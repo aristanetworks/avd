@@ -53,7 +53,6 @@ class ActionModule(ActionBase):
         # Only template output on ansible versions < 2.19.
         self.template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
 
-        self._validation_mode = self._task.args.get("validation_mode")
         self._digital_twin = self._task.args.get("digital_twin", False)
         output_dir = self._task.args.get("output_dir")
 
@@ -122,7 +121,6 @@ class ActionModule(ActionBase):
             hostname="",
             ansible_display=display,
             schema_id="eos_designs",
-            validation_mode=self._validation_mode,
         )
 
         all_inputs: dict[str, EosDesigns] = {}
