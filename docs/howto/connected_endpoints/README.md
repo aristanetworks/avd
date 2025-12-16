@@ -8,13 +8,13 @@
 
 ## Introduction
 
-**connected_endpoints**  is an endpoint-centric model intended for servers or other use cases where most ports have unique configurations. Instead of manually creating `interface Ethernet...` configurations for every server, you describe the connections using adapters and profiles, and AVD generates the complete, standardized configuration for you.
+**connected_endpoints**  is an endpoint-centric model intended for servers or other select cases where most ports have unique configurations. Instead of manually creating `interface Ethernet...` configurations for every server, you describe the connections using adapters and profiles, and AVD generates the complete, standardized configuration for you.
 
-This key is typically defined in a folder named `CONNECTED_ENPOINTS` but can be defined somewhere else depending on your environment.
+This key is typically defined in a folder named `CONNECTED_ENDPOINTS`, but it can be defined elsewhere, depending on your environment.
 
 ## Concepts
 
-**port_profiles**: Port profiles are used to share common settings for connected_endpoints and/or network_ports. Keys are the same as used under endpoint adapters. Keys defined under endpoints adapters take precedence.
+**port_profiles**: Port profiles are used to share common settings for connected_endpoints and network_ports. Keys are the same as those used under endpoint adapters. Keys defined under endpoint adapters take precedence.
 
 **adapters**:  An adapter represents a network interface on the connected_endpoint. They serve as the bridge between the Fabric (the switches) and the Endpoints (the devices). They define how a specific device is cabled and what network services (VLANs, VRFs) it should receive.
 
@@ -32,7 +32,7 @@ A port profile can refer to another port profile using parent_profile to inherit
 - `spanning_tree_portfast`: Set to `edge` for server ports.
 - `native_vlan`: For trunk ports, defines the native VLAN.
 - `storm_control`: To apply storm control policies.
-- `flowcontrol`: To configure flowcontrol settings.
+- `flowcontrol`: To configure flow control settings.
 
 ### Adapters
 
@@ -42,11 +42,11 @@ A port profile can refer to another port profile using parent_profile to inherit
 
 Adapters define the physical mapping between the endpoint and the switch fabric:
 
-- `endpoint_ports`: Port name for the endpoint i.e eth0.
+- `endpoint_ports`: Port name for the endpoint, i.e, eth0.
 - `switch_ports`: Specifies which physical interface(s) on the switch connect to the adapter.
-- `switches`: The switches the interface will connect to.
-- `Profiles`: The port profile defined earlier, apply set of similar configuration
-- `description`: A brief description of the interface function
+- `switches`: The switches to which the interface will connect.
+- `Profiles`: The port profile defined earlier applies to a set of similar configurations.
+- `description`: A brief description of the interface function.
 
 Note: The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
 
@@ -54,17 +54,17 @@ Note: The lists `endpoint_ports`, `switch_ports`, and `switches` must have the s
 
 ### Prerequisites
 
-1. **Ansible & AVD Installed:** You have Ansible and the `arista.avd` collection installed.
-2. **Inventory Set Up:** Your inventory (`inventory/` directory) is created with your hosts and group variables.
+1. **Ansible and AVD Installed:** You have Ansible and the `arista.avd` collection installed.
+2. **Inventory Set Up:** Your inventory is created with your host and group variables.
 3. **Playbook Exists:** You have a main Ansible playbook (e.g., `build.yml`) that imports the AVD roles.
 
 ### Step 1. Create the two configuration files
 
-Navigate to your inventory folder
+Navigate to the root of your project.
 
 ```bash
 touch group_vars/DC1/port_profiles.yml
-touch group_vars/DC1/connected_endpoints.yml
+touch group_vars/CONNECTED_ENDPOINTS/ce.yml
 ```
 
 ### Step 2. Define the port profiles
@@ -81,7 +81,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC
 
 ### Step 3. Define your connected endpoints
 
-```yaml title="group_vars/DC1/connected_endpoints.yml"
+```yaml title="group_vars/CONNECTED_ENDPOINTS/ce.yml"
 --8<--
 ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/CONNECTED_ENDPOINTS/ce1.yml
 --8<--
@@ -130,8 +130,8 @@ docs/howto/connected_endpoints/artifacts/ESXI-HOST-03.cfg
 
 This is a critical best practice. Before deploying, verify that the configuration is correct.
 
-Open the generated file for your leaf switch (e.g., `intended/configs/leaf1.cfg`) and you will see the exact EOS CLI commands shown in the "Generated Configuration" section above, ready for deployment.
+Open the generated file for your leaf switch (e.g., `intended/configs/leaf1.cfg`), and you will see the exact EOS CLI commands shown in the "Generated Configuration" section earlier, ready for deployment.
 
 ### Step 4 (Optional): Deploy the Configuration
 
-After reviewing, you can deploy the configuration to your devices. This is typically done with a separate playbook or by integrating with Arista CloudVision. If using Ansible for deployment, a task might use the `arista.avd.eos_config_deploy_eapi` module to push the generated file to the device or `arista.avd.cv_deploy` to deploy with CloudVision.
+After reviewing, you can deploy the configuration to your devices. This is typically done with a separate playbook or by integrating with Arista CloudVision. If using Ansible for deployment, a task might use the `arista.avd.eos_config_deploy_eapi` role to push the generated file to the device or `arista.avd.cv_deploy` to deploy with CloudVision.
