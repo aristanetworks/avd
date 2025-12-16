@@ -42,13 +42,8 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
             self.structured_config.metadata.validate_hardware.enabled = False
         if self.shared_utils.platform_settings.feature_support.hardware_validation and self.shared_utils.node_config.validation_profile:
             validate_hardware = self.shared_utils.validation_profile(self.shared_utils.node_config.validation_profile)
-            self.structured_config.metadata.validate_hardware.min_power_supplies = validate_hardware.hardware.min_power_supplies
-            self.structured_config.metadata.validate_hardware.min_fans = validate_hardware.hardware.min_fans
-            self.structured_config.metadata.validate_hardware.min_supervisors = validate_hardware.hardware.min_supervisors
-            self.structured_config.metadata.validate_hardware.min_line_cards = validate_hardware.hardware.min_line_cards
-            self.structured_config.metadata.validate_hardware.min_fabric_cards = validate_hardware.hardware.min_fabric_cards
-            self.structured_config.metadata.validate_hardware.transceiver_manufacturers = validate_hardware.hardware.transceiver_manufacturers._cast_as(
-                EosCliConfigGen.Metadata.ValidateHardware.TransceiverManufacturers
+            self.structured_config.metadata.validate_hardware = validate_hardware.hardware._cast_as(
+                EosCliConfigGen.Metadata.ValidateHardware, ignore_extra_keys=True
             )
         if self.shared_utils.node_config.validation_profile:
             validate_hardware = self.shared_utils.validation_profile(self.shared_utils.node_config.validation_profile)
