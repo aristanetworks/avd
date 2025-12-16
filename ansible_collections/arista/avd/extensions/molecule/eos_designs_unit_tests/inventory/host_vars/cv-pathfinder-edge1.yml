@@ -63,4 +63,3 @@ ipv4_acls:
 platform_settings:
   - platforms:
       - default
-    kernel_ecmp_cli: true

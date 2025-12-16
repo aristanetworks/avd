@@ -10825,6 +10825,18 @@ $defs:
             convert_types:
             - int
             description: Set BGP cluster id.
+          kernel_ecmp_cli:
+            type: bool
+            default: true
+            description: 'Use EOS CLI to configure kernel forwarding ECMP programming.
+
+              For EOS kernel forwarding, ECMP programming can be enabled in two different
+              ways, depending on the EOS version.
+
+              - For newer EOS versions (starting 4.33.2) use the proper CLI.
+
+              - For older EOS versions use an agent environment variable. Changing
+              this requires restarting the KernelFib agent.'
           ptp:
             documentation_options:
               table: node-type-ptp-configuration
@@ -12519,18 +12531,6 @@ $defs:
             '
           min: 68
           max: 65535
-        kernel_ecmp_cli:
-          type: bool
-          default: true
-          description: 'Use EOS CLI to configure kernel forwarding ECMP programming.
-
-            For EOS kernel forwarding, ECMP programming can be enabled in two different
-            ways, depending on the EOS version.
-
-            - For newer EOS versions (starting 4.33.2) use the proper CLI.
-
-            - For older EOS versions use an agent environment variable. Changing this
-            requires restarting the KernelFib agent.'
         feature_support:
           type: dict
           keys:
