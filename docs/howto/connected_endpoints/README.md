@@ -94,18 +94,22 @@ ansible-playbook build.yml
 ```
 
 ``` yaml title="build.yml"
-- hosts: FABRIC
-  connection: local
-  gather_facts: false
+---
+# build.yml
 
+- name: Build Configs
+  hosts: FABRIC
+  gather_facts: false
   tasks:
-    - name: Generate AVD Structured Configuration
-      import_role:
+
+    - name: Generate AVD Structured Configurations and Fabric Documentation
+      ansible.builtin.import_role:
         name: arista.avd.eos_designs
 
-    - name: Generate AVD Device Configurations
-      import_role:
+    - name: Generate Device Configurations and Documentation
+      ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
+
 ```
 
 ### Step 5: Review the Generated Configuration
