@@ -8,4 +8,4 @@ type: dict
 keys:
   ip_telnet_client:
     type: dict
-    $ref: "eos_cli_config_gen#/$defs/ip_client"
+    $ref: "eos_cli_config_gen#/$defs/source_interface_per_vrf"

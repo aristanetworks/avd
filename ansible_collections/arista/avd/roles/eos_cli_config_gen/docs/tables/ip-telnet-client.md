@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>ip_telnet_client</samp>](## "ip_telnet_client") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;source_interface</samp>](## "ip_telnet_client.source_interface") | String |  |  |  | Define `source_interface` for VRF default. |
-    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "ip_telnet_client.vrfs") | List, items: Dictionary |  |  |  | Define vrfs for any VRF other than default. |
+    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "ip_telnet_client.vrfs") | List, items: Dictionary |  |  |  | Define `source interfaces` for any VRF other than default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_telnet_client.vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "ip_telnet_client.vrfs.[].source_interface") | String | Required |  |  |  |
     | [<samp>ip_telnet_client_source_interfaces</samp>](## "ip_telnet_client_source_interfaces") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ip_telnet_client</samp> instead.</span> |
@@ -22,7 +22,7 @@
       # Define `source_interface` for VRF default.
       source_interface: <str>
 
-      # Define vrfs for any VRF other than default.
+      # Define `source interfaces` for any VRF other than default.
       vrfs:
         - name: <str; required; unique>
           source_interface: <str; required>

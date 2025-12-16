@@ -6805,7 +6805,7 @@ keys:
           - int
   ip_telnet_client:
     type: dict
-    $ref: eos_cli_config_gen#/$defs/ip_client
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_telnet_client_source_interfaces:
     documentation_options:
       table: ip-telnet-client
@@ -25479,7 +25479,7 @@ $defs:
           min: 1
           max: 65535
           description: requires 'original_port'.
-  ip_client:
+  source_interface_per_vrf:
     type: dict
     keys:
       source_interface:
@@ -25488,7 +25488,7 @@ $defs:
       vrfs:
         type: list
         primary_key: name
-        description: Define vrfs for any VRF other than default.
+        description: Define `source interfaces` for any VRF other than default.
         items:
           type: dict
           keys:
