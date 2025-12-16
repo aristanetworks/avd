@@ -12,24 +12,24 @@ custom_structured_configuration_prefix:
 aaa_settings:
   # DATA MODEL WITH NO PRIMARY KEY
   tacacs:
-      servers:
-        - host: 10.10.10.11 # Collides with csc_1_aaa_server_groups
-          vrf: default
-          cleartext_key: arista
-          groups:
-            - TACACS1
+    servers:
+      - host: 10.10.10.11 # Collides with csc_1_aaa_server_groups
+        vrf: default
+        cleartext_key: arista
+        groups:
+          - TACACS1
 
-        - host: 10.10.10.2  # Collides with csc_1_aaa_server_groups
-          vrf: MGMT
-          cleartext_key: arista
-          groups:
-            - TACACS1
+      - host: 10.10.10.2  # Collides with csc_1_aaa_server_groups
+        vrf: MGMT
+        cleartext_key: arista
+        groups:
+          - TACACS1
 
-        - host: 10.10.10.3 # unique value
-          vrf: MGMT1
-          cleartext_key: arista
-          groups:
-            - TACACS1
+      - host: 10.10.10.3 # unique value
+        vrf: MGMT1
+        cleartext_key: arista
+        groups:
+          - TACACS1
 
   # DATA MODEL WITH PRIMARY KEY
   local_users:
