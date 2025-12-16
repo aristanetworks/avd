@@ -7,7 +7,6 @@ port_profiles:
     spanning_tree_portfast: edge
     storm_control:
       all:
-        # action: drop
         level: "10"
         unit: percent
 
