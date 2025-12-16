@@ -17394,10 +17394,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Define `source_interface` for VRF default."""
         vrfs: Vrfs
         """
-        Define vrfs for any VRF other than default.
+        Define `source interfaces` for any VRF other than default.
 
-        Subclass of AvdIndexedList with `VrfsItem` items.
-        Primary key is `name` (`str`).
+        Subclass of AvdIndexedList with
+        `VrfsItem` items. Primary key is `name` (`str`).
         """
 
         if TYPE_CHECKING:
@@ -17412,10 +17412,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     source_interface: Define `source_interface` for VRF default.
                     vrfs:
-                       Define vrfs for any VRF other than default.
+                       Define `source interfaces` for any VRF other than default.
 
-                       Subclass of AvdIndexedList with `VrfsItem` items.
-                       Primary key is `name` (`str`).
+                       Subclass of AvdIndexedList with
+                       `VrfsItem` items. Primary key is `name` (`str`).
 
                 """
 
