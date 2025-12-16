@@ -214,7 +214,7 @@ These settings allow modification of the default behavior as needed. The values 
 # Enable AVD catalogs generation. Can be disabled if only user-defined catalogs are used.
 avd_catalogs_enabled: true
 
-# Disables execution of user-defined catalogs by default. Enable this setting if executing user-defined tests is required.
+# Disable user-defined catalogs generation. Enable this setting to generate tests from user-defined catalog files located in `user_catalogs_dir`.
 user_catalogs_enabled: false
 
 # Generate extra fabric-wide validation tests (e.g., reachability and routing tests).

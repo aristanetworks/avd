@@ -184,14 +184,11 @@ class ActionModule(ActionBase):
 
         generate_avd_catalogs = get(PLUGIN_ARGS, "avd_catalogs.enabled")
         structured_config_dir = get(PLUGIN_ARGS, "avd_catalogs.structured_config_dir")
-        user_catalog_enabled = get(PLUGIN_ARGS, "user_catalogs.enabled")
+        generate_user_catalogs = get(PLUGIN_ARGS, "user_catalogs.enabled")
         user_catalog_dir = get(PLUGIN_ARGS, "user_catalogs.input_dir")
 
-        if generate_avd_catalogs is False and user_catalog_dir is None:
-            msg = (
-                "When 'avd_catalogs.enabled' is False, a directory with user-defined ANTA catalogs "
-                "must be provided using the 'user_catalogs.input_dir' argument"
-            )
+        if generate_avd_catalogs is False and generate_user_catalogs is False:
+            msg = "Exactly one of 'avd_catalogs.enabled' or 'user_catalogs.enabled' must be provided"
             raise AnsibleActionFail(msg)
         if generate_avd_catalogs is True and structured_config_dir is None:
             msg = (
@@ -199,10 +196,16 @@ class ActionModule(ActionBase):
                 "must be provided using the 'avd_catalogs.structured_config_dir' argument"
             )
             raise AnsibleActionFail(msg)
+        if generate_user_catalogs is True and user_catalog_dir is None:
+            msg = (
+                "When 'user_catalogs.enabled' is True, a directory with user-defined ANTA catalogs "
+                "must be provided using the 'user_catalogs.input_dir' argument"
+            )
+            raise AnsibleActionFail(msg)
 
         try:
             # Load the user-defined ANTA catalogs if provided
-            if user_catalog_enabled and user_catalog_dir is not None:
+            if generate_user_catalogs and user_catalog_dir is not None:
                 USER_CATALOG = load_user_catalogs(user_catalog_dir)
                 if not generate_avd_catalogs and not USER_CATALOG.tests:
                     LOGGER.warning("No tests found in the user-defined ANTA catalogs, exiting")
