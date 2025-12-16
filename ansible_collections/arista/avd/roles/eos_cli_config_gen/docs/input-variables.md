@@ -89,7 +89,7 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-telnet-cl
 ### IP TFTP client source-interfaces
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-tftp-client-source-interfaces.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-tftp-client.md
 --8<--
 
 ### Local users
