@@ -365,7 +365,6 @@ class UtilsMixin(Protocol):
             validation_profile = validation_profile._deepinherited(parent_profile)
 
         # Remove parent_profile after resolution to avoid re-processing inheritance
-        if hasattr(validation_profile, "parent_profile"):
-            delattr(validation_profile, "parent_profile")
+        delattr(validation_profile, "parent_profile")
 
         return validation_profile
