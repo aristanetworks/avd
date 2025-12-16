@@ -5,11 +5,13 @@ ip_name_server:
     - name: default
       servers:
         - ip_address: 10.10.128.10
+        # no VRF priority
         - ip_address: 10.10.129.10
           priority: 0
         - ip_address: 2001:db8::1
         - ip_address: 2001:db8::2
           priority: 0
+        # Same DNS different VRF and priority
         - ip_address: 2001:db8::3
           priority: 1
     - name: mgmt
@@ -18,6 +20,7 @@ ip_name_server:
         - ip_address: 2001:db8::1
         - ip_address: 2001:db8::2
           priority: 1
+    # Test for sort with ignore_case: false
     - name: TEST
       servers:
         - ip_address: 4.4.4.4
