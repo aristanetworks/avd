@@ -191,13 +191,12 @@ keys:
           interface_storm_control: false
           queue_monitor_length_notify: false
           evpn_gateway_all_active_multihoming: true
+          hardware_validation: false
         reload_delay:
           mlag: 300
           non_mlag: 330
         digital_twin:
           act_node_type: veos
-        validate_hardware:
-          enabled: false
       - platforms:
           - CEOS
           - cEOS
@@ -209,25 +208,23 @@ keys:
           interface_storm_control: false
           queue_monitor_length_notify: false
           evpn_gateway_all_active_multihoming: true
+          hardware_validation: false
         management_interface: Management0
         reload_delay:
           mlag: 300
           non_mlag: 330
         digital_twin:
           act_node_type: veos
-        validate_hardware:
-          enabled: false
       - platforms:
           - CloudEOS
         feature_support:
           bgp_update_wait_install: false
           interface_storm_control: false
           queue_monitor_length_notify: false
+          hardware_validation: false
         p2p_uplinks_mtu: 9194
         digital_twin:
           act_node_type: cloudeos
-        validate_hardware:
-          enabled: false
       - platforms:
           - AWE-5310
           - AWE-7230R

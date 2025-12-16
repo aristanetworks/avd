@@ -319,3 +319,11 @@ class UtilsMixin(Protocol):
             case "use_inband_mgmt_interface":
                 return self.inband_mgmt_interface
         return input_interface
+
+    def validation_profile(self: SharedUtilsProtocol, profile_name: str) -> EosDesigns.ValidationProfilesItem:
+        if profile_name not in self.inputs.validation_profiles:
+            msg = f"Validate Profile '{profile_name}' referenced under `node_config.profile`\
+                        node variables does not exist in `validation_profiles`."
+            raise AristaAvdInvalidInputsError(msg)
+
+        return self.inputs.validation_profiles[profile_name]

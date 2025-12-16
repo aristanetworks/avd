@@ -1576,6 +1576,12 @@ The keys can be customized to provide a better better organization or grouping o
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-keys.md
 --8<--
 
+## Validation Profiles
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/validation-profiles.md
+--8<--
+
 ## Platform settings
 
 Set platform specific settings like TCAM profile and reload delay.

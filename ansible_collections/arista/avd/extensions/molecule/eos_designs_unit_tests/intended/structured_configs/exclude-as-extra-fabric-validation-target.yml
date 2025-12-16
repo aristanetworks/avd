@@ -24,6 +24,10 @@ metadata:
   is_deployed: true
   rack: ABC567
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    transceiver_manufacturers:
+    - Arista Networks
+    - Arastra, Inc.
   exclude_as_extra_fabric_validation_target: true
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
