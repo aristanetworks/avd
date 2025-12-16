@@ -4,23 +4,28 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# How-to Guide: Connected Endpoints
+# Connected Endpoints
 
 ## Introduction to Connected Endpoints
 
-The **`connected_endpoints`** data model in AVD is a structured way to define the interfaces that connect to your leaf switches. Instead of manually creating `interface Ethernet...` configurations for every server, you describe the connections using a data model, and AVD generates the complete, standardized configuration for you.
+The **`connected_endpoints`**  is an endpoint-centric model intended for servers or other use cases where most ports have unique configurations. Instead of manually creating `interface Ethernet...` configurations for every server, you describe the connections using adapters and profiles, and AVD generates the complete, standardized configuration for you.
 
-This model is typically defined directly under the leaf switch's data model, for example, in `host_vars/<leaf_name>.yml` or a group file like `group_vars/LEAFS.yml`.
+This key is typically defined directly under the leaf switch's configuration file, for example, in `host_vars/<leaf_name>.yml` or a group file like `group_vars/LEAFS.yml`.
 
-The core of this model revolves around the concept called **Port Profiles**.
+## Core Concepts
 
-## Core Concept: Port Profiles
+**`port_profiles`**: Pgit rofiles to share common settings for connected_endpoints and/or network_ports. Keys are the same as used under endpoint adapters. Keys defined under endpoints adapters take precedence.
+**`adapters`**:  An adapter represents a network interface on the server. They serve as the bridge between the Fabric (the switches) and the Endpoints (the devices). They define how a specific device is cabled and what network services (VLANs, VRFs) it should receive.
+
+### Port Profiles
 
 A **Port Profile** is a reusable template that defines a standard set of switchport configurations. You create a profile once and then apply it to any number of connected endpoints. This ensures consistency and dramatically simplifies configuration.
 
 Profiles are defined under the `port_profiles` key.
 
-### Key settings for a Port Profile
+A port profile can refer to another port profile using parent_profile to inherit settings in up to two levels (adapter->profile->parent_profile).
+
+#### Key settings for a Port Profile
 
 - `mode`: Can be `access` or `trunk`.
 - `vlans`: For `access` mode, the single VLAN ID. For `trunk` mode, the list of allowed VLANs.
@@ -30,7 +35,7 @@ Profiles are defined under the `port_profiles` key.
 - `storm_control`: To apply storm control policies.
 - `flowcontrol`: To configure flowcontrol settings.
 
-### Example: Defining several Port Profiles
+#### Example: Defining several Port Profiles
 
 This would typically be in a shared file like `group_vars/FABRIC.yml` or in a dedicated file `group_vars/PROFILES.yml` if you have a large fabric.
 
@@ -43,6 +48,56 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC
 1. Profile for a single-homed server in VLAN 10
 2. Profile for a dual-homed (LACP) server trunking two VLANs
 3. Profile for a trunk port connecting to a firewall
+
+### Adapters
+
+Adapters serve as the bridge between the Fabric (the switches) and the Endpoints (the devices). They define how a specific device is cabled and what network services (VLANs, VRFs) it should receive.
+
+#### Connectivity Definitions
+
+Adapters define the physical mapping between the endpoint and the switch fabric:
+
+- Switch Ports: Specifies which physical interface(s) on the switch connect to the adapter.
+- Link Speed: Sets the required speed (e.g., 10G, 25G, 100G) for the member ports.
+- Port-Channeling: Defines if the adapter uses LACP or static Port-Channels to group multiple physical links into a single logical one.
+
+#### Multi-Chassis Link Aggregation (MLAG)
+
+Adapters are frequently used to configure `MLAG` (active-active) connectivity. By defining an adapter that spans two different Leaf switches, AVD automatically generates the complex `MLAG`, Peer-Link, and Virtual IP configurations required to provide redundancy to the endpoint.
+
+#### Network Service Mapping
+
+Adapters determine which VLANs or Segments are trunked to the device:
+
+- Mode: Specifies if the port is an access port (single VLAN) or a trunk port (multiple VLANs).
+- VLAN IDs: Maps the specific Network Services defined in your fabric to the physical adapter ports.
+- Native VLAN: Defines the untagged VLAN for the link.
+
+#### Example YAML Definition
+
+In an AVD inventory, an adapter is usually defined under a connected_endpoints key:
+
+```YAML
+connected_endpoints:
+  - name: ESXI_CLUSTER_01
+    adapters:
+      - endpoint_ports: [ eth1, eth2 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ LEAF1A, LEAF1B ] # Spanning two switches for MLAG
+        mode: trunk
+        vlans: "10,20,30"
+        spanning_tree_portfast: edge
+```
+
+#### Key Parameters Explained
+
+endpoint_ports: The names of the ports on the server/device side.
+
+switch_ports: The physical interfaces on the Arista switches.
+
+switches: The specific switches in the fabric where these ports reside.
+
+spanning_tree_portfast: Usually set to edge for adapters to ensure the port transitions to a forwarding state immediately upon link-up.
 
 ## How-To: Define a Connected Endpoint
 
