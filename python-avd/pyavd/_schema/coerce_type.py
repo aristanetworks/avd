@@ -12,7 +12,7 @@ from .constants import ACCEPTED_COERCION_MAP
 if TYPE_CHECKING:
     from typing import NoReturn, TypeVar
 
-    T = TypeVar("T")
+    T = TypeVar("T", int, bool, str)
 
 
 def coerce_type(value: Any, target_type: type[T]) -> T:
