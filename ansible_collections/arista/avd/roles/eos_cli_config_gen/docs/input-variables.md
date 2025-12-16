@@ -77,7 +77,7 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-tacacs-so
 ### IP FTP client source-interfaces
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-ftp-client-source-interfaces.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-ftp-client.md
 --8<--
 
 ### IP Telnet client source-interfaces

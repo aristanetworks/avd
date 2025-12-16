@@ -6057,18 +6057,18 @@ keys:
                 type: str
                 required: true
                 description: Regular Expression.
+  ip_ftp_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_ftp_client_source_interfaces:
+    documentation_options:
+      table: ip-ftp-client
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          required: true
-          description: Interface Name.
-        vrf:
-          type: str
-          description: VRF Name.
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_ftp_client
   ip_hardware:
     type: dict
     keys:
@@ -25508,3 +25508,21 @@ $defs:
           min: 1
           max: 65535
           description: requires 'original_port'.
+  source_interface_per_vrf:
+    type: dict
+    keys:
+      source_interface:
+        type: str
+        description: Define `source_interface` for VRF default.
+      vrfs:
+        type: list
+        primary_key: name
+        description: Define `source interfaces` for any VRF other than default.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            source_interface:
+              type: str
+              required: true
