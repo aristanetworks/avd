@@ -40,16 +40,15 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
         # Logic for validate hardware
         if not self.shared_utils.platform_settings.feature_support.hardware_validation:
             self.structured_config.metadata.validate_hardware.enabled = False
-        if self.shared_utils.platform_settings.feature_support.hardware_validation and self.shared_utils.node_config.validation_profile:
-            validate_hardware = self.shared_utils.validation_profile(self.shared_utils.node_config.validation_profile)
-            self.structured_config.metadata.validate_hardware = validate_hardware.hardware._cast_as(
-                EosCliConfigGen.Metadata.ValidateHardware, ignore_extra_keys=True
-            )
         if self.shared_utils.node_config.validation_profile:
-            validate_hardware = self.shared_utils.validation_profile(self.shared_utils.node_config.validation_profile)
-            self.structured_config.metadata.validate_no_errors_period = validate_hardware.logging.validate_no_errors_period
-            if validate_hardware.exclude_as_extra_fabric_validation_target:
-                self.structured_config.metadata.exclude_as_extra_fabric_validation_target = validate_hardware.exclude_as_extra_fabric_validation_target
+            resolved_profile = self.shared_utils.get_resolved_validation_profile(self.shared_utils.node_config.validation_profile)
+            if self.shared_utils.platform_settings.feature_support.hardware_validation:
+                self.structured_config.metadata.validate_hardware = resolved_profile.hardware._cast_as(
+                    EosCliConfigGen.Metadata.ValidateHardware, ignore_extra_keys=True
+                )
+            self.structured_config.metadata.validate_no_errors_period = resolved_profile.logging.validate_no_errors_period
+            if resolved_profile.exclude_as_extra_fabric_validation_target:
+                self.structured_config.metadata.exclude_as_extra_fabric_validation_target = resolved_profile.exclude_as_extra_fabric_validation_target
 
 
 class AvdStructuredConfigMetadata(StructuredConfigGenerator, AvdStructuredConfigMetadataProtocol):
