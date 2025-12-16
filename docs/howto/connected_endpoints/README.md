@@ -6,16 +6,17 @@
 
 # Connected Endpoints
 
-## Introduction to Connected Endpoints
+## Introduction
 
-The **`connected_endpoints`**  is an endpoint-centric model intended for servers or other use cases where most ports have unique configurations. Instead of manually creating `interface Ethernet...` configurations for every server, you describe the connections using adapters and profiles, and AVD generates the complete, standardized configuration for you.
+**connected_endpoints**  is an endpoint-centric model intended for servers or other use cases where most ports have unique configurations. Instead of manually creating `interface Ethernet...` configurations for every server, you describe the connections using adapters and profiles, and AVD generates the complete, standardized configuration for you.
 
 This key is typically defined directly under the leaf switch's configuration file, for example, in `host_vars/<leaf_name>.yml` or a group file like `group_vars/LEAFS.yml`.
 
 ## Core Concepts
 
-**`port_profiles`**: Pgit rofiles to share common settings for connected_endpoints and/or network_ports. Keys are the same as used under endpoint adapters. Keys defined under endpoints adapters take precedence.
-**`adapters`**:  An adapter represents a network interface on the server. They serve as the bridge between the Fabric (the switches) and the Endpoints (the devices). They define how a specific device is cabled and what network services (VLANs, VRFs) it should receive.
+**port_profiles**: Port profiles are used to share common settings for connected_endpoints and/or network_ports. Keys are the same as used under endpoint adapters. Keys defined under endpoints adapters take precedence.
+
+**adapters**:  An adapter represents a network interface on the connected_endpoint. They serve as the bridge between the Fabric (the switches) and the Endpoints (the devices). They define how a specific device is cabled and what network services (VLANs, VRFs) it should receive.
 
 ### Port Profiles
 
@@ -99,7 +100,7 @@ switches: The specific switches in the fabric where these ports reside.
 
 spanning_tree_portfast: Usually set to edge for adapters to ensure the port transitions to a forwarding state immediately upon link-up.
 
-## How-To: Define a Connected Endpoint
+## Define a Connected Endpoint
 
 Once you have your profiles, you can define the actual endpoint connections under a specific leaf switch. This is done using the `connected_endpoints` key.
 
