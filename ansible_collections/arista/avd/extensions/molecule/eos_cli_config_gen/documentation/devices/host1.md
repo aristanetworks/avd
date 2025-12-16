@@ -13349,6 +13349,7 @@ mac security
 | -------------- | -------- |
 | SERVICE-DEMO | 10,20,80,440-450 |
 | SERVICE-DEMO2 | - |
+| service-demo3 | 20-25 |
 
 #### Traffic Policies
 
@@ -13400,6 +13401,8 @@ Counters: test
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ----------- | ------ |
 | BLUE-C7-POLICY-01 | ipv4 | any | any | neighbors | - | - | - | - | - | default action: PASS |
 
+##### policy1
+
 ##### Traffic-Policy Interfaces
 
 | Interface | Input Traffic-Policy | Output Traffic-Policy |
@@ -13417,6 +13420,10 @@ traffic-policies
       10,20,80,440-450
    !
    field-set l4-port SERVICE-DEMO2
+   !
+   field-set l4-port service-demo3
+      20-25
+   !
    field-set ipv4 prefix DEMO-01
       10.0.0.0/8 192.168.0.0/16
       except 10.2.2.2/32 10.10.0.0/16 172.16.0.0/16
@@ -13620,6 +13627,13 @@ traffic-policies
          protocol neighbors bgp enforce ttl maximum-hops
       !
       match ipv4-all-default ipv4
+      !
+      match ipv6-all-default ipv6
+   !
+   traffic-policy policy1
+      match ipv4-all-default ipv4
+         actions
+            drop
       !
       match ipv6-all-default ipv6
 ```
