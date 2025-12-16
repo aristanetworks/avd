@@ -4,7 +4,6 @@
   vars:
     underlay_routing_protocol: ABC
   arista.avd.eos_designs_structured_config:
-    validation_mode: error
 
 - vars:
     error_msg: >-
