@@ -15,8 +15,6 @@ $defs:
           type: str
           convert_types:
           - int
-        default_gateway:
-          type: str
         dns_servers:
           type: list
           items:

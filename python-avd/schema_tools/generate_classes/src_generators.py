@@ -373,7 +373,7 @@ class SrcData:
     field should be set on all instances except for the root model
     """
 
-    cls: ModelSrc | ListSrc | None = None
+    cls: ModelSrc | ListSrc | LiteralSrc | None = None
     """
     cls is a full model for a 'dict' field or the main class for a 'list' field.
     """
@@ -392,7 +392,7 @@ class FileSrc:
     Use str() on the instance to render the source code.
     """
 
-    classes: list[ModelSrc]
+    classes: list[ModelSrc | ListSrc | LiteralSrc | None]
 
     def __str__(self) -> str:
         """Returns Python source code for this file."""
@@ -404,7 +404,7 @@ class FileSrc:
 
     def _render_classes(self) -> str:
         """Render the python source code for classes."""
-        return "\n\n".join(str(cls) for cls in self.classes)
+        return "\n\n".join(str(cls) for cls in self.classes if cls is not None)
 
     def _render_imports(self) -> str:
         """Render the python source code for imports."""
