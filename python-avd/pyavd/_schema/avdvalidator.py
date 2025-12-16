@@ -4,7 +4,7 @@
 from collections import ChainMap
 from collections.abc import Generator, Mapping
 from re import fullmatch
-from typing import Any, Literal, NoReturn
+from typing import Any, NoReturn
 
 from pyavd._errors import AvdValidationError
 from pyavd._utils import get_all, get_all_with_path, get_indices_of_duplicate_items
@@ -18,7 +18,7 @@ from .utils import get_instance_with_defaults
 
 
 class AvdValidator:
-    def __init__(self, schema: dict) -> None:
+    def __init__(self, schema: dict[str, Any]) -> None:
         self.schema = schema
         self.validators = {
             # Note type_validator is not included here since we first check that before spending energy on the rest
@@ -39,7 +39,7 @@ class AvdValidator:
         self._relaxed_validation: bool = False
         """Used to ignore missing required keys."""
 
-    def validate(self, instance: Any, schema: dict | None = None, path: list[str | int] | None = None) -> Generator:
+    def validate(self, instance: Any, schema: dict[str, Any] | None = None, path: list[str | int] | None = None) -> Generator:
         if schema is None:
             schema = self.schema
         if path is None:
@@ -56,7 +56,7 @@ class AvdValidator:
                 continue
             yield from validator(schema_value, instance, schema, path)
 
-    def type_validator(self, schema_type: str, instance: Any, _schema: dict, path: list[str | int]) -> Generator:
+    def type_validator(self, schema_type: str, instance: Any, _schema: dict[str, Any], path: list[str | int]) -> Generator[AvdValidationError]:
         """Validates the type of `instance` equal to `schema_type`."""
         if not is_type(instance, schema_type):
             yield AvdValidationError(
@@ -86,7 +86,7 @@ class AvdValidator:
                         path=[*path, *paths[duplicate_index], unique_key_path[-1]],
                     )
 
-    def primary_key_validator(self, primary_key: str, instance: list, schema: dict, path: list[str | int]) -> Generator:
+    def primary_key_validator(self, primary_key: str, instance: list[dict[str, Any]], schema: dict[str, Any], path: list[str | int]) -> Generator:
         if not instance:
             return
 
@@ -98,7 +98,7 @@ class AvdValidator:
             # Reusing the unique keys validator
             yield from self.unique_keys_validator([primary_key], instance, schema, path)
 
-    def keys_validator(self, keys: dict, instance: dict, schema: dict, path: list[str | int]) -> Generator:
+    def keys_validator(self, keys: dict[Any, Any], instance: dict[str, Any], schema: dict[str, Any], path: list[str | int]) -> Generator:
         """
         This function validates each key with the relevant subschema.
 
@@ -111,7 +111,7 @@ class AvdValidator:
         """
         # Compile schema_dynamic_keys and add to "dynamic_keys"
         if schema_dynamic_keys := schema.get("dynamic_keys"):
-            dynamic_keys = {}
+            dynamic_keys: dict[Any, Any] = {}
             for dynamic_key, childschema in schema_dynamic_keys.items():
                 instance_with_defaults = get_instance_with_defaults(instance, dynamic_key, schema)
                 resolved_keys = get_all(instance_with_defaults, dynamic_key)
@@ -164,12 +164,12 @@ class AvdValidator:
         # Restore value
         self._relaxed_validation = old_relaxed_validation
 
-    def dynamic_keys_validator(self, _dynamic_keys: dict, instance: dict, schema: dict, path: list[str | int]) -> Generator:
+    def dynamic_keys_validator(self, _dynamic_keys: dict, instance: dict[str, Any], schema: dict[str, Any], path: list[str | int]) -> Generator:
         """This function triggers the regular "keys" validator in case only dynamic_keys is set."""
         if "keys" not in schema:
             yield from self.keys_validator({}, instance, schema, path=path)
 
-    def items_validator(self, items: dict, instance: list, _schema: dict, path: list[str | int]) -> Generator:
+    def items_validator(self, items: dict[str, Any], instance: list[dict[str, Any]], _schema: dict, path: list[str | int]) -> Generator:
         for index, item in enumerate(instance):
             yield from self.validate(item, items, path=[*path, index])
 
@@ -185,11 +185,11 @@ class AvdValidator:
         if instance < schema_min:
             yield AvdValidationError(f"'{instance}' is lower than the allowed minimum of {schema_min}.", path=path)
 
-    def max_length_validator(self, schema_max_length: int, instance: str | list, _schema: dict, path: list[str | int]) -> Generator:
+    def max_length_validator(self, schema_max_length: int, instance: str | list[Any], _schema: dict, path: list[str | int]) -> Generator:
         if len(instance) > schema_max_length:
             yield AvdValidationError(f"The value is longer ({len(instance)}) than the allowed maximum of {schema_max_length}.", path=path)
 
-    def min_length_validator(self, schema_min_length: int, instance: str | list, _schema: dict, path: list[str | int]) -> Generator:
+    def min_length_validator(self, schema_min_length: int, instance: str | list[Any], _schema: dict, path: list[str | int]) -> Generator:
         if len(instance) < schema_min_length:
             yield AvdValidationError(f"The value is shorter ({len(instance)}) than the allowed minimum of {schema_min_length}.", path=path)
 
@@ -260,7 +260,7 @@ class AvdValidator:
             yield AvdValidationError(f"The value '{instance}' is not matching the pattern '{pattern}'.", path=path)
 
 
-def is_type(instance: Any, type_str: Literal["dict", "int", "str", "bool", "list"]) -> bool:
+def is_type(instance: Any, type_str: str) -> bool:
     match type_str:
         case "int":
             return isinstance(instance, int)
