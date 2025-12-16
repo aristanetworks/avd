@@ -6,7 +6,7 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 $defs:
-  ip_client:
+  source_interface:
     type: dict
     keys:
       source_interface:
@@ -15,7 +15,7 @@ $defs:
       vrfs:
         type: list
         primary_key: name
-        description: Define vrfs for any VRF other than default.
+        description: Define `source interfaces` for any VRF other than default.
         items:
           type: dict
           keys:
