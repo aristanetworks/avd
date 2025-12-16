@@ -6832,18 +6832,18 @@ keys:
           display_name: VRF
           convert_types:
           - int
+  ip_telnet_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_telnet_client_source_interfaces:
+    documentation_options:
+      table: ip-telnet-client
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          required: true
-          description: Interface Name.
-        vrf:
-          type: str
-          description: VRF Name.
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_telnet_client
   ip_tftp_client:
     type: dict
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
