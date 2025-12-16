@@ -6,7 +6,7 @@ from collections.abc import Generator
 from typing import Any
 
 
-def get_indices_of_duplicate_items(values: list) -> Generator[tuple[Any, list[int]], None, None]:
+def get_indices_of_duplicate_items(values: list | tuple) -> Generator[tuple[Any, list[int]], None, None]:
     """Returns a Generator of Tuples with (<value>, [<indices of duplicate items>])."""
     counters = defaultdict(list)
     [counters[item].append(index) for index, item in enumerate(values)]

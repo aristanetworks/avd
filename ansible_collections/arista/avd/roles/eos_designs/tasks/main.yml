@@ -29,7 +29,6 @@
   arista.avd.eos_designs_facts:
     # cprofile_file: "eos_designs_facts.prof"
     template_output: true
-    validation_mode: "{{ avd_data_validation_mode }}"
     output_dir: "{{ output_dir }}"
     digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
   check_mode: false
@@ -42,7 +41,6 @@
     dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
     # cprofile_file: "structured-{{inventory_hostname}}.prof"
     template_output: true
-    validation_mode: "{{ avd_data_validation_mode }}"
     structured_config: "{{ avd_eos_designs_structured_config | arista.avd.default(true) }}"
     debug_vars: "{{ avd_eos_designs_debug | arista.avd.default(false) }}"
     debug_vars_file: "{{ structured_dir }}/{{ inventory_hostname }}-debug-vars.yml"

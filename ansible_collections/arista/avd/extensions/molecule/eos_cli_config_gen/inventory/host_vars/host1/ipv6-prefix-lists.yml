@@ -1,6 +1,11 @@
 ---
 ### IPv6 Prefix-lists ###
 ipv6_prefix_lists:
+  # Test for sort with ignore_case: false
+  - name: ipv6_list1
+    sequence_numbers:
+      - sequence: 10
+        action: permit 1b11:3a00:22b0:0082::/64 eq 128
   - name: PL-IPV6-LOOPBACKS
     sequence_numbers:
       - sequence: 10

@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from collections.abc import Generator
 
 
-def get_all(data: Any, path: str, required: bool = False, org_path: str | None = None) -> list:
+def get_all(data: Any, path: str, required: bool = False, org_path: str | None = None) -> list[Any]:
     """
     Get all values from data matching a data path.
 
