@@ -10,7 +10,6 @@ l2leaf:
     - name: SNMP_AUTOGEN_ENGINEID_RFC3411_HOSTNAME_DEFAULT_MGMT
       id: 43
       inband_mgmt_ip: 192.168.0.10/24
-
 default_mgmt_method: inband
 inband_mgmt_interface_vrf: MGMT
 inband_mgmt_gateway: 192.168.0.10/24
@@ -19,11 +18,9 @@ snmp_settings:
   contact: example@example.com
   location: true
   compute_local_engineid: true
-  compute_local_engineid_rfc3411: true
-  # The default value is hostname_and_ip
-  # Since inband_mgmt_method is set to inband, it should
-  # automatically try to use hostname_inband_ip
-  # compute_local_engineid_source: hostname_and_ip
+  # compute_local_engineid_source: rfc_3411
+  # The default value is rfc_3411
+  # Since inband_mgmt_method is set to inband, it should use the inband_mgmt_ip.
   compute_v3_user_localized_key: true
   users:
     - name: usertest-auth-priv

@@ -18,8 +18,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "snmp_settings.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 access-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl</samp>](## "snmp_settings.vrfs.[].ipv6_acl") | String |  |  |  | IPv6 access-list name. |
     | [<samp>&nbsp;&nbsp;compute_local_engineid</samp>](## "snmp_settings.compute_local_engineid") | Boolean |  | `False` |  | Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.<br> |
-    | [<samp>&nbsp;&nbsp;compute_local_engineid_rfc3411</samp>](## "snmp_settings.compute_local_engineid_rfc3411") | Boolean |  | `False` |  | Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.<br> |
-    | [<samp>&nbsp;&nbsp;compute_local_engineid_source</samp>](## "snmp_settings.compute_local_engineid_source") | String |  | `hostname_and_ip` | Valid Values:<br>- <code>hostname_and_ip</code><br>- <code>system_mac</code><br>- <code>hostname_inband_ip</code><br>- <code>hostname_oob_ip</code> | `compute_local_engineid_source` supports:<br>- `hostname_and_ip` generate a local engineId for SNMP by<br>If compute_local_engineid_rfc3411 is set to false (default), hashing via SHA1<br>  the string generated via the concatenation of the hostname plus the management IP.<br>  {{ inventory_hostname }} + {{ switch.mgmt_ip }}.<br>If compute_local_engineid_rfc3411 is set t True, it will use the default_mgmt_method to find the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757104+ sha1(hostname + mgmt_ip)<br>- `system_mac` generate the switch default engine id for AVD usage.<br>  To use this, `system_mac_address` MUST be set for the device.<br>  The formula is f5717f + system_mac_address + 00.<br>- `hostname_inband_ip` generate a local engineId for SNMP by hashing via SHA1<br>  the string generated via the concatenation of the hostname plus the management IP, with an RFC3411 compliant prefix.<br>  8000757104 + sha1({{ inventory_hostname }} + {{ mgmt_ip }}).<br>  The management ip is either the switch.mgmt_ip or the ip address of the inband_mgmt_interface.<br>- `hostname_oob_ip` generate a local engineId for SNMP by hashing via SHA1<br>  the string generated via the concatenation of the hostname plus the management IP, with an RFC3411 compliant prefix.<br>  8000757104 + sha1({{ inventory_hostname }} + {{ mgmt_ip }}).<br>  The management ip is either the switch.mgmt_ip or the ip address of the inband_mgmt_interface.<br> |
+    | [<samp>&nbsp;&nbsp;compute_local_engineid_source</samp>](## "snmp_settings.compute_local_engineid_source") | String |  | `rfc3411` | Valid Values:<br>- <code>rfc3411</code><br>- <code>system_mac</code><br>- <code>hostname_and_ip</code><br>- <code>legacy_hostname_and_ip</code> | `compute_local_engineid_source` supports:<br>- `rfc3411` use the default_mgmt_method to find the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757104+ sha1(hostname + mgmt_ip)<br>- `system_mac` generate the switch default engine id for AVD usage.<br>  To use this, `system_mac_address` MUST be set for the device.<br>  The formula is f5717f + system_mac_address + 00.<br>- `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1<br>  the string generated via the concatenation of the hostname plus the management IP.<br>  {{ inventory_hostname }} + {{ mgmt_ip }} as defined by `compute_local_engineid_ip`.<br>  Note that this is a legacy method not following RFC 3411.<br>- `legacy_hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1<br>  the string generated via the concatenation of the hostname plus the management IP.<br>  {{ inventory_hostname }} + {{ switch.mgmt_ip }}.<br>  Note that this is a legacy method not following RFC 3411 and kept in AVD for backward-compatibility purposes<br>  and that it does not take into account properly the inband mgmt case. |
+    | [<samp>&nbsp;&nbsp;compute_local_engineid_ip</samp>](## "snmp_settings.compute_local_engineid_ip") | String |  | `use_default_mgmt_method` |  | The IP to use when computing the engine ID when `compute_local_engineid_source: rfc3411` or `compute_local_engineid_source: hostname_and_ip`.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface` will use the Out-of-band interface IP.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_interface` will use the inband management VRF IP.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_interface` will use the IP for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the IP.<br> |
     | [<samp>&nbsp;&nbsp;compute_v3_user_localized_key</samp>](## "snmp_settings.compute_v3_user_localized_key") | Boolean |  | `False` |  | Requires compute_local_engineid to be `true`.<br>If enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.<br>The algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.<br> |
     | [<samp>&nbsp;&nbsp;users</samp>](## "snmp_settings.users") | List, items: Dictionary |  |  |  | Configuration of local SNMP users.<br>Configuration of remote SNMP users are currently only possible using `structured_config`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.users.[].name") | String |  |  |  | Username. |
@@ -118,27 +118,31 @@
       # Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
       compute_local_engineid: <bool; default=False>
 
-      # Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
-      compute_local_engineid_rfc3411: <bool; default=False>
-
       # `compute_local_engineid_source` supports:
-      # - `hostname_and_ip` generate a local engineId for SNMP by
-      # If compute_local_engineid_rfc3411 is set to false (default), hashing via SHA1
-      #   the string generated via the concatenation of the hostname plus the management IP.
-      #   {{ inventory_hostname }} + {{ switch.mgmt_ip }}.
-      # If compute_local_engineid_rfc3411 is set t True, it will use the default_mgmt_method to find the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757104+ sha1(hostname + mgmt_ip)
+      # - `rfc3411` use the default_mgmt_method to find the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757104+ sha1(hostname + mgmt_ip)
       # - `system_mac` generate the switch default engine id for AVD usage.
       #   To use this, `system_mac_address` MUST be set for the device.
       #   The formula is f5717f + system_mac_address + 00.
-      # - `hostname_inband_ip` generate a local engineId for SNMP by hashing via SHA1
-      #   the string generated via the concatenation of the hostname plus the management IP, with an RFC3411 compliant prefix.
-      #   8000757104 + sha1({{ inventory_hostname }} + {{ mgmt_ip }}).
-      #   The management ip is either the switch.mgmt_ip or the ip address of the inband_mgmt_interface.
-      # - `hostname_oob_ip` generate a local engineId for SNMP by hashing via SHA1
-      #   the string generated via the concatenation of the hostname plus the management IP, with an RFC3411 compliant prefix.
-      #   8000757104 + sha1({{ inventory_hostname }} + {{ mgmt_ip }}).
-      #   The management ip is either the switch.mgmt_ip or the ip address of the inband_mgmt_interface.
-      compute_local_engineid_source: <str; "hostname_and_ip" | "system_mac" | "hostname_inband_ip" | "hostname_oob_ip"; default="hostname_and_ip">
+      # - `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1
+      #   the string generated via the concatenation of the hostname plus the management IP.
+      #   {{ inventory_hostname }} + {{ mgmt_ip }} as defined by `compute_local_engineid_ip`.
+      #   Note that this is a legacy method not following RFC 3411.
+      # - `legacy_hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1
+      #   the string generated via the concatenation of the hostname plus the management IP.
+      #   {{ inventory_hostname }} + {{ switch.mgmt_ip }}.
+      #   Note that this is a legacy method not following RFC 3411 and kept in AVD for backward-compatibility purposes
+      #   and that it does not take into account properly the inband mgmt case.
+      compute_local_engineid_source: <str; "rfc3411" | "system_mac" | "hostname_and_ip" | "legacy_hostname_and_ip"; default="rfc3411">
+
+      # The IP to use when computing the engine ID when `compute_local_engineid_source: rfc3411` or `compute_local_engineid_source: hostname_and_ip`.
+      # The value will be interpreted according to these rules:
+      # - `use_mgmt_interface` will use the Out-of-band interface IP.
+      #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+      # - `use_inband_mgmt_interface` will use the inband management VRF IP.
+      #   An error will be raised if inband management is not configured for the device.
+      # - `use_default_mgmt_method_interface` will use the IP for one of the two options above depending on the value of `default_mgmt_method`.
+      # - Any other string will be used directly as the IP.
+      compute_local_engineid_ip: <str; default="use_default_mgmt_method">
 
       # Requires compute_local_engineid to be `true`.
       # If enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.
