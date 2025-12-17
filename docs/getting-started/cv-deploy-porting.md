@@ -288,11 +288,11 @@ Devices can be removed manually in the CloudVision Portal user interface or prag
 
 === "Manual (single device)"
 
-    Under the `Provisioning / Network Provisioning` menu, right click the device and select `Remove`.
+    Under the `Provisioning / Network Provisioning` menu, right click the device and select `Remove` and save.  
 
 === "Manual (multiple devices)"
 
-    Under the `Provisioning / Network Provisioning` menu, right click a container, select `Manage / Device` and tick the box next the the devices you want to remove from network provisioning.
+    Under the `Provisioning / Network Provisioning` menu, right click a container, select `Manage / Device` and tick the box next the the devices you want to remove from network provisioning, click the trash bin icon on the top right corner and save.
 
     !!! note
         The box next to `Name` field in the blue bar on top can be used to select all devices.
@@ -313,7 +313,7 @@ Devices can be removed manually in the CloudVision Portal user interface or prag
       tasks:
         - name: build the reset list
           ansible.builtin.set_fact:
-            cvp_devices: "{{ cvp_devices | d([]) + [ {'fqdn': item, 'parentContainerName': '' } ] }}"
+            cvp_devices: "{{ cvp_devices | arista.avd.default([]) + [ {'fqdn': item, 'parentContainerName': '' } ] }}"
           loop: "{{ groups[EOS_targets] }}"
           run_once: true
 
