@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: SNMP_AUTOGEN_ENGINEID_HOSTNAME_IP_OOB
+hostname: snmp-autogen-engineid-hostname-ip-oob
 ip_igmp_snooping:
   globally_enabled: true
 management_interfaces:
@@ -20,18 +20,18 @@ metadata:
 service_routing_protocols_model: multi-agent
 snmp_server:
   engine_ids:
-    local: 69381fd668ed3ffc9961db62e239372cddd43360
+    local: 44f3e75f08a5bf52eef3165edb18207d4a5ef2f4
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS SNMP_AUTOGEN_ENGINEID_HOSTNAME_IP_OOB
+  location: EOS_DESIGNS_UNIT_TESTS snmp-autogen-engineid-hostname-ip-oob
   users:
   - name: usertest-auth-priv
     group: usergroup
     version: v3
-    localized: 69381fd668ed3ffc9961db62e239372cddd43360
+    localized: 44f3e75f08a5bf52eef3165edb18207d4a5ef2f4
     auth: sha
-    auth_passphrase: 517266266cd6e52ca58f8983ed9e672b8afbe6ad
+    auth_passphrase: 879870a5f62773c95a2ae8017b0b293549f60ef3
     priv: aes192
-    priv_passphrase: 736973e664828b42100366888947e0bf2df295dc3d833a94
+    priv_passphrase: 7cbd81f3e04f953704e1959d06fb41c6b1eff88ea677fec2
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0

@@ -1,0 +1,16 @@
+---
+# Minimum config to only test the specific feature.
+# This tests the SNMP auto engine ID
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: snmp-autogen-engineid-rfc3411-hostname-oob-ip
+      id: 43
+      mgmt_ip: 192.168.0.10/24
+
+snmp_settings:
+  compute_local_engineid: true
+  # The default value is 3411
+  # compute_local_engineid_source: rfc_3411
+  local_engineid_ip: use_mgmt_interface

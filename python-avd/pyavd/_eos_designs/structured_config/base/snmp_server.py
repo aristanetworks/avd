@@ -60,8 +60,7 @@ class SnmpServerMixin(Protocol):
         """
         Return the IP address to use for computing the SNMP engine ID.
 
-        This is only used in the case when 'compute_local_engineid_source: rfc3411'
-
+        This is only used in the case when 'compute_local_engineid_source: rfc3411'.
         """
         local_engineid_ip = self.inputs.snmp_settings.local_engineid_ip
         if self.inputs.snmp_settings.local_engineid_ip == "use_default_mgmt_method_interface":
@@ -71,13 +70,22 @@ class SnmpServerMixin(Protocol):
                 case "inband":
                     local_engineid_ip = "use_inband_mgmt_interface"
                 case "none":
-                    msg = "The key 'snmp_settings.compute_local_engineid_ip' must be set when 'default_mgmt_method' is set to 'none'."
+                    msg = "The key 'snmp_settings.local_engineid_ip' must be set when 'default_mgmt_method' is set to 'none'."
                     raise AristaAvdInvalidInputsError(msg)
 
         match local_engineid_ip:
             case "use_mgmt_interface":
+                has_mgmt_ip = (self.shared_utils.node_config.mgmt_ip is not None) or (self.shared_utils.node_config.ipv6_mgmt_ip is not None)
+                if not has_mgmt_ip:
+                    msg = "'snmp_settings.local_engineid_ip' is set to 'use_mgmt_interface' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
+                    raise AristaAvdInvalidInputsError(msg)
                 return self.shared_utils.node_config.mgmt_ip
             case "use_inband_mgmt_interface":
+                if self.shared_utils.inband_mgmt_interface is None:
+                    msg = (
+                        "'snmp_settings.local_engineid_ip' is set to 'use_inband_mgmt_interface' but this node is missing configuration for inband management."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
                 return self.shared_utils.inband_mgmt_ip
             case _:
                 return self.inputs.snmp_settings.local_engineid_ip
@@ -101,8 +109,6 @@ class SnmpServerMixin(Protocol):
         if not self.inputs.snmp_settings.compute_local_engineid:
             return
 
-        local_engine_id = None
-
         match self.inputs.snmp_settings.compute_local_engineid_source:
             case "rfc3411":
                 digest = self._get_sha1_digest(self._get_snmp_engine_id_ip())
@@ -122,8 +128,7 @@ class SnmpServerMixin(Protocol):
                     raise AristaAvdInvalidInputsError(msg)
                 local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
 
-        if local_engine_id:
-            self.structured_config.snmp_server.engine_ids.local = local_engine_id
+        self.structured_config.snmp_server.engine_ids.local = local_engine_id
 
     def set_snmp_location(self: AvdStructuredConfigBaseProtocol) -> None:
         """

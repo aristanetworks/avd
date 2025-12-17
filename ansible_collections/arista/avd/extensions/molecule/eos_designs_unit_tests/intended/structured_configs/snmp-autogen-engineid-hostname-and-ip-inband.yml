@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: SNMP_AUTOGEN_ENGINEID_HOSTNAME_AND_IP_INBAND
+hostname: snmp-autogen-engineid-hostname-and-ip-inband
 ip_igmp_snooping:
   globally_enabled: true
 metadata:
@@ -12,18 +12,18 @@ metadata:
 service_routing_protocols_model: multi-agent
 snmp_server:
   engine_ids:
-    local: 4cb92a84ce4799f8658807f4bfadc8eb42aa218b
+    local: 07459749db8910d2ea1447c20595b70729534f97
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS SNMP_AUTOGEN_ENGINEID_HOSTNAME_AND_IP_INBAND
+  location: EOS_DESIGNS_UNIT_TESTS snmp-autogen-engineid-hostname-and-ip-inband
   users:
   - name: usertest-auth-priv
     group: usergroup
     version: v3
-    localized: 4cb92a84ce4799f8658807f4bfadc8eb42aa218b
+    localized: 07459749db8910d2ea1447c20595b70729534f97
     auth: sha
-    auth_passphrase: 639210ea4228bcfae15eb57bae1df284360ef736
+    auth_passphrase: d035999725c2ae5776a5c5b685853ecc6503739d
     priv: aes192
-    priv_passphrase: 2ea88d2bdb22b8be7b13b087fac866b16d1ecd2f474545a3
+    priv_passphrase: 7a3e71ab96695ec38d1f1019163797d44bd8f80aa53be88a
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
