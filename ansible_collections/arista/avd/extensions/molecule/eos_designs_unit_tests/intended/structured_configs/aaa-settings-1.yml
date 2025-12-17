@@ -15,6 +15,8 @@ aaa_accounting:
         group: TACACS1
       - method: group
         group: RADIUS1
+      - method: group
+        group: tacacs+
       - method: logging
   system:
     default:
@@ -44,6 +46,8 @@ aaa_accounting:
         group: TACACS1
       - method: group
         group: RADIUS1
+      - method: group
+        group: tacacs+
       - method: logging
     - commands: '0'
       type: start-stop
@@ -234,6 +238,9 @@ radius_server:
   - host: '1:1:1:1:1:1:1:1'
     vrf: MGMT
     key: 071B245F5A
+  - host: 10.10.10.42
+    vrf: default
+    key: 071B245F5A
 service_routing_protocols_model: multi-agent
 tacacs_servers:
   hosts:
@@ -257,6 +264,9 @@ tacacs_servers:
     key: 071B245F5A
   - host: '1:1:1:1:1:1:1:1'
     vrf: MGMT
+    key: 071B245F5A
+  - host: 10.10.10.42
+    vrf: default
     key: 071B245F5A
   policy_unknown_mandatory_attribute_ignore: true
 transceiver_qsfp_default_mode_4x10: true

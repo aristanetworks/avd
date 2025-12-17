@@ -57,7 +57,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {
                     "host": {"type": str},
-                    "groups": {"type": Groups},
+                    "groups": {"type": Groups, "default": lambda cls: coerce_type(["tacacs+"], target_type=cls)},
                     "vrf": {"type": str},
                     "key": {"type": str},
                     "cleartext_key": {"type": str},
@@ -68,7 +68,11 @@ class EosDesigns(EosDesignsRootModel):
                 Combination of `host` and `vrf` should be unique.
                 """
                 groups: Groups
-                """Subclass of AvdList with `str` items."""
+                """
+                Subclass of AvdList with `str` items.
+
+                Default value: `lambda cls: coerce_type(["tacacs+"], target_type=cls)`
+                """
                 vrf: str | None
                 """
                 VRF name.
@@ -266,7 +270,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {
                     "host": {"type": str},
-                    "groups": {"type": Groups},
+                    "groups": {"type": Groups, "default": lambda cls: coerce_type(["radius"], target_type=cls)},
                     "vrf": {"type": str},
                     "key": {"type": str},
                     "cleartext_key": {"type": str},
@@ -278,7 +282,11 @@ class EosDesigns(EosDesignsRootModel):
                 Combination of `host` and `vrf` should be unique.
                 """
                 groups: Groups
-                """Subclass of AvdList with `str` items."""
+                """
+                Subclass of AvdList with `str` items.
+
+                Default value: `lambda cls: coerce_type(["radius"], target_type=cls)`
+                """
                 vrf: str | None
                 """
                 VRF name.

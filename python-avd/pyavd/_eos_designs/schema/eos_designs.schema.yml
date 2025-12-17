@@ -36,10 +36,11 @@ keys:
                   required: true
                 groups:
                   type: list
-                  required: true
                   min_length: 1
                   items:
                     type: str
+                  default:
+                  - tacacs+
                 vrf:
                   type: str
                   description: "VRF name.\nThe value will be interpreted according
@@ -119,10 +120,11 @@ keys:
                   required: true
                 groups:
                   type: list
-                  required: true
                   min_length: 1
                   items:
                     type: str
+                  default:
+                  - radius
                 vrf:
                   type: str
                   description: "VRF name.\nThe value will be interpreted according
