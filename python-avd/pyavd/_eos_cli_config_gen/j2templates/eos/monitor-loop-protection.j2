@@ -8,7 +8,7 @@
 !
 monitor loop-protection
 {%     if monitor_loop_protection.enabled is arista.avd.defined(true) %}
-   no schutdown
+   no shutdown
 {%     elif monitor_loop_protection.enabled is arista.avd.defined(false) %}
    shutdown
 {%     endif %}

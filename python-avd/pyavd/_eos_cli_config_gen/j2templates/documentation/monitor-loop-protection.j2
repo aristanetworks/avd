@@ -14,29 +14,25 @@
 | Enabled | {{ monitor_loop_protection.enabled }} |
 {%     endif %}
 {%     if monitor_loop_protection.disabled_time is arista.avd.defined %}
-| disabled-time | {{ monitor_loop_protection.disabled_time }} |
+| Disabled-time | {{ monitor_loop_protection.disabled_time }} |
 {%     endif %}
 {%     if monitor_loop_protection.protect_vlan is arista.avd.defined %}
-| protect vlan | {{ monitor_loop_protection.protect_vlan }} |
+| Protect vlan | {{ monitor_loop_protection.protect_vlan }} |
 {%     endif %}
 {%     if monitor_loop_protection.rate_limit is arista.avd.defined %}
-| rate-limit | {{ monitor_loop_protection.rate_limit }} |
+| Rate-limit | {{ monitor_loop_protection.rate_limit }} |
 {%     endif %}
 {%     if monitor_loop_protection.transmit_interval is arista.avd.defined %}
-| transmit-interval | {{ monitor_loop_protection.transmit_interval }} |
+| Transmit-interval | {{ monitor_loop_protection.transmit_interval }} |
 {%     endif %}
+{%     set loop_protection_interfaces = ethernet_interfaces | arista.avd.natural_sort('name') | selectattr("loop_protection", "arista.avd.defined", false) %}
+{%     if loop_protection_interfaces %}
 
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%         if ethernet_interface.loop_protection is arista.avd.defined(false) %}
 | Disabled Interfaces |
 | ------------------- |
-{%             break %}
-{%         endif %}
-{%     endfor %}
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%         if ethernet_interface.loop_protection is arista.avd.defined(false) %}
+{%     endif %}
+{%     for ethernet_interface in loop_protection_interfaces %}
 | {{ ethernet_interface.name }} |
-{%         endif %}
 {%     endfor %}
 
 ### Monitor Loop Protection Configuration
