@@ -355,11 +355,12 @@ Serial Number: DEADBEEFC0FFEW
 
 ```eos
 !
+agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=true
 agent Dummy environment V1=42:V2=666
+!
 agent Dummy shutdown
 agent Dummy shutdown supervisor active
 agent Dummy shutdown supervisor standby
-agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=true
 agent KernelFib shutdown supervisor active
 agent KernelFib shutdown supervisor standby
 ```
@@ -492,17 +493,21 @@ ip domain-list domain2.local
 | 2001:db8::2 | default | 0 |
 | 2001:db8::1 | mgmt | - |
 | 2001:db8::2 | TEST | 3 |
+| 10.10.11.11 | ZTP | - |
+| 10.10.222.11 | TEST | 2 |
 
 #### IP Name Servers Device Configuration
 
 ```eos
+ip name-server vrf ZTP 10.10.11.11
 ip name-server vrf default 10.10.128.10
-ip name-server vrf mgmt 10.10.128.10
-ip name-server vrf TEST 10.10.128.10 priority 3
-ip name-server vrf default 10.10.129.10 priority 0
+ip name-server vrf default 10.10.129.10
 ip name-server vrf default 2001:db8::1
+ip name-server vrf default 2001:db8::2
+ip name-server vrf mgmt 10.10.128.10
 ip name-server vrf mgmt 2001:db8::1
-ip name-server vrf default 2001:db8::2 priority 0
+ip name-server vrf TEST 10.10.222.11 priority 2
+ip name-server vrf TEST 10.10.128.10 priority 3
 ip name-server vrf TEST 2001:db8::2 priority 3
 ```
 
@@ -553,9 +558,42 @@ DNS Domain: arista.avd.com
 
 DNS Domain: anta.avd.com
 
+##### ZZ_SERVER
+
+DNS Domain: arista.avd.com
+
+###### IP Domain List
+
+| IP Domain |
+| --------- |
+| domain-list1 |
+
+###### Name Server
+
+| VRF | IP Address | Priority |
+| --- | ---------- | -------- |
+| a_vrf | 2.2.2.7 | 3 |
+| default | 1.1.1.1 | - |
+| vrf1 | 2.2.2.1 | - |
+| vrf1 | 2.2.2.2 | 1 |
+| vrf1 | 2.2.2.4 | 4 |
+| vrf1 | 8.8.8.8 | - |
+| ZVRF | 2.2.2.6 | 3 |
+
 #### IP Name Server Groups Device Configuration
 
 ```eos
+!
+ip name-server group ZZ_SERVER
+   name-server vrf default 1.1.1.1
+   name-server vrf vrf1 2.2.2.1
+   name-server vrf vrf1 8.8.8.8
+   name-server vrf vrf1 2.2.2.2 priority 1
+   name-server vrf ZVRF 2.2.2.6 priority 3
+   name-server vrf a_vrf 2.2.2.7 priority 3
+   name-server vrf vrf1 2.2.2.4 priority 4
+   dns domain arista.avd.com
+   ip domain-list domain-list1
 !
 ip name-server group mynameserver0
    name-server vrf default 1.1.1.1 priority 0
@@ -711,14 +749,14 @@ ptp monitor threshold missing-message announce 201 sequence-ids
 #### TCP MSS Ceiling
 
 | Protocol | Segment Size |
-| -------- | -------------|
+| -------- | ------------ |
 | IPv4 | 1344 |
 | IPv6 | 1366 |
 
 #### Control-Plane Access-Groups
 
 | Protocol | VRF | Access-list |
-| -------- | --- | ------------|
+| -------- | --- | ----------- |
 | IPv4 Ingress default | All | ingress_ipv4_acl |
 | IPv4 | default | acl4_1 |
 | IPv4 | red | acl4_2 |
@@ -844,9 +882,9 @@ management tech-support
 
 | IP Client | VRF | Source Interface Name |
 | --------- | --- | --------------------- |
-| FTP | default | Ethernet10 |
 | FTP | default | Loopback0 |
 | FTP | MGMT | Management0 |
+| FTP | abc | Ethernet10 |
 | HTTP | default | Loopback0 |
 | HTTP | MGMT | Management0 |
 | HTTP | default | Ethernet10 |
@@ -854,19 +892,19 @@ management tech-support
 | SSH | default | Loopback0 |
 | SSH | MGMT | Management0 |
 | Telnet | default | Ethernet10 |
-| Telnet | default | Loopback0 |
 | Telnet | MGMT | Management0 |
-| TFTP | default | Ethernet10 |
+| Telnet | data | Loopback0 |
 | TFTP | default | Loopback0 |
 | TFTP | MGMT | Management0 |
+| TFTP | data | Ethernet10 |
 
 #### IP Client Source Interfaces Device Configuration
 
 ```eos
 !
-ip ftp client source-interface Ethernet10
-ip ftp client source-interface Loopback0 vrf default
+ip ftp client source-interface Loopback0
 ip ftp client source-interface Management0 vrf MGMT
+ip ftp client source-interface Ethernet10 vrf abc
 ip http client local-interface Loopback0 vrf default
 ip http client local-interface Management0 vrf MGMT
 ip http client local-interface Ethernet10
@@ -874,11 +912,11 @@ ip ssh client source-interface Ethernet10
 ip ssh client source-interface Loopback0 vrf default
 ip ssh client source-interface Management0 vrf MGMT
 ip telnet client source-interface Ethernet10
-ip telnet client source-interface Loopback0 vrf default
 ip telnet client source-interface Management0 vrf MGMT
-ip tftp client source-interface Ethernet10
-ip tftp client source-interface Loopback0 vrf default
+ip telnet client source-interface Loopback0 vrf data
+ip tftp client source-interface Loopback0
 ip tftp client source-interface Management0 vrf MGMT
+ip tftp client source-interface Ethernet10 vrf data
  ```
 
 ### Management Accounts
@@ -911,7 +949,7 @@ management accounts
 | onetarget | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | testid100 |
 | multipletargets | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | testid1 testid2 testid3 testid4 |
 | serialandtargets | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | Serial-Number testid10 testid20 |
-| noserialnotargets | - | - | - | - | - | - | - |  |
+| noserialnotargets | - | - | - | - | - | - | - | - |
 | serialonly | - | - | - | - | - | - | - | Serial-Number |
 
 Provider eos-native is configured.
@@ -1563,8 +1601,8 @@ ip radius source-interface loopback10
 
 #### AAA Server Groups Summary
 
-| Server Group Name | Type  | VRF | IP address |
-| ------------------| ----- | --- | ---------- |
+| Server Group Name | Type | VRF | IP address |
+| ----------------- | ---- | --- | ---------- |
 | TACACS | tacacs+ | mgt | 10.10.11.157 |
 | TACACS | tacacs+ | default | 10.10.11.249 |
 | TACACS1 | tacacs+ | mgt | 10.10.10.157 |
@@ -1637,14 +1675,14 @@ Policy lockout has been enabled. After **3** failed login attempts within **900*
 #### AAA Authentication Device Configuration
 
 ```eos
+aaa authentication policy local allow-nopassword-remote-login
 aaa authentication login default group TACACS local
 aaa authentication login command-api local
 aaa authentication login console local
 aaa authentication enable default group TACACS local
 aaa authentication dot1x default group RADIUS1
-aaa authentication policy on-failure log
 aaa authentication policy on-success log
-aaa authentication policy local allow-nopassword-remote-login
+aaa authentication policy on-failure log
 aaa authentication policy lockout failure 3 window 900 duration 300
 !
 ```
@@ -1827,7 +1865,7 @@ address locking
 ### Password Policies
 
 | Policy Name | Digits | Length | Lowercase letters | Special characters | Uppercase letters | Repetitive characters | Sequential characters |
-|-------------|--------|--------|-------------------|--------------------|-------------------|-----------------------|----------------------|
+| ----------- | ------ | ------ | ----------------- | ------------------ | ----------------- | --------------------- | --------------------- |
 | AVD_POLICY | > 1 | > 2 | > 3 | > 4 | > 5 | < 6 | < 7 |
 
 ### Session Shared-secret Profiles
@@ -1978,64 +2016,92 @@ dhcp relay
 
 #### VRF AVRF DHCP Server
 
-##### Subnets
+##### IPv4 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
-| 172.16.254.0/24 | - | - | 172.16.254.1 | - | - |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ | ------------------------------ | ---------------------------- | ---------------------------- |
+| 172.16.254.0/24 | - | - | 172.16.254.1 | - | - | - | - | - |
 
 #### VRF default DHCP Server
 
-##### Subnets
+##### IPv4 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ | ------------------------------ | ---------------------------- | ---------------------------- |
+| 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 | https://www.arista.io/ztp/bootstrap | 192.168.66.22 | 192.166.66.33, 192.161.66.33 |
+| 10.2.3.0/24 | - | - | - | - | - | - | - | - |
+| 172.16.254.0/24 | - | - | 172.16.254.1 | - | - | - | - | - |
+| 192.168.0.0/24 | - | - | - | - | - | - | - | - |
+
+###### DHCP Reservations in subnet 10.0.0.0/24
+
+| Mac Address | IPv4 Address | Hostname |
+| ----------- | ------------ | -------- |
+| 0001.0001.0001 | 10.0.0.2 | host3 |
+| 1a1b.1c1d.1e1f | 10.0.0.1 | host1 |
+
+##### IPv6 Subnets
+
+| Subnet | Name | DNS Servers | Lease Time | Ranges | IPv6 TFTP Bootfile URL (Option 59) |
+| ------ | ---- | ----------- | ---------- | ------ | ---------------------------------- |
 | 2a00:2::/64 | - | - | - | - | - |
-| 10.2.3.0/24 | - | - | - | - | - |
+| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | https://2001:0db8:fe/ztp/bootstrap |
+
+###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
+
+| Mac Address | IPv6 Address | Hostname |
+| ----------- | ------------ | -------- |
+| 0003.0003.003 | 2001:db8:abcd:1234:c000::1 | - |
 
 ##### IPv4 Vendor Options
 
 | Vendor ID | Sub-option Code | Sub-option Type | Sub-option Data |
-| --------- | ----------------| --------------- | --------------- |
+| --------- | --------------- | --------------- | --------------- |
 | NTP | 42 | ipv4-address | 10.1.1.1 |
 
 #### VRF TEST DHCP Server
 
-##### Subnets
+##### IPv4 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
-| 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 |
-| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ | ------------------------------ | ---------------------------- | ---------------------------- |
+| 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 | - | - | - |
 
 ###### DHCP Reservations in subnet 10.0.0.0/24
 
-| Mac Address | IPv4 Address | IPv6 Address | Hostname |
-| ----------- | ------------ | ------------ | -------- |
-| 0001.0001.0001 | 10.0.0.2 | - |  host3 |
-| 1a1b.1c1d.1e1f | 10.0.0.1 | - |  host1 |
+| Mac Address | IPv4 Address | Hostname |
+| ----------- | ------------ | -------- |
+| 0001.0001.0001 | 10.0.0.2 | host3 |
+| 1a1b.1c1d.1e1f | 10.0.0.1 | host1 |
+
+##### IPv6 Subnets
+
+| Subnet | Name | DNS Servers | Lease Time | Ranges | IPv6 TFTP Bootfile URL (Option 59) |
+| ------ | ---- | ----------- | ---------- | ------ | ---------------------------------- |
+| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - |
 
 ###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
-| Mac Address | IPv4 Address | IPv6 Address | Hostname |
-| ----------- | ------------ | ------------ | -------- |
-| 0003.0003.003 | - | 2001:db8:abcd:1234:c000::1 |  - |
+| Mac Address | IPv6 Address | Hostname |
+| ----------- | ------------ | -------- |
+| 0003.0003.003 | 2001:db8:abcd:1234:c000::1 | - |
 
 ##### IPv4 Vendor Options
 
 | Vendor ID | Sub-option Code | Sub-option Type | Sub-option Data |
-| --------- | ----------------| --------------- | --------------- |
+| --------- | --------------- | --------------- | --------------- |
+| abcd | 42 | ipv4-address | 10.1.1.1 |
 | NTP | 1 | string | test |
 | NTP | 42 | ipv4-address | 10.1.1.1 |
 | NTP | 66 | array ipv4-address | 1.1.1.1 2.2.2.2 |
 
 #### VRF VRF01 DHCP Server
 
-##### Subnets
+##### IPv4 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
-| 192.168.0.0/24 | - | - | - | - | - |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ | ------------------------------ | ---------------------------- | ---------------------------- |
+| 192.168.0.0/24 | - | - | - | - | - | - | - | - |
 
 ### DHCP Server Configuration
 
@@ -2047,25 +2113,6 @@ dhcp server vrf AVRF
       default-gateway 172.16.254.1
    dns server ipv4 10.0.0.1 192.168.255.254
    client class ipv4 definition Class1
-!
-dhcp server vrf defauls
-!
-dhcp server
-   dns server ipv4 10.0.0.1 192.168.255.254
-   dns server ipv6 2001:db8::1 2001:db8::2
-   tftp server option 66 ipv4 192.168.66.22
-   tftp server option 150 ipv4 192.166.66.33 192.161.66.33
-   tftp server file ipv4 https://www.arista.io/ztp/bootstrap
-   tftp server file ipv6 https://2001:0db8:fe/ztp/bootstrap
-   !
-   subnet 2a00:2::/64
-   !
-   subnet 10.2.3.0/24
-   !
-   vendor-option ipv4 NTP
-      sub-option 42 type ipv4-address data 10.1.1.1
-!
-dhcp server vrf defaulu
 !
 dhcp server vrf TEST
    lease time ipv4 10 days 10 hours 10 minutes
@@ -2100,11 +2147,65 @@ dhcp server vrf TEST
       sub-option 1 type string data "test"
       sub-option 42 type ipv4-address data 10.1.1.1
       sub-option 66 type array ipv4-address data 1.1.1.1 2.2.2.2
+   !
+   vendor-option ipv4 abcd
+      sub-option 42 type ipv4-address data 10.1.1.1
 !
 dhcp server vrf VRF01
+   disabled
    !
    subnet 192.168.0.0/24
-   disabled
+!
+dhcp server vrf defauls
+!
+dhcp server
+   dns server ipv4 10.0.0.1 192.168.255.254
+   dns server ipv6 2001:db8::1 2001:db8::2
+   tftp server option 66 ipv4 192.168.66.22
+   tftp server option 150 ipv4 192.166.66.33 192.161.66.33
+   tftp server file ipv4 https://www.arista.io/ztp/bootstrap
+   tftp server file ipv6 https://2001:0db8:fe/ztp/bootstrap
+   !
+   subnet 10.0.0.0/24
+      reservations
+         mac-address 0001.0001.0001
+            ipv4-address 10.0.0.2
+            hostname host3
+         !
+         mac-address 1a1b.1c1d.1e1f
+            ipv4-address 10.0.0.1
+            hostname host1
+      !
+      range 10.0.0.10 10.0.0.100
+      !
+      range 10.0.0.110 10.0.0.120
+      name TEST1
+      dns server 10.1.1.12 10.1.1.13
+      lease time 0 days 0 hours 10 minutes
+      default-gateway 10.0.0.1
+      tftp server option 66 192.168.66.22
+      tftp server option 150 192.166.66.33 192.161.66.33
+      tftp server file https://www.arista.io/ztp/bootstrap
+   !
+   subnet 10.2.3.0/24
+   !
+   subnet 172.16.254.0/24
+      default-gateway 172.16.254.1
+   !
+   subnet 192.168.0.0/24
+   !
+   subnet 2a00:2::/64
+   !
+   subnet 2001:db8:abcd:1234:c000::/66
+      reservations
+         mac-address 0003.0003.003
+            ipv6-address 2001:db8:abcd:1234:c000::1
+      tftp server file https://2001:0db8:fe/ztp/bootstrap
+   !
+   vendor-option ipv4 NTP
+      sub-option 42 type ipv4-address data 10.1.1.1
+!
+dhcp server vrf defaulu
 ```
 
 ### DHCP Server Interfaces
@@ -2166,6 +2267,10 @@ daemon TerminAttr
 
 ```eos
 !
+daemon ZZZ
+   exec /usr/bin/random
+   shutdown
+!
 daemon ocprometheus
    exec /usr/bin/ocprometheus -config /usr/bin/ocprometheus.yml -addr localhost:6042
    no shutdown
@@ -2180,7 +2285,7 @@ daemon random
 #### Logging Servers and Features Summary
 
 | Type | Level |
-| -----| ----- |
+| ---- | ----- |
 | Console | errors |
 | Monitor | disabled |
 | Buffer | warnings |
@@ -2339,7 +2444,7 @@ mcs client
 #### SNMP Hosts Configuration
 
 | Host | VRF | Community | Username | Authentication level | SNMP Version |
-| ---- |---- | --------- | -------- | -------------------- | ------------ |
+| ---- | --- | --------- | -------- | -------------------- | ------------ |
 | 10.6.75.121 | MGMT | <removed> | - | - | 1 |
 | 10.6.75.121 | MGMT | <removed> | - | - | 2c |
 | 10.6.75.122 | MGMT | <removed> | - | - | 2c |
@@ -2566,6 +2671,7 @@ monitor session default encapsulation gre payload inner-packet
 
 | Name | Level | Intermediate Point |
 | ---- | ----- | ------------------ |
+| abcd | 3 | - |
 | CUSTOMER_A | 5 | True |
 | PROVIDER_B | 3 | - |
 
@@ -2573,6 +2679,7 @@ monitor session default encapsulation gre payload inner-packet
 
 | Domain | Association ID | Direction | Profile | VLAN |
 | ------ | -------------- | --------- | ------- | ---- |
+| abcd | 202 | - | profile_simple | 202 |
 | CUSTOMER_A | 101 | down | profile_10G | 101 |
 | CUSTOMER_A | 102 | up | profile_10G | 102 |
 | PROVIDER_B | 201 | - | profile_simple | 201 |
@@ -2619,6 +2726,7 @@ monitor session default encapsulation gre payload inner-packet
 | ------- | ------- | ------------ | ------- | ----------- |
 | profile_10G | - | True | 3 | 445.445 |
 | profile_20G | - | - | - | - |
+| PROFILE_Z | - | - | - | - |
 
 ##### CFM Profile Synthetic Loss Measurement
 
@@ -2626,6 +2734,7 @@ monitor session default encapsulation gre payload inner-packet
 | ------- | ------- | ------------ | ------- | ----------- | ------------- |
 | profile_10G | - | True | 5-6 | 10 | 10 |
 | profile_20G | - | - | - | 10 | - |
+| PROFILE_Z | - | - | - | 10 | - |
 
 #### CFM Device Configuration
 
@@ -2635,6 +2744,9 @@ cfm
    measurement loss inband
    measurement loss synthetic
    continuity-check loc-state action disable interface routing
+   !
+   profile PROFILE_Z
+      measurement loss synthetic tx-interval 10 milliseconds
    !
    profile profile_10G
       continuity-check
@@ -2691,6 +2803,12 @@ cfm
       association 201
          profile profile_simple
          vlan 201
+      !
+      association 202
+         profile profile_simple
+         vlan 202
+   !
+   domain abcd level 3
       !
       association 202
          profile profile_simple
@@ -2941,7 +3059,7 @@ vmtracer session session_2
 | trigger-on-intf4 | - | on-intf | trigger on-intf Ethernet4 ip |
 | trigger-on-intf5 | - | on-intf | trigger on-intf Ethernet5 ip6 |
 | trigger-on-intf6 | - | on-intf | trigger on-intf Ethernet6 operstatus |
-| trigger-on-logging | increment device health metric Metric2 | on-logging | poll interval 10<br>regex ab* |
+| TRIGGER-ON-LOGGING | increment device health metric Metric2 | on-logging | poll interval 10<br>regex ab* |
 | trigger-on-logging2 | - | on-logging | regex ab* |
 | trigger-on-logging3 | - | on-logging | - |
 | trigger-on-maintenance1 | - | on-maintenance | trigger on-maintenance enter interface Management3 after stage linkdown |
@@ -2961,6 +3079,12 @@ event-handler CONFIG_VERSIONING
    trigger on-startup-config
    action bash FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* | tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* | tail -n +11 | xargs -I % rm %; fi
    delay 0
+!
+event-handler TRIGGER-ON-LOGGING
+   action increment device-health metric Metric2
+   trigger on-logging
+      poll interval 10
+      regex ab*
 !
 event-handler trigger-on-boot
    trigger on-boot
@@ -3003,12 +3127,6 @@ event-handler trigger-on-intf5
 !
 event-handler trigger-on-intf6
    trigger on-intf Ethernet6 operstatus
-!
-event-handler trigger-on-logging
-   action increment device-health metric Metric2
-   trigger on-logging
-      poll interval 10
-      regex ab*
 !
 event-handler trigger-on-logging2
    trigger on-logging
@@ -3055,7 +3173,8 @@ event-handler without-trigger-key
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On | Table Size |
 | ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- | ---------- |
-| T1 | 3666 | 5666 | True | 0 |  | - |
+| a1 | 3666 | 5666 | True | 2 | - | - |
+| T1 | 3666 | 5666 | True | 0 | - | - |
 | T2 | - | - | False | 1 | Dps1<br>Ethernet40 | 614400 |
 | T3 | - | - | - | 4 | Ethernet41<br>Ethernet42<br>Port-Channel115 | 100000 |
 
@@ -3063,6 +3182,8 @@ event-handler without-trigger-key
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
+| a1 | a2-e1 | 42.42.42.42 | - | No local interface |
+| a1 | T2-E1 | 42.42.42.42 | - | No local interface |
 | T2 | T2-E1 | 42.42.42.42 | - | No local interface |
 | T3 | T3-E1 | 10.10.10.1<br>dead:beaf::cafe | 555<br>666 | No local interface |
 | T3 | T3-E2 | 10.10.10.10 | 777 | No local interface |
@@ -3077,7 +3198,8 @@ Software export of IPFIX data records enabled.
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
 | ------------ | --------------------------------- | ------------------------- | ------------------- | ---------- |
-| T1 | 3666 | 5666 | 0 |  |
+| a1 | 3666 | 5666 | 2 | - |
+| T1 | 3666 | 5666 | 0 | - |
 | T2 | - | - | 1 | Ethernet40 |
 | T3 | - | - | 4 | Dps1<br>Ethernet41<br>Port-Channel115 |
 
@@ -3085,6 +3207,8 @@ Software export of IPFIX data records enabled.
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
+| a1 | a2-e1 | 42.42.42.42 | - | No local interface |
+| a1 | T2-E1 | 42.42.42.42 | - | No local interface |
 | T2 | T2-E1 | 42.42.42.42 | - | No local interface |
 | T3 | T3-E1 | 10.10.10.1<br>dead:beaf::cafe | 555<br>666 | No local interface |
 | T3 | T3-E2 | 10.10.10.10 | 777 | No local interface |
@@ -3101,14 +3225,17 @@ Software export of IPFIX data records enabled.
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters |
 | ------------ | --------------------------------- | ------------------------- | ------------------- |
+| a1 | 3666 | 5666 | 2 |
 | T1 | 3666 | 5666 | 0 |
 | T2 | - | - | 1 |
 | T3 | - | - | 2 |
 
 ##### Exporters Summary
 
-| Tracker Name | Exporter Name |  Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port | DSCP Value | Format |
-| ------------ | ------------- | ---------------- | ------------------| ----------------------- | -------------- | ---------- | ------ |
+| Tracker Name | Exporter Name | Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port | DSCP Value | Format |
+| ------------ | ------------- | --------------- | ----------------- | ----------------------- | -------------- | ---------- | ------ |
+| a1 | a2-e1 | - | - | 42.42.42.42 | - | - | - |
+| a1 | T2-E1 | - | - | 42.42.42.42 | - | - | - |
 | T2 | T2-E1 | - | - | 10.10.10.10<br>42.42.42.42<br>collector.without.port<br>dead:beef::cafe<br>sflow<br>this.is.my.awesome.collector.dns.name | 777<br>-<br>-<br>-<br>666<br>888 | 50 | - |
 | T3 | T3-E3 | Management1 | 424242 | collector.with.port<br>sflow | 111<br>- | - | sflow |
 | T3 | T3-E4 | - | - | dead:beef::cafe | - | - | - |
@@ -3135,14 +3262,63 @@ flow tracking hardware
          collector 10.10.10.10 port 777
       !
       exporter T3-E3
-         collector this.is.my.awesome.collector.dns.name port 888
          format ipfix version 10
+         collector this.is.my.awesome.collector.dns.name port 888
          local interface Management1
          template interval 424242
       !
       exporter T3-E4
          collector dead:beef::cafe
+   !
+   tracker a1
+      record export on inactive timeout 3666
+      record export on interval 5666
+      exporter T2-E1
+         collector 42.42.42.42
+      !
+      exporter a2-e1
+         collector 42.42.42.42
    record format ipfix standard timestamps counters
+   no shutdown
+!
+flow tracking mirror-on-drop
+   encapsulation ipv4 ipv6 mpls
+   sample limit 777 pps
+   !
+   tracker T1
+      record export on inactive timeout 3666
+      record export on interval 5666
+   !
+   tracker T2
+      exporter T2-E1
+         collector 10.10.10.10 port 777
+         collector 42.42.42.42
+         collector collector.without.port
+         collector dead:beef::cafe
+         collector sflow port 666
+         collector this.is.my.awesome.collector.dns.name port 888
+         dscp 50
+   !
+   tracker T3
+      exporter T3-E3
+         format sflow
+         collector collector.with.port port 111
+         collector sflow
+         local interface Management1
+         template interval 424242
+      !
+      exporter T3-E4
+         collector dead:beef::cafe
+   !
+   tracker a1
+      record export on inactive timeout 3666
+      record export on interval 5666
+      !
+      exporter T2-E1
+         collector 42.42.42.42
+      !
+      exporter a2-e1
+         collector 42.42.42.42
    no shutdown
 !
 flow tracking sampled
@@ -3177,36 +3353,16 @@ flow tracking sampled
       !
       exporter T3-E4
          collector dead:beef::cafe
-   no shutdown
-!
-flow tracking mirror-on-drop
-   encapsulation ipv4 ipv6 mpls
-   sample limit 777 pps
    !
-   tracker T1
+   tracker a1
       record export on inactive timeout 3666
       record export on interval 5666
-   !
-   tracker T2
+      record export mpls
       exporter T2-E1
-         collector 10.10.10.10 port 777
          collector 42.42.42.42
-         collector collector.without.port
-         collector dead:beef::cafe
-         collector sflow port 666
-         collector this.is.my.awesome.collector.dns.name port 888
-         dscp 50
-   !
-   tracker T3
-      exporter T3-E3
-         format sflow
-         collector collector.with.port port 111
-         collector sflow
-         local interface Management1
-         template interval 424242
       !
-      exporter T3-E4
-         collector dead:beef::cafe
+      exporter a2-e1
+         collector 42.42.42.42
    no shutdown
 ```
 
@@ -3744,6 +3900,14 @@ lldp receive packet tagged drop
 
 ### Forwarding Profiles
 
+#### aaa
+
+| Protocol | Forward | Tagged Forward | Untagged Forward |
+| -------- | ------- | -------------- | ---------------- |
+| bfd per-link rfc-7130 | False | True | - |
+| e-lmi | True | - | - |
+| isis | - | - | True |
+
 #### TEST1
 
 | Protocol | Forward | Tagged Forward | Untagged Forward |
@@ -3811,6 +3975,10 @@ l2-protocol
       pause untagged forward
       stp tagged forward
       stp untagged forward
+   forwarding profile aaa
+      bfd per-link rfc-7130 tagged forward
+      e-lmi forward
+      isis untagged forward
 ```
 
 ## LACP
@@ -3918,7 +4086,7 @@ port-channel load-balance trident udf eth-type IPv6 ip-protocol 2 header inner l
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 10 | 40 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -4019,7 +4187,7 @@ vlan 3012
 ### Static MAC Address Entries
 
 | MAC Address | VLAN | DROP Traffic | Interface | Eligibility Forwarding |
-|-------------|------|--------------|-----------|------------------------|
+| ----------- | ---- | ------------ | --------- | ---------------------- |
 | 000a.000a.000a | 10 | - | Ethernet1 | - |
 | 000c.000c.000c | 10 | True | - | - |
 | 000d.000d.000d | 10 | - | Ethernet2 | - |
@@ -4080,7 +4248,7 @@ mac address-table notification host-flap detection moves 2
 ### IPSec profiles
 
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode | Flow Parallelization |
-| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
+| ------------ | ---------- | --------- | ---------- | ------------ | -------- | ---------- | ---- | -------------------- |
 | Profile-1 | IKE-1 | SA-1 | start | - | - | - | transport | - |
 | Profile-2 | - | SA-2 | start | - | - | - | tunnel | False |
 | Profile-3 | - | SA-3 | start | - | - | - | tunnel | True |
@@ -4221,6 +4389,7 @@ interface defaults
 
 #### Interface Profiles Summary
 
+- aa-profile-3
 - TEST-PROFILE-1
 - TEST-PROFILE-2
 
@@ -4234,6 +4403,10 @@ interface profile TEST-PROFILE-1
    command no lldp transmit
 !
 interface profile TEST-PROFILE-2
+   command mtu 9214
+   command ptp enable
+!
+interface profile aa-profile-3
    command mtu 9214
    command ptp enable
 ```
@@ -4338,6 +4511,8 @@ interface Dps1
 | Ethernet82 | Switchport_tap_tool | tap-tool | - | - | - | - |
 | Ethernet83 | Test_tap_tool | tap-tool | - | - | - | - |
 | Ethernet84 | - | tap | - | - | - | - |
+| Ethernet86 | All_Transceiver_Commands | - | - | - | - | - |
+| Ethernet87 | Transmitter_SP_20 | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -4351,7 +4526,7 @@ interface Dps1
 ##### Flexible Encapsulation Interfaces
 
 | Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- |------------ | ---------------------- | ---------------------- |
+| --------- | ----------- | ------- | -------------------- | -------------------------- | ----------- | --------------------- | --------------------- | --------------------- | --------------------------- | ------------ | ---------------------- | ---------------------- |
 | Ethernet26.1 | TENANT_A pseudowire 1 interface | - | unmatched | - | - | - | - | - | - | - | - | - |
 | Ethernet26.100 | TENANT_A pseudowire 1 interface | 10 | dot1q | - | 100 | - | - | client | - | - | - | - |
 | Ethernet26.200 | TENANT_A pseudowire 2 interface | - | dot1q | - | 200 | - | - | - | - | - | - | - |
@@ -4372,7 +4547,7 @@ interface Dps1
 ##### Private VLAN
 
 | Interface | PVLAN Mapping | Secondary Trunk |
-| --------- | ------------- | ----------------|
+| --------- | ------------- | --------------- |
 | Ethernet1 | 20-30 | True |
 | Ethernet2 | - | False |
 | Ethernet15 | 111 | - |
@@ -4407,12 +4582,14 @@ interface Dps1
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override | Application Override |
-| --------- | --------------------- | -------------- | -------------------- |
-| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 |
-| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 |
-| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd |
-| Ethernet73 | - | 100gbase-ar4 | 5 |
+| Interface | Transceiver Frequency | Media Override | Application Override | Power Ignore | Transmitter Signal-Power | Transmitter Disabled |
+| --------- | --------------------- | -------------- | -------------------- | ------------ | ------------------------ | -------------------- |
+| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 | - | - | - |
+| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | - | - | - |
+| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd | - | - | - |
+| Ethernet73 | - | 100gbase-ar4 | 5 | - | - | - |
+| Ethernet86 | 190050.000 ghz | 100gbase-ar4 | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 | True | -10.68 | True |
+| Ethernet87 | - | - | - | - | -20.00 | - |
 
 ##### Link Tracking Groups
 
@@ -4446,8 +4623,8 @@ interface Dps1
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | - | 172.31.255.1/31 | default | 1500 | - | - | - |
 | Ethernet2 | SRV-POD02_Eth1 | - | 10.1.255.3/24 | default | - | - | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 172.31.128.1/31 | default | 1500 | - | - | - |
@@ -4521,13 +4698,13 @@ interface Dps1
 ##### IP NAT: Interfaces configured via profile
 
 | Interface | Profile |
-| --------- |-------- |
+| --------- | ------- |
 | Ethernet69 | TEST-NAT-PROFILE |
 
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
 | Ethernet4 | Molecule IPv6 | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
@@ -4540,11 +4717,11 @@ interface Dps1
 ##### VRRP Details
 
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| --------- | ------- | -------- | ---------------------- | ------- | ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
 | Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
-| Ethernet65 | 2 | - | - | Enabled | - | - |  | 2 | 2001:db8::1, 2002:db8::2 | text |
+| Ethernet65 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1, 2002:db8::2 | text |
 | Ethernet66 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - | ietf-md5 |
-| Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown |  | 2 | 2001:db8::1 | text |
+| Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 | text |
 | Ethernet66 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
 
 ##### ISIS
@@ -5723,6 +5900,25 @@ interface Ethernet84
 interface Ethernet85
    description DOT1X Testing - pae mode supplicant
    dot1x pae supplicant test_profile
+!
+interface Ethernet86
+   description All_Transceiver_Commands
+   no shutdown
+   switchport
+   transceiver media override 100gbase-ar4
+   transceiver power ignore
+   transceiver application override 5
+   transceiver application override 5 lanes start 1 end 1
+   transceiver application override 5 lanes start 2 end 3
+   transceiver frequency 190050.000 ghz
+   transceiver transmitter signal-power -10.68
+   transceiver transmitter disabled
+!
+interface Ethernet87
+   description Transmitter_SP_20
+   no shutdown
+   switchport
+   transceiver transmitter signal-power -20.00
 ```
 
 ### Port-Channel Interfaces
@@ -5732,7 +5928,7 @@ interface Ethernet85
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | trunk | 2-4094 | - | LEAF_PEER_L3, MLAG | - | - | - | - |
 | Port-Channel5 | DC1_L2LEAF1_Po1 | trunk | 110,201 | - | - | - | - | 5 | - |
 | Port-Channel10 | SRV01_bond0 | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
@@ -5772,7 +5968,7 @@ interface Ethernet85
 ##### Flexible Encapsulation Interfaces
 
 | Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
+| --------- | ----------- | ------- | -------------------- | -------------------------- | ----------- | --------------------- | --------------------- | --------------------- | --------------------------- | ------------ | ---------------------- | ---------------------- |
 | Port-Channel111.1 | TENANT_A pseudowire 1 interface | - | unmatched | - | - | - | - | - | - | - | - | - |
 | Port-Channel111.100 | TENANT_A pseudowire 2 interface | - | dot1q | - | 100 | - | - | client | - | - | - | - |
 | Port-Channel111.200 | TENANT_A pseudowire 3 interface | - | dot1q | - | 200 | - | - | - | - | - | - | - |
@@ -5793,7 +5989,7 @@ interface Ethernet85
 ##### Private VLAN
 
 | Interface | PVLAN Mapping | Secondary Trunk |
-| --------- | ------------- | ----------------|
+| --------- | ------------- | --------------- |
 | Port-Channel15 | - | False |
 | Port-Channel100 | 20-30 | True |
 | Port-Channel101 | 111 | - |
@@ -5801,8 +5997,8 @@ interface Ethernet85
 
 ##### VLAN Translations
 
-| Interface |  Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
-| --------- |  --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
+| Interface | Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
+| --------- | --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
 | Port-Channel16 | out | 23 | 22 | - | - | - | True |
 | Port-Channel100 | both | 12 | 20 | - | - | - | - |
 | Port-Channel100 | both | 23 | 42 | 74 | - | False | - |
@@ -5891,25 +6087,25 @@ interface Ethernet85
 ##### IP NAT: Interfaces configured via profile
 
 | Interface | Profile |
-| --------- |-------- |
+| --------- | ------- |
 | Port-Channel130 | TEST-NAT-PROFILE |
 
 ##### IPv6
 
 | Interface | Description | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | -------------| --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
+| --------- | ----------- | ------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | - | True | - | - |
 
 ##### VRRP Details
 
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| --------- | ------- | -------- | ---------------------- | ------- | ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
 | Port-Channel333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
-| Port-Channel333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown |  | 2 | 2001:db8:333::1, 2002:db8:333::2 | text |
+| Port-Channel333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8:333::1, 2002:db8:333::2 | text |
 | Port-Channel333 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
 | Port-Channel667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
-| Port-Channel667 | 2 | - | - | Enabled | - | - |  | 2 | 2001:db8:667::1 | text |
+| Port-Channel667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8:667::1 | text |
 
 ##### ISIS
 
@@ -5976,6 +6172,9 @@ interface Port-Channel5
    ip igmp host-proxy version 2
    l2 mtu 8000
    l2 mru 8000
+   !
+   address locking
+      address-family ipv4 disabled
    mlag 5
    ntp serve
    ip ospf authentication-key 8a <removed>
@@ -6772,8 +6971,8 @@ interface Tunnel4
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan24 | SVI Description | default | - | False |
 | Vlan25 | SVI Description | default | - | False |
 | Vlan26 | - | default | - | - |
@@ -6823,44 +7022,44 @@ interface Tunnel4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan24 |  default  |  -  |  10.10.24.1/24  |  -  |  -  |  -  |
-| Vlan25 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan26 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |
-| Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |
-| Vlan43 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan44 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan50 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |
-| Vlan81 |  Tenant_C  |  -  |  10.10.81.1/24  |  -  |  -  |  -  |
-| Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |
-| Vlan84 |  default  |  10.10.84.1/24  |  -  |  10.10.84.254, 10.11.84.254/24  |  -  |  -  |
-| Vlan85 |  default  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |
-| Vlan86 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
-| Vlan87 |  default  |  10.10.87.1/24  |  -  |  -  |  ACL_IN  |  ACL_OUT  |
-| Vlan88 |  default  |  -  |  10.10.87.1/23  |  -  |  -  |  -  |
-| Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |
-| Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
-| Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan92 |  default  |  10.10.92.1/24  |  -  |  -  |  -  |  -  |
-| Vlan110 |  Tenant_A  |  10.0.101.1/24  |  -  |  -  |  -  |  -  |
-| Vlan111 |  TENANT_A_PROJECT01  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |
-| Vlan333 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |
-| Vlan334 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan335 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan336 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan337 |  default  |  10.0.2.2/25  |  -  |  -  |  -  |  -  |
-| Vlan338 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan339 |  default  |  -  |  -  |  -  |  -  |  -  |
-| Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |
-| Vlan667 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |
-| Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |
-| Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |
-| Vlan2001 |  Tenant_B  |  -  |  10.2.1.1/24  |  -  |  -  |  -  |
-| Vlan2002 |  Tenant_B  |  -  |  10.2.2.1/24  |  -  |  -  |  -  |
-| Vlan4092 |  default  |  10.255.252.0/31  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.251.0/31  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  169.254.252.0/31  |  -  |  -  |  -  |  -  |
+| Vlan24 | default | - | 10.10.24.1/24 | - | - | - |
+| Vlan25 | default | - | - | - | - | - |
+| Vlan26 | default | - | - | - | - | - |
+| Vlan41 | default | - | 10.10.41.1/24 | - | - | - |
+| Vlan42 | default | - | 10.10.42.1/24 | - | - | - |
+| Vlan43 | default | - | - | - | - | - |
+| Vlan44 | default | - | - | - | - | - |
+| Vlan50 | default | - | - | - | - | - |
+| Vlan75 | default | - | 10.10.75.1/24 | - | - | - |
+| Vlan81 | Tenant_C | - | 10.10.81.1/24 | - | - | - |
+| Vlan83 | default | - | 10.10.83.1/24 | - | - | - |
+| Vlan84 | default | 10.10.84.1/24 | - | 10.10.84.254, 10.11.84.254/24 | - | - |
+| Vlan85 | default | 10.10.84.1/24 | - | - | - | - |
+| Vlan86 | default | 10.10.83.1/24 | - | - | - | - |
+| Vlan87 | default | 10.10.87.1/24 | - | - | ACL_IN | ACL_OUT |
+| Vlan88 | default | - | 10.10.87.1/23 | - | - | - |
+| Vlan89 | default | - | 10.10.144.3/20 | - | - | - |
+| Vlan90 | default | 10.10.83.1/24 | - | - | - | - |
+| Vlan91 | default | - | - | - | - | - |
+| Vlan92 | default | 10.10.92.1/24 | - | - | - | - |
+| Vlan110 | Tenant_A | 10.0.101.1/24 | - | - | - | - |
+| Vlan111 | TENANT_A_PROJECT01 | - | 10.1.10.254/24 | - | - | - |
+| Vlan333 | default | 192.0.2.2/25 | - | - | - | - |
+| Vlan334 | default | - | - | - | - | - |
+| Vlan335 | default | - | - | - | - | - |
+| Vlan336 | default | - | - | - | - | - |
+| Vlan337 | default | 10.0.2.2/25 | - | - | - | - |
+| Vlan338 | default | - | - | - | - | - |
+| Vlan339 | default | - | - | - | - | - |
+| Vlan501 | default | 10.50.26.29/27 | - | - | - | - |
+| Vlan667 | default | 192.0.2.2/25 | - | - | - | - |
+| Vlan1001 | Tenant_A | - | 10.1.1.1/24 | - | - | - |
+| Vlan1002 | Tenant_A | - | 10.1.2.1/24 | - | - | - |
+| Vlan2001 | Tenant_B | - | 10.2.1.1/24 | - | - | - |
+| Vlan2002 | Tenant_B | - | 10.2.2.1/24 | - | - | - |
+| Vlan4092 | default | 10.255.252.0/31 | - | - | - | - |
+| Vlan4093 | default | 10.255.251.0/31 | - | - | - | - |
+| Vlan4094 | default | 169.254.252.0/31 | - | - | - | - |
 
 ##### IP NAT: Source Static
 
@@ -6911,12 +7110,12 @@ interface Tunnel4
 ##### VRRP Details
 
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| --------- | ------- | -------- | ---------------------- | ------- | ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
 | Vlan333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
-| Vlan333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown |  | 2 | 2001:db8:333::1, 2002:db8:333::2 | text |
+| Vlan333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8:333::1, 2002:db8:333::2 | text |
 | Vlan333 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
 | Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
-| Vlan667 | 2 | - | - | Enabled | - | - |  | 2 | 2001:db8:667::1 | text |
+| Vlan667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8:667::1 | text |
 
 ##### ISIS
 
@@ -7589,8 +7788,8 @@ ip route vrf TENANT_A_PROJECT02 10.3.5.0/24 Null0
 
 #### IPv6 Static Routes Summary
 
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | default | 2a01:cb04:4e6:d300::/64 | 2a01:cb04:4e6:d100::1 | vlan1001 | 1 | - | - | - |
 | default | 2a01:cb04:4e6:d400::/64 | 2a01:cb04:4e6:d100::1 | vlan1001 | 200 | 666 | RT-TO-FAKE-DMZ | - |
 | default | 2a01:cb04:4e6:d400::/64 | 2a01:cb04:4e6:d100::1 | vlan1001 | 200 | 666 | RT-TO-FAKE-DB-ZONE | 100 |
@@ -7622,14 +7821,28 @@ IPv6 neighbor cache persistency is enabled. The refresh-delay is 1000 seconds af
 | --- | ------------ | -------------- | ----------- |
 | MGMT | 11:22:33:44:55:66:77:88 | Ethernet1 | 11:22:33:44:55:66 |
 | - | ::ffff:192.1.56.10 | Loopback99 | aa:af:12:34:bc:bf |
+| MGMT | 11:11:11:11:11:11:11:11 | Ethernet3 | 11:11:11:11:11:11 |
+| - | ::ffff:192.1.56.10 | Ethernet2 | 22:22:22:22:22:22 |
+| - | 11:22:33:44:55:66:77:77 | Ethernet2 | 22:22:22:22:22:22 |
+| MGMT | 11:11:11:11:11:11:11:11 | Ethernet4 | 00:00:00:00:00:00 |
+| MGMT | 11:22:33:44:55:66:77:88 | Ethernet1 | 11:22:33:44:55:66 |
+| guest | 11:11:11:11:11:11:11:11 | Ethernet4 | 00:00:00:00:00:00 |
+| data | 11:22:33:44:55:66:77:77 | Ethernet2 | 22:22:22:22:22:22 |
 
 #### IPv6 Neighbor Configuration
 
 ```eos
 !
 ipv6 neighbor persistent refresh-delay 1000
-ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11:22:33:44:55:66
+ipv6 neighbor 11:22:33:44:55:66:77:77 Ethernet2 22:22:22:22:22:22
+ipv6 neighbor ::ffff:192.1.56.10 Ethernet2 22:22:22:22:22:22
 ipv6 neighbor ::ffff:192.1.56.10 Loopback99 aa:af:12:34:bc:bf
+ipv6 neighbor vrf MGMT 11:11:11:11:11:11:11:11 Ethernet3 11:11:11:11:11:11
+ipv6 neighbor vrf MGMT 11:11:11:11:11:11:11:11 Ethernet4 00:00:00:00:00:00
+ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11:22:33:44:55:66
+ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11:22:33:44:55:66
+ipv6 neighbor vrf data 11:22:33:44:55:66:77:77 Ethernet2 22:22:22:22:22:22
+ipv6 neighbor vrf guest 11:11:11:11:11:11:11:11 Ethernet4 00:00:00:00:00:00
 ```
 
 ### ARP
@@ -7655,11 +7868,11 @@ Global ARP timeout: 300
 !
 arp persistent refresh-delay 700
 arp aging timeout default 300
-arp vrf BLAH 42.42.42.42 DEAD.BEEF.CAFE arpa
-arp vrf defauls 42.42.42.42 DEAD.BEEF.CAFE arpa
 arp 41.42.42.42 DEAD.BEEF.CAFE arpa
 arp 42.42.42.42 DEAD.BEEF.CAFE arpa
 arp 43.42.42.42 DEAD.BEEF.CAFE arpa
+arp vrf BLAH 42.42.42.42 DEAD.BEEF.CAFE arpa
+arp vrf defauls 42.42.42.42 DEAD.BEEF.CAFE arpa
 arp vrf defaulu 42.42.42.42 DEAD.BEEF.CAFE arpa
 ```
 
@@ -7787,13 +8000,13 @@ router adaptive-virtual-topology
 #### VRF Software Forwarding Hardware Offload MTU
 
 | VRF | MTU |
-|-----|-----|
+| --- | --- |
 | BLUE-C2 | 98 |
 
 #### VRF Route leaking
 
 | VRF | Source VRF | Route Map Policy | RCF Policy |
-|-----|------------|------------------| ---------- |
+| --- | ---------- | ---------------- | ---------- |
 | BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING | - |
 | BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING | RCF_BLUE_C3() |
 | BLUE3 | BLUE-C1 | RM-BLUE-LEAKING | - |
@@ -7802,7 +8015,7 @@ router adaptive-virtual-topology
 #### VRF Routes Dynamic Prefix-lists
 
 | VRF | Dynamic Prefix-list |
-|-----|---------------------|
+| --- | ------------------- |
 | BLUE-C2 | DYNAMIC_TEST_PREFIX_LIST_1 |
 | BLUE-C2 | DYNAMIC_TEST_PREFIX_LIST_2 |
 
@@ -7912,8 +8125,8 @@ router service-insertion
 
 ##### SRTE Policies
 
-| Endpoint | Color | Preference | Name | Description | SBFD Remote Discriminator | Label Stack | Index  | Weight | Explicit Null |
-| -------- | ----- | ---------- | ---- | ----------- | ------------------------- | ----------- | ------ | ------ | ------------- |
+| Endpoint | Color | Preference | Name | Description | SBFD Remote Discriminator | Label Stack | Index | Weight | Explicit Null |
+| -------- | ----- | ---------- | ---- | ----------- | ------------------------- | ----------- | ----- | ------ | ------------- |
 | 1.2.3.4 | 70810 | 180 | SRTE-1.2.3.4-70810 | SRTE POLICY FOR 1.2.3.4 COLOR 70810 | 155.2.1.1 | 900002 900003 900005 900006 | 200 | - | ipv4 ipv6 |
 | 1.2.3.4 | 80810 | 100 | SRTE-1.2.3.4-80810 | SRTE POLICY FOR 1.2.3.4 COLOR 80810 | - | 900002 900008 900007 900006 | 100 | 20 | none |
 | 5.6.7.8 | 20320 | 80 | - | - | 2600599809 | 900002 900003 900005 900006 | 300 | 120 | ipv4 |
@@ -8004,13 +8217,13 @@ router traffic-engineering
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 192.168.255.3 | enabled | Ethernet1 <br> Ethernet2 <br> Vlan4093 <br> | enabled<br>(any state) | 12000 | disabled | disabled | 100 | 10 | True | route-map RM-OSPF-DIST-IN |
-| 101 | 1.0.1.1 | enabled | Ethernet2.101 <br> | disabled | default | disabled | enabled | - | - | - | - |
-| 200 | 192.168.254.1 | disabled |- | disabled | 5 | Always | enabled | - | - | - | - |
-| 300 | - | disabled |- | disabled | default | disabled | disabled | - | - | - | - |
-| 400 | - | disabled |- | disabled | default | disabled | disabled | - | - | - | - |
-| 500 | - | disabled |- | disabled | default | disabled | disabled | - | - | - | - |
-| 600 | - | disabled |- | disabled | default | disabled | disabled | - | - | - | - |
+| 100 | 192.168.255.3 | enabled | Ethernet1<br>Ethernet2<br>Vlan4093 | enabled<br>(any state) | 12000 | disabled | disabled | 100 | 10 | True | route-map RM-OSPF-DIST-IN |
+| 101 | 1.0.1.1 | enabled | Ethernet2.101 | disabled | default | disabled | enabled | - | - | - | - |
+| 200 | 192.168.254.1 | disabled | - | disabled | 5 | Always | enabled | - | - | - | - |
+| 300 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+| 400 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+| 500 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
+| 600 | - | disabled | - | disabled | default | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Distance
 
@@ -8053,7 +8266,7 @@ router traffic-engineering
 #### Router OSPF Route Summary
 
 | Process ID | Prefix | Tag | Attribute Route Map | Not Advertised |
-|------------|--------|-----|---------------------|----------------|
+| ---------- | ------ | --- | ------------------- | -------------- |
 | 101 | 10.0.0.0/8 | - | - | - |
 | 101 | 20.0.0.0/8 | 10 | - | - |
 | 101 | 30.0.0.0/8 | - | RM-OSPF_SUMMARY | - |
@@ -8063,11 +8276,11 @@ router traffic-engineering
 
 | Process ID | Area | Area Type | Filter Networks | Filter Prefix List | Additional Options |
 | ---------- | ---- | --------- | --------------- | ------------------ | ------------------ |
-| 200 | 0.0.0.2 | normal | 1.1.1.0/24, 2.2.2.0/24 | - |  |
-| 200 | 3 | normal | - | PL-OSPF-FILTERING |  |
-| 600 | 0.0.0.1 | normal | - | - |  |
+| 200 | 0.0.0.2 | normal | 1.1.1.0/24, 2.2.2.0/24 | - | - |
+| 200 | 3 | normal | - | PL-OSPF-FILTERING | - |
+| 600 | 0.0.0.1 | normal | - | - | - |
 | 600 | 0.0.10.11 | stub | - | - | no-summary |
-| 600 | 0.0.20.20 | nssa | - | - |  |
+| 600 | 0.0.20.20 | nssa | - | - | - |
 | 600 | 0.0.20.21 | nssa | - | - | no-summary |
 | 600 | 0.0.20.22 | nssa | - | - | nssa-only |
 | 600 | 0.0.20.23 | nssa | - | - | default-information-originate |
@@ -8189,24 +8402,24 @@ ip ospf router-id output-format hostnames
 
 | Process ID | VRF | Source Protocol | Include Leaked | Route Map |
 | ---------- | --- | --------------- | -------------- | --------- |
-| 100 | - |connected | enabled | rm-ospf-connected |
-| 100 | - |static | enabled | rm-ospf-static |
-| 100 | - |bgp | enabled | rm-ospf-bgp |
-| 100 | - |dhcp | - | rm-ospf-dhcp |
-| 100 | - |isis level-2 | enabled | rm-ospf-isis |
-| 100 | - |ospfv3 | enabled | rm-ospf-ospfv3 |
-| 100 | - |ospfv3 match external | enabled | rm-ospf-ospfv3-external |
-| 100 | - |ospfv3 match nssa external | enabled | rm-ospf-ospfv3-nssa-external |
-| 101 | TEST2 |connected | - | - |
-| 101 | TEST2 |static | - | - |
-| 101 | TEST2 |bgp | - | - |
-| 101 | TEST2 |dhcp | - | - |
-| 101 | TEST2 |isis | - | - |
-| 101 | TEST2 |ospfv3 match external | enabled | - |
-| 101 | TEST2 |ospfv3 match internal | enabled | rm-ospf-ospfv3-internal |
-| 101 | TEST2 |ospfv3 match nssa external | enabled | - |
-| 201 | MGMT |ospfv3 match internal | enabled | - |
-| 301 | TEST1 |ospfv3 | enabled | - |
+| 100 | - | connected | enabled | rm-ospf-connected |
+| 100 | - | static | enabled | rm-ospf-static |
+| 100 | - | bgp | enabled | rm-ospf-bgp |
+| 100 | - | dhcp | - | rm-ospf-dhcp |
+| 100 | - | isis level-2 | enabled | rm-ospf-isis |
+| 100 | - | ospfv3 | enabled | rm-ospf-ospfv3 |
+| 100 | - | ospfv3 match external | enabled | rm-ospf-ospfv3-external |
+| 100 | - | ospfv3 match nssa external | enabled | rm-ospf-ospfv3-nssa-external |
+| 101 | TEST2 | connected | - | - |
+| 101 | TEST2 | static | - | - |
+| 101 | TEST2 | bgp | - | - |
+| 101 | TEST2 | dhcp | - | - |
+| 101 | TEST2 | isis | - | - |
+| 101 | TEST2 | ospfv3 match external | enabled | - |
+| 101 | TEST2 | ospfv3 match internal | enabled | rm-ospf-ospfv3-internal |
+| 101 | TEST2 | ospfv3 match nssa external | enabled | - |
+| 201 | MGMT | ospfv3 match internal | enabled | - |
+| 301 | TEST1 | ospfv3 | enabled | - |
 
 #### IPv6 Router OSPF Device Configuration
 
@@ -8256,8 +8469,8 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | Advertise Passive-only | True |
 | SR MPLS Enabled | True |
 | SPF Interval | 250 seconds |
-| SPF Interval Wait Time| 10 milliseconds |
-| SPF Interval Hold Time| 20 milliseconds |
+| SPF Interval Wait Time | 10 milliseconds |
+| SPF Interval Hold Time | 20 milliseconds |
 | Graceful-restart Enabled | True |
 | Graceful-restart t2 Level-1 | 10 |
 | Graceful-restart t2 Level-2 | 20 |
@@ -8784,11 +8997,12 @@ ASN Notation: asdot
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False | - | - | True |
-| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
-| 2.2.1.0/24 | False | False | - | - | False |
+| Prefix | AS Set | Summary Only | Attribute Map | Attribute RCF | Match Map | Advertise Only |
+| ------ | ------ | ------------ | ------------- | ------------- | --------- | -------------- |
+| 1.1.1.0/24 | False | False | - | - | - | True |
+| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | AGG-ADD-RCF() | RM-MATCH | True |
+| 2.2.1.0/24 | False | False | - | - | - | False |
+| 3.3.3.0/24 | False | False | - | AGG-ADD-RCF() | - | False |
 
 #### Router BGP EVPN Address Family
 
@@ -9025,7 +9239,7 @@ ASN Notation: asdot
 #### Router BGP VPWS Instances
 
 | Instance | Route-Distinguisher | Both Route-Target | MPLS Control Word | Label Flow | MTU | Pseudowire | Local ID | Remote ID |
-| -------- | ------------------- | ----------------- | ----------------- | -----------| --- | ---------- | -------- | --------- |
+| -------- | ------------------- | ----------------- | ----------------- | ---------- | --- | ---------- | -------- | --------- |
 | TENANT_A | 100.70.0.2:1000 | 65000:1000 | True | True | 1600 | TEN_A_site1_site3_pw | 15 | 35 |
 | TENANT_A | 100.70.0.2:1000 | 65000:1000 | True | True | 1600 | TEN_A_site2_site5_pw | 25 | 57 |
 | TENANT_B | 100.70.0.2:2000 | 65000:2000 | False | False | - | TEN_B_site2_site5_pw | 26 | 58 |
@@ -9150,7 +9364,7 @@ router bgp 65101
    neighbor MPLS-IBGP-PEERS peer group
    neighbor MPLS-IBGP-PEERS remote-as 65000
    neighbor MPLS-IBGP-PEERS local-as 65000 no-prepend replace-as
-   neighbor MPLS-IBGP-PEERS password 7 <removed>
+   neighbor MPLS-IBGP-PEERS password 8a <removed>
    neighbor MPLS-IBGP-PEERS send-community
    neighbor MPLS-IBGP-PEERS maximum-routes 0
    neighbor MULTIPLE-COMMUNITY peer group
@@ -9296,6 +9510,7 @@ router bgp 65101
    neighbor 192.168.255.3 missing-policy address-family all direction in action deny
    neighbor 192.168.255.4 remote-as 65004
    neighbor 192.168.255.4 send-community
+   neighbor 192.168.255.11 password 8a <removed>
    neighbor 192.168.255.21 peer group EVPN-OVERLAY-PEERS
    no neighbor 192.168.255.21 rib-in pre-policy retain
    neighbor 192.168.255.21 missing-policy address-family all direction out action deny-in-out
@@ -9309,8 +9524,9 @@ router bgp 65101
    neighbor fe80::b%Vl4094 peer group IPV6-UNDERLAY-MLAG
    no bgp redistribute-internal
    aggregate-address 1.1.1.0/24 advertise-only
-   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
+   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE attribute rcf AGG-ADD-RCF() match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
+   aggregate-address 3.3.3.0/24 attribute rcf AGG-ADD-RCF()
    redistribute connected rcf Router_BGP_Connected()
    redistribute isis level-2 include leaked route-map RM_BGP_EVPN
    redistribute ospf match internal
@@ -9906,6 +10122,7 @@ router bgp 65101
       neighbor 101.0.3.6 bfd interval 2500 min-rx 2000 multiplier 3
       neighbor 101.0.3.7 bfd
       aggregate-address 0.0.0.0/0 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET advertise-only
+      aggregate-address 3.3.3.0/24 attribute rcf AGG-ADD-RCF()
       aggregate-address 193.1.0.0/16 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET match-map VRF-MATCH-MAP
       redistribute ospf include leaked
       redistribute static rcf VRF_STATIC_RCF()
@@ -9920,6 +10137,7 @@ router bgp 65101
    !
    vrf NHP-PEER1
       neighbor 11.11.11.0 next-hop-peer
+      neighbor 11.11.11.0 password 8a <removed>
    !
    vrf RED-C1
       rd 1.0.1.1:102
@@ -10380,7 +10598,7 @@ router bfd
 | Setting | Value |
 | ------- | ----- |
 | Refresh interval | 3 |
-| Refresh method  | explicit |
+| Refresh method | explicit |
 | Hello interval | 30 |
 | Timeout multiplier | 254 |
 | Authentication type | md5 |
@@ -10864,6 +11082,7 @@ router igmp
 | IP_CL_TEST2 | deny | 1003:1003 |
 | IP_RE_TEST1 | permit | ^$ |
 | IP_RE_TEST2 | deny | ^100 |
+| aa_test3 | deny | ^100 |
 
 #### IP Community-lists Device Configuration
 
@@ -10875,6 +11094,7 @@ ip community-list regexp IP_CL_TEST1 permit 20:*
 ip community-list IP_CL_TEST2 deny 1003:1003
 ip community-list regexp IP_RE_TEST1 permit ^$
 ip community-list regexp IP_RE_TEST2 deny ^100
+ip community-list regexp aa_test3 deny ^100
 ```
 
 ### Peer Filters
@@ -10912,6 +11132,7 @@ peer-filter PF2
 
 | Dynamic Prefix-List Name | Match Map | IPv4 Prefix-list | IPv6 Prefix-list |
 | ------------------------ | --------- | ---------------- | ---------------- |
+| aa_list_1 | Test_2 | IPV4_PREFIX_LIST | - |
 | DYNAMIC_PREFIX_LIST_NAME_1 | Test_1 | IPV4_PREFIX_LIST | - |
 | DYNAMIC_PREFIX_LIST_NAME_2 | Test_2 | - | IPV6_PREFIX_LIST |
 | DYNAMIC_PREFIX_LIST_NAME_3 | Test_2 | IPV4_PREFIX_LIST | IPV6_PREFIX_LIST |
@@ -10932,6 +11153,10 @@ dynamic prefix-list DYNAMIC_PREFIX_LIST_NAME_3
    match-map Test_2
    prefix-list ipv4 IPV4_PREFIX_LIST
    prefix-list ipv6 IPV6_PREFIX_LIST
+!
+dynamic prefix-list aa_list_1
+   match-map Test_2
+   prefix-list ipv4 IPV4_PREFIX_LIST
 ```
 
 ### Prefix-lists
@@ -10965,6 +11190,12 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 
 #### IPv6 Prefix-lists Summary
 
+##### ipv6_list1
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 1b11:3a00:22b0:0082::/64 eq 128 |
+
 ##### PL-IPV6-LOOPBACKS
 
 | Sequence | Action |
@@ -10976,6 +11207,9 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ```eos
 !
 ipv6 prefix-list PL-IPV6-LOOPBACKS
+   seq 10 permit 1b11:3a00:22b0:0082::/64 eq 128
+!
+ipv6 prefix-list ipv6_list1
    seq 10 permit 1b11:3a00:22b0:0082::/64 eq 128
 ```
 
@@ -11093,6 +11327,7 @@ route-map RM-STATIC-2-BGP permit 10
 
 | List Name | Type | Extended Communities |
 | --------- | ---- | -------------------- |
+| aa_test3 | deny | 65001:65001 |
 | TEST1 | permit | 65000:65000 |
 | TEST1 | deny | 65002:65002 |
 | TEST2 | deny | 65001:65001 |
@@ -11105,6 +11340,8 @@ ip extcommunity-list TEST1 permit 65000:65000
 ip extcommunity-list TEST1 deny 65002:65002
 !
 ip extcommunity-list TEST2 deny 65001:65001
+!
+ip extcommunity-list aa_test3 deny 65001:65001
 ```
 
 ### IP Extended Community RegExp Lists
@@ -11113,6 +11350,7 @@ ip extcommunity-list TEST2 deny 65001:65001
 
 | List Name | Type | Regular Expression |
 | --------- | ---- | ------------------ |
+| aa_test3 | deny | `6500[0-1]:650[0-9][0-9]` |
 | TEST1 | permit | `65[0-9]{3}:[0-9]+` |
 | TEST1 | deny | `.*` |
 | TEST2 | deny | `6500[0-1]:650[0-9][0-9]` |
@@ -11125,6 +11363,8 @@ ip extcommunity-list regexp TEST1 permit 65[0-9]{3}:[0-9]+
 ip extcommunity-list regexp TEST1 deny .*
 !
 ip extcommunity-list regexp TEST2 deny 6500[0-1]:650[0-9][0-9]
+!
+ip extcommunity-list regexp aa_test3 deny 6500[0-1]:650[0-9][0-9]
 ```
 
 ### Match-lists
@@ -11195,7 +11435,7 @@ ip as-path access-list mylist2 deny _64517$ igp
 #### 802.1X Global
 
 | System Auth Control | Protocol LLDP Bypass | Dynamic Authorization | Dropped Packets Statistics |
-| ------------------- | -------------------- | ----------------------| -------------------------- |
+| ------------------- | -------------------- | --------------------- | -------------------------- |
 | True | True | True | True |
 
 #### 802.1X MAC based authentication
@@ -11233,6 +11473,7 @@ ip as-path access-list mylist2 deny _64517$ igp
 
 | VLAN Group Name | Members |
 | --------------- | ------- |
+| aa_Assignment_1 | 400-407 |
 | Assignment_1 | 400-407 |
 | Assignment_2 | 55 |
 | Assignment_3 | 1,3,15-20 |
@@ -11248,9 +11489,17 @@ ip as-path access-list mylist2 deny _64517$ igp
 
 | Profile | EAP Method | Identity | SSL Profile |
 | ------- | ---------- | -------- | ----------- |
+| aa_profile4 | tls | user_id1 | PF1 |
 | Profile1 | tls | user_id1 | PF1 |
 | Profile2 | - | user_id2 | - |
 | Profile3 | - | - | PF2 |
+
+#### 802.1X EAPOL
+
+| Attribute | Value |
+| --------- | ----- |
+| VLAN Change Logoff Disabled | True |
+| Unresponsive Action Traffic Allow VLAN | 20 |
 
 #### 802.1X Interfaces
 
@@ -11294,6 +11543,12 @@ dot1x
    !
    supplicant profile Profile3
       ssl profile PF2
+   !
+   supplicant profile aa_profile4
+      identity user_id1
+      eap-method tls
+      passphrase 0 <removed>
+      ssl profile PF1
    aaa unresponsive phone action apply cached-results timeout 10 hours else traffic allow
    aaa unresponsive action traffic allow vlan 10
    aaa unresponsive eap response success
@@ -11306,7 +11561,9 @@ dot1x
    radius av-pair filter-id ipv4 ipv6 required
    radius av-pair framed-mtu 1500
    mac-based-auth radius av-pair user-name delimiter colon lowercase
+   eapol vlan change logoff disabled
    aaa unresponsive recovery action reauthenticate
+   eapol unresponsive action traffic allow vlan 20
    supplicant disconnect cached-results timeout 79 seconds
    captive-portal url http://portal-nacm08/captiveredirect/ ssl profile Profile1
    captive-portal access-list ipv4 ACL
@@ -11314,6 +11571,7 @@ dot1x
    vlan assignment group Assignment_1 members 400-407
    vlan assignment group Assignment_2 members 55
    vlan assignment group Assignment_3 members 1,3,15-20
+   vlan assignment group aa_Assignment_1 members 400-407
    statistics packets dropped
    radius av-pair lldp system-name auth-only
    radius av-pair lldp system-description auth-only
@@ -11334,7 +11592,7 @@ dot1x dynamic-authorization
 #### PoE Global
 
 | Reboot Action | Shutdown Action | LLDP Negotiation |
-| ------------------- | -------------------- | ----------------------|
+| ------------- | --------------- | ---------------- |
 | maintain | power-off | - |
 
 #### PoE Interfaces
@@ -11561,11 +11819,20 @@ ip access-list ACL_SEQUENCE_AND_COUNTERS
    permit response traffic nat
 !
 ip access-list ACL_WITHOUT_ENTRIES
+!
+ip access-list acl_aaa_short
 ```
 
 ### IPv6 Standard Access-lists
 
 #### IPv6 Standard Access-lists Summary
+
+##### ipv6_test1
+
+| Sequence | Action |
+| -------- | ------ |
+| 5 | deny 2001:db8:1000::/64 |
+| 10 | permit 2001:db8::/32 |
 
 ##### TEST4
 
@@ -11604,6 +11871,10 @@ ipv6 access-list standard TEST5
    10 deny 2001:db8::/32
 !
 ipv6 access-list standard TEST6
+   5 deny 2001:db8:1000::/64
+   10 permit 2001:db8::/32
+!
+ipv6 access-list standard ipv6_test1
    5 deny 2001:db8:1000::/64
    10 permit 2001:db8::/32
 ```
@@ -11651,12 +11922,6 @@ ACL has counting mode `counters per-entry` enabled!
 
 ```eos
 !
-ipv6 access-list acl_qos_tc0_v6
-   10 permit ipv6 any any dscp cs1
-!
-ipv6 access-list acl_qos_tc5_v6
-   10 permit ipv6 any 2001:db8::/48
-!
 ipv6 access-list TEST1
    5 deny ipv6 fe80::/64 any
    10 permit ipv6 fe90::/64 any
@@ -11669,6 +11934,12 @@ ipv6 access-list TEST2
 ipv6 access-list TEST3
    5 deny ipv6 2001:db8:1000::/64 any
    10 permit ipv6 2001:db8::/32 any
+!
+ipv6 access-list acl_qos_tc0_v6
+   10 permit ipv6 any any dscp cs1
+!
+ipv6 access-list acl_qos_tc5_v6
+   10 permit ipv6 any 2001:db8::/48
 ```
 
 ### MAC Access-lists
@@ -11971,7 +12242,7 @@ platform trident mmu headroom-pool limit cells 556
 ### Unsupported Interface Configurations
 
 | Unsupported Configuration | action |
-| ---------------- | -------|
+| ------------------------- | ------ |
 | Speed | warn |
 | Error correction | error |
 
@@ -12034,7 +12305,7 @@ system l1
 | -------- | -------------------- |
 | best-effort | aimini(peer-to-peer)<br>apple_update(software-update) |
 | category1 | aim(audio-video)<br>aim(chat)<br>anydesk |
-| empty |  |
+| empty | - |
 
 ### Field Sets
 
@@ -12179,7 +12450,7 @@ MSS-G is enabled.
 ##### Segment SEGMENT-TEST1 Definitions
 
 | Interface | Match-List Name | Covered Prefix-List Name | Address Family |
-| --------- |---------------- | ------------------------ | -------------- |
+| --------- | --------------- | ------------------------ | -------------- |
 | - | MATCH-LIST10 | - | ipv4 |
 | - | MATCH-LIST11 | - | ipv6 |
 
@@ -12192,7 +12463,7 @@ MSS-G is enabled.
 ##### Segment SEGMENT-TEST2 Definitions
 
 | Interface | Match-List Name | Covered Prefix-List Name | Address Family |
-| --------- |---------------- | ------------------------ | -------------- |
+| --------- | --------------- | ------------------------ | -------------- |
 | - | MATCH-LIST4 | - | ipv4 |
 | - | MATCH-LIST3 | - | ipv6 |
 
@@ -12209,7 +12480,7 @@ MSS-G is enabled.
 ##### Segment SEGMENT-TEST1 Definitions
 
 | Interface | Match-List Name | Covered Prefix-List Name | Address Family |
-| --------- |---------------- | ------------------------ | -------------- |
+| --------- | --------------- | ------------------------ | -------------- |
 | Ethernet1 | - | - | - |
 | Ethernet2 | - | - | - |
 | - | - | PREFIX-LIST10 | ipv4 |
@@ -12275,7 +12546,7 @@ router segment-security
 #### Router Path-selection Summary
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Dynamic peers source | STUN |
 
 #### TCP MSS Ceiling Configuration
@@ -12304,14 +12575,14 @@ router segment-security
 ##### Path Group PG-1
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | 666 |
 | Keepalive interval(failure threshold) | 200(3) |
 
 ###### Dynamic Peers Settings
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | IP Local | True |
 | IPSec | True |
 
@@ -12326,7 +12597,7 @@ router segment-security
 ##### Path Group PG-2
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | 42 |
 | IPSec profile | IPSEC-P-1 |
 | Keepalive interval | auto |
@@ -12336,14 +12607,14 @@ router segment-security
 
 | Interface name | Public address | STUN server profile(s) |
 | -------------- | -------------- | ---------------------- |
-| Ethernet1/1 | - |  |
-| Ethernet1/1/3 | - |  |
+| Ethernet1/1 | - | - |
+| Ethernet1/1/3 | - | - |
 | Ethernet2 | 192.168.42.42 | STUN-P-1<br>STUN-P-2 |
-| Ethernet2/4.666 | - |  |
+| Ethernet2/4.666 | - | - |
 | Ethernet3 | - | STUN-P-1 |
-| Ethernet4.666 | - |  |
+| Ethernet4.666 | - | - |
 | Port-Channel1 | 192.168.42.43 | STUN-P-1<br>STUN-P-2 |
-| Port-Channel4.666 | - |  |
+| Port-Channel4.666 | - | - |
 
 ###### Local IPs
 
@@ -12355,27 +12626,27 @@ router segment-security
 ###### Dynamic Peers Settings
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | IP Local | - |
 | IPSec | False |
 
 ##### Path Group PG-3
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | 888 |
 
 ##### Path Group PG-4
 
 | Setting | Value |
-| ------  | ----- |
+| ------- | ----- |
 | Path Group ID | - |
 
 #### Load-balance Policies
 
 | Policy Name | Jitter (ms) | Latency (ms) | Loss Rate (%) | Path Groups (priority) | Lowest Hop Count |
 | ----------- | ----------- | ------------ | ------------- | ---------------------- | ---------------- |
-| LB-EMPTY | - | - | - |  | False |
+| LB-EMPTY | - | - | - | - | False |
 | LB-P-1 | - | - | 17 | PG-5 (1)<br>PG-2 (42)<br>PG-4 (42)<br>PG-3 (666) | True |
 | LB-P-2 | 666 | 42 | 42.42 | PG-1 (1)<br>PG-3 (1) | False |
 
@@ -12750,7 +13021,7 @@ NAT profile VRF is: TEST
 | --------- | --------- | ------------- | ------------------------- | ----------------------- | ---------------- |
 | port_only_1 | port-only | - | - | - | - |
 | port_only_2 | port-only | - | - | - | 1024-65535 |
-| prefix_16 | ip-port | 16 | 91 | 10.0.0.1-10.0.255.254<br>10.1.0.0-10.1.255.255 | -<br>1024-65535 |
+| prefix_16 | ip-port | 16 | 91 | 10.0.0.1-10.0.255.254<br>10.1.0.0-10.1.255.255<br>10.2.0.1-10.2.255.254 | -<br>1024-65535<br>-65535 |
 | prefix_21 | ip-port | 21 | - | - | - |
 | prefix_24 | ip-port | 24 | 100 | - | - |
 | prefix_32 | ip-port | 32 | - | 10.2.0.1-10.2.0.1<br>10.2.0.2-10.2.0.2 | 1024-65535<br>- |
@@ -12778,6 +13049,7 @@ NAT profile VRF is: TEST
 | per Host Connection Limit | max. 1000 Connections |
 | IP Host 10.0.0.1 Connection Limit | max. 100 Connections |
 | IP Host 10.0.0.2 Connection Limit | max. 200 Connections |
+| IP Host 9.0.0.1 Connection Limit | max. 300 Connections |
 | Global Connection Limit Low Mark | 50 % |
 | per Host Connection Limit Low Mark | 50 % |
 | UDP Connection Timeout | 3600 Seconds |
@@ -12795,6 +13067,7 @@ ip nat translation max-entries 100000
 ip nat translation low-mark 50
 ip nat translation max-entries 1000 host
 ip nat translation low-mark 50 host
+ip nat translation max-entries 300 9.0.0.1
 ip nat translation max-entries 100 10.0.0.1
 ip nat translation max-entries 200 10.0.0.2
 ip nat kernel buffer size 64
@@ -12838,14 +13111,15 @@ ip nat profile NAT-PROFILE-TEST-VRF vrf TEST
 !
 ip nat pool prefix_16 prefix-length 16
    range 10.0.0.1 10.0.255.254
+   range 10.2.0.1 10.2.255.254
    range 10.1.0.0 10.1.255.255 1024 65535
    utilization threshold 91 action log
 ip nat pool prefix_21 prefix-length 21
 ip nat pool prefix_24 prefix-length 24
    utilization threshold 100 action log
 ip nat pool prefix_32 prefix-length 32
-   range 10.2.0.1 10.2.0.1 1024 65535
    range 10.2.0.2 10.2.0.2
+   range 10.2.0.1 10.2.0.1 1024 65535
 ip nat pool prefix_32_without_ip prefix-length 32
 ip nat pool port_only_1 port-only
 ip nat pool port_only_2 port-only
@@ -12882,21 +13156,33 @@ ip hardware fib load-balance distribution dynamic flow-set-size 4
 
 Errdisable recovery timer interval: 300 seconds
 
-|  Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
-| ------ | ----------------- | ---------------- | -------------------------- |
-| acl | True | - | - |
+| Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
+| ----- | ----------------- | ---------------- | --------------------------- |
+| acl | True | True | - |
 | arp-inspection | True | True | - |
 | bpduguard | - | True | 400 |
 | dot1x | True | True | 500 |
+| dot1x-coa | True | True | - |
+| dot1x-phone-classification | True | True | - |
+| dot1x-session-replace | True | True | - |
+| error-correction-encoding | True | True | - |
+| hardware-speed-group | True | True | - |
 | hitless-reload-down | - | True | - |
+| interface-speed | True | True | - |
+| internal-error | True | True | - |
 | lacp-rate-limit | - | True | - |
 | link-change | True | - | - |
 | link-flap | - | True | - |
 | no-internal-vlan | - | True | - |
+| port-breakout | True | True | - |
 | portchannelguard | - | True | - |
 | portsec | - | True | - |
 | speed-misconfigured | - | True | - |
+| storm-control | True | True | - |
+| stuck-queue | - | True | - |
+| switchcard-unreachable | True | True | - |
 | tapagg | True | True | - |
+| transceiver-adapter | True | True | - |
 | uplink-failure-detection | - | True | - |
 | xcvr-misconfigured | True | True | - |
 | xcvr-overheat | True | True | - |
@@ -12908,27 +13194,51 @@ Errdisable recovery timer interval: 300 seconds
 errdisable detect cause acl
 errdisable detect cause arp-inspection
 errdisable detect cause dot1x
+errdisable detect cause dot1x-coa
+errdisable detect cause dot1x-phone-classification
+errdisable detect cause dot1x-session-replace
+errdisable detect cause error-correction-encoding
+errdisable detect cause hardware-speed-group
+errdisable detect cause interface-speed
+errdisable detect cause internal-error
 errdisable detect cause link-change
+errdisable detect cause port-breakout
+errdisable detect cause storm-control
+errdisable detect cause switchcard-unreachable
 errdisable detect cause tapagg
+errdisable detect cause transceiver-adapter
 errdisable detect cause xcvr-misconfigured
 errdisable detect cause xcvr-overheat
 errdisable detect cause xcvr-power-unsupported
+errdisable recovery cause acl
 errdisable recovery cause arp-inspection
-errdisable recovery cause bpduguard interval 400
-errdisable recovery cause dot1x interval 500
+errdisable recovery cause dot1x-coa
+errdisable recovery cause dot1x-phone-classification
+errdisable recovery cause dot1x-session-replace
+errdisable recovery cause error-correction-encoding
+errdisable recovery cause hardware-speed-group
 errdisable recovery cause hitless-reload-down
+errdisable recovery cause interface-speed
+errdisable recovery cause internal-error
 errdisable recovery cause lacp-rate-limit
 errdisable recovery cause link-flap
 errdisable recovery cause no-internal-vlan
+errdisable recovery cause port-breakout
 errdisable recovery cause portchannelguard
 errdisable recovery cause portsec
 errdisable recovery cause speed-misconfigured
+errdisable recovery cause storm-control
+errdisable recovery cause stuck-queue
+errdisable recovery cause switchcard-unreachable
 errdisable recovery cause tapagg
+errdisable recovery cause transceiver-adapter
 errdisable recovery cause uplink-failure-detection
 errdisable recovery cause xcvr-misconfigured
 errdisable recovery cause xcvr-overheat
 errdisable recovery cause xcvr-power-unsupported
 errdisable recovery cause xcvr-unsupported
+errdisable recovery cause bpduguard interval 400
+errdisable recovery cause dot1x interval 500
 errdisable recovery interval 300
 ```
 
@@ -13039,6 +13349,7 @@ mac security
 | -------------- | -------- |
 | SERVICE-DEMO | 10,20,80,440-450 |
 | SERVICE-DEMO2 | - |
+| service-demo3 | 20-25 |
 
 #### Traffic Policies
 
@@ -13046,31 +13357,31 @@ mac security
 
 Counters: DROP-PACKETS
 
-| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
-| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
-| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>any | -<br/>SERVICE-DEMO | any<br/>any | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 |
-| BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | -<br/>- | any<br/>- | SERVICE-DEMO<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop IPv4 address: 2.2.2.1 2.2.2.2 |
-| BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | any | icmp | - | - | - | - | action: DROP<br/>counter: DROP-PACKETS<br/>logging<br/>redirect aggregation groups: group1 group2 group3<br/>redirect interface: Ethernet 1-4 |
-| BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22<br/>- | -<br/>- | 80<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv4 address: 1.1.1.1 3.3.3.3 vrf: VRF_IPv4 |
-| BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | bgp | - | - | - | - | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:0db8:0000:0000:0000:0000:0000:0001 fe80:0000:0000:0000:f2de:f1ff:fe3f:307e vrf: VRF_IPv6 |
-| BLUE-C1-POLICY-06 | ipv4 | any | any | neighbors<br/>udp<br/>tcp<br/>icmp | -<br/>22<br/>22<br/>- | -<br/>-<br/>-<br/>- | -<br/>1,10-20<br/>any<br/>- | -<br/>-<br/>-<br/>- | action: PASS<br/>redirect next-hop groups: load_balancers monitoring_tools |
-| BLUE-C1-POLICY-07 | ipv4 | any | 10.0.0.0/8<br/>192.168.0.0/16 | - | - | - | - | - | action: PASS<br/>redirect next-hop recursive IPv4 address: 1.1.1.3 3.3.3.1 vrf: VRF_IPv4_recursive |
-| BLUE-C1-POLICY-08 | ipv4 | any | DEMO-01 | udp<br/>tcp | any<br/>any | -<br/>SERVICE-DEMO-SRC | 1,10-20<br/>any | -<br/>SERVICE-DEMO-DST | action: PASS<br/>redirect next-hop recursive IPv4 address: 13.2.1.3 14.2.3.1 |
+| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Packet Type | Action |
+| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ----------- | ------ |
+| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>any | -<br/>SERVICE-DEMO | any<br/>any | -<br/>- | vxlan decap, multicast | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 |
+| BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | -<br/>- | any<br/>- | SERVICE-DEMO<br/>- | vxlan decap exclude | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop IPv4 address: 2.2.2.1 2.2.2.2 |
+| BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | any | icmp | - | - | - | - | - | action: DROP<br/>counter: DROP-PACKETS<br/>logging<br/>redirect aggregation groups: group1 group2 group3<br/>redirect interface: Ethernet 1-4 |
+| BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22<br/>- | -<br/>- | 80<br/>- | -<br/>- | - | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv4 address: 1.1.1.1 3.3.3.3 vrf: VRF_IPv4 |
+| BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | bgp | - | - | - | - | - | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:0db8:0000:0000:0000:0000:0000:0001 fe80:0000:0000:0000:f2de:f1ff:fe3f:307e vrf: VRF_IPv6 |
+| BLUE-C1-POLICY-06 | ipv4 | any | any | neighbors<br/>udp<br/>tcp<br/>icmp | -<br/>22<br/>22<br/>- | -<br/>-<br/>-<br/>- | -<br/>1,10-20<br/>any<br/>- | -<br/>-<br/>-<br/>- | - | action: PASS<br/>redirect next-hop groups: load_balancers monitoring_tools |
+| BLUE-C1-POLICY-07 | ipv4 | any | 10.0.0.0/8<br/>192.168.0.0/16 | - | - | - | - | - | - | action: PASS<br/>redirect next-hop recursive IPv4 address: 1.1.1.3 3.3.3.1 vrf: VRF_IPv4_recursive |
+| BLUE-C1-POLICY-08 | ipv4 | any | DEMO-01 | udp<br/>tcp | any<br/>any | -<br/>SERVICE-DEMO-SRC | 1,10-20<br/>any | -<br/>SERVICE-DEMO-DST | - | action: PASS<br/>redirect next-hop recursive IPv4 address: 13.2.1.3 14.2.3.1 |
 
 ##### BLUE-C2-POLICY
 
 Counters: DEMO-TRAFFIC
 
-| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
-| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
-| BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | any | tcp<br/>icmp | 1,10-20<br/>- | -<br/>- | any<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop recursive IPv6 address: 2a00:1450:4009:821::200e vrf: VRF_IPv6_recursive |
-| BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | SERVICE-DEMO<br/>- | any<br/>- | -<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop recursive IPv6 address: 2001:4860:4860::8888 2606:4700:4700::1111 |
-| BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | any | tcp | any | - | any | - | action: DROP<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 ttl: 3 |
-| BLUE-C2-POLICY-04 | ipv6 | any | any | - | - | - | - | - | action: PASS<br/>redirect interface: Ethernet 6 |
-| BLUE-C2-POLICY-05 | ipv6 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop IPv4 address: 2.2.2.33 2.2.2.43 vrf: VRF_TTL_IPv4 ttl: 5 |
-| BLUE-C2-POLICY-06 | ipv4 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop groups: Testing_TTL_GROUP ttl: 44 |
-| BLUE-C2-POLICY-07 | ipv4 | any | any | - | - | - | - | - | action: PASS |
-| BLUE-C2-POLICY-08 | ipv6 | any | any | icmpv6 | - | - | - | - | default action: PASS |
+| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Packet Type | Action |
+| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ----------- | ------ |
+| BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | any | tcp<br/>icmp | 1,10-20<br/>- | -<br/>- | any<br/>- | -<br/>- | - | action: PASS<br/>traffic-class: 5<br/>redirect next-hop recursive IPv6 address: 2a00:1450:4009:821::200e vrf: VRF_IPv6_recursive |
+| BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | SERVICE-DEMO<br/>- | any<br/>- | -<br/>- | - | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop recursive IPv6 address: 2001:4860:4860::8888 2606:4700:4700::1111 |
+| BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | any | tcp | any | - | any | - | - | action: DROP<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 ttl: 3 |
+| BLUE-C2-POLICY-04 | ipv6 | any | any | - | - | - | - | - | - | action: PASS<br/>redirect interface: Ethernet 6 |
+| BLUE-C2-POLICY-05 | ipv6 | any | any | - | - | - | - | - | - | action: PASS<br/>redirect next-hop IPv4 address: 2.2.2.33 2.2.2.43 vrf: VRF_TTL_IPv4 ttl: 5 |
+| BLUE-C2-POLICY-06 | ipv4 | any | any | - | - | - | - | - | - | action: PASS<br/>redirect next-hop groups: Testing_TTL_GROUP ttl: 44 |
+| BLUE-C2-POLICY-07 | ipv4 | any | any | - | - | - | - | - | - | action: PASS |
+| BLUE-C2-POLICY-08 | ipv6 | any | any | icmpv6 | - | - | - | - | - | default action: PASS |
 
 ##### BLUE-C3-POLICY
 
@@ -13086,9 +13397,11 @@ Counters: test
 
 ##### BLUE-C7-POLICY
 
-| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
-| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
-| BLUE-C7-POLICY-01 | ipv4 | any | any | neighbors | - | - | - | - | default action: PASS |
+| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Packet Type | Action |
+| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ----------- | ------ |
+| BLUE-C7-POLICY-01 | ipv4 | any | any | neighbors | - | - | - | - | - | default action: PASS |
+
+##### policy1
 
 ##### Traffic-Policy Interfaces
 
@@ -13107,6 +13420,10 @@ traffic-policies
       10,20,80,440-450
    !
    field-set l4-port SERVICE-DEMO2
+   !
+   field-set l4-port service-demo3
+      20-25
+   !
    field-set ipv4 prefix DEMO-01
       10.0.0.0/8 192.168.0.0/16
       except 10.2.2.2/32 10.10.0.0/16 172.16.0.0/16
@@ -13128,6 +13445,10 @@ traffic-policies
          protocol udp source port field-set SERVICE-DEMO
          ttl 10, 20-30
          !
+         packet type
+            multicast
+            vxlan decap
+         !
          actions
             redirect next-hop 2001:db8::1 fd00::abcd:1234
             set traffic class 5
@@ -13137,6 +13458,9 @@ traffic-policies
          protocol tcp flags established
          protocol tcp destination port field-set SERVICE-DEMO
          protocol icmp
+         !
+         packet type
+            vxlan decap exclude
          !
          actions
             count DEMO-TRAFFIC
@@ -13305,6 +13629,13 @@ traffic-policies
       match ipv4-all-default ipv4
       !
       match ipv6-all-default ipv6
+   !
+   traffic-policy policy1
+      match ipv4-all-default ipv4
+         actions
+            drop
+      !
+      match ipv6-all-default ipv6
 ```
 
 ## Quality Of Service
@@ -13378,6 +13709,7 @@ qos random-detect ecn allow non-ect chip-based
 
 | Name | Field | Value |
 | ---- | ----- | ----- |
+| aaa_test_6 | acl | acl_qos_tc5_v4 |
 | CM_IPv6_ACCESS_GROUP | - | - |
 | CM_REPLICATION_LD | acl | ACL_REPLICATION_LD |
 | CM_REPLICATION_LD2 | vlan | 200 |
@@ -13410,18 +13742,6 @@ class-map type qos match-any CM_REPLICATION_LD2
 class-map type qos match-any CM_REPLICATION_LD3
    match cos 3
 !
-class-map type qos match-any cmap_tc0_v4
-   match ip access-group acl_qos_tc0_v4
-!
-class-map type qos match-any cmap_tc0_v6
-   match ipv6 access-group acl_qos_tc0_v6
-!
-class-map type qos match-any cmap_tc5_v4
-   match ip access-group acl_qos_tc5_v4
-!
-class-map type qos match-any cmap_tc5_v6
-   match ipv6 access-group acl_qos_tc5_v6
-!
 class-map type qos match-any COS_RANGE
    match vlan 1-3
 !
@@ -13443,6 +13763,21 @@ class-map type qos match-any DSCP_TEST_5
 class-map type qos match-any VLAN_RANGE
    match vlan 200-400
 !
+class-map type qos match-any aaa_test_6
+   match ip access-group acl_qos_tc5_v4
+!
+class-map type qos match-any cmap_tc0_v4
+   match ip access-group acl_qos_tc0_v4
+!
+class-map type qos match-any cmap_tc0_v6
+   match ipv6 access-group acl_qos_tc0_v6
+!
+class-map type qos match-any cmap_tc5_v4
+   match ip access-group acl_qos_tc5_v4
+!
+class-map type qos match-any cmap_tc5_v6
+   match ipv6 access-group acl_qos_tc5_v6
+!
 class-map type pbr match-any CM_PBR_EXCLUDE
    match ip access-group ACL_PBR_EXCLUDE
 !
@@ -13450,6 +13785,9 @@ class-map type pbr match-any CM_PBR_INCLUDE
    match ip access-group ACL_PBR_INCLUDE
 !
 class-map type pbr match-any CM_PBR_WITHOUT_ACCESS_GROUP
+!
+class-map type pbr match-any aaa
+   match ip access-group ACL_PBR_INCLUDE
 ```
 
 ### QOS Policy Maps
@@ -13459,26 +13797,26 @@ class-map type pbr match-any CM_PBR_WITHOUT_ACCESS_GROUP
 ##### PM_REPLICATION_LD
 
 | Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
-| ---------- | --- | -----| ------------- | --------------- | ----------------------------- |
+| ---------- | --- | ---- | ------------- | --------------- | ----------------------------- |
 | CM_REPLICATION_LD | - | af11 | 2 | 1 | 10 kbps (260 kbytes) -> drop-precedence<br> 30 kbps(270 kbytes) -> drop |
 | CM_REPLICATION_LD_2 | - | af11 | 2 | - | - |
 
 ##### PM_REPLICATION_LD2
 
 | Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
-| ---------- | --- | -----| ------------- | --------------- | ----------------------------- |
+| ---------- | --- | ---- | ------------- | --------------- | ----------------------------- |
 | CM_REPLICATION_LD | 4 | af11 | - | - | 30 kbps (280 bytes) -> dscp<br> 1 mbps(270 bytes) -> drop |
 
 ##### PM_REPLICATION_LD3
 
 | Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
-| ---------- | --- | -----| ------------- | --------------- | ----------------------------- |
+| ---------- | --- | ---- | ------------- | --------------- | ----------------------------- |
 | CM_REPLICATION_LD | 6 | af11 | - | - | 10000 bps (260 kbytes) -> drop |
 
 ##### pmap_test1
 
 | Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
-| ---------- | --- | -----| ------------- | --------------- | ----------------------------- |
+| ---------- | --- | ---- | ------------- | --------------- | ----------------------------- |
 | cmap_tc0_v4 | - | - | 0 | - | - |
 | cmap_tc5_v4 | - | - | 5 | - | - |
 | cmap_tc5_v6 | - | - | 5 | - | - |
@@ -13594,7 +13932,7 @@ policy-map type quality-of-service pmap_test1
 
 | TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
 | -------- | ---- | ------------- | ------------- | -------------------- |
-| 1 | All | -  | -  | - |
+| 1 | All | - | - | - |
 | 2 | All | 320 kbytes | 320 kbytes | 90 |
 | 4 | All | 320 segments | 320 segments | - |
 
@@ -13683,10 +14021,10 @@ Priority Flow Control is **enabled**.
 
 | TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
 | -------- | ---- | ------------- | ------------- | -------------------- |
-| 1 | All | -  | -  | - |
-| 2 | All | -  | -  | - |
+| 1 | All | - | - | - |
+| 2 | All | - | - | - |
 | 3 | All | 320 kbytes | 320 kbytes | - |
-| 4 | All | -  | -  | - |
+| 4 | All | - | - | - |
 | 1 | Multicast | - | - | - |
 | 2 | Multicast | - | - | - |
 | 4 | Multicast | - | - | - |
@@ -13697,7 +14035,7 @@ Priority Flow Control is **enabled**.
 | -------- | ---- | --------------- | ------------- | ------------- | ---------------- | ------ |
 | 1 | All | - | 1 kbytes | 10 kbytes | 100 | - |
 | 2 | All | 2 | 2 kbytes | 200 kbytes | 50 | 10 |
-| 3 | All | - | -  | -  | - | - |
+| 3 | All | - | - | - | - | - |
 | 4 | All | - | 1 kbytes | 10 kbytes | 90 | - |
 | 1 | Multicast | - | - | - | - | - |
 | 2 | Multicast | - | - | - | - | - |
@@ -13723,9 +14061,9 @@ Priority Flow Control is **enabled**.
 
 | TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Drop Probability | Weight |
 | -------- | ---- | --------------- | ------------- | ------------- | ---------------- | ------ |
-| 1 | Unicast | - |1 microseconds | 10 microseconds | 90 | 15 |
-| 2 | Unicast | 1 |2 milliseconds | 20 milliseconds | 80 | - |
-| 4 | Unicast | - |1 microseconds | 10 microseconds | 90 | - |
+| 1 | Unicast | - | 1 microseconds | 10 microseconds | 90 | 15 |
+| 2 | Unicast | 1 | 2 milliseconds | 20 milliseconds | 80 | - |
+| 4 | Unicast | - | 1 microseconds | 10 microseconds | 90 | - |
 
 #### QOS Profile Device Configuration
 
@@ -14066,24 +14404,33 @@ stun
 | bar | red | peer-group-baz | downlink-neighbors |
 | foo | - | 169.254.1.1<br>fe80::1 | ixp<br>uplink-neighbors |
 | without-neighbors-key | red | - | BP1 |
+| ZZZ | - | peer-group-baz<br>ZZZ | BP1 |
 
 #### BGP Groups Device Configuration
 
 ```eos
 !
+group bgp ZZZ
+   neighbor peer-group-baz
+   neighbor ZZZ
+   exit
+!
 group bgp bar
    vrf red
    neighbor peer-group-baz
    maintenance profile bgp downlink-neighbors
+   exit
 !
 group bgp foo
    neighbor 169.254.1.1
    neighbor fe80::1
    maintenance profile bgp ixp
    maintenance profile bgp uplink-neighbors
+   exit
 !
 group bgp without-neighbors-key
    vrf red
+   exit
 ```
 
 ### Interface Groups
@@ -14092,6 +14439,7 @@ group bgp without-neighbors-key
 
 | Interface Group | Interfaces | Interface maintenance profile | BGP maintenance profiles |
 | --------------- | ---------- | ----------------------------- | ------------------------ |
+| aaa_group | Ethernet1,5 | aaa-uplink-interfaces<br>ZZZ-uplink-interfaces | aaa-uplink-interfaces<br>ZZZ-uplink-interfaces |
 | QSFP_Interface_Group | Ethernet1,5 | uplink-interfaces | BP1 |
 | QSFP_Interface_Group1 | Ethernet1,5 | IP1 | BP1 |
 | SFP_Interface_Group | Ethernet10-20<br>Ethernet30-48 | downlink-interfaces<br>ix-interfaces | downlink-neighbors<br>local-ix |
@@ -14103,9 +14451,11 @@ group bgp without-neighbors-key
 group interface QSFP_Interface_Group
    interface Ethernet1,5
    maintenance profile interface uplink-interfaces
+   exit
 !
 group interface QSFP_Interface_Group1
    interface Ethernet1,5
+   exit
 !
 group interface SFP_Interface_Group
    interface Ethernet10-20
@@ -14114,6 +14464,15 @@ group interface SFP_Interface_Group
    maintenance profile bgp local-ix
    maintenance profile interface downlink-interfaces
    maintenance profile interface ix-interfaces
+   exit
+!
+group interface aaa_group
+   interface Ethernet1,5
+   maintenance profile bgp ZZZ-uplink-interfaces
+   maintenance profile bgp aaa-uplink-interfaces
+   maintenance profile interface ZZZ-uplink-interfaces
+   maintenance profile interface aaa-uplink-interfaces
+   exit
 ```
 
 ### Maintenance
@@ -14135,7 +14494,7 @@ Default maintenance unit profile: **UP1**
 | BP3 | RM-MAINTENANCE3 |
 
 | Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) | Shutdown Max Delay |
-|-------------------|-----------------------------------|-----------------------------------------|--------------------|
+| ----------------- | --------------------------------- | --------------------------------------- | ------------------ |
 | IP1 | 10 | 500 | 300 |
 
 | Unit profile | on-boot duration (s) |

@@ -55,12 +55,25 @@ Counters: {{ policy.counters | join(", ") }}
 {%             endif %}
 {%             if policy.matches is arista.avd.defined %}
 
-| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
-| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
+| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Packet Type | Action |
+| --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ----------- | ------ |
 {%                 for match in policy.matches | arista.avd.natural_sort('name') %}
 {%                     set row = namespace() %}
 {%                     set row.match_set = match.name %}
 {%                     set row.type = match.type | lower %}
+{#                     -- Packet Type #}
+{%                     set row.packet_type = [] %}
+{%                     if match.packet_type.vxlan is arista.avd.defined %}
+{%                         do row.packet_type.append("vxlan " ~ match.packet_type.vxlan) %}
+{%                     endif %}
+{%                     if match.packet_type.multicast is arista.avd.defined(true) %}
+{%                         do row.packet_type.append("multicast") %}
+{%                     endif %}
+{%                     if row.packet_type != [] %}
+{%                         set row.packet_type = row.packet_type | join(', ') %}
+{%                     else %}
+{%                         set row.packet_type = "-" %}
+{%                     endif %}
 {#                     -- Source Prefix #}
 {%                     set row.src_net = "" %}
 {%                     if match.source.prefix_lists is arista.avd.defined %}
@@ -182,7 +195,7 @@ Counters: {{ policy.counters | join(", ") }}
 {%                         do row.actions.append("default action: PASS") %}
 {%                     endif %}
 {# -- Table rendering #}
-| {{ row.match_set }} | {{ row.type }} | {{ row.src_net }} | {{ row.dst_net }} | {{ row.protocols }} | {{ row.src_port }} | {{ row.src_field }} | {{ row.dst_port }} | {{ row.dst_field }} | {{ row.actions | join('<br/>') }} |
+| {{ row.match_set }} | {{ row.type }} | {{ row.src_net }} | {{ row.dst_net }} | {{ row.protocols }} | {{ row.src_port }} | {{ row.src_field }} | {{ row.dst_port }} | {{ row.dst_field }} | {{ row.packet_type }} | {{ row.actions | join('<br/>') }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}

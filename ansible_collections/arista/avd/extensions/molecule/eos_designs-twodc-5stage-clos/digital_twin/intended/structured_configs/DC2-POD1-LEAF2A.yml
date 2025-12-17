@@ -214,7 +214,8 @@ vlan_internal_order:
 vlans:
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -366,22 +366,27 @@ vlan_internal_order:
 vlans:
 - id: 2
   name: Tenant1_SVI
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 3
   name: Tenant1_VRF_SVI
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TESTING
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: VRF_STATIC_ROUTE_ON_L3_INTERFACE
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: VRF_STATIC_ROUTE_ON_L3_PORT_CHANNEL
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vxlan_interface:
   vxlan1:
     description: network-services-static-routes_VTEP

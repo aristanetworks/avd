@@ -9,7 +9,7 @@
 {%     set counter = namespace() %}
 {%     set counter.acle_number = 0 %}
 {#     START ACL CYCLE: walk over the list of defined ACLs #}
-{%     for acl in ip_access_lists | arista.avd.natural_sort('name') %}
+{%     for acl in ip_access_lists | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 ip access-list {{ acl.name }}
 {%         if acl.counters_per_entry is arista.avd.defined(true) %}

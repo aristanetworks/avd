@@ -1,9 +1,10 @@
 ---
 ## IP TFTP CLIENT SOURCE INTERFACES ##
 
-ip_tftp_client_source_interfaces:
-  - name: Loopback0
-    vrf: default
-  - name: Management0
-    vrf: MGMT
-  - name: Ethernet10
+ip_tftp_client:
+  source_interface: Loopback0
+  vrfs:
+    - name: MGMT
+      source_interface: Management0
+    - name: data
+      source_interface: Ethernet10

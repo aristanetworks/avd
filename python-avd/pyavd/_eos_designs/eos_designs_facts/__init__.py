@@ -20,7 +20,7 @@ from .vlans import VlansMixin
 from .wan import WanMixin
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
+    from collections.abc import MutableMapping
 
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
@@ -188,6 +188,8 @@ class EosDesignsFactsGeneratorProtocol(
     def vtep_loopback_ipv4_pool(self) -> str | None:
         """Exposed in avd_switch_facts."""
         if self.shared_utils.underlay_ipv6_numbered:
+            return None
+        if self.shared_utils.node_config.vtep_loopback == "Loopback0":
             return None
         if self.shared_utils.vtep is True:
             return self.shared_utils.vtep_loopback_ipv4_pool
@@ -391,7 +393,7 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
 
     def __init__(
         self,
-        hostvars: Mapping,
+        hostvars: MutableMapping,
         inputs: EosDesigns,
         peer_generators: dict[str, EosDesignsFactsGenerator],
         shared_utils: SharedUtilsProtocol,

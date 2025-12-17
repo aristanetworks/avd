@@ -2098,3 +2098,38 @@ ethernet_interfaces:
       pae:
         mode: supplicant
         supplicant_profile: test_profile
+
+# All Transceiver Commands
+  - name: Ethernet86
+    switchport:
+      enabled: true
+    description: All_Transceiver_Commands
+    shutdown: false
+    transceiver:
+      frequency: 190050
+      application_override: 5
+      application_override_lanes:
+        - override: 5
+          first_lane: 1
+          last_lane: 1
+        - override: 5
+          first_lane: 2
+          last_lane: 3
+      frequency_unit: ghz
+      media:
+        override: 100gbase-ar4
+      power:
+        ignore: true
+      transmitter:
+        signal_power: -10.675
+        disabled: true
+
+# Additional Transmitter Signal Power Test
+  - name: Ethernet87
+    switchport:
+      enabled: true
+    description: Transmitter_SP_20
+    shutdown: false
+    transceiver:
+      transmitter:
+        signal_power: -20

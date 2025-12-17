@@ -1264,6 +1264,25 @@ keys:
                     max: 8
                     convert_types:
                       - str
+            power:
+              type: dict
+              keys:
+                ignore:
+                  type: bool
+                  description: Ignore advertised transceiver power consumption.
+            transmitter:
+              type: dict
+              keys:
+                signal_power:
+                  type: str
+                  description: Optical signal power between < -30 and 10 > (dBm).
+                  convert_types:
+                    - int
+                    - float
+                disabled:
+                  type: bool
+                  description: Disable the optical transmitter.
+
         ip_proxy_arp:
           type: bool
         traffic_policy:
@@ -1354,6 +1373,12 @@ keys:
             port_profile:
               type: str
               description: Key only used for documentation or validation purposes.
+            validate_state:
+              type: bool
+              description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
+            validate_lldp:
+              type: bool
+              description: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
         sflow:
           type: dict
           keys:
@@ -1485,6 +1510,7 @@ keys:
                             description: Indicate the units to be used for the threshold values.
                           min:
                             type: int
+                            required: true
                             min: 1
                             max: 256000000
                             convert_types:
@@ -1657,12 +1683,6 @@ keys:
                       - "0"
                       - "7"
                       - "8a"
-        validate_state:
-          type: bool
-          description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
-        validate_lldp:
-          type: bool
-          description: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
         switchport:
           type: dict
           description: This should not be combined with `ethernet_interfaces[].type = switched/routed`.
@@ -2058,11 +2078,11 @@ keys:
                   keys:
                     source:
                       type: str
-                      pattern: "^([0-9a-f]{2}:){5}[0-9a-f]{2}$"
+                      pattern: "([0-9a-f]{2}:){5}[0-9a-f]{2}"
                       description: MAC address for the source.
                     destination:
                       type: str
-                      pattern: "^([0-9a-f]{2}:){5}[0-9a-f]{2}$"
+                      pattern: "([0-9a-f]{2}:){5}[0-9a-f]{2}"
                       description: MAC address for the destination.
                 encapsulation:
                   type: dict
