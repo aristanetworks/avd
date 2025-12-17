@@ -884,9 +884,9 @@ management tech-support
 
 | IP Client | VRF | Source Interface Name |
 | --------- | --- | --------------------- |
-| FTP | default | Ethernet10 |
 | FTP | default | Loopback0 |
 | FTP | MGMT | Management0 |
+| FTP | abc | Ethernet10 |
 | HTTP | default | Loopback0 |
 | HTTP | MGMT | Management0 |
 | HTTP | default | Ethernet10 |
@@ -894,19 +894,19 @@ management tech-support
 | SSH | default | Loopback0 |
 | SSH | MGMT | Management0 |
 | Telnet | default | Ethernet10 |
-| Telnet | default | Loopback0 |
 | Telnet | MGMT | Management0 |
-| TFTP | default | Ethernet10 |
+| Telnet | data | Loopback0 |
 | TFTP | default | Loopback0 |
 | TFTP | MGMT | Management0 |
+| TFTP | data | Ethernet10 |
 
 #### IP Client Source Interfaces Device Configuration
 
 ```eos
 !
-ip ftp client source-interface Ethernet10
-ip ftp client source-interface Loopback0 vrf default
+ip ftp client source-interface Loopback0
 ip ftp client source-interface Management0 vrf MGMT
+ip ftp client source-interface Ethernet10 vrf abc
 ip http client local-interface Loopback0 vrf default
 ip http client local-interface Management0 vrf MGMT
 ip http client local-interface Ethernet10
@@ -914,11 +914,11 @@ ip ssh client source-interface Ethernet10
 ip ssh client source-interface Loopback0 vrf default
 ip ssh client source-interface Management0 vrf MGMT
 ip telnet client source-interface Ethernet10
-ip telnet client source-interface Loopback0 vrf default
 ip telnet client source-interface Management0 vrf MGMT
-ip tftp client source-interface Ethernet10
-ip tftp client source-interface Loopback0 vrf default
+ip telnet client source-interface Loopback0 vrf data
+ip tftp client source-interface Loopback0
 ip tftp client source-interface Management0 vrf MGMT
+ip tftp client source-interface Ethernet10 vrf data
  ```
 
 ### Management Accounts
