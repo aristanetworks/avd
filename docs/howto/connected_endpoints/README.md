@@ -58,16 +58,7 @@ Note: The lists `endpoint_ports`, `switch_ports`, and `switches` must have the s
 2. **Inventory Set Up:** Your inventory is created with your host and group variables.
 3. **Playbook Exists:** You have a main Ansible playbook (e.g., `build.yml`) that imports the AVD roles.
 
-### Step 1. Create the two configuration files
-
-Navigate to the root of your project.
-
-```bash
-touch group_vars/DC1/port_profiles.yml
-touch group_vars/CONNECTED_ENDPOINTS/ce.yml
-```
-
-### Step 2. Define the port profiles
+### Step 1. Define the port profiles
 
 ```yaml title="group_vars/DC1/port_profiles.yml"
 --8<--
@@ -79,7 +70,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC
 2. Profile for a dual-homed (LACP) server trunking two VLANs
 3. Profile for a trunk port connecting to a firewall
 
-### Step 3. Define your connected endpoints
+### Step 2. Define your connected endpoints
 
 ```yaml title="group_vars/CONNECTED_ENDPOINTS/ce.yml"
 --8<--
@@ -87,32 +78,10 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/CO
 --8<--
 ```
 
-### Step 4. Run the build playbook
+!!! note
+    Run your specific `build` playbook to generate the configuration.
 
-``` bash
-ansible-playbook build.yml
-```
-
-``` yaml title="build.yml"
----
-# build.yml
-
-- name: Build Configs
-  hosts: FABRIC
-  gather_facts: false
-  tasks:
-
-    - name: Generate AVD Structured Configurations and Fabric Documentation
-      ansible.builtin.import_role:
-        name: arista.avd.eos_designs
-
-    - name: Generate Device Configurations and Documentation
-      ansible.builtin.import_role:
-        name: arista.avd.eos_cli_config_gen
-
-```
-
-### Step 5: Review the Generated Configuration
+### Step 3: Review the Generated Configuration
 
 Device configuration is located `intended/configs/`
 
@@ -127,11 +96,3 @@ docs/howto/connected_endpoints/artifacts/WEB-SERVER-01.cfg
 docs/howto/connected_endpoints/artifacts/ESXI-HOST-03.cfg
 --8<--
 ```
-
-This is a critical best practice. Before deploying, verify that the configuration is correct.
-
-Open the generated file for your leaf switch (e.g., `intended/configs/leaf1.cfg`), and you will see the exact EOS CLI commands shown in the "Generated Configuration" section earlier, ready for deployment.
-
-### Step 4 (Optional): Deploy the Configuration
-
-After reviewing, you can deploy the configuration to your devices. This is typically done with a separate playbook or by integrating with Arista CloudVision. If using Ansible for deployment, a task might use the `arista.avd.eos_config_deploy_eapi` role to push the generated file to the device or `arista.avd.cv_deploy` to deploy with CloudVision.
