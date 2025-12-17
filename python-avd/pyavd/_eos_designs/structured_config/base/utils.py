@@ -76,7 +76,7 @@ class UtilsMixin(Protocol):
             else:
                 source_interfaces.vrfs.append_new(
                     source_interface=self.shared_utils.inband_mgmt_interface,
-                    name=self.shared_utils.inband_mgmt_vrf,
+                    name=inband_mgmt_vrf,
                 )
 
         return source_interfaces
