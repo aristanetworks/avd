@@ -83,7 +83,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC
 
 ```yaml title="group_vars/CONNECTED_ENDPOINTS/ce.yml"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/CONNECTED_ENDPOINTS/ce1.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/CONNECTED_ENDPOINTS/ce.yml
 --8<--
 ```
 
