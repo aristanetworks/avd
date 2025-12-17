@@ -78,7 +78,10 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/CO
 --8<--
 ```
 
+1. Within `port_channel`, we define its existence and what mode we would like to use, but there is no additional requirement like setting the Port Channel ID. That is done automatically. You can always override the default by setting the `channel_id` key within your Port Channel definition. The default Port Channel selected will be derived from the first switch port in the adapter.
+
 !!! note
+
     Run your specific `build` playbook to generate the configuration.
 
 ### Step 3: Review the Generated Configuration
