@@ -288,7 +288,7 @@ Devices can be removed manually in the CloudVision Portal user interface or prag
 
 === "Manual (single device)"
 
-    Under the `Provisioning / Network Provisioning` menu, right click the device and select `Remove` and save.  
+    Under the `Provisioning / Network Provisioning` menu, right click the device and select `Remove` and save.
 
 === "Manual (multiple devices)"
 
