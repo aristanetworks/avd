@@ -10372,9 +10372,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
         """
@@ -11156,9 +11156,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     cv_pathfinder_transit_mode:
                        Configure the transit mode for a WAN client for CV Pathfinder designs
                        only when the `wan_mode` root
@@ -15407,9 +15407,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
         """
@@ -16200,9 +16200,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     cv_pathfinder_transit_mode:
                        Configure the transit mode for a WAN client for CV Pathfinder designs
                        only when the `wan_mode` root
@@ -23900,9 +23900,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         default_flow_tracker_type: DefaultFlowTrackerType
         """
@@ -24057,9 +24057,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     default_flow_tracker_type: Set the default flow tracker type.
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
@@ -24439,9 +24439,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         default_flow_tracker_type: DefaultFlowTrackerType
         """
@@ -24596,9 +24596,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     default_flow_tracker_type: Set the default flow tracker type.
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
@@ -32518,7 +32518,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    WanMode: TypeAlias = Literal["autovpn", "cv-pathfinder"]
+    WanMode: TypeAlias = Literal["cv-pathfinder", "legacy-autovpn"]
 
     class WanPathGroupsItem(AvdModel):
         """Subclass of AvdModel."""
@@ -38146,9 +38146,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -38913,9 +38913,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -43172,9 +43172,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         This is used both for AutoVPN and Pathfinder designs.
                         That means if
-                        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                        `server` indicates that the router is a
-                        route-reflector.
+                        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                        `server` indicates that the
+                        router is a route-reflector.
                         """
                         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                         """
@@ -43948,9 +43948,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                        This is used both for AutoVPN and Pathfinder designs.
                                        That means if
-                                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                       `server` indicates that the router is a
-                                       route-reflector.
+                                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                       `server` indicates that the
+                                       router is a route-reflector.
                                     cv_pathfinder_transit_mode:
                                        Configure the transit mode for a WAN client for CV Pathfinder designs
                                        only when the `wan_mode` root
@@ -48118,9 +48118,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -48896,9 +48896,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -53138,9 +53138,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -53914,9 +53914,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -70320,9 +70320,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -71087,9 +71087,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -75346,9 +75346,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         This is used both for AutoVPN and Pathfinder designs.
                         That means if
-                        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                        `server` indicates that the router is a
-                        route-reflector.
+                        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                        `server` indicates that the
+                        router is a route-reflector.
                         """
                         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                         """
@@ -76122,9 +76122,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                        This is used both for AutoVPN and Pathfinder designs.
                                        That means if
-                                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                       `server` indicates that the router is a
-                                       route-reflector.
+                                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                       `server` indicates that the
+                                       router is a route-reflector.
                                     cv_pathfinder_transit_mode:
                                        Configure the transit mode for a WAN client for CV Pathfinder designs
                                        only when the `wan_mode` root
@@ -80292,9 +80292,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -81070,9 +81070,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -85312,9 +85312,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -86088,9 +86088,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -88736,17 +88736,18 @@ class EosDesigns(EosDesignsRootModel):
     """
     wan_route_servers: WanRouteServers
     """
-    List of the AutoVPN RRs when using `wan_mode: autovpn`, or the Pathfinders
-    when using `wan_mode: cv-
-    pathfinder`, to which the device should connect to.
-    This is also used to establish iBGP sessions
-    between WAN route servers.
+    List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or the Pathfinders
+    when using
+    `wan_mode: cv-pathfinder`, to which the device should connect to.
+    This is also used to establish
+    iBGP sessions between WAN route servers.
 
-    When the route server is part of the same inventory as the WAN routers,
+    When the route server is part of the same inventory as the
+    WAN routers,
     only the name is required.
 
-    Subclass of AvdIndexedList with `WanRouteServersItem` items. Primary key
-    is `hostname` (`str`).
+    Subclass of AvdIndexedList with `WanRouteServersItem`
+    items. Primary key is `hostname` (`str`).
     """
     wan_stun_dtls_disable: bool
     """
@@ -90358,17 +90359,18 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdIndexedList with
                    `WanPathGroupsItem` items. Primary key is `name` (`str`).
                 wan_route_servers:
-                   List of the AutoVPN RRs when using `wan_mode: autovpn`, or the Pathfinders
-                   when using `wan_mode: cv-
-                   pathfinder`, to which the device should connect to.
-                   This is also used to establish iBGP sessions
-                   between WAN route servers.
+                   List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or the Pathfinders
+                   when using
+                   `wan_mode: cv-pathfinder`, to which the device should connect to.
+                   This is also used to establish
+                   iBGP sessions between WAN route servers.
 
-                   When the route server is part of the same inventory as the WAN routers,
+                   When the route server is part of the same inventory as the
+                   WAN routers,
                    only the name is required.
 
-                   Subclass of AvdIndexedList with `WanRouteServersItem` items. Primary key
-                   is `hostname` (`str`).
+                   Subclass of AvdIndexedList with `WanRouteServersItem`
+                   items. Primary key is `hostname` (`str`).
                 wan_stun_dtls_disable:
                    WAN STUN connections are authenticated and secured with DTLS by default.
                    For CV Pathfinder

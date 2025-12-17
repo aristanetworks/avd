@@ -46,7 +46,7 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: autovpn-empty-load-balance-policy
+hostname: legacy-autovpn-empty-load-balance-policy
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -218,7 +218,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: autovpn-empty-load-balance-policy_VTEP
+    description: legacy-autovpn-empty-load-balance-policy_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789
