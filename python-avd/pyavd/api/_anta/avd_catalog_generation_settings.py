@@ -4,14 +4,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from logging import getLogger
 from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .avd_test_spec import AvdTestSpec
-
-LOGGER = getLogger(__name__)
 
 
 @dataclass(frozen=True)

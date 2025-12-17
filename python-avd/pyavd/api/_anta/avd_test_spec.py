@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING
 from pyavd._anta.lib import AntaTest
 
 if TYPE_CHECKING:
-    from pyavd._anta.constants import StructuredConfigKey
     from pyavd._anta.input_factories._base_classes import AntaTestInputFactory
 
 
@@ -24,8 +23,6 @@ class AvdTestSpec:
 
     test_class: type[AntaTest]
     """The ANTA test class to be used for the test."""
-    conditional_keys: list[StructuredConfigKey] | None = field(default=None)
-    """Optional structured config keys that are required to run the test."""
     input_factory: type[AntaTestInputFactory] | None = field(default=None)
     """
     Optional input factory class that generates the `AntaTest.Input` models (inputs) for the test.

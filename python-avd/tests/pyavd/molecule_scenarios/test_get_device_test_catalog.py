@@ -50,7 +50,11 @@ def test_get_device_test_catalog(molecule_host: MoleculeHost, molecule_scenario:
     settings = get(run_settings, f"{molecule_host.name}", run_settings["default"])
 
     expected_data = deepcopy(molecule_host.get_test_catalog(run_name=run_name))
-    result_catalog = get_device_test_catalog(molecule_host.name, host_config, fabric_data, settings=settings)
+
+    if get(host_config, "metadata.is_deployed", default=True) is True:
+        result_catalog = get_device_test_catalog(molecule_host.name, host_config, fabric_data, settings=settings)
+    else:
+        result_catalog = AntaCatalog()
 
     assert isinstance(result_catalog, AntaCatalog)
     result_data = json.loads(result_catalog.dump().to_json())
