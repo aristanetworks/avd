@@ -73,7 +73,7 @@ class UtilsMixin(Protocol):
                 msg = f"Unable to configure multiple {error_context} source-interfaces for the same VRF '{inband_mgmt_vrf}'."
                 raise AristaAvdError(msg)
 
-            if self.shared_utils.inband_mgmt_vrf is None or self.shared_utils.inband_mgmt_vrf == "default":
+            if inband_mgmt_vrf == "default":
                 source_interfaces.source_interface = self.shared_utils.inband_mgmt_interface
             else:
                 source_interfaces.vrfs.append_new(
