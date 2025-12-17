@@ -10574,10 +10574,10 @@ router bfd
 | Options | Value |
 | ------- | ----- |
 | Enabled | True |
-| disabled-time | 100 |
-| protect vlan | 1000-1100 |
-| rate-limit | 100 |
-| transmit-interval | 10 |
+| Disabled-time | 100 |
+| Protect vlan | 1000-1100 |
+| Rate-limit | 100 |
+| Transmit-interval | 10 |
 
 | Disabled Interfaces |
 | ------------------- |
@@ -10588,7 +10588,7 @@ router bfd
 ```eos ####
 !
 monitor loop-protection
-   no schutdown
+   no shutdown
    protect vlan 1000-1100
    rate-limit 100
    transmit-interval 10

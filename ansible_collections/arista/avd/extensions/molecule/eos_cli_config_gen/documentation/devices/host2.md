@@ -1313,10 +1313,10 @@ router bfd
 | Options | Value |
 | ------- | ----- |
 | Enabled | False |
-| disabled-time | 100 |
-| protect vlan | 1000-1100 |
-| rate-limit | 100 |
-| transmit-interval | 10 |
+| Disabled-time | 100 |
+| Protect vlan | 1000-1100 |
+| Rate-limit | 100 |
+| Transmit-interval | 10 |
 
 | Disabled Interfaces |
 | ------------------- |
