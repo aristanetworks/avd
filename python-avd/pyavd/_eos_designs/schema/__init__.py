@@ -9578,6 +9578,7 @@ class EosDesigns(EosDesignsRootModel):
             "overlay_address_families": {"type": OverlayAddressFamilies},
             "mpls_route_reflectors": {"type": MplsRouteReflectors},
             "bgp_cluster_id": {"type": str},
+            "kernel_ecmp_cli": {"type": bool, "default": True},
             "ptp": {"type": Ptp},
             "wan_role": {"type": str},
             "cv_pathfinder_transit_mode": {"type": str},
@@ -10364,6 +10365,18 @@ class EosDesigns(EosDesignsRootModel):
         """
         bgp_cluster_id: str | None
         """Set BGP cluster id."""
+        kernel_ecmp_cli: bool
+        """
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
+
+        Default value: `True`
+        """
         ptp: Ptp
         """Subclass of AvdModel."""
         wan_role: WanRole | None
@@ -10597,6 +10610,7 @@ class EosDesigns(EosDesignsRootModel):
                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                 bgp_cluster_id: str | None | UndefinedType = Undefined,
+                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 wan_role: WanRole | None | UndefinedType = Undefined,
                 cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -11150,6 +11164,14 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     bgp_cluster_id: Set BGP cluster id.
+                    kernel_ecmp_cli:
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     ptp: Subclass of AvdModel.
                     wan_role:
                        Override the default WAN role.
@@ -14603,6 +14625,7 @@ class EosDesigns(EosDesignsRootModel):
             "overlay_address_families": {"type": OverlayAddressFamilies},
             "mpls_route_reflectors": {"type": MplsRouteReflectors},
             "bgp_cluster_id": {"type": str},
+            "kernel_ecmp_cli": {"type": bool, "default": True},
             "ptp": {"type": Ptp},
             "wan_role": {"type": str},
             "cv_pathfinder_transit_mode": {"type": str},
@@ -15399,6 +15422,18 @@ class EosDesigns(EosDesignsRootModel):
         """
         bgp_cluster_id: str | None
         """Set BGP cluster id."""
+        kernel_ecmp_cli: bool
+        """
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
+
+        Default value: `True`
+        """
         ptp: Ptp
         """Subclass of AvdModel."""
         wan_role: WanRole | None
@@ -15633,6 +15668,7 @@ class EosDesigns(EosDesignsRootModel):
                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                 bgp_cluster_id: str | None | UndefinedType = Undefined,
+                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 wan_role: WanRole | None | UndefinedType = Undefined,
                 cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -16194,6 +16230,14 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     bgp_cluster_id: Set BGP cluster id.
+                    kernel_ecmp_cli:
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     ptp: Subclass of AvdModel.
                     wan_role:
                        Override the default WAN role.
@@ -25812,7 +25856,6 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
-            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
@@ -25840,18 +25883,6 @@ class EosDesigns(EosDesignsRootModel):
         Set MTU on point to point uplink interfaces.
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-        """
-        kernel_ecmp_cli: bool
-        """
-        Use EOS CLI to configure kernel forwarding ECMP programming.
-        For EOS kernel forwarding, ECMP
-        programming can be enabled in two different ways, depending on the EOS version.
-        - For newer EOS
-        versions (starting 4.33.2) use the proper CLI.
-        - For older EOS versions use an agent environment
-        variable. Changing this requires restarting the KernelFib agent.
-
-        Default value: `True`
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -25902,7 +25933,6 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
-                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
@@ -25931,14 +25961,6 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-                    kernel_ecmp_cli:
-                       Use EOS CLI to configure kernel forwarding ECMP programming.
-                       For EOS kernel forwarding, ECMP
-                       programming can be enabled in two different ways, depending on the EOS version.
-                       - For newer EOS
-                       versions (starting 4.33.2) use the proper CLI.
-                       - For older EOS versions use an agent environment
-                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -26603,7 +26625,6 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
-            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
@@ -26631,18 +26652,6 @@ class EosDesigns(EosDesignsRootModel):
         Set MTU on point to point uplink interfaces.
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-        """
-        kernel_ecmp_cli: bool
-        """
-        Use EOS CLI to configure kernel forwarding ECMP programming.
-        For EOS kernel forwarding, ECMP
-        programming can be enabled in two different ways, depending on the EOS version.
-        - For newer EOS
-        versions (starting 4.33.2) use the proper CLI.
-        - For older EOS versions use an agent environment
-        variable. Changing this requires restarting the KernelFib agent.
-
-        Default value: `True`
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -26693,7 +26702,6 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
-                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
@@ -26722,14 +26730,6 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-                    kernel_ecmp_cli:
-                       Use EOS CLI to configure kernel forwarding ECMP programming.
-                       For EOS kernel forwarding, ECMP
-                       programming can be enabled in two different ways, depending on the EOS version.
-                       - For newer EOS
-                       versions (starting 4.33.2) use the proper CLI.
-                       - For older EOS versions use an agent environment
-                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -37373,6 +37373,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -38138,6 +38139,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -38368,6 +38381,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -38907,6 +38921,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
@@ -42389,6 +42411,7 @@ class EosDesigns(EosDesignsRootModel):
                             "overlay_address_families": {"type": OverlayAddressFamilies},
                             "mpls_route_reflectors": {"type": MplsRouteReflectors},
                             "bgp_cluster_id": {"type": str},
+                            "kernel_ecmp_cli": {"type": bool, "default": True},
                             "ptp": {"type": Ptp},
                             "wan_role": {"type": str},
                             "cv_pathfinder_transit_mode": {"type": str},
@@ -43164,6 +43187,18 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp_cluster_id: str | None
                         """Set BGP cluster id."""
+                        kernel_ecmp_cli: bool
+                        """
+                        Use EOS CLI to configure kernel forwarding ECMP programming.
+                        For EOS kernel forwarding, ECMP
+                        programming can be enabled in two different ways, depending on the EOS version.
+                        - For newer EOS
+                        versions (starting 4.33.2) use the proper CLI.
+                        - For older EOS versions use an agent environment
+                        variable. Changing this requires restarting the KernelFib agent.
+
+                        Default value: `True`
+                        """
                         ptp: Ptp
                         """Subclass of AvdModel."""
                         wan_role: WanRole | None
@@ -43396,6 +43431,7 @@ class EosDesigns(EosDesignsRootModel):
                                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                                 bgp_cluster_id: str | None | UndefinedType = Undefined,
+                                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                                 ptp: Ptp | UndefinedType = Undefined,
                                 wan_role: WanRole | None | UndefinedType = Undefined,
                                 cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -43942,6 +43978,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `str` items.
                                     bgp_cluster_id: Set BGP cluster id.
+                                    kernel_ecmp_cli:
+                                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                                       For EOS kernel forwarding, ECMP
+                                       programming can be enabled in two different ways, depending on the EOS version.
+                                       - For newer EOS
+                                       versions (starting 4.33.2) use the proper CLI.
+                                       - For older EOS versions use an agent environment
+                                       variable. Changing this requires restarting the KernelFib agent.
                                     ptp: Subclass of AvdModel.
                                     wan_role:
                                        Override the default WAN role.
@@ -47332,6 +47376,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -48110,6 +48155,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -48342,6 +48399,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -48890,6 +48948,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
@@ -52355,6 +52421,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -53130,6 +53197,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -53362,6 +53441,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -53908,6 +53988,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
@@ -69547,6 +69635,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -70312,6 +70401,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -70542,6 +70643,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -71081,6 +71183,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
@@ -74563,6 +74673,7 @@ class EosDesigns(EosDesignsRootModel):
                             "overlay_address_families": {"type": OverlayAddressFamilies},
                             "mpls_route_reflectors": {"type": MplsRouteReflectors},
                             "bgp_cluster_id": {"type": str},
+                            "kernel_ecmp_cli": {"type": bool, "default": True},
                             "ptp": {"type": Ptp},
                             "wan_role": {"type": str},
                             "cv_pathfinder_transit_mode": {"type": str},
@@ -75338,6 +75449,18 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp_cluster_id: str | None
                         """Set BGP cluster id."""
+                        kernel_ecmp_cli: bool
+                        """
+                        Use EOS CLI to configure kernel forwarding ECMP programming.
+                        For EOS kernel forwarding, ECMP
+                        programming can be enabled in two different ways, depending on the EOS version.
+                        - For newer EOS
+                        versions (starting 4.33.2) use the proper CLI.
+                        - For older EOS versions use an agent environment
+                        variable. Changing this requires restarting the KernelFib agent.
+
+                        Default value: `True`
+                        """
                         ptp: Ptp
                         """Subclass of AvdModel."""
                         wan_role: WanRole | None
@@ -75570,6 +75693,7 @@ class EosDesigns(EosDesignsRootModel):
                                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                                 bgp_cluster_id: str | None | UndefinedType = Undefined,
+                                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                                 ptp: Ptp | UndefinedType = Undefined,
                                 wan_role: WanRole | None | UndefinedType = Undefined,
                                 cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -76116,6 +76240,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `str` items.
                                     bgp_cluster_id: Set BGP cluster id.
+                                    kernel_ecmp_cli:
+                                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                                       For EOS kernel forwarding, ECMP
+                                       programming can be enabled in two different ways, depending on the EOS version.
+                                       - For newer EOS
+                                       versions (starting 4.33.2) use the proper CLI.
+                                       - For older EOS versions use an agent environment
+                                       variable. Changing this requires restarting the KernelFib agent.
                                     ptp: Subclass of AvdModel.
                                     wan_role:
                                        Override the default WAN role.
@@ -79506,6 +79638,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -80284,6 +80417,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -80516,6 +80661,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -81064,6 +81210,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
@@ -84529,6 +84683,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -85304,6 +85459,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -85536,6 +85703,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -86082,6 +86250,14 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
