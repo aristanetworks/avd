@@ -381,5 +381,5 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FA
 
 For complete details on all available node type properties, see:
 
-- [Default Node Types Variables](../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#node-type-variables)
-- [Node Type Customization](../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#node-type-customization)
+- [Default Node Types Variables](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#node-type-variables)
+- [Node Type Customization](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#node-type-customization)
