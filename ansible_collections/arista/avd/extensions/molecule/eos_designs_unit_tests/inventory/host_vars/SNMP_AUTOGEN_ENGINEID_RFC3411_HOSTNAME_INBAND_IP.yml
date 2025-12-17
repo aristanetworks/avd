@@ -17,7 +17,7 @@ snmp_settings:
   compute_local_engineid: true
   # The default value is 3411
   # compute_local_engineid_source: rfc_3411
-  compute_local_engineid_ip: use_inband_mgmt_interface
+  local_engineid_ip: use_inband_mgmt_interface
   compute_v3_user_localized_key: true
   users:
     - name: usertest-auth-priv

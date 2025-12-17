@@ -12,18 +12,18 @@ metadata:
 service_routing_protocols_model: multi-agent
 snmp_server:
   engine_ids:
-    local: 8000757104a78fd1153a14f76bee5d7468f95309ed38866a10
+    local: 80007571041f24c315e079d178efbf30ef19e0836c112dc18f
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS SNMP_AUTOGEN_ENGINEID_RFC3411_HOSTNAME_DEFAULT_MGMT
   users:
   - name: usertest-auth-priv
     group: usergroup
     version: v3
-    localized: 8000757104a78fd1153a14f76bee5d7468f95309ed38866a10
+    localized: 80007571041f24c315e079d178efbf30ef19e0836c112dc18f
     auth: sha
-    auth_passphrase: 5fbdabf97d46e5c6ad032f5006217a2857ff9baa
+    auth_passphrase: c339ee396973e90c04206140b55627678921d0a5
     priv: aes192
-    priv_passphrase: b54d01f2bcf6cf9ed10040321a4bc81cfd7decd66475b592
+    priv_passphrase: 375984d3e9a16df7ee4348b037f614817a2833e89d4f6e78
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4092

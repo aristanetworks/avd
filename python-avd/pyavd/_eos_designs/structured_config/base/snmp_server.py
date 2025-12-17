@@ -57,30 +57,30 @@ class SnmpServerMixin(Protocol):
         )
 
     def _get_snmp_engine_id_ip(self: AvdStructuredConfigBaseProtocol) -> str | None:
-        """Return the IP address to use for computing the SNMP engine ID."""
-        if self.inputs.snmp_settings.compute_local_engineid_source == "legacy_hostname_and_ip":
-            # This may return None.
-            return self.shared_utils.node_config.mgmt_ip
+        """
+        Return the IP address to use for computing the SNMP engine ID.
 
-        # This is now handling either `rfc3411` or `hostname_and_ip` method
-        compute_local_engineid_ip = self.inputs.snmp_settings.compute_local_engineid_ip
-        if self.inputs.snmp_settings.compute_local_engineid_ip == "use_default_mgmt_method_interface":
+        This is only used in the case when 'compute_local_engineid_source: rfc3411'
+
+        """
+        local_engineid_ip = self.inputs.snmp_settings.local_engineid_ip
+        if self.inputs.snmp_settings.local_engineid_ip == "use_default_mgmt_method_interface":
             match self.inputs.default_mgmt_method:
                 case "oob":
-                    compute_local_engineid_ip = "use_mgmt_interface"
+                    local_engineid_ip = "use_mgmt_interface"
                 case "inband":
-                    compute_local_engineid_ip = "use_inband_mgmt_interface"
+                    local_engineid_ip = "use_inband_mgmt_interface"
                 case "none":
                     msg = "The key 'snmp_settings.compute_local_engineid_ip' must be set when 'default_mgmt_method' is set to 'none'."
                     raise AristaAvdInvalidInputsError(msg)
 
-        match compute_local_engineid_ip:
+        match local_engineid_ip:
             case "use_mgmt_interface":
                 return self.shared_utils.node_config.mgmt_ip
             case "use_inband_mgmt_interface":
                 return self.shared_utils.inband_mgmt_ip
             case _:
-                return self.inputs.snmp_settings.compute_local_engineid_ip
+                return self.inputs.snmp_settings.local_engineid_ip
 
     def _get_sha1_digest(self: AvdStructuredConfigBaseProtocol, ip: str | None) -> str:
         """
@@ -110,14 +110,11 @@ class SnmpServerMixin(Protocol):
                 # Arista Enterprise ID = 30065 (7571 in hex)
                 # 5th octet = 04 , meaning engine id is based on custom text
                 local_engine_id = f"8000757104{digest}"
-            case "legacy_hostname_and_ip":
-                # This is the default value in AVD 5.x.
-                # This does not handle well inband mgmt cases as it used None for the management IP
-                # This is kept for legacyt purposes.
-                local_engine_id = self._get_sha1_digest(self._get_snmp_engine_id_ip())
             case "hostname_and_ip":
-                # This fixes the handling for inband management case but still not provide RFC3411 compliant hash.
-                local_engine_id = self._get_sha1_digest(self._get_snmp_engine_id_ip())
+                # This is the default value in AVD 5.x.
+                # This does not handle well inband mgmt cases as it uses None for the management IP
+                # This is kept for legacy purposes.
+                local_engine_id = self._get_sha1_digest(self.shared_utils.node_config.mgmt_ip)
             case "system_mac":
                 # This is the default value of the engine ID on EOS. Note that is is not RFC3411 compliant.
                 if self.shared_utils.system_mac_address is None:

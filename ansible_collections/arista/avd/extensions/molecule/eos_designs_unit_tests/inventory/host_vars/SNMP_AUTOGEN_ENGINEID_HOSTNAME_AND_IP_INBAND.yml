@@ -1,6 +1,6 @@
 ---
 # Minimum config to only test the specific feature.
-# This tests the SNMP auto engine ID for the legacy_hostname_and_ip mode
+# This tests the SNMP auto engine ID for the hostname_and_ip mode
 # It is not RFC 3411 compliant and hash None for inband management
 type: l2leaf
 
@@ -16,8 +16,7 @@ snmp_settings:
   contact: example@example.com
   location: true
   compute_local_engineid: true
-  compute_local_engineid_source: legacy_hostname_and_ip
-  # compute_local_engineid_ip is ignored for this source
+  compute_local_engineid_source: hostname_and_ip
   compute_v3_user_localized_key: true
   users:
     - name: usertest-auth-priv

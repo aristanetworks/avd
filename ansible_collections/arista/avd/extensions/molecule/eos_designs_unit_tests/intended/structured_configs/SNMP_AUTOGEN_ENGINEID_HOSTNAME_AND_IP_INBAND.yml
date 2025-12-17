@@ -1,0 +1,35 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: SNMP_AUTOGEN_ENGINEID_HOSTNAME_AND_IP_INBAND
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+snmp_server:
+  engine_ids:
+    local: 4cb92a84ce4799f8658807f4bfadc8eb42aa218b
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS SNMP_AUTOGEN_ENGINEID_HOSTNAME_AND_IP_INBAND
+  users:
+  - name: usertest-auth-priv
+    group: usergroup
+    version: v3
+    localized: 4cb92a84ce4799f8658807f4bfadc8eb42aa218b
+    auth: sha
+    auth_passphrase: 639210ea4228bcfae15eb57bae1df284360ef736
+    priv: aes192
+    priv_passphrase: 2ea88d2bdb22b8be7b13b087fac866b16d1ecd2f474545a3
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
