@@ -10,3 +10,6 @@ l3leaf,dc1-leaf1b,,Ethernet4,mlag_peer,dc1-leaf1a,,Ethernet4,True
 l3leaf,dc1-leaf1b,,Ethernet11,,ESXI-HOST-03,,,True
 spine,dc1-spine1,,Ethernet1,l3leaf,dc1-leaf1a,,Ethernet1,True
 spine,dc1-spine1,,Ethernet2,l3leaf,dc1-leaf1b,,Ethernet1,True
+spine,dc1-spine1,,Ethernet3,service_leaf,dc1-svc-leaf1,,Ethernet1,True
+service_leaf,dc1-svc-leaf1,,Ethernet1,spine,dc1-spine1,,Ethernet3,True
+service_leaf,dc1-svc-leaf1,,Ethernet10,,APP-SERVER-01,,,True

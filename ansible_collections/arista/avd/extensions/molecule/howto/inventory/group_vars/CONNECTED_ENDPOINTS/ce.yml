@@ -15,3 +15,11 @@ connected_endpoints:
         description: "LACP bundle to ESXI-HOST-03"
         port_channel: # (!)!
           mode: active
+
+  # Connected endpoint on service_leaf to demonstrate custom node type capabilities
+  - name: APP-SERVER-01
+    adapters:
+      - switch_ports: [Ethernet10]
+        switches: [dc1-svc-leaf1]
+        profile: PP-APPSERVER
+        description: "Connects to APP-SERVER-01 on service_leaf"

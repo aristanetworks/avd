@@ -21,3 +21,8 @@ port_profiles:
     mode: trunk
     vlans: "10,20,30,100"
     native_vlan: 100
+
+  - profile: PP-APPSERVER
+    mode: trunk
+    vlans: "11,12"
+    spanning_tree_portfast: edge

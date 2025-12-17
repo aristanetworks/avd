@@ -125,12 +125,8 @@ def apply_filters(block: list[str], filters: list[str]) -> list[str]:
     return filtered_block
 
 
-def process_config(config_path: str, output_dir: str) -> None:
+def process_config(config_path: str, output_dir: str | None = None) -> None:
     logger.info("--- Loading Config: %s ---", config_path)
-
-    out_path = Path(output_dir)
-    if not out_path.exists():
-        out_path.mkdir(parents=True, exist_ok=True)
 
     cfg_path = Path(config_path)
     with cfg_path.open("r", encoding="utf-8") as f:
@@ -141,8 +137,20 @@ def process_config(config_path: str, output_dir: str) -> None:
         sections_def: list[str | dict] = job.get("sections", [])
         artifact_filename: str = job.get("artifact")
 
+        # Use job-specific output_dir if provided, otherwise use the global one
+        job_output_dir: str | None = job.get("output_dir")
+        final_output_dir: str | None = job_output_dir if job_output_dir else output_dir
+
+        if not final_output_dir:
+            logger.error("ERROR: No output_dir specified for artifact '%s'", artifact_filename)
+            continue
+
+        out_path = Path(final_output_dir)
+        if not out_path.exists():
+            out_path.mkdir(parents=True, exist_ok=True)
+
         full_output_path = out_path / artifact_filename
-        logger.info("Processing target: %s", target_file)
+        logger.info("Processing target: %s -> %s", target_file, full_output_path)
 
         eos_lines = load_file(target_file)
         if not eos_lines:
@@ -183,8 +191,12 @@ def process_config(config_path: str, output_dir: str) -> None:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        logger.error("Usage: python3 processor.py <config.yml> <output_dir>")
+    if len(sys.argv) < 2:
+        logger.error("Usage: python3 processor.py <config.yml> [output_dir]")
+        logger.error("  If output_dir is not provided, each artifact must specify 'output_dir' in the config.")
         sys.exit(1)
 
-    process_config(sys.argv[1], sys.argv[2])
+    config_file = sys.argv[1]
+    output_dir = sys.argv[2] if len(sys.argv) >= 3 else None
+
+    process_config(config_file, output_dir)

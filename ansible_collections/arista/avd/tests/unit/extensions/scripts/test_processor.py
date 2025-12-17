@@ -183,3 +183,57 @@ def test_process_config_integration(tmp_path: Path) -> None:
     """).strip()
 
     assert content.strip() == expected_content
+
+
+def test_process_config_with_per_artifact_output_dir(tmp_path: Path) -> None:
+    """Test that per-artifact output_dir overrides global output_dir."""
+    config_dir = tmp_path / "inputs"
+    config_dir.mkdir()
+
+    eos_file = config_dir / "device.cfg"
+    eos_file.write_text(
+        dedent("""
+        vlan 10
+           name Test
+        !
+        router bgp 65001
+           neighbor 1.1.1.1 remote-as 100
+        !
+    """).strip(),
+        encoding="utf-8",
+    )
+
+    # Create two different output directories
+    output_dir_1 = tmp_path / "artifacts1"
+    output_dir_2 = tmp_path / "artifacts2"
+
+    job_yaml = config_dir / "config.yml"
+    job_yaml_content = f"""
+    - file: "{eos_file}"
+      sections:
+        - header: "vlan 10"
+      artifact: "vlan.cfg"
+      output_dir: "{output_dir_1}"
+    - file: "{eos_file}"
+      sections:
+        - header: "router bgp 65001"
+      artifact: "bgp.cfg"
+      output_dir: "{output_dir_2}"
+    """
+    job_yaml.write_text(dedent(job_yaml_content), encoding="utf-8")
+
+    # Process without global output_dir
+    processor.process_config(str(job_yaml))
+
+    # Check that artifacts went to their respective directories
+    vlan_file = output_dir_1 / "vlan.cfg"
+    bgp_file = output_dir_2 / "bgp.cfg"
+
+    assert vlan_file.exists()
+    assert bgp_file.exists()
+
+    vlan_content = vlan_file.read_text(encoding="utf-8")
+    bgp_content = bgp_file.read_text(encoding="utf-8")
+
+    assert "vlan 10" in vlan_content
+    assert "router bgp 65001" in bgp_content
