@@ -37,7 +37,6 @@ keys:
                   min_length: 1
                   items:
                     type: str
-                  default: [tacacs+]
                 vrf:
                   type: str
                   description: |-
@@ -109,7 +108,6 @@ keys:
                   min_length: 1
                   items:
                     type: str
-                  default: [radius]
                 vrf:
                   type: str
                   description: |-
