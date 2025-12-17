@@ -48,7 +48,7 @@ class AvdCatalogGenerationSettings:
         test_names = {test.test_class.name for test in avd_test_specs}
         invalid_test_names = (run_tests_set | skip_tests_set) - test_names
         if invalid_test_names:
-            msg = f"Invalid test names in run_tests or skip_tests filters: {', '.join(invalid_test_names)}"
+            msg = f"Invalid test names in run_tests or skip_tests filters: {', '.join(sorted(invalid_test_names))}"
             raise ValueError(msg)
 
         # Remove any tests from run_tests that are in skip_tests
