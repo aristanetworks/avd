@@ -6,22 +6,28 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
-
 if TYPE_CHECKING:
     from collections.abc import Iterable
     from typing import Any
 
+    from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
+
 try:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-except ImportError as e:
-    EosDesignsFacts = RaiseOnUse(ImportError(f"The 'arista.avd' collection requires the 'pyavd' Python library. Got import error {e}"))
+
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
 
 
 class AvdSwitchFactsDefaultDict(defaultdict[str, EosDesignsFacts]):
     avd_switch_facts: dict[str, dict]
 
     def __init__(self, avd_switch_facts: dict[str, dict]) -> None:
+        if not HAS_PYAVD:
+            msg = "The 'arista.avd' collection requires the 'pyavd' Python library."
+            raise ImportError(msg)
+
         self.avd_switch_facts = avd_switch_facts
 
     def __contains__(self, key: object) -> bool:

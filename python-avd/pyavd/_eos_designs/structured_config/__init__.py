@@ -6,7 +6,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.shared_utils import SharedUtils
 
 from .base import AvdStructuredConfigBase
@@ -28,7 +27,7 @@ if TYPE_CHECKING:
     from ansible.template import Templar
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-    from pyavd.avd_schema_tools import AvdSchemaTools
+    from pyavd._eos_designs.schema import EosDesigns
 
     from .structured_config_generator import StructuredConfigGenerator
 
@@ -61,54 +60,6 @@ The order is important, since later modules can overwrite or read config created
 def get_structured_config(
     *,
     hostname: str,
-    hostvars: MutableMapping,
-    input_schema_tools: AvdSchemaTools,
-    all_facts: Mapping[str, EosDesignsFacts],
-    result: dict,
-    templar: Templar | None = None,
-    validate: bool = True,
-    digital_twin: bool = False,
-) -> EosCliConfigGen | None:
-    """
-    Generate structured_config for a device.
-
-    Args:
-        hostname:
-            The hostname of the device
-        hostvars:
-            The variables for the device
-        input_schema_tools:
-            An AvdSchemaTools object used to validate the input variables if enabled.
-        all_facts:
-            Map of all devices and their facts.
-        result:
-            Dictionary to store results.
-        templar:
-            The templar to use for rendering templates.
-        validate:
-            Optional flag to disable validation for the input schema.
-        digital_twin:
-            Optional flag to enable avd_digital_twin_mode.
-
-    Returns:
-        The structured config as an EosCliConfigGen instance or None if validation failed.
-    """
-    # Validate input data
-    if validate:
-        result.update(input_schema_tools.convert_and_validate_data(hostvars))
-        if result.get("failed"):
-            # Input data validation failed so return empty dict. Calling function should check result.get("failed").
-            return None
-
-    # Load input vars into the EosDesigns data class.
-    inputs = EosDesigns._from_dict(hostvars)
-
-    return get_structured_config_v2(hostname=hostname, inputs=inputs, all_facts=all_facts, hostvars=hostvars, templar=templar, digital_twin=digital_twin)
-
-
-def get_structured_config_v2(
-    *,
-    hostname: str,
     inputs: EosDesigns,
     all_facts: Mapping[str, EosDesignsFacts],
     hostvars: MutableMapping | None = None,
@@ -122,7 +73,7 @@ def get_structured_config_v2(
         hostname:
             The hostname of the device.
         inputs:
-            Validated input variables loaded into an EosDesigns instance, as returned from `pyavd.load_inputs()`
+            Inputs loaded into the EosDesigns as found in the `design` attribute of the LoadDesignResult returned from `pyavd.load_design`.
         all_facts:
             Map of all devices and their facts.
         hostvars:

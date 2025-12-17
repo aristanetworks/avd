@@ -10,7 +10,7 @@ from pyavd._eos_designs.shared_utils import SharedUtils
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
-    from collections.abc import MutableMapping
+    from collections.abc import Mapping, MutableMapping
 
     from ansible.template import Templar
 
@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 
 def get_facts(
-    all_inputs: dict[str, EosDesigns],
+    all_inputs: Mapping[str, EosDesigns | Mapping],
     all_hostvars: MutableMapping[str, MutableMapping] | None = None,
     templar: Templar | None = None,
     pool_manager: PoolManager | None = None,
@@ -31,7 +31,8 @@ def get_facts(
     Generate facts for all devices.
 
     Args:
-        all_inputs: Validated input variables loaded into EosDesigns instances for each device.
+        all_inputs: Dictionary where keys are hostnames and values are the Design instance per device.
+            Supporting dicts as well for backwards compatibility.
         all_hostvars: Dictionaries with variables exposed to custom jinja templates for each device.
         templar: Templater used to render custom jinja templates.
         pool_manager: instance of pool-manager used for dynamic assignments like node ids.
@@ -40,6 +41,8 @@ def get_facts(
     Returns:
         EosDesignsFacts instances for each device.
     """
+    from pyavd._eos_designs.schema import EosDesigns  # noqa: PLC0415
+
     peer_facts_generators: dict[str, EosDesignsFactsGenerator] = {}
     """Placeholder for generators. Referenced in the generators themselves as well as in shared_utils to be able to resolve facts for peers."""
 
@@ -52,8 +55,13 @@ def get_facts(
     if all_hostvars is None:
         all_hostvars = {}
 
-    for hostname, inputs in all_inputs.items():
+    for hostname in all_inputs:
         hostvars = all_hostvars.get(hostname, {})
+
+        inputs = all_inputs[hostname]
+        if not isinstance(inputs, EosDesigns):
+            inputs = EosDesigns._from_dict(inputs)
+
         peer_facts_generators[hostname] = _create_generator_instance(
             hostname, inputs, hostvars, templar, pool_manager, digital_twin, peer_facts_generators, mlag_groups
         )

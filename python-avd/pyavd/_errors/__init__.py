@@ -5,6 +5,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from pyavd._utils import json_path_to_string
+
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
@@ -19,18 +21,6 @@ class AristaAvdError(Exception):
         self.host = host
         self.message = message
         super().__init__(self.message)
-
-    def _json_path_to_string(self, json_path: Sequence[str | int]) -> str:
-        path = ""
-        for index, elem in enumerate(json_path):
-            if isinstance(elem, int) or elem.isnumeric():
-                path += f"[{elem}]"
-            else:
-                if index == 0:
-                    path += elem
-                    continue
-                path += f".{elem}"
-        return path
 
 
 class AristaAvdInvalidInputsError(AristaAvdError):
@@ -56,7 +46,7 @@ class AristaAvdMissingVariableError(AristaAvdError):
 class AvdSchemaError(AristaAvdError):
     def __init__(self, message: str = "Schema Error", path: Sequence[str | int] | None = None) -> None:
         if path is not None:
-            self.path = self._json_path_to_string(path)
+            self.path = json_path_to_string(path)
             message = f"'Validation Error: {self.path}': {message}"
         super().__init__(message)
 
@@ -67,8 +57,8 @@ class AvdValidationError(AristaAvdError):
 
     def __init__(self, violation: str, path: Sequence[str | int]) -> None:
         self.violation = violation
-        self.path = self._json_path_to_string(path)
-        message = f"'Validation Error: {self.path}': {violation}"
+        self.path = json_path_to_string(path)
+        message = f"Validation Error: [{self.path}] {violation}"
         super().__init__(message)
 
     @classmethod
@@ -89,7 +79,7 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
         conflict: bool = False,
     ) -> None:
         messages = []
-        self.path = self._json_path_to_string(key)
+        self.path = json_path_to_string(key)
         self.version = remove_in_version
         self.date = remove_after_date
         self.removed = removed
@@ -98,7 +88,7 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
         if removed:
             messages.append(f"The input data model '{self.path}' was removed.")
         elif conflict and new_key:
-            self.new_key_path = ".".join(item for item in [self._json_path_to_string(key[:-1]), new_key] if item)
+            self.new_key_path = ".".join(item for item in [json_path_to_string(key[:-1]), new_key] if item)
             messages.append(
                 f"The input data model '{self.path}' is deprecated and cannot be used in conjunction with the new data model '{self.new_key_path}'. "
                 "This usually happens when a data model has been updated and custom structured configuration still uses the old model."
@@ -139,3 +129,7 @@ class AristaAvdModelDeprecationWarning(DeprecationWarning):
     TODO: Not ideal with AvdDeprecationWarning already inheriting from AristaAvdError
           but this is our legacy we have to live with for now.
     """
+
+
+class PyAvdDeprecationWarning(DeprecationWarning):
+    """TODO: Docstring for PyAvdDeprecationWarning."""

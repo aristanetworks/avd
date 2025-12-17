@@ -7,24 +7,36 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ansible.utils.display import Display
+    from pyavd_utils.validation import ValidationResult
 
-    from pyavd.load_inputs import ValidationResult
+    from pyavd._utils import json_path_to_string
+
+try:
+    from pyavd._utils import json_path_to_string
+
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
 
 
 def parse_validation_result(validation_result: ValidationResult, hostname: str, ansible_display: Display) -> int:
-    """Parser of pyavd.load_inputs.ValidationResult displaying warnings and errors and returning the number of validation errors."""
+    """Parser of pyavd.load_design.ValidationResult displaying warnings and errors and returning the number of validation errors."""
+    if not HAS_PYAVD:
+        msg = "The 'arista.avd' collection requires the 'pyavd' Python library."
+        raise ImportError(msg)
+
     for deprecation in validation_result.deprecations:
         ansible_display.deprecated(
             msg=f"{hostname}: {deprecation}",
             version=deprecation.version,
-            date=deprecation.date,
             collection_name="arista.avd",
             removed=deprecation.removed,
         )
 
-    if (error_count := len(validation_result.validation_errors)) > 0:
-        for validation_error in validation_result.validation_errors:
-            message = f"{hostname}: {validation_error}"
+    if (error_count := len(validation_result.violations)) > 0:
+        for violation in validation_result.violations:
+            path = json_path_to_string(violation.path)
+            message = f"[{hostname}] Validation Error: [{path}] {violation.message}"
             ansible_display.error(message, wrap_text=False)
 
     return error_count

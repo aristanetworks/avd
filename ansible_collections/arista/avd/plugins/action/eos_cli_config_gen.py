@@ -7,7 +7,7 @@ import json
 import logging
 from contextlib import suppress
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import yaml
 from ansible.errors import AnsibleActionFail
@@ -23,8 +23,13 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     parse_validation_result,
 )
 
+if TYPE_CHECKING:
+    from pyavd import get_device_config, get_device_doc, validate_structured_config
+    from pyavd._utils import strip_empties_from_dict, template
+    from pyavd.j2filters import add_md_toc
+
 try:
-    from pyavd import get_device_config, get_device_doc
+    from pyavd import get_device_config, get_device_doc, validate_structured_config
     from pyavd._utils import strip_empties_from_dict, template
     from pyavd.j2filters import add_md_toc
 
@@ -213,24 +218,14 @@ class ActionModule(ActionBase):
         To simplify type checking this always return a dict even if validation fails.
         The caller should check for result['failed'].
         """
-        from pyavd_utils.validation import get_validated_data  # noqa: PLC0415
-
-        from pyavd._errors import AvdDeprecationWarning, AvdValidationError  # noqa: PLC0415
-        from pyavd._schema.store import init_store  # noqa: PLC0415
-        from pyavd.load_inputs import ValidationResult  # noqa: PLC0415
-
         try:
-            data_as_json = json.dumps(task_vars, skipkeys=True, default=lambda _: "<not serializable>")
+            validated_data_result = validate_structured_config(task_vars)
         except (TypeError, ValueError, RecursionError) as e:
             msg = f"Unable to load structured config from the given data: {e}"
             raise ValueError(msg) from e
 
-        init_store()
-        validated_data_result = get_validated_data(data_as_json, "eos_cli_config_gen")
         validated_inputs: dict = json.loads(validated_data_result.validated_data) if validated_data_result.validated_data is not None else {}
-        validation_errors = tuple(AvdValidationError.from_violation(violation) for violation in validated_data_result.validation_result.violations)
-        deprecations = tuple(AvdDeprecationWarning.from_deprecation(deprecation) for deprecation in validated_data_result.validation_result.deprecations)
-        validation_errors = parse_validation_result(ValidationResult(validation_errors, deprecations), hostname, display)
+        validation_errors = parse_validation_result(validated_data_result.validation_result, hostname, display)
         if validation_errors:
             result["failed"] = True
             result["msg"] = build_result_message(validation_errors)
