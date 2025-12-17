@@ -5,7 +5,7 @@ from copy import deepcopy
 
 import pytest
 
-from pyavd import get_device_doc, validate_structured_config
+from pyavd import get_device_doc, load_eos_config
 from pyavd._utils import get
 from tests.models import MoleculeHost
 
@@ -40,8 +40,8 @@ def test_get_device_doc(molecule_host: MoleculeHost) -> None:
     if not get(structured_config, "eos_cli_config_gen_documentation.enable", default=True):
         return
 
-    # run validation on structured_config to ensure it is covered
-    validate_structured_config(structured_config)
+    load_eos_config_result = load_eos_config(structured_config)
+    assert load_eos_config_result.eos_config is not None
 
     expected_doc = molecule_host.doc
     add_md_toc = get(structured_config, "eos_cli_config_gen_documentation.toc", default=True)

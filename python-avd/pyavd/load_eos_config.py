@@ -21,11 +21,11 @@ def load_eos_config(inputs: dict) -> LoadEOSConfigResult:
         LoadEOSConfigResult containing the loaded EOSConfig (or None if validation fails)
         and the validation result with any errors or warnings.
     """
-    from . import validate_inputs  # noqa: PLC0415
+    from . import validate_structured_config  # noqa: PLC0415
     from .api.schemas import EOSConfig  # noqa: PLC0415
     from .api.validation import LoadEOSConfigResult  # noqa: PLC0415
 
-    validated_data_result = validate_inputs(inputs)
+    validated_data_result = validate_structured_config(inputs)
     if validated_data_result.validated_data is not None:
         validated_data = json.loads(validated_data_result.validated_data)
         eos_config = EOSConfig._load(validated_data)

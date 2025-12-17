@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from pyavd import get_avd_facts
+from pyavd import get_avd_facts, load_design
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from tests.models import MoleculeScenario
 
@@ -34,10 +34,18 @@ from tests.models import MoleculeScenario
 @pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos", "digital_twin")
 def test_get_avd_facts(molecule_scenario: MoleculeScenario) -> None:
     """Test get_avd_facts."""
-    molecule_inputs = {host.name: deepcopy(host.hostvars) for host in molecule_scenario.hosts}
+    # We need hostvars for that single test where we have custom ip addressing logic reading hostvars...
+    molecule_hostvars = {host.name: deepcopy(host.hostvars) for host in molecule_scenario.hosts}
+    molecule_inputs = {}
+    for host in molecule_scenario.hosts:
+        load_design_result = load_design(host.hostvars)
+        assert load_design_result.design is not None
+        molecule_inputs[host.name] = load_design_result.design
 
     with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
-        avd_facts = get_avd_facts(molecule_inputs, pool_manager=molecule_scenario.pool_manager, digital_twin=molecule_scenario.digital_twin)
+        avd_facts = get_avd_facts(
+            all_inputs=molecule_inputs, all_hostvars=molecule_hostvars, pool_manager=molecule_scenario.pool_manager, digital_twin=molecule_scenario.digital_twin
+        )
 
     assert isinstance(avd_facts, dict)
     assert len(avd_facts) == len(molecule_inputs)

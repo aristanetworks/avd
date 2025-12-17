@@ -6,14 +6,19 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
+    from collections.abc import Mapping, MutableMapping
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd.api.pool_manager import PoolManager
     from pyavd.api.schemas import Design
 
 
-def get_avd_facts(all_inputs: dict[str, Design | Mapping], pool_manager: PoolManager | None = None, digital_twin: bool = False) -> dict[str, EosDesignsFacts]:
+def get_avd_facts(
+    all_inputs: Mapping[str, Design | Mapping],
+    all_hostvars: MutableMapping[str, MutableMapping] | None = None,
+    pool_manager: PoolManager | None = None,
+    digital_twin: bool = False,
+) -> dict[str, EosDesignsFacts]:
     """
     Build avd_facts using the AVD eos_designs_facts logic.
 
@@ -24,6 +29,7 @@ def get_avd_facts(all_inputs: dict[str, Design | Mapping], pool_manager: PoolMan
     Args:
         all_inputs: A dictionary where keys are hostnames and values are the Design instance per device.
             Supporting dicts as well for backwards compatibility.
+        all_hostvars: Per-device dictionaries with variables exposed to custom ip addressing or description logic.
         pool_manager: PREVIEW: Optional instance of pyavd.avd.PoolManager or subclass hereof,
             implementing ".get_assignment(pool_type: PoolType, shared_utils: SharedUtils)".
             Used for dynamic ID allocations using the "pool_manager" feature.
@@ -36,4 +42,4 @@ def get_avd_facts(all_inputs: dict[str, Design | Mapping], pool_manager: PoolMan
     """
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts  # noqa: PLC0415
 
-    return get_facts(all_inputs=all_inputs, pool_manager=pool_manager, digital_twin=digital_twin)
+    return get_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, digital_twin=digital_twin)
