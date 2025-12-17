@@ -14,7 +14,7 @@ from pyavd._anta.logs import LogMessage, TestLoggerAdapter
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from pyavd._anta.models import DeviceTestContext
+    from pyavd._anta.models import InputFactoryDataSource
 
 T_Input = TypeVar("T_Input", bound=AntaTest.Input)
 
@@ -33,14 +33,16 @@ class AntaTestInputFactory(ABC, Generic[T_Input]):
         logger_adapter: Custom `TestLoggerAdapter` logger adapter used for logging in the input factory.
     """
 
-    def __init__(self, device_context: DeviceTestContext, test_name: str) -> None:
+    def __init__(self, data_source: InputFactoryDataSource, test_name: str) -> None:
         """Initialize the `AntaTestInputFactory`."""
-        self.device = device_context
-        self.structured_config = device_context.structured_config
-        self.fabric_data = device_context.fabric_data
+        self.data_source = data_source
+        self.hostname = data_source.hostname
+        self.structured_config = data_source.structured_config
+        self.fabric_data = data_source.fabric_data
+        self.settings = data_source.settings
 
         # Create the logger adapter for the test input factory
-        self.logger_adapter = TestLoggerAdapter(logger=getLogger(self.__module__), extra={"device": self.device.hostname, "test": test_name})
+        self.logger_adapter = TestLoggerAdapter(logger=getLogger(self.__module__), extra={"device": self.hostname, "test": test_name})
 
     @abstractmethod
     def create(self) -> Iterator[T_Input]:

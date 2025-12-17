@@ -3,6 +3,6 @@
 # that can be found in the LICENSE file.
 from .avd_catalog_generation_settings import AvdCatalogGenerationSettings
 from .avd_fabric_data import AvdFabricData
-from .test_spec import TestSpec
+from .avd_test_spec import AvdTestSpec
 
-__all__ = ["AvdCatalogGenerationSettings", "AvdFabricData", "TestSpec"]
+__all__ = ["AvdCatalogGenerationSettings", "AvdFabricData", "AvdTestSpec"]

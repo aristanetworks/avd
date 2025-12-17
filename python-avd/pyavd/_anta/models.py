@@ -20,8 +20,8 @@ LOGGER = getLogger(__name__)
 
 
 @dataclass(frozen=True)
-class BgpNeighbor:
-    """Represents a BGP neighbor from the structured configuration."""
+class ResolvedBgpNeighbor:
+    """Model to represent a BGP neighbor resolved from the structured configuration."""
 
     ip_address: IPv4Address | IPv6Address
     vrf: str
@@ -29,16 +29,16 @@ class BgpNeighbor:
 
 
 @dataclass(frozen=True)
-class BgpNeighborInterface:
-    """Represents a BGP neighbor interface (RFC5549) from the structured configuration."""
+class ResolvedBgpNeighborInterface:
+    """Model to represent a BGP neighbor interface (RFC5549) resolved from the structured configuration."""
 
     interface: str
     vrf: str
 
 
 @dataclass
-class DeviceTestContext:
-    """Stores device test context data for ANTA test generation."""
+class InputFactoryDataSource:
+    """Model to store the data required by the input factories to generate test inputs to build an ANTA catalog for a single device."""
 
     hostname: str
     structured_config: EosCliConfigGen
@@ -56,7 +56,7 @@ class DeviceTestContext:
         return self.is_vtep and "Dps" in self.structured_config.vxlan_interface.vxlan1.vxlan._get("source_interface")
 
     @cached_property
-    def bgp_neighbors(self) -> list[BgpNeighbor]:
+    def bgp_neighbors(self) -> list[ResolvedBgpNeighbor]:
         """Generate a list of BGP neighbors for the device."""
         neighbors = [
             bgp_neighbor for neighbor in self.structured_config.router_bgp.neighbors if (bgp_neighbor := self._process_bgp_neighbor(neighbor, "default"))
@@ -71,7 +71,7 @@ class DeviceTestContext:
         return neighbors
 
     @cached_property
-    def bgp_neighbor_interfaces(self) -> list[BgpNeighborInterface]:
+    def bgp_neighbor_interfaces(self) -> list[ResolvedBgpNeighborInterface]:
         """Generate a list of BGP neighbor interfaces (RFC5549) for the device."""
         neighbor_interfaces = [
             bgp_neighbor_interface
@@ -89,7 +89,7 @@ class DeviceTestContext:
 
     def _process_bgp_neighbor_interface(
         self, neighbor_interface: EosCliConfigGen.RouterBgp.NeighborInterfacesItem | EosCliConfigGen.RouterBgp.VrfsItem.NeighborInterfacesItem, vrf: str
-    ) -> BgpNeighborInterface | None:
+    ) -> ResolvedBgpNeighborInterface | None:
         """
         Process a BGP neighbor interface (RFC5549) from the structured configuration and return a `BgpNeighborInterface` object.
 
@@ -126,11 +126,11 @@ class DeviceTestContext:
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None
 
-        return BgpNeighborInterface(interface=neighbor_interface.name, vrf=vrf)
+        return ResolvedBgpNeighborInterface(interface=neighbor_interface.name, vrf=vrf)
 
     def _process_bgp_neighbor(
         self, neighbor: EosCliConfigGen.RouterBgp.NeighborsItem | EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem, vrf: str
-    ) -> BgpNeighbor | None:
+    ) -> ResolvedBgpNeighbor | None:
         """
         Process a BGP neighbor from the structured configuration and return a `BgpNeighbor` object.
 
@@ -176,4 +176,4 @@ class DeviceTestContext:
             else None
         )
 
-        return BgpNeighbor(ip_address=ip_interface(neighbor.ip_address).ip, vrf=vrf, update_source=update_source)
+        return ResolvedBgpNeighbor(ip_address=ip_interface(neighbor.ip_address).ip, vrf=vrf, update_source=update_source)
