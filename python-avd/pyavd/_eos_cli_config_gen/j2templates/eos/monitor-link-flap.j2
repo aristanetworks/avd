@@ -1,0 +1,51 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - monitor link flap #}
+{% if monitor_link_flap is arista.avd.defined %}
+!
+monitor link-flap policy
+{%     for profile in monitor_link_flap.profiles | arista.avd.natural_sort('name') %}
+{%         if profile.damping_penalty is arista.avd.defined %}
+   profile {{ profile.name }} damping
+{%             if profile.damping_penalty.threshold is arista.avd.defined %}
+{%                 set monitor_flap_cli = "penalty threshold " %}
+{%                 if profile.damping_penalty.threshold.reuse is arista.avd.defined %}
+{%                     set monitor_flap_cli = monitor_flap_cli ~ " reuse " ~ profile.damping_penalty.threshold.reuse %}
+{%                 endif %}
+{%                 if profile.damping_penalty.threshold.suppression is arista.avd.defined %}
+{%                     set monitor_flap_cli = monitor_flap_cli ~ " suppression " ~ profile.damping_penalty.threshold.suppression %}
+{%                 endif %}
+{%                 if profile.damping_penalty.threshold.maximum is arista.avd.defined %}
+{%                     set monitor_flap_cli = monitor_flap_cli ~ " maximum " ~ profile.damping_penalty.threshold.maximum %}
+{%                 endif %}
+      {{ monitor_flap_cli }}
+{%             endif %}
+{%             if profile.damping_penalty.mac_fault is arista.avd.defined %}
+{%                 for fault in profile.damping_penalty.mac_fault | arista.avd.natural_sort('location') %}
+      penalty mac fault {{ fault.location }} {{ fault.penalty }}
+{%                 endfor %}
+{%             endif %}
+{%             if profile.decay is arista.avd.defined %}
+      penalty decay half-life {{ profile.decay.half_life }} {{ profile.decay.units }}
+{%             endif %}
+{%         else %}
+{%             if profile.max_flaps is arista.avd.defined and profile.time is arista.avd.defined %}
+{%                 set monitor_flap_cli = "   profile " ~ profile.name ~ " max-flaps " ~ profile.max_flaps ~ " time " ~ profile.time %}
+{%                 if profile.violations is arista.avd.defined and profile.intervals is arista.avd.defined %}
+{%                     set monitor_flap_cli = monitor_flap_cli ~ " violations " ~ profile.violations ~ " intervals " ~ intervals %}
+{%                 endif %}
+   {{ monitor_flap_cli }}
+{%             endif %}
+{%         endif %}
+{%         if monitor_link_flap.default_profiles is arista.avd.defined %}
+{%             set default_profiles_cli = "   default-profiles" %}
+{%             for profile in monitor_link_flap.default_profiles %}
+{%                 set default_profiles_cli = default_profiles_cli ~ " " ~ profile %}
+{%             endfor %}
+   {{ default_profiles_cli }}
+{%         endif %}
+{%     endfor %}
+{% endif %}
