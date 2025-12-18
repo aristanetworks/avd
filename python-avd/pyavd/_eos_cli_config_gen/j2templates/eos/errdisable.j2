@@ -9,7 +9,6 @@
 {%     for cause in errdisable.detect.causes | arista.avd.natural_sort %}
 errdisable detect cause {{ cause }}
 {%     endfor %}
-{#     The rejectattr filter will fail when causes does not exist so we need to add default #}
 {%     for cause in errdisable.recovery.causes | arista.avd.default([], true) | rejectattr("interval", "arista.avd.defined") | arista.avd.natural_sort %}
 {%         set cause_cli = "errdisable recovery cause " ~ cause.name %}
 {{ cause_cli }}
