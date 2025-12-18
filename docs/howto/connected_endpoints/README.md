@@ -34,6 +34,8 @@ A port profile can refer to another port profile using parent_profile to inherit
 - `storm_control`: To apply storm control policies.
 - `flowcontrol`: To configure flow control settings.
 
+Please consult [User Manual](../input-variables.md#port-profiles-settings) for all available keys.
+
 ### Adapters
 
 **Adapters** serve as the bridge between the Fabric (the switches) and the Endpoints (the devices). They define how a specific device is cabled and what network services (VLANs, VRFs) it should receive.
@@ -48,7 +50,10 @@ Adapters define the physical mapping between the endpoint and the switch fabric:
 - `Profiles`: The port profile defined earlier applies to a set of similar configurations.
 - `description`: A brief description of the interface function.
 
-Note: The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+!!! note
+    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+
+Please consult [User Manual](../input-variables.md#connected-endpoints-settings) for all available keys.
 
 ## Running Ansible to Generate the Configuration
 
