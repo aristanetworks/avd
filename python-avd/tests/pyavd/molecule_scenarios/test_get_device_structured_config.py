@@ -54,4 +54,4 @@ def test_get_device_structured_config(molecule_host: MoleculeHost) -> None:
     assert isinstance(structured_config, EOSConfig)
     assert molecule_host.name == structured_config.hostname
     # Comparing with dict to get better assert output on diff.
-    assert expected_structured_config == structured_config._asdict()
+    assert expected_structured_config == structured_config._as_dict()
