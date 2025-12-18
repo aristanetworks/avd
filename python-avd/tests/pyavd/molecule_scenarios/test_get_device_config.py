@@ -1,11 +1,10 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import json
 
 import pytest
 
-from pyavd import get_device_config, validate_structured_config
+from pyavd import get_device_config, load_eos_config
 from pyavd._utils import get
 from tests.models import MoleculeHost
 
@@ -42,16 +41,9 @@ def test_get_device_config(molecule_host: MoleculeHost) -> None:
     if not get(structured_config, "eos_cli_config_gen_configuration.enable", default=True):
         return
 
-    # TODO: Figure out why the commented code reorders certain outputs that are sorted without case sensitivity.
-    # TODO: Seen with `pytest python-avd/tests/pyavd/molecule_scenarios/test_get_device_config.py::test_get_device_config[eos_cli_config_gen__host1]`
-    # TODO: load_eos_config_result = load_eos_config(structured_config)
-    # TODO: assert load_eos_config_result.eos_config is not None
-    # TODO: device_config = get_device_config(load_eos_config_result.eos_config)
-
-    validated_data_result = validate_structured_config(structured_config)
-    assert validated_data_result.validated_data is not None
-    structured_config = json.loads(validated_data_result.validated_data)
-    device_config = get_device_config(structured_config)
+    load_eos_config_result = load_eos_config(structured_config)
+    assert load_eos_config_result.eos_config is not None
+    device_config = get_device_config(load_eos_config_result.eos_config)
 
     assert isinstance(device_config, str)
     assert device_config == expected_config

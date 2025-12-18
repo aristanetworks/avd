@@ -1,12 +1,11 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import json
 from copy import deepcopy
 
 import pytest
 
-from pyavd import get_device_doc, load_eos_config, validate_structured_config
+from pyavd import get_device_doc, load_eos_config
 from tests.models import MoleculeHost
 
 
@@ -46,13 +45,7 @@ def test_get_device_doc(molecule_host: MoleculeHost) -> None:
 
     expected_doc = molecule_host.doc
     add_md_toc = eos_config.eos_cli_config_gen_documentation.toc
-
-    # When loading and dumping to dict we get some reordering. TODO: Investigate and avoid this.
-    validated_data_result = validate_structured_config(structured_config)
-    assert validated_data_result.validated_data is not None
-    structured_config = json.loads(validated_data_result.validated_data)
-
-    device_doc = get_device_doc(eos_config._as_dict(), add_md_toc=add_md_toc)
+    device_doc = get_device_doc(eos_config, add_md_toc=add_md_toc)
 
     assert isinstance(device_doc, str)
     assert device_doc == expected_doc
