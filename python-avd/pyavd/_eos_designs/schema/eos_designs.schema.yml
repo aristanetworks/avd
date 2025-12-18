@@ -5657,22 +5657,32 @@ keys:
           keys:
             min_power_supplies:
               type: int
+              convert_types:
+              - str
               description: Minimum number of power supplies required for the device.
                 Set to 0 to skip validation.
             min_fans:
               type: int
+              convert_types:
+              - str
               description: Minimum number of fans required for the device. Set to
                 0 to skip validation.
             min_supervisors:
               type: int
+              convert_types:
+              - str
               description: Minimum number of supervisor modules required for the device.
                 Set to 0 to skip validation.
             min_line_cards:
               type: int
+              convert_types:
+              - str
               description: Minimum number of line cards required for the device. Set
                 to 0 to skip validation.
             min_fabric_cards:
               type: int
+              convert_types:
+              - str
               description: Minimum number of fabric cards required for the device.
                 Set to 0 to skip validation.
             transceiver_manufacturers:
@@ -5688,6 +5698,8 @@ keys:
           keys:
             validate_no_errors_period:
               type: int
+              convert_types:
+              - str
               description: Threshold (in minutes) defining how far back to check the
                 logging buffer for error-level logs during the validation performed
                 by the `anta_runner` role.
