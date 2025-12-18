@@ -60,7 +60,7 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: autovpn-edge
+hostname: legacy-autovpn-edge
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -164,13 +164,13 @@ router_bgp:
   - ip_address: 192.168.131.1
     peer_group: WAN-OVERLAY-PEERS
     metadata:
-      peer: autovpn-rr1
-    description: autovpn-rr1_Dps1
+      peer: legacy-autovpn-rr1
+    description: legacy-autovpn-rr1_Dps1
   - ip_address: 192.168.131.2
     peer_group: WAN-OVERLAY-PEERS
     metadata:
-      peer: autovpn-rr2
-    description: autovpn-rr2_Dps1
+      peer: legacy-autovpn-rr2
+    description: legacy-autovpn-rr2_Dps1
   redistribute:
     connected:
       enabled: true
@@ -246,17 +246,17 @@ router_path_selection:
     - name: Ethernet1
       stun:
         server_profiles:
-        - INET-autovpn-rr1-Ethernet1
-        - INET-autovpn-rr2-Ethernet1
+        - INET-legacy-autovpn-rr1-Ethernet1
+        - INET-legacy-autovpn-rr2-Ethernet1
     dynamic_peers:
       enabled: true
     static_peers:
     - router_ip: 192.168.131.1
-      name: autovpn-rr1
+      name: legacy-autovpn-rr1
       ipv4_addresses:
       - 10.7.7.7
     - router_ip: 192.168.131.2
-      name: autovpn-rr2
+      name: legacy-autovpn-rr2
       ipv4_addresses:
       - 10.8.8.8
   - name: MPLS
@@ -265,13 +265,13 @@ router_path_selection:
     - name: Ethernet2
       stun:
         server_profiles:
-        - MPLS-autovpn-rr1-Ethernet1
+        - MPLS-legacy-autovpn-rr1-Ethernet1
     dynamic_peers:
       enabled: true
       ipsec: false
     static_peers:
     - router_ip: 192.168.131.1
-      name: autovpn-rr1
+      name: legacy-autovpn-rr1
   load_balance_policies:
   - name: LB-DEFAULT-AUTOVPN-POLICY-CONTROL-PLANE
     path_groups:
@@ -326,10 +326,10 @@ spanning_tree:
 stun:
   client:
     server_profiles:
-    - name: MPLS-autovpn-rr1-Ethernet1
-    - name: INET-autovpn-rr1-Ethernet1
+    - name: MPLS-legacy-autovpn-rr1-Ethernet1
+    - name: INET-legacy-autovpn-rr1-Ethernet1
       ip_address: 10.7.7.7
-    - name: INET-autovpn-rr2-Ethernet1
+    - name: INET-legacy-autovpn-rr2-Ethernet1
       ip_address: 10.8.8.8
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
@@ -349,7 +349,7 @@ vrfs:
     tenant: TenantA
 vxlan_interface:
   vxlan1:
-    description: autovpn-edge_VTEP
+    description: legacy-autovpn-edge_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789

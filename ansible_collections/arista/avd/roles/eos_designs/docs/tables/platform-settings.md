@@ -18,7 +18,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lag_hardware_only</samp>](## "custom_platform_settings.[].lag_hardware_only") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_interface_mtu</samp>](## "custom_platform_settings.[].default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Takes precedence over the root key "default_interface_mtu".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_mtu</samp>](## "custom_platform_settings.[].p2p_uplinks_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Set MTU on point to point uplink interfaces.<br>Takes precedence over the root key "p2p_uplinks_mtu".<br><node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;kernel_ecmp_cli</samp>](## "custom_platform_settings.[].kernel_ecmp_cli") | Boolean |  | `True` |  | Use EOS CLI to configure kernel forwarding ECMP programming.<br>For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.<br>- For newer EOS versions (starting 4.33.2) use the proper CLI.<br>- For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "custom_platform_settings.[].feature_support") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor</samp>](## "custom_platform_settings.[].feature_support.queue_monitor") | Boolean |  | `True` |  | Support for LANZ.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "custom_platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  | Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.<br>The feature will be ignored on platforms where this is false. |
@@ -103,7 +102,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lag_hardware_only</samp>](## "platform_settings.[].lag_hardware_only") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_interface_mtu</samp>](## "platform_settings.[].default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Takes precedence over the root key "default_interface_mtu".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_mtu</samp>](## "platform_settings.[].p2p_uplinks_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Set MTU on point to point uplink interfaces.<br>Takes precedence over the root key "p2p_uplinks_mtu".<br><node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;kernel_ecmp_cli</samp>](## "platform_settings.[].kernel_ecmp_cli") | Boolean |  | `True` |  | Use EOS CLI to configure kernel forwarding ECMP programming.<br>For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.<br>- For newer EOS versions (starting 4.33.2) use the proper CLI.<br>- For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "platform_settings.[].feature_support") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor</samp>](## "platform_settings.[].feature_support.queue_monitor") | Boolean |  | `True` |  | Support for LANZ.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  | Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.<br>The feature will be ignored on platforms where this is false. |
@@ -212,12 +210,6 @@
         # Takes precedence over the root key "p2p_uplinks_mtu".
         # <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
         p2p_uplinks_mtu: <int; 68-65535>
-
-        # Use EOS CLI to configure kernel forwarding ECMP programming.
-        # For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.
-        # - For newer EOS versions (starting 4.33.2) use the proper CLI.
-        # - For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent.
-        kernel_ecmp_cli: <bool; default=True>
         feature_support:
 
           # Support for LANZ.
@@ -430,12 +422,6 @@
         # Takes precedence over the root key "p2p_uplinks_mtu".
         # <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
         p2p_uplinks_mtu: <int; 68-65535>
-
-        # Use EOS CLI to configure kernel forwarding ECMP programming.
-        # For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.
-        # - For newer EOS versions (starting 4.33.2) use the proper CLI.
-        # - For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent.
-        kernel_ecmp_cli: <bool; default=True>
         feature_support:
 
           # Support for LANZ.
