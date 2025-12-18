@@ -166,7 +166,7 @@ custom_node_type_keys:
 ### Key Properties
 
 | Property | Type | Description |
-|----------|------|-------------|
+| ---------- | ------ | ------------- |
 | `key` | string | The key used in your data model (e.g., `spine`, `l3leaf`) |
 | `type` | string | The type value that devices reference |
 | `connected_endpoints` | boolean | Enable connected endpoints configuration |
@@ -355,7 +355,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FA
 ### Common Properties Reference
 
 | Property | Values | Description |
-|----------|--------|-------------|
+| ---------- | -------- | ------------- |
 | `key` | string | Data model key (e.g., `spine:`) |
 | `type` | string | Type devices reference |
 | `connected_endpoints` | true/false | Enable connected endpoints |
@@ -368,7 +368,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FA
 ### Default Node Types Comparison (high-level)
 
 | Node Type | EVPN Role | VTEP | MLAG | Connected Endpoints | Use Case |
-|-----------|-----------|------|------|---------------------|----------|
+| ----------- | ----------- | ------ | ------ | --------------------- | ---------- |
 | spine | server | ❌ | ❌ | ❌ | Spine switches |
 | l3leaf | client | ✅ | ✅ | ✅ | L3 leaf switches |
 | l2leaf | none | ❌ | ✅ | ✅ | L2 leaf switches |
