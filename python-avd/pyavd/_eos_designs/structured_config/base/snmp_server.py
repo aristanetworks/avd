@@ -69,7 +69,7 @@ class SnmpServerMixin(Protocol):
                     local_engineid_ip = "use_mgmt_interface"
                 case "inband":
                     local_engineid_ip = "use_inband_mgmt_interface"
-                case "none":
+                case "none" | _:
                     msg = "The key 'snmp_settings.local_engineid_ip' must be set when 'default_mgmt_method' is set to 'none'."
                     raise AristaAvdInvalidInputsError(msg)
 
