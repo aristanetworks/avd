@@ -21,6 +21,6 @@ class KernelSettingsMixin(Protocol):
     @structured_config_contributor
     def kernel_settings(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set the structured config for kernel settings."""
-        if not (self.shared_utils.is_wan_router and self.shared_utils.platform_settings.kernel_ecmp_cli):
+        if not (self.shared_utils.is_wan_router and self.shared_utils.node_config.kernel_ecmp_cli):
             return
         self.structured_config.kernel.software_forwarding_ecmp = True
