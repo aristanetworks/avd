@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 def get_avd_facts(
     all_inputs: Mapping[str, Design | Mapping],
-    all_hostvars: MutableMapping[str, MutableMapping] | None = None,
+    all_hostvars: Mapping[str, MutableMapping] | None = None,
     pool_manager: PoolManager | None = None,
     digital_twin: bool = False,
 ) -> dict[str, EosDesignsFacts]:

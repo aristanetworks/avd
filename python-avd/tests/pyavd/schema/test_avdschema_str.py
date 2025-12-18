@@ -244,10 +244,9 @@ def test_node_config_valid_ethernet_ranges(raw_schema_section: str, schema_key_n
     raw_inputs_under_test = raw_schema_section.format(schema_key_name=schema_key_name, schema_key_value=schema_key_value).replace("'", '"')
     inputs_under_test = json.loads(raw_inputs_under_test)
 
-    validation_results = validate_inputs(inputs_under_test)
+    validated_data_result = validate_inputs(inputs_under_test)
 
-    assert not validation_results.failed
-    assert not validation_results.validation_errors
+    assert not validated_data_result.validation_result.violations
 
 
 @pytest.mark.parametrize(
@@ -275,8 +274,7 @@ def test_node_config_invalid_ethernet_ranges(raw_schema_section: str, schema_key
     raw_inputs_under_test = raw_schema_section.format(schema_key_name=schema_key_name, schema_key_value=schema_key_value).replace("'", '"')
     inputs_under_test = json.loads(raw_inputs_under_test)
 
-    validation_results = validate_inputs(inputs_under_test)
+    validated_data_result = validate_inputs(inputs_under_test)
 
     # TODO: Remove 'not' once strict pattern validation is enforced. Items being tested here should cause validation failure.
-    assert not validation_results.failed
-    assert not validation_results.validation_errors
+    assert not validated_data_result.validation_result.violations

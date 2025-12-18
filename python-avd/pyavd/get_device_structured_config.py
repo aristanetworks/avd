@@ -6,11 +6,15 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from collections.abc import MutableMapping
+
     from ._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from .api.schemas import Design, EOSConfig
 
 
-def get_device_structured_config(hostname: str, inputs: Design | dict, avd_facts: dict[str, EosDesignsFacts], digital_twin: bool = False) -> EOSConfig:
+def get_device_structured_config(
+    hostname: str, inputs: Design | dict, avd_facts: dict[str, EosDesignsFacts], hostvars: MutableMapping | None = None, digital_twin: bool = False
+) -> EOSConfig:
     """
     Build and return the AVD structured configuration for one device.
 
@@ -18,6 +22,7 @@ def get_device_structured_config(hostname: str, inputs: Design | dict, avd_facts
         hostname: Hostname of device.
         inputs: Design instance or dictionary with the validated design inputs.
         avd_facts: Dictionary of avd_facts as returned from `pyavd.get_avd_facts`.
+        hostvars: Per-device dictionaries with variables exposed to custom ip addressing or description logic.
         digital_twin: PREVIEW: Optional flag to enable digital-twin mode.
 
     Returns:
@@ -33,6 +38,7 @@ def get_device_structured_config(hostname: str, inputs: Design | dict, avd_facts
         hostname=hostname,
         inputs=inputs,
         all_facts=avd_facts,
+        hostvars=hostvars,
         templar=None,
         digital_twin=digital_twin,
     )

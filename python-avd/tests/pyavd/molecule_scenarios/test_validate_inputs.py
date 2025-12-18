@@ -33,7 +33,6 @@ from tests.models import MoleculeHost
 def test_validate_inputs_with_valid_inputs(molecule_host: MoleculeHost) -> None:
     """Test validate_inputs."""
     inputs = deepcopy(molecule_host.hostvars)
-    validation_result = validate_inputs(inputs)
-    assert validation_result.validation_errors == []
-    assert validation_result.failed is False
+    validated_data_result = validate_inputs(inputs)
+    assert validated_data_result.validation_result.violations == []
     EosDesigns._from_dict(inputs)

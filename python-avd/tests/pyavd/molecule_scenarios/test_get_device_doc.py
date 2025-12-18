@@ -1,12 +1,12 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import json
 from copy import deepcopy
 
 import pytest
 
-from pyavd import get_device_doc, load_eos_config
-from pyavd._utils import get
+from pyavd import get_device_doc, load_eos_config, validate_structured_config
 from tests.models import MoleculeHost
 
 
@@ -37,15 +37,22 @@ def test_get_device_doc(molecule_host: MoleculeHost) -> None:
     else:
         structured_config = deepcopy(molecule_host.structured_config)
 
-    if not get(structured_config, "eos_cli_config_gen_documentation.enable", default=True):
-        return
-
     load_eos_config_result = load_eos_config(structured_config)
     assert load_eos_config_result.eos_config is not None
+    eos_config = load_eos_config_result.eos_config
+
+    if not eos_config.eos_cli_config_gen_documentation.enable:
+        return
 
     expected_doc = molecule_host.doc
-    add_md_toc = get(structured_config, "eos_cli_config_gen_documentation.toc", default=True)
-    device_doc = get_device_doc(structured_config, add_md_toc=add_md_toc)
+    add_md_toc = eos_config.eos_cli_config_gen_documentation.toc
+
+    # When loading and dumping to dict we get some reordering. TODO: Investigate and avoid this.
+    validated_data_result = validate_structured_config(structured_config)
+    assert validated_data_result.validated_data is not None
+    structured_config = json.loads(validated_data_result.validated_data)
+
+    device_doc = get_device_doc(eos_config._as_dict(), add_md_toc=add_md_toc)
 
     assert isinstance(device_doc, str)
     assert device_doc == expected_doc

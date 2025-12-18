@@ -34,7 +34,6 @@ from tests.models import MoleculeScenario
 @pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos", "digital_twin")
 def test_get_avd_facts(molecule_scenario: MoleculeScenario) -> None:
     """Test get_avd_facts."""
-    # We need hostvars for that single test where we have custom ip addressing logic reading hostvars...
     molecule_hostvars = {host.name: deepcopy(host.hostvars) for host in molecule_scenario.hosts}
     molecule_inputs = {}
     for host in molecule_scenario.hosts:
@@ -44,7 +43,11 @@ def test_get_avd_facts(molecule_scenario: MoleculeScenario) -> None:
 
     with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
         avd_facts = get_avd_facts(
-            all_inputs=molecule_inputs, all_hostvars=molecule_hostvars, pool_manager=molecule_scenario.pool_manager, digital_twin=molecule_scenario.digital_twin
+            # We need hostvars for those few tests where we have custom ip addressing / description logic reading hostvars...
+            all_inputs=molecule_inputs,
+            all_hostvars=molecule_hostvars,
+            pool_manager=molecule_scenario.pool_manager,
+            digital_twin=molecule_scenario.digital_twin,
         )
 
     assert isinstance(avd_facts, dict)

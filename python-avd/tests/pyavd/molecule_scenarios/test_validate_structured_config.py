@@ -6,7 +6,6 @@ from copy import deepcopy
 import pytest
 
 from pyavd import validate_structured_config
-from pyavd._errors import AvdValidationError
 from pyavd.api.schemas import EOSConfig
 from tests.models import MoleculeHost
 
@@ -74,5 +73,4 @@ def test_validate_structured_config_with_invalid_data(molecule_host: MoleculeHos
     validated_data_result = validate_structured_config(structured_config)
     assert validated_data_result.validated_data is None
     assert len(validated_data_result.validation_result.violations) >= 1
-    assert isinstance(validated_data_result.validation_result.violations[0], AvdValidationError)
-    assert "invalid_key" in str(validated_data_result.validation_result.violations[0])
+    assert validated_data_result.validation_result.violations[0].message == "Invalid key."

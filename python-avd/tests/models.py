@@ -164,7 +164,7 @@ class MoleculeScenario:
         """The AVD facts calculated from the full Ansible inventory in the molecule scenario."""
         all_hostvars = {host.name: deepcopy(host.hostvars) for host in self.hosts}
         all_inputs = {hostname: EosDesigns._from_dict(hostvars) for hostname, hostvars in all_hostvars.items()}
-        return get_facts(all_inputs=all_inputs, pool_manager=self.pool_manager, all_hostvars=all_hostvars, digital_twin=self.digital_twin)
+        return get_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=self.pool_manager, digital_twin=self.digital_twin)
 
     @cached_property
     def fabric_documentation(self) -> str | None:

@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.eos_designs_facts import EosDesignsFactsGenerator
 from pyavd._eos_designs.shared_utils import SharedUtils
@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 
 def get_facts(
     all_inputs: Mapping[str, EosDesigns | Mapping],
-    all_hostvars: MutableMapping[str, MutableMapping] | None = None,
+    all_hostvars: Mapping[str, MutableMapping[str, Any]] | None = None,
     templar: Templar | None = None,
     pool_manager: PoolManager | None = None,
     digital_twin: bool = False,
@@ -33,7 +33,7 @@ def get_facts(
     Args:
         all_inputs: Dictionary where keys are hostnames and values are the Design instance per device.
             Supporting dicts as well for backwards compatibility.
-        all_hostvars: Dictionaries with variables exposed to custom jinja templates for each device.
+        all_hostvars: Dictionaries with variables exposed to custom jinja templates or custom python logic for each device.
         templar: Templater used to render custom jinja templates.
         pool_manager: instance of pool-manager used for dynamic assignments like node ids.
         digital_twin: Optional flag to enable avd_digital_twin_mode.

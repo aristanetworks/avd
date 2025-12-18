@@ -36,10 +36,10 @@ from tests.models import MoleculeHost
 @pytest.mark.digital_twin_molecule_scenarios("digital_twin")
 def test_get_device_structured_config(molecule_host: MoleculeHost) -> None:
     """Test get_device_structured_config."""
-    inputs = deepcopy(molecule_host.hostvars)
+    hostvars = deepcopy(molecule_host.hostvars)
 
     # Load inputs
-    load_design_result = load_design(inputs)
+    load_design_result = load_design(hostvars)
 
     assert load_design_result.design is not None
 
@@ -49,7 +49,10 @@ def test_get_device_structured_config(molecule_host: MoleculeHost) -> None:
 
     with patch("sys.path", [*sys.path, *molecule_host.scenario.extra_python_paths]):
         avd_facts = molecule_host.scenario.avd_facts
-        structured_config = get_device_structured_config(molecule_host.name, design, avd_facts, digital_twin=molecule_host.scenario.digital_twin)
+        # We need hostvars for those few tests where we have custom ip addressing / description logic reading hostvars...
+        structured_config = get_device_structured_config(
+            molecule_host.name, design, avd_facts, hostvars=hostvars, digital_twin=molecule_host.scenario.digital_twin
+        )
 
     assert isinstance(structured_config, EOSConfig)
     assert molecule_host.name == structured_config.hostname
