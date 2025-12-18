@@ -36,7 +36,6 @@ keys:
                   required: true
                 groups:
                   type: list
-                  required: true
                   min_length: 1
                   items:
                     type: str
@@ -119,7 +118,6 @@ keys:
                   required: true
                 groups:
                   type: list
-                  required: true
                   min_length: 1
                   items:
                     type: str
