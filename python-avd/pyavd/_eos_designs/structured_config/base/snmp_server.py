@@ -121,14 +121,12 @@ class SnmpServerMixin(Protocol):
                 # This does not handle well inband mgmt cases as it uses None for the management IP
                 # This is kept for legacy purposes.
                 local_engine_id = self._get_sha1_digest(self.shared_utils.node_config.mgmt_ip)
-            case "system_mac":
+            case "system_mac" | _:
                 # This is the default value of the engine ID on EOS. Note that is is not RFC3411 compliant.
                 if self.shared_utils.system_mac_address is None:
                     msg = "'compute_local_engineid_source: system_mac' requires 'system_mac_address' to be set."
                     raise AristaAvdInvalidInputsError(msg)
                 local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
-            case _:
-                raise NotImplementedError
 
         self.structured_config.snmp_server.engine_ids.local = local_engine_id
 
