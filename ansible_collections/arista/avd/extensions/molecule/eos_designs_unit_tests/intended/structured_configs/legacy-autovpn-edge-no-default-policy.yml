@@ -48,7 +48,7 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: autovpn-edge-no-default-policy
+hostname: legacy-autovpn-edge-no-default-policy
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -162,8 +162,8 @@ router_bgp:
   - ip_address: 2.2.2.2
     peer_group: WAN-OVERLAY-PEERS
     metadata:
-      peer: autovpn-rr3
-    description: autovpn-rr3_Dps1
+      peer: legacy-autovpn-rr3
+    description: legacy-autovpn-rr3_Dps1
   redistribute:
     connected:
       enabled: true
@@ -239,12 +239,12 @@ router_path_selection:
     - name: Ethernet1
       stun:
         server_profiles:
-        - INET-autovpn-rr3-Ethernet1
+        - INET-legacy-autovpn-rr3-Ethernet1
     dynamic_peers:
       enabled: true
     static_peers:
     - router_ip: 2.2.2.2
-      name: autovpn-rr3
+      name: legacy-autovpn-rr3
       ipv4_addresses:
       - 10.7.7.7
   load_balance_policies:
@@ -280,7 +280,7 @@ spanning_tree:
 stun:
   client:
     server_profiles:
-    - name: INET-autovpn-rr3-Ethernet1
+    - name: INET-legacy-autovpn-rr3-Ethernet1
       ip_address: 10.7.7.7
       ssl_profile: STUN-DTLS
 transceiver_qsfp_default_mode_4x10: false
@@ -297,7 +297,7 @@ vrfs:
     tenant: TenantA
 vxlan_interface:
   vxlan1:
-    description: autovpn-edge-no-default-policy_VTEP
+    description: legacy-autovpn-edge-no-default-policy_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789

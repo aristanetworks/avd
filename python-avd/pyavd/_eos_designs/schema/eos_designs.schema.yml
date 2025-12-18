@@ -36,7 +36,6 @@ keys:
                   required: true
                 groups:
                   type: list
-                  required: true
                   min_length: 1
                   items:
                     type: str
@@ -119,7 +118,6 @@ keys:
                   required: true
                 groups:
                   type: list
-                  required: true
                   min_length: 1
                   items:
                     type: str
@@ -5806,8 +5804,8 @@ keys:
     type: str
     default: cv-pathfinder
     valid_values:
-    - autovpn
     - cv-pathfinder
+    - legacy-autovpn
   wan_path_groups:
     documentation_options:
       table: wan-path-groups-and-carriers
@@ -5906,7 +5904,8 @@ keys:
               convert_types:
               - str
   wan_route_servers:
-    description: 'List of the AutoVPN RRs when using `wan_mode: autovpn`, or the Pathfinders
+    description: 'List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or
+      the Pathfinders
 
       when using `wan_mode: cv-pathfinder`, to which the device should connect to.
 
@@ -10872,6 +10871,18 @@ $defs:
             convert_types:
             - int
             description: Set BGP cluster id.
+          kernel_ecmp_cli:
+            type: bool
+            default: true
+            description: 'Use EOS CLI to configure kernel forwarding ECMP programming.
+
+              For EOS kernel forwarding, ECMP programming can be enabled in two different
+              ways, depending on the EOS version.
+
+              - For newer EOS versions (starting 4.33.2) use the proper CLI.
+
+              - For older EOS versions use an agent environment variable. Changing
+              this requires restarting the KernelFib agent.'
           ptp:
             documentation_options:
               table: node-type-ptp-configuration
@@ -11094,7 +11105,7 @@ $defs:
 
               This is used both for AutoVPN and Pathfinder designs.
 
-              That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+              That means if `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
 
               `server` indicates that the router is a route-reflector.'
           cv_pathfinder_transit_mode:
@@ -11560,7 +11571,7 @@ $defs:
 
             This is used both for AutoVPN and Pathfinder designs.
 
-            That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+            That means if `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
 
             `server` indicates that the router is a route-reflector.
 
@@ -12564,18 +12575,6 @@ $defs:
             '
           min: 68
           max: 65535
-        kernel_ecmp_cli:
-          type: bool
-          default: true
-          description: 'Use EOS CLI to configure kernel forwarding ECMP programming.
-
-            For EOS kernel forwarding, ECMP programming can be enabled in two different
-            ways, depending on the EOS version.
-
-            - For newer EOS versions (starting 4.33.2) use the proper CLI.
-
-            - For older EOS versions use an agent environment variable. Changing this
-            requires restarting the KernelFib agent.'
         feature_support:
           type: dict
           keys:

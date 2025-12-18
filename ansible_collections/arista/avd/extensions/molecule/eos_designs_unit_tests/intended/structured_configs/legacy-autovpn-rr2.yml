@@ -5,7 +5,7 @@ application_traffic_recognition:
     ipv4_prefixes:
     - name: PFX-LOCAL-VTEP-IP
       prefix_values:
-      - 192.168.131.1/32
+      - 192.168.131.2/32
   applications:
     ipv4_applications:
     - name: APP-CONTROL-PLANE
@@ -22,17 +22,16 @@ dps_interfaces:
 - name: Dps1
   description: DPS Interface
   mtu: 9194
-  ip_address: 192.168.131.1/32
+  ip_address: 192.168.131.2/32
   flow_tracker:
     hardware: FLOW-TRACKER
 enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: ATT_777
+  description: ATT_888
   shutdown: false
-  ip_address: dhcp
-  dhcp_client_accept_default_route: true
+  ip_address: 10.8.8.8/31
   metadata:
     peer_type: l3_interface
   switchport:
@@ -51,17 +50,17 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: autovpn-rr1
+hostname: legacy-autovpn-rr2
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
-    extcommunities: soo 192.168.31.1:0
+    extcommunities: soo 192.168.31.2:0
 ip_routing: true
 ip_security:
   ike_policies:
   - name: AUTOVPN-IKE
-    local_id: 192.168.131.1
+    local_id: 192.168.131.2
   sa_policies:
   - name: AUTOVPN-SA
   profiles:
@@ -81,7 +80,7 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.31.1/32
+  ip_address: 192.168.31.2/32
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -101,7 +100,7 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
-    - extcommunity soo 192.168.31.1:0 additive
+    - extcommunity soo 192.168.31.2:0 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -115,12 +114,12 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65000'
-  router_id: 192.168.31.1
+  router_id: 192.168.31.2
   maximum_paths:
     paths: 16
   updates:
     wait_install: true
-  bgp_cluster_id: 192.168.31.1
+  bgp_cluster_id: 192.168.31.2
   bgp:
     default:
       ipv4_unicast: false
@@ -159,11 +158,11 @@ router_bgp:
     maximum_routes: 0
     ttl_maximum_hops: 1
   neighbors:
-  - ip_address: 192.168.131.2
+  - ip_address: 192.168.131.1
     peer_group: WAN-RR-OVERLAY-PEERS
     metadata:
-      peer: autovpn-rr2
-    description: autovpn-rr2_Dps1
+      peer: legacy-autovpn-rr1
+    description: legacy-autovpn-rr1_Dps1
   redistribute:
     connected:
       enabled: true
@@ -196,7 +195,7 @@ router_bgp:
       activate: true
   vrfs:
   - name: default
-    rd: 192.168.31.1:1
+    rd: 192.168.31.2:1
     route_targets:
       import:
       - address_family: evpn
@@ -218,10 +217,10 @@ router_path_selection:
     local_interfaces:
     - name: Ethernet1
     static_peers:
-    - router_ip: 192.168.131.2
-      name: autovpn-rr2
+    - router_ip: 192.168.131.1
+      name: legacy-autovpn-rr1
       ipv4_addresses:
-      - 10.8.8.8
+      - 10.7.7.7
   - name: LTE
     id: 102
   load_balance_policies:
@@ -275,6 +274,9 @@ router_path_selection:
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
+static_routes:
+- prefix: 0.0.0.0/0
+  next_hop: 10.8.8.9
 stun:
   server:
     local_interfaces:
@@ -285,7 +287,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: autovpn-rr1_VTEP
+    description: legacy-autovpn-rr2_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789
