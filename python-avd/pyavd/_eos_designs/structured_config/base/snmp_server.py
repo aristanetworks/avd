@@ -127,6 +127,8 @@ class SnmpServerMixin(Protocol):
                     msg = "'compute_local_engineid_source: system_mac' requires 'system_mac_address' to be set."
                     raise AristaAvdInvalidInputsError(msg)
                 local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
+            case _:
+                raise NotImplementedError
 
         self.structured_config.snmp_server.engine_ids.local = local_engine_id
 
