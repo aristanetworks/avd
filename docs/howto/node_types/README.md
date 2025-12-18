@@ -116,22 +116,10 @@ This creates a new `service_leaf` node type with:
 
 Once defined, use your custom node type like any default type. Combined with `default_node_types`, devices are automatically assigned the custom type:
 
-```yaml title="group_vars/SERVICE_LEAFS/service_leafs.yml"
----
-type: service_leaf
-
-service_leaf:
-  defaults:
-    platform: vEOS-lab
-    loopback_ipv4_pool: 10.255.10.0/27
-    vtep_loopback_ipv4_pool: 10.255.11.0/27
-  nodes:
-    - name: service-leaf1
-      id: 1
-      mgmt_ip: 172.16.1.31/24
-      uplink_switches: [dc1-spine1, dc1-spine2]
-      uplink_interfaces: [Ethernet1, Ethernet2]
-      uplink_switch_interfaces: [Ethernet5, Ethernet5]
+```yaml title="group_vars/DC1_SERVICE_LEAVES/service_leafs.yml"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC1_SERVICE_LEAVES/service_leafs.yml
+--8<--
 ```
 
 ## Modifying Default Node Types
