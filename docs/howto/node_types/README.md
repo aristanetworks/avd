@@ -78,6 +78,7 @@ With this configuration:
 - Devices matching `.*-leaf.*` (like `dc1-leaf1a`) automatically get `type: l3leaf`
 
 !!! note
+
     The regex patterns are automatically bounded by `^` and `$`, so they must match the full hostname.
     Order matters - the first matching pattern wins.
 
