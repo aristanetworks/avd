@@ -1,9 +1,3 @@
-<!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
-  ~ Use of this source code is governed by the Apache License 2.0
-  ~ that can be found in the LICENSE file.
-  -->
-
 # Node Types
 
 ## Introduction
@@ -71,9 +65,9 @@ In this example:
 
 Instead of manually setting `type` on each group, use `default_node_types` to automatically assign types based on hostname patterns.
 
-```yaml title="group_vars/FABRIC/fabric_variables.yml"
+```yaml title="group_vars/FABRIC/node_types.yml"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/fabric_variables.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/default_node_types.yml
 --8<--
 ```
 
@@ -101,9 +95,9 @@ Notice that there's no `type:` variable - it's automatically assigned based on t
 
 Use `custom_node_type_keys` to define new node types or modify existing ones.
 
-```yaml title="group_vars/FABRIC/fabric_variables.yml"
+```yaml title="group_vars/FABRIC/node_types.yml"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/fabric_variables.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/custom_node_types.yml
 --8<--
 ```
 
@@ -159,6 +153,7 @@ custom_node_type_keys:
 ```
 
 !!! warning
+
     When overriding a default node type, you must specify all required properties, not just the ones you want to change.
 
 ## Common Node Type Properties
@@ -230,45 +225,6 @@ custom_node_type_keys:
     default_evpn_encapsulation: mpls
 ```
 
-## Complete Example
-
-Here's a complete example showing default node types, custom node types, and automatic assignment:
-
-```yaml title="group_vars/FABRIC/all_node_types.yml"
----
-# Automatically assign node types based on hostname
-default_node_types:
-  - node_type: spine
-    match_hostnames:
-      - ".*-spine.*"
-  - node_type: service_leaf
-    match_hostnames:
-      - ".*-svc-leaf.*"
-  - node_type: l3leaf
-    match_hostnames:
-      - ".*-leaf.*"
-
-# Define custom node type
-custom_node_type_keys:
-  - key: service_leaf
-    type: service_leaf
-    connected_endpoints: true
-    default_evpn_role: client
-    mlag_support: true
-    network_services:
-      l2: true
-      l3: true
-    vtep: true
-    default_ptp_priority1: 40
-    cv_tags_topology_type: leaf
-```
-
-With this configuration:
-
-- Devices named `dc1-spine1`, `dc1-spine2` automatically become type `spine`
-- Devices named `dc1-svc-leaf1` automatically become type `service_leaf`
-- Devices named `dc1-leaf1a`, `dc1-leaf1b` automatically become type `l3leaf`
-
 ## Best Practices
 
 1. **Use `custom_node_type_keys` for additions**: When adding new node types, use `custom_node_type_keys` instead of replacing the entire `node_type_keys` list.
@@ -328,9 +284,9 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC
 
 Use `default_node_types` to assign types based on hostname patterns:
 
-```yaml title="group_vars/FABRIC/fabric_variables.yml"
+```yaml title="group_vars/FABRIC/node_types.yml"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/fabric_variables.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/defaul_node_types.yml
 --8<--
 ```
 
@@ -346,9 +302,9 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC
 
 Use `custom_node_type_keys` to define new node types:
 
-```yaml title="group_vars/FABRIC/fabric_variables.yml"
+```yaml title="group_vars/FABRIC/node_types.yml"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/fabric_variables.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/custom_node_types.yml
 --8<--
 ```
 
