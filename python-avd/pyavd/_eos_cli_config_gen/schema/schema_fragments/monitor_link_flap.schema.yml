@@ -1,0 +1,92 @@
+# Copyright (c) 2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+keys:
+  monitor_link_flap:
+    type: dict
+    keys:
+      profile:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            damping_penalty:
+              type: dict
+              keys:
+                decay_half_life:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 1
+                  max: 5000
+                mac_fault:
+                  type: dict
+                  keys:
+                    local:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 0
+                      max: 5000
+                    remote:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 0
+                      max: 5000
+                threshold:
+                  type: dict
+                  keys:
+                    maximum:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 0
+                      max: 1000000
+                    reuse:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 0
+                      max: 1000000
+                    suppression:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 0
+                      max: 1000000
+            max_flaps:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 100
+            time:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 1800
+            violations:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 1000
+            intervals:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 1000
+      default_profiles:
+        type: list
+        items:
+          type: str
+        description: The default-profile set may contain zero, one, or multiple profiles. When the default-profile set contains multiple profiles, error-disable criteria is satisfied when conditions match any profile.

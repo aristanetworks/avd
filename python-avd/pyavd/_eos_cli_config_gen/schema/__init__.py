@@ -25691,6 +25691,180 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class MonitorLinkFlap(AvdModel):
+        """Subclass of AvdModel."""
+
+        class ProfileItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class DampingPenalty(AvdModel):
+                """Subclass of AvdModel."""
+
+                class MacFault(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"local": {"type": int}, "remote": {"type": int}}
+                    local: int | None
+                    remote: int | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, local: int | None | UndefinedType = Undefined, remote: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            MacFault.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                local: local
+                                remote: remote
+
+                            """
+
+                class Threshold(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"maximum": {"type": int}, "reuse": {"type": int}, "suppression": {"type": int}}
+                    maximum: int | None
+                    reuse: int | None
+                    suppression: int | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            maximum: int | None | UndefinedType = Undefined,
+                            reuse: int | None | UndefinedType = Undefined,
+                            suppression: int | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Threshold.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                maximum: maximum
+                                reuse: reuse
+                                suppression: suppression
+
+                            """
+
+                _fields: ClassVar[dict] = {"decay_half_life": {"type": int}, "mac_fault": {"type": MacFault}, "threshold": {"type": Threshold}}
+                decay_half_life: int | None
+                mac_fault: MacFault
+                """Subclass of AvdModel."""
+                threshold: Threshold
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        decay_half_life: int | None | UndefinedType = Undefined,
+                        mac_fault: MacFault | UndefinedType = Undefined,
+                        threshold: Threshold | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        DampingPenalty.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            decay_half_life: decay_half_life
+                            mac_fault: Subclass of AvdModel.
+                            threshold: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "damping_penalty": {"type": DampingPenalty},
+                "max_flaps": {"type": int},
+                "time": {"type": int},
+                "violations": {"type": int},
+                "intervals": {"type": int},
+            }
+            name: str
+            damping_penalty: DampingPenalty
+            """Subclass of AvdModel."""
+            max_flaps: int | None
+            time: int | None
+            violations: int | None
+            intervals: int | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    damping_penalty: DampingPenalty | UndefinedType = Undefined,
+                    max_flaps: int | None | UndefinedType = Undefined,
+                    time: int | None | UndefinedType = Undefined,
+                    violations: int | None | UndefinedType = Undefined,
+                    intervals: int | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    ProfileItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        damping_penalty: Subclass of AvdModel.
+                        max_flaps: max_flaps
+                        time: time
+                        violations: violations
+                        intervals: intervals
+
+                    """
+
+        class Profile(AvdIndexedList[str, ProfileItem]):
+            """Subclass of AvdIndexedList with `ProfileItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Profile._item_type = ProfileItem
+
+        class DefaultProfiles(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DefaultProfiles._item_type = str
+
+        _fields: ClassVar[dict] = {"profile": {"type": Profile}, "default_profiles": {"type": DefaultProfiles}}
+        profile: Profile
+        """Subclass of AvdIndexedList with `ProfileItem` items. Primary key is `name` (`str`)."""
+        default_profiles: DefaultProfiles
+        """
+        The default-profile set may contain zero, one, or multiple profiles. When the default-profile set
+        contains multiple profiles, error-disable criteria is satisfied when conditions match any profile.
+        Subclass of AvdList with `str` items.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, profile: Profile | UndefinedType = Undefined, default_profiles: DefaultProfiles | UndefinedType = Undefined) -> None:
+                """
+                MonitorLinkFlap.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    profile: Subclass of AvdIndexedList with `ProfileItem` items. Primary key is `name` (`str`).
+                    default_profiles:
+                       The default-profile set may contain zero, one, or multiple profiles. When the default-profile set
+                       contains multiple profiles, error-disable criteria is satisfied when conditions match any profile.
+                       Subclass of AvdList with `str` items.
+
+                """
+
     class MonitorServerRadius(AvdModel):
         """Subclass of AvdModel."""
 
@@ -68696,6 +68870,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "mlag_configuration": {"type": MlagConfiguration},
         "monitor_connectivity": {"type": MonitorConnectivity},
         "monitor_layer1": {"type": MonitorLayer1},
+        "monitor_link_flap": {"type": MonitorLinkFlap},
         "monitor_server_radius": {"type": MonitorServerRadius},
         "monitor_session_default_encapsulation_gre": {"type": MonitorSessionDefaultEncapsulationGre},
         "monitor_sessions": {"type": MonitorSessions},
@@ -69117,6 +69292,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     Subclass of AvdModel.
     """
+    monitor_link_flap: MonitorLinkFlap
+    """Subclass of AvdModel."""
     monitor_server_radius: MonitorServerRadius
     """
     Settings to monitor radius servers.
@@ -69438,6 +69615,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             mlag_configuration: MlagConfiguration | UndefinedType = Undefined,
             monitor_connectivity: MonitorConnectivity | UndefinedType = Undefined,
             monitor_layer1: MonitorLayer1 | UndefinedType = Undefined,
+            monitor_link_flap: MonitorLinkFlap | UndefinedType = Undefined,
             monitor_server_radius: MonitorServerRadius | UndefinedType = Undefined,
             monitor_session_default_encapsulation_gre: MonitorSessionDefaultEncapsulationGre | UndefinedType = Undefined,
             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -69735,6 +69913,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Enable SYSLOG messages on transceiver SMBus communication failures.
 
                    Subclass of AvdModel.
+                monitor_link_flap: Subclass of AvdModel.
                 monitor_server_radius:
                    Settings to monitor radius servers.
 
