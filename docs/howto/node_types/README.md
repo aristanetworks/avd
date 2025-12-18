@@ -326,7 +326,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC
 
 #### Automatic Assignment (Pattern-Based)
 
-Use `default_node_types` to assign types based on hostname patterns (see lines 14-25):
+Use `default_node_types` to assign types based on hostname patterns:
 
 ```yaml title="group_vars/FABRIC/fabric_variables.yml"
 --8<--
