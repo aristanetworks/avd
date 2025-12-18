@@ -34,7 +34,7 @@ A port profile can refer to another port profile using parent_profile to inherit
 - `storm_control`: To apply storm control policies.
 - `flowcontrol`: To configure flow control settings.
 
-Please consult [User Manual](../input-variables.md#port-profiles-settings) for all available keys.
+Please consult [User Manual](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#port-profiles-settings) for all available keys.
 
 ### Adapters
 
@@ -53,7 +53,7 @@ Adapters define the physical mapping between the endpoint and the switch fabric:
 !!! note
     The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
 
-Please consult [User Manual](../input-variables.md#connected-endpoints-settings) for all available keys.
+Please consult [User Manual](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#connected-endpoints-settings) for all available keys.
 
 ## Running Ansible to Generate the Configuration
 
