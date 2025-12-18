@@ -23,4 +23,3 @@ service_leaf:
       mgmt_ip: 172.16.1.111/24
       bgp_as: 65110
       uplink_switch_interfaces: [Ethernet3]
-
