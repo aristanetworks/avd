@@ -287,7 +287,7 @@ Use `default_node_types` to assign types based on hostname patterns:
 
 ```yaml title="group_vars/FABRIC/node_types.yml"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/defaul_node_types.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/default_node_types.yml
 --8<--
 ```
 
