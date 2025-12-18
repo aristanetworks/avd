@@ -276,5 +276,60 @@ Use this approach to replace a playbook whose **only** job was to upload configl
 
 </div>
 
+### Migration considerations for CloudVision
+
+When migrating AVD from `cvp_configlet_upload` to `cv_deploy` role, the EOS devices should be removed from CloudVision `Network Provisioning` to avoid multiple config sources and configuration overlap.
+
+Omitting to clean up Network Provisioning configlets mapping will result in configuration not being removed from device configuration when removing it from the static configlet studios because it would still be defined in the Network Provisioning configlet.
+
+Devices can be removed manually in the CloudVision Portal user interface or pragramatically with an ansible playbook.
+
+<div class="grid" markdown>
+
+=== "Manual (single device)"
+
+    Under the `Provisioning / Network Provisioning` menu, right click the device and select `Remove` and save.
+
+=== "Manual (multiple devices)"
+
+    Under the `Provisioning / Network Provisioning` menu, right click a container, select `Manage / Device` and tick the box next the the devices you want to remove from network provisioning, click the trash bin icon on the top right corner and save.
+
+    !!! note
+        The box next to `Name` field in the blue bar on top can be used to select all devices.
+
+=== "Ansible"
+
+    The example playbook below gathers the required data from CVP and removes the devices from CVP Network Provisioning.
+
+    ```yaml
+    ---
+    - name: "Trigger a provisioning reset on EOS devices"
+      hosts: all
+      connection: local
+      gather_facts: false
+      vars:
+        EOS_targets:  # set to a group or device in the inventory you want to reset
+        CVP_target:   # set to cloudvision portal host in the inventory file
+      tasks:
+        - name: build the reset list
+          ansible.builtin.set_fact:
+            cvp_devices: "{{ cvp_devices | arista.avd.default([]) + [ {'fqdn': item, 'parentContainerName': '' } ] }}"
+          loop: "{{ groups[EOS_targets] }}"
+          run_once: true
+
+        - name: "Remove devices from Network Provisioning"
+          arista.cvp.cv_device_v3:
+            devices: "{{ cvp_devices }}"
+            state: provisioning_reset
+            search_key: hostname
+          delegate_to: "{{ CVP_target }}"
+          run_once: true
+    ```
+
+    !!! note
+        For more details, refer to the full Ansible collection cv_device_v3 module [documentation](https://galaxy.ansible.com/ui/repo/published/arista/cvp/content/module/cv_device_v3/).
+
+</div>
+
 !!! note
     For a complete overview of all the updates and capabilities in the `cv_deploy` role, including how to manage configlets and configlet containers, please see the role [documentation](../../ansible_collections/arista/avd/roles/cv_deploy/README.md)
