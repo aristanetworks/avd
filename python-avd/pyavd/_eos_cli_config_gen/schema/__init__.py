@@ -25700,27 +25700,58 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class DampingPenalty(AvdModel):
                 """Subclass of AvdModel."""
 
-                class MacFault(AvdModel):
+                class Decay(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"local": {"type": int}, "remote": {"type": int}}
-                    local: int | None
-                    remote: int | None
+                    Units: TypeAlias = Literal["minutes", "seconds"]
+                    _fields: ClassVar[dict] = {"half_life": {"type": int}, "units": {"type": str}}
+                    half_life: int | None
+                    units: Units
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, local: int | None | UndefinedType = Undefined, remote: int | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, half_life: int | None | UndefinedType = Undefined, units: Units | UndefinedType = Undefined) -> None:
                             """
-                            MacFault.
+                            Decay.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                local: local
-                                remote: remote
+                                half_life: half_life
+                                units: units
 
                             """
+
+                class MacFaultItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Location: TypeAlias = Literal["local", "remote"]
+                    _fields: ClassVar[dict] = {"location": {"type": str}, "penalty": {"type": int}}
+                    location: Location
+                    penalty: int
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, location: Location | UndefinedType = Undefined, penalty: int | UndefinedType = Undefined) -> None:
+                            """
+                            MacFaultItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                location: location
+                                penalty: penalty
+
+                            """
+
+                class MacFault(AvdIndexedList[str, MacFaultItem]):
+                    """Subclass of AvdIndexedList with `MacFaultItem` items. Primary key is `location` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "location"
+
+                MacFault._item_type = MacFaultItem
 
                 class Threshold(AvdModel):
                     """Subclass of AvdModel."""
@@ -25752,10 +25783,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                _fields: ClassVar[dict] = {"decay_half_life": {"type": int}, "mac_fault": {"type": MacFault}, "threshold": {"type": Threshold}}
-                decay_half_life: int | None
-                mac_fault: MacFault
+                _fields: ClassVar[dict] = {"decay": {"type": Decay}, "mac_fault": {"type": MacFault}, "threshold": {"type": Threshold}}
+                decay: Decay
                 """Subclass of AvdModel."""
+                mac_fault: MacFault
+                """Subclass of AvdIndexedList with `MacFaultItem` items. Primary key is `location` (`str`)."""
                 threshold: Threshold
                 """Subclass of AvdModel."""
 
@@ -25764,7 +25796,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        decay_half_life: int | None | UndefinedType = Undefined,
+                        decay: Decay | UndefinedType = Undefined,
                         mac_fault: MacFault | UndefinedType = Undefined,
                         threshold: Threshold | UndefinedType = Undefined,
                     ) -> None:
@@ -25775,8 +25807,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            decay_half_life: decay_half_life
-                            mac_fault: Subclass of AvdModel.
+                            decay: Subclass of AvdModel.
+                            mac_fault: Subclass of AvdIndexedList with `MacFaultItem` items. Primary key is `location` (`str`).
                             threshold: Subclass of AvdModel.
 
                         """

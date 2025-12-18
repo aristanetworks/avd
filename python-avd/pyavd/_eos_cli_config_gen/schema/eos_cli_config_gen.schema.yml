@@ -9995,27 +9995,39 @@ keys:
             damping_penalty:
               type: dict
               keys:
-                decay_half_life:
-                  type: int
-                  convert_types:
-                  - str
-                  min: 1
-                  max: 5000
-                mac_fault:
+                decay:
                   type: dict
                   keys:
-                    local:
+                    half_life:
                       type: int
                       convert_types:
                       - str
-                      min: 0
+                      min: 1
                       max: 5000
-                    remote:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 0
-                      max: 5000
+                    units:
+                      type: str
+                      required: true
+                      valid_values:
+                      - minutes
+                      - seconds
+                mac_fault:
+                  type: list
+                  primary_key: location
+                  items:
+                    type: dict
+                    keys:
+                      location:
+                        type: str
+                        valid_values:
+                        - local
+                        - remote
+                      penalty:
+                        type: int
+                        required: true
+                        convert_types:
+                        - str
+                        min: 0
+                        max: 5000
                 threshold:
                   type: dict
                   keys:

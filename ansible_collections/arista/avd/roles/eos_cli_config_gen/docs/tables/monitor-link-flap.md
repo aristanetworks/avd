@@ -11,10 +11,12 @@
     | [<samp>&nbsp;&nbsp;profile</samp>](## "monitor_link_flap.profile") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_link_flap.profile.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;damping_penalty</samp>](## "monitor_link_flap.profile.[].damping_penalty") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decay_half_life</samp>](## "monitor_link_flap.profile.[].damping_penalty.decay_half_life") | Integer |  |  | Min: 1<br>Max: 5000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_fault</samp>](## "monitor_link_flap.profile.[].damping_penalty.mac_fault") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local</samp>](## "monitor_link_flap.profile.[].damping_penalty.mac_fault.local") | Integer |  |  | Min: 0<br>Max: 5000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote</samp>](## "monitor_link_flap.profile.[].damping_penalty.mac_fault.remote") | Integer |  |  | Min: 0<br>Max: 5000 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decay</samp>](## "monitor_link_flap.profile.[].damping_penalty.decay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;half_life</samp>](## "monitor_link_flap.profile.[].damping_penalty.decay.half_life") | Integer |  |  | Min: 1<br>Max: 5000 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "monitor_link_flap.profile.[].damping_penalty.decay.units") | String | Required |  | Valid Values:<br>- <code>minutes</code><br>- <code>seconds</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_fault</samp>](## "monitor_link_flap.profile.[].damping_penalty.mac_fault") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;location</samp>](## "monitor_link_flap.profile.[].damping_penalty.mac_fault.[].location") | String | Required, Unique |  | Valid Values:<br>- <code>local</code><br>- <code>remote</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penalty</samp>](## "monitor_link_flap.profile.[].damping_penalty.mac_fault.[].penalty") | Integer | Required |  | Min: 0<br>Max: 5000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "monitor_link_flap.profile.[].damping_penalty.threshold") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "monitor_link_flap.profile.[].damping_penalty.threshold.maximum") | Integer |  |  | Min: 0<br>Max: 1000000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reuse</samp>](## "monitor_link_flap.profile.[].damping_penalty.threshold.reuse") | Integer |  |  | Min: 0<br>Max: 1000000 |  |
@@ -33,10 +35,12 @@
       profile:
         - name: <str; required; unique>
           damping_penalty:
-            decay_half_life: <int; 1-5000>
+            decay:
+              half_life: <int; 1-5000>
+              units: <str; "minutes" | "seconds"; required>
             mac_fault:
-              local: <int; 0-5000>
-              remote: <int; 0-5000>
+              - location: <str; "local" | "remote"; required; unique>
+                penalty: <int; 0-5000; required>
             threshold:
               maximum: <int; 0-1000000>
               reuse: <int; 0-1000000>
