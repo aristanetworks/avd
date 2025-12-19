@@ -1,0 +1,29 @@
+---
+monitor_link_flap:
+  profiles:
+    - name: LFP1
+      damping_penalty:
+        decay:
+          half_life: 5
+          units: "seconds"
+        mac_fault:
+          - location: "local"
+            penalty: 5
+          - location: "remote"
+            penalty: 10
+        threshold:
+          maximum: 5
+          reuse: 2
+          suppression: 100
+    - name: LFP2
+      max_flaps: 23
+      time: 10
+    - name: LFP3
+      max_flaps: 11
+      time: 12
+      violations: 5
+      intervals: 10
+  default_profiles:
+    - LFP3
+    - LFP1
+  

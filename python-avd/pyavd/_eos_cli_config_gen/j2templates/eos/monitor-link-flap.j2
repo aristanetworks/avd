@@ -11,7 +11,7 @@ monitor link-flap policy
 {%         if profile.damping_penalty is arista.avd.defined %}
    profile {{ profile.name }} damping
 {%             if profile.damping_penalty.threshold is arista.avd.defined %}
-{%                 set monitor_flap_cli = "penalty threshold " %}
+{%                 set monitor_flap_cli = "penalty threshold" %}
 {%                 if profile.damping_penalty.threshold.reuse is arista.avd.defined %}
 {%                     set monitor_flap_cli = monitor_flap_cli ~ " reuse " ~ profile.damping_penalty.threshold.reuse %}
 {%                 endif %}
@@ -33,19 +33,15 @@ monitor link-flap policy
 {%             endif %}
 {%         else %}
 {%             if profile.max_flaps is arista.avd.defined and profile.time is arista.avd.defined %}
-{%                 set monitor_flap_cli = "   profile " ~ profile.name ~ " max-flaps " ~ profile.max_flaps ~ " time " ~ profile.time %}
+{%                 set monitor_flap_cli = "profile " ~ profile.name ~ " max-flaps " ~ profile.max_flaps ~ " time " ~ profile.time %}
 {%                 if profile.violations is arista.avd.defined and profile.intervals is arista.avd.defined %}
-{%                     set monitor_flap_cli = monitor_flap_cli ~ " violations " ~ profile.violations ~ " intervals " ~ intervals %}
+{%                     set monitor_flap_cli = monitor_flap_cli ~ " violations " ~ profile.violations ~ " intervals " ~ profile.intervals %}
 {%                 endif %}
    {{ monitor_flap_cli }}
 {%             endif %}
 {%         endif %}
-{%         if monitor_link_flap.default_profiles is arista.avd.defined and monitor_link_flap.default_profiles|length > 0 %}
-{%             set default_profiles_cli = "   default-profiles" %}
-{%             for profile in monitor_link_flap.default_profiles %}
-{%                 set default_profiles_cli = default_profiles_cli ~ " " ~ profile %}
-{%             endfor %}
-   {{ default_profiles_cli }}
-{%         endif %}
 {%     endfor %}
+{%     if monitor_link_flap.default_profiles is arista.avd.defined and monitor_link_flap.default_profiles | length > 0 %}
+   default-profiles {{ monitor_link_flap.default_profiles | arista.avd.natural_sort | join(' ') }}
+{%     endif %}
 {% endif %}
