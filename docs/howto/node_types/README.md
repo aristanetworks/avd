@@ -26,7 +26,15 @@ This guide explains how to use the default node types, create custom node types,
 
 AVD provides several built-in node types optimized for different fabric architectures:
 
-### Data Center Fabric Node Types
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/node-type-variables.md
+--8<--
+
+!!! note
+
+    Node types can exist in the same multi-domain fabric.
+
+### L3LS EVPN VXLAN Fabric Node Types
 
 - **spine**: Spine switches acting as EVPN route servers
 - **l3leaf**: Layer 3 leaf switches with VXLAN/EVPN capabilities, MLAG support, and connected endpoints
@@ -40,7 +48,7 @@ AVD provides several built-in node types optimized for different fabric architec
 - **pe**: Provider Edge (PE) routers with MPLS, EVPN, and connected endpoints support
 - **rr**: Route reflectors for MPLS networks
 
-### Campus Fabric Node Types
+### L2LS Fabric Node Types
 
 - **l3spine**: Layer 3 spine for campus architectures
 - **leaf**: Campus leaf switches with Layer 2 capabilities
@@ -48,14 +56,14 @@ AVD provides several built-in node types optimized for different fabric architec
 
 ### WAN Node Types
 
-- **wan_router**: WAN edge routers for CV Pathfinder
-- **wan_rr**: WAN route reflectors/pathfinders
+- **wan_router**: WAN edge routers for AutoVPN
+- **wan_rr**: WAN route reflectors for AutoVPN
 
 ## Using Default Node Types
 
 The simplest way to use node types is to set the `type` variable on your devices or groups:
 
-```yaml title="group_vars/DC1_SPINES/spines.yml"
+```yaml title="Spine Node Settings"
 --8<--
 ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC1_SPINES/spines.yml
 --8<--
@@ -71,7 +79,7 @@ In this example:
 
 Instead of manually setting `type` on each group, use `default_node_types` to automatically assign types based on hostname patterns.
 
-```yaml title="group_vars/FABRIC/node_types.yml"
+```yaml title="Default Node Types"
 --8<--
 ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/default_node_types.yml
 --8<--
@@ -90,7 +98,7 @@ With this configuration:
 
 Now you can define devices without explicitly setting `type`:
 
-```yaml title="group_vars/DC1_SERVICE_LEAVES/service_leaves.yml"
+```yaml title="Service Leaves Settings"
 --8<--
 ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC1_SERVICE_LEAVES/service_leaves.yml
 --8<--
@@ -102,7 +110,7 @@ Notice that there's no `type:` variable - it's automatically assigned based on t
 
 Use `custom_node_type_keys` to define new node types or modify existing ones.
 
-```yaml title="group_vars/FABRIC/node_types.yml"
+```yaml title="Custom Node Types"
 --8<--
 ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/custom_node_types.yml
 --8<--
@@ -122,9 +130,9 @@ This creates a new `service_leaf` node type with:
 
 Once defined, use your custom node type like any default type. Combined with `default_node_types`, devices are automatically assigned the custom type:
 
-```yaml title="group_vars/DC1_SERVICE_LEAVES/service_leafs.yml"
+```yaml title="Service Leaves Settings"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC1_SERVICE_LEAVES/service_leafs.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC1_SERVICE_LEAVES/service_leaves.yml
 --8<--
 ```
 
@@ -132,7 +140,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC
 
 To modify a default node type, use `custom_node_type_keys` with the same `key` as the default:
 
-```yaml title="group_vars/FABRIC/override_node_types.yml"
+```yaml title="Overriding Default Node Types"
 ---
 custom_node_type_keys:
   # Override the default l3leaf to disable connected endpoints
@@ -199,7 +207,7 @@ uplink_type: p2p  # p2p, port-channel, p2p-vrfs, lan
 
 Create a custom PE router with specific MPLS and EVPN settings:
 
-```yaml title="group_vars/FABRIC/mpls_node_types.yml"
+```yaml title="Custom MPLS Node Type"
 ---
 custom_node_type_keys:
   - key: custom_pe
@@ -236,21 +244,6 @@ custom_node_type_keys:
 
 ## Troubleshooting
 
-### Device type not found
-
-**Error**: `No device type found. Either set 'type' or 'default_node_types'.`
-
-**Solution**: Ensure either:
-
-- The device has `type` set in its group_vars, or
-- A `default_node_types` pattern matches the device hostname
-
-### Node type key not found
-
-**Error**: `Could not find the given type 'X' in node_type_keys or custom_node_type_keys.`
-
-**Solution**: Verify the `type` value matches a `type` field in either `node_type_keys` or `custom_node_type_keys`.
-
 ### Configuration not applied
 
 **Issue**: Custom node type defined but configuration not applied.
@@ -260,73 +253,6 @@ custom_node_type_keys:
 - Verify the `key` in `custom_node_type_keys` matches the key used in your data model
 - Check that devices reference the correct `type` value
 - Ensure `custom_node_type_keys` is defined at the fabric level (not per-device)
-
-## Quick Reference
-
-### Three Ways to Assign Node Types
-
-#### Manual Assignment (Explicit)
-
-Set `type` explicitly on the device group:
-
-```yaml title="group_vars/DC1_SPINES/spines.yml"
---8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC1_SPINES/spines.yml
---8<--
-```
-
-#### Automatic Assignment (Pattern-Based)
-
-Use `default_node_types` to assign types based on hostname patterns:
-
-```yaml title="group_vars/FABRIC/node_types.yml"
---8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/default_node_types.yml
---8<--
-```
-
-Then define devices without explicit `type`:
-
-```yaml title="group_vars/DC1_SERVICE_LEAVES/service_leaves.yml"
---8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC1_SERVICE_LEAVES/service_leaves.yml
---8<--
-```
-
-#### Custom Node Type
-
-Use `custom_node_type_keys` to define new node types:
-
-```yaml title="group_vars/FABRIC/node_types.yml"
---8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC/custom_node_types.yml
---8<--
-```
-
-### Common Properties Reference
-
-| Property | Values | Description |
-| ---------- | -------- | ------------- |
-| `key` | string | Data model key (e.g., `spine:`) |
-| `type` | string | Type devices reference |
-| `connected_endpoints` | true/false | Enable connected endpoints |
-| `default_evpn_role` | none/client/server | EVPN role |
-| `mlag_support` | true/false | Enable MLAG |
-| `vtep` | true/false | Enable VXLAN VTEP |
-| `underlay_router` | true/false | Enable L3 routing |
-| `uplink_type` | p2p/port-channel/p2p-vrfs/lan | Uplink configuration |
-
-### Default Node Types Comparison (high-level)
-
-| Node Type | EVPN Role | VTEP | MLAG | Connected Endpoints | Use Case |
-| ----------- | ----------- | ------ | ------ | --------------------- | ---------- |
-| spine | server | ❌ | ❌ | ❌ | Spine switches |
-| l3leaf | client | ✅ | ✅ | ✅ | L3 leaf switches |
-| l2leaf | none | ❌ | ✅ | ✅ | L2 leaf switches |
-| pe | client | ❌ | ❌ | ✅ | MPLS PE routers |
-| p | none | ❌ | ❌ | ❌ | MPLS P routers |
-| wan_router | client | ❌ | ❌ | ✅ | WAN edge routers |
-| wan_rr | server | ❌ | ❌ | ❌ | WAN route reflectors |
 
 ## Reference
 
