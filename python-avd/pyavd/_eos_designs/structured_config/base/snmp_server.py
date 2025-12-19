@@ -114,8 +114,8 @@ class SnmpServerMixin(Protocol):
                 digest = self._get_sha1_digest(self._get_snmp_engine_id_ip())
                 # prefix with Enterprise Id + 04 to adhere to RCF3411 and RFC5343
                 # Arista Enterprise ID = 30065 (7571 in hex)
-                # 5th octet = 04 , meaning engine id is based on custom text
-                local_engine_id = f"8000757104{digest}"
+                # 5th octet = 05 , meaning engine id is based on custom octet
+                local_engine_id = f"8000757105{digest}"
             case "hostname_and_ip":
                 # This is the default value in AVD 5.x.
                 # This does not handle well inband mgmt cases as it uses None for the management IP

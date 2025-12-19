@@ -12,7 +12,7 @@ metadata:
 service_routing_protocols_model: multi-agent
 snmp_server:
   engine_ids:
-    local: 80007571048c9a1044e774a9bad6ec05aa638db7de9ae174b9
+    local: 80007571058c9a1044e774a9bad6ec05aa638db7de9ae174b9
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4092

@@ -29542,7 +29542,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         `compute_local_engineid_source` supports:
         - `rfc3411` use the value of `local_engineid_ip` to find
-        the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757104+ sha1(hostname +
+        the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757105 + sha1(hostname +
         local_engineid_ip)
         - `system_mac` generate the switch default engine id for AVD usage.
           To use
@@ -29653,7 +29653,7 @@ class EosDesigns(EosDesignsRootModel):
                     compute_local_engineid_source:
                        `compute_local_engineid_source` supports:
                        - `rfc3411` use the value of `local_engineid_ip` to find
-                       the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757104+ sha1(hostname +
+                       the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757105 + sha1(hostname +
                        local_engineid_ip)
                        - `system_mac` generate the switch default engine id for AVD usage.
                          To use
