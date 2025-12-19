@@ -25694,7 +25694,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class MonitorLinkFlap(AvdModel):
         """Subclass of AvdModel."""
 
-        class ProfileItem(AvdModel):
+        class ProfilesItem(AvdModel):
             """Subclass of AvdModel."""
 
             class DampingPenalty(AvdModel):
@@ -25842,7 +25842,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     intervals: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
-                    ProfileItem.
+                    ProfilesItem.
 
 
                     Subclass of AvdModel.
@@ -25857,21 +25857,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class Profile(AvdIndexedList[str, ProfileItem]):
-            """Subclass of AvdIndexedList with `ProfileItem` items. Primary key is `name` (`str`)."""
+        class Profiles(AvdIndexedList[str, ProfilesItem]):
+            """Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`)."""
 
             _primary_key: ClassVar[str] = "name"
 
-        Profile._item_type = ProfileItem
+        Profiles._item_type = ProfilesItem
 
         class DefaultProfiles(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
         DefaultProfiles._item_type = str
 
-        _fields: ClassVar[dict] = {"profile": {"type": Profile}, "default_profiles": {"type": DefaultProfiles}}
-        profile: Profile
-        """Subclass of AvdIndexedList with `ProfileItem` items. Primary key is `name` (`str`)."""
+        _fields: ClassVar[dict] = {"profiles": {"type": Profiles}, "default_profiles": {"type": DefaultProfiles}}
+        profiles: Profiles
+        """Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`)."""
         default_profiles: DefaultProfiles
         """
         The default-profile set may contain zero, one, or multiple profiles. When the default-profile set
@@ -25881,7 +25881,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, profile: Profile | UndefinedType = Undefined, default_profiles: DefaultProfiles | UndefinedType = Undefined) -> None:
+            def __init__(self, *, profiles: Profiles | UndefinedType = Undefined, default_profiles: DefaultProfiles | UndefinedType = Undefined) -> None:
                 """
                 MonitorLinkFlap.
 
@@ -25889,7 +25889,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    profile: Subclass of AvdIndexedList with `ProfileItem` items. Primary key is `name` (`str`).
+                    profiles: Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`).
                     default_profiles:
                        The default-profile set may contain zero, one, or multiple profiles. When the default-profile set
                        contains multiple profiles, error-disable criteria is satisfied when conditions match any profile.
