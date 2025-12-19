@@ -29566,16 +29566,18 @@ class EosDesigns(EosDesignsRootModel):
         The value
         will be interpreted according to these rules:
         - `use_mgmt_interface` will use the Out-of-band
-        interface IP.
-          An error will be raised if `mgmt_ip` is not configured for the device.
-        -
-        `use_inband_mgmt_interface` will use the inband management IP.
-          An error will be raised if inband
-        management is not configured for the device.
-        - `use_default_mgmt_method_interface` will use the IP
-        for one of the two options above depending on the value of `default_mgmt_method`.
-        - Any other string
-        will be used directly as the IP.
+        interface IP or IPv6.
+          The order of preference is first `mgmt_ip` and then `ipv6_mgmt_ip`.
+          An
+        error will be raised if neither are configured for the device.
+        - `use_inband_mgmt_interface` will
+        use the inband management IP.
+          An error will be raised if inband management is not configured for
+        the device.
+        - `use_default_mgmt_method_interface` will use the IP for one of the two options above
+        depending on the value of `default_mgmt_method`.
+        - Any other string will be used directly as the IP
+        (it can be IP or IPv6).
 
         Default value: `"use_default_mgmt_method_interface"`
         """
@@ -29671,16 +29673,18 @@ class EosDesigns(EosDesignsRootModel):
                        The value
                        will be interpreted according to these rules:
                        - `use_mgmt_interface` will use the Out-of-band
-                       interface IP.
-                         An error will be raised if `mgmt_ip` is not configured for the device.
-                       -
-                       `use_inband_mgmt_interface` will use the inband management IP.
-                         An error will be raised if inband
-                       management is not configured for the device.
-                       - `use_default_mgmt_method_interface` will use the IP
-                       for one of the two options above depending on the value of `default_mgmt_method`.
-                       - Any other string
-                       will be used directly as the IP.
+                       interface IP or IPv6.
+                         The order of preference is first `mgmt_ip` and then `ipv6_mgmt_ip`.
+                         An
+                       error will be raised if neither are configured for the device.
+                       - `use_inband_mgmt_interface` will
+                       use the inband management IP.
+                         An error will be raised if inband management is not configured for
+                       the device.
+                       - `use_default_mgmt_method_interface` will use the IP for one of the two options above
+                       depending on the value of `default_mgmt_method`.
+                       - Any other string will be used directly as the IP
+                       (it can be IP or IPv6).
                     compute_v3_user_localized_key:
                        Requires compute_local_engineid to be `true`.
                        If enabled, the SNMPv3 passphrases for auth and priv

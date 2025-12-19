@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, strip_null_from_data
+from pyavd._utils import AvdStringFormatter, default, strip_null_from_data
 from pyavd.j2filters import natural_sort, snmp_hash
 
 if TYPE_CHECKING:
@@ -79,7 +79,7 @@ class SnmpServerMixin(Protocol):
                 if not has_mgmt_ip:
                     msg = "'snmp_settings.local_engineid_ip' is set to 'use_mgmt_interface' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
                     raise AristaAvdInvalidInputsError(msg)
-                return self.shared_utils.node_config.mgmt_ip
+                return default(self.shared_utils.node_config.mgmt_ip, self.shared_utils.node_config.ipv6_mgmt_ip)
             case "use_inband_mgmt_interface":
                 if self.shared_utils.inband_mgmt_interface is None:
                     msg = (

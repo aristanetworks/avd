@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: snmp-autogen-engineid-rfc3411-hostname-oob-ip
+hostname: snmp-autogen-engineid-rfc3411-hostname-oob-ipv6
 ip_igmp_snooping:
   globally_enabled: true
 management_interfaces:
@@ -11,7 +11,6 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.0.10/24
   ipv6_enable: true
   ipv6_address: 2001:db8::dead:beef:cafe/64
   type: oob
@@ -21,7 +20,7 @@ metadata:
 service_routing_protocols_model: multi-agent
 snmp_server:
   engine_ids:
-    local: 8000757104c535c6b6a22f7e993ac7477dac663586577afe4f
+    local: 8000757104e5546932ca5436e7781c8ccd90b65095c88ba601
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
