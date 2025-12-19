@@ -156,30 +156,35 @@ class FabricDocumentationFacts(AvdFacts):
     @cached_property
     def topology_links(self) -> list[dict]:
         """List of topology links extracted from _topology."""
+        # TODO: with the changed I need to sort twice...
         return natural_sort(
-            [
-                {
-                    "node": hostname,
-                    "type": data[0],
-                    "serial_number": self.avd_facts[hostname].serial_number,
-                    "node_interface": data[1],
-                    "node_ip_address": data[2],
-                    "routed": data[4],
-                    "peer": peer_name,
-                    "peer_type": "mlag_peer" if peer_data[3] else peer_data[0],
-                    "peer_serial_number": self.avd_facts[peer_name].serial_number if peer_name else None,
-                    "peer_interface": peer_data[1],
-                    "peer_ip_address": peer_data[2],
-                }
-                for hostname, edges in self._topology.get_edges_by_node_unidirectional_sorted().items()
-                if edges
-                for edge in edges
-                for node_name, data in edge.node_data
-                if node_name == hostname
-                # Below is just a way to set the peer variables for easy reuse.
-                for peer_name, peer_data in edge.node_data
-                if peer_name != hostname
-            ]
+            natural_sort(
+                [
+                    {
+                        "node": hostname,
+                        "type": data[0],
+                        "serial_number": self.avd_facts[hostname].serial_number,
+                        "node_interface": data[1],
+                        "node_ip_address": data[2],
+                        "routed": data[4],
+                        "peer": peer_name,
+                        "peer_type": "mlag_peer" if peer_data[3] else peer_data[0],
+                        "peer_serial_number": self.avd_facts[peer_name].serial_number if peer_name else None,
+                        "peer_interface": peer_data[1],
+                        "peer_ip_address": peer_data[2],
+                    }
+                    for hostname, edges in self._topology.get_edges_by_node_unidirectional_sorted().items()
+                    if edges
+                    for edge in edges
+                    for node_name, data in edge.node_data
+                    if node_name == hostname
+                    # Below is just a way to set the peer variables for easy reuse.
+                    for peer_name, peer_data in edge.node_data
+                    if peer_name != hostname
+                ],
+                sort_key="node_interface",
+            ),
+            sort_key="node",
         )
 
     # TODO: - Add IPv6 to fabric docs.
