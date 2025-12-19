@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 | Node Type Key      | Underlay Router | Uplink Type  | EVPN Role | MPLS Role   | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | WAN Role | Underlay Routing Protocol | Overlay Routing Protocol | Notes |
 | ------------------ | --------------- | ------------ | ----------| ------------| ------------------- | ------------------- | ---- | ------------ | ------------------- | -------- | ------------------------- | ------------------------ | |
 | spine              | ✅              | p2p          | server    | ✘           | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘        | eBGP                      | eBGP                     | |
