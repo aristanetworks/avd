@@ -7,8 +7,9 @@ from contextlib import nullcontext as does_not_raise
 from typing import Any
 
 import pytest
+from jinja2.utils import Namespace
 
-from pyavd.j2filters.natural_sort import _convert, natural_sort
+from pyavd.j2filters.natural_sort import _alphanum_key, _convert, natural_sort
 
 
 class TestNaturalSortFilter:
@@ -183,3 +184,14 @@ class TestNaturalSortFilter:
         with expected_raise:
             resp = natural_sort(item_to_natural_sort, sort_key, strict=strict, ignore_case=ignore_case, default_value=default_value)
             assert resp == sorted_list
+
+    def test_natural_sort_namespaces(self) -> None:
+        a = Namespace(name="a")
+        b = Namespace(name="b")
+        resp = natural_sort([b, a], "name")
+        assert resp == [a, b]
+
+    def test__alphanum_key_failure(self) -> None:
+        with pytest.raises(ValueError, match="'natural_sort' requires 'sort_key' to be set when used for a Mapping or a Namespace:"):
+            # trying to get a key for a dict without sort_key
+            _alphanum_key(item={"name": "blah"})
