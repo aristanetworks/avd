@@ -727,8 +727,8 @@
 | Interface | PFC | Priority | Drop/No_drop |
 {%         for priority_intf in priority_intfs %}
 {%             if priority_intf.priority_flow_control.priorities is arista.avd.defined %}
-{%                 for priority_block in priority_intf.priority_flow_control.priorities | arista.avd.natural_sort %}
-{%                     set priority = priority_block.priority | arista.avd.default("-") %}
+{%                 for priority_block in priority_intf.priority_flow_control.priorities | arista.avd.natural_sort(sort_key="priority") %}
+{%                     set priority = priority_block.priority %}
 {%                     set drop_no_drop = priority_block.no_drop | arista.avd.default("-") %}
 | {{ priority_intf.name }} | {{ priority_intf.priority_flow_control.enabled }} | {{ priority }} | {{ drop_no_drop }} |
 {%                 endfor %}

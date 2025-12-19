@@ -48,6 +48,9 @@ def natural_sort(
 
 def _alphanum_key(item: Any, sort_key: str | None = None, *, strict: bool = True, ignore_case: bool = True, default_value: Any = None) -> list:
     """Get the key to natural sort by. Falling back to the item itself."""
+    if isinstance(item, (Mapping, Namespace)) and sort_key is None:
+        msg = f"'natural_sort' requires 'sort_key' to be set when used for a Mapping or a Namespace: {item} "
+        raise ValueError(msg)
     if sort_key is not None and isinstance(item, Mapping):
         if strict and sort_key not in item and default_value is None:
             msg = f"Missing key '{sort_key}' in item to sort {item}."

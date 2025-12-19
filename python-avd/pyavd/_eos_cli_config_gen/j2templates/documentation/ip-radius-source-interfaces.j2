@@ -12,7 +12,7 @@
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-{%     for ip_radius_source_interface in ip_radius_source_interfaces | arista.avd.natural_sort %}
+{%     for ip_radius_source_interface in ip_radius_source_interfaces | arista.avd.natural_sort(sort_key="name") %}
 | {{ ip_radius_source_interface.vrf | arista.avd.default('default') }} | {{ ip_radius_source_interface.name }} |
 {%     endfor %}
 

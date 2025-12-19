@@ -885,9 +885,9 @@ management tech-support
 | FTP | default | Loopback0 |
 | FTP | MGMT | Management0 |
 | FTP | abc | Ethernet10 |
+| HTTP | default | Ethernet10 |
 | HTTP | default | Loopback0 |
 | HTTP | MGMT | Management0 |
-| HTTP | default | Ethernet10 |
 | SSH | default | Ethernet10 |
 | SSH | default | Loopback0 |
 | SSH | MGMT | Management0 |
@@ -905,9 +905,9 @@ management tech-support
 ip ftp client source-interface Loopback0
 ip ftp client source-interface Management0 vrf MGMT
 ip ftp client source-interface Ethernet10 vrf abc
+ip http client local-interface Ethernet10
 ip http client local-interface Loopback0 vrf default
 ip http client local-interface Management0 vrf MGMT
-ip http client local-interface Ethernet10
 ip ssh client source-interface Ethernet10
 ip ssh client source-interface Loopback0 vrf default
 ip ssh client source-interface Management0 vrf MGMT
@@ -1370,19 +1370,19 @@ tacacs-server host 10.10.10.160
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-| default | loopback1 |
-| TEST1 | lo3 |
-| default | loopback10 |
+| default | Loopback1 |
+| TEST1 | Loopback3 |
+| default | Loopback10 |
 
 #### IP TACACS Source Interfaces Device Configuration
 
 ```eos
 !
-ip tacacs vrf default source-interface loopback1
+ip tacacs vrf default source-interface Loopback1
 !
-ip tacacs vrf TEST1 source-interface lo3
+ip tacacs vrf TEST1 source-interface Loopback3
 !
-ip tacacs source-interface loopback10
+ip tacacs source-interface Loopback10
 ```
 
 ### Radius Proxy
@@ -1582,19 +1582,19 @@ radius-server host 10.10.11.155 vrf mgt tls ssl-profile HOST_SSL_PROFILE port 20
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-| default | loopback1 |
-| MGMT | Ma1 |
-| default | loopback10 |
+| default | Loopback1 |
+| default | Loopback10 |
+| MGMT | Management1 |
 
 #### IP SOURCE Source Interfaces Device Configuration
 
 ```eos
 !
-ip radius vrf default source-interface loopback1
+ip radius vrf default source-interface Loopback1
 !
-ip radius vrf MGMT source-interface Ma1
+ip radius source-interface Loopback10
 !
-ip radius source-interface loopback10
+ip radius vrf MGMT source-interface Management1
 ```
 
 ### AAA Server Groups

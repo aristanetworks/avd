@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - ip radius source interfaces #}
-{% for ip_radius_source_interface in ip_radius_source_interfaces | arista.avd.natural_sort %}
+{% for ip_radius_source_interface in ip_radius_source_interfaces | arista.avd.natural_sort(sort_key='name') %}
 !
 {%     set ip_radius_cli = "ip radius" %}
 {%     if ip_radius_source_interface.vrf is arista.avd.defined %}

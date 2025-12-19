@@ -5,7 +5,7 @@
 #}
 {# eos - ethernet interfaces #}
 {% set POE_CLASS_MAP = {0: "15.40", 1: "4.00", 2: "7.00", 3: "15.40", 4: "30.00", 5: "45.00", 6: "60.00", 7: "75.00", 8: "90.00"} %}
-{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort(sort_key='name') %}
 !
 interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.comment is arista.avd.defined %}
@@ -177,7 +177,7 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.switchport.source_interface is arista.avd.defined %}
    switchport source-interface {{ ethernet_interface.switchport.source_interface }}
 {%     endif %}
-{%     for vlan_translation in ethernet_interface.switchport.vlan_translations.direction_both | arista.avd.natural_sort('from') %}
+{%     for vlan_translation in ethernet_interface.switchport.vlan_translations.direction_both | arista.avd.natural_sort(sort_key='from') %}
 {%         set vlan_translation_both_cli = 'switchport vlan translation ' ~ vlan_translation.from %}
 {%         if vlan_translation.dot1q_tunnel is arista.avd.defined(true) %}
 {%             set vlan_translation_both_cli = vlan_translation_both_cli ~ ' dot1q-tunnel' %}
@@ -341,7 +341,7 @@ interface {{ ethernet_interface.name }}
 {%     elif ethernet_interface.bfd.echo is arista.avd.defined(false) %}
    no bfd echo
 {%     endif %}
-{%     for ip_helper in ethernet_interface.ip_helpers | arista.avd.natural_sort('ip_helper') %}
+{%     for ip_helper in ethernet_interface.ip_helpers | arista.avd.natural_sort(sort_key='ip_helper') %}
 {%         set ip_helper_cli = "ip helper-address " ~ ip_helper.ip_helper %}
 {%         if ip_helper.vrf is arista.avd.defined %}
 {%             set ip_helper_cli = ip_helper_cli ~ " vrf " ~ ip_helper.vrf %}
@@ -351,7 +351,7 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ ip_helper_cli }}
 {%     endfor %}
-{%     for destination in ethernet_interface.ipv6_dhcp_relay_destinations | arista.avd.natural_sort('address') %}
+{%     for destination in ethernet_interface.ipv6_dhcp_relay_destinations | arista.avd.natural_sort(sort_key='address') %}
 {%         set destination_cli = "ipv6 dhcp relay destination " ~ destination.address %}
 {%         if destination.vrf is arista.avd.defined %}
 {%             set destination_cli = destination_cli ~ " vrf " ~ destination.vrf %}
@@ -548,7 +548,7 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ospf_area is arista.avd.defined %}
    ip ospf area {{ ethernet_interface.ospf_area }}
 {%     endif %}
-{%     for ospf_message_digest_key in ethernet_interface.ospf_message_digest_keys | arista.avd.natural_sort('id') %}
+{%     for ospf_message_digest_key in ethernet_interface.ospf_message_digest_keys | arista.avd.natural_sort(sort_key='id') %}
 {%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and ospf_message_digest_key.key is arista.avd.defined %}
    ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} {{ ospf_message_digest_key.key_type | arista.avd.default("7") }} {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
@@ -710,19 +710,17 @@ interface {{ ethernet_interface.name }}
 {%     elif ethernet_interface.priority_flow_control.enabled is arista.avd.defined(false) %}
    no priority-flow-control
 {%     endif %}
-{%     for priority_block in ethernet_interface.priority_flow_control.priorities | arista.avd.natural_sort %}
-{%         if priority_block.priority is arista.avd.defined %}
-{%             if priority_block.no_drop is arista.avd.defined(true) %}
+{%     for priority_block in ethernet_interface.priority_flow_control.priorities | arista.avd.natural_sort(sort_key="priority") %}
+{%         if priority_block.no_drop is arista.avd.defined(true) %}
    priority-flow-control priority {{ priority_block.priority }} no-drop
-{%             elif priority_block.no_drop is arista.avd.defined(false) %}
+{%         elif priority_block.no_drop is arista.avd.defined(false) %}
    priority-flow-control priority {{ priority_block.priority }} drop
-{%             endif %}
 {%         endif %}
 {%     endfor %}
-{%     for tx_queue in ethernet_interface.tx_queues | arista.avd.natural_sort('id') %}
+{%     for tx_queue in ethernet_interface.tx_queues | arista.avd.natural_sort(sort_key='id') %}
 {%         include 'eos/ethernet-interface-tx-queues.j2' %}
 {%     endfor %}
-{%     for uc_tx_queue in ethernet_interface.uc_tx_queues | arista.avd.natural_sort('id') %}
+{%     for uc_tx_queue in ethernet_interface.uc_tx_queues | arista.avd.natural_sort(sort_key='id') %}
 {%         include 'eos/ethernet-interface-uc-tx-queues.j2' %}
 {%     endfor %}
 {%     if ethernet_interface.sflow is arista.avd.defined %}
@@ -815,7 +813,7 @@ interface {{ ethernet_interface.name }}
 {%             endif %}
 {%         endif %}
 {%         set both_key_ids = [] %}
-{%         for auth_key in ethernet_interface.isis_authentication.both.key_ids | arista.avd.natural_sort("id") %}
+{%         for auth_key in ethernet_interface.isis_authentication.both.key_ids | arista.avd.natural_sort(sort_key="id") %}
 {%             do both_key_ids.append(auth_key.id) %}
 {%             if auth_key.rfc_5310 is arista.avd.defined(true) %}
    isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }}
@@ -823,7 +821,7 @@ interface {{ ethernet_interface.name }}
    isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%             endif %}
 {%         endfor %}
-{%         for auth_key in ethernet_interface.isis_authentication.level_1.key_ids | arista.avd.natural_sort("id") %}
+{%         for auth_key in ethernet_interface.isis_authentication.level_1.key_ids | arista.avd.natural_sort(sort_key="id") %}
 {%             if auth_key.id not in both_key_ids %}
 {%                 if auth_key.rfc_5310 is arista.avd.defined(true) %}
    isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }} level-1
@@ -832,7 +830,7 @@ interface {{ ethernet_interface.name }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
-{%         for auth_key in ethernet_interface.isis_authentication.level_2.key_ids | arista.avd.natural_sort("id") %}
+{%         for auth_key in ethernet_interface.isis_authentication.level_2.key_ids | arista.avd.natural_sort(sort_key="id") %}
 {%             if auth_key.id not in both_key_ids %}
 {%                 if auth_key.rfc_5310 is arista.avd.defined(true) %}
    isis authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key | arista.avd.hide_passwords(hide_passwords) }} level-2
@@ -962,7 +960,7 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.switchport.tap.encapsulation.vxlan_strip is arista.avd.defined(true) and ethernet_interface.switchport.tap.mpls_pop_all is not arista.avd.defined(true) %}
    switchport tap encapsulation vxlan strip
 {%         endif %}
-{%         for protocol in ethernet_interface.switchport.tap.encapsulation.gre.protocols | arista.avd.natural_sort('protocol') %}
+{%         for protocol in ethernet_interface.switchport.tap.encapsulation.gre.protocols | arista.avd.natural_sort(sort_key='protocol') %}
 {%             if protocol.strip is arista.avd.defined(true) %}
 {%                 set tap_encapsulation_cli = "switchport tap encapsulation gre protocol " ~ protocol.protocol %}
 {%                 if protocol.feature_header_length is arista.avd.defined %}
@@ -978,12 +976,12 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.switchport.tap.encapsulation.gre.strip is arista.avd.defined(true) %}
    switchport tap encapsulation gre strip
 {%         endif %}
-{%         for destination in ethernet_interface.switchport.tap.encapsulation.gre.destinations | arista.avd.natural_sort('destination') %}
+{%         for destination in ethernet_interface.switchport.tap.encapsulation.gre.destinations | arista.avd.natural_sort(sort_key='destination') %}
 {%             set tap_encapsulation_cli = "switchport tap encapsulation gre destination " ~ destination.destination %}
 {%             if destination.source is arista.avd.defined %}
 {%                 set tap_encapsulation_cli = tap_encapsulation_cli ~ " source " ~ destination.source %}
 {%             endif %}
-{%             for destination_protocol in destination.protocols | arista.avd.natural_sort('protocol') %}
+{%             for destination_protocol in destination.protocols | arista.avd.natural_sort(sort_key='protocol') %}
 {%                 if destination_protocol.strip is arista.avd.defined(true) %}
 {%                     set tap_encapsulation_protocol_cli = tap_encapsulation_cli ~ " protocol " ~ destination_protocol.protocol %}
 {%                     if destination_protocol.feature_header_length is arista.avd.defined %}
@@ -1074,10 +1072,8 @@ interface {{ ethernet_interface.name }}
 {%     elif ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback is arista.avd.defined %}
    traffic-engineering min-delay dynamic twamp-light fallback {{ ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.number }} {{ ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.unit }}
 {%     endif %}
-{%     for link_tracking_group in ethernet_interface.link_tracking_groups | arista.avd.natural_sort %}
-{%         if link_tracking_group.name is arista.avd.defined and link_tracking_group.direction is arista.avd.defined %}
+{%     for link_tracking_group in ethernet_interface.link_tracking_groups | arista.avd.natural_sort(sort_key="name") %}
    link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}
-{%         endif %}
 {%     endfor %}
 {%     if ethernet_interface.link_tracking.direction is arista.avd.defined and ethernet_interface.link_tracking.groups is arista.avd.defined %}
 {%         for group_name in ethernet_interface.link_tracking.groups %}
@@ -1087,7 +1083,7 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.vmtracer is arista.avd.defined(true) %}
    vmtracer vmware-esx
 {%     endif %}
-{%     for vrid in ethernet_interface.vrrp_ids | arista.avd.natural_sort('id') %}
+{%     for vrid in ethernet_interface.vrrp_ids | arista.avd.natural_sort(sort_key='id') %}
 {%         if vrid.priority_level is arista.avd.defined %}
    vrrp {{ vrid.id }} priority-level {{ vrid.priority_level }}
 {%         endif %}
@@ -1136,7 +1132,7 @@ interface {{ ethernet_interface.name }}
 {%         for ipv6_address in vrid.ipv6.addresses | arista.avd.natural_sort %}
    vrrp {{ vrid.id }} ipv6 {{ ipv6_address }}
 {%         endfor %}
-{%         for tracked_obj in vrid.tracked_object | arista.avd.natural_sort('name') %}
+{%         for tracked_obj in vrid.tracked_object | arista.avd.natural_sort(sort_key='name') %}
 {%             if tracked_obj.name is arista.avd.defined %}
 {%                 set tracked_obj_cli = "vrrp " ~ vrid.id ~ " tracked-object " ~ tracked_obj.name %}
 {%                 if tracked_obj.decrement is arista.avd.defined %}

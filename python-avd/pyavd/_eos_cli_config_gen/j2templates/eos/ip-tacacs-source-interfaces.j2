@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - ip tacacs source interfaces #}
-{% for ip_tacacs_source_interface in ip_tacacs_source_interfaces | arista.avd.natural_sort %}
+{% for ip_tacacs_source_interface in ip_tacacs_source_interfaces | arista.avd.natural_sort(sort_key='name') %}
 !
 {%     set ip_tacacs_cli = "ip tacacs" %}
 {%     if ip_tacacs_source_interface.vrf is arista.avd.defined %}
