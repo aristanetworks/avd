@@ -14,5 +14,5 @@ l2leaf:
 snmp_settings:
   compute_local_engineid: true
   # The default value is 3411
-  # compute_local_engineid_source: rfc_3411
+  # compute_local_engineid_source: rfc3411_type5
   local_engineid_ip: use_mgmt_interface

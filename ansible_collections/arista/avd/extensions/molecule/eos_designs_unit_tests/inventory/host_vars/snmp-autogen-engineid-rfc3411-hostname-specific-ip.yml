@@ -11,7 +11,7 @@ default_mgmt_method: none
 
 snmp_settings:
   compute_local_engineid: true
-  # The default value is 3411
-  # compute_local_engineid_source: rfc_3411
+  # The default value is rfc3411_type5
+  # compute_local_engineid_source: rfc3411_type5
   # default_mgmt_method is none so an IP must be set
   local_engineid_ip: 42.42.42.42

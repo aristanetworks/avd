@@ -29216,7 +29216,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
-        ComputeLocalEngineidSource: TypeAlias = Literal["rfc3411", "system_mac", "hostname_and_ip"]
+        ComputeLocalEngineidSource: TypeAlias = Literal["rfc3411_type5", "rfc3411_type3", "system_mac", "hostname_and_ip"]
 
         class UsersItem(AvdModel):
             """Subclass of AvdModel."""
@@ -29497,7 +29497,7 @@ class EosDesigns(EosDesignsRootModel):
             "location_template": {"type": str, "default": "{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"},
             "vrfs": {"type": Vrfs},
             "compute_local_engineid": {"type": bool, "default": False},
-            "compute_local_engineid_source": {"type": str, "default": "rfc3411"},
+            "compute_local_engineid_source": {"type": str, "default": "rfc3411_type5"},
             "local_engineid_ip": {"type": str, "default": "use_default_mgmt_method_interface"},
             "compute_v3_user_localized_key": {"type": bool, "default": False},
             "users": {"type": Users},
@@ -29541,9 +29541,14 @@ class EosDesigns(EosDesignsRootModel):
         compute_local_engineid_source: ComputeLocalEngineidSource
         """
         `compute_local_engineid_source` supports:
-        - `rfc3411` use the value of `local_engineid_ip` to find
-        the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757105 + sha1(hostname +
+        - `rfc3411_type5` use the value of `local_engineid_ip` to
+        find the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757105 + sha1(hostname +
         local_engineid_ip)
+        - `rfc3411_type3` generate the RFC3411 compliant type 3 engined ID.
+          To use
+        this, `system_mac_address` MUST be set for the device.
+          The formula is 8000757103 +
+        system_mac_address.
         - `system_mac` generate the switch default engine id for AVD usage.
           To use
         this, `system_mac_address` MUST be set for the device.
@@ -29558,13 +29563,13 @@ class EosDesigns(EosDesignsRootModel):
         backward compatibility; it does not follow RFC 3411 and does not properly support in-band
         management.
 
-        Default value: `"rfc3411"`
+        Default value: `"rfc3411_type5"`
         """
         local_engineid_ip: str
         """
-        The IP to use when computing the engine ID when `compute_local_engineid_source: rfc3411`.
-        The value
-        will be interpreted according to these rules:
+        The IP to use when computing the engine ID when `compute_local_engineid_source: rfc3411_type5`.
+        The
+        value will be interpreted according to these rules:
         - `use_mgmt_interface` will use the Out-of-band
         interface IP or IPv6.
           The order of preference is first `mgmt_ip` and then `ipv6_mgmt_ip`.
@@ -29652,9 +29657,14 @@ class EosDesigns(EosDesignsRootModel):
                     compute_local_engineid: Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
                     compute_local_engineid_source:
                        `compute_local_engineid_source` supports:
-                       - `rfc3411` use the value of `local_engineid_ip` to find
-                       the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757105 + sha1(hostname +
+                       - `rfc3411_type5` use the value of `local_engineid_ip` to
+                       find the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757105 + sha1(hostname +
                        local_engineid_ip)
+                       - `rfc3411_type3` generate the RFC3411 compliant type 3 engined ID.
+                         To use
+                       this, `system_mac_address` MUST be set for the device.
+                         The formula is 8000757103 +
+                       system_mac_address.
                        - `system_mac` generate the switch default engine id for AVD usage.
                          To use
                        this, `system_mac_address` MUST be set for the device.
@@ -29669,9 +29679,9 @@ class EosDesigns(EosDesignsRootModel):
                        backward compatibility; it does not follow RFC 3411 and does not properly support in-band
                        management.
                     local_engineid_ip:
-                       The IP to use when computing the engine ID when `compute_local_engineid_source: rfc3411`.
-                       The value
-                       will be interpreted according to these rules:
+                       The IP to use when computing the engine ID when `compute_local_engineid_source: rfc3411_type5`.
+                       The
+                       value will be interpreted according to these rules:
                        - `use_mgmt_interface` will use the Out-of-band
                        interface IP or IPv6.
                          The order of preference is first `mgmt_ip` and then `ipv6_mgmt_ip`.

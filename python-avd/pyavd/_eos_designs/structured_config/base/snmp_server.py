@@ -110,17 +110,25 @@ class SnmpServerMixin(Protocol):
             return
 
         match self.inputs.snmp_settings.compute_local_engineid_source:
-            case "rfc3411":
-                digest = self._get_sha1_digest(self._get_snmp_engine_id_ip())
-                # prefix with Enterprise Id + 04 to adhere to RCF3411 and RFC5343
+            case "rfc3411_type5":
+                # prefix with Enterprise Id + 05 to adhere to RCF3411 and RFC5343
                 # Arista Enterprise ID = 30065 (7571 in hex)
                 # 5th octet = 05 , meaning engine id is based on custom octet
+                digest = self._get_sha1_digest(self._get_snmp_engine_id_ip())
                 local_engine_id = f"8000757105{digest}"
             case "hostname_and_ip":
                 # This is the default value in AVD 5.x.
                 # This does not handle well inband mgmt cases as it uses None for the management IP
                 # This is kept for legacy purposes.
                 local_engine_id = self._get_sha1_digest(self.shared_utils.node_config.mgmt_ip)
+            case "rfc3411_type3":
+                # prefix with Enterprise Id + 05 to adhere to RCF3411 and RFC5343
+                # Arista Enterprise ID = 30065 (7571 in hex)
+                # 5th octet = 05 , meaning engine id is based on custom octet
+                if self.shared_utils.system_mac_address is None:
+                    msg = "'compute_local_engineid_source: rfc3411_type3' requires 'system_mac_address' to be set."
+                    raise AristaAvdInvalidInputsError(msg)
+                local_engine_id = f"8000757103{str(self.shared_utils.system_mac_address).replace(':', '').lower()}"
             case "system_mac" | _:
                 # This is the default value of the engine ID on EOS. Note that is is not RFC3411 compliant.
                 if self.shared_utils.system_mac_address is None:
