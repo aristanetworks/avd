@@ -12563,6 +12563,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class MonitorLinkFlapProfiles(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        MonitorLinkFlapProfiles._item_type = str
+
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "comment": {"type": str},
@@ -12665,6 +12670,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "vrrp_ids": {"type": VrrpIds},
             "switchport": {"type": Switchport},
             "traffic_engineering": {"type": TrafficEngineering},
+            "monitor_link_flap_profiles": {"type": MonitorLinkFlapProfiles},
             "eos_cli": {"type": str},
         }
         name: str
@@ -12884,6 +12890,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         traffic_engineering: TrafficEngineering
         """Subclass of AvdModel."""
+        monitor_link_flap_profiles: MonitorLinkFlapProfiles
+        """Subclass of AvdList with `str` items."""
         eos_cli: str | None
         """Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
 
@@ -12993,6 +13001,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 vrrp_ids: VrrpIds | UndefinedType = Undefined,
                 switchport: Switchport | UndefinedType = Undefined,
                 traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
+                monitor_link_flap_profiles: MonitorLinkFlapProfiles | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -13132,6 +13141,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of
                        AvdModel.
                     traffic_engineering: Subclass of AvdModel.
+                    monitor_link_flap_profiles: Subclass of AvdList with `str` items.
                     eos_cli: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
 
                 """

@@ -4835,6 +4835,12 @@ interface Dps1
 | Ethernet81/3 | True | 3,15-29,testgrp | 4 | 10 percent | 5 microseconds | 2,TEST-SRLG,ARISTA |
 | Ethernet81/4 | True | 4,7-100,testgrp | 2 | 100 mbps | twamp-light, fallback 2 milliseconds | - |
 
+#### Monitor - Link Flap Profiles
+
+| Interface | Link Flap Profiles |
+| --------- | -------- |
+| Ethernet81/4 | LFP1 LFP2 |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -5874,6 +5880,7 @@ interface Ethernet81/4
    traffic-engineering administrative-group 4,7-100,testgrp
    traffic-engineering metric 2
    traffic-engineering min-delay dynamic twamp-light fallback 2 milliseconds
+   monitor link-flap profiles LFP1 LFP2
 !
 interface Ethernet81/10
    description isis_port_channel_member

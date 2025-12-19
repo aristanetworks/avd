@@ -789,6 +789,22 @@
 | {{ te_interface.name }} | {{ te_enabled }} | {{ admin_groups }} | {{ te_metric }} | {{ te_bandwidth }} | {{ te_min_del }} | {{ te_srlgs | join(",") }} |
 {%         endfor %}
 {%     endif %}
+{%     set monitor_link_flaps = [] %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.monitor_link_flap_profiles is arista.avd.defined %}
+{%             do monitor_link_flaps.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if monitor_link_flaps | length > 0 %}
+
+#### Monitor - Link Flap Profiles
+
+| Interface | Link Flap Profiles |
+| --------- | -------- |
+{%         for monitored_interface in monitor_link_flaps %}
+| {{ monitored_interface.name }} | {{ monitored_interface.monitor_link_flap_profiles | arista.avd.natural_sort | join(' ') }} |
+{%         endfor %}
+{%     endif %}
 
 #### Ethernet Interfaces Device Configuration
 
