@@ -1,3 +1,4 @@
+---
 # Testing with oob management
 type: l2leaf
 l2leaf:
@@ -69,6 +70,11 @@ aaa_settings:
         groups:
           - TACACS1
 
+      # Test with default groups tacacs+
+      - host: 10.10.10.42
+        vrf: default
+        key: 071B245F5A
+
     vrfs:
       # Testing override of source for VRF default - no VRF in output source interface model.
       - name: default
@@ -137,6 +143,11 @@ aaa_settings:
         groups:
           - RADIUS1
 
+      # Test with default groups radius
+      - host: 10.10.10.42
+        vrf: default
+        key: 071B245F5A
+
     vrfs:
       - name: default
         source_interface: Vlan123
@@ -161,6 +172,8 @@ aaa_settings:
             group: TACACS1
           - method: group
             group: RADIUS1
+          - method: group
+            group: tacacs+
           - method: logging
     system:
       default:
@@ -190,6 +203,8 @@ aaa_settings:
               group: TACACS1
             - method: group
               group: RADIUS1
+            - method: group
+              group: tacacs+
             - method: logging
         - commands: 0
           type: start-stop

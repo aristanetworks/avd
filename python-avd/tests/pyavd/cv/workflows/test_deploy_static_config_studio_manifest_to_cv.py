@@ -1,7 +1,8 @@
 # Copyright (c) 2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from unittest.mock import AsyncMock, MagicMock
+from pathlib import Path
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -15,27 +16,11 @@ from .helpers import create_grpc_container, generate_id
 
 
 @pytest.fixture
-def mock_cv_client() -> MagicMock:
-    """Fixture to provide a mocked CVClient instance with AsyncMocks."""
-    client = MagicMock()
-    # Patch all required async methods with AsyncMock
-    client.get_configlet_containers = AsyncMock()
-    client.set_configlet_containers = AsyncMock()
-    client.get_configlets = AsyncMock()
-    client.set_configlets_from_files = AsyncMock()
-    client.delete_configlets = AsyncMock()
-    client.get_studio_inputs_with_path = AsyncMock()
-    client.set_studio_inputs = AsyncMock()
-    client.delete_configlet_container = AsyncMock()
-    return client
-
-
-@pytest.fixture
 def avd_initial_manifest() -> AvdManifest:
     """Fixture to provide an AvdManifest instance for initial deployment."""
-    vxlan_configlet = AvdConfiglet(name="VXLAN", file="vxlan.cfg")
-    mlag_configlet = AvdConfiglet(name="MLAG", file="mlag.cfg")
-    bgp_configlet = AvdConfiglet(name="BGP", file="bgp.cfg")
+    vxlan_configlet = AvdConfiglet(name="VXLAN", file=Path("vxlan.cfg"))
+    mlag_configlet = AvdConfiglet(name="MLAG", file=Path("mlag.cfg"))
+    bgp_configlet = AvdConfiglet(name="BGP", file=Path("bgp.cfg"))
 
     leafs_container = AvdContainer(
         name="LEAFS", tag_query="topology_hint_type:leaf", description="Leafs container", configlets=(vxlan_configlet.name, mlag_configlet.name)
@@ -198,9 +183,9 @@ class TestDeployStaticConfigStudio:
         mock_cv_client.get_studio_inputs_with_path.return_value = [root_id, unused_root_id]
 
         # New desired state from AVD.
-        cfl1 = AvdConfiglet(name="CF_LEAF1", file="/path/to/cfl1.cfg")
-        cfl2 = AvdConfiglet(name="CF_LEAF2", file="/path/to/cfl2.cfg")
-        cfs1 = AvdConfiglet(name="CF_SPINE1", file="/path/to/cfs1.cfg")  # New configlet
+        cfl1 = AvdConfiglet(name="CF_LEAF1", file=Path("/path/to/cfl1.cfg"))
+        cfl2 = AvdConfiglet(name="CF_LEAF2", file=Path("/path/to/cfl2.cfg"))
+        cfs1 = AvdConfiglet(name="CF_SPINE1", file=Path("/path/to/cfs1.cfg"))  # New configlet
 
         cnt_leaf1 = AvdContainer(
             name="CNT_LEAF1",

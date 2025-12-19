@@ -9,11 +9,11 @@
 {%     for cause in errdisable.detect.causes | arista.avd.natural_sort %}
 errdisable detect cause {{ cause }}
 {%     endfor %}
-{%     for cause in errdisable.recovery.causes | rejectattr("interval", "arista.avd.defined") | arista.avd.natural_sort %}
+{%     for cause in errdisable.recovery.causes | arista.avd.default([]) | rejectattr("interval", "arista.avd.defined") | arista.avd.natural_sort %}
 {%         set cause_cli = "errdisable recovery cause " ~ cause.name %}
 {{ cause_cli }}
 {%     endfor %}
-{%     for cause in errdisable.recovery.causes | selectattr("interval", "arista.avd.defined") | arista.avd.natural_sort %}
+{%     for cause in errdisable.recovery.causes | arista.avd.default([]) | selectattr("interval", "arista.avd.defined") | arista.avd.natural_sort %}
 {%         set cause_cli = "errdisable recovery cause " ~ cause.name ~ " interval " ~ cause.interval %}
 {{ cause_cli }}
 {%     endfor %}
