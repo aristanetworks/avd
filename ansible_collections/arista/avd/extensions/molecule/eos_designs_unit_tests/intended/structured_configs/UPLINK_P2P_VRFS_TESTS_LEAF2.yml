@@ -190,16 +190,20 @@ vlan_internal_order:
 vlans:
 - id: 66
   name: TEST-L2VLAN-ATTRACTION
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: IT
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: ONLY-ON-L2LEAF
   ip_routing: true
-  tenant: TenantC
+  metadata:
+    tenant: TenantC

@@ -26,12 +26,19 @@ class RouteMapsMixin(Protocol):
         if self.shared_utils.overlay_cvx:
             return
 
-        if self.shared_utils.overlay_routing_protocol == "ebgp" and self.inputs.evpn_prevent_readvertise_to_server:
-            remote_asns = natural_sort({rs_dict.get("bgp_as") for rs_dict in self._evpn_route_servers.values()})
+        if (
+            self.shared_utils.overlay_routing_protocol == "ebgp"
+            and self.inputs.evpn_prevent_readvertise_to_server
+            # Limit the usage of the route-maps for route filtering towards RSs to source_peer_asn and as_path_acl modes.
+            and self.inputs.evpn_prevent_readvertise_to_server_mode in ["source_peer_asn", "as_path_acl"]
+        ):
+            match_prefix = "as " if self.inputs.evpn_prevent_readvertise_to_server_mode == "source_peer_asn" else "as-path AS"
+
+            remote_asns = natural_sort({bgp_as for rs_dict in self._evpn_route_servers.values() if (bgp_as := rs_dict.get("bgp_as")) is not None})
             for remote_asn in remote_asns:
-                route_maps_item = EosCliConfigGen.RouteMapsItem(name=f"RM-EVPN-FILTER-AS{self.shared_utils.get_asn(remote_asn)}")
+                route_maps_item = EosCliConfigGen.RouteMapsItem(name=f"RM-EVPN-FILTER-AS{remote_asn}")
                 route_maps_item.sequence_numbers.append_new(
-                    sequence=10, type="deny", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match([f"as {self.shared_utils.get_asn(remote_asn)}"])
+                    sequence=10, type="deny", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match([f"{match_prefix}{remote_asn}"])
                 )
                 route_maps_item.sequence_numbers.append_new(sequence=20, type="permit")
                 self.structured_config.route_maps.append(route_maps_item)

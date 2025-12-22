@@ -1,3 +1,4 @@
+---
 # Testing with oob management
 type: l2leaf
 l2leaf:
@@ -69,6 +70,11 @@ aaa_settings:
         groups:
           - TACACS1
 
+      # Test with default groups tacacs+
+      - host: 10.10.10.42
+        vrf: default
+        key: 071B245F5A
+
     vrfs:
       # Testing override of source for VRF default - no VRF in output source interface model.
       - name: default
@@ -103,6 +109,17 @@ aaa_settings:
         groups:
           - RADIUS1
 
+      # Test case for TLS configuration. The 'key' field should be ignored during processing
+      - host: 11.10.10.5
+        vrf: MGMT
+        key: 071B245F5A
+        tls:
+          enabled: true
+          ssl_profile: HOST_SSL_PROFILE
+          port: 2080
+        groups:
+          - RADIUS1
+
       # No VRF, so it should honor default_mgmt_method which is oob in this case
       - host: 11.10.10.3
         vrf: MGMT
@@ -125,6 +142,11 @@ aaa_settings:
         cleartext_key: arista
         groups:
           - RADIUS1
+
+      # Test with default groups radius
+      - host: 10.10.10.42
+        vrf: default
+        key: 071B245F5A
 
     vrfs:
       - name: default
@@ -150,6 +172,8 @@ aaa_settings:
             group: TACACS1
           - method: group
             group: RADIUS1
+          - method: group
+            group: tacacs+
           - method: logging
     system:
       default:
@@ -179,6 +203,8 @@ aaa_settings:
               group: TACACS1
             - method: group
               group: RADIUS1
+            - method: group
+              group: tacacs+
             - method: logging
         - commands: 0
           type: start-stop
@@ -268,9 +294,6 @@ aaa_settings:
           default: "group tacacs+ local"
         - level: "5"
           default: "group radius"
-        # To handle the not defined cases
-        - level: "6"
-        - default: "group radius"
   root_login:
     enabled: true
     sha512_password: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.

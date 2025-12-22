@@ -123,6 +123,28 @@ cvx
       vtep mac-learning control-plane
 ```
 
+## Authentication
+
+### AAA Accounting
+
+#### AAA Accounting Summary
+
+| Type | Commands | Record type | Groups | Logging |
+| ---- | -------- | ----------- | ------ | ------- |
+| Commands - Console | all | none | - | - |
+| Commands - Console | 0 | none | - | - |
+| Commands - Default | all | none | - | - |
+| Commands - Default | 0 | none | - | - |
+
+#### AAA Accounting Device Configuration
+
+```eos
+aaa accounting commands all console none
+aaa accounting commands 0 console none
+aaa accounting commands all default none
+aaa accounting commands 0 default none
+```
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -147,7 +169,7 @@ daemon TerminAttr
 #### Logging Servers and Features Summary
 
 | Type | Level |
-| -----| ----- |
+| ---- | ----- |
 | Synchronous | critical |
 
 | Format Type | Setting |
@@ -237,7 +259,7 @@ spanning-tree mst configuration
 | -------- | ----- |
 | Instance | EVPN_UNDERLAY |
 | SPF Interval | 250 seconds |
-| SPF Interval Wait Time| 30 milliseconds |
+| SPF Interval Wait Time | 30 milliseconds |
 
 #### ISIS Interfaces Summary
 
@@ -382,6 +404,17 @@ mpls rsvp
 router multicast
    ipv4
       multipath deterministic
+```
+
+## Errdisable
+
+### Errdisable Summary
+
+Errdisable recovery timer interval: 300 seconds
+
+```eos
+!
+errdisable recovery interval 300
 ```
 
 ### Traffic Policies information

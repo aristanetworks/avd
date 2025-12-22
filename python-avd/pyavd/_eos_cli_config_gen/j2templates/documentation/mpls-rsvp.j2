@@ -17,7 +17,7 @@
 | Refresh interval | {{ mpls.rsvp.refresh.interval }} |
 {%         endif %}
 {%         if mpls.rsvp.refresh.method is arista.avd.defined %}
-| Refresh method  | {{ mpls.rsvp.refresh.method }} |
+| Refresh method | {{ mpls.rsvp.refresh.method }} |
 {%         endif %}
 {%     endif %}
 {%     if mpls.rsvp.hello.interval is arista.avd.defined and mpls.rsvp.hello.multiplier is arista.avd.defined %}

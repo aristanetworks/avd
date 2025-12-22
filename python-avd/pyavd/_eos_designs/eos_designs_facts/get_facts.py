@@ -10,7 +10,7 @@ from pyavd._eos_designs.shared_utils import SharedUtils
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
+    from collections.abc import MutableMapping
 
     from ansible.template import Templar
 
@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 
 def get_facts(
     all_inputs: dict[str, EosDesigns],
-    all_hostvars: Mapping[str, Mapping],
+    all_hostvars: MutableMapping[str, MutableMapping],
     templar: Templar | None = None,
     pool_manager: PoolManager | None = None,
     digital_twin: bool = False,
@@ -46,9 +46,17 @@ def get_facts(
     all_facts: dict[str, EosDesignsFacts] = {}
     """Placeholder for the final facts data to be returned."""
 
+    mlag_groups: dict[str, set[str]] = {}
+    """Placeholder for map of mlag_group to devices. Used to identify MLAG pairs from the mlag_group variable."""
+
     for hostname, inputs in all_inputs.items():
         hostvars = all_hostvars.get(hostname, {})
-        peer_facts_generators[hostname] = _create_generator_instance(hostname, inputs, hostvars, templar, pool_manager, digital_twin, peer_facts_generators)
+        peer_facts_generators[hostname] = _create_generator_instance(
+            hostname, inputs, hostvars, templar, pool_manager, digital_twin, peer_facts_generators, mlag_groups
+        )
+
+    for generator in peer_facts_generators.values():
+        generator.update_mlag_groups()
 
     for generator in peer_facts_generators.values():
         generator.cross_pollinate()
@@ -69,11 +77,12 @@ def get_facts(
 def _create_generator_instance(
     hostname: str,
     inputs: EosDesigns,
-    hostvars: Mapping,
+    hostvars: MutableMapping,
     templar: Templar | None,
     pool_manager: PoolManager | None,
     digital_twin: bool,
     peer_facts_generators: dict[str, EosDesignsFactsGenerator],
+    mlag_groups: dict[str, set[str]],
 ) -> EosDesignsFactsGenerator:
     """Initialize SharedUtils and EosDesignsFactsGenerator and return the instance of the generator."""
     shared_utils = SharedUtils(
@@ -85,4 +94,4 @@ def _create_generator_instance(
         pool_manager=pool_manager,
         digital_twin=digital_twin,
     )
-    return EosDesignsFactsGenerator(hostvars=hostvars, inputs=inputs, peer_generators=peer_facts_generators, shared_utils=shared_utils)
+    return EosDesignsFactsGenerator(hostvars=hostvars, inputs=inputs, peer_generators=peer_facts_generators, shared_utils=shared_utils, mlag_groups=mlag_groups)

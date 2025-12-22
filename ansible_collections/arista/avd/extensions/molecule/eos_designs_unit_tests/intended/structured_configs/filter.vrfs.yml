@@ -87,8 +87,10 @@ vrfs:
 - name: VRF2
   description: This VRF is attracted by Loopback and will be configured because it is permitted by filter.allow_vrfs
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: VRF5
   description: This VRF will be configured because of always_include_vrfs_in_tenants and it is permitted by filter.allow_vrfs
   ip_routing: true
-  tenant: TENANT2
+  metadata:
+    tenant: TENANT2

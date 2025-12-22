@@ -23,7 +23,7 @@ from .structured_config_generator import StructCfgs
 from .underlay import AvdStructuredConfigUnderlay
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
+    from collections.abc import Mapping, MutableMapping
 
     from ansible.template import Templar
 
@@ -33,6 +33,7 @@ if TYPE_CHECKING:
     from .structured_config_generator import StructuredConfigGenerator
 
 AVD_STRUCTURED_CONFIG_CLASSES: list[type[StructuredConfigGenerator]] = [
+    # TODO: Rewrite the world to not rely on the order of classes
     AvdStructuredConfigBase,
     AvdStructuredConfigMlag,
     AvdStructuredConfigUnderlay,
@@ -41,10 +42,6 @@ AVD_STRUCTURED_CONFIG_CLASSES: list[type[StructuredConfigGenerator]] = [
     AvdStructuredConfigNetworkServices,
     AvdStructuredConfigConnectedEndpoints,
     AvdStructuredConfigInbandManagement,
-    # The classes below this have the property ignore_avd_eos_designs_enforce_duplication_checks_across_all_models = True
-    # This lets the classes inspect structured config, and since their output is not at risk of generating duplicate
-    # objects like interfaces, we can ignore that here.
-    #
     # The Flows module must be rendered after others contributing interfaces,
     # since it parses those interfaces for sFlow or flow tracking (ipfix) config.
     AvdStructuredConfigFlows,
@@ -64,7 +61,7 @@ The order is important, since later modules can overwrite or read config created
 def get_structured_config(
     *,
     hostname: str,
-    hostvars: Mapping,
+    hostvars: MutableMapping,
     input_schema_tools: AvdSchemaTools,
     all_facts: Mapping[str, EosDesignsFacts],
     result: dict,

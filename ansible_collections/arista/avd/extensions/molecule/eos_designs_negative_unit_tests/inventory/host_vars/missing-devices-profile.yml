@@ -1,0 +1,9 @@
+---
+fabric_name: FABRIC_MISSING_DEVICES_PROFILE
+
+devices:
+  - name: missing-devices-profile
+    profile: missing-profile
+
+expected_error_message: >-
+  The Device Profile 'missing-profile' applied for the device 'missing-devices-profile' does not exist under `device_profiles`.

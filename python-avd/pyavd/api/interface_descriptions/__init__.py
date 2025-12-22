@@ -457,7 +457,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             ),
         )
 
-    def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str:
+    def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str | None:
         """
         Build Router ID loopback interface description.
 
@@ -473,7 +473,7 @@ class AvdInterfaceDescriptions(AvdFacts):
 
         return data.description
 
-    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str:
+    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str | None:
         """
         Build VTEP loopback interface description.
 
@@ -601,6 +601,10 @@ class InterfaceDescriptionData:
         self.wan_carrier = wan_carrier
         self.wan_circuit_id = wan_circuit_id
         self.main_interface_wan_carrier = main_interface_wan_carrier
+
+    @property
+    def hostname(self) -> str:
+        return self._shared_utils.hostname
 
     @property
     def mpls_overlay_role(self) -> str | None:

@@ -53,11 +53,13 @@ custom_structured_configuration_ethernet_interfaces:
 
     # Test to skip the VerifyLLDPNeighbors test case via `validate_state` key
   - name: Ethernet3
-    validate_state: false
+    metadata:
+      validate_state: false
 
     # Test to skip the VerifyLLDPNeighbors test case via `validate_lldp` key
   - name: Ethernet4
-    validate_lldp: false
+    metadata:
+      validate_lldp: false
 
     # Test to skip the VerifyReachability test case for DHCP interface
   - name: Ethernet16
@@ -154,3 +156,25 @@ custom_structured_configuration_port_channel_interfaces:
       peer_interface: Ethernet2
     switchport:
       enabled: false
+
+# Custom Loopback and VXLAN configuration to simulate a Multi-VTEP for ANTA tests
+custom_structured_configuration_loopback_interfaces:
+  - name: Loopback66
+    description: MLAG_VTEP_IP
+    shutdown: false
+    ip_address: 10.66.66.66/32
+
+custom_structured_configuration_vxlan_interface:
+  vxlan1:
+    vxlan:
+      source_interface: Loopback0
+      mlag_source_interface: Loopback66
+
+# Custom BGP strucutred_config to validate that RFC5549 interfaces are validated
+custom_structured_configuration_router_bgp:
+  neighbor_interfaces:
+    - name: Vlan4093
+      remote_as: 65133
+      metadata:
+        peer: dc1-svc-leaf1a
+        validate_state: true

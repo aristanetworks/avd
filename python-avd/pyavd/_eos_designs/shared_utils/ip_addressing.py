@@ -55,10 +55,7 @@ class IpAddressingMixin(Protocol):
         return self.node_config.router_id_pool
 
     @cached_property
-    def vtep_loopback_ipv4_pool(self: SharedUtilsProtocol) -> str | None:
-        if self.inputs.underlay_ipv6_numbered:
-            return None
-
+    def vtep_loopback_ipv4_pool(self: SharedUtilsProtocol) -> str:
         if not self.node_config.vtep_loopback_ipv4_pool:
             msg = "vtep_loopback_ipv4_pool"
             raise AristaAvdMissingVariableError(msg)
@@ -68,6 +65,9 @@ class IpAddressingMixin(Protocol):
     @cached_property
     def vtep_ip(self: SharedUtilsProtocol) -> str:
         """Render ipv4 address for vtep_ip using dynamically loaded python module."""
+        if self.vtep_loopback.lower() == "loopback0" and self.router_id:
+            return self.router_id
+
         if self.mlag is True:
             return self.ip_addressing.vtep_ip_mlag()
 
@@ -76,6 +76,9 @@ class IpAddressingMixin(Protocol):
     @cached_property
     def vtep_ipv6(self: SharedUtilsProtocol) -> str:
         """Render ipv6 address for vtep_ip using dynamically loaded python module."""
+        if self.vtep_loopback.lower() == "loopback0" and self.ipv6_router_id:
+            return self.ipv6_router_id
+
         if self.mlag is True:
             return self.ip_addressing.vtep_ipv6_mlag()
 
