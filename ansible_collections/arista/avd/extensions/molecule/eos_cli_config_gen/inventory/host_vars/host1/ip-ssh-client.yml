@@ -4,7 +4,7 @@
 ip_ssh_client:
   source_interface: ethernet10
   vrfs:
-    - name: default
+    - name: aaa
       source_interface: Loopback0
     - name: MGMT
       source_interface: manaGement0

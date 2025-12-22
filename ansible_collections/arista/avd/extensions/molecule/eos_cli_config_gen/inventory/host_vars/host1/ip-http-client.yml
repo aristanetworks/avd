@@ -6,5 +6,5 @@ ip_http_client:
   vrfs:
     - name: MGMT
       source_interface: Management0
-    - name: default
+    - name: aaa
       source_interface: Loopback0
