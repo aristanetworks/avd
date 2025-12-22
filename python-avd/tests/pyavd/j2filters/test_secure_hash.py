@@ -19,7 +19,7 @@ VALID_PASSWORDS = [
         "pass",
         "DxaFhAPPrrOzqgZV",
         "sha512_password",
-        "$6$DxaFhAPPrrOzqgZV$pdiZUeB6SRwVsiTzW1jPQvBy3eP5DqJWjZ1Fd3mpO8E9tjJ/ntaiZx7CaIIkfYyOnzgV92AW7fFSWnQzzowzP.",
+        "$6$.aBFDsiJk9.zduYg$IaYKd2fJLSbFujJ6B6S4mNQ1WFdB3WJwCneVsx3oUeWFI7cCfrSl5131DK7AnrTlS3y2pijredWQjRWmO7l2.1",
     )
 ]
 
