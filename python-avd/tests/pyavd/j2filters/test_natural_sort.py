@@ -192,6 +192,6 @@ class TestNaturalSortFilter:
         assert resp == [a, b]
 
     def test__alphanum_key_failure(self) -> None:
-        with pytest.raises(ValueError, match="'natural_sort' requires 'sort_key' to be set when used for a Mapping or a Namespace:"):
+        with pytest.raises(ValueError, match=r"'natural_sort' requires 'sort_key' to be set when used for a (Mapping|Namespace):"):
             # trying to get a key for a dict without sort_key
             _alphanum_key(item={"name": "blah"})
