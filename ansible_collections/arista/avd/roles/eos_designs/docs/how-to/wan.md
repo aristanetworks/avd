@@ -107,13 +107,13 @@ The following table list the `eos_designs` top level keys used for WAN and how t
 
 | Key | Must be the same for all the WAN routers | Comment |
 | --- | ---------------------------------------- | ------- |
-| `wan_mode` | ✅ | Two possible modes, `autovpn` and `cv-pathfinder` (default). |
+| `wan_mode` | ✅ | Two possible modes, `legacy-autovpn` and `cv-pathfinder` (default). |
 | `wan_encapsulation` | ✅ | Two possible encapsulations, `vxlan` and `path-selection` (default). |
 | `wan_virtual_topologies` | ✅ | to define the Policies and the VRF to policy mappings. |
 | `wan_path_groups` | ✅ | to define the list of path-groups in the network. |
 | `wan_carriers` | ✅ | to define the list of carriers in the network, each carrier is assigned to a path-group. |
 | `wan_ipsec_profiles` | ✅ | to define the shared key for the Control Plane and Data Plane IPSec profiles. |
-| `cv_pathfinder_regions` | ✅ | to define the Region/Zone/Site hierarchy, not required for AutoVPN. |
+| `cv_pathfinder_regions` | ✅ | to define the Region/Zone/Site hierarchy, not required for Legacy AutoVPN. |
 | `tenants` | ✅ | the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF information. |
 | `wan_stun_dtls_disable` | ✅ | disable dTLS for STUN for instance for lab. (**NOT** recommended in production). |
 | `application_classification` | ✅ | to define the specific traffic classification required for the WAN if any. |
@@ -136,14 +136,14 @@ Additionally, following keys must be set for the WAN route servers for the conne
 
 AVD supports two design types for WAN:
 
-- AutoVPN
+- Legacy AutoVPN
 - CV Pathfinder
 
 By default the mode is set to `cv-pathfinder` and can be changed using:
 
 ```yaml
 ---
-wan_mode: autovpn | cv-pathfinder # default: cv-pathfinder
+wan_mode: legacy-autovpn | cv-pathfinder # default: cv-pathfinder
 ```
 
 #### WAN encapsulation
