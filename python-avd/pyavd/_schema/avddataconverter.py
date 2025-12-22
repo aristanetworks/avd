@@ -32,7 +32,7 @@ if TYPE_CHECKING:
 class AvdDataConverter:
     """AvdDataConverter is used to convert AVD Data Types based on schema options."""
 
-    def __init__(self, schema: dict) -> None:
+    def __init__(self, schema: dict[str, Any]) -> None:
         self.schema = schema
 
         # We run through all the regular keys first, to ensure that all data has been converted
@@ -45,7 +45,7 @@ class AvdDataConverter:
         }
 
     def convert_data(
-        self, data: Any, schema: dict | None = None, path: list[str | int] | None = None, parent_dict: dict | None = None
+        self, data: Any, schema: dict[str, Any] | None = None, path: list[str | int] | None = None, parent_dict: dict | None = None
     ) -> Generator[AvdDeprecationWarning, None, None]:
         """
         Perform in-place conversion of data according to the provided schema.
@@ -66,7 +66,7 @@ class AvdDataConverter:
             yield from converter(schema[key], data, schema, path, parent_dict)
 
     def convert_keys(
-        self, keys: dict, data: dict, schema: dict, path: list[str | int], _parent_dict: dict | None
+        self, keys: dict, data: dict[str, Any], schema: dict[str, Any], path: list[str | int], _parent_dict: dict | None
     ) -> Generator[AvdDeprecationWarning, None, None]:
         """This function performs conversion on each key with the relevant subschema."""
         if not is_type(data, "dict"):
@@ -105,7 +105,7 @@ class AvdDataConverter:
                 )
 
     def convert_dynamic_keys(
-        self, dynamic_keys: dict, data: dict, schema: dict, path: list[str | int], parent_dict: dict | None
+        self, dynamic_keys: dict[str, Any], data: dict[str, Any], schema: dict[str, Any], path: list[str | int], parent_dict: dict | None
     ) -> Generator[AvdDeprecationWarning, None, None]:
         """
         This function resolves "dynamic_keys" by looking in the actual data.
@@ -127,7 +127,7 @@ class AvdDataConverter:
         yield from self.convert_keys(keys, data, schema, path, parent_dict)
 
     def convert_items(
-        self, items: dict, data: list, _schema: dict, path: list[str | int], parent_dict: dict | None
+        self, items: dict[str, Any], data: list[Any], _schema: dict, path: list[str | int], parent_dict: dict | None
     ) -> Generator[AvdDeprecationWarning, None, None]:
         """This function performs conversion on each item with the items subschema."""
         if not is_type(data, "list"):
@@ -145,7 +145,7 @@ class AvdDataConverter:
             # Dive in to child items/schema
             yield from self.convert_data(item, items, [*path, index], parent_dict)
 
-    def convert_types(self, convert_types: list, data: dict | list, index: str | int, schema: dict, _path: list[str | int]) -> None:
+    def convert_types(self, convert_types: list[str], data: dict | list, index: str | int, schema: dict[str, Any], _path: list[str | int]) -> None:
         """
         This function performs type conversion if necessary on a single data instance.
 
@@ -162,28 +162,34 @@ class AvdDataConverter:
         schema_type = schema.get("type")
 
         # Get value from input data
-        value = data[index]
+        value = data[index]  # pyright: ignore[reportCallIssue, reportArgumentType]
 
         # For simple conversions, skip conversion if the value is of the correct type
         # Avoid corner case where we want to convert bool to int. Bool is a subclass of Int so it passes the check above.
+        if schema_type is None:
+            return
+
+        py_schema_type = SCHEMA_TO_PY_TYPE_MAP.get(schema_type)
         if (
             schema_type in SIMPLE_CONVERTERS
-            and isinstance(value, SCHEMA_TO_PY_TYPE_MAP.get(schema_type))
+            and py_schema_type is not None
+            and isinstance(value, py_schema_type)
             and not (schema_type == "int" and isinstance(value, bool))
         ):
             return
 
         for convert_type in convert_types:
-            if isinstance(value, SCHEMA_TO_PY_TYPE_MAP.get(convert_type)) and schema_type in SIMPLE_CONVERTERS:
+            py_convert_type = SCHEMA_TO_PY_TYPE_MAP[convert_type]
+            if isinstance(value, py_convert_type) and schema_type in SIMPLE_CONVERTERS:
                 # Ignore errors
                 # TODO: Log message
                 with contextlib.suppress(Exception):
-                    data[index] = SIMPLE_CONVERTERS[schema_type](value)
+                    data[index] = SIMPLE_CONVERTERS[schema_type](value)  # pyright: ignore[reportCallIssue, reportArgumentType]
 
                 return
 
     def deprecation(
-        self, deprecation: dict, _data: Any, _schema: dict, path: list[str | int], parent_dict: dict | None
+        self, deprecation: dict[str, Any], _data: Any, _schema: dict, path: list[str | int], parent_dict: dict | None
     ) -> Generator[AvdDeprecationWarning, None, None]:
         """
         Deprecation.

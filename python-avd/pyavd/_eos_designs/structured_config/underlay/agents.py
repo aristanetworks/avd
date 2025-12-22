@@ -22,7 +22,7 @@ class AgentsMixin(Protocol):
     @structured_config_contributor
     def agents(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set the structured config for agents."""
-        if not self.shared_utils.is_wan_router or self.shared_utils.platform_settings.kernel_ecmp_cli:
+        if not self.shared_utils.is_wan_router or self.shared_utils.node_config.kernel_ecmp_cli:
             return
 
         agent = EosCliConfigGen.AgentsItem(name="KernelFib")

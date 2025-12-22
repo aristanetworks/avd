@@ -884,9 +884,9 @@ management tech-support
 
 | IP Client | VRF | Source Interface Name |
 | --------- | --- | --------------------- |
-| FTP | default | Ethernet10 |
 | FTP | default | Loopback0 |
 | FTP | MGMT | Management0 |
+| FTP | abc | Ethernet10 |
 | HTTP | default | Loopback0 |
 | HTTP | MGMT | Management0 |
 | HTTP | default | Ethernet10 |
@@ -894,19 +894,19 @@ management tech-support
 | SSH | default | Loopback0 |
 | SSH | MGMT | Management0 |
 | Telnet | default | Ethernet10 |
-| Telnet | default | Loopback0 |
 | Telnet | MGMT | Management0 |
-| TFTP | default | Ethernet10 |
+| Telnet | data | Loopback0 |
 | TFTP | default | Loopback0 |
 | TFTP | MGMT | Management0 |
+| TFTP | data | Ethernet10 |
 
 #### IP Client Source Interfaces Device Configuration
 
 ```eos
 !
-ip ftp client source-interface Ethernet10
-ip ftp client source-interface Loopback0 vrf default
+ip ftp client source-interface Loopback0
 ip ftp client source-interface Management0 vrf MGMT
+ip ftp client source-interface Ethernet10 vrf abc
 ip http client local-interface Loopback0 vrf default
 ip http client local-interface Management0 vrf MGMT
 ip http client local-interface Ethernet10
@@ -914,11 +914,11 @@ ip ssh client source-interface Ethernet10
 ip ssh client source-interface Loopback0 vrf default
 ip ssh client source-interface Management0 vrf MGMT
 ip telnet client source-interface Ethernet10
-ip telnet client source-interface Loopback0 vrf default
 ip telnet client source-interface Management0 vrf MGMT
-ip tftp client source-interface Ethernet10
-ip tftp client source-interface Loopback0 vrf default
+ip telnet client source-interface Loopback0 vrf data
+ip tftp client source-interface Loopback0
 ip tftp client source-interface Management0 vrf MGMT
+ip tftp client source-interface Ethernet10 vrf data
  ```
 
 ### Management Accounts
@@ -2020,20 +2020,20 @@ dhcp relay
 
 ##### IPv4 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
-| 172.16.254.0/24 | - | - | 172.16.254.1 | - | - |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ | ------------------------------ | ---------------------------- | ---------------------------- |
+| 172.16.254.0/24 | - | - | 172.16.254.1 | - | - | - | - | - |
 
 #### VRF default DHCP Server
 
 ##### IPv4 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
-| 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 |
-| 10.2.3.0/24 | - | - | - | - | - |
-| 172.16.254.0/24 | - | - | 172.16.254.1 | - | - |
-| 192.168.0.0/24 | - | - | - | - | - |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ | ------------------------------ | ---------------------------- | ---------------------------- |
+| 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 | https://www.arista.io/ztp/bootstrap | 192.168.66.22 | 192.166.66.33, 192.161.66.33 |
+| 10.2.3.0/24 | - | - | - | - | - | - | - | - |
+| 172.16.254.0/24 | - | - | 172.16.254.1 | - | - | - | - | - |
+| 192.168.0.0/24 | - | - | - | - | - | - | - | - |
 
 ###### DHCP Reservations in subnet 10.0.0.0/24
 
@@ -2044,10 +2044,10 @@ dhcp relay
 
 ##### IPv6 Subnets
 
-| Subnet | Name | DNS Servers | Lease Time | Ranges |
-| ------ | ---- | ----------- | ---------- | ------ |
-| 2a00:2::/64 | - | - | - | - |
-| 2001:db8:abcd:1234:c000::/66 | - | - | - | - |
+| Subnet | Name | DNS Servers | Lease Time | Ranges | IPv6 TFTP Bootfile URL (Option 59) |
+| ------ | ---- | ----------- | ---------- | ------ | ---------------------------------- |
+| 2a00:2::/64 | - | - | - | - | - |
+| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | https://2001:0db8:fe/ztp/bootstrap |
 
 ###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
@@ -2065,9 +2065,9 @@ dhcp relay
 
 ##### IPv4 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
-| 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ | ------------------------------ | ---------------------------- | ---------------------------- |
+| 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 | - | - | - |
 
 ###### DHCP Reservations in subnet 10.0.0.0/24
 
@@ -2078,9 +2078,9 @@ dhcp relay
 
 ##### IPv6 Subnets
 
-| Subnet | Name | DNS Servers | Lease Time | Ranges |
-| ------ | ---- | ----------- | ---------- | ------ |
-| 2001:db8:abcd:1234:c000::/66 | - | - | - | - |
+| Subnet | Name | DNS Servers | Lease Time | Ranges | IPv6 TFTP Bootfile URL (Option 59) |
+| ------ | ---- | ----------- | ---------- | ------ | ---------------------------------- |
+| 2001:db8:abcd:1234:c000::/66 | - | - | - | - | - |
 
 ###### DHCP Reservations in subnet 2001:db8:abcd:1234:c000::/66
 
@@ -2101,9 +2101,9 @@ dhcp relay
 
 ##### IPv4 Subnets
 
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
-| 192.168.0.0/24 | - | - | - | - | - |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ | ------------------------------ | ---------------------------- | ---------------------------- |
+| 192.168.0.0/24 | - | - | - | - | - | - | - | - |
 
 ### DHCP Server Configuration
 
@@ -2185,6 +2185,9 @@ dhcp server
       dns server 10.1.1.12 10.1.1.13
       lease time 0 days 0 hours 10 minutes
       default-gateway 10.0.0.1
+      tftp server option 66 192.168.66.22
+      tftp server option 150 192.166.66.33 192.161.66.33
+      tftp server file https://www.arista.io/ztp/bootstrap
    !
    subnet 10.2.3.0/24
    !
@@ -2199,6 +2202,7 @@ dhcp server
       reservations
          mac-address 0003.0003.003
             ipv6-address 2001:db8:abcd:1234:c000::1
+      tftp server file https://2001:0db8:fe/ztp/bootstrap
    !
    vendor-option ipv4 NTP
       sub-option 42 type ipv4-address data 10.1.1.1
@@ -3898,6 +3902,14 @@ lldp receive packet tagged drop
 
 ### Forwarding Profiles
 
+#### aaa
+
+| Protocol | Forward | Tagged Forward | Untagged Forward |
+| -------- | ------- | -------------- | ---------------- |
+| bfd per-link rfc-7130 | False | True | - |
+| e-lmi | True | - | - |
+| isis | - | - | True |
+
 #### TEST1
 
 | Protocol | Forward | Tagged Forward | Untagged Forward |
@@ -3965,6 +3977,10 @@ l2-protocol
       pause untagged forward
       stp tagged forward
       stp untagged forward
+   forwarding profile aaa
+      bfd per-link rfc-7130 tagged forward
+      e-lmi forward
+      isis untagged forward
 ```
 
 ## LACP
@@ -7807,14 +7823,28 @@ IPv6 neighbor cache persistency is enabled. The refresh-delay is 1000 seconds af
 | --- | ------------ | -------------- | ----------- |
 | MGMT | 11:22:33:44:55:66:77:88 | Ethernet1 | 11:22:33:44:55:66 |
 | - | ::ffff:192.1.56.10 | Loopback99 | aa:af:12:34:bc:bf |
+| MGMT | 11:11:11:11:11:11:11:11 | Ethernet3 | 11:11:11:11:11:11 |
+| - | ::ffff:192.1.56.10 | Ethernet2 | 22:22:22:22:22:22 |
+| - | 11:22:33:44:55:66:77:77 | Ethernet2 | 22:22:22:22:22:22 |
+| MGMT | 11:11:11:11:11:11:11:11 | Ethernet4 | 00:00:00:00:00:00 |
+| MGMT | 11:22:33:44:55:66:77:88 | Ethernet1 | 11:22:33:44:55:66 |
+| guest | 11:11:11:11:11:11:11:11 | Ethernet4 | 00:00:00:00:00:00 |
+| data | 11:22:33:44:55:66:77:77 | Ethernet2 | 22:22:22:22:22:22 |
 
 #### IPv6 Neighbor Configuration
 
 ```eos
 !
 ipv6 neighbor persistent refresh-delay 1000
-ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11:22:33:44:55:66
+ipv6 neighbor 11:22:33:44:55:66:77:77 Ethernet2 22:22:22:22:22:22
+ipv6 neighbor ::ffff:192.1.56.10 Ethernet2 22:22:22:22:22:22
 ipv6 neighbor ::ffff:192.1.56.10 Loopback99 aa:af:12:34:bc:bf
+ipv6 neighbor vrf MGMT 11:11:11:11:11:11:11:11 Ethernet3 11:11:11:11:11:11
+ipv6 neighbor vrf MGMT 11:11:11:11:11:11:11:11 Ethernet4 00:00:00:00:00:00
+ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11:22:33:44:55:66
+ipv6 neighbor vrf MGMT 11:22:33:44:55:66:77:88 Ethernet1 11:22:33:44:55:66
+ipv6 neighbor vrf data 11:22:33:44:55:66:77:77 Ethernet2 22:22:22:22:22:22
+ipv6 neighbor vrf guest 11:11:11:11:11:11:11:11 Ethernet4 00:00:00:00:00:00
 ```
 
 ### ARP
@@ -11162,6 +11192,12 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 
 #### IPv6 Prefix-lists Summary
 
+##### ipv6_list1
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 1b11:3a00:22b0:0082::/64 eq 128 |
+
 ##### PL-IPV6-LOOPBACKS
 
 | Sequence | Action |
@@ -11173,6 +11209,9 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ```eos
 !
 ipv6 prefix-list PL-IPV6-LOOPBACKS
+   seq 10 permit 1b11:3a00:22b0:0082::/64 eq 128
+!
+ipv6 prefix-list ipv6_list1
    seq 10 permit 1b11:3a00:22b0:0082::/64 eq 128
 ```
 
@@ -11790,6 +11829,13 @@ ip access-list acl_aaa_short
 
 #### IPv6 Standard Access-lists Summary
 
+##### ipv6_test1
+
+| Sequence | Action |
+| -------- | ------ |
+| 5 | deny 2001:db8:1000::/64 |
+| 10 | permit 2001:db8::/32 |
+
 ##### TEST4
 
 | Sequence | Action |
@@ -11827,6 +11873,10 @@ ipv6 access-list standard TEST5
    10 deny 2001:db8::/32
 !
 ipv6 access-list standard TEST6
+   5 deny 2001:db8:1000::/64
+   10 permit 2001:db8::/32
+!
+ipv6 access-list standard ipv6_test1
    5 deny 2001:db8:1000::/64
    10 permit 2001:db8::/32
 ```
@@ -11874,12 +11924,6 @@ ACL has counting mode `counters per-entry` enabled!
 
 ```eos
 !
-ipv6 access-list acl_qos_tc0_v6
-   10 permit ipv6 any any dscp cs1
-!
-ipv6 access-list acl_qos_tc5_v6
-   10 permit ipv6 any 2001:db8::/48
-!
 ipv6 access-list TEST1
    5 deny ipv6 fe80::/64 any
    10 permit ipv6 fe90::/64 any
@@ -11892,6 +11936,12 @@ ipv6 access-list TEST2
 ipv6 access-list TEST3
    5 deny ipv6 2001:db8:1000::/64 any
    10 permit ipv6 2001:db8::/32 any
+!
+ipv6 access-list acl_qos_tc0_v6
+   10 permit ipv6 any any dscp cs1
+!
+ipv6 access-list acl_qos_tc5_v6
+   10 permit ipv6 any 2001:db8::/48
 ```
 
 ### MAC Access-lists
@@ -12973,7 +13023,7 @@ NAT profile VRF is: TEST
 | --------- | --------- | ------------- | ------------------------- | ----------------------- | ---------------- |
 | port_only_1 | port-only | - | - | - | - |
 | port_only_2 | port-only | - | - | - | 1024-65535 |
-| prefix_16 | ip-port | 16 | 91 | 10.0.0.1-10.0.255.254<br>10.1.0.0-10.1.255.255 | -<br>1024-65535 |
+| prefix_16 | ip-port | 16 | 91 | 10.0.0.1-10.0.255.254<br>10.1.0.0-10.1.255.255<br>10.2.0.1-10.2.255.254 | -<br>1024-65535<br>-65535 |
 | prefix_21 | ip-port | 21 | - | - | - |
 | prefix_24 | ip-port | 24 | 100 | - | - |
 | prefix_32 | ip-port | 32 | - | 10.2.0.1-10.2.0.1<br>10.2.0.2-10.2.0.2 | 1024-65535<br>- |
@@ -13001,6 +13051,7 @@ NAT profile VRF is: TEST
 | per Host Connection Limit | max. 1000 Connections |
 | IP Host 10.0.0.1 Connection Limit | max. 100 Connections |
 | IP Host 10.0.0.2 Connection Limit | max. 200 Connections |
+| IP Host 9.0.0.1 Connection Limit | max. 300 Connections |
 | Global Connection Limit Low Mark | 50 % |
 | per Host Connection Limit Low Mark | 50 % |
 | UDP Connection Timeout | 3600 Seconds |
@@ -13018,6 +13069,7 @@ ip nat translation max-entries 100000
 ip nat translation low-mark 50
 ip nat translation max-entries 1000 host
 ip nat translation low-mark 50 host
+ip nat translation max-entries 300 9.0.0.1
 ip nat translation max-entries 100 10.0.0.1
 ip nat translation max-entries 200 10.0.0.2
 ip nat kernel buffer size 64
@@ -13061,14 +13113,15 @@ ip nat profile NAT-PROFILE-TEST-VRF vrf TEST
 !
 ip nat pool prefix_16 prefix-length 16
    range 10.0.0.1 10.0.255.254
+   range 10.2.0.1 10.2.255.254
    range 10.1.0.0 10.1.255.255 1024 65535
    utilization threshold 91 action log
 ip nat pool prefix_21 prefix-length 21
 ip nat pool prefix_24 prefix-length 24
    utilization threshold 100 action log
 ip nat pool prefix_32 prefix-length 32
-   range 10.2.0.1 10.2.0.1 1024 65535
    range 10.2.0.2 10.2.0.2
+   range 10.2.0.1 10.2.0.1 1024 65535
 ip nat pool prefix_32_without_ip prefix-length 32
 ip nat pool port_only_1 port-only
 ip nat pool port_only_2 port-only
@@ -13298,6 +13351,7 @@ mac security
 | -------------- | -------- |
 | SERVICE-DEMO | 10,20,80,440-450 |
 | SERVICE-DEMO2 | - |
+| service-demo3 | 20-25 |
 
 #### Traffic Policies
 
@@ -13349,6 +13403,8 @@ Counters: test
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ----------- | ------ |
 | BLUE-C7-POLICY-01 | ipv4 | any | any | neighbors | - | - | - | - | - | default action: PASS |
 
+##### policy1
+
 ##### Traffic-Policy Interfaces
 
 | Interface | Input Traffic-Policy | Output Traffic-Policy |
@@ -13366,6 +13422,10 @@ traffic-policies
       10,20,80,440-450
    !
    field-set l4-port SERVICE-DEMO2
+   !
+   field-set l4-port service-demo3
+      20-25
+   !
    field-set ipv4 prefix DEMO-01
       10.0.0.0/8 192.168.0.0/16
       except 10.2.2.2/32 10.10.0.0/16 172.16.0.0/16
@@ -13569,6 +13629,13 @@ traffic-policies
          protocol neighbors bgp enforce ttl maximum-hops
       !
       match ipv4-all-default ipv4
+      !
+      match ipv6-all-default ipv6
+   !
+   traffic-policy policy1
+      match ipv4-all-default ipv4
+         actions
+            drop
       !
       match ipv6-all-default ipv6
 ```
