@@ -3,10 +3,8 @@
 # that can be found in the LICENSE file.
 
 
-import hashlib
+import re
 
-# crypt(3) Base64 alphabet
-CRYPT_B64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 HASH_INPUT_TYPE = ["sha512_password"]
 
 
@@ -55,17 +53,5 @@ def secure_hash(user_input: str, salt: str, hash_type: str = "sha512_password") 
         msg = f"The hash_type key does not support the value '{hash_type}'. The value used with hash_type must be one of {HASH_INPUT_TYPE}"
         raise ValueError(msg)
 
-    base64_salt = crypt_base64_salt(salt)
-    return sha512_password(user_input, base64_salt)
-
-
-def crypt_base64_salt(input_str: str, length: int = 16) -> str:
-    """
-    Generate a crypt-compatible salt from arbitrary input.
-
-    - Hashes the input using SHA-256
-    - Encodes using crypt-style Base64
-    - Output contains only [a-zA-Z0-9/.]
-    """
-    digest = hashlib.sha256(input_str.encode("utf-8")).digest()
-    return "".join(CRYPT_B64[b & 0x3F] for b in digest)[:length]
+    sanitized_salt = re.sub(r"[^A-Za-z0-9\.\/]", "", salt)
+    return sha512_password(user_input, sanitized_salt)
