@@ -8,6 +8,8 @@ overlay_routing_protocol: ebgp
 
 # Local users
 aaa_settings:
+  enable_password:
+    cleartext_password: admin
   local_users:
     # Define a new user, which is called "ansible"
     - name: ansible
@@ -19,6 +21,10 @@ aaa_settings:
       privilege: 15
       role: network-admin
       no_password: true
+    - name: clear_password
+      cleartext_password: admin
+      privilege: 15
+      role: network-admin
 
 # BGP peer groups passwords
 bgp_peer_groups:

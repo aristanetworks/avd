@@ -14,7 +14,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
 )
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, get_v2
-from pyavd.j2filters import natural_sort
+from pyavd.j2filters import natural_sort, secure_hash
 
 from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
@@ -249,6 +249,9 @@ class AvdStructuredConfigBaseProtocol(
         """enable_password.disable is set to match EOS default config and historic configs if aaa_settings.enable_password.password is not defined."""
         if self.inputs.aaa_settings.enable_password.password:
             self.structured_config.enable_password._update(hash_algorithm="sha512", key=self.inputs.aaa_settings.enable_password.password)
+        elif self.inputs.aaa_settings.enable_password.cleartext_password:
+            secure_hash_password = secure_hash(self.inputs.aaa_settings.enable_password.cleartext_password, self.shared_utils.hostname)
+            self.structured_config.enable_password._update(hash_algorithm="sha512", key=secure_hash_password)
         else:
             self.structured_config.enable_password.disabled = True
 
@@ -425,8 +428,24 @@ class AvdStructuredConfigBaseProtocol(
         """local_users set based on global aaa_settings.local_users data model."""
         if not (local_users := self.inputs.aaa_settings.local_users):
             return
-
-        self.structured_config.local_users = local_users._natural_sorted()
+        for local_user in local_users._natural_sorted():
+            local_user_data = EosCliConfigGen.LocalUsersItem(
+                name=local_user.name,
+                disabled=local_user.disabled,
+                privilege=local_user.privilege,
+                role=local_user.role,
+                ssh_key=local_user.ssh_key,
+                secondary_ssh_key=local_user.secondary_ssh_key,
+                shell=local_user.shell,
+            )
+            if local_user.sha512_password:
+                local_user_data.sha512_password = local_user.sha512_password
+            elif local_user.cleartext_password:
+                password = secure_hash(local_user.cleartext_password, self.shared_utils.hostname)
+                local_user_data.sha512_password = password
+            elif local_user.no_password:
+                local_user_data.no_password = True
+            self.structured_config.local_users.append(local_user_data)
 
     @structured_config_contributor
     def clock(self) -> None:
