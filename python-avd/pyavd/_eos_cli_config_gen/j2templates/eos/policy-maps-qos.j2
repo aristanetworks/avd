@@ -12,10 +12,10 @@ policy-map type quality-of-service {{ policy_map.name }}
    !
 {%         endif %}
    class {{ class.name }}
-{%         for set in class.set | arista.avd.default([]) %}
-{%             set cli_set = set | replace('_','-') | lower %}
-{%             if cli_set in ['cos', 'dscp', 'traffic-class', 'drop-precedence'] %}
-      set {{ cli_set }} {{ class.set[set] }}
+{%         for key in ['cos', 'dscp', 'traffic_class', 'drop_precedence'] %}
+{%             if key in class.set %}
+{%                 set cli_set = key | replace('_','-') %}
+      set {{ cli_set }} {{ class.set[key] }}
 {%             endif %}
 {%         endfor %}
 {%         if class.police is arista.avd.defined %}
