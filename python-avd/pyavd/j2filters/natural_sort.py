@@ -27,7 +27,7 @@ def natural_sort(
 
     Args:
         iterable: Input iterable.
-        sort_key: Key to sort by, defaults to None.
+        sort_key: Key to sort by, defaults to None. Required if the iterable contains a Mapping or a Namespace.
         strict: If strict is True, raise an error if the sort_key is missing and no default value is given.
         ignore_case: If ignore_case is True, strings are applied lower() function.
         default_value: Default value to use if the sort_key is missing.
