@@ -28,6 +28,7 @@ if TYPE_CHECKING:
 
             peer: str
             peer_interface: str
+            validate_lldp: bool
 
         name: str
         metadata: Metadata
@@ -92,12 +93,14 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
             self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=interface.name, fields="metadata.peer, metadata.peer_interface")
             return False
 
-        if interface.metadata.validate_lldp is not True and not self.is_peer_available(interface.metadata.peer, identity=interface.name):
-            return False
+        if not interface.metadata.validate_lldp:
+            if not self.is_peer_available(interface.metadata.peer, identity=interface.name):
+                return False
 
-        return interface.metadata.validate_lldp is True or not self.is_peer_interface_shutdown(
-            interface.metadata.peer, interface.metadata.peer_interface, interface.name
-        )
+            if self.is_peer_interface_shutdown(interface.metadata.peer, interface.metadata.peer_interface, interface.name):
+                return False
+
+        return True
 
 
 class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Input]):
