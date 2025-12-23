@@ -46,6 +46,7 @@ keys:
             host:
               type: str
               description: Host IP address or name.
+            # vrf could be changed to a list vrfs
             vrf:
               type: str
               convert_types:
