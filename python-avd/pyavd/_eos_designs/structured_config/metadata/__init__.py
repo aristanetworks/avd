@@ -15,9 +15,10 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
 from .cv_pathfinder import CvPathfinderMixin
 from .cv_tags import CvTagsMixin
 from .digital_twin import DigitalTwinMixin
+from .utils import UtilsMixin
 
 
-class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, DigitalTwinMixin, StructuredConfigGeneratorProtocol, Protocol):
+class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, DigitalTwinMixin, UtilsMixin, StructuredConfigGeneratorProtocol, Protocol):
     """Protocol for the AvdStructuredConfigMetadata Class."""
 
     @structured_config_contributor
@@ -41,7 +42,7 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
         if not self.shared_utils.platform_settings.feature_support.hardware_validation:
             self.structured_config.metadata.validate_hardware.enabled = False
         if self.shared_utils.node_config.validation_profile:
-            resolved_profile = self.shared_utils.get_resolved_validation_profile(self.shared_utils.node_config.validation_profile)
+            resolved_profile = self.get_resolved_validation_profile(self.shared_utils.node_config.validation_profile)
             if self.shared_utils.platform_settings.feature_support.hardware_validation:
                 self.structured_config.metadata.validate_hardware = resolved_profile.hardware._cast_as(
                     EosCliConfigGen.Metadata.ValidateHardware, ignore_extra_keys=True
