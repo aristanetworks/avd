@@ -581,8 +581,8 @@ class AvdStructuredConfigBaseProtocol(
             domain=default(self.shared_utils.node_config.ptp.domain, default_ptp_domain),
             monitor=self.get_ptp_monitor(),
             forward_v1=default(self.shared_utils.node_config.ptp.forward_v1, self.inputs.ptp_settings.forward_v1) or None,
-            free_running=default(self.shared_utils.node_config.ptp.free_running, self.inputs.ptp_settings.free_running),
         )
+
         self.structured_config.ptp.free_running.enabled = default(
             self.shared_utils.node_config.ptp.free_running.enabled, self.inputs.ptp_settings.free_running.enabled
         )
