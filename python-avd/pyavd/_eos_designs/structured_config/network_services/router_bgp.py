@@ -276,15 +276,17 @@ class RouterBgpMixin(Protocol):
         route_targets = {"import": [], "export": []}
 
         for af in sorted(vrf_address_families):
-            if (target := get_item(route_targets["import"], "address_family", af)) is None:
-                route_targets["import"].append({"address_family": af, "route_targets": [vrf_rt]})
-            else:
-                target["route_targets"].append(vrf_rt)
+            if vrf.rt_import:
+                if (target := get_item(route_targets["import"], "address_family", af)) is None:
+                    route_targets["import"].append({"address_family": af, "route_targets": [vrf_rt]})
+                else:
+                    target["route_targets"].append(vrf_rt)
 
-            if (target := get_item(route_targets["export"], "address_family", af)) is None:
-                route_targets["export"].append({"address_family": af, "route_targets": [vrf_rt]})
-            else:
-                target["route_targets"].append(vrf_rt)
+            if vrf.rt_export:
+                if (target := get_item(route_targets["export"], "address_family", af)) is None:
+                    route_targets["export"].append({"address_family": af, "route_targets": [vrf_rt]})
+                else:
+                    target["route_targets"].append(vrf_rt)
 
         for rt in vrf.additional_route_targets:
             if rt.type is None:
@@ -297,7 +299,7 @@ class RouterBgpMixin(Protocol):
         if vrf.name == "default" and self._vrf_default_evpn and self._route_maps_vrf_default_check():
             # Special handling of vrf default with evpn.
 
-            if (target := get_item(route_targets["export"], "address_family", "evpn")) is None:
+            if (target := get_item(route_targets["export"], "address_family", "evpn")) is None and vrf.rt_export:
                 route_targets["export"].append({"address_family": "evpn", "route_targets": ["route-map RM-EVPN-EXPORT-VRF-DEFAULT"]})
             else:
                 target.setdefault("route_targets", []).append("route-map RM-EVPN-EXPORT-VRF-DEFAULT")

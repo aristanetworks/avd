@@ -64665,6 +64665,8 @@ class EosDesigns(EosDesignsRootModel):
                         "vrf_id": {"type": int},
                         "rd_override": {"type": str},
                         "rt_override": {"type": str},
+                        "rt_import": {"type": bool, "default": True},
+                        "rt_export": {"type": bool, "default": True},
                         "mlag_ibgp_peering_ipv4_pool": {"type": str},
                         "mlag_ibgp_peering_ipv6_pool": {"type": str},
                         "ip_helpers": {"type": IpHelpers},
@@ -64748,6 +64750,18 @@ class EosDesigns(EosDesignsRootModel):
                       - A single number will be used in the RT assigned number subfield (second part of the
                     RT).
                       - A full RT string with colon separator which will override the full RT.
+                    """
+                    rt_import: bool
+                    """
+                    Enable/Disable route target import for the VRF of every address family.
+
+                    Default value: `True`
+                    """
+                    rt_export: bool
+                    """
+                    Enable/Disable route target export for the VRF of every address family.
+
+                    Default value: `True`
                     """
                     mlag_ibgp_peering_ipv4_pool: str | None
                     """
@@ -64968,6 +64982,8 @@ class EosDesigns(EosDesignsRootModel):
                             vrf_id: int | None | UndefinedType = Undefined,
                             rd_override: str | None | UndefinedType = Undefined,
                             rt_override: str | None | UndefinedType = Undefined,
+                            rt_import: bool | UndefinedType = Undefined,
+                            rt_export: bool | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv6_pool: str | None | UndefinedType = Undefined,
                             ip_helpers: IpHelpers | UndefinedType = Undefined,
@@ -65045,6 +65061,8 @@ class EosDesigns(EosDesignsRootModel):
                                      - A single number will be used in the RT assigned number subfield (second part of the
                                    RT).
                                      - A full RT string with colon separator which will override the full RT.
+                                rt_import: Enable/Disable route target import for the VRF of every address family.
+                                rt_export: Enable/Disable route target export for the VRF of every address family.
                                 mlag_ibgp_peering_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The

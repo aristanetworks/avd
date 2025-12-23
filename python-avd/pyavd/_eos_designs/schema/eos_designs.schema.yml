@@ -7693,6 +7693,16 @@ $defs:
                   formats:\n  - A single number will be used in the RT assigned number
                   subfield (second part of the RT).\n  - A full RT string with colon
                   separator which will override the full RT.\n"
+              rt_import:
+                type: bool
+                description: Enable/Disable route target import for the VRF of every
+                  address family.
+                default: true
+              rt_export:
+                type: bool
+                description: Enable/Disable route target export for the VRF of every
+                  address family.
+                default: true
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: 'Comma separated list of prefixes (IPv4 address/Mask)
