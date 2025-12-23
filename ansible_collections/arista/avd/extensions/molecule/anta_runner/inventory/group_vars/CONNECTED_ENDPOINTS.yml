@@ -101,7 +101,7 @@ servers:
           endpoint_port_channel: PortChannel dc2-leaf2-server1
           mode: active
 
-      - endpoint_ports: [Eth1]
+      - endpoint_ports: [iLO]
         switch_ports: [Ethernet5]
         switches: [dc2-leaf2c]
         vlans: 11
