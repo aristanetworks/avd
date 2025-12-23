@@ -139,6 +139,8 @@ l3leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           ptp:
             enabled: false
+            free_running:
+              enabled: true
           link_tracking:
             enabled: true
             groups:

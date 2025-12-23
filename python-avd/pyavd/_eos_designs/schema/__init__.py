@@ -7624,6 +7624,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ttl": {"type": int},
                 "forward_unicast": {"type": bool, "default": False},
                 "forward_v1": {"type": bool},
+                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                 "dscp": {"type": Dscp},
                 "monitor": {"type": Monitor},
             }
@@ -7688,6 +7689,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             forward_v1: bool | None
             """Forward dataplane PTP V1 packets."""
+            free_running: EosCliConfigGen.Ptp.FreeRunning
             dscp: Dscp
             """Subclass of AvdModel."""
             monitor: Monitor
@@ -7714,6 +7716,7 @@ class EosDesigns(EosDesignsRootModel):
                     ttl: int | None | UndefinedType = Undefined,
                     forward_unicast: bool | UndefinedType = Undefined,
                     forward_v1: bool | None | UndefinedType = Undefined,
+                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                     dscp: Dscp | UndefinedType = Undefined,
                     monitor: Monitor | UndefinedType = Undefined,
                 ) -> None:
@@ -7759,6 +7762,7 @@ class EosDesigns(EosDesignsRootModel):
                         ttl: ttl
                         forward_unicast: Enable PTP unicast forwarding.
                         forward_v1: Forward dataplane PTP V1 packets.
+                        free_running: free_running
                         dscp: Subclass of AvdModel.
                         monitor: Subclass of AvdModel.
 
@@ -12670,6 +12674,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ttl": {"type": int},
                 "forward_unicast": {"type": bool, "default": False},
                 "forward_v1": {"type": bool},
+                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                 "dscp": {"type": Dscp},
                 "monitor": {"type": Monitor},
             }
@@ -12734,6 +12739,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             forward_v1: bool | None
             """Forward dataplane PTP V1 packets."""
+            free_running: EosCliConfigGen.Ptp.FreeRunning
             dscp: Dscp
             """Subclass of AvdModel."""
             monitor: Monitor
@@ -12760,6 +12766,7 @@ class EosDesigns(EosDesignsRootModel):
                     ttl: int | None | UndefinedType = Undefined,
                     forward_unicast: bool | UndefinedType = Undefined,
                     forward_v1: bool | None | UndefinedType = Undefined,
+                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                     dscp: Dscp | UndefinedType = Undefined,
                     monitor: Monitor | UndefinedType = Undefined,
                 ) -> None:
@@ -12805,6 +12812,7 @@ class EosDesigns(EosDesignsRootModel):
                         ttl: ttl
                         forward_unicast: Enable PTP unicast forwarding.
                         forward_v1: Forward dataplane PTP V1 packets.
+                        free_running: free_running
                         dscp: Subclass of AvdModel.
                         monitor: Subclass of AvdModel.
 
@@ -28499,6 +28507,7 @@ class EosDesigns(EosDesignsRootModel):
             "domain": {"type": int, "default": 127},
             "auto_clock_identity": {"type": bool, "default": True},
             "forward_v1": {"type": bool, "default": False},
+            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
         }
         enabled: bool | None
         profile: str
@@ -28520,6 +28529,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        free_running: EosCliConfigGen.Ptp.FreeRunning
 
         if TYPE_CHECKING:
 
@@ -28531,6 +28541,7 @@ class EosDesigns(EosDesignsRootModel):
                 domain: int | UndefinedType = Undefined,
                 auto_clock_identity: bool | UndefinedType = Undefined,
                 forward_v1: bool | UndefinedType = Undefined,
+                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
             ) -> None:
                 """
                 PtpSettings.
@@ -28548,6 +28559,7 @@ class EosDesigns(EosDesignsRootModel):
                     domain: domain
                     auto_clock_identity: auto_clock_identity
                     forward_v1: Forward dataplane PTP V1 packets.
+                    free_running: free_running
 
                 """
 
@@ -35421,6 +35433,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -35485,6 +35498,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -35511,6 +35525,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -35556,6 +35571,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -40443,6 +40459,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
                                 "forward_v1": {"type": bool},
+                                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -40507,6 +40524,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             forward_v1: bool | None
                             """Forward dataplane PTP V1 packets."""
+                            free_running: EosCliConfigGen.Ptp.FreeRunning
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -40533,6 +40551,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
                                     forward_v1: bool | None | UndefinedType = Undefined,
+                                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -40578,6 +40597,7 @@ class EosDesigns(EosDesignsRootModel):
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
                                         forward_v1: Forward dataplane PTP V1 packets.
+                                        free_running: free_running
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -45422,6 +45442,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -45486,6 +45507,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -45512,6 +45534,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -45557,6 +45580,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -50467,6 +50491,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -50531,6 +50556,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -50557,6 +50583,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -50602,6 +50629,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -67683,6 +67711,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -67747,6 +67776,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -67773,6 +67803,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -67818,6 +67849,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -72705,6 +72737,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
                                 "forward_v1": {"type": bool},
+                                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -72769,6 +72802,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             forward_v1: bool | None
                             """Forward dataplane PTP V1 packets."""
+                            free_running: EosCliConfigGen.Ptp.FreeRunning
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -72795,6 +72829,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
                                     forward_v1: bool | None | UndefinedType = Undefined,
+                                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -72840,6 +72875,7 @@ class EosDesigns(EosDesignsRootModel):
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
                                         forward_v1: Forward dataplane PTP V1 packets.
+                                        free_running: free_running
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -77684,6 +77720,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -77748,6 +77785,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -77774,6 +77812,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -77819,6 +77858,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -82729,6 +82769,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -82793,6 +82834,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -82819,6 +82861,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -82864,6 +82907,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
