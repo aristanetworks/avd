@@ -281,6 +281,16 @@ class EthernetInterfacesMixin(Protocol):
             interface.access_group_out = acl.name
             self._set_ipv4_acl(acl)
 
+        if l3_interface.ipv6_acl_in:
+            acl = self.shared_utils.get_ipv6_acl(l3_interface.ipv6_acl_in)
+            interface.ipv6_access_group_in = acl.name
+            self._set_ipv6_acl(acl)
+
+        if l3_interface.ipv6_acl_out:
+            acl = self.shared_utils.get_ipv6_acl(l3_interface.ipv6_acl_out)
+            interface.ipv6_access_group_out = acl.name
+            self._set_ipv6_acl(acl)
+
         if l3_interface.structured_config:
             self.custom_structured_configs.nested.ethernet_interfaces.obtain(l3_interface.name)._deepmerge(
                 l3_interface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy

@@ -1,0 +1,29 @@
+---
+type: spine
+
+spine:
+  nodes:
+    - bgp_as: 65000
+      name: ipv6-acls
+      id: 1
+      loopback_ipv4_pool: 192.168.0.0/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.16.0.2/30
+          ipv6_acl_in: TEST-IPV6-ACL-IN
+          ipv6_acl_out: TEST-IPV6-ACL-OUT
+        # Testing using the same ACL name on multiple interfaces - should not produce duplicate ACLs in structured config.
+        - name: Ethernet4
+          ip_address: 172.19.19.0/31
+          ipv6_acl_in: TEST-IPV6-ACL-IN
+          ipv6_acl_out: TEST-IPV6-ACL-OUT
+
+ipv6_acls:
+  - name: TEST-IPV6-ACL-IN
+    sequence_numbers:
+      - sequence: 15
+        action: allow
+  - name: TEST-IPV6-ACL-OUT
+    sequence_numbers:
+      - sequence: 15
+        action: deny

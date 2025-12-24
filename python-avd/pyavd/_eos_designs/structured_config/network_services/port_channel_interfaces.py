@@ -153,6 +153,20 @@ class PortChannelInterfacesMixin(Protocol):
                     port_channel_interface.access_group_out = acl.name
                     self._set_ipv4_acl(acl)
 
+                if l3_port_channel.ipv6_acl_in:
+                    acl = self.shared_utils.get_ipv6_acl(
+                        name=l3_port_channel.ipv6_acl_in,
+                    )
+                    port_channel_interface.ipv6_access_group_in = acl.name
+                    self._set_ipv6_acl(acl)
+
+                if l3_port_channel.ipv6_acl_out:
+                    acl = self.shared_utils.get_ipv6_acl(
+                        name=l3_port_channel.ipv6_acl_out,
+                    )
+                    port_channel_interface.ipv6_access_group_out = acl.name
+                    self._set_ipv6_acl(acl)
+
                 if not is_subinterface:
                     port_channel_interface.switchport.enabled = False
 

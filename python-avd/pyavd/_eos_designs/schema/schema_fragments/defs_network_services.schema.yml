@@ -870,6 +870,14 @@ $defs:
                       type: str
                       convert_types:
                         - int
+                    ipv6_acl_in:
+                      type: str
+                      convert_types:
+                        - int
+                    ipv6_acl_out:
+                      type: str
+                      convert_types:
+                        - int
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
@@ -1094,6 +1102,18 @@ $defs:
                     ipv4_acl_out:
                       description: |-
                         Name of the IPv4 Access-list to be assigned in the egress direction.
+                      type: str
+                      convert_types:
+                        - int
+                    ipv6_acl_in:
+                      description: |-
+                        Name of the IPv6 access-list to be assigned in the ingress direction.
+                      type: str
+                      convert_types:
+                        - int
+                    ipv6_acl_out:
+                      description: |-
+                        Name of the IPv6 Access-list to be assigned in the egress direction.
                       type: str
                       convert_types:
                         - int

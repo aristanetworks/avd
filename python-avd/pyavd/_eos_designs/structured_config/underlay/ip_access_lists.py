@@ -27,3 +27,11 @@ class IpAccesslistsMixin(Protocol):
         Called for each interface in l3_interfaces and l3_port_channels when applying ipv4_acls
         """
         self.structured_config.ip_access_lists.append(ipv4_acl._cast_as(EosCliConfigGen.IpAccessListsItem))
+
+    def _set_ipv6_acl(self: AvdStructuredConfigUnderlayProtocol, ipv6_acl: EosDesigns.Ipv6AclsItem) -> None:
+        """
+        Set structured config for ip_access_lists.
+
+        Called for each interface in l3_interfaces and l3_port_channels when applying ipv4_acls
+        """
+        self.structured_config.ipv6_access_lists.append(ipv6_acl._cast_as(EosCliConfigGen.Ipv6AccessListsItem))

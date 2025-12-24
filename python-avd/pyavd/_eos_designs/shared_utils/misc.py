@@ -231,6 +231,17 @@ class MiscMixin(Protocol):
             ipv4_acl.name += f"_{self.sanitize_interface_name(interface_name)}"
         return ipv4_acl
 
+    def get_ipv6_acl(self: SharedUtilsProtocol, name: str) -> EosDesigns.Ipv6AclsItem:
+        """
+        Get one IPv6 ACL from "ipv6_acls" where fields have been substituted.
+
+        If any substitution is done, the ACL name will get "_<interface_name>" appended.
+        """
+        if name not in self.inputs.ipv6_acls:
+            msg = f"ipv6_acls[name={name}]"
+            raise AristaAvdMissingVariableError(msg)
+        return self.inputs.ipv6_acls[name]
+
     @staticmethod
     def _get_ipv4_acl_field_with_substitution(field_value: str, replacements: dict[str, str | None], field_context: str, interface_name: str) -> str:
         """
