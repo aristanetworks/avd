@@ -853,6 +853,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-settings.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-acls.md
 --8<--
 
+## MAC ACL settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/mac-acls.md
+--8<--
+
 ### IPv4 Prefix-List Catalog settings
 
 --8<--

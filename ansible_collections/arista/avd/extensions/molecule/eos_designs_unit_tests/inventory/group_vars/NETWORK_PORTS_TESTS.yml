@@ -1,6 +1,20 @@
 type: l2leaf
 mgmt_gateway: 192.168.0.1
 
+mac_acls:
+  - name: acl1
+    entries:
+      - sequence: 10
+        action: "deny any 01:80:c2:00:00:00 00:00:00:00:00:00"
+      - sequence: 5
+        action: "permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00"
+  - name: acl2
+    entries:
+      - sequence: 5
+        action: "permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00"
+      - sequence: 10
+        action: "deny any 01:80:c2:00:00:00 00:00:00:00:00:00"
+
 port_profiles:
   - profile: common
     mode: access
@@ -56,6 +70,8 @@ network_ports:
       - Ethernet11-12
     profile: phone_with_pc
     description: Phones with attached PCs
+    mac_acl_in: acl1
+    mac_acl_out: acl2
 
   # Test for issue #2223 regarding colon in description
   - switches:

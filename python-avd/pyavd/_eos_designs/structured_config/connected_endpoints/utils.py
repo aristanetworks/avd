@@ -243,3 +243,10 @@ class UtilsMixin(Protocol):
             return adapter.l2_mru
 
         return None
+
+    def _get_mac_acl(self: AvdStructuredConfigConnectedEndpointsProtocol, acl: str, context: str) -> str:
+        """Returns MAC ACL."""
+        if acl not in self.inputs.mac_acls:
+            msg = f"MAC access-list reference under {context} is not present in `mac_acls`. "
+            raise AristaAvdInvalidInputsError(msg)
+        return acl

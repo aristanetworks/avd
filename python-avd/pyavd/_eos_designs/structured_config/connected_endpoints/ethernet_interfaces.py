@@ -131,6 +131,16 @@ class EthernetInterfacesMixin(Protocol):
                 native_vlan=adapter.native_vlan,
             )
 
+        if adapter.mac_acl_in is not None:
+            mac_acl = self._get_mac_acl(adapter.mac_acl_in, adapter._internal_data.context)
+            ethernet_interface.mac_access_group_in = mac_acl
+            self._set_mac_acls(mac_acl)
+
+        if adapter.mac_acl_out is not None:
+            mac_acl = self._get_mac_acl(adapter.mac_acl_out, adapter._internal_data.context)
+            ethernet_interface.mac_access_group_out = mac_acl
+            self._set_mac_acls(mac_acl)
+
     def _get_ethernet_interface_cfg(
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
