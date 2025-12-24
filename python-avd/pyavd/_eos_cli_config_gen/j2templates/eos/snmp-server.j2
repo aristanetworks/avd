@@ -36,16 +36,11 @@ snmp-server contact {{ snmp_server.contact }}
 snmp-server location {{ snmp_server.location }}
 {%     endif %}
 {%     if snmp_server.local_interfaces is arista.avd.defined %}
-{%         set without_vrf = snmp_server.local_interfaces | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort("name") %}
-{%         set with_vrf = snmp_server.local_interfaces | selectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort(sort_key="vrf", ignore_case=false) %}
-{%         set sorted_local_interfaces =  without_vrf | list + with_vrf | list %}
-{%         for local_interface in sorted_local_interfaces %}
-{%             set interface_snmp_cli = "snmp-server" %}
-{%             if local_interface.vrf is arista.avd.defined %}
-{%                 set interface_snmp_cli = interface_snmp_cli ~ " vrf " ~ local_interface.vrf %}
-{%             endif %}
-{%             set interface_snmp_cli = interface_snmp_cli ~ " local-interface " ~ local_interface.name %}
-{{ interface_snmp_cli }}
+{%         for local_interface in snmp_server.local_interfaces | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort("name") %}
+snmp-server local-interface {{ local_interface.name }}
+{%         endfor %}
+{%         for local_interface in snmp_server.local_interfaces | selectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort(sort_key="vrf", ignore_case=false) %}
+snmp-server vrf {{ local_interface.vrf }} local-interface {{ local_interface.name }}
 {%         endfor %}
 {%     endif %}
 {%     if snmp_server.views is arista.avd.defined %}
