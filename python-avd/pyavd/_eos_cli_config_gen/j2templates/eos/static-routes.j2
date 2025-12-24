@@ -8,9 +8,11 @@
 !
 {%     if static_routes is arista.avd.defined %}
 {%         set with_vrf_non_default = static_routes | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
-{%         set without_vrf = static_routes | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort('interface', default_value='') | arista.avd.natural_sort('next_hop', default_value='') | arista.avd.natural_sort('prefix', default_value='') %}
-{%         set with_vrf_default = static_routes | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort %}
-{%         set sorted_static_routes =  without_vrf | list + with_vrf_default | list + with_vrf_non_default | list %}
+{%         set without_vrf = static_routes | rejectattr('vrf', 'arista.avd.defined') %}
+{%         set with_vrf_default = static_routes | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') %}
+{%         set combined_routes = without_vrf | list + with_vrf_default | list %}
+{%         set sorted_combined_routes = combined_routes | arista.avd.natural_sort('interface', default_value='') | arista.avd.natural_sort('next_hop', default_value='') | arista.avd.natural_sort('prefix', default_value='') %}
+{%         set sorted_static_routes = sorted_combined_routes | list + with_vrf_non_default | list %}
 {%     endif %}
 {%     for static_route in sorted_static_routes | arista.avd.default([]) %}
 {%         set static_route_cli = "ip route" %}
