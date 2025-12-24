@@ -886,11 +886,11 @@ management tech-support
 | FTP | MGMT | Management0 |
 | FTP | abc | Ethernet10 |
 | HTTP | default | Ethernet10 |
-| HTTP | aaa | Loopback0 |
 | HTTP | MGMT | Management0 |
+| HTTP | aaa | Loopback0 |
 | SSH | default | Ethernet10 |
-| SSH | aaa | Loopback0 |
 | SSH | MGMT | Management0 |
+| SSH | aaa | Loopback0 |
 | Telnet | default | Ethernet10 |
 | Telnet | MGMT | Management0 |
 | Telnet | data | Loopback0 |
