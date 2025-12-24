@@ -44,3 +44,10 @@ tenants:
             enabled: true
             name: VLAN200
             ip_address_virtual: 10.0.200.1/24
+      - name: default
+        vrf_id: 3
+        svis:
+          - id: 201
+            enabled: true
+            name: VLAN201
+            ip_address_virtual: 10.0.201.1/24

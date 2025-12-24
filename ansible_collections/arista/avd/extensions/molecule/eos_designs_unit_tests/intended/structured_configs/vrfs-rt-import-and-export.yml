@@ -27,6 +27,10 @@ prefix_lists:
     action: permit 10.10.0.0/24 eq 32
   - sequence: 20
     action: permit 10.11.0.0/24 eq 32
+- name: PL-SVI-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.0.201.0/24
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -34,6 +38,24 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  - sequence: 30
+    type: permit
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
+  - sequence: 20
+    type: permit
 router_bfd:
   multihop:
     interval: 300
@@ -55,6 +77,7 @@ router_bgp:
       type: ipv4
     send_community: all
     maximum_routes: 12000
+    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -68,6 +91,15 @@ router_bgp:
       enabled: true
       route_map: RM-CONN-2-BGP
   vlans:
+  - id: 201
+    metadata:
+      tenant: TENANT1
+    rd: 10.10.0.20:10201
+    route_targets:
+      both:
+      - 10201:10201
+    redistribute_routes:
+    - learned
   - id: 100
     metadata:
       tenant: TENANT1
@@ -97,6 +129,18 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: false
   vrfs:
+  - name: default
+    rd: 10.10.0.20:3
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '3:3'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '3:3'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
   - name: VRF1
     rd: 111:222
     route_targets:
@@ -122,6 +166,12 @@ router_bgp:
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
+- name: Vlan201
+  description: VLAN201
+  shutdown: false
+  ip_address_virtual: 10.0.201.1/24
+  metadata:
+    tenant: TENANT1
 - name: Vlan100
   description: VLAN100
   shutdown: false
@@ -142,6 +192,10 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vlans:
+- id: 201
+  name: VLAN201
+  metadata:
+    tenant: TENANT1
 - id: 100
   name: VLAN100
   metadata:
@@ -168,11 +222,15 @@ vxlan_interface:
       source_interface: Loopback1
       udp_port: 4789
       vlans:
+      - id: 201
+        vni: 10201
       - id: 100
         vni: 10100
       - id: 200
         vni: 10200
       vrfs:
+      - name: default
+        vni: 3
       - name: VRF1
         vni: 1
       - name: VRF2
