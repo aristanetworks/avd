@@ -1538,6 +1538,19 @@ radius proxy
 
 - Dynamic Authorization for TLS connections uses SSL profile SSL_PROFILE
 
+#### RADIUS Server Hosts
+
+| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
+| --- | -------------- | --- | ----------- | ------- | ---------- |
+| default | 10.10.10.158 | - | - | 1 | 1 |
+| default | 10.10.11.156 | True | - | 1 | 1 |
+| default | 10.10.10.249 | - | - | 1 | 1 |
+| mgt | 10.10.10.157 | - | - | 1 | 1 |
+| mgt | 10.10.11.159 | - | - | - | 1 |
+| mgt | 10.10.11.160 | - | - | 1 | - |
+| mgt | 10.10.11.248 | - | - | - | - |
+| mgt | 10.10.11.155 | True | HOST_SSL_PROFILE | 1 | 1 |
+
 #### RADIUS Server Device Configuration
 
 ```eos

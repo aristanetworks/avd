@@ -33,19 +33,21 @@
 
 - Dynamic Authorization for TLS connections uses SSL profile {{ radius_server.dynamic_authorization.tls_ssl_profile }}
 {%     endif %}
-{%     if radius_server.hosts is arista.avd.defined %}
+{%     if radius_server.vrfs is arista.avd.defined %}
 
 #### RADIUS Server Hosts
 
 | VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
 | --- | -------------- | --- | ----------- | ------- | ---------- |
-{%         for host in radius_server.hosts | arista.avd.default([]) %}
-{%             set vrf = host.vrf | arista.avd.default('default') %}
-{%             set tls = host.tls.enabled | arista.avd.default('-') %}
-{%             set ssl_profile = host.tls.ssl_profile | arista.avd.default('-') %}
-{%             set timeout = host.timeout | arista.avd.default('-') %}
-{%             set retransmit = host.retransmit | arista.avd.default('-') %}
-| {{ vrf }} | {{ host.host }} | {{ tls }} | {{ ssl_profile }} | {{ timeout }} | {{ retransmit }} |
+{%         for vrf in radius_server.vrfs | arista.avd.default([]) %}
+{%             for server in vrf.servers | arista.avd.default([]) %}
+{%                 set vrf = vrf.name | arista.avd.default('default') %}
+{%                 set tls = server.tls.enabled | arista.avd.default('-') %}
+{%                 set ssl_profile = server.tls.ssl_profile | arista.avd.default('-') %}
+{%                 set timeout = server.timeout | arista.avd.default('-') %}
+{%                 set retransmit = server.retransmit | arista.avd.default('-') %}
+| {{ vrf }} | {{ server.host }} | {{ tls }} | {{ ssl_profile }} | {{ timeout }} | {{ retransmit }} |
+{%             endfor %}
 {%         endfor %}
 {%     endif %}
 
