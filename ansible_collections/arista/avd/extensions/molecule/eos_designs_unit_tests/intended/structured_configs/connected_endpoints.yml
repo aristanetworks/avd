@@ -40,6 +40,8 @@ ethernet_interfaces:
 - name: Ethernet4
   description: PHYSICAL_PORT_DESCRIPTION
   shutdown: false
+  mac_access_group_in: acl1
+  mac_access_group_out: acl2
   metadata:
     peer: OLD_SW-1/4
     peer_type: custom_server
@@ -511,6 +513,20 @@ ip_igmp_snooping:
 link_tracking_groups:
 - name: LT_GROUP1
   recovery_delay: 300
+mac_access_lists:
+- name: acl1
+  entries:
+  - sequence: 10
+    action: deny any 01:80:c2:00:00:00 00:00:00:00:00:00
+  - sequence: 5
+    action: permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00
+- name: acl2
+  entries:
+  - sequence: 5
+    action: permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00
+  - sequence: 10
+    action: deny any 01:80:c2:00:00:00 00:00:00:00:00:00
+- name: no-entries
 metadata:
   is_deployed: true
   platform: 720XP
@@ -572,6 +588,8 @@ port_channel_interfaces:
   shutdown: false
   lacp_fallback_timeout: 90
   lacp_fallback_mode: individual
+  mac_access_group_in: acl1
+  mac_access_group_out: no-entries
   switchport:
     enabled: true
 - name: Port-Channel15

@@ -1,5 +1,20 @@
 loopback_ipv4_pool: 192.168.0.0/24
 
+mac_acls:
+  - name: acl1
+    entries:
+      - sequence: 10
+        action: "deny any 01:80:c2:00:00:00 00:00:00:00:00:00"
+      - sequence: 5
+        action: "permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00"
+  - name: acl2
+    entries:
+      - sequence: 5
+        action: "permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00"
+      - sequence: 10
+        action: "deny any 01:80:c2:00:00:00 00:00:00:00:00:00"
+  - name: no-entries
+
 type: l2leaf
 l2leaf:
   defaults:
@@ -70,6 +85,8 @@ servers:
       - switches: [connected_endpoints]
         switch_ports: [Ethernet4]
         description: "PHYSICAL_PORT_DESCRIPTION"
+        mac_acl_in: acl1
+        mac_acl_out: acl2
   # port-channel provide port-channel description
   - name: OLD_SW-1/5
     adapters:
@@ -129,6 +146,8 @@ servers:
     adapters:
       - switches: [connected_endpoints, connected_endpoints]
         switch_ports: [Ethernet12, Ethernet13]
+        mac_acl_in: acl1
+        mac_acl_out: no-entries
         port_channel:
           mode: "active"
           endpoint_port_channel: "INDIVIDUAL_1"

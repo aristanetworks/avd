@@ -970,6 +970,8 @@ port_channel_interfaces:
 - name: Port-Channel44
   shutdown: false
   mlag: 44
+  mac_access_group_in: acl1
+  mac_access_group_out: acl2
   switchport:
     enabled: true
 - name: Port-Channel43

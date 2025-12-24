@@ -14,6 +14,7 @@ mac_acls:
         action: "permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00"
       - sequence: 10
         action: "deny any 01:80:c2:00:00:00 00:00:00:00:00:00"
+  - name: no-entries
 
 port_profiles:
   - profile: common
@@ -111,6 +112,8 @@ network_ports:
     port_channel:
       channel_id: 44
       mode: "active"
+    mac_acl_in: acl1
+    mac_acl_out: acl2
     monitor_sessions:
       - name: DMF
         role: source
