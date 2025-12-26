@@ -55,7 +55,7 @@ radius-server dynamic-authorization tls ssl-profile {{ radius_server.dynamic_aut
 {%             if radius_host.key is arista.avd.defined and radius_host.tls.enabled is arista.avd.defined(true) %}
 {%                 set radius_key_cli = "radius-server host " ~ radius_host.host %}
 {%                 if radius_server_vrf.name != "default" %}
-{%                     set radius_cli = radius_cli ~ " vrf " ~ radius_server_vrf.name %}
+{%                     set radius_key_cli = radius_key_cli ~ " vrf " ~ radius_server_vrf.name %}
 {%                 endif %}
 {%                 set radius_key_cli = radius_key_cli ~ " key 7 " ~ radius_host.key | arista.avd.hide_passwords(hide_passwords) %}
 {{ radius_key_cli }}

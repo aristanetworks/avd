@@ -136,7 +136,6 @@ keys:
                     - int
                 tls:
                   type: dict
-                  description: When TLS is configured, `key` and `cleartext_key` are ignored.
                   $ref: "eos_cli_config_gen#/keys/radius_server/keys/vrfs/items/keys/servers/items/keys/tls"
           vrfs:
             type: list
