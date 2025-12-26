@@ -231,6 +231,7 @@ radius_server:
         enabled: true
         ssl_profile: HOST_SSL_PROFILE
         port: 2080
+      key: 071B245F5A
     - host: 11.10.10.3
       key: 0112140D481F07
     - host: nodomain.co
