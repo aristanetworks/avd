@@ -1569,7 +1569,7 @@ radius-server host 10.10.11.159 vrf mgt retransmit 1 key 7 <removed>
 radius-server host 10.10.11.160 vrf mgt timeout 1 key 7 <removed>
 radius-server host 10.10.11.248 vrf mgt key 7 <removed>
 radius-server host 10.10.11.155 vrf mgt tls ssl-profile HOST_SSL_PROFILE port 2083 timeout 1 retransmit 1
-radius-server host 10.10.11.155 key 7 <removed>
+radius-server host 10.10.11.155 vrf mgt key 7 <removed>
 ```
 
 ### IP RADIUS Source Interfaces

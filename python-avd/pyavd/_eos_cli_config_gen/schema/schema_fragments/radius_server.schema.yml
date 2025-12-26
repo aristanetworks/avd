@@ -59,7 +59,6 @@ keys:
                     description: Host IP address or name.
                   tls:
                     type: dict
-                    description: |-
                     keys:
                       enabled:
                         type: bool

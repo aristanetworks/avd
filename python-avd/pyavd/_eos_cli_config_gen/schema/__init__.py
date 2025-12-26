@@ -37227,18 +37227,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 host: str
                 """Host IP address or name."""
                 tls: Tls
-                """
-                When TLS is configured, `key` is ignored..
-
-                Subclass of AvdModel.
-                """
+                """Subclass of AvdModel."""
                 timeout: int | None
                 retransmit: int | None
                 key: str | None
-                """
-                Encrypted key - only type 7 supported.
-                When TLS is configured, `key` is ignored.
-                """
+                """Encrypted key - only type 7 supported."""
 
                 if TYPE_CHECKING:
 
@@ -37259,15 +37252,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             host: Host IP address or name.
-                            tls:
-                               When TLS is configured, `key` is ignored..
-
-                               Subclass of AvdModel.
+                            tls: Subclass of AvdModel.
                             timeout: timeout
                             retransmit: retransmit
-                            key:
-                               Encrypted key - only type 7 supported.
-                               When TLS is configured, `key` is ignored.
+                            key: Encrypted key - only type 7 supported.
 
                         """
 
