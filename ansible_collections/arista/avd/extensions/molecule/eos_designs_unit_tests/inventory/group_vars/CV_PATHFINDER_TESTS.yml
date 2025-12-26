@@ -45,6 +45,16 @@ cv_pathfinder_regions:
         id: 511
         location: Miami
 
+ipv6_acls:
+  - name: TEST-IPV6-ACL-IN
+    sequence_numbers:
+      - sequence: 15
+        action: allow
+  - name: TEST-IPV6-ACL-OUT
+    sequence_numbers:
+      - sequence: 15
+        action: deny
+
 ipv4_acls:
   - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
     entries:
@@ -290,6 +300,8 @@ wan_router:
               static_routes:
                 - prefix: 172.18.0.0/16
               # flow_tracking not set, hence not configured
+              ipv6_acl_in: TEST-IPV6-ACL-IN
+              ipv6_acl_out: TEST-IPV6-ACL-OUT
               ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
               ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
 

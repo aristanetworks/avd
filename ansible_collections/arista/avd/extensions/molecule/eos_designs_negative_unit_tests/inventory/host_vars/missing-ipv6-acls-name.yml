@@ -1,0 +1,16 @@
+---
+type: spine
+
+spine:
+  nodes:
+    - bgp_as: 65000
+      name: missing-ipv6-acls-name
+      id: 1
+      loopback_ipv4_pool: 192.168.0.0/24
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 172.16.0.2/30
+          ipv6_acl_in: TEST-IPV6-ACL-IN
+
+expected_error_message: >-
+  'ipv6_acls[name=TEST-IPV6-ACL-IN]' is required but was not found.

@@ -409,6 +409,15 @@ ip_security:
       action: clear
   key_controller:
     profile: DP-PROFILE
+ipv6_access_lists:
+- name: TEST-IPV6-ACL-IN
+  sequence_numbers:
+  - sequence: 15
+    action: allow
+- name: TEST-IPV6-ACL-OUT
+  sequence_numbers:
+  - sequence: 15
+    action: deny
 kernel:
   software_forwarding_ecmp: true
 loopback_interfaces:
@@ -718,6 +727,8 @@ port_channel_interfaces:
   ip_address: 172.15.6.9/31
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Port-Channel540
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Port-Channel540
+  ipv6_access_group_in: TEST-IPV6-ACL-IN
+  ipv6_access_group_out: TEST-IPV6-ACL-OUT
   metadata:
     peer: peerDevice11
     peer_interface: Port-Channel545

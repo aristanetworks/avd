@@ -335,6 +335,8 @@ tenant_a:
             description: "test l3 interfaces acls"
             ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
             ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
+            ipv6_acl_in: TEST-IPV6-ACL-IN
+            ipv6_acl_out: TEST-IPV6-ACL-OUT
             # no description nor descriptions is tested in Tenant_OSPF below
       - name: Tenant_A_OSPF
         vrf_id: 16
@@ -429,3 +431,13 @@ ipv4_acls:
         protocol: ip
         source: interface_ip
         destination: any
+
+ipv6_acls:
+  - name: TEST-IPV6-ACL-IN
+    sequence_numbers:
+      - sequence: 20
+        action: allow
+  - name: TEST-IPV6-ACL-OUT
+    sequence_numbers:
+      - sequence: 20
+        action: deny

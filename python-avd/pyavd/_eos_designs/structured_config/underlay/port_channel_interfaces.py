@@ -200,12 +200,12 @@ class PortChannelInterfacesMixin(Protocol):
 
         if l3_port_channel.ipv6_acl_in:
             acl = self.shared_utils.get_ipv6_acl(l3_port_channel.ipv6_acl_in)
-            interface.access_group_in = acl.name
+            interface.ipv6_access_group_in = acl.name
             self._set_ipv6_acl(acl)
 
         if l3_port_channel.ipv6_acl_out:
             acl = self.shared_utils.get_ipv6_acl(l3_port_channel.ipv6_acl_out)
-            interface.access_group_out = acl.name
+            interface.ipv6_access_group_out = acl.name
             self._set_ipv6_acl(acl)
 
         if l3_port_channel.structured_config:
