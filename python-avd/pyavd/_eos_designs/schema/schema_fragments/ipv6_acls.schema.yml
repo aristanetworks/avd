@@ -10,7 +10,7 @@ keys:
     type: list
     primary_key: name
     description: |-
-      IPv6 extended access-lists supporting substitution on certain fields.
+      IPv6 extended access-lists.
       These access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.
     items:
       type: dict

@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ipv6_acls</samp>](## "ipv6_acls") | List, items: Dictionary |  |  |  | IPv6 extended access-lists supporting substitution on certain fields.<br>These access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use. |
+    | [<samp>ipv6_acls</samp>](## "ipv6_acls") | List, items: Dictionary |  |  |  | IPv6 extended access-lists.<br>These access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ipv6_acls.[].name") | String | Required, Unique |  |  | Access-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "ipv6_acls.[].counters_per_entry") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "ipv6_acls.[].sequence_numbers") | List, items: Dictionary | Required |  |  |  |
@@ -17,7 +17,7 @@
 === "YAML"
 
     ```yaml
-    # IPv6 extended access-lists supporting substitution on certain fields.
+    # IPv6 extended access-lists.
     # These access-lists can be referenced under node settings `l3_interfaces`, and will only be configured on devices where they are in use.
     ipv6_acls:
 

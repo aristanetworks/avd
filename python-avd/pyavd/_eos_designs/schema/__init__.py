@@ -88495,12 +88495,12 @@ class EosDesigns(EosDesignsRootModel):
     """
     ipv6_acls: Ipv6Acls
     """
-    IPv6 extended access-lists supporting substitution on certain fields.
-    These access-lists can be
-    referenced under node settings `l3_interfaces`, and will only be configured on devices where they
-    are in use.
+    IPv6 extended access-lists.
+    These access-lists can be referenced under node settings
+    `l3_interfaces`, and will only be configured on devices where they are in use.
 
-    Subclass of AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
+    Subclass of
+    AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
     """
     ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks
     """
@@ -90440,12 +90440,12 @@ class EosDesigns(EosDesignsRootModel):
                    - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
                    Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
                 ipv6_acls:
-                   IPv6 extended access-lists supporting substitution on certain fields.
-                   These access-lists can be
-                   referenced under node settings `l3_interfaces`, and will only be configured on devices where they
-                   are in use.
+                   IPv6 extended access-lists.
+                   These access-lists can be referenced under node settings
+                   `l3_interfaces`, and will only be configured on devices where they are in use.
 
-                   Subclass of AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
+                   Subclass of
+                   AvdIndexedList with `Ipv6AclsItem` items. Primary key is `name` (`str`).
                 ipv6_mgmt_destination_networks:
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.
