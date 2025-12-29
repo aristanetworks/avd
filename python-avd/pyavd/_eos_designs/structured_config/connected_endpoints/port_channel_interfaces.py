@@ -170,12 +170,12 @@ class PortChannelInterfacesMixin(Protocol):
 
         if adapter.mac_acl_in is not None:
             mac_acl = self._get_mac_acl(adapter.mac_acl_in, adapter._internal_data.context)
-            port_channel_interface.mac_access_group_in = mac_acl
+            port_channel_interface.mac_access_group_in = mac_acl.name
             self._set_mac_acls(mac_acl)
 
         if adapter.mac_acl_out is not None:
             mac_acl = self._get_mac_acl(adapter.mac_acl_out, adapter._internal_data.context)
-            port_channel_interface.mac_access_group_out = mac_acl
+            port_channel_interface.mac_access_group_out = mac_acl.name
             self._set_mac_acls(mac_acl)
 
         port_channel_interface.metadata._update(

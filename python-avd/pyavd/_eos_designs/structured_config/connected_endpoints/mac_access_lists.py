@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
     from . import AvdStructuredConfigConnectedEndpointsProtocol
 
 
@@ -18,6 +19,5 @@ class MacAccessListsMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    def _set_mac_acls(self: AvdStructuredConfigConnectedEndpointsProtocol, mac_acl: str) -> None:
-        acl = self.inputs.mac_acls[mac_acl]
-        self.structured_config.mac_access_lists.append(acl._cast_as(EosCliConfigGen.MacAccessListsItem))
+    def _set_mac_acls(self: AvdStructuredConfigConnectedEndpointsProtocol, mac_acl: EosDesigns.MacAclsItem) -> None:
+        self.structured_config.mac_access_lists.append(mac_acl._cast_as(EosCliConfigGen.MacAccessListsItem))
