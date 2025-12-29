@@ -247,6 +247,6 @@ class UtilsMixin(Protocol):
     def _get_mac_acl(self: AvdStructuredConfigConnectedEndpointsProtocol, acl: str, context: str) -> EosDesigns.MacAclsItem:
         """Returns MAC ACL."""
         if acl not in self.inputs.mac_acls:
-            msg = f"MAC access-list reference under {context} is not present in `mac_acls`. "
+            msg = f"MAC access-list `{acl}` referenced under {context} is not present in `mac_acls`."
             raise AristaAvdInvalidInputsError(msg)
         return self.inputs.mac_acls[acl]
