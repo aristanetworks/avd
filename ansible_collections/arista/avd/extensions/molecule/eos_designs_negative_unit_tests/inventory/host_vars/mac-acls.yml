@@ -14,4 +14,4 @@ servers:
         mac_acl_in: ACL1
 
 expected_error_message: >-
-  MAC access-list `ACL1` referenced under servers[name=Server1].adapters[0] is not present in `mac_acls`.
+  'mac_acls[name=ACL1]' is required but was not found.

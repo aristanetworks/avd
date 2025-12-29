@@ -79,7 +79,6 @@ class PortChannelInterfacesMixin(Protocol):
             network_port_as_adapter = network_port._cast_as(
                 EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem, ignore_extra_keys=True
             )
-            network_port_as_adapter._internal_data.context = network_port._internal_data.context
             for ethernet_interface_name in range_expand(network_port.switch_ports):
                 # Override switches and switch_ports to only render for a single interface
                 # The blank extra switch is only inserted to work around port_channel validations

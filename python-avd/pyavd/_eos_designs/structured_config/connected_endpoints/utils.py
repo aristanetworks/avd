@@ -7,7 +7,7 @@ import re
 from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Protocol
 
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import Undefined, UndefinedType, get_v2, short_esi_to_route_target
 
 if TYPE_CHECKING:
@@ -247,6 +247,6 @@ class UtilsMixin(Protocol):
     def _get_mac_acl(self: AvdStructuredConfigConnectedEndpointsProtocol, acl: str, context: str) -> EosDesigns.MacAclsItem:
         """Returns MAC ACL."""
         if acl not in self.inputs.mac_acls:
-            msg = f"MAC access-list `{acl}` referenced under {context} is not present in `mac_acls`."
-            raise AristaAvdInvalidInputsError(msg)
+            msg = f"mac_acls[name={acl}]"
+            raise AristaAvdMissingVariableError(msg)
         return self.inputs.mac_acls[acl]
