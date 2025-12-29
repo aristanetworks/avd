@@ -9,6 +9,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
+
     from . import AvdStructuredConfigConnectedEndpointsProtocol
 
 
