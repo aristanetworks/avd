@@ -244,7 +244,7 @@ class UtilsMixin(Protocol):
 
         return None
 
-    def _get_mac_acl(self: AvdStructuredConfigConnectedEndpointsProtocol, acl: str, context: str) -> EosDesigns.MacAclsItem:
+    def _get_mac_acl(self: AvdStructuredConfigConnectedEndpointsProtocol, acl: str) -> EosDesigns.MacAclsItem:
         """Returns MAC ACL."""
         if acl not in self.inputs.mac_acls:
             msg = f"mac_acls[name={acl}]"
