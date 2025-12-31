@@ -25,6 +25,7 @@ policy_maps:
             dscp: af11
             traffic_class: 2
             drop_precedence: 1
+            cos: 2
           police:
             rate: 10
             rate_unit: kbps
