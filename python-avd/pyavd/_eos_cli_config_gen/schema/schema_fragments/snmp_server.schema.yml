@@ -72,7 +72,6 @@ keys:
                   description: IPv6 access list name.
             view:
               type: str
-      # TODO: the model for ipv4_acls, ipv6_acls and local_interfaces can be changed to handle vrf default (same as ip_http_client)
       ipv4_acls:
         type: list
         items:

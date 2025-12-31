@@ -6,8 +6,7 @@
 {# eos - snmp server #}
 {% if snmp_server is arista.avd.defined %}
 !
-{# TODO IPv4/IPv6 access list config order is not correct as per EOS #}
-{# TODO change the model for ipv4_acls and ipv6_acls to handle vrf default and handle the cli ordering #}
+{# TODO: IPv4/IPv6 access-list ordering is incorrect per EOS. Update ipv4_acls and ipv6_acls models to handle default VRF and CLI order. #}
 {%     if snmp_server.ipv4_acls is arista.avd.defined %}
 {%         for acl in snmp_server.ipv4_acls %}
 {%             set acl_cli = "snmp-server ipv4 access-list " ~ acl.name %}
