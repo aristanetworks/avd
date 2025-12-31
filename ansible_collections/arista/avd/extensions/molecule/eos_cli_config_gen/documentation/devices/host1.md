@@ -892,11 +892,11 @@ management tech-support
 | SSH | default | Loopback0 |
 | SSH | MGMT | Management0 |
 | Telnet | default | Ethernet10 |
-| Telnet | default | Loopback0 |
 | Telnet | MGMT | Management0 |
-| TFTP | default | Ethernet10 |
+| Telnet | data | Loopback0 |
 | TFTP | default | Loopback0 |
 | TFTP | MGMT | Management0 |
+| TFTP | data | Ethernet10 |
 
 #### IP Client Source Interfaces Device Configuration
 
@@ -912,11 +912,11 @@ ip ssh client source-interface Ethernet10
 ip ssh client source-interface Loopback0 vrf default
 ip ssh client source-interface Management0 vrf MGMT
 ip telnet client source-interface Ethernet10
-ip telnet client source-interface Loopback0 vrf default
 ip telnet client source-interface Management0 vrf MGMT
-ip tftp client source-interface Ethernet10
-ip tftp client source-interface Loopback0 vrf default
+ip telnet client source-interface Loopback0 vrf data
+ip tftp client source-interface Loopback0
 ip tftp client source-interface Management0 vrf MGMT
+ip tftp client source-interface Ethernet10 vrf data
  ```
 
 ### Management Accounts
@@ -6817,6 +6817,7 @@ interface Port-Channel667
 | Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.3/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.3/32 |
 | Loopback2 | - | default | - |
+| Loopback10 | Test_Node_Segment | default | 10.2.255.3/32 |
 | Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 <br> 192.168.1.1/32 secondary <br> 10.0.0.254/32 secondary |
 | Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 |
 
@@ -6827,6 +6828,7 @@ interface Port-Channel667
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 | Loopback2 | - | default | - |
+| Loopback10 | Test_Node_Segment | default | 2002::CAFE/128 |
 | Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 2002::CAFE/64 |
 | Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | - |
 
@@ -6855,6 +6857,13 @@ interface Loopback1
 !
 interface Loopback2
    ip ospf area 0.0.0.2
+!
+interface Loopback10
+   description Test_Node_Segment
+   ip address 10.2.255.3/32
+   ipv6 address 2002::CAFE/128
+   node-segment ipv4 index 34
+   node-segment ipv6 index 23
 !
 interface Loopback99
    description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
@@ -8524,6 +8533,12 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 | Vlan4094 | EVPN_UNDERLAY | - | - |
 | Loopback99 | ISIS_TEST | 100 | point-to-point |
+
+#### ISIS Segment-routing Node-SID
+
+| Loopback | IPv4 Index | IPv6 Index |
+| -------- | ---------- | ---------- |
+| Loopback10 | 34 | 23 |
 
 #### Prefix Segments
 
@@ -11979,6 +11994,8 @@ ipv6 access-list acl_qos_tc5_v6
 | - | permit any 02:00:00:12:34:56 00:00:00:00:00:00 |
 | - | deny any 02:00:00:ab:cd:ef 00:00:00:00:00:00 |
 
+##### TEST5
+
 #### MAC Access-lists Device Configuration
 
 ```eos
@@ -12002,6 +12019,8 @@ mac access-list TEST4
    remark A comment in the middle
    permit any 02:00:00:12:34:56 00:00:00:00:00:00
    deny any 02:00:00:ab:cd:ef 00:00:00:00:00:00
+!
+mac access-list TEST5
 ```
 
 ## VRF Instances

@@ -17435,63 +17435,129 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     IpTacacsSourceInterfaces._item_type = IpTacacsSourceInterfacesItem
 
-    class IpTelnetClientSourceInterfacesItem(AvdModel):
+    class IpTelnetClient(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-        name: str
-        """Interface Name."""
-        vrf: str | None
-        """VRF Name."""
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            source_interface: str
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        source_interface: source_interface
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"source_interface": {"type": str}, "vrfs": {"type": Vrfs}}
+        source_interface: str | None
+        """Define `source_interface` for VRF default."""
+        vrfs: Vrfs
+        """
+        Define `source interfaces` for any VRF other than default.
+
+        Subclass of AvdIndexedList with
+        `VrfsItem` items. Primary key is `name` (`str`).
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
                 """
-                IpTelnetClientSourceInterfacesItem.
+                IpTelnetClient.
 
 
                 Subclass of AvdModel.
 
                 Args:
-                    name: Interface Name.
-                    vrf: VRF Name.
+                    source_interface: Define `source_interface` for VRF default.
+                    vrfs:
+                       Define `source interfaces` for any VRF other than default.
+
+                       Subclass of AvdIndexedList with
+                       `VrfsItem` items. Primary key is `name` (`str`).
 
                 """
 
-    class IpTelnetClientSourceInterfaces(AvdList[IpTelnetClientSourceInterfacesItem]):
-        """Subclass of AvdList with `IpTelnetClientSourceInterfacesItem` items."""
-
-    IpTelnetClientSourceInterfaces._item_type = IpTelnetClientSourceInterfacesItem
-
-    class IpTftpClientSourceInterfacesItem(AvdModel):
+    class IpTftpClient(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-        name: str
-        """Interface Name."""
-        vrf: str | None
-        """VRF Name."""
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            source_interface: str
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        source_interface: source_interface
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"source_interface": {"type": str}, "vrfs": {"type": Vrfs}}
+        source_interface: str | None
+        """Define `source_interface` for VRF default."""
+        vrfs: Vrfs
+        """
+        Define `source interfaces` for any VRF other than default.
+
+        Subclass of AvdIndexedList with
+        `VrfsItem` items. Primary key is `name` (`str`).
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
                 """
-                IpTftpClientSourceInterfacesItem.
+                IpTftpClient.
 
 
                 Subclass of AvdModel.
 
                 Args:
-                    name: Interface Name.
-                    vrf: VRF Name.
+                    source_interface: Define `source_interface` for VRF default.
+                    vrfs:
+                       Define `source interfaces` for any VRF other than default.
+
+                       Subclass of AvdIndexedList with
+                       `VrfsItem` items. Primary key is `name` (`str`).
 
                 """
-
-    class IpTftpClientSourceInterfaces(AvdList[IpTftpClientSourceInterfacesItem]):
-        """Subclass of AvdList with `IpTftpClientSourceInterfacesItem` items."""
-
-    IpTftpClientSourceInterfaces._item_type = IpTftpClientSourceInterfacesItem
 
     class Ipv6AccessListsItem(AvdModel):
         """Subclass of AvdModel."""
@@ -68584,8 +68650,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_security": {"type": IpSecurity},
         "ip_ssh_client_source_interfaces": {"type": IpSshClientSourceInterfaces},
         "ip_tacacs_source_interfaces": {"type": IpTacacsSourceInterfaces},
-        "ip_telnet_client_source_interfaces": {"type": IpTelnetClientSourceInterfaces},
-        "ip_tftp_client_source_interfaces": {"type": IpTftpClientSourceInterfaces},
+        "ip_telnet_client": {"type": IpTelnetClient},
+        "ip_tftp_client": {"type": IpTftpClient},
         "ip_virtual_router_mac_address": {"type": str},
         "ip_virtual_router_mac_address_advertisement_interval": {"type": int},
         "ip_virtual_router_mac_address_mlag_peer": {"type": bool},
@@ -68942,10 +69008,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdList with `IpSshClientSourceInterfacesItem` items."""
     ip_tacacs_source_interfaces: IpTacacsSourceInterfaces
     """Subclass of AvdList with `IpTacacsSourceInterfacesItem` items."""
-    ip_telnet_client_source_interfaces: IpTelnetClientSourceInterfaces
-    """Subclass of AvdList with `IpTelnetClientSourceInterfacesItem` items."""
-    ip_tftp_client_source_interfaces: IpTftpClientSourceInterfaces
-    """Subclass of AvdList with `IpTftpClientSourceInterfacesItem` items."""
+    ip_telnet_client: IpTelnetClient
+    """Subclass of AvdModel."""
+    ip_tftp_client: IpTftpClient
+    """Subclass of AvdModel."""
     ip_virtual_router_mac_address: str | None
     """MAC address (hh:hh:hh:hh:hh:hh)."""
     ip_virtual_router_mac_address_advertisement_interval: int | None
@@ -69326,8 +69392,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_security: IpSecurity | UndefinedType = Undefined,
             ip_ssh_client_source_interfaces: IpSshClientSourceInterfaces | UndefinedType = Undefined,
             ip_tacacs_source_interfaces: IpTacacsSourceInterfaces | UndefinedType = Undefined,
-            ip_telnet_client_source_interfaces: IpTelnetClientSourceInterfaces | UndefinedType = Undefined,
-            ip_tftp_client_source_interfaces: IpTftpClientSourceInterfaces | UndefinedType = Undefined,
+            ip_telnet_client: IpTelnetClient | UndefinedType = Undefined,
+            ip_tftp_client: IpTftpClient | UndefinedType = Undefined,
             ip_virtual_router_mac_address: str | None | UndefinedType = Undefined,
             ip_virtual_router_mac_address_advertisement_interval: int | None | UndefinedType = Undefined,
             ip_virtual_router_mac_address_mlag_peer: bool | None | UndefinedType = Undefined,
@@ -69608,8 +69674,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_security: Subclass of AvdModel.
                 ip_ssh_client_source_interfaces: Subclass of AvdList with `IpSshClientSourceInterfacesItem` items.
                 ip_tacacs_source_interfaces: Subclass of AvdList with `IpTacacsSourceInterfacesItem` items.
-                ip_telnet_client_source_interfaces: Subclass of AvdList with `IpTelnetClientSourceInterfacesItem` items.
-                ip_tftp_client_source_interfaces: Subclass of AvdList with `IpTftpClientSourceInterfacesItem` items.
+                ip_telnet_client: Subclass of AvdModel.
+                ip_tftp_client: Subclass of AvdModel.
                 ip_virtual_router_mac_address: MAC address (hh:hh:hh:hh:hh:hh).
                 ip_virtual_router_mac_address_advertisement_interval: Advertisement interval in seconds.
                 ip_virtual_router_mac_address_mlag_peer: Enable MLAG peer gateway.
