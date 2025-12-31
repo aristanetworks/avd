@@ -25716,7 +25716,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         protect_vlan: str | None
         """
         VLAN range as string.
-        "< vlan_id >, < vlan_id >-< vlan_id >"#
+        "< vlan_id >, < vlan_id >-< vlan_id >"
         Example: 15,16,17,18
         """
         rate_limit: int | None
@@ -25749,7 +25749,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        not automatically come back up.
                     protect_vlan:
                        VLAN range as string.
-                       "< vlan_id >, < vlan_id >-< vlan_id >"#
+                       "< vlan_id >, < vlan_id >-< vlan_id >"
                        Example: 15,16,17,18
                     rate_limit: Rate limits the loop detection frames. Default to maximum 1000/second.
                     transmit_interval: Loop protection packet transmit interval. Default is 5 seconds.
