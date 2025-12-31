@@ -11981,6 +11981,8 @@ ipv6 access-list acl_qos_tc5_v6
 | - | permit any 02:00:00:12:34:56 00:00:00:00:00:00 |
 | - | deny any 02:00:00:ab:cd:ef 00:00:00:00:00:00 |
 
+##### TEST5
+
 #### MAC Access-lists Device Configuration
 
 ```eos
@@ -12004,6 +12006,8 @@ mac access-list TEST4
    remark A comment in the middle
    permit any 02:00:00:12:34:56 00:00:00:00:00:00
    deny any 02:00:00:ab:cd:ef 00:00:00:00:00:00
+!
+mac access-list TEST5
 ```
 
 ## VRF Instances
