@@ -43,15 +43,15 @@ flow_tracking:
         on_inactive_timeout: 50020
         on_interval: 300321
       exporters:
-      - name: CLOUDVISION
-        collectors:
-        - host: 127.0.0.1
-        local_interface: Vlan4092
       - name: ayush_exporter
         collectors:
         - host: 127.0.2.1
         local_interface: Management1
         template_interval: 40020
+      - name: CLOUDVISION
+        collectors:
+        - host: 127.0.0.1
+        local_interface: Vlan4092
     shutdown: false
 hostname: flow-tracking-tests-l2-leaf4
 ip_igmp_snooping:

@@ -44,15 +44,15 @@ flow_tracking:
         on_interval: 300321
       name: FLOW-TRACKER-10
       exporters:
-      - name: Exporter1
-        collectors:
-        - host: 127.0.0.1
-        local_interface: Ethernet101
       - name: ayush_exporter
         collectors:
         - host: 127.0.2.1
         local_interface: Vlan4092
         template_interval: 40020
+      - name: Exporter1
+        collectors:
+        - host: 127.0.0.1
+        local_interface: Ethernet101
     shutdown: false
 hostname: flow-tracking-tests-l2-leaf3
 ip_igmp_snooping:
