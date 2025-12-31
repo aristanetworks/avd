@@ -16,14 +16,17 @@ validation_profiles:
     parent_profile: profile2
     hardware:
       min_power_supplies: 2
+      transceiver_manufacturers:
+        - Third-party vendor profile1
   - name: profile2
     hardware:
       min_fans: 4
+      min_power_supplies: 4
       min_supervisors: 2
       min_line_cards: 10
       min_fabric_cards: 5
       transceiver_manufacturers:
-        - Third-party vendor
+        - Third-party vendor profile2
     exclude_as_extra_fabric_validation_target: true
     logging:
       validate_no_errors_period: 2

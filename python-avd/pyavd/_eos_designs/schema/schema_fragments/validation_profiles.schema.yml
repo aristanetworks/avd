@@ -18,7 +18,7 @@ keys:
           type: str
           description: |-
             Inherit settings from a parent profile defined under `validation_profiles`.
-            Max one level of profile inheritance.
+            Max one level of profile inheritance: profile -> parent_profile
         hardware:
           type: dict
           keys:

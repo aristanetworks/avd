@@ -71,7 +71,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow_subinterfaces</samp>](## "custom_platform_settings.[].feature_support.sflow_subinterfaces") | Boolean |  | `True` |  | Support for sFlow on sub-interfaces.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan</samp>](## "custom_platform_settings.[].feature_support.wan") | Boolean |  | `True` |  | Support for Arista WAN features.<br>An error will be raised if the feature is enabled and this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "custom_platform_settings.[].feature_support.ptp") | Boolean |  | `True` |  | Support for Precision Time Protocol (PTP).<br>The feature will be ignored on platforms where this is false. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_validation</samp>](## "custom_platform_settings.[].feature_support.hardware_validation") | Boolean |  | `True` |  | Enable hardware validation for the device.<br>If `false`, all hardware tests are skipped, therefore the other keys in `validation_profiles[].hardware` are ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_validation</samp>](## "custom_platform_settings.[].feature_support.hardware_validation") | Boolean |  | `True` |  | Enable hardware validation for the device.<br>When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "custom_platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "custom_platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "custom_platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -147,7 +147,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow_subinterfaces</samp>](## "platform_settings.[].feature_support.sflow_subinterfaces") | Boolean |  | `True` |  | Support for sFlow on sub-interfaces.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan</samp>](## "platform_settings.[].feature_support.wan") | Boolean |  | `True` |  | Support for Arista WAN features.<br>An error will be raised if the feature is enabled and this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "platform_settings.[].feature_support.ptp") | Boolean |  | `True` |  | Support for Precision Time Protocol (PTP).<br>The feature will be ignored on platforms where this is false. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_validation</samp>](## "platform_settings.[].feature_support.hardware_validation") | Boolean |  | `True` |  | Enable hardware validation for the device.<br>If `false`, all hardware tests are skipped, therefore the other keys in `validation_profiles[].hardware` are ignored. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_validation</samp>](## "platform_settings.[].feature_support.hardware_validation") | Boolean |  | `True` |  | Enable hardware validation for the device.<br>When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -317,7 +317,7 @@
           ptp: <bool; default=True>
 
           # Enable hardware validation for the device.
-          # If `false`, all hardware tests are skipped, therefore the other keys in `validation_profiles[].hardware` are ignored.
+          # When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored.
           hardware_validation: <bool; default=True>
         management_interface: <str; default="Management1">
 
@@ -501,7 +501,7 @@
           ptp: <bool; default=True>
 
           # Enable hardware validation for the device.
-          # If `false`, all hardware tests are skipped, therefore the other keys in `validation_profiles[].hardware` are ignored.
+          # When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored.
           hardware_validation: <bool; default=True>
         management_interface: <str; default="Management1">
 

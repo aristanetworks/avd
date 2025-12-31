@@ -10489,6 +10489,13 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdModel.
         """
         validation_profile: str | None
+        """
+        Name of the validation profile to apply to this device.
+        The profile must be defined under
+        `validation_profiles`.
+        Validation profiles define hardware and logging validation requirements used
+        by the `anta_runner` role during post-deployment validation.
+        """
 
         if TYPE_CHECKING:
 
@@ -11246,7 +11253,12 @@ class EosDesigns(EosDesignsRootModel):
                        associated node(s).
 
                        Subclass of AvdModel.
-                    validation_profile: validation_profile
+                    validation_profile:
+                       Name of the validation profile to apply to this device.
+                       The profile must be defined under
+                       `validation_profiles`.
+                       Validation profiles define hardware and logging validation requirements used
+                       by the `anta_runner` role during post-deployment validation.
 
                 """
 
@@ -15540,6 +15552,13 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdModel.
         """
         validation_profile: str | None
+        """
+        Name of the validation profile to apply to this device.
+        The profile must be defined under
+        `validation_profiles`.
+        Validation profiles define hardware and logging validation requirements used
+        by the `anta_runner` role during post-deployment validation.
+        """
 
         if TYPE_CHECKING:
 
@@ -16306,7 +16325,12 @@ class EosDesigns(EosDesignsRootModel):
                        associated node(s).
 
                        Subclass of AvdModel.
-                    validation_profile: validation_profile
+                    validation_profile:
+                       Name of the validation profile to apply to this device.
+                       The profile must be defined under
+                       `validation_profiles`.
+                       Validation profiles define hardware and logging validation requirements used
+                       by the `anta_runner` role during post-deployment validation.
 
                 """
 
@@ -25608,8 +25632,9 @@ class EosDesigns(EosDesignsRootModel):
             hardware_validation: bool
             """
             Enable hardware validation for the device.
-            If `false`, all hardware tests are skipped, therefore the
-            other keys in `validation_profiles[].hardware` are ignored.
+            When `false`, all hardware tests are skipped, therefore
+            the `validation_profiles[].hardware` keys defined for the validation profile applied to the device
+            are ignored.
 
             Default value: `True`
             """
@@ -25737,8 +25762,9 @@ class EosDesigns(EosDesignsRootModel):
                            false.
                         hardware_validation:
                            Enable hardware validation for the device.
-                           If `false`, all hardware tests are skipped, therefore the
-                           other keys in `validation_profiles[].hardware` are ignored.
+                           When `false`, all hardware tests are skipped, therefore
+                           the `validation_profiles[].hardware` keys defined for the validation profile applied to the device
+                           are ignored.
 
                     """
 
@@ -26363,8 +26389,9 @@ class EosDesigns(EosDesignsRootModel):
             hardware_validation: bool
             """
             Enable hardware validation for the device.
-            If `false`, all hardware tests are skipped, therefore the
-            other keys in `validation_profiles[].hardware` are ignored.
+            When `false`, all hardware tests are skipped, therefore
+            the `validation_profiles[].hardware` keys defined for the validation profile applied to the device
+            are ignored.
 
             Default value: `True`
             """
@@ -26492,8 +26519,9 @@ class EosDesigns(EosDesignsRootModel):
                            false.
                         hardware_validation:
                            Enable hardware validation for the device.
-                           If `false`, all hardware tests are skipped, therefore the
-                           other keys in `validation_profiles[].hardware` are ignored.
+                           When `false`, all hardware tests are skipped, therefore
+                           the `validation_profiles[].hardware` keys defined for the validation profile applied to the device
+                           are ignored.
 
                     """
 
@@ -32283,7 +32311,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Inherit settings from a parent profile defined under `validation_profiles`.
         Max one level of profile
-        inheritance.
+        inheritance: profile -> parent_profile
         """
         hardware: Hardware
         """Subclass of AvdModel."""
@@ -32319,7 +32347,7 @@ class EosDesigns(EosDesignsRootModel):
                     parent_profile:
                        Inherit settings from a parent profile defined under `validation_profiles`.
                        Max one level of profile
-                       inheritance.
+                       inheritance: profile -> parent_profile
                     hardware: Subclass of AvdModel.
                     logging: Subclass of AvdModel.
                     exclude_as_extra_fabric_validation_target:
@@ -38351,6 +38379,13 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
                     """
                     validation_profile: str | None
+                    """
+                    Name of the validation profile to apply to this device.
+                    The profile must be defined under
+                    `validation_profiles`.
+                    Validation profiles define hardware and logging validation requirements used
+                    by the `anta_runner` role during post-deployment validation.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -39091,7 +39126,12 @@ class EosDesigns(EosDesignsRootModel):
                                    associated node(s).
 
                                    Subclass of AvdModel.
-                                validation_profile: validation_profile
+                                validation_profile:
+                                   Name of the validation profile to apply to this device.
+                                   The profile must be defined under
+                                   `validation_profiles`.
+                                   Validation profiles define hardware and logging validation requirements used
+                                   by the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -43393,6 +43433,13 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
                         """
                         validation_profile: str | None
+                        """
+                        Name of the validation profile to apply to this device.
+                        The profile must be defined under
+                        `validation_profiles`.
+                        Validation profiles define hardware and logging validation requirements used
+                        by the `anta_runner` role during post-deployment validation.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -44142,7 +44189,12 @@ class EosDesigns(EosDesignsRootModel):
                                        associated node(s).
 
                                        Subclass of AvdModel.
-                                    validation_profile: validation_profile
+                                    validation_profile:
+                                       Name of the validation profile to apply to this device.
+                                       The profile must be defined under
+                                       `validation_profiles`.
+                                       Validation profiles define hardware and logging validation requirements used
+                                       by the `anta_runner` role during post-deployment validation.
 
                                 """
 
@@ -48355,6 +48407,13 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
                     """
                     validation_profile: str | None
+                    """
+                    Name of the validation profile to apply to this device.
+                    The profile must be defined under
+                    `validation_profiles`.
+                    Validation profiles define hardware and logging validation requirements used
+                    by the `anta_runner` role during post-deployment validation.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -49106,7 +49165,12 @@ class EosDesigns(EosDesignsRootModel):
                                    associated node(s).
 
                                    Subclass of AvdModel.
-                                validation_profile: validation_profile
+                                validation_profile:
+                                   Name of the validation profile to apply to this device.
+                                   The profile must be defined under
+                                   `validation_profiles`.
+                                   Validation profiles define hardware and logging validation requirements used
+                                   by the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -53391,6 +53455,13 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
                     """
                     validation_profile: str | None
+                    """
+                    Name of the validation profile to apply to this device.
+                    The profile must be defined under
+                    `validation_profiles`.
+                    Validation profiles define hardware and logging validation requirements used
+                    by the `anta_runner` role during post-deployment validation.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -54140,7 +54211,12 @@ class EosDesigns(EosDesignsRootModel):
                                    associated node(s).
 
                                    Subclass of AvdModel.
-                                validation_profile: validation_profile
+                                validation_profile:
+                                   Name of the validation profile to apply to this device.
+                                   The profile must be defined under
+                                   `validation_profiles`.
+                                   Validation profiles define hardware and logging validation requirements used
+                                   by the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -70589,6 +70665,13 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
                     """
                     validation_profile: str | None
+                    """
+                    Name of the validation profile to apply to this device.
+                    The profile must be defined under
+                    `validation_profiles`.
+                    Validation profiles define hardware and logging validation requirements used
+                    by the `anta_runner` role during post-deployment validation.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -71329,7 +71412,12 @@ class EosDesigns(EosDesignsRootModel):
                                    associated node(s).
 
                                    Subclass of AvdModel.
-                                validation_profile: validation_profile
+                                validation_profile:
+                                   Name of the validation profile to apply to this device.
+                                   The profile must be defined under
+                                   `validation_profiles`.
+                                   Validation profiles define hardware and logging validation requirements used
+                                   by the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -75631,6 +75719,13 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
                         """
                         validation_profile: str | None
+                        """
+                        Name of the validation profile to apply to this device.
+                        The profile must be defined under
+                        `validation_profiles`.
+                        Validation profiles define hardware and logging validation requirements used
+                        by the `anta_runner` role during post-deployment validation.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -76380,7 +76475,12 @@ class EosDesigns(EosDesignsRootModel):
                                        associated node(s).
 
                                        Subclass of AvdModel.
-                                    validation_profile: validation_profile
+                                    validation_profile:
+                                       Name of the validation profile to apply to this device.
+                                       The profile must be defined under
+                                       `validation_profiles`.
+                                       Validation profiles define hardware and logging validation requirements used
+                                       by the `anta_runner` role during post-deployment validation.
 
                                 """
 
@@ -80593,6 +80693,13 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
                     """
                     validation_profile: str | None
+                    """
+                    Name of the validation profile to apply to this device.
+                    The profile must be defined under
+                    `validation_profiles`.
+                    Validation profiles define hardware and logging validation requirements used
+                    by the `anta_runner` role during post-deployment validation.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -81344,7 +81451,12 @@ class EosDesigns(EosDesignsRootModel):
                                    associated node(s).
 
                                    Subclass of AvdModel.
-                                validation_profile: validation_profile
+                                validation_profile:
+                                   Name of the validation profile to apply to this device.
+                                   The profile must be defined under
+                                   `validation_profiles`.
+                                   Validation profiles define hardware and logging validation requirements used
+                                   by the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -85629,6 +85741,13 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
                     """
                     validation_profile: str | None
+                    """
+                    Name of the validation profile to apply to this device.
+                    The profile must be defined under
+                    `validation_profiles`.
+                    Validation profiles define hardware and logging validation requirements used
+                    by the `anta_runner` role during post-deployment validation.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -86378,7 +86497,12 @@ class EosDesigns(EosDesignsRootModel):
                                    associated node(s).
 
                                    Subclass of AvdModel.
-                                validation_profile: validation_profile
+                                validation_profile:
+                                   Name of the validation profile to apply to this device.
+                                   The profile must be defined under
+                                   `validation_profiles`.
+                                   Validation profiles define hardware and logging validation requirements used
+                                   by the `anta_runner` role during post-deployment validation.
 
                             """
 

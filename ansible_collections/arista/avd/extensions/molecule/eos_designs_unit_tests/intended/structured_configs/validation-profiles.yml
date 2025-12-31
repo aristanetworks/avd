@@ -34,7 +34,7 @@ metadata:
     min_line_cards: 10
     min_fabric_cards: 5
     transceiver_manufacturers:
-    - Third-party vendor
+    - Third-party vendor profile1
   validate_no_errors_period: 2
   exclude_as_extra_fabric_validation_target: true
 prefix_lists:

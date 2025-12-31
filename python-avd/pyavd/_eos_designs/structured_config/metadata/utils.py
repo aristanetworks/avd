@@ -24,28 +24,23 @@ class UtilsMixin(Protocol):
         """
         Return a fully resolved validation profile.
 
-        The method performs the following steps:
-        - Verifies that the requested validation profile exists.
-        - If a parent profile is defined, verifies that the parent exists.
-        - Resolves the profile by deep-inheriting from the parent profile.
-        - Removes the `parent_profile` attribute from the resolved profile
-        to prevent further inheritance processing.
+        The validation profile is resolved as follows:
+        * Verify that the requested validation profile exists.
+        * If a parent profile is defined, verify that the parent profile exists.
+        * Deep-inherit the profile from its parent profile.
+        * Remove the ``parent_profile`` attribute from the resolved profile to
+        prevent further inheritance processing.
 
-        Parameters:
-        ----------
-        profile_name : str
-            Name of the validation profile applied under the node configuration.
+        Args:
+            profile_name: Name of the validation profile applied under the node
+                configuration.
 
         Returns:
-        -------
-        EosDesigns.ValidationProfilesItem
             The resolved validation profile with inheritance applied.
 
         Raises:
-        ------
-        AristaAvdInvalidInputsError
-            If the profile or its parent profile is not defined in
-            `inputs.validation_profiles`.
+            AristaAvdInvalidInputsError: If the validation profile or its parent
+                profile is not defined under ``inputs.validation_profiles``.
         """
         validation_profiles = self.inputs.validation_profiles
 
@@ -55,10 +50,9 @@ class UtilsMixin(Protocol):
 
         validation_profile = validation_profiles[profile_name]
 
-        parent_name = validation_profile.parent_profile
-        if parent_name:
+        if (parent_name := validation_profile.parent_profile) is not None:
             if parent_name not in validation_profiles:
-                msg = f"Parent validation profile '{parent_name}' referenced by validation profile '{profile_name}' is not defined under validation_profiles."
+                msg = f"Parent validation profile '{parent_name}' referenced by validation profile '{profile_name}' is not defined under 'validation_profiles'."
                 raise AristaAvdInvalidInputsError(msg)
 
             parent_profile = validation_profiles[parent_name]

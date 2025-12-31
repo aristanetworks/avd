@@ -290,7 +290,7 @@ $defs:
               type: bool
               description: |-
                 Enable hardware validation for the device.
-                If `false`, all hardware tests are skipped, therefore the other keys in `validation_profiles[].hardware` are ignored.
+                When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored.
               default: true
         management_interface:
           type: str

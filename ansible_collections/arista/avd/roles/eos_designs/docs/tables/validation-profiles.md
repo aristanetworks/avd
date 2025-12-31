@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>validation_profiles</samp>](## "validation_profiles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "validation_profiles.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "validation_profiles.[].parent_profile") | String |  |  |  | Inherit settings from a parent profile defined under `validation_profiles`.<br>Max one level of profile inheritance. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "validation_profiles.[].parent_profile") | String |  |  |  | Inherit settings from a parent profile defined under `validation_profiles`.<br>Max one level of profile inheritance: profile -> parent_profile |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "validation_profiles.[].hardware") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "validation_profiles.[].hardware.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. Set to 0 to skip validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "validation_profiles.[].hardware.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. Set to 0 to skip validation. |
@@ -29,7 +29,7 @@
       - name: <str; required; unique>
 
         # Inherit settings from a parent profile defined under `validation_profiles`.
-        # Max one level of profile inheritance.
+        # Max one level of profile inheritance: profile -> parent_profile
         parent_profile: <str>
         hardware:
 
