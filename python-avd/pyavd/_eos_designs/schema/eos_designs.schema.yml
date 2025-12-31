@@ -4575,6 +4575,9 @@ keys:
         type: bool
         default: false
         $ref: eos_cli_config_gen#/keys/ptp/keys/forward_v1
+      free_running:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/ptp/keys/free_running
   queue_monitor_length:
     documentation_options:
       table: system-settings
@@ -10941,6 +10944,9 @@ $defs:
               forward_v1:
                 type: bool
                 description: Forward dataplane PTP V1 packets.
+              free_running:
+                type: dict
+                $ref: eos_cli_config_gen#/keys/ptp/keys/free_running
               dscp:
                 type: dict
                 keys:
