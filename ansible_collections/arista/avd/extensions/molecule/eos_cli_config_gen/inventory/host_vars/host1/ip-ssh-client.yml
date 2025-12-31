@@ -2,7 +2,7 @@
 ### IP SSH Client ###
 
 ip_ssh_client:
-  source_interface: ethernet10
+  source_interface: Ethernet10
   vrfs:
     - name: aaa
       source_interface: Loopback0
