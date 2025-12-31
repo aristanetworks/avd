@@ -80,7 +80,7 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
 
         Available data:
             - mlag_peer
-            - peer_channel_group_id
+            - mlag_port_channel_id
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
