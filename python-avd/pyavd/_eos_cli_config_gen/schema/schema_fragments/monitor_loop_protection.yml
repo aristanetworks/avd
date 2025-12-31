@@ -23,7 +23,7 @@ keys:
           - int
         description: |-
           VLAN range as string.
-          "< vlan_id >, < vlan_id >-< vlan_id >"#
+          "< vlan_id >, < vlan_id >-< vlan_id >"
           Example: 15,16,17,18
       rate_limit:
         type: int
