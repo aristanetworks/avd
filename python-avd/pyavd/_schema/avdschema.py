@@ -37,11 +37,11 @@ class AvdSchema:
         Force loading the YAML schema files into the store. By default schemas are loaded from pickled files.
     """
 
-    def __init__(self, schema: dict | None = None, schema_id: str | None = None, load_store_from_yaml: bool = False) -> None:
+    def __init__(self, schema: dict[str, Any] | None = None, schema_id: str | None = None, load_store_from_yaml: bool = False) -> None:
         self.store = create_store(load_from_yaml=load_store_from_yaml)
         self.load_schema(schema, schema_id)
 
-    def load_schema(self, schema: dict | None = None, schema_id: str | None = None) -> None:
+    def load_schema(self, schema: dict[str, Any] | None = None, schema_id: str | None = None) -> None:
         """
         Load schema from dict or the ID of a builtin schema.
 
@@ -74,7 +74,7 @@ class AvdSchema:
     def convert(self, data: Any) -> Generator:
         yield from self._dataconverter.convert_data(data)
 
-    def subschema(self, datapath: list) -> dict:
+    def subschema(self, datapath: list[str]) -> dict[str, Any]:
         """
         Takes datapath elements as a list and returns the subschema for this datapath.
 
@@ -126,7 +126,7 @@ class AvdSchema:
 
         schema = self._schema
 
-        def recursive_function(datapath: list, schema: dict) -> dict:
+        def recursive_function(datapath: list[str], schema: dict[str, Any]) -> dict[str, Any]:
             """Walk through schema following the datapath."""
             if len(datapath) == 0:
                 return schema
@@ -152,7 +152,7 @@ class AvdSchema:
 
         return recursive_function(datapath, schema)
 
-    def get_default_value(self, datapath: list) -> Any:
+    def get_default_value(self, datapath: list[str]) -> Any:
         """
         Return the default value of a key given the datapath as a list.
 
