@@ -20,13 +20,13 @@ aaa_settings:
           - TACACS1
 
       - host: 10.10.10.2  # Collides with csc_1_aaa_server_groups
-        vrf: MGMT
+        vrf: default
         cleartext_key: arista
         groups:
           - TACACS1
 
       - host: 10.10.10.3 # unique value
-        vrf: MGMT1
+        vrf: default
         cleartext_key: arista
         groups:
           - TACACS1
@@ -59,11 +59,11 @@ csc_1_aaa_server_groups:
     type: tacacs+
     servers:
       - server: 10.10.10.11 # Collides with eos_designs
-        vrf: default
+        vrf: MGMT
       - server: 10.10.10.2 # Collides with eos_designs
         vrf: MGMT
       - server: 10.10.10.4 # unique value
-        vrf: MGMT1
+        vrf: MGMT
 
 csc_1_local_users:
   - name: super-shared-admin  # Collides with both eos_designs and csc_2_local_users
