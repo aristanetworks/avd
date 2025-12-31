@@ -30,10 +30,10 @@
 
 | Disabled Interfaces |
 | ------------------- |
-{%     endif %}
-{%     for ethernet_interface in loop_protection_interfaces %}
+{%         for ethernet_interface in loop_protection_interfaces %}
 | {{ ethernet_interface.name }} |
-{%     endfor %}
+{%         endfor %}
+{%     endif %}
 
 ### Monitor Loop Protection Configuration
 
