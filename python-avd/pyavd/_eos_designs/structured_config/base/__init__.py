@@ -429,9 +429,11 @@ class AvdStructuredConfigBaseProtocol(
         if not (local_users := self.inputs.aaa_settings.local_users):
             return
         for local_user in local_users._natural_sorted():
-            local_user_data = EosCliConfigGen.LocalUsersItem(
-                name=local_user.name,
-                disabled=local_user.disabled,
+            local_user_data = EosCliConfigGen.LocalUsersItem(name=local_user.name, disabled=local_user.disabled)
+            if local_user_data.disabled is True:
+                self.structured_config.local_users.append(local_user_data)
+                continue
+            local_user_data._update(
                 privilege=local_user.privilege,
                 role=local_user.role,
                 ssh_key=local_user.ssh_key,
