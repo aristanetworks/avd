@@ -7,4 +7,4 @@ ip_ssh_client:
     - name: aaa
       source_interface: Loopback0
     - name: MGMT
-      source_interface: manaGement0
+      source_interface: Management0
