@@ -27,6 +27,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "<node_type_keys.key>.defaults.ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "<node_type_keys.key>.defaults.ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.defaults.ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free_running</samp>](## "<node_type_keys.key>.defaults.ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "<node_type_keys.key>.defaults.ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "<node_type_keys.key>.defaults.ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "<node_type_keys.key>.defaults.ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "<node_type_keys.key>.defaults.ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -71,6 +74,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free_running</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -111,6 +117,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "<node_type_keys.key>.node_groups.[].ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "<node_type_keys.key>.node_groups.[].ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.node_groups.[].ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free_running</samp>](## "<node_type_keys.key>.node_groups.[].ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "<node_type_keys.key>.node_groups.[].ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "<node_type_keys.key>.node_groups.[].ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "<node_type_keys.key>.node_groups.[].ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "<node_type_keys.key>.node_groups.[].ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -153,6 +162,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "<node_type_keys.key>.nodes.[].ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "<node_type_keys.key>.nodes.[].ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.nodes.[].ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free_running</samp>](## "<node_type_keys.key>.nodes.[].ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "<node_type_keys.key>.nodes.[].ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "<node_type_keys.key>.nodes.[].ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "<node_type_keys.key>.nodes.[].ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "<node_type_keys.key>.nodes.[].ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -195,6 +207,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "device_profiles.[].ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "device_profiles.[].ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "device_profiles.[].ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free_running</samp>](## "device_profiles.[].ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "device_profiles.[].ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "device_profiles.[].ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "device_profiles.[].ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "device_profiles.[].ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -237,6 +252,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "devices.[].ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "devices.[].ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "devices.[].ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free_running</samp>](## "devices.[].ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "devices.[].ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "devices.[].ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "devices.[].ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "devices.[].ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -315,6 +333,15 @@
 
           # Forward dataplane PTP V1 packets.
           forward_v1: <bool>
+          free_running:
+
+            # Enables PTP configuration in free-running mode.
+            # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+            # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+            enabled: <bool; required>
+
+            # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+            source_clock_hardware: <bool>
           dscp:
             general_messages: <int>
             event_messages: <int>
@@ -398,6 +425,15 @@
 
                 # Forward dataplane PTP V1 packets.
                 forward_v1: <bool>
+                free_running:
+
+                  # Enables PTP configuration in free-running mode.
+                  # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+                  # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+                  enabled: <bool; required>
+
+                  # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+                  source_clock_hardware: <bool>
                 dscp:
                   general_messages: <int>
                   event_messages: <int>
@@ -468,6 +504,15 @@
 
             # Forward dataplane PTP V1 packets.
             forward_v1: <bool>
+            free_running:
+
+              # Enables PTP configuration in free-running mode.
+              # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+              # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+              enabled: <bool; required>
+
+              # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+              source_clock_hardware: <bool>
             dscp:
               general_messages: <int>
               event_messages: <int>
@@ -544,6 +589,15 @@
 
             # Forward dataplane PTP V1 packets.
             forward_v1: <bool>
+            free_running:
+
+              # Enables PTP configuration in free-running mode.
+              # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+              # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+              enabled: <bool; required>
+
+              # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+              source_clock_hardware: <bool>
             dscp:
               general_messages: <int>
               event_messages: <int>
@@ -620,6 +674,15 @@
 
           # Forward dataplane PTP V1 packets.
           forward_v1: <bool>
+          free_running:
+
+            # Enables PTP configuration in free-running mode.
+            # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+            # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+            enabled: <bool; required>
+
+            # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+            source_clock_hardware: <bool>
           dscp:
             general_messages: <int>
             event_messages: <int>
@@ -696,6 +759,15 @@
 
           # Forward dataplane PTP V1 packets.
           forward_v1: <bool>
+          free_running:
+
+            # Enables PTP configuration in free-running mode.
+            # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+            # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+            enabled: <bool; required>
+
+            # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+            source_clock_hardware: <bool>
           dscp:
             general_messages: <int>
             event_messages: <int>
