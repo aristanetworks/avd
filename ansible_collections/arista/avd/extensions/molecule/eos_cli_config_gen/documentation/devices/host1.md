@@ -4814,15 +4814,17 @@ interface Dps1
 interface Ethernet1
    !! testing multi line comment with |-
    !! connection to dc1-spine1
-   traffic-policy input BLUE-C1-POLICY
-   traffic-policy output BLUE-C2-POLICY
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    mtu 1500
+   traffic-policy input BLUE-C1-POLICY
+   traffic-policy output BLUE-C2-POLICY
    bgp session tracker ST1
    l2-protocol forwarding profile TEST1
    l2 mtu 8000
    l2 mru 8000
    speed forced 100gfull
+   switchport trunk private-vlan secondary
+   switchport pvlan mapping 20-30
    switchport access vlan 200
    switchport trunk native vlan tag
    switchport phone vlan 110
@@ -4847,8 +4849,6 @@ interface Ethernet1
    switchport vlan translation out 34 50
    switchport vlan translation out 10 45 inner 34
    switchport vlan translation out 45 dot1q-tunnel all
-   switchport trunk private-vlan secondary
-   switchport pvlan mapping 20-30
    address locking ipv4
    ip address 172.31.255.1/31
    ip verify unicast source reachable-via rx
@@ -4901,12 +4901,12 @@ interface Ethernet2
    switchport mode trunk
    switchport
    address locking ipv4 ipv6
-   arp gratuitous accept
    ip address 10.1.255.3/24
    ip address 1.1.1.3/24 secondary
    ip address 1.1.1.4/24 secondary
    ip address 10.0.0.254/24 secondary
    ip address 192.168.1.1/24 secondary
+   arp gratuitous accept
    tcp mss ceiling ipv4 70 ingress
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST out
@@ -4931,8 +4931,8 @@ interface Ethernet3
    switchport mode trunk
    no switchport
    switchport vlan translation out 23 dot1q-tunnel 50
-   no snmp trap link-change
    address locking ipv6
+   no snmp trap link-change
    ip address 172.31.128.1/31
    ipv6 enable
    ipv6 address 2002:ABDC::1/64
@@ -4971,11 +4971,11 @@ interface Ethernet4
    shutdown
    mtu 9100
    no switchport
-   snmp trap link-change
    !
    address locking
       address-family ipv4
       address-family ipv6
+   snmp trap link-change
    ipv6 enable
    ipv6 address 2020::2020/64
    ipv6 address FE80:FEA::AB65/64 link-local
@@ -5185,10 +5185,10 @@ interface Ethernet14
 !
 interface Ethernet15
    description PVLAN Promiscuous Access - only one secondary
+   switchport pvlan mapping 111
    switchport access vlan 110
    switchport mode access
    switchport
-   switchport pvlan mapping 111
    isis authentication mode shared-secret profile profile1 algorithm sha-256 level-1
    isis authentication mode shared-secret profile profile2 algorithm sha-1 level-2
 !
@@ -5204,10 +5204,10 @@ interface Ethernet16
 !
 interface Ethernet17
    description PVLAN Secondary Trunk
+   switchport trunk private-vlan secondary
    switchport trunk allowed vlan 110-112
    switchport mode trunk
    switchport
-   switchport trunk private-vlan secondary
    isis authentication mode sha key-id 5 rx-disabled level-1
    isis authentication mode sha key-id 10 rx-disabled level-2
 !
