@@ -32,7 +32,7 @@ l2leaf:
   defaults:
     platform: vEOS-lab
     uplink_interfaces: ['Ethernet1']
-    uplink_switches: ['sflow-settings-missing-destinations']
+    uplink_switches: ['duplicate-neighbors-l3-edge']
 
   nodes:
     - name: duplicate-cloudvision-exporter
@@ -42,4 +42,5 @@ l2leaf:
         - Ethernet15
 
 expected_error_message: >-
-  Found conflicting data while generating configuration for cloudvision exporter with name 'Exporter1'. Please check your exporters configuration for tracker 'FLOW-TRACKER-11' is not conflicting with 'export_to_cv' configuration.
+  Found conflicting data while generating configuration for cloudvision exporter with name 'Exporter1'. Please check your exporters configuration for tracker
+  'FLOW-TRACKER-11' is not conflicting with 'export_to_cv' configuration.
