@@ -53,22 +53,25 @@ def _alphanum_key(item: Any, sort_key: str | None = None, *, strict: bool = True
         if sort_key is None:
             msg = f"'natural_sort' requires 'sort_key' to be set when used for a Mapping: {item} "
             raise ValueError(msg)
-        if strict and sort_key not in item and default_value is None:
-            msg = f"Missing key '{sort_key}' in item to sort {item}."
-            raise KeyError(msg)
-        if default_value is None:
-            default_value = item
-        return [_convert(c, ignore_case) for c in re.split(SPLIT_PATTERN, str(item.get(sort_key, default_value)))]
+        val = item.get(sort_key)
+        if val is None:
+            if strict and default_value is None and sort_key not in item:
+                msg = f"Missing key '{sort_key}' in item to sort {item}."
+                raise KeyError(msg)
+            val = default_value if default_value is not None else item
+        return [_convert(c, ignore_case) for c in re.split(SPLIT_PATTERN, str(val))]
     if isinstance(item, Namespace):
         if sort_key is None:
             msg = f"'natural_sort' requires 'sort_key' to be set when used for a Namespace: {item} "
             raise ValueError(msg)
-        if strict and not hasattr(item, sort_key) and default_value is None:
-            msg = f"Missing attribute '{sort_key}' in item to sort {item}."
-            raise AttributeError(msg)
-        if default_value is None:
-            default_value = item
-        return [_convert(c, ignore_case) for c in re.split(SPLIT_PATTERN, str(getattr(item, sort_key, default_value)))]
+        val = getattr(item, sort_key, None)
+        if val is None:
+            if strict and default_value is None and not hasattr(item, sort_key):
+                msg = f"Missing attribute '{sort_key}' in item to sort {item}."
+                raise KeyError(msg)
+            val = default_value if default_value is not None else f"~{str(item).lstrip('<')}"
+        return [_convert(c, ignore_case) for c in re.split(SPLIT_PATTERN, str(val))]
+
     return [_convert(c, ignore_case) for c in re.split(SPLIT_PATTERN, str(item))]
 
 
