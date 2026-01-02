@@ -84,7 +84,7 @@ The following table depicts the AVD release support matrix, including the timeli
 | ------- | -------------------- | ----------------- | ------------------ | -------------- |
 | 6.x.x | - | - | - | - |
 | 5.x.x | Oct-2024 | - | - | - |
-| 4.x.x | Jun-2023 | Oct-2024 | Apr-2025 | Oct-2025 |
+| 4.x.x | Jun-2023 | Oct-2024 | Apr-2026 | Oct-2026 |
 
 ## Ordering Information
 
