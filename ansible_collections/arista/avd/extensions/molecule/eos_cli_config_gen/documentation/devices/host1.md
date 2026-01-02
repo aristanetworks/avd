@@ -2442,6 +2442,7 @@ mcs client
 | --- | ------ |
 | default | Disabled |
 | MGMT | Enabled |
+| lower_case | Enabled |
 
 #### SNMP Hosts Configuration
 
@@ -2545,8 +2546,9 @@ snmp-server enable traps msdp backward-transition
 snmp-server enable traps msdp established
 snmp-server enable traps snmp link-down
 snmp-server enable traps snmpConfigManEvent
-snmp-server vrf MGMT
 no snmp-server vrf default
+snmp-server vrf MGMT
+snmp-server vrf lower_case
 snmp-server ifmib ifspeed shape-rate
 ```
 
