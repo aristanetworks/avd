@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -7624,6 +7624,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ttl": {"type": int},
                 "forward_unicast": {"type": bool, "default": False},
                 "forward_v1": {"type": bool},
+                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                 "dscp": {"type": Dscp},
                 "monitor": {"type": Monitor},
             }
@@ -7688,6 +7689,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             forward_v1: bool | None
             """Forward dataplane PTP V1 packets."""
+            free_running: EosCliConfigGen.Ptp.FreeRunning
             dscp: Dscp
             """Subclass of AvdModel."""
             monitor: Monitor
@@ -7714,6 +7716,7 @@ class EosDesigns(EosDesignsRootModel):
                     ttl: int | None | UndefinedType = Undefined,
                     forward_unicast: bool | UndefinedType = Undefined,
                     forward_v1: bool | None | UndefinedType = Undefined,
+                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                     dscp: Dscp | UndefinedType = Undefined,
                     monitor: Monitor | UndefinedType = Undefined,
                 ) -> None:
@@ -7759,6 +7762,7 @@ class EosDesigns(EosDesignsRootModel):
                         ttl: ttl
                         forward_unicast: Enable PTP unicast forwarding.
                         forward_v1: Forward dataplane PTP V1 packets.
+                        free_running: free_running
                         dscp: Subclass of AvdModel.
                         monitor: Subclass of AvdModel.
 
@@ -9578,6 +9582,7 @@ class EosDesigns(EosDesignsRootModel):
             "overlay_address_families": {"type": OverlayAddressFamilies},
             "mpls_route_reflectors": {"type": MplsRouteReflectors},
             "bgp_cluster_id": {"type": str},
+            "kernel_ecmp_cli": {"type": bool, "default": True},
             "ptp": {"type": Ptp},
             "wan_role": {"type": str},
             "cv_pathfinder_transit_mode": {"type": str},
@@ -10364,6 +10369,18 @@ class EosDesigns(EosDesignsRootModel):
         """
         bgp_cluster_id: str | None
         """Set BGP cluster id."""
+        kernel_ecmp_cli: bool
+        """
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
+
+        Default value: `True`
+        """
         ptp: Ptp
         """Subclass of AvdModel."""
         wan_role: WanRole | None
@@ -10372,9 +10389,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
         """
@@ -10597,6 +10614,7 @@ class EosDesigns(EosDesignsRootModel):
                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                 bgp_cluster_id: str | None | UndefinedType = Undefined,
+                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 wan_role: WanRole | None | UndefinedType = Undefined,
                 cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -11150,15 +11168,23 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     bgp_cluster_id: Set BGP cluster id.
+                    kernel_ecmp_cli:
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     ptp: Subclass of AvdModel.
                     wan_role:
                        Override the default WAN role.
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     cv_pathfinder_transit_mode:
                        Configure the transit mode for a WAN client for CV Pathfinder designs
                        only when the `wan_mode` root
@@ -12648,6 +12674,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ttl": {"type": int},
                 "forward_unicast": {"type": bool, "default": False},
                 "forward_v1": {"type": bool},
+                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                 "dscp": {"type": Dscp},
                 "monitor": {"type": Monitor},
             }
@@ -12712,6 +12739,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             forward_v1: bool | None
             """Forward dataplane PTP V1 packets."""
+            free_running: EosCliConfigGen.Ptp.FreeRunning
             dscp: Dscp
             """Subclass of AvdModel."""
             monitor: Monitor
@@ -12738,6 +12766,7 @@ class EosDesigns(EosDesignsRootModel):
                     ttl: int | None | UndefinedType = Undefined,
                     forward_unicast: bool | UndefinedType = Undefined,
                     forward_v1: bool | None | UndefinedType = Undefined,
+                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                     dscp: Dscp | UndefinedType = Undefined,
                     monitor: Monitor | UndefinedType = Undefined,
                 ) -> None:
@@ -12783,6 +12812,7 @@ class EosDesigns(EosDesignsRootModel):
                         ttl: ttl
                         forward_unicast: Enable PTP unicast forwarding.
                         forward_v1: Forward dataplane PTP V1 packets.
+                        free_running: free_running
                         dscp: Subclass of AvdModel.
                         monitor: Subclass of AvdModel.
 
@@ -14603,6 +14633,7 @@ class EosDesigns(EosDesignsRootModel):
             "overlay_address_families": {"type": OverlayAddressFamilies},
             "mpls_route_reflectors": {"type": MplsRouteReflectors},
             "bgp_cluster_id": {"type": str},
+            "kernel_ecmp_cli": {"type": bool, "default": True},
             "ptp": {"type": Ptp},
             "wan_role": {"type": str},
             "cv_pathfinder_transit_mode": {"type": str},
@@ -15399,6 +15430,18 @@ class EosDesigns(EosDesignsRootModel):
         """
         bgp_cluster_id: str | None
         """Set BGP cluster id."""
+        kernel_ecmp_cli: bool
+        """
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
+
+        Default value: `True`
+        """
         ptp: Ptp
         """Subclass of AvdModel."""
         wan_role: WanRole | None
@@ -15407,9 +15450,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
         """
@@ -15633,6 +15676,7 @@ class EosDesigns(EosDesignsRootModel):
                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                 bgp_cluster_id: str | None | UndefinedType = Undefined,
+                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 wan_role: WanRole | None | UndefinedType = Undefined,
                 cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -16194,15 +16238,23 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     bgp_cluster_id: Set BGP cluster id.
+                    kernel_ecmp_cli:
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     ptp: Subclass of AvdModel.
                     wan_role:
                        Override the default WAN role.
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     cv_pathfinder_transit_mode:
                        Configure the transit mode for a WAN client for CV Pathfinder designs
                        only when the `wan_mode` root
@@ -23900,9 +23952,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         default_flow_tracker_type: DefaultFlowTrackerType
         """
@@ -24057,9 +24109,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     default_flow_tracker_type: Set the default flow tracker type.
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
@@ -24439,9 +24491,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         default_flow_tracker_type: DefaultFlowTrackerType
         """
@@ -24596,9 +24648,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     default_flow_tracker_type: Set the default flow tracker type.
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
@@ -25812,7 +25864,6 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
-            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
@@ -25840,18 +25891,6 @@ class EosDesigns(EosDesignsRootModel):
         Set MTU on point to point uplink interfaces.
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-        """
-        kernel_ecmp_cli: bool
-        """
-        Use EOS CLI to configure kernel forwarding ECMP programming.
-        For EOS kernel forwarding, ECMP
-        programming can be enabled in two different ways, depending on the EOS version.
-        - For newer EOS
-        versions (starting 4.33.2) use the proper CLI.
-        - For older EOS versions use an agent environment
-        variable. Changing this requires restarting the KernelFib agent.
-
-        Default value: `True`
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -25902,7 +25941,6 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
-                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
@@ -25931,14 +25969,6 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-                    kernel_ecmp_cli:
-                       Use EOS CLI to configure kernel forwarding ECMP programming.
-                       For EOS kernel forwarding, ECMP
-                       programming can be enabled in two different ways, depending on the EOS version.
-                       - For newer EOS
-                       versions (starting 4.33.2) use the proper CLI.
-                       - For older EOS versions use an agent environment
-                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -26603,7 +26633,6 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
-            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
@@ -26631,18 +26660,6 @@ class EosDesigns(EosDesignsRootModel):
         Set MTU on point to point uplink interfaces.
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-        """
-        kernel_ecmp_cli: bool
-        """
-        Use EOS CLI to configure kernel forwarding ECMP programming.
-        For EOS kernel forwarding, ECMP
-        programming can be enabled in two different ways, depending on the EOS version.
-        - For newer EOS
-        versions (starting 4.33.2) use the proper CLI.
-        - For older EOS versions use an agent environment
-        variable. Changing this requires restarting the KernelFib agent.
-
-        Default value: `True`
         """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
@@ -26693,7 +26710,6 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
-                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
@@ -26722,14 +26738,6 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-                    kernel_ecmp_cli:
-                       Use EOS CLI to configure kernel forwarding ECMP programming.
-                       For EOS kernel forwarding, ECMP
-                       programming can be enabled in two different ways, depending on the EOS version.
-                       - For newer EOS
-                       versions (starting 4.33.2) use the proper CLI.
-                       - For older EOS versions use an agent environment
-                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -28499,6 +28507,7 @@ class EosDesigns(EosDesignsRootModel):
             "domain": {"type": int, "default": 127},
             "auto_clock_identity": {"type": bool, "default": True},
             "forward_v1": {"type": bool, "default": False},
+            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
         }
         enabled: bool | None
         profile: str
@@ -28520,6 +28529,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        free_running: EosCliConfigGen.Ptp.FreeRunning
 
         if TYPE_CHECKING:
 
@@ -28531,6 +28541,7 @@ class EosDesigns(EosDesignsRootModel):
                 domain: int | UndefinedType = Undefined,
                 auto_clock_identity: bool | UndefinedType = Undefined,
                 forward_v1: bool | UndefinedType = Undefined,
+                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
             ) -> None:
                 """
                 PtpSettings.
@@ -28548,6 +28559,7 @@ class EosDesigns(EosDesignsRootModel):
                     domain: domain
                     auto_clock_identity: auto_clock_identity
                     forward_v1: Forward dataplane PTP V1 packets.
+                    free_running: free_running
 
                 """
 
@@ -32518,7 +32530,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    WanMode: TypeAlias = Literal["autovpn", "cv-pathfinder"]
+    WanMode: TypeAlias = Literal["cv-pathfinder", "legacy-autovpn"]
 
     class WanPathGroupsItem(AvdModel):
         """Subclass of AvdModel."""
@@ -35421,6 +35433,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -35485,6 +35498,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -35511,6 +35525,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -35556,6 +35571,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -37373,6 +37389,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -38138,6 +38155,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -38146,9 +38175,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -38368,6 +38397,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -38907,15 +38937,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -40421,6 +40459,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
                                 "forward_v1": {"type": bool},
+                                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -40485,6 +40524,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             forward_v1: bool | None
                             """Forward dataplane PTP V1 packets."""
+                            free_running: EosCliConfigGen.Ptp.FreeRunning
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -40511,6 +40551,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
                                     forward_v1: bool | None | UndefinedType = Undefined,
+                                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -40556,6 +40597,7 @@ class EosDesigns(EosDesignsRootModel):
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
                                         forward_v1: Forward dataplane PTP V1 packets.
+                                        free_running: free_running
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -42389,6 +42431,7 @@ class EosDesigns(EosDesignsRootModel):
                             "overlay_address_families": {"type": OverlayAddressFamilies},
                             "mpls_route_reflectors": {"type": MplsRouteReflectors},
                             "bgp_cluster_id": {"type": str},
+                            "kernel_ecmp_cli": {"type": bool, "default": True},
                             "ptp": {"type": Ptp},
                             "wan_role": {"type": str},
                             "cv_pathfinder_transit_mode": {"type": str},
@@ -43164,6 +43207,18 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp_cluster_id: str | None
                         """Set BGP cluster id."""
+                        kernel_ecmp_cli: bool
+                        """
+                        Use EOS CLI to configure kernel forwarding ECMP programming.
+                        For EOS kernel forwarding, ECMP
+                        programming can be enabled in two different ways, depending on the EOS version.
+                        - For newer EOS
+                        versions (starting 4.33.2) use the proper CLI.
+                        - For older EOS versions use an agent environment
+                        variable. Changing this requires restarting the KernelFib agent.
+
+                        Default value: `True`
+                        """
                         ptp: Ptp
                         """Subclass of AvdModel."""
                         wan_role: WanRole | None
@@ -43172,9 +43227,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         This is used both for AutoVPN and Pathfinder designs.
                         That means if
-                        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                        `server` indicates that the router is a
-                        route-reflector.
+                        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                        `server` indicates that the
+                        router is a route-reflector.
                         """
                         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                         """
@@ -43396,6 +43451,7 @@ class EosDesigns(EosDesignsRootModel):
                                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                                 bgp_cluster_id: str | None | UndefinedType = Undefined,
+                                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                                 ptp: Ptp | UndefinedType = Undefined,
                                 wan_role: WanRole | None | UndefinedType = Undefined,
                                 cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -43942,15 +43998,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `str` items.
                                     bgp_cluster_id: Set BGP cluster id.
+                                    kernel_ecmp_cli:
+                                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                                       For EOS kernel forwarding, ECMP
+                                       programming can be enabled in two different ways, depending on the EOS version.
+                                       - For newer EOS
+                                       versions (starting 4.33.2) use the proper CLI.
+                                       - For older EOS versions use an agent environment
+                                       variable. Changing this requires restarting the KernelFib agent.
                                     ptp: Subclass of AvdModel.
                                     wan_role:
                                        Override the default WAN role.
 
                                        This is used both for AutoVPN and Pathfinder designs.
                                        That means if
-                                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                       `server` indicates that the router is a
-                                       route-reflector.
+                                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                       `server` indicates that the
+                                       router is a route-reflector.
                                     cv_pathfinder_transit_mode:
                                        Configure the transit mode for a WAN client for CV Pathfinder designs
                                        only when the `wan_mode` root
@@ -45378,6 +45442,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -45442,6 +45507,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -45468,6 +45534,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -45513,6 +45580,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -47332,6 +47400,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -48110,6 +48179,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -48118,9 +48199,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -48342,6 +48423,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -48890,15 +48972,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -50401,6 +50491,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -50465,6 +50556,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -50491,6 +50583,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -50536,6 +50629,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -52355,6 +52449,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -53130,6 +53225,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -53138,9 +53245,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -53362,6 +53469,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -53908,15 +54016,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -67595,6 +67711,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -67659,6 +67776,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -67685,6 +67803,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -67730,6 +67849,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -69547,6 +69667,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -70312,6 +70433,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -70320,9 +70453,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -70542,6 +70675,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -71081,15 +71215,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -72595,6 +72737,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
                                 "forward_v1": {"type": bool},
+                                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -72659,6 +72802,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             forward_v1: bool | None
                             """Forward dataplane PTP V1 packets."""
+                            free_running: EosCliConfigGen.Ptp.FreeRunning
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -72685,6 +72829,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
                                     forward_v1: bool | None | UndefinedType = Undefined,
+                                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -72730,6 +72875,7 @@ class EosDesigns(EosDesignsRootModel):
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
                                         forward_v1: Forward dataplane PTP V1 packets.
+                                        free_running: free_running
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -74563,6 +74709,7 @@ class EosDesigns(EosDesignsRootModel):
                             "overlay_address_families": {"type": OverlayAddressFamilies},
                             "mpls_route_reflectors": {"type": MplsRouteReflectors},
                             "bgp_cluster_id": {"type": str},
+                            "kernel_ecmp_cli": {"type": bool, "default": True},
                             "ptp": {"type": Ptp},
                             "wan_role": {"type": str},
                             "cv_pathfinder_transit_mode": {"type": str},
@@ -75338,6 +75485,18 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp_cluster_id: str | None
                         """Set BGP cluster id."""
+                        kernel_ecmp_cli: bool
+                        """
+                        Use EOS CLI to configure kernel forwarding ECMP programming.
+                        For EOS kernel forwarding, ECMP
+                        programming can be enabled in two different ways, depending on the EOS version.
+                        - For newer EOS
+                        versions (starting 4.33.2) use the proper CLI.
+                        - For older EOS versions use an agent environment
+                        variable. Changing this requires restarting the KernelFib agent.
+
+                        Default value: `True`
+                        """
                         ptp: Ptp
                         """Subclass of AvdModel."""
                         wan_role: WanRole | None
@@ -75346,9 +75505,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         This is used both for AutoVPN and Pathfinder designs.
                         That means if
-                        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                        `server` indicates that the router is a
-                        route-reflector.
+                        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                        `server` indicates that the
+                        router is a route-reflector.
                         """
                         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                         """
@@ -75570,6 +75729,7 @@ class EosDesigns(EosDesignsRootModel):
                                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                                 bgp_cluster_id: str | None | UndefinedType = Undefined,
+                                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                                 ptp: Ptp | UndefinedType = Undefined,
                                 wan_role: WanRole | None | UndefinedType = Undefined,
                                 cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -76116,15 +76276,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `str` items.
                                     bgp_cluster_id: Set BGP cluster id.
+                                    kernel_ecmp_cli:
+                                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                                       For EOS kernel forwarding, ECMP
+                                       programming can be enabled in two different ways, depending on the EOS version.
+                                       - For newer EOS
+                                       versions (starting 4.33.2) use the proper CLI.
+                                       - For older EOS versions use an agent environment
+                                       variable. Changing this requires restarting the KernelFib agent.
                                     ptp: Subclass of AvdModel.
                                     wan_role:
                                        Override the default WAN role.
 
                                        This is used both for AutoVPN and Pathfinder designs.
                                        That means if
-                                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                       `server` indicates that the router is a
-                                       route-reflector.
+                                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                       `server` indicates that the
+                                       router is a route-reflector.
                                     cv_pathfinder_transit_mode:
                                        Configure the transit mode for a WAN client for CV Pathfinder designs
                                        only when the `wan_mode` root
@@ -77552,6 +77720,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -77616,6 +77785,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -77642,6 +77812,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -77687,6 +77858,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -79506,6 +79678,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -80284,6 +80457,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -80292,9 +80477,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -80516,6 +80701,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -81064,15 +81250,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -82575,6 +82769,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -82639,6 +82834,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -82665,6 +82861,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -82710,6 +82907,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -84529,6 +84727,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -85304,6 +85503,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -85312,9 +85523,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -85536,6 +85747,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -86082,15 +86294,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -88736,17 +88956,18 @@ class EosDesigns(EosDesignsRootModel):
     """
     wan_route_servers: WanRouteServers
     """
-    List of the AutoVPN RRs when using `wan_mode: autovpn`, or the Pathfinders
-    when using `wan_mode: cv-
-    pathfinder`, to which the device should connect to.
-    This is also used to establish iBGP sessions
-    between WAN route servers.
+    List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or the Pathfinders
+    when using
+    `wan_mode: cv-pathfinder`, to which the device should connect to.
+    This is also used to establish
+    iBGP sessions between WAN route servers.
 
-    When the route server is part of the same inventory as the WAN routers,
+    When the route server is part of the same inventory as the
+    WAN routers,
     only the name is required.
 
-    Subclass of AvdIndexedList with `WanRouteServersItem` items. Primary key
-    is `hostname` (`str`).
+    Subclass of AvdIndexedList with `WanRouteServersItem`
+    items. Primary key is `hostname` (`str`).
     """
     wan_stun_dtls_disable: bool
     """
@@ -90358,17 +90579,18 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdIndexedList with
                    `WanPathGroupsItem` items. Primary key is `name` (`str`).
                 wan_route_servers:
-                   List of the AutoVPN RRs when using `wan_mode: autovpn`, or the Pathfinders
-                   when using `wan_mode: cv-
-                   pathfinder`, to which the device should connect to.
-                   This is also used to establish iBGP sessions
-                   between WAN route servers.
+                   List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or the Pathfinders
+                   when using
+                   `wan_mode: cv-pathfinder`, to which the device should connect to.
+                   This is also used to establish
+                   iBGP sessions between WAN route servers.
 
-                   When the route server is part of the same inventory as the WAN routers,
+                   When the route server is part of the same inventory as the
+                   WAN routers,
                    only the name is required.
 
-                   Subclass of AvdIndexedList with `WanRouteServersItem` items. Primary key
-                   is `hostname` (`str`).
+                   Subclass of AvdIndexedList with `WanRouteServersItem`
+                   items. Primary key is `hostname` (`str`).
                 wan_stun_dtls_disable:
                    WAN STUN connections are authenticated and secured with DTLS by default.
                    For CV Pathfinder

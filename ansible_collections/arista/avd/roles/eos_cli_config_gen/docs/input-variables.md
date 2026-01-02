@@ -3,7 +3,7 @@
 title: Input variables for eos_cli_config_gen
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -77,19 +77,19 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-tacacs-so
 ### IP FTP client source-interfaces
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-ftp-client-source-interfaces.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-ftp-client.md
 --8<--
 
 ### IP Telnet client source-interfaces
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-telnet-client-source-interfaces.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-telnet-client.md
 --8<--
 
 ### IP TFTP client source-interfaces
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-tftp-client-source-interfaces.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-tftp-client.md
 --8<--
 
 ### Local users
