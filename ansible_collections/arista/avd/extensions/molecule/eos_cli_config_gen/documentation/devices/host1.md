@@ -13817,7 +13817,7 @@ class-map type pbr match-any aaa
 
 | Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
 | ---------- | --- | ---- | ------------- | --------------- | ----------------------------- |
-| CM_REPLICATION_LD | - | af11 | 2 | 1 | 10 kbps (260 kbytes) -> drop-precedence<br> 30 kbps(270 kbytes) -> drop |
+| CM_REPLICATION_LD | 2 | af11 | 2 | 1 | 10 kbps (260 kbytes) -> drop-precedence<br> 30 kbps(270 kbytes) -> drop |
 | CM_REPLICATION_LD_2 | - | af11 | 2 | - | - |
 
 ##### PM_REPLICATION_LD2
@@ -13848,6 +13848,7 @@ class-map type pbr match-any aaa
 !
 policy-map type quality-of-service PM_REPLICATION_LD
    class CM_REPLICATION_LD
+      set cos 2
       set dscp af11
       set traffic-class 2
       set drop-precedence 1
@@ -13859,14 +13860,14 @@ policy-map type quality-of-service PM_REPLICATION_LD
 !
 policy-map type quality-of-service PM_REPLICATION_LD2
    class CM_REPLICATION_LD
-      set dscp af11
       set cos 4
+      set dscp af11
       police rate 30 kbps burst-size 280 bytes action set dscp af11 rate 1 mbps burst-size 270 bytes
 !
 policy-map type quality-of-service PM_REPLICATION_LD3
    class CM_REPLICATION_LD
-      set dscp af11
       set cos 6
+      set dscp af11
       police rate 10000 bps burst-size 260 kbytes
 !
 policy-map type quality-of-service pmap_test1
