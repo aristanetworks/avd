@@ -2135,7 +2135,7 @@ ethernet_interfaces:
       transmitter:
         signal_power: -20
 
-# Monitor loop protection
+  # Disable monitor loop protection
   - name: Ethernet88
     description: Loop protection disable
     loop_protection: false
