@@ -583,6 +583,12 @@ class AvdStructuredConfigBaseProtocol(
             forward_v1=default(self.shared_utils.node_config.ptp.forward_v1, self.inputs.ptp_settings.forward_v1) or None,
         )
 
+        self.structured_config.ptp.free_running.enabled = default(
+            self.shared_utils.node_config.ptp.free_running.enabled, self.inputs.ptp_settings.free_running.enabled
+        )
+        self.structured_config.ptp.free_running.source_clock_hardware = default(
+            self.shared_utils.node_config.ptp.free_running.source_clock_hardware, self.inputs.ptp_settings.free_running.source_clock_hardware
+        )
         self.structured_config.ptp.source.ip = self.shared_utils.node_config.ptp.source_ip
         self.structured_config.ptp.message_type.general.dscp = self.shared_utils.node_config.ptp.dscp.general_messages
         self.structured_config.ptp.message_type.event.dscp = self.shared_utils.node_config.ptp.dscp.event_messages
