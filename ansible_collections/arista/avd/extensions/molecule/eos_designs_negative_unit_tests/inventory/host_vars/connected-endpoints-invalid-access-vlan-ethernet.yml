@@ -3,6 +3,9 @@ loopback_ipv4_pool: 192.168.0.0/24
 type: l2leaf
 l2leaf:
   defaults:
+    uplink_interfaces: [Ethernet1]
+    uplink_switches: [incorrect-downlink-link-tracking-group]
+    uplink_switch_interfaces: [Ethernet1]
   nodes:
     - name: connected-endpoints-invalid-access-vlan-ethernet
 

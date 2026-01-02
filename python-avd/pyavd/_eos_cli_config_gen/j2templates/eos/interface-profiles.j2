@@ -1,11 +1,11 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - interface profiles #}
 {% if interface_profiles is arista.avd.defined %}
-{%     for interface_profile in interface_profiles | arista.avd.natural_sort('name') %}
+{%     for interface_profile in interface_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 interface profile {{ interface_profile.name }}
 {%         if interface_profile.commands is arista.avd.defined %}

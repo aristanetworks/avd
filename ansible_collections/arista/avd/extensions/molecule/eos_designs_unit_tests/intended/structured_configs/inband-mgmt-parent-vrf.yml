@@ -198,11 +198,13 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -212,12 +214,14 @@ router_bgp:
   - ip_address: 172.16.255.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '64999'
-    peer: inband-mgmt-spine1-ztp
+    metadata:
+      peer: inband-mgmt-spine1-ztp
     description: inband-mgmt-spine1-ztp_Ethernet2
   - ip_address: 10.0.254.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '64999'
-    peer: inband-mgmt-spine1-ztp
+    metadata:
+      peer: inband-mgmt-spine1-ztp
     description: inband-mgmt-spine1-ztp_Loopback0
   redistribute:
     connected:
@@ -259,7 +263,8 @@ vlan_interfaces:
   shutdown: true
   vrf: INBANDMGMT
   ip_address: 192.168.103.1/24
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 - name: Vlan101
   description: Inband Management
   shutdown: false
@@ -290,19 +295,23 @@ vlan_internal_order:
 vlans:
 - id: 103
   name: Inband management vlan
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 - id: 101
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 - id: 102
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: INBANDMGMT
   ip_routing: true
-  tenant: INBAND_MGMT_TESTS
+  metadata:
+    tenant: INBAND_MGMT_TESTS
 vxlan_interface:
   vxlan1:
     description: inband-mgmt-parent-vrf_VTEP

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -26,7 +26,7 @@ class UtilsMixin(Protocol):
     """
 
     @cached_property
-    def _local_endpoint_trunk_groups(self: AvdStructuredConfigNetworkServicesProtocol) -> set:
+    def _local_endpoint_trunk_groups(self: AvdStructuredConfigNetworkServicesProtocol) -> set[str]:
         return set(self.facts.local_endpoint_trunk_groups)
 
     @cached_property

@@ -145,6 +145,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: WAN
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: SITE2
   local_interface: Vlan4094
@@ -218,7 +220,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65102'
     description: site2-leaf1
     next_hop_self: true
@@ -226,11 +229,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -239,12 +244,14 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.251.16
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: site2-leaf1
+    metadata:
+      peer: site2-leaf1
     description: site2-leaf1_Vlan4093
   - ip_address: 10.0.2.15
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: site2-wan2
+    metadata:
+      peer: site2-wan2
     description: site2-wan2_Ethernet1
   redistribute:
     connected:
@@ -252,7 +259,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 666
-    tenant: WAN-EXAMPLE-TENANT
+    metadata:
+      tenant: WAN-EXAMPLE-TENANT
     rd: 192.168.255.10:10666
     route_targets:
       both:
@@ -260,7 +268,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 42
-    tenant: WAN-EXAMPLE-TENANT
+    metadata:
+      tenant: WAN-EXAMPLE-TENANT
     rd: 192.168.255.10:10042
     route_targets:
       both:
@@ -353,29 +362,33 @@ vlan_interfaces:
   shutdown: false
   vrf: BLUE
   ip_address: 10.66.22.1/24
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - name: Vlan3099
   description: MLAG_L3_VRF_BLUE
   shutdown: false
   vrf: BLUE
   ip_address: 10.255.251.17/31
   mtu: 9214
-  tenant: WAN-EXAMPLE-TENANT
-  type: underlay_peering
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
+    type: underlay_peering
 - name: Vlan42
   description: RED-TEST
   shutdown: false
   vrf: RED
   ip_address: 10.42.22.1/24
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - name: Vlan3100
   description: MLAG_L3_VRF_RED
   shutdown: false
   vrf: RED
   ip_address: 10.255.251.17/31
   mtu: 9214
-  tenant: WAN-EXAMPLE-TENANT
-  type: underlay_peering
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
@@ -386,37 +399,45 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 666
   name: BLUE-TEST
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - id: 3099
   name: MLAG_L3_VRF_BLUE
   trunk_groups:
   - MLAG
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - id: 42
   name: RED-TEST
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - id: 3100
   name: MLAG_L3_VRF_RED
   trunk_groups:
   - MLAG
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: BLUE
   ip_routing: true
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 - name: RED
   ip_routing: true
-  tenant: WAN-EXAMPLE-TENANT
+  metadata:
+    tenant: WAN-EXAMPLE-TENANT
 vxlan_interface:
   vxlan1:
     description: site2-leaf2_VTEP

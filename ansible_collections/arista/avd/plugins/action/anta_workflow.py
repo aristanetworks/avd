@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -24,14 +24,12 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPlug
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from pyavd.api._anta import MinimalStructuredConfig
-
 PLUGIN_NAME = "arista.avd.anta_workflow"
 
 try:
-    from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, anta_runner
+    from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, TestResult, anta_runner
     from pyavd._utils import default, get, strip_empties_from_dict
-    from pyavd.api._anta import AvdCatalogGenerationSettings, InputFactorySettings, get_minimal_structured_configs
+    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData
     from pyavd.get_device_test_catalog import get_device_test_catalog
 
     HAS_PYAVD = True
@@ -75,7 +73,7 @@ ARGUMENT_SPEC = {
             "output_dir": {"type": "str"},
             "structured_config_dir": {"type": "str"},
             "structured_config_suffix": {"type": "str", "choices": ["yml", "yaml", "json"], "default": "yml"},
-            "allow_bgp_vrfs": {"type": "bool", "default": False},
+            "extra_fabric_validation": {"type": "bool", "default": False},
             "filters": {
                 "type": "list",
                 "elements": "dict",
@@ -110,11 +108,22 @@ ARGUMENT_SPEC = {
             "json_output": {"type": "str"},
             "filters": {
                 "type": "dict",
+                "options": {"exclude_statuses": {"type": "list", "elements": "str", "choices": ["error", "failure", "skipped", "success", "unset"]}},
+            },
+            "sorting": {
+                "type": "dict",
                 "options": {
-                    "hide_statuses": {
+                    "status_priority": {
                         "type": "list",
                         "elements": "str",
-                        "choices": ["success", "failure", "error", "skipped", "unset"],
+                        "choices": ["error", "failure", "skipped", "success", "unset"],
+                        "default": ["error", "failure", "skipped", "success", "unset"],
+                    },
+                    "sort_fields": {
+                        "type": "list",
+                        "elements": "str",
+                        "choices": ["categories", "custom_field", "description", "device", "test"],
+                        "default": ["device", "categories", "test", "description", "custom_field"],
                     },
                 },
             },
@@ -125,7 +134,7 @@ ARGUMENT_SPEC = {
 # Global variables to share data between processes. Since the plugin is forked, these variables are inherited by child processes.
 # TODO: Consider aggregating some of them into a SHARED_VARS dict or use multiprocessing.Manager()
 STRUCTURED_CONFIGS: dict[str, dict[str, Any]] | None = None
-MINIMAL_STRUCTURED_CONFIGS: dict[str, MinimalStructuredConfig] | None = None
+FABRIC_DATA: AvdFabricData | None = None
 PLUGIN_ARGS: dict[str, Any] | None = None
 ANSIBLE_VARS: dict[str, dict[str, Any]] | None = None
 USER_CATALOG: AntaCatalog | None = None
@@ -134,7 +143,7 @@ LOG_QUEUE: Queue = Queue()
 
 class ActionModule(ActionBase):
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
-        global STRUCTURED_CONFIGS, MINIMAL_STRUCTURED_CONFIGS, PLUGIN_ARGS, ANSIBLE_VARS, USER_CATALOG  # noqa: PLW0603
+        global STRUCTURED_CONFIGS, FABRIC_DATA, PLUGIN_ARGS, ANSIBLE_VARS, USER_CATALOG  # noqa: PLW0603
 
         self._supports_check_mode = False
 
@@ -200,7 +209,7 @@ class ActionModule(ActionBase):
             # Load the structured configs and build the minimal structured configs if needed
             if generate_avd_catalogs:
                 STRUCTURED_CONFIGS = load_structured_configs(deployed_devices, structured_config_dir, get(PLUGIN_ARGS, "avd_catalogs.structured_config_suffix"))
-                MINIMAL_STRUCTURED_CONFIGS = get_minimal_structured_configs(STRUCTURED_CONFIGS)
+                FABRIC_DATA = AvdFabricData.from_structured_configs(STRUCTURED_CONFIGS)
 
             with ProcessPoolExecutor(max_workers=max((ansible_forks - 1), 1), mp_context=get_context("fork")) as executor:
                 batch_size = get(PLUGIN_ARGS, "runner.batch_size")
@@ -248,7 +257,9 @@ def run_anta(devices: list[str]) -> ResultManager:
 
 def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[str, Any]) -> dict[str, Any]:
     """Build the ANTA reports from the batch results and return a summary dictionary containing ANTA test statistics."""
-    hide_statuses = get(report_settings, "filters.hide_statuses")
+    exclude_statuses = get(report_settings, "filters.exclude_statuses")
+    sort_fields = get(report_settings, "sorting.sort_fields")
+    status_priority = get(report_settings, "sorting.status_priority")
     csv_output_path = get(report_settings, "csv_output")
     md_output_path = get(report_settings, "md_output")
     json_output_path = get(report_settings, "json_output")
@@ -259,17 +270,17 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
         for result in manager.results:
             result_manager.add(result)
 
-    # Filter the results based on the hide_statuses if provided
-    if hide_statuses:
-        filtered_result_manager = result_manager.filter(hide=set(hide_statuses))
+    # Filter the results based on the exclude_statuses if provided
+    if exclude_statuses:
+        filtered_result_manager = result_manager.filter(hide=set(exclude_statuses))
         if not filtered_result_manager.results:
-            msg = f"The report is empty because all results were hidden by the provided status filters: {', '.join(hide_statuses)}"
+            msg = f"The report is empty because all results were hidden by the provided status filters: {', '.join(exclude_statuses)}"
             LOGGER.warning(msg)
     else:
         filtered_result_manager = result_manager
 
     # Sort the result manager
-    filtered_result_manager.sort(sort_by=["name", "categories", "test", "description", "result", "custom_field"])
+    sort_result_manager(filtered_result_manager, status_priority, sort_fields)
 
     # TODO: Consider using multiprocessing to generate reports in parallel
     if csv_output_path:
@@ -308,6 +319,54 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
             tests_summary["devices_with_test_errors"].append(device)
 
     return tests_summary
+
+
+def sort_result_manager(result_manager: ResultManager, status_priority: list[str], sort_fields: list[str]) -> None:
+    """
+    Sort the results within a ResultManager in place.
+
+    Sorting logic:
+    1. **Primary Sort:** Results are grouped by their test status based on the order defined in `status_priority`.
+        Statuses not listed in the priority list are pushed to the bottom and grouped alphabetically.
+    2. **Secondary Sort:** Within each status group, results are sorted lexicographically by the attributes defined in `sort_fields`.
+
+    Args:
+        result_manager: The ANTA result manager.
+        status_priority: List of statuses (e.g., ["success", "failure"]) to force to the top.
+        sort_fields: List of attributes to use for secondary sorting (e.g., ["categories", "device"]).
+    """
+    if not result_manager.results:
+        return
+
+    # Define the master list of all possible sort fields (in preferred tie-breaker order).
+    all_sort_fields = ["device", "categories", "test", "description", "custom_field"]
+
+    # Start with the user explicit fields.
+    final_sort_fields = sort_fields.copy()
+
+    # Append missing fields from the master list to serve as automatic tie-breakers.
+    for field in all_sort_fields:
+        if field not in final_sort_fields:
+            final_sort_fields.append(field)
+
+    # Map 'device' to 'name' to match TestResult attribute names.
+    normalized_sort_fields = ["name" if field == "device" else field for field in final_sort_fields]
+
+    # Create a rank map for the primary sort order.
+    status_rank_map = {status: idx for idx, status in enumerate(status_priority)}
+
+    def sort_key(result: TestResult) -> tuple[Any, ...]:
+        """Generate a comparison tuple for sorting."""
+        # Primary sort: Get rank from map. If status is unknown, use Infinity to push it to the end.
+        rank = status_rank_map.get(result.result, float("inf"))
+
+        # Secondary sort: Extract values from the sort_fields.
+        secondary_values = [getattr(result, field) or "" for field in normalized_sort_fields]
+
+        # Test status is also included to group unranked statuses alphabetically.
+        return (rank, str(result.result), *secondary_values)
+
+    result_manager.results = sorted(result_manager.results, key=sort_key)
 
 
 def update_ansible_result(result: dict[str, Any], anta_tests_summary: dict[str, Any], has_errors_ref: list[bool]) -> dict[str, Any]:
@@ -392,7 +451,7 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
     if USER_CATALOG is not None:
         catalogs.append(USER_CATALOG)
 
-    input_factory_settings = InputFactorySettings(allow_bgp_vrfs=get(PLUGIN_ARGS, "avd_catalogs.allow_bgp_vrfs"))
+    extra_fabric_validation = get(PLUGIN_ARGS, "avd_catalogs.extra_fabric_validation")
     output_dir = get(PLUGIN_ARGS, "avd_catalogs.output_dir")
     avd_catalogs_filters = get(PLUGIN_ARGS, "avd_catalogs.filters", default=[])
 
@@ -400,16 +459,16 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
         anta_device = build_anta_device(device)
         inventory.add_device(anta_device)
         # We generate the device's AVD catalog only if structured configs are loaded
-        if STRUCTURED_CONFIGS is not None and MINIMAL_STRUCTURED_CONFIGS is not None:
+        if STRUCTURED_CONFIGS is not None and FABRIC_DATA is not None:
             settings = AvdCatalogGenerationSettings(
-                input_factory_settings=input_factory_settings,
+                extra_fabric_validation=extra_fabric_validation,
                 output_dir=output_dir,
                 **get_device_catalog_filters(device, avd_catalogs_filters),
             )
             catalog = get_device_test_catalog(
                 hostname=device,
                 structured_config=STRUCTURED_CONFIGS[device],
-                minimal_structured_configs=MINIMAL_STRUCTURED_CONFIGS,
+                fabric_data=FABRIC_DATA,
                 settings=settings,
             )
             catalogs.append(catalog)

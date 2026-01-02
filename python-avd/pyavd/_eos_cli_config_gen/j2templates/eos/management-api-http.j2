@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -42,7 +42,7 @@ management api http-commands
       ipv6 access-group {{ vrf.ipv6_access_group }}
 {%         endif %}
 {%     endfor %}
-{%     if management_api_http.protocol_https_certificate.certificate is arista.avd.defined and management_api_http.protocol_https_certificate.private_key is arista.avd.defined %}
+{%     if management_api_http.protocol_https_certificate is arista.avd.defined %}
    protocol https certificate
 {{ management_api_http.protocol_https_certificate.certificate }}
 EOF

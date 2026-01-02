@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -44,27 +44,12 @@ is also given in the inputs, there is a conflict leading to validation error to 
 
 If a removed key is set in the inputs, a validation error will be raised and the task will fail.
 
-## Validation Options
+## Input Variables Validation
 
 Schema validation is built in to the central Action plugins used in AVD. Each plugin runs variable type conversion first and then
 performs validation of the converted data.
 
-By default any data validation issues will trigger errors - blocking further processing.
-This behavior can be adjusted by setting the variables described below.
-
-!!! danger
-    The input variable `avd_data_validation_mode` now has a default value of `error`, and while it can be set to `warning`, this is highly discouraged.
-    All AVD code relies on the validation to ensure valid data, so the code assumes that the data is valid.
-
-    If the validation mode is set to `warning`, execution will continue with invalid data, which can lead to hard-to-read errors or incorrect behavior.
-
-```yaml
-# Validation Mode for AVD input data validation | Optional
-# During validation, messages will generated with information about the host(s) and key(s) which failed validation.
-# "error" will produce error messages and fail the task.
-# "warning" will produce warning messages.
-avd_data_validation_mode: < "error" | "warning" | default -> "error" >
-```
+Any data validation issues will trigger errors - blocking further processing.
 
 ## Schema Details
 
@@ -113,7 +98,7 @@ The `deprecation.new_key` field is used for detecting conflicts with old and new
 ### Schema Options for type `int` (Integer)
 
 | Key | Type | Required | Default | Value Restrictions | Description |
-| ----| ---- | -------- | ------- | ------------------ | ----------- |
+| --- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"int"` | Type of variable using the Python short names for each type.<br>`int` for Integer |
 | <samp>convert_types</samp> | List, items: String | | | | List of types to auto-convert from.<br>For type `int`, auto-conversion is supported from `bool` and `str` |
 | <samp>&nbsp;&nbsp;- \<str\></samp> | String | | | Valid Values:<br>- `"bool"`<br>- `"str"` | |
@@ -140,7 +125,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 ### Schema Options for type `bool` (Boolean)
 
 | Key | Type | Required | Default | Value Restrictions | Description |
-| ----| ---- | -------- | ------- | ------------------ | ----------- |
+| --- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"bool"` | Type of variable using the Python short names for each type.<br>`bool` for Boolean |
 | <samp>default</samp> | Boolean | | | | Default value |
 | <samp>display_name</samp> | String | | | Regex Pattern: `"^[^\n]+$"` | Free text display name for forms and documentation (single line) |
@@ -160,7 +145,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 ### Schema Options for type `str` (String)
 
 | Key | Type | Required | Default | Value Restrictions | Description |
-| ----| ---- | -------- | ------- | ------------------ | ----------- |
+| --- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"str"` | Type of variable using the Python short names for each type.<br>`str` for String |
 | <samp>convert_to_lower_case</samp> | Boolean | | False | | Convert string value to lower case before performing validation |
 | <samp>convert_types</samp> | List, items: String | | | | List of types to auto-convert from.<br>For type `str`, auto-conversion is supported from `bool` and `int` |
@@ -190,7 +175,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 ### Schema Options for type `list` (List)
 
 | Key | Type | Required | Default | Value Restrictions | Description |
-| ----| ---- | -------- | ------- | ------------------ | ----------- |
+| --- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"list"` | Type of variable using the Python short names for each type.<br>`list` for List |
 | <samp>default</samp> | List | | | | Default value |
 | <samp>items</samp> | Dict | | | | Dictionary describing the schema of each list item. This is a recursive schema, so the value must conform to AVD Schema |
@@ -215,7 +200,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 ### Schema Options for type `dict` (Dictionary)
 
 | Key | Type | Required | Default | Value Restrictions | Description |
-| ----| ---- | -------- | ------- | ------------------ | ----------- |
+| --- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"dict"` | Type of variable using the Python short names for each type.<br>`dict` for Dictionary |
 | <samp>default</samp> | Dict | | | | Default value |
 | <samp>keys</samp> | Dictionary | | | Key Pattern: `^[a-z][a-z0-9_]*$` | Dictionary of dictionary-keys in the format `{<keyname>: {<schema>}}`.<br>`keyname` must use snake_case.<br>`schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema |

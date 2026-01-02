@@ -1,11 +1,11 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - event handlers #}
 {% if event_handlers is arista.avd.defined %}
-{%     for handler in event_handlers | arista.avd.natural_sort('name') %}
+{%     for handler in event_handlers | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 event-handler {{ handler.name }}
 {%         if handler.actions.log is arista.avd.defined(true) and not handler.actions.bash_command is arista.avd.defined and handler.trigger != "on-boot" %}

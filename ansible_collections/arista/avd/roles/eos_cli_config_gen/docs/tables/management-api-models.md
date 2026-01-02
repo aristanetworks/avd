@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -10,7 +10,7 @@
     | [<samp>management_api_models</samp>](## "management_api_models") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;provider</samp>](## "management_api_models.provider") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sysdb</samp>](## "management_api_models.provider.sysdb") | Dictionary |  |  |  | Sysdb provider configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_paths</samp>](## "management_api_models.provider.sysdb.disabled_paths") | List, items: String |  |  |  | List of disabled Sysdb paths for Octa. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled_paths</samp>](## "management_api_models.provider.sysdb.disabled_paths") | List, items: String |  |  | Min Length: 1 | List of disabled Sysdb paths for Octa. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_api_models.provider.sysdb.disabled_paths.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;smash</samp>](## "management_api_models.provider.smash") | Dictionary |  |  |  | Smash provider configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;paths</samp>](## "management_api_models.provider.smash.paths") | List, items: Dictionary |  |  |  | List of Smash paths. |
@@ -31,7 +31,7 @@
         sysdb:
 
           # List of disabled Sysdb paths for Octa.
-          disabled_paths:
+          disabled_paths: # >=1 items
             - <str>
 
         # Smash provider configuration.

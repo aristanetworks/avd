@@ -1,3 +1,4 @@
+---
 tenant_c:
   - name: Tenant_C
     mac_vrf_vni_base: 30000
@@ -99,7 +100,7 @@ tenant_c:
           - ip_address: 1.1.1.1
             peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
             description: test_description
-            nodes: [ DC1-BL2B ]
+            nodes: [DC1-BL2B]
             set_ipv4_next_hop: 1.1.1.1
             bfd: true
             bfd_timers:
@@ -116,7 +117,7 @@ tenant_c:
             description: test_bgp_peer_group_without_nodes
           - ip_address: 2.2.2.3
             peer_group: Tenant_C_BGP_PEER_GROUP2
-            nodes: [DC1-BL2A]
+            nodes: [ DC1-BL2A ]
             description: test_bgp_peer_group_without_nodes_2nd_time
           - ip_address: 2.2.2.3
             peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP

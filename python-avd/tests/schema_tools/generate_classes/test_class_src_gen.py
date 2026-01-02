@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import json
@@ -7,9 +7,6 @@ from importlib import import_module
 from pathlib import Path
 
 import pytest
-
-# Override global path to load schema from source instead of any installed version.
-sys.path.insert(0, str(Path(__file__).parents[3]))
 
 import pyavd._schema.models.avd_model
 from schema_tools.generate_classes.src_generators import FileSrc

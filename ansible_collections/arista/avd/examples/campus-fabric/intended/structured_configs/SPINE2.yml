@@ -125,6 +125,8 @@ metadata:
   is_deployed: true
   platform: cEOSLab
   fabric_name: DC1_FABRIC
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: SPINES
   local_interface: Vlan4094
@@ -223,81 +225,90 @@ vlan_interfaces:
   ip_address: 10.1.10.3/23
   ip_virtual_router_addresses:
   - 10.1.10.1
-  tenant: MY_FABRIC
-  tags:
-  - '110'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '110'
 - name: Vlan120
   description: IDF1-Voice
   shutdown: false
   ip_address: 10.1.20.3/23
   ip_virtual_router_addresses:
   - 10.1.20.1
-  tenant: MY_FABRIC
-  tags:
-  - '120'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '120'
 - name: Vlan130
   description: IDF1-Guest
   shutdown: false
   ip_address: 10.1.30.3/23
   ip_virtual_router_addresses:
   - 10.1.30.1
-  tenant: MY_FABRIC
-  tags:
-  - '130'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '130'
 - name: Vlan210
   description: IDF2-Data
   shutdown: false
   ip_address: 10.2.10.3/23
   ip_virtual_router_addresses:
   - 10.2.10.1
-  tenant: MY_FABRIC
-  tags:
-  - '210'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '210'
 - name: Vlan220
   description: IDF2-Voice
   shutdown: false
   ip_address: 10.2.20.3/23
   ip_virtual_router_addresses:
   - 10.2.20.1
-  tenant: MY_FABRIC
-  tags:
-  - '220'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '220'
 - name: Vlan230
   description: IDF2-Guest
   shutdown: false
   ip_address: 10.2.30.3/23
   ip_virtual_router_addresses:
   - 10.2.30.1
-  tenant: MY_FABRIC
-  tags:
-  - '230'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '230'
 - name: Vlan310
   description: IDF3-Data
   shutdown: false
   ip_address: 10.3.10.3/23
   ip_virtual_router_addresses:
   - 10.3.10.1
-  tenant: MY_FABRIC
-  tags:
-  - '310'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '310'
 - name: Vlan320
   description: IDF3-Voice
   shutdown: false
   ip_address: 10.3.20.3/23
   ip_virtual_router_addresses:
   - 10.3.20.1
-  tenant: MY_FABRIC
-  tags:
-  - '320'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '320'
 - name: Vlan330
   description: IDF3-Guest
   shutdown: false
   ip_address: 10.3.30.3/23
   ip_virtual_router_addresses:
   - 10.3.30.1
-  tenant: MY_FABRIC
-  tags:
-  - '330'
+  metadata:
+    tenant: MY_FABRIC
+    tags:
+    - '330'
 - name: Vlan10
   description: Inband Management
   shutdown: false
@@ -315,42 +326,54 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 110
   name: IDF1-Data
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 120
   name: IDF1-Voice
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 130
   name: IDF1-Guest
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 210
   name: IDF2-Data
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 220
   name: IDF2-Voice
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 230
   name: IDF2-Guest
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 310
   name: IDF3-Data
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 320
   name: IDF3-Voice
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 330
   name: IDF3-Guest
-  tenant: MY_FABRIC
+  metadata:
+    tenant: MY_FABRIC
 - id: 10
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

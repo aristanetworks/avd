@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -189,8 +189,6 @@ class EthernetInterfacesMixin(Protocol):
             or None,
             speed=adapter.speed,
             shutdown=not (adapter.enabled if adapter.enabled is not None else True),
-            validate_state=None if (adapter.validate_state if adapter.validate_state is not None else True) else False,
-            validate_lldp=None if (adapter.validate_lldp if adapter.validate_lldp is not None else True) else False,
             dot1x=adapter.dot1x,
             poe=adapter.poe if self.shared_utils.platform_settings.feature_support.poe else Undefined,
             eos_cli=adapter.raw_eos_cli,
@@ -201,6 +199,8 @@ class EthernetInterfacesMixin(Protocol):
             peer_type=connected_endpoint.type,
             port_profile=adapter.profile,
             peer_key=connected_endpoint._internal_data.context,
+            validate_state=False if adapter.validate_state is False else None,
+            validate_lldp=False if adapter.validate_lldp is False else None,
         )
 
         # Port-channel member

@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2025 Arista Networks, Inc.
+# Copyright (c) 2022-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -23,19 +23,9 @@ options:
     description:
       - If true, the output data will be run through another jinja2 rendering before returning.
         This is to resolve any input values with inline jinja using variables/facts set by the input templates.
+      - Ignored for ansible-core versions >= 2.19, since it is no longer needed.
     required: false
     type: bool
-  validation_mode:
-    description:
-      - Run validation in either "error" or "warning" mode.
-      - Validation will validate the input variables according to the schema.
-      - During validation, messages will be generated with information about the host(s) and key(s) which failed validation.
-      - validation_mode:error will produce error messages and fail the task.
-      - validation_mode:warning will produce warning messages.
-    required: false
-    default: "error"
-    type: str
-    choices: [ "error", "warning" ]
   cprofile_file:
     description:
       - Filename for storing cprofile data used to debug performance issues.

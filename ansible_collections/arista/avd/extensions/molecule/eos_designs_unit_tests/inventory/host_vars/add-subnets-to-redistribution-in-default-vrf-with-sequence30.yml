@@ -10,6 +10,8 @@ wan_router: # dynamic_key: node_type
     uplink_switches: [tenant-default-vrf-settings]
     uplink_interfaces: [Ethernet2]
     uplink_mtu: 9216
+    # test for kernel_ecmp_cli
+    kernel_ecmp_cli: false
     filter:
       tags: [wan_router]
   nodes:

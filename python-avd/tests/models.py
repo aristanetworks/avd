@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -50,7 +50,7 @@ class MoleculeHost:
 
         return load(structured_config_path.read_text(), CSafeLoader)
 
-    def get_test_catalog(self, run_name: Literal["default_run", "allow_bgp_vrfs_run", "filtered_run"]) -> dict[str, Any]:
+    def get_test_catalog(self, run_name: Literal["default_run", "default_run_filtered_report", "filtered_run", "default_run_sorted_report"]) -> dict[str, Any]:
         """
         Gets the expected ANTA test catalog for a specific run.
 

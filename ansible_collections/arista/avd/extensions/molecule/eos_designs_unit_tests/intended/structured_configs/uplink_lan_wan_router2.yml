@@ -269,7 +269,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: WAN-OVERLAY-PEERS
-    type: wan
+    metadata:
+      type: wan
     remote_as: '65100'
     update_source: Dps1
     bfd: true
@@ -371,7 +372,8 @@ vrfs:
 - name: VRF1
   ip_routing: true
   ipv6_routing: true
-  tenant: TEST
+  metadata:
+    tenant: TEST
 vxlan_interface:
   vxlan1:
     description: uplink_lan_wan_router2_VTEP

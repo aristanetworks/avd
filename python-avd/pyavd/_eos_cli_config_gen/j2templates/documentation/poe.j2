@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -22,7 +22,7 @@
 #### PoE Global
 
 | Reboot Action | Shutdown Action | LLDP Negotiation |
-| ------------------- | -------------------- | ----------------------|
+| ------------- | --------------- | ---------------- |
 {# Get global poe settings for defaults #}
 {%         set poe_global_defaults.reboot_action = poe.reboot.action | arista.avd.default(poe_global_defaults.reboot_action) %}
 {%         set poe_global_defaults.interface_shutdown_action = poe.interface_shutdown.action | arista.avd.default(poe_global_defaults.interface_shutdown_action) %}

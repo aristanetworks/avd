@@ -75,7 +75,7 @@
               - cv_deploy_results.workspace.description == cv_workspace_description
               # errors and warnings
               - cv_deploy_results.errors == []
-              - cv_deploy_results.warnings == []
+              - cv_deploy_results.warnings | default([]) | length == 0
               # tags
               - cv_deploy_results.deployed_device_tags != []
               - cv_deploy_results.deployed_interface_tags != []

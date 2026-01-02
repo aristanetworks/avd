@@ -1,11 +1,15 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+import sys
 from pathlib import Path
-from unittest.mock import MagicMock
+from unittest import mock
 
 import pytest
+from ansible.parsing.dataloader import DataLoader
+from ansible.release import __version__ as ansible_version
+from ansible.template import Templar
 
 from pyavd._utils.template import template
 
@@ -16,24 +20,15 @@ def test_template_empty_templar_raise() -> None:
 
 
 def test_template(tmp_path: Path) -> None:
-    """
-    Mocking ansible Templar otherwise we need ansible for pytest.
-
-    This is not really a good test.
-    """
+    """Testing a simple jinja template."""
     file = tmp_path / "dummy.j2"
     content = "{{ my_var }}"
-    # not useful
     _ = file.write_text(content)
 
-    # magic mocking Ansible stuff
-    templar = MagicMock()
-    loader = MagicMock()
-    loader._get_file_contents.return_value = (content, {})
-    templar._loader = loader
+    templar = Templar(DataLoader())
 
-    template(str(file), {"my_var": 42}, templar)
-    loader.path_dwim_relative_stack.assert_called_once()
-    loader._get_file_contents.assert_called_once()
-    templar.set_temporary_context.assert_called_once_with(available_variables={"my_var": 42})
-    templar.template.assert_called_once_with(content, convert_data=False, escape_backslashes=False)
+    mocked_module = mock.MagicMock(ANSIBLE_ABOVE_2_19=ansible_version.startswith(("2.19", "2.2")))
+    with mock.patch.dict(sys.modules, {"ansible_collections.arista.avd.plugins.plugin_utils.utils": mocked_module}):
+        result = template(str(file), {"my_var": 42}, templar)
+
+    assert result == 42

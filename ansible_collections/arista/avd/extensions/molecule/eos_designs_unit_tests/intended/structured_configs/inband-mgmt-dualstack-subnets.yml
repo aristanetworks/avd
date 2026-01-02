@@ -78,7 +78,8 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address: 2a00:104::7/64
   mtu: 1500
-  type: inband_mgmt
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -87,7 +88,8 @@ vlan_internal_order:
 vlans:
 - id: 104
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

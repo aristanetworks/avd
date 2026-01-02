@@ -1,19 +1,20 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - interface groups #}
-{% for interface_group in interface_groups | arista.avd.natural_sort('name') %}
+{% for interface_group in interface_groups | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 group interface {{ interface_group.name }}
 {%     for interface in interface_group.interfaces | arista.avd.natural_sort %}
    interface {{ interface }}
 {%     endfor %}
-{%     for bgp_profile in interface_group.bgp_maintenance_profiles | arista.avd.natural_sort %}
+{%     for bgp_profile in interface_group.bgp_maintenance_profiles | arista.avd.natural_sort(ignore_case=false) %}
    maintenance profile bgp {{ bgp_profile }}
 {%     endfor %}
-{%     for interface_profile in interface_group.interface_maintenance_profiles | arista.avd.natural_sort %}
+{%     for interface_profile in interface_group.interface_maintenance_profiles | arista.avd.natural_sort(ignore_case=false) %}
    maintenance profile interface {{ interface_profile }}
 {%     endfor %}
+   exit
 {% endfor %}

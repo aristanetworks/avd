@@ -3,7 +3,7 @@
 title: Ansible Collection Role anta_runner
 ---
 <!--
-  ~ Copyright (c) 2024-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2024-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -214,8 +214,9 @@ These settings allow modification of the default behavior as needed. The values 
 # Enable AVD catalogs generation. Can be disabled if only user-defined catalogs are used.
 avd_catalogs_enabled: true
 
-# Generate tests for BGP peers in VRFs.
-avd_catalogs_allow_bgp_vrfs: false
+# Generate extra fabric-wide validation tests (e.g., reachability and routing tests).
+# This can generate many additional test inputs in the catalogs, and validation may take longer on large fabrics.
+avd_catalogs_extra_fabric_validation: false
 
 # Global timeout for the ANTA runner. Depending on the scale this can be adjusted.
 anta_runner_timeout: 30
@@ -306,7 +307,7 @@ By default, filters apply to all devices targeted by the run. `device_list` can 
 
 #### Report Filtering
 
-`anta_report_hide_statuses`: A list of test result statuses to hide from the generated reports. The available statuses are `success`, `failure`, `error`, `skipped`, and `unset`.
+`anta_report_exclude_statuses`: A list of test result statuses to exclude from the generated reports. The available statuses are `error`, `failure`, `skipped`, `success`, and `unset`.
 
 ```yaml
 # In the playbook
@@ -319,7 +320,41 @@ By default, filters apply to all devices targeted by the run. `device_list` can 
       import_role:
         name: arista.avd.anta_runner
       vars:
-        anta_report_hide_statuses: [ success, skipped ]
+        # Do not show success and skipped tests in the reports.
+        anta_report_exclude_statuses: [ success, skipped ]
+```
+
+#### Report Sorting
+
+`anta_report_status_priority`: A list of test statuses that defines the primary grouping order of the test results. Tests with statuses listed here appear at the top in the specified order. Any status not listed is pushed to the bottom of the reports and grouped alphabetically.
+
+- **Available values:** `error`, `failure`, `skipped`, `success`, `unset`
+- **Default:** `['error', 'failure', 'skipped', 'success', 'unset']`
+
+`anta_report_sort_fields`: A list of result attributes used to sort tests **within** each status group.
+
+- **Available values:** `categories`, `custom_field`, `description`, `device`, `test`
+- **Default:** `['device', 'categories', 'test', 'description', 'custom_field']`
+
+!!! note
+    `anta_report_status_priority` defines the primary grouping order. Within each status group, tests are sub-sorted using the attributes defined in `anta_report_sort_fields`.
+
+```yaml
+# In the playbook
+- name: Run ANTA
+  hosts: FABRIC
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Run ANTA on EOS devices
+      import_role:
+        name: arista.avd.anta_runner
+      vars:
+        # Prioritize success, then skipped tests. Unlisted statuses like 'error' falls to the bottom.
+        anta_report_status_priority: [ success, skipped ]
+
+        # Within each status group, sort by device, then test name.
+        anta_report_sort_fields: [ device, test ]
 ```
 
 ## AVD-generated Catalog Test Index
@@ -335,7 +370,7 @@ The table below shows which parts of the AVD structured configuration are used t
 | [**VerifyAgentLogs**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyAgentLogs){:target="_blank"} | Verifies that there are no agent crash reports on the device. | *None* |
 | [**VerifyAPIHttpsSSL**](https://anta.arista.com/stable/api/tests/security/#anta.tests.security.VerifyAPIHttpsSSL){:target="_blank"} | Verifies the SSL profile for the eAPI HTTPS server is valid and attached. | `management_api_http.https_ssl_profile` |
 | [**VerifyAVTSpecificPath**](https://anta.arista.com/stable/api/tests/avt/#anta.tests.avt.VerifyAVTSpecificPath){:target="_blank"} | Verifies the status of specific AVT paths in the routing table. | <ul><li>`router_adaptive_virtual_topology.vrfs`</li><li>`router_path_selection.path_groups`</li><li>`static_peers`</li></ul> |
-| [**VerifyBGPPeerSession**](https://anta.arista.com/stable/api/tests/routing.bgp/#anta.tests.routing.bgp.VerifyBGPPeerSession){:target="_blank"} | Verifies that BGP peer sessions are in an 'established' state. | `router_bgp.neighbors` |
+| [**VerifyBGPPeerSession**](https://anta.arista.com/stable/api/tests/routing.bgp/#anta.tests.routing.bgp.VerifyBGPPeerSession){:target="_blank"} | Verifies that BGP peer sessions are in an 'established' state. | **Sources:**<ul><li>`router_bgp.neighbors`</li><li>`router_bgp.neighbor_interfaces`</li><li>`router_bgp.vrfs[].neighbors`</li><li>`router_bgp.vrfs[].neighbor_interfaces`</li></ul>**Filters:**<ul><li>`router_bgp.neighbors[].shutdown == False`</li><li>`peer_group` → `router_bgp.peer_groups[name=peer_group].shutdown == False`</li><li>`metadata.peer` → `is_deployed == True`</li><li>`metadata.validate_state == True`</li></ul> |
 | [**VerifyCoredump**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyCoredump){:target="_blank"} | Verifies that there are no coredump files in `/var/core`. | *None* |
 | [**VerifyEnvironmentCooling**](https://anta.arista.com/stable/api/tests/hardware/#anta.tests.hardware.VerifyEnvironmentCooling){:target="_blank"} | Verifies the status of all fans and the overall environment cooling. | *None*,  default states=["ok"] |
 | [**VerifyEnvironmentPower**](https://anta.arista.com/stable/api/tests/hardware/#anta.tests.hardware.VerifyEnvironmentPower){:target="_blank"} | Verifies the status of all power supply units (PSUs). | *None*,  default states=["ok"] |
@@ -347,25 +382,29 @@ The table below shows which parts of the AVD structured configuration are used t
 | [**VerifyInterfaceErrors**](https://anta.arista.com/stable/api/tests/interfaces/#anta.tests.interfaces.VerifyInterfaceErrors){:target="_blank"} | Verifies that interface error counters are not increasing. | *None* |
 | [**VerifyInterfaceUtilization**](https://anta.arista.com/stable/api/tests/interfaces/#anta.tests.interfaces.VerifyInterfaceUtilization){:target="_blank"} | Verifies that interface utilization is below a defined threshold. | *None* |
 | [**VerifyInterfacesStatus**](https://anta.arista.com/stable/api/tests/interfaces/#anta.tests.interfaces.VerifyInterfacesStatus){:target="_blank"} | Verifies the operational status of enabled network interfaces. | <ul><li>`ethernet_interfaces`</li><li>`port_channel_interfaces`</li><li>`vlan_interfaces`</li><li>`loopback_interfaces`</li><li>`dps_interfaces`</li><li>VXLAN interface, if the device is a VTEP</li></ul> |
-| [**VerifyInventory**](https://anta.arista.com/stable/api/tests/hardware/#anta.tests.hardware.VerifyInventory){:target="_blank"} | Verifies the physical hardware inventory of the device. | *None* |
-| [**VerifyLLDPNeighbors**](https://anta.arista.com/stable/api/tests/connectivity/#anta.tests.connectivity.VerifyLLDPNeighbors){:target="_blank"} | Verifies LLDP neighbors for Ethernet interfaces.<br>A test is generated when all are true:<ul><li>peer and peer_interface are defined.</li><li>The peer device is deployed (is_deployed: true).</li><li>The interface is not a subinterface.</li><li>The interface is not shut down on either the local or peer side.</li><li>The test is not disabled by validate_state or validate_lldp.</li></ul> | `ethernet_interfaces` (specifically peer information) |
-| [**VerifyLoggingErrors**](https://anta.arista.com/stable/api/tests/logging/#anta.tests.logging.VerifyLoggingErrors){:target="_blank"} | Verifies that there are no new 'error' or higher severity syslog messages. | *None* |
+| [**VerifyInventory**](https://anta.arista.com/stable/api/tests/hardware/#anta.tests.hardware.VerifyInventory){:target="_blank"} | Verifies the physical hardware inventory of the device. | `metadata.hardware_requirements` |
+| [**VerifyLLDPNeighbors**](https://anta.arista.com/stable/api/tests/connectivity/#anta.tests.connectivity.VerifyLLDPNeighbors){:target="_blank"} | Verifies LLDP neighbors for Ethernet interfaces. | <ul><li>`ethernet_interfaces[]`</li><li>`ethernet_interfaces[].metadata.validate_state`</li><li>`ethernet_interfaces[].metadata.validate_lldp`</li><li>`ethernet_interfaces[].metadata.peer`</li><li>`ethernet_interfaces[].metadata.peer_interface`</li><li>`peer.metadata.is_deployed`</li><li>`peer.ethernet_interfaces[].shutdown`</li><li>`peer.dns_domain`</li></ul> |
+| [**VerifyLoggingErrors**](https://anta.arista.com/stable/api/tests/logging/#anta.tests.logging.VerifyLoggingErrors){:target="_blank"} | Verifies that there are no 'error' or higher severity syslog messages in the last N minutes or entire buffer. | `metadata.validate_no_errors_period` *Optional, defaults to full buffer* |
 | [**VerifyMaintenance**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyMaintenance){:target="_blank"} | Verifies that the device is not currently under or entering maintenance. | *None* |
 | [**VerifyMemoryUtilization**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyMemoryUtilization){:target="_blank"} | Verifies whether the memory utilization is below 75%. | *None* |
 | [**VerifyMlagConfigSanity**](https://anta.arista.com/stable/api/tests/mlag/#anta.tests.mlag.VerifyMlagConfigSanity){:target="_blank"} | Verifies the health and sanity of the MLAG configuration. | `mlag_configuration` |
 | [**VerifyMlagInterfaces**](https://anta.arista.com/stable/api/tests/mlag/#anta.tests.mlag.VerifyMlagInterfaces){:target="_blank"} | Verifies there are no inactive or active-partial MLAG ports. | `mlag_configuration` |
 | [**VerifyMlagStatus**](https://anta.arista.com/stable/api/tests/mlag/#anta.tests.mlag.VerifyMlagStatus){:target="_blank"} | Verifies the global MLAG state is 'active' and other parameters are consistent. | `mlag_configuration` |
 | [**VerifyNTP**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyNTP){:target="_blank"} | Verifies that the device's NTP service is synchronized with a time source. | *None* |
+| [**VerifyOSPFMaxLSA**](https://anta.arista.com/stable/api/tests/routing.ospf/#anta.tests.routing.ospf.VerifyOSPFMaxLSA){:target="_blank"} | Verifies that all OSPF instances did not cross the maximum LSA threshold. | `router_ospf` |
+| [**VerifyOSPFNeighborState**](https://anta.arista.com/stable/api/tests/routing.ospf/#anta.tests.routing.ospf.VerifyOSPFNeighborState){:target="_blank"} | Verifies that all OSPF neighbors are in the *full* state; the *2Ways* state is **not** accepted. Use `VerifyOSPFSpecificNeighbors` in a user-defined catalog instead for any device with a neighbor that is expected to be in the *2Ways* state. | `router_ospf` |
 | [**VerifyPortChannels**](https://anta.arista.com/stable/api/tests/interfaces/#anta.tests.interfaces.VerifyPortChannels){:target="_blank"} | Verifies the status of Port-Channel interfaces and their members. | `port_channel_interfaces` |
-| [**VerifyReachability**](https://anta.arista.com/stable/api/tests/connectivity/#anta.tests.connectivity.VerifyReachability){:target="_blank"} | Point-to-point ethernet links when:<br><ul><li>`peer`, `peer_interface` and `ip_address` are defined</li><li>`ip_address` is static - *not* 'dhcp' and *not* 'unnumbered'</li><li>Interface is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`</li><li>`peer` device is deployed - `is_deployed=True`</li><li>`peer_interface` on the `peer` device has a defined static `ip_address` - *not* 'dhcp' and *not* 'unnumbered'</li><li>`peer_interface` is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`</li></ul><br>BGP neighbors when: <br><ul><li>`update_source` IP address is defined</li></ul> | See description |
-| [**VerifyReloadCause**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyReloadCause){:target="_blank"} | Verifies that the last reload cause was expected. | allowed_causes=["USER", "FPGA", "ZTP"] |
+| [**VerifyReachability**](https://anta.arista.com/stable/api/tests/connectivity/#anta.tests.connectivity.VerifyReachability){:target="_blank"} | Test network reachability to one or many destination IP(s). | <ul><li>`ethernet_interfaces[]`</li><li>`ethernet_interfaces[].metadata.peer`</li><li>`ethernet_interfaces[].metadata.peer_interface`</li><li>`peer.metadata.is_deployed`</li><li>`router_bgp.neighbors[]`</li></ul><ul> |
+| [**VerifyReloadCause**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyReloadCause){:target="_blank"} | Verifies that the last reload cause was expected. | *Allowed causes:*<ul><li>**USER** - Reload requested by the user.</li><li>**USER_HITLESS** - Hitless reload requested by the user.</li><li>**FPGA** - Reload requested after FPGA upgrade</li><li>**ZTP** - System reloaded due to Zero Touch Provisioning</li></ul> |
 | [**VerifyRoutingProtocolModel**](https://anta.arista.com/stable/api/tests/routing.generic/#anta.tests.routing.generic.VerifyRoutingProtocolModel){:target="_blank"} | Verifies the configured routing protocol model. | `service_routing_protocols_model` |
+| [**VerifyRoutingTableEntry**](https://anta.arista.com/stable/api/tests/routing.generic/#anta.tests.routing.generic.VerifyRoutingTableEntry){:target="_blank"} | Verifies that Loopback0 and VTEP IPs from all fabric devices (excluding WAN routers) are present in the routing table of VTEP devices to ensure proper IPv4 underlay routing. IPv6 underlays are *not* tested. | Fabric-wide collection of:<ul><li>`loopback_interfaces[name=Loopback0].ip_address`</li><li>`vxlan_interface.vxlan1.vxlan.source_interface` → `loopback_interfaces[name=<source_interface>].ip_address`</li><li>`vxlan_interface.vxlan1.vxlan.mlag_source_interface` → `loopback_interfaces[name=<mlag_source_interface>].ip_address`</li></ul><br>**Requires:** `avd_catalogs_extra_fabric_validation: true` (role variable) |
 | [**VerifyRunningConfigDiffs**](https://anta.arista.com/stable/api/tests/configuration/#anta.tests.configuration.VerifyRunningConfigDiffs){:target="_blank"} | Verifies there are no differences between the running and startup configs. | *None* |
 | [**VerifySpecificIPSecConn**](https://anta.arista.com/stable/api/tests/security/#anta.tests.security.VerifySpecificIPSecConn){:target="_blank"} | Verifies the status of specific IPSec tunnels. | `router_path_selection` |
 | [**VerifySpecificPath**](https://anta.arista.com/stable/api/tests/path_selection/#anta.tests.path_selection.VerifySpecificPath){:target="_blank"} | Verifies the DPS path and telemetry state of an IPv4 peer. | `router_path_selection` |
 | [**VerifySTPCounters**](https://anta.arista.com/stable/api/tests/stp/#anta.tests.stp.VerifySTPCounters){:target="_blank"} | Verifies there is no errors in STP BPDU packets. | *None* |
 | [**VerifyStormControlDrops**](https://anta.arista.com/stable/api/tests/interfaces/#anta.tests.interfaces.VerifyStormControlDrops){:target="_blank"} | Verifies that no interfaces are dropping packets due to storm-control. | *None* |
 | [**VerifyTemperature**](https://anta.arista.com/stable/api/tests/hardware/#anta.tests.hardware.VerifyTemperature){:target="_blank"} | Verifies that all device temperature sensors are within their alert thresholds. | *None* |
+| [**VerifyTransceiversManufacturers**](https://anta.arista.com/stable/api/tests/hardware/#anta.tests.hardware.VerifyTransceiversManufacturers){:target="_blank"} | Verifies if all the transceivers come from approved manufacturers. | `metadata.hardware_requirements.transceiver_manufacturers` |
 | [**VerifyTransceiversTemperature**](https://anta.arista.com/stable/api/tests/hardware/#anta.tests.hardware.VerifyTransceiversTemperature){:target="_blank"} | Verifies that all transceiver temperature sensors are within their alert thresholds. | *None* |
 | [**VerifyVxlanConfigSanity**](https://anta.arista.com/stable/api/tests/vxlan/#anta.tests.vxlan.VerifyVxlanConfigSanity){:target="_blank"} | Verifies the health and sanity of the VXLAN configuration. | `vxlan_interface.vxlan1.vxlan` |
 | [**VerifyZeroTouch**](https://anta.arista.com/stable/api/tests/configuration/#anta.tests.configuration.VerifyZeroTouch){:target="_blank"} | Verifies that the Zero Touch Provisioning (ZTP) process is not active. | *None* |

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -31,6 +31,18 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_maximum_paths</samp>](## "<node_type_keys.key>.nodes.[].isis_maximum_paths") | Integer |  |  |  | Number of path to configure in ECMP for ISIS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is_type</samp>](## "<node_type_keys.key>.nodes.[].is_type") | String |  |  | Valid Values:<br>- <code>level-1-2</code><br>- <code>level-1</code><br>- <code>level-2</code> | Overrides `isis_default_is_type`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node_sid_base</samp>](## "<node_type_keys.key>.nodes.[].node_sid_base") | Integer |  | `0` |  | Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID. |
+    | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_system_id_prefix</samp>](## "device_profiles.[].isis_system_id_prefix") | String |  |  | Pattern: `[0-9a-f]{4}\.[0-9a-f]{4}` | (4.4 hexadecimal). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_maximum_paths</samp>](## "device_profiles.[].isis_maximum_paths") | Integer |  |  |  | Number of path to configure in ECMP for ISIS. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;is_type</samp>](## "device_profiles.[].is_type") | String |  |  | Valid Values:<br>- <code>level-1-2</code><br>- <code>level-1</code><br>- <code>level-2</code> | Overrides `isis_default_is_type`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;node_sid_base</samp>](## "device_profiles.[].node_sid_base") | Integer |  | `0` |  | Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID. |
+    | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_system_id_prefix</samp>](## "devices.[].isis_system_id_prefix") | String |  |  | Pattern: `[0-9a-f]{4}\.[0-9a-f]{4}` | (4.4 hexadecimal). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_maximum_paths</samp>](## "devices.[].isis_maximum_paths") | Integer |  |  |  | Number of path to configure in ECMP for ISIS. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;is_type</samp>](## "devices.[].is_type") | String |  |  | Valid Values:<br>- <code>level-1-2</code><br>- <code>level-1</code><br>- <code>level-2</code> | Overrides `isis_default_is_type`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;node_sid_base</samp>](## "devices.[].node_sid_base") | Integer |  | `0` |  | Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID. |
 
 === "YAML"
 
@@ -106,4 +118,40 @@
 
           # Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
           node_sid_base: <int; default=0>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    device_profiles:
+
+        # Profile Name
+      - name: <str; required; unique>
+
+        # (4.4 hexadecimal).
+        isis_system_id_prefix: <str>
+
+        # Number of path to configure in ECMP for ISIS.
+        isis_maximum_paths: <int>
+
+        # Overrides `isis_default_is_type`.
+        is_type: <str; "level-1-2" | "level-1" | "level-2">
+
+        # Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+        node_sid_base: <int; default=0>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    devices:
+
+        # The Node Name is used as "hostname".
+        name: <str; required; unique>
+
+        # (4.4 hexadecimal).
+        isis_system_id_prefix: <str>
+
+        # Number of path to configure in ECMP for ISIS.
+        isis_maximum_paths: <int>
+
+        # Overrides `isis_default_is_type`.
+        is_type: <str; "level-1-2" | "level-1" | "level-2">
+
+        # Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+        node_sid_base: <int; default=0>
     ```

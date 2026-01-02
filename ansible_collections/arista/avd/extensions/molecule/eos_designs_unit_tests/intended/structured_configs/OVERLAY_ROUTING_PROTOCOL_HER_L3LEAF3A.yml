@@ -103,7 +103,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65003'
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
     next_hop_self: true
@@ -111,13 +112,15 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   neighbors:
   - ip_address: 192.168.253.5
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
+    metadata:
+      peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Vlan4093
   redistribute:
     connected:
@@ -149,27 +152,30 @@ vlan_interfaces:
   description: SVI_ON_ALL_LEAFS
   shutdown: true
   vrf: TEST
-  tenant: TEST
-  tags:
-  - leaf1
-  - leaf2
-  - leaf3
+  metadata:
+    tenant: TEST
+    tags:
+    - leaf1
+    - leaf2
+    - leaf3
 - name: Vlan3903
   description: SVI_ON_LEAF2-3
   shutdown: true
   vrf: TEST
-  tenant: TEST
-  tags:
-  - leaf2
-  - leaf3
+  metadata:
+    tenant: TEST
+    tags:
+    - leaf2
+    - leaf3
 - name: Vlan3000
   description: MLAG_L3_VRF_TEST
   shutdown: false
   vrf: TEST
   ip_address: 192.168.253.4/31
   mtu: 9214
-  tenant: TEST
-  type: underlay_peering
+  metadata:
+    tenant: TEST
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
@@ -180,35 +186,43 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 3900
   name: SVI_ON_ALL_LEAFS
-  tenant: TEST
+  metadata:
+    tenant: TEST
 - id: 3903
   name: SVI_ON_LEAF2-3
-  tenant: TEST
+  metadata:
+    tenant: TEST
 - id: 3000
   name: MLAG_L3_VRF_TEST
   trunk_groups:
   - MLAG
-  tenant: TEST
+  metadata:
+    tenant: TEST
 - id: 2900
   name: L2VLAN_ON_ALL_LEAFS
-  tenant: TEST
+  metadata:
+    tenant: TEST
 - id: 2903
   name: L2VLAN_ON_LEAF2-3
-  tenant: TEST
+  metadata:
+    tenant: TEST
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST
   ip_routing: true
-  tenant: TEST
+  metadata:
+    tenant: TEST
 vxlan_interface:
   vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_VTEP

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -178,6 +178,16 @@ keys:
                         enforce_gtsm:
                           type: bool
                           description: Enforce the GTSM for BGP speakers. Only supported when protocol is set to 'neighbors'.
+                  packet_type:
+                    type: dict
+                    keys:
+                      vxlan:
+                        type: str
+                        valid_values: ["decap", "decap exclude"]
+                        description: Configure VXLAN decapsulation match.
+                      multicast:
+                        type: bool
+                        description: Configure multicast packet type match.
                   actions:
                     type: dict
                     keys:

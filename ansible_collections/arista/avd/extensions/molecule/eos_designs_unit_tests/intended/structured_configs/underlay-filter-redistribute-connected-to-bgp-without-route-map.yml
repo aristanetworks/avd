@@ -56,12 +56,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -72,7 +74,8 @@ router_bgp:
       enabled: true
   vlans:
   - id: 111
-    tenant: TEST
+    metadata:
+      tenant: TEST
     rd: 10.10.0.3:10111
     route_targets:
       both:
@@ -109,9 +112,10 @@ vlan_interfaces:
   description: svi_with_default_vrf
   shutdown: true
   ip_address: 10.10.10.111/24
-  tenant: TEST
-  tags:
-  - fabric
+  metadata:
+    tenant: TEST
+    tags:
+    - fabric
 vlan_internal_order:
   allocation: ascending
   range:
@@ -120,7 +124,8 @@ vlan_internal_order:
 vlans:
 - id: 111
   name: svi_with_default_vrf
-  tenant: TEST
+  metadata:
+    tenant: TEST
 vrfs:
 - name: MGMT
   ip_routing: false

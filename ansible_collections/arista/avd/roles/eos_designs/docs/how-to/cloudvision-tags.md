@@ -3,7 +3,7 @@
 title: Generate Cloudvision Tags with eos_designs
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -122,7 +122,7 @@ Providing these input variables will lead to the automatic generation of the fol
 
 | Campus Tag Name | Tag type | Description | Source of information |
 | --------------- | -------- | ----------- | --------------------- |
-| `topology_hint_network_type`| Device | Identifies associated CloudVision Topology hierarchy type. | Always set to `campusV2`. |
+| `topology_hint_network_type` | Device | Identifies associated CloudVision Topology hierarchy type. | Always set to `campusV2`. |
 | `topology_hint_type` | Device | Identifies role of the device in CloudVision Campus Topology. | `<node_type_keys.key>.nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].cv_tags_topology_type`, else `<node_type_keys.key>.defaults.cv_tags_topology_type`, else `cv_tags_topology_type`, else `custom_node_type_keys.[].cv_tags_topology_type`, else `node_type_keys.[].cv_tags_topology_type`. |
 | `Role` | Device | Identifies role of the device in CloudVision Campus Topology. Used in CV Dashboards. | `<node_type_keys.key>.nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].cv_tags_topology_type`, else `<node_type_keys.key>.defaults.cv_tags_topology_type`, else `cv_tags_topology_type`, else `custom_node_type_keys.[].cv_tags_topology_type`, else `node_type_keys.[].cv_tags_topology_type`. |
 | `Campus` | Device | Identifies Campus fabric. | `<node_type_keys.key>.nodes.[].campus`, else `<node_type_keys.key>.node_groups.[].nodes.[].campus`, else `<node_type_keys.key>.node_groups.[].campus`, else `<node_type_keys.key>.defaults.campus`, else `campus`. |

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -220,7 +220,8 @@ class RouteMapsMixin(Protocol):
 
         if not sequence_numbers:
             return
-        self.structured_config.route_maps.append_new(name="RM-CONN-2-BGP", sequence_numbers=sequence_numbers)
+        route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
+        route_map.sequence_numbers.extend(sequence_numbers)
 
     def _redistribute_static_to_bgp_route_map(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """Append network services relevant entries to the route-map used to redistribute static routes to BGP."""

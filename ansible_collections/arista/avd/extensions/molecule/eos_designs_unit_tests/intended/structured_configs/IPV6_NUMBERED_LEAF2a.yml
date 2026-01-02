@@ -83,6 +83,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
 ntp:
   local_interface:
     name: Management1
@@ -113,12 +115,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv6-UNDERLAY-PEERS
-    type: ipv6
+    metadata:
+      type: ipv6
     password: F0bdF6JLcJtagc6PCN8W0Q==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -129,22 +133,26 @@ router_bgp:
   - ip_address: 2001:db8:2:4::1
     peer_group: IPv6-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: IPV6_NUMBERED_SPINE1
+    metadata:
+      peer: IPV6_NUMBERED_SPINE1
     description: IPV6_NUMBERED_SPINE1_Ethernet3
   - ip_address: 2001:db8:2:5::1
     peer_group: IPv6-UNDERLAY-PEERS
     remote_as: '65100'
-    peer: IPV6_NUMBERED_SPINE2
+    metadata:
+      peer: IPV6_NUMBERED_SPINE2
     description: IPV6_NUMBERED_SPINE2_Ethernet3
   - ip_address: 2001:db8:0:1::1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
-    peer: IPV6_NUMBERED_SPINE1
+    metadata:
+      peer: IPV6_NUMBERED_SPINE1
     description: IPV6_NUMBERED_SPINE1_Loopback0
   - ip_address: 2001:db8:0:2::1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
-    peer: IPV6_NUMBERED_SPINE2
+    metadata:
+      peer: IPV6_NUMBERED_SPINE2
     description: IPV6_NUMBERED_SPINE2_Loopback0
   redistribute:
     connected:
@@ -152,7 +160,8 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 11
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.1.3:10011
     route_targets:
       both:
@@ -160,7 +169,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 12
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.1.3:10012
     route_targets:
       both:
@@ -168,7 +178,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 21
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.1.3:10021
     route_targets:
       both:
@@ -176,7 +187,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 22
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.1.3:10022
     route_targets:
       both:
@@ -184,7 +196,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 31
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.1.3:10031
     route_targets:
       both:
@@ -192,7 +205,8 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 32
-    tenant: TENANT1
+    metadata:
+      tenant: TENANT1
     rd: 10.255.1.3:10032
     route_targets:
       both:
@@ -277,13 +291,15 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan21
   description: VRF11_VLAN21
   shutdown: false
@@ -291,13 +307,15 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:DB8:21::1/48
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan31
   description: VRF11_VLAN21
   shutdown: false
@@ -305,7 +323,8 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:DB8:32::1/48
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: Vlan32
   description: VRF11_VLAN22
   shutdown: false
@@ -313,7 +332,8 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:DB8:33::1/48
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vlan_internal_order:
   allocation: ascending
   range:
@@ -322,36 +342,45 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VRF10_VLAN11
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 12
   name: VRF10_VLAN12
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 21
   name: VRF11_VLAN21
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 22
   name: VRF11_VLAN22
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 31
   name: VRF11_VLAN21
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - id: 32
   name: VRF11_VLAN22
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF10
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: VRF11
   ip_routing: true
   ipv6_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 - name: VRF12
   ip_routing: true
   ipv6_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vxlan_interface:
   vxlan1:
     description: IPV6_NUMBERED_LEAF2a_VTEP

@@ -3,7 +3,7 @@
 title: arista.avd.defined
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -31,11 +31,11 @@ Compared to the built-in `is defined` test, this test will also test for `None` 
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>_input</samp> | any | True | None |  | Value to test |
-| <samp>test_value</samp> | any | optional | None |  | Value to match for in addition to defined and not none |
+| <samp>_input</samp> | any | True | None | - | Value to test |
+| <samp>test_value</samp> | any | optional | None | - | Value to match for in addition to defined and not none |
 | <samp>var_type</samp> | string | optional | None | Valid values:<br>- <code>float</code><br>- <code>int</code><br>- <code>str</code><br>- <code>list</code><br>- <code>dict</code><br>- <code>tuple</code><br>- <code>bool</code> | Type or Class to test for |
 | <samp>fail_action</samp> | string | optional | None | Valid values:<br>- <code>warning</code><br>- <code>error</code> | Optional action if a test fails to emit a Warning or Error |
-| <samp>var_name</samp> | string | optional | None |  | Optional string to use as a variable name in warning or error messages |
+| <samp>var_name</samp> | string | optional | None | - | Optional string to use as a variable name in warning or error messages |
 
 ## Examples
 

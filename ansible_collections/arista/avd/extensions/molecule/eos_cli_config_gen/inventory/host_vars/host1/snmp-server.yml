@@ -11,6 +11,12 @@ snmp_server:
       - id: DEADBEEFCAFE123456
         address: 2.2.2.2
         udp_port: 1337
+      # These next two are needed to configure non localized remote users defined below
+      - id: 424242424242DEAD
+        address: 42.42.42.42
+      - id: 424242424242DEAD6666
+        address: 42.42.42.42
+        udp_port: 666
   contact: DC1_OPS
   location: DC1
   communities:

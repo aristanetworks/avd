@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -25,7 +25,7 @@ Default maintenance unit profile: **{{ maintenance.default_unit_profile | arista
 {%     endfor %}
 
 | Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) | Shutdown Max Delay |
-|-------------------|-----------------------------------|-----------------------------------------|--------------------|
+| ----------------- | --------------------------------- | --------------------------------------- | ------------------ |
 {%     for interface_profile in maintenance.interface_profiles | arista.avd.natural_sort('name') %}
 {%         set row_load_interval = interface_profile.rate_monitoring.load_interval | arista.avd.default(60) %}
 {%         set row_threshold = interface_profile.rate_monitoring.threshold | arista.avd.default(100) %}

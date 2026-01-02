@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from pathlib import Path
@@ -10,6 +10,7 @@ from deepmerge import always_merger
 
 from pyavd._errors import AristaAvdError, AvdSchemaError, AvdValidationError
 from pyavd._schema.avdschema import DEFAULT_SCHEMA, AvdSchema
+from pyavd._schema.avdvalidator import is_type
 
 script_dir = Path(__file__).parent
 with Path(script_dir, "access_lists.schema.yml").open(encoding="utf-8") as schema_file:
@@ -195,6 +196,5 @@ class TestAvdSchema:
             avdschema.subschema(["non-existing-key"])
 
     def test_is_type_with_unsupported_type(self) -> None:
-        avdschema = AvdSchema(combined_schema)
         with pytest.raises(NotImplementedError, match=r"Unable to check type 'tuple'"):
-            avdschema._validator.is_type("foo", "tuple")  # pyright: ignore[reportArgumentType]
+            is_type("foo", "tuple")  # pyright: ignore[reportArgumentType]

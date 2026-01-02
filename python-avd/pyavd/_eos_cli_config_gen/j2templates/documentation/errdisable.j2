@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -29,8 +29,8 @@ Errdisable recovery timer interval: {{ errdisable.recovery.interval }} seconds
 {%             endif %}
 {%         endfor %}
 
-|  Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
-| ------ | ----------------- | ---------------- | -------------------------- |
+| Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
+| ----- | ----------------- | ---------------- | --------------------------- |
 {%         for cause, status in causes.items() | arista.avd.natural_sort %}
 | {{ cause }} | {{ status.detect_status | arista.avd.default("-") }} | {{ status.recovery_status | arista.avd.default("-") }} | {{ status.recovery_interval | arista.avd.default("-") }} |
 {%         endfor %}

@@ -44,6 +44,15 @@ metadata:
   is_deployed: true
   platform: 7010TX
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: true
+    min_power_supplies: 2
+    min_fans: 4
+    min_supervisors: 2
+    min_line_cards: 10
+    min_fabric_cards: 5
+    transceiver_manufacturers:
+    - Third-party vendor
 mlag_configuration:
   domain_id: MLAG_PER_MTU_INTERFACE
   local_interface: Vlan4094
@@ -97,7 +106,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '923'
     description: 7010TX-LEAF1
     next_hop_self: true
@@ -105,11 +115,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -118,7 +130,8 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.224.4
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: 7010TX-LEAF1
+    metadata:
+      peer: 7010TX-LEAF1
     description: 7010TX-LEAF1_Vlan4093
   redistribute:
     connected:
@@ -160,12 +173,14 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

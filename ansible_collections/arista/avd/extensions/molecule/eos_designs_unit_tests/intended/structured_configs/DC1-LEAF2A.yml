@@ -103,6 +103,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.33/31
   metadata:
     peer: DC1-SPINE1
@@ -115,6 +120,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.35/31
   metadata:
     peer: DC1-SPINE2
@@ -127,6 +137,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.37/31
   metadata:
     peer: DC1-SPINE2
@@ -139,6 +154,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.39/31
   metadata:
     peer: DC1-SPINE1
@@ -151,6 +171,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.41/31
   metadata:
     peer: DC1-SPINE3
@@ -163,6 +188,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.43/31
   metadata:
     peer: DC1-SPINE4
@@ -175,6 +205,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.45/31
   metadata:
     peer: DC1-SPINE4
@@ -187,6 +222,11 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: upstream
+  - name: l2leaf-server02
+    direction: upstream
   ip_address: 172.31.254.47/31
   metadata:
     peer: DC1-SPINE3
@@ -392,6 +432,11 @@ ipv6_static_routes:
   next_hop: 2001:db8:310::1
   track_bfd: true
   name: Track-bfd-network-services
+link_tracking_groups:
+- name: l2leaf-server01
+  recovery_delay: 301
+- name: l2leaf-server02
+  recovery_delay: 300
 local_users:
 - name: admin
   disabled: true
@@ -497,6 +542,9 @@ port_channel_interfaces:
 - name: Port-Channel7
   description: DC1_L2LEAF1_Po1
   shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:0808:0707:0606
     route_target: 08:08:07:07:06:06
@@ -511,6 +559,9 @@ port_channel_interfaces:
 - name: Port-Channel9
   description: DC1-L2LEAF3A_Po1
   shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:0606:0707:0808
     route_target: 06:06:07:07:08:08
@@ -523,6 +574,9 @@ port_channel_interfaces:
 - name: Port-Channel1013
   description: DC1-L2LEAF4A_Po1001
   shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:a36b:7013:457b
     route_target: a3:6b:70:13:45:7b
@@ -535,6 +589,9 @@ port_channel_interfaces:
 - name: Port-Channel141
   description: DC1_L2LEAF5_Po1
   shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:fa91:ce62:ce95
     route_target: fa:91:ce:62:ce:95
@@ -547,6 +604,9 @@ port_channel_interfaces:
 - name: Port-Channel30
   description: DC1_L2LEAF6_Po1
   shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: downstream
   evpn_ethernet_segment:
     identifier: 0000:0000:a8be:743c:0a1a
     route_target: a8:be:74:3c:0a:1a
@@ -559,6 +619,9 @@ port_channel_interfaces:
 - name: Port-Channel32
   description: description through uplink_switch_port_channel_structured_config(DC1.L2LEAF7A)
   shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server01
+    direction: downstream
   switchport:
     enabled: true
     mode: trunk
@@ -658,12 +721,14 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -674,62 +739,74 @@ router_bgp:
   - ip_address: 172.31.254.32
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet3/1
   - ip_address: 172.31.254.34
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet1/3/1
   - ip_address: 172.31.254.36
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet1/4/1
   - ip_address: 172.31.254.38
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet4/1
   - ip_address: 172.31.254.40
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet1/3/1
   - ip_address: 172.31.254.42
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet3/1
   - ip_address: 172.31.254.44
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet4/1
   - ip_address: 172.31.254.46
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet1/4/1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE1
+    metadata:
+      peer: DC1-SPINE1
     description: DC1-SPINE1
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE2
+    metadata:
+      peer: DC1-SPINE2
     description: DC1-SPINE2
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE3
+    metadata:
+      peer: DC1-SPINE3
     description: DC1-SPINE3
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
-    peer: DC1-SPINE4
+    metadata:
+      peer: DC1-SPINE4
     description: DC1-SPINE4
   redistribute:
     connected:
@@ -769,7 +846,8 @@ router_bgp:
     - learned
     vlan: 120-121
   - name: Tenant_A_NFS
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 65001:20161
     route_targets:
       both:
@@ -778,7 +856,8 @@ router_bgp:
     - learned
     vlan: '161'
   - name: Tenant_A_VMOTION
-    tenant: Tenant_A
+    metadata:
+      tenant: Tenant_A
     rd: 65001:20160
     route_targets:
       both:
@@ -1031,35 +1110,39 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.30.1/24
-  tenant: Tenant_A
-  tags:
-  - app
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - app
+    - erp1
 - name: Vlan131
   description: Tenant_A_APP_Zone_2
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.31.1/24
-  tenant: Tenant_A
-  tags:
-  - app
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - app
 - name: Vlan140
   description: Tenant_A_DB_BZone_1
   shutdown: false
   vrf: Tenant_A_DB_Zone
   ip_address_virtual: 10.1.40.1/24
-  tenant: Tenant_A
-  tags:
-  - db
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - db
+    - erp1
 - name: Vlan141
   description: Tenant_A_DB_Zone_2
   shutdown: false
   vrf: Tenant_A_DB_Zone
   ip_address_virtual: 10.1.41.1/24
-  tenant: Tenant_A
-  tags:
-  - db
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - db
 - name: Vlan110
   description: Tenant_A_OP_Zone_1
   shutdown: false
@@ -1067,9 +1150,10 @@ vlan_interfaces:
   ip_address_virtual: 10.1.10.1/24
   access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
   access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan110
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan111
   description: Tenant_A_OP_Zone_2
   shutdown: false
@@ -1079,9 +1163,10 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo100
     vrf: MGMT
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan112
   description: Tenant_A_OP_Zone_3
   shutdown: false
@@ -1091,9 +1176,10 @@ vlan_interfaces:
     source_interface: lo101
     vrf: MGMT
   mtu: 1560
-  tenant: Tenant_A
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - opzone
 - name: Vlan120
   description: Tenant_A_WEB_Zone_1
   shutdown: false
@@ -1106,51 +1192,57 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo100
     vrf: TEST
-  tenant: Tenant_A
-  tags:
-  - web
-  - erp1
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
+    - erp1
 - name: Vlan121
   description: Tenant_A_WEBZone_2
   shutdown: true
   vrf: Tenant_A_WEB_Zone
   ip_address_virtual: 10.1.10.254/24
   mtu: 1560
-  tenant: Tenant_A
-  tags:
-  - web
+  metadata:
+    tenant: Tenant_A
+    tags:
+    - web
 - name: Vlan210
   description: Tenant_B_OP_Zone_1
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.10.1/24
-  tenant: Tenant_B
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_B
+    tags:
+    - opzone
 - name: Vlan211
   description: Tenant_B_OP_Zone_2
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.11.1/24
-  tenant: Tenant_B
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_B
+    tags:
+    - opzone
 - name: Vlan310
   description: Tenant_C_OP_Zone_1
   shutdown: false
   vrf: Tenant_C_OP_Zone
   ip_address_virtual: 10.3.10.1/24
-  tenant: Tenant_C
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_C
+    tags:
+    - opzone
 - name: Vlan311
   description: Tenant_C_OP_Zone_2
   shutdown: false
   vrf: Tenant_C_OP_Zone
   ip_address_virtual: 10.3.11.1/24
-  tenant: Tenant_C
-  tags:
-  - opzone
+  metadata:
+    tenant: Tenant_C
+    tags:
+    - opzone
 - name: Vlan450
   description: Tenant_D_v6_WAN_Zone_1
   shutdown: false
@@ -1158,9 +1250,10 @@ vlan_interfaces:
   ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:db8:355::1/64
-  tenant: Tenant_D
-  tags:
-  - v6wan
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6wan
 - name: Vlan451
   description: Tenant_D_v6_WAN_Zone_2
   shutdown: false
@@ -1169,9 +1262,10 @@ vlan_interfaces:
   ipv6_address_virtuals:
   - 2001:db8:451::1/64
   mtu: 1560
-  tenant: Tenant_D
-  tags:
-  - v6wan
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6wan
 - name: Vlan452
   description: Tenant_D_v6_WAN_Zone_3
   shutdown: false
@@ -1181,9 +1275,10 @@ vlan_interfaces:
   ipv6_address_virtuals:
   - 2001:db8:412::1/64
   mtu: 1560
-  tenant: Tenant_D
-  tags:
-  - v6wan
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6wan
 - name: Vlan410
   description: Tenant_D_v6_OP_Zone_1
   shutdown: false
@@ -1204,9 +1299,10 @@ vlan_interfaces:
   - ipv6_prefix: 2001:db8:312::1/64
     valid_lifetime: '200'
     preferred_lifetime: '100'
-  tenant: Tenant_D
-  tags:
-  - v6opzone
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6opzone
 - name: Vlan411
   description: Tenant_D_v6_OP_Zone_2
   shutdown: false
@@ -1217,9 +1313,10 @@ vlan_interfaces:
   ipv6_address: 2001:db8:311::2/64
   ipv6_virtual_router_addresses:
   - 2001:db8:311::1
-  tenant: Tenant_D
-  tags:
-  - v6opzone
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6opzone
 - name: Vlan412
   description: Tenant_D_v6_OP_Zone_1
   shutdown: false
@@ -1229,9 +1326,10 @@ vlan_interfaces:
   ipv6_address_virtuals:
   - 2001:db8:412::1/64
   mtu: 1560
-  tenant: Tenant_D
-  tags:
-  - v6opzone
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6opzone
 - name: Vlan413
   description: Tenant_D_v6_OP_Zone_3
   shutdown: false
@@ -1247,9 +1345,10 @@ vlan_interfaces:
   ipv6_virtual_router_addresses:
   - 2001:db9:413::1
   mtu: 1560
-  tenant: Tenant_D
-  tags:
-  - v6opzone
+  metadata:
+    tenant: Tenant_D
+    tags:
+    - v6opzone
 vlan_internal_order:
   allocation: ascending
   range:
@@ -1258,103 +1357,134 @@ vlan_internal_order:
 vlans:
 - id: 130
   name: Tenant_A_APP_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 131
   name: Tenant_A_APP_Zone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 140
   name: Tenant_A_DB_BZone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 141
   name: Tenant_A_DB_Zone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 110
   name: Tenant_A_OP_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 111
   name: Tenant_A_OP_Zone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 112
   name: Tenant_A_OP_Zone_3
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 121
   name: Tenant_A_WEBZone_2
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 160
   name: Tenant_A_VMOTION
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 161
   name: Tenant_A_NFS
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - id: 210
   name: Tenant_B_OP_Zone_1
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 211
   name: Tenant_B_OP_Zone_2
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - id: 310
   name: Tenant_C_OP_Zone_1
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 311
   name: Tenant_C_OP_Zone_2
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - id: 450
   name: Tenant_D_v6_WAN_Zone_1
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - id: 451
   name: Tenant_D_v6_WAN_Zone_2
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - id: 452
   name: Tenant_D_v6_WAN_Zone_3
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - id: 410
   name: Tenant_D_v6_OP_Zone_1
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - id: 411
   name: Tenant_D_v6_OP_Zone_2
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - id: 412
   name: Tenant_D_v6_OP_Zone_1
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - id: 413
   name: Tenant_D_v6_OP_Zone_3
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_A_APP_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_DB_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_OP_Zone
   description: Tenant_A_OP_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_OSPF
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_A_WEB_Zone
   ip_routing: true
-  tenant: Tenant_A
+  metadata:
+    tenant: Tenant_A
 - name: Tenant_B_OP_Zone
   ip_routing: true
-  tenant: Tenant_B
+  metadata:
+    tenant: Tenant_B
 - name: Tenant_C_OP_Zone
   ip_routing: true
-  tenant: Tenant_C
+  metadata:
+    tenant: Tenant_C
 - name: '12345678'
   ip_routing: true
   ipv6_routing: true
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 - name: Tenant_D_OP_Zone
   ip_routing: true
   ipv6_routing: true
-  tenant: Tenant_D
+  metadata:
+    tenant: Tenant_D
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF2A_VTEP

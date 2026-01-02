@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """Constants used by PyAVD for ANTA."""
@@ -21,6 +21,7 @@ class StructuredConfigKey(Enum):
     SERVICE_ROUTING_PROTOCOLS_MODEL = "service_routing_protocols_model"
     ROUTER_AVT = "router_adaptive_virtual_topology"
     ROUTER_PATH_SELECTION = "router_path_selection"
+    ROUTER_OSPF = "router_ospf"
 
     @classmethod
     def to_string_list(cls, keys: list[StructuredConfigKey]) -> list[str]:

@@ -27,8 +27,8 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
-- name: Ethernet2.2
-  description: P2P_HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_Ethernet1.1
+- name: Ethernet10
+  description: P2P_HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_Ethernet10
   shutdown: false
   mtu: 9214
   ip_address: 10.10.50.14/31
@@ -43,7 +43,7 @@ ethernet_interfaces:
     transport: ipv4
   metadata:
     peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
-    peer_interface: Ethernet1.1
+    peer_interface: Ethernet10
     peer_type: l3leaf
   sflow:
     enable: true
@@ -263,7 +263,8 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
-    type: ipv4
+    metadata:
+      type: ipv4
     remote_as: '65001'
     description: HARDWARE_FEATURES_CEOS_LAB
     next_hop_self: true
@@ -271,11 +272,13 @@ router_bgp:
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
+    metadata:
+      type: ipv4
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
-    type: evpn
+    metadata:
+      type: evpn
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -284,29 +287,34 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.40.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    peer: HARDWARE_FEATURES_CEOS_LAB
+    metadata:
+      peer: HARDWARE_FEATURES_CEOS_LAB
     description: HARDWARE_FEATURES_CEOS_LAB_Vlan4093
   - ip_address: 10.10.50.5
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: HARDWARE_FEATURES_CLOUDEOS
+    metadata:
+      peer: HARDWARE_FEATURES_CLOUDEOS
     description: HARDWARE_FEATURES_CLOUDEOS_Ethernet1
   - ip_address: 10.10.50.15
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
-    description: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_Ethernet1.1
+    metadata:
+      peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+    description: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_Ethernet10
   - ip_address: 10.10.30.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     local_as: '65000'
-    peer: HARDWARE_FEATURES_CLOUDEOS
+    metadata:
+      peer: HARDWARE_FEATURES_CLOUDEOS
     description: HARDWARE_FEATURES_CLOUDEOS
   - ip_address: 10.10.60.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     local_as: '65100'
-    peer: HARDWARE_FEATURES_CEOS_LAB
+    metadata:
+      peer: HARDWARE_FEATURES_CEOS_LAB
     description: HARDWARE_FEATURES_CEOS_LAB
   redistribute:
     connected:
@@ -380,8 +388,9 @@ vlan_interfaces:
   vrf: VRF10
   ip_address: 10.10.40.0/31
   mtu: 9214
-  tenant: TENANT1
-  type: underlay_peering
+  metadata:
+    tenant: TENANT1
+    type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
@@ -392,23 +401,27 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenant: system
 - id: 3009
   name: MLAG_L3_VRF_VRF10
   trunk_groups:
   - MLAG
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF10
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenant: TENANT1
 vxlan_interface:
   vxlan1:
     description: HARDWARE_FEATURES_VEOS_LAB_VTEP

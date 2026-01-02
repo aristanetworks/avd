@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -182,7 +182,7 @@
           connected_endpoints: true
           mlag_support: true
           network_services:
-            l2: true,
+            l2: true
           underlay_router: false
           uplink_type: port-channel
           cv_tags_topology_type: leaf
@@ -221,5 +221,5 @@
           default_flow_tracker_type: hardware
           vtep: true
           network_services:
-            l3: true,
+            l3: true
         ```

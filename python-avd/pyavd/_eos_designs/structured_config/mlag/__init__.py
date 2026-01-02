@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -31,7 +31,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         if self.shared_utils.mlag_peer_l3_vlan is not None and self.shared_utils.underlay_routing_protocol != "none":
             self.structured_config.vlans.append_new(
                 id=self.shared_utils.mlag_peer_l3_vlan,
-                tenant="system",
+                metadata=EosCliConfigGen.VlansItem.Metadata(tenant="system"),
                 name=AvdStringFormatter().format(
                     self.inputs.mlag_peer_l3_vlan_name, mlag_peer=self.shared_utils.mlag_peer, mlag_peer_l3_vlan=self.shared_utils.mlag_peer_l3_vlan
                 ),
@@ -40,7 +40,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
 
         self.structured_config.vlans.append_new(
             id=self.shared_utils.node_config.mlag_peer_vlan,
-            tenant="system",
+            metadata=EosCliConfigGen.VlansItem.Metadata(tenant="system"),
             name=AvdStringFormatter().format(
                 self.inputs.mlag_peer_vlan_name, mlag_peer=self.shared_utils.mlag_peer, mlag_peer_vlan=self.shared_utils.node_config.mlag_peer_vlan
             ),
@@ -293,7 +293,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             self.structured_config.router_bgp.neighbor_interfaces.append_new(
                 name=interface_name,
                 peer_group=self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name,
-                peer=self.shared_utils.mlag_peer,
+                metadata=EosCliConfigGen.RouterBgp.NeighborInterfacesItem.Metadata(peer=self.shared_utils.mlag_peer),
                 remote_as=self.shared_utils.formatted_bgp_as,
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,
@@ -308,7 +308,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             self.structured_config.router_bgp.neighbors.append_new(
                 ip_address=neighbor_ip,
                 peer_group=self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name,
-                peer=self.shared_utils.mlag_peer,
+                metadata=EosCliConfigGen.RouterBgp.NeighborsItem.Metadata(peer=self.shared_utils.mlag_peer),
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,
                     mlag_peer=self.shared_utils.mlag_peer,

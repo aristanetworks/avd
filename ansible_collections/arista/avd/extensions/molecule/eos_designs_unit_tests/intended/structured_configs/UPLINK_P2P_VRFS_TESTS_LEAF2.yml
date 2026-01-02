@@ -111,19 +111,22 @@ router_bgp:
       ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
-    type: ipv6
+    metadata:
+      type: ipv6
     send_community: all
     maximum_routes: 12000
   neighbors:
   - ip_address: 2001:db8:3:8::1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+    metadata:
+      peer: UPLINK_P2P_VRFS_TESTS_SPINE1
     description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet2
   - ip_address: 2001:db8:3:9::1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
-    peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+    metadata:
+      peer: UPLINK_P2P_VRFS_TESTS_SPINE2
     description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet1
   redistribute:
     connected:
@@ -175,9 +178,10 @@ vlan_interfaces:
   shutdown: false
   vrf: ONLY-ON-L2LEAF
   ip_address_virtual: 172.16.0.1/24
-  tenant: TenantC
-  tags:
-  - not-on-spine-2
+  metadata:
+    tenant: TenantC
+    tags:
+    - not-on-spine-2
 vlan_internal_order:
   allocation: ascending
   range:
@@ -186,16 +190,20 @@ vlan_internal_order:
 vlans:
 - id: 66
   name: TEST-L2VLAN-ATTRACTION
-  tenant: TenantC
+  metadata:
+    tenant: TenantC
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: IT
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenant: TenantA
 - name: ONLY-ON-L2LEAF
   ip_routing: true
-  tenant: TenantC
+  metadata:
+    tenant: TenantC

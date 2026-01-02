@@ -3,7 +3,7 @@
 title: arista.avd.default
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -27,8 +27,8 @@ As a last resort, the filter will return `None`.
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>_input</samp> | any | True | None |  | Default value to check. Will be returned untouched if `not undefined` and `not None`. |
-| <samp>default_values</samp> | any | optional | None |  | One or more default values will be tested individually, and the first valid value will be used. |
+| <samp>_input</samp> | any | True | None | - | Default value to check. Will be returned untouched if `not undefined` and `not None`. |
+| <samp>default_values</samp> | any | optional | None | - | One or more default values will be tested individually, and the first valid value will be used. |
 
 ## Examples
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """Centralized package to import all the tests of the ANTA framework."""
@@ -12,6 +12,7 @@ from anta.tests.hardware import (
     VerifyEnvironmentSystemCooling,
     VerifyInventory,
     VerifyTemperature,
+    VerifyTransceiversManufacturers,
     VerifyTransceiversTemperature,
 )
 from anta.tests.interfaces import (
@@ -32,7 +33,8 @@ from anta.tests.mlag import (
 )
 from anta.tests.path_selection import VerifySpecificPath
 from anta.tests.routing.bgp import VerifyBGPPeerSession
-from anta.tests.routing.generic import VerifyRoutingProtocolModel
+from anta.tests.routing.generic import VerifyRoutingProtocolModel, VerifyRoutingTableEntry
+from anta.tests.routing.ospf import VerifyOSPFMaxLSA, VerifyOSPFNeighborState
 from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn
 from anta.tests.stp import VerifySTPCounters
 from anta.tests.system import (
@@ -71,16 +73,20 @@ __all__ = [
     "VerifyMlagInterfaces",
     "VerifyMlagStatus",
     "VerifyNTP",
+    "VerifyOSPFMaxLSA",
+    "VerifyOSPFNeighborState",
     "VerifyPortChannels",
     "VerifyReachability",
     "VerifyReloadCause",
     "VerifyRoutingProtocolModel",
+    "VerifyRoutingTableEntry",
     "VerifyRunningConfigDiffs",
     "VerifySTPCounters",
     "VerifySpecificIPSecConn",
     "VerifySpecificPath",
     "VerifyStormControlDrops",
     "VerifyTemperature",
+    "VerifyTransceiversManufacturers",
     "VerifyTransceiversTemperature",
     "VerifyVxlanConfigSanity",
     "VerifyZeroTouch",

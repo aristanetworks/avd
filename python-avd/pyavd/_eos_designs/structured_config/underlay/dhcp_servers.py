@@ -1,10 +1,10 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
-from ipaddress import AddressValueError, IPv4Address, ip_network
+from ipaddress import AddressValueError, IPv4Address, IPv4Network
 from typing import TYPE_CHECKING, Protocol
 
 if TYPE_CHECKING:
@@ -29,7 +29,7 @@ class DhcpServersMixin(Protocol):
         dhcp_server = EosCliConfigGen.DhcpServersItem()
         # Set subnets for DHCP server
         self._update_subnets(dhcp_server)
-        if len(dhcp_server.subnets) == 0:
+        if len(dhcp_server.ipv4_subnets) == 0:
             return
         dhcp_server.vrf = "default"
         # Set ZTP bootfile
@@ -60,13 +60,14 @@ class DhcpServersMixin(Protocol):
                     and "unnumbered" not in uplink.ip_address
                     and peer_facts.inband_ztp
                 ):
-                    subnet_item = EosCliConfigGen.DhcpServersItem.SubnetsItem(
-                        subnet=str(ip_network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False)),
+                    # ipv6 numbered is not supported with inband_ztp hence right now only ipv4_subnet can be added
+                    subnet_item = EosCliConfigGen.DhcpServersItem.Ipv4SubnetsItem(
+                        subnet=str(IPv4Network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False)),
                         name=f"inband ztp for {peer}-{uplink.interface}",
                         default_gateway=f"{uplink.peer_ip_address}",
                     )
                     subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
-                    dhcp_server.subnets.append(subnet_item)
+                    dhcp_server.ipv4_subnets.append(subnet_item)
 
     def _get_cvp_server_for_dhcp(self: AvdStructuredConfigUnderlayProtocol) -> str | None:
         """Return the first CVP server using either new or old data models."""

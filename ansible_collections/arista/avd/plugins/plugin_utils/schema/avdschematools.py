@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -22,10 +22,6 @@ except ImportError as e:
     AristaAvdError = AvdDeprecationWarning = ImportError
 
 
-VALID_VALIDATION_MODES = ["error", "warning"]
-DEFAULT_VALIDATION_MODE = "error"
-
-
 class AvdSchemaTools:
     """Tools that wrap the various schema components for easy reuse in Ansible plugins."""
 
@@ -35,14 +31,10 @@ class AvdSchemaTools:
         ansible_display: Display,
         schema: dict | None = None,
         schema_id: str | None = None,
-        validation_mode: str | None = None,
-        plugin_name: str | None = None,
     ) -> None:
         self._set_schema(schema, schema_id)
         self.hostname = hostname
         self.ansible_display = ansible_display
-        self.plugin_name = plugin_name
-        self._set_validation_mode(validation_mode)
 
     def _set_schema(self, schema: dict | None, schema_id: str | None) -> None:
         if schema is None and schema_id is None:
@@ -54,20 +46,6 @@ class AvdSchemaTools:
         except AristaAvdError as e:
             msg = "Invalid Schema!"
             raise AnsibleActionFail(msg) from e
-
-    def _set_validation_mode(self, validation_mode: str | None) -> None:
-        if validation_mode is None:
-            validation_mode = DEFAULT_VALIDATION_MODE
-
-        if not isinstance(validation_mode, str):
-            msg = "The argument 'validation_mode' must be a string"
-            raise AnsibleActionFail(msg)
-
-        if validation_mode not in VALID_VALIDATION_MODES:
-            msg = f"Invalid value '{validation_mode}' for the argument 'validation_mode'. Must be one of {VALID_VALIDATION_MODES}"
-            raise AnsibleActionFail(msg)
-
-        self.validation_mode = validation_mode
 
     def convert_data(self, data: dict) -> int:
         """
@@ -83,7 +61,7 @@ class AvdSchemaTools:
         """
         # avd_schema.convert returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
         exceptions = self.avdschema.convert(data)
-        return self.handle_validation_exceptions(exceptions, "error")
+        return self.handle_validation_exceptions(exceptions)
 
     def validate_data(self, data: dict) -> int:
         """
@@ -95,7 +73,7 @@ class AvdSchemaTools:
         """
         # avd_schema.validate returns a generator, which we iterate through in handle_exceptions to perform the actual validations.
         exceptions = self.avdschema.validate(data)
-        return self.handle_validation_exceptions(exceptions, self.validation_mode)
+        return self.handle_validation_exceptions(exceptions)
 
     def convert_and_validate_data(self, data: dict, return_counters: bool = False) -> dict:
         """
@@ -119,7 +97,7 @@ class AvdSchemaTools:
 
         # Perform validation
         validation_errors += self.validate_data(data)
-        if validation_errors and self.validation_mode == "error":
+        if validation_errors:
             result["failed"] = True
 
         result["msg"] = self.build_result_message(validation_errors=validation_errors)
@@ -129,7 +107,7 @@ class AvdSchemaTools:
 
         return result
 
-    def handle_validation_exceptions(self, exceptions: Generator, mode: str | None) -> int:
+    def handle_validation_exceptions(self, exceptions: Generator) -> int:
         """
         Iterate through the Generator of exceptions.
 
@@ -155,7 +133,7 @@ class AvdSchemaTools:
                         msg=message,
                         version=exception.version,
                         date=exception.date,
-                        collection_name=self.plugin_name,
+                        collection_name="arista.avd",
                         removed=exception.removed,
                     )
                 # Conflicts are handled as errors below.
@@ -164,28 +142,14 @@ class AvdSchemaTools:
                         msg=message,
                         version=exception.version,
                         date=exception.date,
-                        collection_name=self.plugin_name,
+                        collection_name="arista.avd",
                         removed=exception.removed,
                     )
                     continue
 
             counter += 1
-            if mode == "warning":
-                self.ansible_display.warning(message)
-            else:
-                # when mode == "error"
-                self.ansible_display.error(message, wrap_text=False)
+            self.ansible_display.error(message, wrap_text=False)
         return counter
-
-    def validate_schema(self) -> int:
-        """
-        Validate the loaded schema according to the meta-schema.
-
-        Returns int with number of validation errors
-        """
-        # avd_schema.validate_schema returns a generator, which we iterate through in handle_exceptions to perform the actual validations.
-        exceptions = self.avdschema.validate_schema(self.avdschema._schema)
-        return self.handle_validation_exceptions(exceptions, "error")
 
     def build_result_message(self, validation_errors: int = 0, schema_validation_errors: int = 0) -> str | None:
         result_messages = []

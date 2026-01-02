@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -81,6 +81,7 @@ class Templar:
             list_compress,
             natural_sort,
             range_expand,
+            secure_hash,
             snmp_hash,
             status_render,
         )
@@ -100,6 +101,7 @@ class Templar:
                 "arista.avd.range_expand": range_expand,
                 "arista.avd.snmp_hash": snmp_hash,
                 "arista.avd.status_render": status_render,
+                "arista.avd.secure_hash": secure_hash,
             },
         )
         self.environment.tests.update(

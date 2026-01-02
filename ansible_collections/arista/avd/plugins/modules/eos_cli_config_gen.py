@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2025 Arista Networks, Inc.
+# Copyright (c) 2021-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -40,17 +40,6 @@ options:
     description: Flag to generate the table of content for the device documentation.
     type: bool
     default: true
-  validation_mode:
-    description:
-      - Run validation in either "error" or "warning" mode.
-      - Validation will validate the input variables according to the schema.
-      - During validation, messages will be generated with information about the host(s) and key(s) which failed validation.
-      - validation_mode:error will produce error messages and fail the task.
-      - validation_mode:warning will produce warning messages.
-    required: false
-    default: "error"
-    type: str
-    choices: [ "error", "warning" ]
   cprofile_file:
     description:
       - Filename for storing cprofile data used to debug performance issues.
