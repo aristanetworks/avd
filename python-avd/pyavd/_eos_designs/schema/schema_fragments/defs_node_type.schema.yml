@@ -1,5 +1,5 @@
 ---
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -1314,6 +1314,9 @@ $defs:
               forward_v1:
                 type: bool
                 description: Forward dataplane PTP V1 packets.
+              free_running:
+                type: dict
+                $ref: "eos_cli_config_gen#/keys/ptp/keys/free_running"
               dscp:
                 type: dict
                 keys:
