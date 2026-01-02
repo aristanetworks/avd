@@ -287,7 +287,12 @@ class TestNaturalSortFilter:
         assert resp == [n2, n3, n1]
         assert n2.counters_per_entry is False
 
-    def test__alphanum_key_failure(self) -> None:
-        with pytest.raises(ValueError, match=r"'natural_sort' requires 'sort_key' to be set when used for a (Mapping|Namespace):"):
+    def test__alphanum_key_failure_mapping(self) -> None:
+        with pytest.raises(ValueError, match=r"'natural_sort' requires 'sort_key' to be set when used for a Mapping:"):
             # trying to get a key for a dict without sort_key
             _alphanum_key(item={"name": "blah"})
+
+    def test__alphanum_key_failure_namespace(self) -> None:
+        with pytest.raises(ValueError, match=r"'natural_sort' requires 'sort_key' to be set when used for a Namespace:"):
+            # trying to get a key for a dict without sort_key
+            _alphanum_key(item=Namespace(name="blah"))
