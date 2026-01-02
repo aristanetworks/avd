@@ -1585,10 +1585,13 @@ $defs:
                       valid_values:
                         - import
                         - export
+                      required: true
                     address_family:
                       type: str
+                      required: true
                     route_target:
                       type: str
+                      required: true
                     nodes:
                       type: list
                       items:

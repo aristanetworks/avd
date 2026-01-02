@@ -64544,9 +64544,9 @@ class EosDesigns(EosDesignsRootModel):
                             "route_target": {"type": str},
                             "nodes": {"type": Nodes},
                         }
-                        type: Type | None
-                        address_family: str | None
-                        route_target: str | None
+                        type: Type
+                        address_family: str
+                        route_target: str
                         nodes: Nodes
                         """
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
@@ -64558,9 +64558,9 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                type: Type | None | UndefinedType = Undefined,
-                                address_family: str | None | UndefinedType = Undefined,
-                                route_target: str | None | UndefinedType = Undefined,
+                                type: Type | UndefinedType = Undefined,
+                                address_family: str | UndefinedType = Undefined,
+                                route_target: str | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                             ) -> None:
                                 """

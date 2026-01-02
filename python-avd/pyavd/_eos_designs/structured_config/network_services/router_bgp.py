@@ -286,10 +286,9 @@ class RouterBgpMixin(Protocol):
                 )
 
         for rt in vrf.additional_route_targets:
-            if rt.type == "import" and rt.address_family and rt.route_target:
-                bgp_vrf.route_targets.field_import.obtain(rt.address_family).route_targets.extend([rt.route_target])
-            elif rt.type == "export" and rt.address_family and rt.route_target:
-                bgp_vrf.route_targets.export.obtain(rt.address_family).route_targets.extend([rt.route_target])
+            bgp_vrf.route_targets.field_import.obtain(rt.address_family).route_targets.extend(
+                [rt.route_target]
+            ) if rt.type == "import" else bgp_vrf.route_targets.export.obtain(rt.address_family).route_targets.extend([rt.route_target])
 
         if vrf.name == "default" and self._vrf_default_evpn and self._route_maps_vrf_default_check() and vrf.rt_export:
             # Special handling of vrf default with evpn.
