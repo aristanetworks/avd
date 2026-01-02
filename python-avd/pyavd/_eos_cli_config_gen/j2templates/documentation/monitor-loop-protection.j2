@@ -25,7 +25,7 @@
 {%     if monitor_loop_protection.transmit_interval is arista.avd.defined %}
 | Transmit-interval | {{ monitor_loop_protection.transmit_interval }} |
 {%     endif %}
-{%     set loop_protection_interfaces = ethernet_interfaces | arista.avd.natural_sort('name') | selectattr("loop_protection", "arista.avd.defined", false) %}
+{%     set loop_protection_interfaces = ethernet_interfaces | selectattr("loop_protection", "arista.avd.defined", false) | arista.avd.natural_sort('name') %}
 {%     if loop_protection_interfaces %}
 
 | Disabled Interfaces |
