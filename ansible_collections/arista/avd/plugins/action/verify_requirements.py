@@ -421,7 +421,7 @@ class ActionModule(AvdActionPlugin):
 
         self.result["failed"] = False
 
-        error_message = "Set 'avd_ignore_requirements=True' to ignore validation error(s)."
+        error_message = "If it is a false positive, set 'avd_ignore_requirements=True'."
         info: dict[str, Any] = {
             "ansible": {},
             "python": {},
