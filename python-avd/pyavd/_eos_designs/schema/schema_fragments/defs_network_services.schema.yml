@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -425,11 +425,17 @@ $defs:
                     - A full RT string with colon separator which will override the full RT.
               rt_import:
                 type: bool
-                description: Enable/Disable route target import for the VRF of every address family.
+                description: |
+                  Enable or disable route target import for the VRF for all address families.
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.
                 default: true
               rt_export:
                 type: bool
-                description: Enable/Disable route target export for the VRF of every address family.
+                description: |
+                  Enable or disable route target export for the VRF for all address families.
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.
                 default: true
               mlag_ibgp_peering_ipv4_pool:
                 type: str

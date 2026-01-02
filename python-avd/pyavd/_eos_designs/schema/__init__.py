@@ -64753,13 +64753,21 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     rt_import: bool
                     """
-                    Enable/Disable route target import for the VRF of every address family.
+                    Enable or disable route target import for the VRF for all address families.
+                    This setting applies
+                    only to the automatically generated route targets
+                    and does not affect any entries defined under
+                    `additional_route_targets`.
 
                     Default value: `True`
                     """
                     rt_export: bool
                     """
-                    Enable/Disable route target export for the VRF of every address family.
+                    Enable or disable route target export for the VRF for all address families.
+                    This setting applies
+                    only to the automatically generated route targets
+                    and does not affect any entries defined under
+                    `additional_route_targets`.
 
                     Default value: `True`
                     """
@@ -65061,8 +65069,18 @@ class EosDesigns(EosDesignsRootModel):
                                      - A single number will be used in the RT assigned number subfield (second part of the
                                    RT).
                                      - A full RT string with colon separator which will override the full RT.
-                                rt_import: Enable/Disable route target import for the VRF of every address family.
-                                rt_export: Enable/Disable route target export for the VRF of every address family.
+                                rt_import:
+                                   Enable or disable route target import for the VRF for all address families.
+                                   This setting applies
+                                   only to the automatically generated route targets
+                                   and does not affect any entries defined under
+                                   `additional_route_targets`.
+                                rt_export:
+                                   Enable or disable route target export for the VRF for all address families.
+                                   This setting applies
+                                   only to the automatically generated route targets
+                                   and does not affect any entries defined under
+                                   `additional_route_targets`.
                                 mlag_ibgp_peering_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The

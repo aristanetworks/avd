@@ -7695,13 +7695,25 @@ $defs:
                   separator which will override the full RT.\n"
               rt_import:
                 type: bool
-                description: Enable/Disable route target import for the VRF of every
-                  address family.
+                description: 'Enable or disable route target import for the VRF for
+                  all address families.
+
+                  This setting applies only to the automatically generated route targets
+
+                  and does not affect any entries defined under `additional_route_targets`.
+
+                  '
                 default: true
               rt_export:
                 type: bool
-                description: Enable/Disable route target export for the VRF of every
-                  address family.
+                description: 'Enable or disable route target export for the VRF for
+                  all address families.
+
+                  This setting applies only to the automatically generated route targets
+
+                  and does not affect any entries defined under `additional_route_targets`.
+
+                  '
                 default: true
               mlag_ibgp_peering_ipv4_pool:
                 type: str
