@@ -286,8 +286,6 @@ class RouterBgpMixin(Protocol):
                 )
 
         for rt in vrf.additional_route_targets:
-            if rt.type is None:
-                continue
             if rt.type == "import" and rt.address_family and rt.route_target:
                 bgp_vrf.route_targets.field_import.obtain(rt.address_family).route_targets.extend([rt.route_target])
             elif rt.type == "export" and rt.address_family and rt.route_target:
