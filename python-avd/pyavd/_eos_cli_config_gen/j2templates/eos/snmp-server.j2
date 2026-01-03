@@ -200,8 +200,8 @@ snmp-server enable traps {{ snmp_trap.name }}
 {%         endif %}
 {%     endfor %}
 {%     if snmp_server.vrfs is arista.avd.defined %}
-{%         set default_vrfs = snmp_server.vrfs | selectattr('name', 'equalto', 'default') | arista.avd.natural_sort('name') | list %}
-{%         set no_default_vrfs = snmp_server.vrfs | rejectattr('name', 'equalto', 'default') | arista.avd.natural_sort('name', ignore_case=false) | list %}
+{%         set default_vrfs = snmp_server.vrfs | selectattr('name', 'equalto', 'default') | list %}
+{%         set no_default_vrfs = snmp_server.vrfs | rejectattr('name', 'equalto', 'default') | arista.avd.natural_sort('name', ignore_case=false) %}
 {%         for vrf in (default_vrfs + no_default_vrfs) %}
 {%             if vrf.enable is arista.avd.defined(true) %}
 snmp-server vrf {{ vrf.name }}
