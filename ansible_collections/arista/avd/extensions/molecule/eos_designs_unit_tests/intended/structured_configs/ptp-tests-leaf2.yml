@@ -277,6 +277,9 @@ ptp:
         delay_resp: 12
         follow_up: 13
         sync: 14
+  free_running:
+    enabled: true
+    source_clock_hardware: true
   forward_v1: true
 route_maps:
 - name: RM-MLAG-PEER-IN

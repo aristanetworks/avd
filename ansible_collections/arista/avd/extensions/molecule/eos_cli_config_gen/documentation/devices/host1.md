@@ -885,9 +885,9 @@ management tech-support
 | FTP | default | Loopback0 |
 | FTP | MGMT | Management0 |
 | FTP | abc | Ethernet10 |
+| HTTP | default | Ethernet10 |
 | HTTP | default | Loopback0 |
 | HTTP | MGMT | Management0 |
-| HTTP | default | Ethernet10 |
 | SSH | default | Ethernet10 |
 | SSH | default | Loopback0 |
 | SSH | MGMT | Management0 |
@@ -905,9 +905,9 @@ management tech-support
 ip ftp client source-interface Loopback0
 ip ftp client source-interface Management0 vrf MGMT
 ip ftp client source-interface Ethernet10 vrf abc
+ip http client local-interface Ethernet10
 ip http client local-interface Loopback0 vrf default
 ip http client local-interface Management0 vrf MGMT
-ip http client local-interface Ethernet10
 ip ssh client source-interface Ethernet10
 ip ssh client source-interface Loopback0 vrf default
 ip ssh client source-interface Management0 vrf MGMT
@@ -1370,19 +1370,19 @@ tacacs-server host 10.10.10.160
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-| default | loopback1 |
-| TEST1 | lo3 |
-| default | loopback10 |
+| default | Loopback1 |
+| TEST1 | Loopback3 |
+| default | Loopback10 |
 
 #### IP TACACS Source Interfaces Device Configuration
 
 ```eos
 !
-ip tacacs vrf default source-interface loopback1
+ip tacacs vrf default source-interface Loopback1
 !
-ip tacacs vrf TEST1 source-interface lo3
+ip tacacs vrf TEST1 source-interface Loopback3
 !
-ip tacacs source-interface loopback10
+ip tacacs source-interface Loopback10
 ```
 
 ### Radius Proxy
@@ -1582,19 +1582,19 @@ radius-server host 10.10.11.155 vrf mgt tls ssl-profile HOST_SSL_PROFILE port 20
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-| default | loopback1 |
-| MGMT | Ma1 |
-| default | loopback10 |
+| default | Loopback1 |
+| default | Loopback10 |
+| MGMT | Management1 |
 
 #### IP SOURCE Source Interfaces Device Configuration
 
 ```eos
 !
-ip radius vrf default source-interface loopback1
+ip radius vrf default source-interface Loopback1
 !
-ip radius vrf MGMT source-interface Ma1
+ip radius source-interface Loopback10
 !
-ip radius source-interface loopback10
+ip radius vrf MGMT source-interface Management1
 ```
 
 ### AAA Server Groups
@@ -6817,6 +6817,7 @@ interface Port-Channel667
 | Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.3/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.3/32 |
 | Loopback2 | - | default | - |
+| Loopback10 | Test_Node_Segment | default | 10.2.255.3/32 |
 | Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 <br> 192.168.1.1/32 secondary <br> 10.0.0.254/32 secondary |
 | Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 |
 
@@ -6827,6 +6828,7 @@ interface Port-Channel667
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 | Loopback2 | - | default | - |
+| Loopback10 | Test_Node_Segment | default | 2002::CAFE/128 |
 | Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 2002::CAFE/64 |
 | Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | - |
 
@@ -6855,6 +6857,13 @@ interface Loopback1
 !
 interface Loopback2
    ip ospf area 0.0.0.2
+!
+interface Loopback10
+   description Test_Node_Segment
+   ip address 10.2.255.3/32
+   ipv6 address 2002::CAFE/128
+   node-segment ipv4 index 34
+   node-segment ipv6 index 23
 !
 interface Loopback99
    description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
@@ -8524,6 +8533,12 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 | Vlan4094 | EVPN_UNDERLAY | - | - |
 | Loopback99 | ISIS_TEST | 100 | point-to-point |
+
+#### ISIS Segment-routing Node-SID
+
+| Loopback | IPv4 Index | IPv6 Index |
+| -------- | ---------- | ---------- |
+| Loopback10 | 34 | 23 |
 
 #### Prefix Segments
 
@@ -11979,6 +11994,8 @@ ipv6 access-list acl_qos_tc5_v6
 | - | permit any 02:00:00:12:34:56 00:00:00:00:00:00 |
 | - | deny any 02:00:00:ab:cd:ef 00:00:00:00:00:00 |
 
+##### TEST5
+
 #### MAC Access-lists Device Configuration
 
 ```eos
@@ -12002,6 +12019,8 @@ mac access-list TEST4
    remark A comment in the middle
    permit any 02:00:00:12:34:56 00:00:00:00:00:00
    deny any 02:00:00:ab:cd:ef 00:00:00:00:00:00
+!
+mac access-list TEST5
 ```
 
 ## VRF Instances
@@ -13798,7 +13817,7 @@ class-map type pbr match-any aaa
 
 | Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
 | ---------- | --- | ---- | ------------- | --------------- | ----------------------------- |
-| CM_REPLICATION_LD | - | af11 | 2 | 1 | 10 kbps (260 kbytes) -> drop-precedence<br> 30 kbps(270 kbytes) -> drop |
+| CM_REPLICATION_LD | 2 | af11 | 2 | 1 | 10 kbps (260 kbytes) -> drop-precedence<br> 30 kbps(270 kbytes) -> drop |
 | CM_REPLICATION_LD_2 | - | af11 | 2 | - | - |
 
 ##### PM_REPLICATION_LD2
@@ -13829,6 +13848,7 @@ class-map type pbr match-any aaa
 !
 policy-map type quality-of-service PM_REPLICATION_LD
    class CM_REPLICATION_LD
+      set cos 2
       set dscp af11
       set traffic-class 2
       set drop-precedence 1
@@ -13840,14 +13860,14 @@ policy-map type quality-of-service PM_REPLICATION_LD
 !
 policy-map type quality-of-service PM_REPLICATION_LD2
    class CM_REPLICATION_LD
-      set dscp af11
       set cos 4
+      set dscp af11
       police rate 30 kbps burst-size 280 bytes action set dscp af11 rate 1 mbps burst-size 270 bytes
 !
 policy-map type quality-of-service PM_REPLICATION_LD3
    class CM_REPLICATION_LD
-      set dscp af11
       set cos 6
+      set dscp af11
       police rate 10000 bps burst-size 260 kbytes
 !
 policy-map type quality-of-service pmap_test1
