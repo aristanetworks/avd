@@ -171,8 +171,6 @@ class SrcGenList(SrcGenBase["AvdSchemaList"]):
 
         Recursively walks child schemas and creates nested classes and fields.
         """
-        # getting circular import error
-
         self.schema = schema
         self.class_name = class_name
 
