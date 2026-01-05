@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -42,7 +42,7 @@ class UtilsWanMixin(Protocol):
         """
         Top level structured config contributor for the WAN policies.
 
-        It sets either the router-path selection policies (for autovpn mode) or the cv-pathfinder policies (for cv-pathfinder mode)
+        It sets either the router-path selection policies (for legacy-autovpn mode) or the cv-pathfinder policies (for cv-pathfinder mode)
         including their dependencies (avt profiles, load-balancing policies, nat profiles, acls, internet-exit policy,
         router-service-insertion, relevant interfaces, ...).
 
@@ -69,17 +69,17 @@ class UtilsWanMixin(Protocol):
 
             if vrf.name == "default":
                 # VRF default is always set and use an updated name so not tracked in added_policies
-                if self.inputs.wan_mode == "autovpn":
-                    self._set_autovpn_policy(vrf_policy, control_plane=True)
+                if self.inputs.wan_mode == "legacy-autovpn":
+                    self._set_legacy_autovpn_policy(vrf_policy, control_plane=True)
                     self._set_router_path_selection_vrf(vrf)
                 else:  # cv-pathfinder
                     policy_profiles = self._set_cv_pathfinder_policy(vrf_policy, control_plane=True)
                     self._set_router_adaptive_virtual_topology_vrf(vrf, policy_profiles)
                 continue
 
-            if self.inputs.wan_mode == "autovpn":
+            if self.inputs.wan_mode == "legacy-autovpn":
                 if vrf_policy.name not in added_policies:
-                    self._set_autovpn_policy(vrf_policy)
+                    self._set_legacy_autovpn_policy(vrf_policy)
                     added_policies[vrf_policy.name] = EosCliConfigGen.RouterAdaptiveVirtualTopology.VrfsItem.Profiles()
                 self._set_router_path_selection_vrf(vrf)
             else:  # cv-pathfinder

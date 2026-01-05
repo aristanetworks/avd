@@ -28,3 +28,4 @@ mac_access_lists:
       - action: "remark A comment in the middle"
       - action: "permit any 02:00:00:12:34:56 00:00:00:00:00:00"
       - action: "deny any 02:00:00:ab:cd:ef 00:00:00:00:00:00"
+  - name: TEST5

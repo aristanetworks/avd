@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -7624,6 +7624,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ttl": {"type": int},
                 "forward_unicast": {"type": bool, "default": False},
                 "forward_v1": {"type": bool},
+                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                 "dscp": {"type": Dscp},
                 "monitor": {"type": Monitor},
             }
@@ -7688,6 +7689,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             forward_v1: bool | None
             """Forward dataplane PTP V1 packets."""
+            free_running: EosCliConfigGen.Ptp.FreeRunning
             dscp: Dscp
             """Subclass of AvdModel."""
             monitor: Monitor
@@ -7714,6 +7716,7 @@ class EosDesigns(EosDesignsRootModel):
                     ttl: int | None | UndefinedType = Undefined,
                     forward_unicast: bool | UndefinedType = Undefined,
                     forward_v1: bool | None | UndefinedType = Undefined,
+                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                     dscp: Dscp | UndefinedType = Undefined,
                     monitor: Monitor | UndefinedType = Undefined,
                 ) -> None:
@@ -7759,6 +7762,7 @@ class EosDesigns(EosDesignsRootModel):
                         ttl: ttl
                         forward_unicast: Enable PTP unicast forwarding.
                         forward_v1: Forward dataplane PTP V1 packets.
+                        free_running: free_running
                         dscp: Subclass of AvdModel.
                         monitor: Subclass of AvdModel.
 
@@ -10385,9 +10389,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
         """
@@ -11178,9 +11182,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     cv_pathfinder_transit_mode:
                        Configure the transit mode for a WAN client for CV Pathfinder designs
                        only when the `wan_mode` root
@@ -12670,6 +12674,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ttl": {"type": int},
                 "forward_unicast": {"type": bool, "default": False},
                 "forward_v1": {"type": bool},
+                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                 "dscp": {"type": Dscp},
                 "monitor": {"type": Monitor},
             }
@@ -12734,6 +12739,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             forward_v1: bool | None
             """Forward dataplane PTP V1 packets."""
+            free_running: EosCliConfigGen.Ptp.FreeRunning
             dscp: Dscp
             """Subclass of AvdModel."""
             monitor: Monitor
@@ -12760,6 +12766,7 @@ class EosDesigns(EosDesignsRootModel):
                     ttl: int | None | UndefinedType = Undefined,
                     forward_unicast: bool | UndefinedType = Undefined,
                     forward_v1: bool | None | UndefinedType = Undefined,
+                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                     dscp: Dscp | UndefinedType = Undefined,
                     monitor: Monitor | UndefinedType = Undefined,
                 ) -> None:
@@ -12805,6 +12812,7 @@ class EosDesigns(EosDesignsRootModel):
                         ttl: ttl
                         forward_unicast: Enable PTP unicast forwarding.
                         forward_v1: Forward dataplane PTP V1 packets.
+                        free_running: free_running
                         dscp: Subclass of AvdModel.
                         monitor: Subclass of AvdModel.
 
@@ -15442,9 +15450,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
         """
@@ -16244,9 +16252,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     cv_pathfinder_transit_mode:
                        Configure the transit mode for a WAN client for CV Pathfinder designs
                        only when the `wan_mode` root
@@ -23944,9 +23952,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         default_flow_tracker_type: DefaultFlowTrackerType
         """
@@ -24101,9 +24109,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     default_flow_tracker_type: Set the default flow tracker type.
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
@@ -24483,9 +24491,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         default_flow_tracker_type: DefaultFlowTrackerType
         """
@@ -24640,9 +24648,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     default_flow_tracker_type: Set the default flow tracker type.
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
@@ -28499,6 +28507,7 @@ class EosDesigns(EosDesignsRootModel):
             "domain": {"type": int, "default": 127},
             "auto_clock_identity": {"type": bool, "default": True},
             "forward_v1": {"type": bool, "default": False},
+            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
         }
         enabled: bool | None
         profile: str
@@ -28520,6 +28529,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        free_running: EosCliConfigGen.Ptp.FreeRunning
 
         if TYPE_CHECKING:
 
@@ -28531,6 +28541,7 @@ class EosDesigns(EosDesignsRootModel):
                 domain: int | UndefinedType = Undefined,
                 auto_clock_identity: bool | UndefinedType = Undefined,
                 forward_v1: bool | UndefinedType = Undefined,
+                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
             ) -> None:
                 """
                 PtpSettings.
@@ -28548,6 +28559,7 @@ class EosDesigns(EosDesignsRootModel):
                     domain: domain
                     auto_clock_identity: auto_clock_identity
                     forward_v1: Forward dataplane PTP V1 packets.
+                    free_running: free_running
 
                 """
 
@@ -32518,7 +32530,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    WanMode: TypeAlias = Literal["autovpn", "cv-pathfinder"]
+    WanMode: TypeAlias = Literal["cv-pathfinder", "legacy-autovpn"]
 
     class WanPathGroupsItem(AvdModel):
         """Subclass of AvdModel."""
@@ -35421,6 +35433,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -35485,6 +35498,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -35511,6 +35525,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -35556,6 +35571,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -38159,9 +38175,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -38935,9 +38951,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -40443,6 +40459,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
                                 "forward_v1": {"type": bool},
+                                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -40507,6 +40524,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             forward_v1: bool | None
                             """Forward dataplane PTP V1 packets."""
+                            free_running: EosCliConfigGen.Ptp.FreeRunning
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -40533,6 +40551,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
                                     forward_v1: bool | None | UndefinedType = Undefined,
+                                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -40578,6 +40597,7 @@ class EosDesigns(EosDesignsRootModel):
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
                                         forward_v1: Forward dataplane PTP V1 packets.
+                                        free_running: free_running
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -43207,9 +43227,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         This is used both for AutoVPN and Pathfinder designs.
                         That means if
-                        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                        `server` indicates that the router is a
-                        route-reflector.
+                        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                        `server` indicates that the
+                        router is a route-reflector.
                         """
                         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                         """
@@ -43992,9 +44012,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                        This is used both for AutoVPN and Pathfinder designs.
                                        That means if
-                                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                       `server` indicates that the router is a
-                                       route-reflector.
+                                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                       `server` indicates that the
+                                       router is a route-reflector.
                                     cv_pathfinder_transit_mode:
                                        Configure the transit mode for a WAN client for CV Pathfinder designs
                                        only when the `wan_mode` root
@@ -45422,6 +45442,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -45486,6 +45507,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -45512,6 +45534,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -45557,6 +45580,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -48175,9 +48199,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -48962,9 +48986,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -50467,6 +50491,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -50531,6 +50556,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -50557,6 +50583,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -50602,6 +50629,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -53217,9 +53245,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -54002,9 +54030,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -64516,9 +64544,9 @@ class EosDesigns(EosDesignsRootModel):
                             "route_target": {"type": str},
                             "nodes": {"type": Nodes},
                         }
-                        type: Type | None
-                        address_family: str | None
-                        route_target: str | None
+                        type: Type
+                        address_family: str
+                        route_target: str
                         nodes: Nodes
                         """
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
@@ -64530,9 +64558,9 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                type: Type | None | UndefinedType = Undefined,
-                                address_family: str | None | UndefinedType = Undefined,
-                                route_target: str | None | UndefinedType = Undefined,
+                                type: Type | UndefinedType = Undefined,
+                                address_family: str | UndefinedType = Undefined,
+                                route_target: str | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -64665,6 +64693,8 @@ class EosDesigns(EosDesignsRootModel):
                         "vrf_id": {"type": int},
                         "rd_override": {"type": str},
                         "rt_override": {"type": str},
+                        "rt_import": {"type": bool, "default": True},
+                        "rt_export": {"type": bool, "default": True},
                         "mlag_ibgp_peering_ipv4_pool": {"type": str},
                         "mlag_ibgp_peering_ipv6_pool": {"type": str},
                         "ip_helpers": {"type": IpHelpers},
@@ -64748,6 +64778,26 @@ class EosDesigns(EosDesignsRootModel):
                       - A single number will be used in the RT assigned number subfield (second part of the
                     RT).
                       - A full RT string with colon separator which will override the full RT.
+                    """
+                    rt_import: bool
+                    """
+                    Enable or disable route target import for the VRF for all address families.
+                    This setting applies
+                    only to the automatically generated route targets
+                    and does not affect any entries defined under
+                    `additional_route_targets`.
+
+                    Default value: `True`
+                    """
+                    rt_export: bool
+                    """
+                    Enable or disable route target export for the VRF for all address families.
+                    This setting applies
+                    only to the automatically generated route targets
+                    and does not affect any entries defined under
+                    `additional_route_targets`.
+
+                    Default value: `True`
                     """
                     mlag_ibgp_peering_ipv4_pool: str | None
                     """
@@ -64968,6 +65018,8 @@ class EosDesigns(EosDesignsRootModel):
                             vrf_id: int | None | UndefinedType = Undefined,
                             rd_override: str | None | UndefinedType = Undefined,
                             rt_override: str | None | UndefinedType = Undefined,
+                            rt_import: bool | UndefinedType = Undefined,
+                            rt_export: bool | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv6_pool: str | None | UndefinedType = Undefined,
                             ip_helpers: IpHelpers | UndefinedType = Undefined,
@@ -65045,6 +65097,18 @@ class EosDesigns(EosDesignsRootModel):
                                      - A single number will be used in the RT assigned number subfield (second part of the
                                    RT).
                                      - A full RT string with colon separator which will override the full RT.
+                                rt_import:
+                                   Enable or disable route target import for the VRF for all address families.
+                                   This setting applies
+                                   only to the automatically generated route targets
+                                   and does not affect any entries defined under
+                                   `additional_route_targets`.
+                                rt_export:
+                                   Enable or disable route target export for the VRF for all address families.
+                                   This setting applies
+                                   only to the automatically generated route targets
+                                   and does not affect any entries defined under
+                                   `additional_route_targets`.
                                 mlag_ibgp_peering_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The
@@ -67683,6 +67747,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -67747,6 +67812,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -67773,6 +67839,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -67818,6 +67885,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -70421,9 +70489,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -71197,9 +71265,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -72705,6 +72773,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
                                 "forward_v1": {"type": bool},
+                                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -72769,6 +72838,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             forward_v1: bool | None
                             """Forward dataplane PTP V1 packets."""
+                            free_running: EosCliConfigGen.Ptp.FreeRunning
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -72795,6 +72865,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
                                     forward_v1: bool | None | UndefinedType = Undefined,
+                                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -72840,6 +72911,7 @@ class EosDesigns(EosDesignsRootModel):
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
                                         forward_v1: Forward dataplane PTP V1 packets.
+                                        free_running: free_running
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -75469,9 +75541,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         This is used both for AutoVPN and Pathfinder designs.
                         That means if
-                        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                        `server` indicates that the router is a
-                        route-reflector.
+                        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                        `server` indicates that the
+                        router is a route-reflector.
                         """
                         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                         """
@@ -76254,9 +76326,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                        This is used both for AutoVPN and Pathfinder designs.
                                        That means if
-                                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                       `server` indicates that the router is a
-                                       route-reflector.
+                                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                       `server` indicates that the
+                                       router is a route-reflector.
                                     cv_pathfinder_transit_mode:
                                        Configure the transit mode for a WAN client for CV Pathfinder designs
                                        only when the `wan_mode` root
@@ -77684,6 +77756,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -77748,6 +77821,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -77774,6 +77848,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -77819,6 +77894,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -80437,9 +80513,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -81224,9 +81300,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -82729,6 +82805,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -82793,6 +82870,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -82819,6 +82897,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -82864,6 +82943,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -85479,9 +85559,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -86264,9 +86344,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -88912,17 +88992,18 @@ class EosDesigns(EosDesignsRootModel):
     """
     wan_route_servers: WanRouteServers
     """
-    List of the AutoVPN RRs when using `wan_mode: autovpn`, or the Pathfinders
-    when using `wan_mode: cv-
-    pathfinder`, to which the device should connect to.
-    This is also used to establish iBGP sessions
-    between WAN route servers.
+    List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or the Pathfinders
+    when using
+    `wan_mode: cv-pathfinder`, to which the device should connect to.
+    This is also used to establish
+    iBGP sessions between WAN route servers.
 
-    When the route server is part of the same inventory as the WAN routers,
+    When the route server is part of the same inventory as the
+    WAN routers,
     only the name is required.
 
-    Subclass of AvdIndexedList with `WanRouteServersItem` items. Primary key
-    is `hostname` (`str`).
+    Subclass of AvdIndexedList with `WanRouteServersItem`
+    items. Primary key is `hostname` (`str`).
     """
     wan_stun_dtls_disable: bool
     """
@@ -90534,17 +90615,18 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdIndexedList with
                    `WanPathGroupsItem` items. Primary key is `name` (`str`).
                 wan_route_servers:
-                   List of the AutoVPN RRs when using `wan_mode: autovpn`, or the Pathfinders
-                   when using `wan_mode: cv-
-                   pathfinder`, to which the device should connect to.
-                   This is also used to establish iBGP sessions
-                   between WAN route servers.
+                   List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or the Pathfinders
+                   when using
+                   `wan_mode: cv-pathfinder`, to which the device should connect to.
+                   This is also used to establish
+                   iBGP sessions between WAN route servers.
 
-                   When the route server is part of the same inventory as the WAN routers,
+                   When the route server is part of the same inventory as the
+                   WAN routers,
                    only the name is required.
 
-                   Subclass of AvdIndexedList with `WanRouteServersItem` items. Primary key
-                   is `hostname` (`str`).
+                   Subclass of AvdIndexedList with `WanRouteServersItem`
+                   items. Primary key is `hostname` (`str`).
                 wan_stun_dtls_disable:
                    WAN STUN connections are authenticated and secured with DTLS by default.
                    For CV Pathfinder

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -25,7 +25,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile_name</samp>](## "wan_ipsec_profiles.data_plane.profile_name") | String |  | `DP-PROFILE` |  | Name of the IPSec profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.data_plane.shared_key") | String |  |  |  | Type 7 obfuscated IPSec shared key.<br>Takes precedence over `cleartext_shared_key`.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_shared_key</samp>](## "wan_ipsec_profiles.data_plane.cleartext_shared_key") | String |  |  |  | Cleartext IPSec shared key.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
-    | [<samp>wan_mode</samp>](## "wan_mode") | String |  | `cv-pathfinder` | Valid Values:<br>- <code>autovpn</code><br>- <code>cv-pathfinder</code> | Select if the WAN should be run using CV Pathfinder or AutoVPN only. |
+    | [<samp>wan_mode</samp>](## "wan_mode") | String |  | `cv-pathfinder` | Valid Values:<br>- <code>cv-pathfinder</code><br>- <code>legacy-autovpn</code> | Select if the WAN should be run using CV Pathfinder or AutoVPN only. |
     | [<samp>wan_stun_dtls_disable</samp>](## "wan_stun_dtls_disable") | Boolean |  | `False` |  | WAN STUN connections are authenticated and secured with DTLS by default.<br>For CV Pathfinder deployments CloudVision will automatically deploy certificates on the devices.<br>In case of AutoVPN the certificates must be deployed manually to all devices.<br><br>For LAB environments this can be disabled, if there are no certificates available.<br>This should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication. |
     | [<samp>wan_stun_dtls_profile_name</samp>](## "wan_stun_dtls_profile_name") | String |  | `STUN-DTLS` |  | Name of the SSL profile used for DTLS on WAN STUN connections.<br>When using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers. |
     | [<samp>wan_use_agent_env_var_for_kernel_software_forwarding_ecmp</samp>](## "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp") <span style="color:red">removed</span> | Boolean |  | `False` |  | For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the EOS version.<br><br>- `true`: For older EOS versions use an agent environment variable. Changing this requires a restart of the KernelFib agent.<br>- `false`: For newer EOS versions (starting 4.33.2) use the proper CLI.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
@@ -92,7 +92,7 @@
         cleartext_shared_key: <str>
 
     # Select if the WAN should be run using CV Pathfinder or AutoVPN only.
-    wan_mode: <str; "autovpn" | "cv-pathfinder"; default="cv-pathfinder">
+    wan_mode: <str; "cv-pathfinder" | "legacy-autovpn"; default="cv-pathfinder">
 
     # WAN STUN connections are authenticated and secured with DTLS by default.
     # For CV Pathfinder deployments CloudVision will automatically deploy certificates on the devices.
