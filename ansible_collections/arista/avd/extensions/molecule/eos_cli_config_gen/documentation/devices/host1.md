@@ -3830,6 +3830,7 @@ load-balance cluster
 ## Default Profiles
 
 Note that when multiple profiles are assigned, then the monitor is triggered when the conditions in any of the profiles is met.
+
 - LFP3
 - LFP1
 
