@@ -43,4 +43,4 @@ l2leaf:
 
 expected_error_message: >-
   Found conflicting data while generating configuration for cloudvision exporter with name 'Exporter1'. Please check your exporters configuration for tracker
-  'FLOW-TRACKER-11' is not conflicting with 'export_to_cv' configuration.
+  'FLOW-TRACKER-11' is not conflicting with 'cloudvision_exporter' configuration.

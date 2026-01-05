@@ -138,7 +138,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 except AristaAvdDuplicateDataError as e:
                     msg = (
                         f"Found conflicting data while generating configuration for cloudvision exporter with name '{self.export_to_cv.name}'. "
-                        f"Please check your exporters configuration for tracker '{tracker_name}' is not conflicting with 'export_to_cv' configuration."
+                        f"Please check your exporters configuration for tracker '{tracker_name}' is not conflicting with 'cloudvision_exporter' configuration."
                     )
                     raise AristaAvdInvalidInputsError(msg) from e
 
@@ -200,7 +200,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 except AristaAvdDuplicateDataError as e:
                     msg = (
                         f"Found conflicting data while generating configuration for cloudvision exporter with name '{self.export_to_cv.name}'. "
-                        f"Please check your exporters configuration for tracker '{tracker_name}' is not conflicting with 'export_to_cv' configuration."
+                        f"Please check your exporters configuration for tracker '{tracker_name}' is not conflicting with 'cloudvision_exporter' configuration."
                     )
                     raise AristaAvdInvalidInputsError(msg) from e
 
