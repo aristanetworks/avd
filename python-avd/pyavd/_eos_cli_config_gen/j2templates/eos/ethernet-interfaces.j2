@@ -638,12 +638,10 @@ interface {{ ethernet_interface.name }}
 {%             if ethernet_interface.switchport.port_security.vlans is arista.avd.defined %}
 {%                 set sorted_vlans_cli = [] %}
 {%                 for vlan in ethernet_interface.switchport.port_security.vlans %}
-{%                     if vlan.range is arista.avd.defined and vlan.mac_address_maximum is arista.avd.defined %}
-{%                         for id in vlan.range | arista.avd.range_expand %}
-{%                             set port_sec_cli =  "switchport port-security vlan " ~ id ~ " mac-address maximum " ~ vlan.mac_address_maximum %}
-{%                             do sorted_vlans_cli.append(port_sec_cli) %}
-{%                         endfor %}
-{%                     endif %}
+{%                     for id in vlan.range | arista.avd.range_expand %}
+{%                         set port_sec_cli =  "switchport port-security vlan " ~ id ~ " mac-address maximum " ~ vlan.mac_address_maximum %}
+{%                         do sorted_vlans_cli.append(port_sec_cli) %}
+{%                     endfor %}
 {%                 endfor %}
 {%                 for vlan_cli in sorted_vlans_cli | arista.avd.natural_sort %}
    {{ vlan_cli }}
@@ -720,9 +718,11 @@ interface {{ ethernet_interface.name }}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
+{# Not refelcting on vEOS device #}
 {%     for tx_queue in ethernet_interface.tx_queues | arista.avd.natural_sort('id') %}
 {%         include 'eos/ethernet-interface-tx-queues.j2' %}
 {%     endfor %}
+{# Not refelcting on vEOS device #}
 {%     for uc_tx_queue in ethernet_interface.uc_tx_queues | arista.avd.natural_sort('id') %}
 {%         include 'eos/ethernet-interface-uc-tx-queues.j2' %}
 {%     endfor %}
@@ -1051,6 +1051,7 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.switchport.tool.dot1q_remove_outer_vlan_tag is arista.avd.defined %}
    switchport tool dot1q remove outer {{ ethernet_interface.switchport.tool.dot1q_remove_outer_vlan_tag }}
 {%         endif %}
+{# Need to double check this command #}
 {%         if ethernet_interface.switchport.tool.dzgre_preserve is arista.avd.defined(true) %}
    switchport tool dzgre preserve
 {%         endif %}
