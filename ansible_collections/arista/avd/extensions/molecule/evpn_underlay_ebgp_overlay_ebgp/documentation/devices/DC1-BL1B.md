@@ -580,9 +580,9 @@ ip routing vrf Tenant_L3_VRF_Zone
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
-| Tenant_A_WAN_Zone | 10.3.4.0/24 | 1.2.3.4 | - | 1 | - | - | - |
 | Tenant_A_WAN_Zone | 1.1.1.0/24 | 10.1.1.1 | vlan101 | 1 | - | - | - |
 | Tenant_A_WAN_Zone | 1.1.2.0/24 | 10.1.1.1 | vlan101 | 200 | 666 | RT-TO-FAKE-DMZ | - |
+| Tenant_A_WAN_Zone | 10.3.4.0/24 | 1.2.3.4 | - | 1 | - | - | - |
 | Tenant_A_WAN_Zone | 10.3.5.0/24 | - | Null0 | 1 | - | - | - |
 
 #### Static Routes Device Configuration

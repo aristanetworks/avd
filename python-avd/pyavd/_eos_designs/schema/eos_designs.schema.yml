@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../_schema/avd_meta_schema.json
@@ -4575,6 +4575,9 @@ keys:
         type: bool
         default: false
         $ref: eos_cli_config_gen#/keys/ptp/keys/forward_v1
+      free_running:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/ptp/keys/free_running
   queue_monitor_length:
     documentation_options:
       table: system-settings
@@ -7693,6 +7696,28 @@ $defs:
                   formats:\n  - A single number will be used in the RT assigned number
                   subfield (second part of the RT).\n  - A full RT string with colon
                   separator which will override the full RT.\n"
+              rt_import:
+                type: bool
+                description: 'Enable or disable route target import for the VRF for
+                  all address families.
+
+                  This setting applies only to the automatically generated route targets
+
+                  and does not affect any entries defined under `additional_route_targets`.
+
+                  '
+                default: true
+              rt_export:
+                type: bool
+                description: 'Enable or disable route target export for the VRF for
+                  all address families.
+
+                  This setting applies only to the automatically generated route targets
+
+                  and does not affect any entries defined under `additional_route_targets`.
+
+                  '
+                default: true
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: 'Comma separated list of prefixes (IPv4 address/Mask)
@@ -9095,10 +9120,13 @@ $defs:
                       valid_values:
                       - import
                       - export
+                      required: true
                     address_family:
                       type: str
+                      required: true
                     route_target:
                       type: str
+                      required: true
                     nodes:
                       type: list
                       items:
@@ -10941,6 +10969,9 @@ $defs:
               forward_v1:
                 type: bool
                 description: Forward dataplane PTP V1 packets.
+              free_running:
+                type: dict
+                $ref: eos_cli_config_gen#/keys/ptp/keys/free_running
               dscp:
                 type: dict
                 keys:
