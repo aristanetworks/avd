@@ -9,7 +9,7 @@
 {%     if monitor_link_flap.profiles is arista.avd.defined and monitor_link_flap.profiles | length > 0 %}
 ## Link-Flap Profiles
 | Name | Damping | Decay Half-Life | Decay Units | MAC Fault Location | MAC Fault Penalty | Threshold Max | Threshold Reuse | Threshold Suppression | Max Flaps | Time | Violations | Intervals |
-| ---- | ------- | --------------- | ----------- | ------------------ | ----------------- | ------------- | ---------------- | --------------------- | --------- | ---- | ---------- | --------- |
+| ---- | ------- | --------------- | ----------- | ------------------ | ----------------- | ------------- | ---------------- | -------------------- | --------- | ---- | ---------- | --------- |
 {%         for profile in monitor_link_flap.profiles | arista.avd.natural_sort("name")  %}
 {%             if profile.damping_penalty.mac_fault is arista.avd.defined %}
 {%                 set ns = namespace(_mac_location = "", _mac_penalty = "") %}
