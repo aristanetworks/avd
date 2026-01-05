@@ -28,7 +28,7 @@ class UtilsMixin(Protocol):
         * Verify that the requested validation profile exists.
         * If a parent profile is defined, verify that the parent profile exists.
         * Deep-inherit the profile from its parent profile.
-        * Remove the ``parent_profile`` attribute from the resolved profile to
+        * Remove the `parent_profile` attribute from the resolved profile to
         prevent further inheritance processing.
 
         Args:
@@ -40,7 +40,7 @@ class UtilsMixin(Protocol):
 
         Raises:
             AristaAvdInvalidInputsError: If the validation profile or its parent
-                profile is not defined under ``inputs.validation_profiles``.
+                profile is not defined under `inputs.validation_profiles`.
         """
         validation_profiles = self.inputs.validation_profiles
 
