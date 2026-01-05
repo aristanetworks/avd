@@ -9993,7 +9993,7 @@ keys:
         type: int
         convert_types:
         - str
-        description: 'Port disable time. Default is 604800 seconds (7 days).
+        description: 'Port disable time. EOS default is 604800 seconds (7 days).
 
           0 indicates that the disabled device should not automatically come back
           up.'
@@ -10012,14 +10012,14 @@ keys:
         type: int
         convert_types:
         - str
-        description: Rate limits the loop detection frames. Default to maximum 1000/second.
+        description: Rate limits the loop detection frames. EOS default is 1000/second.
         min: 0
         max: 1000
       transmit_interval:
         type: int
         convert_types:
         - str
-        description: Loop protection packet transmit interval. Default is 5 seconds.
+        description: Loop protection packet transmit interval. EOS default is 5 seconds.
         min: 1
         max: 10
   monitor_server_radius:

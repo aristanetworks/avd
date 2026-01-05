@@ -25709,9 +25709,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         enabled: bool | None
         disabled_time: int | None
         """
-        Port disable time. Default is 604800 seconds (7 days).
-        0 indicates that the disabled device should
-        not automatically come back up.
+        Port disable time. EOS default is 604800 seconds (7 days).
+        0 indicates that the disabled device
+        should not automatically come back up.
         """
         protect_vlan: str | None
         """
@@ -25720,9 +25720,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Example: 15,16,17,18
         """
         rate_limit: int | None
-        """Rate limits the loop detection frames. Default to maximum 1000/second."""
+        """Rate limits the loop detection frames. EOS default is 1000/second."""
         transmit_interval: int | None
-        """Loop protection packet transmit interval. Default is 5 seconds."""
+        """Loop protection packet transmit interval. EOS default is 5 seconds."""
 
         if TYPE_CHECKING:
 
@@ -25744,15 +25744,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     enabled: enabled
                     disabled_time:
-                       Port disable time. Default is 604800 seconds (7 days).
-                       0 indicates that the disabled device should
-                       not automatically come back up.
+                       Port disable time. EOS default is 604800 seconds (7 days).
+                       0 indicates that the disabled device
+                       should not automatically come back up.
                     protect_vlan:
                        VLAN range as string.
                        "< vlan_id >, < vlan_id >-< vlan_id >"
                        Example: 15,16,17,18
-                    rate_limit: Rate limits the loop detection frames. Default to maximum 1000/second.
-                    transmit_interval: Loop protection packet transmit interval. Default is 5 seconds.
+                    rate_limit: Rate limits the loop detection frames. EOS default is 1000/second.
+                    transmit_interval: Loop protection packet transmit interval. EOS default is 5 seconds.
 
                 """
 
