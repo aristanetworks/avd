@@ -3816,25 +3816,19 @@ load-balance cluster
       interface Ethernet 2.2,3.1
       flow exhaustion action traffic-class 9
 ```
-
 # Monitor Link-Flap
-
 ## Link-Flap Profiles
-
 | Name | Damping | Decay Half-Life | Decay Units | MAC Fault Location | MAC Fault Penalty | Threshold Max | Threshold Reuse | Threshold Suppression | Max Flaps | Time | Violations | Intervals |
-| ---- | ------- | --------------- | ----------- | ------------------ | ----------------- | ------------- | ---------------- | --------------------- | --------- | ---- | ---------- | --------- |
+| ---- | ------- | --------------- | ----------- | ------------------ | ----------------- | ------------- | ---------------- | -------------------- | --------- | ---- | ---------- | --------- |
 | LFP1 | True | 5 | seconds | local<br>remote<br>  | 5<br>10<br> | 5 | 2 | 100 | - | - | - | - |
 | LFP2 | False | - | - | -  | - | - | - | - | 23 | 10 | - | - |
 | LFP3 | False | - | - | -  | - | - | - | - | 11 | 12 | 5 | 10 |
-
 ## Default Profiles
-
 Note that when multiple profiles are assigned, then the monitor is triggered when the conditions in any of the profiles is met.
-- LFP3
-- LFP1
+* LFP3
+* LFP1
 
 ## Monitor Link Flap Device Configuration
-
 ```eos
 !
 monitor link-flap policy
