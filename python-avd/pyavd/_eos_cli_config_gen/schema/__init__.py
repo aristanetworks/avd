@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -6603,11 +6603,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {"name": {"type": str}, "direction": {"type": str}}
             name: str
             """Group name."""
-            direction: Direction | None
+            direction: Direction
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, direction: Direction | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, direction: Direction | UndefinedType = Undefined) -> None:
                     """
                     LinkTrackingGroupsItem.
 
@@ -6638,7 +6638,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Groups._item_type = str
 
             _fields: ClassVar[dict] = {"direction": {"type": str}, "groups": {"type": Groups}}
-            direction: Direction | None
+            direction: Direction
             groups: Groups
             """
             Link state group(s) an interface belongs to.
@@ -6648,7 +6648,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, direction: Direction | None | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                def __init__(self, *, direction: Direction | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
                     """
                     LinkTracking.
 
@@ -30354,11 +30354,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {"name": {"type": str}, "direction": {"type": str}}
             name: str
             """Group name."""
-            direction: Direction | None
+            direction: Direction
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, direction: Direction | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, name: str | UndefinedType = Undefined, direction: Direction | UndefinedType = Undefined) -> None:
                     """
                     LinkTrackingGroupsItem.
 
@@ -30389,7 +30389,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Groups._item_type = str
 
             _fields: ClassVar[dict] = {"direction": {"type": str}, "groups": {"type": Groups}}
-            direction: Direction | None
+            direction: Direction
             groups: Groups
             """
             Link state group(s) an interface belongs to.
@@ -30399,7 +30399,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, direction: Direction | None | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                def __init__(self, *, direction: Direction | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
                     """
                     LinkTracking.
 
@@ -55642,7 +55642,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"source_vrf": {"type": str}, "subscribe_policy": {"type": str}, "subscribe_rcf": {"type": str}}
-                source_vrf: str | None
+                source_vrf: str
                 subscribe_policy: str | None
                 """Route-Map Policy."""
                 subscribe_rcf: str | None
@@ -55658,7 +55658,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        source_vrf: str | None | UndefinedType = Undefined,
+                        source_vrf: str | UndefinedType = Undefined,
                         subscribe_policy: str | None | UndefinedType = Undefined,
                         subscribe_rcf: str | None | UndefinedType = Undefined,
                     ) -> None:

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from functools import cached_property
@@ -80,7 +80,7 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
 
         Available data:
             - mlag_peer
-            - peer_channel_group_id
+            - mlag_port_channel_id
             - mpls_overlay_role
             - mpls_lsr
             - overlay_routing_protocol
