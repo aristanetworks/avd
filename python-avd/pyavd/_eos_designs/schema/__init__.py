@@ -29556,7 +29556,7 @@ class EosDesigns(EosDesignsRootModel):
         - `rfc3411_type5` use the value of `local_engineid_ip` to
         find the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757105 + sha1(hostname +
         local_engineid_ip)
-        - `rfc3411_type3` generate the RFC3411 compliant type 3 engine ID.
+        - `rfc3411_type3` generate an RFC3411 type 3 compliant Engine ID.
           To use this,
         `system_mac_address` MUST be set for the device.
           The formula is 8000757103 + system_mac_address.
@@ -29670,7 +29670,7 @@ class EosDesigns(EosDesignsRootModel):
                        - `rfc3411_type5` use the value of `local_engineid_ip` to
                        find the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757105 + sha1(hostname +
                        local_engineid_ip)
-                       - `rfc3411_type3` generate the RFC3411 compliant type 3 engine ID.
+                       - `rfc3411_type3` generate an RFC3411 type 3 compliant Engine ID.
                          To use this,
                        `system_mac_address` MUST be set for the device.
                          The formula is 8000757103 + system_mac_address.
