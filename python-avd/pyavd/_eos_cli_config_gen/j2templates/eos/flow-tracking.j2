@@ -8,7 +8,7 @@
 {% if flow_tracking.hardware is arista.avd.defined %}
 !
 flow tracking hardware
-{%     for tracker in flow_tracking.hardware.trackers | arista.avd.natural_sort(ignore_case=false) %}
+{%     for tracker in flow_tracking.hardware.trackers | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 {%         if not loop.first %}
    !
 {%         endif %}
@@ -30,7 +30,7 @@ flow tracking hardware
 {%             if exporter.format.ipfix_version is arista.avd.defined %}
          format ipfix version {{ exporter.format.ipfix_version }}
 {%             endif %}
-{%             for collector in exporter.collectors | arista.avd.natural_sort %}
+{%             for collector in exporter.collectors | arista.avd.natural_sort(sort_key="host") %}
 {%                 set collector_cli = "collector " ~ collector.host %}
 {%                 if collector.port is arista.avd.defined %}
 {%                     set collector_cli =  collector_cli ~ " port " ~ collector.port %}
@@ -72,7 +72,7 @@ flow tracking mirror-on-drop
 {%         set tracker_ns.tracker_exclamation = true %}
    sample limit {{ flow_tracking.mirror_on_drop.sample_limit }} pps
 {%     endif %}
-{%     for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort(ignore_case=false) %}
+{%     for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 {%         if not loop.first or tracker_ns.tracker_exclamation == true %}
    !
 {%         endif %}
@@ -94,7 +94,7 @@ flow tracking mirror-on-drop
 {%             if exporter.format is arista.avd.defined %}
          format {{ exporter.format }}
 {%             endif %}
-{%             for collector in exporter.collectors | arista.avd.natural_sort %}
+{%             for collector in exporter.collectors | arista.avd.natural_sort(sort_key="host") %}
 {%                 set collector_cli = "collector " ~ collector.host %}
 {%                 if collector.port is arista.avd.defined %}
 {%                     set collector_cli =  collector_cli ~ " port " ~ collector.port %}
@@ -148,7 +148,7 @@ flow tracking sampled
    hardware offload threshold minimum {{ flow_tracking.sampled.hardware_offload.threshold_minimum }} samples
 {%         endif %}
 {%     endif %}
-{%     for tracker in flow_tracking.sampled.trackers | arista.avd.natural_sort(ignore_case=false) %}
+{%     for tracker in flow_tracking.sampled.trackers | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 {%         if not loop.first %}
    !
 {%         endif %}
@@ -170,7 +170,7 @@ flow tracking sampled
       !
 {%             endif %}
       exporter {{ exporter.name }}
-{%             for collector in exporter.collectors | arista.avd.natural_sort %}
+{%             for collector in exporter.collectors | arista.avd.natural_sort(sort_key="host") %}
 {%                 set collector_cli = "collector " ~ collector.host %}
 {%                 if collector.port is arista.avd.defined %}
 {%                     set collector_cli =  collector_cli ~ " port " ~ collector.port %}

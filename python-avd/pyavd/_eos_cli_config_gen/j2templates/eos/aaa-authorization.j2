@@ -20,7 +20,7 @@ aaa authorization commands all default {{ aaa_authorization.commands.all_default
 {%     if aaa_authorization.config_commands is arista.avd.defined(false) %}
 no aaa authorization config-commands
 {%     endif %}
-{%     for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort %}
+{%     for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort(sort_key="level") %}
 aaa authorization commands {{ command_level.level }} default {{ command_level.default }}
 {%     endfor %}
 {% endif %}
