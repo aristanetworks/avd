@@ -977,16 +977,22 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-cv-pathfinder-z
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-settings.md
 --8<--
 
-### Source-interfaces settings
+### AAA settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-source-interfaces-settings.md
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/aaa-settings.md
 --8<--
 
-### sFlow settings
+### DNS settings
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-sflow-settings.md
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/dns-settings.md
+--8<--
+
+### Event handlers settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/event-handlers.md
 --8<--
 
 ### Flow Tracking Settings
@@ -995,10 +1001,46 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-sflow-se
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-flow-tracking-settings.md
 --8<--
 
+### Logging settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/logging-settings.md
+--8<--
+
+### Management eAPI settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-eapi.md
+--8<--
+
+### NTP settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/ntp-settings.md
+--8<--
+
+### sFlow settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-sflow-settings.md
+--8<--
+
+### Source-interfaces settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-source-interfaces-settings.md
+--8<--
+
 ### SNMP settings
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-snmp-settings.md
+--8<--
+
+### SSH settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/ssh-settings.md
 --8<--
 
 ## Monitoring
