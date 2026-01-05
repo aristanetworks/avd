@@ -12,7 +12,7 @@ def sha512_password(clear_password: str, salt: str) -> str:
 
     Args:
         clear_password: The cleartext password provided by the user that will be hashed.
-        salt: Salt value to be used when creating password hash. A randomly generated salt will be used unless the user specifies one.
+        salt: Salt value to be used when creating password hash.
 
     Returns:
         The SHA-512 password hash.
