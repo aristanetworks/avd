@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -69,7 +69,6 @@ class ActionModule(ActionBase):
         # Only template output on ansible versions < 2.19.
         template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
 
-        validation_mode = self._task.args.get("validation_mode")
         digital_twin = self._task.args.get("digital_twin", False)
 
         # Get updated templar instance to be passed along to our simplified "templater"
@@ -93,7 +92,6 @@ class ActionModule(ActionBase):
             hostname=hostname,
             ansible_display=display,
             schema_id="eos_designs",
-            validation_mode=validation_mode,
         )
 
         # Get Structured Config from modules in PyAVD using internal api so we can supply our own templar
@@ -140,7 +138,6 @@ class ActionModule(ActionBase):
                 hostname=hostname,
                 ansible_display=display,
                 schema_id="eos_cli_config_gen",
-                validation_mode=validation_mode,
             )
 
             for template_item in eos_designs_custom_templates:

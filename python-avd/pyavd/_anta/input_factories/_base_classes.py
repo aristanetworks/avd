@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -12,17 +12,19 @@ from anta.models import AntaTest
 from pyavd._anta.logs import LogMessage, TestLoggerAdapter
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     from pyavd._anta.models import DeviceTestContext
 
-Input = TypeVar("Input", bound=AntaTest.Input)
+T_Input = TypeVar("T_Input", bound=AntaTest.Input)
 
 
-class AntaTestInputFactory(ABC, Generic[Input]):
+class AntaTestInputFactory(ABC, Generic[T_Input]):
     """
     Base class for `AntaTest.Input` factories.
 
-    Implementations of this class must provide a `create` method that returns
-    a list of `AntaTest.Input` models or `None`.
+    Implementations of this class must provide a `create` method that yields
+    `AntaTest.Input` models.
 
     Attributes:
         device: `DeviceTestContext` instance for the test.
@@ -41,8 +43,13 @@ class AntaTestInputFactory(ABC, Generic[Input]):
         self.logger_adapter = TestLoggerAdapter(logger=getLogger(self.__module__), extra={"device": self.device.hostname, "test": test_name})
 
     @abstractmethod
-    def create(self) -> list[Input] | None:
-        """Create the `AntaTest.Input` models for the `AntaTest`."""
+    def create(self) -> Iterator[T_Input]:
+        """
+        Yield the `AntaTest.Input` models for the `AntaTest`.
+
+        If no inputs can be generated (e.g., no eligible LLDP neighbors configured),
+        the method should return without yielding any values.
+        """
 
     def is_peer_available(self, peer: str, identity: str) -> bool:
         """Check if a peer is part of the fabric and is deployed."""

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -155,16 +155,20 @@ keys:
                 description: Group name.
               direction:
                 type: str
+                required: true
                 valid_values: ["upstream", "downstream"]
         link_tracking:
           type: dict
           keys:
             direction:
               type: str
+              required: true
               valid_values: ["upstream", "downstream"]
             groups:
               type: list
               description: Link state group(s) an interface belongs to.
+              required: true
+              min_length: 1
               items:
                 type: str
                 description: Group names.
@@ -1264,6 +1268,25 @@ keys:
                     max: 8
                     convert_types:
                       - str
+            power:
+              type: dict
+              keys:
+                ignore:
+                  type: bool
+                  description: Ignore advertised transceiver power consumption.
+            transmitter:
+              type: dict
+              keys:
+                signal_power:
+                  type: str
+                  description: Optical signal power between < -30 and 10 > (dBm).
+                  convert_types:
+                    - int
+                    - float
+                disabled:
+                  type: bool
+                  description: Disable the optical transmitter.
+
         ip_proxy_arp:
           type: bool
         traffic_policy:

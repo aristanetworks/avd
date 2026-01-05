@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -26,7 +26,7 @@ from .structured_config_generator import StructCfgs
 from .underlay import AvdStructuredConfigUnderlay
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
+    from collections.abc import Mapping, MutableMapping
 
     from ansible.template import Templar
 
@@ -64,7 +64,7 @@ The order is important, since later modules can overwrite or read config created
 def get_structured_config(
     *,
     hostname: str,
-    hostvars: Mapping,
+    hostvars: MutableMapping,
     input_schema_tools: AvdSchemaTools,
     all_facts: Mapping[str, EosDesignsFacts],
     result: dict,

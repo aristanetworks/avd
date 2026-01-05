@@ -1,6 +1,6 @@
 ---
 type: wan_router
-wan_mode: autovpn
+wan_mode: legacy-autovpn
 bgp_as: 65000
 
 cv_pathfinder_regions:
@@ -60,7 +60,6 @@ wan_virtual_topologies:
         drop_unmatched: false
         path_groups:
           - names: [INET]
-
 expected_error_message: >-
   The `default_virtual_topology` path-groups configuration for `wan_virtual_topologies.policies[DEFAULT-POLICY]` produces an empty load-balancing policy.
   Make sure at least one path-group present on the device is allowed in the `default_virtual_topology` path-groups.

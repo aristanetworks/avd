@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../_schema/avd_meta_schema.json
@@ -36,7 +36,6 @@ keys:
                   required: true
                 groups:
                   type: list
-                  required: true
                   min_length: 1
                   items:
                     type: str
@@ -119,7 +118,6 @@ keys:
                   required: true
                 groups:
                   type: list
-                  required: true
                   min_length: 1
                   items:
                     type: str
@@ -243,6 +241,10 @@ keys:
       "warning" will produce warning messages.
 
       '
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -2645,7 +2647,15 @@ keys:
                         - str
                   local_interface:
                     type: str
-                    description: Local Source Interface
+                    default: use_default_mgmt_method_interface
+                    description: "Local Source Interface.\nThe value will be interpreted
+                      according to these rules:\n  - `use_mgmt_interface` will configure
+                      the `mgmt_interface` as the local interface.\n  - `use_inband_mgmt_interface`
+                      will configure the `inband_mgmt_interface` as the local interface.\n
+                      \ - `use_default_mgmt_method_interface` will configure `mgmt_interface`
+                      or `inband_mgmt_interface` as the local interface depending
+                      on the value of `default_mgmt_method`.\n  - Any other string
+                      will be used directly as the local interface."
                   template_interval:
                     type: int
                     convert_types:
@@ -4565,6 +4575,9 @@ keys:
         type: bool
         default: false
         $ref: eos_cli_config_gen#/keys/ptp/keys/forward_v1
+      free_running:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/ptp/keys/free_running
   queue_monitor_length:
     documentation_options:
       table: system-settings
@@ -4649,8 +4662,11 @@ keys:
               A rate of 16384 corresponds to an average sample of one per 16384 packets.'
       destinations:
         type: list
-        required: true
         min_length: 1
+        description: 'sFlow will be configured if at least one destination is set
+          in `destinations` or if `export_to_cloudvision.enabled: true`.
+
+          One of them is required.'
         items:
           type: dict
           keys:
@@ -4683,6 +4699,37 @@ keys:
               convert_types:
               - int
               default: use_default_mgmt_method_vrf
+      export_to_cloudvision:
+        type: dict
+        description: 'Enables automatic sFlow export to CloudVision.
+
+          sFlow will be configured if at least one destination is set in `destinations`
+          or if `export_to_cloudvision.enabled: true`.
+
+          One of them is required.'
+        keys:
+          enabled:
+            type: bool
+            description: 'Configures an sFlow destination for `127.0.0.1` port `6343`
+              in the VRF defined in `export_to_cloudvision.vrf`.
+
+              Also configures the TerminAttr daemon to export sFlow to this destination.'
+          vrf:
+            type: str
+            description: "VRF Name.\nThe value of `vrf` will be interpreted according
+              to these rules:\n- `use_mgmt_interface_vrf` will configure the sFlow
+              destination and daemon terminattr sflow address under the VRF defined
+              by `mgmt_interface_vrf`.\n  An error will be raised if `mgmt_ip` or
+              `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+              will configure the sFlow destination and daemon terminattr sflow address
+              under the VRF defined by `inband_mgmt_vrf`.\n  An error will be raised
+              if inband management is not configured for the device.\n- `use_default_mgmt_method_vrf`
+              will configure the VRF and daemon terminattr sflow address for one of
+              the two options above depending on the value of `default_mgmt_method`.\n-
+              Any other string will be used directly as the VRF name."
+            convert_types:
+            - int
+            default: use_default_mgmt_method_vrf
       vrfs:
         type: list
         primary_key: name
@@ -5708,8 +5755,8 @@ keys:
     type: str
     default: cv-pathfinder
     valid_values:
-    - autovpn
     - cv-pathfinder
+    - legacy-autovpn
   wan_path_groups:
     documentation_options:
       table: wan-path-groups-and-carriers
@@ -5808,7 +5855,8 @@ keys:
               convert_types:
               - str
   wan_route_servers:
-    description: 'List of the AutoVPN RRs when using `wan_mode: autovpn`, or the Pathfinders
+    description: 'List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or
+      the Pathfinders
 
       when using `wan_mode: cv-pathfinder`, to which the device should connect to.
 
@@ -7648,6 +7696,28 @@ $defs:
                   formats:\n  - A single number will be used in the RT assigned number
                   subfield (second part of the RT).\n  - A full RT string with colon
                   separator which will override the full RT.\n"
+              rt_import:
+                type: bool
+                description: 'Enable or disable route target import for the VRF for
+                  all address families.
+
+                  This setting applies only to the automatically generated route targets
+
+                  and does not affect any entries defined under `additional_route_targets`.
+
+                  '
+                default: true
+              rt_export:
+                type: bool
+                description: 'Enable or disable route target export for the VRF for
+                  all address families.
+
+                  This setting applies only to the automatically generated route targets
+
+                  and does not affect any entries defined under `additional_route_targets`.
+
+                  '
+                default: true
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: 'Comma separated list of prefixes (IPv4 address/Mask)
@@ -9050,10 +9120,13 @@ $defs:
                       valid_values:
                       - import
                       - export
+                      required: true
                     address_family:
                       type: str
+                      required: true
                     route_target:
                       type: str
+                      required: true
                     nodes:
                       type: list
                       items:
@@ -10779,6 +10852,18 @@ $defs:
             convert_types:
             - int
             description: Set BGP cluster id.
+          kernel_ecmp_cli:
+            type: bool
+            default: true
+            description: 'Use EOS CLI to configure kernel forwarding ECMP programming.
+
+              For EOS kernel forwarding, ECMP programming can be enabled in two different
+              ways, depending on the EOS version.
+
+              - For newer EOS versions (starting 4.33.2) use the proper CLI.
+
+              - For older EOS versions use an agent environment variable. Changing
+              this requires restarting the KernelFib agent.'
           ptp:
             documentation_options:
               table: node-type-ptp-configuration
@@ -10884,6 +10969,9 @@ $defs:
               forward_v1:
                 type: bool
                 description: Forward dataplane PTP V1 packets.
+              free_running:
+                type: dict
+                $ref: eos_cli_config_gen#/keys/ptp/keys/free_running
               dscp:
                 type: dict
                 keys:
@@ -11001,7 +11089,7 @@ $defs:
 
               This is used both for AutoVPN and Pathfinder designs.
 
-              That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+              That means if `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
 
               `server` indicates that the router is a route-reflector.'
           cv_pathfinder_transit_mode:
@@ -11465,7 +11553,7 @@ $defs:
 
             This is used both for AutoVPN and Pathfinder designs.
 
-            That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+            That means if `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
 
             `server` indicates that the router is a route-reflector.
 
@@ -12473,18 +12561,6 @@ $defs:
             '
           min: 68
           max: 65535
-        kernel_ecmp_cli:
-          type: bool
-          default: true
-          description: 'Use EOS CLI to configure kernel forwarding ECMP programming.
-
-            For EOS kernel forwarding, ECMP programming can be enabled in two different
-            ways, depending on the EOS version.
-
-            - For newer EOS versions (starting 4.33.2) use the proper CLI.
-
-            - For older EOS versions use an agent environment variable. Changing this
-            requires restarting the KernelFib agent.'
         feature_support:
           type: dict
           keys:

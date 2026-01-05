@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -12,7 +12,7 @@ from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
 from pyavd._utils.get import get_v2
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Mapping
+    from collections.abc import Callable, MutableMapping
     from typing import TypeVar
 
     from typing_extensions import Self
@@ -159,7 +159,7 @@ class StructuredConfigGenerator(AvdFacts, StructuredConfigGeneratorProtocol):
 
     def __init__(
         self,
-        hostvars: Mapping,
+        hostvars: MutableMapping,
         inputs: EosDesigns,
         facts: EosDesignsFacts,
         shared_utils: SharedUtilsProtocol,

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import logging
@@ -21,6 +21,7 @@ from .store import create_store
 try:
     import jsonschema_rs
 
+    JSON_SCHEMA_VALIDATOR = jsonschema_rs.Draft7Validator
     HAS_JSONSCHEMA_RS = True
 except ImportError:
     HAS_JSONSCHEMA_RS = False
@@ -61,7 +62,7 @@ def validate_schemas(schema_store: dict) -> None:
             "The schemas could not be validated."
         )
         return
-    schema_validator = jsonschema_rs.Draft7Validator(schema_store["avd_meta_schema"])
+    schema_validator = JSON_SCHEMA_VALIDATOR(schema_store["avd_meta_schema"])
     for schema_name, schema in schema_store.items():
         if schema_name == "avd_meta_schema":
             continue
