@@ -2701,6 +2701,7 @@ keys:
                 description: Group name.
               direction:
                 type: str
+                required: true
                 valid_values:
                 - upstream
                 - downstream
@@ -2709,12 +2710,15 @@ keys:
           keys:
             direction:
               type: str
+              required: true
               valid_values:
               - upstream
               - downstream
             groups:
               type: list
               description: Link state group(s) an interface belongs to.
+              required: true
+              min_length: 1
               items:
                 type: str
                 description: Group names.
@@ -11943,6 +11947,7 @@ keys:
                 description: Group name.
               direction:
                 type: str
+                required: true
                 valid_values:
                 - upstream
                 - downstream
@@ -11951,12 +11956,15 @@ keys:
           keys:
             direction:
               type: str
+              required: true
               valid_values:
               - upstream
               - downstream
             groups:
               type: list
               description: Link state group(s) an interface belongs to.
+              required: true
+              min_length: 1
               items:
                 type: str
                 description: Group names.
@@ -14043,7 +14051,6 @@ keys:
                     type: int
                     min: 0
                     max: 7
-                    required: true
                     convert_types:
                     - str
                     description: 'Priority queue number (COS value).
@@ -14052,9 +14059,7 @@ keys:
                   no_drop:
                     type: bool
                     required: true
-                    description: 'Enable Priority Flow Control frames on this queue.
-
-                      '
+                    description: Enable Priority Flow Control frames on this queue.
   queue_monitor_length:
     type: dict
     keys:
@@ -20397,6 +20402,7 @@ keys:
                 keys:
                   source_vrf:
                     type: str
+                    required: true
                     convert_types:
                     - int
                   subscribe_policy:

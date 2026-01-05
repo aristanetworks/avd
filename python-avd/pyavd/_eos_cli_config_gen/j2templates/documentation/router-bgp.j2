@@ -959,19 +959,19 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             set vlans = vlan_aware_bundle.vlan | arista.avd.default("-") %}
 {%             if vlan_aware_bundle.route_targets.both is arista.avd.defined or vlan_aware_bundle.route_targets.import_export_evpn_domains is arista.avd.defined %}
 {%                 set both_route_target = vlan_aware_bundle.route_targets.both | arista.avd.default([]) | list %}
-{%                 for rt in vlan_aware_bundle.route_targets.import_export_evpn_domains | arista.avd.natural_sort %}
+{%                 for rt in vlan_aware_bundle.route_targets.import_export_evpn_domains | arista.avd.natural_sort(sort_key="domain") %}
 {%                     do both_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
 {%                 endfor %}
 {%             endif %}
 {%             if vlan_aware_bundle.route_targets.import is arista.avd.defined or vlan_aware_bundle.route_targets.import_evpn_domains is arista.avd.defined %}
 {%                 set import_route_target = vlan_aware_bundle.route_targets.import | arista.avd.default([]) | list %}
-{%                 for rt in vlan_aware_bundle.route_targets.import_evpn_domains | arista.avd.natural_sort %}
+{%                 for rt in vlan_aware_bundle.route_targets.import_evpn_domains | arista.avd.natural_sort(sort_key="domain") %}
 {%                     do import_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
 {%                 endfor %}
 {%             endif %}
 {%             if vlan_aware_bundle.route_targets.export is arista.avd.defined or vlan_aware_bundle.route_targets.export_evpn_domains is arista.avd.defined %}
 {%                 set export_route_target = vlan_aware_bundle.route_targets.export | arista.avd.default([]) | list %}
-{%                 for rt in vlan_aware_bundle.route_targets.export_evpn_domains | arista.avd.natural_sort  %}
+{%                 for rt in vlan_aware_bundle.route_targets.export_evpn_domains | arista.avd.natural_sort(sort_key="domain")  %}
 {%                     do export_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
 {%                 endfor %}
 {%             endif %}
@@ -991,19 +991,19 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             set route_distinguisher = vlan.rd | arista.avd.default("-") %}
 {%             if vlan.route_targets.both is arista.avd.defined or vlan.route_targets.import_export_evpn_domains is arista.avd.defined %}
 {%                 set both_route_target = vlan.route_targets.both | arista.avd.default([]) | list %}
-{%                 for rt in vlan.route_targets.import_export_evpn_domains | arista.avd.natural_sort %}
+{%                 for rt in vlan.route_targets.import_export_evpn_domains | arista.avd.natural_sort(sort_key="domain") %}
 {%                     do both_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
 {%                 endfor %}
 {%             endif %}
 {%             if vlan.route_targets.import is arista.avd.defined or vlan.route_targets.import_evpn_domains is arista.avd.defined %}
 {%                 set import_route_target = vlan.route_targets.import | arista.avd.default([]) | list %}
-{%                 for rt in vlan.route_targets.import_evpn_domains | arista.avd.natural_sort %}
+{%                 for rt in vlan.route_targets.import_evpn_domains | arista.avd.natural_sort(sort_key="domain") %}
 {%                     do import_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
 {%                 endfor %}
 {%             endif %}
 {%             if vlan.route_targets.export is arista.avd.defined or vlan.route_targets.export_evpn_domains is arista.avd.defined %}
 {%                 set export_route_target = vlan.route_targets.export | arista.avd.default([]) | list %}
-{%                 for rt in vlan.route_targets.export_evpn_domains | arista.avd.natural_sort  %}
+{%                 for rt in vlan.route_targets.export_evpn_domains | arista.avd.natural_sort(sort_key="domain")  %}
 {%                     do export_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
 {%                 endfor %}
 {%             endif %}
