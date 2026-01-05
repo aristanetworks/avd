@@ -463,23 +463,29 @@ class SrcGenRootDict(SrcGenDict):
                 dynamic_key_model_name = generate_class_name(f"dynamic_{dynamic_key_type}")
                 _dynamic_key_maps.append({"dynamic_keys_path": dynamic_keys_path, "model_key": dynamic_key_type})
                 fieldsrc = childschema._generate_class_src(class_name=generate_class_name(dynamic_key_type))
-                fields = [
+                fieldsrc_list = [
                     FieldSrc(
-                        name="key", field_type="str", type_hints=[FieldTypeHintSrc(field_type="str")], description="Key used as dynamic key", optional=False
+                        name="key",
+                        field_type="str",
+                        type_hints=[FieldTypeHintSrc(field_type="str")],
+                        description="Key used as dynamic key",
+                        optional=False,
                     )
                 ]
+
                 # Overriding the details from the autocreated field. This way we can reuse the field definition with types and type hints
                 if fieldsrc.field is not None:
                     fieldsrc.field.name = "value"
                     fieldsrc.field.description = "Value of dynamic key"
-                    fields.append(fieldsrc.field)
+                    fieldsrc_list.append(fieldsrc.field)
+
                 dyn_classes.extend(
                     [
                         ModelSrc(
                             name=f"{dynamic_key_model_name}Item",
                             # Reversing the order to ensure we put items before the class needing it.
                             classes=[cls for cls in [*reversed(fieldsrc.item_classes or []), fieldsrc.cls] if cls is not None],
-                            fields=fields,
+                            fields=fieldsrc_list,
                         ),
                         ListSrc(
                             name=dynamic_key_model_name,
