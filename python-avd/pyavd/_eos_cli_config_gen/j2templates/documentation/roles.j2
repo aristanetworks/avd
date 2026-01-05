@@ -9,7 +9,7 @@
 ### Roles
 
 #### Roles Summary
-{%     for role in roles | arista.avd.natural_sort %}
+{%     for role in roles | arista.avd.natural_sort(sort_key="name") %}
 
 ##### Role {{ role.name }}
 

@@ -60,13 +60,11 @@ qos profile {{ profile.name }}
    !
    no priority-flow-control
 {%         endif %}
-{%         for priority_block in profile.priority_flow_control.priorities | arista.avd.natural_sort('priority') %}
-{%             if priority_block.priority is arista.avd.defined %}
-{%                 if priority_block.no_drop is arista.avd.defined(true) %}
+{%         for priority_block in profile.priority_flow_control.priorities | arista.avd.natural_sort(sort_key='priority') %}
+{%             if priority_block.no_drop is arista.avd.defined(true) %}
    priority-flow-control priority {{ priority_block.priority }} no-drop
-{%                 elif priority_block.no_drop is arista.avd.defined(false) %}
+{%             elif priority_block.no_drop is arista.avd.defined(false) %}
    priority-flow-control priority {{ priority_block.priority }} drop
-{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%         if profile.priority_flow_control.watchdog.enabled is arista.avd.defined(true) %}
