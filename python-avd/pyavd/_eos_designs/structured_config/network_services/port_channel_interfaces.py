@@ -135,37 +135,7 @@ class PortChannelInterfacesMixin(Protocol):
                     peer=l3_port_channel.peer,
                     peer_type="l3_port_channel",
                 )
-                if l3_port_channel.ipv4_acl_in:
-                    acl = self.shared_utils.get_ipv4_acl(
-                        name=l3_port_channel.ipv4_acl_in,
-                        interface_name=l3_port_channel.name,
-                        interface_ip=interface_ip,
-                    )
-                    port_channel_interface.access_group_in = acl.name
-                    self._set_ipv4_acl(acl)
-
-                if l3_port_channel.ipv4_acl_out:
-                    acl = self.shared_utils.get_ipv4_acl(
-                        name=l3_port_channel.ipv4_acl_out,
-                        interface_name=l3_port_channel.name,
-                        interface_ip=interface_ip,
-                    )
-                    port_channel_interface.access_group_out = acl.name
-                    self._set_ipv4_acl(acl)
-
-                if l3_port_channel.ipv6_acl_in:
-                    acl = self.shared_utils.get_ipv6_acl(
-                        name=l3_port_channel.ipv6_acl_in,
-                    )
-                    port_channel_interface.ipv6_access_group_in = acl.name
-                    self._set_ipv6_acl(acl)
-
-                if l3_port_channel.ipv6_acl_out:
-                    acl = self.shared_utils.get_ipv6_acl(
-                        name=l3_port_channel.ipv6_acl_out,
-                    )
-                    port_channel_interface.ipv6_access_group_out = acl.name
-                    self._set_ipv6_acl(acl)
+                self.set_acls(l3_port_channel, port_channel_interface, l3_port_channel.name, interface_ip)
 
                 if not is_subinterface:
                     port_channel_interface.switchport.enabled = False

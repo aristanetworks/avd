@@ -13,6 +13,7 @@ from pyavd._utils import default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
+    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
     from pyavd._eos_designs.schema import EosDesigns
 
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -435,3 +436,39 @@ class UtilsMixin(Protocol):
 
         # Default to the specified router ID
         return router_id
+
+    def set_acls(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        l3_interface: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem,
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
+        interface_name: str,
+        interface_ip: str | None,
+    ) -> None:
+        if l3_interface.ipv4_acl_in:
+            acl = self.shared_utils.get_ipv4_acl(
+                name=l3_interface.ipv4_acl_in,
+                interface_name=interface_name,
+                interface_ip=interface_ip,
+            )
+            interface.access_group_in = acl.name
+            self._set_ipv4_acl(acl)
+
+        if l3_interface.ipv4_acl_out:
+            acl = self.shared_utils.get_ipv4_acl(
+                name=l3_interface.ipv4_acl_out,
+                interface_name=interface_name,
+                interface_ip=interface_ip,
+            )
+            interface.access_group_out = acl.name
+            self._set_ipv4_acl(acl)
+
+        if l3_interface.ipv6_acl_in:
+            acl = self.shared_utils.get_ipv6_acl(name=l3_interface.ipv6_acl_in)
+            interface.ipv6_access_group_in = acl.name
+            self._set_ipv6_acl(acl)
+
+        if l3_interface.ipv6_acl_out:
+            acl = self.shared_utils.get_ipv6_acl(name=l3_interface.ipv6_acl_out)
+            interface.ipv6_access_group_out = acl.name
+            self._set_ipv6_acl(acl)

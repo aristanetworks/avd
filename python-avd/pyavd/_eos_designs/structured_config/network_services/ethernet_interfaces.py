@@ -145,33 +145,7 @@ class EthernetInterfacesMixin(Protocol):
 
                 interface.sflow.enable = self.shared_utils.get_interface_sflow(interface.name, self.inputs.fabric_sflow.l3_interfaces)
 
-                if l3_interface.ipv4_acl_in:
-                    acl = self.shared_utils.get_ipv4_acl(
-                        name=l3_interface.ipv4_acl_in,
-                        interface_name=interface_name,
-                        interface_ip=interface_ip,
-                    )
-                    interface.access_group_in = acl.name
-                    self._set_ipv4_acl(acl)
-
-                if l3_interface.ipv4_acl_out:
-                    acl = self.shared_utils.get_ipv4_acl(
-                        name=l3_interface.ipv4_acl_out,
-                        interface_name=interface_name,
-                        interface_ip=interface_ip,
-                    )
-                    interface.access_group_out = acl.name
-                    self._set_ipv4_acl(acl)
-
-                if l3_interface.ipv6_acl_in:
-                    acl = self.shared_utils.get_ipv6_acl(name=l3_interface.ipv6_acl_in)
-                    interface.ipv6_access_group_in = acl.name
-                    self._set_ipv6_acl(acl)
-
-                if l3_interface.ipv6_acl_out:
-                    acl = self.shared_utils.get_ipv6_acl(name=l3_interface.ipv6_acl_out)
-                    interface.ipv6_access_group_out = acl.name
-                    self._set_ipv6_acl(acl)
+                self.set_acls(l3_interface, interface, interface_name, interface_ip)
 
                 if "." in interface_name:
                     # This is a subinterface so we need to ensure that the parent is created

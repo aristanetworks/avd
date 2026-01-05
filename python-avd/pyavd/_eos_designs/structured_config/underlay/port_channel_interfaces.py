@@ -187,26 +187,7 @@ class PortChannelInterfacesMixin(Protocol):
             or None
         )
         interface.metadata._update(peer_interface=l3_port_channel.peer_port_channel, peer_type="l3_port_channel")
-
-        if l3_port_channel.ipv4_acl_in:
-            acl = self._get_acl_for_l3_generic_interface(l3_port_channel.ipv4_acl_in, l3_port_channel)
-            interface.access_group_in = acl.name
-            self._set_ipv4_acl(acl)
-
-        if l3_port_channel.ipv4_acl_out:
-            acl = self._get_acl_for_l3_generic_interface(l3_port_channel.ipv4_acl_out, l3_port_channel)
-            interface.access_group_out = acl.name
-            self._set_ipv4_acl(acl)
-
-        if l3_port_channel.ipv6_acl_in:
-            acl = self.shared_utils.get_ipv6_acl(l3_port_channel.ipv6_acl_in)
-            interface.ipv6_access_group_in = acl.name
-            self._set_ipv6_acl(acl)
-
-        if l3_port_channel.ipv6_acl_out:
-            acl = self.shared_utils.get_ipv6_acl(l3_port_channel.ipv6_acl_out)
-            interface.ipv6_access_group_out = acl.name
-            self._set_ipv6_acl(acl)
+        self.set_acls(l3_port_channel, interface)
 
         if l3_port_channel.structured_config:
             self.custom_structured_configs.nested.port_channel_interfaces.obtain(l3_port_channel.name)._deepmerge(

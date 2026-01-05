@@ -311,3 +311,29 @@ class UtilsMixin(Protocol):
             interface_ip=interface_ip,
             peer_ip=interface.peer_ip,
         )
+
+    def set_acls(
+        self: AvdStructuredConfigUnderlayProtocol,
+        l3_interface: EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
+        | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem,
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
+    ) -> None:
+        if l3_interface.ipv4_acl_in:
+            acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_in, l3_interface)
+            interface.access_group_in = acl.name
+            self._set_ipv4_acl(acl)
+
+        if l3_interface.ipv4_acl_out:
+            acl = self._get_acl_for_l3_generic_interface(l3_interface.ipv4_acl_out, l3_interface)
+            interface.access_group_out = acl.name
+            self._set_ipv4_acl(acl)
+
+        if l3_interface.ipv6_acl_in:
+            acl = self.shared_utils.get_ipv6_acl(l3_interface.ipv6_acl_in)
+            interface.ipv6_access_group_in = acl.name
+            self._set_ipv6_acl(acl)
+
+        if l3_interface.ipv6_acl_out:
+            acl = self.shared_utils.get_ipv6_acl(l3_interface.ipv6_acl_out)
+            interface.ipv6_access_group_out = acl.name
+            self._set_ipv6_acl(acl)
