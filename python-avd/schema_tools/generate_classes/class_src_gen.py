@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -12,11 +12,11 @@ from .utils import generate_class_name, generate_class_name_from_ref
 
 if TYPE_CHECKING:
     from schema_tools.metaschema.meta_schema_model import (
-        AvdSchemaBool,  # noqa: TC004
-        AvdSchemaDict,  # noqa: TC004
-        AvdSchemaInt,  # noqa: TC004
-        AvdSchemaList,  # noqa: TC004
-        AvdSchemaStr,  # noqa: TC004
+        AvdSchemaBool,
+        AvdSchemaDict,
+        AvdSchemaInt,
+        AvdSchemaList,
+        AvdSchemaStr,
     )
 
     # Define the type alias using the imported types for the type checker
@@ -123,7 +123,7 @@ class SrcGenBase(Generic[T]):
         return None
 
 
-class SrcGenInt(SrcGenBase[AvdSchemaInt]):
+class SrcGenInt(SrcGenBase["AvdSchemaInt"]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
 
     @cached_property
@@ -135,11 +135,11 @@ class SrcGenInt(SrcGenBase[AvdSchemaInt]):
         return LiteralSrc(self.get_class_name(), self.schema.valid_values)
 
 
-class SrcGenBool(SrcGenBase[AvdSchemaBool]):
+class SrcGenBool(SrcGenBase["AvdSchemaBool"]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
 
 
-class SrcGenStr(SrcGenBase[AvdSchemaStr]):
+class SrcGenStr(SrcGenBase["AvdSchemaStr"]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
 
     def get_default(self) -> str | None:
@@ -157,7 +157,7 @@ class SrcGenStr(SrcGenBase[AvdSchemaStr]):
         return LiteralSrc(self.get_class_name(), self.schema.valid_values)
 
 
-class SrcGenList(SrcGenBase[AvdSchemaList]):
+class SrcGenList(SrcGenBase["AvdSchemaList"]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
 
     def get_type(self) -> str:
@@ -278,7 +278,7 @@ class SrcGenList(SrcGenBase[AvdSchemaList]):
         return imports
 
 
-class SrcGenDict(SrcGenBase[AvdSchemaDict]):
+class SrcGenDict(SrcGenBase["AvdSchemaDict"]):
     """Provides the method "generate_class_src" used to build source code for Python classes representing the schema."""
 
     def get_type(self) -> str:
