@@ -12,7 +12,7 @@ qos rewrite dscp
 {%     if qos.tx_queue.shape_rate_percent_adaptive is arista.avd.defined(true) %}
 qos tx-queue shape rate percent adaptive
 {%     endif %}
-{%     for queue in qos.tx_queue.queues | arista.avd.natural_sort %}
+{%     for queue in qos.tx_queue.queues | arista.avd.natural_sort(sort_key="id") %}
 {%         if queue.scheduler_profile_responsive is arista.avd.defined(true) %}
 qos tx-queue {{ queue.id }} scheduler profile responsive
 {%         endif %}
