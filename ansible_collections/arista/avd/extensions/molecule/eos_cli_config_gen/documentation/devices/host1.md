@@ -6289,9 +6289,9 @@ interface Port-Channel14
 interface Port-Channel15
    !! testing multi line comments with |
    !! applied to port-channel 15
+   description DC1_L2LEAF3_Po1
    traffic-policy input BLUE-C1-POLICY
    traffic-policy output BLUE-C2-POLICY
-   description DC1_L2LEAF3_Po1
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    switchport
@@ -6393,6 +6393,8 @@ interface Port-Channel99
 !
 interface Port-Channel100
    logging event link-status
+   switchport trunk private-vlan secondary
+   switchport pvlan mapping 20-30
    switchport access vlan 200
    switchport trunk native vlan tag
    switchport phone vlan 110
@@ -6417,8 +6419,6 @@ interface Port-Channel100
    switchport vlan translation out 34 50
    switchport vlan translation out 10 45 inner 34
    switchport vlan translation out 45 dot1q-tunnel all
-   switchport trunk private-vlan secondary
-   switchport pvlan mapping 20-30
    switchport port-security
    switchport port-security mac-address maximum disabled
    isis enable EVPN_UNDERLAY
@@ -6453,10 +6453,10 @@ interface Port-Channel100.102
 !
 interface Port-Channel101
    description PVLAN Promiscuous Access - only one secondary
+   switchport pvlan mapping 111
    switchport access vlan 110
    switchport mode access
    switchport
-   switchport pvlan mapping 111
    no qos trust
 !
 interface Port-Channel102
@@ -6469,10 +6469,10 @@ interface Port-Channel102
 !
 interface Port-Channel103
    description PVLAN Secondary Trunk
+   switchport trunk private-vlan secondary
    switchport trunk allowed vlan 110-112
    switchport mode trunk
    switchport
-   switchport trunk private-vlan secondary
 !
 interface Port-Channel104
    description LACP fallback individual

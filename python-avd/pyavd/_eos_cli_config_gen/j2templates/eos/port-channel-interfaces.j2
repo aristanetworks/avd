@@ -15,12 +15,6 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.profile is arista.avd.defined %}
    profile {{ port_channel_interface.profile }}
 {%     endif %}
-{%     if port_channel_interface.traffic_policy.input is arista.avd.defined %}
-   traffic-policy input {{ port_channel_interface.traffic_policy.input }}
-{%     endif %}
-{%     if port_channel_interface.traffic_policy.output is arista.avd.defined %}
-   traffic-policy output {{ port_channel_interface.traffic_policy.output }}
-{%     endif %}
 {%     if port_channel_interface.description is arista.avd.defined %}
    description {{ port_channel_interface.description }}
 {%     endif %}
@@ -37,11 +31,23 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.logging.event.link_status is arista.avd.defined(false) %}
    no logging event link-status
 {%     endif %}
+{%     if port_channel_interface.traffic_policy.input is arista.avd.defined %}
+   traffic-policy input {{ port_channel_interface.traffic_policy.input }}
+{%     endif %}
+{%     if port_channel_interface.traffic_policy.output is arista.avd.defined %}
+   traffic-policy output {{ port_channel_interface.traffic_policy.output }}
+{%     endif %}
 {%     if port_channel_interface.bgp.session_tracker is arista.avd.defined %}
    bgp session tracker {{ port_channel_interface.bgp.session_tracker }}
 {%     endif %}
 {%     if port_channel_interface.l2_protocol.forwarding_profile is arista.avd.defined %}
    l2-protocol forwarding profile {{ port_channel_interface.l2_protocol.forwarding_profile }}
+{%     endif %}
+{%     if port_channel_interface.switchport.trunk.private_vlan_secondary is arista.avd.defined(true) %}
+   switchport trunk private-vlan secondary
+{%     endif %}
+{%     if port_channel_interface.switchport.pvlan_mapping is arista.avd.defined %}
+   switchport pvlan mapping {{ port_channel_interface.switchport.pvlan_mapping }}
 {%     endif %}
 {%     if port_channel_interface.switchport.access_vlan is arista.avd.defined %}
    switchport access vlan {{ port_channel_interface.switchport.access_vlan }}
@@ -78,7 +84,7 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.switchport.vlan_forwarding_accept_all is arista.avd.defined(true) %}
    switchport vlan forwarding accept all
 {%     endif %}
-{%     for trunk_group in port_channel_interface.switchport.trunk.groups | arista.avd.natural_sort %}
+{%     for trunk_group in port_channel_interface.switchport.trunk.groups | arista.avd.natural_sort(ignore_case=false) %}
    switchport trunk group {{ trunk_group }}
 {%     endfor %}
 {%     if port_channel_interface.switchport.enabled is arista.avd.defined(true) %}
@@ -93,9 +99,11 @@ interface {{ port_channel_interface.name }}
 {%         endif %}
    {{ encapsulation_dot1q_cli }}
 {%     endif %}
+{# Need to check on hardware #}
 {%     if port_channel_interface.vlan_id is arista.avd.defined %}
    vlan id {{ port_channel_interface.vlan_id }}
 {%     endif %}
+{# Need to check on hardware #}
 {%     if port_channel_interface.encapsulation_vlan.client.encapsulation is arista.avd.defined and not port_channel_interface.encapsulation_dot1q.vlan is arista.avd.defined %}
 {%         set client_encapsulation = port_channel_interface.encapsulation_vlan.client.encapsulation %}
 {%         set network_flag = False %}
@@ -183,12 +191,6 @@ interface {{ port_channel_interface.name }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if port_channel_interface.switchport.trunk.private_vlan_secondary is arista.avd.defined(true) %}
-   switchport trunk private-vlan secondary
-{%     endif %}
-{%     if port_channel_interface.switchport.pvlan_mapping is arista.avd.defined %}
-   switchport pvlan mapping {{ port_channel_interface.switchport.pvlan_mapping }}
-{%     endif %}
 {%     if port_channel_interface.l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
    l2-protocol encapsulation dot1q vlan {{ port_channel_interface.l2_protocol.encapsulation_dot1q_vlan }}
 {%     endif %}
@@ -248,17 +250,17 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.vrf is arista.avd.defined %}
    vrf {{ port_channel_interface.vrf }}
 {%     endif %}
-{%     if port_channel_interface.ip_proxy_arp is arista.avd.defined(true) %}
-   ip proxy-arp
-{%     endif %}
-{%     if port_channel_interface.arp_gratuitous_accept is arista.avd.defined(true) %}
-   arp gratuitous accept
-{%     endif %}
 {%     if port_channel_interface.ip_address is arista.avd.defined %}
    ip address {{ port_channel_interface.ip_address }}
 {%         for ip_address_secondary in port_channel_interface.ip_address_secondaries | arista.avd.natural_sort %}
    ip address {{ ip_address_secondary }} secondary
 {%         endfor %}
+{%     endif %}
+{%     if port_channel_interface.ip_proxy_arp is arista.avd.defined(true) %}
+   ip proxy-arp
+{%     endif %}
+{%     if port_channel_interface.arp_gratuitous_accept is arista.avd.defined(true) %}
+   arp gratuitous accept
 {%     endif %}
 {%     if port_channel_interface.ip_address is arista.avd.defined("dhcp") and port_channel_interface.dhcp_client_accept_default_route is arista.avd.defined(true) %}
    dhcp client accept default-route
@@ -853,16 +855,16 @@ interface {{ port_channel_interface.name }}
    {{ tap_truncation_cli }}
 {%         endif %}
 {%         if port_channel_interface.switchport.tap.default.groups is arista.avd.defined %}
-   switchport tap default group {{ port_channel_interface.switchport.tap.default.groups | arista.avd.natural_sort | join(" group ") }}
+   switchport tap default group {{ port_channel_interface.switchport.tap.default.groups | arista.avd.natural_sort(ignore_case=false) | join(" group ") }}
 {%         endif %}
 {%         if port_channel_interface.switchport.tap.default.nexthop_groups is arista.avd.defined %}
-   switchport tap default nexthop-group {{ port_channel_interface.switchport.tap.default.nexthop_groups | arista.avd.natural_sort | join(" ") }}
+   switchport tap default nexthop-group {{ port_channel_interface.switchport.tap.default.nexthop_groups | arista.avd.natural_sort(ignore_case=false) | join(" ") }}
 {%         endif %}
 {%         for interface in port_channel_interface.switchport.tap.default.interfaces | arista.avd.natural_sort %}
    switchport tap default interface {{ interface }}
 {%         endfor %}
 {%         if port_channel_interface.switchport.tool.groups is arista.avd.defined %}
-{%             set tool_groups = port_channel_interface.switchport.tool.groups | arista.avd.natural_sort | join(" ") %}
+{%             set tool_groups = port_channel_interface.switchport.tool.groups | arista.avd.natural_sort(ignore_case=false) | join(" ") %}
    switchport tool group set {{ tool_groups }}
 {%         endif %}
 {%         if port_channel_interface.switchport.tool.dot1q_remove_outer_vlan_tag is arista.avd.defined %}
@@ -878,7 +880,7 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.traffic_engineering.administrative_groups is arista.avd.defined %}
    traffic-engineering administrative-group {{ port_channel_interface.traffic_engineering.administrative_groups | join(",") }}
 {%     endif %}
-{%     for srlg in port_channel_interface.traffic_engineering.srlgs | arista.avd.natural_sort %}
+{%     for srlg in port_channel_interface.traffic_engineering.srlgs | arista.avd.natural_sort(ignore_case=false) %}
    traffic-engineering srlg {{ srlg }}
 {%     endfor %}
 {%     if port_channel_interface.traffic_engineering.metric is arista.avd.defined %}
@@ -889,7 +891,7 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback is arista.avd.defined %}
    traffic-engineering min-delay dynamic twamp-light fallback {{ port_channel_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.number }} {{ port_channel_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.unit }}
 {%     endif %}
-{%     for link_tracking_group in port_channel_interface.link_tracking_groups | arista.avd.natural_sort(sort_key='name') %}
+{%     for link_tracking_group in port_channel_interface.link_tracking_groups | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}
 {%     endfor %}
 {%     if port_channel_interface.link_tracking.direction is arista.avd.defined and port_channel_interface.link_tracking.groups is arista.avd.defined %}
