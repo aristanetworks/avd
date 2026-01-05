@@ -225,6 +225,7 @@ keys:
                 description: Group name.
               direction:
                 type: str
+                required: true
                 valid_values:
                   - upstream
                   - downstream
@@ -233,10 +234,13 @@ keys:
           keys:
             direction:
               type: str
+              required: true
               valid_values: ["upstream", "downstream"]
             groups:
               type: list
               description: Link state group(s) an interface belongs to.
+              required: true
+              min_length: 1
               items:
                 type: str
                 description: Group names.
