@@ -1019,7 +1019,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-eapi.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-interface-settings.md
 --8<--
 
-### NTP
+### Time configuration
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/time-configuration.md
