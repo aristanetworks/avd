@@ -81,4 +81,4 @@ class TestSrcGenBase:
         srcgen = SrcGenInt()
         srcgen.schema = schema
         with pytest.raises(RuntimeError, match=r"'valid_key' was called when 'schema._key' is 'None'"):
-            srcgen.get_key()
+            srcgen.valid_key
