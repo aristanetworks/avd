@@ -3,7 +3,7 @@
 title: Ansible Collection Role anta_runner
 ---
 <!--
-  ~ Copyright (c) 2024-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2024-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -213,6 +213,9 @@ These settings allow modification of the default behavior as needed. The values 
 ```yaml
 # Enable AVD catalogs generation. Can be disabled if only user-defined catalogs are used.
 avd_catalogs_enabled: true
+
+# Disable user-defined catalogs generation. Enable this setting to generate tests from user-defined catalog files located in `user_catalogs_dir`.
+user_catalogs_enabled: false
 
 # Generate extra fabric-wide validation tests (e.g., reachability and routing tests).
 # This can generate many additional test inputs in the catalogs, and validation may take longer on large fabrics.

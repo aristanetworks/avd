@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -7,8 +7,9 @@ from contextlib import nullcontext as does_not_raise
 from typing import Any
 
 import pytest
+from jinja2.utils import Namespace
 
-from pyavd.j2filters.natural_sort import _convert, natural_sort
+from pyavd.j2filters.natural_sort import _alphanum_key, _convert, natural_sort
 
 
 class TestNaturalSortFilter:
@@ -183,3 +184,115 @@ class TestNaturalSortFilter:
         with expected_raise:
             resp = natural_sort(item_to_natural_sort, sort_key, strict=strict, ignore_case=ignore_case, default_value=default_value)
             assert resp == sorted_list
+
+    def test_natural_sort_namespaces_basic(self) -> None:
+        """Test basic natural sorting with Namespace objects."""
+        n1 = Namespace(name="ACL-10", counters_per_entry=True)
+        n2 = Namespace(name="ACL-01", counters_per_entry=True)
+        n3 = Namespace(name="ACL-05", counters_per_entry=False)
+
+        # Execute
+        resp = natural_sort([n1, n2, n3], sort_key="name")
+
+        # Assert identity and order
+        assert resp == [n2, n3, n1]
+        assert resp[0].name == "ACL-01"
+        assert resp[2].name == "ACL-10"
+
+    def test_natural_sort_namespaces_missing_keys(self) -> None:
+        """Test sorting when some Namespaces are missing the sort_key (non-strict)."""
+        n1 = Namespace(name="ACL-10", counters_per_entry=True)
+        n2 = Namespace(sequence_numbers={"sequence": 10})  # Missing 'name'
+        n3 = Namespace(counters_per_entry=False)  # Missing 'name'
+        n4 = Namespace(name="ACL-05", counters_per_entry=False)
+
+        # Execute
+        resp = natural_sort([n1, n2, n3, n4], sort_key="name", strict=False)
+
+        # Based on AVD logic: items with valid keys sort first,
+        # then items where the key is missing (defaulting to the item itself).
+        # Expected identity order: n4 (ACL-05), n1 (ACL-10), n3, n2
+        assert resp == [n4, n1, n3, n2]
+
+    def test_natural_sort_namespaces_all_missing_key(self) -> None:
+        """Test sorting when NO Namespaces have the sort_key (non-strict)."""
+        # Setup
+        n1 = Namespace(sequence_numbers={"sequence": 10})
+        n2 = Namespace(counters_per_entry=False)
+        n3 = Namespace(action="action_command")
+
+        # Execute
+        # Since all are missing the key and default_value is None,
+        # they sort based on the items themselves.
+        resp = natural_sort([n1, n2, n3], sort_key="name", strict=False, ignore_case=True)
+
+        # Based on your param, the expected order is n3, n2, n1
+        # This usually happens if the fallback sorts by the string representation
+        # of the objects or their internal data.
+        assert resp == [n3, n2, n1]
+        assert resp[0].action == "action_command"
+        assert resp[1].counters_per_entry is False
+        assert resp[2].sequence_numbers["sequence"] == 10
+
+    def test_natural_sort_namespaces_strict_error(self) -> None:
+        """Test that strict mode correctly raises AttributeError for Namespaces."""
+        n1 = Namespace(counters_per_entry=False)
+
+        # The optimized function raises AttributeError for Namespaces
+        msg = "Missing attribute 'name' in item to sort"
+        with pytest.raises(KeyError, match=msg):
+            natural_sort([n1], sort_key="name", strict=True)
+
+    def test_natural_sort_namespaces_ignore_case(self) -> None:
+        """Test natural sorting for Namespaces with ignore_case=True."""
+        # Setup
+        n1 = Namespace(name="default")
+        n2 = Namespace(name="D")
+        n3 = Namespace(name="E")
+
+        # Execute
+        resp = natural_sort([n1, n2, n3], sort_key="name", ignore_case=True, strict=False)
+
+        # Assert - Expected order: D, default, E
+        assert resp == [n2, n1, n3]
+        assert resp[0].name == "D"
+        assert resp[1].name == "default"
+        assert resp[2].name == "E"
+
+    def test_natural_sort_namespaces_respect_case(self) -> None:
+        """Test natural sorting for Namespaces with ignore_case=False (case-sensitive)."""
+        # Setup
+        n1 = Namespace(name="default")
+        n2 = Namespace(name="D")
+        n3 = Namespace(name="E")
+
+        # Execute
+        resp = natural_sort([n1, n2, n3], sort_key="name", ignore_case=False, strict=False)
+
+        # Assert - Expected order: D, E, default
+        assert resp == [n2, n3, n1]
+        assert resp[0].name == "D"
+        assert resp[1].name == "E"
+        assert resp[2].name == "default"
+
+    def test_natural_sort_namespaces_with_default(self) -> None:
+        """Test sorting using a default_value when the sort_key is missing."""
+        n1 = Namespace(name="ACL-10")
+        n2 = Namespace(counters_per_entry=False)  # Missing 'name'
+        n3 = Namespace(name="ACL-05")
+
+        # Providing "ACL-00" as default means n2 should sort to the front
+        resp = natural_sort([n1, n2, n3], sort_key="name", default_value="ACL-00", strict=True)
+
+        assert resp == [n2, n3, n1]
+        assert n2.counters_per_entry is False
+
+    def test__alphanum_key_failure_mapping(self) -> None:
+        with pytest.raises(ValueError, match=r"'natural_sort' requires 'sort_key' to be set when used for a Mapping:"):
+            # trying to get a key for a dict without sort_key
+            _alphanum_key(item={"name": "blah"})
+
+    def test__alphanum_key_failure_namespace(self) -> None:
+        with pytest.raises(ValueError, match=r"'natural_sort' requires 'sort_key' to be set when used for a Namespace:"):
+            # trying to get a key for a dict without sort_key
+            _alphanum_key(item=Namespace(name="blah"))

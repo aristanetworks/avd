@@ -64,6 +64,8 @@ ptp:
         delay_resp: 3
         follow_up: 3
         sync: 3
+  free_running:
+    enabled: false
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
