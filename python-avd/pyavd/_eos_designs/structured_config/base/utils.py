@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_designs.schema import EosDesigns
@@ -109,3 +110,19 @@ class UtilsMixin(Protocol):
 
         msg = f"`{path_prefix}.key` or `{path_prefix}.cleartext_key`"
         raise AristaAvdMissingVariableError(msg)
+
+    def get_salt(self: AvdStructuredConfigBaseProtocol, string: str) -> str:
+        """
+        Computes the SHA256 hash of the input string and returns a truncated version of the hash.
+
+        The SHA256 hash is computed, and the resulting hexadecimal digest is truncated to a maximum of 16 characters.
+        This function is flagged with 'NOSONAR' to indicate that the use of a truncated hash is intentional
+        and not a security vulnerability in this context, as it is used for generating a salt.
+
+        Args:
+            string: The input string to be hashed.
+
+        Returns:
+            A string representing the truncated SHA256 hash (salt), with a maximum length of 16 characters.
+        """
+        return sha256(string.encode()).hexdigest()[:16]  # NOSONAR

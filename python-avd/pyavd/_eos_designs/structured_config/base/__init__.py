@@ -250,7 +250,8 @@ class AvdStructuredConfigBaseProtocol(
         if self.inputs.aaa_settings.enable_password.password:
             self.structured_config.enable_password._update(hash_algorithm="sha512", key=self.inputs.aaa_settings.enable_password.password)
         elif self.inputs.aaa_settings.enable_password.cleartext_password:
-            secure_hash_password = secure_hash(self.inputs.aaa_settings.enable_password.cleartext_password, self.shared_utils.hostname)
+            salt = self.get_salt(self.shared_utils.hostname)
+            secure_hash_password = secure_hash(self.inputs.aaa_settings.enable_password.cleartext_password, salt)
             self.structured_config.enable_password._update(hash_algorithm="sha512", key=secure_hash_password)
         else:
             self.structured_config.enable_password.disabled = True
@@ -443,7 +444,8 @@ class AvdStructuredConfigBaseProtocol(
             if local_user.sha512_password:
                 local_user_data.sha512_password = local_user.sha512_password
             elif local_user.cleartext_password:
-                password = secure_hash(local_user.cleartext_password, self.shared_utils.hostname)
+                salt = self.get_salt(f"{self.shared_utils.hostname}-{local_user.name}")
+                password = secure_hash(local_user.cleartext_password, salt)
                 local_user_data.sha512_password = password
             elif local_user.no_password:
                 local_user_data.no_password = True
@@ -604,12 +606,6 @@ class AvdStructuredConfigBaseProtocol(
             forward_v1=default(self.shared_utils.node_config.ptp.forward_v1, self.inputs.ptp_settings.forward_v1) or None,
         )
 
-        self.structured_config.ptp.free_running.enabled = default(
-            self.shared_utils.node_config.ptp.free_running.enabled, self.inputs.ptp_settings.free_running.enabled
-        )
-        self.structured_config.ptp.free_running.source_clock_hardware = default(
-            self.shared_utils.node_config.ptp.free_running.source_clock_hardware, self.inputs.ptp_settings.free_running.source_clock_hardware
-        )
         self.structured_config.ptp.source.ip = self.shared_utils.node_config.ptp.source_ip
         self.structured_config.ptp.message_type.general.dscp = self.shared_utils.node_config.ptp.dscp.general_messages
         self.structured_config.ptp.message_type.event.dscp = self.shared_utils.node_config.ptp.dscp.event_messages
