@@ -7292,8 +7292,8 @@ interface Vlan83
 !
 interface Vlan84
    description SVI Description
-   arp gratuitous accept
    ip address 10.10.84.1/24
+   arp gratuitous accept
    arp monitor mac-address
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 2 rx-disabled
@@ -7379,8 +7379,8 @@ interface Vlan91
 !
 interface Vlan92
    description SVI Description
-   ip proxy-arp
    ip address 10.10.92.1/24
+   ip proxy-arp
    ip directed-broadcast
    isis enable EVPN_UNDERLAY
    isis authentication mode shared-secret profile profile2 algorithm sha-1 rx-disabled level-1
@@ -7511,10 +7511,10 @@ interface Vlan1002
    ip address virtual 10.1.2.1/24
 !
 interface Vlan2001
-   traffic-policy input Policy-01
-   traffic-policy output Policy-02
    description SVI Description
    logging event link-status
+   traffic-policy input Policy-01
+   traffic-policy output Policy-02
    vrf Tenant_B
    ip address virtual 10.2.1.1/24
    comment
