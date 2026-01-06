@@ -346,9 +346,9 @@ interface {{ port_channel_interface.name }}
 {%         set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ ipv6_nd_prefix.ipv6_prefix %}
 {%         if ipv6_nd_prefix.valid_lifetime is arista.avd.defined %}
 {%             set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ ipv6_nd_prefix.valid_lifetime %}
-{%         endif %}
-{%         if ipv6_nd_prefix.preferred_lifetime is arista.avd.defined %}
-{%             set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ ipv6_nd_prefix.preferred_lifetime  %}
+{%             if ipv6_nd_prefix.preferred_lifetime is arista.avd.defined %}
+{%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ ipv6_nd_prefix.preferred_lifetime  %}
+{%             endif %}
 {%         endif %}
 {%         if ipv6_nd_prefix.no_autoconfig_flag is arista.avd.defined(true) %}
 {%             set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " no-autoconfig" %}
@@ -496,12 +496,10 @@ interface {{ port_channel_interface.name }}
 {%             if port_channel_interface.switchport.port_security.vlans is arista.avd.defined %}
 {%                 set sorted_vlans_cli = [] %}
 {%                 for vlan in port_channel_interface.switchport.port_security.vlans %}
-{%                     if vlan.range is arista.avd.defined and vlan.mac_address_maximum is arista.avd.defined %}
-{%                         for id in vlan.range | arista.avd.range_expand %}
-{%                             set port_sec_cli = "switchport port-security vlan " ~ id ~ " mac-address maximum " ~ vlan.mac_address_maximum %}
-{%                             do sorted_vlans_cli.append(port_sec_cli) %}
-{%                         endfor %}
-{%                     endif %}
+{%                     for id in vlan.range | arista.avd.range_expand %}
+{%                         set port_sec_cli = "switchport port-security vlan " ~ id ~ " mac-address maximum " ~ vlan.mac_address_maximum %}
+{%                         do sorted_vlans_cli.append(port_sec_cli) %}
+{%                     endfor %}
 {%                 endfor %}
 {%                 for cli in sorted_vlans_cli | arista.avd.natural_sort %}
    {{ cli }}

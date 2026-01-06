@@ -1227,6 +1227,7 @@ keys:
                         type: int
                         convert_types:
                           - str
+                        required: true
             tap:
               type: dict
               $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/switchport/keys/tap"

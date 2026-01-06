@@ -33243,11 +33243,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                       - 1,3
                       - 1-10
                     """
-                    mac_address_maximum: int | None
+                    mac_address_maximum: int
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, range: str | UndefinedType = Undefined, mac_address_maximum: int | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, range: str | UndefinedType = Undefined, mac_address_maximum: int | UndefinedType = Undefined) -> None:
                             """
                             VlansItem.
 
