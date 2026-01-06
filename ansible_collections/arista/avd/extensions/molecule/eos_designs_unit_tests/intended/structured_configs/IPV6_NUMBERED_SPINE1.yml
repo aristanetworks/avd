@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   hash_algorithm: sha512
-  key: $6$b737daa8fb970213$4RKVApwnYunw8kIY.6FcBTvZjKXgvqDZuvDKIpShX4YR9cSDyGgpg3WK3jfl/Zsjdn8LXol.PqSwuwpwwMx621
+  key: $6$4a218ce02030f015$p3AHazuaM3hN.wrfgQDdMKQ1VKobWipodBc3xFZBctjEciC6RK2/ZDEmPHHiCJ7OQlwuYrlY.q4VXQ50HS4SW1
 ethernet_interfaces:
 - name: Ethernet1
   description: P2P_IPV6_NUMBERED_LEAF1a_Ethernet1
@@ -58,7 +58,7 @@ local_users:
 - name: clear_password
   privilege: 15
   role: network-admin
-  sha512_password: $6$4d0bab643678c063$LQIufN9.CYiAoOTukRsnzY4G949fPfuV.pnGVGOJvgEahoGP81bNGZmx0qRUto9Ba5AQvtRyTpD8y72Gfhodj/
+  sha512_password: $6$75d2c43eaa837bc8$u557hMeivMHVmSCuP88u5F2rFSwgwGnhr90W/vfX1aKCHrkWCreSLJOea9QLa07z3wfrwNuEPQnqqHU/8dhy40
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
