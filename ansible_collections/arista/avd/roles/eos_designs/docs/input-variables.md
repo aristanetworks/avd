@@ -973,12 +973,6 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-cv-pathfinder-z
 
 ## Management settings
 
-### Deprecated settings 6.0.0
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/deprecated-settings.md
---8<--
-
 ### AAA
 
 --8<--
