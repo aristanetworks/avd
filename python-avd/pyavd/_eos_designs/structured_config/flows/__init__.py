@@ -95,6 +95,24 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
         elif self.shared_utils.flow_tracking_type == "sampled":
             self._set_sampled_flow_tracking()
 
+    def _set_exporter_to_cloudvision(
+        self, tracker: EosCliConfigGen.FlowTracking.Hardware.TrackersItem | EosCliConfigGen.FlowTracking.Sampled.TrackersItem
+    ) -> None:
+        """Called when export_to_cloudvision: true on a tracker."""
+        local_interface = self.shared_utils.get_source_interface(self.export_to_cv.vrf, self.export_to_cv.source_interface)
+        try:
+            cv_exporter = tracker.exporters.append_new(
+                name=self.export_to_cv.name,
+                local_interface=local_interface,
+            )
+            cv_exporter.collectors.append_new(host="127.0.0.1")
+        except AristaAvdDuplicateDataError as e:
+            msg = (
+                f"Found conflicting data while generating configuration for cloudvision exporter with name '{self.export_to_cv.name}'. "
+                f"Please check your exporters configuration for tracker '{tracker.name}' is not conflicting with 'cloudvision_exporter' configuration."
+            )
+            raise AristaAvdInvalidInputsError(msg) from e
+
     def _set_hardware_flow_tracking(self) -> None:
         """Set the structured configuration for hardware flow tracking if any interface is configured."""
         all_interfaces = chain(
@@ -127,20 +145,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                     template_interval=exporter.template_interval,
                 )
             if config.export_to_cloudvision:
-                local_interface = self.shared_utils.get_source_interface(self.export_to_cv.vrf, self.export_to_cv.source_interface)
-                collector = [EosCliConfigGen.FlowTracking.Hardware.TrackersItem.ExportersItem.CollectorsItem(host="127.0.0.1")]
-                try:
-                    flow_tracking_hardware_tracker.exporters.append_new(
-                        name=self.export_to_cv.name,
-                        collectors=EosCliConfigGen.FlowTracking.Hardware.TrackersItem.ExportersItem.Collectors(collector),
-                        local_interface=local_interface,
-                    )
-                except AristaAvdDuplicateDataError as e:
-                    msg = (
-                        f"Found conflicting data while generating configuration for cloudvision exporter with name '{self.export_to_cv.name}'. "
-                        f"Please check your exporters configuration for tracker '{tracker_name}' is not conflicting with 'cloudvision_exporter' configuration."
-                    )
-                    raise AristaAvdInvalidInputsError(msg) from e
+                self._set_exporter_to_cloudvision(flow_tracking_hardware_tracker)
 
     def _set_sampled_flow_tracking(self) -> None:
         """Set the structured configuration for sampled flow tracking if any interface is configured."""
@@ -189,20 +194,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                     template_interval=exporter.template_interval,
                 )
             if config.export_to_cloudvision:
-                local_interface = self.shared_utils.get_source_interface(self.export_to_cv.vrf, self.export_to_cv.source_interface)
-                collector = [EosCliConfigGen.FlowTracking.Sampled.TrackersItem.ExportersItem.CollectorsItem(host="127.0.0.1")]
-                try:
-                    flow_tracking_sampled_tracker.exporters.append_new(
-                        name=self.export_to_cv.name,
-                        collectors=EosCliConfigGen.FlowTracking.Sampled.TrackersItem.ExportersItem.Collectors(collector),
-                        local_interface=local_interface,
-                    )
-                except AristaAvdDuplicateDataError as e:
-                    msg = (
-                        f"Found conflicting data while generating configuration for cloudvision exporter with name '{self.export_to_cv.name}'. "
-                        f"Please check your exporters configuration for tracker '{tracker_name}' is not conflicting with 'cloudvision_exporter' configuration."
-                    )
-                    raise AristaAvdInvalidInputsError(msg) from e
+                self._set_exporter_to_cloudvision(flow_tracking_sampled_tracker)
 
     def _get_tracker_input_config(self, tracker_name: str) -> EosDesigns.FlowTrackingSettings.TrackersItem:
         """
