@@ -99,6 +99,9 @@ class SrcGenBase(Generic[T]):
 
     def get_key(self) -> str:
         """Returns the key name after stripping dynamic key syntax."""
+        if self.schema._key is None:
+            msg = f"'get_key' was called when 'schema._key' is 'None' for {self}."
+            raise RuntimeError(msg)
         return self.schema._key.replace("<", "").replace(">", "").replace(".", "_")
 
     def get_field_name(self) -> str:
@@ -114,6 +117,9 @@ class SrcGenBase(Generic[T]):
     @property
     def valid_key(self) -> bool:
         """Check if the key name can be used as field name."""
+        if self.schema._key is None:
+            msg = f"'valid_key' was called when 'schema._key' is 'None' for {self}."
+            raise RuntimeError(msg)
         return not iskeyword(self.schema._key) and self.schema._key.islower()
 
     def get_default(self) -> str | None:

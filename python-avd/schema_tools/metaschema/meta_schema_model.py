@@ -113,7 +113,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     _class_src_generator: type[SrcGenBase]
 
     # Internal attributes used by schema docs generators
-    _key: str = ""
+    _key: str | None = None
     _parent_schema: AvdSchemaField | None = None
     _is_primary_key: bool = False
     """
@@ -131,7 +131,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     # Signal to __init__ if the $ref in the schema should be resolved before initializing the pydantic model.
     _resolve_schema: ClassVar[Literal["eos_designs", "eos_cli_config_gen", "all"] | None] = "all"
 
-    def __init__(self, _resolve_schema: str | None = None, **data: Any) -> None:
+    def __init__(self, _resolve_schema: Literal["eos_designs", "eos_cli_config_gen", "all"] | None = None, **data: Any) -> None:
         """
         Takes a kwarg "_resolve_schema" which controls if $refs are resolved, and if a string, only the given schema will be resolved.
 
@@ -194,6 +194,8 @@ class AvdSchemaBaseModel(BaseModel, ABC):
 
         Like "rootkey.subkey.[].mykey".
         """
+        if self._parent_schema is None:
+            return [self._key] if self._key else []
         # A list item has no key, so add "[]" to the parent schema for representing the list-item
         if not self._key:
             return [*self._parent_schema._path, "[]"]

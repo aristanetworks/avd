@@ -219,24 +219,23 @@ class ModelSrc:
         if self.fields:
             args = "Args:\n"
             for field in self.fields:
-                if field is not None:
-                    field_arg = f"{field.name}"
-                    if field.description:
-                        description = (
-                            "\n".join(wrap(field.description, width=100, replace_whitespace=False))
-                            .replace("Example:\n", "Example:  # fmt: skip\n")
-                            .replace("Examples:\n", "Examples:  # fmt: skip\n")
-                            .replace("Note:\n", "Note:  # fmt: skip\n")
-                            .replace("Notes:\n", "Notes:  # fmt: skip\n")
-                        )
-                        if "\n" in description:
-                            field_arg += f":\n{indent(description, '   ')}"
-                        else:
-                            field_arg += f": {description}"
+                field_arg = f"{field.name}"
+                if field.description:
+                    description = (
+                        "\n".join(wrap(field.description, width=100, replace_whitespace=False))
+                        .replace("Example:\n", "Example:  # fmt: skip\n")
+                        .replace("Examples:\n", "Examples:  # fmt: skip\n")
+                        .replace("Note:\n", "Note:  # fmt: skip\n")
+                        .replace("Notes:\n", "Notes:  # fmt: skip\n")
+                    )
+                    if "\n" in description:
+                        field_arg += f":\n{indent(description, '   ')}"
                     else:
-                        field_arg += f": {field.name}"
-                    args += indent(field_arg, INDENT)
-                    args += "\n"
+                        field_arg += f": {description}"
+                else:
+                    field_arg += f": {field.name}"
+                args += indent(field_arg, INDENT)
+                args += "\n"
             docstring_elements.append(args)
 
         if docstring_elements:
@@ -264,13 +263,13 @@ class ModelSrc:
             return ""
 
         src = indent("_fields: ClassVar[dict] = {\n", INDENT)
-        src += indent(",\n".join(field.field_as_dict_str() for field in self.fields if field is not None), INDENT * 2)
+        src += indent(",\n".join(field.field_as_dict_str() for field in self.fields), INDENT * 2)
         src += indent("\n}\n", INDENT)
 
-        if field_to_key_map := {field.name: field.key for field in self.fields if field is not None and field.name and field.key and field.name != field.key}:
+        if field_to_key_map := {field.name: field.key for field in self.fields if field.name and field.key and field.name != field.key}:
             src += f"    _field_to_key_map: ClassVar[dict] = {field_to_key_map}\n"
 
-        if key_to_field_map := {field.key: field.name for field in self.fields if field is not None and field.name and field.key and field.name != field.key}:
+        if key_to_field_map := {field.key: field.name for field in self.fields if field.name and field.key and field.name != field.key}:
             src += f"    _key_to_field_map: ClassVar[dict] = {key_to_field_map}\n"
 
         if self.allow_extra:
@@ -279,13 +278,12 @@ class ModelSrc:
             return src
 
         for field in self.fields:
-            if field is not None:
-                src += indent(f"{field.field_as_class_attr()}\n", INDENT)
-                if docstring := field._docstring().strip():
-                    if "\n" in docstring:
-                        src += indent(f'"""\n{docstring}\n"""\n', INDENT)
-                    else:
-                        src += indent(f'"""{docstring}"""\n', INDENT)
+            src += indent(f"{field.field_as_class_attr()}\n", INDENT)
+            if docstring := field._docstring().strip():
+                if "\n" in docstring:
+                    src += indent(f'"""\n{docstring}\n"""\n', INDENT)
+                else:
+                    src += indent(f'"""{docstring}"""\n', INDENT)
         if self.base_classes == ["object"]:
             # This is some internal class so we don't need __init__
             return src
@@ -309,8 +307,7 @@ class ModelSrc:
         for cls in self.classes:
             imports.update(cls.get_imports())
         for field in self.fields:
-            if field is not None:
-                imports.update(field.get_imports())
+            imports.update(field.get_imports())
         return imports
 
 
@@ -412,9 +409,8 @@ class FileSrc:
     def _render_imports(self) -> str:
         """Render the python source code for imports."""
         imports = set()
-        for cls in self.classes:
-            if cls is not None:
-                imports.update(cls.get_imports())
+        for cls in filter(None, self.classes):
+            imports.update(cls.get_imports())
         return "\n".join(str(imp) for imp in imports)
 
 
