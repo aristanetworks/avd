@@ -22,6 +22,14 @@ radius_server:
           tls:
             enabled: true
             port: 1700
+        - host: 10.10.11.156
+          timeout: 34
+          retransmit: 45
+          key: 071B245F5A
+        - host: 10.10.11.156
+          tls:
+            enabled: true
+            port: 345
         - host: 10.10.10.249
           key: 071B245F5A
           timeout: 1

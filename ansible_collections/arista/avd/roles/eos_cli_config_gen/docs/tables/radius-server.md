@@ -18,14 +18,14 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "radius_server.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "radius_server.vrfs.[].name") | String | Required, Unique |  |  | VRF name. Use "default" for the default VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "radius_server.vrfs.[].servers") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "radius_server.vrfs.[].servers.[].host") | String | Required, Unique |  |  | Host IP address or name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls</samp>](## "radius_server.vrfs.[].servers.[].tls") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "radius_server.vrfs.[].servers.[].host") | String | Required |  |  | -> Host IP address or name. Multiple server with the same host can be configured for TLS and no TLS. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tls</samp>](## "radius_server.vrfs.[].servers.[].tls") | Dictionary |  |  |  | When "tls" and "key" both are defined together, "tls" takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "radius_server.vrfs.[].servers.[].tls.enabled") | Boolean |  |  |  | Enable TLS for radius-server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "radius_server.vrfs.[].servers.[].tls.ssl_profile") | String |  |  |  | Name of TLS profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "radius_server.vrfs.[].servers.[].tls.port") | Integer |  |  | Min: 0<br>Max: 65535 | TCP Port used for TLS. EOS default is 2083. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "radius_server.vrfs.[].servers.[].timeout") | Integer |  |  | Min: 1<br>Max: 1000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retransmit</samp>](## "radius_server.vrfs.[].servers.[].retransmit") | Integer |  |  | Min: 0<br>Max: 100 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_server.vrfs.[].servers.[].key") | String |  |  |  | Encrypted key - only type 7 supported. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_server.vrfs.[].servers.[].key") | String |  |  |  | Encrypted key - only type 7 supported.<br>When tls and key both are defined together, "tls" takes precedence. |
     | [<samp>&nbsp;&nbsp;tls_ssl_profile</samp>](## "radius_server.tls_ssl_profile") | String |  |  |  | Name of global TLS profile. |
 
 === "YAML"
@@ -53,8 +53,10 @@
         - name: <str; required; unique>
           servers:
 
-              # Host IP address or name.
-            - host: <str; required; unique>
+              # -> Host IP address or name. Multiple server with the same host can be configured for TLS and no TLS.
+            - host: <str; required>
+
+              # When "tls" and "key" both are defined together, "tls" takes precedence.
               tls:
 
                 # Enable TLS for radius-server.
@@ -69,6 +71,7 @@
               retransmit: <int; 0-100>
 
               # Encrypted key - only type 7 supported.
+              # When tls and key both are defined together, "tls" takes precedence.
               key: <str>
 
       # Name of global TLS profile.

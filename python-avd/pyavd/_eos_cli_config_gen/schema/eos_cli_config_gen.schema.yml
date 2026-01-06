@@ -14309,15 +14309,18 @@ keys:
               description: VRF name. Use "default" for the default VRF.
             servers:
               type: list
-              primary_key: host
               items:
                 type: dict
                 keys:
                   host:
                     type: str
-                    description: Host IP address or name.
+                    required: true
+                    description: -> Host IP address or name. Multiple server with
+                      the same host can be configured for TLS and no TLS.
                   tls:
                     type: dict
+                    description: When "tls" and "key" both are defined together, "tls"
+                      takes precedence.
                     keys:
                       enabled:
                         type: bool
@@ -14346,7 +14349,9 @@ keys:
                     - str
                   key:
                     type: str
-                    description: Encrypted key - only type 7 supported.
+                    description: 'Encrypted key - only type 7 supported.
+
+                      When tls and key both are defined together, "tls" takes precedence.'
       tls_ssl_profile:
         type: str
         description: Name of global TLS profile.

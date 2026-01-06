@@ -37225,13 +37225,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "key": {"type": str},
                 }
                 host: str
-                """Host IP address or name."""
+                """-> Host IP address or name. Multiple server with the same host can be configured for TLS and no TLS."""
                 tls: Tls
-                """Subclass of AvdModel."""
+                """
+                When "tls" and "key" both are defined together, "tls" takes precedence.
+
+                Subclass of AvdModel.
+                """
                 timeout: int | None
                 retransmit: int | None
                 key: str | None
-                """Encrypted key - only type 7 supported."""
+                """
+                Encrypted key - only type 7 supported.
+                When tls and key both are defined together, "tls" takes
+                precedence.
+                """
 
                 if TYPE_CHECKING:
 
@@ -37251,18 +37259,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            host: Host IP address or name.
-                            tls: Subclass of AvdModel.
+                            host: -> Host IP address or name. Multiple server with the same host can be configured for TLS and no TLS.
+                            tls:
+                               When "tls" and "key" both are defined together, "tls" takes precedence.
+
+                               Subclass of AvdModel.
                             timeout: timeout
                             retransmit: retransmit
-                            key: Encrypted key - only type 7 supported.
+                            key:
+                               Encrypted key - only type 7 supported.
+                               When tls and key both are defined together, "tls" takes
+                               precedence.
 
                         """
 
-            class Servers(AvdIndexedList[str, ServersItem]):
-                """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `host` (`str`)."""
-
-                _primary_key: ClassVar[str] = "host"
+            class Servers(AvdList[ServersItem]):
+                """Subclass of AvdList with `ServersItem` items."""
 
             Servers._item_type = ServersItem
 
@@ -37270,7 +37282,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             name: str
             """VRF name. Use "default" for the default VRF."""
             servers: Servers
-            """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `host` (`str`)."""
+            """Subclass of AvdList with `ServersItem` items."""
 
             if TYPE_CHECKING:
 
@@ -37283,7 +37295,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: VRF name. Use "default" for the default VRF.
-                        servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `host` (`str`).
+                        servers: Subclass of AvdList with `ServersItem` items.
 
                     """
 

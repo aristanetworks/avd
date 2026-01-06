@@ -1544,6 +1544,8 @@ radius proxy
 | --- | -------------- | --- | ----------- | ------- | ---------- |
 | default | 10.10.10.158 | - | - | 1 | 1 |
 | default | 10.10.11.156 | True | - | 1 | 1 |
+| default | 10.10.11.156 | - | - | 34 | 45 |
+| default | 10.10.11.156 | True | - | - | - |
 | default | 10.10.10.249 | - | - | 1 | 1 |
 | mgt | 10.10.10.157 | - | - | 1 | 1 |
 | mgt | 10.10.11.159 | - | - | - | 1 |
@@ -1563,6 +1565,8 @@ radius-server dynamic-authorization tls ssl-profile SSL_PROFILE
 radius-server host 10.10.10.158 timeout 1 retransmit 1 key 7 <removed>
 radius-server host 10.10.11.156 tls port 1700 timeout 1 retransmit 1
 radius-server host 10.10.11.156 key 7 <removed>
+radius-server host 10.10.11.156 timeout 34 retransmit 45 key 7 <removed>
+radius-server host 10.10.11.156 tls port 345
 radius-server host 10.10.10.249 timeout 1 retransmit 1 key 7 <removed>
 radius-server host 10.10.10.157 vrf mgt timeout 1 retransmit 1 key 7 <removed>
 radius-server host 10.10.11.159 vrf mgt retransmit 1 key 7 <removed>

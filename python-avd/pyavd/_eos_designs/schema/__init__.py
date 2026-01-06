@@ -275,7 +275,7 @@ class EosDesigns(EosDesignsRootModel):
                 host: str
                 """
                 Host IP address or name.
-                Combination of `host` and `vrf` should be unique.
+                Multiple server with the same host can be configured for TLS and no TLS.
                 """
                 groups: Groups
                 """Subclass of AvdList with `str` items."""
@@ -309,6 +309,7 @@ class EosDesigns(EosDesignsRootModel):
                 recommended to make use of a vault or similar.
                 """
                 tls: EosCliConfigGen.RadiusServer.VrfsItem.ServersItem.Tls
+                """When "tls" and "key" both are defined together, "tls" takes precedence."""
 
                 if TYPE_CHECKING:
 
@@ -331,7 +332,7 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             host:
                                Host IP address or name.
-                               Combination of `host` and `vrf` should be unique.
+                               Multiple server with the same host can be configured for TLS and no TLS.
                             groups: Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
@@ -356,7 +357,7 @@ class EosDesigns(EosDesignsRootModel):
                                Encrypted to Type 7 by AVD.
                                To protect the password at rest it is strongly
                                recommended to make use of a vault or similar.
-                            tls: tls
+                            tls: When "tls" and "key" both are defined together, "tls" takes precedence.
 
                         """
 
