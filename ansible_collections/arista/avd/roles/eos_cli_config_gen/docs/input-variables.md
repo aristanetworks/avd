@@ -483,10 +483,10 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/hostname.md
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-domain-lookup.md
 --8<--
 
-### IP HTTP client source-interfaces
+### IP HTTP client
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-http-client-source-interfaces.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-http-client.md
 --8<--
 
 ### IP name servers
@@ -501,10 +501,10 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-name-serv
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-name-server-groups.md
 --8<--
 
-### IP SSH client source-interfaces
+### IP SSH client
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-ssh-client-source-interfaces.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-ssh-client.md
 --8<--
 
 ### Management accounts
