@@ -208,9 +208,9 @@ asyncio_default_fixture_loop_scope = "function"
 [tool.coverage.run]
 branch = true
 parallel = true
-source = [
-  "python-avd/pyavd",
-  "python-avd/schema_tools",
+source_pkgs = [
+  "pyavd",
+  "schema_tools",
 ]
 omit = [
   "python-avd/pyavd/_cv/api/*"
@@ -249,7 +249,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.0.0-dev5"
+current_version = "6.0.0-dev6"
 
 allow_dirty = true
 commit = false
