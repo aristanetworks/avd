@@ -188,7 +188,7 @@ class ActionModule(ActionBase):
         user_catalog_dir = get(PLUGIN_ARGS, "user_catalogs.input_dir")
 
         if generate_avd_catalogs is False and generate_user_catalogs is False:
-            msg = "Exactly one of 'avd_catalogs.enabled' or 'user_catalogs.enabled' must be provided"
+            msg = "At least one of 'avd_catalogs.enabled' or 'user_catalogs.enabled' must be set to True"
             raise AnsibleActionFail(msg)
         if generate_avd_catalogs is True and structured_config_dir is None:
             msg = (
