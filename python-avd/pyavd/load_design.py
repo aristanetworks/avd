@@ -15,7 +15,7 @@ def load_design(inputs: dict) -> LoadDesignResult:
     Load and validate Design data.
 
     Args:
-        inputs: Dictionary with  data to be validated and loaded as a Design instance.
+        inputs: Dictionary with data to be validated and loaded as a Design instance.
 
     Returns:
         LoadDesignResult containing the loaded design (or None if validation fails)
