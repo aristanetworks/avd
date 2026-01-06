@@ -8,17 +8,17 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>dot1x_settings</samp>](## "dot1x_settings") | Dictionary |  |  |  | Settings for 802.1X deployments. |
-    | [<samp>&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.enabled") | Boolean |  | `False` |  | Globally enable 802.1X port authentication on the switch.<br>Must be set for 802.1X to be active on any interface.<br>When set, `dot1x_settings.authentication.radius_groups` is required. |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.enabled") | Boolean |  | `False` |  | Globally enable 802.1X port authentication on the switch.<br>Must be set for 802.1X to be active on any interface. |
     | [<samp>&nbsp;&nbsp;authentication</samp>](## "dot1x_settings.authentication") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;radius_groups</samp>](## "dot1x_settings.authentication.radius_groups") | List, items: String |  |  | Min Length: 1 | Required list of RADIUS server groups to be used for 802.1X authentication when globally enabled.<br>The order of the list defines the server group priority.<br>Each group name must also be defined on at least one server under `aaa_settings.radius.servers`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;radius_groups</samp>](## "dot1x_settings.authentication.radius_groups") | List, items: String |  |  | Min Length: 1 | List of RADIUS server groups to be used for 802.1X authentication when globally enabled. If not provided, all defined RADIUS hosts are used.<br>The order of the list defines the server group priority.<br>Each group name must also be defined on at least one server under `aaa_settings.radius.servers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dot1x_settings.authentication.radius_groups.[]") | String |  |  |  | RADIUS server group name. |
     | [<samp>&nbsp;&nbsp;accounting</samp>](## "dot1x_settings.accounting") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.accounting.enabled") | Boolean |  | `True` |  | Enable 802.1X accounting. When set, at least one accounting method must be provided via<br>the `dot1x_settings.accounting.radius_groups` or `dot1x_settings.accounting.syslog` key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x_settings.accounting.enabled") | Boolean |  | `True` |  | Enable 802.1X accounting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "dot1x_settings.accounting.mode") | String |  | `start-stop` | Valid Values:<br>- <code>start-stop</code><br>- <code>stop-only</code> | Determines whether to send accounting records when a session is established and<br>when it ends (`start-stop`), or only when the session ends (`stop-only`). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;radius_groups</samp>](## "dot1x_settings.accounting.radius_groups") | List, items: String |  |  | Min Length: 1 | List of RADIUS server groups to be used for 802.1X accounting.<br>The order of the list defines the server group priority.<br>Each group name must also be defined on at least one server under `aaa_settings.radius.servers`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;radius_groups</samp>](## "dot1x_settings.accounting.radius_groups") | List, items: String |  |  | Min Length: 1 | List of RADIUS server groups to be used for 802.1X accounting when enabled. If not provided, all defined RADIUS hosts are used.<br>The order of the list defines the server group priority.<br>Each group name must also be defined on at least one server under `aaa_settings.radius.servers`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dot1x_settings.accounting.radius_groups.[]") | String |  |  |  | RADIUS server group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multicast</samp>](## "dot1x_settings.accounting.multicast") | Boolean |  | `False` |  | Send Accounting-Request packets to all servers in a RADIUS group at the same time. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;syslog</samp>](## "dot1x_settings.accounting.syslog") | Boolean |  | `False` |  | Log all accounting messages to Syslog.<br>Acts as a fallback if RADIUS groups are configured, or as the primary method if no groups are defined. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;syslog</samp>](## "dot1x_settings.accounting.syslog") | Boolean |  | `False` |  | Log all accounting messages to syslog if all RADIUS servers are unavailable or unresponsive. |
     | [<samp>&nbsp;&nbsp;bypass_bpdu</samp>](## "dot1x_settings.bypass_bpdu") | Boolean |  | `True` |  | Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection. |
     | [<samp>&nbsp;&nbsp;bypass_lldp</samp>](## "dot1x_settings.bypass_lldp") | Boolean |  | `True` |  | Allow LLDP packets to be processed even if the port is not authenticated. |
     | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "dot1x_settings.dynamic_authorization") | Dictionary |  |  |  |  |
@@ -38,11 +38,10 @@
 
       # Globally enable 802.1X port authentication on the switch.
       # Must be set for 802.1X to be active on any interface.
-      # When set, `dot1x_settings.authentication.radius_groups` is required.
       enabled: <bool; default=False>
       authentication:
 
-        # Required list of RADIUS server groups to be used for 802.1X authentication when globally enabled.
+        # List of RADIUS server groups to be used for 802.1X authentication when globally enabled. If not provided, all defined RADIUS hosts are used.
         # The order of the list defines the server group priority.
         # Each group name must also be defined on at least one server under `aaa_settings.radius.servers`.
         radius_groups: # >=1 items
@@ -51,15 +50,14 @@
           - <str>
       accounting:
 
-        # Enable 802.1X accounting. When set, at least one accounting method must be provided via
-        # the `dot1x_settings.accounting.radius_groups` or `dot1x_settings.accounting.syslog` key.
+        # Enable 802.1X accounting.
         enabled: <bool; default=True>
 
         # Determines whether to send accounting records when a session is established and
         # when it ends (`start-stop`), or only when the session ends (`stop-only`).
         mode: <str; "start-stop" | "stop-only"; default="start-stop">
 
-        # List of RADIUS server groups to be used for 802.1X accounting.
+        # List of RADIUS server groups to be used for 802.1X accounting when enabled. If not provided, all defined RADIUS hosts are used.
         # The order of the list defines the server group priority.
         # Each group name must also be defined on at least one server under `aaa_settings.radius.servers`.
         radius_groups: # >=1 items
@@ -70,8 +68,7 @@
         # Send Accounting-Request packets to all servers in a RADIUS group at the same time.
         multicast: <bool; default=False>
 
-        # Log all accounting messages to Syslog.
-        # Acts as a fallback if RADIUS groups are configured, or as the primary method if no groups are defined.
+        # Log all accounting messages to syslog if all RADIUS servers are unavailable or unresponsive.
         syslog: <bool; default=False>
 
       # Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.

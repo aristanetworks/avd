@@ -1,18 +1,8 @@
 ---
 dot1x_settings:
   enabled: true
-  authentication:
-    radius_groups: [agni-server-group]
   accounting:
     enabled: false
   redistribute_in_evpn: true
-
-aaa_settings:
-  radius:
-    servers:
-      - host: agni.arista.com
-        groups:
-          - agni-server-group
-        cleartext_key: super-secret-key
 
 evpn_vlan_aware_bundles: false

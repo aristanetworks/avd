@@ -9,19 +9,9 @@ l2leaf:
 
 dot1x_settings:
   enabled: true
-  authentication:
-    radius_groups: [agni-server-group]
   accounting:
     enabled: false
   bypass_bpdu: false
   bypass_lldp: false
   dynamic_authorization:
     enabled: false
-
-aaa_settings:
-  radius:
-    servers:
-      - host: agni.arista.com
-        groups:
-          - agni-server-group
-        cleartext_key: super-secret-key

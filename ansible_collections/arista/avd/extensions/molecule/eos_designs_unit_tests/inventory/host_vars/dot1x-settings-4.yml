@@ -1,15 +1,18 @@
 ---
+# Test for global 802.1X enabled with combination of specific group and the default 'radius' group as fallback
 type: l2leaf
 l2leaf:
   defaults:
   nodes:
-    - name: dot1x-aaa-accounting-missing-radius-groups-or-syslog
+    - name: dot1x-settings-4
       mgmt_ip: 192.168.0.2/24
 
 dot1x_settings:
   enabled: true
   authentication:
-    radius_groups: [agni-server-group]
+    radius_groups: [agni-server-group, radius]
+  accounting:
+    radius_groups: [agni-server-group, radius]
 
 aaa_settings:
   radius:
@@ -18,6 +21,3 @@ aaa_settings:
         groups:
           - agni-server-group
         cleartext_key: super-secret-key
-
-expected_error_message: >-
-  'dot1x_settings.accounting.radius_groups' or 'dot1x_settings.accounting.syslog' is required when 802.1X accounting is enabled.

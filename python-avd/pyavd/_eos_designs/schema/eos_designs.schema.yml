@@ -2012,17 +2012,16 @@ keys:
         default: false
         description: 'Globally enable 802.1X port authentication on the switch.
 
-          Must be set for 802.1X to be active on any interface.
-
-          When set, `dot1x_settings.authentication.radius_groups` is required.'
+          Must be set for 802.1X to be active on any interface.'
       authentication:
         type: dict
         keys:
           radius_groups:
             type: list
             min_length: 1
-            description: 'Required list of RADIUS server groups to be used for 802.1X
-              authentication when globally enabled.
+            description: 'List of RADIUS server groups to be used for 802.1X authentication
+              when globally enabled. If not provided, all defined RADIUS hosts are
+              used.
 
               The order of the list defines the server group priority.
 
@@ -2036,11 +2035,7 @@ keys:
           enabled:
             type: bool
             default: true
-            description: 'Enable 802.1X accounting. When set, at least one accounting
-              method must be provided via
-
-              the `dot1x_settings.accounting.radius_groups` or `dot1x_settings.accounting.syslog`
-              key.'
+            description: Enable 802.1X accounting.
           mode:
             type: str
             valid_values:
@@ -2054,7 +2049,8 @@ keys:
           radius_groups:
             type: list
             min_length: 1
-            description: 'List of RADIUS server groups to be used for 802.1X accounting.
+            description: 'List of RADIUS server groups to be used for 802.1X accounting
+              when enabled. If not provided, all defined RADIUS hosts are used.
 
               The order of the list defines the server group priority.
 
@@ -2070,10 +2066,8 @@ keys:
           syslog:
             type: bool
             default: false
-            description: 'Log all accounting messages to Syslog.
-
-              Acts as a fallback if RADIUS groups are configured, or as the primary
-              method if no groups are defined.'
+            description: Log all accounting messages to syslog if all RADIUS servers
+              are unavailable or unresponsive.
       bypass_bpdu:
         type: bool
         default: true

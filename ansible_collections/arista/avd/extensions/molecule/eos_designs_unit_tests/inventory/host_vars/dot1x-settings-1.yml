@@ -9,15 +9,3 @@ l2leaf:
 
 dot1x_settings:
   enabled: true
-  authentication:
-    radius_groups: [agni-server-group]
-  accounting:
-    radius_groups: [agni-server-group]
-
-aaa_settings:
-  radius:
-    servers:
-      - host: agni.arista.com
-        groups:
-          - agni-server-group
-        cleartext_key: super-secret-key

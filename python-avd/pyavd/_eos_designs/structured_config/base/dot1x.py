@@ -37,13 +37,11 @@ class Dot1xMixin(Protocol):
 
     def _configure_dot1x_aaa_authentication(self: AvdStructuredConfigBaseProtocol, authentication_settings: EosDesigns.Dot1xSettings.Authentication) -> None:
         """Configure 802.1X AAA authentication settings."""
-        if not authentication_settings.radius_groups:
-            msg = "'dot1x_settings.authentication.radius_groups' is required when 802.1X is enabled globally."
-            raise AristaAvdInvalidInputsError(msg)
-
-        self._validate_radius_groups(authentication_settings.radius_groups, "authentication server")
-
-        self.structured_config.aaa_authentication.dot1x.default = " ".join(f"group {group}" for group in authentication_settings.radius_groups)
+        if authentication_settings.radius_groups:
+            self._validate_radius_groups(authentication_settings.radius_groups, context_msg="authentication server")
+            self.structured_config.aaa_authentication.dot1x.default = " ".join(f"group {group}" for group in authentication_settings.radius_groups)
+        else:
+            self.structured_config.aaa_authentication.dot1x.default = "group radius"
 
     def _configure_dot1x_dynamic_authorization(
         self: AvdStructuredConfigBaseProtocol, dyn_authorization_settings: EosDesigns.Dot1xSettings.DynamicAuthorization
@@ -63,22 +61,23 @@ class Dot1xMixin(Protocol):
         if not accounting_settings.enabled:
             return
 
-        if not accounting_settings.radius_groups and not accounting_settings.syslog:
-            msg = "'dot1x_settings.accounting.radius_groups' or 'dot1x_settings.accounting.syslog' is required when 802.1X accounting is enabled."
-            raise AristaAvdInvalidInputsError(msg)
+        if accounting_settings.radius_groups:
+            self._validate_radius_groups(accounting_settings.radius_groups, "accounting server")
 
-        self._validate_radius_groups(accounting_settings.radius_groups, "accounting server")
+            # Add RADIUS server groups.
+            for group in accounting_settings.radius_groups:
+                self.structured_config.aaa_accounting.dot1x.default.methods.append_unique(
+                    EosCliConfigGen.AaaAccounting.Dot1x.Default.MethodsItem(method="group", group=group, multicast=accounting_settings.multicast)
+                )
+        else:
+            self.structured_config.aaa_accounting.dot1x.default.methods.append(
+                EosCliConfigGen.AaaAccounting.Dot1x.Default.MethodsItem(method="group", group="radius", multicast=accounting_settings.multicast)
+            )
 
         # Set record mode (start-stop vs stop-only).
         self.structured_config.aaa_accounting.dot1x.default.type = accounting_settings.mode
 
-        # Add RADIUS server groups.
-        for group in accounting_settings.radius_groups:
-            self.structured_config.aaa_accounting.dot1x.default.methods.append_unique(
-                EosCliConfigGen.AaaAccounting.Dot1x.Default.MethodsItem(method="group", group=group, multicast=accounting_settings.multicast)
-            )
-
-        # Add Syslog.
+        # Add Syslog fallback.
         if accounting_settings.syslog:
             self.structured_config.aaa_accounting.dot1x.default.methods.append_new(method="logging")
 
@@ -104,7 +103,12 @@ class Dot1xMixin(Protocol):
         context_msg: str,
     ) -> None:
         """Validate that the provided groups are defined in `aaa_settings.radius.servers`."""
-        if undefined_groups := set(groups).difference(self._radius_server_groups):
+        undefined_groups = set(groups).difference(self._radius_server_groups)
+
+        # "radius" is a special group in EOS for all servers, so we don't need to validate it against defined groups.
+        undefined_groups.discard("radius")
+
+        if undefined_groups:
             msg = (
                 f"The RADIUS {context_msg} groups '{', '.join(sorted(undefined_groups))}' "
                 "are not defined on at least one server under 'aaa_settings.radius.servers'."

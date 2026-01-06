@@ -16768,10 +16768,12 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {"radius_groups": {"type": RadiusGroups}}
             radius_groups: RadiusGroups
             """
-            Required list of RADIUS server groups to be used for 802.1X authentication when globally enabled.
-            The order of the list defines the server group priority.
-            Each group name must also be defined on at
-            least one server under `aaa_settings.radius.servers`.
+            List of RADIUS server groups to be used for 802.1X authentication when globally enabled. If not
+            provided, all defined RADIUS hosts are used.
+            The order of the list defines the server group
+            priority.
+            Each group name must also be defined on at least one server under
+            `aaa_settings.radius.servers`.
 
             Subclass of AvdList with `str` items.
             """
@@ -16787,10 +16789,12 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         radius_groups:
-                           Required list of RADIUS server groups to be used for 802.1X authentication when globally enabled.
-                           The order of the list defines the server group priority.
-                           Each group name must also be defined on at
-                           least one server under `aaa_settings.radius.servers`.
+                           List of RADIUS server groups to be used for 802.1X authentication when globally enabled. If not
+                           provided, all defined RADIUS hosts are used.
+                           The order of the list defines the server group
+                           priority.
+                           Each group name must also be defined on at least one server under
+                           `aaa_settings.radius.servers`.
 
                            Subclass of AvdList with `str` items.
 
@@ -16815,9 +16819,7 @@ class EosDesigns(EosDesignsRootModel):
             }
             enabled: bool
             """
-            Enable 802.1X accounting. When set, at least one accounting method must be provided via
-            the
-            `dot1x_settings.accounting.radius_groups` or `dot1x_settings.accounting.syslog` key.
+            Enable 802.1X accounting.
 
             Default value: `True`
             """
@@ -16831,13 +16833,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             radius_groups: RadiusGroups
             """
-            List of RADIUS server groups to be used for 802.1X accounting.
-            The order of the list defines the
-            server group priority.
-            Each group name must also be defined on at least one server under
-            `aaa_settings.radius.servers`.
+            List of RADIUS server groups to be used for 802.1X accounting when enabled. If not provided, all
+            defined RADIUS hosts are used.
+            The order of the list defines the server group priority.
+            Each group
+            name must also be defined on at least one server under `aaa_settings.radius.servers`.
 
-            Subclass of AvdList with `str` items.
+            Subclass of
+            AvdList with `str` items.
             """
             multicast: bool
             """
@@ -16847,9 +16850,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             syslog: bool
             """
-            Log all accounting messages to Syslog.
-            Acts as a fallback if RADIUS groups are configured, or as the
-            primary method if no groups are defined.
+            Log all accounting messages to syslog if all RADIUS servers are unavailable or unresponsive.
 
             Default value: `False`
             """
@@ -16872,27 +16873,22 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        enabled:
-                           Enable 802.1X accounting. When set, at least one accounting method must be provided via
-                           the
-                           `dot1x_settings.accounting.radius_groups` or `dot1x_settings.accounting.syslog` key.
+                        enabled: Enable 802.1X accounting.
                         mode:
                            Determines whether to send accounting records when a session is established and
                            when it ends
                            (`start-stop`), or only when the session ends (`stop-only`).
                         radius_groups:
-                           List of RADIUS server groups to be used for 802.1X accounting.
-                           The order of the list defines the
-                           server group priority.
-                           Each group name must also be defined on at least one server under
-                           `aaa_settings.radius.servers`.
+                           List of RADIUS server groups to be used for 802.1X accounting when enabled. If not provided, all
+                           defined RADIUS hosts are used.
+                           The order of the list defines the server group priority.
+                           Each group
+                           name must also be defined on at least one server under `aaa_settings.radius.servers`.
 
-                           Subclass of AvdList with `str` items.
+                           Subclass of
+                           AvdList with `str` items.
                         multicast: Send Accounting-Request packets to all servers in a RADIUS group at the same time.
-                        syslog:
-                           Log all accounting messages to Syslog.
-                           Acts as a fallback if RADIUS groups are configured, or as the
-                           primary method if no groups are defined.
+                        syslog: Log all accounting messages to syslog if all RADIUS servers are unavailable or unresponsive.
 
                     """
 
@@ -17001,7 +16997,6 @@ class EosDesigns(EosDesignsRootModel):
         Globally enable 802.1X port authentication on the switch.
         Must be set for 802.1X to be active on any
         interface.
-        When set, `dot1x_settings.authentication.radius_groups` is required.
 
         Default value: `False`
         """
@@ -17058,7 +17053,6 @@ class EosDesigns(EosDesignsRootModel):
                        Globally enable 802.1X port authentication on the switch.
                        Must be set for 802.1X to be active on any
                        interface.
-                       When set, `dot1x_settings.authentication.radius_groups` is required.
                     authentication: Subclass of AvdModel.
                     accounting: Subclass of AvdModel.
                     bypass_bpdu: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
