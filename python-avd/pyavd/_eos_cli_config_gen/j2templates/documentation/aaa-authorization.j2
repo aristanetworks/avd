@@ -41,7 +41,7 @@ Authorization for serial console is enabled.
 {%         if aaa_authorization.commands.all_default is arista.avd.defined %}
 | all | {{ aaa_authorization.commands.all_default }} |
 {%         endif %}
-{%         for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort %}
+{%         for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort(sort_key="level") %}
 | {{ command_level.level }} | {{ command_level.default }} |
 {%         endfor %}
 {%     endif %}

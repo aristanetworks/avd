@@ -49,12 +49,12 @@
 {%         if dhcp_server.tftp_server.file_ipv6 is arista.avd.defined %}
    tftp server file ipv6 {{ dhcp_server.tftp_server.file_ipv6 }}
 {%         endif %}
-{%         for subnet in dhcp_server.ipv4_subnets | arista.avd.natural_sort %}
+{%         for subnet in dhcp_server.ipv4_subnets | arista.avd.natural_sort(sort_key="subnet") %}
    !
    subnet {{ subnet.subnet }}
 {%             if subnet.reservations is arista.avd.defined %}
       reservations
-{%                 for reservation in subnet.reservations | arista.avd.natural_sort("mac_address") %}
+{%                 for reservation in subnet.reservations | arista.avd.natural_sort(sort_key="mac_address") %}
          mac-address {{ reservation.mac_address }}
 {%                     if reservation.ipv4_address is arista.avd.defined %}
             ipv4-address {{ reservation.ipv4_address }}
@@ -67,7 +67,7 @@
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
-{%             for range in subnet.ranges | arista.avd.natural_sort("end") | arista.avd.natural_sort("start") %}
+{%             for range in subnet.ranges | arista.avd.natural_sort(sort_key="end") | arista.avd.natural_sort(sort_key="start") %}
       !
       range {{ range.start }} {{ range.end }}
 {%             endfor %}
@@ -95,12 +95,12 @@
       tftp server file {{ subnet.tftp_server.file }}
 {%             endif %}
 {%         endfor %}
-{%         for subnet in dhcp_server.ipv6_subnets | arista.avd.natural_sort %}
+{%         for subnet in dhcp_server.ipv6_subnets | arista.avd.natural_sort (sort_key="subnet") %}
    !
    subnet {{ subnet.subnet }}
 {%             if subnet.reservations is arista.avd.defined %}
       reservations
-{%                 for reservation in subnet.reservations | arista.avd.natural_sort("mac_address") %}
+{%                 for reservation in subnet.reservations | arista.avd.natural_sort(sort_key="mac_address") %}
          mac-address {{ reservation.mac_address }}
 {%                     if reservation.ipv6_address is arista.avd.defined %}
             ipv6-address {{ reservation.ipv6_address }}
@@ -113,7 +113,7 @@
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
-{%             for range in subnet.ranges | arista.avd.natural_sort("end") | arista.avd.natural_sort("start") %}
+{%             for range in subnet.ranges | arista.avd.natural_sort(sort_key="end") | arista.avd.natural_sort(sort_key="start") %}
       !
       range {{ range.start }} {{ range.end }}
 {%             endfor %}
@@ -135,7 +135,7 @@
 {%         for option in dhcp_server.ipv4_vendor_options | arista.avd.natural_sort(sort_key="vendor_id", ignore_case=false) %}
    !
    vendor-option ipv4 {{ option.vendor_id }}
-{%             for sub_option in option.sub_options | arista.avd.natural_sort("code") %}
+{%             for sub_option in option.sub_options | arista.avd.natural_sort(sort_key="code") %}
 {%                 if sub_option.string is arista.avd.defined %}
       sub-option {{ sub_option.code }} type string data "{{ sub_option.string }}"
 {%                 elif sub_option.ipv4_address is arista.avd.defined %}

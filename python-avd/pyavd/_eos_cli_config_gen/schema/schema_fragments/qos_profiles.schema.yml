@@ -416,7 +416,6 @@ keys:
                     type: int
                     min: 0
                     max: 7
-                    required: true
                     convert_types:
                       - str
                     description: |
@@ -424,5 +423,5 @@ keys:
                   no_drop:
                     type: bool
                     required: true
-                    description: |
+                    description: |-
                       Enable Priority Flow Control frames on this queue.
