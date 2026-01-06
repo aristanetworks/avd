@@ -6122,18 +6122,18 @@ keys:
                     max: 7
                     convert_types:
                     - str
+  ip_http_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_http_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: Interface Name.
-          type: str
-        vrf:
-          type: str
-          convert_types:
-          - int
+    documentation_options:
+      table: ip-http-client
+    deprecation:
+      removed: true
+      warning: true
+      new_key: ip_http_client
+      remove_in_version: 6.0.0
   ip_icmp_redirect:
     type: bool
   ip_igmp_snooping:
@@ -6810,18 +6810,18 @@ keys:
       connection_tx_interface_match_source_ip:
         type: bool
         description: Match source interface of the IPsec connection.
+  ip_ssh_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_ssh_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: Interface Name.
-          type: str
-        vrf:
-          type: str
-          convert_types:
-          - int
+    documentation_options:
+      table: ip-ssh-client
+    deprecation:
+      removed: true
+      warning: true
+      new_key: ip_ssh_client
+      remove_in_version: 6.0.0
   ip_tacacs_source_interfaces:
     type: list
     display_name: IP Tacacs Source Interfaces
