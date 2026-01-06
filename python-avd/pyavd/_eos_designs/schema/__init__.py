@@ -29554,14 +29554,14 @@ class EosDesigns(EosDesignsRootModel):
         """
         `compute_local_engineid_source` supports:
         - `rfc3411_type5` use the value of `local_engineid_ip` to
-        find the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757105 + sha1(hostname +
+        find the mgmt ip and calculate an RFC3411 compliant Engine ID based on 8000757105 + sha1(hostname +
         local_engineid_ip)
         - `rfc3411_type3` generate an RFC3411 type 3 compliant Engine ID.
           To use this,
         `system_mac_address` MUST be set for the device.
           The formula is 8000757103 + system_mac_address.
         -
-        `system_mac` generate the switch default engine id for AVD usage.
+        `system_mac` generate the Engine ID similar to the default EOS behavior.
           To use this,
         `system_mac_address` MUST be set for the device.
           The formula is f5717f + system_mac_address + 00.
@@ -29668,14 +29668,14 @@ class EosDesigns(EosDesignsRootModel):
                     compute_local_engineid_source:
                        `compute_local_engineid_source` supports:
                        - `rfc3411_type5` use the value of `local_engineid_ip` to
-                       find the mgmt ip and calculate an RFC3411 compliant EngineID based on 8000757105 + sha1(hostname +
+                       find the mgmt ip and calculate an RFC3411 compliant Engine ID based on 8000757105 + sha1(hostname +
                        local_engineid_ip)
                        - `rfc3411_type3` generate an RFC3411 type 3 compliant Engine ID.
                          To use this,
                        `system_mac_address` MUST be set for the device.
                          The formula is 8000757103 + system_mac_address.
                        -
-                       `system_mac` generate the switch default engine id for AVD usage.
+                       `system_mac` generate the Engine ID similar to the default EOS behavior.
                          To use this,
                        `system_mac_address` MUST be set for the device.
                          The formula is f5717f + system_mac_address + 00.
