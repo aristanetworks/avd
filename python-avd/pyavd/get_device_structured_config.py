@@ -26,7 +26,7 @@ def get_device_structured_config(
         digital_twin: PREVIEW: Optional flag to enable digital-twin mode.
 
     Returns:
-        Device Structured Configuration as an instance of EOSConfig.
+        Device structured configuration as an instance of EOSConfig.
     """
     from ._eos_designs.structured_config import get_structured_config  # noqa: PLC0415
     from .api.schemas import Design  # noqa: PLC0415
