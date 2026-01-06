@@ -973,7 +973,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-cv-pathfinder-z
 
 ## Management settings
 
-## Deprecated settings 6.0.0
+### Deprecated settings 6.0.0
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/deprecated-settings.md
@@ -997,7 +997,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/dns-settings.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/event-handlers.md
 --8<--
 
-### Flow Tracking
+### Flow tracking
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-flow-tracking-settings.md
