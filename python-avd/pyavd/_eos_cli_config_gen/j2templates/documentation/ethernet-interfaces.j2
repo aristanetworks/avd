@@ -764,7 +764,7 @@
 #### Traffic Engineering
 
 | Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLGs |
-| --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
+| --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ----- |
 {%         for te_interface in te_interfaces %}
 {%             set admin_groups = te_interface.traffic_engineering.administrative_groups | arista.avd.default (["-"]) | join(",") %}
 {%             set te_enabled = te_interface.traffic_engineering.enabled | arista.avd.default("-") %}
@@ -800,7 +800,7 @@
 #### Monitor - Link Flap Profiles
 
 | Interface | Link Flap Profiles |
-| --------- | ----------------- |
+| --------- | ------------------ |
 {%         for monitored_interface in monitor_link_flaps %}
 | {{ monitored_interface.name }} | {{ monitored_interface.monitor_link_flap_profiles | arista.avd.natural_sort | join(' ') }} |
 {%         endfor %}
