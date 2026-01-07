@@ -68,7 +68,6 @@
   - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [DPS Interfaces](#dps-interfaces)
-  - [Ethernet Interfaces](#ethernet-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Switchport Port-security](#switchport-port-security)
   - [Switchport Port-security Summary](#switchport-port-security-summary)
@@ -811,13 +810,6 @@ load-balance cluster
 | ------- | ------------------ | -------------- | ----- | --------- | ----------------------- | ---------------------------- |
 | False | - | Default | 30 | 120 | 2 | - |
 
-#### LLDP Interface Settings
-
-LLDP is **disabled** globally. Local interface configs will not apply.
-
-| Interface | Transmit | Receive |
-| --------- | -------- | ------- |
-
 ### LLDP Device Configuration
 
 ```eos
@@ -930,26 +922,6 @@ interface Dps1
    mtu 666
    flow tracker sampled FT-S
    ip address 192.168.42.42/24
-```
-
-### Ethernet Interfaces
-
-#### Ethernet Interfaces Summary
-
-##### L2
-
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-
-*Inherited from Port-Channel Interface
-
-#### Ethernet Interfaces Device Configuration
-
-```eos
-!
-interface Ethernet1
-   description Loop protection disable
-   no loop-protection
 ```
 
 ### VXLAN Interface
@@ -1312,7 +1284,7 @@ router bfd
 
 | Enabled | Disabled-time | Protect vlan | Rate-limit | Transmit-interval | Disabled Interfaces |
 | ------- | ------------- | ------------ | ---------- | ----------------- | ------------------- |
-| False | 100 | 1000-1100 | 100 | 10 | Ethernet1 |
+| False | 100 | 1000-1100 | 100 | 10 | - |
 
 ### Monitor Loop Protection Configuration
 

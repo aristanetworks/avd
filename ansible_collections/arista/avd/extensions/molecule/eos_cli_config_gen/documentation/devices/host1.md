@@ -10614,7 +10614,7 @@ router bfd
 
 | Enabled | Disabled-time | Protect vlan | Rate-limit | Transmit-interval | Disabled Interfaces |
 | ------- | ------------- | ------------ | ---------- | ----------------- | ------------------- |
-| True | 100 | 1000-1100 | 100 | 10 | Ethernet88<br>Ethernet89 |
+| True | 100 | 1000-1100 | 100 | 10 | Ethernet88<br/>Ethernet89 |
 
 ### Monitor Loop Protection Configuration
 
