@@ -98,6 +98,7 @@ keys:
               max: 1000
             intervals:
               type: int
+              description: Intervals for monitoring violations.
               convert_types:
                 - str
               min: 1
