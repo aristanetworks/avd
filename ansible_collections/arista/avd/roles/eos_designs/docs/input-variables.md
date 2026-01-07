@@ -1596,6 +1596,12 @@ Management interface is modified for specific platforms like modular platforms w
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/platform-settings.md
 --8<--
 
+## Validation Profiles
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/validation-profiles.md
+--8<--
+
 ## PTP settings
 
 See the [Configuring PTP](how-to/ptp.md) how-to for details.
