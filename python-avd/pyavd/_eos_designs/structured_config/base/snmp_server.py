@@ -101,11 +101,7 @@ class SnmpServerMixin(Protocol):
         return sha1(f"{self.shared_utils.hostname}{ip}".encode()).hexdigest()  # NOSONAR # noqa: S324
 
     def set_snmp_local_engine_id(self: AvdStructuredConfigBaseProtocol) -> None:
-        """
-        Set SNMP local engine ID when "snmp_settings.compute_local_engineid: true".
-
-        Some stuff. TODO
-        """
+        """Set SNMP local engine ID when 'snmp_settings.compute_local_engineid: true'."""
         if not self.inputs.snmp_settings.compute_local_engineid:
             return
 
