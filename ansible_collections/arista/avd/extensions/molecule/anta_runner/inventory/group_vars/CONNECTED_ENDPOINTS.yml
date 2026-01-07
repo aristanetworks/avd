@@ -107,6 +107,7 @@ servers:
         vlans: 11
         mode: access
         spanning_tree_portfast: edge
+        validate_lldp: true
 
 workstations:
   - name: dc1-leaf1-workstation1
