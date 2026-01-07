@@ -491,6 +491,11 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.lldp.ztp_vlan is arista.avd.defined %}
    lldp tlv transmit ztp vlan {{ ethernet_interface.lldp.ztp_vlan }}
 {%     endif %}
+{%     if ethernet_interface.loop_protection is arista.avd.defined(false) %}
+   no loop-protection
+{%     elif ethernet_interface.loop_protection is arista.avd.defined(true) %}
+   loop-protection
+{%     endif %}
 {%     if ethernet_interface.mac_security.profile is arista.avd.defined %}
    mac security profile {{ ethernet_interface.mac_security.profile }}
 {%     endif %}

@@ -673,6 +673,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/management-a
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-connectivity.md
 --8<--
 
+### Monitor loop protection
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-loop-protection.md
+--8<--
+
 ### Monitor server Radius
 
 --8<--
