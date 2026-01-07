@@ -2580,6 +2580,31 @@ keys:
               format_ipfix_standard_timestamps_counters:
                 type: bool
                 description: Enable software export of IPFIX data records.
+      cloudvision_exporter:
+        type: dict
+        description: Configuration for the exporter to CloudVision.
+        keys:
+          name:
+            type: str
+            default: CLOUDVISION
+          vrf:
+            type: str
+            default: use_default_mgmt_method_vrf
+            description: "VRF name.\nThe value will be interpreted according to these
+              rules:\n- `use_mgmt_interface_vrf` will configure under the VRF set
+              with `mgmt_interface_vrf`.\n  An error will be raised if `mgmt_ip` or
+              `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+              will configure under the VRF set with `inband_mgmt_vrf`.\n  An error
+              will be raised if inband management is not configured for the device.\n-
+              `use_default_mgmt_method_vrf` will configure the VRF and source-interface
+              for one of the two options above depending on the value of `default_mgmt_method`.\n-
+              Any other string will be used directly as the VRF name."
+          source_interface:
+            type: str
+            description: 'Local interface used to connect to TerminAttr on EOS.
+
+              If not set, the local interface may be set automatically when VRF is
+              set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.'
       trackers:
         type: list
         primary_key: name
@@ -2625,6 +2650,15 @@ keys:
                   min: 1000
                   max: 36000000
                   description: Flow record export interval in milliseconds
+            export_to_cloudvision:
+              type: bool
+              description: 'When set to `true`, AVD automatically:
+
+                Configure an Flow tracking for `127.0.0.1` port `4739` in the VRF
+                defined in `cloudvision_exporter.vrf`.
+
+                Also configures the TerminAttr daemon IPFIX Collector address to listen
+                on for receiving IPFIX packets.'
             exporters:
               type: list
               primary_key: name
@@ -3181,9 +3215,6 @@ keys:
       level:
         type: list
         $ref: eos_cli_config_gen#/keys/logging/keys/level
-      validate_no_errors_period:
-        type: int
-        $ref: eos_cli_config_gen#/keys/metadata/keys/validate_no_errors_period
   mac_address_table:
     documentation_options:
       table: system-settings
@@ -4332,13 +4363,12 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
         evpn_gateway_all_active_multihoming: true
+        hardware_validation: false
       reload_delay:
         mlag: 300
         non_mlag: 330
       digital_twin:
         act_node_type: veos
-      validate_hardware:
-        enabled: false
     - platforms:
       - CEOS
       - cEOS
@@ -4350,25 +4380,23 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
         evpn_gateway_all_active_multihoming: true
+        hardware_validation: false
       management_interface: Management0
       reload_delay:
         mlag: 300
         non_mlag: 330
       digital_twin:
         act_node_type: veos
-      validate_hardware:
-        enabled: false
     - platforms:
       - CloudEOS
       feature_support:
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        hardware_validation: false
       p2p_uplinks_mtu: 9194
       digital_twin:
         act_node_type: cloudeos
-      validate_hardware:
-        enabled: false
     - platforms:
       - AWE-5310
       - AWE-7230R
@@ -4836,16 +4864,39 @@ keys:
           '
       compute_local_engineid_source:
         type: str
-        default: hostname_and_ip
-        description: "`compute_local_engineid_source` supports:\n- `hostname_and_ip`
-          generate a local engineId for SNMP by hashing via SHA1\n  the string generated
-          via the concatenation of the hostname plus the management IP.\n  {{ inventory_hostname
-          }} + {{ switch.mgmt_ip }}.\n- `system_mac` generate the switch default engine
-          id for AVD usage.\n  To use this, `system_mac_address` MUST be set for the
-          device.\n  The formula is f5717f + system_mac_address + 00.\n"
+        default: rfc3411_type5
+        description: "`compute_local_engineid_source` supports:\n- `rfc3411_type5`
+          use the value of `local_engineid_ip` to find the mgmt ip and calculate an
+          RFC3411 compliant Engine ID based on 8000757105 + sha1(hostname + local_engineid_ip)\n-
+          `rfc3411_type3` generate an RFC3411 type 3 compliant Engine ID.\n  To use
+          this, `system_mac_address` MUST be set for the device.\n  The formula is
+          8000757103 + system_mac_address.\n- `system_mac` generate the Engine ID
+          similar to the default EOS behavior.\n  To use this, `system_mac_address`
+          MUST be set for the device.\n  The formula is f5717f + system_mac_address
+          + 00.\n- `hostname_and_ip` generate a local engineId for SNMP by hashing
+          via SHA1 the string generated via the concatenation of the hostname plus
+          the out-of-band management IP.\n    sha1(hostname + mgmt_ip)\n  `local_engineid_ip`
+          does not have any effect when using `compute_local_engineid_source: hostname_and_ip`.\n
+          \ Note that this is a legacy method kept for backward compatibility; it
+          does not follow RFC 3411 and does not properly support in-band management."
         valid_values:
-        - hostname_and_ip
+        - rfc3411_type5
+        - rfc3411_type3
         - system_mac
+        - hostname_and_ip
+      local_engineid_ip:
+        type: str
+        description: "The IP to use when computing the engine ID when `compute_local_engineid_source:
+          rfc3411_type5`.\nThe value will be interpreted according to these rules:\n-
+          `use_mgmt_interface` will use the Out-of-band interface IP or IPv6.\n  The
+          order of preference is first `mgmt_ip` and then `ipv6_mgmt_ip`.\n  An error
+          will be raised if neither are configured for the device.\n- `use_inband_mgmt_interface`
+          will use the inband management IP.\n  An error will be raised if inband
+          management is not configured for the device.\n- `use_default_mgmt_method_interface`
+          will use the IP for one of the two options above depending on the value
+          of `default_mgmt_method`.\n- Any other string will be used directly as the
+          IP (it can be IP or IPv6).\n"
+        default: use_default_mgmt_method_interface
       compute_v3_user_localized_key:
         type: bool
         default: false
@@ -5648,6 +5699,89 @@ keys:
     description: Use `router general` to set router ID for all routing protocols and
       VRFs.
     default: false
+  validation_profiles:
+    type: list
+    primary_key: name
+    description: 'List of validation profiles defining hardware, logging, and fabric-related
+      validation rules.
+
+      Validation profiles can be referenced from node definitions (for example under
+      `l3leaf.nodes[].validation_profile`) and support single-level inheritance using
+      `parent_profile`.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+        parent_profile:
+          type: str
+          description: 'Inherit settings from a parent profile defined under `validation_profiles`.
+
+            Max one level of profile inheritance: profile -> parent_profile'
+        hardware:
+          type: dict
+          description: 'Hardware validation thresholds for the device.
+
+            These settings are only applied when `platform_settings/custom_platform_settings[].feature_support.hardware_validation`
+            is set to `true`.
+
+            If hardware validation is disabled, all hardware validation checks are
+            skipped and the keys under this section are ignored.'
+          keys:
+            min_power_supplies:
+              type: int
+              convert_types:
+              - str
+              description: Minimum number of power supplies required for the device.
+                Set to 0 to skip validation.
+            min_fans:
+              type: int
+              convert_types:
+              - str
+              description: Minimum number of fans required for the device. Set to
+                0 to skip validation.
+            min_supervisors:
+              type: int
+              convert_types:
+              - str
+              description: Minimum number of supervisor modules required for the device.
+                Set to 0 to skip validation.
+            min_line_cards:
+              type: int
+              convert_types:
+              - str
+              description: Minimum number of line cards required for the device. Set
+                to 0 to skip validation.
+            min_fabric_cards:
+              type: int
+              convert_types:
+              - str
+              description: Minimum number of fabric cards required for the device.
+                Set to 0 to skip validation.
+            transceiver_manufacturers:
+              type: list
+              description: List of approved transceiver manufacturers for the device.
+              items:
+                type: str
+              default:
+              - Arista Networks
+              - Arastra, Inc.
+        logging:
+          type: dict
+          keys:
+            validate_no_errors_period:
+              type: int
+              convert_types:
+              - str
+              description: Threshold (in minutes) defining how far back to check the
+                logging buffer for error-level logs during the validation performed
+                by the `anta_runner` role.
+        exclude_as_extra_fabric_validation_target:
+          type: bool
+          description: Exclude this node from being used as a destination target from
+            other fabric devices in the extra fabric validation tests performed by
+            the `anta_runner` role.
+          default: false
   vtep_loopback_description:
     documentation_options:
       table: overlay-settings
@@ -9768,11 +9902,6 @@ $defs:
               not overlap with autogenerated Port-channel IDs in the Network Services.\nNote!
               For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches
               must have the same value.\n"
-          exclude_as_extra_fabric_validation_target:
-            type: bool
-            $ref: eos_cli_config_gen#/keys/metadata/keys/exclude_as_extra_fabric_validation_target
-            documentation_options:
-              table: node-type-common-configuration
           uplink_ethernet_structured_config:
             type: dict
             $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
@@ -10853,6 +10982,8 @@ $defs:
             - int
             description: Set BGP cluster id.
           kernel_ecmp_cli:
+            documentation_options:
+              table: node-type-common-configuration
             type: bool
             default: true
             description: 'Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -11385,6 +11516,16 @@ $defs:
               remove_in_version: 6.0.0
               new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config
                 or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config
+          validation_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: 'Name of the validation profile to apply to this device.
+
+              The profile must be defined under `validation_profiles`.
+
+              Validation profiles define requirements (e.g., hardware and logging)
+              used by the `anta_runner` role during post-deployment validation.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -11565,10 +11706,6 @@ $defs:
           - hardware
           description: Set the default flow tracker type.
           default: sampled
-        exclude_as_extra_fabric_validation_target:
-          type: bool
-          $ref: eos_cli_config_gen#/keys/metadata/keys/exclude_as_extra_fabric_validation_target
-          default: false
         mlag_support:
           type: bool
           default: false
@@ -12820,6 +12957,14 @@ $defs:
 
                 The feature will be ignored on platforms where this is false.'
               default: true
+            hardware_validation:
+              type: bool
+              description: 'Enable hardware validation for the device.
+
+                When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware`
+                keys defined for the validation profile applied to the device are
+                ignored.'
+              default: true
         management_interface:
           type: str
           default: Management1
@@ -12864,9 +13009,6 @@ $defs:
               - third-party
               - tools-server
               - veos
-        validate_hardware:
-          type: dict
-          $ref: eos_cli_config_gen#/keys/metadata/keys/validate_hardware
         structured_config:
           type: dict
           relaxed_validation: true
