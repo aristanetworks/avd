@@ -3079,7 +3079,16 @@ class EosDesigns(EosDesignsRootModel):
             role.
             """
             validate_lldp: bool | None
-            """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+            """
+            Controls LLDP topology validation performed by the `anta_runner` role.
+            - When set to `false`, LLDP
+            validation is disabled for the interface.
+            - When set to `true`, LLDP validation is enabled without
+            enforcing peer availability checks.
+            - When not defined, the peer is treated as an AVD-managed device
+            and the validation additionally verifies that the peer device is deployed and the peer interface is
+            not shutdown.
+            """
             campus_link_type: CampusLinkType
             """
             PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -3289,7 +3298,15 @@ class EosDesigns(EosDesignsRootModel):
                         validate_state:
                            Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                            role.
-                        validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                        validate_lldp:
+                           Controls LLDP topology validation performed by the `anta_runner` role.
+                           - When set to `false`, LLDP
+                           validation is disabled for the interface.
+                           - When set to `true`, LLDP validation is enabled without
+                           enforcing peer availability checks.
+                           - When not defined, the peer is treated as an AVD-managed device
+                           and the validation additionally verifies that the peer device is deployed and the peer interface is
+                           not shutdown.
                         campus_link_type:
                            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                            change at any time.
@@ -23370,7 +23387,16 @@ class EosDesigns(EosDesignsRootModel):
         role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+        """
+        Controls LLDP topology validation performed by the `anta_runner` role.
+        - When set to `false`, LLDP
+        validation is disabled for the interface.
+        - When set to `true`, LLDP validation is enabled without
+        enforcing peer availability checks.
+        - When not defined, the peer is treated as an AVD-managed device
+        and the validation additionally verifies that the peer device is deployed and the peer interface is
+        not shutdown.
+        """
         campus_link_type: CampusLinkType
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -23582,7 +23608,15 @@ class EosDesigns(EosDesignsRootModel):
                     validate_state:
                        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                        role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                    validate_lldp:
+                       Controls LLDP topology validation performed by the `anta_runner` role.
+                       - When set to `false`, LLDP
+                       validation is disabled for the interface.
+                       - When set to `true`, LLDP validation is enabled without
+                       enforcing peer availability checks.
+                       - When not defined, the peer is treated as an AVD-managed device
+                       and the validation additionally verifies that the peer device is deployed and the peer interface is
+                       not shutdown.
                     campus_link_type:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
@@ -28193,7 +28227,16 @@ class EosDesigns(EosDesignsRootModel):
         role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+        """
+        Controls LLDP topology validation performed by the `anta_runner` role.
+        - When set to `false`, LLDP
+        validation is disabled for the interface.
+        - When set to `true`, LLDP validation is enabled without
+        enforcing peer availability checks.
+        - When not defined, the peer is treated as an AVD-managed device
+        and the validation additionally verifies that the peer device is deployed and the peer interface is
+        not shutdown.
+        """
         campus_link_type: CampusLinkType
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -28364,7 +28407,15 @@ class EosDesigns(EosDesignsRootModel):
                     validate_state:
                        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                        role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                    validate_lldp:
+                       Controls LLDP topology validation performed by the `anta_runner` role.
+                       - When set to `false`, LLDP
+                       validation is disabled for the interface.
+                       - When set to `true`, LLDP validation is enabled without
+                       enforcing peer availability checks.
+                       - When not defined, the peer is treated as an AVD-managed device
+                       and the validation additionally verifies that the peer device is deployed and the peer interface is
+                       not shutdown.
                     campus_link_type:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
@@ -55630,7 +55681,16 @@ class EosDesigns(EosDesignsRootModel):
                     role.
                     """
                     validate_lldp: bool | None
-                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+                    """
+                    Controls LLDP topology validation performed by the `anta_runner` role.
+                    - When set to `false`, LLDP
+                    validation is disabled for the interface.
+                    - When set to `true`, LLDP validation is enabled without
+                    enforcing peer availability checks.
+                    - When not defined, the peer is treated as an AVD-managed device
+                    and the validation additionally verifies that the peer device is deployed and the peer interface is
+                    not shutdown.
+                    """
                     campus_link_type: CampusLinkType
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -55840,7 +55900,15 @@ class EosDesigns(EosDesignsRootModel):
                                 validate_state:
                                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                                    role.
-                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                                validate_lldp:
+                                   Controls LLDP topology validation performed by the `anta_runner` role.
+                                   - When set to `false`, LLDP
+                                   validation is disabled for the interface.
+                                   - When set to `true`, LLDP validation is enabled without
+                                   enforcing peer availability checks.
+                                   - When not defined, the peer is treated as an AVD-managed device
+                                   and the validation additionally verifies that the peer device is deployed and the peer interface is
+                                   not shutdown.
                                 campus_link_type:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -57382,7 +57450,16 @@ class EosDesigns(EosDesignsRootModel):
                     role.
                     """
                     validate_lldp: bool | None
-                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+                    """
+                    Controls LLDP topology validation performed by the `anta_runner` role.
+                    - When set to `false`, LLDP
+                    validation is disabled for the interface.
+                    - When set to `true`, LLDP validation is enabled without
+                    enforcing peer availability checks.
+                    - When not defined, the peer is treated as an AVD-managed device
+                    and the validation additionally verifies that the peer device is deployed and the peer interface is
+                    not shutdown.
+                    """
                     campus_link_type: CampusLinkType
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -57592,7 +57669,15 @@ class EosDesigns(EosDesignsRootModel):
                                 validate_state:
                                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                                    role.
-                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                                validate_lldp:
+                                   Controls LLDP topology validation performed by the `anta_runner` role.
+                                   - When set to `false`, LLDP
+                                   validation is disabled for the interface.
+                                   - When set to `true`, LLDP validation is enabled without
+                                   enforcing peer availability checks.
+                                   - When not defined, the peer is treated as an AVD-managed device
+                                   and the validation additionally verifies that the peer device is deployed and the peer interface is
+                                   not shutdown.
                                 campus_link_type:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.

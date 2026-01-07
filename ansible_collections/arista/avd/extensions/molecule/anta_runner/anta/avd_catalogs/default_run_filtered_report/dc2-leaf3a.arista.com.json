@@ -52,7 +52,8 @@
             "neighbor_device": "dc2-leaf2b",
             "neighbor_port": "Ethernet2"
           }
-        ]
+        ],
+        "require_fqdn": false
       }
     },
     {

@@ -6762,8 +6762,17 @@ $defs:
           performed by the `anta_runner` role.
       validate_lldp:
         type: bool
-        description: Set to false to disable the LLDP topology validation performed
-          by the `anta_runner` role.
+        description: 'Controls LLDP topology validation performed by the `anta_runner`
+          role.
+
+          - When set to `false`, LLDP validation is disabled for the interface.
+
+          - When set to `true`, LLDP validation is enabled without enforcing peer
+          availability checks.
+
+          - When not defined, the peer is treated as an AVD-managed device and the
+          validation additionally verifies that the peer device is deployed and the
+          peer interface is not shutdown.'
       campus_link_type:
         type: list
         $ref: eos_designs#/$defs/campus_link_type
