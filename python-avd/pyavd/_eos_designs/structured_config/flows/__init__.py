@@ -132,13 +132,13 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 collectors.append_new(host="127.0.0.1")
                 try:
                     tracker.exporters.append_new(name=self.export_to_cv.name, collectors=collectors, local_interface=local_interface)
-                except AristaAvdDuplicateDataError as e:
+                except AristaAvdDuplicateDataError:
                     msg = (
                         f"Found conflicting configuration for exporter '{self.export_to_cv.name}' while generating configuration for flow tracking "
                         f"'export_to_cloudvision'. One exporter defined for tracker '{tracker.name}' is conflicting with the 'cloudvision_exporter.name' "
                         "configuration."
                     )
-                    raise AristaAvdInvalidInputsError(msg) from e
+                    raise AristaAvdInvalidInputsError(msg) from None
 
     def _set_sampled_flow_tracking(self) -> None:
         """Set the structured configuration for sampled flow tracking if any interface is configured."""
@@ -192,13 +192,13 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 collectors.append_new(host="127.0.0.1")
                 try:
                     tracker.exporters.append_new(name=self.export_to_cv.name, collectors=collectors, local_interface=local_interface)
-                except AristaAvdDuplicateDataError as e:
+                except AristaAvdDuplicateDataError:
                     msg = (
                         f"Found conflicting configuration for exporter '{self.export_to_cv.name}' while generating configuration for flow tracking "
                         f"'export_to_cloudvision'. One exporter defined for tracker '{tracker.name}' is conflicting with the 'cloudvision_exporter.name' "
                         "configuration."
                     )
-                    raise AristaAvdInvalidInputsError(msg) from e
+                    raise AristaAvdInvalidInputsError(msg) from None
 
     def _get_tracker_input_config(self, tracker_name: str) -> EosDesigns.FlowTrackingSettings.TrackersItem:
         """
