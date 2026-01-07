@@ -127,14 +127,15 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                     template_interval=exporter.template_interval,
                 )
             if config.export_to_cloudvision:
-                local_interface = self.shared_utils.get_source_interface(self.export_to_cv.vrf, self.export_to_cv.source_interface)
+                export_to_cv = self.inputs.flow_tracking_settings.cloudvision_exporter
+                local_interface = self.shared_utils.get_source_interface(export_to_cv.vrf, export_to_cv.source_interface)
                 collectors = EosCliConfigGen.FlowTracking.Hardware.TrackersItem.ExportersItem.Collectors()
                 collectors.append_new(host="127.0.0.1")
                 try:
-                    tracker.exporters.append_new(name=self.export_to_cv.name, collectors=collectors, local_interface=local_interface)
+                    tracker.exporters.append_new(name=export_to_cv.name, collectors=collectors, local_interface=local_interface)
                 except AristaAvdDuplicateDataError:
                     msg = (
-                        f"Found conflicting configuration for exporter '{self.export_to_cv.name}' while generating configuration for flow tracking "
+                        f"Found conflicting configuration for exporter '{export_to_cv.name}' while generating configuration for flow tracking "
                         f"'export_to_cloudvision'. One exporter defined for tracker '{tracker.name}' is conflicting with the 'cloudvision_exporter.name' "
                         "configuration."
                     )
@@ -187,14 +188,15 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                     template_interval=exporter.template_interval,
                 )
             if config.export_to_cloudvision:
-                local_interface = self.shared_utils.get_source_interface(self.export_to_cv.vrf, self.export_to_cv.source_interface)
+                export_to_cv = self.inputs.flow_tracking_settings.cloudvision_exporter
+                local_interface = self.shared_utils.get_source_interface(export_to_cv.vrf, export_to_cv.source_interface)
                 collectors = EosCliConfigGen.FlowTracking.Sampled.TrackersItem.ExportersItem.Collectors()
                 collectors.append_new(host="127.0.0.1")
                 try:
-                    tracker.exporters.append_new(name=self.export_to_cv.name, collectors=collectors, local_interface=local_interface)
+                    tracker.exporters.append_new(name=export_to_cv.name, collectors=collectors, local_interface=local_interface)
                 except AristaAvdDuplicateDataError:
                     msg = (
-                        f"Found conflicting configuration for exporter '{self.export_to_cv.name}' while generating configuration for flow tracking "
+                        f"Found conflicting configuration for exporter '{export_to_cv.name}' while generating configuration for flow tracking "
                         f"'export_to_cloudvision'. One exporter defined for tracker '{tracker.name}' is conflicting with the 'cloudvision_exporter.name' "
                         "configuration."
                     )
