@@ -30,7 +30,7 @@ class DaemonTerminattrMixin(Protocol):
         first_tracker_exported_to_cloudvision = next((tracker.name for tracker in flow_tracking_settings.trackers if tracker.export_to_cloudvision), None)
 
         if not (cv_settings := self.inputs.cv_settings):
-            self._validate_cv_settings(first_tracker_exported_to_cloudvision)
+            self._validate_missing_cv_settings(first_tracker_exported_to_cloudvision)
             return
 
         clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem] = (
@@ -110,9 +110,9 @@ class DaemonTerminattrMixin(Protocol):
             case EosDesigns.CvSettings.OnpremClustersItem():
                 return EosCliConfigGen.DaemonTerminattr.Cvauth(method="token", token_file=cluster.token_file)
 
-    def _validate_cv_settings(self: AvdStructuredConfigBaseProtocol, first_tracker_exporting_to_cloudvision: str | None) -> None:
+    def _validate_missing_cv_settings(self: AvdStructuredConfigBaseProtocol, first_tracker_exporting_to_cloudvision: str | None) -> None:
         """
-        Validate that cv_settings is configured if CloudVision export is enabled for sFlow or flow tracking.
+        Verifies that when cv_settings is **not** configured no Sflow or flow tracking configuration expects export to CloudVision.
 
         Expected to be called when self.inputs.cv_settings is not set.
         """
