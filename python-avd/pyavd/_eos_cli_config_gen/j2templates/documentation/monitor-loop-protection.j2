@@ -8,32 +8,16 @@
 
 ## Monitor Loop Protection
 
-| Options | Value |
-| ------- | ----- |
-{%     if monitor_loop_protection.enabled is arista.avd.defined %}
-| Enabled | {{ monitor_loop_protection.enabled }} |
-{%     endif %}
-{%     if monitor_loop_protection.disabled_time is arista.avd.defined %}
-| Disabled-time | {{ monitor_loop_protection.disabled_time }} |
-{%     endif %}
-{%     if monitor_loop_protection.protect_vlan is arista.avd.defined %}
-| Protect vlan | {{ monitor_loop_protection.protect_vlan }} |
-{%     endif %}
-{%     if monitor_loop_protection.rate_limit is arista.avd.defined %}
-| Rate-limit | {{ monitor_loop_protection.rate_limit }} |
-{%     endif %}
-{%     if monitor_loop_protection.transmit_interval is arista.avd.defined %}
-| Transmit-interval | {{ monitor_loop_protection.transmit_interval }} |
-{%     endif %}
+{%     set enabled = monitor_loop_protection.enabled | arista.avd.default('-') %}
+{%     set disabled_time = monitor_loop_protection.disabled_time | arista.avd.default('-') %}
+{%     set protect_vlan = monitor_loop_protection.protect_vlan | arista.avd.default('-') %}
+{%     set rate_limit = monitor_loop_protection.rate_limit | arista.avd.default('-') %}
+{%     set transmit_interval = monitor_loop_protection.transmit_interval | arista.avd.default('-') %}
 {%     set loop_protection_interfaces = ethernet_interfaces | selectattr("loop_protection", "arista.avd.defined", false) | arista.avd.natural_sort('name') %}
-{%     if loop_protection_interfaces %}
-
-| Disabled Interfaces |
-| ------------------- |
-{%         for ethernet_interface in loop_protection_interfaces %}
-| {{ ethernet_interface.name }} |
-{%         endfor %}
-{%     endif %}
+{%     set disabled_interfaces = loop_protection_interfaces | map(attribute='name') | join('<br>') %}
+| Enabled | Disabled-time | Protect vlan | Rate-limit | Transmit-interval | Disabled Interfaces |
+| ------- | ------------- | ------------ | ---------- | ----------------- | ------------------- |
+| {{ enabled }} | {{ disabled_time }} | {{ protect_vlan }} | {{ rate_limit }} | {{ transmit_interval }} | {{ disabled_interfaces }} |
 
 ### Monitor Loop Protection Configuration
 

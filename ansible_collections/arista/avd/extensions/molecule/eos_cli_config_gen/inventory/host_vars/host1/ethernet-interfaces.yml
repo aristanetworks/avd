@@ -2139,3 +2139,6 @@ ethernet_interfaces:
   - name: Ethernet88
     description: Loop protection disable
     loop_protection: false
+  - name: Ethernet89
+    description: Loop protection disable
+    loop_protection: false
