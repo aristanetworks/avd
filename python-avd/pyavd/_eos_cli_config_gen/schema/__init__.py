@@ -25808,6 +25808,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"location": {"type": str}, "penalty": {"type": int}}
                     location: Location
                     penalty: int
+                    """0 refers to - No penalty, 1-5000 refers to penalty value for fault."""
 
                     if TYPE_CHECKING:
 
@@ -25820,7 +25821,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 location: location
-                                penalty: penalty
+                                penalty: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
 
                             """
 
@@ -25836,8 +25837,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"maximum": {"type": int}, "reuse": {"type": int}, "suppression": {"type": int}}
                     maximum: int | None
+                    """Maximum value of penalty for a link."""
                     reuse: int | None
+                    """Value of penalty below which suppressed link would be reused."""
                     suppression: int | None
+                    """Value of penalty above which link would be suppressed."""
 
                     if TYPE_CHECKING:
 
@@ -25855,9 +25859,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                maximum: maximum
-                                reuse: reuse
-                                suppression: suppression
+                                maximum: Maximum value of penalty for a link.
+                                reuse: Value of penalty below which suppressed link would be reused.
+                                suppression: Value of penalty above which link would be suppressed.
 
                             """
 
@@ -25865,7 +25869,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 decay: Decay
                 """Subclass of AvdModel."""
                 mac_fault: MacFault
-                """Subclass of AvdIndexedList with `MacFaultItem` items. Primary key is `location` (`str`)."""
+                """
+                Penalty for MAC fault change.
+
+                Subclass of AvdIndexedList with `MacFaultItem` items. Primary key is
+                `location` (`str`).
+                """
                 threshold: Threshold
                 """Subclass of AvdModel."""
 
@@ -25886,7 +25895,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             decay: Subclass of AvdModel.
-                            mac_fault: Subclass of AvdIndexedList with `MacFaultItem` items. Primary key is `location` (`str`).
+                            mac_fault:
+                               Penalty for MAC fault change.
+
+                               Subclass of AvdIndexedList with `MacFaultItem` items. Primary key is
+                               `location` (`str`).
                             threshold: Subclass of AvdModel.
 
                         """
@@ -25904,8 +25917,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             max_flaps: int | None
             time: int | None
+            """The time period that flaps are counted (in seconds)."""
             violations: int | None
+            """Number of violations to be detected."""
             intervals: int | None
+            """Intervals for monitoring violations."""
 
             if TYPE_CHECKING:
 
@@ -25929,9 +25945,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: name
                         damping_penalty: Subclass of AvdModel.
                         max_flaps: max_flaps
-                        time: time
-                        violations: violations
-                        intervals: intervals
+                        time: The time period that flaps are counted (in seconds).
+                        violations: Number of violations to be detected.
+                        intervals: Intervals for monitoring violations.
 
                     """
 

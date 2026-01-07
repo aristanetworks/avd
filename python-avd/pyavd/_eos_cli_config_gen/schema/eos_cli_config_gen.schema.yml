@@ -10021,6 +10021,7 @@ keys:
                       - seconds
                 mac_fault:
                   type: list
+                  description: Penalty for MAC fault change.
                   primary_key: location
                   items:
                     type: dict
@@ -10032,6 +10033,8 @@ keys:
                         - remote
                       penalty:
                         type: int
+                        description: 0 refers to - No penalty, 1-5000 refers to penalty
+                          value for fault.
                         required: true
                         convert_types:
                         - str
@@ -10041,18 +10044,22 @@ keys:
                   type: dict
                   keys:
                     maximum:
+                      description: Maximum value of penalty for a link.
                       type: int
                       convert_types:
                       - str
                       min: 0
                       max: 1000000
                     reuse:
+                      description: Value of penalty below which suppressed link would
+                        be reused.
                       type: int
                       convert_types:
                       - str
                       min: 0
                       max: 1000000
                     suppression:
+                      description: Value of penalty above which link would be suppressed.
                       type: int
                       convert_types:
                       - str
@@ -10066,18 +10073,21 @@ keys:
               max: 100
             time:
               type: int
+              description: The time period that flaps are counted (in seconds).
               convert_types:
               - str
               min: 1
               max: 1800
             violations:
               type: int
+              description: Number of violations to be detected.
               convert_types:
               - str
               min: 1
               max: 1000
             intervals:
               type: int
+              description: Intervals for monitoring violations.
               convert_types:
               - str
               min: 1
