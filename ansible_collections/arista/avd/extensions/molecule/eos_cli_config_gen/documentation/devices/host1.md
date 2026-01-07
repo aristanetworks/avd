@@ -793,6 +793,7 @@ system control-plane
 | VRF | Enabled | IPv4 ACL | IPv6 ACL |
 | --- | ------- | -------- | -------- |
 | mgt | True | ACL-SSH-VRF | ACL-SSH-VRF6 |
+| VRF1 | True | - | - |
 | default | True | ACL-SSH | ACL-SSH6 |
 
 #### Authentication Settings
@@ -827,6 +828,9 @@ management ssh
    client-alive count-max 42
    no shutdown
    log-level debug
+   !
+   vrf VRF1
+      no shutdown
    !
    vrf default
       no shutdown
