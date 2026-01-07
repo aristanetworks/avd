@@ -25904,24 +25904,48 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {
-                "name": {"type": str},
-                "damping_penalty": {"type": DampingPenalty},
-                "max_flaps": {"type": int},
-                "time": {"type": int},
-                "violations": {"type": int},
-                "intervals": {"type": int},
-            }
+            class MaxFlaps(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"flaps": {"type": int}, "time": {"type": int}, "violations": {"type": int}, "intervals": {"type": int}}
+                flaps: int
+                time: int
+                """The time period that flaps are counted (in seconds)."""
+                violations: int | None
+                """Number of violations to be detected."""
+                intervals: int | None
+                """Intervals for monitoring violations."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        flaps: int | UndefinedType = Undefined,
+                        time: int | UndefinedType = Undefined,
+                        violations: int | None | UndefinedType = Undefined,
+                        intervals: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        MaxFlaps.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            flaps: flaps
+                            time: The time period that flaps are counted (in seconds).
+                            violations: Number of violations to be detected.
+                            intervals: Intervals for monitoring violations.
+
+                        """
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "damping_penalty": {"type": DampingPenalty}, "max_flaps": {"type": MaxFlaps}}
             name: str
             damping_penalty: DampingPenalty
             """Subclass of AvdModel."""
-            max_flaps: int | None
-            time: int | None
-            """The time period that flaps are counted (in seconds)."""
-            violations: int | None
-            """Number of violations to be detected."""
-            intervals: int | None
-            """Intervals for monitoring violations."""
+            max_flaps: MaxFlaps
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -25930,10 +25954,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     damping_penalty: DampingPenalty | UndefinedType = Undefined,
-                    max_flaps: int | None | UndefinedType = Undefined,
-                    time: int | None | UndefinedType = Undefined,
-                    violations: int | None | UndefinedType = Undefined,
-                    intervals: int | None | UndefinedType = Undefined,
+                    max_flaps: MaxFlaps | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ProfilesItem.
@@ -25944,10 +25965,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: name
                         damping_penalty: Subclass of AvdModel.
-                        max_flaps: max_flaps
-                        time: The time period that flaps are counted (in seconds).
-                        violations: Number of violations to be detected.
-                        intervals: Intervals for monitoring violations.
+                        max_flaps: Subclass of AvdModel.
 
                     """
 

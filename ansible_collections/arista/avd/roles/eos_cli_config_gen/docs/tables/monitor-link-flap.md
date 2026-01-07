@@ -21,10 +21,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "monitor_link_flap.profiles.[].damping_penalty.threshold.maximum") | Integer |  |  | Min: 0<br>Max: 1000000 | Maximum value of penalty for a link. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reuse</samp>](## "monitor_link_flap.profiles.[].damping_penalty.threshold.reuse") | Integer |  |  | Min: 0<br>Max: 1000000 | Value of penalty below which suppressed link would be reused. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suppression</samp>](## "monitor_link_flap.profiles.[].damping_penalty.threshold.suppression") | Integer |  |  | Min: 0<br>Max: 1000000 | Value of penalty above which link would be suppressed. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_flaps</samp>](## "monitor_link_flap.profiles.[].max_flaps") | Integer |  |  | Min: 1<br>Max: 100 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time</samp>](## "monitor_link_flap.profiles.[].time") | Integer |  |  | Min: 1<br>Max: 1800 | The time period that flaps are counted (in seconds). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;violations</samp>](## "monitor_link_flap.profiles.[].violations") | Integer |  |  | Min: 1<br>Max: 1000 | Number of violations to be detected. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intervals</samp>](## "monitor_link_flap.profiles.[].intervals") | Integer |  |  | Min: 1<br>Max: 1000 | Intervals for monitoring violations. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_flaps</samp>](## "monitor_link_flap.profiles.[].max_flaps") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flaps</samp>](## "monitor_link_flap.profiles.[].max_flaps.flaps") | Integer | Required |  | Min: 1<br>Max: 100 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time</samp>](## "monitor_link_flap.profiles.[].max_flaps.time") | Integer | Required |  | Min: 1<br>Max: 1800 | The time period that flaps are counted (in seconds). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;violations</samp>](## "monitor_link_flap.profiles.[].max_flaps.violations") | Integer |  |  | Min: 1<br>Max: 1000 | Number of violations to be detected. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intervals</samp>](## "monitor_link_flap.profiles.[].max_flaps.intervals") | Integer |  |  | Min: 1<br>Max: 1000 | Intervals for monitoring violations. |
     | [<samp>&nbsp;&nbsp;default_profiles</samp>](## "monitor_link_flap.default_profiles") | List, items: String |  |  |  | The default-profile set may contain zero, one, or multiple profiles. When the default-profile set contains multiple profiles, error-disable criteria is satisfied when conditions match any profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "monitor_link_flap.default_profiles.[]") | String |  |  |  |  |
 
@@ -55,16 +56,17 @@
 
               # Value of penalty above which link would be suppressed.
               suppression: <int; 0-1000000>
-          max_flaps: <int; 1-100>
+          max_flaps:
+            flaps: <int; 1-100; required>
 
-          # The time period that flaps are counted (in seconds).
-          time: <int; 1-1800>
+            # The time period that flaps are counted (in seconds).
+            time: <int; 1-1800; required>
 
-          # Number of violations to be detected.
-          violations: <int; 1-1000>
+            # Number of violations to be detected.
+            violations: <int; 1-1000>
 
-          # Intervals for monitoring violations.
-          intervals: <int; 1-1000>
+            # Intervals for monitoring violations.
+            intervals: <int; 1-1000>
 
       # The default-profile set may contain zero, one, or multiple profiles. When the default-profile set contains multiple profiles, error-disable criteria is satisfied when conditions match any profile.
       default_profiles:

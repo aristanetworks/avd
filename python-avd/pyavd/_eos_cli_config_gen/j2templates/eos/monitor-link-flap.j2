@@ -7,7 +7,7 @@
 {% if monitor_link_flap is arista.avd.defined %}
 !
 monitor link-flap policy
-{%     for profile in monitor_link_flap.profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%     for profile in monitor_link_flap.profiles | arista.avd.natural_sort('name') %}
 {%         if profile.damping_penalty is arista.avd.defined %}
    profile {{ profile.name }} damping
 {%             if profile.damping_penalty.threshold is arista.avd.defined %}
@@ -32,10 +32,10 @@ monitor link-flap policy
       penalty decay half-life {{ profile.decay.half_life }} {{ profile.decay.units }}
 {%             endif %}
 {%         else %}
-{%             if profile.max_flaps is arista.avd.defined and profile.time is arista.avd.defined %}
-{%                 set monitor_flap_cli = "profile " ~ profile.name ~ " max-flaps " ~ profile.max_flaps ~ " time " ~ profile.time %}
-{%                 if profile.violations is arista.avd.defined and profile.intervals is arista.avd.defined %}
-{%                     set monitor_flap_cli = monitor_flap_cli ~ " violations " ~ profile.violations ~ " intervals " ~ profile.intervals %}
+{%             if profile.max_flaps is arista.avd.defined %}
+{%                 set monitor_flap_cli = "profile " ~ profile.name ~ " max-flaps " ~ profile.max_flaps.flaps ~ " time " ~ profile.max_flaps.time %}
+{%                 if profile.max_flaps.violations is arista.avd.defined and profile.max_flaps.intervals is arista.avd.defined %}
+{%                     set monitor_flap_cli = monitor_flap_cli ~ " violations " ~ profile.max_flaps.violations ~ " intervals " ~ profile.max_flaps.intervals %}
 {%                 endif %}
    {{ monitor_flap_cli }}
 {%             endif %}

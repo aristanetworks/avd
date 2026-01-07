@@ -10066,32 +10066,37 @@ keys:
                       min: 0
                       max: 1000000
             max_flaps:
-              type: int
-              convert_types:
-              - str
-              min: 1
-              max: 100
-            time:
-              type: int
-              description: The time period that flaps are counted (in seconds).
-              convert_types:
-              - str
-              min: 1
-              max: 1800
-            violations:
-              type: int
-              description: Number of violations to be detected.
-              convert_types:
-              - str
-              min: 1
-              max: 1000
-            intervals:
-              type: int
-              description: Intervals for monitoring violations.
-              convert_types:
-              - str
-              min: 1
-              max: 1000
+              type: dict
+              keys:
+                flaps:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 100
+                  required: true
+                time:
+                  type: int
+                  description: The time period that flaps are counted (in seconds).
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 1800
+                  required: true
+                violations:
+                  type: int
+                  description: Number of violations to be detected.
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 1000
+                intervals:
+                  type: int
+                  description: Intervals for monitoring violations.
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 1000
       default_profiles:
         type: list
         items:

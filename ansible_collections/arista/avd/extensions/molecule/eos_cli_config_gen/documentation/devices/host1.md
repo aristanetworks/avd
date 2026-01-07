@@ -3822,7 +3822,7 @@ load-balance cluster
 ### Link-Flap Profiles
 
 | Name | Damping | Decay Half-Life | Decay Units | MAC Fault Location | MAC Fault Penalty | Threshold Max | Threshold Reuse | Threshold Suppression | Max Flaps | Time | Violations | Intervals |
-| ---- | ------- | --------------- | ----------- | ------------------ | ----------------- | ------------- | --------------- | -------------0------- | --------- | ---- | ---------- | --------- |
+| ---- | ------- | --------------- | ----------- | ------------------ | ----------------- | ------------- | --------------- | --------------------- | --------- | ---- | ---------- | --------- |
 | LFP1 | True | 5 | seconds | local<br>remote<br>  | 5<br>10<br> | 5 | 2 | 100 | - | - | - | - |
 | LFP2 | False | - | - | -  | - | - | - | - | 23 | 10 | - | - |
 | LFP3 | False | - | - | -  | - | - | - | - | 11 | 12 | 5 | 10 |
@@ -4848,14 +4848,14 @@ interface Dps1
 #### Traffic Engineering
 
 | Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLGs |
-| --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
+| --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ----- |
 | Ethernet81/3 | True | 3,15-29,testgrp | 4 | 10 percent | 5 microseconds | 2,TEST-SRLG,ARISTA |
 | Ethernet81/4 | True | 4,7-100,testgrp | 2 | 100 mbps | twamp-light, fallback 2 milliseconds | - |
 
 #### Monitor - Link Flap Profiles
 
 | Interface | Link Flap Profiles |
-| --------- | -------- |
+| --------- | ------------------ |
 | Ethernet81/4 | LFP1 LFP2 |
 
 #### Ethernet Interfaces Device Configuration

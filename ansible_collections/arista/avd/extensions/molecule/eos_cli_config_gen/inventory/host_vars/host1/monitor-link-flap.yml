@@ -16,13 +16,15 @@ monitor_link_flap:
           reuse: 2
           suppression: 100
     - name: LFP2
-      max_flaps: 23
-      time: 10
+      max_flaps:
+        flaps: 23
+        time: 10
     - name: LFP3
-      max_flaps: 11
-      time: 12
-      violations: 5
-      intervals: 10
+      max_flaps:
+        flaps: 11
+        time: 12
+        violations: 5
+        intervals: 10
   default_profiles:
     - LFP3
     - LFP1
