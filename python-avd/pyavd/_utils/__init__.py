@@ -28,6 +28,7 @@ from .unique import unique
 
 __all__ = [
     "AvdStringFormatter",
+    "IndexedListCache",
     "Undefined",
     "UndefinedType",
     "append_if_not_duplicate",
@@ -46,7 +47,6 @@ __all__ = [
     "get_ipv6_networks_from_pool",
     "get_item",
     "get_item_cached",
-    "IndexedListCache",
     "get_networks_from_pool",
     "get_v2",
     "groupby",
