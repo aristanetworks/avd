@@ -224,6 +224,7 @@ ethernet_interfaces:
     address_locking:
       ipv4: true
       ipv6: true
+    loop_protection: true
 
   - name: Ethernet3
     metadata:
@@ -2133,3 +2134,11 @@ ethernet_interfaces:
     transceiver:
       transmitter:
         signal_power: -20
+
+  # Disable monitor loop protection
+  - name: Ethernet88
+    description: Loop protection disable
+    loop_protection: false
+  - name: Ethernet89
+    description: Loop protection disable
+    loop_protection: false
