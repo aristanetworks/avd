@@ -89,7 +89,6 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
 
         This relies on flow-tracking being rendered after all other eos_designs modules (except structured config).
         """
-        self.export_to_cv = self.inputs.flow_tracking_settings.cloudvision_exporter
         if self.shared_utils.flow_tracking_type == "hardware":
             self._set_hardware_flow_tracking()
         elif self.shared_utils.flow_tracking_type == "sampled":
