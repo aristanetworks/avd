@@ -173,7 +173,7 @@ class FilteredTenantsMixin(Protocol):
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
     ) -> bool:
         """
-        Check if vlan is in accepted_vlans list.
+        Check if vlan is in accepted_vlans set.
 
         If filter.only_vlans_in_use is True also check if vlan id or trunk group is assigned to connected endpoint.
         """
@@ -193,18 +193,19 @@ class FilteredTenantsMixin(Protocol):
         return bool(self.inputs.enable_trunk_groups and vlan.trunk_groups and endpoint_trunk_groups.intersection(vlan.trunk_groups))
 
     @cached_property
-    def accepted_vlans(self: SharedUtilsProtocol) -> list[int]:
+    def accepted_vlans(self: SharedUtilsProtocol) -> set[int]:
         """
         The 'vlans' switch fact is a string representing a vlan range (ex. "1-200").
 
         For l2 switches return intersection of vlans from this switch and vlans from uplink switches.
         For anything else return the expanded vlans from this switch.
+
+        Returns set[int] for O(1) membership testing.
         """
         switch_vlans = self.switch_facts.vlans
         if not switch_vlans:
-            return []
-        switch_vlans_list = range_expand(switch_vlans)
-        accepted_vlans = [int(vlan) for vlan in switch_vlans_list]
+            return set()
+        accepted_vlans = {int(vlan) for vlan in range_expand(switch_vlans)}
         if self.uplink_type != "port-channel":
             return accepted_vlans
 
@@ -213,9 +214,9 @@ class FilteredTenantsMixin(Protocol):
         for uplink_switch in uplink_switches:
             uplink_switch_facts = self.get_peer_facts(uplink_switch, required=True)
             uplink_switch_vlans = uplink_switch_facts.vlans
-            uplink_switch_vlans_list = range_expand(uplink_switch_vlans)
-            uplink_switch_vlans_list = [int(vlan) for vlan in uplink_switch_vlans_list]
-            accepted_vlans = [vlan for vlan in accepted_vlans if vlan in uplink_switch_vlans_list]
+            uplink_switch_vlans_set = {int(vlan) for vlan in range_expand(uplink_switch_vlans)}
+            # O(min(len(a), len(b))) set intersection instead of O(n*m) list comprehension
+            accepted_vlans = accepted_vlans.intersection(uplink_switch_vlans_set)
 
         return accepted_vlans
 

@@ -13,7 +13,7 @@ from .get_all import get_all, get_all_with_path
 from .get_indices_of_duplicate_items import get_indices_of_duplicate_items
 from .get_ip_from_ip_prefix import get_ip_from_ip_prefix
 from .get_ip_from_pool import get_ip_from_pool, get_ipv4_networks_from_pool, get_ipv6_networks_from_pool, get_networks_from_pool
-from .get_item import get_item
+from .get_item import IndexedListCache, get_item, get_item_cached
 from .groupby import groupby, groupby_obj
 from .load_python_class import load_python_class
 from .merge import merge
@@ -45,6 +45,8 @@ __all__ = [
     "get_ipv4_networks_from_pool",
     "get_ipv6_networks_from_pool",
     "get_item",
+    "get_item_cached",
+    "IndexedListCache",
     "get_networks_from_pool",
     "get_v2",
     "groupby",

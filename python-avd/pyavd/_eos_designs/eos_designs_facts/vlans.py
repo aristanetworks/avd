@@ -146,18 +146,23 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         Return set of vlans and set of trunk groups used by downstream switches.
 
         Traverse any downstream L2 switches so ensure we can provide connectivity to any vlans / trunk groups used by them.
+
+        Uses pre-computed _downlink_switches (populated during cross_pollinate phase) for O(k) lookup
+        instead of O(n) scan through all_fabric_devices.
         """
         if not self.shared_utils.any_network_services:
             return set(), set()
 
         vlans = set()
         trunk_groups = set()
-        for fabric_switch in self.shared_utils.all_fabric_devices:
-            fabric_switch_facts = self.get_peer_facts_generator(fabric_switch)
-            if fabric_switch_facts.shared_utils.uplink_type == "port-channel" and self.shared_utils.hostname in fabric_switch_facts.uplink_peers:
-                fabric_switch_endpoint_vlans, fabric_switch_endpoint_trunk_groups = fabric_switch_facts._endpoint_vlans_and_trunk_groups
-                vlans.update(fabric_switch_endpoint_vlans)
-                trunk_groups.update(fabric_switch_endpoint_trunk_groups)
+        # Use _downlink_switches populated during cross_pollinate() instead of scanning all_fabric_devices
+        for downlink_switch in self._downlink_switches:
+            downlink_switch_facts = self.get_peer_facts_generator(downlink_switch)
+            # Only include port-channel uplinks (original filter condition)
+            if downlink_switch_facts.shared_utils.uplink_type == "port-channel":
+                downlink_switch_endpoint_vlans, downlink_switch_endpoint_trunk_groups = downlink_switch_facts._endpoint_vlans_and_trunk_groups
+                vlans.update(downlink_switch_endpoint_vlans)
+                trunk_groups.update(downlink_switch_endpoint_trunk_groups)
 
         return vlans, trunk_groups
 

@@ -3,6 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import os
+from concurrent.futures import ThreadPoolExecutor
 from typing import TYPE_CHECKING
 
 from pyavd._eos_designs.eos_designs_facts import EosDesignsFactsGenerator
@@ -18,6 +20,10 @@ if TYPE_CHECKING:
     from pyavd.api.pool_manager import PoolManager
 
     from .schema import EosDesignsFacts
+
+# Maximum workers for parallel rendering. Can be overridden via environment variable.
+_DEFAULT_MAX_WORKERS = 32
+_MAX_WORKERS = min(os.cpu_count() or 1, int(os.environ.get("AVD_FACTS_MAX_WORKERS", _DEFAULT_MAX_WORKERS)))
 
 
 def get_facts(
@@ -61,15 +67,40 @@ def get_facts(
     for generator in peer_facts_generators.values():
         generator.cross_pollinate()
 
-    for hostname, generator in peer_facts_generators.items():
-        try:
-            all_facts[hostname] = generator.render()
-        except AristaAvdMissingVariableError as e:  # noqa: PERF203
-            raise AristaAvdMissingVariableError(variable=e.variable, host=e.host or hostname) from e
-        except AristaAvdError as e:
-            host = e.host if hasattr(e, "host") and e.host else hostname
-            msg = f"{str(e).removesuffix('.')} for host '{host}'."
-            raise type(e)(msg, host=host) from e
+    # Parallelize render phase - each generator.render() is independent after cross-pollination
+    # Use ThreadPoolExecutor since render() is CPU-bound but releases GIL during cached_property lookups
+    num_devices = len(peer_facts_generators)
+    if num_devices > 1:
+        # Parallel execution for multiple devices
+        max_workers = min(_MAX_WORKERS, num_devices)
+
+        def _render_one(item: tuple[str, EosDesignsFactsGenerator]) -> tuple[str, EosDesignsFacts]:
+            hostname, generator = item
+            return hostname, generator.render()
+
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            try:
+                for hostname, facts in executor.map(_render_one, peer_facts_generators.items()):
+                    all_facts[hostname] = facts
+            except AristaAvdMissingVariableError as e:
+                # Exception from thread already has host info from _render_one
+                raise AristaAvdMissingVariableError(variable=e.variable, host=e.host) from e
+            except AristaAvdError as e:
+                # Re-raise with host info preserved from the original exception
+                host = e.host if hasattr(e, "host") and e.host else "unknown"
+                msg = f"{str(e).removesuffix('.')} for host '{host}'."
+                raise type(e)(msg, host=host) from e
+    else:
+        # Single device - no threading overhead
+        for hostname, generator in peer_facts_generators.items():
+            try:
+                all_facts[hostname] = generator.render()
+            except AristaAvdMissingVariableError as e:  # noqa: PERF203
+                raise AristaAvdMissingVariableError(variable=e.variable, host=e.host or hostname) from e
+            except AristaAvdError as e:
+                host = e.host if hasattr(e, "host") and e.host else hostname
+                msg = f"{str(e).removesuffix('.')} for host '{host}'."
+                raise type(e)(msg, host=host) from e
 
     return all_facts
 
