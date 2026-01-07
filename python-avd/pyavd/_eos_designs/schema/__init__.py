@@ -64544,9 +64544,9 @@ class EosDesigns(EosDesignsRootModel):
                             "route_target": {"type": str},
                             "nodes": {"type": Nodes},
                         }
-                        type: Type | None
-                        address_family: str | None
-                        route_target: str | None
+                        type: Type
+                        address_family: str
+                        route_target: str
                         nodes: Nodes
                         """
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
@@ -64558,9 +64558,9 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                type: Type | None | UndefinedType = Undefined,
-                                address_family: str | None | UndefinedType = Undefined,
-                                route_target: str | None | UndefinedType = Undefined,
+                                type: Type | UndefinedType = Undefined,
+                                address_family: str | UndefinedType = Undefined,
+                                route_target: str | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -64693,6 +64693,8 @@ class EosDesigns(EosDesignsRootModel):
                         "vrf_id": {"type": int},
                         "rd_override": {"type": str},
                         "rt_override": {"type": str},
+                        "rt_import": {"type": bool, "default": True},
+                        "rt_export": {"type": bool, "default": True},
                         "mlag_ibgp_peering_ipv4_pool": {"type": str},
                         "mlag_ibgp_peering_ipv6_pool": {"type": str},
                         "ip_helpers": {"type": IpHelpers},
@@ -64776,6 +64778,26 @@ class EosDesigns(EosDesignsRootModel):
                       - A single number will be used in the RT assigned number subfield (second part of the
                     RT).
                       - A full RT string with colon separator which will override the full RT.
+                    """
+                    rt_import: bool
+                    """
+                    Enable or disable route target import for the VRF for all address families.
+                    This setting applies
+                    only to the automatically generated route targets
+                    and does not affect any entries defined under
+                    `additional_route_targets`.
+
+                    Default value: `True`
+                    """
+                    rt_export: bool
+                    """
+                    Enable or disable route target export for the VRF for all address families.
+                    This setting applies
+                    only to the automatically generated route targets
+                    and does not affect any entries defined under
+                    `additional_route_targets`.
+
+                    Default value: `True`
                     """
                     mlag_ibgp_peering_ipv4_pool: str | None
                     """
@@ -64996,6 +65018,8 @@ class EosDesigns(EosDesignsRootModel):
                             vrf_id: int | None | UndefinedType = Undefined,
                             rd_override: str | None | UndefinedType = Undefined,
                             rt_override: str | None | UndefinedType = Undefined,
+                            rt_import: bool | UndefinedType = Undefined,
+                            rt_export: bool | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv6_pool: str | None | UndefinedType = Undefined,
                             ip_helpers: IpHelpers | UndefinedType = Undefined,
@@ -65073,6 +65097,18 @@ class EosDesigns(EosDesignsRootModel):
                                      - A single number will be used in the RT assigned number subfield (second part of the
                                    RT).
                                      - A full RT string with colon separator which will override the full RT.
+                                rt_import:
+                                   Enable or disable route target import for the VRF for all address families.
+                                   This setting applies
+                                   only to the automatically generated route targets
+                                   and does not affect any entries defined under
+                                   `additional_route_targets`.
+                                rt_export:
+                                   Enable or disable route target export for the VRF for all address families.
+                                   This setting applies
+                                   only to the automatically generated route targets
+                                   and does not affect any entries defined under
+                                   `additional_route_targets`.
                                 mlag_ibgp_peering_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The

@@ -52,6 +52,7 @@
       vars:
         anta_runner_dry_run: true
         avd_catalogs_enabled: false
+        user_catalogs_enabled: true
         anta_reports_dir: "{{ root_dir }}/anta/reports/user_defined_catalogs_run"
       run_once: true
 
@@ -62,6 +63,7 @@
       vars:
         anta_runner_dry_run: true
         avd_catalogs_enabled: false
+        user_catalogs_enabled: true
         anta_reports_dir: "{{ root_dir }}/anta/reports/user_defined_catalogs_with_tags_run"
         anta_runner_tags: ["border_leaf"]
       run_once: true
