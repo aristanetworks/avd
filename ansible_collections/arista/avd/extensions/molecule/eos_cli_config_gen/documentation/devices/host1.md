@@ -11138,6 +11138,12 @@ ip community-list regexp aa_test3 deny ^100
 
 #### Peer Filters Summary
 
+##### Filter1
+
+| Sequence | Match |
+| -------- | ----- |
+| 20 | as-range 1-2 result reject |
+
 ##### PF1
 
 | Sequence | Match |
@@ -11154,6 +11160,9 @@ ip community-list regexp aa_test3 deny ^100
 #### Peer Filters Device Configuration
 
 ```eos
+!
+peer-filter Filter1
+   20 match as-range 1-2 result reject
 !
 peer-filter PF1
    10 match as-range 1-2 result reject
