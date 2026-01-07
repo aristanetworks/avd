@@ -11,7 +11,6 @@ ip_name_server:
         - ip_address: 2001:db8::1
         - ip_address: 2001:db8::2
           priority: 0
-        # Same DNS different VRF and priority
         - ip_address: 2001:db8::3
           priority: 1
     - name: mgmt
