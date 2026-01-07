@@ -1,0 +1,31 @@
+# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  custom_platform_skus:
+    $ref: eos_designs#/$defs/platform_skus
+    type: list
+    documentation_options:
+      table: platform-skus
+    description:
+      Custom Platform settings to override the default `platform_skus`.
+      This list will be prepended to the list of `platform_skus`.
+      The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.
+      If no matches are found, the first entry containing a platform `default` will be chosen.
+  platform_skus:
+    $ref: eos_designs#/$defs/platform_skus
+    type: list
+    documentation_options:
+      table: platform-skus
+    description:
+      Platform settings.
+      The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.
+      If no matches are found, the first entry containing a platform `default` will be chosen.
+      The default values will be overridden if `platform_skus` is defined.
+      If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.
+      If you need to add custom platforms, create them under `custom_platform_skus`.
+      Entries under `custom_platform_skus` will be matched before the equivalent entries from `platform_skus`.
