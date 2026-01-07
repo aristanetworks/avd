@@ -15971,6 +15971,101 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class IpLargeCommunityListsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class EntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Action: TypeAlias = Literal["permit", "deny"]
+
+            class LargeCommunities(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            LargeCommunities._item_type = str
+
+            _fields: ClassVar[dict] = {"action": {"type": str}, "large_communities": {"type": LargeCommunities}, "regexp": {"type": str}}
+            action: Action
+            large_communities: LargeCommunities
+            """
+            If defined, a standard large-community-list will be configured.
+            Large community values (ASN:Local-
+            part-1:Local-part-2):
+            - ASN:nn:nn
+
+
+            Subclass of AvdList with `str` items.
+            """
+            regexp: str | None
+            """
+            Regular Expression.
+            If defined, a regex large-community-list will be configured.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    action: Action | UndefinedType = Undefined,
+                    large_communities: LargeCommunities | UndefinedType = Undefined,
+                    regexp: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        action: action
+                        large_communities:
+                           If defined, a standard large-community-list will be configured.
+                           Large community values (ASN:Local-
+                           part-1:Local-part-2):
+                           - ASN:nn:nn
+
+
+                           Subclass of AvdList with `str` items.
+                        regexp:
+                           Regular Expression.
+                           If defined, a regex large-community-list will be configured.
+
+                    """
+
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
+
+        Entries._item_type = EntriesItem
+
+        _fields: ClassVar[dict] = {"name": {"type": str}, "entries": {"type": Entries}}
+        name: str
+        """IP Large-community-list Name."""
+        entries: Entries
+        """Subclass of AvdList with `EntriesItem` items."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, name: str | UndefinedType = Undefined, entries: Entries | UndefinedType = Undefined) -> None:
+                """
+                IpLargeCommunityListsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name: IP Large-community-list Name.
+                    entries: Subclass of AvdList with `EntriesItem` items.
+
+                """
+
+    class IpLargeCommunityLists(AvdIndexedList[str, IpLargeCommunityListsItem]):
+        """Subclass of AvdIndexedList with `IpLargeCommunityListsItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    IpLargeCommunityLists._item_type = IpLargeCommunityListsItem
+
     class IpNameServerGroupsItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -68708,6 +68803,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_http_client": {"type": IpHttpClient},
         "ip_icmp_redirect": {"type": bool},
         "ip_igmp_snooping": {"type": IpIgmpSnooping},
+        "ip_large_community_lists": {"type": IpLargeCommunityLists},
         "ip_name_server_groups": {"type": IpNameServerGroups},
         "ip_name_servers": {"type": IpNameServers},
         "ip_nat": {"type": IpNat},
@@ -69058,6 +69154,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ip_icmp_redirect: bool | None
     ip_igmp_snooping: IpIgmpSnooping
     """Subclass of AvdModel."""
+    ip_large_community_lists: IpLargeCommunityLists
+    """
+    Large communities and regexp entries MUST not be configured in the same large-community-list.
+    Subclass of AvdIndexedList with `IpLargeCommunityListsItem` items. Primary key is `name` (`str`).
+    """
     ip_name_server_groups: IpNameServerGroups
     """Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`)."""
     ip_name_servers: IpNameServers
@@ -69450,6 +69551,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_http_client: IpHttpClient | UndefinedType = Undefined,
             ip_icmp_redirect: bool | None | UndefinedType = Undefined,
             ip_igmp_snooping: IpIgmpSnooping | UndefinedType = Undefined,
+            ip_large_community_lists: IpLargeCommunityLists | UndefinedType = Undefined,
             ip_name_server_groups: IpNameServerGroups | UndefinedType = Undefined,
             ip_name_servers: IpNameServers | UndefinedType = Undefined,
             ip_nat: IpNat | UndefinedType = Undefined,
@@ -69732,6 +69834,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_http_client: Subclass of AvdModel.
                 ip_icmp_redirect: ip_icmp_redirect
                 ip_igmp_snooping: Subclass of AvdModel.
+                ip_large_community_lists:
+                   Large communities and regexp entries MUST not be configured in the same large-community-list.
+                   Subclass of AvdIndexedList with `IpLargeCommunityListsItem` items. Primary key is `name` (`str`).
                 ip_name_server_groups: Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`).
                 ip_name_servers: Subclass of AvdList with `IpNameServersItem` items.
                 ip_nat: Subclass of AvdModel.
