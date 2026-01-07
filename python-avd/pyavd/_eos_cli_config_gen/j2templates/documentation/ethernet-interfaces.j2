@@ -800,7 +800,7 @@
 #### Monitor - Link Flap Profiles
 
 | Interface | Link Flap Profiles |
-| --------- | -------- |
+| --------- | ----------------- |
 {%         for monitored_interface in monitor_link_flaps %}
 | {{ monitored_interface.name }} | {{ monitored_interface.monitor_link_flap_profiles | arista.avd.natural_sort | join(' ') }} |
 {%         endfor %}
