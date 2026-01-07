@@ -57,7 +57,8 @@
             "neighbor_device": "dc2-leaf3a.arista.com",
             "neighbor_port": "Ethernet4"
           }
-        ]
+        ],
+        "require_fqdn": false
       }
     },
     {
