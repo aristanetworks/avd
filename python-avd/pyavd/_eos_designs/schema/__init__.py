@@ -17911,6 +17911,83 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class CloudvisionExporter(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str, "default": "CLOUDVISION"},
+                "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
+                "source_interface": {"type": str},
+            }
+            name: str
+            """Default value: `"CLOUDVISION"`"""
+            vrf: str
+            """
+            VRF name.
+            The value will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure under the VRF set with `mgmt_interface_vrf`.
+              An error will be raised if `mgmt_ip` or
+            `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf` will configure under the
+            VRF set with `inband_mgmt_vrf`.
+              An error will be raised if inband management is not configured for
+            the device.
+            - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of
+            the two options above depending on the value of `default_mgmt_method`.
+            - Any other string will be
+            used directly as the VRF name.
+
+            Default value: `"use_default_mgmt_method_vrf"`
+            """
+            source_interface: str | None
+            """
+            Local interface used to connect to TerminAttr on EOS.
+            If not set, the local interface may be set
+            automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+            `use_default_mgmt_method_vrf`.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    vrf: str | UndefinedType = Undefined,
+                    source_interface: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    CloudvisionExporter.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        vrf:
+                           VRF name.
+                           The value will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure under the VRF set with `mgmt_interface_vrf`.
+                             An error will be raised if `mgmt_ip` or
+                           `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf` will configure under the
+                           VRF set with `inband_mgmt_vrf`.
+                             An error will be raised if inband management is not configured for
+                           the device.
+                           - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of
+                           the two options above depending on the value of `default_mgmt_method`.
+                           - Any other string will be
+                           used directly as the VRF name.
+                        source_interface:
+                           Local interface used to connect to TerminAttr on EOS.
+                           If not set, the local interface may be set
+                           automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+                           `use_default_mgmt_method_vrf`.
+
+                    """
+
         class TrackersItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -18126,6 +18203,7 @@ class EosDesigns(EosDesignsRootModel):
                 "name": {"type": str},
                 "sampled": {"type": Sampled},
                 "record_export": {"type": RecordExport},
+                "export_to_cloudvision": {"type": bool},
                 "exporters": {"type": Exporters},
             }
             name: str
@@ -18138,6 +18216,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             record_export: RecordExport
             """Subclass of AvdModel."""
+            export_to_cloudvision: bool | None
+            """
+            When set to `true`, AVD automatically:
+            Configure an Flow tracking for `127.0.0.1` port `4739` in the
+            VRF defined in `cloudvision_exporter.vrf`.
+            Also configures the TerminAttr daemon IPFIX Collector
+            address to listen on for receiving IPFIX packets.
+            """
             exporters: Exporters
             """Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`)."""
 
@@ -18149,6 +18235,7 @@ class EosDesigns(EosDesignsRootModel):
                     name: str | UndefinedType = Undefined,
                     sampled: Sampled | UndefinedType = Undefined,
                     record_export: RecordExport | UndefinedType = Undefined,
+                    export_to_cloudvision: bool | None | UndefinedType = Undefined,
                     exporters: Exporters | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -18164,6 +18251,12 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         record_export: Subclass of AvdModel.
+                        export_to_cloudvision:
+                           When set to `true`, AVD automatically:
+                           Configure an Flow tracking for `127.0.0.1` port `4739` in the
+                           VRF defined in `cloudvision_exporter.vrf`.
+                           Also configures the TerminAttr daemon IPFIX Collector
+                           address to listen on for receiving IPFIX packets.
                         exporters: Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`).
 
                     """
@@ -18178,6 +18271,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "sampled": {"type": Sampled},
             "hardware": {"type": Hardware},
+            "cloudvision_exporter": {"type": CloudvisionExporter},
             "trackers": {
                 "type": Trackers,
                 "default": lambda cls: coerce_type(
@@ -18206,6 +18300,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        cloudvision_exporter: CloudvisionExporter
+        """
+        Configuration for the exporter to CloudVision.
+
+        Subclass of AvdModel.
+        """
         trackers: Trackers
         """
         Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
@@ -18220,6 +18320,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 sampled: Sampled | UndefinedType = Undefined,
                 hardware: Hardware | UndefinedType = Undefined,
+                cloudvision_exporter: CloudvisionExporter | UndefinedType = Undefined,
                 trackers: Trackers | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -18235,6 +18336,10 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdModel.
                     hardware:
                        The options relevant only for flow tracker type hardware.
+
+                       Subclass of AvdModel.
+                    cloudvision_exporter:
+                       Configuration for the exporter to CloudVision.
 
                        Subclass of AvdModel.
                     trackers: Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
