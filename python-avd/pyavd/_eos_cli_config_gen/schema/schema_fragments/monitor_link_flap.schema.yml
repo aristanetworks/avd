@@ -49,6 +49,7 @@ keys:
                           - "remote"
                       penalty:
                         type: int
+                        description: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
                         required: true
                         convert_types:
                           - str
