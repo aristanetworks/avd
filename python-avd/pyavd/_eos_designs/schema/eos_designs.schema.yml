@@ -3181,9 +3181,6 @@ keys:
       level:
         type: list
         $ref: eos_cli_config_gen#/keys/logging/keys/level
-      validate_no_errors_period:
-        type: int
-        $ref: eos_cli_config_gen#/keys/metadata/keys/validate_no_errors_period
   mac_address_table:
     documentation_options:
       table: system-settings
@@ -4332,13 +4329,12 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
         evpn_gateway_all_active_multihoming: true
+        hardware_validation: false
       reload_delay:
         mlag: 300
         non_mlag: 330
       digital_twin:
         act_node_type: veos
-      validate_hardware:
-        enabled: false
     - platforms:
       - CEOS
       - cEOS
@@ -4350,25 +4346,23 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
         evpn_gateway_all_active_multihoming: true
+        hardware_validation: false
       management_interface: Management0
       reload_delay:
         mlag: 300
         non_mlag: 330
       digital_twin:
         act_node_type: veos
-      validate_hardware:
-        enabled: false
     - platforms:
       - CloudEOS
       feature_support:
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        hardware_validation: false
       p2p_uplinks_mtu: 9194
       digital_twin:
         act_node_type: cloudeos
-      validate_hardware:
-        enabled: false
     - platforms:
       - AWE-5310
       - AWE-7230R
@@ -5671,6 +5665,89 @@ keys:
     description: Use `router general` to set router ID for all routing protocols and
       VRFs.
     default: false
+  validation_profiles:
+    type: list
+    primary_key: name
+    description: 'List of validation profiles defining hardware, logging, and fabric-related
+      validation rules.
+
+      Validation profiles can be referenced from node definitions (for example under
+      `l3leaf.nodes[].validation_profile`) and support single-level inheritance using
+      `parent_profile`.'
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+        parent_profile:
+          type: str
+          description: 'Inherit settings from a parent profile defined under `validation_profiles`.
+
+            Max one level of profile inheritance: profile -> parent_profile'
+        hardware:
+          type: dict
+          description: 'Hardware validation thresholds for the device.
+
+            These settings are only applied when `platform_settings/custom_platform_settings[].feature_support.hardware_validation`
+            is set to `true`.
+
+            If hardware validation is disabled, all hardware validation checks are
+            skipped and the keys under this section are ignored.'
+          keys:
+            min_power_supplies:
+              type: int
+              convert_types:
+              - str
+              description: Minimum number of power supplies required for the device.
+                Set to 0 to skip validation.
+            min_fans:
+              type: int
+              convert_types:
+              - str
+              description: Minimum number of fans required for the device. Set to
+                0 to skip validation.
+            min_supervisors:
+              type: int
+              convert_types:
+              - str
+              description: Minimum number of supervisor modules required for the device.
+                Set to 0 to skip validation.
+            min_line_cards:
+              type: int
+              convert_types:
+              - str
+              description: Minimum number of line cards required for the device. Set
+                to 0 to skip validation.
+            min_fabric_cards:
+              type: int
+              convert_types:
+              - str
+              description: Minimum number of fabric cards required for the device.
+                Set to 0 to skip validation.
+            transceiver_manufacturers:
+              type: list
+              description: List of approved transceiver manufacturers for the device.
+              items:
+                type: str
+              default:
+              - Arista Networks
+              - Arastra, Inc.
+        logging:
+          type: dict
+          keys:
+            validate_no_errors_period:
+              type: int
+              convert_types:
+              - str
+              description: Threshold (in minutes) defining how far back to check the
+                logging buffer for error-level logs during the validation performed
+                by the `anta_runner` role.
+        exclude_as_extra_fabric_validation_target:
+          type: bool
+          description: Exclude this node from being used as a destination target from
+            other fabric devices in the extra fabric validation tests performed by
+            the `anta_runner` role.
+          default: false
   vtep_loopback_description:
     documentation_options:
       table: overlay-settings
@@ -9791,11 +9868,6 @@ $defs:
               not overlap with autogenerated Port-channel IDs in the Network Services.\nNote!
               For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches
               must have the same value.\n"
-          exclude_as_extra_fabric_validation_target:
-            type: bool
-            $ref: eos_cli_config_gen#/keys/metadata/keys/exclude_as_extra_fabric_validation_target
-            documentation_options:
-              table: node-type-common-configuration
           uplink_ethernet_structured_config:
             type: dict
             $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
@@ -10876,6 +10948,8 @@ $defs:
             - int
             description: Set BGP cluster id.
           kernel_ecmp_cli:
+            documentation_options:
+              table: node-type-common-configuration
             type: bool
             default: true
             description: 'Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -11408,6 +11482,16 @@ $defs:
               remove_in_version: 6.0.0
               new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config
                 or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config
+          validation_profile:
+            documentation_options:
+              table: node-type-common-configuration
+            type: str
+            description: 'Name of the validation profile to apply to this device.
+
+              The profile must be defined under `validation_profiles`.
+
+              Validation profiles define requirements (e.g., hardware and logging)
+              used by the `anta_runner` role during post-deployment validation.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -11588,10 +11672,6 @@ $defs:
           - hardware
           description: Set the default flow tracker type.
           default: sampled
-        exclude_as_extra_fabric_validation_target:
-          type: bool
-          $ref: eos_cli_config_gen#/keys/metadata/keys/exclude_as_extra_fabric_validation_target
-          default: false
         mlag_support:
           type: bool
           default: false
@@ -12843,6 +12923,14 @@ $defs:
 
                 The feature will be ignored on platforms where this is false.'
               default: true
+            hardware_validation:
+              type: bool
+              description: 'Enable hardware validation for the device.
+
+                When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware`
+                keys defined for the validation profile applied to the device are
+                ignored.'
+              default: true
         management_interface:
           type: str
           default: Management1
@@ -12887,9 +12975,6 @@ $defs:
               - third-party
               - tools-server
               - veos
-        validate_hardware:
-          type: dict
-          $ref: eos_cli_config_gen#/keys/metadata/keys/validate_hardware
         structured_config:
           type: dict
           relaxed_validation: true
