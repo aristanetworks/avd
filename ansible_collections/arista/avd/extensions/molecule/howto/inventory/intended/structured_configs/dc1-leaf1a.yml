@@ -51,6 +51,7 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   metadata:
     peer: WEB-SERVER-01
+    peer_interface: eth0
     peer_key: connected_endpoints
     port_profile: PP-WEBSERVER
   switchport:
@@ -65,6 +66,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: ESXI-HOST-03
+    peer_interface: vmnic0
     peer_key: connected_endpoints
     port_profile: PP-VMHOST-LACP
 hostname: dc1-leaf1a

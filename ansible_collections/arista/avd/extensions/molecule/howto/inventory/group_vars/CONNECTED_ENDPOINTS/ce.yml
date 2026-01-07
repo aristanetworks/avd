@@ -2,24 +2,27 @@
 connected_endpoints:
   - name: WEB-SERVER-01
     adapters:
-      - switch_ports: [Ethernet10]
+      - endpoint_ports: [eth0]
         switches: [dc1-leaf1a]
+        switch_ports: [Ethernet10]
         profile: PP-WEBSERVER
         description: "Connects to WEB-SERVER-01 NIC1"
 
   - name: ESXI-HOST-03
     adapters:
-      - switch_ports: [Ethernet11, Ethernet11]
+      - endpoint_ports: [vmnic0, vmnic1]
         switches: [dc1-leaf1a, dc1-leaf1b]
+        switch_ports: [Ethernet11, Ethernet11]
         profile: PP-VMHOST-LACP
         description: "LACP bundle to ESXI-HOST-03"
-        port_channel: # (!)!
+        port_channel: # (1)!
           mode: active
 
   # Connected endpoint on service_leaf to demonstrate custom node type capabilities
   - name: APP-SERVER-01
     adapters:
-      - switch_ports: [Ethernet10]
+      - endpoint_ports: [eth0]
         switches: [dc1-svc-leaf1]
+        switch_ports: [Ethernet10]
         profile: PP-APPSERVER
         description: "Connects to APP-SERVER-01 on service_leaf"

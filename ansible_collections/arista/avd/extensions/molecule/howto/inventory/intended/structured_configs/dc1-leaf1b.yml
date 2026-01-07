@@ -53,6 +53,7 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer: ESXI-HOST-03
+    peer_interface: vmnic1
     peer_key: connected_endpoints
     port_profile: PP-VMHOST-LACP
 hostname: dc1-leaf1b
