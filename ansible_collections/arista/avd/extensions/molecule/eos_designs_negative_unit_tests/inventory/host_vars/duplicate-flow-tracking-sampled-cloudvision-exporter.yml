@@ -32,7 +32,7 @@ l2leaf:
   defaults:
     platform: vEOS-lab
     uplink_interfaces: ['Ethernet1']
-    uplink_switches: ['duplicate-neighbors-l3-edge']
+    uplink_switches: ['duplicate-flow-tracking-hardware-cloudvision-exporter']
     # default value is sampled
     flow_tracker_type: sampled
 
