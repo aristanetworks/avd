@@ -1,0 +1,18 @@
+---
+# This tests the SNMP auto engine ID calculation for the method specified
+# as the default mgmt method.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: snmp-autogen-engineid-rfc3411-hostname-default-mgmt-oob
+      id: 43
+      mgmt_ip: 192.168.0.10/24
+# keeping default
+# default_mgmt_method: oob
+
+snmp_settings:
+  compute_local_engineid: true
+  # The default value is rfc3411_type5
+  # compute_local_engineid_source: rfc3411_type5
+  # Since default_mgmt_method is not set, it should use the mgmt_ip
