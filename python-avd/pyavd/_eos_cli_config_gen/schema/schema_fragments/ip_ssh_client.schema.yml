@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -6,12 +6,6 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  ip_ssh_client_source_interfaces:
-    type: list
-    documentation_options:
-      table: ip-ssh-client
-    deprecation:
-      removed: true
-      warning: true
-      new_key: ip_ssh_client
-      remove_in_version: 6.0.0
+  ip_ssh_client:
+    type: dict
+    $ref: "eos_cli_config_gen#/$defs/source_interface_per_vrf"
