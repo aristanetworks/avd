@@ -59,6 +59,7 @@ keys:
                   type: dict
                   keys:
                     maximum:
+                      description: Maximum value of penalty for a link.
                       type: int
                       convert_types:
                         - str
