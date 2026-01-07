@@ -11,7 +11,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, default, get_item, strip_empties_from_dict
+from pyavd._utils import AvdStringFormatter, default, strip_empties_from_dict
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:
@@ -273,36 +273,26 @@ class RouterBgpMixin(Protocol):
     ) -> None:
         """In-place update EVPN/MPLS part of structured config for *one* VRF under router_bgp.vrfs."""
         vrf_rt = self.get_vrf_rt(vrf)
-        route_targets = {"import": [], "export": []}
 
         for af in sorted(vrf_address_families):
-            if (target := get_item(route_targets["import"], "address_family", af)) is None:
-                route_targets["import"].append({"address_family": af, "route_targets": [vrf_rt]})
-            else:
-                target["route_targets"].append(vrf_rt)
+            if vrf.rt_import:
+                bgp_vrf.route_targets.field_import.append_new(
+                    address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ImportItem.RouteTargets([vrf_rt])
+                )
 
-            if (target := get_item(route_targets["export"], "address_family", af)) is None:
-                route_targets["export"].append({"address_family": af, "route_targets": [vrf_rt]})
-            else:
-                target["route_targets"].append(vrf_rt)
+            if vrf.rt_export:
+                bgp_vrf.route_targets.export.append_new(
+                    address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ExportItem.RouteTargets([vrf_rt])
+                )
 
         for rt in vrf.additional_route_targets:
-            if rt.type is None:
-                continue
-            if (target := get_item(route_targets[rt.type], "address_family", rt.address_family)) is None:
-                route_targets[rt.type].append({"address_family": rt.address_family, "route_targets": [rt.route_target]})
-            else:
-                target["route_targets"].append(rt.route_target)
+            bgp_vrf.route_targets.field_import.obtain(rt.address_family).route_targets.extend(
+                [rt.route_target]
+            ) if rt.type == "import" else bgp_vrf.route_targets.export.obtain(rt.address_family).route_targets.extend([rt.route_target])
 
-        if vrf.name == "default" and self._vrf_default_evpn and self._route_maps_vrf_default_check():
+        if vrf.name == "default" and self._vrf_default_evpn and self._route_maps_vrf_default_check() and vrf.rt_export:
             # Special handling of vrf default with evpn.
-
-            if (target := get_item(route_targets["export"], "address_family", "evpn")) is None:
-                route_targets["export"].append({"address_family": "evpn", "route_targets": ["route-map RM-EVPN-EXPORT-VRF-DEFAULT"]})
-            else:
-                target.setdefault("route_targets", []).append("route-map RM-EVPN-EXPORT-VRF-DEFAULT")
-
-        bgp_vrf.route_targets = EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets._from_dict(route_targets)
+            bgp_vrf.route_targets.export.obtain("evpn").route_targets.extend(["route-map RM-EVPN-EXPORT-VRF-DEFAULT"])
 
         # VRF default
         if vrf.name == "default":
