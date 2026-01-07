@@ -108,7 +108,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
             cv_exporter.collectors.append_new(host="127.0.0.1")
         except AristaAvdDuplicateDataError as e:
             msg = (
-                f"Found conflicting data while generating configuration for cloudvision exporter with name '{self.export_to_cv.name}'. "
+                f"Found conflicting configuration for exporter '{self.export_to_cv.name}' while generating configuration for flow tracking 'export_to_cloudvision'. "
                 f"Please check your exporters configuration for tracker '{tracker.name}' is not conflicting with 'cloudvision_exporter' configuration."
             )
             raise AristaAvdInvalidInputsError(msg) from e
