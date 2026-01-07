@@ -98,7 +98,7 @@ class SnmpServerMixin(Protocol):
         so that users can control the upgrade to 6.0.0 without having to re do their SNMP engine IDs.
         """
         # Accepting SonarLint issue: The weak sha1 is not used for encryption. Just to create a unique engine id.
-        return sha1(f"{self.shared_utils.hostname}{ip}".encode(), usedforsecurity=True).hexdigest()  # NOSONAR
+        return sha1(f"{self.shared_utils.hostname}{ip}".encode(), usedforsecurity=False).hexdigest()  # NOSONAR
 
     def set_snmp_local_engine_id(self: AvdStructuredConfigBaseProtocol) -> None:
         """Set SNMP local engine ID when 'snmp_settings.compute_local_engineid: true'."""
