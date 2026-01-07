@@ -1214,6 +1214,8 @@ $defs:
               - "int"
             description: Set BGP cluster id.
           kernel_ecmp_cli:
+            documentation_options:
+              table: node-type-common-configuration
             type: bool
             default: true
             description: |-
