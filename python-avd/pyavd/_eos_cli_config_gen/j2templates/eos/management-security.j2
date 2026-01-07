@@ -58,8 +58,8 @@ management security
 {%             if auto_certificate_profile.renewal is arista.avd.defined %}
       renewal {{ auto_certificate_profile.renewal }} seconds
 {%             endif %}
-{%         endfor %}
    !
+{%         endfor %}
 {%     endif %}
 {%     if management_security.auto_certificate_protocols is arista.avd.defined %}
 {%         for auto_certificate_protocol in management_security.auto_certificate_protocols | arista.avd.natural_sort(sort_key="name") %}
@@ -70,7 +70,7 @@ management security
       server vrf {{ auto_certificate_protocol.server.vrf }}
 {%             endif %}
 {%             if auto_certificate_protocol.connection.retry.interval is arista.avd.defined %}
-{%                 if auto_certificate_protocol.connection.retry.exponential_backoff is arista.avd.defined %}
+{%                 if auto_certificate_protocol.connection.retry.exponential_backoff is arista.avd.defined(true) %}
 {%                     set auto_cert_backoff_exponential = " backoff exponential" %}
 {%                 else %}
 {%                     set auto_cert_backoff_exponential = "" %}
@@ -83,20 +83,18 @@ management security
 {%             if auto_certificate_protocol.disabled is arista.avd.defined %}
       disabled
 {%             endif %}
-{%             if auto_certificate_protocol.credentials.enroll.username is arista.avd.defined and auto_certificate_protocol.credentials.enroll.secret is arista.avd.defined %}
-      credentials enroll username {{ auto_certificate_protocol.credentials.enroll.username }} secret 7 {{ auto_certificate_protocol.credentials.enroll.secret }}
-{%             endif %}
 {%             if auto_certificate_protocol.credentials.enroll.token is arista.avd.defined %}
-      credentials enroll token 7 {{ auto_certificate_protocol.credentials.enroll.token }}
-{%             endif %}
-{%             if auto_certificate_protocol.credentials.re_enroll.username is arista.avd.defined and auto_certificate_protocol.credentials.re_enroll.secret is arista.avd.defined %}
-      credentials enroll username {{ auto_certificate_protocol.credentials.re_enroll.username }} secret 7 {{ auto_certificate_protocol.credentials.re_enroll.secret }}
+      credentials enroll token 7 {{ auto_certificate_protocol.credentials.enroll.token | arista.avd.hide_passwords(hide_passwords) }}
+{%             elif auto_certificate_protocol.credentials.enroll.username is arista.avd.defined and auto_certificate_protocol.credentials.enroll.secret is arista.avd.defined %}
+      credentials enroll username {{ auto_certificate_protocol.credentials.enroll.username }} secret 7 {{ auto_certificate_protocol.credentials.enroll.secret | arista.avd.hide_passwords(hide_passwords) }}
 {%             endif %}
 {%             if auto_certificate_protocol.credentials.re_enroll.token is arista.avd.defined %}
-      credentials enroll token 7 {{ auto_certificate_protocol.credentials.re_enroll.token }}
+      credentials enroll token 7 {{ auto_certificate_protocol.credentials.re_enroll.token | arista.avd.hide_passwords(hide_passwords) }}
+{%             elif auto_certificate_protocol.credentials.re_enroll.username is arista.avd.defined and auto_certificate_protocol.credentials.re_enroll.secret is arista.avd.defined %}
+      credentials enroll username {{ auto_certificate_protocol.credentials.re_enroll.username }} secret 7 {{ auto_certificate_protocol.credentials.re_enroll.secret | arista.avd.hide_passwords(hide_passwords) }}
 {%             endif %}
-{%         endfor %}
    !
+{%         endfor %}
 {%     endif %}
 {%     if management_security.entropy_sources is arista.avd.defined %}
 {%         set entropy_sources = [] %}

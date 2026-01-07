@@ -52,6 +52,8 @@ Serial Number: DEADBEEFC0FFEW
   - [Address Locking Device Configuration](#address-locking-device-configuration)
 - [Management Security](#management-security)
   - [Management Security Summary](#management-security-summary)
+  - [Management Security Auto-Certificate Profiles](#management-security-auto-certificate-profiles)
+  - [Management Security Auto-Certificate Protocols](#management-security-auto-certificate-protocols)
   - [Management Security SSL Profiles](#management-security-ssl-profiles)
   - [SSL profile test1-chain-cert Certificates Summary](#ssl-profile-test1-chain-cert-certificates-summary)
   - [SSL profile test1-trust-cert Certificates Summary](#ssl-profile-test1-trust-cert-certificates-summary)
@@ -1825,6 +1827,21 @@ address locking
 | Signature verification | Enabled |
 | Signature verification SSL profile | cipher-v1.0-v1.3 |
 
+### Management Security Auto-Certificate Profiles
+
+| Auto-Certificate Profile Name | Key filename | Auto-Certificate Protocol Name | Certificate Signature Digest | Renewal Time | Distinguished Name Parameters | Subject Alternative Name Parameters |
+| ----------------------------- | ------------ | ------------------------------ | ---------------------------- | ------------ | ----------------------------- | ----------------------------------- |
+| AVD_AUTO_CERTIFICATE_PROFILE | SSL_KEY | AVD_EST_PROTOCOL_token | sha512 | - | Common Name: 00:1c:73:ff:ff:ff<br>Country: US<br>Email: noreply@arista.com<br>Locality: Santa Clara<br>Organization: Arista Networks<br>Organization Unit: AVD<br>Serial Number: 123abc<br>State: CA | Dns: avd.arista.com<br>Email: noreply@arista.com<br>Ip: 198.51.100.42<br>Uri: https://avd.arista.com/ |
+| AVD_AUTO_CERTIFICATE_PROFILE_system | SSL_KEY | AVD_EST_PROTOCOL_secret | - | 86400 | Common Name: 00:1c:73:aa:aa:aa<br>Country: US<br>Email: noreply@arista.com<br>Locality: Santa Clara<br>Organization: Arista Networks<br>Organization Unit: AVD<br>Serial Number: system<br>State: CA | - |
+
+### Management Security Auto-Certificate Protocols
+
+| Auto-Certificate Protocol Name | Protocol | Disabled | Server URL | SSL Profile Name | VRF | Connection Retry Count | Connection Retry Interval | Exponential Backoff |
+| ------------------------------ | -------- | -------- | ---------- | ---------------- | --- | ---------------------- | ------------------------- | ------------------- |
+| AVD_EST_PROTOCOL_both | EST | Disabled | https://test_est.example.com/test2 | SSL_PROFILE | MGMT | 100 | 30 | False |
+| AVD_EST_PROTOCOL_secret | EST | - | https://test_est.example.com/test1 | SSL_PROFILE | - | 100 | - | False |
+| AVD_EST_PROTOCOL_token | EST | - | https://test_est.example.com/test | SSL_PROFILE | MGMT | 100 | 30 | True |
+
 ### Management Security SSL Profiles
 
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Ciphers | CRLs | FIPS restrictions enabled |
@@ -1896,6 +1913,59 @@ address locking
 ```eos
 !
 management security
+   auto-certificate profile AVD_AUTO_CERTIFICATE_PROFILE
+      key SSL_KEY
+      parameters distinguished-name common-name "00:1c:73:ff:ff:ff"
+      parameters distinguished-name country US
+      parameters distinguished-name state "CA"
+      parameters distinguished-name locality "Santa Clara"
+      parameters distinguished-name organization "Arista Networks"
+      parameters distinguished-name organization-unit "AVD"
+      parameters distinguished-name email noreply@arista.com
+      parameters distinguished-name serial-number "123abc"
+      parameters subject-alternative-name ip 198.51.100.42
+      parameters subject-alternative-name dns avd.arista.com
+      parameters subject-alternative-name email noreply@arista.com
+      parameters subject-alternative-name uri https://avd.arista.com/
+      protocol instance AVD_EST_PROTOCOL_token
+      digest sha512
+   !
+   auto-certificate profile AVD_AUTO_CERTIFICATE_PROFILE_system
+      key SSL_KEY
+      parameters distinguished-name common-name "00:1c:73:aa:aa:aa"
+      parameters distinguished-name country US
+      parameters distinguished-name state "CA"
+      parameters distinguished-name locality "Santa Clara"
+      parameters distinguished-name organization "Arista Networks"
+      parameters distinguished-name organization-unit "AVD"
+      parameters distinguished-name email noreply@arista.com
+      parameters distinguished-name serial-number system
+      protocol instance AVD_EST_PROTOCOL_secret
+      renewal 86400 seconds
+   !
+   auto-certificate protocol est AVD_EST_PROTOCOL_both
+      server url https://test_est.example.com/test2
+      server ssl profile SSL_PROFILE
+      server vrf MGMT
+      connection retry interval 30 seconds
+      connection retry count 100
+      disabled
+      credentials enroll token 7 <removed>
+   !
+   auto-certificate protocol est AVD_EST_PROTOCOL_secret
+      server url https://test_est.example.com/test1
+      server ssl profile SSL_PROFILE
+      connection retry count 100
+      credentials enroll username est_authentication secret 7 <removed>
+   !
+   auto-certificate protocol est AVD_EST_PROTOCOL_token
+      server url https://test_est.example.com/test
+      server ssl profile SSL_PROFILE
+      server vrf MGMT
+      connection retry interval 30 seconds backoff exponential
+      connection retry count 100
+      credentials enroll token 7 <removed>
+   !
    entropy source hardware haveged cpu jitter
    entropy source hardware exclusive
    password minimum length 17
