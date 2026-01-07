@@ -212,6 +212,11 @@ source_pkgs = [
   "pyavd",
   "schema_tools",
 ]
+source_dirs = [
+  # Adding compiled templates as source dir since they are not part of the pyavd package
+  "python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates",
+  "python-avd/pyavd/_eos_designs/j2templates/compiled_templates",
+]
 omit = [
   "python-avd/pyavd/_cv/api/*"
 ]
