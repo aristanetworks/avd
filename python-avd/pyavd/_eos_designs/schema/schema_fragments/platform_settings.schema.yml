@@ -114,15 +114,6 @@ keys:
           platform: vEOS-lab
       - platforms:
           - 720DT
-        feature_support:
-          queue_monitor_length_notify: false
-          per_interface_mtu: false
-        reload_delay:
-          mlag: 300
-          non_mlag: 330
-        digital_twin:
-          platform: vEOS-lab
-      - platforms:
           - 7010TX
         feature_support:
           queue_monitor_length_notify: false
