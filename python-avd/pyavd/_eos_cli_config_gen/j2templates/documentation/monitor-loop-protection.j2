@@ -1,0 +1,26 @@
+{#
+ Copyright (c) 2025-2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - monitor loop protection #}
+{% if monitor_loop_protection is arista.avd.defined %}
+
+## Monitor Loop Protection
+
+{%     set enabled = monitor_loop_protection.enabled | arista.avd.default('-') %}
+{%     set disabled_time = monitor_loop_protection.disabled_time | arista.avd.default('-') %}
+{%     set protect_vlan = monitor_loop_protection.protect_vlan | arista.avd.default('-') %}
+{%     set rate_limit = monitor_loop_protection.rate_limit | arista.avd.default('-') %}
+{%     set transmit_interval = monitor_loop_protection.transmit_interval | arista.avd.default('-') %}
+{%     set disabled_interfaces = ethernet_interfaces | arista.avd.default([]) | selectattr("loop_protection", "arista.avd.defined", false) | map(attribute='name') | arista.avd.natural_sort | join('<br/>') | default('-', true) %}
+| Enabled | Disabled-time | Protect vlan | Rate-limit | Transmit-interval | Disabled Interfaces |
+| ------- | ------------- | ------------ | ---------- | ----------------- | ------------------- |
+| {{ enabled }} | {{ disabled_time }} | {{ protect_vlan }} | {{ rate_limit }} | {{ transmit_interval }} | {{ disabled_interfaces }} |
+
+### Monitor Loop Protection Configuration
+
+```eos ####
+{%     include 'eos/monitor-loop-protection.j2' %}
+```
+{% endif %}
