@@ -69,7 +69,7 @@ management ssh
 {%     if management_ssh.hostkey.server_cert is arista.avd.defined %}
    hostkey server cert {{ management_ssh.hostkey.server_cert }}
 {%     endif %}
-{%     for vrf in management_ssh.vrfs | arista.avd.natural_sort('name') %}
+{%     for vrf in management_ssh.vrfs | arista.avd.natural_sort(sort_key='name') %}
    !
    vrf {{ vrf.name }}
 {%         if vrf.enable is arista.avd.defined(true) %}

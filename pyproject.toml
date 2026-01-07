@@ -208,9 +208,14 @@ asyncio_default_fixture_loop_scope = "function"
 [tool.coverage.run]
 branch = true
 parallel = true
-source = [
-  "python-avd/pyavd",
-  "python-avd/schema_tools",
+source_pkgs = [
+  "pyavd",
+  "schema_tools",
+]
+source_dirs = [
+  # Adding compiled templates as source dir since they are not part of the pyavd package
+  "python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates",
+  "python-avd/pyavd/_eos_designs/j2templates/compiled_templates",
 ]
 omit = [
   "python-avd/pyavd/_cv/api/*"
@@ -249,7 +254,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.0.0-dev5"
+current_version = "6.0.0-dev6"
 
 allow_dirty = true
 commit = false

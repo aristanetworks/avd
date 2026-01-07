@@ -29228,7 +29228,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
-        ComputeLocalEngineidSource: TypeAlias = Literal["hostname_and_ip", "system_mac"]
+        ComputeLocalEngineidSource: TypeAlias = Literal["rfc3411_type5", "rfc3411_type3", "system_mac", "hostname_and_ip"]
 
         class UsersItem(AvdModel):
             """Subclass of AvdModel."""
@@ -29509,7 +29509,8 @@ class EosDesigns(EosDesignsRootModel):
             "location_template": {"type": str, "default": "{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"},
             "vrfs": {"type": Vrfs},
             "compute_local_engineid": {"type": bool, "default": False},
-            "compute_local_engineid_source": {"type": str, "default": "hostname_and_ip"},
+            "compute_local_engineid_source": {"type": str, "default": "rfc3411_type5"},
+            "local_engineid_ip": {"type": str, "default": "use_default_mgmt_method_interface"},
             "compute_v3_user_localized_key": {"type": bool, "default": False},
             "users": {"type": Users},
             "hosts": {"type": Hosts},
@@ -29552,18 +29553,48 @@ class EosDesigns(EosDesignsRootModel):
         compute_local_engineid_source: ComputeLocalEngineidSource
         """
         `compute_local_engineid_source` supports:
-        - `hostname_and_ip` generate a local engineId for SNMP by
-        hashing via SHA1
-          the string generated via the concatenation of the hostname plus the management
-        IP.
-          {{ inventory_hostname }} + {{ switch.mgmt_ip }}.
-        - `system_mac` generate the switch default
-        engine id for AVD usage.
-          To use this, `system_mac_address` MUST be set for the device.
-          The
-        formula is f5717f + system_mac_address + 00.
+        - `rfc3411_type5` use the value of `local_engineid_ip` to
+        find the mgmt ip and calculate an RFC3411 compliant Engine ID based on 8000757105 + sha1(hostname +
+        local_engineid_ip)
+        - `rfc3411_type3` generate an RFC3411 type 3 compliant Engine ID.
+          To use this,
+        `system_mac_address` MUST be set for the device.
+          The formula is 8000757103 + system_mac_address.
+        -
+        `system_mac` generate the Engine ID similar to the default EOS behavior.
+          To use this,
+        `system_mac_address` MUST be set for the device.
+          The formula is f5717f + system_mac_address + 00.
+        - `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1 the string generated via
+        the concatenation of the hostname plus the out-of-band management IP.
+            sha1(hostname + mgmt_ip)
+        `local_engineid_ip` does not have any effect when using `compute_local_engineid_source:
+        hostname_and_ip`.
+          Note that this is a legacy method kept for backward compatibility; it does not
+        follow RFC 3411 and does not properly support in-band management.
 
-        Default value: `"hostname_and_ip"`
+        Default value: `"rfc3411_type5"`
+        """
+        local_engineid_ip: str
+        """
+        The IP to use when computing the engine ID when `compute_local_engineid_source: rfc3411_type5`.
+        The
+        value will be interpreted according to these rules:
+        - `use_mgmt_interface` will use the Out-of-band
+        interface IP or IPv6.
+          The order of preference is first `mgmt_ip` and then `ipv6_mgmt_ip`.
+          An
+        error will be raised if neither are configured for the device.
+        - `use_inband_mgmt_interface` will
+        use the inband management IP.
+          An error will be raised if inband management is not configured for
+        the device.
+        - `use_default_mgmt_method_interface` will use the IP for one of the two options above
+        depending on the value of `default_mgmt_method`.
+        - Any other string will be used directly as the IP
+        (it can be IP or IPv6).
+
+        Default value: `"use_default_mgmt_method_interface"`
         """
         compute_v3_user_localized_key: bool
         """
@@ -29603,6 +29634,7 @@ class EosDesigns(EosDesignsRootModel):
                 vrfs: Vrfs | UndefinedType = Undefined,
                 compute_local_engineid: bool | UndefinedType = Undefined,
                 compute_local_engineid_source: ComputeLocalEngineidSource | UndefinedType = Undefined,
+                local_engineid_ip: str | UndefinedType = Undefined,
                 compute_v3_user_localized_key: bool | UndefinedType = Undefined,
                 users: Users | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
@@ -29635,16 +29667,42 @@ class EosDesigns(EosDesignsRootModel):
                     compute_local_engineid: Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
                     compute_local_engineid_source:
                        `compute_local_engineid_source` supports:
-                       - `hostname_and_ip` generate a local engineId for SNMP by
-                       hashing via SHA1
-                         the string generated via the concatenation of the hostname plus the management
-                       IP.
-                         {{ inventory_hostname }} + {{ switch.mgmt_ip }}.
-                       - `system_mac` generate the switch default
-                       engine id for AVD usage.
-                         To use this, `system_mac_address` MUST be set for the device.
-                         The
-                       formula is f5717f + system_mac_address + 00.
+                       - `rfc3411_type5` use the value of `local_engineid_ip` to
+                       find the mgmt ip and calculate an RFC3411 compliant Engine ID based on 8000757105 + sha1(hostname +
+                       local_engineid_ip)
+                       - `rfc3411_type3` generate an RFC3411 type 3 compliant Engine ID.
+                         To use this,
+                       `system_mac_address` MUST be set for the device.
+                         The formula is 8000757103 + system_mac_address.
+                       -
+                       `system_mac` generate the Engine ID similar to the default EOS behavior.
+                         To use this,
+                       `system_mac_address` MUST be set for the device.
+                         The formula is f5717f + system_mac_address + 00.
+                       - `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1 the string generated via
+                       the concatenation of the hostname plus the out-of-band management IP.
+                           sha1(hostname + mgmt_ip)
+                       `local_engineid_ip` does not have any effect when using `compute_local_engineid_source:
+                       hostname_and_ip`.
+                         Note that this is a legacy method kept for backward compatibility; it does not
+                       follow RFC 3411 and does not properly support in-band management.
+                    local_engineid_ip:
+                       The IP to use when computing the engine ID when `compute_local_engineid_source: rfc3411_type5`.
+                       The
+                       value will be interpreted according to these rules:
+                       - `use_mgmt_interface` will use the Out-of-band
+                       interface IP or IPv6.
+                         The order of preference is first `mgmt_ip` and then `ipv6_mgmt_ip`.
+                         An
+                       error will be raised if neither are configured for the device.
+                       - `use_inband_mgmt_interface` will
+                       use the inband management IP.
+                         An error will be raised if inband management is not configured for
+                       the device.
+                       - `use_default_mgmt_method_interface` will use the IP for one of the two options above
+                       depending on the value of `default_mgmt_method`.
+                       - Any other string will be used directly as the IP
+                       (it can be IP or IPv6).
                     compute_v3_user_localized_key:
                        Requires compute_local_engineid to be `true`.
                        If enabled, the SNMPv3 passphrases for auth and priv
@@ -64544,9 +64602,9 @@ class EosDesigns(EosDesignsRootModel):
                             "route_target": {"type": str},
                             "nodes": {"type": Nodes},
                         }
-                        type: Type | None
-                        address_family: str | None
-                        route_target: str | None
+                        type: Type
+                        address_family: str
+                        route_target: str
                         nodes: Nodes
                         """
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
@@ -64558,9 +64616,9 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                type: Type | None | UndefinedType = Undefined,
-                                address_family: str | None | UndefinedType = Undefined,
-                                route_target: str | None | UndefinedType = Undefined,
+                                type: Type | UndefinedType = Undefined,
+                                address_family: str | UndefinedType = Undefined,
+                                route_target: str | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -64693,6 +64751,8 @@ class EosDesigns(EosDesignsRootModel):
                         "vrf_id": {"type": int},
                         "rd_override": {"type": str},
                         "rt_override": {"type": str},
+                        "rt_import": {"type": bool, "default": True},
+                        "rt_export": {"type": bool, "default": True},
                         "mlag_ibgp_peering_ipv4_pool": {"type": str},
                         "mlag_ibgp_peering_ipv6_pool": {"type": str},
                         "ip_helpers": {"type": IpHelpers},
@@ -64776,6 +64836,26 @@ class EosDesigns(EosDesignsRootModel):
                       - A single number will be used in the RT assigned number subfield (second part of the
                     RT).
                       - A full RT string with colon separator which will override the full RT.
+                    """
+                    rt_import: bool
+                    """
+                    Enable or disable route target import for the VRF for all address families.
+                    This setting applies
+                    only to the automatically generated route targets
+                    and does not affect any entries defined under
+                    `additional_route_targets`.
+
+                    Default value: `True`
+                    """
+                    rt_export: bool
+                    """
+                    Enable or disable route target export for the VRF for all address families.
+                    This setting applies
+                    only to the automatically generated route targets
+                    and does not affect any entries defined under
+                    `additional_route_targets`.
+
+                    Default value: `True`
                     """
                     mlag_ibgp_peering_ipv4_pool: str | None
                     """
@@ -64996,6 +65076,8 @@ class EosDesigns(EosDesignsRootModel):
                             vrf_id: int | None | UndefinedType = Undefined,
                             rd_override: str | None | UndefinedType = Undefined,
                             rt_override: str | None | UndefinedType = Undefined,
+                            rt_import: bool | UndefinedType = Undefined,
+                            rt_export: bool | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv6_pool: str | None | UndefinedType = Undefined,
                             ip_helpers: IpHelpers | UndefinedType = Undefined,
@@ -65073,6 +65155,18 @@ class EosDesigns(EosDesignsRootModel):
                                      - A single number will be used in the RT assigned number subfield (second part of the
                                    RT).
                                      - A full RT string with colon separator which will override the full RT.
+                                rt_import:
+                                   Enable or disable route target import for the VRF for all address families.
+                                   This setting applies
+                                   only to the automatically generated route targets
+                                   and does not affect any entries defined under
+                                   `additional_route_targets`.
+                                rt_export:
+                                   Enable or disable route target export for the VRF for all address families.
+                                   This setting applies
+                                   only to the automatically generated route targets
+                                   and does not affect any entries defined under
+                                   `additional_route_targets`.
                                 mlag_ibgp_peering_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The

@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - loopback interfaces #}
-{% for loopback_interface in loopback_interfaces | arista.avd.natural_sort('name') %}
+{% for loopback_interface in loopback_interfaces | arista.avd.natural_sort(sort_key='name') %}
 !
 interface {{ loopback_interface.name }}
 {%     if loopback_interface.description is arista.avd.defined %}
