@@ -4,15 +4,15 @@ ip_large_community_lists:
   - name: IP_L_CL_TEST1
     entries:
       - action: permit
-        communities: ["64496:1001:1001", "65536:1002:1002"]
+        large_communities: ["64496:1001:1001", "65536:1002:1002"]
       - action: deny
-        communities: ["64496:1010:1010"]
+        large_communities: ["64496:1010:1010"]
       - action: permit
         regexp: 65536:*:*
   - name: IP_L_CL_TEST2
     entries:
       - action: deny
-        communities: ["65536:1003:1003"]
+        large_communities: ["65536:1003:1003"]
   - name: IP_L_RE_TEST1
     entries:
       - action: permit
