@@ -1922,6 +1922,11 @@ management security
    session shared-secret profile profile2
       secret Secret4 0 <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00
    !
+   ssl profile SSL_PROFILE
+      tls versions 1.1 1.2
+      fips restrictions
+      certificate SSL_CERT key SSL_KEY
+   !
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key
       crl ca.crl
@@ -1929,11 +1934,6 @@ management security
    !
    ssl profile cipher-list-profile
       cipher-list ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
-   !
-   ssl profile SSL_PROFILE
-      tls versions 1.1 1.2
-      fips restrictions
-      certificate SSL_CERT key SSL_KEY
    !
    ssl profile test1-chain-cert
       chain certificate test-chain-cert1.crt
