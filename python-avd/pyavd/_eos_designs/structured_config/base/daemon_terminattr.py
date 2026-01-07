@@ -22,38 +22,15 @@ class DaemonTerminattrMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    def _validate_cv_settings(self: AvdStructuredConfigBaseProtocol, first_tracker_exporting_to_cloudvision: str) -> bool:
-        """Validate that cv_settings is configured if CloudVision export is enabled for sFlow or flow tracking."""
-        if not self.inputs.cv_settings:
-            if first_tracker_exporting_to_cloudvision:
-                msg = (
-                    "CloudVision export is enabled for flow_tracking_settings, but 'cv_settings' is not defined. Please configure"
-                    f" 'cv_settings' when enabling 'flow_tracking_settings.trackers[name={first_tracker_exporting_to_cloudvision}].export_to_cloudvision'."
-                )
-                raise AristaAvdInvalidInputsError(msg)
-
-            if self.inputs.sflow_settings.export_to_cloudvision.enabled:
-                msg = (
-                    "CloudVision export is enabled for sFlow, but 'cv_settings' is not defined."
-                    " Please configure 'cv_settings' when enabling 'sflow_settings.export_to_cloudvision.enabled'."
-                )
-                raise AristaAvdInvalidInputsError(msg)
-            return True
-        return False
-
     @structured_config_contributor
     def daemon_terminattr(self: AvdStructuredConfigBaseProtocol) -> None:
-        """
-        Configures daemon_terminattr settings based on cv_settings and calls _legacy_daemon_terminattr for the legacy cv_* and terminattr_* models.
-
-        The schema will enforce that we only use either new or old models.
-        """
-        cv_settings = self.inputs.cv_settings
+        """Configures daemon_terminattr settings based on cv_settings."""
         sflow_settings = self.inputs.sflow_settings
         flow_tracking_settings = self.inputs.flow_tracking_settings
-        first_tracker_exported_to_cloudvision = next((tracker.name for tracker in flow_tracking_settings.trackers if tracker.export_to_cloudvision), "")
+        first_tracker_exported_to_cloudvision = next((tracker.name for tracker in flow_tracking_settings.trackers if tracker.export_to_cloudvision), None)
 
-        if self._validate_cv_settings(first_tracker_exported_to_cloudvision):
+        if not (cv_settings := self.inputs.cv_settings):
+            self._validate_cv_settings(first_tracker_exported_to_cloudvision)
             return
 
         clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem] = (
@@ -71,7 +48,7 @@ class DaemonTerminattrMixin(Protocol):
             disable_aaa=cv_settings.terminattr.disable_aaa,
         )
 
-        if first_tracker_exported_to_cloudvision != "":
+        if first_tracker_exported_to_cloudvision is not None:
             flow_tracking_vrf = self.shared_utils.get_vrf(
                 flow_tracking_settings.cloudvision_exporter.vrf, context="flow_tracking_settings.export_to_cloudvision.vrf"
             )
@@ -93,19 +70,20 @@ class DaemonTerminattrMixin(Protocol):
                 ),
                 cvsourceintf=self.shared_utils.get_source_interface(cluster.vrf, cluster.source_interface) if cv_settings.set_source_interfaces else None,
             )
-        else:
-            # Multiple clusters
-            for cluster in clusters:
-                self.structured_config.daemon_terminattr.clusters.append_new(
-                    name=cluster.name,
-                    cvaddrs=self.get_cv_addrs(cluster)._cast_as(EosCliConfigGen.DaemonTerminattr.ClustersItem.Cvaddrs),
-                    cvauth=self.get_cv_auth(cluster)._cast_as(EosCliConfigGen.DaemonTerminattr.ClustersItem.Cvauth),
-                    cvvrf=self.shared_utils.get_vrf(
-                        cluster.vrf,
-                        self.get_cv_cluster_vrf_context(cluster),
-                    ),
-                    cvsourceintf=self.shared_utils.get_source_interface(cluster.vrf, cluster.source_interface) if cv_settings.set_source_interfaces else None,
-                )
+            return
+
+        # Multiple clusters
+        for cluster in clusters:
+            self.structured_config.daemon_terminattr.clusters.append_new(
+                name=cluster.name,
+                cvaddrs=self.get_cv_addrs(cluster)._cast_as(EosCliConfigGen.DaemonTerminattr.ClustersItem.Cvaddrs),
+                cvauth=self.get_cv_auth(cluster)._cast_as(EosCliConfigGen.DaemonTerminattr.ClustersItem.Cvauth),
+                cvvrf=self.shared_utils.get_vrf(
+                    cluster.vrf,
+                    self.get_cv_cluster_vrf_context(cluster),
+                ),
+                cvsourceintf=self.shared_utils.get_source_interface(cluster.vrf, cluster.source_interface) if cv_settings.set_source_interfaces else None,
+            )
 
     @staticmethod
     def get_cv_cluster_vrf_context(cluster: EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem) -> str:
@@ -131,3 +109,23 @@ class DaemonTerminattrMixin(Protocol):
                 return EosCliConfigGen.DaemonTerminattr.Cvauth(method="token-secure", token_file=cluster.token_file)
             case EosDesigns.CvSettings.OnpremClustersItem():
                 return EosCliConfigGen.DaemonTerminattr.Cvauth(method="token", token_file=cluster.token_file)
+
+    def _validate_cv_settings(self: AvdStructuredConfigBaseProtocol, first_tracker_exporting_to_cloudvision: str | None) -> None:
+        """
+        Validate that cv_settings is configured if CloudVision export is enabled for sFlow or flow tracking.
+
+        Expected to be called when self.inputs.cv_settings is not set.
+        """
+        if first_tracker_exporting_to_cloudvision is not None:
+            msg = (
+                "CloudVision export is enabled for flow_tracking_settings, but 'cv_settings' is not defined. Please configure"
+                f" 'cv_settings' when enabling 'flow_tracking_settings.trackers[name={first_tracker_exporting_to_cloudvision}].export_to_cloudvision'."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        if self.inputs.sflow_settings.export_to_cloudvision.enabled:
+            msg = (
+                "CloudVision export is enabled for sFlow, but 'cv_settings' is not defined."
+                " Please configure 'cv_settings' when enabling 'sflow_settings.export_to_cloudvision.enabled'."
+            )
+            raise AristaAvdInvalidInputsError(msg)
