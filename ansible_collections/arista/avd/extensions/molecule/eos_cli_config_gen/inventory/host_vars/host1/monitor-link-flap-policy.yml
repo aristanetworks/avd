@@ -1,5 +1,5 @@
 ---
-monitor_link_flap:
+monitor_link_flap_policy:
   profiles:
     - name: LFP1
       damping_penalty:

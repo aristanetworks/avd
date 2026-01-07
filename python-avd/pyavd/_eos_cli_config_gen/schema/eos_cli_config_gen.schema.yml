@@ -9989,7 +9989,7 @@ keys:
             type: bool
             description: Some platforms support only the `logging transceiver` command.
               `enabled` key configures this command.
-  monitor_link_flap:
+  monitor_link_flap_policy:
     type: dict
     keys:
       profiles:

@@ -3,11 +3,11 @@
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
-{# eos - monitor link flap #}
-{% if monitor_link_flap is arista.avd.defined %}
+{# eos - monitor link flap policy #}
+{% if monitor_link_flap_policy is arista.avd.defined %}
 !
 monitor link-flap policy
-{%     for profile in monitor_link_flap.profiles | arista.avd.natural_sort('name') %}
+{%     for profile in monitor_link_flap_policy.profiles | arista.avd.natural_sort('name') %}
 {%         if profile.damping_penalty is arista.avd.defined %}
    profile {{ profile.name }} damping
 {%             if profile.damping_penalty.threshold is arista.avd.defined %}
@@ -41,7 +41,7 @@ monitor link-flap policy
 {%             endif %}
 {%         endif %}
 {%     endfor %}
-{%     if monitor_link_flap.default_profiles is arista.avd.defined and monitor_link_flap.default_profiles | length > 0 %}
-   default-profiles {{ monitor_link_flap.default_profiles | arista.avd.natural_sort | join(' ') }}
+{%     if monitor_link_flap_policy.default_profiles is arista.avd.defined and monitor_link_flap_policy.default_profiles | length > 0 %}
+   default-profiles {{ monitor_link_flap_policy.default_profiles | arista.avd.natural_sort | join(' ') }}
 {%     endif %}
 {% endif %}

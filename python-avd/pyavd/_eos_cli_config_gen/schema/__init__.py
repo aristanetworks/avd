@@ -25769,7 +25769,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
-    class MonitorLinkFlap(AvdModel):
+    class MonitorLinkFlapPolicy(AvdModel):
         """Subclass of AvdModel."""
 
         class ProfilesItem(AvdModel):
@@ -25995,7 +25995,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             def __init__(self, *, profiles: Profiles | UndefinedType = Undefined, default_profiles: DefaultProfiles | UndefinedType = Undefined) -> None:
                 """
-                MonitorLinkFlap.
+                MonitorLinkFlapPolicy.
 
 
                 Subclass of AvdModel.
@@ -69014,7 +69014,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "mlag_configuration": {"type": MlagConfiguration},
         "monitor_connectivity": {"type": MonitorConnectivity},
         "monitor_layer1": {"type": MonitorLayer1},
-        "monitor_link_flap": {"type": MonitorLinkFlap},
+        "monitor_link_flap_policy": {"type": MonitorLinkFlapPolicy},
         "monitor_server_radius": {"type": MonitorServerRadius},
         "monitor_session_default_encapsulation_gre": {"type": MonitorSessionDefaultEncapsulationGre},
         "monitor_sessions": {"type": MonitorSessions},
@@ -69436,7 +69436,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     Subclass of AvdModel.
     """
-    monitor_link_flap: MonitorLinkFlap
+    monitor_link_flap_policy: MonitorLinkFlapPolicy
     """Subclass of AvdModel."""
     monitor_server_radius: MonitorServerRadius
     """
@@ -69759,7 +69759,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             mlag_configuration: MlagConfiguration | UndefinedType = Undefined,
             monitor_connectivity: MonitorConnectivity | UndefinedType = Undefined,
             monitor_layer1: MonitorLayer1 | UndefinedType = Undefined,
-            monitor_link_flap: MonitorLinkFlap | UndefinedType = Undefined,
+            monitor_link_flap_policy: MonitorLinkFlapPolicy | UndefinedType = Undefined,
             monitor_server_radius: MonitorServerRadius | UndefinedType = Undefined,
             monitor_session_default_encapsulation_gre: MonitorSessionDefaultEncapsulationGre | UndefinedType = Undefined,
             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -70057,7 +70057,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Enable SYSLOG messages on transceiver SMBus communication failures.
 
                    Subclass of AvdModel.
-                monitor_link_flap: Subclass of AvdModel.
+                monitor_link_flap_policy: Subclass of AvdModel.
                 monitor_server_radius:
                    Settings to monitor radius servers.
 
