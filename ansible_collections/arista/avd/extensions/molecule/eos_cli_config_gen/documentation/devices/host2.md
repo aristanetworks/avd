@@ -1310,17 +1310,9 @@ router bfd
 
 ## Monitor Loop Protection
 
-| Options | Value |
-| ------- | ----- |
-| Enabled | False |
-| Disabled-time | 100 |
-| Protect vlan | 1000-1100 |
-| Rate-limit | 100 |
-| Transmit-interval | 10 |
-
-| Disabled Interfaces |
-| ------------------- |
-| Ethernet1 |
+| Enabled | Disabled-time | Protect vlan | Rate-limit | Transmit-interval | Disabled Interfaces |
+| ------- | ------------- | ------------ | ---------- | ----------------- | ------------------- |
+| False | 100 | 1000-1100 | 100 | 10 | Ethernet1 |
 
 ### Monitor Loop Protection Configuration
 
