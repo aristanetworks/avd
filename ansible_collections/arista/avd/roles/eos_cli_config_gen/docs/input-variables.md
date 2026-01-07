@@ -237,6 +237,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-extcommun
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-extcommunity-lists-regexp.md
 --8<--
 
+### IP large community lists
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-large-community-lists.md
+--8<--
+
 ### IPv6 prefix-lists
 
 --8<--
