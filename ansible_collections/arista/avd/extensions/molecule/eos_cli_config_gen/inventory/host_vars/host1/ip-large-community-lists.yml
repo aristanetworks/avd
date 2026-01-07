@@ -21,6 +21,8 @@ ip_large_community_lists:
     entries:
       - action: deny
         regexp: ^64496:*:*
+      - action: deny
+        large_communities: ["64497:1004:1004", "64497:1005:1005"]
   # Test for sort with ignore_case: false
   - name: aa_test3
     entries:
