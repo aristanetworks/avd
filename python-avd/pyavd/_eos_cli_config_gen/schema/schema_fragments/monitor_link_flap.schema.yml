@@ -87,6 +87,7 @@ keys:
               max: 100
             time:
               type: int
+              description: The time period that flaps are counted (in seconds).
               convert_types:
                 - str
               min: 1
