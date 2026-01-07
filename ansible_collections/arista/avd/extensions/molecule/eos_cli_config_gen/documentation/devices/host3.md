@@ -406,6 +406,17 @@ router multicast
       multipath deterministic
 ```
 
+## Errdisable
+
+### Errdisable Summary
+
+Errdisable recovery timer interval: 300 seconds
+
+```eos
+!
+errdisable recovery interval 300
+```
+
 ### Traffic Policies information
 
 #### Traffic Policies Device Configuration

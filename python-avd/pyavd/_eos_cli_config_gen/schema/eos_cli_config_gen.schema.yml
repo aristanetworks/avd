@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../_schema/avd_meta_schema.json
@@ -2701,6 +2701,7 @@ keys:
                 description: Group name.
               direction:
                 type: str
+                required: true
                 valid_values:
                 - upstream
                 - downstream
@@ -2709,12 +2710,15 @@ keys:
           keys:
             direction:
               type: str
+              required: true
               valid_values:
               - upstream
               - downstream
             groups:
               type: list
               description: Link state group(s) an interface belongs to.
+              required: true
+              min_length: 1
               items:
                 type: str
                 description: Group names.
@@ -6057,18 +6061,18 @@ keys:
                 type: str
                 required: true
                 description: Regular Expression.
+  ip_ftp_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_ftp_client_source_interfaces:
+    documentation_options:
+      table: ip-ftp-client
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          required: true
-          description: Interface Name.
-        vrf:
-          type: str
-          description: VRF Name.
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_ftp_client
   ip_hardware:
     type: dict
     keys:
@@ -6118,18 +6122,18 @@ keys:
                     max: 7
                     convert_types:
                     - str
+  ip_http_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_http_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: Interface Name.
-          type: str
-        vrf:
-          type: str
-          convert_types:
-          - int
+    documentation_options:
+      table: ip-http-client
+    deprecation:
+      removed: true
+      warning: true
+      new_key: ip_http_client
+      remove_in_version: 6.0.0
   ip_icmp_redirect:
     type: bool
   ip_igmp_snooping:
@@ -6806,18 +6810,18 @@ keys:
       connection_tx_interface_match_source_ip:
         type: bool
         description: Match source interface of the IPsec connection.
+  ip_ssh_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_ssh_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: Interface Name.
-          type: str
-        vrf:
-          type: str
-          convert_types:
-          - int
+    documentation_options:
+      table: ip-ssh-client
+    deprecation:
+      removed: true
+      warning: true
+      new_key: ip_ssh_client
+      remove_in_version: 6.0.0
   ip_tacacs_source_interfaces:
     type: list
     display_name: IP Tacacs Source Interfaces
@@ -6832,30 +6836,30 @@ keys:
           display_name: VRF
           convert_types:
           - int
+  ip_telnet_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_telnet_client_source_interfaces:
+    documentation_options:
+      table: ip-telnet-client
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          required: true
-          description: Interface Name.
-        vrf:
-          type: str
-          description: VRF Name.
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_telnet_client
+  ip_tftp_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_tftp_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          required: true
-          description: Interface Name.
-        vrf:
-          type: str
-          description: VRF Name.
+    documentation_options:
+      table: ip-tftp-client
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_tftp_client
   ip_virtual_router_mac_address:
     type: str
     description: MAC address (hh:hh:hh:hh:hh:hh).
@@ -11943,6 +11947,7 @@ keys:
                 description: Group name.
               direction:
                 type: str
+                required: true
                 valid_values:
                 - upstream
                 - downstream
@@ -11951,12 +11956,15 @@ keys:
           keys:
             direction:
               type: str
+              required: true
               valid_values:
               - upstream
               - downstream
             groups:
               type: list
               description: Link state group(s) an interface belongs to.
+              required: true
+              min_length: 1
               items:
                 type: str
                 description: Group names.
@@ -14043,7 +14051,6 @@ keys:
                     type: int
                     min: 0
                     max: 7
-                    required: true
                     convert_types:
                     - str
                     description: 'Priority queue number (COS value).
@@ -14052,9 +14059,7 @@ keys:
                   no_drop:
                     type: bool
                     required: true
-                    description: 'Enable Priority Flow Control frames on this queue.
-
-                      '
+                    description: Enable Priority Flow Control frames on this queue.
   queue_monitor_length:
     type: dict
     keys:
@@ -20397,6 +20402,7 @@ keys:
                 keys:
                   source_vrf:
                     type: str
+                    required: true
                     convert_types:
                     - int
                   subscribe_policy:
@@ -25508,3 +25514,21 @@ $defs:
           min: 1
           max: 65535
           description: requires 'original_port'.
+  source_interface_per_vrf:
+    type: dict
+    keys:
+      source_interface:
+        type: str
+        description: Define `source_interface` for VRF default.
+      vrfs:
+        type: list
+        primary_key: name
+        description: Define `source interfaces` for any VRF other than default.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            source_interface:
+              type: str
+              required: true

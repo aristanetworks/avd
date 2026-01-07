@@ -1,4 +1,5 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+---
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -8,7 +9,7 @@ type: dict
 keys:
   wan_route_servers:
     description: |-
-      List of the AutoVPN RRs when using `wan_mode: autovpn`, or the Pathfinders
+      List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or the Pathfinders
       when using `wan_mode: cv-pathfinder`, to which the device should connect to.
       This is also used to establish iBGP sessions between WAN route servers.
 

@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -16,12 +16,14 @@
 
 - ACL has counting mode `counters per-entry` enabled!
 {%         endif %}
+{%         if mac_access_list.entries is arista.avd.defined %}
 
 | Sequence | Action |
 | -------- | ------ |
-{%         for acl_entry in mac_access_list.entries %}
+{%             for acl_entry in mac_access_list.entries %}
 | {{ acl_entry.sequence | arista.avd.default('-') }} | {{ acl_entry.action }} |
-{%         endfor %}
+{%             endfor %}
+{%         endif %}
 {%     endfor %}
 
 #### MAC Access-lists Device Configuration
