@@ -64,6 +64,7 @@ keys:
                       min: 0
                       max: 1000000
                     reuse:
+                      description: Value of penalty below which suppressed link would be reused.
                       type: int
                       convert_types:
                         - str
