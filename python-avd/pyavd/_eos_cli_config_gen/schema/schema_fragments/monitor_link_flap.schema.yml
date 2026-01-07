@@ -94,6 +94,7 @@ keys:
               max: 1800
             violations:
               type: int
+              description: Number of violations to be detected.
               convert_types:
                 - str
               min: 1
