@@ -69156,8 +69156,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     ip_large_community_lists: IpLargeCommunityLists
     """
-    Large communities and regexp entries MUST not be configured in the same large-community-list.
-    Subclass of AvdIndexedList with `IpLargeCommunityListsItem` items. Primary key is `name` (`str`).
+    A BGP large-community access list filters prefixes based on their BGP large community values.
+    Multiple large-community lists with the same name may be specified.
+
+
+    Subclass of AvdIndexedList
+    with `IpLargeCommunityListsItem` items. Primary key is `name` (`str`).
     """
     ip_name_server_groups: IpNameServerGroups
     """Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`)."""
@@ -69835,8 +69839,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_icmp_redirect: ip_icmp_redirect
                 ip_igmp_snooping: Subclass of AvdModel.
                 ip_large_community_lists:
-                   Large communities and regexp entries MUST not be configured in the same large-community-list.
-                   Subclass of AvdIndexedList with `IpLargeCommunityListsItem` items. Primary key is `name` (`str`).
+                   A BGP large-community access list filters prefixes based on their BGP large community values.
+                   Multiple large-community lists with the same name may be specified.
+
+
+                   Subclass of AvdIndexedList
+                   with `IpLargeCommunityListsItem` items. Primary key is `name` (`str`).
                 ip_name_server_groups: Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`).
                 ip_name_servers: Subclass of AvdList with `IpNameServersItem` items.
                 ip_nat: Subclass of AvdModel.

@@ -6261,8 +6261,9 @@ keys:
     type: list
     primary_key: name
     display_name: IP Large Community Lists
-    description: 'Large communities and regexp entries MUST not be configured in the
-      same large-community-list.
+    description: 'A BGP large-community access list filters prefixes based on their
+      BGP large community values. Multiple large-community lists with the same name
+      may be specified.
 
       '
     items:

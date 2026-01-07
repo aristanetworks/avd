@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_large_community_lists</samp>](## "ip_large_community_lists") | List, items: Dictionary |  |  |  | Large communities and regexp entries MUST not be configured in the same large-community-list.<br> |
+    | [<samp>ip_large_community_lists</samp>](## "ip_large_community_lists") | List, items: Dictionary |  |  |  | A BGP large-community access list filters prefixes based on their BGP large community values. Multiple large-community lists with the same name may be specified.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_large_community_lists.[].name") | String | Required, Unique |  |  | IP Large-community-list Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ip_large_community_lists.[].entries") | List, items: Dictionary | Required |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;action</samp>](## "ip_large_community_lists.[].entries.[].action") | String | Required |  | Valid Values:<br>- <code>permit</code><br>- <code>deny</code> |  |
@@ -18,7 +18,7 @@
 === "YAML"
 
     ```yaml
-    # Large communities and regexp entries MUST not be configured in the same large-community-list.
+    # A BGP large-community access list filters prefixes based on their BGP large community values. Multiple large-community lists with the same name may be specified.
     ip_large_community_lists:
 
         # IP Large-community-list Name.
