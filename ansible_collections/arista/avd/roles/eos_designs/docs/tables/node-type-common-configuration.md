@@ -32,6 +32,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "<node_type_keys.key>.defaults.campus_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "<node_type_keys.key>.defaults.campus_access_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "<node_type_keys.key>.defaults.cv_tags_topology_type") | String |  |  |  | Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validation_profile</samp>](## "<node_type_keys.key>.defaults.validation_profile") | String |  |  |  | Name of the validation profile to apply to this device.<br>The profile must be defined under `validation_profiles`.<br>Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation. |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
@@ -59,6 +60,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].campus_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].campus_access_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].cv_tags_topology_type") | String |  |  |  | Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validation_profile</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].validation_profile") | String |  |  |  | Name of the validation profile to apply to this device.<br>The profile must be defined under `validation_profiles`.<br>Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.node_groups.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "<node_type_keys.key>.node_groups.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "<node_type_keys.key>.node_groups.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
@@ -82,6 +84,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "<node_type_keys.key>.node_groups.[].campus_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "<node_type_keys.key>.node_groups.[].campus_access_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "<node_type_keys.key>.node_groups.[].cv_tags_topology_type") | String |  |  |  | Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validation_profile</samp>](## "<node_type_keys.key>.node_groups.[].validation_profile") | String |  |  |  | Name of the validation profile to apply to this device.<br>The profile must be defined under `validation_profiles`.<br>Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.nodes.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
@@ -107,6 +110,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "<node_type_keys.key>.nodes.[].campus_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "<node_type_keys.key>.nodes.[].campus_access_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "<node_type_keys.key>.nodes.[].cv_tags_topology_type") | String |  |  |  | Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validation_profile</samp>](## "<node_type_keys.key>.nodes.[].validation_profile") | String |  |  |  | Name of the validation profile to apply to this device.<br>The profile must be defined under `validation_profiles`.<br>Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation. |
     | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "device_profiles.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
@@ -132,6 +136,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "device_profiles.[].campus_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "device_profiles.[].campus_access_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "device_profiles.[].cv_tags_topology_type") | String |  |  |  | Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validation_profile</samp>](## "device_profiles.[].validation_profile") | String |  |  |  | Name of the validation profile to apply to this device.<br>The profile must be defined under `validation_profiles`.<br>Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation. |
     | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "devices.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
@@ -157,6 +162,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "devices.[].campus_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "devices.[].campus_access_pod") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "devices.[].cv_tags_topology_type") | String |  |  |  | Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validation_profile</samp>](## "devices.[].validation_profile") | String |  |  |  | Name of the validation profile to apply to this device.<br>The profile must be defined under `validation_profiles`.<br>Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation. |
 
 === "YAML"
 
@@ -247,6 +253,11 @@
 
         # Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
         cv_tags_topology_type: <str>
+
+        # Name of the validation profile to apply to this device.
+        # The profile must be defined under `validation_profiles`.
+        # Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation.
+        validation_profile: <str>
 
       # Define variables related to all nodes part of this group.
       node_groups:
@@ -343,6 +354,11 @@
               # Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
               cv_tags_topology_type: <str>
 
+              # Name of the validation profile to apply to this device.
+              # The profile must be defined under `validation_profiles`.
+              # Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation.
+              validation_profile: <str>
+
           # Unique identifier used for IP addressing and other algorithms.
           id: <int>
 
@@ -424,6 +440,11 @@
 
           # Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
           cv_tags_topology_type: <str>
+
+          # Name of the validation profile to apply to this device.
+          # The profile must be defined under `validation_profiles`.
+          # Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation.
+          validation_profile: <str>
 
       # Define variables per node.
       nodes:
@@ -513,6 +534,11 @@
           # Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
           cv_tags_topology_type: <str>
 
+          # Name of the validation profile to apply to this device.
+          # The profile must be defined under `validation_profiles`.
+          # Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation.
+          validation_profile: <str>
+
     # PREVIEW - This datamodel is still under development and may change or get removed at any time.
     device_profiles:
 
@@ -601,6 +627,11 @@
         # Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
         cv_tags_topology_type: <str>
 
+        # Name of the validation profile to apply to this device.
+        # The profile must be defined under `validation_profiles`.
+        # Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation.
+        validation_profile: <str>
+
     # PREVIEW - This datamodel is still under development and may change or get removed at any time.
     devices:
 
@@ -688,4 +719,9 @@
 
         # Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
         cv_tags_topology_type: <str>
+
+        # Name of the validation profile to apply to this device.
+        # The profile must be defined under `validation_profiles`.
+        # Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation.
+        validation_profile: <str>
     ```

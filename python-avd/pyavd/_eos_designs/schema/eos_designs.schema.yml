@@ -5645,6 +5645,12 @@ keys:
   validation_profiles:
     type: list
     primary_key: name
+    description: 'List of validation profiles defining hardware, logging, and fabric-related
+      validation rules.
+
+      Validation profiles can be referenced from node definitions (for example under
+      `l3leaf.nodes[].validation_profile`) and support single-level inheritance using
+      `parent_profile`.'
     items:
       type: dict
       keys:
@@ -5657,6 +5663,13 @@ keys:
             Max one level of profile inheritance: profile -> parent_profile'
         hardware:
           type: dict
+          description: 'Hardware validation thresholds for the device.
+
+            These settings are only applied when `platform_settings/custom_platform_settings[].feature_support.hardware_validation`
+            is set to `true`.
+
+            If hardware validation is disabled, all hardware validation checks are
+            skipped and the keys under this section are ignored.'
           keys:
             min_power_supplies:
               type: int
@@ -11445,12 +11458,14 @@ $defs:
               new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config
                 or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config
           validation_profile:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             description: 'Name of the validation profile to apply to this device.
 
               The profile must be defined under `validation_profiles`.
 
-              Validation profiles define hardware and logging validation requirements
+              Validation profiles define requirements (e.g., hardware and logging)
               used by the `anta_runner` role during post-deployment validation.'
       node_groups:
         type: list

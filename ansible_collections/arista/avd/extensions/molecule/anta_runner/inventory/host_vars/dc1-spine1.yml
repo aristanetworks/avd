@@ -1,4 +1,0 @@
----
-logging_settings:
-  hosts:
-    - name: graylog-server

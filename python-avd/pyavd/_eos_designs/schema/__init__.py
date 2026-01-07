@@ -10497,8 +10497,8 @@ class EosDesigns(EosDesignsRootModel):
         Name of the validation profile to apply to this device.
         The profile must be defined under
         `validation_profiles`.
-        Validation profiles define hardware and logging validation requirements used
-        by the `anta_runner` role during post-deployment validation.
+        Validation profiles define requirements (e.g., hardware and logging) used by
+        the `anta_runner` role during post-deployment validation.
         """
 
         if TYPE_CHECKING:
@@ -11261,8 +11261,8 @@ class EosDesigns(EosDesignsRootModel):
                        Name of the validation profile to apply to this device.
                        The profile must be defined under
                        `validation_profiles`.
-                       Validation profiles define hardware and logging validation requirements used
-                       by the `anta_runner` role during post-deployment validation.
+                       Validation profiles define requirements (e.g., hardware and logging) used by
+                       the `anta_runner` role during post-deployment validation.
 
                 """
 
@@ -15564,8 +15564,8 @@ class EosDesigns(EosDesignsRootModel):
         Name of the validation profile to apply to this device.
         The profile must be defined under
         `validation_profiles`.
-        Validation profiles define hardware and logging validation requirements used
-        by the `anta_runner` role during post-deployment validation.
+        Validation profiles define requirements (e.g., hardware and logging) used by
+        the `anta_runner` role during post-deployment validation.
         """
 
         if TYPE_CHECKING:
@@ -16337,8 +16337,8 @@ class EosDesigns(EosDesignsRootModel):
                        Name of the validation profile to apply to this device.
                        The profile must be defined under
                        `validation_profiles`.
-                       Validation profiles define hardware and logging validation requirements used
-                       by the `anta_runner` role during post-deployment validation.
+                       Validation profiles define requirements (e.g., hardware and logging) used by
+                       the `anta_runner` role during post-deployment validation.
 
                 """
 
@@ -32326,7 +32326,15 @@ class EosDesigns(EosDesignsRootModel):
         inheritance: profile -> parent_profile
         """
         hardware: Hardware
-        """Subclass of AvdModel."""
+        """
+        Hardware validation thresholds for the device.
+        These settings are only applied when
+        `platform_settings/custom_platform_settings[].feature_support.hardware_validation` is set to `true`.
+        If hardware validation is disabled, all hardware validation checks are skipped and the keys under
+        this section are ignored.
+
+        Subclass of AvdModel.
+        """
         logging: Logging
         """Subclass of AvdModel."""
         exclude_as_extra_fabric_validation_target: bool
@@ -32360,7 +32368,14 @@ class EosDesigns(EosDesignsRootModel):
                        Inherit settings from a parent profile defined under `validation_profiles`.
                        Max one level of profile
                        inheritance: profile -> parent_profile
-                    hardware: Subclass of AvdModel.
+                    hardware:
+                       Hardware validation thresholds for the device.
+                       These settings are only applied when
+                       `platform_settings/custom_platform_settings[].feature_support.hardware_validation` is set to `true`.
+                       If hardware validation is disabled, all hardware validation checks are skipped and the keys under
+                       this section are ignored.
+
+                       Subclass of AvdModel.
                     logging: Subclass of AvdModel.
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
@@ -38399,8 +38414,8 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the validation profile to apply to this device.
                     The profile must be defined under
                     `validation_profiles`.
-                    Validation profiles define hardware and logging validation requirements used
-                    by the `anta_runner` role during post-deployment validation.
+                    Validation profiles define requirements (e.g., hardware and logging) used by
+                    the `anta_runner` role during post-deployment validation.
                     """
 
                     if TYPE_CHECKING:
@@ -39146,8 +39161,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the validation profile to apply to this device.
                                    The profile must be defined under
                                    `validation_profiles`.
-                                   Validation profiles define hardware and logging validation requirements used
-                                   by the `anta_runner` role during post-deployment validation.
+                                   Validation profiles define requirements (e.g., hardware and logging) used by
+                                   the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -43457,8 +43472,8 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the validation profile to apply to this device.
                         The profile must be defined under
                         `validation_profiles`.
-                        Validation profiles define hardware and logging validation requirements used
-                        by the `anta_runner` role during post-deployment validation.
+                        Validation profiles define requirements (e.g., hardware and logging) used by
+                        the `anta_runner` role during post-deployment validation.
                         """
 
                         if TYPE_CHECKING:
@@ -44213,8 +44228,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the validation profile to apply to this device.
                                        The profile must be defined under
                                        `validation_profiles`.
-                                       Validation profiles define hardware and logging validation requirements used
-                                       by the `anta_runner` role during post-deployment validation.
+                                       Validation profiles define requirements (e.g., hardware and logging) used by
+                                       the `anta_runner` role during post-deployment validation.
 
                                 """
 
@@ -48435,8 +48450,8 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the validation profile to apply to this device.
                     The profile must be defined under
                     `validation_profiles`.
-                    Validation profiles define hardware and logging validation requirements used
-                    by the `anta_runner` role during post-deployment validation.
+                    Validation profiles define requirements (e.g., hardware and logging) used by
+                    the `anta_runner` role during post-deployment validation.
                     """
 
                     if TYPE_CHECKING:
@@ -49193,8 +49208,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the validation profile to apply to this device.
                                    The profile must be defined under
                                    `validation_profiles`.
-                                   Validation profiles define hardware and logging validation requirements used
-                                   by the `anta_runner` role during post-deployment validation.
+                                   Validation profiles define requirements (e.g., hardware and logging) used by
+                                   the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -53487,8 +53502,8 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the validation profile to apply to this device.
                     The profile must be defined under
                     `validation_profiles`.
-                    Validation profiles define hardware and logging validation requirements used
-                    by the `anta_runner` role during post-deployment validation.
+                    Validation profiles define requirements (e.g., hardware and logging) used by
+                    the `anta_runner` role during post-deployment validation.
                     """
 
                     if TYPE_CHECKING:
@@ -54243,8 +54258,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the validation profile to apply to this device.
                                    The profile must be defined under
                                    `validation_profiles`.
-                                   Validation profiles define hardware and logging validation requirements used
-                                   by the `anta_runner` role during post-deployment validation.
+                                   Validation profiles define requirements (e.g., hardware and logging) used by
+                                   the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -70737,8 +70752,8 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the validation profile to apply to this device.
                     The profile must be defined under
                     `validation_profiles`.
-                    Validation profiles define hardware and logging validation requirements used
-                    by the `anta_runner` role during post-deployment validation.
+                    Validation profiles define requirements (e.g., hardware and logging) used by
+                    the `anta_runner` role during post-deployment validation.
                     """
 
                     if TYPE_CHECKING:
@@ -71484,8 +71499,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the validation profile to apply to this device.
                                    The profile must be defined under
                                    `validation_profiles`.
-                                   Validation profiles define hardware and logging validation requirements used
-                                   by the `anta_runner` role during post-deployment validation.
+                                   Validation profiles define requirements (e.g., hardware and logging) used by
+                                   the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -75795,8 +75810,8 @@ class EosDesigns(EosDesignsRootModel):
                         Name of the validation profile to apply to this device.
                         The profile must be defined under
                         `validation_profiles`.
-                        Validation profiles define hardware and logging validation requirements used
-                        by the `anta_runner` role during post-deployment validation.
+                        Validation profiles define requirements (e.g., hardware and logging) used by
+                        the `anta_runner` role during post-deployment validation.
                         """
 
                         if TYPE_CHECKING:
@@ -76551,8 +76566,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Name of the validation profile to apply to this device.
                                        The profile must be defined under
                                        `validation_profiles`.
-                                       Validation profiles define hardware and logging validation requirements used
-                                       by the `anta_runner` role during post-deployment validation.
+                                       Validation profiles define requirements (e.g., hardware and logging) used by
+                                       the `anta_runner` role during post-deployment validation.
 
                                 """
 
@@ -80773,8 +80788,8 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the validation profile to apply to this device.
                     The profile must be defined under
                     `validation_profiles`.
-                    Validation profiles define hardware and logging validation requirements used
-                    by the `anta_runner` role during post-deployment validation.
+                    Validation profiles define requirements (e.g., hardware and logging) used by
+                    the `anta_runner` role during post-deployment validation.
                     """
 
                     if TYPE_CHECKING:
@@ -81531,8 +81546,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the validation profile to apply to this device.
                                    The profile must be defined under
                                    `validation_profiles`.
-                                   Validation profiles define hardware and logging validation requirements used
-                                   by the `anta_runner` role during post-deployment validation.
+                                   Validation profiles define requirements (e.g., hardware and logging) used by
+                                   the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -85825,8 +85840,8 @@ class EosDesigns(EosDesignsRootModel):
                     Name of the validation profile to apply to this device.
                     The profile must be defined under
                     `validation_profiles`.
-                    Validation profiles define hardware and logging validation requirements used
-                    by the `anta_runner` role during post-deployment validation.
+                    Validation profiles define requirements (e.g., hardware and logging) used by
+                    the `anta_runner` role during post-deployment validation.
                     """
 
                     if TYPE_CHECKING:
@@ -86581,8 +86596,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Name of the validation profile to apply to this device.
                                    The profile must be defined under
                                    `validation_profiles`.
-                                   Validation profiles define hardware and logging validation requirements used
-                                   by the `anta_runner` role during post-deployment validation.
+                                   Validation profiles define requirements (e.g., hardware and logging) used by
+                                   the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -89114,7 +89129,12 @@ class EosDesigns(EosDesignsRootModel):
     Default value: `False`
     """
     validation_profiles: ValidationProfiles
-    """Subclass of AvdIndexedList with `ValidationProfilesItem` items. Primary key is `name` (`str`)."""
+    """
+    List of validation profiles defining hardware, logging, and fabric-related validation rules.
+    Validation profiles can be referenced from node definitions (for example under
+    `l3leaf.nodes[].validation_profile`) and support single-level inheritance using `parent_profile`.
+    Subclass of AvdIndexedList with `ValidationProfilesItem` items. Primary key is `name` (`str`).
+    """
     vtep_loopback_description: str
     """
     Customize the description on the VTEP interface, typically Loopback1.
@@ -90764,7 +90784,11 @@ class EosDesigns(EosDesignsRootModel):
                    details.
                    Requires both `cv_topology` and `cv_topology_levels` to be set.
                 use_router_general_for_router_id: Use `router general` to set router ID for all routing protocols and VRFs.
-                validation_profiles: Subclass of AvdIndexedList with `ValidationProfilesItem` items. Primary key is `name` (`str`).
+                validation_profiles:
+                   List of validation profiles defining hardware, logging, and fabric-related validation rules.
+                   Validation profiles can be referenced from node definitions (for example under
+                   `l3leaf.nodes[].validation_profile`) and support single-level inheritance using `parent_profile`.
+                   Subclass of AvdIndexedList with `ValidationProfilesItem` items. Primary key is `name` (`str`).
                 vtep_loopback_description: Customize the description on the VTEP interface, typically Loopback1.
                 vtep_vvtep_ip:
                    IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.

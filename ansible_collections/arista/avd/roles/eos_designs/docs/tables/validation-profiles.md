@@ -7,10 +7,10 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>validation_profiles</samp>](## "validation_profiles") | List, items: Dictionary |  |  |  |  |
+    | [<samp>validation_profiles</samp>](## "validation_profiles") | List, items: Dictionary |  |  |  | List of validation profiles defining hardware, logging, and fabric-related validation rules.<br>Validation profiles can be referenced from node definitions (for example under `l3leaf.nodes[].validation_profile`) and support single-level inheritance using `parent_profile`. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "validation_profiles.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "validation_profiles.[].parent_profile") | String |  |  |  | Inherit settings from a parent profile defined under `validation_profiles`.<br>Max one level of profile inheritance: profile -> parent_profile |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "validation_profiles.[].hardware") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "validation_profiles.[].hardware") | Dictionary |  |  |  | Hardware validation thresholds for the device.<br>These settings are only applied when `platform_settings/custom_platform_settings[].feature_support.hardware_validation` is set to `true`.<br>If hardware validation is disabled, all hardware validation checks are skipped and the keys under this section are ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_power_supplies</samp>](## "validation_profiles.[].hardware.min_power_supplies") | Integer |  |  |  | Minimum number of power supplies required for the device. Set to 0 to skip validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_fans</samp>](## "validation_profiles.[].hardware.min_fans") | Integer |  |  |  | Minimum number of fans required for the device. Set to 0 to skip validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_supervisors</samp>](## "validation_profiles.[].hardware.min_supervisors") | Integer |  |  |  | Minimum number of supervisor modules required for the device. Set to 0 to skip validation. |
@@ -25,12 +25,18 @@
 === "YAML"
 
     ```yaml
+    # List of validation profiles defining hardware, logging, and fabric-related validation rules.
+    # Validation profiles can be referenced from node definitions (for example under `l3leaf.nodes[].validation_profile`) and support single-level inheritance using `parent_profile`.
     validation_profiles:
       - name: <str; required; unique>
 
         # Inherit settings from a parent profile defined under `validation_profiles`.
         # Max one level of profile inheritance: profile -> parent_profile
         parent_profile: <str>
+
+        # Hardware validation thresholds for the device.
+        # These settings are only applied when `platform_settings/custom_platform_settings[].feature_support.hardware_validation` is set to `true`.
+        # If hardware validation is disabled, all hardware validation checks are skipped and the keys under this section are ignored.
         hardware:
 
           # Minimum number of power supplies required for the device. Set to 0 to skip validation.

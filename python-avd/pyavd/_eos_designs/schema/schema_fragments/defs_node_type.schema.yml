@@ -1696,11 +1696,13 @@ $defs:
               remove_in_version: 6.0.0
               new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config
           validation_profile:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             description: |-
               Name of the validation profile to apply to this device.
               The profile must be defined under `validation_profiles`.
-              Validation profiles define hardware and logging validation requirements used by the `anta_runner` role during post-deployment validation.
+              Validation profiles define requirements (e.g., hardware and logging) used by the `anta_runner` role during post-deployment validation.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

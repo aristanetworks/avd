@@ -10,19 +10,15 @@
     | [<samp>&lt;node_type_keys.key&gt;</samp>](## "<node_type_keys.key>") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "<node_type_keys.key>.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;kernel_ecmp_cli</samp>](## "<node_type_keys.key>.defaults.kernel_ecmp_cli") | Boolean |  | `True` |  | Use EOS CLI to configure kernel forwarding ECMP programming.<br>For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.<br>- For newer EOS versions (starting 4.33.2) use the proper CLI.<br>- For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validation_profile</samp>](## "<node_type_keys.key>.defaults.validation_profile") | String |  |  |  | Name of the validation profile to apply to this device.<br>The profile must be defined under `validation_profiles`.<br>Validation profiles define hardware and logging validation requirements used by the `anta_runner` role during post-deployment validation. |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kernel_ecmp_cli</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].kernel_ecmp_cli") | Boolean |  | `True` |  | Use EOS CLI to configure kernel forwarding ECMP programming.<br>For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.<br>- For newer EOS versions (starting 4.33.2) use the proper CLI.<br>- For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validation_profile</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].validation_profile") | String |  |  |  | Name of the validation profile to apply to this device.<br>The profile must be defined under `validation_profiles`.<br>Validation profiles define hardware and logging validation requirements used by the `anta_runner` role during post-deployment validation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kernel_ecmp_cli</samp>](## "<node_type_keys.key>.node_groups.[].kernel_ecmp_cli") | Boolean |  | `True` |  | Use EOS CLI to configure kernel forwarding ECMP programming.<br>For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.<br>- For newer EOS versions (starting 4.33.2) use the proper CLI.<br>- For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validation_profile</samp>](## "<node_type_keys.key>.node_groups.[].validation_profile") | String |  |  |  | Name of the validation profile to apply to this device.<br>The profile must be defined under `validation_profiles`.<br>Validation profiles define hardware and logging validation requirements used by the `anta_runner` role during post-deployment validation. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kernel_ecmp_cli</samp>](## "<node_type_keys.key>.nodes.[].kernel_ecmp_cli") | Boolean |  | `True` |  | Use EOS CLI to configure kernel forwarding ECMP programming.<br>For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.<br>- For newer EOS versions (starting 4.33.2) use the proper CLI.<br>- For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validation_profile</samp>](## "<node_type_keys.key>.nodes.[].validation_profile") | String |  |  |  | Name of the validation profile to apply to this device.<br>The profile must be defined under `validation_profiles`.<br>Validation profiles define hardware and logging validation requirements used by the `anta_runner` role during post-deployment validation. |
 
 === "YAML"
 
@@ -37,11 +33,6 @@
         # - For newer EOS versions (starting 4.33.2) use the proper CLI.
         # - For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent.
         kernel_ecmp_cli: <bool; default=True>
-
-        # Name of the validation profile to apply to this device.
-        # The profile must be defined under `validation_profiles`.
-        # Validation profiles define hardware and logging validation requirements used by the `anta_runner` role during post-deployment validation.
-        validation_profile: <str>
 
       # Define variables related to all nodes part of this group.
       node_groups:
@@ -62,21 +53,11 @@
               # - For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent.
               kernel_ecmp_cli: <bool; default=True>
 
-              # Name of the validation profile to apply to this device.
-              # The profile must be defined under `validation_profiles`.
-              # Validation profiles define hardware and logging validation requirements used by the `anta_runner` role during post-deployment validation.
-              validation_profile: <str>
-
           # Use EOS CLI to configure kernel forwarding ECMP programming.
           # For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.
           # - For newer EOS versions (starting 4.33.2) use the proper CLI.
           # - For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent.
           kernel_ecmp_cli: <bool; default=True>
-
-          # Name of the validation profile to apply to this device.
-          # The profile must be defined under `validation_profiles`.
-          # Validation profiles define hardware and logging validation requirements used by the `anta_runner` role during post-deployment validation.
-          validation_profile: <str>
 
       # Define variables per node.
       nodes:
@@ -89,9 +70,4 @@
           # - For newer EOS versions (starting 4.33.2) use the proper CLI.
           # - For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent.
           kernel_ecmp_cli: <bool; default=True>
-
-          # Name of the validation profile to apply to this device.
-          # The profile must be defined under `validation_profiles`.
-          # Validation profiles define hardware and logging validation requirements used by the `anta_runner` role during post-deployment validation.
-          validation_profile: <str>
     ```
