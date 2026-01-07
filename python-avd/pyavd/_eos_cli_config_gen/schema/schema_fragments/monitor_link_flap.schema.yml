@@ -71,6 +71,7 @@ keys:
                       min: 0
                       max: 1000000
                     suppression:
+                      description: Value of penalty above which link would be suppressed.
                       type: int
                       convert_types:
                         - str
