@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -307,9 +307,7 @@ class FilteredTenantsMixin(Protocol):
                                 vrf._internal_data.evpn_l3_multicast_evpn_peg_transit = evpn_peg.transit
                                 break
 
-            vrf.additional_route_targets = vrf.additional_route_targets._filtered(
-                lambda rt: bool((not rt.nodes or self.hostname in rt.nodes) and rt.address_family and rt.route_target and rt.type in ["import", "export"])
-            )
+            vrf.additional_route_targets = vrf.additional_route_targets._filtered(lambda rt: bool(not rt.nodes or self.hostname in rt.nodes))
 
             if vrf.svis or vrf.l3_interfaces or vrf.loopbacks or vrf.l3_port_channels or self.is_forced_vrf(vrf, tenant.name):
                 filtered_vrfs.append(vrf)

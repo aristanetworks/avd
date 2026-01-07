@@ -885,12 +885,12 @@ management tech-support
 | FTP | default | Loopback0 |
 | FTP | MGMT | Management0 |
 | FTP | abc | Ethernet10 |
-| HTTP | default | Loopback0 |
-| HTTP | MGMT | Management0 |
 | HTTP | default | Ethernet10 |
+| HTTP | MGMT | Management0 |
+| HTTP | aaa | Loopback0 |
 | SSH | default | Ethernet10 |
-| SSH | default | Loopback0 |
 | SSH | MGMT | Management0 |
+| SSH | aaa | Loopback0 |
 | Telnet | default | Ethernet10 |
 | Telnet | MGMT | Management0 |
 | Telnet | data | Loopback0 |
@@ -905,12 +905,12 @@ management tech-support
 ip ftp client source-interface Loopback0
 ip ftp client source-interface Management0 vrf MGMT
 ip ftp client source-interface Ethernet10 vrf abc
-ip http client local-interface Loopback0 vrf default
-ip http client local-interface Management0 vrf MGMT
 ip http client local-interface Ethernet10
+ip http client local-interface Management0 vrf MGMT
+ip http client local-interface Loopback0 vrf aaa
 ip ssh client source-interface Ethernet10
-ip ssh client source-interface Loopback0 vrf default
 ip ssh client source-interface Management0 vrf MGMT
+ip ssh client source-interface Loopback0 vrf aaa
 ip telnet client source-interface Ethernet10
 ip telnet client source-interface Management0 vrf MGMT
 ip telnet client source-interface Loopback0 vrf data
@@ -1372,19 +1372,19 @@ tacacs-server host 10.10.10.160
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-| default | loopback1 |
-| TEST1 | lo3 |
-| default | loopback10 |
+| default | Loopback1 |
+| TEST1 | Loopback3 |
+| default | Loopback10 |
 
 #### IP TACACS Source Interfaces Device Configuration
 
 ```eos
 !
-ip tacacs vrf default source-interface loopback1
+ip tacacs vrf default source-interface Loopback1
 !
-ip tacacs vrf TEST1 source-interface lo3
+ip tacacs vrf TEST1 source-interface Loopback3
 !
-ip tacacs source-interface loopback10
+ip tacacs source-interface Loopback10
 ```
 
 ### Radius Proxy
@@ -1584,19 +1584,19 @@ radius-server host 10.10.11.155 vrf mgt tls ssl-profile HOST_SSL_PROFILE port 20
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-| default | loopback1 |
-| MGMT | Ma1 |
-| default | loopback10 |
+| default | Loopback1 |
+| default | Loopback10 |
+| MGMT | Management1 |
 
 #### IP SOURCE Source Interfaces Device Configuration
 
 ```eos
 !
-ip radius vrf default source-interface loopback1
+ip radius vrf default source-interface Loopback1
 !
-ip radius vrf MGMT source-interface Ma1
+ip radius source-interface Loopback10
 !
-ip radius source-interface loopback10
+ip radius vrf MGMT source-interface Management1
 ```
 
 ### AAA Server Groups
@@ -2439,6 +2439,8 @@ mcs client
 | Management1 | MGMT |
 | Loopback0 | default |
 | Loopback12 | Tenant_A_APP_Zone |
+| Ethernet1 | AAA |
+| Ethernet2 | abc |
 
 #### SNMP VRF Status
 
@@ -2446,6 +2448,7 @@ mcs client
 | --- | ------ |
 | default | Disabled |
 | MGMT | Enabled |
+| lower_case | Enabled |
 
 #### SNMP Hosts Configuration
 
@@ -2507,8 +2510,10 @@ snmp-server engineID local 424242424242424242
 snmp-server contact DC1_OPS
 snmp-server location DC1
 snmp-server local-interface Loopback0
-snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
+snmp-server vrf AAA local-interface Ethernet1
 snmp-server vrf MGMT local-interface Management1
+snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
+snmp-server vrf abc local-interface Ethernet2
 snmp-server view VW-READ iso included
 snmp-server view VW-WRITE iso included
 snmp-server community <removed> ro onur
@@ -2549,6 +2554,7 @@ snmp-server enable traps snmp link-down
 snmp-server enable traps snmpConfigManEvent
 no snmp-server vrf default
 snmp-server vrf MGMT
+snmp-server vrf lower_case
 snmp-server ifmib ifspeed shape-rate
 ```
 
@@ -2865,6 +2871,8 @@ tap aggregation
 | AAA | - | 10.6.75.62 | 123 |
 | AAA | - | 10.6.75.63 | 333 |
 | AAA | Ethernet2 | - | - |
+| abc | - | 10.6.75.62 | 6343 |
+| abc | 2.2.2.2 | - | - |
 | BBB | - | 10.6.75.62 | 6343 |
 | BBB | 1.1.1.1 | - | - |
 | CCC | - | 10.6.75.62 | 6343 |
@@ -2916,7 +2924,7 @@ sFlow hardware accelerated Sample Rate: 1024
 | bgp | True |
 | router | True |
 | switch | False |
-| tunnel | False |
+| tunnel ipv4 egress | False |
 
 #### SFlow Interfaces
 
@@ -2954,6 +2962,8 @@ sflow vrf MGMT destination 10.6.75.59
 sflow vrf MGMT destination 10.6.75.62 123
 sflow vrf MGMT destination 10.6.75.63 333
 sflow vrf MGMT source-interface Ethernet3
+sflow vrf abc destination 10.6.75.62
+sflow vrf abc source 2.2.2.2
 sflow destination 10.6.75.61
 sflow destination 10.6.75.62 123
 sflow source-interface Management0
@@ -2962,7 +2972,7 @@ sflow sample output subinterface
 sflow extension bgp
 sflow extension router
 no sflow extension switch
-no sflow extension tunnel
+no sflow extension tunnel ipv4 egress
 sflow interface disable default
 sflow interface egress unmodified enable default
 sflow run
@@ -7770,24 +7780,35 @@ ipv6 hardware fib optimize prefixes profile internet
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
+| default | 1.1.1.0/24 | - | Ethernet1 | 1 | - | - | - |
+| default | 1.1.1.0/24 | - | Vlan2 | 1 | - | - | - |
+| default | 1.1.1.0/24 | 1.1.1.1 | - | 1 | - | - | - |
+| default | 1.1.1.0/24 | 2.2.2.2 | - | 1 | - | - | - |
+| default | 1.1.1.0/24 | 10.1.1.1 | vlan1001 | 1 | - | - | - |
+| default | 1.1.2.0/24 | 10.1.1.1 | vlan1001 | 200 | 666 | RT-TO-FAKE-DMZ | - |
+| default | 2.2.2.0/24 | 3.3.3.3 | - | 1 | - | - | - |
 | BLUE-C1 | 193.1.0.0/24 | - | Null0 | 1 | - | - | - |
 | BLUE-C1 | 193.1.1.0/24 | - | Null0 | 1 | - | - | - |
 | BLUE-C1 | 193.1.2.0/24 | - | Null0 | 1 | - | - | - |
-| default | 1.1.1.0/24 | 10.1.1.1 | vlan1001 | 1 | - | - | - |
-| default | 1.1.2.0/24 | 10.1.1.1 | vlan1001 | 200 | 666 | RT-TO-FAKE-DMZ | - |
 | TENANT_A_PROJECT01 | 1.2.1.0/24 | 10.1.2.1 | vlan202 | 1 | - | - | - |
 | TENANT_A_PROJECT01 | 1.2.2.0/24 | 10.1.2.1 | vlan1001 | 201 | 667 | RT-TO-FAKE-DMZ | - |
-| TENANT_A_PROJECT02 | 10.3.4.0/24 | 1.2.3.4 | - | 1 | - | - | - |
-| TENANT_A_PROJECT02 | 10.3.5.0/24 | - | Null0 | 1 | - | - | - |
 | TENANT_A_PROJECT01 | 10.3.6.0/24 | 11.2.1.1 (tracked with BFD) | Ethernet40 | 100 | 1000 | Track-BFD | 300 |
 | TENANT_A_PROJECT01 | 10.3.7.0/24 | - | Ethernet41 | 100 | 1000 | No-Track-BFD | 300 |
+| TENANT_A_PROJECT02 | 10.3.4.0/24 | 1.2.3.4 | - | 1 | - | - | - |
+| TENANT_A_PROJECT02 | 10.3.5.0/24 | - | Null0 | 1 | - | - | - |
+| aaa | 10.3.8.0/24 | - | Null0 | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
+ip route 1.1.1.0/24 Ethernet1
+ip route 1.1.1.0/24 Vlan2
+ip route 1.1.1.0/24 1.1.1.1
+ip route 1.1.1.0/24 2.2.2.2
 ip route 1.1.1.0/24 Vlan1001 10.1.1.1
 ip route 1.1.2.0/24 Vlan1001 10.1.1.1 200 tag 666 name RT-TO-FAKE-DMZ
+ip route 2.2.2.0/24 3.3.3.3
 ip route vrf BLUE-C1 193.1.0.0/24 Null0
 ip route vrf BLUE-C1 193.1.1.0/24 Null0
 ip route vrf BLUE-C1 193.1.2.0/24 Null0
@@ -7797,6 +7818,7 @@ ip route vrf TENANT_A_PROJECT01 10.3.6.0/24 Ethernet40 11.2.1.1 track bfd 100 ta
 ip route vrf TENANT_A_PROJECT01 10.3.7.0/24 Ethernet41 100 tag 1000 name No-Track-BFD metric 300
 ip route vrf TENANT_A_PROJECT02 10.3.4.0/24 1.2.3.4
 ip route vrf TENANT_A_PROJECT02 10.3.5.0/24 Null0
+ip route vrf aaa 10.3.8.0/24 Null0
 ```
 
 ### IPv6 Static Routes
@@ -13823,7 +13845,7 @@ class-map type pbr match-any aaa
 
 | Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
 | ---------- | --- | ---- | ------------- | --------------- | ----------------------------- |
-| CM_REPLICATION_LD | - | af11 | 2 | 1 | 10 kbps (260 kbytes) -> drop-precedence<br> 30 kbps(270 kbytes) -> drop |
+| CM_REPLICATION_LD | 2 | af11 | 2 | 1 | 10 kbps (260 kbytes) -> drop-precedence<br> 30 kbps(270 kbytes) -> drop |
 | CM_REPLICATION_LD_2 | - | af11 | 2 | - | - |
 
 ##### PM_REPLICATION_LD2
@@ -13854,6 +13876,7 @@ class-map type pbr match-any aaa
 !
 policy-map type quality-of-service PM_REPLICATION_LD
    class CM_REPLICATION_LD
+      set cos 2
       set dscp af11
       set traffic-class 2
       set drop-precedence 1
@@ -13865,14 +13888,14 @@ policy-map type quality-of-service PM_REPLICATION_LD
 !
 policy-map type quality-of-service PM_REPLICATION_LD2
    class CM_REPLICATION_LD
-      set dscp af11
       set cos 4
+      set dscp af11
       police rate 30 kbps burst-size 280 bytes action set dscp af11 rate 1 mbps burst-size 270 bytes
 !
 policy-map type quality-of-service PM_REPLICATION_LD3
    class CM_REPLICATION_LD
-      set dscp af11
       set cos 6
+      set dscp af11
       police rate 10000 bps burst-size 260 kbytes
 !
 policy-map type quality-of-service pmap_test1
@@ -14388,6 +14411,7 @@ priority-flow-control pause watchdog action no-drop
 | -------------- | ---------- | ----------- | ---- |
 | server1 | 1.2.3.4 | pathfinder | 3478 |
 | server2 | 2.3.4.5 | - | 4100 |
+| SERVER3 | 1.2.3.5 | - | 3478 |
 
 ### STUN Server
 
@@ -14401,6 +14425,8 @@ priority-flow-control pause watchdog action no-drop
 !
 stun
    client
+      server-profile SERVER3
+         ip address 1.2.3.5
       server-profile server1
          ip address 1.2.3.4
          ssl profile pathfinder

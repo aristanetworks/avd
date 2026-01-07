@@ -61,9 +61,28 @@ static_routes:
   - vrf: TENANT_A_PROJECT01
     prefix: 10.3.7.0/24
     interface: Ethernet41
-    # Negative test case - Tacking should not be enabled
+    # Negative test case - Tracking should not be enabled
     track_bfd: true
     tag: 1000
     name: No-Track-BFD
     distance: 100
     metric: 300
+
+  - prefix: 10.3.8.0/24
+    vrf: aaa
+    interface: Null0
+
+  - prefix: 1.1.1.0/24
+    next_hop: 2.2.2.2
+
+  - prefix: 1.1.1.0/24
+    next_hop: 1.1.1.1
+
+  - prefix: 1.1.1.0/24
+    interface: Ethernet1
+
+  - prefix: 1.1.1.0/24
+    interface: Vlan2
+
+  - prefix: 2.2.2.0/24
+    next_hop: 3.3.3.3
