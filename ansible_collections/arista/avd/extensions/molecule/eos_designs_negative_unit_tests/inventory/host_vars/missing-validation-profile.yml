@@ -1,0 +1,20 @@
+type: l3leaf
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    bgp_as: 65101
+  nodes:
+    - name: missing-validation-profile
+      id: 1
+      mgmt_ip: 192.168.200.105/24
+      validation_profile: profile1
+
+validation_profiles:
+  - name: profile2
+    hardware:
+      min_power_supplies: 2
+
+expected_error_message: >-
+  Validation profile 'profile1' referenced in node configuration is not defined under 'validation_profiles'.
