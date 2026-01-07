@@ -886,11 +886,11 @@ management tech-support
 | FTP | MGMT | Management0 |
 | FTP | abc | Ethernet10 |
 | HTTP | default | Ethernet10 |
-| HTTP | default | Loopback0 |
 | HTTP | MGMT | Management0 |
+| HTTP | aaa | Loopback0 |
 | SSH | default | Ethernet10 |
-| SSH | default | Loopback0 |
 | SSH | MGMT | Management0 |
+| SSH | aaa | Loopback0 |
 | Telnet | default | Ethernet10 |
 | Telnet | MGMT | Management0 |
 | Telnet | data | Loopback0 |
@@ -906,11 +906,11 @@ ip ftp client source-interface Loopback0
 ip ftp client source-interface Management0 vrf MGMT
 ip ftp client source-interface Ethernet10 vrf abc
 ip http client local-interface Ethernet10
-ip http client local-interface Loopback0 vrf default
 ip http client local-interface Management0 vrf MGMT
+ip http client local-interface Loopback0 vrf aaa
 ip ssh client source-interface Ethernet10
-ip ssh client source-interface Loopback0 vrf default
 ip ssh client source-interface Management0 vrf MGMT
+ip ssh client source-interface Loopback0 vrf aaa
 ip telnet client source-interface Ethernet10
 ip telnet client source-interface Management0 vrf MGMT
 ip telnet client source-interface Loopback0 vrf data
