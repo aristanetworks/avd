@@ -17,6 +17,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: DIGITAL_TWIN_SINGLE_SWITCH_FABRIC
+  validate_hardware:
+    enabled: false
   digital_twin:
     environment: act
     node_type: veos
