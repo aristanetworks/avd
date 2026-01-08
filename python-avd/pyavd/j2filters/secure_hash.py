@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -12,7 +12,7 @@ def sha512_password(clear_password: str, salt: str) -> str:
 
     Args:
         clear_password: The cleartext password provided by the user that will be hashed.
-        salt: Salt value to be used when creating password hash. A randomly generated salt will be used unless the user specifies one.
+        salt: Salt value to be used when creating password hash.
 
     Returns:
         The SHA-512 password hash.

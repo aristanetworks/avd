@@ -38,6 +38,10 @@ snmp_server:
     - name: Loopback0
     - name: Loopback12
       vrf: Tenant_A_APP_Zone
+    - name: Ethernet1
+      vrf: AAA
+    - name: Ethernet2
+      vrf: abc
   ipv4_acls:
     - name: SNMP-MGMT
       vrf: MGMT
@@ -166,5 +170,7 @@ snmp_server:
     - name: default
       enable: false
     - name: MGMT
+      enable: true
+    - name: lower_case
       enable: true
   ifmib_ifspeed_shape_rate: true

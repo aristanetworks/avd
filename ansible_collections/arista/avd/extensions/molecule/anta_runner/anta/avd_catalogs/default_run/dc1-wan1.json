@@ -91,15 +91,16 @@
         "neighbors": [
           {
             "port": "Ethernet1",
-            "neighbor_device": "dc1-leaf1a.dc1.local",
+            "neighbor_device": "dc1-leaf1a",
             "neighbor_port": "Ethernet6"
           },
           {
             "port": "Ethernet2",
-            "neighbor_device": "dc1-leaf1b.dc1.local",
+            "neighbor_device": "dc1-leaf1b",
             "neighbor_port": "Ethernet6"
           }
-        ]
+        ],
+        "require_fqdn": false
       }
     },
     {

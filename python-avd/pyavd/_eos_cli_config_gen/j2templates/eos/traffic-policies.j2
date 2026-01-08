@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -9,17 +9,15 @@
 traffic-policies
 {# FIELD SET #}
 {#     -- L4 PORT MANAGEMENT -- #}
-{%     for field_set_port in traffic_policies.field_sets.ports | arista.avd.natural_sort('name') %}
+{%     for field_set_port in traffic_policies.field_sets.ports | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    field-set l4-port {{ field_set_port.name }}
 {%         if field_set_port.port_range is arista.avd.defined %}
       {{ field_set_port.port_range }}
 {%         endif %}
-{%         if not loop.last %}
    !
-{%         endif %}
 {%     endfor %}
 {#     -- IPv4 PREFIX MANAGEMENT -- #}
-{%     for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.natural_sort('name') %}
+{%     for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    field-set ipv4 prefix {{ field_set_ipv4.name }}
 {%         if field_set_ipv4.prefixes is arista.avd.defined %}
       {{ field_set_ipv4.prefixes | arista.avd.natural_sort | join(' ') }}
@@ -32,7 +30,7 @@ traffic-policies
 {%         endif %}
 {%     endfor %}
 {#     -- IPv6 PREFIX MANAGEMENT -- #}
-{%     for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.natural_sort('name') %}
+{%     for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    field-set ipv6 prefix {{ field_set_ipv6.name }}
 {%         if field_set_ipv6.prefixes is arista.avd.defined %}
       {{ field_set_ipv6.prefixes | arista.avd.natural_sort | join(' ') }}
@@ -52,7 +50,7 @@ traffic-policies
    counter interface poll interval {{ traffic_policies.options.counter_interface_poll_interval }} seconds
 {%     endif %}
 {# TRAFFIC POLICIES #}
-{%     for policy in traffic_policies.policies | arista.avd.natural_sort('name') %}
+{%     for policy in traffic_policies.policies | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    traffic-policy {{ policy.name }}
 {# COUNTER SECTION #}
