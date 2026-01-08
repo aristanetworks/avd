@@ -145,8 +145,8 @@ class DaemonTerminattrMixin(Protocol):
             msg = "'dns_settings' must be configured when cv_settings.onprem_clusters[].servers[].name' is set to a DNS name."
             raise AristaAvdInvalidInputsError(msg)
 
-        if not self.structured_config.ntp.servers:
-            msg = "'ntp.servers' must be configured when 'cv_settings.onprem_clusters' is defined."
+        if not self.inputs.ntp_settings.servers:
+            msg = "'ntp_settings.servers' must be configured when 'cv_settings.onprem_clusters' is defined."
             raise AristaAvdInvalidInputsError(msg)
 
     @staticmethod
