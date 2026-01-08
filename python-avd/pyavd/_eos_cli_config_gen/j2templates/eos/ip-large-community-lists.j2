@@ -4,12 +4,17 @@
  that can be found in the LICENSE file.
 #}
 {# eos - ip large community lists #}
-{% for ip_large_community_list in ip_large_community_lists | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{% if ip_large_community_lists is arista.avd.defined %}
 !
-{%     for entry in ip_large_community_list.entries %}
-ip large-community-list {{ ip_large_community_list.name }} {{ entry.type }} {{ entry.large_communities }}
+{%     for large_community_list in ip_large_community_lists %}
+{%         if large_community_list.name is arista.avd.defined %}
+{%             for entry in large_community_list.entries %}
+{%                 if entry.regexp is arista.avd.defined %}
+ip large-community-list regexp {{ large_community_list.name }} {{ entry.action }} {{ entry.regexp }}
+{%                 elif entry.large_communities is arista.avd.defined %}
+ip large-community-list {{ large_community_list.name }} {{ entry.action }} {{ entry.large_communities | join(' ') }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
 {%     endfor %}
-{%     for entry in ip_large_community_list.entries %}
-ip large-community-list regexp {{ ip_large_community_list.name }} {{ entry.type }} {{ entry.regexp }}
-{%     endfor %}
-{% endfor %}
+{% endif %}
