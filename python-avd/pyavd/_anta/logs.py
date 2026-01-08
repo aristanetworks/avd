@@ -114,6 +114,8 @@ class LogMessage(Enum):
     EXTRA_FABRIC_VALIDATION_DISABLED = "skipped - Extra fabric-wide validation tests disabled"
     HARDWARE_VALIDATION_DISABLED = "skipped - Hardware validation tests disabled"
     NO_STORM_CONTROL_ENABLED = "skipped - No interfaces with storm-control enabled"
+    NO_LOOPBACK0_WITH_IP = "skipped - No Loopback0 with IP address found"
 
     # Device role message
     DEVICE_IS_WAN_ROUTER = "skipped - Device is a WAN router"
+    DEVICE_IS_NOT_VTEP = "skipped - Device is not a VTEP"

@@ -5,18 +5,16 @@ from collections.abc import Callable, Iterator
 from functools import wraps
 from typing import TypeVar
 
-from anta.models import AntaTest
-
 from pyavd._anta.logs import LogMessage
 
 from ._base_classes import AntaTestInputFactory
 
 F = TypeVar("F", bound=AntaTestInputFactory)
-R = TypeVar("R", bound=AntaTest.Input)
+R = TypeVar("R")
 
 
 def skip_if_hardware_validation_disabled(func: Callable[[F], Iterator[R]]) -> Callable[[F], Iterator[R]]:
-    """Decorator to skip execution of the input factory create method if hardware validation is disabled."""
+    """Decorator to skip execution of an input factory method if hardware validation is disabled."""
 
     @wraps(func)
     def wrapper(self: F) -> Iterator[R]:
@@ -29,7 +27,7 @@ def skip_if_hardware_validation_disabled(func: Callable[[F], Iterator[R]]) -> Ca
 
 
 def skip_if_extra_fabric_validation_disabled(func: Callable[[F], Iterator[R]]) -> Callable[[F], Iterator[R]]:
-    """Decorator to skip execution of the input factory create method if extra fabric validation is disabled."""
+    """Decorator to skip execution of an input factory method if extra fabric validation is disabled."""
 
     @wraps(func)
     def wrapper(self: F) -> Iterator[R]:
@@ -42,12 +40,38 @@ def skip_if_extra_fabric_validation_disabled(func: Callable[[F], Iterator[R]]) -
 
 
 def skip_if_wan_router(func: Callable[[F], Iterator[R]]) -> Callable[[F], Iterator[R]]:
-    """Decorator to skip execution of the input factory create method if the device is a WAN router."""
+    """Decorator to skip execution of an input factory method if the device is a WAN router."""
 
     @wraps(func)
     def wrapper(self: F) -> Iterator[R]:
         if self.device.is_wan_router:
             self.logger_adapter.debug(LogMessage.DEVICE_IS_WAN_ROUTER)
+            return
+        yield from func(self)
+
+    return wrapper
+
+
+def skip_if_not_vtep(func: Callable[[F], Iterator[R]]) -> Callable[[F], Iterator[R]]:
+    """Decorator to skip execution of an input factory method if the device is NOT a VTEP."""
+
+    @wraps(func)
+    def wrapper(self: F) -> Iterator[R]:
+        if not self.device.is_vtep:
+            self.logger_adapter.debug(LogMessage.DEVICE_IS_NOT_VTEP)
+            return
+        yield from func(self)
+
+    return wrapper
+
+
+def skip_if_no_loopback0_with_ip(func: Callable[[F], Iterator[R]]) -> Callable[[F], Iterator[R]]:
+    """Decorator to skip execution of an input factory method if the device has no Loopback0 with an IP address configured."""
+
+    @wraps(func)
+    def wrapper(self: F) -> Iterator[R]:
+        if not self.device.loopback0_ip:
+            self.logger_adapter.debug(LogMessage.NO_LOOPBACK0_WITH_IP)
             return
         yield from func(self)
 

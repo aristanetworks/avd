@@ -11,7 +11,7 @@ from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
-from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_wan_router
+from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_not_vtep, skip_if_wan_router
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -45,6 +45,7 @@ class VerifyRoutingTableEntryInputFactory(AntaTestInputFactory[VerifyRoutingTabl
     """
 
     @skip_if_extra_fabric_validation_disabled
+    @skip_if_not_vtep
     @skip_if_wan_router
     def create(self) -> Iterator[VerifyRoutingTableEntry.Input]:
         """Generate the inputs for the `VerifyRoutingTableEntry` test."""

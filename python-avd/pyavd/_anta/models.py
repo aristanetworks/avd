@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import cached_property
-from ipaddress import IPv4Address, IPv6Address, ip_interface
+from ipaddress import IPv4Address, IPv4Interface, IPv6Address, ip_interface
 from logging import getLogger
 from typing import TYPE_CHECKING
 
@@ -26,6 +26,7 @@ class BgpNeighbor:
     ip_address: IPv4Address | IPv6Address
     vrf: str
     update_source: str | None = None
+    description: str | None = None
 
 
 @dataclass(frozen=True)
@@ -34,6 +35,7 @@ class BgpNeighborInterface:
 
     interface: str
     vrf: str
+    description: str | None = None
 
 
 @dataclass
@@ -54,6 +56,13 @@ class DeviceTestContext:
     def is_wan_router(self) -> bool:
         """Check if the device is a WAN router."""
         return self.is_vtep and "Dps" in self.structured_config.vxlan_interface.vxlan1.vxlan._get("source_interface")
+
+    @cached_property
+    def loopback0_ip(self) -> IPv4Address | None:
+        """Get the Loopback0 IP of the device."""
+        if "Loopback0" in self.structured_config.loopback_interfaces and (ip_address := self.structured_config.loopback_interfaces["Loopback0"].ip_address):
+            return IPv4Interface(ip_address).ip
+        return None
 
     @cached_property
     def bgp_neighbors(self) -> list[BgpNeighbor]:
@@ -126,7 +135,11 @@ class DeviceTestContext:
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None
 
-        return BgpNeighborInterface(interface=neighbor_interface.name, vrf=vrf)
+        return BgpNeighborInterface(
+            interface=neighbor_interface.name,
+            vrf=vrf,
+            description=neighbor_interface.description or (neighbor_interface.metadata.peer if from_default_vrf else None),
+        )
 
     def _process_bgp_neighbor(
         self, neighbor: EosCliConfigGen.RouterBgp.NeighborsItem | EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem, vrf: str
@@ -176,4 +189,9 @@ class DeviceTestContext:
             else None
         )
 
-        return BgpNeighbor(ip_address=ip_interface(neighbor.ip_address).ip, vrf=vrf, update_source=update_source)
+        return BgpNeighbor(
+            ip_address=ip_interface(neighbor.ip_address).ip,
+            vrf=vrf,
+            update_source=update_source,
+            description=neighbor.description or (neighbor.metadata.peer if from_default_vrf else None),
+        )
