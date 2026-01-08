@@ -22,17 +22,24 @@ if TYPE_CHECKING:
     from pyavd._anta.models import DeviceTestContext
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
-    class CandidateEthernetInterfacesItem(Protocol):
+    class Metadata(Protocol):
+        """Required metadata for a candidate interface."""
+
+        peer: str
+        peer_interface: str
+
+    class CandidateEthernetInterfacesItemLLDP(Protocol):
         """Protocol representing an interface that is a valid candidate for LLDP testing."""
-
-        class Metadata(Protocol):
-            """Required metadata for a candidate interface."""
-
-            peer: str
-            peer_interface: str
 
         name: str
         metadata: Metadata
+
+    class CandidateEthernetInterfacesItemP2P(Protocol):
+        """Protocol representing an interface that is a valid candidate for P2P reachability testing."""
+
+        name: str
+        metadata: Metadata
+        ip_address: str
 
 
 class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.Input]):
@@ -65,7 +72,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
 
         yield VerifyLLDPNeighbors.Input(neighbors=natural_sort(neighbors, sort_key="port"), require_fqdn=False)
 
-    def _is_interface_candidate(self, interface: EosCliConfigGen.EthernetInterfacesItem) -> TypeGuard[CandidateEthernetInterfacesItem]:
+    def _is_interface_candidate(self, interface: EosCliConfigGen.EthernetInterfacesItem) -> TypeGuard[CandidateEthernetInterfacesItemLLDP]:
         """Check if an interface is valid for LLDP testing."""
         if interface.metadata.validate_state is False or interface.metadata.validate_lldp is False:
             self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=interface.name)
@@ -160,22 +167,10 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
     def _get_p2p_hosts(self) -> Iterator[Host]:
         """Generate Host objects for the point-to-point reachability test."""
         for intf in self.structured_config.ethernet_interfaces:
-            if intf.shutdown or (intf.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown):
-                self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=intf.name)
+            if not self._is_interface_candidate(intf):
                 continue
 
-            if not intf.ip_address or not intf.metadata.peer or not intf.metadata.peer_interface:
-                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="ip_address, metadata.peer, metadata.peer_interface")
-                continue
-
-            if intf.ip_address == "dhcp":
-                self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=intf.name)
-                continue
-
-            if "unnumbered" in intf.ip_address:
-                self.logger_adapter.debug(LogMessage.INTERFACE_UNNUMBERED, interface=intf.name)
-                continue
-
+            # Get and validate the peer interface
             if (peer_interface_ip := self.get_peer_interface_ip(intf.metadata.peer, intf.metadata.peer_interface, intf.name)) is None:
                 continue
 
@@ -235,6 +230,25 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
             if not self._is_host_seen(host):
                 self._track_host(host)
                 yield host
+
+    def _is_interface_candidate(self, interface: EosCliConfigGen.EthernetInterfacesItem) -> TypeGuard[CandidateEthernetInterfacesItemP2P]:
+        """Check if an interface is valid for P2P reachability testing."""
+        if interface.shutdown or (interface.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown):
+            self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=interface.name)
+            return False
+
+        if not interface.ip_address or not interface.metadata.peer or not interface.metadata.peer_interface:
+            self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=interface.name, fields="ip_address, metadata.peer, metadata.peer_interface")
+            return False
+
+        if interface.ip_address == "dhcp":
+            self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=interface.name)
+            return False
+
+        if "unnumbered" in interface.ip_address:
+            self.logger_adapter.debug(LogMessage.INTERFACE_UNNUMBERED, interface=interface.name)
+            return False
+        return True
 
     def _track_host(self, host: Host) -> None:
         """Register a Host destination in the covered_destinations tracker."""

@@ -203,17 +203,17 @@ class AvdFabricData:
 
             # Devices excluded as destination targets are not added to the IP mappings
             if device_data.exclude_as_extra_fabric_validation_target:
-                LOGGER.debug("<%s> Skipped from IPv4 mappings - Device excluded as a target from extra validation tests", device)
+                LOGGER.debug("<%s> Skipped from all IPv4 mappings - Device excluded as a target from extra validation tests", device)
                 continue
 
             # Undeployed devices are not added to the IP mappings
             if not device_data.is_deployed:
-                LOGGER.debug("<%s> Skipped from IPv4 mappings - Device is not deployed", device)
+                LOGGER.debug("<%s> Skipped from all IPv4 mappings - Device is not deployed", device)
                 continue
 
             # WAN routers are not added to the IP mappings for now
             if device_data.is_wan_router:
-                LOGGER.debug("<%s> Skipped from IPv4 mappings - Device is a WAN router", device)
+                LOGGER.debug("<%s> Skipped from all IPv4 mappings - Device is a WAN router", device)
                 continue
 
             # Track special IPs for this device
