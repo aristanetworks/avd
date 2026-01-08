@@ -28,6 +28,9 @@ Use `network_ports` instead when:
 
 This key is typically defined in a folder named `CONNECTED_ENDPOINTS`, but it can be defined elsewhere, depending on your environment.
 
+!!! warning
+    It is not recommended to mix `connected_endpoints` and `network_ports` in a single inventory. When in doubt or troubleshooting inventory, please us `connected_endpoints` as it requires more deterministic inputs and builds more deterministic outputs.
+
 ## Concepts
 
 **port_profiles**: Port profiles are used to share common settings for connected_endpoints and network_ports. Keys are the same as those used under endpoint adapters. Keys defined under endpoint adapters take precedence.
