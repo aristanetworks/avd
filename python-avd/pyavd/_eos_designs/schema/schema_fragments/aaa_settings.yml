@@ -197,7 +197,6 @@ keys:
               type: str
               description: |-
                 SHA512 Hash of Password.
-                Must be the hash of the password.
                 Takes precedence over `cleartext_password`.
                 This variable is sensitive and SHOULD be configured using some vault mechanism.
             cleartext_password:
