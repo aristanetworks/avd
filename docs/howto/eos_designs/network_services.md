@@ -28,7 +28,7 @@ Everything starts with a tenant. A tenant is the top-level key under which you d
 ```yaml
 tenants:
   - name: MY_TENANT
-    mac_vrf_vni_base: 10000
+    mac_vrf_vni_base: 10000 # Required for VXLAN based network
     vrfs:
       # ... VRF definitions go here
     l2vlans:
