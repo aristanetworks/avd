@@ -11380,7 +11380,7 @@ $defs:
             - hardware
             description: 'Set the flow tracker type.
 
-              Override the `default_flow_tracker_type`` set at the `node_type_key`
+              Override the `default_flow_tracker_type` set at the `node_type_key`
               level.
 
               `default_flow_tracker_type` default value is `sampled`.'
