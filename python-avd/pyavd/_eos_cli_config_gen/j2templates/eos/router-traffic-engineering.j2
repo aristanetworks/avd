@@ -48,6 +48,11 @@ router traffic-engineering
 {%                             if labelstack.index is arista.avd.defined %}
 {%                                 set stack = stack ~ " index " ~ labelstack.index %}
 {%                             endif %}
+{%         if loop.first and pathgroup.explicit_null is arista.avd.defined %}
+            !
+{%         else %}
+            !
+{%         endif %}
             segment-list label-stack {{ stack }}
 {%                         endfor %}
 {%                     endfor %}

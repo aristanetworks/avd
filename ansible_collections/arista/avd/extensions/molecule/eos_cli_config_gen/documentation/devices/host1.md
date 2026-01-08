@@ -8190,6 +8190,7 @@ router traffic-engineering
          !
          path-group preference 180
             explicit-null ipv4 ipv6
+            !
             segment-list label-stack 900002 900003 900005 900006 index 200
       !
       policy endpoint 1.2.3.4 color 80810
@@ -8198,6 +8199,7 @@ router traffic-engineering
          !
          path-group preference 100
             explicit-null none
+            !
             segment-list label-stack 900002 900008 900007 900006 weight 20 index 100
       !
       policy endpoint 5.6.7.8 color 20320
@@ -8206,12 +8208,16 @@ router traffic-engineering
          !
          path-group preference 80
             explicit-null ipv4
+            !
             segment-list label-stack 900002 900003 900005 900006 weight 120 index 300
+            !
             segment-list label-stack 900002 900004 900007 900006 weight 220 index 400
          !
          path-group preference 120
             explicit-null ipv6
+            !
             segment-list label-stack 900002 900008 900009 900006
+            !
             segment-list label-stack 900002 900010 900011 900012
    router-id ipv4 10.0.0.1
    router-id ipv6 2001:beef:cafe::1
@@ -10528,6 +10534,12 @@ router rip vrf vrf2
 
 #### PBR Policy Maps Summary
 
+##### pm_pbr
+
+| Class | Index | Drop | Nexthop | Recursive |
+| ----- | ----- | ---- | ------- | --------- |
+| CM_PBR_EXCLUDE | - | - | 192.168.4.2 | True |
+
 ##### PM_PBR_BREAKOUT
 
 | Class | Index | Drop | Nexthop | Recursive |
@@ -10543,6 +10555,10 @@ policy-map type pbr PM_PBR_BREAKOUT
    class CM_PBR_EXCLUDE
    !
    class CM_PBR_INCLUDE
+      set nexthop recursive 192.168.4.2
+!
+policy-map type pbr pm_pbr
+   class CM_PBR_EXCLUDE
       set nexthop recursive 192.168.4.2
 ```
 
