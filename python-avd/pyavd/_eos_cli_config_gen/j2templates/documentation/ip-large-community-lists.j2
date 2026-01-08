@@ -12,19 +12,17 @@
 
 | Name | Action | Communities / Regexp |
 | ---- | ------ | -------------------- |
-{%     for large_community_list in ip_large_community_lists %}
-{%         if large_community_list.name is arista.avd.defined %}
-{%             for entry in large_community_list.entries %}
-{%                 if entry.action is arista.avd.defined %}
-{%                     if entry.regexp is arista.avd.defined %}
+{# eos - ip large community lists #}
+{% for ip_large_community_list in ip_large_community_lists | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+!
+{%      for entry in ip_large_community_list.entries %}
+{%          if entry.regexp is arista.avd.defined %}
 | {{ large_community_list.name }} | {{ entry.action }} | {{ entry.regexp }} |
-{%                     elif entry.large_communities is arista.avd.defined %}
+{%          elif entry.large_communities is arista.avd.defined %}
 | {{ large_community_list.name }} | {{ entry.action }} | {{ entry.large_communities | join(', ') }} |
-{%                     endif %}
-{%                 endif %}
-{%             endfor %}
-{%         endif %}
+{%          endif %}
 {%     endfor %}
+{% endfor %}
 
 #### IP Large-community-lists Device Configuration
 
