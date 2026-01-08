@@ -72,7 +72,7 @@ underlay OSPF process id '{self.inputs.underlay_ospf_process_id}'."
                 maybe_existing_process = self.structured_config.router_ospf.process_ids.obtain(process_id)
                 maybe_existing_process._combine(process)
 
-        # If we have static_routes in default VRF and not EPVN, and underlay is OSPF
+        # If we have static_routes in default VRF and not EVPN, and underlay is OSPF
         # Then add redistribute static to the underlay OSPF process.
         if self._vrf_default_ipv4_static_routes["redistribute_in_underlay"] and self.shared_utils.underlay_routing_protocol in ["ospf", "ospf-ldp"]:
             self.structured_config.router_ospf.process_ids.obtain(self.inputs.underlay_ospf_process_id).redistribute.static.enabled = True
