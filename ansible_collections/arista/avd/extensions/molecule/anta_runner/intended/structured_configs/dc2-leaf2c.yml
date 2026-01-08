@@ -33,6 +33,7 @@ ethernet_interfaces:
     peer_interface: iLO
     peer_type: server
     peer_key: servers
+    validate_lldp: true
   switchport:
     enabled: true
     mode: access

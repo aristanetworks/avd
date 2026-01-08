@@ -39,25 +39,26 @@
         "neighbors": [
           {
             "port": "Ethernet1",
-            "neighbor_device": "dc1-spine1.dc1.local",
+            "neighbor_device": "dc1-spine1",
             "neighbor_port": "Ethernet5"
           },
           {
             "port": "Ethernet2",
-            "neighbor_device": "dc1-spine2.dc1.local",
+            "neighbor_device": "dc1-spine2",
             "neighbor_port": "Ethernet5"
           },
           {
             "port": "Ethernet3",
-            "neighbor_device": "dc1-svc-leaf1b.dc1.local",
+            "neighbor_device": "dc1-svc-leaf1b",
             "neighbor_port": "Ethernet3"
           },
           {
             "port": "Ethernet4",
-            "neighbor_device": "dc1-svc-leaf1b.dc1.local",
+            "neighbor_device": "dc1-svc-leaf1b",
             "neighbor_port": "Ethernet4"
           }
-        ]
+        ],
+        "require_fqdn": false
       }
     },
     {
