@@ -14,7 +14,7 @@ from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
-from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_no_loopback0_with_ip, skip_if_not_vtep, skip_if_wan_router
+from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_not_vtep, skip_if_wan_router
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -184,14 +184,12 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 vrf="default",
                 repeat=1,
             )
-            if not self._is_host_seen(host):
-                self._track_host(host)
-                yield host
+            self._track_host(host)
+            yield host
 
     @skip_if_extra_fabric_validation_disabled
     @skip_if_not_vtep
     @skip_if_wan_router
-    @skip_if_no_loopback0_with_ip
     def _get_vtep_underlay_hosts(self) -> Iterator[Host]:
         """Generate Host objects for the VTEP underlay reachability test."""
         if not self.fabric_data.loopback0_mapping:

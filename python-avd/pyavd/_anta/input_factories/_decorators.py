@@ -63,16 +63,3 @@ def skip_if_not_vtep(func: Callable[[F], Iterator[R]]) -> Callable[[F], Iterator
         yield from func(self)
 
     return wrapper
-
-
-def skip_if_no_loopback0_with_ip(func: Callable[[F], Iterator[R]]) -> Callable[[F], Iterator[R]]:
-    """Decorator to skip execution of an input factory method if the device has no Loopback0 with an IP address configured."""
-
-    @wraps(func)
-    def wrapper(self: F) -> Iterator[R]:
-        if not self.device.loopback0_ip:
-            self.logger_adapter.debug(LogMessage.NO_LOOPBACK0_WITH_IP)
-            return
-        yield from func(self)
-
-    return wrapper
