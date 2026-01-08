@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -9,7 +9,7 @@
          dot1x.aaa.unresponsive is arista.avd.defined or dot1x.captive_portal is arista.avd.defined
          or dot1x.supplicant is arista.avd.defined  or dot1x.radius_av_pair_username_format is arista.avd.defined %}
 dot1x
-{%         for profile in dot1x.supplicant.profiles | arista.avd.natural_sort("name") %}
+{%         for profile in dot1x.supplicant.profiles | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
    supplicant profile {{ profile.name }}
 {%             if profile.identity is arista.avd.defined %}
       identity {{ profile.identity }}
@@ -39,7 +39,7 @@ dot1x
                               dot1x.aaa.unresponsive[action.name].traffic_allow_vlan is arista.avd.defined %}
 {%                             if dot1x.aaa.unresponsive[action.name].apply_cached_results is arista.avd.defined(true) %}
 {%                                 set action_apply_config = "apply cached-results" %}
-{%                                 if dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration is arista.avd.defined and dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration_unit is arista.avd.defined %}
+{%                                 if dot1x.aaa.unresponsive[action.name].cached_results_timeout is arista.avd.defined %}
 {%                                     set action_apply_config = action_apply_config ~ " timeout " ~ dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration ~ " " ~ dot1x.aaa.unresponsive[action.name].cached_results_timeout.time_duration_unit %}
 {%                                 endif %}
 {%                             endif %}
@@ -90,17 +90,17 @@ dot1x
 {%         if dot1x.radius_av_pair.framed_mtu is arista.avd.defined %}
    radius av-pair framed-mtu {{ dot1x.radius_av_pair.framed_mtu }}
 {%         endif %}
-{%         if dot1x.radius_av_pair_username_format.delimiter is arista.avd.defined and dot1x.radius_av_pair_username_format.mac_string_case is arista.avd.defined %}
+{%         if dot1x.radius_av_pair_username_format is arista.avd.defined %}
    mac-based-auth radius av-pair user-name delimiter {{ dot1x.radius_av_pair_username_format.delimiter }} {{ dot1x.radius_av_pair_username_format.mac_string_case }}
 {%         endif %}
 {%         if dot1x.eapol.vlan_change_logoff_disabled is arista.avd.defined(true) %}
    eapol vlan change logoff disabled
 {%         endif %}
-{%         if dot1x.eapol.unresponsive_action_traffic_allow_vlan is arista.avd.defined %}
-   eapol unresponsive action traffic allow vlan {{ dot1x.eapol.unresponsive_action_traffic_allow_vlan }}
-{%         endif %}
 {%         if dot1x.aaa.unresponsive.recovery_action_reauthenticate is arista.avd.defined(true) %}
    {{ aaa_config }} recovery action reauthenticate
+{%         endif %}
+{%         if dot1x.eapol.unresponsive_action_traffic_allow_vlan is arista.avd.defined %}
+   eapol unresponsive action traffic allow vlan {{ dot1x.eapol.unresponsive_action_traffic_allow_vlan }}
 {%         endif %}
 {%         if dot1x.supplicant.disconnect_cached_results_timeout is arista.avd.defined %}
    supplicant disconnect cached-results timeout {{ dot1x.supplicant.disconnect_cached_results_timeout }} seconds
@@ -121,7 +121,7 @@ dot1x
    captive-portal start limit infinite
 {%             endif %}
 {%         endif %}
-{%         for vlan_assignment_group in dot1x.vlan_assignment_groups | arista.avd.natural_sort("name") %}
+{%         for vlan_assignment_group in dot1x.vlan_assignment_groups | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
    vlan assignment group {{ vlan_assignment_group.name }} members {{ vlan_assignment_group.members }}
 {%         endfor %}
 {%         if dot1x.statistics_packets_dropped is arista.avd.defined(true) %}

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -62,6 +62,9 @@ keys:
             - str
           description: |
             "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
+        loop_protection:
+          type: bool
+          description: Enable/disable loop protection.
         arp_gratuitous_accept:
           type: bool
           description: Accept gratuitous ARP.
@@ -155,16 +158,20 @@ keys:
                 description: Group name.
               direction:
                 type: str
+                required: true
                 valid_values: ["upstream", "downstream"]
         link_tracking:
           type: dict
           keys:
             direction:
               type: str
+              required: true
               valid_values: ["upstream", "downstream"]
             groups:
               type: list
               description: Link state group(s) an interface belongs to.
+              required: true
+              min_length: 1
               items:
                 type: str
                 description: Group names.
@@ -1264,6 +1271,25 @@ keys:
                     max: 8
                     convert_types:
                       - str
+            power:
+              type: dict
+              keys:
+                ignore:
+                  type: bool
+                  description: Ignore advertised transceiver power consumption.
+            transmitter:
+              type: dict
+              keys:
+                signal_power:
+                  type: str
+                  description: Optical signal power between < -30 and 10 > (dBm).
+                  convert_types:
+                    - int
+                    - float
+                disabled:
+                  type: bool
+                  description: Disable the optical transmitter.
+
         ip_proxy_arp:
           type: bool
         traffic_policy:
@@ -1359,7 +1385,12 @@ keys:
               description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
             validate_lldp:
               type: bool
-              description: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+              description: |-
+                Controls LLDP topology validation performed by the `anta_runner` role.
+                - Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)
+                and the peer interface is not administratively shutdown.
+                - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
+                - `false`: Disables validation for the interface.
         sflow:
           type: dict
           keys:
@@ -1491,6 +1522,7 @@ keys:
                             description: Indicate the units to be used for the threshold values.
                           min:
                             type: int
+                            required: true
                             min: 1
                             max: 256000000
                             convert_types:

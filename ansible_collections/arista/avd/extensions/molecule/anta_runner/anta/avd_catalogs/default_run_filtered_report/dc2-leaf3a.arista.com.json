@@ -52,7 +52,8 @@
             "neighbor_device": "dc2-leaf2b",
             "neighbor_port": "Ethernet2"
           }
-        ]
+        ],
+        "require_fqdn": false
       }
     },
     {
@@ -406,6 +407,10 @@
           },
           {
             "peer_address": "10.255.128.12",
+            "vrf": "default"
+          },
+          {
+            "interface": "Vlan4093",
             "vrf": "default"
           }
         ]

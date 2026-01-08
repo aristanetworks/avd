@@ -59,7 +59,7 @@
           },
           {
             "port": "Ethernet6",
-            "neighbor_device": "dc1-leaf2a.dc1.local",
+            "neighbor_device": "dc1-leaf2a",
             "neighbor_port": "Ethernet6"
           },
           {
@@ -67,7 +67,8 @@
             "neighbor_device": "dc2-leaf2c",
             "neighbor_port": "Ethernet1"
           }
-        ]
+        ],
+        "require_fqdn": false
       }
     },
     {
@@ -238,6 +239,10 @@
             "status": "up"
           },
           {
+            "name": "Ethernet10",
+            "status": "up"
+          },
+          {
             "name": "Loopback0",
             "status": "up"
           },
@@ -287,6 +292,10 @@
           },
           {
             "name": "Vlan3010",
+            "status": "up"
+          },
+          {
+            "name": "Vlan3049",
             "status": "up"
           },
           {
@@ -392,6 +401,14 @@
           {
             "peer_address": "10.255.128.12",
             "vrf": "default"
+          },
+          {
+            "peer_address": "10.255.129.121",
+            "vrf": "VRFBGP"
+          },
+          {
+            "peer_address": "172.16.50.254",
+            "vrf": "VRFBGP"
           }
         ]
       }

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -29,7 +29,7 @@ PLUGIN_NAME = "arista.avd.anta_workflow"
 try:
     from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, TestResult, anta_runner
     from pyavd._utils import default, get, strip_empties_from_dict
-    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData, InputFactorySettings
+    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData
     from pyavd.get_device_test_catalog import get_device_test_catalog
 
     HAS_PYAVD = True
@@ -73,7 +73,6 @@ ARGUMENT_SPEC = {
             "output_dir": {"type": "str"},
             "structured_config_dir": {"type": "str"},
             "structured_config_suffix": {"type": "str", "choices": ["yml", "yaml", "json"], "default": "yml"},
-            "allow_bgp_vrfs": {"type": "bool", "default": False},
             "extra_fabric_validation": {"type": "bool", "default": False},
             "filters": {
                 "type": "list",
@@ -89,6 +88,7 @@ ARGUMENT_SPEC = {
     "user_catalogs": {
         "type": "dict",
         "options": {
+            "enabled": {"type": "bool", "default": False},
             "input_dir": {"type": "str"},
         },
     },
@@ -184,13 +184,11 @@ class ActionModule(ActionBase):
 
         generate_avd_catalogs = get(PLUGIN_ARGS, "avd_catalogs.enabled")
         structured_config_dir = get(PLUGIN_ARGS, "avd_catalogs.structured_config_dir")
+        generate_user_catalogs = get(PLUGIN_ARGS, "user_catalogs.enabled")
         user_catalog_dir = get(PLUGIN_ARGS, "user_catalogs.input_dir")
 
-        if generate_avd_catalogs is False and user_catalog_dir is None:
-            msg = (
-                "When 'avd_catalogs.enabled' is False, a directory with user-defined ANTA catalogs "
-                "must be provided using the 'user_catalogs.input_dir' argument"
-            )
+        if generate_avd_catalogs is False and generate_user_catalogs is False:
+            msg = "At least one of 'avd_catalogs.enabled' or 'user_catalogs.enabled' must be set to True"
             raise AnsibleActionFail(msg)
         if generate_avd_catalogs is True and structured_config_dir is None:
             msg = (
@@ -198,10 +196,16 @@ class ActionModule(ActionBase):
                 "must be provided using the 'avd_catalogs.structured_config_dir' argument"
             )
             raise AnsibleActionFail(msg)
+        if generate_user_catalogs is True and user_catalog_dir is None:
+            msg = (
+                "When 'user_catalogs.enabled' is True, a directory with user-defined ANTA catalogs "
+                "must be provided using the 'user_catalogs.input_dir' argument"
+            )
+            raise AnsibleActionFail(msg)
 
         try:
             # Load the user-defined ANTA catalogs if provided
-            if user_catalog_dir is not None:
+            if generate_user_catalogs and user_catalog_dir is not None:
                 USER_CATALOG = load_user_catalogs(user_catalog_dir)
                 if not generate_avd_catalogs and not USER_CATALOG.tests:
                     LOGGER.warning("No tests found in the user-defined ANTA catalogs, exiting")
@@ -452,7 +456,6 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
     if USER_CATALOG is not None:
         catalogs.append(USER_CATALOG)
 
-    input_factory_settings = InputFactorySettings(allow_bgp_vrfs=get(PLUGIN_ARGS, "avd_catalogs.allow_bgp_vrfs"))
     extra_fabric_validation = get(PLUGIN_ARGS, "avd_catalogs.extra_fabric_validation")
     output_dir = get(PLUGIN_ARGS, "avd_catalogs.output_dir")
     avd_catalogs_filters = get(PLUGIN_ARGS, "avd_catalogs.filters", default=[])
@@ -463,7 +466,6 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
         # We generate the device's AVD catalog only if structured configs are loaded
         if STRUCTURED_CONFIGS is not None and FABRIC_DATA is not None:
             settings = AvdCatalogGenerationSettings(
-                input_factory_settings=input_factory_settings,
                 extra_fabric_validation=extra_fabric_validation,
                 output_dir=output_dir,
                 **get_device_catalog_filters(device, avd_catalogs_filters),

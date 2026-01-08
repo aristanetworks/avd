@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -29,7 +29,7 @@
 {%     if tx_queue.random_detect.ecn.count is arista.avd.defined(true) %}
       random-detect ecn count
 {%     endif %}
-{%     if tx_queue.random_detect.ecn.threshold.min is arista.avd.defined and tx_queue.random_detect.ecn.threshold.max is arista.avd.defined and tx_queue.random_detect.ecn.threshold.units is arista.avd.defined %}
+{%     if tx_queue.random_detect.ecn.threshold is arista.avd.defined %}
 {%         set units = tx_queue.random_detect.ecn.threshold.units %}
 {%         set ecn_command = "random-detect ecn" %}
 {%         set ecn_command = ecn_command ~ " minimum-threshold " ~ tx_queue.random_detect.ecn.threshold.min ~ " " ~ units %}

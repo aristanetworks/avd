@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
@@ -36,10 +36,10 @@
       output_dir: "{{ avd_catalogs_dir }}"
       structured_config_dir: "{{ structured_dir }}"
       structured_config_suffix: "{{ avd_structured_config_file_format }}"
-      allow_bgp_vrfs: "{{ avd_catalogs_allow_bgp_vrfs }}"
       extra_fabric_validation: "{{ avd_catalogs_extra_fabric_validation }}"
       filters: "{{ avd_catalogs_filters | arista.avd.default([]) }}"
     user_catalogs:
+      enabled: "{{ user_catalogs_enabled }}"
       input_dir: "{{ user_catalogs_dir }}"
     runner:
       timeout: "{{ anta_runner_timeout }}"

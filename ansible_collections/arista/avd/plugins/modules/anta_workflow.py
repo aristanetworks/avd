@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ANSIBLE_METADATA = {"metadata_version": "1.0", "status": ["preview"]}
@@ -49,10 +49,6 @@ options:
         type: str
         default: "yml"
         choices: ["yml", "yaml", "json"]
-      allow_bgp_vrfs:
-        description: If `true`, generate tests for BGP peers in VRFs.
-        type: bool
-        default: false
       extra_fabric_validation:
         description: If `true`, generate extra fabric-wide validation tests (e.g., reachability and routing tests).
         type: bool
@@ -163,7 +159,6 @@ EXAMPLES = r"""
           output_dir: "{{ inventory_dir }}/anta/avd_catalogs"
           structured_config_dir: "{{ inventory_dir }}/intended/structured_configs"
           # structured_config_suffix: ".yml"
-          allow_bgp_vrfs: true
           # filters:
           #   - device_list: "{{ groups['DC1'] }}"
           #     skip_tests:

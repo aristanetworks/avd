@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../_schema/avd_meta_schema.json
@@ -300,12 +300,14 @@ keys:
                 max: 255
                 convert_types:
                 - str
+                required: true
               duration:
                 type: int
                 min: 1
                 max: 4294967295
                 convert_types:
                 - str
+                required: true
               window:
                 type: int
                 min: 1
@@ -374,8 +376,10 @@ keys:
                   description: Privilege level(s) 0-15.
                   convert_types:
                   - int
+                  required: true
                 default:
                   type: str
+                  required: true
                   description: 'Command authorization method(s) as a string.
 
                     Examples:
@@ -413,6 +417,7 @@ keys:
           - tacacs+
           - radius
           - ldap
+          required: true
         servers:
           type: list
           items:
@@ -421,6 +426,7 @@ keys:
               server:
                 type: str
                 description: Hostname or IP address.
+                required: true
               vrf:
                 type: str
                 description: VRF name.
@@ -835,9 +841,11 @@ keys:
                     valid_values:
                     - permit
                     - deny
+                    required: true
                   match:
                     type: str
                     description: Regex To Match.
+                    required: true
                   origin:
                     type: str
                     valid_values:
@@ -858,7 +866,7 @@ keys:
 
       Input data validation will validate the input variables according to the schema.
 
-      During validation, messages will generated with information about the host(s)
+      During validation, messages will be generated with information about the host(s)
       and key(s) which failed validation.
 
       "error" will produce error messages and fail the task.
@@ -866,6 +874,10 @@ keys:
       "warning" will produce warning messages.
 
       '
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
   banners:
     type: dict
     keys:
@@ -1386,6 +1398,8 @@ keys:
               description: Cluster Name.
             cvaddrs:
               type: list
+              required: true
+              min_length: 1
               description: 'Streaming address(es) for CloudVision cluster.
 
                 - TCP 9910 is used for CV on-prem
@@ -1775,6 +1789,7 @@ keys:
                 type: str
         ipv4_vendor_options:
           type: list
+          min_length: 1
           primary_key: vendor_id
           items:
             type: dict
@@ -1827,12 +1842,15 @@ keys:
                         type: str
         ipv4_subnets:
           type: list
+          min_length: 1
           $ref: eos_cli_config_gen#/$defs/subnets
           items:
             type: dict
             keys:
               subnet:
                 description: IPv4 subnet.
+                type: str
+              default_gateway:
                 type: str
               reservations:
                 type: list
@@ -1842,8 +1860,26 @@ keys:
                     ipv4_address:
                       type: str
                       description: Valid IPv4 address from the given subnet.
+              tftp_server:
+                type: dict
+                keys:
+                  file:
+                    type: str
+                    min_length: 1
+                    max_length: 253
+                    description: Name of TFTP file for IPv4 clients.
+                  option_66:
+                    type: str
+                    description: IPv4 address or server FQDN for TFTP option 66.
+                  option_150:
+                    type: list
+                    min_length: 1
+                    description: List of IPv4 addresses for TFTP option 150.
+                    items:
+                      type: str
         ipv6_subnets:
           type: list
+          min_length: 1
           $ref: eos_cli_config_gen#/$defs/subnets
           items:
             type: dict
@@ -1859,6 +1895,14 @@ keys:
                     ipv6_address:
                       type: str
                       description: Valid IPv6 address from the given subnet.
+              tftp_server:
+                type: dict
+                keys:
+                  file:
+                    type: str
+                    min_length: 1
+                    max_length: 253
+                    description: Name of TFTP file for IPv6 clients.
         subnets:
           type: list
           deprecation:
@@ -2019,46 +2063,14 @@ keys:
                 - disabled
               action:
                 type: dict
-                description: Set action for supplicant when AAA times out.
+                $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/phone_action
                 keys:
-                  apply_cached_results:
-                    type: bool
-                    description: Use results from a previous AAA response.
-                  cached_results_timeout:
-                    type: dict
-                    keys:
-                      time_duration:
-                        type: int
-                        convert_types:
-                        - str
-                        min: 1
-                        description: 'Enable caching for a specific duration -
-
-                          <1-10000>      duration in days
-
-                          <1-14400000>   duration in minutes
-
-                          <1-240000>     duration in hours
-
-                          <1-864000000>  duration in seconds'
-                      time_duration_unit:
-                        type: str
-                        required: true
-                        valid_values:
-                        - days
-                        - hours
-                        - minutes
-                        - seconds
                   apply_alternate:
                     type: bool
                     description: 'Apply alternate action if primary action fails.
 
-                      eg. aaa unresponsive action apply cached-results else traffic
+                      e.g. aaa unresponsive action apply cached-results else traffic
                       allow'
-                  traffic_allow:
-                    type: bool
-                    description: Set action for supplicant traffic when AAA times
-                      out.
                   traffic_allow_vlan:
                     type: int
                     convert_types:
@@ -2077,6 +2089,7 @@ keys:
                     keys:
                       time_duration:
                         type: int
+                        required: true
                         convert_types:
                         - str
                         min: 1
@@ -2101,7 +2114,7 @@ keys:
                     type: bool
                     description: 'Apply alternate action if primary action fails.
 
-                      eg. aaa unresponsive phone action apply cached-results else
+                      e.g. aaa unresponsive phone action apply cached-results else
                       traffic allow'
                   traffic_allow:
                     description: Set action for supplicant traffic when AAA times
@@ -2273,6 +2286,7 @@ keys:
             interface in the final EOS configuration.
   dynamic_prefix_lists:
     type: list
+    primary_key: name
     items:
       type: dict
       keys:
@@ -2361,12 +2375,27 @@ keys:
             type: list
             items:
               type: str
+              description: 'Specifies the events that should trigger this action.
+
+                The list of supported causes depends on both the EOS version and the
+                hardware platform.'
               valid_values:
               - acl
               - arp-inspection
               - dot1x
+              - dot1x-coa
+              - dot1x-phone-classification
+              - dot1x-session-replace
+              - error-correction-encoding
+              - hardware-speed-group
+              - interface-speed
+              - internal-error
               - link-change
+              - port-breakout
+              - storm-control
+              - switchcard-unreachable
               - tapagg
+              - transceiver-adapter
               - xcvr-misconfigured
               - xcvr-overheat
               - xcvr-power-unsupported
@@ -2381,19 +2410,37 @@ keys:
               keys:
                 name:
                   type: str
+                  description: 'Specifies the type of event that can trigger recovery
+                    actions.
+
+                    The list of supported causes depends on both the EOS version and
+                    the hardware platform.'
                   valid_values:
+                  - acl
                   - arp-inspection
                   - bpduguard
                   - dot1x
+                  - dot1x-coa
+                  - dot1x-phone-classification
+                  - dot1x-session-replace
+                  - error-correction-encoding
+                  - hardware-speed-group
                   - hitless-reload-down
+                  - interface-speed
+                  - internal-error
                   - lacp-rate-limit
                   - link-flap
                   - no-internal-vlan
+                  - port-breakout
                   - portchannelguard
                   - portsec
                   - speed-misconfigured
+                  - storm-control
+                  - stuck-queue
+                  - switchcard-unreachable
                   - tap-port-init
                   - tapagg
+                  - transceiver-adapter
                   - uplink-failure-detection
                   - xcvr-misconfigured
                   - xcvr-overheat
@@ -2547,6 +2594,9 @@ keys:
             "l2 mru" CLI.
 
             '
+        loop_protection:
+          type: bool
+          description: Enable/disable loop protection.
         arp_gratuitous_accept:
           type: bool
           description: Accept gratuitous ARP.
@@ -2654,6 +2704,7 @@ keys:
                 description: Group name.
               direction:
                 type: str
+                required: true
                 valid_values:
                 - upstream
                 - downstream
@@ -2662,12 +2713,15 @@ keys:
           keys:
             direction:
               type: str
+              required: true
               valid_values:
               - upstream
               - downstream
             groups:
               type: list
               description: Link state group(s) an interface belongs to.
+              required: true
+              min_length: 1
               items:
                 type: str
                 description: Group names.
@@ -3866,6 +3920,24 @@ keys:
                     max: 8
                     convert_types:
                     - str
+            power:
+              type: dict
+              keys:
+                ignore:
+                  type: bool
+                  description: Ignore advertised transceiver power consumption.
+            transmitter:
+              type: dict
+              keys:
+                signal_power:
+                  type: str
+                  description: Optical signal power between < -30 and 10 > (dBm).
+                  convert_types:
+                  - int
+                  - float
+                disabled:
+                  type: bool
+                  description: Disable the optical transmitter.
         ip_proxy_arp:
           type: bool
         traffic_policy:
@@ -3964,8 +4036,18 @@ keys:
                 validation performed by the `anta_runner` role.
             validate_lldp:
               type: bool
-              description: Set to false to disable the LLDP topology validation performed
-                by the `anta_runner` role.
+              description: 'Controls LLDP topology validation performed by the `anta_runner`
+                role.
+
+                - Unset (Default): The peer is treated as an AVD-managed device. Validation
+                is performed only if the peer is deployed (`is_deployed: true`)
+
+                and the peer interface is not administratively shutdown.
+
+                - `true`: Forces validation. Use this for connected endpoints not
+                managed by AVD.
+
+                - `false`: Disables validation for the interface.'
         sflow:
           type: dict
           keys:
@@ -4098,6 +4180,7 @@ keys:
                               values.
                           min:
                             type: int
+                            required: true
                             min: 1
                             max: 256000000
                             convert_types:
@@ -5825,6 +5908,7 @@ keys:
         entries:
           type: list
           required: true
+          min_length: 1
           items:
             type: dict
             keys:
@@ -5836,6 +5920,7 @@ keys:
                 - deny
               communities:
                 type: list
+                min_length: 1
                 items:
                   type: str
                 description: 'If defined, a standard community-list will be configured.
@@ -5945,6 +6030,7 @@ keys:
         entries:
           type: list
           required: true
+          min_length: 1
           items:
             type: dict
             keys:
@@ -5988,18 +6074,18 @@ keys:
                 type: str
                 required: true
                 description: Regular Expression.
+  ip_ftp_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_ftp_client_source_interfaces:
+    documentation_options:
+      table: ip-ftp-client
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          required: true
-          description: Interface Name.
-        vrf:
-          type: str
-          description: VRF Name.
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_ftp_client
   ip_hardware:
     type: dict
     keys:
@@ -6049,18 +6135,18 @@ keys:
                     max: 7
                     convert_types:
                     - str
+  ip_http_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_http_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: Interface Name.
-          type: str
-        vrf:
-          type: str
-          convert_types:
-          - int
+    documentation_options:
+      table: ip-http-client
+    deprecation:
+      removed: true
+      warning: true
+      new_key: ip_http_client
+      remove_in_version: 6.0.0
   ip_icmp_redirect:
     type: bool
   ip_igmp_snooping:
@@ -6737,18 +6823,18 @@ keys:
       connection_tx_interface_match_source_ip:
         type: bool
         description: Match source interface of the IPsec connection.
+  ip_ssh_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_ssh_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: Interface Name.
-          type: str
-        vrf:
-          type: str
-          convert_types:
-          - int
+    documentation_options:
+      table: ip-ssh-client
+    deprecation:
+      removed: true
+      warning: true
+      new_key: ip_ssh_client
+      remove_in_version: 6.0.0
   ip_tacacs_source_interfaces:
     type: list
     display_name: IP Tacacs Source Interfaces
@@ -6763,30 +6849,30 @@ keys:
           display_name: VRF
           convert_types:
           - int
+  ip_telnet_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_telnet_client_source_interfaces:
+    documentation_options:
+      table: ip-telnet-client
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          required: true
-          description: Interface Name.
-        vrf:
-          type: str
-          description: VRF Name.
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_telnet_client
+  ip_tftp_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_tftp_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          required: true
-          description: Interface Name.
-        vrf:
-          type: str
-          description: VRF Name.
+    documentation_options:
+      table: ip-tftp-client
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_tftp_client
   ip_virtual_router_mac_address:
     type: str
     description: MAC address (hh:hh:hh:hh:hh:hh).
@@ -9912,6 +9998,44 @@ keys:
             type: bool
             description: Some platforms support only the `logging transceiver` command.
               `enabled` key configures this command.
+  monitor_loop_protection:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      disabled_time:
+        type: int
+        convert_types:
+        - str
+        description: 'Port disable time. EOS default is 604800 seconds (7 days).
+
+          0 indicates that the disabled device should not automatically come back
+          up.'
+        min: 0
+        max: 604800
+      protect_vlan:
+        type: str
+        convert_types:
+        - int
+        description: 'VLAN range as string.
+
+          "< vlan_id >, < vlan_id >-< vlan_id >"
+
+          Example: 15,16,17,18'
+      rate_limit:
+        type: int
+        convert_types:
+        - str
+        description: Rate limits the loop detection frames. EOS default is 1000/second.
+        min: 0
+        max: 1000
+      transmit_interval:
+        type: int
+        convert_types:
+        - str
+        description: Loop protection packet transmit interval. EOS default is 5 seconds.
+        min: 1
+        max: 10
   monitor_server_radius:
     type: dict
     description: Settings to monitor radius servers.
@@ -11874,6 +11998,7 @@ keys:
                 description: Group name.
               direction:
                 type: str
+                required: true
                 valid_values:
                 - upstream
                 - downstream
@@ -11882,12 +12007,15 @@ keys:
           keys:
             direction:
               type: str
+              required: true
               valid_values:
               - upstream
               - downstream
             groups:
               type: list
               description: Link state group(s) an interface belongs to.
+              required: true
+              min_length: 1
               items:
                 type: str
                 description: Group names.
@@ -12581,8 +12709,18 @@ keys:
                 validation performed by the `anta_runner` role.
             validate_lldp:
               type: bool
-              description: Set to false to disable the LLDP topology validation performed
-                by the `anta_runner` role.
+              description: 'Controls LLDP topology validation performed by the `anta_runner`
+                role.
+
+                - Unset (Default): The peer is treated as an AVD-managed device. Validation
+                is performed only if the peer is deployed (`is_deployed: true`)
+
+                and the peer interface is not administratively shutdown.
+
+                - `true`: Forces validation. Use this for connected endpoints not
+                managed by AVD.
+
+                - `false`: Disables validation for the interface.'
         sflow:
           type: dict
           keys:
@@ -13974,7 +14112,6 @@ keys:
                     type: int
                     min: 0
                     max: 7
-                    required: true
                     convert_types:
                     - str
                     description: 'Priority queue number (COS value).
@@ -13983,9 +14120,7 @@ keys:
                   no_drop:
                     type: bool
                     required: true
-                    description: 'Enable Priority Flow Control frames on this queue.
-
-                      '
+                    description: Enable Priority Flow Control frames on this queue.
   queue_monitor_length:
     type: dict
     keys:
@@ -15018,6 +15153,14 @@ keys:
               type: bool
             password:
               type: str
+            password_type:
+              type: str
+              valid_values:
+              - '7'
+              - 8a
+              convert_types:
+              - int
+              default: '7'
             passive:
               type: bool
             default_originate:
@@ -15232,6 +15375,14 @@ keys:
               type: bool
             password:
               type: str
+            password_type:
+              type: str
+              valid_values:
+              - '7'
+              - 8a
+              convert_types:
+              - int
+              default: '7'
             passive:
               type: bool
             shutdown:
@@ -18642,6 +18793,14 @@ keys:
                     - int
                   password:
                     type: str
+                  password_type:
+                    type: str
+                    valid_values:
+                    - '7'
+                    - 8a
+                    convert_types:
+                    - int
+                    default: '7'
                   passive:
                     type: bool
                   remove_private_as:
@@ -20304,6 +20463,7 @@ keys:
                 keys:
                   source_vrf:
                     type: str
+                    required: true
                     convert_types:
                     - int
                   subscribe_policy:
@@ -25152,8 +25312,6 @@ $defs:
           type: str
           convert_types:
           - int
-        default_gateway:
-          type: str
         dns_servers:
           type: list
           items:
@@ -25417,3 +25575,21 @@ $defs:
           min: 1
           max: 65535
           description: requires 'original_port'.
+  source_interface_per_vrf:
+    type: dict
+    keys:
+      source_interface:
+        type: str
+        description: Define `source_interface` for VRF default.
+      vrfs:
+        type: list
+        primary_key: name
+        description: Define `source interfaces` for any VRF other than default.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            source_interface:
+              type: str
+              required: true

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -168,7 +168,7 @@ class PortChannelInterfacesMixin(Protocol):
             metadata=EosCliConfigGen.PortChannelInterfacesItem.Metadata(
                 # TODO: Make logic conditional once functionality allows to include (some) connected endpoints into the ACT topology definition file
                 validate_state=self.shared_utils.get_interface_validate_state(adapter.validate_state),
-                validate_lldp=False if adapter.validate_lldp is False else None,
+                validate_lldp=adapter.validate_lldp,
             ),
         )
         port_channel_interface.sflow.enable = self.shared_utils.get_interface_sflow(

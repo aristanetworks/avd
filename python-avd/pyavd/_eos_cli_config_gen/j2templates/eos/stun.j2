@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -9,7 +9,7 @@
 stun
 {%     if stun.client is arista.avd.defined %}
    client
-{%         for profile in stun.client.server_profiles | arista.avd.natural_sort('name') %}
+{%         for profile in stun.client.server_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
       server-profile {{ profile.name }}
 {%             if profile.ip_address is arista.avd.defined %}
          ip address {{ profile.ip_address }}

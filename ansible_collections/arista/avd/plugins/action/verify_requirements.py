@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -82,7 +82,7 @@ def _validate_python_version(info: dict[str, Any]) -> bool:
 
 
 def _parse_requirements(req_str: str) -> tuple[Requirement, list[str]]:
-    """Parse a requirement string and return the parsed object an a list of extras requirements to parse if any."""
+    """Parse a requirement string and return the parsed object and a list of extras requirements to parse if any."""
     try:
         req = Requirement(req_str)
     except InvalidRequirement as exc:
@@ -94,7 +94,7 @@ def _parse_requirements(req_str: str) -> tuple[Requirement, list[str]]:
         for subreq_name in metadata(req.name).get_all("Requires-Dist"):
             subreq = Requirement(subreq_name)
             if subreq.marker:
-                extras = [subreq_name for marker in subreq.marker._markers if str(marker[0]) == "extra" and str(marker[2]) in req.extras]
+                extras.extend([subreq_name for marker in subreq.marker._markers if str(marker[0]) == "extra" and str(marker[2]) in req.extras])
 
     return req, extras
 
@@ -421,7 +421,7 @@ class ActionModule(AvdActionPlugin):
 
         self.result["failed"] = False
 
-        error_message = "Set 'avd_ignore_requirements=True' to ignore validation error(s)."
+        error_message = "If it is a false positive, set 'avd_ignore_requirements=True'."
         info: dict[str, Any] = {
             "ansible": {},
             "python": {},

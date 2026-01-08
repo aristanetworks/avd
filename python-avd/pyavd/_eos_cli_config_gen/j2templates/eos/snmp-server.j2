@@ -1,12 +1,12 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - snmp server #}
 {% if snmp_server is arista.avd.defined %}
 !
-{# TODO IPv4/IPv6 access list config order is not correct as per EOS #}
+{# TODO: IPv4/IPv6 access-list ordering is incorrect per EOS. Update ipv4_acls and ipv6_acls models to handle default VRF and CLI order. #}
 {%     if snmp_server.ipv4_acls is arista.avd.defined %}
 {%         for acl in snmp_server.ipv4_acls %}
 {%             set acl_cli = "snmp-server ipv4 access-list " ~ acl.name %}
@@ -34,15 +34,12 @@ snmp-server contact {{ snmp_server.contact }}
 {%     if snmp_server.location is arista.avd.defined %}
 snmp-server location {{ snmp_server.location }}
 {%     endif %}
-{# TODO local interfaces config order is not correct as per EOS #}
 {%     if snmp_server.local_interfaces is arista.avd.defined %}
-{%         for local_interface in snmp_server.local_interfaces | arista.avd.natural_sort('name') %}
-{%             set interface_snmp_cli = "snmp-server" %}
-{%             if local_interface.vrf is arista.avd.defined %}
-{%                 set interface_snmp_cli = interface_snmp_cli ~ " vrf " ~ local_interface.vrf %}
-{%             endif %}
-{%             set interface_snmp_cli = interface_snmp_cli ~ " local-interface " ~ local_interface.name %}
-{{ interface_snmp_cli }}
+{%         for local_interface in snmp_server.local_interfaces | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort("name") %}
+snmp-server local-interface {{ local_interface.name }}
+{%         endfor %}
+{%         for local_interface in snmp_server.local_interfaces | selectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort(sort_key="vrf", ignore_case=false) %}
+snmp-server vrf {{ local_interface.vrf }} local-interface {{ local_interface.name }}
 {%         endfor %}
 {%     endif %}
 {%     if snmp_server.views is arista.avd.defined %}
@@ -203,7 +200,9 @@ snmp-server enable traps {{ snmp_trap.name }}
 {%         endif %}
 {%     endfor %}
 {%     if snmp_server.vrfs is arista.avd.defined %}
-{%         for vrf in snmp_server.vrfs %}
+{%         set default_vrfs = snmp_server.vrfs | selectattr('name', 'equalto', 'default') | list %}
+{%         set no_default_vrfs = snmp_server.vrfs | rejectattr('name', 'equalto', 'default') | arista.avd.natural_sort('name', ignore_case=false) %}
+{%         for vrf in (default_vrfs + no_default_vrfs) %}
 {%             if vrf.enable is arista.avd.defined(true) %}
 snmp-server vrf {{ vrf.name }}
 {%             else %}
