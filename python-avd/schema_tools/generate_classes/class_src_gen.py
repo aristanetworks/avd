@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 from keyword import iskeyword
-from typing import TYPE_CHECKING, Generic, Literal, TypeVar
+from typing import TYPE_CHECKING, Generic, TypeVar
 
 from .src_generators import ClassVarSrc, FieldSrc, FieldTypeHintSrc, ListSrc, LiteralSrc, ModelSrc, SrcData
 from .utils import generate_class_name, generate_class_name_from_ref
@@ -19,14 +19,7 @@ if TYPE_CHECKING:
         AvdSchemaStr,
     )
 
-    # Define the type alias using the imported types for the type checker
-    SchemaClasses = AvdSchemaBool | AvdSchemaDict | AvdSchemaInt | AvdSchemaList | AvdSchemaStr
-    T = TypeVar("T", bound=SchemaClasses)
-else:
-    # At runtime, we only need the string names for the type hint to work
-    # and to avoid the circular import.
-    SchemaClasses = Literal["AvdSchemaBool", "AvdSchemaDict", "AvdSchemaInt", "AvdSchemaList", "AvdSchemaStr"]
-    T = TypeVar("T", bound=SchemaClasses)
+T = TypeVar("T", bound="AvdSchemaBool | AvdSchemaDict | AvdSchemaInt | AvdSchemaList | AvdSchemaStr")
 
 
 class SrcGenBase(Generic[T]):
