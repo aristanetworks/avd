@@ -21,12 +21,12 @@ if TYPE_CHECKING:
 
     # Define the type alias using the imported types for the type checker
     SchemaClasses = AvdSchemaBool | AvdSchemaDict | AvdSchemaInt | AvdSchemaList | AvdSchemaStr
+    T = TypeVar("T", bound=SchemaClasses)
 else:
     # At runtime, we only need the string names for the type hint to work
     # and to avoid the circular import.
     SchemaClasses = Literal["AvdSchemaBool", "AvdSchemaDict", "AvdSchemaInt", "AvdSchemaList", "AvdSchemaStr"]
-
-T = TypeVar("T", bound=SchemaClasses)
+    T = TypeVar("T", bound=SchemaClasses)
 
 
 class SrcGenBase(Generic[T]):
