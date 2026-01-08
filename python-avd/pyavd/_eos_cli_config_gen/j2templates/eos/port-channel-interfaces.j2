@@ -99,11 +99,9 @@ interface {{ port_channel_interface.name }}
 {%         endif %}
    {{ encapsulation_dot1q_cli }}
 {%     endif %}
-{# Need to check on hardware #}
 {%     if port_channel_interface.vlan_id is arista.avd.defined %}
    vlan id {{ port_channel_interface.vlan_id }}
 {%     endif %}
-{# Need to check on hardware #}
 {%     if port_channel_interface.encapsulation_vlan.client.encapsulation is arista.avd.defined and not port_channel_interface.encapsulation_dot1q.vlan is arista.avd.defined %}
 {%         set client_encapsulation = port_channel_interface.encapsulation_vlan.client.encapsulation %}
 {%         set network_flag = False %}

@@ -134,11 +134,9 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ encapsulation_dot1q_cli }}
 {%     endif %}
-{# Need to check on hardware #}
 {%     if ethernet_interface.vlan_id is arista.avd.defined %}
    vlan id {{ ethernet_interface.vlan_id }}
 {%     endif %}
-{# Need to check on hardware #}
 {%     if ethernet_interface.encapsulation_vlan.client.encapsulation is arista.avd.defined and ethernet_interface.encapsulation_dot1q.vlan is not arista.avd.defined %}
 {%         set client_encapsulation = ethernet_interface.encapsulation_vlan.client.encapsulation %}
 {%         set network_flag = False %}
@@ -720,7 +718,6 @@ interface {{ ethernet_interface.name }}
 {%     for tx_queue in ethernet_interface.tx_queues | arista.avd.natural_sort(sort_key='id') %}
 {%         include 'eos/ethernet-interface-tx-queues.j2' %}
 {%     endfor %}
-{# Not refelcting on vEOS device #}
 {%     for uc_tx_queue in ethernet_interface.uc_tx_queues | arista.avd.natural_sort(sort_key='id') %}
 {%         include 'eos/ethernet-interface-uc-tx-queues.j2' %}
 {%     endfor %}
