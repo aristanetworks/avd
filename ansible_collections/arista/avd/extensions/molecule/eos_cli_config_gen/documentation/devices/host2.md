@@ -83,6 +83,8 @@
   - [PBR Policy Maps](#pbr-policy-maps)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
+- [Monitor Loop Protection](#monitor-loop-protection)
+  - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS RSVP](#mpls-rsvp)
@@ -1276,6 +1278,24 @@ policy-map type pbr POLICY_DROP_THEN_NEXTHOP
 !
 router bfd
    session stats snapshot interval dangerous 8
+```
+
+## Monitor Loop Protection
+
+| Enabled | Disabled-time | Protect vlan | Rate-limit | Transmit-interval | Disabled Interfaces |
+| ------- | ------------- | ------------ | ---------- | ----------------- | ------------------- |
+| False | 100 | 1000-1100 | 100 | 10 | - |
+
+### Monitor Loop Protection Configuration
+
+```eos ####
+!
+monitor loop-protection
+   shutdown
+   protect vlan 1000-1100
+   rate-limit 100
+   transmit-interval 10
+   disabled-time 100
 ```
 
 ## MPLS

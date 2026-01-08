@@ -726,26 +726,26 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.aaa_root.secret.sha512_password = aaa_root_login.sha512_password
 
     @structured_config_contributor
-    def ip_ssh_client_source_interfaces(self) -> None:
+    def ip_ssh_client(self) -> None:
         """Parse source_interfaces.ssh_client and return list of source_interfaces."""
         if not (inputs := self.inputs.source_interfaces.ssh_client):
             return
 
         if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP SSH Client", output_type=EosCliConfigGen.IpSshClientSourceInterfaces
+            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP SSH Client", output_type=EosCliConfigGen.IpSshClient
         ):
-            self.structured_config.ip_ssh_client_source_interfaces = source_interfaces
+            self.structured_config.ip_ssh_client = source_interfaces
 
     @structured_config_contributor
-    def ip_http_client_source_interfaces(self) -> None:
+    def ip_http_client(self) -> None:
         """Parse source_interfaces.http_client and set list of source_interfaces."""
         if not (inputs := self.inputs.source_interfaces.http_client):
             return
 
         if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP HTTP Client", output_type=EosCliConfigGen.IpHttpClientSourceInterfaces
+            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP HTTP Client", output_type=EosCliConfigGen.IpHttpClient
         ):
-            self.structured_config.ip_http_client_source_interfaces = source_interfaces
+            self.structured_config.ip_http_client = source_interfaces
 
     @structured_config_contributor
     def prefix_lists(self) -> None:

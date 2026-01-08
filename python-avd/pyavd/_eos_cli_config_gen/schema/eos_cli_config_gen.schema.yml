@@ -2594,6 +2594,9 @@ keys:
             "l2 mru" CLI.
 
             '
+        loop_protection:
+          type: bool
+          description: Enable/disable loop protection.
         arp_gratuitous_accept:
           type: bool
           description: Accept gratuitous ARP.
@@ -4033,8 +4036,18 @@ keys:
                 validation performed by the `anta_runner` role.
             validate_lldp:
               type: bool
-              description: Set to false to disable the LLDP topology validation performed
-                by the `anta_runner` role.
+              description: 'Controls LLDP topology validation performed by the `anta_runner`
+                role.
+
+                - Unset (Default): The peer is treated as an AVD-managed device. Validation
+                is performed only if the peer is deployed (`is_deployed: true`)
+
+                and the peer interface is not administratively shutdown.
+
+                - `true`: Forces validation. Use this for connected endpoints not
+                managed by AVD.
+
+                - `false`: Disables validation for the interface.'
         sflow:
           type: dict
           keys:
@@ -6122,18 +6135,18 @@ keys:
                     max: 7
                     convert_types:
                     - str
+  ip_http_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_http_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: Interface Name.
-          type: str
-        vrf:
-          type: str
-          convert_types:
-          - int
+    documentation_options:
+      table: ip-http-client
+    deprecation:
+      removed: true
+      warning: true
+      new_key: ip_http_client
+      remove_in_version: 6.0.0
   ip_icmp_redirect:
     type: bool
   ip_igmp_snooping:
@@ -6810,18 +6823,18 @@ keys:
       connection_tx_interface_match_source_ip:
         type: bool
         description: Match source interface of the IPsec connection.
+  ip_ssh_client:
+    type: dict
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_ssh_client_source_interfaces:
     type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: Interface Name.
-          type: str
-        vrf:
-          type: str
-          convert_types:
-          - int
+    documentation_options:
+      table: ip-ssh-client
+    deprecation:
+      removed: true
+      warning: true
+      new_key: ip_ssh_client
+      remove_in_version: 6.0.0
   ip_tacacs_source_interfaces:
     type: list
     display_name: IP Tacacs Source Interfaces
@@ -9987,6 +10000,44 @@ keys:
             type: bool
             description: Some platforms support only the `logging transceiver` command.
               `enabled` key configures this command.
+  monitor_loop_protection:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      disabled_time:
+        type: int
+        convert_types:
+        - str
+        description: 'Port disable time. EOS default is 604800 seconds (7 days).
+
+          0 indicates that the disabled device should not automatically come back
+          up.'
+        min: 0
+        max: 604800
+      protect_vlan:
+        type: str
+        convert_types:
+        - int
+        description: 'VLAN range as string.
+
+          "< vlan_id >, < vlan_id >-< vlan_id >"
+
+          Example: 15,16,17,18'
+      rate_limit:
+        type: int
+        convert_types:
+        - str
+        description: Rate limits the loop detection frames. EOS default is 1000/second.
+        min: 0
+        max: 1000
+      transmit_interval:
+        type: int
+        convert_types:
+        - str
+        description: Loop protection packet transmit interval. EOS default is 5 seconds.
+        min: 1
+        max: 10
   monitor_server_radius:
     type: dict
     description: Settings to monitor radius servers.
@@ -12660,8 +12711,18 @@ keys:
                 validation performed by the `anta_runner` role.
             validate_lldp:
               type: bool
-              description: Set to false to disable the LLDP topology validation performed
-                by the `anta_runner` role.
+              description: 'Controls LLDP topology validation performed by the `anta_runner`
+                role.
+
+                - Unset (Default): The peer is treated as an AVD-managed device. Validation
+                is performed only if the peer is deployed (`is_deployed: true`)
+
+                and the peer interface is not administratively shutdown.
+
+                - `true`: Forces validation. Use this for connected endpoints not
+                managed by AVD.
+
+                - `false`: Disables validation for the interface.'
         sflow:
           type: dict
           keys:
