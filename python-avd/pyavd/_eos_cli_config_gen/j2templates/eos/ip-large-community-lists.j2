@@ -11,5 +11,6 @@
 ip large-community-list {{ ip_large_community_list.name }} {{ entry.action }} {{ entry.large_communities | join(' ') }}
 {%          elif entry.large_communities is arista.avd.defined %}
 ip large-community-list regexp {{ ip_large_community_list.name }} {{ entry.action }} {{ entry.regexp }}
+{%          endif %}
 {%     endfor %}
 {% endfor %}
