@@ -1540,18 +1540,18 @@ radius proxy
 
 #### RADIUS Server Hosts
 
-| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
-| --- | -------------- | --- | ----------- | ------- | ---------- |
-| default | 10.10.10.158 | - | - | 1 | 1 |
-| default | 10.10.11.156 | True | - | 1 | 1 |
-| default | 10.10.11.156 | - | - | 34 | 45 |
-| default | 10.10.11.156 | True | - | - | - |
-| default | 10.10.10.249 | - | - | 1 | 1 |
-| mgt | 10.10.10.157 | - | - | 1 | 1 |
-| mgt | 10.10.11.159 | - | - | - | 1 |
-| mgt | 10.10.11.160 | - | - | 1 | - |
-| mgt | 10.10.11.248 | - | - | - | - |
-| mgt | 10.10.11.155 | True | HOST_SSL_PROFILE | 1 | 1 |
+| VRF | RADIUS Servers | TLS | Port | SSL Profile | Timeout | Retransmit |
+| --- | -------------- | --- | ---- | ----------- | ------- | ---------- |
+| default | 10.10.10.158 | - | - | - | 1 | 1 |
+| default | 10.10.11.156 | True | 1700 | - | 1 | 1 |
+| default | 10.10.11.156 | - | - | - | 34 | 45 |
+| default | 10.10.11.156 | True | 345 | - | - | - |
+| default | 10.10.10.249 | - | - | - | 1 | 1 |
+| mgt | 10.10.10.157 | - | - | - | 1 | 1 |
+| mgt | 10.10.11.159 | - | - | - | - | 1 |
+| mgt | 10.10.11.160 | - | - | - | 1 | - |
+| mgt | 10.10.11.248 | - | - | - | - | - |
+| mgt | 10.10.11.155 | True | 2083 | HOST_SSL_PROFILE | 1 | 1 |
 
 #### RADIUS Server Device Configuration
 

@@ -37,16 +37,17 @@
 
 #### RADIUS Server Hosts
 
-| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
-| --- | -------------- | --- | ----------- | ------- | ---------- |
+| VRF | RADIUS Servers | TLS | Port | SSL Profile | Timeout | Retransmit |
+| --- | -------------- | --- | ---- | ----------- | ------- | ---------- |
 {%         for vrf in radius_server.vrfs | arista.avd.default([]) %}
 {%             for server in vrf.servers | arista.avd.default([]) %}
 {%                 set vrf = vrf.name | arista.avd.default('default') %}
 {%                 set tls = server.tls.enabled | arista.avd.default('-') %}
+{%                 set port = server.tls.port | arista.avd.default('-') %}
 {%                 set ssl_profile = server.tls.ssl_profile | arista.avd.default('-') %}
 {%                 set timeout = server.timeout | arista.avd.default('-') %}
 {%                 set retransmit = server.retransmit | arista.avd.default('-') %}
-| {{ vrf }} | {{ server.host }} | {{ tls }} | {{ ssl_profile }} | {{ timeout }} | {{ retransmit }} |
+| {{ vrf }} | {{ server.host }} | {{ tls }} | {{ port }} | {{ ssl_profile }} | {{ timeout }} | {{ retransmit }} |
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
