@@ -427,10 +427,14 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def local_users(self) -> None:
         """local_users set based on global aaa_settings.local_users data model."""
+        # Exit early if no local users are defined in inputs
         if not (local_users := self.inputs.aaa_settings.local_users):
             return
+
         for local_user in local_users._natural_sorted():
             local_user_data = EosCliConfigGen.LocalUsersItem(name=local_user.name, disabled=local_user.disabled)
+
+            # If the user is disabled, append it as-is and skip further processing
             if local_user_data.disabled is True:
                 self.structured_config.local_users.append(local_user_data)
                 continue
@@ -441,12 +445,16 @@ class AvdStructuredConfigBaseProtocol(
                 secondary_ssh_key=local_user.secondary_ssh_key,
                 shell=local_user.shell,
             )
+
+            # Pre-hashed SHA-512 password
             if local_user.sha512_password:
                 local_user_data.sha512_password = local_user.sha512_password
+            # Cleartext password (hashed using a deterministic salt)
             elif local_user.cleartext_password:
                 salt = self.get_salt(f"{self.shared_utils.hostname}-{local_user.name}")
                 password = secure_hash(local_user.cleartext_password, salt)
                 local_user_data.sha512_password = password
+            # Explicitly configure user with no password
             elif local_user.no_password:
                 local_user_data.no_password = True
             self.structured_config.local_users.append(local_user_data)

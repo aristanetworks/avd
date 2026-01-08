@@ -220,9 +220,7 @@ keys:
               type: str
               description: 'SHA512 Hash of Password.
 
-                Must be the hash of the password. By default EOS salts the password
-                with the username, so the simplest is to generate the hash on an EOS
-                device using the same username.
+                Must be the hash of the password.
 
                 Takes precedence over `cleartext_password`.
 

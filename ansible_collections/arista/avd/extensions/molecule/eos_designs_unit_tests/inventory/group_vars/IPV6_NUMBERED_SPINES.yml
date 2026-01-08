@@ -17,6 +17,8 @@ aaa_settings:
       role: network-admin
       # Password set to "ansible". Same string as the device generates when configuring a username.
       sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+      # Test to verify that sha512_password takes precedence over cleartext_password
+      cleartext_password: admin
     - name: admin
       privilege: 15
       role: network-admin

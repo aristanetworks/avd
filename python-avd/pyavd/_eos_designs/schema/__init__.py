@@ -506,11 +506,11 @@ class EosDesigns(EosDesignsRootModel):
             sha512_password: str | None
             """
             SHA512 Hash of Password.
-            Must be the hash of the password. By default EOS salts the password with
-            the username, so the simplest is to generate the hash on an EOS device using the same username.
-            Takes precedence over `cleartext_password`.
-            This variable is sensitive and SHOULD be configured
-            using some vault mechanism.
+            Must be the hash of the password.
+            Takes precedence over
+            `cleartext_password`.
+            This variable is sensitive and SHOULD be configured using some vault
+            mechanism.
             """
             cleartext_password: str | None
             """
@@ -569,11 +569,11 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         sha512_password:
                            SHA512 Hash of Password.
-                           Must be the hash of the password. By default EOS salts the password with
-                           the username, so the simplest is to generate the hash on an EOS device using the same username.
-                           Takes precedence over `cleartext_password`.
-                           This variable is sensitive and SHOULD be configured
-                           using some vault mechanism.
+                           Must be the hash of the password.
+                           Takes precedence over
+                           `cleartext_password`.
+                           This variable is sensitive and SHOULD be configured using some vault
+                           mechanism.
                         cleartext_password:
                            Cleartext user password.
                            Encrypted using `password_type` by AVD.

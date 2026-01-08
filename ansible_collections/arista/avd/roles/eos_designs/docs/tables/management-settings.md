@@ -125,7 +125,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "aaa_settings.root_login.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sha512_password</samp>](## "aaa_settings.root_login.sha512_password") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;local_users</samp>](## "aaa_settings.local_users") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sha512_password</samp>](## "aaa_settings.local_users.[].sha512_password") | String |  |  |  | SHA512 Hash of Password.<br>Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.<br>Takes precedence over `cleartext_password`.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sha512_password</samp>](## "aaa_settings.local_users.[].sha512_password") | String |  |  |  | SHA512 Hash of Password.<br>Must be the hash of the password.<br>Takes precedence over `cleartext_password`.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "aaa_settings.local_users.[].cleartext_password") | String |  |  |  | Cleartext user password.<br>Encrypted using `password_type` by AVD.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "aaa_settings.local_users.[].password_type") | String |  | `sha512` | Valid Values:<br>- <code>sha512</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "aaa_settings.local_users.[].name") | String | Required, Unique |  |  | Username. |
@@ -517,7 +517,7 @@
       local_users:
 
           # SHA512 Hash of Password.
-          # Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.
+          # Must be the hash of the password.
           # Takes precedence over `cleartext_password`.
           # This variable is sensitive and SHOULD be configured using some vault mechanism.
         - sha512_password: <str>
