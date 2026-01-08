@@ -1,6 +1,6 @@
 ---
 type: wan_router
-wan_mode: autovpn
+wan_mode: legacy-autovpn
 bgp_as: 65000
 
 cv_pathfinder_regions:
@@ -49,5 +49,4 @@ wan_carriers:
   - name: ATT
     path_group: MPLS
     trusted: true
-
 expected_error_message: "Dps1 IP 192.168.255.1 is not in the Route Reflector listen range prefixes"

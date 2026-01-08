@@ -3,8 +3,8 @@
 
 ip_tacacs_source_interfaces:
   - vrf: default
-    name: loopback1
+    name: Loopback1
   - vrf: TEST1
-    name: lo3
+    name: Loopback3
   - vrf:
-    name: loopback10
+    name: Loopback10

@@ -3,7 +3,7 @@
 title: Input variables for eos_designs
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -1594,6 +1594,12 @@ Management interface is modified for specific platforms like modular platforms w
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/platform-settings.md
+--8<--
+
+## Validation Profiles
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/validation-profiles.md
 --8<--
 
 ## PTP settings

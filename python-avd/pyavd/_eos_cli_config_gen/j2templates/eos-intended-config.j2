@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -322,6 +322,8 @@
 {% include 'eos/arp.j2' %}
 {# IPv6 Static Route #}
 {% include 'eos/ipv6-static-routes.j2' %}
+{# monitor loop protection #}
+{% include 'eos/monitor-loop-protection.j2' %}
 {# MPLS #}
 {% include 'eos/mpls.j2' %}
 {# IP NAT - Part 2#}
