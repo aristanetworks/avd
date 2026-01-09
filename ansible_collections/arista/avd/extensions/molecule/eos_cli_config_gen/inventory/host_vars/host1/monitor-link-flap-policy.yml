@@ -1,7 +1,7 @@
 ---
 monitor_link_flap_policy:
   profiles:
-    - name: LFP1
+    - name: LFP2
       damping_penalty:
         decay:
           half_life: 5
@@ -15,16 +15,19 @@ monitor_link_flap_policy:
           maximum: 5
           reuse: 2
           suppression: 100
-    - name: LFP2
-      max_flaps:
-        flaps: 23
-        time: 10
     - name: LFP3
+      damping_penalty:
+        threshold:
+    - name: LFP1
       max_flaps:
         flaps: 11
         time: 12
         violations: 5
         intervals: 10
+    - name: LFP4
+      max_flaps:
+        flaps: 23
+        time: 10
   default_profiles:
     - LFP3
     - LFP1

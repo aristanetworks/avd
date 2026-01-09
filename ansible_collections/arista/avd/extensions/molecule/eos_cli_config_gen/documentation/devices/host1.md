@@ -3825,9 +3825,10 @@ load-balance cluster
 
 | Name | Damping | Decay Half-Life | Decay Units | MAC Fault Location | MAC Fault Penalty | Threshold Max | Threshold Reuse | Threshold Suppression | Max Flaps | Time | Violations | Intervals |
 | ---- | ------- | --------------- | ----------- | ------------------ | ----------------- | ------------- | --------------- | --------------------- | --------- | ---- | ---------- | --------- |
-| LFP1 | True | 5 | seconds | local<br>remote<br> | 5<br>10<br> | 5 | 2 | 100 | - | - | - | - |
-| LFP2 | False | - | - | - | - | - | - | - | 23 | 10 | - | - |
-| LFP3 | False | - | - | - | - | - | - | - | 11 | 12 | 5 | 10 |
+| LFP1 | False | - | - | - | - | - | - | - | 11 | 12 | 5 | 10 |
+| LFP2 | True | 5 | seconds | local<br>remote<br> | 5<br>10<br> | 5 | 2 | 100 | - | - | - | - |
+| LFP3 | True | - | - | - | - | - | - | - | - | - | - | - |
+| LFP4 | False | - | - | - | - | - | - | - | 23 | 10 | - | - |
 
 ### Default Profiles
 
@@ -3841,12 +3842,14 @@ Note that when multiple profiles are assigned, then the monitor is triggered whe
 ```eos
 !
 monitor link-flap policy
-   profile LFP1 damping
+   profile LFP2 damping
       penalty threshold reuse 2 suppression 100 maximum 5
       penalty mac fault local 5
       penalty mac fault remote 10
-   profile LFP2 max-flaps 23 time 10
-   profile LFP3 max-flaps 11 time 12 violations 5 intervals 10
+   !
+   profile LFP3 damping
+   profile LFP1 max-flaps 11 time 12 violations 5 intervals 10
+   profile LFP4 max-flaps 23 time 10
    default-profiles LFP1 LFP3
 ```
 
