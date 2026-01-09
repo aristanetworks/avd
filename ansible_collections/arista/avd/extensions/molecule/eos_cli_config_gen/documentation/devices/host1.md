@@ -11231,9 +11231,6 @@ dynamic prefix-list aa_list_1
 
 ##### PL-IPV4-LOOPBACKS
 
-| Sequence | Action |
-| -------- | ------ |
-
 ##### PL-LOOPBACKS-EVPN-OVERLAY
 
 | Sequence | Action |
