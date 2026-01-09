@@ -8,8 +8,6 @@ type: dict
 keys:
   ssh_settings:
     type: dict
-    documentation_options:
-      table: management-settings
     keys:
       enabled:
         type: bool
