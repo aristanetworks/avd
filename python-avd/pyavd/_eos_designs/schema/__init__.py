@@ -26,13 +26,34 @@ class EosDesigns(EosDesignsRootModel):
         class EnablePassword(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"password": {"type": str}}
+            PasswordType: TypeAlias = Literal["sha512"]
+            _fields: ClassVar[dict] = {"password": {"type": str}, "cleartext_password": {"type": str}, "password_type": {"type": str, "default": "sha512"}}
             password: str | None
-            """SHA512 hashed password."""
+            """
+            SHA512 hashed password.
+            Takes precedence over `cleartext_password`.
+            This variable is sensitive and
+            SHOULD be configured using some vault.
+            """
+            cleartext_password: str | None
+            """
+            Cleartext enable password.
+            Encrypted using `password_type` by AVD.
+            This variable is sensitive and
+            SHOULD be configured using some vault mechanism.
+            """
+            password_type: PasswordType
+            """Default value: `"sha512"`"""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, password: str | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
+                    password_type: PasswordType | UndefinedType = Undefined,
+                ) -> None:
                     """
                     EnablePassword.
 
@@ -40,7 +61,17 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        password: SHA512 hashed password.
+                        password:
+                           SHA512 hashed password.
+                           Takes precedence over `cleartext_password`.
+                           This variable is sensitive and
+                           SHOULD be configured using some vault.
+                        cleartext_password:
+                           Cleartext enable password.
+                           Encrypted using `password_type` by AVD.
+                           This variable is sensitive and
+                           SHOULD be configured using some vault mechanism.
+                        password_type: password_type
 
                     """
 
@@ -454,6 +485,120 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class LocalUsersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            PasswordType: TypeAlias = Literal["sha512"]
+            Shell: TypeAlias = Literal["/bin/bash", "/bin/sh", "/sbin/nologin"]
+            _fields: ClassVar[dict] = {
+                "sha512_password": {"type": str},
+                "cleartext_password": {"type": str},
+                "password_type": {"type": str, "default": "sha512"},
+                "name": {"type": str},
+                "disabled": {"type": bool},
+                "privilege": {"type": int},
+                "role": {"type": str},
+                "no_password": {"type": bool},
+                "ssh_key": {"type": str},
+                "secondary_ssh_key": {"type": str},
+                "shell": {"type": str},
+            }
+            sha512_password: str | None
+            """
+            SHA512 Hash of Password.
+            Takes precedence over `cleartext_password`.
+            This variable is sensitive and
+            SHOULD be configured using some vault mechanism.
+            """
+            cleartext_password: str | None
+            """
+            Cleartext user password.
+            Encrypted using `password_type` by AVD.
+            This variable is sensitive and
+            SHOULD be configured using some vault mechanism.
+            """
+            password_type: PasswordType
+            """Default value: `"sha512"`"""
+            name: str
+            """Username."""
+            disabled: bool | None
+            """
+            If true, the user will be removed and all other settings are ignored.
+            Useful for removing the
+            default "admin" user.
+            """
+            privilege: int | None
+            """Initial privilege level with local EXEC authorization."""
+            role: str | None
+            """EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator"."""
+            no_password: bool | None
+            """
+            If set a password will not be configured for this user. "sha512_password" MUST not be defined for
+            this user.
+            """
+            ssh_key: str | None
+            secondary_ssh_key: str | None
+            shell: Shell | None
+            """Specify shell for the user."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    sha512_password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
+                    password_type: PasswordType | UndefinedType = Undefined,
+                    name: str | UndefinedType = Undefined,
+                    disabled: bool | None | UndefinedType = Undefined,
+                    privilege: int | None | UndefinedType = Undefined,
+                    role: str | None | UndefinedType = Undefined,
+                    no_password: bool | None | UndefinedType = Undefined,
+                    ssh_key: str | None | UndefinedType = Undefined,
+                    secondary_ssh_key: str | None | UndefinedType = Undefined,
+                    shell: Shell | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    LocalUsersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sha512_password:
+                           SHA512 Hash of Password.
+                           Takes precedence over `cleartext_password`.
+                           This variable is sensitive and
+                           SHOULD be configured using some vault mechanism.
+                        cleartext_password:
+                           Cleartext user password.
+                           Encrypted using `password_type` by AVD.
+                           This variable is sensitive and
+                           SHOULD be configured using some vault mechanism.
+                        password_type: password_type
+                        name: Username.
+                        disabled:
+                           If true, the user will be removed and all other settings are ignored.
+                           Useful for removing the
+                           default "admin" user.
+                        privilege: Initial privilege level with local EXEC authorization.
+                        role: EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator".
+                        no_password:
+                           If set a password will not be configured for this user. "sha512_password" MUST not be defined for
+                           this user.
+                        ssh_key: ssh_key
+                        secondary_ssh_key: secondary_ssh_key
+                        shell: Specify shell for the user.
+
+                    """
+
+        class LocalUsers(AvdIndexedList[str, LocalUsersItem]):
+            """Subclass of AvdIndexedList with `LocalUsersItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        LocalUsers._item_type = LocalUsersItem
+
         _fields: ClassVar[dict] = {
             "enable_password": {"type": EnablePassword},
             "tacacs": {"type": Tacacs},
@@ -462,7 +607,7 @@ class EosDesigns(EosDesignsRootModel):
             "authorization": {"type": EosCliConfigGen.AaaAuthorization},
             "accounting": {"type": EosCliConfigGen.AaaAccounting},
             "root_login": {"type": RootLogin},
-            "local_users": {"type": EosCliConfigGen.LocalUsers},
+            "local_users": {"type": LocalUsers},
         }
         enable_password: EnablePassword
         """Subclass of AvdModel."""
@@ -475,7 +620,8 @@ class EosDesigns(EosDesignsRootModel):
         accounting: EosCliConfigGen.AaaAccounting
         root_login: RootLogin
         """Subclass of AvdModel."""
-        local_users: EosCliConfigGen.LocalUsers
+        local_users: LocalUsers
+        """Subclass of AvdIndexedList with `LocalUsersItem` items. Primary key is `name` (`str`)."""
 
         if TYPE_CHECKING:
 
@@ -489,7 +635,7 @@ class EosDesigns(EosDesignsRootModel):
                 authorization: EosCliConfigGen.AaaAuthorization | UndefinedType = Undefined,
                 accounting: EosCliConfigGen.AaaAccounting | UndefinedType = Undefined,
                 root_login: RootLogin | UndefinedType = Undefined,
-                local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
+                local_users: LocalUsers | UndefinedType = Undefined,
             ) -> None:
                 """
                 AaaSettings.
@@ -505,7 +651,7 @@ class EosDesigns(EosDesignsRootModel):
                     authorization: authorization
                     accounting: accounting
                     root_login: Subclass of AvdModel.
-                    local_users: local_users
+                    local_users: Subclass of AvdIndexedList with `LocalUsersItem` items. Primary key is `name` (`str`).
 
                 """
 
@@ -87374,7 +87520,7 @@ class EosDesigns(EosDesignsRootModel):
                             "queue_monitor_length_notify": False,
                             "interface_storm_control": True,
                             "bgp_update_wait_for_convergence": True,
-                            "bgp_update_wait_install": False,
+                            "bgp_update_wait_install": True,
                         },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
@@ -89001,7 +89147,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """

@@ -19,7 +19,24 @@ keys:
         keys:
           password:
             type: str
-            description: SHA512 hashed password.
+            description: 'SHA512 hashed password.
+
+              Takes precedence over `cleartext_password`.
+
+              This variable is sensitive and SHOULD be configured using some vault.'
+          cleartext_password:
+            type: str
+            description: 'Cleartext enable password.
+
+              Encrypted using `password_type` by AVD.
+
+              This variable is sensitive and SHOULD be configured using some vault
+              mechanism.'
+          password_type:
+            type: str
+            valid_values:
+            - sha512
+            default: sha512
       tacacs:
         type: dict
         keys:
@@ -195,6 +212,30 @@ keys:
       local_users:
         $ref: eos_cli_config_gen#/keys/local_users
         type: list
+        items:
+          type: dict
+          keys:
+            sha512_password:
+              type: str
+              description: 'SHA512 Hash of Password.
+
+                Takes precedence over `cleartext_password`.
+
+                This variable is sensitive and SHOULD be configured using some vault
+                mechanism.'
+            cleartext_password:
+              type: str
+              description: 'Cleartext user password.
+
+                Encrypted using `password_type` by AVD.
+
+                This variable is sensitive and SHOULD be configured using some vault
+                mechanism.'
+            password_type:
+              type: str
+              valid_values:
+              - sha512
+              default: sha512
   address_locking_settings:
     type: dict
     $ref: eos_cli_config_gen#/keys/address_locking
@@ -4353,7 +4394,7 @@ keys:
         queue_monitor_length_notify: false
         interface_storm_control: true
         bgp_update_wait_for_convergence: true
-        bgp_update_wait_install: false
+        bgp_update_wait_install: true
       digital_twin:
         platform: vEOS-lab
     - platforms:

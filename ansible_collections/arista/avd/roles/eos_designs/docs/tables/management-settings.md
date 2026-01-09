@@ -9,7 +9,9 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>aaa_settings</samp>](## "aaa_settings") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enable_password</samp>](## "aaa_settings.enable_password") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "aaa_settings.enable_password.password") | String |  |  |  | SHA512 hashed password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "aaa_settings.enable_password.password") | String |  |  |  | SHA512 hashed password.<br>Takes precedence over `cleartext_password`.<br>This variable is sensitive and SHOULD be configured using some vault. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "aaa_settings.enable_password.cleartext_password") | String |  |  |  | Cleartext enable password.<br>Encrypted using `password_type` by AVD.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "aaa_settings.enable_password.password_type") | String |  | `sha512` | Valid Values:<br>- <code>sha512</code> |  |
     | [<samp>&nbsp;&nbsp;tacacs</samp>](## "aaa_settings.tacacs") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "aaa_settings.tacacs.servers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "aaa_settings.tacacs.servers.[].host") | String | Required |  |  | Host IP address or name.<br>Combination of `host` and `vrf` should be unique. |
@@ -123,11 +125,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "aaa_settings.root_login.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sha512_password</samp>](## "aaa_settings.root_login.sha512_password") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;local_users</samp>](## "aaa_settings.local_users") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "aaa_settings.local_users.[].name") | String | Required, Unique |  |  | Username. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sha512_password</samp>](## "aaa_settings.local_users.[].sha512_password") | String |  |  |  | SHA512 Hash of Password.<br>Takes precedence over `cleartext_password`.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "aaa_settings.local_users.[].cleartext_password") | String |  |  |  | Cleartext user password.<br>Encrypted using `password_type` by AVD.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "aaa_settings.local_users.[].password_type") | String |  | `sha512` | Valid Values:<br>- <code>sha512</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "aaa_settings.local_users.[].name") | String | Required, Unique |  |  | Username. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "aaa_settings.local_users.[].disabled") | Boolean |  |  |  | If true, the user will be removed and all other settings are ignored.<br>Useful for removing the default "admin" user.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;privilege</samp>](## "aaa_settings.local_users.[].privilege") | Integer |  |  | Min: 0<br>Max: 15 | Initial privilege level with local EXEC authorization.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "aaa_settings.local_users.[].role") | String |  |  |  | EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator".<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sha512_password</samp>](## "aaa_settings.local_users.[].sha512_password") | String |  |  |  | SHA512 Hash of Password.<br>Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_password</samp>](## "aaa_settings.local_users.[].no_password") | Boolean |  |  |  | If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssh_key</samp>](## "aaa_settings.local_users.[].ssh_key") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secondary_ssh_key</samp>](## "aaa_settings.local_users.[].secondary_ssh_key") | String |  |  |  |  |
@@ -264,7 +268,15 @@
       enable_password:
 
         # SHA512 hashed password.
+        # Takes precedence over `cleartext_password`.
+        # This variable is sensitive and SHOULD be configured using some vault.
         password: <str>
+
+        # Cleartext enable password.
+        # Encrypted using `password_type` by AVD.
+        # This variable is sensitive and SHOULD be configured using some vault mechanism.
+        cleartext_password: <str>
+        password_type: <str; "sha512"; default="sha512">
       tacacs:
         servers:
 
@@ -504,8 +516,19 @@
         sha512_password: <str>
       local_users:
 
+          # SHA512 Hash of Password.
+          # Takes precedence over `cleartext_password`.
+          # This variable is sensitive and SHOULD be configured using some vault mechanism.
+        - sha512_password: <str>
+
+          # Cleartext user password.
+          # Encrypted using `password_type` by AVD.
+          # This variable is sensitive and SHOULD be configured using some vault mechanism.
+          cleartext_password: <str>
+          password_type: <str; "sha512"; default="sha512">
+
           # Username.
-        - name: <str; required; unique>
+          name: <str; required; unique>
 
           # If true, the user will be removed and all other settings are ignored.
           # Useful for removing the default "admin" user.
@@ -516,10 +539,6 @@
 
           # EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator".
           role: <str>
-
-          # SHA512 Hash of Password.
-          # Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.
-          sha512_password: <str>
 
           # If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
           no_password: <bool>
