@@ -1,6 +1,17 @@
 aaa_root:
   disabled: true
 config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - apiserver.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /tmp/cv-onboarding-token
+  cvsourceintf: Vlan4092
+  cvvrf: default
+  disable_aaa: false
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ipfixaddr: default/127.0.0.1:4739
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -25,19 +36,22 @@ ethernet_interfaces:
     peer_interface: Ethernet34
     peer_type: l3leaf
 flow_tracking:
-  sampled:
-    sample: 10000
+  hardware:
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER-11
+      record_export:
         on_inactive_timeout: 50020
         on_interval: 300321
-      name: FLOW-TRACKER-11
       exporters:
       - name: ayush_exporter
         collectors:
         - host: 127.0.2.1
         local_interface: Management1
         template_interval: 40020
+      - name: CLOUDVISION
+        collectors:
+        - host: 127.0.0.1
+        local_interface: Vlan4092
     shutdown: false
 hostname: flow-tracking-tests-l2-leaf4
 ip_igmp_snooping:
@@ -61,7 +75,7 @@ port_channel_interfaces:
   description: L2_flow-tracking-tests-leaf-mlag_Port-Channel34
   shutdown: false
   flow_tracker:
-    sampled: FLOW-TRACKER-11
+    hardware: FLOW-TRACKER-11
   switchport:
     enabled: true
     mode: trunk
