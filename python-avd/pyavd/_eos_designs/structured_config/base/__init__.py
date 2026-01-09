@@ -457,6 +457,10 @@ class AvdStructuredConfigBaseProtocol(
             # Explicitly configure user with no password
             elif local_user.no_password:
                 local_user_data.no_password = True
+                # EOS requires either no_password: true or a secret to be set.
+            else:
+                msg = f"Either 'sha512_password', 'cleartext_password' or 'no_password: true' must be set for username '{local_user.name}'."
+                raise AristaAvdInvalidInputsError(msg)
             self.structured_config.local_users.append(local_user_data)
 
     @structured_config_contributor
