@@ -21,6 +21,10 @@ platform_settings:
       non_mlag: 330
     digital_twin:
       platform: vEOS-lab
+  - platforms:
+      - 7358X4
+    feature_support:
+      bgp_update_wait_install: true
 
 validation_profiles:
   - name: profile1
@@ -64,3 +68,7 @@ l3leaf:
       id: 5
       platform: 7020TX
       mgmt_ip: 192.168.201.118/24
+    - name: 7358X4-LEAF1
+      bgp_as: 925
+      id: 6
+      mgmt_ip: 192.168.201.119/24
