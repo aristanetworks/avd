@@ -26,13 +26,34 @@ class EosDesigns(EosDesignsRootModel):
         class EnablePassword(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"password": {"type": str}}
+            PasswordType: TypeAlias = Literal["sha512"]
+            _fields: ClassVar[dict] = {"password": {"type": str}, "cleartext_password": {"type": str}, "password_type": {"type": str, "default": "sha512"}}
             password: str | None
-            """SHA512 hashed password."""
+            """
+            SHA512 hashed password.
+            Takes precedence over `cleartext_password`.
+            This variable is sensitive and
+            SHOULD be configured using some vault.
+            """
+            cleartext_password: str | None
+            """
+            Cleartext enable password.
+            Encrypted using `password_type` by AVD.
+            This variable is sensitive and
+            SHOULD be configured using some vault mechanism.
+            """
+            password_type: PasswordType
+            """Default value: `"sha512"`"""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, password: str | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
+                    password_type: PasswordType | UndefinedType = Undefined,
+                ) -> None:
                     """
                     EnablePassword.
 
@@ -40,7 +61,17 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        password: SHA512 hashed password.
+                        password:
+                           SHA512 hashed password.
+                           Takes precedence over `cleartext_password`.
+                           This variable is sensitive and
+                           SHOULD be configured using some vault.
+                        cleartext_password:
+                           Cleartext enable password.
+                           Encrypted using `password_type` by AVD.
+                           This variable is sensitive and
+                           SHOULD be configured using some vault mechanism.
+                        password_type: password_type
 
                     """
 
@@ -454,6 +485,120 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class LocalUsersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            PasswordType: TypeAlias = Literal["sha512"]
+            Shell: TypeAlias = Literal["/bin/bash", "/bin/sh", "/sbin/nologin"]
+            _fields: ClassVar[dict] = {
+                "sha512_password": {"type": str},
+                "cleartext_password": {"type": str},
+                "password_type": {"type": str, "default": "sha512"},
+                "name": {"type": str},
+                "disabled": {"type": bool},
+                "privilege": {"type": int},
+                "role": {"type": str},
+                "no_password": {"type": bool},
+                "ssh_key": {"type": str},
+                "secondary_ssh_key": {"type": str},
+                "shell": {"type": str},
+            }
+            sha512_password: str | None
+            """
+            SHA512 Hash of Password.
+            Takes precedence over `cleartext_password`.
+            This variable is sensitive and
+            SHOULD be configured using some vault mechanism.
+            """
+            cleartext_password: str | None
+            """
+            Cleartext user password.
+            Encrypted using `password_type` by AVD.
+            This variable is sensitive and
+            SHOULD be configured using some vault mechanism.
+            """
+            password_type: PasswordType
+            """Default value: `"sha512"`"""
+            name: str
+            """Username."""
+            disabled: bool | None
+            """
+            If true, the user will be removed and all other settings are ignored.
+            Useful for removing the
+            default "admin" user.
+            """
+            privilege: int | None
+            """Initial privilege level with local EXEC authorization."""
+            role: str | None
+            """EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator"."""
+            no_password: bool | None
+            """
+            If set a password will not be configured for this user. "sha512_password" MUST not be defined for
+            this user.
+            """
+            ssh_key: str | None
+            secondary_ssh_key: str | None
+            shell: Shell | None
+            """Specify shell for the user."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    sha512_password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
+                    password_type: PasswordType | UndefinedType = Undefined,
+                    name: str | UndefinedType = Undefined,
+                    disabled: bool | None | UndefinedType = Undefined,
+                    privilege: int | None | UndefinedType = Undefined,
+                    role: str | None | UndefinedType = Undefined,
+                    no_password: bool | None | UndefinedType = Undefined,
+                    ssh_key: str | None | UndefinedType = Undefined,
+                    secondary_ssh_key: str | None | UndefinedType = Undefined,
+                    shell: Shell | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    LocalUsersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sha512_password:
+                           SHA512 Hash of Password.
+                           Takes precedence over `cleartext_password`.
+                           This variable is sensitive and
+                           SHOULD be configured using some vault mechanism.
+                        cleartext_password:
+                           Cleartext user password.
+                           Encrypted using `password_type` by AVD.
+                           This variable is sensitive and
+                           SHOULD be configured using some vault mechanism.
+                        password_type: password_type
+                        name: Username.
+                        disabled:
+                           If true, the user will be removed and all other settings are ignored.
+                           Useful for removing the
+                           default "admin" user.
+                        privilege: Initial privilege level with local EXEC authorization.
+                        role: EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator".
+                        no_password:
+                           If set a password will not be configured for this user. "sha512_password" MUST not be defined for
+                           this user.
+                        ssh_key: ssh_key
+                        secondary_ssh_key: secondary_ssh_key
+                        shell: Specify shell for the user.
+
+                    """
+
+        class LocalUsers(AvdIndexedList[str, LocalUsersItem]):
+            """Subclass of AvdIndexedList with `LocalUsersItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        LocalUsers._item_type = LocalUsersItem
+
         _fields: ClassVar[dict] = {
             "enable_password": {"type": EnablePassword},
             "tacacs": {"type": Tacacs},
@@ -462,7 +607,7 @@ class EosDesigns(EosDesignsRootModel):
             "authorization": {"type": EosCliConfigGen.AaaAuthorization},
             "accounting": {"type": EosCliConfigGen.AaaAccounting},
             "root_login": {"type": RootLogin},
-            "local_users": {"type": EosCliConfigGen.LocalUsers},
+            "local_users": {"type": LocalUsers},
         }
         enable_password: EnablePassword
         """Subclass of AvdModel."""
@@ -475,7 +620,8 @@ class EosDesigns(EosDesignsRootModel):
         accounting: EosCliConfigGen.AaaAccounting
         root_login: RootLogin
         """Subclass of AvdModel."""
-        local_users: EosCliConfigGen.LocalUsers
+        local_users: LocalUsers
+        """Subclass of AvdIndexedList with `LocalUsersItem` items. Primary key is `name` (`str`)."""
 
         if TYPE_CHECKING:
 
@@ -489,7 +635,7 @@ class EosDesigns(EosDesignsRootModel):
                 authorization: EosCliConfigGen.AaaAuthorization | UndefinedType = Undefined,
                 accounting: EosCliConfigGen.AaaAccounting | UndefinedType = Undefined,
                 root_login: RootLogin | UndefinedType = Undefined,
-                local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
+                local_users: LocalUsers | UndefinedType = Undefined,
             ) -> None:
                 """
                 AaaSettings.
@@ -505,7 +651,7 @@ class EosDesigns(EosDesignsRootModel):
                     authorization: authorization
                     accounting: accounting
                     root_login: Subclass of AvdModel.
-                    local_users: local_users
+                    local_users: Subclass of AvdIndexedList with `LocalUsersItem` items. Primary key is `name` (`str`).
 
                 """
 
