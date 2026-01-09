@@ -11154,7 +11154,6 @@ router igmp
 #### IP Community-lists Device Configuration
 
 ```eos
-!
 ip community-list IP_CL_TEST1 permit 1001:1001 1002:1002
 ip community-list IP_CL_TEST1 deny 1010:1010
 ip community-list regexp IP_CL_TEST1 permit 20:*
@@ -11182,7 +11181,6 @@ ip community-list regexp aa_test3 deny ^100
 #### IP Large-community-lists Device Configuration
 
 ```eos
-!
 ip large-community-list IP_L_CL_TEST1 permit 64496:1001:1001 65536:1002:1002
 ip large-community-list IP_L_CL_TEST1 deny 64496:1010:1010
 ip large-community-list regexp IP_L_CL_TEST1 permit 65536:*:*
@@ -11428,12 +11426,9 @@ route-map RM-STATIC-2-BGP permit 10
 #### IP Extended Community Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list TEST1 permit 65000:65000
 ip extcommunity-list TEST1 deny 65002:65002
-!
 ip extcommunity-list TEST2 deny 65001:65001
-!
 ip extcommunity-list aa_test3 deny 65001:65001
 ```
 
@@ -11451,12 +11446,9 @@ ip extcommunity-list aa_test3 deny 65001:65001
 #### IP Extended Community RegExp Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list regexp TEST1 permit 65[0-9]{3}:[0-9]+
 ip extcommunity-list regexp TEST1 deny .*
-!
 ip extcommunity-list regexp TEST2 deny 6500[0-1]:650[0-9][0-9]
-!
 ip extcommunity-list regexp aa_test3 deny 6500[0-1]:650[0-9][0-9]
 ```
 
