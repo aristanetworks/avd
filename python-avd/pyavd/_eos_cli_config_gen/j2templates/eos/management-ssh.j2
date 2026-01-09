@@ -35,7 +35,7 @@ management ssh
    mac {{ management_ssh.mac | join(" ") }}
 {%     endif %}
 {%     if management_ssh.hostkey.server is arista.avd.defined %}
-   hostkey server {{ management_ssh.hostkey.server | join(" ") }}
+   hostkey server {{ management_ssh.hostkey.server | arista.avd.natural_sort | join(" ") }}
 {%     endif %}
 {%     if management_ssh.connection.per_host is arista.avd.defined %}
    connection per-host {{ management_ssh.connection.per_host }}
