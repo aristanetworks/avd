@@ -46,7 +46,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet11
-  description: LACP bundle to ESXI-HOST-03
+  description: ESXI-HOST-03_vmnic1
   shutdown: false
   channel_group:
     id: 11

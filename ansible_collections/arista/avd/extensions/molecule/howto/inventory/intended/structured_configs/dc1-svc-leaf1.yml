@@ -26,7 +26,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet10
-  description: Connects to APP-SERVER-01 on service_leaf
+  description: APP-SERVER-01_eth0
   shutdown: false
   spanning_tree_portfast: edge
   metadata:

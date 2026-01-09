@@ -22,6 +22,33 @@ This guide explains how to use the default node types, create custom node types,
 
 **type**: The variable set on each device (or group) that references a node type defined in `node_type_keys` or `custom_node_type_keys`.
 
+### Typical Node Types per Design
+
+Data Center or Campus L3LS EVPN VXLAN Fabric Node Types
+
+- **spine**
+- **l3leaf**
+- **l2leaf**
+- **super_spine**
+- **overlay_controller**
+
+MPLS/SR Node Types
+
+- **p**
+- **pe**
+- **rr**
+
+L2LS Fabric Node Types
+
+- **l3spine**
+- **leaf**
+- **l2spine**
+
+WAN Node Types
+
+- **wan_router**
+- **wan_rr**
+
 ## Default Node Types
 
 AVD provides several built-in node types optimized for different fabric architectures:
@@ -32,32 +59,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/node-type-variables.md
 
 !!! note
 
-    Node types can exist in the same multi-domain fabric.
-
-### L3LS EVPN VXLAN Fabric Node Types
-
-- **spine**: Spine switches acting as EVPN route servers
-- **l3leaf**: Layer 3 leaf switches with VXLAN/EVPN capabilities, MLAG support, and connected endpoints
-- **l2leaf**: Layer 2 leaf switches with MLAG support, no routing capabilities
-- **super_spine**: Super spine for 5-stage CLOS architectures
-- **overlay_controller**: Dedicated EVPN route servers
-
-### MPLS/SR Node Types
-
-- **p**: Provider (P) routers with MPLS LSR capabilities
-- **pe**: Provider Edge (PE) routers with MPLS, EVPN, and connected endpoints support
-- **rr**: Route reflectors for MPLS networks
-
-### L2LS Fabric Node Types
-
-- **l3spine**: Layer 3 spine for campus architectures
-- **leaf**: Campus leaf switches with Layer 2 capabilities
-- **l2spine**: Layer 2 spine switches
-
-### WAN Node Types
-
-- **wan_router**: WAN edge routers for AutoVPN
-- **wan_rr**: WAN route reflectors for AutoVPN
+    All AVD node types can coexist in the same inventory. i.e.: You can mix campus and WAN node types in the same inventory.
 
 ## Using Default Node Types
 
@@ -202,6 +204,8 @@ uplink_type: p2p  # p2p, port-channel, p2p-vrfs, lan
 - **port-channel**: LACP port-channel uplinks (default for l2leaf)
 - **p2p-vrfs**: Layer 3 uplinks with subinterfaces per VRF
 - **lan**: LAN uplinks for campus designs
+
+For a complete list of properties, see the [Node Type Customization](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.html#node-type-customization) documentation.
 
 ## Advanced Example: MPLS PE Router
 

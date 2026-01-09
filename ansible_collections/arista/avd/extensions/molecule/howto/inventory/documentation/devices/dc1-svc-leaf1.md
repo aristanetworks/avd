@@ -253,7 +253,7 @@ vlan 3402
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet10 | Connects to APP-SERVER-01 on service_leaf | trunk | 11-12 | - | - | - |
+| Ethernet10 | APP-SERVER-01_eth0 | trunk | 11-12 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -275,7 +275,7 @@ interface Ethernet1
    ip address 10.255.255.83/31
 !
 interface Ethernet10
-   description Connects to APP-SERVER-01 on service_leaf
+   description APP-SERVER-01_eth0
    no shutdown
    switchport trunk allowed vlan 11,12
    switchport mode trunk

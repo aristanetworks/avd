@@ -307,7 +307,7 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet3 | MLAG_dc1-leaf1a_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet4 | MLAG_dc1-leaf1a_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
-| Ethernet11 | LACP bundle to ESXI-HOST-03 | *trunk | *20,30 | *- | *- | 11 |
+| Ethernet11 | ESXI-HOST-03_vmnic1 | *trunk | *20,30 | *- | *- | 11 |
 
 *Inherited from Port-Channel Interface
 
@@ -339,7 +339,7 @@ interface Ethernet4
    channel-group 3 mode active
 !
 interface Ethernet11
-   description LACP bundle to ESXI-HOST-03
+   description ESXI-HOST-03_vmnic1
    no shutdown
    channel-group 11 mode active
 ```

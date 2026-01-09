@@ -26,16 +26,14 @@ Use `network_ports` instead when:
 - You want to apply the same profile to a range of interfaces
 - Endpoint-specific details are not required
 
-This key is typically defined in a folder named `CONNECTED_ENDPOINTS`, but it can be defined elsewhere, depending on your environment.
-
 !!! warning
-    It is not recommended to mix `connected_endpoints` and `network_ports` in a single inventory. When in doubt or troubleshooting inventory, please us `connected_endpoints` as it requires more deterministic inputs and builds more deterministic outputs.
+    Both data models share the same underlying implementation and can coexist without conflicts. If a switch port is defined in both “Connected Endpoints” and “Network Ports”, the “Connected Endpoints” configuration will take precedence.
 
 ## Concepts
 
 **port_profiles**: Port profiles are used to share common settings for connected_endpoints and network_ports. Keys are the same as those used under endpoint adapters. Keys defined under endpoint adapters take precedence.
 
-**adapters**:  An adapter represents a network interface on the connected_endpoint. They serve as the bridge between the Fabric (the switches) and the Endpoints (the devices). They define how a specific device is cabled and what network services (VLANs, VRFs) it should receive.
+**adapters**:  An adapter represents a network interface on the connected_endpoint.
 
 ### Port Profiles
 
@@ -53,7 +51,7 @@ A port profile can refer to another port profile using parent_profile to inherit
 - `storm_control`: To apply storm control policies.
 - `flowcontrol`: To configure flow control settings.
 
-Please consult [User Manual](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#port-profiles-settings) for all available keys.
+Please consult the [User Manual](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#port-profiles-settings) for all available keys.
 
 ### Adapters
 
@@ -98,7 +96,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/CO
 
 ### Generated Configuration
 
-Device configuration is located `intended/configs/`
+Device configuration is located in `intended/configs/`
 
 ```cli title="Code snippet for WEB-SERVER-01"
 --8<--
@@ -120,7 +118,7 @@ docs/howto/connected_endpoints/artifacts/ESXI-HOST-03.cfg
 
 3. **Consistent naming conventions**: Establish clear naming patterns for endpoints and profiles to improve readability and maintenance.
 
-4. **Document endpoint connections**: Use the `description` field to clearly identify the purpose and owner of each connection.
+4. **Connected endpoints description**: AVD uses a default pattern to create the description `{endpoint_type}_{endpoint}_{endpoint_port(if defined)}`. To customize this pattern please refer to the [Custom Descriptions and Names](../../../ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.md) documentation.
 
 5. **Validate list lengths**: Ensure `endpoint_ports`, `switch_ports`, and `switches` lists have the same length to avoid configuration errors.
 
@@ -140,7 +138,7 @@ docs/howto/connected_endpoints/artifacts/ESXI-HOST-03.cfg
 
 ### Port-channel not forming
 
-**Issue**: Port-channel is configured but not forming between switches.
+**Issue**: Port-channel is configured but not forming between server and switches.
 
 **Solution**:
 
@@ -163,32 +161,6 @@ docs/howto/connected_endpoints/artifacts/ESXI-HOST-03.cfg
 - Verify the endpoint is defined under a valid `<connected_endpoints_key>` (e.g., `servers`, `firewalls`)
 - Check that the switches referenced in `switches` are part of the fabric
 - Ensure the playbook includes the switches where endpoints are connected
-
-## Quick Reference
-
-### Port Profile Properties
-
-| Property | Type | Description |
-| -------- | ---- | ----------- |
-| `mode` | string | `access` or `trunk` |
-| `vlans` | string | VLAN ID(s) for the port |
-| `native_vlan` | integer | Native VLAN for trunk ports |
-| `port_channel.mode` | string | `active`, `passive`, or `on` |
-| `port_channel.channel_id` | integer | Override auto-assigned channel ID |
-| `spanning_tree_portfast` | string | `edge` for server ports |
-| `storm_control` | dict | Storm control settings |
-| `parent_profile` | string | Inherit settings from another profile |
-
-### Adapter Properties
-
-| Property | Type | Description |
-| -------- | ---- | ----------- |
-| `endpoint_ports` | list | Port names on the endpoint |
-| `switch_ports` | list | Switch interfaces |
-| `switches` | list | Switch hostnames |
-| `profile` | string | Port profile to apply |
-| `description` | string | Interface description |
-| `port_channel` | dict | Port-channel settings (overrides profile) |
 
 ## Reference
 

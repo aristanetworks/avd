@@ -307,8 +307,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet3 | MLAG_dc1-leaf1b_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet4 | MLAG_dc1-leaf1b_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
-| Ethernet10 | Connects to WEB-SERVER-01 NIC1 | access | 10 | - | - | - |
-| Ethernet11 | LACP bundle to ESXI-HOST-03 | *trunk | *20,30 | *- | *- | 11 |
+| Ethernet10 | WEB-SERVER-01_eth0 | access | 10 | - | - | - |
+| Ethernet11 | ESXI-HOST-03_vmnic0 | *trunk | *20,30 | *- | *- | 11 |
 
 *Inherited from Port-Channel Interface
 
@@ -340,7 +340,7 @@ interface Ethernet4
    channel-group 3 mode active
 !
 interface Ethernet10
-   description Connects to WEB-SERVER-01 NIC1
+   description WEB-SERVER-01_eth0
    no shutdown
    switchport access vlan 10
    switchport mode access
@@ -348,7 +348,7 @@ interface Ethernet10
    spanning-tree portfast
 !
 interface Ethernet11
-   description LACP bundle to ESXI-HOST-03
+   description ESXI-HOST-03_vmnic0
    no shutdown
    channel-group 11 mode active
 ```

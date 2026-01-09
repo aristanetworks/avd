@@ -46,7 +46,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet10
-  description: Connects to WEB-SERVER-01 NIC1
+  description: WEB-SERVER-01_eth0
   shutdown: false
   spanning_tree_portfast: edge
   metadata:
@@ -59,7 +59,7 @@ ethernet_interfaces:
     mode: access
     access_vlan: 10
 - name: Ethernet11
-  description: LACP bundle to ESXI-HOST-03
+  description: ESXI-HOST-03_vmnic0
   shutdown: false
   channel_group:
     id: 11
