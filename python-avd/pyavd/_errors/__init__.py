@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -129,7 +129,3 @@ class AristaAvdModelDeprecationWarning(DeprecationWarning):
     TODO: Not ideal with AvdDeprecationWarning already inheriting from AristaAvdError
           but this is our legacy we have to live with for now.
     """
-
-
-class PyAvdDeprecationWarning(DeprecationWarning):
-    """TODO: Docstring for PyAvdDeprecationWarning."""

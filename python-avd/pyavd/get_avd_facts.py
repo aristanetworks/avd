@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -29,7 +29,8 @@ def get_avd_facts(
     Args:
         all_inputs: A dictionary where keys are hostnames and values are the Design instance per device.
             Supporting dicts as well for backwards compatibility.
-        all_hostvars: Per-device dictionaries with variables exposed to custom ip addressing or description logic.
+        all_hostvars: Raw hostvars exposed to custom python logic for each device.
+            This is optional and only needed if custom python modules are used for descriptions or IP addressing.
         pool_manager: PREVIEW: Optional instance of pyavd.avd.PoolManager or subclass hereof,
             implementing ".get_assignment(pool_type: PoolType, shared_utils: SharedUtils)".
             Used for dynamic ID allocations using the "pool_manager" feature.

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from functools import lru_cache
@@ -6,6 +6,7 @@ from pathlib import Path
 from pickle import load
 from typing import Any
 
+from pyavd._utils import RunOnce
 from pyavd.constants import SCHEMA_STORE_GZ_FILE
 
 from .constants import PICKLED_SCHEMAS
@@ -24,13 +25,13 @@ def create_store(*, load_from_yaml: bool = False) -> dict[str, dict[str, Any]]:
     return store
 
 
-@lru_cache(maxsize=1)
+@RunOnce
 def init_store() -> None:
     """
     Init the schema store in pyavd-utils.
 
     This should be called at least one time before each validation.
-    The cache decorator will ensure a quick return on subsequent calls.
+    The RunOnce decorator will ensure we only run this once and otherwise do a quick return on subsequent calls.
 
     TODO: Init from fragments when running from source.
     """

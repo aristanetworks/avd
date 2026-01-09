@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -14,8 +14,18 @@ def get_device_doc(structured_config: EOSConfig | dict, add_md_toc: bool = False
     Render and return the device documentation using AVD eos_cli_config_gen templates.
 
     Args:
-        structured_config: EOSConfig instance or dictionary with the validated structured configuration.
-        add_md_toc: Add a table of contents for markdown headings.
+        structured_config:
+            EOSConfig instance or dictionary with the validated structured configuration.
+
+            - Preferably use the EOSConfig instance returned from `pyavd.get_device_structured_config`.
+            - Alternatively variables could be validated and loaded into EOSConfig using `pyavd.load_eos_config`.
+            - Finally, for backwards compatibility, variables can be given as a dictionary,
+              which should be converted and validated according to AVD `eos_cli_config_gen` schema first using `pyavd.validate_structured_config`,
+                which will return the data as a JSON string in the 'validated_data' attribute.
+                The JSON string should be loaded into a dictionary before calling this function.
+
+        add_md_toc:
+            Add a table of contents for markdown headings.
 
     Returns:
         Device documentation in Markdown format.

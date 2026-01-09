@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -77,9 +77,11 @@ def get_structured_config(
         all_facts:
             Map of all devices and their facts.
         hostvars:
-            The variables for the device exposed to the templar.
+            Raw hostvars exposed to custom jinja templates or custom python logic for each device.
+            This is optional and only needed if custom templates or python modules are used for descriptions or IP addressing.
         templar:
-            The templar to use for rendering templates.
+            Templater used to render custom jinja templates.
+            This is optional and only needed if custom templates are used for descriptions or IP addressing.
         digital_twin:
             Optional flag to enable avd_digital_twin_mode.
 

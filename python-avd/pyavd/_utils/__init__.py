@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from .append_if_not_duplicate import append_if_not_duplicate
@@ -20,6 +20,7 @@ from .load_python_class import load_python_class
 from .merge import merge
 from .remove_cached_property_type import remove_cached_property_type
 from .replace_or_append_item import replace_or_append_item
+from .run_once import RunOnce
 from .short_esi_to_route_target import short_esi_to_route_target
 from .strip_empties import strip_empties_from_dict, strip_empties_from_list, strip_null_from_data
 from .template import template
@@ -29,6 +30,7 @@ from .unique import unique
 
 __all__ = [
     "AvdStringFormatter",
+    "RunOnce",
     "Undefined",
     "UndefinedType",
     "append_if_not_duplicate",
