@@ -8,21 +8,23 @@ platform_settings:
             enabled: true
           description: Structured config for platform matching the regex
     # Test for validate hardware disabled
-    validate_hardware:
-      enabled: false
+    feature_support:
+      hardware_validation: false
   - platforms:
       - 7010TX
     feature_support:
       queue_monitor_length_notify: false
       per_interface_mtu: false
+      hardware_validation: true
     reload_delay:
       mlag: 300
       non_mlag: 330
     digital_twin:
       platform: vEOS-lab
-    # Test for validate hardware enabled with specific requirements
-    validate_hardware:
-      enabled: true  # default
+
+validation_profiles:
+  - name: profile1
+    hardware:
       min_power_supplies: 2
       min_fans: 4
       min_supervisors: 2
@@ -40,6 +42,8 @@ l3leaf:
     loopback_ipv4_offset: 32
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     mlag_interfaces: [Ethernet5, Ethernet6]
+    # Test for validate hardware enabled with specific requirements
+    validation_profile: profile1
   node_groups:
     - group: MLAG_PER_MTU_INTERFACE
       bgp_as: 923
