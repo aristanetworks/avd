@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from ipaddress import IPv4Address, AddressValueError
 from typing import TYPE_CHECKING, Protocol, cast, overload
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -132,6 +133,17 @@ class IpIgmpSnoopingMixin(Protocol):
                 f"The configured 'igmp_snooping_querier.source_address: {source_address_key}' resolved to None."
             )
             raise AristaAvdInvalidInputsError(msg)
+
+        try:
+            IPv4Address(source_address)
+        except AddressValueError:
+            msg = (
+                f"Invalid IGMP snooping querier source address for VLAN '{l2vlan.name}' in Tenant '{tenant.name}'. "
+                f"The value '{source_address}' resolved from "
+                f"'igmp_snooping_querier.source_address: {source_address_key}' is not a valid IPv4 address."
+            )
+            raise AristaAvdInvalidInputsError(msg) from None
+
         return source_address
 
     def _get_svi_igmp_querier_source_address(
@@ -157,17 +169,29 @@ class IpIgmpSnoopingMixin(Protocol):
                     msg = (
                         f"Invalid configuration on VRF '{vrf.name}' in Tenant '{tenant.name}'. 'vtep_diagnostic.loopback' along with either "
                         "'vtep_diagnostic.loopback_ip_pools' or 'vtep_diagnostic.loopback_ip_range' must be defined "
-                        "when 'igmp_snooping_querier.source_address' is set to 'diagnostic_loopback' on the VLAN."
+                        "when 'igmp_snooping_querier.source_address' is set to 'diagnostic_loopback' on the VRF."
                     )
                     raise AristaAvdInvalidInputsError(msg) from None
             case _:
                 source_address = source_address_key
 
-        if source_address is not None:
-            return source_address
+        if source_address is None:
+            msg = (
+                f"Unable to determine the IGMP snooping querier source address for VLAN '{svi.name}' "
+                f"in VRF '{vrf.name}' in Tenant '{tenant.name}'. "
+                f"The configured 'igmp_snooping_querier.source_address: {source_address_key}' resolved to None."
+            )
+            raise AristaAvdInvalidInputsError(msg)
 
-        msg = (
-            f"Unable to determine the IGMP snooping querier source address for VLAN '{svi.name}' in VRF '{vrf.name}' in Tenant '{tenant.name}'. "
-            f"The configured 'igmp_snooping_querier.source_address: {source_address_key}' resolved to None."
-        )
-        raise AristaAvdInvalidInputsError(msg)
+        try:
+            IPv4Address(source_address)
+        except AddressValueError:
+            msg = (
+                f"Invalid IGMP snooping querier source address for VLAN '{svi.name}' "
+                f"in VRF '{vrf.name}' in Tenant '{tenant.name}'. "
+                f"The value '{source_address}' resolved from "
+                f"'igmp_snooping_querier.source_address: {source_address_key}' is not a valid IPv4 address."
+            )
+            raise AristaAvdInvalidInputsError(msg) from None
+
+        return source_address

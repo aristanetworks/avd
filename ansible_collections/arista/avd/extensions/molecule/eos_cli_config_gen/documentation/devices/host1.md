@@ -182,6 +182,8 @@ Serial Number: DEADBEEFC0FFEW
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
   - [BFD Interfaces](#bfd-interfaces)
+- [Monitor Loop Protection](#monitor-loop-protection)
+  - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Interfaces](#mpls-interfaces)
@@ -886,11 +888,11 @@ management tech-support
 | FTP | MGMT | Management0 |
 | FTP | abc | Ethernet10 |
 | HTTP | default | Ethernet10 |
-| HTTP | default | Loopback0 |
 | HTTP | MGMT | Management0 |
+| HTTP | aaa | Loopback0 |
 | SSH | default | Ethernet10 |
-| SSH | default | Loopback0 |
 | SSH | MGMT | Management0 |
+| SSH | aaa | Loopback0 |
 | Telnet | default | Ethernet10 |
 | Telnet | MGMT | Management0 |
 | Telnet | data | Loopback0 |
@@ -906,11 +908,11 @@ ip ftp client source-interface Loopback0
 ip ftp client source-interface Management0 vrf MGMT
 ip ftp client source-interface Ethernet10 vrf abc
 ip http client local-interface Ethernet10
-ip http client local-interface Loopback0 vrf default
 ip http client local-interface Management0 vrf MGMT
+ip http client local-interface Loopback0 vrf aaa
 ip ssh client source-interface Ethernet10
-ip ssh client source-interface Loopback0 vrf default
 ip ssh client source-interface Management0 vrf MGMT
+ip ssh client source-interface Loopback0 vrf aaa
 ip telnet client source-interface Ethernet10
 ip telnet client source-interface Management0 vrf MGMT
 ip telnet client source-interface Loopback0 vrf data
@@ -4918,6 +4920,7 @@ interface Ethernet2
    ip address 10.0.0.254/24 secondary
    ip address 192.168.1.1/24 secondary
    tcp mss ceiling ipv4 70 ingress
+   loop-protection
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST out
    multicast ipv4 static
@@ -5929,6 +5932,14 @@ interface Ethernet87
    no shutdown
    switchport
    transceiver transmitter signal-power -20.00
+!
+interface Ethernet88
+   description Loop protection disable
+   no loop-protection
+!
+interface Ethernet89
+   description Loop protection disable
+   no loop-protection
 ```
 
 ### Port-Channel Interfaces
@@ -10599,6 +10610,24 @@ router bfd
 | Port-Channel9 | 500 | 500 | 5 | True |
 | Vlan85 | 500 | 500 | 5 | True |
 
+## Monitor Loop Protection
+
+| Enabled | Disabled-time | Protect vlan | Rate-limit | Transmit-interval | Disabled Interfaces |
+| ------- | ------------- | ------------ | ---------- | ----------------- | ------------------- |
+| True | 100 | 1000-1100 | 100 | 10 | Ethernet88<br/>Ethernet89 |
+
+### Monitor Loop Protection Configuration
+
+```eos ####
+!
+monitor loop-protection
+   no shutdown
+   protect vlan 1000-1100
+   rate-limit 100
+   transmit-interval 10
+   disabled-time 100
+```
+
 ## MPLS
 
 ### MPLS and LDP
@@ -11201,9 +11230,6 @@ dynamic prefix-list aa_list_1
 #### Prefix-lists Summary
 
 ##### PL-IPV4-LOOPBACKS
-
-| Sequence | Action |
-| -------- | ------ |
 
 ##### PL-LOOPBACKS-EVPN-OVERLAY
 

@@ -14,7 +14,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
 )
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, get_v2
-from pyavd.j2filters import natural_sort
+from pyavd.j2filters import natural_sort, secure_hash
 
 from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
@@ -249,6 +249,10 @@ class AvdStructuredConfigBaseProtocol(
         """enable_password.disable is set to match EOS default config and historic configs if aaa_settings.enable_password.password is not defined."""
         if self.inputs.aaa_settings.enable_password.password:
             self.structured_config.enable_password._update(hash_algorithm="sha512", key=self.inputs.aaa_settings.enable_password.password)
+        elif self.inputs.aaa_settings.enable_password.cleartext_password:
+            salt = self.get_salt(self.shared_utils.hostname)
+            secure_hash_password = secure_hash(self.inputs.aaa_settings.enable_password.cleartext_password, salt)
+            self.structured_config.enable_password._update(hash_algorithm="sha512", key=secure_hash_password)
         else:
             self.structured_config.enable_password.disabled = True
 
@@ -423,10 +427,41 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def local_users(self) -> None:
         """local_users set based on global aaa_settings.local_users data model."""
+        # Exit early if no local users are defined in inputs
         if not (local_users := self.inputs.aaa_settings.local_users):
             return
 
-        self.structured_config.local_users = local_users._natural_sorted()
+        for local_user in local_users._natural_sorted():
+            local_user_data = EosCliConfigGen.LocalUsersItem(name=local_user.name, disabled=local_user.disabled)
+
+            # If the user is disabled, append it as-is and skip further processing
+            if local_user_data.disabled is True:
+                self.structured_config.local_users.append(local_user_data)
+                continue
+            local_user_data._update(
+                privilege=local_user.privilege,
+                role=local_user.role,
+                ssh_key=local_user.ssh_key,
+                secondary_ssh_key=local_user.secondary_ssh_key,
+                shell=local_user.shell,
+            )
+
+            # Pre-hashed SHA-512 password
+            if local_user.sha512_password:
+                local_user_data.sha512_password = local_user.sha512_password
+            # Cleartext password (hashed using a deterministic salt)
+            elif local_user.cleartext_password:
+                salt = self.get_salt(f"{self.shared_utils.hostname}-{local_user.name}")
+                password = secure_hash(local_user.cleartext_password, salt)
+                local_user_data.sha512_password = password
+            # Explicitly configure user with no password
+            elif local_user.no_password:
+                local_user_data.no_password = True
+                # EOS requires either no_password: true or a secret to be set.
+            else:
+                msg = f"Either 'sha512_password', 'cleartext_password' or 'no_password: true' must be set for username '{local_user.name}'."
+                raise AristaAvdInvalidInputsError(msg)
+            self.structured_config.local_users.append(local_user_data)
 
     @structured_config_contributor
     def clock(self) -> None:
@@ -726,26 +761,26 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.aaa_root.secret.sha512_password = aaa_root_login.sha512_password
 
     @structured_config_contributor
-    def ip_ssh_client_source_interfaces(self) -> None:
+    def ip_ssh_client(self) -> None:
         """Parse source_interfaces.ssh_client and return list of source_interfaces."""
         if not (inputs := self.inputs.source_interfaces.ssh_client):
             return
 
         if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP SSH Client", output_type=EosCliConfigGen.IpSshClientSourceInterfaces
+            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP SSH Client", output_type=EosCliConfigGen.IpSshClient
         ):
-            self.structured_config.ip_ssh_client_source_interfaces = source_interfaces
+            self.structured_config.ip_ssh_client = source_interfaces
 
     @structured_config_contributor
-    def ip_http_client_source_interfaces(self) -> None:
+    def ip_http_client(self) -> None:
         """Parse source_interfaces.http_client and set list of source_interfaces."""
         if not (inputs := self.inputs.source_interfaces.http_client):
             return
 
         if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP HTTP Client", output_type=EosCliConfigGen.IpHttpClientSourceInterfaces
+            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP HTTP Client", output_type=EosCliConfigGen.IpHttpClient
         ):
-            self.structured_config.ip_http_client_source_interfaces = source_interfaces
+            self.structured_config.ip_http_client = source_interfaces
 
     @structured_config_contributor
     def prefix_lists(self) -> None:
