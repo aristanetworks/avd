@@ -173,6 +173,7 @@ wan_router:
         - name: cv-pathfinder-edge1
           id: 2
           uplink_switch_interfaces: [Ethernet2]
+          kernel_ecmp_cli: true
           l3_interfaces:
             # Testing on sub-interface
             - name: Ethernet1/49.3

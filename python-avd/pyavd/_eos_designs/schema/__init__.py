@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -3079,7 +3079,17 @@ class EosDesigns(EosDesignsRootModel):
             role.
             """
             validate_lldp: bool | None
-            """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+            """
+            Controls LLDP topology validation performed by the `anta_runner` role.
+            - Unset (Default): The peer
+            is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+            (`is_deployed: true`)
+            and the peer interface is not administratively shutdown.
+            - `true`: Forces
+            validation. Use this for connected endpoints not managed by AVD.
+            - `false`: Disables validation for
+            the interface.
+            """
             campus_link_type: CampusLinkType
             """
             PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -3289,7 +3299,16 @@ class EosDesigns(EosDesignsRootModel):
                         validate_state:
                            Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                            role.
-                        validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                        validate_lldp:
+                           Controls LLDP topology validation performed by the `anta_runner` role.
+                           - Unset (Default): The peer
+                           is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+                           (`is_deployed: true`)
+                           and the peer interface is not administratively shutdown.
+                           - `true`: Forces
+                           validation. Use this for connected endpoints not managed by AVD.
+                           - `false`: Disables validation for
+                           the interface.
                         campus_link_type:
                            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                            change at any time.
@@ -7624,6 +7643,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ttl": {"type": int},
                 "forward_unicast": {"type": bool, "default": False},
                 "forward_v1": {"type": bool},
+                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                 "dscp": {"type": Dscp},
                 "monitor": {"type": Monitor},
             }
@@ -7688,6 +7708,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             forward_v1: bool | None
             """Forward dataplane PTP V1 packets."""
+            free_running: EosCliConfigGen.Ptp.FreeRunning
             dscp: Dscp
             """Subclass of AvdModel."""
             monitor: Monitor
@@ -7714,6 +7735,7 @@ class EosDesigns(EosDesignsRootModel):
                     ttl: int | None | UndefinedType = Undefined,
                     forward_unicast: bool | UndefinedType = Undefined,
                     forward_v1: bool | None | UndefinedType = Undefined,
+                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                     dscp: Dscp | UndefinedType = Undefined,
                     monitor: Monitor | UndefinedType = Undefined,
                 ) -> None:
@@ -7759,6 +7781,7 @@ class EosDesigns(EosDesignsRootModel):
                         ttl: ttl
                         forward_unicast: Enable PTP unicast forwarding.
                         forward_v1: Forward dataplane PTP V1 packets.
+                        free_running: free_running
                         dscp: Subclass of AvdModel.
                         monitor: Subclass of AvdModel.
 
@@ -9504,7 +9527,6 @@ class EosDesigns(EosDesignsRootModel):
             "uplink_macsec": {"type": UplinkMacsec},
             "uplink_port_channel_id": {"type": int},
             "uplink_switch_port_channel_id": {"type": int},
-            "exclude_as_extra_fabric_validation_target": {"type": bool},
             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -9578,6 +9600,7 @@ class EosDesigns(EosDesignsRootModel):
             "overlay_address_families": {"type": OverlayAddressFamilies},
             "mpls_route_reflectors": {"type": MplsRouteReflectors},
             "bgp_cluster_id": {"type": str},
+            "kernel_ecmp_cli": {"type": bool, "default": True},
             "ptp": {"type": Ptp},
             "wan_role": {"type": str},
             "cv_pathfinder_transit_mode": {"type": str},
@@ -9595,6 +9618,7 @@ class EosDesigns(EosDesignsRootModel):
             "campus_access_pod": {"type": str},
             "cv_tags_topology_type": {"type": str},
             "digital_twin": {"type": DigitalTwin},
+            "validation_profile": {"type": str},
         }
         name: str
         """Profile Name"""
@@ -9826,11 +9850,6 @@ class EosDesigns(EosDesignsRootModel):
         autogenerated Port-channel IDs in the Network Services.
         Note! For MLAG pairs the ID must be between
         1 and 2000 and both MLAG switches must have the same value.
-        """
-        exclude_as_extra_fabric_validation_target: bool | None
-        """
-        Exclude this node from being used as a destination target from other fabric devices in the extra
-        fabric validation tests performed by the `anta_runner` role.
         """
         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
         """Custom structured config applied to `uplink_interfaces`."""
@@ -10364,6 +10383,18 @@ class EosDesigns(EosDesignsRootModel):
         """
         bgp_cluster_id: str | None
         """Set BGP cluster id."""
+        kernel_ecmp_cli: bool
+        """
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
+
+        Default value: `True`
+        """
         ptp: Ptp
         """Subclass of AvdModel."""
         wan_role: WanRole | None
@@ -10372,9 +10403,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
         """
@@ -10439,7 +10470,7 @@ class EosDesigns(EosDesignsRootModel):
         flow_tracker_type: FlowTrackerType | None
         """
         Set the flow tracker type.
-        Override the `default_flow_tracker_type`` set at the `node_type_key`
+        Override the `default_flow_tracker_type` set at the `node_type_key`
         level.
         `default_flow_tracker_type` default value is `sampled`.
         """
@@ -10479,6 +10510,14 @@ class EosDesigns(EosDesignsRootModel):
         associated node(s).
 
         Subclass of AvdModel.
+        """
+        validation_profile: str | None
+        """
+        Name of the validation profile to apply to this device.
+        The profile must be defined under
+        `validation_profiles`.
+        Validation profiles define requirements (e.g., hardware and logging) used by
+        the `anta_runner` role during post-deployment validation.
         """
 
         if TYPE_CHECKING:
@@ -10523,7 +10562,6 @@ class EosDesigns(EosDesignsRootModel):
                 uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -10597,6 +10635,7 @@ class EosDesigns(EosDesignsRootModel):
                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                 bgp_cluster_id: str | None | UndefinedType = Undefined,
+                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 wan_role: WanRole | None | UndefinedType = Undefined,
                 cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -10614,6 +10653,7 @@ class EosDesigns(EosDesignsRootModel):
                 campus_access_pod: str | None | UndefinedType = Undefined,
                 cv_tags_topology_type: str | None | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
+                validation_profile: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 DeviceProfilesItem.
@@ -10784,9 +10824,6 @@ class EosDesigns(EosDesignsRootModel):
                        autogenerated Port-channel IDs in the Network Services.
                        Note! For MLAG pairs the ID must be between
                        1 and 2000 and both MLAG switches must have the same value.
-                    exclude_as_extra_fabric_validation_target:
-                       Exclude this node from being used as a destination target from other fabric devices in the extra
-                       fabric validation tests performed by the `anta_runner` role.
                     uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                     uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -11150,15 +11187,23 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     bgp_cluster_id: Set BGP cluster id.
+                    kernel_ecmp_cli:
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     ptp: Subclass of AvdModel.
                     wan_role:
                        Override the default WAN role.
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     cv_pathfinder_transit_mode:
                        Configure the transit mode for a WAN client for CV Pathfinder designs
                        only when the `wan_mode` root
@@ -11202,7 +11247,7 @@ class EosDesigns(EosDesignsRootModel):
                        Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                     flow_tracker_type:
                        Set the flow tracker type.
-                       Override the `default_flow_tracker_type`` set at the `node_type_key`
+                       Override the `default_flow_tracker_type` set at the `node_type_key`
                        level.
                        `default_flow_tracker_type` default value is `sampled`.
                     underlay_multicast: Subclass of AvdModel.
@@ -11231,6 +11276,12 @@ class EosDesigns(EosDesignsRootModel):
                        associated node(s).
 
                        Subclass of AvdModel.
+                    validation_profile:
+                       Name of the validation profile to apply to this device.
+                       The profile must be defined under
+                       `validation_profiles`.
+                       Validation profiles define requirements (e.g., hardware and logging) used by
+                       the `anta_runner` role during post-deployment validation.
 
                 """
 
@@ -12648,6 +12699,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ttl": {"type": int},
                 "forward_unicast": {"type": bool, "default": False},
                 "forward_v1": {"type": bool},
+                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                 "dscp": {"type": Dscp},
                 "monitor": {"type": Monitor},
             }
@@ -12712,6 +12764,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             forward_v1: bool | None
             """Forward dataplane PTP V1 packets."""
+            free_running: EosCliConfigGen.Ptp.FreeRunning
             dscp: Dscp
             """Subclass of AvdModel."""
             monitor: Monitor
@@ -12738,6 +12791,7 @@ class EosDesigns(EosDesignsRootModel):
                     ttl: int | None | UndefinedType = Undefined,
                     forward_unicast: bool | UndefinedType = Undefined,
                     forward_v1: bool | None | UndefinedType = Undefined,
+                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                     dscp: Dscp | UndefinedType = Undefined,
                     monitor: Monitor | UndefinedType = Undefined,
                 ) -> None:
@@ -12783,6 +12837,7 @@ class EosDesigns(EosDesignsRootModel):
                         ttl: ttl
                         forward_unicast: Enable PTP unicast forwarding.
                         forward_v1: Forward dataplane PTP V1 packets.
+                        free_running: free_running
                         dscp: Subclass of AvdModel.
                         monitor: Subclass of AvdModel.
 
@@ -14529,7 +14584,6 @@ class EosDesigns(EosDesignsRootModel):
             "uplink_macsec": {"type": UplinkMacsec},
             "uplink_port_channel_id": {"type": int},
             "uplink_switch_port_channel_id": {"type": int},
-            "exclude_as_extra_fabric_validation_target": {"type": bool},
             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -14603,6 +14657,7 @@ class EosDesigns(EosDesignsRootModel):
             "overlay_address_families": {"type": OverlayAddressFamilies},
             "mpls_route_reflectors": {"type": MplsRouteReflectors},
             "bgp_cluster_id": {"type": str},
+            "kernel_ecmp_cli": {"type": bool, "default": True},
             "ptp": {"type": Ptp},
             "wan_role": {"type": str},
             "cv_pathfinder_transit_mode": {"type": str},
@@ -14620,6 +14675,7 @@ class EosDesigns(EosDesignsRootModel):
             "campus_access_pod": {"type": str},
             "cv_tags_topology_type": {"type": str},
             "digital_twin": {"type": DigitalTwin},
+            "validation_profile": {"type": str},
         }
         name: str
         """The Node Name is used as "hostname"."""
@@ -14861,11 +14917,6 @@ class EosDesigns(EosDesignsRootModel):
         autogenerated Port-channel IDs in the Network Services.
         Note! For MLAG pairs the ID must be between
         1 and 2000 and both MLAG switches must have the same value.
-        """
-        exclude_as_extra_fabric_validation_target: bool | None
-        """
-        Exclude this node from being used as a destination target from other fabric devices in the extra
-        fabric validation tests performed by the `anta_runner` role.
         """
         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
         """Custom structured config applied to `uplink_interfaces`."""
@@ -15399,6 +15450,18 @@ class EosDesigns(EosDesignsRootModel):
         """
         bgp_cluster_id: str | None
         """Set BGP cluster id."""
+        kernel_ecmp_cli: bool
+        """
+        Use EOS CLI to configure kernel forwarding ECMP programming.
+        For EOS kernel forwarding, ECMP
+        programming can be enabled in two different ways, depending on the EOS version.
+        - For newer EOS
+        versions (starting 4.33.2) use the proper CLI.
+        - For older EOS versions use an agent environment
+        variable. Changing this requires restarting the KernelFib agent.
+
+        Default value: `True`
+        """
         ptp: Ptp
         """Subclass of AvdModel."""
         wan_role: WanRole | None
@@ -15407,9 +15470,9 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
         """
@@ -15474,7 +15537,7 @@ class EosDesigns(EosDesignsRootModel):
         flow_tracker_type: FlowTrackerType | None
         """
         Set the flow tracker type.
-        Override the `default_flow_tracker_type`` set at the `node_type_key`
+        Override the `default_flow_tracker_type` set at the `node_type_key`
         level.
         `default_flow_tracker_type` default value is `sampled`.
         """
@@ -15514,6 +15577,14 @@ class EosDesigns(EosDesignsRootModel):
         associated node(s).
 
         Subclass of AvdModel.
+        """
+        validation_profile: str | None
+        """
+        Name of the validation profile to apply to this device.
+        The profile must be defined under
+        `validation_profiles`.
+        Validation profiles define requirements (e.g., hardware and logging) used by
+        the `anta_runner` role during post-deployment validation.
         """
 
         if TYPE_CHECKING:
@@ -15559,7 +15630,6 @@ class EosDesigns(EosDesignsRootModel):
                 uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -15633,6 +15703,7 @@ class EosDesigns(EosDesignsRootModel):
                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                 bgp_cluster_id: str | None | UndefinedType = Undefined,
+                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 wan_role: WanRole | None | UndefinedType = Undefined,
                 cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -15650,6 +15721,7 @@ class EosDesigns(EosDesignsRootModel):
                 campus_access_pod: str | None | UndefinedType = Undefined,
                 cv_tags_topology_type: str | None | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
+                validation_profile: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 DevicesItem.
@@ -15828,9 +15900,6 @@ class EosDesigns(EosDesignsRootModel):
                        autogenerated Port-channel IDs in the Network Services.
                        Note! For MLAG pairs the ID must be between
                        1 and 2000 and both MLAG switches must have the same value.
-                    exclude_as_extra_fabric_validation_target:
-                       Exclude this node from being used as a destination target from other fabric devices in the extra
-                       fabric validation tests performed by the `anta_runner` role.
                     uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                     uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -16194,15 +16263,23 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     bgp_cluster_id: Set BGP cluster id.
+                    kernel_ecmp_cli:
+                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                       For EOS kernel forwarding, ECMP
+                       programming can be enabled in two different ways, depending on the EOS version.
+                       - For newer EOS
+                       versions (starting 4.33.2) use the proper CLI.
+                       - For older EOS versions use an agent environment
+                       variable. Changing this requires restarting the KernelFib agent.
                     ptp: Subclass of AvdModel.
                     wan_role:
                        Override the default WAN role.
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     cv_pathfinder_transit_mode:
                        Configure the transit mode for a WAN client for CV Pathfinder designs
                        only when the `wan_mode` root
@@ -16246,7 +16323,7 @@ class EosDesigns(EosDesignsRootModel):
                        Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                     flow_tracker_type:
                        Set the flow tracker type.
-                       Override the `default_flow_tracker_type`` set at the `node_type_key`
+                       Override the `default_flow_tracker_type` set at the `node_type_key`
                        level.
                        `default_flow_tracker_type` default value is `sampled`.
                     underlay_multicast: Subclass of AvdModel.
@@ -16275,6 +16352,12 @@ class EosDesigns(EosDesignsRootModel):
                        associated node(s).
 
                        Subclass of AvdModel.
+                    validation_profile:
+                       Name of the validation profile to apply to this device.
+                       The profile must be defined under
+                       `validation_profiles`.
+                       Validation profiles define requirements (e.g., hardware and logging) used by
+                       the `anta_runner` role during post-deployment validation.
 
                 """
 
@@ -17847,6 +17930,83 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class CloudvisionExporter(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str, "default": "CLOUDVISION"},
+                "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
+                "source_interface": {"type": str},
+            }
+            name: str
+            """Default value: `"CLOUDVISION"`"""
+            vrf: str
+            """
+            VRF name.
+            The value will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure under the VRF set with `mgmt_interface_vrf`.
+              An error will be raised if `mgmt_ip` or
+            `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf` will configure under the
+            VRF set with `inband_mgmt_vrf`.
+              An error will be raised if inband management is not configured for
+            the device.
+            - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of
+            the two options above depending on the value of `default_mgmt_method`.
+            - Any other string will be
+            used directly as the VRF name.
+
+            Default value: `"use_default_mgmt_method_vrf"`
+            """
+            source_interface: str | None
+            """
+            Local interface used to connect to TerminAttr on EOS.
+            If not set, the local interface may be set
+            automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+            `use_default_mgmt_method_vrf`.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    vrf: str | UndefinedType = Undefined,
+                    source_interface: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    CloudvisionExporter.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        vrf:
+                           VRF name.
+                           The value will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure under the VRF set with `mgmt_interface_vrf`.
+                             An error will be raised if `mgmt_ip` or
+                           `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf` will configure under the
+                           VRF set with `inband_mgmt_vrf`.
+                             An error will be raised if inband management is not configured for
+                           the device.
+                           - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of
+                           the two options above depending on the value of `default_mgmt_method`.
+                           - Any other string will be
+                           used directly as the VRF name.
+                        source_interface:
+                           Local interface used to connect to TerminAttr on EOS.
+                           If not set, the local interface may be set
+                           automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+                           `use_default_mgmt_method_vrf`.
+
+                    """
+
         class TrackersItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -18062,6 +18222,7 @@ class EosDesigns(EosDesignsRootModel):
                 "name": {"type": str},
                 "sampled": {"type": Sampled},
                 "record_export": {"type": RecordExport},
+                "export_to_cloudvision": {"type": bool},
                 "exporters": {"type": Exporters},
             }
             name: str
@@ -18074,6 +18235,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             record_export: RecordExport
             """Subclass of AvdModel."""
+            export_to_cloudvision: bool | None
+            """
+            When set to `true`, AVD automatically:
+            Configure an Flow tracking for `127.0.0.1` port `4739` in the
+            VRF defined in `cloudvision_exporter.vrf`.
+            Also configures the TerminAttr daemon IPFIX Collector
+            address to listen on for receiving IPFIX packets.
+            """
             exporters: Exporters
             """Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`)."""
 
@@ -18085,6 +18254,7 @@ class EosDesigns(EosDesignsRootModel):
                     name: str | UndefinedType = Undefined,
                     sampled: Sampled | UndefinedType = Undefined,
                     record_export: RecordExport | UndefinedType = Undefined,
+                    export_to_cloudvision: bool | None | UndefinedType = Undefined,
                     exporters: Exporters | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -18100,6 +18270,12 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         record_export: Subclass of AvdModel.
+                        export_to_cloudvision:
+                           When set to `true`, AVD automatically:
+                           Configure an Flow tracking for `127.0.0.1` port `4739` in the
+                           VRF defined in `cloudvision_exporter.vrf`.
+                           Also configures the TerminAttr daemon IPFIX Collector
+                           address to listen on for receiving IPFIX packets.
                         exporters: Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`).
 
                     """
@@ -18114,6 +18290,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "sampled": {"type": Sampled},
             "hardware": {"type": Hardware},
+            "cloudvision_exporter": {"type": CloudvisionExporter},
             "trackers": {
                 "type": Trackers,
                 "default": lambda cls: coerce_type(
@@ -18142,6 +18319,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        cloudvision_exporter: CloudvisionExporter
+        """
+        Configuration for the exporter to CloudVision.
+
+        Subclass of AvdModel.
+        """
         trackers: Trackers
         """
         Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
@@ -18156,6 +18339,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 sampled: Sampled | UndefinedType = Undefined,
                 hardware: Hardware | UndefinedType = Undefined,
+                cloudvision_exporter: CloudvisionExporter | UndefinedType = Undefined,
                 trackers: Trackers | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -18171,6 +18355,10 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdModel.
                     hardware:
                        The options relevant only for flow tracker type hardware.
+
+                       Subclass of AvdModel.
+                    cloudvision_exporter:
+                       Configuration for the exporter to CloudVision.
 
                        Subclass of AvdModel.
                     trackers: Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
@@ -21679,7 +21867,6 @@ class EosDesigns(EosDesignsRootModel):
             "policy": {"type": EosCliConfigGen.Logging.Policy},
             "event": {"type": EosCliConfigGen.Logging.Event},
             "level": {"type": EosCliConfigGen.Logging.Level},
-            "validate_no_errors_period": {"type": int},
         }
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
@@ -21701,11 +21888,6 @@ class EosDesigns(EosDesignsRootModel):
         event: EosCliConfigGen.Logging.Event
         level: EosCliConfigGen.Logging.Level
         """Configure logging severity."""
-        validate_no_errors_period: int | None
-        """
-        Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
-        the validation performed by the `anta_runner` role.
-        """
 
         if TYPE_CHECKING:
 
@@ -21725,7 +21907,6 @@ class EosDesigns(EosDesignsRootModel):
                 policy: EosCliConfigGen.Logging.Policy | UndefinedType = Undefined,
                 event: EosCliConfigGen.Logging.Event | UndefinedType = Undefined,
                 level: EosCliConfigGen.Logging.Level | UndefinedType = Undefined,
-                validate_no_errors_period: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 LoggingSettings.
@@ -21747,9 +21928,6 @@ class EosDesigns(EosDesignsRootModel):
                     policy: policy
                     event: event
                     level: Configure logging severity.
-                    validate_no_errors_period:
-                       Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
-                       the validation performed by the `anta_runner` role.
 
                 """
 
@@ -23318,7 +23496,17 @@ class EosDesigns(EosDesignsRootModel):
         role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+        """
+        Controls LLDP topology validation performed by the `anta_runner` role.
+        - Unset (Default): The peer
+        is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+        (`is_deployed: true`)
+        and the peer interface is not administratively shutdown.
+        - `true`: Forces
+        validation. Use this for connected endpoints not managed by AVD.
+        - `false`: Disables validation for
+        the interface.
+        """
         campus_link_type: CampusLinkType
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -23530,7 +23718,16 @@ class EosDesigns(EosDesignsRootModel):
                     validate_state:
                        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                        role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                    validate_lldp:
+                       Controls LLDP topology validation performed by the `anta_runner` role.
+                       - Unset (Default): The peer
+                       is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+                       (`is_deployed: true`)
+                       and the peer interface is not administratively shutdown.
+                       - `true`: Forces
+                       validation. Use this for connected endpoints not managed by AVD.
+                       - `false`: Disables validation for
+                       the interface.
                     campus_link_type:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
@@ -23826,7 +24023,6 @@ class EosDesigns(EosDesignsRootModel):
             "default_evpn_encapsulation": {"type": str, "default": "vxlan"},
             "default_wan_role": {"type": str},
             "default_flow_tracker_type": {"type": str, "default": "sampled"},
-            "exclude_as_extra_fabric_validation_target": {"type": bool, "default": False},
             "mlag_support": {"type": bool, "default": False},
             "network_services": {"type": NetworkServices},
             "underlay_router": {"type": bool, "default": True},
@@ -23900,22 +24096,15 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         default_flow_tracker_type: DefaultFlowTrackerType
         """
         Set the default flow tracker type.
 
         Default value: `"sampled"`
-        """
-        exclude_as_extra_fabric_validation_target: bool
-        """
-        Exclude this node from being used as a destination target from other fabric devices in the extra
-        fabric validation tests performed by the `anta_runner` role.
-
-        Default value: `False`
         """
         mlag_support: bool
         """
@@ -24012,7 +24201,6 @@ class EosDesigns(EosDesignsRootModel):
                 default_evpn_encapsulation: DefaultEvpnEncapsulation | UndefinedType = Undefined,
                 default_wan_role: DefaultWanRole | None | UndefinedType = Undefined,
                 default_flow_tracker_type: DefaultFlowTrackerType | UndefinedType = Undefined,
-                exclude_as_extra_fabric_validation_target: bool | UndefinedType = Undefined,
                 mlag_support: bool | UndefinedType = Undefined,
                 network_services: NetworkServices | UndefinedType = Undefined,
                 underlay_router: bool | UndefinedType = Undefined,
@@ -24057,13 +24245,10 @@ class EosDesigns(EosDesignsRootModel):
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     default_flow_tracker_type: Set the default flow tracker type.
-                    exclude_as_extra_fabric_validation_target:
-                       Exclude this node from being used as a destination target from other fabric devices in the extra
-                       fabric validation tests performed by the `anta_runner` role.
                     mlag_support: Can this node type support mlag.
                     network_services:
                        Will network services be deployed on this node type.
@@ -24365,7 +24550,6 @@ class EosDesigns(EosDesignsRootModel):
             "default_evpn_encapsulation": {"type": str, "default": "vxlan"},
             "default_wan_role": {"type": str},
             "default_flow_tracker_type": {"type": str, "default": "sampled"},
-            "exclude_as_extra_fabric_validation_target": {"type": bool, "default": False},
             "mlag_support": {"type": bool, "default": False},
             "network_services": {"type": NetworkServices},
             "underlay_router": {"type": bool, "default": True},
@@ -24439,22 +24623,15 @@ class EosDesigns(EosDesignsRootModel):
 
         This is used both for AutoVPN and Pathfinder designs.
         That means if
-        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-        `server` indicates that the router is a
-        route-reflector.
+        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+        `server` indicates that the
+        router is a route-reflector.
         """
         default_flow_tracker_type: DefaultFlowTrackerType
         """
         Set the default flow tracker type.
 
         Default value: `"sampled"`
-        """
-        exclude_as_extra_fabric_validation_target: bool
-        """
-        Exclude this node from being used as a destination target from other fabric devices in the extra
-        fabric validation tests performed by the `anta_runner` role.
-
-        Default value: `False`
         """
         mlag_support: bool
         """
@@ -24551,7 +24728,6 @@ class EosDesigns(EosDesignsRootModel):
                 default_evpn_encapsulation: DefaultEvpnEncapsulation | UndefinedType = Undefined,
                 default_wan_role: DefaultWanRole | None | UndefinedType = Undefined,
                 default_flow_tracker_type: DefaultFlowTrackerType | UndefinedType = Undefined,
-                exclude_as_extra_fabric_validation_target: bool | UndefinedType = Undefined,
                 mlag_support: bool | UndefinedType = Undefined,
                 network_services: NetworkServices | UndefinedType = Undefined,
                 underlay_router: bool | UndefinedType = Undefined,
@@ -24596,13 +24772,10 @@ class EosDesigns(EosDesignsRootModel):
 
                        This is used both for AutoVPN and Pathfinder designs.
                        That means if
-                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                       `server` indicates that the router is a
-                       route-reflector.
+                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                       `server` indicates that the
+                       router is a route-reflector.
                     default_flow_tracker_type: Set the default flow tracker type.
-                    exclude_as_extra_fabric_validation_target:
-                       Exclude this node from being used as a destination target from other fabric devices in the extra
-                       fabric validation tests performed by the `anta_runner` role.
                     mlag_support: Can this node type support mlag.
                     network_services:
                        Will network services be deployed on this node type.
@@ -25442,6 +25615,7 @@ class EosDesigns(EosDesignsRootModel):
                 "sflow_subinterfaces": {"type": bool, "default": True},
                 "wan": {"type": bool, "default": True},
                 "ptp": {"type": bool, "default": True},
+                "hardware_validation": {"type": bool, "default": True},
             }
             queue_monitor: bool
             """
@@ -25606,6 +25780,15 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            hardware_validation: bool
+            """
+            Enable hardware validation for the device.
+            When `false`, all hardware tests are skipped, therefore
+            the `validation_profiles[].hardware` keys defined for the validation profile applied to the device
+            are ignored.
+
+            Default value: `True`
+            """
 
             if TYPE_CHECKING:
 
@@ -25632,6 +25815,7 @@ class EosDesigns(EosDesignsRootModel):
                     sflow_subinterfaces: bool | UndefinedType = Undefined,
                     wan: bool | UndefinedType = Undefined,
                     ptp: bool | UndefinedType = Undefined,
+                    hardware_validation: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -25727,6 +25911,11 @@ class EosDesigns(EosDesignsRootModel):
                            Support for Precision Time Protocol (PTP).
                            The feature will be ignored on platforms where this is
                            false.
+                        hardware_validation:
+                           Enable hardware validation for the device.
+                           When `false`, all hardware tests are skipped, therefore
+                           the `validation_profiles[].hardware` keys defined for the validation profile applied to the device
+                           are ignored.
 
                     """
 
@@ -25812,12 +26001,10 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
-            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
-            "validate_hardware": {"type": EosCliConfigGen.Metadata.ValidateHardware},
             "structured_config": {"type": EosCliConfigGen},
             "raw_eos_cli": {"type": str},
         }
@@ -25841,18 +26028,6 @@ class EosDesigns(EosDesignsRootModel):
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
         """
-        kernel_ecmp_cli: bool
-        """
-        Use EOS CLI to configure kernel forwarding ECMP programming.
-        For EOS kernel forwarding, ECMP
-        programming can be enabled in two different ways, depending on the EOS version.
-        - For newer EOS
-        versions (starting 4.33.2) use the proper CLI.
-        - For older EOS versions use an agent environment
-        variable. Changing this requires restarting the KernelFib agent.
-
-        Default value: `True`
-        """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
         management_interface: str
@@ -25871,20 +26046,6 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
-        validate_hardware: EosCliConfigGen.Metadata.ValidateHardware
-        """
-        Settings for hardware validation performed by the `anta_runner` role.
-        If `enabled` is set to
-        `false`, all other keys in this dictionary are ignored.
-
-        For the `min_*` keys:
-        - Undefined
-        (Default): Validate that all available slots are populated.
-        - Positive Integer: Validate that the
-        number of components inserted is at least the specified minimum.
-        - 0: Skip the validation for this
-        specific component.
-        """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
         raw_eos_cli: str | None
@@ -25902,12 +26063,10 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
-                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
-                validate_hardware: EosCliConfigGen.Metadata.ValidateHardware | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -25931,14 +26090,6 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-                    kernel_ecmp_cli:
-                       Use EOS CLI to configure kernel forwarding ECMP programming.
-                       For EOS kernel forwarding, ECMP
-                       programming can be enabled in two different ways, depending on the EOS version.
-                       - For newer EOS
-                       versions (starting 4.33.2) use the proper CLI.
-                       - For older EOS versions use an agent environment
-                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -25951,18 +26102,6 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
-                    validate_hardware:
-                       Settings for hardware validation performed by the `anta_runner` role.
-                       If `enabled` is set to
-                       `false`, all other keys in this dictionary are ignored.
-
-                       For the `min_*` keys:
-                       - Undefined
-                       (Default): Validate that all available slots are populated.
-                       - Positive Integer: Validate that the
-                       number of components inserted is at least the specified minimum.
-                       - 0: Skip the validation for this
-                       specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -26233,6 +26372,7 @@ class EosDesigns(EosDesignsRootModel):
                 "sflow_subinterfaces": {"type": bool, "default": True},
                 "wan": {"type": bool, "default": True},
                 "ptp": {"type": bool, "default": True},
+                "hardware_validation": {"type": bool, "default": True},
             }
             queue_monitor: bool
             """
@@ -26397,6 +26537,15 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            hardware_validation: bool
+            """
+            Enable hardware validation for the device.
+            When `false`, all hardware tests are skipped, therefore
+            the `validation_profiles[].hardware` keys defined for the validation profile applied to the device
+            are ignored.
+
+            Default value: `True`
+            """
 
             if TYPE_CHECKING:
 
@@ -26423,6 +26572,7 @@ class EosDesigns(EosDesignsRootModel):
                     sflow_subinterfaces: bool | UndefinedType = Undefined,
                     wan: bool | UndefinedType = Undefined,
                     ptp: bool | UndefinedType = Undefined,
+                    hardware_validation: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -26518,6 +26668,11 @@ class EosDesigns(EosDesignsRootModel):
                            Support for Precision Time Protocol (PTP).
                            The feature will be ignored on platforms where this is
                            false.
+                        hardware_validation:
+                           Enable hardware validation for the device.
+                           When `false`, all hardware tests are skipped, therefore
+                           the `validation_profiles[].hardware` keys defined for the validation profile applied to the device
+                           are ignored.
 
                     """
 
@@ -26603,12 +26758,10 @@ class EosDesigns(EosDesignsRootModel):
             "lag_hardware_only": {"type": bool},
             "default_interface_mtu": {"type": int},
             "p2p_uplinks_mtu": {"type": int},
-            "kernel_ecmp_cli": {"type": bool, "default": True},
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
             "digital_twin": {"type": DigitalTwin},
-            "validate_hardware": {"type": EosCliConfigGen.Metadata.ValidateHardware},
             "structured_config": {"type": EosCliConfigGen},
             "raw_eos_cli": {"type": str},
         }
@@ -26632,18 +26785,6 @@ class EosDesigns(EosDesignsRootModel):
         Takes precedence over the root key "p2p_uplinks_mtu".
         <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
         """
-        kernel_ecmp_cli: bool
-        """
-        Use EOS CLI to configure kernel forwarding ECMP programming.
-        For EOS kernel forwarding, ECMP
-        programming can be enabled in two different ways, depending on the EOS version.
-        - For newer EOS
-        versions (starting 4.33.2) use the proper CLI.
-        - For older EOS versions use an agent environment
-        variable. Changing this requires restarting the KernelFib agent.
-
-        Default value: `True`
-        """
         feature_support: FeatureSupport
         """Subclass of AvdModel."""
         management_interface: str
@@ -26662,20 +26803,6 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
-        validate_hardware: EosCliConfigGen.Metadata.ValidateHardware
-        """
-        Settings for hardware validation performed by the `anta_runner` role.
-        If `enabled` is set to
-        `false`, all other keys in this dictionary are ignored.
-
-        For the `min_*` keys:
-        - Undefined
-        (Default): Validate that all available slots are populated.
-        - Positive Integer: Validate that the
-        number of components inserted is at least the specified minimum.
-        - 0: Skip the validation for this
-        specific component.
-        """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
         raw_eos_cli: str | None
@@ -26693,12 +26820,10 @@ class EosDesigns(EosDesignsRootModel):
                 lag_hardware_only: bool | None | UndefinedType = Undefined,
                 default_interface_mtu: int | None | UndefinedType = Undefined,
                 p2p_uplinks_mtu: int | None | UndefinedType = Undefined,
-                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
                 digital_twin: DigitalTwin | UndefinedType = Undefined,
-                validate_hardware: EosCliConfigGen.Metadata.ValidateHardware | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -26722,14 +26847,6 @@ class EosDesigns(EosDesignsRootModel):
                        Set MTU on point to point uplink interfaces.
                        Takes precedence over the root key "p2p_uplinks_mtu".
                        <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
-                    kernel_ecmp_cli:
-                       Use EOS CLI to configure kernel forwarding ECMP programming.
-                       For EOS kernel forwarding, ECMP
-                       programming can be enabled in two different ways, depending on the EOS version.
-                       - For newer EOS
-                       versions (starting 4.33.2) use the proper CLI.
-                       - For older EOS versions use an agent environment
-                       variable. Changing this requires restarting the KernelFib agent.
                     feature_support: Subclass of AvdModel.
                     management_interface: management_interface
                     security_entropy_sources:
@@ -26742,18 +26859,6 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
-                    validate_hardware:
-                       Settings for hardware validation performed by the `anta_runner` role.
-                       If `enabled` is set to
-                       `false`, all other keys in this dictionary are ignored.
-
-                       For the `min_*` keys:
-                       - Undefined
-                       (Default): Validate that all available slots are populated.
-                       - Positive Integer: Validate that the
-                       number of components inserted is at least the specified minimum.
-                       - 0: Skip the validation for this
-                       specific component.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -28185,7 +28290,17 @@ class EosDesigns(EosDesignsRootModel):
         role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+        """
+        Controls LLDP topology validation performed by the `anta_runner` role.
+        - Unset (Default): The peer
+        is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+        (`is_deployed: true`)
+        and the peer interface is not administratively shutdown.
+        - `true`: Forces
+        validation. Use this for connected endpoints not managed by AVD.
+        - `false`: Disables validation for
+        the interface.
+        """
         campus_link_type: CampusLinkType
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -28356,7 +28471,16 @@ class EosDesigns(EosDesignsRootModel):
                     validate_state:
                        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                        role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                    validate_lldp:
+                       Controls LLDP topology validation performed by the `anta_runner` role.
+                       - Unset (Default): The peer
+                       is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+                       (`is_deployed: true`)
+                       and the peer interface is not administratively shutdown.
+                       - `true`: Forces
+                       validation. Use this for connected endpoints not managed by AVD.
+                       - `false`: Disables validation for
+                       the interface.
                     campus_link_type:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
@@ -28499,6 +28623,7 @@ class EosDesigns(EosDesignsRootModel):
             "domain": {"type": int, "default": 127},
             "auto_clock_identity": {"type": bool, "default": True},
             "forward_v1": {"type": bool, "default": False},
+            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
         }
         enabled: bool | None
         profile: str
@@ -28520,6 +28645,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        free_running: EosCliConfigGen.Ptp.FreeRunning
 
         if TYPE_CHECKING:
 
@@ -28531,6 +28657,7 @@ class EosDesigns(EosDesignsRootModel):
                 domain: int | UndefinedType = Undefined,
                 auto_clock_identity: bool | UndefinedType = Undefined,
                 forward_v1: bool | UndefinedType = Undefined,
+                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
             ) -> None:
                 """
                 PtpSettings.
@@ -28548,6 +28675,7 @@ class EosDesigns(EosDesignsRootModel):
                     domain: domain
                     auto_clock_identity: auto_clock_identity
                     forward_v1: Forward dataplane PTP V1 packets.
+                    free_running: free_running
 
                 """
 
@@ -29216,7 +29344,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
-        ComputeLocalEngineidSource: TypeAlias = Literal["hostname_and_ip", "system_mac"]
+        ComputeLocalEngineidSource: TypeAlias = Literal["rfc3411_type5", "rfc3411_type3", "system_mac", "hostname_and_ip"]
 
         class UsersItem(AvdModel):
             """Subclass of AvdModel."""
@@ -29497,7 +29625,8 @@ class EosDesigns(EosDesignsRootModel):
             "location_template": {"type": str, "default": "{fabric_name} {dc_name?> }{pod_name?> }{rack?> }{hostname}"},
             "vrfs": {"type": Vrfs},
             "compute_local_engineid": {"type": bool, "default": False},
-            "compute_local_engineid_source": {"type": str, "default": "hostname_and_ip"},
+            "compute_local_engineid_source": {"type": str, "default": "rfc3411_type5"},
+            "local_engineid_ip": {"type": str, "default": "use_default_mgmt_method_interface"},
             "compute_v3_user_localized_key": {"type": bool, "default": False},
             "users": {"type": Users},
             "hosts": {"type": Hosts},
@@ -29540,18 +29669,48 @@ class EosDesigns(EosDesignsRootModel):
         compute_local_engineid_source: ComputeLocalEngineidSource
         """
         `compute_local_engineid_source` supports:
-        - `hostname_and_ip` generate a local engineId for SNMP by
-        hashing via SHA1
-          the string generated via the concatenation of the hostname plus the management
-        IP.
-          {{ inventory_hostname }} + {{ switch.mgmt_ip }}.
-        - `system_mac` generate the switch default
-        engine id for AVD usage.
-          To use this, `system_mac_address` MUST be set for the device.
-          The
-        formula is f5717f + system_mac_address + 00.
+        - `rfc3411_type5` use the value of `local_engineid_ip` to
+        find the mgmt ip and calculate an RFC3411 compliant Engine ID based on 8000757105 + sha1(hostname +
+        local_engineid_ip)
+        - `rfc3411_type3` generate an RFC3411 type 3 compliant Engine ID.
+          To use this,
+        `system_mac_address` MUST be set for the device.
+          The formula is 8000757103 + system_mac_address.
+        -
+        `system_mac` generate the Engine ID similar to the default EOS behavior.
+          To use this,
+        `system_mac_address` MUST be set for the device.
+          The formula is f5717f + system_mac_address + 00.
+        - `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1 the string generated via
+        the concatenation of the hostname plus the out-of-band management IP.
+            sha1(hostname + mgmt_ip)
+        `local_engineid_ip` does not have any effect when using `compute_local_engineid_source:
+        hostname_and_ip`.
+          Note that this is a legacy method kept for backward compatibility; it does not
+        follow RFC 3411 and does not properly support in-band management.
 
-        Default value: `"hostname_and_ip"`
+        Default value: `"rfc3411_type5"`
+        """
+        local_engineid_ip: str
+        """
+        The IP to use when computing the engine ID when `compute_local_engineid_source: rfc3411_type5`.
+        The
+        value will be interpreted according to these rules:
+        - `use_mgmt_interface` will use the Out-of-band
+        interface IP or IPv6.
+          The order of preference is first `mgmt_ip` and then `ipv6_mgmt_ip`.
+          An
+        error will be raised if neither are configured for the device.
+        - `use_inband_mgmt_interface` will
+        use the inband management IP.
+          An error will be raised if inband management is not configured for
+        the device.
+        - `use_default_mgmt_method_interface` will use the IP for one of the two options above
+        depending on the value of `default_mgmt_method`.
+        - Any other string will be used directly as the IP
+        (it can be IP or IPv6).
+
+        Default value: `"use_default_mgmt_method_interface"`
         """
         compute_v3_user_localized_key: bool
         """
@@ -29591,6 +29750,7 @@ class EosDesigns(EosDesignsRootModel):
                 vrfs: Vrfs | UndefinedType = Undefined,
                 compute_local_engineid: bool | UndefinedType = Undefined,
                 compute_local_engineid_source: ComputeLocalEngineidSource | UndefinedType = Undefined,
+                local_engineid_ip: str | UndefinedType = Undefined,
                 compute_v3_user_localized_key: bool | UndefinedType = Undefined,
                 users: Users | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
@@ -29623,16 +29783,42 @@ class EosDesigns(EosDesignsRootModel):
                     compute_local_engineid: Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
                     compute_local_engineid_source:
                        `compute_local_engineid_source` supports:
-                       - `hostname_and_ip` generate a local engineId for SNMP by
-                       hashing via SHA1
-                         the string generated via the concatenation of the hostname plus the management
-                       IP.
-                         {{ inventory_hostname }} + {{ switch.mgmt_ip }}.
-                       - `system_mac` generate the switch default
-                       engine id for AVD usage.
-                         To use this, `system_mac_address` MUST be set for the device.
-                         The
-                       formula is f5717f + system_mac_address + 00.
+                       - `rfc3411_type5` use the value of `local_engineid_ip` to
+                       find the mgmt ip and calculate an RFC3411 compliant Engine ID based on 8000757105 + sha1(hostname +
+                       local_engineid_ip)
+                       - `rfc3411_type3` generate an RFC3411 type 3 compliant Engine ID.
+                         To use this,
+                       `system_mac_address` MUST be set for the device.
+                         The formula is 8000757103 + system_mac_address.
+                       -
+                       `system_mac` generate the Engine ID similar to the default EOS behavior.
+                         To use this,
+                       `system_mac_address` MUST be set for the device.
+                         The formula is f5717f + system_mac_address + 00.
+                       - `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1 the string generated via
+                       the concatenation of the hostname plus the out-of-band management IP.
+                           sha1(hostname + mgmt_ip)
+                       `local_engineid_ip` does not have any effect when using `compute_local_engineid_source:
+                       hostname_and_ip`.
+                         Note that this is a legacy method kept for backward compatibility; it does not
+                       follow RFC 3411 and does not properly support in-band management.
+                    local_engineid_ip:
+                       The IP to use when computing the engine ID when `compute_local_engineid_source: rfc3411_type5`.
+                       The
+                       value will be interpreted according to these rules:
+                       - `use_mgmt_interface` will use the Out-of-band
+                       interface IP or IPv6.
+                         The order of preference is first `mgmt_ip` and then `ipv6_mgmt_ip`.
+                         An
+                       error will be raised if neither are configured for the device.
+                       - `use_inband_mgmt_interface` will
+                       use the inband management IP.
+                         An error will be raised if inband management is not configured for
+                       the device.
+                       - `use_default_mgmt_method_interface` will use the IP for one of the two options above
+                       depending on the value of `default_mgmt_method`.
+                       - Any other string will be used directly as the IP
+                       (it can be IP or IPv6).
                     compute_v3_user_localized_key:
                        Requires compute_local_engineid to be `true`.
                        If enabled, the SNMPv3 passphrases for auth and priv
@@ -32247,6 +32433,183 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class ValidationProfilesItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Hardware(AvdModel):
+            """Subclass of AvdModel."""
+
+            class TransceiverManufacturers(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            TransceiverManufacturers._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "min_power_supplies": {"type": int},
+                "min_fans": {"type": int},
+                "min_supervisors": {"type": int},
+                "min_line_cards": {"type": int},
+                "min_fabric_cards": {"type": int},
+                "transceiver_manufacturers": {
+                    "type": TransceiverManufacturers,
+                    "default": lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls),
+                },
+            }
+            min_power_supplies: int | None
+            """Minimum number of power supplies required for the device. Set to 0 to skip validation."""
+            min_fans: int | None
+            """Minimum number of fans required for the device. Set to 0 to skip validation."""
+            min_supervisors: int | None
+            """Minimum number of supervisor modules required for the device. Set to 0 to skip validation."""
+            min_line_cards: int | None
+            """Minimum number of line cards required for the device. Set to 0 to skip validation."""
+            min_fabric_cards: int | None
+            """Minimum number of fabric cards required for the device. Set to 0 to skip validation."""
+            transceiver_manufacturers: TransceiverManufacturers
+            """
+            List of approved transceiver manufacturers for the device.
+
+            Subclass of AvdList with `str` items.
+
+            Default value: `lambda cls: coerce_type(["Arista Networks", "Arastra, Inc."], target_type=cls)`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    min_power_supplies: int | None | UndefinedType = Undefined,
+                    min_fans: int | None | UndefinedType = Undefined,
+                    min_supervisors: int | None | UndefinedType = Undefined,
+                    min_line_cards: int | None | UndefinedType = Undefined,
+                    min_fabric_cards: int | None | UndefinedType = Undefined,
+                    transceiver_manufacturers: TransceiverManufacturers | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Hardware.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        min_power_supplies: Minimum number of power supplies required for the device. Set to 0 to skip validation.
+                        min_fans: Minimum number of fans required for the device. Set to 0 to skip validation.
+                        min_supervisors: Minimum number of supervisor modules required for the device. Set to 0 to skip validation.
+                        min_line_cards: Minimum number of line cards required for the device. Set to 0 to skip validation.
+                        min_fabric_cards: Minimum number of fabric cards required for the device. Set to 0 to skip validation.
+                        transceiver_manufacturers:
+                           List of approved transceiver manufacturers for the device.
+
+                           Subclass of AvdList with `str` items.
+
+                    """
+
+        class Logging(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"validate_no_errors_period": {"type": int}}
+            validate_no_errors_period: int | None
+            """
+            Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+            the validation performed by the `anta_runner` role.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, validate_no_errors_period: int | None | UndefinedType = Undefined) -> None:
+                    """
+                    Logging.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        validate_no_errors_period:
+                           Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during
+                           the validation performed by the `anta_runner` role.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "name": {"type": str},
+            "parent_profile": {"type": str},
+            "hardware": {"type": Hardware},
+            "logging": {"type": Logging},
+            "exclude_as_extra_fabric_validation_target": {"type": bool, "default": False},
+        }
+        name: str
+        parent_profile: str | None
+        """
+        Inherit settings from a parent profile defined under `validation_profiles`.
+        Max one level of profile
+        inheritance: profile -> parent_profile
+        """
+        hardware: Hardware
+        """
+        Hardware validation thresholds for the device.
+        These settings are only applied when
+        `platform_settings/custom_platform_settings[].feature_support.hardware_validation` is set to `true`.
+        If hardware validation is disabled, all hardware validation checks are skipped and the keys under
+        this section are ignored.
+
+        Subclass of AvdModel.
+        """
+        logging: Logging
+        """Subclass of AvdModel."""
+        exclude_as_extra_fabric_validation_target: bool
+        """
+        Exclude this node from being used as a destination target from other fabric devices in the extra
+        fabric validation tests performed by the `anta_runner` role.
+
+        Default value: `False`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                name: str | UndefinedType = Undefined,
+                parent_profile: str | None | UndefinedType = Undefined,
+                hardware: Hardware | UndefinedType = Undefined,
+                logging: Logging | UndefinedType = Undefined,
+                exclude_as_extra_fabric_validation_target: bool | UndefinedType = Undefined,
+            ) -> None:
+                """
+                ValidationProfilesItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name: name
+                    parent_profile:
+                       Inherit settings from a parent profile defined under `validation_profiles`.
+                       Max one level of profile
+                       inheritance: profile -> parent_profile
+                    hardware:
+                       Hardware validation thresholds for the device.
+                       These settings are only applied when
+                       `platform_settings/custom_platform_settings[].feature_support.hardware_validation` is set to `true`.
+                       If hardware validation is disabled, all hardware validation checks are skipped and the keys under
+                       this section are ignored.
+
+                       Subclass of AvdModel.
+                    logging: Subclass of AvdModel.
+                    exclude_as_extra_fabric_validation_target:
+                       Exclude this node from being used as a destination target from other fabric devices in the extra
+                       fabric validation tests performed by the `anta_runner` role.
+
+                """
+
+    class ValidationProfiles(AvdIndexedList[str, ValidationProfilesItem]):
+        """Subclass of AvdIndexedList with `ValidationProfilesItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    ValidationProfiles._item_type = ValidationProfilesItem
+
     class WanCarriersItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -32518,7 +32881,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    WanMode: TypeAlias = Literal["autovpn", "cv-pathfinder"]
+    WanMode: TypeAlias = Literal["cv-pathfinder", "legacy-autovpn"]
 
     class WanPathGroupsItem(AvdModel):
         """Subclass of AvdModel."""
@@ -35421,6 +35784,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -35485,6 +35849,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -35511,6 +35876,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -35556,6 +35922,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -37299,7 +37666,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "exclude_as_extra_fabric_validation_target": {"type": bool},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -37373,6 +37739,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -37390,6 +37757,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus_access_pod": {"type": str},
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
+                        "validation_profile": {"type": str},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -37600,11 +37968,6 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
-                    """
-                    exclude_as_extra_fabric_validation_target: bool | None
-                    """
-                    Exclude this node from being used as a destination target from other fabric devices in the extra
-                    fabric validation tests performed by the `anta_runner` role.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -38138,6 +38501,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -38146,9 +38521,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -38213,7 +38588,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
-                    Override the `default_flow_tracker_type`` set at the `node_type_key`
+                    Override the `default_flow_tracker_type` set at the `node_type_key`
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
@@ -38254,6 +38629,14 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
+                    validation_profile: str | None
+                    """
+                    Name of the validation profile to apply to this device.
+                    The profile must be defined under
+                    `validation_profiles`.
+                    Validation profiles define requirements (e.g., hardware and logging) used by
+                    the `anta_runner` role during post-deployment validation.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -38293,7 +38676,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -38368,6 +38750,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -38385,6 +38768,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus_access_pod: str | None | UndefinedType = Undefined,
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
+                            validation_profile: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -38541,9 +38925,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                exclude_as_extra_fabric_validation_target:
-                                   Exclude this node from being used as a destination target from other fabric devices in the extra
-                                   fabric validation tests performed by the `anta_runner` role.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -38907,15 +39288,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -38959,7 +39348,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                 flow_tracker_type:
                                    Set the flow tracker type.
-                                   Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                   Override the `default_flow_tracker_type` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 underlay_multicast: Subclass of AvdModel.
@@ -38988,6 +39377,12 @@ class EosDesigns(EosDesignsRootModel):
                                    associated node(s).
 
                                    Subclass of AvdModel.
+                                validation_profile:
+                                   Name of the validation profile to apply to this device.
+                                   The profile must be defined under
+                                   `validation_profiles`.
+                                   Validation profiles define requirements (e.g., hardware and logging) used by
+                                   the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -40421,6 +40816,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
                                 "forward_v1": {"type": bool},
+                                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -40485,6 +40881,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             forward_v1: bool | None
                             """Forward dataplane PTP V1 packets."""
+                            free_running: EosCliConfigGen.Ptp.FreeRunning
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -40511,6 +40908,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
                                     forward_v1: bool | None | UndefinedType = Undefined,
+                                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -40556,6 +40954,7 @@ class EosDesigns(EosDesignsRootModel):
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
                                         forward_v1: Forward dataplane PTP V1 packets.
+                                        free_running: free_running
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -42315,7 +42714,6 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_macsec": {"type": UplinkMacsec},
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
-                            "exclude_as_extra_fabric_validation_target": {"type": bool},
                             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -42389,6 +42787,7 @@ class EosDesigns(EosDesignsRootModel):
                             "overlay_address_families": {"type": OverlayAddressFamilies},
                             "mpls_route_reflectors": {"type": MplsRouteReflectors},
                             "bgp_cluster_id": {"type": str},
+                            "kernel_ecmp_cli": {"type": bool, "default": True},
                             "ptp": {"type": Ptp},
                             "wan_role": {"type": str},
                             "cv_pathfinder_transit_mode": {"type": str},
@@ -42406,6 +42805,7 @@ class EosDesigns(EosDesignsRootModel):
                             "campus_access_pod": {"type": str},
                             "cv_tags_topology_type": {"type": str},
                             "digital_twin": {"type": DigitalTwin},
+                            "validation_profile": {"type": str},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -42626,11 +43026,6 @@ class EosDesigns(EosDesignsRootModel):
                         autogenerated Port-channel IDs in the Network Services.
                         Note! For MLAG pairs the ID must be between
                         1 and 2000 and both MLAG switches must have the same value.
-                        """
-                        exclude_as_extra_fabric_validation_target: bool | None
-                        """
-                        Exclude this node from being used as a destination target from other fabric devices in the extra
-                        fabric validation tests performed by the `anta_runner` role.
                         """
                         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config applied to `uplink_interfaces`."""
@@ -43164,6 +43559,18 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp_cluster_id: str | None
                         """Set BGP cluster id."""
+                        kernel_ecmp_cli: bool
+                        """
+                        Use EOS CLI to configure kernel forwarding ECMP programming.
+                        For EOS kernel forwarding, ECMP
+                        programming can be enabled in two different ways, depending on the EOS version.
+                        - For newer EOS
+                        versions (starting 4.33.2) use the proper CLI.
+                        - For older EOS versions use an agent environment
+                        variable. Changing this requires restarting the KernelFib agent.
+
+                        Default value: `True`
+                        """
                         ptp: Ptp
                         """Subclass of AvdModel."""
                         wan_role: WanRole | None
@@ -43172,9 +43579,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         This is used both for AutoVPN and Pathfinder designs.
                         That means if
-                        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                        `server` indicates that the router is a
-                        route-reflector.
+                        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                        `server` indicates that the
+                        router is a route-reflector.
                         """
                         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                         """
@@ -43239,7 +43646,7 @@ class EosDesigns(EosDesignsRootModel):
                         flow_tracker_type: FlowTrackerType | None
                         """
                         Set the flow tracker type.
-                        Override the `default_flow_tracker_type`` set at the `node_type_key`
+                        Override the `default_flow_tracker_type` set at the `node_type_key`
                         level.
                         `default_flow_tracker_type` default value is `sampled`.
                         """
@@ -43279,6 +43686,14 @@ class EosDesigns(EosDesignsRootModel):
                         associated node(s).
 
                         Subclass of AvdModel.
+                        """
+                        validation_profile: str | None
+                        """
+                        Name of the validation profile to apply to this device.
+                        The profile must be defined under
+                        `validation_profiles`.
+                        Validation profiles define requirements (e.g., hardware and logging) used by
+                        the `anta_runner` role during post-deployment validation.
                         """
 
                         if TYPE_CHECKING:
@@ -43321,7 +43736,6 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                                exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -43396,6 +43810,7 @@ class EosDesigns(EosDesignsRootModel):
                                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                                 bgp_cluster_id: str | None | UndefinedType = Undefined,
+                                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                                 ptp: Ptp | UndefinedType = Undefined,
                                 wan_role: WanRole | None | UndefinedType = Undefined,
                                 cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -43413,6 +43828,7 @@ class EosDesigns(EosDesignsRootModel):
                                 campus_access_pod: str | None | UndefinedType = Undefined,
                                 cv_tags_topology_type: str | None | UndefinedType = Undefined,
                                 digital_twin: DigitalTwin | UndefinedType = Undefined,
+                                validation_profile: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -43576,9 +43992,6 @@ class EosDesigns(EosDesignsRootModel):
                                        autogenerated Port-channel IDs in the Network Services.
                                        Note! For MLAG pairs the ID must be between
                                        1 and 2000 and both MLAG switches must have the same value.
-                                    exclude_as_extra_fabric_validation_target:
-                                       Exclude this node from being used as a destination target from other fabric devices in the extra
-                                       fabric validation tests performed by the `anta_runner` role.
                                     uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                     uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -43942,15 +44355,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `str` items.
                                     bgp_cluster_id: Set BGP cluster id.
+                                    kernel_ecmp_cli:
+                                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                                       For EOS kernel forwarding, ECMP
+                                       programming can be enabled in two different ways, depending on the EOS version.
+                                       - For newer EOS
+                                       versions (starting 4.33.2) use the proper CLI.
+                                       - For older EOS versions use an agent environment
+                                       variable. Changing this requires restarting the KernelFib agent.
                                     ptp: Subclass of AvdModel.
                                     wan_role:
                                        Override the default WAN role.
 
                                        This is used both for AutoVPN and Pathfinder designs.
                                        That means if
-                                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                       `server` indicates that the router is a
-                                       route-reflector.
+                                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                       `server` indicates that the
+                                       router is a route-reflector.
                                     cv_pathfinder_transit_mode:
                                        Configure the transit mode for a WAN client for CV Pathfinder designs
                                        only when the `wan_mode` root
@@ -43994,7 +44415,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                     flow_tracker_type:
                                        Set the flow tracker type.
-                                       Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                       Override the `default_flow_tracker_type` set at the `node_type_key`
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
                                     underlay_multicast: Subclass of AvdModel.
@@ -44023,6 +44444,12 @@ class EosDesigns(EosDesignsRootModel):
                                        associated node(s).
 
                                        Subclass of AvdModel.
+                                    validation_profile:
+                                       Name of the validation profile to apply to this device.
+                                       The profile must be defined under
+                                       `validation_profiles`.
+                                       Validation profiles define requirements (e.g., hardware and logging) used by
+                                       the `anta_runner` role during post-deployment validation.
 
                                 """
 
@@ -45378,6 +45805,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -45442,6 +45870,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -45468,6 +45897,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -45513,6 +45943,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -47258,7 +47689,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "exclude_as_extra_fabric_validation_target": {"type": bool},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -47332,6 +47762,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -47349,6 +47780,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus_access_pod": {"type": str},
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
+                        "validation_profile": {"type": str},
                     }
                     group: str
                     """
@@ -47572,11 +48004,6 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
-                    """
-                    exclude_as_extra_fabric_validation_target: bool | None
-                    """
-                    Exclude this node from being used as a destination target from other fabric devices in the extra
-                    fabric validation tests performed by the `anta_runner` role.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -48110,6 +48537,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -48118,9 +48557,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -48185,7 +48624,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
-                    Override the `default_flow_tracker_type`` set at the `node_type_key`
+                    Override the `default_flow_tracker_type` set at the `node_type_key`
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
@@ -48225,6 +48664,14 @@ class EosDesigns(EosDesignsRootModel):
                     associated node(s).
 
                     Subclass of AvdModel.
+                    """
+                    validation_profile: str | None
+                    """
+                    Name of the validation profile to apply to this device.
+                    The profile must be defined under
+                    `validation_profiles`.
+                    Validation profiles define requirements (e.g., hardware and logging) used by
+                    the `anta_runner` role during post-deployment validation.
                     """
 
                     if TYPE_CHECKING:
@@ -48267,7 +48714,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -48342,6 +48788,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -48359,6 +48806,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus_access_pod: str | None | UndefinedType = Undefined,
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
+                            validation_profile: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -48524,9 +48972,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                exclude_as_extra_fabric_validation_target:
-                                   Exclude this node from being used as a destination target from other fabric devices in the extra
-                                   fabric validation tests performed by the `anta_runner` role.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -48890,15 +49335,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -48942,7 +49395,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                 flow_tracker_type:
                                    Set the flow tracker type.
-                                   Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                   Override the `default_flow_tracker_type` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 underlay_multicast: Subclass of AvdModel.
@@ -48971,6 +49424,12 @@ class EosDesigns(EosDesignsRootModel):
                                    associated node(s).
 
                                    Subclass of AvdModel.
+                                validation_profile:
+                                   Name of the validation profile to apply to this device.
+                                   The profile must be defined under
+                                   `validation_profiles`.
+                                   Validation profiles define requirements (e.g., hardware and logging) used by
+                                   the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -50401,6 +50860,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -50465,6 +50925,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -50491,6 +50952,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -50536,6 +50998,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -52281,7 +52744,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "exclude_as_extra_fabric_validation_target": {"type": bool},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -52355,6 +52817,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -52372,6 +52835,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus_access_pod": {"type": str},
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
+                        "validation_profile": {"type": str},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -52592,11 +53056,6 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
-                    """
-                    exclude_as_extra_fabric_validation_target: bool | None
-                    """
-                    Exclude this node from being used as a destination target from other fabric devices in the extra
-                    fabric validation tests performed by the `anta_runner` role.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -53130,6 +53589,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -53138,9 +53609,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -53205,7 +53676,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
-                    Override the `default_flow_tracker_type`` set at the `node_type_key`
+                    Override the `default_flow_tracker_type` set at the `node_type_key`
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
@@ -53245,6 +53716,14 @@ class EosDesigns(EosDesignsRootModel):
                     associated node(s).
 
                     Subclass of AvdModel.
+                    """
+                    validation_profile: str | None
+                    """
+                    Name of the validation profile to apply to this device.
+                    The profile must be defined under
+                    `validation_profiles`.
+                    Validation profiles define requirements (e.g., hardware and logging) used by
+                    the `anta_runner` role during post-deployment validation.
                     """
 
                     if TYPE_CHECKING:
@@ -53287,7 +53766,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -53362,6 +53840,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -53379,6 +53858,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus_access_pod: str | None | UndefinedType = Undefined,
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
+                            validation_profile: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -53542,9 +54022,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                exclude_as_extra_fabric_validation_target:
-                                   Exclude this node from being used as a destination target from other fabric devices in the extra
-                                   fabric validation tests performed by the `anta_runner` role.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -53908,15 +54385,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -53960,7 +54445,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                 flow_tracker_type:
                                    Set the flow tracker type.
-                                   Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                   Override the `default_flow_tracker_type` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 underlay_multicast: Subclass of AvdModel.
@@ -53989,6 +54474,12 @@ class EosDesigns(EosDesignsRootModel):
                                    associated node(s).
 
                                    Subclass of AvdModel.
+                                validation_profile:
+                                   Name of the validation profile to apply to this device.
+                                   The profile must be defined under
+                                   `validation_profiles`.
+                                   Validation profiles define requirements (e.g., hardware and logging) used by
+                                   the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -55514,7 +56005,17 @@ class EosDesigns(EosDesignsRootModel):
                     role.
                     """
                     validate_lldp: bool | None
-                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+                    """
+                    Controls LLDP topology validation performed by the `anta_runner` role.
+                    - Unset (Default): The peer
+                    is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+                    (`is_deployed: true`)
+                    and the peer interface is not administratively shutdown.
+                    - `true`: Forces
+                    validation. Use this for connected endpoints not managed by AVD.
+                    - `false`: Disables validation for
+                    the interface.
+                    """
                     campus_link_type: CampusLinkType
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -55724,7 +56225,16 @@ class EosDesigns(EosDesignsRootModel):
                                 validate_state:
                                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                                    role.
-                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                                validate_lldp:
+                                   Controls LLDP topology validation performed by the `anta_runner` role.
+                                   - Unset (Default): The peer
+                                   is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+                                   (`is_deployed: true`)
+                                   and the peer interface is not administratively shutdown.
+                                   - `true`: Forces
+                                   validation. Use this for connected endpoints not managed by AVD.
+                                   - `false`: Disables validation for
+                                   the interface.
                                 campus_link_type:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -57266,7 +57776,17 @@ class EosDesigns(EosDesignsRootModel):
                     role.
                     """
                     validate_lldp: bool | None
-                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+                    """
+                    Controls LLDP topology validation performed by the `anta_runner` role.
+                    - Unset (Default): The peer
+                    is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+                    (`is_deployed: true`)
+                    and the peer interface is not administratively shutdown.
+                    - `true`: Forces
+                    validation. Use this for connected endpoints not managed by AVD.
+                    - `false`: Disables validation for
+                    the interface.
+                    """
                     campus_link_type: CampusLinkType
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -57476,7 +57996,16 @@ class EosDesigns(EosDesignsRootModel):
                                 validate_state:
                                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                                    role.
-                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                                validate_lldp:
+                                   Controls LLDP topology validation performed by the `anta_runner` role.
+                                   - Unset (Default): The peer
+                                   is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+                                   (`is_deployed: true`)
+                                   and the peer interface is not administratively shutdown.
+                                   - `true`: Forces
+                                   validation. Use this for connected endpoints not managed by AVD.
+                                   - `false`: Disables validation for
+                                   the interface.
                                 campus_link_type:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -64428,9 +64957,9 @@ class EosDesigns(EosDesignsRootModel):
                             "route_target": {"type": str},
                             "nodes": {"type": Nodes},
                         }
-                        type: Type | None
-                        address_family: str | None
-                        route_target: str | None
+                        type: Type
+                        address_family: str
+                        route_target: str
                         nodes: Nodes
                         """
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
@@ -64442,9 +64971,9 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                type: Type | None | UndefinedType = Undefined,
-                                address_family: str | None | UndefinedType = Undefined,
-                                route_target: str | None | UndefinedType = Undefined,
+                                type: Type | UndefinedType = Undefined,
+                                address_family: str | UndefinedType = Undefined,
+                                route_target: str | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -64577,6 +65106,8 @@ class EosDesigns(EosDesignsRootModel):
                         "vrf_id": {"type": int},
                         "rd_override": {"type": str},
                         "rt_override": {"type": str},
+                        "rt_import": {"type": bool, "default": True},
+                        "rt_export": {"type": bool, "default": True},
                         "mlag_ibgp_peering_ipv4_pool": {"type": str},
                         "mlag_ibgp_peering_ipv6_pool": {"type": str},
                         "ip_helpers": {"type": IpHelpers},
@@ -64660,6 +65191,26 @@ class EosDesigns(EosDesignsRootModel):
                       - A single number will be used in the RT assigned number subfield (second part of the
                     RT).
                       - A full RT string with colon separator which will override the full RT.
+                    """
+                    rt_import: bool
+                    """
+                    Enable or disable route target import for the VRF for all address families.
+                    This setting applies
+                    only to the automatically generated route targets
+                    and does not affect any entries defined under
+                    `additional_route_targets`.
+
+                    Default value: `True`
+                    """
+                    rt_export: bool
+                    """
+                    Enable or disable route target export for the VRF for all address families.
+                    This setting applies
+                    only to the automatically generated route targets
+                    and does not affect any entries defined under
+                    `additional_route_targets`.
+
+                    Default value: `True`
                     """
                     mlag_ibgp_peering_ipv4_pool: str | None
                     """
@@ -64880,6 +65431,8 @@ class EosDesigns(EosDesignsRootModel):
                             vrf_id: int | None | UndefinedType = Undefined,
                             rd_override: str | None | UndefinedType = Undefined,
                             rt_override: str | None | UndefinedType = Undefined,
+                            rt_import: bool | UndefinedType = Undefined,
+                            rt_export: bool | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv6_pool: str | None | UndefinedType = Undefined,
                             ip_helpers: IpHelpers | UndefinedType = Undefined,
@@ -64957,6 +65510,18 @@ class EosDesigns(EosDesignsRootModel):
                                      - A single number will be used in the RT assigned number subfield (second part of the
                                    RT).
                                      - A full RT string with colon separator which will override the full RT.
+                                rt_import:
+                                   Enable or disable route target import for the VRF for all address families.
+                                   This setting applies
+                                   only to the automatically generated route targets
+                                   and does not affect any entries defined under
+                                   `additional_route_targets`.
+                                rt_export:
+                                   Enable or disable route target export for the VRF for all address families.
+                                   This setting applies
+                                   only to the automatically generated route targets
+                                   and does not affect any entries defined under
+                                   `additional_route_targets`.
                                 mlag_ibgp_peering_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The
@@ -67595,6 +68160,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -67659,6 +68225,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -67685,6 +68252,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -67730,6 +68298,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -69473,7 +70042,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "exclude_as_extra_fabric_validation_target": {"type": bool},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -69547,6 +70115,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -69564,6 +70133,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus_access_pod": {"type": str},
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
+                        "validation_profile": {"type": str},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -69774,11 +70344,6 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
-                    """
-                    exclude_as_extra_fabric_validation_target: bool | None
-                    """
-                    Exclude this node from being used as a destination target from other fabric devices in the extra
-                    fabric validation tests performed by the `anta_runner` role.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -70312,6 +70877,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -70320,9 +70897,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -70387,7 +70964,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
-                    Override the `default_flow_tracker_type`` set at the `node_type_key`
+                    Override the `default_flow_tracker_type` set at the `node_type_key`
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
@@ -70428,6 +71005,14 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdModel.
                     """
+                    validation_profile: str | None
+                    """
+                    Name of the validation profile to apply to this device.
+                    The profile must be defined under
+                    `validation_profiles`.
+                    Validation profiles define requirements (e.g., hardware and logging) used by
+                    the `anta_runner` role during post-deployment validation.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -70467,7 +71052,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -70542,6 +71126,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -70559,6 +71144,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus_access_pod: str | None | UndefinedType = Undefined,
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
+                            validation_profile: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -70715,9 +71301,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                exclude_as_extra_fabric_validation_target:
-                                   Exclude this node from being used as a destination target from other fabric devices in the extra
-                                   fabric validation tests performed by the `anta_runner` role.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -71081,15 +71664,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -71133,7 +71724,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                 flow_tracker_type:
                                    Set the flow tracker type.
-                                   Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                   Override the `default_flow_tracker_type` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 underlay_multicast: Subclass of AvdModel.
@@ -71162,6 +71753,12 @@ class EosDesigns(EosDesignsRootModel):
                                    associated node(s).
 
                                    Subclass of AvdModel.
+                                validation_profile:
+                                   Name of the validation profile to apply to this device.
+                                   The profile must be defined under
+                                   `validation_profiles`.
+                                   Validation profiles define requirements (e.g., hardware and logging) used by
+                                   the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -72595,6 +73192,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
                                 "forward_v1": {"type": bool},
+                                "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -72659,6 +73257,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             forward_v1: bool | None
                             """Forward dataplane PTP V1 packets."""
+                            free_running: EosCliConfigGen.Ptp.FreeRunning
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -72685,6 +73284,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
                                     forward_v1: bool | None | UndefinedType = Undefined,
+                                    free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -72730,6 +73330,7 @@ class EosDesigns(EosDesignsRootModel):
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
                                         forward_v1: Forward dataplane PTP V1 packets.
+                                        free_running: free_running
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -74489,7 +75090,6 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_macsec": {"type": UplinkMacsec},
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
-                            "exclude_as_extra_fabric_validation_target": {"type": bool},
                             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -74563,6 +75163,7 @@ class EosDesigns(EosDesignsRootModel):
                             "overlay_address_families": {"type": OverlayAddressFamilies},
                             "mpls_route_reflectors": {"type": MplsRouteReflectors},
                             "bgp_cluster_id": {"type": str},
+                            "kernel_ecmp_cli": {"type": bool, "default": True},
                             "ptp": {"type": Ptp},
                             "wan_role": {"type": str},
                             "cv_pathfinder_transit_mode": {"type": str},
@@ -74580,6 +75181,7 @@ class EosDesigns(EosDesignsRootModel):
                             "campus_access_pod": {"type": str},
                             "cv_tags_topology_type": {"type": str},
                             "digital_twin": {"type": DigitalTwin},
+                            "validation_profile": {"type": str},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -74800,11 +75402,6 @@ class EosDesigns(EosDesignsRootModel):
                         autogenerated Port-channel IDs in the Network Services.
                         Note! For MLAG pairs the ID must be between
                         1 and 2000 and both MLAG switches must have the same value.
-                        """
-                        exclude_as_extra_fabric_validation_target: bool | None
-                        """
-                        Exclude this node from being used as a destination target from other fabric devices in the extra
-                        fabric validation tests performed by the `anta_runner` role.
                         """
                         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config applied to `uplink_interfaces`."""
@@ -75338,6 +75935,18 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         bgp_cluster_id: str | None
                         """Set BGP cluster id."""
+                        kernel_ecmp_cli: bool
+                        """
+                        Use EOS CLI to configure kernel forwarding ECMP programming.
+                        For EOS kernel forwarding, ECMP
+                        programming can be enabled in two different ways, depending on the EOS version.
+                        - For newer EOS
+                        versions (starting 4.33.2) use the proper CLI.
+                        - For older EOS versions use an agent environment
+                        variable. Changing this requires restarting the KernelFib agent.
+
+                        Default value: `True`
+                        """
                         ptp: Ptp
                         """Subclass of AvdModel."""
                         wan_role: WanRole | None
@@ -75346,9 +75955,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         This is used both for AutoVPN and Pathfinder designs.
                         That means if
-                        `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                        `server` indicates that the router is a
-                        route-reflector.
+                        `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                        `server` indicates that the
+                        router is a route-reflector.
                         """
                         cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                         """
@@ -75413,7 +76022,7 @@ class EosDesigns(EosDesignsRootModel):
                         flow_tracker_type: FlowTrackerType | None
                         """
                         Set the flow tracker type.
-                        Override the `default_flow_tracker_type`` set at the `node_type_key`
+                        Override the `default_flow_tracker_type` set at the `node_type_key`
                         level.
                         `default_flow_tracker_type` default value is `sampled`.
                         """
@@ -75453,6 +76062,14 @@ class EosDesigns(EosDesignsRootModel):
                         associated node(s).
 
                         Subclass of AvdModel.
+                        """
+                        validation_profile: str | None
+                        """
+                        Name of the validation profile to apply to this device.
+                        The profile must be defined under
+                        `validation_profiles`.
+                        Validation profiles define requirements (e.g., hardware and logging) used by
+                        the `anta_runner` role during post-deployment validation.
                         """
 
                         if TYPE_CHECKING:
@@ -75495,7 +76112,6 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                                exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -75570,6 +76186,7 @@ class EosDesigns(EosDesignsRootModel):
                                 overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                                 mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                                 bgp_cluster_id: str | None | UndefinedType = Undefined,
+                                kernel_ecmp_cli: bool | UndefinedType = Undefined,
                                 ptp: Ptp | UndefinedType = Undefined,
                                 wan_role: WanRole | None | UndefinedType = Undefined,
                                 cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -75587,6 +76204,7 @@ class EosDesigns(EosDesignsRootModel):
                                 campus_access_pod: str | None | UndefinedType = Undefined,
                                 cv_tags_topology_type: str | None | UndefinedType = Undefined,
                                 digital_twin: DigitalTwin | UndefinedType = Undefined,
+                                validation_profile: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -75750,9 +76368,6 @@ class EosDesigns(EosDesignsRootModel):
                                        autogenerated Port-channel IDs in the Network Services.
                                        Note! For MLAG pairs the ID must be between
                                        1 and 2000 and both MLAG switches must have the same value.
-                                    exclude_as_extra_fabric_validation_target:
-                                       Exclude this node from being used as a destination target from other fabric devices in the extra
-                                       fabric validation tests performed by the `anta_runner` role.
                                     uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                     uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -76116,15 +76731,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `str` items.
                                     bgp_cluster_id: Set BGP cluster id.
+                                    kernel_ecmp_cli:
+                                       Use EOS CLI to configure kernel forwarding ECMP programming.
+                                       For EOS kernel forwarding, ECMP
+                                       programming can be enabled in two different ways, depending on the EOS version.
+                                       - For newer EOS
+                                       versions (starting 4.33.2) use the proper CLI.
+                                       - For older EOS versions use an agent environment
+                                       variable. Changing this requires restarting the KernelFib agent.
                                     ptp: Subclass of AvdModel.
                                     wan_role:
                                        Override the default WAN role.
 
                                        This is used both for AutoVPN and Pathfinder designs.
                                        That means if
-                                       `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                       `server` indicates that the router is a
-                                       route-reflector.
+                                       `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                       `server` indicates that the
+                                       router is a route-reflector.
                                     cv_pathfinder_transit_mode:
                                        Configure the transit mode for a WAN client for CV Pathfinder designs
                                        only when the `wan_mode` root
@@ -76168,7 +76791,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                     flow_tracker_type:
                                        Set the flow tracker type.
-                                       Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                       Override the `default_flow_tracker_type` set at the `node_type_key`
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
                                     underlay_multicast: Subclass of AvdModel.
@@ -76197,6 +76820,12 @@ class EosDesigns(EosDesignsRootModel):
                                        associated node(s).
 
                                        Subclass of AvdModel.
+                                    validation_profile:
+                                       Name of the validation profile to apply to this device.
+                                       The profile must be defined under
+                                       `validation_profiles`.
+                                       Validation profiles define requirements (e.g., hardware and logging) used by
+                                       the `anta_runner` role during post-deployment validation.
 
                                 """
 
@@ -77552,6 +78181,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -77616,6 +78246,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -77642,6 +78273,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -77687,6 +78319,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -79432,7 +80065,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "exclude_as_extra_fabric_validation_target": {"type": bool},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -79506,6 +80138,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -79523,6 +80156,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus_access_pod": {"type": str},
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
+                        "validation_profile": {"type": str},
                     }
                     group: str
                     """
@@ -79746,11 +80380,6 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
-                    """
-                    exclude_as_extra_fabric_validation_target: bool | None
-                    """
-                    Exclude this node from being used as a destination target from other fabric devices in the extra
-                    fabric validation tests performed by the `anta_runner` role.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -80284,6 +80913,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -80292,9 +80933,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -80359,7 +81000,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
-                    Override the `default_flow_tracker_type`` set at the `node_type_key`
+                    Override the `default_flow_tracker_type` set at the `node_type_key`
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
@@ -80399,6 +81040,14 @@ class EosDesigns(EosDesignsRootModel):
                     associated node(s).
 
                     Subclass of AvdModel.
+                    """
+                    validation_profile: str | None
+                    """
+                    Name of the validation profile to apply to this device.
+                    The profile must be defined under
+                    `validation_profiles`.
+                    Validation profiles define requirements (e.g., hardware and logging) used by
+                    the `anta_runner` role during post-deployment validation.
                     """
 
                     if TYPE_CHECKING:
@@ -80441,7 +81090,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -80516,6 +81164,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -80533,6 +81182,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus_access_pod: str | None | UndefinedType = Undefined,
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
+                            validation_profile: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -80698,9 +81348,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                exclude_as_extra_fabric_validation_target:
-                                   Exclude this node from being used as a destination target from other fabric devices in the extra
-                                   fabric validation tests performed by the `anta_runner` role.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -81064,15 +81711,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -81116,7 +81771,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                 flow_tracker_type:
                                    Set the flow tracker type.
-                                   Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                   Override the `default_flow_tracker_type` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 underlay_multicast: Subclass of AvdModel.
@@ -81145,6 +81800,12 @@ class EosDesigns(EosDesignsRootModel):
                                    associated node(s).
 
                                    Subclass of AvdModel.
+                                validation_profile:
+                                   Name of the validation profile to apply to this device.
+                                   The profile must be defined under
+                                   `validation_profiles`.
+                                   Validation profiles define requirements (e.g., hardware and logging) used by
+                                   the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -82575,6 +83236,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
                             "forward_v1": {"type": bool},
+                            "free_running": {"type": EosCliConfigGen.Ptp.FreeRunning},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -82639,6 +83301,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         forward_v1: bool | None
                         """Forward dataplane PTP V1 packets."""
+                        free_running: EosCliConfigGen.Ptp.FreeRunning
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -82665,6 +83328,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
                                 forward_v1: bool | None | UndefinedType = Undefined,
+                                free_running: EosCliConfigGen.Ptp.FreeRunning | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -82710,6 +83374,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
                                     forward_v1: Forward dataplane PTP V1 packets.
+                                    free_running: free_running
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -84455,7 +85120,6 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_macsec": {"type": UplinkMacsec},
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
-                        "exclude_as_extra_fabric_validation_target": {"type": bool},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -84529,6 +85193,7 @@ class EosDesigns(EosDesignsRootModel):
                         "overlay_address_families": {"type": OverlayAddressFamilies},
                         "mpls_route_reflectors": {"type": MplsRouteReflectors},
                         "bgp_cluster_id": {"type": str},
+                        "kernel_ecmp_cli": {"type": bool, "default": True},
                         "ptp": {"type": Ptp},
                         "wan_role": {"type": str},
                         "cv_pathfinder_transit_mode": {"type": str},
@@ -84546,6 +85211,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus_access_pod": {"type": str},
                         "cv_tags_topology_type": {"type": str},
                         "digital_twin": {"type": DigitalTwin},
+                        "validation_profile": {"type": str},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -84766,11 +85432,6 @@ class EosDesigns(EosDesignsRootModel):
                     autogenerated Port-channel IDs in the Network Services.
                     Note! For MLAG pairs the ID must be between
                     1 and 2000 and both MLAG switches must have the same value.
-                    """
-                    exclude_as_extra_fabric_validation_target: bool | None
-                    """
-                    Exclude this node from being used as a destination target from other fabric devices in the extra
-                    fabric validation tests performed by the `anta_runner` role.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_interfaces`."""
@@ -85304,6 +85965,18 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp_cluster_id: str | None
                     """Set BGP cluster id."""
+                    kernel_ecmp_cli: bool
+                    """
+                    Use EOS CLI to configure kernel forwarding ECMP programming.
+                    For EOS kernel forwarding, ECMP
+                    programming can be enabled in two different ways, depending on the EOS version.
+                    - For newer EOS
+                    versions (starting 4.33.2) use the proper CLI.
+                    - For older EOS versions use an agent environment
+                    variable. Changing this requires restarting the KernelFib agent.
+
+                    Default value: `True`
+                    """
                     ptp: Ptp
                     """Subclass of AvdModel."""
                     wan_role: WanRole | None
@@ -85312,9 +85985,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     This is used both for AutoVPN and Pathfinder designs.
                     That means if
-                    `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                    `server` indicates that the router is a
-                    route-reflector.
+                    `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                    `server` indicates that the
+                    router is a route-reflector.
                     """
                     cv_pathfinder_transit_mode: CvPathfinderTransitMode | None
                     """
@@ -85379,7 +86052,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
-                    Override the `default_flow_tracker_type`` set at the `node_type_key`
+                    Override the `default_flow_tracker_type` set at the `node_type_key`
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
@@ -85419,6 +86092,14 @@ class EosDesigns(EosDesignsRootModel):
                     associated node(s).
 
                     Subclass of AvdModel.
+                    """
+                    validation_profile: str | None
+                    """
+                    Name of the validation profile to apply to this device.
+                    The profile must be defined under
+                    `validation_profiles`.
+                    Validation profiles define requirements (e.g., hardware and logging) used by
+                    the `anta_runner` role during post-deployment validation.
                     """
 
                     if TYPE_CHECKING:
@@ -85461,7 +86142,6 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_macsec: UplinkMacsec | UndefinedType = Undefined,
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
-                            exclude_as_extra_fabric_validation_target: bool | None | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -85536,6 +86216,7 @@ class EosDesigns(EosDesignsRootModel):
                             overlay_address_families: OverlayAddressFamilies | UndefinedType = Undefined,
                             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
                             bgp_cluster_id: str | None | UndefinedType = Undefined,
+                            kernel_ecmp_cli: bool | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
                             wan_role: WanRole | None | UndefinedType = Undefined,
                             cv_pathfinder_transit_mode: CvPathfinderTransitMode | None | UndefinedType = Undefined,
@@ -85553,6 +86234,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus_access_pod: str | None | UndefinedType = Undefined,
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             digital_twin: DigitalTwin | UndefinedType = Undefined,
+                            validation_profile: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -85716,9 +86398,6 @@ class EosDesigns(EosDesignsRootModel):
                                    autogenerated Port-channel IDs in the Network Services.
                                    Note! For MLAG pairs the ID must be between
                                    1 and 2000 and both MLAG switches must have the same value.
-                                exclude_as_extra_fabric_validation_target:
-                                   Exclude this node from being used as a destination target from other fabric devices in the extra
-                                   fabric validation tests performed by the `anta_runner` role.
                                 uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
                                 uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
@@ -86082,15 +86761,23 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 bgp_cluster_id: Set BGP cluster id.
+                                kernel_ecmp_cli:
+                                   Use EOS CLI to configure kernel forwarding ECMP programming.
+                                   For EOS kernel forwarding, ECMP
+                                   programming can be enabled in two different ways, depending on the EOS version.
+                                   - For newer EOS
+                                   versions (starting 4.33.2) use the proper CLI.
+                                   - For older EOS versions use an agent environment
+                                   variable. Changing this requires restarting the KernelFib agent.
                                 ptp: Subclass of AvdModel.
                                 wan_role:
                                    Override the default WAN role.
 
                                    This is used both for AutoVPN and Pathfinder designs.
                                    That means if
-                                   `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
-                                   `server` indicates that the router is a
-                                   route-reflector.
+                                   `wan_mode` root key is set to `legacy-autovpn` or `cv-pathfinder`.
+                                   `server` indicates that the
+                                   router is a route-reflector.
                                 cv_pathfinder_transit_mode:
                                    Configure the transit mode for a WAN client for CV Pathfinder designs
                                    only when the `wan_mode` root
@@ -86134,7 +86821,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                 flow_tracker_type:
                                    Set the flow tracker type.
-                                   Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                   Override the `default_flow_tracker_type` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 underlay_multicast: Subclass of AvdModel.
@@ -86163,6 +86850,12 @@ class EosDesigns(EosDesignsRootModel):
                                    associated node(s).
 
                                    Subclass of AvdModel.
+                                validation_profile:
+                                   Name of the validation profile to apply to this device.
+                                   The profile must be defined under
+                                   `validation_profiles`.
+                                   Validation profiles define requirements (e.g., hardware and logging) used by
+                                   the `anta_runner` role during post-deployment validation.
 
                             """
 
@@ -86613,18 +87306,30 @@ class EosDesigns(EosDesignsRootModel):
                     {
                         "platforms": ["750", "755", "758"],
                         "management_interface": "Management0",
-                        "feature_support": {"poe": True, "queue_monitor_length_notify": False},
+                        "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["720DP", "722XP", "710P"],
-                        "feature_support": {"poe": True, "queue_monitor_length_notify": False},
+                        "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
-                        "platforms": ["7010TX"],
+                        "platforms": ["720DP-24ZS", "720DP-48ZS"],
+                        "feature_support": {"queue_monitor_length_notify": False, "poe": True},
+                        "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
+                        "platforms": ["720DF"],
+                        "feature_support": {"queue_monitor_length_notify": False},
+                        "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
+                        "platforms": ["720DT", "7010TX"],
                         "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
@@ -86694,10 +87399,10 @@ class EosDesigns(EosDesignsRootModel):
                             "interface_storm_control": False,
                             "queue_monitor_length_notify": False,
                             "evpn_gateway_all_active_multihoming": True,
+                            "hardware_validation": False,
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"act_node_type": "veos"},
-                        "validate_hardware": {"enabled": False},
                     },
                     {
                         "platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"],
@@ -86707,18 +87412,22 @@ class EosDesigns(EosDesignsRootModel):
                             "interface_storm_control": False,
                             "queue_monitor_length_notify": False,
                             "evpn_gateway_all_active_multihoming": True,
+                            "hardware_validation": False,
                         },
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"act_node_type": "veos"},
-                        "validate_hardware": {"enabled": False},
                     },
                     {
                         "platforms": ["CloudEOS"],
-                        "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False},
+                        "feature_support": {
+                            "bgp_update_wait_install": False,
+                            "interface_storm_control": False,
+                            "queue_monitor_length_notify": False,
+                            "hardware_validation": False,
+                        },
                         "p2p_uplinks_mtu": 9194,
                         "digital_twin": {"act_node_type": "cloudeos"},
-                        "validate_hardware": {"enabled": False},
                     },
                     {
                         "platforms": ["AWE-5310", "AWE-7230R"],
@@ -86834,6 +87543,7 @@ class EosDesigns(EosDesignsRootModel):
         "uplink_ptp": {"type": UplinkPtp},
         "use_cv_topology": {"type": bool},
         "use_router_general_for_router_id": {"type": bool, "default": False},
+        "validation_profiles": {"type": ValidationProfiles},
         "vtep_loopback_description": {"type": str, "default": "VXLAN_TUNNEL_SOURCE"},
         "vtep_vvtep_ip": {"type": str},
         "wan_carriers": {"type": WanCarriers},
@@ -88291,7 +89001,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}, "validate_hardware": {"enabled": False}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}, "validate_hardware": {"enabled": False}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}, "validate_hardware": {"enabled": False}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """
@@ -88688,6 +89398,13 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
+    validation_profiles: ValidationProfiles
+    """
+    List of validation profiles defining hardware, logging, and fabric-related validation rules.
+    Validation profiles can be referenced from node definitions (for example under
+    `l3leaf.nodes[].validation_profile`) and support single-level inheritance using `parent_profile`.
+    Subclass of AvdIndexedList with `ValidationProfilesItem` items. Primary key is `name` (`str`).
+    """
     vtep_loopback_description: str
     """
     Customize the description on the VTEP interface, typically Loopback1.
@@ -88736,17 +89453,18 @@ class EosDesigns(EosDesignsRootModel):
     """
     wan_route_servers: WanRouteServers
     """
-    List of the AutoVPN RRs when using `wan_mode: autovpn`, or the Pathfinders
-    when using `wan_mode: cv-
-    pathfinder`, to which the device should connect to.
-    This is also used to establish iBGP sessions
-    between WAN route servers.
+    List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or the Pathfinders
+    when using
+    `wan_mode: cv-pathfinder`, to which the device should connect to.
+    This is also used to establish
+    iBGP sessions between WAN route servers.
 
-    When the route server is part of the same inventory as the WAN routers,
+    When the route server is part of the same inventory as the
+    WAN routers,
     only the name is required.
 
-    Subclass of AvdIndexedList with `WanRouteServersItem` items. Primary key
-    is `hostname` (`str`).
+    Subclass of AvdIndexedList with `WanRouteServersItem`
+    items. Primary key is `hostname` (`str`).
     """
     wan_stun_dtls_disable: bool
     """
@@ -88992,6 +89710,7 @@ class EosDesigns(EosDesignsRootModel):
             uplink_ptp: UplinkPtp | UndefinedType = Undefined,
             use_cv_topology: bool | None | UndefinedType = Undefined,
             use_router_general_for_router_id: bool | UndefinedType = Undefined,
+            validation_profiles: ValidationProfiles | UndefinedType = Undefined,
             vtep_loopback_description: str | UndefinedType = Undefined,
             vtep_vvtep_ip: str | None | UndefinedType = Undefined,
             wan_carriers: WanCarriers | UndefinedType = Undefined,
@@ -90335,6 +91054,11 @@ class EosDesigns(EosDesignsRootModel):
                    details.
                    Requires both `cv_topology` and `cv_topology_levels` to be set.
                 use_router_general_for_router_id: Use `router general` to set router ID for all routing protocols and VRFs.
+                validation_profiles:
+                   List of validation profiles defining hardware, logging, and fabric-related validation rules.
+                   Validation profiles can be referenced from node definitions (for example under
+                   `l3leaf.nodes[].validation_profile`) and support single-level inheritance using `parent_profile`.
+                   Subclass of AvdIndexedList with `ValidationProfilesItem` items. Primary key is `name` (`str`).
                 vtep_loopback_description: Customize the description on the VTEP interface, typically Loopback1.
                 vtep_vvtep_ip:
                    IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.
@@ -90358,17 +91082,18 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdIndexedList with
                    `WanPathGroupsItem` items. Primary key is `name` (`str`).
                 wan_route_servers:
-                   List of the AutoVPN RRs when using `wan_mode: autovpn`, or the Pathfinders
-                   when using `wan_mode: cv-
-                   pathfinder`, to which the device should connect to.
-                   This is also used to establish iBGP sessions
-                   between WAN route servers.
+                   List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or the Pathfinders
+                   when using
+                   `wan_mode: cv-pathfinder`, to which the device should connect to.
+                   This is also used to establish
+                   iBGP sessions between WAN route servers.
 
-                   When the route server is part of the same inventory as the WAN routers,
+                   When the route server is part of the same inventory as the
+                   WAN routers,
                    only the name is required.
 
-                   Subclass of AvdIndexedList with `WanRouteServersItem` items. Primary key
-                   is `hostname` (`str`).
+                   Subclass of AvdIndexedList with `WanRouteServersItem`
+                   items. Primary key is `hostname` (`str`).
                 wan_stun_dtls_disable:
                    WAN STUN connections are authenticated and secured with DTLS by default.
                    For CV Pathfinder

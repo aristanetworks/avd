@@ -21,13 +21,14 @@ classifiers = [
 keywords = ["pyavd"]
 requires-python = ">=3.10"
 dependencies = [
+    "anta>=1.7.0",
     "aristaproto>=0.1.1",
     "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
     # pinned grpclib since we patch the connection code to get proxy support
     "grpclib==0.4.9",
     "jinja2>=3.0",
-    "pyavd-utils==0.0.1.dev4",
+    "pyavd-utils==0.0.1",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     "requests>=2.27.0",
@@ -43,7 +44,6 @@ ansible = [
     "pyavd[ansible-collection]",
 ]
 ansible-collection = [
-    "anta>=1.6.0",
     "netaddr>=0.7.19",
     # distlib is required to install the collection from source as it is using manifest
     "distlib>=0.3.9",
@@ -58,7 +58,7 @@ requires = [
     "pydantic>=2.3.0",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
-    "ruff==0.14.9",
+    "ruff==0.14.10",
     "setuptools>=77.0",
 ]
 build-backend = "custom_build_backend"
