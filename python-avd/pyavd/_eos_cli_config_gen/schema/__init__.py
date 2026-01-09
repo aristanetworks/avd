@@ -21244,7 +21244,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 EOS 4.27.0F.
                 """
                 ip_access_group: str | None
-                """ACL name."""
+                """
+                -> ACL name. Only one transport in the same VRF can be configured with a service ACL; all transports
+                in the same VRF use the same service ACL.
+                """
                 port: int | None
                 """
                 GNMI port.
@@ -21286,7 +21289,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                operations,
                                an option to support overriding the timestamp field to the send-time is available from
                                EOS 4.27.0F.
-                            ip_access_group: ACL name.
+                            ip_access_group:
+                               -> ACL name. Only one transport in the same VRF can be configured with a service ACL; all transports
+                               in the same VRF use the same service ACL.
                             port:
                                GNMI port.
                                Make sure to update the control-plane ACL accordingly in order for the service to be
