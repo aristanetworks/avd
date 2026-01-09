@@ -26007,7 +26007,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {"profiles": {"type": Profiles}, "default_profiles": {"type": DefaultProfiles}}
         profiles: Profiles
-        """Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`)."""
+        """
+        A list of damping profiles containing the set of parameters required by the damping logic, which is
+        based on is based on the BGP Route Flap Damping algorithm described in RFC2439.
+
+        Subclass of
+        AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`).
+        """
         default_profiles: DefaultProfiles
         """
         The default-profile set may contain zero, one, or multiple profiles. When the default-profile set
@@ -26025,7 +26031,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    profiles: Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`).
+                    profiles:
+                       A list of damping profiles containing the set of parameters required by the damping logic, which is
+                       based on is based on the BGP Route Flap Damping algorithm described in RFC2439.
+
+                       Subclass of
+                       AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`).
                     default_profiles:
                        The default-profile set may contain zero, one, or multiple profiles. When the default-profile set
                        contains multiple profiles, error-disable criteria is satisfied when conditions match any profile.

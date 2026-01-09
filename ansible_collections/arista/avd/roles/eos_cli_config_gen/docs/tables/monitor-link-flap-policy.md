@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>monitor_link_flap_policy</samp>](## "monitor_link_flap_policy") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;profiles</samp>](## "monitor_link_flap_policy.profiles") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;profiles</samp>](## "monitor_link_flap_policy.profiles") | List, items: Dictionary |  |  |  | A list of damping profiles containing the set of parameters required by the damping logic, which is based on is based on the BGP Route Flap Damping algorithm described in RFC2439. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_link_flap_policy.profiles.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;damping_penalty</samp>](## "monitor_link_flap_policy.profiles.[].damping_penalty") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decay</samp>](## "monitor_link_flap_policy.profiles.[].damping_penalty.decay") | Dictionary |  |  |  |  |
@@ -33,6 +33,8 @@
 
     ```yaml
     monitor_link_flap_policy:
+
+      # A list of damping profiles containing the set of parameters required by the damping logic, which is based on is based on the BGP Route Flap Damping algorithm described in RFC2439.
       profiles:
         - name: <str; required; unique>
           damping_penalty:

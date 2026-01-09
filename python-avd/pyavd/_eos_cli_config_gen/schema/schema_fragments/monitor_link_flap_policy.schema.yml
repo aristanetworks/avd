@@ -11,6 +11,7 @@ keys:
       profiles:
         type: list
         primary_key: name
+        description: A list of damping profiles containing the set of parameters required by the damping logic, which is based on is based on the BGP Route Flap Damping algorithm described in RFC2439.
         items:
           type: dict
           keys:
