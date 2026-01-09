@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mmu</samp>](## "platform.trident.mmu") | Dictionary |  |  |  | Memory Management Unit settings.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;active_profile</samp>](## "platform.trident.mmu.active_profile") | String |  |  |  | The queue profile to be applied to the platform.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;headroom_pool</samp>](## "platform.trident.mmu.headroom_pool") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "platform.trident.mmu.headroom_pool.unit") | String |  |  | Valid Values:<br>- <code>bytes</code><br>- <code>cells</code> | Unit to be used for the `headroom_pool` value.<br>If not specified, default is bytes.<br>bytes range is 1-33554670.<br>cells range is 1-132105. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "platform.trident.mmu.headroom_pool.unit") | String |  |  | Valid Values:<br>- <code>bytes</code><br>- <code>cells</code> | Unit to be used for the `headroom_pool` value.<br>If not specified, default is bytes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "platform.trident.mmu.headroom_pool.limit") | Integer |  |  |  | Max limit on headroom pool size. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_profiles</samp>](## "platform.trident.mmu.queue_profiles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "platform.trident.mmu.queue_profiles.[].name") | String | Required, Unique |  |  |  |
@@ -100,8 +100,6 @@
 
             # Unit to be used for the `headroom_pool` value.
             # If not specified, default is bytes.
-            # bytes range is 1-33554670.
-            # cells range is 1-132105.
             unit: <str; "bytes" | "cells">
 
             # Max limit on headroom pool size.

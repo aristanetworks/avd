@@ -11107,11 +11107,7 @@ keys:
                     - cells
                     description: 'Unit to be used for the `headroom_pool` value.
 
-                      If not specified, default is bytes.
-
-                      bytes range is 1-33554670.
-
-                      cells range is 1-132105.'
+                      If not specified, default is bytes.'
                   limit:
                     type: int
                     convert_types:

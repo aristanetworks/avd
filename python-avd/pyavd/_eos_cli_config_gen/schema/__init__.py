@@ -28441,9 +28441,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
                     Unit to be used for the `headroom_pool` value.
                     If not specified, default is bytes.
-                    bytes range is
-                    1-33554670.
-                    cells range is 1-132105.
                     """
                     limit: int | None
                     """Max limit on headroom pool size."""
@@ -28461,9 +28458,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 unit:
                                    Unit to be used for the `headroom_pool` value.
                                    If not specified, default is bytes.
-                                   bytes range is
-                                   1-33554670.
-                                   cells range is 1-132105.
                                 limit: Max limit on headroom pool size.
 
                             """
