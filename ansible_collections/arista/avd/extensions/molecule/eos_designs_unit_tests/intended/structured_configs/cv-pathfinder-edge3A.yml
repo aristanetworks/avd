@@ -346,30 +346,30 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
     profiles:
-    - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
-      id: 254
-    - name: DEFAULT-AVT-POLICY-VIDEO
-      id: 3
-    - name: DEFAULT-AVT-POLICY-DEFAULT
-      id: 1
+    - id: 254
+      name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+    - id: 3
+      name: DEFAULT-AVT-POLICY-VIDEO
+    - id: 1
+      name: DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD
     policy: PROD-AVT-POLICY
     profiles:
-    - name: PROD-AVT-POLICY-VOICE
-      id: 2
-    - name: PROD-AVT-POLICY-VIDEO
-      id: 4
-    - name: PROD-AVT-POLICY-MPLS-ONLY
-      id: 5
-    - name: PROD-AVT-POLICY-DEFAULT
-      id: 1
+    - id: 2
+      name: PROD-AVT-POLICY-VOICE
+    - id: 4
+      name: PROD-AVT-POLICY-VIDEO
+    - id: 5
+      name: PROD-AVT-POLICY-MPLS-ONLY
+    - id: 1
+      name: PROD-AVT-POLICY-DEFAULT
   - name: IT
     policy: DEFAULT-AVT-POLICY
     profiles:
-    - name: DEFAULT-AVT-POLICY-VIDEO
-      id: 3
-    - name: DEFAULT-AVT-POLICY-DEFAULT
-      id: 1
+    - id: 3
+      name: DEFAULT-AVT-POLICY-VIDEO
+    - id: 1
+      name: DEFAULT-AVT-POLICY-DEFAULT
 router_bfd:
   multihop:
     interval: 300

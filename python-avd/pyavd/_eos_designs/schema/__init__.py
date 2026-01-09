@@ -491,10 +491,10 @@ class EosDesigns(EosDesignsRootModel):
             PasswordType: TypeAlias = Literal["sha512"]
             Shell: TypeAlias = Literal["/bin/bash", "/bin/sh", "/sbin/nologin"]
             _fields: ClassVar[dict] = {
+                "name": {"type": str},
                 "sha512_password": {"type": str},
                 "cleartext_password": {"type": str},
                 "password_type": {"type": str, "default": "sha512"},
-                "name": {"type": str},
                 "disabled": {"type": bool},
                 "privilege": {"type": int},
                 "role": {"type": str},
@@ -503,6 +503,8 @@ class EosDesigns(EosDesignsRootModel):
                 "secondary_ssh_key": {"type": str},
                 "shell": {"type": str},
             }
+            name: str
+            """Username."""
             sha512_password: str | None
             """
             SHA512 Hash of Password.
@@ -519,8 +521,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             password_type: PasswordType
             """Default value: `"sha512"`"""
-            name: str
-            """Username."""
             disabled: bool | None
             """
             If true, the user will be removed and all other settings are ignored.
@@ -546,10 +546,10 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    name: str | UndefinedType = Undefined,
                     sha512_password: str | None | UndefinedType = Undefined,
                     cleartext_password: str | None | UndefinedType = Undefined,
                     password_type: PasswordType | UndefinedType = Undefined,
-                    name: str | UndefinedType = Undefined,
                     disabled: bool | None | UndefinedType = Undefined,
                     privilege: int | None | UndefinedType = Undefined,
                     role: str | None | UndefinedType = Undefined,
@@ -565,6 +565,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        name: Username.
                         sha512_password:
                            SHA512 Hash of Password.
                            Takes precedence over `cleartext_password`.
@@ -576,7 +577,6 @@ class EosDesigns(EosDesignsRootModel):
                            This variable is sensitive and
                            SHOULD be configured using some vault mechanism.
                         password_type: password_type
-                        name: Username.
                         disabled:
                            If true, the user will be removed and all other settings are ignored.
                            Useful for removing the
@@ -8394,8 +8394,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
-                "profile": {"type": str},
                 "name": {"type": str},
+                "profile": {"type": str},
                 "description": {"type": str},
                 "ip_address": {"type": str},
                 "dhcp_ip": {"type": str},
@@ -8423,14 +8423,14 @@ class EosDesigns(EosDesignsRootModel):
                 "flow_tracking": {"type": FlowTracking},
                 "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             }
-            profile: str | None
-            """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
             name: str
             """
             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
             For a
             subinterface, the parent physical interface is automatically created.
             """
+            profile: str | None
+            """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
             description: str | None
             """
             Interface description.
@@ -8585,8 +8585,8 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    profile: str | None | UndefinedType = Undefined,
                     name: str | UndefinedType = Undefined,
+                    profile: str | None | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     ip_address: str | None | UndefinedType = Undefined,
                     dhcp_ip: str | None | UndefinedType = Undefined,
@@ -8621,11 +8621,11 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                         name:
                            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                            For a
                            subinterface, the parent physical interface is automatically created.
+                        profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                         description:
                            Interface description.
                            If not set a default description will be configured with '[<peer>[
@@ -13450,8 +13450,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
 
             _fields: ClassVar[dict] = {
-                "profile": {"type": str},
                 "name": {"type": str},
+                "profile": {"type": str},
                 "description": {"type": str},
                 "ip_address": {"type": str},
                 "dhcp_ip": {"type": str},
@@ -13479,14 +13479,14 @@ class EosDesigns(EosDesignsRootModel):
                 "flow_tracking": {"type": FlowTracking},
                 "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             }
-            profile: str | None
-            """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
             name: str
             """
             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
             For a
             subinterface, the parent physical interface is automatically created.
             """
+            profile: str | None
+            """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
             description: str | None
             """
             Interface description.
@@ -13641,8 +13641,8 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    profile: str | None | UndefinedType = Undefined,
                     name: str | UndefinedType = Undefined,
+                    profile: str | None | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     ip_address: str | None | UndefinedType = Undefined,
                     dhcp_ip: str | None | UndefinedType = Undefined,
@@ -13677,11 +13677,11 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                         name:
                            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                            For a
                            subinterface, the parent physical interface is automatically created.
+                        profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                         description:
                            Interface description.
                            If not set a default description will be configured with '[<peer>[
@@ -14692,10 +14692,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         _fields: ClassVar[dict] = {
+            "name": {"type": str},
             "profile": {"type": str},
             "type": {"type": str},
             "mlag_group": {"type": str},
-            "name": {"type": str},
             "downlink_pools": {"type": DownlinkPools},
             "id": {"type": int},
             "platform": {"type": str},
@@ -14823,6 +14823,8 @@ class EosDesigns(EosDesignsRootModel):
             "digital_twin": {"type": DigitalTwin},
             "validation_profile": {"type": str},
         }
+        name: str
+        """The Node Name is used as "hostname"."""
         profile: str | None
         """
         Inherit settings from a profile defined under `device_profiles`.
@@ -14844,8 +14846,6 @@ class EosDesigns(EosDesignsRootModel):
         creating MLAG Pairs, for port-channel descriptions on peers and for MLAG domain-id (unless
         mlag_domain_id is set).
         """
-        name: str
-        """The Node Name is used as "hostname"."""
         downlink_pools: DownlinkPools
         """
         IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined
@@ -15738,10 +15738,10 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
+                name: str | UndefinedType = Undefined,
                 profile: str | None | UndefinedType = Undefined,
                 type: str | None | UndefinedType = Undefined,
                 mlag_group: str | None | UndefinedType = Undefined,
-                name: str | UndefinedType = Undefined,
                 downlink_pools: DownlinkPools | UndefinedType = Undefined,
                 id: int | None | UndefinedType = Undefined,
                 platform: str | None | UndefinedType = Undefined,
@@ -15876,6 +15876,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    name: The Node Name is used as "hostname".
                     profile:
                        Inherit settings from a profile defined under `device_profiles`.
                        Max two levels of profile
@@ -15891,7 +15892,6 @@ class EosDesigns(EosDesignsRootModel):
                        The group is used for
                        creating MLAG Pairs, for port-channel descriptions on peers and for MLAG domain-id (unless
                        mlag_domain_id is set).
-                    name: The Node Name is used as "hostname".
                     downlink_pools:
                        IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined
                        with `uplink_ipv4_pool` set on the downlink switch.
@@ -25044,12 +25044,14 @@ class EosDesigns(EosDesignsRootModel):
             KeyType: TypeAlias = Literal["0", "7", "8a"]
             HashAlgorithm: TypeAlias = Literal["md5", "sha1"]
             _fields: ClassVar[dict] = {
+                "id": {"type": int},
                 "key": {"type": str},
                 "cleartext_key": {"type": str},
                 "key_type": {"type": str},
-                "id": {"type": int},
                 "hash_algorithm": {"type": str},
             }
+            id: int
+            """Key identifier."""
             key: str | None
             """
             Authentication provided using the `key_type` format.
@@ -25070,8 +25072,6 @@ class EosDesigns(EosDesignsRootModel):
             Key type of the `key`.
             Does not have any influence on `cleartext_key`.
             """
-            id: int
-            """Key identifier."""
             hash_algorithm: HashAlgorithm
 
             if TYPE_CHECKING:
@@ -25079,10 +25079,10 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    id: int | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
                     cleartext_key: str | None | UndefinedType = Undefined,
                     key_type: KeyType | None | UndefinedType = Undefined,
-                    id: int | UndefinedType = Undefined,
                     hash_algorithm: HashAlgorithm | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -25092,6 +25092,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        id: Key identifier.
                         key:
                            Authentication provided using the `key_type` format.
                            Will be rendered as such.
@@ -25106,7 +25107,6 @@ class EosDesigns(EosDesignsRootModel):
                         key_type:
                            Key type of the `key`.
                            Does not have any influence on `cleartext_key`.
-                        id: Key identifier.
                         hash_algorithm: hash_algorithm
 
                     """
@@ -36537,8 +36537,8 @@ class EosDesigns(EosDesignsRootModel):
                                     """
 
                         _fields: ClassVar[dict] = {
-                            "profile": {"type": str},
                             "name": {"type": str},
+                            "profile": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
                             "dhcp_ip": {"type": str},
@@ -36566,14 +36566,14 @@ class EosDesigns(EosDesignsRootModel):
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         }
-                        profile: str | None
-                        """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                         name: str
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
                         subinterface, the parent physical interface is automatically created.
                         """
+                        profile: str | None
+                        """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                         description: str | None
                         """
                         Interface description.
@@ -36728,8 +36728,8 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                profile: str | None | UndefinedType = Undefined,
                                 name: str | UndefinedType = Undefined,
+                                profile: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
@@ -36764,11 +36764,11 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
                                        subinterface, the parent physical interface is automatically created.
+                                    profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
                                        If not set a default description will be configured with '[<peer>[
@@ -41577,8 +41577,8 @@ class EosDesigns(EosDesignsRootModel):
                                         """
 
                             _fields: ClassVar[dict] = {
-                                "profile": {"type": str},
                                 "name": {"type": str},
+                                "profile": {"type": str},
                                 "description": {"type": str},
                                 "ip_address": {"type": str},
                                 "dhcp_ip": {"type": str},
@@ -41606,14 +41606,14 @@ class EosDesigns(EosDesignsRootModel):
                                 "flow_tracking": {"type": FlowTracking},
                                 "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             }
-                            profile: str | None
-                            """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                             name: str
                             """
                             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                             For a
                             subinterface, the parent physical interface is automatically created.
                             """
+                            profile: str | None
+                            """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                             description: str | None
                             """
                             Interface description.
@@ -41768,8 +41768,8 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    profile: str | None | UndefinedType = Undefined,
                                     name: str | UndefinedType = Undefined,
+                                    profile: str | None | UndefinedType = Undefined,
                                     description: str | None | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
                                     dhcp_ip: str | None | UndefinedType = Undefined,
@@ -41804,11 +41804,11 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                         name:
                                            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                            For a
                                            subinterface, the parent physical interface is automatically created.
+                                        profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                         description:
                                            Interface description.
                                            If not set a default description will be configured with '[<peer>[
@@ -46558,8 +46558,8 @@ class EosDesigns(EosDesignsRootModel):
                                     """
 
                         _fields: ClassVar[dict] = {
-                            "profile": {"type": str},
                             "name": {"type": str},
+                            "profile": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
                             "dhcp_ip": {"type": str},
@@ -46587,14 +46587,14 @@ class EosDesigns(EosDesignsRootModel):
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         }
-                        profile: str | None
-                        """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                         name: str
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
                         subinterface, the parent physical interface is automatically created.
                         """
+                        profile: str | None
+                        """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                         description: str | None
                         """
                         Interface description.
@@ -46749,8 +46749,8 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                profile: str | None | UndefinedType = Undefined,
                                 name: str | UndefinedType = Undefined,
+                                profile: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
@@ -46785,11 +46785,11 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
                                        subinterface, the parent physical interface is automatically created.
+                                    profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
                                        If not set a default description will be configured with '[<peer>[
@@ -51613,8 +51613,8 @@ class EosDesigns(EosDesignsRootModel):
                                     """
 
                         _fields: ClassVar[dict] = {
-                            "profile": {"type": str},
                             "name": {"type": str},
+                            "profile": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
                             "dhcp_ip": {"type": str},
@@ -51642,14 +51642,14 @@ class EosDesigns(EosDesignsRootModel):
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         }
-                        profile: str | None
-                        """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                         name: str
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
                         subinterface, the parent physical interface is automatically created.
                         """
+                        profile: str | None
+                        """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                         description: str | None
                         """
                         Interface description.
@@ -51804,8 +51804,8 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                profile: str | None | UndefinedType = Undefined,
                                 name: str | UndefinedType = Undefined,
+                                profile: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
@@ -51840,11 +51840,11 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
                                        subinterface, the parent physical interface is automatically created.
+                                    profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
                                        If not set a default description will be configured with '[<peer>[
@@ -68913,8 +68913,8 @@ class EosDesigns(EosDesignsRootModel):
                                     """
 
                         _fields: ClassVar[dict] = {
-                            "profile": {"type": str},
                             "name": {"type": str},
+                            "profile": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
                             "dhcp_ip": {"type": str},
@@ -68942,14 +68942,14 @@ class EosDesigns(EosDesignsRootModel):
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         }
-                        profile: str | None
-                        """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                         name: str
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
                         subinterface, the parent physical interface is automatically created.
                         """
+                        profile: str | None
+                        """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                         description: str | None
                         """
                         Interface description.
@@ -69104,8 +69104,8 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                profile: str | None | UndefinedType = Undefined,
                                 name: str | UndefinedType = Undefined,
+                                profile: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
@@ -69140,11 +69140,11 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
                                        subinterface, the parent physical interface is automatically created.
+                                    profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
                                        If not set a default description will be configured with '[<peer>[
@@ -73953,8 +73953,8 @@ class EosDesigns(EosDesignsRootModel):
                                         """
 
                             _fields: ClassVar[dict] = {
-                                "profile": {"type": str},
                                 "name": {"type": str},
+                                "profile": {"type": str},
                                 "description": {"type": str},
                                 "ip_address": {"type": str},
                                 "dhcp_ip": {"type": str},
@@ -73982,14 +73982,14 @@ class EosDesigns(EosDesignsRootModel):
                                 "flow_tracking": {"type": FlowTracking},
                                 "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             }
-                            profile: str | None
-                            """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                             name: str
                             """
                             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                             For a
                             subinterface, the parent physical interface is automatically created.
                             """
+                            profile: str | None
+                            """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                             description: str | None
                             """
                             Interface description.
@@ -74144,8 +74144,8 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    profile: str | None | UndefinedType = Undefined,
                                     name: str | UndefinedType = Undefined,
+                                    profile: str | None | UndefinedType = Undefined,
                                     description: str | None | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
                                     dhcp_ip: str | None | UndefinedType = Undefined,
@@ -74180,11 +74180,11 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                         name:
                                            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                            For a
                                            subinterface, the parent physical interface is automatically created.
+                                        profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                         description:
                                            Interface description.
                                            If not set a default description will be configured with '[<peer>[
@@ -78934,8 +78934,8 @@ class EosDesigns(EosDesignsRootModel):
                                     """
 
                         _fields: ClassVar[dict] = {
-                            "profile": {"type": str},
                             "name": {"type": str},
+                            "profile": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
                             "dhcp_ip": {"type": str},
@@ -78963,14 +78963,14 @@ class EosDesigns(EosDesignsRootModel):
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         }
-                        profile: str | None
-                        """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                         name: str
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
                         subinterface, the parent physical interface is automatically created.
                         """
+                        profile: str | None
+                        """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                         description: str | None
                         """
                         Interface description.
@@ -79125,8 +79125,8 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                profile: str | None | UndefinedType = Undefined,
                                 name: str | UndefinedType = Undefined,
+                                profile: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
@@ -79161,11 +79161,11 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
                                        subinterface, the parent physical interface is automatically created.
+                                    profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
                                        If not set a default description will be configured with '[<peer>[
@@ -83989,8 +83989,8 @@ class EosDesigns(EosDesignsRootModel):
                                     """
 
                         _fields: ClassVar[dict] = {
-                            "profile": {"type": str},
                             "name": {"type": str},
+                            "profile": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
                             "dhcp_ip": {"type": str},
@@ -84018,14 +84018,14 @@ class EosDesigns(EosDesignsRootModel):
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         }
-                        profile: str | None
-                        """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                         name: str
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
                         subinterface, the parent physical interface is automatically created.
                         """
+                        profile: str | None
+                        """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
                         description: str | None
                         """
                         Interface description.
@@ -84180,8 +84180,8 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                profile: str | None | UndefinedType = Undefined,
                                 name: str | UndefinedType = Undefined,
+                                profile: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
@@ -84216,11 +84216,11 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
                                        subinterface, the parent physical interface is automatically created.
+                                    profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
                                        If not set a default description will be configured with '[<peer>[
