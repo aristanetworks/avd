@@ -10470,7 +10470,7 @@ class EosDesigns(EosDesignsRootModel):
         flow_tracker_type: FlowTrackerType | None
         """
         Set the flow tracker type.
-        Override the `default_flow_tracker_type`` set at the `node_type_key`
+        Override the `default_flow_tracker_type` set at the `node_type_key`
         level.
         `default_flow_tracker_type` default value is `sampled`.
         """
@@ -11247,7 +11247,7 @@ class EosDesigns(EosDesignsRootModel):
                        Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                     flow_tracker_type:
                        Set the flow tracker type.
-                       Override the `default_flow_tracker_type`` set at the `node_type_key`
+                       Override the `default_flow_tracker_type` set at the `node_type_key`
                        level.
                        `default_flow_tracker_type` default value is `sampled`.
                     underlay_multicast: Subclass of AvdModel.
@@ -15537,7 +15537,7 @@ class EosDesigns(EosDesignsRootModel):
         flow_tracker_type: FlowTrackerType | None
         """
         Set the flow tracker type.
-        Override the `default_flow_tracker_type`` set at the `node_type_key`
+        Override the `default_flow_tracker_type` set at the `node_type_key`
         level.
         `default_flow_tracker_type` default value is `sampled`.
         """
@@ -16323,7 +16323,7 @@ class EosDesigns(EosDesignsRootModel):
                        Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                     flow_tracker_type:
                        Set the flow tracker type.
-                       Override the `default_flow_tracker_type`` set at the `node_type_key`
+                       Override the `default_flow_tracker_type` set at the `node_type_key`
                        level.
                        `default_flow_tracker_type` default value is `sampled`.
                     underlay_multicast: Subclass of AvdModel.
@@ -38588,7 +38588,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
-                    Override the `default_flow_tracker_type`` set at the `node_type_key`
+                    Override the `default_flow_tracker_type` set at the `node_type_key`
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
@@ -39348,7 +39348,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                 flow_tracker_type:
                                    Set the flow tracker type.
-                                   Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                   Override the `default_flow_tracker_type` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 underlay_multicast: Subclass of AvdModel.
@@ -43646,7 +43646,7 @@ class EosDesigns(EosDesignsRootModel):
                         flow_tracker_type: FlowTrackerType | None
                         """
                         Set the flow tracker type.
-                        Override the `default_flow_tracker_type`` set at the `node_type_key`
+                        Override the `default_flow_tracker_type` set at the `node_type_key`
                         level.
                         `default_flow_tracker_type` default value is `sampled`.
                         """
@@ -44415,7 +44415,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                     flow_tracker_type:
                                        Set the flow tracker type.
-                                       Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                       Override the `default_flow_tracker_type` set at the `node_type_key`
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
                                     underlay_multicast: Subclass of AvdModel.
@@ -48624,7 +48624,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
-                    Override the `default_flow_tracker_type`` set at the `node_type_key`
+                    Override the `default_flow_tracker_type` set at the `node_type_key`
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
@@ -49395,7 +49395,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                 flow_tracker_type:
                                    Set the flow tracker type.
-                                   Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                   Override the `default_flow_tracker_type` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 underlay_multicast: Subclass of AvdModel.
@@ -53676,7 +53676,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
-                    Override the `default_flow_tracker_type`` set at the `node_type_key`
+                    Override the `default_flow_tracker_type` set at the `node_type_key`
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
@@ -54445,7 +54445,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                 flow_tracker_type:
                                    Set the flow tracker type.
-                                   Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                   Override the `default_flow_tracker_type` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 underlay_multicast: Subclass of AvdModel.
@@ -70964,7 +70964,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
-                    Override the `default_flow_tracker_type`` set at the `node_type_key`
+                    Override the `default_flow_tracker_type` set at the `node_type_key`
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
@@ -71724,7 +71724,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                 flow_tracker_type:
                                    Set the flow tracker type.
-                                   Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                   Override the `default_flow_tracker_type` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 underlay_multicast: Subclass of AvdModel.
@@ -76022,7 +76022,7 @@ class EosDesigns(EosDesignsRootModel):
                         flow_tracker_type: FlowTrackerType | None
                         """
                         Set the flow tracker type.
-                        Override the `default_flow_tracker_type`` set at the `node_type_key`
+                        Override the `default_flow_tracker_type` set at the `node_type_key`
                         level.
                         `default_flow_tracker_type` default value is `sampled`.
                         """
@@ -76791,7 +76791,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                     flow_tracker_type:
                                        Set the flow tracker type.
-                                       Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                       Override the `default_flow_tracker_type` set at the `node_type_key`
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
                                     underlay_multicast: Subclass of AvdModel.
@@ -81000,7 +81000,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
-                    Override the `default_flow_tracker_type`` set at the `node_type_key`
+                    Override the `default_flow_tracker_type` set at the `node_type_key`
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
@@ -81771,7 +81771,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                 flow_tracker_type:
                                    Set the flow tracker type.
-                                   Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                   Override the `default_flow_tracker_type` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 underlay_multicast: Subclass of AvdModel.
@@ -86052,7 +86052,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracker_type: FlowTrackerType | None
                     """
                     Set the flow tracker type.
-                    Override the `default_flow_tracker_type`` set at the `node_type_key`
+                    Override the `default_flow_tracker_type` set at the `node_type_key`
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
@@ -86821,7 +86821,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
                                 flow_tracker_type:
                                    Set the flow tracker type.
-                                   Override the `default_flow_tracker_type`` set at the `node_type_key`
+                                   Override the `default_flow_tracker_type` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 underlay_multicast: Subclass of AvdModel.
@@ -87306,18 +87306,30 @@ class EosDesigns(EosDesignsRootModel):
                     {
                         "platforms": ["750", "755", "758"],
                         "management_interface": "Management0",
-                        "feature_support": {"poe": True, "queue_monitor_length_notify": False},
+                        "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["720DP", "722XP", "710P"],
-                        "feature_support": {"poe": True, "queue_monitor_length_notify": False},
+                        "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
-                        "platforms": ["7010TX"],
+                        "platforms": ["720DP-24ZS", "720DP-48ZS"],
+                        "feature_support": {"queue_monitor_length_notify": False, "poe": True},
+                        "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
+                        "platforms": ["720DF"],
+                        "feature_support": {"queue_monitor_length_notify": False},
+                        "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
+                        "platforms": ["720DT", "7010TX"],
                         "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
@@ -88997,7 +89009,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """
