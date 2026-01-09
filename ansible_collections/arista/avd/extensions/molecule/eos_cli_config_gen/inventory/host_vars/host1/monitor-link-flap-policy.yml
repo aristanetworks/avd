@@ -28,6 +28,10 @@ monitor_link_flap_policy:
       max_flaps:
         flaps: 23
         time: 10
+    - name: LFP5
+      damping_penalty:
+        threshold:
+          reuse: 1
   default_profiles:
     - LFP3
     - LFP1

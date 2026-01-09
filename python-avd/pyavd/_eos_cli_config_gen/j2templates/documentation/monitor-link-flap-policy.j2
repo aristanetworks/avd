@@ -21,7 +21,7 @@
 {%                     set ns._mac_penalty = ns._mac_penalty ~ fault.penalty ~ "<br>" %}
 {%                 endfor %}
 {%             endif %}
-| {{ profile.name }} | {{ profile.damping_penalty is arista.avd.defined }} | {{ profile.damping_penalty.decay.half_life | arista.avd.default("-") }} | {{ profile.damping_penalty.decay.units | arista.avd.default("-") }} | {{ ns._mac_location | arista.avd.default("-") }} | {{ ns._mac_penalty | arista.avd.default("-") }} | {{ profile.damping_penalty.threshold.maximum | arista.avd.default("-") }} | {{ profile.damping_penalty.threshold.reuse | arista.avd.default("-") }} | {{ profile.damping_penalty.threshold.suppression | arista.avd.default("-") }} | {{ profile.max_flaps.flaps | arista.avd.default("-") }} | {{ profile.max_flaps.time | arista.avd.default("-") }} | {{ profile.max_flaps.violations | arista.avd.default("-") }} | {{ profile.max_flaps.intervals | arista.avd.default("-") }} |
+| {{ profile.name }} | {{ profile.damping_penalty is arista.avd.defined }} | {{ profile.damping_penalty.decay.half_life | arista.avd.default("-") }} | {{ profile.damping_penalty.decay.units | arista.avd.default("-") }} | {{ ns._mac_location | arista.avd.default("-") }} | {{ ns._mac_penalty | arista.avd.default("-") }} | {{ profile.damping_penalty.threshold.maximum | arista.avd.default("12000") }} | {{ profile.damping_penalty.threshold.reuse | arista.avd.default("750") }} | {{ profile.damping_penalty.threshold.suppression | arista.avd.default("2000") }} | {{ profile.max_flaps.flaps | arista.avd.default("-") }} | {{ profile.max_flaps.time | arista.avd.default("-") }} | {{ profile.max_flaps.violations | arista.avd.default("-") }} | {{ profile.max_flaps.intervals | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
 

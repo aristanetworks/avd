@@ -20,14 +20,10 @@ monitor link-flap policy
    profile {{ profile.name }} damping
 {%         if profile.damping_penalty.threshold is arista.avd.defined %}
 {%             set monitor_flap_cli = "penalty threshold" %}
-{%             if profile.damping_penalty.threshold.reuse is arista.avd.defined %}
-{%                 set monitor_flap_cli = monitor_flap_cli ~ " reuse " ~ profile.damping_penalty.threshold.reuse %}
-{%             endif %}
-{%             if profile.damping_penalty.threshold.suppression is arista.avd.defined %}
-{%                 set monitor_flap_cli = monitor_flap_cli ~ " suppression " ~ profile.damping_penalty.threshold.suppression %}
-{%             endif %}
-{%             if profile.damping_penalty.threshold.maximum is arista.avd.defined %}
-{%                 set monitor_flap_cli = monitor_flap_cli ~ " maximum " ~ profile.damping_penalty.threshold.maximum %}
+{%             if profile.damping_penalty.threshold | length > 0  %}
+{%                 set monitor_flap_cli = monitor_flap_cli ~ " reuse " ~ profile.damping_penalty.threshold.reuse | arista.avd.default('750') %}
+{%                 set monitor_flap_cli = monitor_flap_cli ~ " suppression " ~ profile.damping_penalty.threshold.suppression | arista.avd.default('2000') %}
+{%                 set monitor_flap_cli = monitor_flap_cli ~ " maximum " ~ profile.damping_penalty.threshold.maximum | arista.avd.default('12000') %}
 {%             endif %}
       {{ monitor_flap_cli }}
 {%         endif %}

@@ -3825,10 +3825,11 @@ load-balance cluster
 
 | Name | Damping | Decay Half-Life | Decay Units | MAC Fault Location | MAC Fault Penalty | Threshold Max | Threshold Reuse | Threshold Suppression | Max Flaps | Time | Violations | Intervals |
 | ---- | ------- | --------------- | ----------- | ------------------ | ----------------- | ------------- | --------------- | --------------------- | --------- | ---- | ---------- | --------- |
-| LFP1 | False | - | - | - | - | - | - | - | 11 | 12 | 5 | 10 |
+| LFP1 | False | - | - | - | - | 12000 | 750 | 2000 | 11 | 12 | 5 | 10 |
 | LFP2 | True | 5 | seconds | local<br>remote<br> | 5<br>10<br> | 5 | 2 | 100 | - | - | - | - |
-| LFP3 | True | - | - | - | - | - | - | - | - | - | - | - |
-| LFP4 | False | - | - | - | - | - | - | - | 23 | 10 | - | - |
+| LFP3 | True | - | - | - | - | 12000 | 750 | 2000 | - | - | - | - |
+| LFP4 | False | - | - | - | - | 12000 | 750 | 2000 | 23 | 10 | - | - |
+| LFP5 | True | - | - | - | - | 12000 | 1 | 2000 | - | - | - | - |
 
 ### Default Profiles
 
@@ -3848,6 +3849,9 @@ monitor link-flap policy
       penalty mac fault remote 10
    !
    profile LFP3 damping
+   !
+   profile LFP5 damping
+      penalty threshold reuse 1 suppression 2000 maximum 12000
    profile LFP1 max-flaps 11 time 12 violations 5 intervals 10
    profile LFP4 max-flaps 23 time 10
    default-profiles LFP1 LFP3
