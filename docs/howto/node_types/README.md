@@ -205,7 +205,7 @@ uplink_type: p2p  # p2p, port-channel, p2p-vrfs, lan
 - **p2p-vrfs**: Layer 3 uplinks with subinterfaces per VRF
 - **lan**: LAN uplinks for campus designs
 
-For a complete list of properties, see the [Node Type Customization](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.html#node-type-customization) documentation.
+For a complete list of properties, see the [Node Type Customization](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#node-type-customization) documentation.
 
 ## Advanced Example: MPLS PE Router
 
