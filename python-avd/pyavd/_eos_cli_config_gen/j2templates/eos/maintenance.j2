@@ -30,7 +30,7 @@ maintenance
 {%         set first_line = {'flag': False} %}
    profile unit {{ maintenance.default_unit_profile }} default
 {%     endif %}
-{%     for interface_profile in maintenance.interface_profiles | arista.avd.natural_sort('name') %}
+{%     for interface_profile in maintenance.interface_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%         if not first_line.flag %}
    !
 {%         endif %}
@@ -56,7 +56,7 @@ maintenance
       on-boot duration {{ unit_profile.on_boot.duration }}
 {%         endif %}
 {%     endfor %}
-{%     for unit in maintenance.units | arista.avd.natural_sort('name') %}
+{%     for unit in maintenance.units | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%         if not first_line.flag %}
    !
 {%         endif %}
