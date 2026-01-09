@@ -1564,7 +1564,6 @@ radius-server tls ssl-profile GLOBAL_RADIUS_SSL_PROFILE
 radius-server dynamic-authorization tls ssl-profile SSL_PROFILE
 radius-server host 10.10.10.158 timeout 1 retransmit 1 key 7 <removed>
 radius-server host 10.10.11.156 tls port 1700 timeout 1 retransmit 1
-radius-server host 10.10.11.156 key 7 <removed>
 radius-server host 10.10.11.156 timeout 34 retransmit 45 key 7 <removed>
 radius-server host 10.10.11.156 tls port 345
 radius-server host 10.10.10.249 timeout 1 retransmit 1 key 7 <removed>
@@ -1573,7 +1572,6 @@ radius-server host 10.10.11.159 vrf mgt retransmit 1 key 7 <removed>
 radius-server host 10.10.11.160 vrf mgt timeout 1 key 7 <removed>
 radius-server host 10.10.11.248 vrf mgt key 7 <removed>
 radius-server host 10.10.11.155 vrf mgt tls ssl-profile HOST_SSL_PROFILE port 2083 timeout 1 retransmit 1
-radius-server host 10.10.11.155 vrf mgt key 7 <removed>
 ```
 
 ### IP RADIUS Source Interfaces
