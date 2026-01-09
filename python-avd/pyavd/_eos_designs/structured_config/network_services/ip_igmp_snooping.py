@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast, overload
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
@@ -38,8 +38,25 @@ class IpIgmpSnoopingMixin(Protocol):
             for vrf in tenant.vrfs:
                 for svi in vrf.svis:
                     self._set_ip_igmp_snooping_vlan(svi, tenant, vrf)
+
             for l2vlan in tenant.l2vlans:
                 self._set_ip_igmp_snooping_vlan(l2vlan, tenant, vrf=None)
+
+    @overload
+    def _set_ip_igmp_snooping_vlan(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+    ) -> None: ...
+
+    @overload
+    def _set_ip_igmp_snooping_vlan(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+        vrf: None,
+    ) -> None: ...
 
     def _set_ip_igmp_snooping_vlan(
         self: AvdStructuredConfigNetworkServicesProtocol,
@@ -51,7 +68,10 @@ class IpIgmpSnoopingMixin(Protocol):
         """
         Set ip_igmp_snooping structured_config for one vlan.
 
-        Can be used for both svis and l2vlans
+        Can be used for both SVIs and L2vlans
+
+        This function assumes that when a L2vlansItem is passed, the VRF is set to None, and when an SvisItem is passed,
+        the VRF is not None.
         """
         igmp_snooping_enabled = None
         igmp_snooping_querier_enabled = None
@@ -76,7 +96,13 @@ class IpIgmpSnoopingMixin(Protocol):
         if igmp_snooping_querier_enabled is not None:
             vlan_item.querier.enabled = igmp_snooping_querier_enabled
             if igmp_snooping_querier_enabled:
-                vlan_item.querier.address = self._get_igmp_snooping_querier_source_address(vlan, tenant, vrf)
+                if vrf is None:
+                    vlan = cast("EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem", vlan)
+                    vlan_item.querier.address = self._get_l2vlan_igmp_querier_source_address(vlan, tenant)
+                else:  # SVI
+                    vlan = cast("EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem", vlan)
+                    vlan_item.querier.address = self._get_svi_igmp_querier_source_address(vlan, tenant, vrf)
+
                 vlan_item.querier.version = default(vlan.igmp_snooping_querier.version, tenant.igmp_snooping_querier.version)
 
         if evpn_l2_multicast_enabled:
@@ -86,46 +112,62 @@ class IpIgmpSnoopingMixin(Protocol):
             vlan_item.id = vlan.id
             self.structured_config.ip_igmp_snooping.vlans.append(vlan_item)
 
-    def _get_igmp_snooping_querier_source_address(
+    def _get_l2vlan_igmp_querier_source_address(
         self: AvdStructuredConfigNetworkServicesProtocol,
-        vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem
-        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
+        l2vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
         tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
-        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem | None,
     ) -> str:
-        """
-        Return the IGMP snooping querier source address for a given VLAN.
+        """Return the IGMP snooping querier source address for an L2VLAN."""
+        source_address_key = default(l2vlan.igmp_snooping_querier.source_address, tenant.igmp_snooping_querier.source_address)
 
-        For an SVI attached to a VRF, if the source address is 'vrf_router_id', the VRF router ID is returned.
-        For an L2VLAN, 'vrf_router_id' and 'diagnostic_loopback' are treated as 'main_router_id'.
-        """
-        source_address_key = default(vlan.igmp_snooping_querier.source_address, tenant.igmp_snooping_querier.source_address)
-        source_address = None
-
-        if vrf is not None:
-            if source_address_key == "vrf_router_id":
-                source_address = (
-                    self.shared_utils.router_id if vrf.bgp.router_id == "main_router_id" else self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
-                )
-            elif source_address_key == "main_router_id":
+        match source_address_key:
+            case "main_router_id" | "diagnostic_loopback" | "vrf_router_id":
                 source_address = self.shared_utils.router_id
-            elif source_address_key:
-                source_address = self.get_vrf_router_id(
-                    vrf, tenant, source_address_key, error_context="'igmp_snooping_querier.source_address' is set to 'diagnostic_loopback' on the VLAN"
-                )
+            case _:
+                source_address = source_address_key
 
-        # For L2VLANs, 'vrf_router_id' and 'diagnostic_loopback' are treated as 'main_router_id'.
-        elif source_address_key in {"main_router_id", "diagnostic_loopback", "vrf_router_id"}:
-            source_address = self.shared_utils.router_id
-        else:
-            source_address = source_address_key
+        if source_address is None:
+            msg = (
+                f"Unable to determine the IGMP snooping querier source address for VLAN '{l2vlan.name}' in Tenant '{tenant.name}'. "
+                f"The configured 'igmp_snooping_querier.source_address: {source_address_key}' resolved to None."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+        return source_address
+
+    def _get_svi_igmp_querier_source_address(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+    ) -> str:
+        """Return the IGMP snooping querier source address for an SVI."""
+        source_address_key = default(svi.igmp_snooping_querier.source_address, tenant.igmp_snooping_querier.source_address)
+
+        match source_address_key:
+            case "main_router_id":
+                source_address = self.shared_utils.router_id
+            case "vrf_router_id":
+                # Using the BGP router ID configuration.
+                source_address = self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
+            case "diagnostic_loopback":
+                try:
+                    source_address = self.get_vrf_router_id(vrf, tenant, source_address_key)
+                except AristaAvdInvalidInputsError:
+                    # Re-raise with IGMP-specific context
+                    msg = (
+                        f"Invalid configuration on VRF '{vrf.name}' in Tenant '{tenant.name}'. 'vtep_diagnostic.loopback' along with either "
+                        "'vtep_diagnostic.loopback_ip_pools' or 'vtep_diagnostic.loopback_ip_range' must be defined "
+                        "when 'igmp_snooping_querier.source_address' is set to 'diagnostic_loopback' on the VLAN."
+                    )
+                    raise AristaAvdInvalidInputsError(msg) from None
+            case _:
+                source_address = source_address_key
 
         if source_address is not None:
             return source_address
 
-        vrf_info = f" in VRF '{vrf.name}'" if vrf else ""
         msg = (
-            f"Unable to determine the IGMP snooping querier source address for VLAN '{vlan.name}'{vrf_info} in Tenant '{tenant.name}'. "
+            f"Unable to determine the IGMP snooping querier source address for VLAN '{svi.name}' in VRF '{vrf.name}' in Tenant '{tenant.name}'. "
             f"The configured 'igmp_snooping_querier.source_address: {source_address_key}' resolved to None."
         )
         raise AristaAvdInvalidInputsError(msg)

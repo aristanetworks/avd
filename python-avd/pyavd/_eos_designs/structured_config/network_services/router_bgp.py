@@ -161,7 +161,7 @@ class RouterBgpMixin(Protocol):
                     self._update_router_bgp_vrf_evpn_or_mpls_cfg(bgp_vrf, vrf, vrf_address_families)
 
                 if vrf.name != "default":
-                    bgp_vrf.router_id = self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
+                    bgp_vrf.router_id = self.get_protocol_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
 
                     if vrf.redistribute_connected:
                         bgp_vrf.redistribute.connected.enabled = True
