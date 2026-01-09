@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from ipaddress import IPv4Address, AddressValueError
+from ipaddress import AddressValueError, IPv4Address
 from typing import TYPE_CHECKING, Protocol, cast, overload
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
