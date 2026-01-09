@@ -10320,7 +10320,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             role.
             """
             validate_lldp: bool | None
-            """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+            """
+            Controls LLDP topology validation performed by the `anta_runner` role.
+            - Unset (Default): The peer
+            is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+            (`is_deployed: true`)
+            and the peer interface is not administratively shutdown.
+            - `true`: Forces
+            validation. Use this for connected endpoints not managed by AVD.
+            - `false`: Disables validation for
+            the interface.
+            """
 
             if TYPE_CHECKING:
 
@@ -10350,7 +10360,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         validate_state:
                            Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                            role.
-                        validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                        validate_lldp:
+                           Controls LLDP topology validation performed by the `anta_runner` role.
+                           - Unset (Default): The peer
+                           is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+                           (`is_deployed: true`)
+                           and the peer interface is not administratively shutdown.
+                           - `true`: Forces
+                           validation. Use this for connected endpoints not managed by AVD.
+                           - `false`: Disables validation for
+                           the interface.
 
                     """
 
@@ -12573,6 +12592,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "mtu": {"type": int},
             "l2_mtu": {"type": int},
             "l2_mru": {"type": int},
+            "loop_protection": {"type": bool},
             "arp_gratuitous_accept": {"type": bool},
             "l2_protocol": {"type": L2Protocol},
             "mac_timestamp": {"type": str},
@@ -12681,6 +12701,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
         l2_mru: int | None
         """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
+        loop_protection: bool | None
+        """Enable/disable loop protection."""
         arp_gratuitous_accept: bool | None
         """Accept gratuitous ARP."""
         l2_protocol: L2Protocol
@@ -12901,6 +12923,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 mtu: int | None | UndefinedType = Undefined,
                 l2_mtu: int | None | UndefinedType = Undefined,
                 l2_mru: int | None | UndefinedType = Undefined,
+                loop_protection: bool | None | UndefinedType = Undefined,
                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 l2_protocol: L2Protocol | UndefinedType = Undefined,
                 mac_timestamp: MacTimestamp | None | UndefinedType = Undefined,
@@ -13011,6 +13034,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     mtu: mtu
                     l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
+                    loop_protection: Enable/disable loop protection.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     l2_protocol: Subclass of AvdModel.
                     mac_timestamp:
@@ -25761,6 +25785,66 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class MonitorLoopProtection(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {
+            "enabled": {"type": bool},
+            "disabled_time": {"type": int},
+            "protect_vlan": {"type": str},
+            "rate_limit": {"type": int},
+            "transmit_interval": {"type": int},
+        }
+        enabled: bool | None
+        disabled_time: int | None
+        """
+        Port disable time. EOS default is 604800 seconds (7 days).
+        0 indicates that the disabled device
+        should not automatically come back up.
+        """
+        protect_vlan: str | None
+        """
+        VLAN range as string.
+        "< vlan_id >, < vlan_id >-< vlan_id >"
+        Example: 15,16,17,18
+        """
+        rate_limit: int | None
+        """Rate limits the loop detection frames. EOS default is 1000/second."""
+        transmit_interval: int | None
+        """Loop protection packet transmit interval. EOS default is 5 seconds."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                enabled: bool | None | UndefinedType = Undefined,
+                disabled_time: int | None | UndefinedType = Undefined,
+                protect_vlan: str | None | UndefinedType = Undefined,
+                rate_limit: int | None | UndefinedType = Undefined,
+                transmit_interval: int | None | UndefinedType = Undefined,
+            ) -> None:
+                """
+                MonitorLoopProtection.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    enabled: enabled
+                    disabled_time:
+                       Port disable time. EOS default is 604800 seconds (7 days).
+                       0 indicates that the disabled device
+                       should not automatically come back up.
+                    protect_vlan:
+                       VLAN range as string.
+                       "< vlan_id >, < vlan_id >-< vlan_id >"
+                       Example: 15,16,17,18
+                    rate_limit: Rate limits the loop detection frames. EOS default is 1000/second.
+                    transmit_interval: Loop protection packet transmit interval. EOS default is 5 seconds.
+
+                """
+
     class MonitorServerRadius(AvdModel):
         """Subclass of AvdModel."""
 
@@ -32420,7 +32504,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             role.
             """
             validate_lldp: bool | None
-            """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
+            """
+            Controls LLDP topology validation performed by the `anta_runner` role.
+            - Unset (Default): The peer
+            is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+            (`is_deployed: true`)
+            and the peer interface is not administratively shutdown.
+            - `true`: Forces
+            validation. Use this for connected endpoints not managed by AVD.
+            - `false`: Disables validation for
+            the interface.
+            """
 
             if TYPE_CHECKING:
 
@@ -32448,7 +32542,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         validate_state:
                            Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
                            role.
-                        validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+                        validate_lldp:
+                           Controls LLDP topology validation performed by the `anta_runner` role.
+                           - Unset (Default): The peer
+                           is treated as an AVD-managed device. Validation is performed only if the peer is deployed
+                           (`is_deployed: true`)
+                           and the peer interface is not administratively shutdown.
+                           - `true`: Forces
+                           validation. Use this for connected endpoints not managed by AVD.
+                           - `false`: Disables validation for
+                           the interface.
 
                     """
 
@@ -68766,6 +68869,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "mlag_configuration": {"type": MlagConfiguration},
         "monitor_connectivity": {"type": MonitorConnectivity},
         "monitor_layer1": {"type": MonitorLayer1},
+        "monitor_loop_protection": {"type": MonitorLoopProtection},
         "monitor_server_radius": {"type": MonitorServerRadius},
         "monitor_session_default_encapsulation_gre": {"type": MonitorSessionDefaultEncapsulationGre},
         "monitor_sessions": {"type": MonitorSessions},
@@ -69187,6 +69291,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     Subclass of AvdModel.
     """
+    monitor_loop_protection: MonitorLoopProtection
+    """Subclass of AvdModel."""
     monitor_server_radius: MonitorServerRadius
     """
     Settings to monitor radius servers.
@@ -69508,6 +69614,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             mlag_configuration: MlagConfiguration | UndefinedType = Undefined,
             monitor_connectivity: MonitorConnectivity | UndefinedType = Undefined,
             monitor_layer1: MonitorLayer1 | UndefinedType = Undefined,
+            monitor_loop_protection: MonitorLoopProtection | UndefinedType = Undefined,
             monitor_server_radius: MonitorServerRadius | UndefinedType = Undefined,
             monitor_session_default_encapsulation_gre: MonitorSessionDefaultEncapsulationGre | UndefinedType = Undefined,
             monitor_sessions: MonitorSessions | UndefinedType = Undefined,
@@ -69805,6 +69912,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Enable SYSLOG messages on transceiver SMBus communication failures.
 
                    Subclass of AvdModel.
+                monitor_loop_protection: Subclass of AvdModel.
                 monitor_server_radius:
                    Settings to monitor radius servers.
 
