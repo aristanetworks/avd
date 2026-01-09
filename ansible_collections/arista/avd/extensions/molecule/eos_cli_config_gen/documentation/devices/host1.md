@@ -14221,6 +14221,19 @@ qos profile test_with_pfc
 !
 qos profile uc_mc_queues_test
    !
+   mc-tx-queue 1
+      no priority
+      bandwidth percent 50
+   !
+   mc-tx-queue 2
+      !! Test strict priority
+      priority strict
+      bandwidth percent 10
+   !
+   mc-tx-queue 4
+      !! Test guaranteed percent
+      bandwidth guaranteed percent 10
+   !
    uc-tx-queue 1
       !! Test no priority
       no priority
@@ -14236,19 +14249,6 @@ qos profile uc_mc_queues_test
       !! Test guaranteed percent
       bandwidth guaranteed percent 10
       random-detect ecn minimum-threshold 320 segments maximum-threshold 320 segments weight 10
-   !
-   mc-tx-queue 1
-      no priority
-      bandwidth percent 50
-   !
-   mc-tx-queue 2
-      !! Test strict priority
-      priority strict
-      bandwidth percent 10
-   !
-   mc-tx-queue 4
-      !! Test guaranteed percent
-      bandwidth guaranteed percent 10
 !
 qos profile wred_queues_test
    !

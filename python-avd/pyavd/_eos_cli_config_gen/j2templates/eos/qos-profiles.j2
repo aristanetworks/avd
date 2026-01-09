@@ -61,9 +61,6 @@ qos profile {{ profile.name }}
 {%     for tx_queue in profile.tx_queues | arista.avd.natural_sort('id') %}
 {%         include 'eos/ethernet-interface-tx-queues.j2' %}
 {%     endfor %}
-{%     for uc_tx_queue in profile.uc_tx_queues | arista.avd.natural_sort('id') %}
-{%         include 'eos/ethernet-interface-uc-tx-queues.j2' %}
-{%     endfor %}
 {%     for mc_tx_queue in profile.mc_tx_queues | arista.avd.natural_sort('id') %}
    !
    mc-tx-queue {{ mc_tx_queue.id }}
@@ -83,5 +80,8 @@ qos profile {{ profile.name }}
 {%         if mc_tx_queue.shape.rate is arista.avd.defined %}
       shape rate {{ mc_tx_queue.shape.rate }}
 {%         endif %}
+{%     endfor %}
+{%     for uc_tx_queue in profile.uc_tx_queues | arista.avd.natural_sort('id') %}
+{%         include 'eos/ethernet-interface-uc-tx-queues.j2' %}
 {%     endfor %}
 {% endfor %}
