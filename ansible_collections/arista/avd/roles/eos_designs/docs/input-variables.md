@@ -973,32 +973,82 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-cv-pathfinder-z
 
 ## Management settings
 
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-settings.md
---8<--
-
-### Source-interfaces settings
+### AAA
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-source-interfaces-settings.md
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/aaa-settings.md
 --8<--
 
-### sFlow settings
+### DNS
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-sflow-settings.md
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/dns-settings.md
 --8<--
 
-### Flow Tracking Settings
+### Event handlers
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/event-handlers.md
+--8<--
+
+### Flow tracking
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-flow-tracking-settings.md
 --8<--
 
-### SNMP settings
+### Logging
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/logging-settings.md
+--8<--
+
+### Management eAPI
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-eapi.md
+--8<--
+
+### Management interface
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-interface-settings.md
+--8<--
+
+### Time configuration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/time-configuration.md
+--8<--
+
+### sFlow
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-sflow-settings.md
+--8<--
+
+### Source-interfaces
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-source-interfaces-settings.md
+--8<--
+
+### SNMP
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-snmp-settings.md
+--8<--
+
+### SSH
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/ssh-settings.md
+--8<--
+
+### ZTP
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/inband-ztp-bootstrap-file.md
 --8<--
 
 ## Monitoring
