@@ -32,7 +32,6 @@ validation_profiles:
       min_fabric_cards: 5
       transceiver_manufacturers:
         - Third-party vendor
-
 type: l3leaf
 l3leaf:
   defaults:

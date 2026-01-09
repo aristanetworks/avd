@@ -39,10 +39,10 @@ flow_tracking:
   sampled:
     sample: 10000
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER-10
+      record_export:
         on_inactive_timeout: 50020
         on_interval: 300321
-      name: FLOW-TRACKER-10
       exporters:
       - name: ayush_exporter
         collectors:
