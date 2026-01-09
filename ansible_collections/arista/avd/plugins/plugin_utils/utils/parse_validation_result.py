@@ -27,7 +27,7 @@ def parse_validation_result(validation_result: ValidationResult, hostname: str, 
 
     for deprecation in validation_result.deprecations:
         ansible_display.deprecated(
-            msg=f"{hostname}: {deprecation}",
+            msg=f"{hostname}: {deprecation.message}",
             version=str(deprecation.version) if deprecation.version else None,
             collection_name="arista.avd",
             removed=deprecation.removed,
