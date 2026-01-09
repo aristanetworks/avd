@@ -1,0 +1,39 @@
+---
+underlay_routing_protocol: ospf
+underlay_ospf_process_id: 101
+underlay_ospf_graceful_restart: false
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: conflict-underlay-ospf-with-network-services
+      bgp_as: 102
+      id: 102
+
+tenants:
+  - name: Tenant-A
+    vrfs:
+      - name: default
+        vrf_id: 2
+        ospf:
+          enabled: true
+          process_id: 101
+          # max_lsa overwrites underlay ospf max_lsa of 12000.
+          max_lsa: 42
+        svis:
+          - id: 42
+            name: test-1
+            vni_override: 50111
+            ospf:
+              enabled: true
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for ProcessIdsItem.
+  {'id': 101, 'passive_interface_default': True, 'router_id': '192.168.255.110', 'bfd_enable': False, 'max_lsa': 12000, 'maximum_paths': None}
+  conflicts with
+  {'id': 101, 'passive_interface_default': True, 'router_id': '192.168.255.110', 'no_passive_interfaces': ['Vlan42'], 'max_lsa': 42,
+  'redistribute': {'bgp': {'enabled': True}}}.
