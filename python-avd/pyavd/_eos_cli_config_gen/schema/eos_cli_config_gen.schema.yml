@@ -5895,10 +5895,6 @@ keys:
     type: list
     primary_key: name
     display_name: IP Community Lists
-    description: 'Communities and regexp entries MUST not be configured in the same
-      community-list.
-
-      '
     items:
       type: dict
       keys:
@@ -5909,6 +5905,10 @@ keys:
           type: list
           required: true
           min_length: 1
+          description: 'Communities and regexp entries MUST not be configured in the
+            same entry.
+
+            '
           items:
             type: dict
             keys:
@@ -5946,9 +5946,7 @@ keys:
                 type: str
                 description: 'Regular Expression.
 
-                  If defined, a regex community-list will be configured.
-
-                  '
+                  If defined, a regex community-list will be configured.'
   ip_dhcp_relay:
     type: dict
     keys:
@@ -6289,6 +6287,10 @@ keys:
           type: list
           required: true
           min_length: 1
+          description: 'Large communities and regexp entries MUST not be configured
+            in the same entry.
+
+            '
           items:
             type: dict
             keys:
@@ -6315,9 +6317,7 @@ keys:
                 type: str
                 description: 'Regular Expression.
 
-                  If defined, a regex large-community-list will be configured.
-
-                  '
+                  If defined, a regex large-community-list will be configured.'
   ip_name_server_groups:
     type: list
     primary_key: name

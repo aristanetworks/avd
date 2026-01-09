@@ -15148,7 +15148,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         name: str
         """IP Community-list Name."""
         entries: Entries
-        """Subclass of AvdList with `EntriesItem` items."""
+        """
+        Communities and regexp entries MUST not be configured in the same entry.
+
+
+        Subclass of AvdList with
+        `EntriesItem` items.
+        """
 
         if TYPE_CHECKING:
 
@@ -15161,7 +15167,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     name: IP Community-list Name.
-                    entries: Subclass of AvdList with `EntriesItem` items.
+                    entries:
+                       Communities and regexp entries MUST not be configured in the same entry.
+
+
+                       Subclass of AvdList with
+                       `EntriesItem` items.
 
                 """
 
@@ -16066,7 +16077,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         name: str
         """IP Large-community-list Name."""
         entries: Entries
-        """Subclass of AvdList with `EntriesItem` items."""
+        """
+        Large communities and regexp entries MUST not be configured in the same entry.
+
+
+        Subclass of AvdList
+        with `EntriesItem` items.
+        """
 
         if TYPE_CHECKING:
 
@@ -16079,7 +16096,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     name: IP Large-community-list Name.
-                    entries: Subclass of AvdList with `EntriesItem` items.
+                    entries:
+                       Large communities and regexp entries MUST not be configured in the same entry.
+
+
+                       Subclass of AvdList
+                       with `EntriesItem` items.
 
                 """
 
@@ -69229,13 +69251,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ip_access_lists_max_entries: int | None
     """Limit ACL entries defined under the `ip_access_lists`."""
     ip_community_lists: IpCommunityLists
-    """
-    Communities and regexp entries MUST not be configured in the same community-list.
-
-
-    Subclass of
-    AvdIndexedList with `IpCommunityListsItem` items. Primary key is `name` (`str`).
-    """
+    """Subclass of AvdIndexedList with `IpCommunityListsItem` items. Primary key is `name` (`str`)."""
     ip_dhcp_relay: IpDhcpRelay
     """Subclass of AvdModel."""
     ip_dhcp_snooping: IpDhcpSnooping
@@ -69927,12 +69943,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 interface_profiles: Subclass of AvdIndexedList with `InterfaceProfilesItem` items. Primary key is `name` (`str`).
                 ip_access_lists: Subclass of AvdIndexedList with `IpAccessListsItem` items. Primary key is `name` (`str`).
                 ip_access_lists_max_entries: Limit ACL entries defined under the `ip_access_lists`.
-                ip_community_lists:
-                   Communities and regexp entries MUST not be configured in the same community-list.
-
-
-                   Subclass of
-                   AvdIndexedList with `IpCommunityListsItem` items. Primary key is `name` (`str`).
+                ip_community_lists: Subclass of AvdIndexedList with `IpCommunityListsItem` items. Primary key is `name` (`str`).
                 ip_dhcp_relay: Subclass of AvdModel.
                 ip_dhcp_snooping: Subclass of AvdModel.
                 ip_domain_lookup: Subclass of AvdModel.
