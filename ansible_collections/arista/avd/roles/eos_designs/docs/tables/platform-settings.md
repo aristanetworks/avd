@@ -590,6 +590,7 @@
           feature_support:
             poe: true
             queue_monitor_length_notify: false
+            per_interface_mtu: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -602,12 +603,34 @@
           feature_support:
             poe: true
             queue_monitor_length_notify: false
+            per_interface_mtu: false
           reload_delay:
             mlag: 300
             non_mlag: 330
           digital_twin:
             platform: vEOS-lab
         - platforms:
+          - 720DP-24ZS
+          - 720DP-48ZS
+          feature_support:
+            queue_monitor_length_notify: false
+            poe: true
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
+          - 720DF
+          feature_support:
+            queue_monitor_length_notify: false
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
+          - 720DT
           - 7010TX
           feature_support:
             queue_monitor_length_notify: false
