@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: 7358X4-LEAF1
+hostname: platform-7358X4
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -11,29 +11,14 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.255.38/32
+  ip_address: 192.168.255.1/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 192.168.254.38/32
-management_interfaces:
-- name: Management1
-  description: OOB_MANAGEMENT
-  shutdown: false
-  vrf: MGMT
-  ip_address: 192.168.201.119/24
-  type: oob
+  ip_address: 192.168.254.1/32
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
-  validate_hardware:
-    min_power_supplies: 2
-    min_fans: 4
-    min_supervisors: 2
-    min_line_cards: 10
-    min_fabric_cards: 5
-    transceiver_manufacturers:
-    - Third-party vendor
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -55,7 +40,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '925'
-  router_id: 192.168.255.38
+  router_id: 192.168.255.1
   maximum_paths:
     paths: 4
   updates:
@@ -103,7 +88,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: 7358X4-LEAF1_VTEP
+    description: platform-7358X4_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
