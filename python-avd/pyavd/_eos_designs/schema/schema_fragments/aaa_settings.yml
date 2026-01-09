@@ -8,8 +8,6 @@
 type: dict
 keys:
   aaa_settings:
-    documentation_options:
-      table: management-settings
     type: dict
     keys:
       enable_password:
