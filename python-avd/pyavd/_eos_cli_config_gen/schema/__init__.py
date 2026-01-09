@@ -7432,13 +7432,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class Ipv6DhcpRelayDestinations(AvdIndexedList[str, Ipv6DhcpRelayDestinationsItem]):
-            """
-            Subclass of AvdIndexedList with `Ipv6DhcpRelayDestinationsItem` items. Primary key is `address`
-            (`str`).
-            """
-
-            _primary_key: ClassVar[str] = "address"
+        class Ipv6DhcpRelayDestinations(AvdList[Ipv6DhcpRelayDestinationsItem]):
+            """Subclass of AvdList with `Ipv6DhcpRelayDestinationsItem` items."""
 
         Ipv6DhcpRelayDestinations._item_type = Ipv6DhcpRelayDestinationsItem
 
@@ -12743,10 +12738,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_nd_prefixes: Ipv6NdPrefixes
         """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
         ipv6_dhcp_relay_destinations: Ipv6DhcpRelayDestinations
-        """
-        Subclass of AvdIndexedList with `Ipv6DhcpRelayDestinationsItem` items. Primary key is `address`
-        (`str`).
-        """
+        """Subclass of AvdList with `Ipv6DhcpRelayDestinationsItem` items."""
         access_group_in: str | None
         """Access list name."""
         access_group_out: str | None
@@ -13047,9 +13039,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_nd_ra_disabled: ipv6_nd_ra_disabled
                     ipv6_nd_managed_config_flag: ipv6_nd_managed_config_flag
                     ipv6_nd_prefixes: Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
-                    ipv6_dhcp_relay_destinations:
-                       Subclass of AvdIndexedList with `Ipv6DhcpRelayDestinationsItem` items. Primary key is `address`
-                       (`str`).
+                    ipv6_dhcp_relay_destinations: Subclass of AvdList with `Ipv6DhcpRelayDestinationsItem` items.
                     access_group_in: Access list name.
                     access_group_out: Access list name.
                     ipv6_access_group_in: IPv6 access list name.

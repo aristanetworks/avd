@@ -351,22 +351,25 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ ip_helper_cli }}
 {%     endfor %}
-{# Need to update the data model #}
-{%     for destination in ethernet_interface.ipv6_dhcp_relay_destinations | arista.avd.natural_sort(sort_key='address') %}
-{%         set destination_cli = "ipv6 dhcp relay destination " ~ destination.address %}
-{%         if destination.vrf is arista.avd.defined %}
-{%             set destination_cli = destination_cli ~ " vrf " ~ destination.vrf %}
-{%         endif %}
-{%         if destination.local_interface is arista.avd.defined %}
-{%             set destination_cli = destination_cli ~ " local-interface " ~ destination.local_interface %}
-{%         elif destination.source_address is arista.avd.defined %}
-{%             set destination_cli = destination_cli ~ " source-address " ~ destination.source_address %}
-{%         endif %}
-{%         if destination.link_address is arista.avd.defined %}
-{%             set destination_cli = destination_cli ~ " link-address " ~ destination.link_address %}
-{%         endif %}
+{%     if ethernet_interface.ipv6_dhcp_relay_destinations is arista.avd.defined %}
+{%         set non_default_vrf = ethernet_interface.ipv6_dhcp_relay_destinations | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | list %}
+{%         set default_vrf = ethernet_interface.ipv6_dhcp_relay_destinations | rejectattr('vrf', 'arista.avd.defined') | list + ethernet_interface.ipv6_dhcp_relay_destinations | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') | list %}
+{%         for destination in ((default_vrf | arista.avd.natural_sort(sort_key='address')) + (non_default_vrf | arista.avd.natural_sort(sort_key='address') | arista.avd.natural_sort(sort_key='vrf', ignore_case=false))) %}
+{%             set destination_cli = "ipv6 dhcp relay destination " ~ destination.address %}
+{%             if destination.vrf is arista.avd.defined %}
+{%                 set destination_cli = destination_cli ~ " vrf " ~ destination.vrf %}
+{%             endif %}
+{%             if destination.local_interface is arista.avd.defined %}
+{%                 set destination_cli = destination_cli ~ " local-interface " ~ destination.local_interface %}
+{%             elif destination.source_address is arista.avd.defined %}
+{%                 set destination_cli = destination_cli ~ " source-address " ~ destination.source_address %}
+{%             endif %}
+{%             if destination.link_address is arista.avd.defined %}
+{%                 set destination_cli = destination_cli ~ " link-address " ~ destination.link_address %}
+{%             endif %}
    {{ destination_cli }}
-{%     endfor %}
+{%         endfor %}
+{%     endif %}
 {%     if ethernet_interface.dhcp_server_ipv4 is arista.avd.defined(true) %}
    dhcp server ipv4
 {%     endif %}
@@ -714,7 +717,6 @@ interface {{ ethernet_interface.name }}
    priority-flow-control priority {{ priority_block.priority }} drop
 {%         endif %}
 {%     endfor %}
-{# Not refelcting on vEOS device #}
 {%     for tx_queue in ethernet_interface.tx_queues | arista.avd.natural_sort(sort_key='id') %}
 {%         include 'eos/ethernet-interface-tx-queues.j2' %}
 {%     endfor %}
