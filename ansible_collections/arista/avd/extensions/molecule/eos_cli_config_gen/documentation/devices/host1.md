@@ -12288,16 +12288,18 @@ platform trident l3 routing mac-address per-vlan
 platform trident forwarding-table partition 2
 platform sand forwarding mode arad
 platform sand lag mode 512x32
-platform sand lag hardware-only
 platform fap buffering egress profile unicast
-!
-platform fap voq credit rates unified
+platform sand lag hardware-only
 platform sand qos map traffic-class 0 to network-qos 0
 platform sand qos map traffic-class 1 to network-qos 7
 platform sand qos map traffic-class 2 to network-qos 15
 !
+platform fap voq credit rates unified
+!
 port-channel load-balance sand profile Profile_B
+!
 platform sand multicast replication default ingress
+!
 platform sand mdb profile l3-xxl
 platform sfe data-plane cpu allocation maximum 42
 !
