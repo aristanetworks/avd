@@ -491,10 +491,10 @@ class EosDesigns(EosDesignsRootModel):
             PasswordType: TypeAlias = Literal["sha512"]
             Shell: TypeAlias = Literal["/bin/bash", "/bin/sh", "/sbin/nologin"]
             _fields: ClassVar[dict] = {
+                "name": {"type": str},
                 "sha512_password": {"type": str},
                 "cleartext_password": {"type": str},
                 "password_type": {"type": str, "default": "sha512"},
-                "name": {"type": str},
                 "disabled": {"type": bool},
                 "privilege": {"type": int},
                 "role": {"type": str},
@@ -503,6 +503,8 @@ class EosDesigns(EosDesignsRootModel):
                 "secondary_ssh_key": {"type": str},
                 "shell": {"type": str},
             }
+            name: str
+            """Username."""
             sha512_password: str | None
             """
             SHA512 Hash of Password.
@@ -519,8 +521,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             password_type: PasswordType
             """Default value: `"sha512"`"""
-            name: str
-            """Username."""
             disabled: bool | None
             """
             If true, the user will be removed and all other settings are ignored.
@@ -546,10 +546,10 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    name: str | UndefinedType = Undefined,
                     sha512_password: str | None | UndefinedType = Undefined,
                     cleartext_password: str | None | UndefinedType = Undefined,
                     password_type: PasswordType | UndefinedType = Undefined,
-                    name: str | UndefinedType = Undefined,
                     disabled: bool | None | UndefinedType = Undefined,
                     privilege: int | None | UndefinedType = Undefined,
                     role: str | None | UndefinedType = Undefined,
@@ -565,6 +565,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        name: Username.
                         sha512_password:
                            SHA512 Hash of Password.
                            Takes precedence over `cleartext_password`.
@@ -576,7 +577,6 @@ class EosDesigns(EosDesignsRootModel):
                            This variable is sensitive and
                            SHOULD be configured using some vault mechanism.
                         password_type: password_type
-                        name: Username.
                         disabled:
                            If true, the user will be removed and all other settings are ignored.
                            Useful for removing the
