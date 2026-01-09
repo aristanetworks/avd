@@ -39,12 +39,12 @@
         "neighbors": [
           {
             "port": "Ethernet1",
-            "neighbor_device": "dc1-spine1.dc1.local",
+            "neighbor_device": "dc1-spine1",
             "neighbor_port": "Ethernet3"
           },
           {
             "port": "Ethernet2",
-            "neighbor_device": "dc1-spine2.dc1.local",
+            "neighbor_device": "dc1-spine2",
             "neighbor_port": "Ethernet3"
           },
           {
@@ -54,10 +54,11 @@
           },
           {
             "port": "Ethernet8",
-            "neighbor_device": "dc1-leaf2c.dc1.local",
+            "neighbor_device": "dc1-leaf2c",
             "neighbor_port": "Ethernet1"
           }
-        ]
+        ],
+        "require_fqdn": false
       }
     },
     {

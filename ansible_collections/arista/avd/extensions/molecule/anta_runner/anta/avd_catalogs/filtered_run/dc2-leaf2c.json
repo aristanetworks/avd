@@ -46,8 +46,14 @@
             "port": "Ethernet2",
             "neighbor_device": "dc2-leaf2b",
             "neighbor_port": "Ethernet8"
+          },
+          {
+            "port": "Ethernet5",
+            "neighbor_device": "dc2-leaf2-server1",
+            "neighbor_port": "iLO"
           }
-        ]
+        ],
+        "require_fqdn": false
       }
     }
   ],

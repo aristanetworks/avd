@@ -23,6 +23,11 @@ l2leaf:
       uplink_switch_interfaces:
         - Ethernet34
         - Ethernet34
+      flow_tracker_type: hardware
+
+cv_settings:
+  cvaas:
+    enabled: true
 
 flow_tracking_settings:
   trackers:
@@ -36,3 +41,5 @@ flow_tracking_settings:
             - host: 127.0.2.1
           template_interval: 40020
           local_interface: use_mgmt_interface
+      # Testing export_to_cloudvision for hardware
+      export_to_cloudvision: true
