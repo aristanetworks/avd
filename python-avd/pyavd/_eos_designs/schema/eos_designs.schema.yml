@@ -10,8 +10,6 @@ type: dict
 allow_other_keys: true
 keys:
   aaa_settings:
-    documentation_options:
-      table: management-settings
     type: dict
     keys:
       enable_password:
@@ -1949,8 +1947,6 @@ keys:
         description: In Digital Twin mode, AVD can either use the default interfaces
           of the original or the digital twin platform (as set in `platform_settings.[].digital_twin.platform`).
   dns_settings:
-    documentation_options:
-      table: management-settings
     type: dict
     description: DNS settings
     keys:
@@ -2085,8 +2081,6 @@ keys:
         description: Generate the table of content(TOC) on fabric documentation.
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
-    documentation_options:
-      table: management-settings
     type: list
   event_monitor:
     type: dict
@@ -2848,8 +2842,6 @@ keys:
       are used.
 
       Otherwise no value will be configured.'
-    documentation_options:
-      table: management-settings
   internal_vlan_order:
     documentation_options:
       table: system-settings
@@ -2994,7 +2986,7 @@ keys:
                   Example: "permit 10.255.0.0/27 eq 32"'
   ipv6_mgmt_destination_networks:
     documentation_options:
-      table: management-settings
+      table: management-interface-settings
     description: 'List of IPv6 prefixes to configure as static routes towards the
       OOB IPv6 Management interface gateway.
 
@@ -3007,7 +2999,7 @@ keys:
       description: IPv6_network/Mask.
   ipv6_mgmt_gateway:
     documentation_options:
-      table: management-settings
+      table: management-interface-settings
     type: str
     format: ipv6
     description: 'OOB Management interface gateway in IPv6 format.
@@ -3163,7 +3155,7 @@ keys:
     $ref: eos_cli_config_gen#/keys/load_interval
   local_users:
     documentation_options:
-      table: management-settings
+      table: removed-keys
     deprecation:
       warning: true
       removed: true
@@ -3171,8 +3163,6 @@ keys:
       new_key: aaa_settings.local_users
     type: list
   logging_settings:
-    documentation_options:
-      table: management-settings
     type: dict
     description: Logging settings
     keys:
@@ -3262,8 +3252,6 @@ keys:
     type: dict
     $ref: eos_cli_config_gen#/keys/mac_address_table
   management_eapi:
-    documentation_options:
-      table: management-settings
     description: 'Default is HTTPS management eAPI enabled.
 
       '
@@ -3512,7 +3500,7 @@ keys:
     default: MLAG_{mlag_peer}_{peer_interface}
   name_servers:
     documentation_options:
-      table: management-settings
+      table: removed-keys
     type: list
     deprecation:
       warning: true
@@ -3741,7 +3729,7 @@ keys:
         l3: true
   ntp_settings:
     documentation_options:
-      table: management-settings
+      table: time-configuration
     type: dict
     description: NTP settings
     keys:
@@ -5186,8 +5174,6 @@ keys:
           new_key: dns_settings
   ssh_settings:
     type: dict
-    documentation_options:
-      table: management-settings
     keys:
       enabled:
         type: bool
@@ -5317,7 +5303,7 @@ keys:
       remove_in_version: 6.0.0
   timezone:
     documentation_options:
-      table: management-settings
+      table: time-configuration
     type: str
     description: Clock timezone like "CET" or "US/Pacific".
   trunk_groups:
