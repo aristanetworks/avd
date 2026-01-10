@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from pyavd._utils import json_path_to_string
+from pyavd._utils.json_path_to_string import json_path_to_string
 
 if TYPE_CHECKING:
     from collections.abc import Sequence

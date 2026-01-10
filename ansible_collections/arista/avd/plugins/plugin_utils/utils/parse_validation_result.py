@@ -9,10 +9,10 @@ if TYPE_CHECKING:
     from ansible.utils.display import Display
     from pyavd_utils.validation import ValidationResult
 
-    from pyavd._utils import json_path_to_string
+    from pyavd._utils.json_path_to_string import json_path_to_string
 
 try:
-    from pyavd._utils import json_path_to_string
+    from pyavd._utils.json_path_to_string import json_path_to_string
 
     HAS_PYAVD = True
 except ImportError:
