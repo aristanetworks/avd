@@ -8403,7 +8403,9 @@ keys:
                     '
                 ip_access_group:
                   type: str
-                  description: ACL name.
+                  description: -> ACL name. Only one transport in the same VRF can
+                    be configured with a service ACL; all transports in the same VRF
+                    use the same service ACL.
                 port:
                   type: int
                   description: 'GNMI port.
