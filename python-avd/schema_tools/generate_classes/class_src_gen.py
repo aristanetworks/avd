@@ -5,19 +5,13 @@ from __future__ import annotations
 
 from functools import cached_property
 from keyword import iskeyword
-from typing import TYPE_CHECKING, Generic, TypeVar
+from typing import TYPE_CHECKING, Generic, TypeVar, cast
 
 from .src_generators import ClassVarSrc, FieldSrc, FieldTypeHintSrc, ListSrc, LiteralSrc, ModelSrc, SrcData
 from .utils import generate_class_name, generate_class_name_from_ref
 
 if TYPE_CHECKING:
-    from schema_tools.metaschema.meta_schema_model import (
-        AvdSchemaBool,
-        AvdSchemaDict,
-        AvdSchemaInt,
-        AvdSchemaList,
-        AvdSchemaStr,
-    )
+    from schema_tools.metaschema.meta_schema_model import AvdSchemaBool, AvdSchemaDict, AvdSchemaInt, AvdSchemaList, AvdSchemaStr
 
 T = TypeVar("T", bound="AvdSchemaBool | AvdSchemaDict | AvdSchemaInt | AvdSchemaList | AvdSchemaStr")
 
@@ -227,6 +221,13 @@ class SrcGenList(SrcGenBase["AvdSchemaList"]):
             return None
 
         item_classes = []
+
+        # Ensure that the items for lists with primary key always have the primary key as the first key:
+        if self.schema.primary_key:
+            self.schema.items = cast("AvdSchemaDict", self.schema.items)
+            if self.schema.items.keys:
+                self.schema.items.keys = {self.schema.primary_key: self.schema.items.keys[self.schema.primary_key]} | self.schema.items.keys
+
         fieldsrc = self.schema.items._generate_class_src(f"{self.get_class_name()}Item")
         item_classes.append(fieldsrc.cls)
         if fieldsrc.item_classes:
