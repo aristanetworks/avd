@@ -821,10 +821,10 @@ management ssh
    ipv6 access-group ACL-SSH6 in
    idle-timeout 15
    authentication protocol keyboard-interactive password public-key
+   connection limit 50
    connection per-host 10
    fips restrictions
    hostkey client strict-checking
-   connection limit 50
    authentication empty-passwords permit
    client-alive interval 666
    client-alive count-max 42

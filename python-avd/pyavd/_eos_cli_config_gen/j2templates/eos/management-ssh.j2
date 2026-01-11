@@ -37,6 +37,9 @@ management ssh
 {%     if management_ssh.hostkey.server is arista.avd.defined %}
    hostkey server {{ management_ssh.hostkey.server | arista.avd.natural_sort | join(" ") }}
 {%     endif %}
+{%     if management_ssh.connection.limit is arista.avd.defined %}
+   connection limit {{ management_ssh.connection.limit }}
+{%     endif %}
 {%     if management_ssh.connection.per_host is arista.avd.defined %}
    connection per-host {{ management_ssh.connection.per_host }}
 {%     endif %}
@@ -45,9 +48,6 @@ management ssh
 {%     endif %}
 {%     if management_ssh.hostkey.client_strict_checking is arista.avd.defined(true) %}
    hostkey client strict-checking
-{%     endif %}
-{%     if management_ssh.connection.limit is arista.avd.defined %}
-   connection limit {{ management_ssh.connection.limit }}
 {%     endif %}
 {%     if management_ssh.authentication.empty_passwords is arista.avd.defined  %}
    authentication empty-passwords {{ management_ssh.authentication.empty_passwords }}
