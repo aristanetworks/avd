@@ -34,12 +34,13 @@ def parse_validation_result(validation_result: ValidationResult, hostname: str, 
         if deprecation.url:
             message += f" See {deprecation.url} for details."
 
-        version = deprecation.version
+        # Assign this to a variable to work around a bug in ansible-test's pylint check (https://github.com/ansible/ansible/issues/85614)
+        collection_name = "arista.avd"
 
         ansible_display.deprecated(
             msg=message,
-            version=version,
-            collection_name="arista.avd",
+            version=deprecation.version,
+            collection_name=collection_name,
             removed=deprecation.removed,
         )
 
