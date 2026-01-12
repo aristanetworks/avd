@@ -91,9 +91,7 @@ router msdp
          {{ default_peer_cli }}
 {%                 endif %}
 {%                 for mesh_group in peer.mesh_groups | arista.avd.default([]) %}
-{%                     if mesh_group.name is arista.avd.defined %}
          mesh-group {{ mesh_group.name }}
-{%                     endif %}
 {%                 endfor %}
 {%                 if peer.local_interface is arista.avd.defined %}
          local-interface {{ peer.local_interface }}
