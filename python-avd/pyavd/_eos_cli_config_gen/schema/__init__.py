@@ -15149,7 +15149,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """IP Community-list Name."""
         entries: Entries
         """
-        Communities and regexp entries MUST not be configured in the same entry.
+        Communities and regex MUST not be configured in the same entry.
 
 
         Subclass of AvdList with
@@ -15168,7 +15168,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     name: IP Community-list Name.
                     entries:
-                       Communities and regexp entries MUST not be configured in the same entry.
+                       Communities and regex MUST not be configured in the same entry.
 
 
                        Subclass of AvdList with

@@ -5905,8 +5905,7 @@ keys:
           type: list
           required: true
           min_length: 1
-          description: 'Communities and regexp entries MUST not be configured in the
-            same entry.
+          description: 'Communities and regex MUST not be configured in the same entry.
 
             '
           items:
