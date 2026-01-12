@@ -1,0 +1,26 @@
+{#
+ Copyright (c) 2025-2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - ip name servers #}
+{% if ip_name_server is arista.avd.defined %}
+
+### IP Name Servers
+
+#### IP Name Servers Summary
+
+| Name Server | VRF | Priority |
+| ----------- | --- | -------- |
+{%     for vrf in ip_name_server.vrfs | arista.avd.default([]) %}
+{%         for name_server in vrf.servers %}
+| {{ name_server.ip_address }} | {{ vrf.name }} | {{ name_server.priority | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endfor %}
+
+#### IP Name Servers Device Configuration
+
+```eos
+{%     include 'eos/ip-name-server.j2' %}
+```
+{% endif %}
