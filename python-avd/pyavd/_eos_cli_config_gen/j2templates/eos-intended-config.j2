@@ -283,12 +283,8 @@
 {% include 'eos/ipv6-icmp-redirect.j2' %}
 {# as-paths #}
 {% include 'eos/as-path.j2' %}
-{# Community-lists, improved data model #}
-{% include 'eos/ip-community-lists.j2' %}
-{# IP Extended Community Lists #}
-{% include 'eos/ip-extcommunity-lists.j2' %}
-{# IP Extended Community Lists Regexp #}
-{% include 'eos/ip-extcommunity-lists-regexp.j2' %}
+{# All community-lists #}
+{% include 'eos/all-community-lists.j2' %}
 {# Dynamic Prefix-lists #}
 {% include 'eos/dynamic-prefix-lists.j2' %}
 {# Prefix-lists #}

@@ -5895,10 +5895,6 @@ keys:
     type: list
     primary_key: name
     display_name: IP Community Lists
-    description: 'Communities and regexp entries MUST not be configured in the same
-      community-list.
-
-      '
     items:
       type: dict
       keys:
@@ -5909,6 +5905,10 @@ keys:
           type: list
           required: true
           min_length: 1
+          description: 'Communities and regexp MUST not be configured in the same
+            entry.
+
+            '
           items:
             type: dict
             keys:
@@ -5946,9 +5946,7 @@ keys:
                 type: str
                 description: 'Regular Expression.
 
-                  If defined, a regex community-list will be configured.
-
-                  '
+                  If defined, a regex community-list will be configured.'
   ip_dhcp_relay:
     type: dict
     keys:
@@ -6270,6 +6268,56 @@ keys:
                 per-vlan.
 
                 '
+  ip_large_community_lists:
+    type: list
+    primary_key: name
+    display_name: IP Large Community Lists
+    description: 'A BGP large-community access list filters prefixes based on their
+      BGP large community values. Multiple large-community lists with the same name
+      may be specified.
+
+      '
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: IP Large-community-list Name.
+        entries:
+          type: list
+          required: true
+          min_length: 1
+          description: 'Large communities and regexp MUST not be configured in the
+            same entry.
+
+            '
+          items:
+            type: dict
+            keys:
+              action:
+                type: str
+                required: true
+                valid_values:
+                - permit
+                - deny
+              large_communities:
+                type: list
+                min_length: 1
+                items:
+                  type: str
+                description: 'If defined, a standard large-community-list will be
+                  configured.
+
+                  Large community values (ASN:Local-part-1:Local-part-2):
+
+                  - ASN:nn:nn
+
+                  '
+              regexp:
+                type: str
+                description: 'Regular Expression.
+
+                  If defined, a regex large-community-list will be configured.'
   ip_name_server:
     type: dict
     keys:
