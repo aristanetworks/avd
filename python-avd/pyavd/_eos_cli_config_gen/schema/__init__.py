@@ -22974,7 +22974,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "certificate": {"type": Certificate},
                 "certificate_revocation_lists": {"type": CertificateRevocationLists},
             }
-            name: str | None
+            name: str
             fips_restrictions: bool | None
             """Use FIPS compliant algorithms."""
             tls_versions: str | None
@@ -23020,7 +23020,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    name: str | None | UndefinedType = Undefined,
+                    name: str | UndefinedType = Undefined,
                     fips_restrictions: bool | None | UndefinedType = Undefined,
                     tls_versions: str | None | UndefinedType = Undefined,
                     cipher_list: str | None | UndefinedType = Undefined,
@@ -23068,8 +23068,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class SslProfiles(AvdList[SslProfilesItem]):
-            """Subclass of AvdList with `SslProfilesItem` items."""
+        class SslProfiles(AvdIndexedList[str, SslProfilesItem]):
+            """Subclass of AvdIndexedList with `SslProfilesItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
 
         SslProfiles._item_type = SslProfilesItem
 
@@ -23300,7 +23302,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         password: Password
         """Subclass of AvdModel."""
         ssl_profiles: SslProfiles
-        """Subclass of AvdList with `SslProfilesItem` items."""
+        """Subclass of AvdIndexedList with `SslProfilesItem` items. Primary key is `name` (`str`)."""
         shared_secret_profiles: SharedSecretProfiles
         """Subclass of AvdIndexedList with `SharedSecretProfilesItem` items. Primary key is `profile` (`str`)."""
 
@@ -23331,7 +23333,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                        Subclass of AvdModel.
                     password: Subclass of AvdModel.
-                    ssl_profiles: Subclass of AvdList with `SslProfilesItem` items.
+                    ssl_profiles: Subclass of AvdIndexedList with `SslProfilesItem` items. Primary key is `name` (`str`).
                     shared_secret_profiles: Subclass of AvdIndexedList with `SharedSecretProfilesItem` items. Primary key is `profile` (`str`).
 
                 """
