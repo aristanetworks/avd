@@ -8,9 +8,9 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
-    from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-    from pyavd.api.pool_manager import PoolManager
-    from pyavd.api.schemas import Design
+    from ._eos_designs.eos_designs_facts.schema import EosDesignsFacts
+    from .api.pool_manager import PoolManager
+    from .api.schemas import Design
 
 
 def get_avd_facts(
@@ -27,20 +27,24 @@ def get_avd_facts(
     Note! No support for inline templating or jinja templates for descriptions or ip addressing
 
     Args:
-        all_inputs: A dictionary where keys are hostnames and values are the Design instance per device.
+        all_inputs:
+            A dictionary where keys are hostnames and values are the Design instance per device.
             Supporting dicts as well for backwards compatibility.
-        all_hostvars: Raw hostvars exposed to custom python logic for each device.
+        all_hostvars:
+            Raw hostvars exposed to custom python logic for each device.
             This is optional and only needed if custom python modules are used for descriptions or IP addressing.
-        pool_manager: PREVIEW: Optional instance of pyavd.avd.PoolManager or subclass hereof,
+        pool_manager:
+            PREVIEW: Optional instance of pyavd.avd.PoolManager or subclass hereof,
             implementing ".get_assignment(pool_type: PoolType, shared_utils: SharedUtils)".
             Used for dynamic ID allocations using the "pool_manager" feature.
-        digital_twin: PREVIEW: Optional flag to enable digital-twin mode.
+        digital_twin:
+            PREVIEW: Optional flag to enable digital-twin mode.
 
     Returns:
         Dictionary with various internal "facts" keyed by device hostname.
 
         The full dict must be given as argument to `pyavd.get_device_structured_config`.
     """
-    from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts  # noqa: PLC0415
+    from ._eos_designs.eos_designs_facts.get_facts import get_facts  # noqa: PLC0415
 
     return get_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, digital_twin=digital_twin)

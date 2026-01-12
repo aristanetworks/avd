@@ -224,13 +224,12 @@ class ActionModule(ActionBase):
             msg = f"Unable to load structured config from the given data: {e}"
             raise ValueError(msg) from e
 
-        validated_inputs: dict = json.loads(validated_data_result.validated_data) if validated_data_result.validated_data is not None else {}
         validation_errors = parse_validation_result(validated_data_result.validation_result, hostname, display)
         if validation_errors:
             result["failed"] = True
             result["msg"] = build_result_message(validation_errors)
 
-        return validated_inputs
+        return validated_data_result.validated_data or {}
 
     def render_template_with_ansible_templar(self, task_vars: dict, templatefile: str) -> str:
         """Render a template with the Ansible Templar."""

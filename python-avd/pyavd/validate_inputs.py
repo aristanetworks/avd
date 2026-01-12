@@ -21,7 +21,7 @@ def validate_inputs(inputs: dict) -> ValidatedDataResult:
 
     Returns:
         ValidatedDataResult object with the ValidationResult containing validation errors, deprecation warnings
-        and the validated_data in a JSON string. If the validation fails, the validated_data will be None.
+        and the validated_data as a dict. If the validation fails, the validated_data will be None.
 
     Raises:
         ValueError: If the inputs are not JSON serializable.
@@ -29,6 +29,7 @@ def validate_inputs(inputs: dict) -> ValidatedDataResult:
     from pyavd_utils.validation import get_validated_data  # noqa: PLC0415
 
     from ._schema.store import init_store  # noqa: PLC0415
+    from .api.validation import ValidatedDataResult  # noqa: PLC0415
 
     init_store()
 
@@ -38,4 +39,5 @@ def validate_inputs(inputs: dict) -> ValidatedDataResult:
         msg = f"Unable to serialize inputs: {e}"
         raise ValueError(msg) from e
 
-    return get_validated_data(data_as_json=data_as_json, schema_name="eos_designs")
+    pyavd_utils_validated_data_result = get_validated_data(data_as_json=data_as_json, schema_name="eos_designs")
+    return ValidatedDataResult._from_pyavd_utils_validated_data_result(pyavd_utils_validated_data_result)

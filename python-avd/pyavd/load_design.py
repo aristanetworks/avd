@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import json
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -26,10 +25,6 @@ def load_design(inputs: dict) -> LoadDesignResult:
     from .api.validation import LoadDesignResult  # noqa: PLC0415
 
     validated_data_result = validate_inputs(inputs)
-    if validated_data_result.validated_data is not None:
-        validated_data = json.loads(validated_data_result.validated_data)
-        design = Design._load(validated_data)
-    else:
-        design = None
+    design = Design._load(validated_data_result.validated_data) if validated_data_result.validated_data is not None else None
 
     return LoadDesignResult(design=design, validation_result=validated_data_result.validation_result)

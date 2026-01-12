@@ -19,11 +19,17 @@ def get_device_structured_config(
     Build and return the AVD structured configuration for one device.
 
     Args:
-        hostname: Hostname of device.
-        inputs: Design instance or dictionary with the validated design inputs.
-        avd_facts: Dictionary of avd_facts as returned from `pyavd.get_avd_facts`.
-        hostvars: Per-device dictionaries with variables exposed to custom ip addressing or description logic.
-        digital_twin: PREVIEW: Optional flag to enable digital-twin mode.
+        hostname:
+            Hostname of device.
+        inputs:
+            Design instance or dictionary with the validated design inputs.
+        avd_facts:
+            Dictionary of avd_facts as returned from `pyavd.get_avd_facts`.
+        hostvars:
+            Per-device dictionaries with variables exposed to custom ip addressing or description logic.
+            This is optional and only needed if custom python modules are used for descriptions or IP addressing.
+        digital_twin:
+            PREVIEW: Optional flag to enable digital-twin mode.
 
     Returns:
         Device structured configuration as an instance of EOSConfig.
