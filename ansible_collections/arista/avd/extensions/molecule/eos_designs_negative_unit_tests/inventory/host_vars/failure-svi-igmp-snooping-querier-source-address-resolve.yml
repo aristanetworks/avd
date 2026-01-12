@@ -6,7 +6,7 @@ l3leaf:
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.254.0/24
   nodes:
-    - name: failure-igmp-snooping-querier-source-address-resolve
+    - name: failure-svi-igmp-snooping-querier-source-address-resolve
       bgp_as: 65101
       id: 1
       mgmt_ip: 192.168.200.101/24
