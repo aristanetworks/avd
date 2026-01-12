@@ -6270,6 +6270,40 @@ keys:
                 per-vlan.
 
                 '
+  ip_name_server:
+    type: dict
+    keys:
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              description: 'VRF Name.
+
+                Use "default" for the default VRF.'
+              type: str
+              convert_types:
+              - int
+            servers:
+              type: list
+              required: true
+              primary_key: ip_address
+              items:
+                type: dict
+                keys:
+                  ip_address:
+                    type: str
+                    required: true
+                    description: IPv4 or IPv6 address for DNS server.
+                  priority:
+                    description: Priority value (lower is first).
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 4
   ip_name_server_groups:
     type: list
     primary_key: name
@@ -6351,28 +6385,13 @@ keys:
             remove_in_version: 6.0.0
   ip_name_servers:
     type: list
-    items:
-      type: dict
-      keys:
-        ip_address:
-          type: str
-          required: true
-          description: IPv4 or IPv6 address for DNS server.
-        vrf:
-          description: 'VRF Name.
-
-            Use "default" for the default VRF.'
-          required: true
-          type: str
-          convert_types:
-          - int
-        priority:
-          description: Priority value (lower is first).
-          type: int
-          convert_types:
-          - str
-          min: 0
-          max: 4
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_name_server
+    documentation_options:
+      table: ip-name-server
   ip_nat:
     type: dict
     keys:

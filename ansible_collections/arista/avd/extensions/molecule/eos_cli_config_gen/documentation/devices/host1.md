@@ -489,26 +489,28 @@ ip domain-list domain2.local
 | ----------- | --- | -------- |
 | 10.10.128.10 | default | - |
 | 10.10.129.10 | default | 0 |
-| 10.10.128.10 | mgmt | - |
-| 10.10.128.10 | TEST | 3 |
 | 2001:db8::1 | default | - |
 | 2001:db8::2 | default | 0 |
+| 2001:db8::3 | default | 1 |
+| 10.10.128.10 | mgmt | - |
 | 2001:db8::1 | mgmt | - |
+| 2001:db8::2 | mgmt | 1 |
+| 4.4.4.4 | TEST | - |
+| 10.10.128.10 | TEST | 3 |
 | 2001:db8::2 | TEST | 3 |
-| 10.10.11.11 | ZTP | - |
-| 10.10.222.11 | TEST | 2 |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server vrf ZTP 10.10.11.11
+ip name-server vrf TEST 4.4.4.4
 ip name-server vrf default 10.10.128.10
 ip name-server vrf default 10.10.129.10
 ip name-server vrf default 2001:db8::1
 ip name-server vrf default 2001:db8::2
 ip name-server vrf mgmt 10.10.128.10
 ip name-server vrf mgmt 2001:db8::1
-ip name-server vrf TEST 10.10.222.11 priority 2
+ip name-server vrf default 2001:db8::3 priority 1
+ip name-server vrf mgmt 2001:db8::2 priority 1
 ip name-server vrf TEST 10.10.128.10 priority 3
 ip name-server vrf TEST 2001:db8::2 priority 3
 ```
