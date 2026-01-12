@@ -252,6 +252,7 @@ jobs:
           - "example-single-dc-l3ls"
           - "example-single-dc-l3ls-ipv6"
           - "example-cv-pathfinder"
+          - "howto"
         ansible_version:
           - "ansible-core>=2.16.0,<2.20.0"
         include:

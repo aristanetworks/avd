@@ -23,7 +23,6 @@ tenants:
         ospf:
           enabled: true
           process_id: 101
-          max_lsa: 42
         svis:
           - id: 42
             name: test-1

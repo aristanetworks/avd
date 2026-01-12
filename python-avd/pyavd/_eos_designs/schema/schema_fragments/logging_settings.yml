@@ -7,8 +7,6 @@
 type: dict
 keys:
   logging_settings:
-    documentation_options:
-      table: management-settings
     type: dict
     description: |-
       Logging settings
