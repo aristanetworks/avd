@@ -119,6 +119,7 @@ def test_eos_cli_config_gen_load_dump_consistency(molecule_host: MoleculeHost) -
     validated_data = validated_data_result.validated_data
 
     # Remove all ansible_* keys from the validated data.
+    # This is only relevant for the scenarios loading from hostvars (eos_cli_config_gen*)
     expected_data = {
         k: v
         for k, v in validated_data.items()
