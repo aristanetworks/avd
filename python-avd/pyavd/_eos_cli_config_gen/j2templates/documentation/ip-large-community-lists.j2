@@ -1,0 +1,30 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - ip large community lists #}
+{% if ip_large_community_lists is arista.avd.defined %}
+
+### IP Large-community-lists
+
+#### IP Large-community-lists Summary
+
+| Name | Action | Communities / Regexp |
+| ---- | ------ | -------------------- |
+{%     for large_community_list in ip_large_community_lists %}
+{%         for entry in large_community_list.entries %}
+{%             if entry.regexp is arista.avd.defined %}
+| {{ large_community_list.name }} | {{ entry.action }} | {{ entry.regexp }} |
+{%             elif entry.large_communities is arista.avd.defined %}
+| {{ large_community_list.name }} | {{ entry.action }} | {{ entry.large_communities | join(', ') }} |
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+
+#### IP Large-community-lists Device Configuration
+
+```eos
+{%     include 'eos/ip-large-community-lists.j2' %}
+```
+{% endif %}
