@@ -687,12 +687,17 @@ class AvdStructuredConfigBaseProtocol(
                 self.structured_config.ip_radius_source_interfaces.append_unique(
                     EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
                 )
-
-            radius_server_vrf = self.structured_config.radius_server.vrfs.obtain(server_vrf)
-            if server.tls.enabled:
-                radius_server_vrf.servers.append_new(host=server.host, tls=server.tls)
-            else:
-                radius_server_vrf.servers.append_new(host=server.host, key=self._get_tacacs_or_radius_server_password(server))
+            if server_vrf and server_vrf == "default":
+                if server.tls.enabled:
+                    self.structured_config.radius_server.hosts.append_new(host=server.host, tls=server.tls)
+                else:
+                    self.structured_config.radius_server.hosts.append_new(host=server.host, key=self._get_tacacs_or_radius_server_password(server))
+            elif server_vrf:
+                radius_server_vrf = self.structured_config.radius_server.vrfs.obtain(server_vrf)
+                if server.tls.enabled:
+                    radius_server_vrf.servers.append_new(host=server.host, tls=server.tls._cast_as(EosCliConfigGen.RadiusServer.VrfsItem.ServersItem.Tls))
+                else:
+                    radius_server_vrf.servers.append_new(host=server.host, key=self._get_tacacs_or_radius_server_password(server))
 
             for group in server.groups:
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
