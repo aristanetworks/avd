@@ -37354,6 +37354,95 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class HostsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Tls(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "ssl_profile": {"type": str}, "port": {"type": int}}
+                enabled: bool | None
+                """Enable TLS for radius-server."""
+                ssl_profile: str | None
+                """Name of TLS profile."""
+                port: int | None
+                """TCP Port used for TLS. EOS default is 2083."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        ssl_profile: str | None | UndefinedType = Undefined,
+                        port: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Tls.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable TLS for radius-server.
+                            ssl_profile: Name of TLS profile.
+                            port: TCP Port used for TLS. EOS default is 2083.
+
+                        """
+
+            _fields: ClassVar[dict] = {"host": {"type": str}, "tls": {"type": Tls}, "timeout": {"type": int}, "retransmit": {"type": int}, "key": {"type": str}}
+            host: str
+            """-> Host IP address or name. Multiple server with the same host can be configured for TLS and no TLS."""
+            tls: Tls
+            """
+            When TLS is configured, `key` is ignored.
+
+            Subclass of AvdModel.
+            """
+            timeout: int | None
+            retransmit: int | None
+            key: str | None
+            """
+            Encrypted key - only type 7 supported.
+            When TLS is configured, `key` is ignored.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    host: str | UndefinedType = Undefined,
+                    tls: Tls | UndefinedType = Undefined,
+                    timeout: int | None | UndefinedType = Undefined,
+                    retransmit: int | None | UndefinedType = Undefined,
+                    key: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    HostsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        host: -> Host IP address or name. Multiple server with the same host can be configured for TLS and no TLS.
+                        tls:
+                           When TLS is configured, `key` is ignored.
+
+                           Subclass of AvdModel.
+                        timeout: timeout
+                        retransmit: retransmit
+                        key:
+                           Encrypted key - only type 7 supported.
+                           When TLS is configured, `key` is ignored.
+
+                    """
+
+        class Hosts(AvdList[HostsItem]):
+            """Subclass of AvdList with `HostsItem` items."""
+
+        Hosts._item_type = HostsItem
+
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -37454,9 +37543,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"name": {"type": str}, "servers": {"type": Servers}}
             name: str
-            """VRF name. Use "default" for the default VRF."""
+            """VRF name."""
             servers: Servers
-            """Subclass of AvdList with `ServersItem` items."""
+            """
+            Hosts configuration with default vrf.
+
+            Subclass of AvdList with `ServersItem` items.
+            """
 
             if TYPE_CHECKING:
 
@@ -37468,8 +37561,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        name: VRF name. Use "default" for the default VRF.
-                        servers: Subclass of AvdList with `ServersItem` items.
+                        name: VRF name.
+                        servers:
+                           Hosts configuration with default vrf.
+
+                           Subclass of AvdList with `ServersItem` items.
 
                     """
 
@@ -37484,6 +37580,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "attribute_32_include_in_access_req": {"type": Attribute32IncludeInAccessReq},
             "deadtime": {"type": int},
             "dynamic_authorization": {"type": DynamicAuthorization},
+            "hosts": {"type": Hosts},
             "vrfs": {"type": Vrfs},
             "tls_ssl_profile": {"type": str},
         }
@@ -37493,6 +37590,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Time to skip a non-responsive server in minutes."""
         dynamic_authorization: DynamicAuthorization
         """Subclass of AvdModel."""
+        hosts: Hosts
+        """
+        Hosts configuration with default vrf.
+
+        Subclass of AvdList with `HostsItem` items.
+        """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         tls_ssl_profile: str | None
@@ -37506,6 +37609,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 attribute_32_include_in_access_req: Attribute32IncludeInAccessReq | UndefinedType = Undefined,
                 deadtime: int | None | UndefinedType = Undefined,
                 dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
+                hosts: Hosts | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 tls_ssl_profile: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -37519,6 +37623,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     attribute_32_include_in_access_req: Subclass of AvdModel.
                     deadtime: Time to skip a non-responsive server in minutes.
                     dynamic_authorization: Subclass of AvdModel.
+                    hosts:
+                       Hosts configuration with default vrf.
+
+                       Subclass of AvdList with `HostsItem` items.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     tls_ssl_profile: Name of global TLS profile.
 

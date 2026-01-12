@@ -8,32 +8,31 @@ radius_server:
     port: 1700
     tls_ssl_profile: SSL_PROFILE
   tls_ssl_profile: GLOBAL_RADIUS_SSL_PROFILE
+  hosts:
+    - host: 10.10.10.158
+      key: 071B245F5A
+      timeout: 1
+      retransmit: 1
+    - host: 10.10.11.156
+      timeout: 1
+      retransmit: 1
+      key: 071B245F5A
+      tls:
+        enabled: true
+        port: 1700
+    - host: 10.10.11.156
+      timeout: 34
+      retransmit: 45
+      key: 071B245F5A
+    - host: 10.10.11.156
+      tls:
+        enabled: true
+        port: 345
+    - host: 10.10.10.249
+      key: 071B245F5A
+      timeout: 1
+      retransmit: 1
   vrfs:
-    - name: default
-      servers:
-        - host: 10.10.10.158
-          key: 071B245F5A
-          timeout: 1
-          retransmit: 1
-        - host: 10.10.11.156
-          timeout: 1
-          retransmit: 1
-          key: 071B245F5A
-          tls:
-            enabled: true
-            port: 1700
-        - host: 10.10.11.156
-          timeout: 34
-          retransmit: 45
-          key: 071B245F5A
-        - host: 10.10.11.156
-          tls:
-            enabled: true
-            port: 345
-        - host: 10.10.10.249
-          key: 071B245F5A
-          timeout: 1
-          retransmit: 1
     - name: mgt
       servers:
         - host: 10.10.10.157

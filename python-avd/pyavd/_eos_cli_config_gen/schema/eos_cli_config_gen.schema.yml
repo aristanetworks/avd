@@ -14364,6 +14364,51 @@ keys:
           tls_ssl_profile:
             type: str
             description: Name of TLS profile.
+      hosts:
+        type: list
+        description: Hosts configuration with default vrf.
+        items:
+          type: dict
+          keys:
+            host:
+              type: str
+              required: true
+              description: -> Host IP address or name. Multiple server with the same
+                host can be configured for TLS and no TLS.
+            tls:
+              type: dict
+              description: When TLS is configured, `key` is ignored.
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable TLS for radius-server.
+                ssl_profile:
+                  type: str
+                  description: Name of TLS profile.
+                port:
+                  type: int
+                  min: 0
+                  max: 65535
+                  convert_types:
+                  - str
+                  description: TCP Port used for TLS. EOS default is 2083.
+            timeout:
+              type: int
+              min: 1
+              max: 1000
+              convert_types:
+              - str
+            retransmit:
+              type: int
+              min: 0
+              max: 100
+              convert_types:
+              - str
+            key:
+              type: str
+              description: 'Encrypted key - only type 7 supported.
+
+                When TLS is configured, `key` is ignored.'
       vrfs:
         type: list
         primary_key: name
@@ -14374,51 +14419,10 @@ keys:
               type: str
               convert_types:
               - int
-              description: VRF name. Use "default" for the default VRF.
+              description: VRF name.
             servers:
               type: list
-              items:
-                type: dict
-                keys:
-                  host:
-                    type: str
-                    required: true
-                    description: -> Host IP address or name. Multiple server with
-                      the same host can be configured for TLS and no TLS.
-                  tls:
-                    type: dict
-                    description: When TLS is configured, `key` is ignored.
-                    keys:
-                      enabled:
-                        type: bool
-                        description: Enable TLS for radius-server.
-                      ssl_profile:
-                        type: str
-                        description: Name of TLS profile.
-                      port:
-                        type: int
-                        min: 0
-                        max: 65535
-                        convert_types:
-                        - str
-                        description: TCP Port used for TLS. EOS default is 2083.
-                  timeout:
-                    type: int
-                    min: 1
-                    max: 1000
-                    convert_types:
-                    - str
-                  retransmit:
-                    type: int
-                    min: 0
-                    max: 100
-                    convert_types:
-                    - str
-                  key:
-                    type: str
-                    description: 'Encrypted key - only type 7 supported.
-
-                      When TLS is configured, `key` is ignored.'
+              $ref: eos_cli_config_gen#/keys/radius_server/keys/hosts
       tls_ssl_profile:
         type: str
         description: Name of global TLS profile.
