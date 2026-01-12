@@ -1542,7 +1542,7 @@ radius proxy
 
 #### RADIUS Server Hosts
 
-| VRF | RADIUS Servers | TLS | Port | SSL Profile | Timeout | Retransmit |
+| VRF | RADIUS Servers | TLS | TLS Port | SSL Profile | Timeout | Retransmit |
 | --- | -------------- | --- | ---- | ----------- | ------- | ---------- |
 | default | 10.10.10.158 | - | - | - | 1 | 1 |
 | default | 10.10.11.156 | True | 1700 | - | 1 | 1 |

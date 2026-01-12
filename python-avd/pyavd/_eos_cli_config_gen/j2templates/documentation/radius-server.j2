@@ -37,7 +37,7 @@
 
 #### RADIUS Server Hosts
 
-| VRF | RADIUS Servers | TLS | Port | SSL Profile | Timeout | Retransmit |
+| VRF | RADIUS Servers | TLS | TLS Port | SSL Profile | Timeout | Retransmit |
 | --- | -------------- | --- | ---- | ----------- | ------- | ---------- |
 {%         for vrf in radius_server.vrfs | arista.avd.default([]) %}
 {%             for server in vrf.servers | arista.avd.default([]) %}

@@ -37399,7 +37399,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """-> Host IP address or name. Multiple server with the same host can be configured for TLS and no TLS."""
                 tls: Tls
                 """
-                When "tls" and "key" both are defined together, "tls" takes precedence.
+                When TLS is configured, `key` is ignored.
 
                 Subclass of AvdModel.
                 """
@@ -37408,8 +37408,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 key: str | None
                 """
                 Encrypted key - only type 7 supported.
-                When tls and key both are defined together, "tls" takes
-                precedence.
+                When TLS is configured, `key` is ignored.
                 """
 
                 if TYPE_CHECKING:
@@ -37432,15 +37431,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             host: -> Host IP address or name. Multiple server with the same host can be configured for TLS and no TLS.
                             tls:
-                               When "tls" and "key" both are defined together, "tls" takes precedence.
+                               When TLS is configured, `key` is ignored.
 
                                Subclass of AvdModel.
                             timeout: timeout
                             retransmit: retransmit
                             key:
                                Encrypted key - only type 7 supported.
-                               When tls and key both are defined together, "tls" takes
-                               precedence.
+                               When TLS is configured, `key` is ignored.
 
                         """
 

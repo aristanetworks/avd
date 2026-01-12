@@ -61,7 +61,7 @@ keys:
                       Multiple server with the same host can be configured for TLS and no TLS.
                   tls:
                     type: dict
-                    description: When "tls" and "key" both are defined together, "tls" takes precedence.
+                    description: When TLS is configured, `key` is ignored.
                     keys:
                       enabled:
                         type: bool
@@ -92,7 +92,7 @@ keys:
                     type: str
                     description: |-
                       Encrypted key - only type 7 supported.
-                      When tls and key both are defined together, "tls" takes precedence.
+                      When TLS is configured, `key` is ignored.
       tls_ssl_profile:
         type: str
         description: Name of global TLS profile.
