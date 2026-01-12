@@ -437,6 +437,12 @@ $defs:
                   This setting applies only to the automatically generated route targets
                   and does not affect any entries defined under `additional_route_targets`.
                 default: true
+              evpn_vlan_bundle:
+                type: str
+                description: |
+                  Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.
+                  This setting overrides "evpn_vlan_bundle" set at the Tenant level.
+                  The common option "evpn_vlan_aware_bundles" is disregarded for this option.
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: |-
@@ -792,7 +798,7 @@ $defs:
                       type: str
                       description: |
                         Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
-                        This setting overrides "evpn_vlan_bundle" set at tenant level.
+                        This setting overrides "evpn_vlan_bundle" set at the VRF or tenant level.
                         The common option "evpn_vlan_aware_bundles" is disregarded for this option.
                     nodes:
                       type: list
