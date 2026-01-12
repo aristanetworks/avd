@@ -36,19 +36,21 @@ class AvdCatalogGenerationSettings:
             return
         path = Path(self.output_dir)
         if not (path.exists() and path.is_dir()):
-            msg = f"Provided output_dir {self.output_dir} does not exist or is not a directory"
+            msg = f"Provided output_dir {self.output_dir} does not exist or is not a directory."
             raise ValueError(msg)
 
-    def get_filtered_test_specs(self, avd_test_specs: list[AvdTestSpec]) -> list[AvdTestSpec]:
+    def get_filtered_test_specs(self) -> list[AvdTestSpec]:
         """Return a filtered list of AvdTestSpec based on run_tests, skip_tests, and custom_test_specs."""
+        from pyavd._anta.index import AVD_TEST_INDEX  # noqa: PLC0415
+
         run_tests_set = set(self.run_tests)
         skip_tests_set = set(self.skip_tests)
 
         # Check for invalid test names across all filters
-        test_names = {test.test_class.name for test in avd_test_specs}
+        test_names = {test.test_class.name for test in AVD_TEST_INDEX}
         invalid_test_names = (run_tests_set | skip_tests_set) - test_names
         if invalid_test_names:
-            msg = f"Invalid test names in run_tests or skip_tests filters: {', '.join(sorted(invalid_test_names))}"
+            msg = f"Invalid test name(s) in 'run_tests' or 'skip_tests' filters: {', '.join(sorted(invalid_test_names))}"
             raise ValueError(msg)
 
         # Remove any tests from run_tests that are in skip_tests
@@ -56,20 +58,20 @@ class AvdCatalogGenerationSettings:
 
         final_test_specs: list[AvdTestSpec] = []
 
-        for test in avd_test_specs:
+        for test in AVD_TEST_INDEX:
             name = test.test_class.name
 
             # Skip tests explicitly mentioned in skip_tests
             if name in self.skip_tests:
                 continue
 
-            # If remaining_run_tests is specified, only include tests in that set
-            if remaining_run_tests and name not in remaining_run_tests:
+            # If run_tests is specified, only include tests in remaining_run_tests
+            if self.run_tests and name not in remaining_run_tests:
                 continue
 
             final_test_specs.append(test)
 
-        # Add custom test specs, avoiding duplicates
-        final_test_specs.extend([test for test in self.custom_test_specs if test not in final_test_specs])
+        # Add custom test specs
+        final_test_specs.extend(self.custom_test_specs)
 
         return final_test_specs

@@ -16,8 +16,10 @@ from ._base_classes import AntaTestInputFactory
 F = TypeVar("F", bound=AntaTestInputFactory)
 R = TypeVar("R", bound=AntaTest.Input)
 
+T_AntaTestInputFactoryMethod = Callable[[F], Iterator[R]]
 
-def skip_if_hardware_validation_disabled(func: Callable[[F], Iterator[R]]) -> Callable[[F], Iterator[R]]:
+
+def skip_if_hardware_validation_disabled(func: T_AntaTestInputFactoryMethod) -> T_AntaTestInputFactoryMethod:
     """Decorator to skip execution of the input factory create method if hardware validation is disabled."""
 
     @wraps(func)
@@ -30,7 +32,7 @@ def skip_if_hardware_validation_disabled(func: Callable[[F], Iterator[R]]) -> Ca
     return wrapper
 
 
-def skip_if_extra_fabric_validation_disabled(func: Callable[[F], Iterator[R]]) -> Callable[[F], Iterator[R]]:
+def skip_if_extra_fabric_validation_disabled(func: T_AntaTestInputFactoryMethod) -> T_AntaTestInputFactoryMethod:
     """Decorator to skip execution of the input factory create method if extra fabric validation is disabled."""
 
     @wraps(func)
@@ -43,7 +45,7 @@ def skip_if_extra_fabric_validation_disabled(func: Callable[[F], Iterator[R]]) -
     return wrapper
 
 
-def skip_if_wan_router(func: Callable[[F], Iterator[R]]) -> Callable[[F], Iterator[R]]:
+def skip_if_wan_router(func: T_AntaTestInputFactoryMethod) -> T_AntaTestInputFactoryMethod:
     """Decorator to skip execution of the input factory create method if the device is a WAN router."""
 
     @wraps(func)
@@ -56,16 +58,17 @@ def skip_if_wan_router(func: Callable[[F], Iterator[R]]) -> Callable[[F], Iterat
     return wrapper
 
 
-def skip_if_missing_config(*keys: StructuredConfigKey) -> Callable[[Callable[[F], Iterator[R]]], Callable[[F], Iterator[R]]]:
+def skip_if_missing_config(*keys: StructuredConfigKey) -> Callable[[T_AntaTestInputFactoryMethod], T_AntaTestInputFactoryMethod]:
     """Decorator to skip execution of the input factory create method if specific keys are missing in the structured configuration."""
 
-    def decorator(func: Callable[[F], Iterator[R]]) -> Callable[[F], Iterator[R]]:
+    def decorator(func: T_AntaTestInputFactoryMethod) -> T_AntaTestInputFactoryMethod:
+        key_values = [k.value for k in keys]
+
         @wraps(func)
         def wrapper(self: F) -> Iterator[R]:
             # Check if all keys resolve to a truthy value in the config
-            if not all(get_v2(self.structured_config, key.value) for key in keys):
-                formatted_keys = StructuredConfigKey.to_string_list(list(keys))
-                self.logger_adapter.debug(LogMessage.INPUT_NO_DATA_MODELS, data_models=", ".join(formatted_keys))
+            if not all(get_v2(self.structured_config, value) for value in key_values):
+                self.logger_adapter.debug(LogMessage.INPUT_NO_DATA_MODELS, data_models=", ".join(key_values))
                 return
             yield from func(self)
 

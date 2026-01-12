@@ -32,13 +32,15 @@ class AvdTestSpec:
 
     def __post_init__(self) -> None:
         """Check if `input_factory` is provided when the ANTA test requires inputs."""
-        # Check if the test class has an `Input` model and if it has required fields
-        if "Input" in self.test_class.__dict__ and issubclass((input_class := self.test_class.__dict__["Input"]), AntaTest.Input):
-            for f_name, f_info in input_class.model_fields.items():
-                # No need to check the base class fields
-                if f_name in {"result_overwrite", "filters"}:
-                    continue
-                # If a required field is present, an input factory must be provided
-                if f_info.is_required() and self.input_factory is None:
-                    msg = f"AvdTestSpec for {self.test_class.name} must have `input_factory`"
-                    raise ValueError(msg)
+        input_class = self.test_class.__dict__.get("Input", None)
+        if not (isinstance(input_class, type) and issubclass(input_class, AntaTest.Input)):
+            return
+
+        # No need to check the base class fields
+        excluded_fields = {"result_overwrite", "filters"}
+
+        requires_input = any(f_info.is_required() for f_name, f_info in input_class.model_fields.items() if f_name not in excluded_fields)
+
+        if requires_input and self.input_factory is None:
+            msg = f"AvdTestSpec for {self.test_class.name} must have `input_factory`."
+            raise ValueError(msg)

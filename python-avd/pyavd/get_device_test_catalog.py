@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from dataclasses import asdict
 from logging import getLogger
 from typing import TYPE_CHECKING
 
@@ -44,10 +45,7 @@ def get_device_test_catalog(
     Returns:
         The generated ANTA catalog for the device.
     """
-    from dataclasses import asdict  # noqa: PLC0415
-
     from ._anta.factories import create_catalog  # noqa: PLC0415
-    from ._anta.index import AVD_TEST_INDEX  # noqa: PLC0415
     from ._anta.models import InputFactoryDataSource  # noqa: PLC0415
     from ._anta.utils import dump_anta_catalog  # noqa: PLC0415
     from ._eos_cli_config_gen.schema import EosCliConfigGen  # noqa: PLC0415
@@ -59,7 +57,7 @@ def get_device_test_catalog(
 
     data_source = InputFactoryDataSource(hostname, EosCliConfigGen._load(structured_config), fabric_data, settings)
 
-    final_test_specs = settings.get_filtered_test_specs(AVD_TEST_INDEX)
+    final_test_specs = settings.get_filtered_test_specs()
 
     catalog = create_catalog(data_source, final_test_specs)
 
