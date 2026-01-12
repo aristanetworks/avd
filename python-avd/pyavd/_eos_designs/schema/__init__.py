@@ -30577,12 +30577,13 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 The value of `source_address` will be interpreted according to these rules:
                 - `vrf_router_id` will
-                configure the VRF router ID address according to `vrf.bgp.router_id`.
-                - 'diagnostic_loopback' will
-                configure the VRF Diagnostic Loopback address.
-                - `main_router_id` will configure the Loopback0 IP
-                address.
-                - An IPv4 address will be used directly as the source address.
+                configure the VRF router ID address according to
+                ``<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                - 'diagnostic_loopback' will configure the
+                VRF Diagnostic Loopback address.
+                - `main_router_id` will configure the Loopback0 IP address.
+                - An
+                IPv4 address will be used directly as the source address.
                 Overrides
                 `<network_services_key>[].igmp_snooping_querier.source_address`.
                 """
@@ -30612,12 +30613,13 @@ class EosDesigns(EosDesignsRootModel):
                             source_address:
                                The value of `source_address` will be interpreted according to these rules:
                                - `vrf_router_id` will
-                               configure the VRF router ID address according to `vrf.bgp.router_id`.
-                               - 'diagnostic_loopback' will
-                               configure the VRF Diagnostic Loopback address.
-                               - `main_router_id` will configure the Loopback0 IP
-                               address.
-                               - An IPv4 address will be used directly as the source address.
+                               configure the VRF router ID address according to
+                               ``<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                               - 'diagnostic_loopback' will configure the
+                               VRF Diagnostic Loopback address.
+                               - `main_router_id` will configure the Loopback0 IP address.
+                               - An
+                               IPv4 address will be used directly as the source address.
                                Overrides
                                `<network_services_key>[].igmp_snooping_querier.source_address`.
                             version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
@@ -31572,12 +31574,13 @@ class EosDesigns(EosDesignsRootModel):
             """
             The value of `source_address` will be interpreted according to these rules:
             - `vrf_router_id` will
-            configure the VRF router ID address according to `vrf.bgp.router_id`.
-            - 'diagnostic_loopback' will
-            configure the VRF Diagnostic Loopback address.
-            - `main_router_id` will configure the Loopback0 IP
-            address.
-            - An IPv4 address will be used directly as the source address.
+            configure the VRF router ID address according to
+            ``<network_services_keys.name>[].vrfs[].bgp.router_id`.
+            - 'diagnostic_loopback' will configure the
+            VRF Diagnostic Loopback address.
+            - `main_router_id` will configure the Loopback0 IP address.
+            - An
+            IPv4 address will be used directly as the source address.
             Overrides
             `<network_services_key>[].igmp_snooping_querier.source_address`.
             """
@@ -31607,12 +31610,13 @@ class EosDesigns(EosDesignsRootModel):
                         source_address:
                            The value of `source_address` will be interpreted according to these rules:
                            - `vrf_router_id` will
-                           configure the VRF router ID address according to `vrf.bgp.router_id`.
-                           - 'diagnostic_loopback' will
-                           configure the VRF Diagnostic Loopback address.
-                           - `main_router_id` will configure the Loopback0 IP
-                           address.
-                           - An IPv4 address will be used directly as the source address.
+                           configure the VRF router ID address according to
+                           ``<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                           - 'diagnostic_loopback' will configure the
+                           VRF Diagnostic Loopback address.
+                           - `main_router_id` will configure the Loopback0 IP address.
+                           - An
+                           IPv4 address will be used directly as the source address.
                            Overrides
                            `<network_services_key>[].igmp_snooping_querier.source_address`.
                         version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
@@ -60497,12 +60501,13 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 The value of `source_address` will be interpreted according to these rules:
                                 - `vrf_router_id` will
-                                configure the VRF router ID address according to `vrf.bgp.router_id`.
-                                - 'diagnostic_loopback' will
-                                configure the VRF Diagnostic Loopback address.
-                                - `main_router_id` will configure the Loopback0 IP
-                                address.
-                                - An IPv4 address will be used directly as the source address.
+                                configure the VRF router ID address according to
+                                ``<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                - 'diagnostic_loopback' will configure the
+                                VRF Diagnostic Loopback address.
+                                - `main_router_id` will configure the Loopback0 IP address.
+                                - An
+                                IPv4 address will be used directly as the source address.
                                 Overrides
                                 `<network_services_key>[].igmp_snooping_querier.source_address`.
                                 """
@@ -60532,12 +60537,13 @@ class EosDesigns(EosDesignsRootModel):
                                             source_address:
                                                The value of `source_address` will be interpreted according to these rules:
                                                - `vrf_router_id` will
-                                               configure the VRF router ID address according to `vrf.bgp.router_id`.
-                                               - 'diagnostic_loopback' will
-                                               configure the VRF Diagnostic Loopback address.
-                                               - `main_router_id` will configure the Loopback0 IP
-                                               address.
-                                               - An IPv4 address will be used directly as the source address.
+                                               configure the VRF router ID address according to
+                                               ``<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                               - 'diagnostic_loopback' will configure the
+                                               VRF Diagnostic Loopback address.
+                                               - `main_router_id` will configure the Loopback0 IP address.
+                                               - An
+                                               IPv4 address will be used directly as the source address.
                                                Overrides
                                                `<network_services_key>[].igmp_snooping_querier.source_address`.
                                             version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
@@ -61519,12 +61525,13 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             The value of `source_address` will be interpreted according to these rules:
                             - `vrf_router_id` will
-                            configure the VRF router ID address according to `vrf.bgp.router_id`.
-                            - 'diagnostic_loopback' will
-                            configure the VRF Diagnostic Loopback address.
-                            - `main_router_id` will configure the Loopback0 IP
-                            address.
-                            - An IPv4 address will be used directly as the source address.
+                            configure the VRF router ID address according to
+                            ``<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                            - 'diagnostic_loopback' will configure the
+                            VRF Diagnostic Loopback address.
+                            - `main_router_id` will configure the Loopback0 IP address.
+                            - An
+                            IPv4 address will be used directly as the source address.
                             Overrides
                             `<network_services_key>[].igmp_snooping_querier.source_address`.
                             """
@@ -61554,12 +61561,13 @@ class EosDesigns(EosDesignsRootModel):
                                         source_address:
                                            The value of `source_address` will be interpreted according to these rules:
                                            - `vrf_router_id` will
-                                           configure the VRF router ID address according to `vrf.bgp.router_id`.
-                                           - 'diagnostic_loopback' will
-                                           configure the VRF Diagnostic Loopback address.
-                                           - `main_router_id` will configure the Loopback0 IP
-                                           address.
-                                           - An IPv4 address will be used directly as the source address.
+                                           configure the VRF router ID address according to
+                                           ``<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                           - 'diagnostic_loopback' will configure the
+                                           VRF Diagnostic Loopback address.
+                                           - `main_router_id` will configure the Loopback0 IP address.
+                                           - An
+                                           IPv4 address will be used directly as the source address.
                                            Overrides
                                            `<network_services_key>[].igmp_snooping_querier.source_address`.
                                         version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
