@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from pyavd._anta.input_factories import *
 from pyavd._anta.lib.tests import *
-from pyavd.api._anta import AvdTestSpec
+from pyavd.api._anta.avd_test_spec import AvdTestSpec
 
 AVD_TEST_INDEX: list[AvdTestSpec] = [
     AvdTestSpec(test_class=VerifyAgentLogs),

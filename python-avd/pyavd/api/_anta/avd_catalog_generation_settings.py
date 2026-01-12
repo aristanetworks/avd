@@ -7,6 +7,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from pyavd._anta.index import AVD_TEST_INDEX
+
 if TYPE_CHECKING:
     from .avd_test_spec import AvdTestSpec
 
@@ -41,8 +43,6 @@ class AvdCatalogGenerationSettings:
 
     def get_filtered_test_specs(self) -> list[AvdTestSpec]:
         """Return a filtered list of AvdTestSpec based on run_tests, skip_tests, and custom_test_specs."""
-        from pyavd._anta.index import AVD_TEST_INDEX  # noqa: PLC0415
-
         run_tests_set = set(self.run_tests)
         skip_tests_set = set(self.skip_tests)
 
