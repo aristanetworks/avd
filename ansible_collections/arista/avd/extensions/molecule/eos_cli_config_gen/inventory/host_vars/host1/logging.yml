@@ -22,6 +22,10 @@ logging:
       hosts:
         - name: 10.10.10.7
         - name: 2001:db8::10:7
+        - name: aaa.local
+        - name: AAA.local
+        - name: bbb.local
+        - name: BBB.local
         - name: 30.30.30.7
           protocol: tcp
           ports:

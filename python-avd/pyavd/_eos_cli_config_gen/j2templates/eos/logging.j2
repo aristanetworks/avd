@@ -44,7 +44,7 @@ no logging synchronous
 logging synchronous level {{ logging.synchronous.level | arista.avd.default("critical") }}
 {%     endif %}
 {%     for vrf in logging.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
-{%         for host in vrf.hosts | sort(attribute="name") %}
+{%         for host in vrf.hosts | sort(attribute="name", case_sensitive=True) %}
 {%             set logging_host_cli = "logging" %}
 {%             if vrf.name != "default" %}
 {%                 set logging_host_cli = logging_host_cli ~ " vrf " ~ vrf.name %}
