@@ -493,26 +493,28 @@ ip domain-list domain2.local
 | ----------- | --- | -------- |
 | 10.10.128.10 | default | - |
 | 10.10.129.10 | default | 0 |
-| 10.10.128.10 | mgmt | - |
-| 10.10.128.10 | TEST | 3 |
 | 2001:db8::1 | default | - |
 | 2001:db8::2 | default | 0 |
+| 2001:db8::3 | default | 1 |
+| 10.10.128.10 | mgmt | - |
 | 2001:db8::1 | mgmt | - |
+| 2001:db8::2 | mgmt | 1 |
+| 4.4.4.4 | TEST | - |
+| 10.10.128.10 | TEST | 3 |
 | 2001:db8::2 | TEST | 3 |
-| 10.10.11.11 | ZTP | - |
-| 10.10.222.11 | TEST | 2 |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server vrf ZTP 10.10.11.11
+ip name-server vrf TEST 4.4.4.4
 ip name-server vrf default 10.10.128.10
 ip name-server vrf default 10.10.129.10
 ip name-server vrf default 2001:db8::1
 ip name-server vrf default 2001:db8::2
 ip name-server vrf mgmt 10.10.128.10
 ip name-server vrf mgmt 2001:db8::1
-ip name-server vrf TEST 10.10.222.11 priority 2
+ip name-server vrf default 2001:db8::3 priority 1
+ip name-server vrf mgmt 2001:db8::2 priority 1
 ip name-server vrf TEST 10.10.128.10 priority 3
 ip name-server vrf TEST 2001:db8::2 priority 3
 ```
@@ -965,6 +967,12 @@ Provider eos-native is configured.
 ```eos
 !
 management api gnmi
+   transport grpc MGMT
+      ssl profile gnmi
+      vrf MGMT
+      ip access-group acl1
+      notification timestamp send-time
+   !
    transport grpc arFalse
       ip access-group acl1
       notification timestamp send-time
@@ -972,12 +980,6 @@ management api gnmi
    transport grpc arTrue
       ip access-group acl1
       authorization requests
-      notification timestamp send-time
-   !
-   transport grpc MGMT
-      ssl profile gnmi
-      vrf MGMT
-      ip access-group acl1
       notification timestamp send-time
    !
    transport grpc mytransport
@@ -1087,18 +1089,8 @@ management api http-commands
    protocol unix-socket
    default-services
    protocol https ssl profile SSL_PROFILE
-   no shutdown
-   !
-   vrf default
-      no shutdown
-      ip access-group ACL-API
-      ipv6 access-group ACL-API6
-   !
-   vrf MGMT
-      no shutdown
-      ip access-group ACL-API
    protocol https certificate
------BEGIN CERTIFICATE-----
+   -----BEGIN CERTIFICATE-----
 MIIFNjCCAx4CCQCVGSFu9M4dNDANBgkqhkiG9w0BAQsFADBdMQswCQYDVQQGEwJD
 QTELMAkGA1UECAwCQkMxEjAQBgNVBAcMCVZhbmNvdXZlcjEPMA0GA1UECgwGQXJp
 c3RhMQwwCgYDVQQLDANBVkQxDjAMBgNVBAMMBWhvc3QxMB4XDTI0MTExMzE3NTAw
@@ -1128,8 +1120,8 @@ kc6u4R7x93bWtRedCtL8SroKgg3iSP+MNvjh7GRVrisKi1mHq37xBFbfcKWQ8Fux
 xak6B5u7Dkwio2KGtQAzUTw8GNrG8ix6wYbCxRTorl0qtxWKqB1sqPkxVmo73PkO
 sVbhuzXgHBzA4RNdl/qmwSKlL7pKfpQUm3jSzewJm224QTYODTF8KRpf
 -----END CERTIFICATE-----
-EOF
------BEGIN PRIVATE KEY-----
+   EOF
+   -----BEGIN PRIVATE KEY-----
 MIIJQgIBADANBgkqhkiG9w0BAQEFAASCCSwwggkoAgEAAoICAQCc9nlFQ/+Lvp5s
 9AJOkCaj60EierKWbcZ34Eg9xExoVoFTvmle1G56QgLygfhuwV91hB5ds6YRRPju
 B4UQgYgxQfS12dn4ogSnD5hTLiQoS9ecC2mucj/fbazF98MUi2SBSlZg+ZMY7amT
@@ -1181,7 +1173,17 @@ xEnBkzW4rhGpE+D72RC0Z4wOurE+pLxJpHnPu3lqVmD8m/AaxUzGdiRWPCLkx2G1
 lRIvIpbuqzZ1QzAdWwCX/5mgBk/xoI88N3EcxvgEJJhiXihYwW/630KkKETqnu64
 9ZBLoqoLmPhKxDHZuwO7re9GxVZ1HQ==
 -----END PRIVATE KEY-----
-EOF
+   EOF
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+      ip access-group ACL-API
+   !
+   vrf default
+      no shutdown
+      ip access-group ACL-API
+      ipv6 access-group ACL-API6
 ```
 
 ### Management API Models
@@ -13434,8 +13436,8 @@ mac security
       mka session rekey-period 30
       traffic unprotected allow
       sci
-      l2-protocol ethernet-flow-control bypass
       l2-protocol lldp bypass unauthorized
+      l2-protocol ethernet-flow-control bypass
    !
    profile A2
       key 1234b 7 <removed>
@@ -14609,6 +14611,7 @@ Default maintenance unit profile: **UP1**
 
 | BGP profile | Initiator route-map |
 | ----------- | ------------------- |
+| bgp2 | SystemGenerated |
 | BP1 | RM-MAINTENANCE |
 | BP2 | RM-MAINTENANCE2 |
 | BP3 | RM-MAINTENANCE3 |
@@ -14627,7 +14630,7 @@ Default maintenance unit profile: **UP1**
 | Unit | Interface groups | BGP groups | Unit profile | Quiesce |
 | ---- | ---------------- | ---------- | ------------ | ------- |
 | System | - | - | UP1 | No |
-| UNIT1 | INTERFACE_GROUP_1 | BGP_GROUP_1<br/>BGP_GROUP_2 | UP1 | No |
+| UNIT1 | inrerface_group<br/>INTERFACE_GROUP_1 | bgp_group<br/>BGP_GROUP_1<br/>BGP_GROUP_2 | UP1 | No |
 
 #### Maintenance Device Configuration
 
@@ -14642,6 +14645,8 @@ maintenance
    !
    profile bgp BP3
       initiator route-map RM-MAINTENANCE3 inout
+   !
+   profile bgp bgp2
    profile bgp BP1 default
    profile interface IP1 default
    profile unit UP1 default
@@ -14662,7 +14667,9 @@ maintenance
    unit UNIT1
       group bgp BGP_GROUP_1
       group bgp BGP_GROUP_2
+      group bgp bgp_group
       group interface INTERFACE_GROUP_1
+      group interface inrerface_group
       profile unit UP1
 ```
 
