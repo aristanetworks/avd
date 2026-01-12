@@ -4,14 +4,25 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet41
+  description: P2P_host1_Ethernet42
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.42.200/31
+  metadata:
+    peer: host1
+    peer_interface: Ethernet42
+    peer_type: l3leaf
+  switchport:
+    enabled: false
 - name: Ethernet42
-  description: P2P_host_ansible_only_Ethernet42
+  description: P2P_host1_Ethernet41
   shutdown: false
   mtu: 9214
   ip_address: 192.168.42.201/31
   metadata:
-    peer: host_ansible_only
-    peer_interface: Ethernet42
+    peer: host1
+    peer_interface: Ethernet41
     peer_type: l3leaf
   switchport:
     enabled: false
@@ -82,12 +93,18 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   neighbors:
+  - ip_address: 192.168.42.201
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '101'
+    metadata:
+      peer: host1
+    description: host1_Ethernet42
   - ip_address: 192.168.42.200
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65105'
+    remote_as: '101'
     metadata:
-      peer: host_ansible_only
-    description: host_ansible_only_Ethernet42
+      peer: host1
+    description: host1_Ethernet41
   redistribute:
     connected:
       enabled: true
