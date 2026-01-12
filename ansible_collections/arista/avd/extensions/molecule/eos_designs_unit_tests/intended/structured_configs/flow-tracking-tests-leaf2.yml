@@ -122,20 +122,20 @@ flow_tracking:
       ipv6: true
       threshold_minimum: 1332
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER-3
+      record_export:
         on_inactive_timeout: 50000
         on_interval: 300331
-      name: FLOW-TRACKER-3
       exporters:
       - name: ayush_exporter
         collectors:
         - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 40000
-    - record_export:
+    - name: FLOW-TRACKER-4
+      record_export:
         on_inactive_timeout: 50020
         on_interval: 300321
-      name: FLOW-TRACKER-4
       exporters:
       - name: ayush_exporter
         collectors:

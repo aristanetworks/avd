@@ -1140,7 +1140,6 @@ route-map RM-WAN-HA-PEER-OUT permit 20
 #### IP Extended Community Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.7:202
 ```
 
