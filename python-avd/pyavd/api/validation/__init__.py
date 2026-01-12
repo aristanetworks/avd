@@ -12,13 +12,13 @@ from pyavd_utils.validation import ValidationResult
 if TYPE_CHECKING:
     from pyavd_utils.validation import ValidatedDataResult as _ValidatedDataResult
 
-    from pyavd.api.schemas import Design, EOSConfig
+    from pyavd.api.schemas import AVDDesign, EOSConfig
 
 
 @dataclass(frozen=True)
 class LoadDesignResult:
-    design: Design | None
-    """Loaded design. None if we hit any schema violations."""
+    design: AVDDesign | None
+    """Loaded AVD Design. None if we hit any schema violations."""
 
     validation_result: ValidationResult
     """Result of data validation."""

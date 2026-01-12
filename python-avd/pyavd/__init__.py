@@ -7,7 +7,7 @@ from .get_device_doc import get_device_doc
 from .get_device_structured_config import get_device_structured_config
 from .get_device_test_catalog import get_device_test_catalog
 from .get_fabric_documentation import get_fabric_documentation
-from .load_design import load_design
+from .load_avd_design import load_avd_design
 from .load_eos_config import load_eos_config
 from .validate_inputs import validate_inputs
 from .validate_structured_config import validate_structured_config
@@ -29,7 +29,7 @@ __all__ = [
     "get_device_structured_config",
     "get_device_test_catalog",
     "get_fabric_documentation",
-    "load_design",
+    "load_avd_design",
     "load_eos_config",
     "validate_inputs",
     "validate_structured_config",

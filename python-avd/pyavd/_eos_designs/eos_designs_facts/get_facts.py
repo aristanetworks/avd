@@ -14,14 +14,14 @@ if TYPE_CHECKING:
 
     from ansible.template import Templar
 
-    from pyavd._eos_designs.schema import EosDesigns
     from pyavd.api.pool_manager import PoolManager
+    from pyavd.api.schemas import AVDDesign
 
     from .schema import EosDesignsFacts
 
 
 def get_facts(
-    all_inputs: Mapping[str, EosDesigns | Mapping],
+    all_inputs: Mapping[str, AVDDesign | Mapping],
     all_hostvars: Mapping[str, MutableMapping[str, Any]] | None = None,
     templar: Templar | None = None,
     pool_manager: PoolManager | None = None,
@@ -31,7 +31,7 @@ def get_facts(
     Generate facts for all devices.
 
     Args:
-        all_inputs: Dictionary where keys are hostnames and values are the Design instance per device.
+        all_inputs: Dictionary where keys are hostnames and values are the AVDDesign instance per device.
             Supporting dicts as well for backwards compatibility.
         all_hostvars: Raw hostvars exposed to custom jinja templates or custom python logic for each device.
             This is optional and only needed if custom templates or python modules are used for descriptions or IP addressing.
@@ -43,7 +43,7 @@ def get_facts(
     Returns:
         EosDesignsFacts instances for each device.
     """
-    from pyavd._eos_designs.schema import EosDesigns  # noqa: PLC0415
+    from pyavd.api.schemas import AVDDesign  # noqa: PLC0415
 
     peer_facts_generators: dict[str, EosDesignsFactsGenerator] = {}
     """Placeholder for generators. Referenced in the generators themselves as well as in shared_utils to be able to resolve facts for peers."""
@@ -61,8 +61,8 @@ def get_facts(
         hostvars = all_hostvars.get(hostname, {})
 
         inputs = all_inputs[hostname]
-        if not isinstance(inputs, EosDesigns):
-            inputs = EosDesigns._from_dict(inputs)
+        if not isinstance(inputs, AVDDesign):
+            inputs = AVDDesign._from_dict(inputs)
 
         peer_facts_generators[hostname] = _create_generator_instance(
             hostname, inputs, hostvars, templar, pool_manager, digital_twin, peer_facts_generators, mlag_groups
@@ -89,7 +89,7 @@ def get_facts(
 
 def _create_generator_instance(
     hostname: str,
-    inputs: EosDesigns,
+    inputs: AVDDesign,
     hostvars: MutableMapping,
     templar: Templar | None,
     pool_manager: PoolManager | None,

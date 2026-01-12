@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import threading
+from functools import wraps
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -11,34 +12,33 @@ if TYPE_CHECKING:
     from typing import Any
 
 
-class RunOnce:
+def run_once(func: Callable[..., None]) -> Callable[..., None]:
     """
     Decorator to run a function only once.
 
     This is useful for functions that are called multiple times but should only run once.
     This only supports functions without a return value.
+    If the function raises an Exception it will be raised on the first call. Subsequent calls will still be ignored.
     This is thread-safe.
     """
+    has_run = False
+    lock = threading.Lock()
 
-    func: Callable[(...), None]
-    has_run: bool
-    lock: threading.Lock
-
-    def __init__(self, func: Callable[(...), None]) -> None:
+    @wraps(func)
+    def wrapper(*args: Any, **kwargs: Any) -> None:
         """
-        Initialize the RunOnce decorator.
+        Wrap the function to only call it once.
 
-        Args:
-            func: The function to be executed only once.
+        First we check if it was already run, and if so we return immediately.
+        After that we acquire the lock to ensure only one thread can run the function.
+        Since multiple threads could be waiting to acquire the lock, we need to check has_run again
+        after acquiring the lock to ensure we only run the function once.
         """
-        self.func = func
-        self.has_run = False
-        self.lock = threading.Lock()
+        nonlocal has_run
+        if not has_run:
+            with lock:
+                if not has_run:
+                    has_run = True
+                    func(*args, **kwargs)
 
-    def __call__(self, *args: Any, **kwargs: Any) -> None:
-        """Execute the wrapped function only once, ignoring subsequent calls."""
-        if not self.has_run:
-            with self.lock:
-                if not self.has_run:
-                    self.has_run = True
-                    self.func(*args, **kwargs)
+    return wrapper

@@ -3,8 +3,8 @@
 # that can be found in the LICENSE file.
 import pytest
 
-from pyavd import load_design
-from pyavd._eos_designs.schema import EosDesigns
+from pyavd import load_avd_design
+from pyavd.api.schemas import AVDDesign
 from tests.models import MoleculeHost
 
 
@@ -28,8 +28,8 @@ from tests.models import MoleculeHost
     "example-single-dc-l3ls",
     "example-single-dc-l3ls-ipv6",
 )
-def test_load_design_with_valid_inputs(molecule_host: MoleculeHost) -> None:
+def test_load_avd_design_with_valid_inputs(molecule_host: MoleculeHost) -> None:
     """Test validate_inputs."""
-    load_design_result = load_design(molecule_host.hostvars)
-    assert len(load_design_result.validation_result.violations) == 0
-    assert isinstance(load_design_result.design, EosDesigns)
+    load_avd_design_result = load_avd_design(molecule_host.hostvars)
+    assert len(load_avd_design_result.validation_result.violations) == 0
+    assert isinstance(load_avd_design_result.design, AVDDesign)

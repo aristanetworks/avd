@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
     from ._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from .api.pool_manager import PoolManager
-    from .api.schemas import Design
+    from .api.schemas import AVDDesign
 
 
 def get_avd_facts(
-    all_inputs: Mapping[str, Design | Mapping],
+    all_inputs: Mapping[str, AVDDesign | Mapping],
     all_hostvars: Mapping[str, MutableMapping] | None = None,
     pool_manager: PoolManager | None = None,
     digital_twin: bool = False,
@@ -22,13 +22,13 @@ def get_avd_facts(
     """
     Build avd_facts using the AVD eos_designs_facts logic.
 
-    Variables should be loaded into instances of Design first using `pyavd.load_design`.
+    Variables should be loaded into instances of AVDDesign first using `pyavd.load_design`.
 
     Note! No support for inline templating or jinja templates for descriptions or ip addressing
 
     Args:
         all_inputs:
-            A dictionary where keys are hostnames and values are the Design instance per device.
+            A dictionary where keys are hostnames and values are the AVDDesign instance per device.
             Supporting dicts as well for backwards compatibility.
         all_hostvars:
             Raw hostvars exposed to custom python logic for each device.

@@ -6,7 +6,7 @@ from pathlib import Path
 from pickle import load
 from typing import Any
 
-from pyavd._utils import RunOnce
+from pyavd._utils.run_once import run_once
 from pyavd.constants import SCHEMA_STORE_GZ_FILE
 
 from .constants import PICKLED_SCHEMAS
@@ -25,13 +25,13 @@ def create_store(*, load_from_yaml: bool = False) -> dict[str, dict[str, Any]]:
     return store
 
 
-@RunOnce
+@run_once
 def init_store() -> None:
     """
     Init the schema store in pyavd-utils.
 
     This should be called at least one time before each validation.
-    The RunOnce decorator will ensure we only run this once and otherwise do a quick return on subsequent calls.
+    The run_once decorator will ensure we only run this once and otherwise do a quick return on subsequent calls.
 
     TODO: Init from fragments when running from source.
     """

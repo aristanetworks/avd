@@ -1,7 +1,6 @@
 # Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import json
 import warnings
 from copy import deepcopy
 
@@ -89,7 +88,7 @@ def test_eos_cli_config_gen_initialize_kwargs_with_valid_data(molecule_host: Mol
     "eos_designs_deprecated_vars",
     "eos_designs-l2ls",
     "eos_designs-mpls-isis-sr-ldp",
-    # TODO: "eos_designs-twodc-5stage-clos", # Remove inline jinja
+    # TODO: "eos_designs-twodc-5stage-clos", # Remove custom templates
     "evpn_underlay_ebgp_overlay_ebgp",
     "evpn_underlay_isis_overlay_ibgp",
     "evpn_underlay_ospf_overlay_ebgp",
@@ -117,7 +116,7 @@ def test_eos_cli_config_gen_load_dump_consistency(molecule_host: MoleculeHost) -
     # Coerce data types to match the loaded data.
     validated_data_result = validate_structured_config(structured_config)
     assert validated_data_result.validated_data is not None
-    validated_data = json.loads(validated_data_result.validated_data)
+    validated_data = validated_data_result.validated_data
 
     # Remove all ansible_* keys from the validated data.
     expected_data = {
