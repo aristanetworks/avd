@@ -24,7 +24,7 @@ keys:
           required: true
           min_length: 1
           description: |
-            Large communities and regexp entries MUST not be configured in the same entry.
+            Large communities and regexp MUST not be configured in the same entry.
           items:
             type: dict
             keys:
