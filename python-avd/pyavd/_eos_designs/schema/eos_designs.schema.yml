@@ -7859,7 +7859,7 @@ $defs:
                 to these rules:
 
                 - `vrf_router_id` will configure the VRF router ID address according
-                to `vrf.bgp.router_id`.
+                to ``<network_services_keys.name>[].vrfs[].bgp.router_id`.
 
                 - `diagnostic_loopback` will configure the VRF Diagnostic Loopback.
 
