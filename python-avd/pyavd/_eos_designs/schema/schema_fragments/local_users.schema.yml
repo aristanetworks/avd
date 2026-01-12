@@ -8,7 +8,7 @@ type: dict
 keys:
   local_users:
     documentation_options:
-      table: management-settings
+      table: removed-keys
     deprecation:
       warning: true
       removed: true

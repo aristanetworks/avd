@@ -8,7 +8,7 @@ type: dict
 keys:
   ntp_settings:
     documentation_options:
-      table: management-settings
+      table: time-configuration
     type: dict
     description: |-
       NTP settings

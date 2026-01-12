@@ -1,0 +1,48 @@
+---
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ip_large_community_lists:
+    type: list
+    primary_key: name
+    display_name: IP Large Community Lists
+    description: |
+      A BGP large-community access list filters prefixes based on their BGP large community values. Multiple large-community lists with the same name may be specified.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: IP Large-community-list Name.
+        entries:
+          type: list
+          required: true
+          min_length: 1
+          description: |
+            Large communities and regexp MUST not be configured in the same entry.
+          items:
+            type: dict
+            keys:
+              action:
+                type: str
+                required: true
+                valid_values: ["permit", "deny"]
+              large_communities:
+                type: list
+                min_length: 1
+                items:
+                  type: str
+                description: |
+                  If defined, a standard large-community-list will be configured.
+                  Large community values (ASN:Local-part-1:Local-part-2):
+                  - ASN:nn:nn
+              regexp:
+                type: str
+                description: |-
+                  Regular Expression.
+                  If defined, a regex large-community-list will be configured.
