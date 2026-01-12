@@ -98,10 +98,12 @@ ip_domain_lookup:
     vrf: INBAND_MGMT_VRF
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 10.10.10.1
-  vrf: INBAND_MGMT_VRF
-  priority: 1
+ip_name_server:
+  vrfs:
+  - name: INBAND_MGMT_VRF
+    servers:
+    - ip_address: 10.10.10.1
+      priority: 1
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
