@@ -15,8 +15,8 @@ daemon_terminattr:
   disable_aaa: false
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 dhcp_servers:
-- disabled: false
-  vrf: default
+- vrf: default
+  disabled: false
   lease_time_ipv4:
     days: 6
     hours: 23

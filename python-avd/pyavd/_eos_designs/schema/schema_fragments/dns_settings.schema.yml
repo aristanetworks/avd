@@ -7,8 +7,6 @@
 type: dict
 keys:
   dns_settings:
-    documentation_options:
-      table: management-settings
     type: dict
     description: |-
       DNS settings
