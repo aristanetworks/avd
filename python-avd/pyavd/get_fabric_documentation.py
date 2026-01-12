@@ -17,7 +17,7 @@ from pyavd.api.fabric_documentation import (
 if TYPE_CHECKING:
     from ._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from ._eos_designs.fabric_documentation_facts import FabricDocumentationFacts
-    from .api.validation import EOSConfig
+    from .api.schemas import EOSConfig
 
 
 def get_fabric_documentation(
@@ -54,7 +54,7 @@ def get_fabric_documentation(
         FabricDocumentation object containing the requested documentation areas.
     """
     from ._eos_designs.fabric_documentation_facts import FabricDocumentationFacts  # noqa: PLC0415
-    from .api.validation import EOSConfig  # noqa: PLC0415
+    from .api.schemas import EOSConfig  # noqa: PLC0415
     from .constants import EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH  # noqa: PLC0415
     from .j2filters import add_md_toc  # noqa: PLC0415
     from .templater import Templar  # noqa: PLC0415
