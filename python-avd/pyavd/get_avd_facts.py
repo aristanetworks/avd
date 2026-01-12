@@ -22,7 +22,7 @@ def get_avd_facts(
     """
     Build avd_facts using the AVD eos_designs_facts logic.
 
-    Variables should be loaded into instances of AVDDesign first using `pyavd.load_design`.
+    Variables should be loaded into instances of AVDDesign first using `pyavd.load_avd_design`.
 
     Note! No support for inline templating or jinja templates for descriptions or ip addressing
 

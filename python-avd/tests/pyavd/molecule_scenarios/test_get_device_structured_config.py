@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from pyavd import get_device_structured_config, load_design
+from pyavd import get_device_structured_config, load_avd_design
 from pyavd.api.schemas import EOSConfig
 from tests.models import MoleculeHost
 
@@ -39,11 +39,11 @@ def test_get_device_structured_config(molecule_host: MoleculeHost) -> None:
     hostvars = deepcopy(molecule_host.hostvars)
 
     # Load inputs
-    load_design_result = load_design(hostvars)
+    load_avd_design_result = load_avd_design(hostvars)
 
-    assert load_design_result.design is not None
+    assert load_avd_design_result.design is not None
 
-    design = load_design_result.design
+    design = load_avd_design_result.design
 
     expected_structured_config = molecule_host.structured_config
 

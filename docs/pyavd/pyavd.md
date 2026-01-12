@@ -86,7 +86,7 @@ pip install pyavd[ansible]
       show_root_toc_entry: false
       show_object_full_path: true
 
-::: pyavd.load_design
+::: pyavd.load_avd_design
     options:
       heading_level: 3
       show_root_toc_entry: false

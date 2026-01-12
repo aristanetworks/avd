@@ -20,7 +20,7 @@ except ImportError:
 
 
 def parse_validation_result(validation_result: ValidationResult, hostname: str, ansible_display: Display) -> int:
-    """Parser of pyavd.load_design.ValidationResult displaying warnings and errors and returning the number of validation errors."""
+    """Parser of ValidationResult displaying warnings and errors and returning the number of validation errors."""
     if not HAS_PYAVD:
         msg = "The 'arista.avd' collection requires the 'pyavd' Python library. Got import error."
         raise ImportError(msg)

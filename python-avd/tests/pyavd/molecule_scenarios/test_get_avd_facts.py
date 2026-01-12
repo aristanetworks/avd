@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from pyavd import get_avd_facts, load_design
+from pyavd import get_avd_facts, load_avd_design
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from tests.models import MoleculeScenario
 
@@ -37,9 +37,9 @@ def test_get_avd_facts(molecule_scenario: MoleculeScenario) -> None:
     molecule_hostvars = {host.name: deepcopy(host.hostvars) for host in molecule_scenario.hosts}
     molecule_inputs = {}
     for host in molecule_scenario.hosts:
-        load_design_result = load_design(host.hostvars)
-        assert load_design_result.design is not None
-        molecule_inputs[host.name] = load_design_result.design
+        load_avd_design_result = load_avd_design(host.hostvars)
+        assert load_avd_design_result.design is not None
+        molecule_inputs[host.name] = load_avd_design_result.design
 
     with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
         avd_facts = get_avd_facts(

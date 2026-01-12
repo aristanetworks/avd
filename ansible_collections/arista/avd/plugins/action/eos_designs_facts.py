@@ -25,14 +25,14 @@ if TYPE_CHECKING:
     from ansible.playbook.task import Task
     from ansible.template import Templar
 
-    from pyavd import load_design
+    from pyavd import load_avd_design
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
 
 try:
-    from pyavd import load_design
+    from pyavd import load_avd_design
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
     from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
@@ -147,7 +147,7 @@ class ActionModule(ActionBase):
             host_hostvars = dict(hostvars[host])
 
             # Load input vars into the EosDesigns data class.
-            host_result = load_design(host_hostvars)
+            host_result = load_avd_design(host_hostvars)
 
             data_validation_errors += parse_validation_result(validation_result=host_result.validation_result, hostname=host, ansible_display=display)
 
@@ -156,7 +156,7 @@ class ActionModule(ActionBase):
                 result["failed"] = True
                 continue
 
-            all_inputs[host] = host_result.design
+            all_inputs[host] = host_result.avd_design
             all_hostvars[host] = host_hostvars
 
         # Build result message

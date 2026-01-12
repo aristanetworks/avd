@@ -6,25 +6,25 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .api.validation import LoadDesignResult
+    from .api.validation import LoadAVDDesignResult
 
 
-def load_avd_design(inputs: dict) -> LoadDesignResult:
+def load_avd_design(inputs: dict) -> LoadAVDDesignResult:
     """
-    Load and validate Design data.
+    Load and validate AVD Design data.
 
     Args:
-        inputs: Dictionary with data to be validated and loaded as a Design instance.
+        inputs: Dictionary with data to be validated and loaded as an AVDDesign instance.
 
     Returns:
-        LoadDesignResult containing the loaded AVD Design (or None if validation fails)
+        LoadAVDDesignResult containing the loaded AVD Design (or None if validation fails)
         and the validation result with any errors or warnings.
     """
     from . import validate_inputs  # noqa: PLC0415
     from .api.schemas import AVDDesign  # noqa: PLC0415
-    from .api.validation import LoadDesignResult  # noqa: PLC0415
+    from .api.validation import LoadAVDDesignResult  # noqa: PLC0415
 
     validated_data_result = validate_inputs(inputs)
     design = AVDDesign._load(validated_data_result.validated_data) if validated_data_result.validated_data is not None else None
 
-    return LoadDesignResult(design=design, validation_result=validated_data_result.validation_result)
+    return LoadAVDDesignResult(design=design, validation_result=validated_data_result.validation_result)

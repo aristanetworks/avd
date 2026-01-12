@@ -26,14 +26,14 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
 )
 
 if TYPE_CHECKING:
-    from pyavd import load_design
+    from pyavd import load_avd_design
     from pyavd._eos_designs.structured_config import get_structured_config
     from pyavd._schema.avdschema import AvdSchema
     from pyavd._utils import get, merge, strip_null_from_data
     from pyavd._utils import template as templater
 
 try:
-    from pyavd import load_design
+    from pyavd import load_avd_design
     from pyavd._eos_designs.structured_config import get_structured_config
     from pyavd._schema.avdschema import AvdSchema
     from pyavd._utils import get, merge, strip_null_from_data
@@ -99,11 +99,11 @@ class ActionModule(ActionBase):
         all_facts = AvdSwitchFactsDefaultDict(avd_switch_facts)
 
         # Load input vars into the EosDesigns data class.
-        load_design_result = load_design(host_hostvars)
+        load_avd_design_result = load_avd_design(host_hostvars)
 
-        data_validation_errors = parse_validation_result(validation_result=load_design_result.validation_result, hostname=hostname, ansible_display=display)
+        data_validation_errors = parse_validation_result(validation_result=load_avd_design_result.validation_result, hostname=hostname, ansible_display=display)
 
-        if data_validation_errors or load_design_result.design is None:
+        if data_validation_errors or load_avd_design_result.design is None:
             # Quickly continue if data validation failed
             result["failed"] = True
             result["msg"] = build_result_message(data_validation_errors)
@@ -113,7 +113,7 @@ class ActionModule(ActionBase):
         try:
             structured_config = get_structured_config(
                 hostname=hostname,
-                inputs=load_design_result.design,
+                inputs=load_avd_design_result.design,
                 all_facts=all_facts,
                 hostvars=host_hostvars,
                 templar=self.templar,

@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 
 @dataclass(frozen=True)
-class LoadDesignResult:
+class LoadAVDDesignResult:
     design: AVDDesign | None
     """Loaded AVD Design. None if we hit any schema violations."""
 
@@ -50,4 +50,4 @@ class ValidatedDataResult:
         )
 
 
-__all__ = ["LoadDesignResult", "LoadEOSConfigResult", "ValidatedDataResult", "ValidationResult"]
+__all__ = ["LoadAVDDesignResult", "LoadEOSConfigResult", "ValidatedDataResult", "ValidationResult"]
