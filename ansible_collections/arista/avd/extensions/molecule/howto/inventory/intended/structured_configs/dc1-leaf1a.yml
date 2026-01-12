@@ -76,9 +76,11 @@ ip_domain_lookup:
     vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 192.168.1.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.1.1
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
 local_users:
