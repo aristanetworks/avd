@@ -689,7 +689,10 @@ class AvdStructuredConfigBaseProtocol(
                 )
 
             radius_server_vrf = self.structured_config.radius_server.vrfs.obtain(server_vrf)
-            radius_server_vrf.servers.append_new(host=server.host, tls=server.tls, key=self._get_tacacs_or_radius_server_password(server))
+            if server.tls.enabled:
+                radius_server_vrf.servers.append_new(host=server.host, vrf=server_vrf, tls=server.tls)
+            else:
+                radius_server_vrf.servers.append_new(host=server.host, vrf=server_vrf, key=self._get_tacacs_or_radius_server_password(server))
 
             for group in server.groups:
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
