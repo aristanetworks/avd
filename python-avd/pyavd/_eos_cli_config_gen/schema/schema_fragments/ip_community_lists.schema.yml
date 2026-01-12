@@ -22,7 +22,7 @@ keys:
           required: true
           min_length: 1
           description: |
-            Communities and regex MUST not be configured in the same entry.
+            Communities and regexp MUST not be configured in the same entry.
           items:
             type: dict
             keys:
