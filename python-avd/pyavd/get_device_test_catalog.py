@@ -47,7 +47,7 @@ def get_device_test_catalog(
     """
     from ._anta.factories import create_catalog  # noqa: PLC0415
     from ._anta.models import InputFactoryDataSource  # noqa: PLC0415
-    from ._anta.utils import dump_anta_catalog  # noqa: PLC0415
+    from ._anta.utils import dump_anta_catalog, get_filtered_test_specs  # noqa: PLC0415
     from ._eos_cli_config_gen.schema import EosCliConfigGen  # noqa: PLC0415
     from .api._anta import AvdCatalogGenerationSettings  # noqa: PLC0415
 
@@ -57,7 +57,7 @@ def get_device_test_catalog(
 
     data_source = InputFactoryDataSource(hostname, EosCliConfigGen._load(structured_config), fabric_data, settings)
 
-    final_test_specs = settings.get_filtered_test_specs()
+    final_test_specs = get_filtered_test_specs(settings)
 
     catalog = create_catalog(data_source, final_test_specs)
 

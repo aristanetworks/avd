@@ -17,7 +17,7 @@ class AvdTestSpec:
     """
     Model used to define an ANTA test specification in PyAVD.
 
-    Primarily used in the `AVD_TEST_INDEX` list to define the ANTA tests to be run
+    Primarily used internally to build a default list of ANTA tests to be run
     but can also be provided in the `get_device_test_catalog` PyAVD function to add custom tests.
     """
 

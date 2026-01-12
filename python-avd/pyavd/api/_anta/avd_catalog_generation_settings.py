@@ -7,8 +7,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from pyavd._anta.index import AVD_TEST_INDEX
-
 if TYPE_CHECKING:
     from .avd_test_spec import AvdTestSpec
 
@@ -40,38 +38,3 @@ class AvdCatalogGenerationSettings:
         if not (path.exists() and path.is_dir()):
             msg = f"Provided output_dir {self.output_dir} does not exist or is not a directory."
             raise ValueError(msg)
-
-    def get_filtered_test_specs(self) -> list[AvdTestSpec]:
-        """Return a filtered list of AvdTestSpec based on run_tests, skip_tests, and custom_test_specs."""
-        run_tests_set = set(self.run_tests)
-        skip_tests_set = set(self.skip_tests)
-
-        # Check for invalid test names across all filters
-        test_names = {test.test_class.name for test in AVD_TEST_INDEX}
-        invalid_test_names = (run_tests_set | skip_tests_set) - test_names
-        if invalid_test_names:
-            msg = f"Invalid test name(s) in 'run_tests' or 'skip_tests' filters: {', '.join(sorted(invalid_test_names))}"
-            raise ValueError(msg)
-
-        # Remove any tests from run_tests that are in skip_tests
-        remaining_run_tests = run_tests_set - skip_tests_set
-
-        final_test_specs: list[AvdTestSpec] = []
-
-        for test in AVD_TEST_INDEX:
-            name = test.test_class.name
-
-            # Skip tests explicitly mentioned in skip_tests
-            if name in self.skip_tests:
-                continue
-
-            # If run_tests is specified, only include tests in remaining_run_tests
-            if self.run_tests and name not in remaining_run_tests:
-                continue
-
-            final_test_specs.append(test)
-
-        # Add custom test specs
-        final_test_specs.extend(self.custom_test_specs)
-
-        return final_test_specs
