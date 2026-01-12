@@ -33,7 +33,8 @@ class DaemonTerminattrMixin(Protocol):
         if not (cv_settings := self.inputs.cv_settings):
             self._validate_missing_cv_settings(first_tracker_exported_to_cloudvision)
             return
-        self._validate_onprem_clusters_dependencies(cv_settings.onprem_clusters)
+        if cv_settings.onprem_clusters:
+            self._validate_onprem_clusters_dependencies(cv_settings.onprem_clusters)
         clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem] = (
             list(cv_settings.cvaas.clusters) if cv_settings.cvaas.enabled else []
         )
@@ -138,9 +139,6 @@ class DaemonTerminattrMixin(Protocol):
         - Requires NTP to be configured.
         - Requires DNS settings if any CVP server is defined using a DNS name.
         """
-        if not onprem_clusters:
-            return
-
         if any(self._is_dns_name(server.name) for cluster in onprem_clusters for server in cluster.servers) and not self.inputs.dns_settings.servers:
             msg = "'dns_settings' must be configured when cv_settings.onprem_clusters[].servers[].name' is set to a DNS name."
             raise AristaAvdInvalidInputsError(msg)
@@ -150,14 +148,14 @@ class DaemonTerminattrMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
     @staticmethod
-    def _is_dns_name(fqdm: str) -> bool:
+    def _is_dns_name(fqdn: str) -> bool:
         """
         Check if the string is a valid IP address or not.
 
         If it is not a valid IP address, it is considered a DNS name.
         """
         try:
-            ipaddress.ip_address(fqdm)
+            ipaddress.ip_address(fqdn)
         except ValueError:
             return True
         return False
