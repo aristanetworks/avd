@@ -29,6 +29,15 @@ cv_settings:
   cvaas:
     enabled: true
 
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: 192.168.200.5
+
+dns_settings:
+  servers:
+    - ip_address: 192.168.200.5
+
 flow_tracking_settings:
   trackers:
     - name: FLOW-TRACKER-11

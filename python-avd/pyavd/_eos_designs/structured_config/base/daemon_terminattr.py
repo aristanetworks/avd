@@ -33,8 +33,7 @@ class DaemonTerminattrMixin(Protocol):
         if not (cv_settings := self.inputs.cv_settings):
             self._validate_missing_cv_settings(first_tracker_exported_to_cloudvision)
             return
-        if cv_settings.onprem_clusters:
-            self._validate_onprem_clusters_dependencies(cv_settings.onprem_clusters)
+
         clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem] = (
             list(cv_settings.cvaas.clusters) if cv_settings.cvaas.enabled else []
         )
@@ -44,6 +43,7 @@ class DaemonTerminattrMixin(Protocol):
             # Do not add any config when we have no clusters configured.
             return
 
+        self._validate_onprem_or_cvaas_clusters_dependencies(clusters)
         self.structured_config.daemon_terminattr._update(
             ingestexclude=cv_settings.terminattr.ingestexclude,
             smashexcludes=cv_settings.terminattr.smashexcludes,
@@ -132,30 +132,61 @@ class DaemonTerminattrMixin(Protocol):
             )
             raise AristaAvdInvalidInputsError(msg)
 
-    def _validate_onprem_clusters_dependencies(self: AvdStructuredConfigBaseProtocol, onprem_clusters: EosDesigns.CvSettings.OnpremClusters) -> None:
+    def _validate_onprem_or_cvaas_clusters_dependencies(
+        self: AvdStructuredConfigBaseProtocol,
+        clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem],
+    ) -> None:
         """
-        Validate dependencies required when CV on-prem clusters are configured.
+        Validate infrastructure dependencies required when CloudVision clusters are configured.
 
-        - Requires NTP to be configured.
-        - Requires DNS settings if any CVP server is defined using a DNS name.
+        This validation applies to both CloudVision on-prem and CVaaS clusters and enforces the following requirements:
+
+        - NTP must be configured when any CloudVision cluster is defined.
+        - DNS must be configured for CVaaS clusters.
+        - DNS must be configured for on-prem clusters if any server is specified using a DNS name instead of an IP address.
+
+        Raises:
+            AristaAvdInvalidInputsError: If required NTP or DNS settings are missing.
         """
-        if any(self._is_dns_name(server.name) for cluster in onprem_clusters for server in cluster.servers) and not self.inputs.dns_settings.servers:
+        # NTP is always required
+        if not self.inputs.ntp_settings.servers:
+            msg = (
+                "'ntp_settings.servers' must be configured when CloudVision "
+                "clusters cv_settings.onprem_clusters[].servers[] or cv_settings.cvaas.clusters[] are defined."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        # DNS is always required for CVaaS
+        if any(isinstance(cluster, EosDesigns.CvSettings.Cvaas.ClustersItem) for cluster in clusters) and not self.inputs.dns_settings.servers:
+            msg = "'dns_settings' must be configured when cv_settings.cvaas.clusters[] are defined with cv_settings.cvaas.enabled: true."
+            raise AristaAvdInvalidInputsError(msg)
+
+        # DNS is required for on-prem clusters using DNS names
+        if (
+            any(
+                isinstance(cluster, EosDesigns.CvSettings.OnpremClustersItem) and any(self._is_dns_name(server.name) for server in cluster.servers)
+                for cluster in clusters
+            )
+            and not self.inputs.dns_settings.servers
+        ):
             msg = "'dns_settings' must be configured when cv_settings.onprem_clusters[].servers[].name' is set to a DNS name."
             raise AristaAvdInvalidInputsError(msg)
 
-        if not self.inputs.ntp_settings.servers:
-            msg = "'ntp_settings.servers' must be configured when 'cv_settings.onprem_clusters' is defined."
-            raise AristaAvdInvalidInputsError(msg)
-
     @staticmethod
-    def _is_dns_name(fqdn: str) -> bool:
+    def _is_dns_name(value: str) -> bool:
         """
-        Check if the string is a valid IP address or not.
+        Determine whether a value represents a DNS name.
 
-        If it is not a valid IP address, it is considered a DNS name.
+        The value is considered a DNS name if it cannot be parsed as a valid IPv4 or IPv6 address.
+
+        Args:
+            value: The string value to evaluate.
+
+        Returns:
+            True if the value is not a valid IP address, otherwise False.
         """
         try:
-            ipaddress.ip_address(fqdn)
+            ipaddress.ip_address(value)
         except ValueError:
             return True
         return False
