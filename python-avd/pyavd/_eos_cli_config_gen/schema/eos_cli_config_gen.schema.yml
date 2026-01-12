@@ -5905,7 +5905,8 @@ keys:
           type: list
           required: true
           min_length: 1
-          description: 'Communities and regex MUST not be configured in the same entry.
+          description: 'Communities and regexp MUST not be configured in the same
+            entry.
 
             '
           items:
@@ -6286,8 +6287,8 @@ keys:
           type: list
           required: true
           min_length: 1
-          description: 'Large communities and regexp entries MUST not be configured
-            in the same entry.
+          description: 'Large communities and regexp MUST not be configured in the
+            same entry.
 
             '
           items:
