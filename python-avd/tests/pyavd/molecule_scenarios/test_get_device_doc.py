@@ -1,7 +1,6 @@
 # Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import json
 from copy import deepcopy
 
 import pytest
@@ -43,7 +42,7 @@ def test_get_device_doc(molecule_host: MoleculeHost) -> None:
 
     validated_data_result = validate_structured_config(structured_config)
     assert validated_data_result.validated_data is not None
-    structured_config = json.loads(validated_data_result.validated_data)
+    structured_config = validated_data_result.validated_data
 
     expected_doc = molecule_host.doc
     add_md_toc = get(structured_config, "eos_cli_config_gen_documentation.toc", default=True)
