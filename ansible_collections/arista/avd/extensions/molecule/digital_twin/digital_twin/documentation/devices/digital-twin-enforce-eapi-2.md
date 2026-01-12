@@ -72,10 +72,10 @@ management api http-commands
    protocol https
    no shutdown
    !
-   vrf default
+   vrf MGMT
       no shutdown
    !
-   vrf MGMT
+   vrf default
       no shutdown
 ```
 

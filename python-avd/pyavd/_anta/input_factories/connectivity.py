@@ -38,36 +38,30 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
     Input factory class for the `VerifyLLDPNeighbors` test.
 
     This factory collects LLDP neighbors for Ethernet interfaces that have
-    `peer` and `peer_interface` fields defined in their configuration.
+    `metadata.peer` and `metadata.peer_interface` fields defined in their configuration.
 
     Peers must be available (`is_deployed: true`).
 
     The factory respects `metadata.validate_state` and `metadata.validate_lldp` settings, excludes
-    subinterfaces and shutdown interfaces on local or peer (considering `interface_defaults.ethernet.shutdown`
-    when not set), and uses peer FQDN when `dns_domain` is configured to match EOS
-    LLDP format.
+    subinterfaces and shutdown interfaces on the local device (considering
+    `interface_defaults.ethernet.shutdown` when not explicitly set), and, when
+    `metadata.validate_lldp` is not defined, validates that the peer device is available
+    and the peer interface is not shutdown.
     """
 
     def create(self) -> Iterator[VerifyLLDPNeighbors.Input]:
         """Generate the inputs for the `VerifyLLDPNeighbors` test."""
-        neighbors: list[LLDPNeighbor] = []
-        for intf in self.structured_config.ethernet_interfaces:
-            if not self._is_interface_candidate(intf):
-                continue
-
-            peer_name = intf.metadata.peer
-            peer_interface = intf.metadata.peer_interface
-
-            # LLDP neighbor is the FQDN when dns domain is set in EOS
-            fqdn = f"{peer_name}.{dns_domain}" if (dns_domain := self.fabric_data.devices[peer_name].dns_domain) is not None else peer_name
-
-            neighbors.append(LLDPNeighbor(port=intf.name, neighbor_device=fqdn, neighbor_port=peer_interface))
+        neighbors = [
+            LLDPNeighbor(port=intf.name, neighbor_device=intf.metadata.peer, neighbor_port=intf.metadata.peer_interface)
+            for intf in self.structured_config.ethernet_interfaces
+            if self._is_interface_candidate(intf)
+        ]
 
         if not neighbors:
             self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
-        yield VerifyLLDPNeighbors.Input(neighbors=natural_sort(neighbors, sort_key="port"))
+        yield VerifyLLDPNeighbors.Input(neighbors=natural_sort(neighbors, sort_key="port"), require_fqdn=False)
 
     def _is_interface_candidate(self, interface: EosCliConfigGen.EthernetInterfacesItem) -> TypeGuard[CandidateEthernetInterfacesItem]:
         """Check if an interface is valid for LLDP testing."""
@@ -87,10 +81,16 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
             self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=interface.name, fields="metadata.peer, metadata.peer_interface")
             return False
 
-        if not self.is_peer_available(interface.metadata.peer, identity=interface.name):
-            return False
+        # Default behavior (None) implies we treat the peer as an AVD-managed device in the inventory
+        treat_as_avd_peer = interface.metadata.validate_lldp is None
+        if treat_as_avd_peer:
+            if not self.is_peer_available(interface.metadata.peer, identity=interface.name):
+                return False
 
-        return not self.is_peer_interface_shutdown(interface.metadata.peer, interface.metadata.peer_interface, interface.name)
+            if self.is_peer_interface_shutdown(interface.metadata.peer, interface.metadata.peer_interface, interface.name):
+                return False
+
+        return True
 
 
 class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Input]):

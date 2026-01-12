@@ -86,7 +86,7 @@ router_ospf:
     bfd_enable: false
     no_passive_interfaces:
     - Vlan42
-    max_lsa: 42
+    max_lsa: 12000
     redistribute:
       bgp:
         enabled: true

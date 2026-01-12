@@ -182,6 +182,8 @@ Serial Number: DEADBEEFC0FFEW
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
   - [BFD Interfaces](#bfd-interfaces)
+- [Monitor Loop Protection](#monitor-loop-protection)
+  - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Interfaces](#mpls-interfaces)
@@ -202,6 +204,7 @@ Serial Number: DEADBEEFC0FFEW
   - [Router IGMP](#router-igmp)
 - [Filters](#filters)
   - [IP Community-lists](#ip-community-lists)
+  - [IP Large-community-lists](#ip-large-community-lists)
   - [Peer Filters](#peer-filters)
   - [Dynamic Prefix-lists](#dynamic-prefix-lists)
   - [Prefix-lists](#prefix-lists)
@@ -487,26 +490,28 @@ ip domain-list domain2.local
 | ----------- | --- | -------- |
 | 10.10.128.10 | default | - |
 | 10.10.129.10 | default | 0 |
-| 10.10.128.10 | mgmt | - |
-| 10.10.128.10 | TEST | 3 |
 | 2001:db8::1 | default | - |
 | 2001:db8::2 | default | 0 |
+| 2001:db8::3 | default | 1 |
+| 10.10.128.10 | mgmt | - |
 | 2001:db8::1 | mgmt | - |
+| 2001:db8::2 | mgmt | 1 |
+| 4.4.4.4 | TEST | - |
+| 10.10.128.10 | TEST | 3 |
 | 2001:db8::2 | TEST | 3 |
-| 10.10.11.11 | ZTP | - |
-| 10.10.222.11 | TEST | 2 |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server vrf ZTP 10.10.11.11
+ip name-server vrf TEST 4.4.4.4
 ip name-server vrf default 10.10.128.10
 ip name-server vrf default 10.10.129.10
 ip name-server vrf default 2001:db8::1
 ip name-server vrf default 2001:db8::2
 ip name-server vrf mgmt 10.10.128.10
 ip name-server vrf mgmt 2001:db8::1
-ip name-server vrf TEST 10.10.222.11 priority 2
+ip name-server vrf default 2001:db8::3 priority 1
+ip name-server vrf mgmt 2001:db8::2 priority 1
 ip name-server vrf TEST 10.10.128.10 priority 3
 ip name-server vrf TEST 2001:db8::2 priority 3
 ```
@@ -793,6 +798,7 @@ system control-plane
 | VRF | Enabled | IPv4 ACL | IPv6 ACL |
 | --- | ------- | -------- | -------- |
 | mgt | True | ACL-SSH-VRF | ACL-SSH-VRF6 |
+| VRF1 | True | - | - |
 | default | True | ACL-SSH | ACL-SSH6 |
 
 #### Authentication Settings
@@ -818,15 +824,18 @@ management ssh
    ipv6 access-group ACL-SSH6 in
    idle-timeout 15
    authentication protocol keyboard-interactive password public-key
+   connection limit 50
    connection per-host 10
    fips restrictions
    hostkey client strict-checking
-   connection limit 50
    authentication empty-passwords permit
    client-alive interval 666
    client-alive count-max 42
    no shutdown
    log-level debug
+   !
+   vrf VRF1
+      no shutdown
    !
    vrf default
       no shutdown
@@ -959,6 +968,12 @@ Provider eos-native is configured.
 ```eos
 !
 management api gnmi
+   transport grpc MGMT
+      ssl profile gnmi
+      vrf MGMT
+      ip access-group acl1
+      notification timestamp send-time
+   !
    transport grpc arFalse
       ip access-group acl1
       notification timestamp send-time
@@ -966,12 +981,6 @@ management api gnmi
    transport grpc arTrue
       ip access-group acl1
       authorization requests
-      notification timestamp send-time
-   !
-   transport grpc MGMT
-      ssl profile gnmi
-      vrf MGMT
-      ip access-group acl1
       notification timestamp send-time
    !
    transport grpc mytransport
@@ -1081,18 +1090,8 @@ management api http-commands
    protocol unix-socket
    default-services
    protocol https ssl profile SSL_PROFILE
-   no shutdown
-   !
-   vrf default
-      no shutdown
-      ip access-group ACL-API
-      ipv6 access-group ACL-API6
-   !
-   vrf MGMT
-      no shutdown
-      ip access-group ACL-API
    protocol https certificate
------BEGIN CERTIFICATE-----
+   -----BEGIN CERTIFICATE-----
 MIIFNjCCAx4CCQCVGSFu9M4dNDANBgkqhkiG9w0BAQsFADBdMQswCQYDVQQGEwJD
 QTELMAkGA1UECAwCQkMxEjAQBgNVBAcMCVZhbmNvdXZlcjEPMA0GA1UECgwGQXJp
 c3RhMQwwCgYDVQQLDANBVkQxDjAMBgNVBAMMBWhvc3QxMB4XDTI0MTExMzE3NTAw
@@ -1122,8 +1121,8 @@ kc6u4R7x93bWtRedCtL8SroKgg3iSP+MNvjh7GRVrisKi1mHq37xBFbfcKWQ8Fux
 xak6B5u7Dkwio2KGtQAzUTw8GNrG8ix6wYbCxRTorl0qtxWKqB1sqPkxVmo73PkO
 sVbhuzXgHBzA4RNdl/qmwSKlL7pKfpQUm3jSzewJm224QTYODTF8KRpf
 -----END CERTIFICATE-----
-EOF
------BEGIN PRIVATE KEY-----
+   EOF
+   -----BEGIN PRIVATE KEY-----
 MIIJQgIBADANBgkqhkiG9w0BAQEFAASCCSwwggkoAgEAAoICAQCc9nlFQ/+Lvp5s
 9AJOkCaj60EierKWbcZ34Eg9xExoVoFTvmle1G56QgLygfhuwV91hB5ds6YRRPju
 B4UQgYgxQfS12dn4ogSnD5hTLiQoS9ecC2mucj/fbazF98MUi2SBSlZg+ZMY7amT
@@ -1175,7 +1174,17 @@ xEnBkzW4rhGpE+D72RC0Z4wOurE+pLxJpHnPu3lqVmD8m/AaxUzGdiRWPCLkx2G1
 lRIvIpbuqzZ1QzAdWwCX/5mgBk/xoI88N3EcxvgEJJhiXihYwW/630KkKETqnu64
 9ZBLoqoLmPhKxDHZuwO7re9GxVZ1HQ==
 -----END PRIVATE KEY-----
-EOF
+   EOF
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+      ip access-group ACL-API
+   !
+   vrf default
+      no shutdown
+      ip access-group ACL-API
+      ipv6 access-group ACL-API6
 ```
 
 ### Management API Models
@@ -1269,6 +1278,7 @@ cvx
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
+| SSHUSER | 15 | network-admin | False | - |
 | admin | 15 | network-admin | False | - |
 | admin1 | - | - | True | - |
 | ansible | 15 | network-admin | False | - |
@@ -1279,6 +1289,7 @@ cvx
 
 ```eos
 !
+username SSHUSER privilege 15 role network-admin nopassword
 username admin privilege 15 role network-admin nopassword
 no username admin1
 username ansible privilege 15 role network-admin secret sha512 <removed>
@@ -1920,6 +1931,11 @@ management security
    session shared-secret profile profile2
       secret Secret4 0 <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00
    !
+   ssl profile SSL_PROFILE
+      tls versions 1.1 1.2
+      fips restrictions
+      certificate SSL_CERT key SSL_KEY
+   !
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key
       crl ca.crl
@@ -1927,11 +1943,6 @@ management security
    !
    ssl profile cipher-list-profile
       cipher-list ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
-   !
-   ssl profile SSL_PROFILE
-      tls versions 1.1 1.2
-      fips restrictions
-      certificate SSL_CERT key SSL_KEY
    !
    ssl profile test1-chain-cert
       chain certificate test-chain-cert1.crt
@@ -2307,18 +2318,24 @@ daemon random
 
 | VRF | Hosts | Ports | Protocol | SSL-profile |
 | --- | ----- | ----- | -------- | ----------- |
+| VRFA | 1.2.3.4 | Default | UDP | - |
+| VRFA | 2001:db8::1:2:3:4 | Default | UDP | - |
 | default | 20.20.20.7 | Default | UDP | - |
-| default | 50.50.50.7 | 100, 200 | TCP | - |
-| default | 60.60.60.7 | 100, 200 | UDP | - |
 | default | 2001:db8::20:7 | Default | UDP | - |
 | default | 2001:db8::50:7 | 100, 200 | TCP | - |
 | default | 2001:db8::60:7 | 100, 200 | UDP | - |
+| default | 50.50.50.7 | 100, 200 | TCP | - |
+| default | 60.60.60.7 | 100, 200 | UDP | - |
 | mgt | 10.10.10.7 | Default | UDP | - |
-| mgt | 30.30.30.7 | 100, 200 | TCP | - |
-| mgt | 40.40.40.7 | 300, 400 | UDP | - |
 | mgt | 2001:db8::10:7 | Default | UDP | - |
 | mgt | 2001:db8::30:7 | 100, 200 | TCP | - |
 | mgt | 2001:db8::40:7 | 300, 400 | UDP | - |
+| mgt | 30.30.30.7 | 100, 200 | TCP | - |
+| mgt | 40.40.40.7 | 300, 400 | UDP | - |
+| mgt | AAA.local | Default | UDP | - |
+| mgt | BBB.local | Default | UDP | - |
+| mgt | aaa.local | Default | UDP | - |
+| mgt | bbb.local | Default | UDP | - |
 | mgt | sslhost.net | 6515 | TLS | logging-ssl |
 | vrf_with_no_source_interface | 1.2.3.4 | Default | UDP | - |
 | vrf_with_no_source_interface | 2001:db8::1:2:3:4 | Default | UDP | - |
@@ -2344,18 +2361,24 @@ no logging trap
 logging console errors
 no logging monitor
 logging synchronous level warnings
+logging vrf VRFA host 1.2.3.4
+logging vrf VRFA host 2001:db8::1:2:3:4
 logging host 20.20.20.7
-logging host 50.50.50.7 100 200 protocol tcp
-logging host 60.60.60.7 100 200
 logging host 2001:db8::20:7
 logging host 2001:db8::50:7 100 200 protocol tcp
 logging host 2001:db8::60:7 100 200
+logging host 50.50.50.7 100 200 protocol tcp
+logging host 60.60.60.7 100 200
 logging vrf mgt host 10.10.10.7
-logging vrf mgt host 30.30.30.7 100 200 protocol tcp
-logging vrf mgt host 40.40.40.7 300 400
 logging vrf mgt host 2001:db8::10:7
 logging vrf mgt host 2001:db8::30:7 100 200 protocol tcp
 logging vrf mgt host 2001:db8::40:7 300 400
+logging vrf mgt host 30.30.30.7 100 200 protocol tcp
+logging vrf mgt host 40.40.40.7 300 400
+logging vrf mgt host AAA.local
+logging vrf mgt host BBB.local
+logging vrf mgt host aaa.local
+logging vrf mgt host bbb.local
 logging vrf mgt host sslhost.net 6515 protocol tls ssl-profile logging-ssl
 logging vrf vrf_with_no_source_interface host 1.2.3.4
 logging vrf vrf_with_no_source_interface host 2001:db8::1:2:3:4
@@ -4918,6 +4941,7 @@ interface Ethernet2
    ip address 10.0.0.254/24 secondary
    ip address 192.168.1.1/24 secondary
    tcp mss ceiling ipv4 70 ingress
+   loop-protection
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST out
    multicast ipv4 static
@@ -5929,6 +5953,14 @@ interface Ethernet87
    no shutdown
    switchport
    transceiver transmitter signal-power -20.00
+!
+interface Ethernet88
+   description Loop protection disable
+   no loop-protection
+!
+interface Ethernet89
+   description Loop protection disable
+   no loop-protection
 ```
 
 ### Port-Channel Interfaces
@@ -6879,10 +6911,10 @@ interface Loopback99
    description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
    no shutdown
    vrf TENANT_A_PROJECT02
-   ip proxy-arp
    ip address 10.1.255.3/32
    ip address 10.0.0.254/32 secondary
    ip address 192.168.1.1/32 secondary
+   ip proxy-arp
    ipv6 enable
    ipv6 address 2002::CAFE/64
    mpls ldp interface
@@ -10599,6 +10631,24 @@ router bfd
 | Port-Channel9 | 500 | 500 | 5 | True |
 | Vlan85 | 500 | 500 | 5 | True |
 
+## Monitor Loop Protection
+
+| Enabled | Disabled-time | Protect vlan | Rate-limit | Transmit-interval | Disabled Interfaces |
+| ------- | ------------- | ------------ | ---------- | ----------------- | ------------------- |
+| True | 100 | 1000-1100 | 100 | 10 | Ethernet88<br/>Ethernet89 |
+
+### Monitor Loop Protection Configuration
+
+```eos ####
+!
+monitor loop-protection
+   no shutdown
+   protect vlan 1000-1100
+   rate-limit 100
+   transmit-interval 10
+   disabled-time 100
+```
+
 ## MPLS
 
 ### MPLS and LDP
@@ -11124,7 +11174,6 @@ router igmp
 #### IP Community-lists Device Configuration
 
 ```eos
-!
 ip community-list IP_CL_TEST1 permit 1001:1001 1002:1002
 ip community-list IP_CL_TEST1 deny 1010:1010
 ip community-list regexp IP_CL_TEST1 permit 20:*
@@ -11132,6 +11181,34 @@ ip community-list IP_CL_TEST2 deny 1003:1003
 ip community-list regexp IP_RE_TEST1 permit ^$
 ip community-list regexp IP_RE_TEST2 deny ^100
 ip community-list regexp aa_test3 deny ^100
+```
+
+### IP Large-community-lists
+
+#### IP Large-community-lists Summary
+
+| Name | Action | Communities / Regexp |
+| ---- | ------ | -------------------- |
+| IP_L_CL_TEST1 | permit | 64496:1001:1001, 65536:1002:1002 |
+| IP_L_CL_TEST1 | deny | 64496:1010:1010 |
+| IP_L_CL_TEST1 | permit | 65536:*:* |
+| IP_L_CL_TEST2 | deny | 65536:1003:1003 |
+| IP_L_RE_TEST1 | permit | ^$ |
+| IP_L_RE_TEST2 | deny | ^64496:*:* |
+| IP_L_RE_TEST2 | deny | 64497:1004:1004, 64497:1005:1005 |
+| aa_test3 | deny | ^65536:*:* |
+
+#### IP Large-community-lists Device Configuration
+
+```eos
+ip large-community-list IP_L_CL_TEST1 permit 64496:1001:1001 65536:1002:1002
+ip large-community-list IP_L_CL_TEST1 deny 64496:1010:1010
+ip large-community-list regexp IP_L_CL_TEST1 permit 65536:*:*
+ip large-community-list IP_L_CL_TEST2 deny 65536:1003:1003
+ip large-community-list regexp IP_L_RE_TEST1 permit ^$
+ip large-community-list regexp IP_L_RE_TEST2 deny ^64496:*:*
+ip large-community-list IP_L_RE_TEST2 deny 64497:1004:1004 64497:1005:1005
+ip large-community-list regexp aa_test3 deny ^65536:*:*
 ```
 
 ### Peer Filters
@@ -11201,9 +11278,6 @@ dynamic prefix-list aa_list_1
 #### Prefix-lists Summary
 
 ##### PL-IPV4-LOOPBACKS
-
-| Sequence | Action |
-| -------- | ------ |
 
 ##### PL-LOOPBACKS-EVPN-OVERLAY
 
@@ -11372,12 +11446,9 @@ route-map RM-STATIC-2-BGP permit 10
 #### IP Extended Community Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list TEST1 permit 65000:65000
 ip extcommunity-list TEST1 deny 65002:65002
-!
 ip extcommunity-list TEST2 deny 65001:65001
-!
 ip extcommunity-list aa_test3 deny 65001:65001
 ```
 
@@ -11395,12 +11466,9 @@ ip extcommunity-list aa_test3 deny 65001:65001
 #### IP Extended Community RegExp Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list regexp TEST1 permit 65[0-9]{3}:[0-9]+
 ip extcommunity-list regexp TEST1 deny .*
-!
 ip extcommunity-list regexp TEST2 deny 6500[0-1]:650[0-9][0-9]
-!
 ip extcommunity-list regexp aa_test3 deny 6500[0-1]:650[0-9][0-9]
 ```
 
@@ -13359,8 +13427,8 @@ mac security
       mka session rekey-period 30
       traffic unprotected allow
       sci
-      l2-protocol ethernet-flow-control bypass
       l2-protocol lldp bypass unauthorized
+      l2-protocol ethernet-flow-control bypass
    !
    profile A2
       key 1234b 7 <removed>
@@ -14534,6 +14602,7 @@ Default maintenance unit profile: **UP1**
 
 | BGP profile | Initiator route-map |
 | ----------- | ------------------- |
+| bgp2 | SystemGenerated |
 | BP1 | RM-MAINTENANCE |
 | BP2 | RM-MAINTENANCE2 |
 | BP3 | RM-MAINTENANCE3 |
@@ -14552,7 +14621,7 @@ Default maintenance unit profile: **UP1**
 | Unit | Interface groups | BGP groups | Unit profile | Quiesce |
 | ---- | ---------------- | ---------- | ------------ | ------- |
 | System | - | - | UP1 | No |
-| UNIT1 | INTERFACE_GROUP_1 | BGP_GROUP_1<br/>BGP_GROUP_2 | UP1 | No |
+| UNIT1 | inrerface_group<br/>INTERFACE_GROUP_1 | bgp_group<br/>BGP_GROUP_1<br/>BGP_GROUP_2 | UP1 | No |
 
 #### Maintenance Device Configuration
 
@@ -14567,6 +14636,8 @@ maintenance
    !
    profile bgp BP3
       initiator route-map RM-MAINTENANCE3 inout
+   !
+   profile bgp bgp2
    profile bgp BP1 default
    profile interface IP1 default
    profile unit UP1 default
@@ -14587,7 +14658,9 @@ maintenance
    unit UNIT1
       group bgp BGP_GROUP_1
       group bgp BGP_GROUP_2
+      group bgp bgp_group
       group interface INTERFACE_GROUP_1
+      group interface inrerface_group
       profile unit UP1
 ```
 
