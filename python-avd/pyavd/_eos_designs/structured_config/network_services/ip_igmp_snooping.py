@@ -69,7 +69,7 @@ class IpIgmpSnoopingMixin(Protocol):
         """
         Set ip_igmp_snooping structured_config for one vlan.
 
-        Can be used for both SVIs and L2vlans
+        Can be used for both SVIs and L2VLANs
 
         This function assumes that when a L2vlansItem is passed, the VRF is set to None, and when an SvisItem is passed,
         the VRF is not None.
