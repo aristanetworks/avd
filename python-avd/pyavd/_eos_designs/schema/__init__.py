@@ -31011,8 +31011,8 @@ class EosDesigns(EosDesignsRootModel):
             `<network_services_key>[].evpn_l2_multi_domain` and
             `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
             Not supported in conjunction with EVPN vlan
-            aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-            or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+            aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+            Tenant.
             """
 
             if TYPE_CHECKING:
@@ -31203,8 +31203,8 @@ class EosDesigns(EosDesignsRootModel):
                            `<network_services_key>[].evpn_l2_multi_domain` and
                            `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
                            Not supported in conjunction with EVPN vlan
-                           aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-                           or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                           aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+                           Tenant.
 
                     """
 
@@ -32008,8 +32008,8 @@ class EosDesigns(EosDesignsRootModel):
         `<network_services_key>[].evpn_l2_multi_domain` and
         `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
         Not supported in conjunction with EVPN vlan
-        aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-        or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+        aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+        Tenant.
         """
 
         if TYPE_CHECKING:
@@ -32214,8 +32214,8 @@ class EosDesigns(EosDesignsRootModel):
                        `<network_services_key>[].evpn_l2_multi_domain` and
                        `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
                        Not supported in conjunction with EVPN vlan
-                       aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-                       or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                       aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+                       Tenant.
 
                 """
 
@@ -60885,8 +60885,8 @@ class EosDesigns(EosDesignsRootModel):
                             `<network_services_key>[].evpn_l2_multi_domain` and
                             `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
                             Not supported in conjunction with EVPN vlan
-                            aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-                            or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                            aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+                            Tenant.
                             """
 
                             if TYPE_CHECKING:
@@ -61084,8 +61084,8 @@ class EosDesigns(EosDesignsRootModel):
                                            `<network_services_key>[].evpn_l2_multi_domain` and
                                            `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
                                            Not supported in conjunction with EVPN vlan
-                                           aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-                                           or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                                           aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+                                           Tenant.
 
                                     """
 
@@ -61719,9 +61719,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
                         This setting overrides
-                        "evpn_vlan_bundle" set at tenant level.
-                        The common option "evpn_vlan_aware_bundles" is disregarded
-                        for this option.
+                        "evpn_vlan_bundle" set at the VRF or tenant level.
+                        The common option "evpn_vlan_aware_bundles" is
+                        disregarded for this option.
                         """
                         nodes: Nodes
                         """
@@ -61925,8 +61925,8 @@ class EosDesigns(EosDesignsRootModel):
                         `<network_services_key>[].evpn_l2_multi_domain` and
                         `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
                         Not supported in conjunction with EVPN vlan
-                        aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-                        or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                        aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+                        Tenant.
                         """
 
                         if TYPE_CHECKING:
@@ -62003,9 +62003,9 @@ class EosDesigns(EosDesignsRootModel):
                                     evpn_vlan_bundle:
                                        Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
                                        This setting overrides
-                                       "evpn_vlan_bundle" set at tenant level.
-                                       The common option "evpn_vlan_aware_bundles" is disregarded
-                                       for this option.
+                                       "evpn_vlan_bundle" set at the VRF or tenant level.
+                                       The common option "evpn_vlan_aware_bundles" is
+                                       disregarded for this option.
                                     nodes:
                                        Define node specific configuration, such as unique IP addresses.
                                        Any keys set here will be merged
@@ -62150,8 +62150,8 @@ class EosDesigns(EosDesignsRootModel):
                                        `<network_services_key>[].evpn_l2_multi_domain` and
                                        `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
                                        Not supported in conjunction with EVPN vlan
-                                       aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-                                       or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                                       aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+                                       Tenant.
 
                                 """
 
@@ -65254,6 +65254,7 @@ class EosDesigns(EosDesignsRootModel):
                         "rt_override": {"type": str},
                         "rt_import": {"type": bool, "default": True},
                         "rt_export": {"type": bool, "default": True},
+                        "evpn_vlan_bundle": {"type": str},
                         "mlag_ibgp_peering_ipv4_pool": {"type": str},
                         "mlag_ibgp_peering_ipv6_pool": {"type": str},
                         "ip_helpers": {"type": IpHelpers},
@@ -65357,6 +65358,13 @@ class EosDesigns(EosDesignsRootModel):
                     `additional_route_targets`.
 
                     Default value: `True`
+                    """
+                    evpn_vlan_bundle: str | None
+                    """
+                    Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.
+                    This setting overrides "evpn_vlan_bundle" set at the Tenant level.
+                    The common option
+                    "evpn_vlan_aware_bundles" is disregarded for this option.
                     """
                     mlag_ibgp_peering_ipv4_pool: str | None
                     """
@@ -65579,6 +65587,7 @@ class EosDesigns(EosDesignsRootModel):
                             rt_override: str | None | UndefinedType = Undefined,
                             rt_import: bool | UndefinedType = Undefined,
                             rt_export: bool | UndefinedType = Undefined,
+                            evpn_vlan_bundle: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv6_pool: str | None | UndefinedType = Undefined,
                             ip_helpers: IpHelpers | UndefinedType = Undefined,
@@ -65668,6 +65677,11 @@ class EosDesigns(EosDesignsRootModel):
                                    only to the automatically generated route targets
                                    and does not affect any entries defined under
                                    `additional_route_targets`.
+                                evpn_vlan_bundle:
+                                   Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.
+                                   This setting overrides "evpn_vlan_bundle" set at the Tenant level.
+                                   The common option
+                                   "evpn_vlan_aware_bundles" is disregarded for this option.
                                 mlag_ibgp_peering_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The
@@ -88439,9 +88453,10 @@ class EosDesigns(EosDesignsRootModel):
     in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-
     bundles using the VLAN name as the bundle name.
 
-    The `evpn_vlan_bundle` option under `svis` and
-    `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works
-    when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.
+    The `evpn_vlan_bundle` option under SVI, L2VLAN,
+    VRF or tenant level takes precedence and overrides this behavior. Per SVI/L2VLAN `evpn_vlan_bundle`
+    also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-
+    VRFs.
 
     Default value: `False`
     """
@@ -90418,9 +90433,10 @@ class EosDesigns(EosDesignsRootModel):
                    in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-
                    bundles using the VLAN name as the bundle name.
 
-                   The `evpn_vlan_bundle` option under `svis` and
-                   `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works
-                   when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.
+                   The `evpn_vlan_bundle` option under SVI, L2VLAN,
+                   VRF or tenant level takes precedence and overrides this behavior. Per SVI/L2VLAN `evpn_vlan_bundle`
+                   also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-
+                   VRFs.
                 evpn_vlan_bundles: Subclass of AvdIndexedList with `EvpnVlanBundlesItem` items. Primary key is `name` (`str`).
                 fabric_evpn_encapsulation:
                    Should be set to mpls for evpn-mpls scenario. This overrides the evpn_encapsulation setting under
