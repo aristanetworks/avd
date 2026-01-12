@@ -41,7 +41,6 @@ def parse_validation_result(validation_result: ValidationResult, hostname: str, 
             msg=message,
             version=deprecation.version,
             collection_name=collection_name,
-            removed=deprecation.removed,
         )
 
     if (error_count := len(validation_result.violations)) > 0:
