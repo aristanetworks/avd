@@ -977,7 +977,6 @@ route-map RM-EVPN-EXPORT-VRF-DEFAULT permit 10
 #### IP Extended Community Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.1:0
 ```
 

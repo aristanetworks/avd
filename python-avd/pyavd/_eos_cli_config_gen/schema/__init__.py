@@ -15148,7 +15148,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         name: str
         """IP Community-list Name."""
         entries: Entries
-        """Subclass of AvdList with `EntriesItem` items."""
+        """
+        Communities and regexp MUST not be configured in the same entry.
+
+
+        Subclass of AvdList with
+        `EntriesItem` items.
+        """
 
         if TYPE_CHECKING:
 
@@ -15161,7 +15167,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     name: IP Community-list Name.
-                    entries: Subclass of AvdList with `EntriesItem` items.
+                    entries:
+                       Communities and regexp MUST not be configured in the same entry.
+
+
+                       Subclass of AvdList with
+                       `EntriesItem` items.
 
                 """
 
@@ -15995,6 +16006,200 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class IpLargeCommunityListsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class EntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Action: TypeAlias = Literal["permit", "deny"]
+
+            class LargeCommunities(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            LargeCommunities._item_type = str
+
+            _fields: ClassVar[dict] = {"action": {"type": str}, "large_communities": {"type": LargeCommunities}, "regexp": {"type": str}}
+            action: Action
+            large_communities: LargeCommunities
+            """
+            If defined, a standard large-community-list will be configured.
+            Large community values (ASN:Local-
+            part-1:Local-part-2):
+            - ASN:nn:nn
+
+
+            Subclass of AvdList with `str` items.
+            """
+            regexp: str | None
+            """
+            Regular Expression.
+            If defined, a regex large-community-list will be configured.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    action: Action | UndefinedType = Undefined,
+                    large_communities: LargeCommunities | UndefinedType = Undefined,
+                    regexp: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    EntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        action: action
+                        large_communities:
+                           If defined, a standard large-community-list will be configured.
+                           Large community values (ASN:Local-
+                           part-1:Local-part-2):
+                           - ASN:nn:nn
+
+
+                           Subclass of AvdList with `str` items.
+                        regexp:
+                           Regular Expression.
+                           If defined, a regex large-community-list will be configured.
+
+                    """
+
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
+
+        Entries._item_type = EntriesItem
+
+        _fields: ClassVar[dict] = {"name": {"type": str}, "entries": {"type": Entries}}
+        name: str
+        """IP Large-community-list Name."""
+        entries: Entries
+        """
+        Large communities and regexp MUST not be configured in the same entry.
+
+
+        Subclass of AvdList with
+        `EntriesItem` items.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, name: str | UndefinedType = Undefined, entries: Entries | UndefinedType = Undefined) -> None:
+                """
+                IpLargeCommunityListsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name: IP Large-community-list Name.
+                    entries:
+                       Large communities and regexp MUST not be configured in the same entry.
+
+
+                       Subclass of AvdList with
+                       `EntriesItem` items.
+
+                """
+
+    class IpLargeCommunityLists(AvdIndexedList[str, IpLargeCommunityListsItem]):
+        """Subclass of AvdIndexedList with `IpLargeCommunityListsItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    IpLargeCommunityLists._item_type = IpLargeCommunityListsItem
+
+    class IpNameServer(AvdModel):
+        """Subclass of AvdModel."""
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class ServersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ip_address": {"type": str}, "priority": {"type": int}}
+                ip_address: str
+                """IPv4 or IPv6 address for DNS server."""
+                priority: int | None
+                """Priority value (lower is first)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ip_address: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        ServersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ip_address: IPv4 or IPv6 address for DNS server.
+                            priority: Priority value (lower is first).
+
+                        """
+
+            class Servers(AvdIndexedList[str, ServersItem]):
+                """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `ip_address` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ip_address"
+
+            Servers._item_type = ServersItem
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "servers": {"type": Servers}}
+            name: str
+            """
+            VRF Name.
+            Use "default" for the default VRF.
+            """
+            servers: Servers
+            """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `ip_address` (`str`)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, servers: Servers | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name:
+                           VRF Name.
+                           Use "default" for the default VRF.
+                        servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `ip_address` (`str`).
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}}
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+                """
+                IpNameServer.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+
+                """
+
     class IpNameServerGroupsItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -16154,45 +16359,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _primary_key: ClassVar[str] = "name"
 
     IpNameServerGroups._item_type = IpNameServerGroupsItem
-
-    class IpNameServersItem(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"ip_address": {"type": str}, "vrf": {"type": str}, "priority": {"type": int}}
-        ip_address: str
-        """IPv4 or IPv6 address for DNS server."""
-        vrf: str
-        """
-        VRF Name.
-        Use "default" for the default VRF.
-        """
-        priority: int | None
-        """Priority value (lower is first)."""
-
-        if TYPE_CHECKING:
-
-            def __init__(
-                self, *, ip_address: str | UndefinedType = Undefined, vrf: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined
-            ) -> None:
-                """
-                IpNameServersItem.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    ip_address: IPv4 or IPv6 address for DNS server.
-                    vrf:
-                       VRF Name.
-                       Use "default" for the default VRF.
-                    priority: Priority value (lower is first).
-
-                """
-
-    class IpNameServers(AvdList[IpNameServersItem]):
-        """Subclass of AvdList with `IpNameServersItem` items."""
-
-    IpNameServers._item_type = IpNameServersItem
 
     class IpNat(AvdModel):
         """Subclass of AvdModel."""
@@ -68818,8 +68984,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_http_client": {"type": IpHttpClient},
         "ip_icmp_redirect": {"type": bool},
         "ip_igmp_snooping": {"type": IpIgmpSnooping},
+        "ip_large_community_lists": {"type": IpLargeCommunityLists},
+        "ip_name_server": {"type": IpNameServer},
         "ip_name_server_groups": {"type": IpNameServerGroups},
-        "ip_name_servers": {"type": IpNameServers},
         "ip_nat": {"type": IpNat},
         "ip_ospf_router_id_output_format_hostnames": {"type": bool},
         "ip_radius_source_interfaces": {"type": IpRadiusSourceInterfaces},
@@ -69140,13 +69307,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ip_access_lists_max_entries: int | None
     """Limit ACL entries defined under the `ip_access_lists`."""
     ip_community_lists: IpCommunityLists
-    """
-    Communities and regexp entries MUST not be configured in the same community-list.
-
-
-    Subclass of
-    AvdIndexedList with `IpCommunityListsItem` items. Primary key is `name` (`str`).
-    """
+    """Subclass of AvdIndexedList with `IpCommunityListsItem` items. Primary key is `name` (`str`)."""
     ip_dhcp_relay: IpDhcpRelay
     """Subclass of AvdModel."""
     ip_dhcp_snooping: IpDhcpSnooping
@@ -69169,10 +69330,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ip_icmp_redirect: bool | None
     ip_igmp_snooping: IpIgmpSnooping
     """Subclass of AvdModel."""
+    ip_large_community_lists: IpLargeCommunityLists
+    """
+    A BGP large-community access list filters prefixes based on their BGP large community values.
+    Multiple large-community lists with the same name may be specified.
+
+
+    Subclass of AvdIndexedList
+    with `IpLargeCommunityListsItem` items. Primary key is `name` (`str`).
+    """
+    ip_name_server: IpNameServer
+    """Subclass of AvdModel."""
     ip_name_server_groups: IpNameServerGroups
     """Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`)."""
-    ip_name_servers: IpNameServers
-    """Subclass of AvdList with `IpNameServersItem` items."""
     ip_nat: IpNat
     """Subclass of AvdModel."""
     ip_ospf_router_id_output_format_hostnames: bool | None
@@ -69563,8 +69733,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_http_client: IpHttpClient | UndefinedType = Undefined,
             ip_icmp_redirect: bool | None | UndefinedType = Undefined,
             ip_igmp_snooping: IpIgmpSnooping | UndefinedType = Undefined,
+            ip_large_community_lists: IpLargeCommunityLists | UndefinedType = Undefined,
+            ip_name_server: IpNameServer | UndefinedType = Undefined,
             ip_name_server_groups: IpNameServerGroups | UndefinedType = Undefined,
-            ip_name_servers: IpNameServers | UndefinedType = Undefined,
             ip_nat: IpNat | UndefinedType = Undefined,
             ip_ospf_router_id_output_format_hostnames: bool | None | UndefinedType = Undefined,
             ip_radius_source_interfaces: IpRadiusSourceInterfaces | UndefinedType = Undefined,
@@ -69828,12 +69999,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 interface_profiles: Subclass of AvdIndexedList with `InterfaceProfilesItem` items. Primary key is `name` (`str`).
                 ip_access_lists: Subclass of AvdIndexedList with `IpAccessListsItem` items. Primary key is `name` (`str`).
                 ip_access_lists_max_entries: Limit ACL entries defined under the `ip_access_lists`.
-                ip_community_lists:
-                   Communities and regexp entries MUST not be configured in the same community-list.
-
-
-                   Subclass of
-                   AvdIndexedList with `IpCommunityListsItem` items. Primary key is `name` (`str`).
+                ip_community_lists: Subclass of AvdIndexedList with `IpCommunityListsItem` items. Primary key is `name` (`str`).
                 ip_dhcp_relay: Subclass of AvdModel.
                 ip_dhcp_snooping: Subclass of AvdModel.
                 ip_domain_lookup: Subclass of AvdModel.
@@ -69846,8 +70012,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_http_client: Subclass of AvdModel.
                 ip_icmp_redirect: ip_icmp_redirect
                 ip_igmp_snooping: Subclass of AvdModel.
+                ip_large_community_lists:
+                   A BGP large-community access list filters prefixes based on their BGP large community values.
+                   Multiple large-community lists with the same name may be specified.
+
+
+                   Subclass of AvdIndexedList
+                   with `IpLargeCommunityListsItem` items. Primary key is `name` (`str`).
+                ip_name_server: Subclass of AvdModel.
                 ip_name_server_groups: Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`).
-                ip_name_servers: Subclass of AvdList with `IpNameServersItem` items.
                 ip_nat: Subclass of AvdModel.
                 ip_ospf_router_id_output_format_hostnames: Display DNS-resolved router names for OSPF router IDs.
                 ip_radius_source_interfaces: Subclass of AvdList with `IpRadiusSourceInterfacesItem` items.

@@ -204,6 +204,7 @@ Serial Number: DEADBEEFC0FFEW
   - [Router IGMP](#router-igmp)
 - [Filters](#filters)
   - [IP Community-lists](#ip-community-lists)
+  - [IP Large-community-lists](#ip-large-community-lists)
   - [Peer Filters](#peer-filters)
   - [Dynamic Prefix-lists](#dynamic-prefix-lists)
   - [Prefix-lists](#prefix-lists)
@@ -489,26 +490,28 @@ ip domain-list domain2.local
 | ----------- | --- | -------- |
 | 10.10.128.10 | default | - |
 | 10.10.129.10 | default | 0 |
-| 10.10.128.10 | mgmt | - |
-| 10.10.128.10 | TEST | 3 |
 | 2001:db8::1 | default | - |
 | 2001:db8::2 | default | 0 |
+| 2001:db8::3 | default | 1 |
+| 10.10.128.10 | mgmt | - |
 | 2001:db8::1 | mgmt | - |
+| 2001:db8::2 | mgmt | 1 |
+| 4.4.4.4 | TEST | - |
+| 10.10.128.10 | TEST | 3 |
 | 2001:db8::2 | TEST | 3 |
-| 10.10.11.11 | ZTP | - |
-| 10.10.222.11 | TEST | 2 |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server vrf ZTP 10.10.11.11
+ip name-server vrf TEST 4.4.4.4
 ip name-server vrf default 10.10.128.10
 ip name-server vrf default 10.10.129.10
 ip name-server vrf default 2001:db8::1
 ip name-server vrf default 2001:db8::2
 ip name-server vrf mgmt 10.10.128.10
 ip name-server vrf mgmt 2001:db8::1
-ip name-server vrf TEST 10.10.222.11 priority 2
+ip name-server vrf default 2001:db8::3 priority 1
+ip name-server vrf mgmt 2001:db8::2 priority 1
 ip name-server vrf TEST 10.10.128.10 priority 3
 ip name-server vrf TEST 2001:db8::2 priority 3
 ```
@@ -11163,7 +11166,6 @@ router igmp
 #### IP Community-lists Device Configuration
 
 ```eos
-!
 ip community-list IP_CL_TEST1 permit 1001:1001 1002:1002
 ip community-list IP_CL_TEST1 deny 1010:1010
 ip community-list regexp IP_CL_TEST1 permit 20:*
@@ -11171,6 +11173,34 @@ ip community-list IP_CL_TEST2 deny 1003:1003
 ip community-list regexp IP_RE_TEST1 permit ^$
 ip community-list regexp IP_RE_TEST2 deny ^100
 ip community-list regexp aa_test3 deny ^100
+```
+
+### IP Large-community-lists
+
+#### IP Large-community-lists Summary
+
+| Name | Action | Communities / Regexp |
+| ---- | ------ | -------------------- |
+| IP_L_CL_TEST1 | permit | 64496:1001:1001, 65536:1002:1002 |
+| IP_L_CL_TEST1 | deny | 64496:1010:1010 |
+| IP_L_CL_TEST1 | permit | 65536:*:* |
+| IP_L_CL_TEST2 | deny | 65536:1003:1003 |
+| IP_L_RE_TEST1 | permit | ^$ |
+| IP_L_RE_TEST2 | deny | ^64496:*:* |
+| IP_L_RE_TEST2 | deny | 64497:1004:1004, 64497:1005:1005 |
+| aa_test3 | deny | ^65536:*:* |
+
+#### IP Large-community-lists Device Configuration
+
+```eos
+ip large-community-list IP_L_CL_TEST1 permit 64496:1001:1001 65536:1002:1002
+ip large-community-list IP_L_CL_TEST1 deny 64496:1010:1010
+ip large-community-list regexp IP_L_CL_TEST1 permit 65536:*:*
+ip large-community-list IP_L_CL_TEST2 deny 65536:1003:1003
+ip large-community-list regexp IP_L_RE_TEST1 permit ^$
+ip large-community-list regexp IP_L_RE_TEST2 deny ^64496:*:*
+ip large-community-list IP_L_RE_TEST2 deny 64497:1004:1004 64497:1005:1005
+ip large-community-list regexp aa_test3 deny ^65536:*:*
 ```
 
 ### Peer Filters
@@ -11408,12 +11438,9 @@ route-map RM-STATIC-2-BGP permit 10
 #### IP Extended Community Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list TEST1 permit 65000:65000
 ip extcommunity-list TEST1 deny 65002:65002
-!
 ip extcommunity-list TEST2 deny 65001:65001
-!
 ip extcommunity-list aa_test3 deny 65001:65001
 ```
 
@@ -11431,12 +11458,9 @@ ip extcommunity-list aa_test3 deny 65001:65001
 #### IP Extended Community RegExp Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list regexp TEST1 permit 65[0-9]{3}:[0-9]+
 ip extcommunity-list regexp TEST1 deny .*
-!
 ip extcommunity-list regexp TEST2 deny 6500[0-1]:650[0-9][0-9]
-!
 ip extcommunity-list regexp aa_test3 deny 6500[0-1]:650[0-9][0-9]
 ```
 
