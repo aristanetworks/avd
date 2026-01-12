@@ -28,7 +28,7 @@ def parse_validation_result(validation_result: ValidationResult, hostname: str, 
     for deprecation in validation_result.deprecations:
         path = json_path_to_string(deprecation.path)
 
-        message = f"[{hostname}]: The input data model '{path}' is deprecated"
+        message = f"[{hostname}]: The input data model '{path}' is deprecated."
         if deprecation.replacement:
             message += f" Use '{deprecation.replacement}' instead."
         if deprecation.url:
@@ -46,8 +46,8 @@ def parse_validation_result(validation_result: ValidationResult, hostname: str, 
 
     if (error_count := len(validation_result.violations)) > 0:
         for violation in validation_result.violations:
-            path = json_path_to_string(violation.path)
-            message = f"[{hostname}] Validation Error: '{path}' {violation.message}"
+            path_message = f" for the input data model '{json_path_to_string(violation.path)}'" if violation.path else ""
+            message = f"[{hostname}] Validation error{path_message}: {violation.message}"
             ansible_display.error(message, wrap_text=False)
 
     return error_count
