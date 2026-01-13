@@ -41,6 +41,7 @@ class Dot1xMixin(Protocol):
             self._validate_radius_groups(authentication_settings.radius_groups, context_msg="authentication server")
             self.structured_config.aaa_authentication.dot1x.default = " ".join(f"group {group}" for group in authentication_settings.radius_groups)
         else:
+            self._validate_radius_servers()
             self.structured_config.aaa_authentication.dot1x.default = "group radius"
 
     def _configure_dot1x_dynamic_authorization(
@@ -70,6 +71,7 @@ class Dot1xMixin(Protocol):
                     EosCliConfigGen.AaaAccounting.Dot1x.Default.MethodsItem(method="group", group=group, multicast=accounting_settings.multicast)
                 )
         else:
+            # Presence of at least one RADIUS server has already been validated in the AAA authentication configuration above.
             self.structured_config.aaa_accounting.dot1x.default.methods.append(
                 EosCliConfigGen.AaaAccounting.Dot1x.Default.MethodsItem(method="group", group="radius", multicast=accounting_settings.multicast)
             )
@@ -113,6 +115,12 @@ class Dot1xMixin(Protocol):
                 f"The RADIUS {context_msg} groups '{', '.join(sorted(undefined_groups))}' "
                 "are not defined on at least one server under 'aaa_settings.radius.servers'."
             )
+            raise AristaAvdInvalidInputsError(msg)
+
+    def _validate_radius_servers(self: AvdStructuredConfigBaseProtocol) -> None:
+        """Validate that there is at least one RADIUS server defined in `aaa_settings.radius.servers`."""
+        if len(self.inputs.aaa_settings.radius.servers) == 0:
+            msg = "At least one RADIUS server must be defined under `aaa_settings.radius.servers` for 802.1X authentication."
             raise AristaAvdInvalidInputsError(msg)
 
     @cached_property

@@ -9,3 +9,9 @@ l2leaf:
 
 dot1x_settings:
   enabled: true
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        cleartext_key: super-secret-key

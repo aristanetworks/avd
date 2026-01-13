@@ -15,3 +15,9 @@ dot1x_settings:
   bypass_lldp: false
   dynamic_authorization:
     enabled: false
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        cleartext_key: super-secret-key
