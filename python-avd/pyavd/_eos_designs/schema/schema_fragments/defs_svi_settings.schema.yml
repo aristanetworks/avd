@@ -233,7 +233,7 @@ $defs:
             type: str
             description: |-
               The value of `source_address` will be interpreted according to these rules:
-              - `vrf_router_id` will configure the VRF router ID address according to ``<network_services_keys.name>[].vrfs[].bgp.router_id`.
+              - `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
               - 'diagnostic_loopback' will configure the VRF Diagnostic Loopback address.
               - `main_router_id` will configure the Loopback0 IP address.
               - An IPv4 address will be used directly as the source address.
