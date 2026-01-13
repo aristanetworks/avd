@@ -53,7 +53,7 @@
 {%         if logging.source_interface is arista.avd.defined %}
 | - | {{ logging.source_interface }} |
 {%         endif %}
-{%         for vrf in logging.vrfs | arista.avd.natural_sort('name') %}
+{%         for vrf in logging.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 {%             if vrf.source_interface is arista.avd.defined %}
 | {{ vrf.name }} | {{ vrf.source_interface }} |
 {%             endif %}
@@ -61,9 +61,9 @@
 
 | VRF | Hosts | Ports | Protocol | SSL-profile |
 | --- | ----- | ----- | -------- | ----------- |
-{%         for vrf in logging.vrfs | arista.avd.natural_sort('name') %}
+{%         for vrf in logging.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 {%             if vrf.hosts is arista.avd.defined %}
-{%                 for host in vrf.hosts | arista.avd.natural_sort('name') %}
+{%                 for host in vrf.hosts | sort(attribute="name", case_sensitive=True) %}
 | {{ vrf.name }} | {{ host.name }} | {{ host.ports | arista.avd.default(['Default']) | join(', ') }} | {{ host.protocol | arista.avd.default('UDP') | upper }} | {{ host.ssl_profile | arista.avd.default("-") }} |
 {%                 endfor %}
 {%             endif %}

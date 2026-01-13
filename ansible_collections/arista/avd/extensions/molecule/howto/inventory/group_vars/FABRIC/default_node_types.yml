@@ -1,0 +1,11 @@
+---
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - ".*-spine.*"
+  - node_type: service_leaf
+    match_hostnames:
+      - ".*-svc-leaf.*"
+  - node_type: l3leaf
+    match_hostnames:
+      - ".*-leaf.*"
