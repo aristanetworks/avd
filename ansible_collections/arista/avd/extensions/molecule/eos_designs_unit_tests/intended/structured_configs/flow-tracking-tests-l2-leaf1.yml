@@ -28,10 +28,10 @@ flow_tracking:
   sampled:
     sample: 10000
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER
+      record_export:
         on_inactive_timeout: 70000
         on_interval: 300000
-      name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
         collectors:

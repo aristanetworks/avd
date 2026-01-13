@@ -274,26 +274,26 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-POLICY-WITH-CP
     profiles:
-    - name: CUSTOM-CP-POLICY
-      id: 254
-    - name: DEFAULT-POLICY-VIDEO
-      id: 3
-    - name: DEFAULT-POLICY-DEFAULT
-      id: 1
+    - id: 254
+      name: CUSTOM-CP-POLICY
+    - id: 3
+      name: DEFAULT-POLICY-VIDEO
+    - id: 1
+      name: DEFAULT-POLICY-DEFAULT
   - name: PROD
     policy: DEFAULT-POLICY
     profiles:
-    - name: DEFAULT-POLICY-VIDEO
-      id: 3
-    - name: DEFAULT-POLICY-DEFAULT
-      id: 1
+    - id: 3
+      name: DEFAULT-POLICY-VIDEO
+    - id: 1
+      name: DEFAULT-POLICY-DEFAULT
   - name: IT
     policy: DEFAULT-POLICY
     profiles:
-    - name: DEFAULT-POLICY-VIDEO
-      id: 3
-    - name: DEFAULT-POLICY-DEFAULT
-      id: 1
+    - id: 3
+      name: DEFAULT-POLICY-VIDEO
+    - id: 1
+      name: DEFAULT-POLICY-DEFAULT
 router_bfd:
   multihop:
     interval: 300
