@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import json
@@ -9,9 +9,10 @@ from pathlib import Path
 import pytest
 
 import pyavd._schema.models.avd_model
+from schema_tools.generate_classes.class_src_gen import SrcGenInt
 from schema_tools.generate_classes.src_generators import FileSrc
 from schema_tools.generate_classes.utils import generate_class_name
-from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
+from schema_tools.metaschema.meta_schema_model import AristaAvdSchema, AvdSchemaInt
 from schema_tools.store import create_store
 
 TEST_DATA = [
@@ -65,3 +66,19 @@ def test_import_and_load_model(schema_name: str, data_file: str | None, artifact
     model = cls._from_dict(data)
 
     assert isinstance(model, pyavd._schema.models.avd_model.AvdModel)
+
+
+class TestSrcGenBase:
+    def test_get_key_raises_runtime_error(self) -> None:
+        schema = AvdSchemaInt(type="int")
+        srcgen = SrcGenInt()
+        srcgen.schema = schema
+        with pytest.raises(RuntimeError, match=r"'get_key' was called when 'schema._key' is 'None'"):
+            srcgen.get_key()
+
+    def test_valid_key_raises_runtime_error(self) -> None:
+        schema = AvdSchemaInt(type="int")
+        srcgen = SrcGenInt()
+        srcgen.schema = schema
+        with pytest.raises(RuntimeError, match=r"'valid_key' was called when 'schema._key' is 'None'"):
+            _ = srcgen.valid_key

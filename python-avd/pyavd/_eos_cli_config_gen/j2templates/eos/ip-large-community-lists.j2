@@ -1,0 +1,15 @@
+{#
+ Copyright (c) 2026 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - ip large community lists #}
+{% for large_community_list in ip_large_community_lists | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%     for entry in large_community_list.entries %}
+{%         if entry.regexp is arista.avd.defined %}
+ip large-community-list regexp {{ large_community_list.name }} {{ entry.action }} {{ entry.regexp }}
+{%         elif entry.large_communities is arista.avd.defined %}
+ip large-community-list {{ large_community_list.name }} {{ entry.action }} {{ entry.large_communities | join(' ') }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

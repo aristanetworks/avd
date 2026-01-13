@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
@@ -952,8 +952,8 @@ class EosDesignsFactsProtocol(Protocol):
                     """
 
         _fields: ClassVar[dict] = {
-            "interfaces": {"type": Interfaces},
             "name": {"type": str},
+            "interfaces": {"type": Interfaces},
             "id": {"type": int},
             "description": {"type": str},
             "ipsec": {"type": Ipsec},
@@ -962,10 +962,10 @@ class EosDesignsFactsProtocol(Protocol):
             "excluded_from_default_policy": {"type": bool, "default": False},
             "dps_keepalive": {"type": DpsKeepalive},
         }
-        interfaces: Interfaces
-        """Subclass of AvdList with `InterfacesItem` items."""
         name: str
         """Path-group name."""
+        interfaces: Interfaces
+        """Subclass of AvdList with `InterfacesItem` items."""
         id: int
         """
         Path-group id.
@@ -1020,8 +1020,8 @@ class EosDesignsFactsProtocol(Protocol):
             def __init__(
                 self,
                 *,
-                interfaces: Interfaces | UndefinedType = Undefined,
                 name: str | UndefinedType = Undefined,
+                interfaces: Interfaces | UndefinedType = Undefined,
                 id: int | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
                 ipsec: Ipsec | UndefinedType = Undefined,
@@ -1037,8 +1037,8 @@ class EosDesignsFactsProtocol(Protocol):
                 Subclass of AvdModel.
 
                 Args:
-                    interfaces: Subclass of AvdList with `InterfacesItem` items.
                     name: Path-group name.
+                    interfaces: Subclass of AvdList with `InterfacesItem` items.
                     id:
                        Path-group id.
                        Required until an auto ID algorithm is implemented.

@@ -1,10 +1,10 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - loopback interfaces #}
-{% for loopback_interface in loopback_interfaces | arista.avd.natural_sort('name') %}
+{% for loopback_interface in loopback_interfaces | arista.avd.natural_sort(sort_key='name') %}
 !
 interface {{ loopback_interface.name }}
 {%     if loopback_interface.description is arista.avd.defined %}
@@ -18,14 +18,14 @@ interface {{ loopback_interface.name }}
 {%     if loopback_interface.vrf is arista.avd.defined %}
    vrf {{ loopback_interface.vrf }}
 {%     endif %}
-{%     if loopback_interface.ip_proxy_arp is arista.avd.defined(true) %}
-   ip proxy-arp
-{%     endif %}
 {%     if loopback_interface.ip_address is arista.avd.defined %}
    ip address {{ loopback_interface.ip_address }}
 {%         for ip_address_secondary in loopback_interface.ip_address_secondaries | arista.avd.natural_sort %}
    ip address {{ ip_address_secondary }} secondary
 {%         endfor %}
+{%     endif %}
+{%     if loopback_interface.ip_proxy_arp is arista.avd.defined(true) %}
+   ip proxy-arp
 {%     endif %}
 {%     if loopback_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable

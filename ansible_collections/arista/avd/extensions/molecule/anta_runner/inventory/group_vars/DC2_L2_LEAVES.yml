@@ -5,6 +5,7 @@ l2leaf:
   defaults:
     platform: vEOS-lab
     spanning_tree_mode: mstp
+    validation_profile: profile1
 
   node_groups:
     - group: DC2_L2_LEAF1

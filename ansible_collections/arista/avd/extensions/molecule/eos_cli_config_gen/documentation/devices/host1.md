@@ -182,6 +182,8 @@ Serial Number: DEADBEEFC0FFEW
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
   - [BFD Interfaces](#bfd-interfaces)
+- [Monitor Loop Protection](#monitor-loop-protection)
+  - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Interfaces](#mpls-interfaces)
@@ -202,6 +204,7 @@ Serial Number: DEADBEEFC0FFEW
   - [Router IGMP](#router-igmp)
 - [Filters](#filters)
   - [IP Community-lists](#ip-community-lists)
+  - [IP Large-community-lists](#ip-large-community-lists)
   - [Peer Filters](#peer-filters)
   - [Dynamic Prefix-lists](#dynamic-prefix-lists)
   - [Prefix-lists](#prefix-lists)
@@ -487,26 +490,28 @@ ip domain-list domain2.local
 | ----------- | --- | -------- |
 | 10.10.128.10 | default | - |
 | 10.10.129.10 | default | 0 |
-| 10.10.128.10 | mgmt | - |
-| 10.10.128.10 | TEST | 3 |
 | 2001:db8::1 | default | - |
 | 2001:db8::2 | default | 0 |
+| 2001:db8::3 | default | 1 |
+| 10.10.128.10 | mgmt | - |
 | 2001:db8::1 | mgmt | - |
+| 2001:db8::2 | mgmt | 1 |
+| 4.4.4.4 | TEST | - |
+| 10.10.128.10 | TEST | 3 |
 | 2001:db8::2 | TEST | 3 |
-| 10.10.11.11 | ZTP | - |
-| 10.10.222.11 | TEST | 2 |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server vrf ZTP 10.10.11.11
+ip name-server vrf TEST 4.4.4.4
 ip name-server vrf default 10.10.128.10
 ip name-server vrf default 10.10.129.10
 ip name-server vrf default 2001:db8::1
 ip name-server vrf default 2001:db8::2
 ip name-server vrf mgmt 10.10.128.10
 ip name-server vrf mgmt 2001:db8::1
-ip name-server vrf TEST 10.10.222.11 priority 2
+ip name-server vrf default 2001:db8::3 priority 1
+ip name-server vrf mgmt 2001:db8::2 priority 1
 ip name-server vrf TEST 10.10.128.10 priority 3
 ip name-server vrf TEST 2001:db8::2 priority 3
 ```
@@ -793,6 +798,7 @@ system control-plane
 | VRF | Enabled | IPv4 ACL | IPv6 ACL |
 | --- | ------- | -------- | -------- |
 | mgt | True | ACL-SSH-VRF | ACL-SSH-VRF6 |
+| VRF1 | True | - | - |
 | default | True | ACL-SSH | ACL-SSH6 |
 
 #### Authentication Settings
@@ -818,15 +824,18 @@ management ssh
    ipv6 access-group ACL-SSH6 in
    idle-timeout 15
    authentication protocol keyboard-interactive password public-key
+   connection limit 50
    connection per-host 10
    fips restrictions
    hostkey client strict-checking
-   connection limit 50
    authentication empty-passwords permit
    client-alive interval 666
    client-alive count-max 42
    no shutdown
    log-level debug
+   !
+   vrf VRF1
+      no shutdown
    !
    vrf default
       no shutdown
@@ -885,12 +894,12 @@ management tech-support
 | FTP | default | Loopback0 |
 | FTP | MGMT | Management0 |
 | FTP | abc | Ethernet10 |
-| HTTP | default | Loopback0 |
-| HTTP | MGMT | Management0 |
 | HTTP | default | Ethernet10 |
+| HTTP | MGMT | Management0 |
+| HTTP | aaa | Loopback0 |
 | SSH | default | Ethernet10 |
-| SSH | default | Loopback0 |
 | SSH | MGMT | Management0 |
+| SSH | aaa | Loopback0 |
 | Telnet | default | Ethernet10 |
 | Telnet | MGMT | Management0 |
 | Telnet | data | Loopback0 |
@@ -905,12 +914,12 @@ management tech-support
 ip ftp client source-interface Loopback0
 ip ftp client source-interface Management0 vrf MGMT
 ip ftp client source-interface Ethernet10 vrf abc
-ip http client local-interface Loopback0 vrf default
-ip http client local-interface Management0 vrf MGMT
 ip http client local-interface Ethernet10
+ip http client local-interface Management0 vrf MGMT
+ip http client local-interface Loopback0 vrf aaa
 ip ssh client source-interface Ethernet10
-ip ssh client source-interface Loopback0 vrf default
 ip ssh client source-interface Management0 vrf MGMT
+ip ssh client source-interface Loopback0 vrf aaa
 ip telnet client source-interface Ethernet10
 ip telnet client source-interface Management0 vrf MGMT
 ip telnet client source-interface Loopback0 vrf data
@@ -959,6 +968,12 @@ Provider eos-native is configured.
 ```eos
 !
 management api gnmi
+   transport grpc MGMT
+      ssl profile gnmi
+      vrf MGMT
+      ip access-group acl1
+      notification timestamp send-time
+   !
    transport grpc arFalse
       ip access-group acl1
       notification timestamp send-time
@@ -966,12 +981,6 @@ management api gnmi
    transport grpc arTrue
       ip access-group acl1
       authorization requests
-      notification timestamp send-time
-   !
-   transport grpc MGMT
-      ssl profile gnmi
-      vrf MGMT
-      ip access-group acl1
       notification timestamp send-time
    !
    transport grpc mytransport
@@ -1081,18 +1090,8 @@ management api http-commands
    protocol unix-socket
    default-services
    protocol https ssl profile SSL_PROFILE
-   no shutdown
-   !
-   vrf default
-      no shutdown
-      ip access-group ACL-API
-      ipv6 access-group ACL-API6
-   !
-   vrf MGMT
-      no shutdown
-      ip access-group ACL-API
    protocol https certificate
------BEGIN CERTIFICATE-----
+   -----BEGIN CERTIFICATE-----
 MIIFNjCCAx4CCQCVGSFu9M4dNDANBgkqhkiG9w0BAQsFADBdMQswCQYDVQQGEwJD
 QTELMAkGA1UECAwCQkMxEjAQBgNVBAcMCVZhbmNvdXZlcjEPMA0GA1UECgwGQXJp
 c3RhMQwwCgYDVQQLDANBVkQxDjAMBgNVBAMMBWhvc3QxMB4XDTI0MTExMzE3NTAw
@@ -1122,8 +1121,8 @@ kc6u4R7x93bWtRedCtL8SroKgg3iSP+MNvjh7GRVrisKi1mHq37xBFbfcKWQ8Fux
 xak6B5u7Dkwio2KGtQAzUTw8GNrG8ix6wYbCxRTorl0qtxWKqB1sqPkxVmo73PkO
 sVbhuzXgHBzA4RNdl/qmwSKlL7pKfpQUm3jSzewJm224QTYODTF8KRpf
 -----END CERTIFICATE-----
-EOF
------BEGIN PRIVATE KEY-----
+   EOF
+   -----BEGIN PRIVATE KEY-----
 MIIJQgIBADANBgkqhkiG9w0BAQEFAASCCSwwggkoAgEAAoICAQCc9nlFQ/+Lvp5s
 9AJOkCaj60EierKWbcZ34Eg9xExoVoFTvmle1G56QgLygfhuwV91hB5ds6YRRPju
 B4UQgYgxQfS12dn4ogSnD5hTLiQoS9ecC2mucj/fbazF98MUi2SBSlZg+ZMY7amT
@@ -1175,7 +1174,17 @@ xEnBkzW4rhGpE+D72RC0Z4wOurE+pLxJpHnPu3lqVmD8m/AaxUzGdiRWPCLkx2G1
 lRIvIpbuqzZ1QzAdWwCX/5mgBk/xoI88N3EcxvgEJJhiXihYwW/630KkKETqnu64
 9ZBLoqoLmPhKxDHZuwO7re9GxVZ1HQ==
 -----END PRIVATE KEY-----
-EOF
+   EOF
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+      ip access-group ACL-API
+   !
+   vrf default
+      no shutdown
+      ip access-group ACL-API
+      ipv6 access-group ACL-API6
 ```
 
 ### Management API Models
@@ -1269,6 +1278,7 @@ cvx
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
+| SSHUSER | 15 | network-admin | False | - |
 | admin | 15 | network-admin | False | - |
 | admin1 | - | - | True | - |
 | ansible | 15 | network-admin | False | - |
@@ -1279,6 +1289,7 @@ cvx
 
 ```eos
 !
+username SSHUSER privilege 15 role network-admin nopassword
 username admin privilege 15 role network-admin nopassword
 no username admin1
 username ansible privilege 15 role network-admin secret sha512 <removed>
@@ -1370,19 +1381,19 @@ tacacs-server host 10.10.10.160
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-| default | loopback1 |
-| TEST1 | lo3 |
-| default | loopback10 |
+| default | Loopback1 |
+| TEST1 | Loopback3 |
+| default | Loopback10 |
 
 #### IP TACACS Source Interfaces Device Configuration
 
 ```eos
 !
-ip tacacs vrf default source-interface loopback1
+ip tacacs vrf default source-interface Loopback1
 !
-ip tacacs vrf TEST1 source-interface lo3
+ip tacacs vrf TEST1 source-interface Loopback3
 !
-ip tacacs source-interface loopback10
+ip tacacs source-interface Loopback10
 ```
 
 ### Radius Proxy
@@ -1582,19 +1593,19 @@ radius-server host 10.10.11.155 vrf mgt tls ssl-profile HOST_SSL_PROFILE port 20
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-| default | loopback1 |
-| MGMT | Ma1 |
-| default | loopback10 |
+| default | Loopback1 |
+| default | Loopback10 |
+| MGMT | Management1 |
 
 #### IP SOURCE Source Interfaces Device Configuration
 
 ```eos
 !
-ip radius vrf default source-interface loopback1
+ip radius vrf default source-interface Loopback1
 !
-ip radius vrf MGMT source-interface Ma1
+ip radius source-interface Loopback10
 !
-ip radius source-interface loopback10
+ip radius vrf MGMT source-interface Management1
 ```
 
 ### AAA Server Groups
@@ -1920,6 +1931,11 @@ management security
    session shared-secret profile profile2
       secret Secret4 0 <removed> receive-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00 transmit-lifetime 2024-12-20 10:00:00 2025-12-20 10:00:00
    !
+   ssl profile SSL_PROFILE
+      tls versions 1.1 1.2
+      fips restrictions
+      certificate SSL_CERT key SSL_KEY
+   !
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key
       crl ca.crl
@@ -1927,11 +1943,6 @@ management security
    !
    ssl profile cipher-list-profile
       cipher-list ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
-   !
-   ssl profile SSL_PROFILE
-      tls versions 1.1 1.2
-      fips restrictions
-      certificate SSL_CERT key SSL_KEY
    !
    ssl profile test1-chain-cert
       chain certificate test-chain-cert1.crt
@@ -2307,18 +2318,24 @@ daemon random
 
 | VRF | Hosts | Ports | Protocol | SSL-profile |
 | --- | ----- | ----- | -------- | ----------- |
+| VRFA | 1.2.3.4 | Default | UDP | - |
+| VRFA | 2001:db8::1:2:3:4 | Default | UDP | - |
 | default | 20.20.20.7 | Default | UDP | - |
-| default | 50.50.50.7 | 100, 200 | TCP | - |
-| default | 60.60.60.7 | 100, 200 | UDP | - |
 | default | 2001:db8::20:7 | Default | UDP | - |
 | default | 2001:db8::50:7 | 100, 200 | TCP | - |
 | default | 2001:db8::60:7 | 100, 200 | UDP | - |
+| default | 50.50.50.7 | 100, 200 | TCP | - |
+| default | 60.60.60.7 | 100, 200 | UDP | - |
 | mgt | 10.10.10.7 | Default | UDP | - |
-| mgt | 30.30.30.7 | 100, 200 | TCP | - |
-| mgt | 40.40.40.7 | 300, 400 | UDP | - |
 | mgt | 2001:db8::10:7 | Default | UDP | - |
 | mgt | 2001:db8::30:7 | 100, 200 | TCP | - |
 | mgt | 2001:db8::40:7 | 300, 400 | UDP | - |
+| mgt | 30.30.30.7 | 100, 200 | TCP | - |
+| mgt | 40.40.40.7 | 300, 400 | UDP | - |
+| mgt | AAA.local | Default | UDP | - |
+| mgt | BBB.local | Default | UDP | - |
+| mgt | aaa.local | Default | UDP | - |
+| mgt | bbb.local | Default | UDP | - |
 | mgt | sslhost.net | 6515 | TLS | logging-ssl |
 | vrf_with_no_source_interface | 1.2.3.4 | Default | UDP | - |
 | vrf_with_no_source_interface | 2001:db8::1:2:3:4 | Default | UDP | - |
@@ -2344,18 +2361,24 @@ no logging trap
 logging console errors
 no logging monitor
 logging synchronous level warnings
+logging vrf VRFA host 1.2.3.4
+logging vrf VRFA host 2001:db8::1:2:3:4
 logging host 20.20.20.7
-logging host 50.50.50.7 100 200 protocol tcp
-logging host 60.60.60.7 100 200
 logging host 2001:db8::20:7
 logging host 2001:db8::50:7 100 200 protocol tcp
 logging host 2001:db8::60:7 100 200
+logging host 50.50.50.7 100 200 protocol tcp
+logging host 60.60.60.7 100 200
 logging vrf mgt host 10.10.10.7
-logging vrf mgt host 30.30.30.7 100 200 protocol tcp
-logging vrf mgt host 40.40.40.7 300 400
 logging vrf mgt host 2001:db8::10:7
 logging vrf mgt host 2001:db8::30:7 100 200 protocol tcp
 logging vrf mgt host 2001:db8::40:7 300 400
+logging vrf mgt host 30.30.30.7 100 200 protocol tcp
+logging vrf mgt host 40.40.40.7 300 400
+logging vrf mgt host AAA.local
+logging vrf mgt host BBB.local
+logging vrf mgt host aaa.local
+logging vrf mgt host bbb.local
 logging vrf mgt host sslhost.net 6515 protocol tls ssl-profile logging-ssl
 logging vrf vrf_with_no_source_interface host 1.2.3.4
 logging vrf vrf_with_no_source_interface host 2001:db8::1:2:3:4
@@ -2433,6 +2456,8 @@ mcs client
 | Management1 | MGMT |
 | Loopback0 | default |
 | Loopback12 | Tenant_A_APP_Zone |
+| Ethernet1 | AAA |
+| Ethernet2 | abc |
 
 #### SNMP VRF Status
 
@@ -2440,6 +2465,7 @@ mcs client
 | --- | ------ |
 | default | Disabled |
 | MGMT | Enabled |
+| lower_case | Enabled |
 
 #### SNMP Hosts Configuration
 
@@ -2501,8 +2527,10 @@ snmp-server engineID local 424242424242424242
 snmp-server contact DC1_OPS
 snmp-server location DC1
 snmp-server local-interface Loopback0
-snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
+snmp-server vrf AAA local-interface Ethernet1
 snmp-server vrf MGMT local-interface Management1
+snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
+snmp-server vrf abc local-interface Ethernet2
 snmp-server view VW-READ iso included
 snmp-server view VW-WRITE iso included
 snmp-server community <removed> ro onur
@@ -2543,6 +2571,7 @@ snmp-server enable traps snmp link-down
 snmp-server enable traps snmpConfigManEvent
 no snmp-server vrf default
 snmp-server vrf MGMT
+snmp-server vrf lower_case
 snmp-server ifmib ifspeed shape-rate
 ```
 
@@ -2859,6 +2888,8 @@ tap aggregation
 | AAA | - | 10.6.75.62 | 123 |
 | AAA | - | 10.6.75.63 | 333 |
 | AAA | Ethernet2 | - | - |
+| abc | - | 10.6.75.62 | 6343 |
+| abc | 2.2.2.2 | - | - |
 | BBB | - | 10.6.75.62 | 6343 |
 | BBB | 1.1.1.1 | - | - |
 | CCC | - | 10.6.75.62 | 6343 |
@@ -2910,7 +2941,7 @@ sFlow hardware accelerated Sample Rate: 1024
 | bgp | True |
 | router | True |
 | switch | False |
-| tunnel | False |
+| tunnel ipv4 egress | False |
 
 #### SFlow Interfaces
 
@@ -2948,6 +2979,8 @@ sflow vrf MGMT destination 10.6.75.59
 sflow vrf MGMT destination 10.6.75.62 123
 sflow vrf MGMT destination 10.6.75.63 333
 sflow vrf MGMT source-interface Ethernet3
+sflow vrf abc destination 10.6.75.62
+sflow vrf abc source 2.2.2.2
 sflow destination 10.6.75.61
 sflow destination 10.6.75.62 123
 sflow source-interface Management0
@@ -2956,7 +2989,7 @@ sflow sample output subinterface
 sflow extension bgp
 sflow extension router
 no sflow extension switch
-no sflow extension tunnel
+no sflow extension tunnel ipv4 egress
 sflow interface disable default
 sflow interface egress unmodified enable default
 sflow run
@@ -4908,6 +4941,7 @@ interface Ethernet2
    ip address 10.0.0.254/24 secondary
    ip address 192.168.1.1/24 secondary
    tcp mss ceiling ipv4 70 ingress
+   loop-protection
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST out
    multicast ipv4 static
@@ -5919,6 +5953,14 @@ interface Ethernet87
    no shutdown
    switchport
    transceiver transmitter signal-power -20.00
+!
+interface Ethernet88
+   description Loop protection disable
+   no loop-protection
+!
+interface Ethernet89
+   description Loop protection disable
+   no loop-protection
 ```
 
 ### Port-Channel Interfaces
@@ -6817,6 +6859,7 @@ interface Port-Channel667
 | Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.3/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.3/32 |
 | Loopback2 | - | default | - |
+| Loopback10 | Test_Node_Segment | default | 10.2.255.3/32 |
 | Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 <br> 192.168.1.1/32 secondary <br> 10.0.0.254/32 secondary |
 | Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 |
 
@@ -6827,6 +6870,7 @@ interface Port-Channel667
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 | Loopback2 | - | default | - |
+| Loopback10 | Test_Node_Segment | default | 2002::CAFE/128 |
 | Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 2002::CAFE/64 |
 | Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | - |
 
@@ -6856,14 +6900,21 @@ interface Loopback1
 interface Loopback2
    ip ospf area 0.0.0.2
 !
+interface Loopback10
+   description Test_Node_Segment
+   ip address 10.2.255.3/32
+   ipv6 address 2002::CAFE/128
+   node-segment ipv4 index 34
+   node-segment ipv6 index 23
+!
 interface Loopback99
    description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
    no shutdown
    vrf TENANT_A_PROJECT02
-   ip proxy-arp
    ip address 10.1.255.3/32
    ip address 10.0.0.254/32 secondary
    ip address 192.168.1.1/32 secondary
+   ip proxy-arp
    ipv6 enable
    ipv6 address 2002::CAFE/64
    mpls ldp interface
@@ -7755,24 +7806,35 @@ ipv6 hardware fib optimize prefixes profile internet
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
+| default | 1.1.1.0/24 | - | Ethernet1 | 1 | - | - | - |
+| default | 1.1.1.0/24 | - | Vlan2 | 1 | - | - | - |
+| default | 1.1.1.0/24 | 1.1.1.1 | - | 1 | - | - | - |
+| default | 1.1.1.0/24 | 2.2.2.2 | - | 1 | - | - | - |
+| default | 1.1.1.0/24 | 10.1.1.1 | vlan1001 | 1 | - | - | - |
+| default | 1.1.2.0/24 | 10.1.1.1 | vlan1001 | 200 | 666 | RT-TO-FAKE-DMZ | - |
+| default | 2.2.2.0/24 | 3.3.3.3 | - | 1 | - | - | - |
 | BLUE-C1 | 193.1.0.0/24 | - | Null0 | 1 | - | - | - |
 | BLUE-C1 | 193.1.1.0/24 | - | Null0 | 1 | - | - | - |
 | BLUE-C1 | 193.1.2.0/24 | - | Null0 | 1 | - | - | - |
-| default | 1.1.1.0/24 | 10.1.1.1 | vlan1001 | 1 | - | - | - |
-| default | 1.1.2.0/24 | 10.1.1.1 | vlan1001 | 200 | 666 | RT-TO-FAKE-DMZ | - |
 | TENANT_A_PROJECT01 | 1.2.1.0/24 | 10.1.2.1 | vlan202 | 1 | - | - | - |
 | TENANT_A_PROJECT01 | 1.2.2.0/24 | 10.1.2.1 | vlan1001 | 201 | 667 | RT-TO-FAKE-DMZ | - |
-| TENANT_A_PROJECT02 | 10.3.4.0/24 | 1.2.3.4 | - | 1 | - | - | - |
-| TENANT_A_PROJECT02 | 10.3.5.0/24 | - | Null0 | 1 | - | - | - |
 | TENANT_A_PROJECT01 | 10.3.6.0/24 | 11.2.1.1 (tracked with BFD) | Ethernet40 | 100 | 1000 | Track-BFD | 300 |
 | TENANT_A_PROJECT01 | 10.3.7.0/24 | - | Ethernet41 | 100 | 1000 | No-Track-BFD | 300 |
+| TENANT_A_PROJECT02 | 10.3.4.0/24 | 1.2.3.4 | - | 1 | - | - | - |
+| TENANT_A_PROJECT02 | 10.3.5.0/24 | - | Null0 | 1 | - | - | - |
+| aaa | 10.3.8.0/24 | - | Null0 | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
+ip route 1.1.1.0/24 Ethernet1
+ip route 1.1.1.0/24 Vlan2
+ip route 1.1.1.0/24 1.1.1.1
+ip route 1.1.1.0/24 2.2.2.2
 ip route 1.1.1.0/24 Vlan1001 10.1.1.1
 ip route 1.1.2.0/24 Vlan1001 10.1.1.1 200 tag 666 name RT-TO-FAKE-DMZ
+ip route 2.2.2.0/24 3.3.3.3
 ip route vrf BLUE-C1 193.1.0.0/24 Null0
 ip route vrf BLUE-C1 193.1.1.0/24 Null0
 ip route vrf BLUE-C1 193.1.2.0/24 Null0
@@ -7782,6 +7844,7 @@ ip route vrf TENANT_A_PROJECT01 10.3.6.0/24 Ethernet40 11.2.1.1 track bfd 100 ta
 ip route vrf TENANT_A_PROJECT01 10.3.7.0/24 Ethernet41 100 tag 1000 name No-Track-BFD metric 300
 ip route vrf TENANT_A_PROJECT02 10.3.4.0/24 1.2.3.4
 ip route vrf TENANT_A_PROJECT02 10.3.5.0/24 Null0
+ip route vrf aaa 10.3.8.0/24 Null0
 ```
 
 ### IPv6 Static Routes
@@ -8524,6 +8587,12 @@ ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 | Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 | Vlan4094 | EVPN_UNDERLAY | - | - |
 | Loopback99 | ISIS_TEST | 100 | point-to-point |
+
+#### ISIS Segment-routing Node-SID
+
+| Loopback | IPv4 Index | IPv6 Index |
+| -------- | ---------- | ---------- |
+| Loopback10 | 34 | 23 |
 
 #### Prefix Segments
 
@@ -10562,6 +10631,24 @@ router bfd
 | Port-Channel9 | 500 | 500 | 5 | True |
 | Vlan85 | 500 | 500 | 5 | True |
 
+## Monitor Loop Protection
+
+| Enabled | Disabled-time | Protect vlan | Rate-limit | Transmit-interval | Disabled Interfaces |
+| ------- | ------------- | ------------ | ---------- | ----------------- | ------------------- |
+| True | 100 | 1000-1100 | 100 | 10 | Ethernet88<br/>Ethernet89 |
+
+### Monitor Loop Protection Configuration
+
+```eos ####
+!
+monitor loop-protection
+   no shutdown
+   protect vlan 1000-1100
+   rate-limit 100
+   transmit-interval 10
+   disabled-time 100
+```
+
 ## MPLS
 
 ### MPLS and LDP
@@ -11087,7 +11174,6 @@ router igmp
 #### IP Community-lists Device Configuration
 
 ```eos
-!
 ip community-list IP_CL_TEST1 permit 1001:1001 1002:1002
 ip community-list IP_CL_TEST1 deny 1010:1010
 ip community-list regexp IP_CL_TEST1 permit 20:*
@@ -11095,6 +11181,34 @@ ip community-list IP_CL_TEST2 deny 1003:1003
 ip community-list regexp IP_RE_TEST1 permit ^$
 ip community-list regexp IP_RE_TEST2 deny ^100
 ip community-list regexp aa_test3 deny ^100
+```
+
+### IP Large-community-lists
+
+#### IP Large-community-lists Summary
+
+| Name | Action | Communities / Regexp |
+| ---- | ------ | -------------------- |
+| IP_L_CL_TEST1 | permit | 64496:1001:1001, 65536:1002:1002 |
+| IP_L_CL_TEST1 | deny | 64496:1010:1010 |
+| IP_L_CL_TEST1 | permit | 65536:*:* |
+| IP_L_CL_TEST2 | deny | 65536:1003:1003 |
+| IP_L_RE_TEST1 | permit | ^$ |
+| IP_L_RE_TEST2 | deny | ^64496:*:* |
+| IP_L_RE_TEST2 | deny | 64497:1004:1004, 64497:1005:1005 |
+| aa_test3 | deny | ^65536:*:* |
+
+#### IP Large-community-lists Device Configuration
+
+```eos
+ip large-community-list IP_L_CL_TEST1 permit 64496:1001:1001 65536:1002:1002
+ip large-community-list IP_L_CL_TEST1 deny 64496:1010:1010
+ip large-community-list regexp IP_L_CL_TEST1 permit 65536:*:*
+ip large-community-list IP_L_CL_TEST2 deny 65536:1003:1003
+ip large-community-list regexp IP_L_RE_TEST1 permit ^$
+ip large-community-list regexp IP_L_RE_TEST2 deny ^64496:*:*
+ip large-community-list IP_L_RE_TEST2 deny 64497:1004:1004 64497:1005:1005
+ip large-community-list regexp aa_test3 deny ^65536:*:*
 ```
 
 ### Peer Filters
@@ -11164,9 +11278,6 @@ dynamic prefix-list aa_list_1
 #### Prefix-lists Summary
 
 ##### PL-IPV4-LOOPBACKS
-
-| Sequence | Action |
-| -------- | ------ |
 
 ##### PL-LOOPBACKS-EVPN-OVERLAY
 
@@ -11335,12 +11446,9 @@ route-map RM-STATIC-2-BGP permit 10
 #### IP Extended Community Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list TEST1 permit 65000:65000
 ip extcommunity-list TEST1 deny 65002:65002
-!
 ip extcommunity-list TEST2 deny 65001:65001
-!
 ip extcommunity-list aa_test3 deny 65001:65001
 ```
 
@@ -11358,12 +11466,9 @@ ip extcommunity-list aa_test3 deny 65001:65001
 #### IP Extended Community RegExp Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list regexp TEST1 permit 65[0-9]{3}:[0-9]+
 ip extcommunity-list regexp TEST1 deny .*
-!
 ip extcommunity-list regexp TEST2 deny 6500[0-1]:650[0-9][0-9]
-!
 ip extcommunity-list regexp aa_test3 deny 6500[0-1]:650[0-9][0-9]
 ```
 
@@ -11979,6 +12084,8 @@ ipv6 access-list acl_qos_tc5_v6
 | - | permit any 02:00:00:12:34:56 00:00:00:00:00:00 |
 | - | deny any 02:00:00:ab:cd:ef 00:00:00:00:00:00 |
 
+##### TEST5
+
 #### MAC Access-lists Device Configuration
 
 ```eos
@@ -12002,6 +12109,8 @@ mac access-list TEST4
    remark A comment in the middle
    permit any 02:00:00:12:34:56 00:00:00:00:00:00
    deny any 02:00:00:ab:cd:ef 00:00:00:00:00:00
+!
+mac access-list TEST5
 ```
 
 ## VRF Instances
@@ -13318,8 +13427,8 @@ mac security
       mka session rekey-period 30
       traffic unprotected allow
       sci
-      l2-protocol ethernet-flow-control bypass
       l2-protocol lldp bypass unauthorized
+      l2-protocol ethernet-flow-control bypass
    !
    profile A2
       key 1234b 7 <removed>
@@ -13798,7 +13907,7 @@ class-map type pbr match-any aaa
 
 | Class Name | COS | DSCP | Traffic Class | Drop Precedence | Police Rate (Burst) -> Action |
 | ---------- | --- | ---- | ------------- | --------------- | ----------------------------- |
-| CM_REPLICATION_LD | - | af11 | 2 | 1 | 10 kbps (260 kbytes) -> drop-precedence<br> 30 kbps(270 kbytes) -> drop |
+| CM_REPLICATION_LD | 2 | af11 | 2 | 1 | 10 kbps (260 kbytes) -> drop-precedence<br> 30 kbps(270 kbytes) -> drop |
 | CM_REPLICATION_LD_2 | - | af11 | 2 | - | - |
 
 ##### PM_REPLICATION_LD2
@@ -13829,6 +13938,7 @@ class-map type pbr match-any aaa
 !
 policy-map type quality-of-service PM_REPLICATION_LD
    class CM_REPLICATION_LD
+      set cos 2
       set dscp af11
       set traffic-class 2
       set drop-precedence 1
@@ -13840,14 +13950,14 @@ policy-map type quality-of-service PM_REPLICATION_LD
 !
 policy-map type quality-of-service PM_REPLICATION_LD2
    class CM_REPLICATION_LD
-      set dscp af11
       set cos 4
+      set dscp af11
       police rate 30 kbps burst-size 280 bytes action set dscp af11 rate 1 mbps burst-size 270 bytes
 !
 policy-map type quality-of-service PM_REPLICATION_LD3
    class CM_REPLICATION_LD
-      set dscp af11
       set cos 6
+      set dscp af11
       police rate 10000 bps burst-size 260 kbytes
 !
 policy-map type quality-of-service pmap_test1
@@ -14363,6 +14473,7 @@ priority-flow-control pause watchdog action no-drop
 | -------------- | ---------- | ----------- | ---- |
 | server1 | 1.2.3.4 | pathfinder | 3478 |
 | server2 | 2.3.4.5 | - | 4100 |
+| SERVER3 | 1.2.3.5 | - | 3478 |
 
 ### STUN Server
 
@@ -14376,6 +14487,8 @@ priority-flow-control pause watchdog action no-drop
 !
 stun
    client
+      server-profile SERVER3
+         ip address 1.2.3.5
       server-profile server1
          ip address 1.2.3.4
          ssl profile pathfinder
@@ -14489,6 +14602,7 @@ Default maintenance unit profile: **UP1**
 
 | BGP profile | Initiator route-map |
 | ----------- | ------------------- |
+| bgp2 | SystemGenerated |
 | BP1 | RM-MAINTENANCE |
 | BP2 | RM-MAINTENANCE2 |
 | BP3 | RM-MAINTENANCE3 |
@@ -14507,7 +14621,7 @@ Default maintenance unit profile: **UP1**
 | Unit | Interface groups | BGP groups | Unit profile | Quiesce |
 | ---- | ---------------- | ---------- | ------------ | ------- |
 | System | - | - | UP1 | No |
-| UNIT1 | INTERFACE_GROUP_1 | BGP_GROUP_1<br/>BGP_GROUP_2 | UP1 | No |
+| UNIT1 | inrerface_group<br/>INTERFACE_GROUP_1 | bgp_group<br/>BGP_GROUP_1<br/>BGP_GROUP_2 | UP1 | No |
 
 #### Maintenance Device Configuration
 
@@ -14522,6 +14636,8 @@ maintenance
    !
    profile bgp BP3
       initiator route-map RM-MAINTENANCE3 inout
+   !
+   profile bgp bgp2
    profile bgp BP1 default
    profile interface IP1 default
    profile unit UP1 default
@@ -14542,7 +14658,9 @@ maintenance
    unit UNIT1
       group bgp BGP_GROUP_1
       group bgp BGP_GROUP_2
+      group bgp bgp_group
       group interface INTERFACE_GROUP_1
+      group interface inrerface_group
       profile unit UP1
 ```
 

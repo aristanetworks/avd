@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -423,6 +423,26 @@ $defs:
                   rt_override supports two formats:
                     - A single number will be used in the RT assigned number subfield (second part of the RT).
                     - A full RT string with colon separator which will override the full RT.
+              rt_import:
+                type: bool
+                description: |
+                  Enable or disable route target import for the VRF for all address families.
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              rt_export:
+                type: bool
+                description: |
+                  Enable or disable route target export for the VRF for all address families.
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              evpn_vlan_bundle:
+                type: str
+                description: |
+                  Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.
+                  This setting overrides "evpn_vlan_bundle" set at the Tenant level.
+                  The common option "evpn_vlan_aware_bundles" is disregarded for this option.
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: |-
@@ -778,7 +798,7 @@ $defs:
                       type: str
                       description: |
                         Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
-                        This setting overrides "evpn_vlan_bundle" set at tenant level.
+                        This setting overrides "evpn_vlan_bundle" set at the VRF or tenant level.
                         The common option "evpn_vlan_aware_bundles" is disregarded for this option.
                     nodes:
                       type: list
@@ -1571,10 +1591,13 @@ $defs:
                       valid_values:
                         - import
                         - export
+                      required: true
                     address_family:
                       type: str
+                      required: true
                     route_target:
                       type: str
+                      required: true
                     nodes:
                       type: list
                       items:

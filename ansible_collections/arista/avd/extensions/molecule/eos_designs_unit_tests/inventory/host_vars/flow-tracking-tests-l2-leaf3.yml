@@ -24,7 +24,16 @@ l2leaf:
         - Ethernet33
         - Ethernet33
 
+cv_settings:
+  cvaas:
+    enabled: true
+
 flow_tracking_settings:
+  # Testing export_to_cloudvision for sampled
+  cloudvision_exporter:
+    name: Exporter1
+    source_interface: Ethernet101
+    vrf: vrf_exporter
   trackers:
     - name: FLOW-TRACKER-10
       record_export:
@@ -36,3 +45,5 @@ flow_tracking_settings:
             - host: 127.0.2.1
           template_interval: 40020
           local_interface: use_inband_mgmt_interface
+      # Testing export_to_cloudvision for sampled
+      export_to_cloudvision: true

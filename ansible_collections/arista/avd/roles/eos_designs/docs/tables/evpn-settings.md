@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -20,7 +20,7 @@
     | [<samp>evpn_prevent_readvertise_to_server</samp>](## "evpn_prevent_readvertise_to_server") | Boolean |  | `False` |  | Prevent sending EVPN BGP updates to the route-server if they came from or passed through the route-server already.<br>Refer to `evpn_prevent_readvertise_to_server_mode` to control which configuration style to use.<br>This is very useful in large-scale networks, where convergence will be quicker by not returning all updates received<br>from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.<br> |
     | [<samp>evpn_prevent_readvertise_to_server_mode</samp>](## "evpn_prevent_readvertise_to_server_mode") | String |  | `as_path_acl` | Valid Values:<br>- <code>source_peer_asn</code><br>- <code>as_path_acl</code> | `evpn_prevent_readvertise_to_server_mode` controls the method of identifying EVPN routes that should not be advertised to the EVPN route-servers.<br>Only used when `evpn_prevent_readvertise_to_server` is set to `true`.<br>`source_peer_asn` mode configures an outbound route-map towards EVPN route-servers which filter out BGP updates learned directly from the ASN of the route-server. This mode will still allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.<br>`as_path_acl` mode configures an outbound route-map and as-path access-list which filters out BGP updates with the route-server ASN anywhere in the AS-path.<br> |
     | [<samp>evpn_short_esi_prefix</samp>](## "evpn_short_esi_prefix") | String |  | `0000:0000:` |  | Configure prefix for "short_esi" values. |
-    | [<samp>evpn_vlan_aware_bundles</samp>](## "evpn_vlan_aware_bundles") | Boolean |  | `False` |  | Enable VLAN aware bundles for every EVPN MAC-VRF.<br>If set to `true` all SVIs in a VRF are configured in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-bundles using the VLAN name as the bundle name.<br><br>The `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs. |
+    | [<samp>evpn_vlan_aware_bundles</samp>](## "evpn_vlan_aware_bundles") | Boolean |  | `False` |  | Enable VLAN aware bundles for every EVPN MAC-VRF.<br>If set to `true` all SVIs in a VRF are configured in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-bundles using the VLAN name as the bundle name.<br><br>The `evpn_vlan_bundle` option under SVI, L2VLAN, VRF or tenant level takes precedence and overrides this behavior. Per SVI/L2VLAN `evpn_vlan_bundle` also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs. |
     | [<samp>fabric_evpn_encapsulation</samp>](## "fabric_evpn_encapsulation") | String |  |  | Valid Values:<br>- <code>vxlan</code><br>- <code>mpls</code> | Should be set to mpls for evpn-mpls scenario. This overrides the evpn_encapsulation setting under node_type_keys. |
 
 === "YAML"
@@ -85,7 +85,7 @@
     # Enable VLAN aware bundles for every EVPN MAC-VRF.
     # If set to `true` all SVIs in a VRF are configured in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-bundles using the VLAN name as the bundle name.
     #
-    # The `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.
+    # The `evpn_vlan_bundle` option under SVI, L2VLAN, VRF or tenant level takes precedence and overrides this behavior. Per SVI/L2VLAN `evpn_vlan_bundle` also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.
     evpn_vlan_aware_bundles: <bool; default=False>
 
     # Should be set to mpls for evpn-mpls scenario. This overrides the evpn_encapsulation setting under node_type_keys.

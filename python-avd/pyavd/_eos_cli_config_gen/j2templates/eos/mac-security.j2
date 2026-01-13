@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -13,13 +13,13 @@ mac security
 {%     if mac_security.fips_restrictions is arista.avd.defined(true) %}
    fips restrictions
 {%     endif %}
-{%     for profile in mac_security.profiles | arista.avd.natural_sort('name') %}
+{%     for profile in mac_security.profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    profile {{ profile.name }}
 {%         if profile.cipher is arista.avd.defined %}
       cipher {{ profile.cipher }}
 {%         endif %}
-{%         for connection_key in profile.connection_keys | arista.avd.natural_sort('id') %}
+{%         for connection_key in profile.connection_keys | arista.avd.natural_sort(sort_key='id') %}
 {%             set key_cli = "key " ~ connection_key.id ~ " 7 " ~ connection_key.encrypted_key | arista.avd.hide_passwords(hide_passwords) %}
 {%             if connection_key.fallback is arista.avd.defined(true) %}
 {%                 set key_cli = key_cli ~ " fallback" %}
@@ -42,11 +42,11 @@ mac security
 {%         if profile.sci is arista.avd.defined(true) %}
       sci
 {%         endif %}
-{%         if profile.l2_protocols.ethernet_flow_control.mode is arista.avd.defined %}
-      l2-protocol ethernet-flow-control {{ profile.l2_protocols.ethernet_flow_control.mode }}
-{%         endif %}
 {%         if profile.l2_protocols.lldp.mode is arista.avd.defined %}
       l2-protocol lldp {{ profile.l2_protocols.lldp.mode }}
+{%         endif %}
+{%         if profile.l2_protocols.ethernet_flow_control.mode is arista.avd.defined %}
+      l2-protocol ethernet-flow-control {{ profile.l2_protocols.ethernet_flow_control.mode }}
 {%         endif %}
 {%         if profile.replay_protection.disabled is arista.avd.defined(true) %}
       replay protection disabled

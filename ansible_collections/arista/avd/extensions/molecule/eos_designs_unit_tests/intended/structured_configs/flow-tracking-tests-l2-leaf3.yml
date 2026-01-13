@@ -1,6 +1,17 @@
 aaa_root:
   disabled: true
 config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - apiserver.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /tmp/cv-onboarding-token
+  cvsourceintf: Vlan4092
+  cvvrf: default
+  disable_aaa: false
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ipfixaddr: vrf_exporter/127.0.0.1:4739
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -28,16 +39,20 @@ flow_tracking:
   sampled:
     sample: 10000
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER-10
+      record_export:
         on_inactive_timeout: 50020
         on_interval: 300321
-      name: FLOW-TRACKER-10
       exporters:
       - name: ayush_exporter
         collectors:
         - host: 127.0.2.1
         local_interface: Vlan4092
         template_interval: 40020
+      - name: Exporter1
+        collectors:
+        - host: 127.0.0.1
+        local_interface: Ethernet101
     shutdown: false
 hostname: flow-tracking-tests-l2-leaf3
 ip_igmp_snooping:
