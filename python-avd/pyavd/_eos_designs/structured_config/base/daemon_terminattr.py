@@ -156,21 +156,20 @@ class DaemonTerminattrMixin(Protocol):
             )
             raise AristaAvdInvalidInputsError(msg)
 
-        # DNS is always required for CVaaS
-        if any(isinstance(cluster, EosDesigns.CvSettings.Cvaas.ClustersItem) for cluster in clusters) and not self.inputs.dns_settings.servers:
-            msg = "'dns_settings' must be configured when 'cv_settings.cvaas.clusters[]' are defined with 'cv_settings.cvaas.enabled: true'."
-            raise AristaAvdInvalidInputsError(msg)
-
-        # DNS is required for on-prem clusters using DNS names
-        if (
-            any(
-                isinstance(cluster, EosDesigns.CvSettings.OnpremClustersItem) and any(self._is_dns_name(server.name) for server in cluster.servers)
-                for cluster in clusters
-            )
-            and not self.inputs.dns_settings.servers
-        ):
-            msg = "'dns_settings' must be configured when 'cv_settings.onprem_clusters[].servers[].name' is set to a DNS name."
-            raise AristaAvdInvalidInputsError(msg)
+        # If DNS is already configured, no further DNS validation is needed
+        if self.inputs.dns_settings.servers:
+            return
+        for cluster in clusters:
+            match cluster:
+                # DNS is always required for CVaaS
+                case EosDesigns.CvSettings.Cvaas.ClustersItem():
+                    msg = "'dns_settings' must be configured when 'cv_settings.cvaas.clusters[]' are defined with 'cv_settings.cvaas.enabled: true'."
+                    raise AristaAvdInvalidInputsError(msg)
+                # DNS is required for on-prem clusters using DNS names
+                case EosDesigns.CvSettings.OnpremClustersItem():
+                    if any(self._is_dns_name(server.name) for server in cluster.servers):
+                        msg = "'dns_settings' must be configured when 'cv_settings.onprem_clusters[].servers[].name' is set to a DNS name."
+                        raise AristaAvdInvalidInputsError(msg)
 
     @staticmethod
     def _is_dns_name(value: str) -> bool:
