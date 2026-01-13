@@ -152,7 +152,7 @@ Requirements are located in the [collection installation guide](../../../../../d
 
 ## Input Variables
 
-The input variables are documented in the [Input Variables](docs/input-variables.md) section.
+The input variables are documented in the [Input Variables](docs/data-models.md) section.
 
 Input variables are grouped by configuration elements and are typically stored in different group_vars files.
 
