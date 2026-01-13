@@ -4,8 +4,6 @@ application_traffic_recognition:
   field_sets:
     ipv4_prefixes:
     - name: PFX-PATHFINDERS
-      prefix_values:
-      - 192.168.142.3/32
   applications:
     ipv4_applications:
     - name: APP-CONTROL-PLANE
@@ -14,35 +12,18 @@ application_traffic_recognition:
   - name: APP-PROFILE-CONTROL-PLANE
     applications:
     - name: APP-CONTROL-PLANE
-as_path:
-  access_lists:
-  - name: ASPATH-WAN
-    entries:
-    - type: permit
-      match: _65000\.100_
 config_end: true
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
   mtu: 9194
-  ip_address: 192.168.142.2/32
+  ip_address: 192.168.142.3/32
   flow_tracker:
     hardware: FLOW-TRACKER
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet52
-  description: P2P_asdot-for-wan-ha-leaf11_Ethernet2
-  shutdown: false
-  mtu: 9214
-  ip_address: 172.17.0.3/31
-  metadata:
-    peer: asdot-for-wan-ha-leaf11
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-  switchport:
-    enabled: false
-- name: Ethernet1.42
+- name: Ethernet11.42
   description: Comcast
   shutdown: false
   encapsulation_dot1q:
@@ -51,21 +32,7 @@ ethernet_interfaces:
   dhcp_client_accept_default_route: true
   metadata:
     peer_type: l3_interface
-- name: Ethernet2.42
-  description: Colt
-  shutdown: false
-  encapsulation_dot1q:
-    vlan: 666
-  ip_address: 172.16.7.6/31
-  metadata:
-    peer_type: l3_interface
-- name: Ethernet1
-  shutdown: false
-  metadata:
-    peer_type: l3_interface
-  switchport:
-    enabled: false
-- name: Ethernet2
+- name: Ethernet11
   shutdown: false
   metadata:
     peer_type: l3_interface
@@ -85,17 +52,17 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: asdot-for-wan-ha-transit1B1
+hostname: asdot-for-wan-ha-transit1C1
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
-    extcommunities: soo 192.168.42.1:422
+    extcommunities: soo 192.168.42.3:422
 ip_routing: true
 ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
-    local_id: 192.168.142.2
+    local_id: 192.168.142.3
   sa_policies:
   - name: DP-SA-POLICY
     esp:
@@ -133,7 +100,7 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.42.2/32
+  ip_address: 192.168.42.3/32
 management_security:
   ssl_profiles:
   - name: STUN-DTLS
@@ -158,27 +125,13 @@ metadata:
     - name: Site
       value: Site422
     interface_tags:
-    - interface: Ethernet52
-      tags:
-      - name: Type
-        value: lan
-    - interface: Ethernet1.42
+    - interface: Ethernet11.42
       tags:
       - name: Type
         value: wan
       - name: Carrier
         value: Comcast
-    - interface: Ethernet2.42
-      tags:
-      - name: Type
-        value: wan
-      - name: Carrier
-        value: Colt
-    - interface: Ethernet1
-      tags:
-      - name: Type
-        value: lan
-    - interface: Ethernet2
+    - interface: Ethernet11
       tags:
       - name: Type
         value: lan
@@ -187,30 +140,17 @@ metadata:
     region: AVD_Land_West
     zone: AVD_Land_West-ZONE
     site: Site422
-    vtep_ip: 192.168.142.2
+    vtep_ip: 192.168.142.3
     ssl_profile: STUN-DTLS
-    pathfinders:
-    - vtep_ip: 192.168.142.3
     interfaces:
-    - name: Ethernet1.42
+    - name: Ethernet11.42
       carrier: Comcast
       pathgroup: INET
-    - name: Ethernet2.42
-      carrier: Colt
-      pathgroup: MPLS
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.42.0/24 eq 32
-- name: PL-WAN-HA-PREFIXES
-  sequence_numbers:
-  - sequence: 10
-    action: permit 172.17.0.2/31
-- name: PL-WAN-HA-PEER-PREFIXES
-  sequence_numbers:
-  - sequence: 10
-    action: permit 172.17.0.0/31
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -219,40 +159,14 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
-    - extcommunity soo 192.168.42.1:422 additive
-  - sequence: 50
-    type: permit
-    match:
-    - ip address prefix-list PL-WAN-HA-PREFIXES
+    - extcommunity soo 192.168.42.3:422 additive
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
   - sequence: 40
     type: permit
     description: Mark prefixes originated from the LAN
     set:
-    - extcommunity soo 192.168.42.1:422 additive
-  - sequence: 10
-    type: permit
-    description: Allow WAN HA peer interface prefixes
-    match:
-    - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
-  - sequence: 20
-    type: deny
-    description: Deny other routes from the HA peer
-    match:
-    - as-path ASPATH-WAN
-- name: RM-BGP-UNDERLAY-PEERS-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Make routes learned from WAN HA peer less preferred on LAN routers
-    match:
-    - tag 50
-    - route-type internal
-    set:
-    - metric 50
-  - sequence: 20
-    type: permit
+    - extcommunity soo 192.168.42.3:422 additive
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -266,28 +180,7 @@ route_maps:
   - sequence: 10
     type: permit
     set:
-    - extcommunity soo 192.168.42.1:422 additive
-- name: RM-WAN-HA-PEER-IN
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Set tag 50 on routes received from HA peer over EVPN
-    set:
-    - tag 50
-- name: RM-WAN-HA-PEER-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Make EVPN routes learned from WAN less preferred on HA peer
-    match:
-    - route-type internal
-    set:
-    - local-preference 50
-  - sequence: 20
-    type: permit
-    description: Make locally injected routes less preferred on HA peer
-    set:
-    - local-preference 75
+    - extcommunity soo 192.168.42.3:422 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -333,7 +226,7 @@ router_bfd:
 router_bgp:
   as: '65000.100'
   as_notation: asdot
-  router_id: 192.168.42.2
+  router_id: 192.168.42.3
   maximum_paths:
     paths: 16
   updates:
@@ -347,11 +240,7 @@ router_bgp:
       type: ipv4
     send_community: all
     maximum_routes: 12000
-    allowas_in:
-      enabled: true
-      times: 1
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
     metadata:
       type: wan
@@ -366,40 +255,11 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ttl_maximum_hops: 1
-  neighbors:
-  - ip_address: 172.17.0.2
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65199'
-    metadata:
-      peer: asdot-for-wan-ha-leaf11
-    description: asdot-for-wan-ha-leaf11_Ethernet2
-  - ip_address: 192.168.142.3
-    peer_group: WAN-OVERLAY-PEERS
-    metadata:
-      peer: asdot-for-wan-ha-transit1C1
-    description: asdot-for-wan-ha-transit1C1_Dps1
-  - ip_address: 192.168.142.1
-    remote_as: '65000.100'
-    metadata:
-      peer: asdot-for-wan-ha-transit1A1
-    description: asdot-for-wan-ha-transit1A1
-    route_reflector_client: true
-    update_source: Dps1
-    route_map_in: RM-WAN-HA-PEER-IN
-    route_map_out: RM-WAN-HA-PEER-OUT
-    send_community: all
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
   address_family_evpn:
-    neighbor_default:
-      next_hop_self_received_evpn_routes:
-        enable: true
-    neighbors:
-    - ip_address: 192.168.142.1
-      activate: true
-      encapsulation: path-selection
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
@@ -433,7 +293,7 @@ router_bgp:
       activate: true
   vrfs:
   - name: default
-    rd: 192.168.42.2:1
+    rd: 192.168.42.3:1
     route_targets:
       import:
       - address_family: evpn
@@ -450,45 +310,16 @@ router_path_selection:
     id: 101
     ipsec_profile: CP-PROFILE
     local_interfaces:
-    - name: Ethernet1.42
-      stun:
-        server_profiles:
-        - INET-asdot-for-wan-ha-transit1C1-Ethernet11.42
+    - name: Ethernet11.42
     dynamic_peers:
       enabled: true
-    static_peers:
-    - router_ip: 192.168.142.3
-      name: asdot-for-wan-ha-transit1C1
-      ipv4_addresses:
-      - dhcp
-  - name: MPLS
-    id: 100
-    ipsec_profile: CP-PROFILE
-    local_interfaces:
-    - name: Ethernet2.42
-    dynamic_peers:
-      enabled: true
-  - name: LAN_HA
-    id: 65535
-    flow_assignment: lan
-    local_interfaces:
-    - name: Ethernet52
-    static_peers:
-    - router_ip: 192.168.142.1
-      name: asdot-for-wan-ha-transit1A1
-      ipv4_addresses:
-      - 172.17.0.1
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
-    - name: MPLS
-    - name: LAN_HA
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: INET
-    - name: MPLS
-    - name: LAN_HA
   tcp_mss_ceiling:
     ipv4: auto
 router_traffic_engineering:
@@ -496,19 +327,13 @@ router_traffic_engineering:
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
-stun:
-  client:
-    server_profiles:
-    - name: INET-asdot-for-wan-ha-transit1C1-Ethernet11.42
-      ip_address: dhcp
-      ssl_profile: STUN-DTLS
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
 - name: MGMT
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: asdot-for-wan-ha-transit1B1_VTEP
+    description: asdot-for-wan-ha-transit1C1_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789

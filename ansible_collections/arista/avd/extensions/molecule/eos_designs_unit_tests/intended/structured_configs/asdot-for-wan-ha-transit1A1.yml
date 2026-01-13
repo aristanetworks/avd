@@ -4,6 +4,8 @@ application_traffic_recognition:
   field_sets:
     ipv4_prefixes:
     - name: PFX-PATHFINDERS
+      prefix_values:
+      - 192.168.142.3/32
   applications:
     ipv4_applications:
     - name: APP-CONTROL-PLANE
@@ -189,6 +191,8 @@ metadata:
     site: Site422
     vtep_ip: 192.168.142.1
     ssl_profile: STUN-DTLS
+    pathfinders:
+    - vtep_ip: 192.168.142.3
     interfaces:
     - name: Ethernet1.42
       carrier: Comcast
@@ -372,6 +376,11 @@ router_bgp:
     metadata:
       peer: asdot-for-wan-ha-leaf11
     description: asdot-for-wan-ha-leaf11_Ethernet1
+  - ip_address: 192.168.142.3
+    peer_group: WAN-OVERLAY-PEERS
+    metadata:
+      peer: asdot-for-wan-ha-transit1C1
+    description: asdot-for-wan-ha-transit1C1_Dps1
   - ip_address: 192.168.142.2
     remote_as: '65000.100'
     metadata:
@@ -445,8 +454,16 @@ router_path_selection:
     ipsec_profile: CP-PROFILE
     local_interfaces:
     - name: Ethernet1.42
+      stun:
+        server_profiles:
+        - INET-asdot-for-wan-ha-transit1C1-Ethernet11.42
     dynamic_peers:
       enabled: true
+    static_peers:
+    - router_ip: 192.168.142.3
+      name: asdot-for-wan-ha-transit1C1
+      ipv4_addresses:
+      - dhcp
   - name: MPLS
     id: 100
     ipsec_profile: CP-PROFILE
@@ -482,6 +499,12 @@ router_traffic_engineering:
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
+stun:
+  client:
+    server_profiles:
+    - name: INET-asdot-for-wan-ha-transit1C1-Ethernet11.42
+      ip_address: dhcp
+      ssl_profile: STUN-DTLS
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
 - name: MGMT
