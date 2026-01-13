@@ -1482,8 +1482,6 @@ for granular deployment of network services to the fabric leveraging the tenant 
 - This allows for the reuse of SVI/VLAN IDs across the fabric.
 - An error will be returned at runtime in case of duplicate or conflicting SVI/VLAN IDs or VNIs targeted towards the same device.
 
-### Settings
-
 The supported network services for each tenant cover:
 
 - VRFs
@@ -1509,31 +1507,31 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/new-network-services-bgp-vrf-config.md
 --8<--
 
-#### VRFs
+### VRFs
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-settings.md
 --8<--
 
-##### SVIs
+#### SVIs
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-svis-settings.md
 --8<--
 
-##### L3 interfaces
+#### L3 interfaces
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-interfaces-settings.md
 --8<--
 
-##### L3 port-channels
+#### L3 port-channels
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-port-channel-settings.md
 --8<--
 
-##### Loopbacks
+#### Loopbacks
 
 Loopbacks are usually configured with `vtep_diagnostic` which supports IP pools etc.
 
@@ -1544,13 +1542,13 @@ IP addresses on individual nodes.
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-loopbacks-settings.md
 --8<--
 
-##### BGP
+#### BGP
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-bgp-settings.md
 --8<--
 
-##### OSPF
+#### OSPF
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-ospf-settings.md
@@ -1574,7 +1572,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-po
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-multicast-settings.md
 --8<--
 
-### SVI profiles settings
+### SVI profiles
 
 SVI profiles can be leveraged to share common settings between SVIs.
 
@@ -1593,7 +1591,7 @@ SVI profiles can be leveraged to share common settings between SVIs.
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/svi-profiles.md
 --8<--
 
-### EVPN VLAN aware bundles settings
+### EVPN VLAN aware bundles
 
 EVPN VLAN aware bundles referenced by name in `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle` or `<network_services_key>[].l2vlans[].evpn_vlan_bundle`.
 
@@ -1603,7 +1601,7 @@ An EVPN VLAN aware bundle will only be configured if at least one VLAN is associ
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/evpn-vlan-bundles.md
 --8<--
 
-### Network services keys settings
+### Network services keys
 
 Network Services can be grouped by using separate keys.
 
