@@ -55,3 +55,7 @@ radius_server:
             ssl_profile: HOST_SSL_PROFILE
             port: 2083
           key: 071B245F5B
+        - host: 10.10.11.158
+          tls:
+            enabled: true
+            ssl_profile: SSL_PROFILE
