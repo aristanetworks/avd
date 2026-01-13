@@ -233,7 +233,7 @@ no ptp monitor sequence-id
 
 | Idle Timeout | Connection Limit | Max from a single Host | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
 | ------------ | ---------------- | ---------------------- | ------- | -------------------- | -------------- | ------------------------- |
-| 15 | 55 | - | aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521 |
+| 15 | 55 | - | aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521, dsa |
 
 #### Management SSH Device Configuration
 
@@ -246,7 +246,7 @@ management ssh
    cipher aes256-cbc aes256-ctr aes256-gcm@openssh.com
    key-exchange ecdh-sha2-nistp521
    mac hmac-sha2-512 hmac-sha2-512-etm@openssh.com
-   hostkey server ecdsa-nistp256 ecdsa-nistp521
+   hostkey server dsa ecdsa-nistp256 ecdsa-nistp521
    connection limit 55
    authentication empty-passwords permit
    shutdown
