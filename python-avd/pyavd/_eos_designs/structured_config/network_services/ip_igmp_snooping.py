@@ -122,7 +122,7 @@ class IpIgmpSnoopingMixin(Protocol):
         source_address_key = default(l2vlan.igmp_snooping_querier.source_address, tenant.igmp_snooping_querier.source_address)
 
         source_address = self.shared_utils.router_id if source_address_key in {"main_router_id", "diagnostic_loopback", "vrf_router_id"} else source_address_key
-        source_address = cast("str", source_address)
+        source_address = cast("str", source_address) if source_address is None else source_address
         # Validate (None and invalid IPv4 handled together)
         try:
             IPv4Address(source_address)
