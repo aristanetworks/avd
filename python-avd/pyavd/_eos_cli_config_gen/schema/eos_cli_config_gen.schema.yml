@@ -4042,8 +4042,18 @@ keys:
                 validation performed by the `anta_runner` role.
             validate_lldp:
               type: bool
-              description: Set to false to disable the LLDP topology validation performed
-                by the `anta_runner` role.
+              description: 'Controls LLDP topology validation performed by the `anta_runner`
+                role.
+
+                - Unset (Default): The peer is treated as an AVD-managed device. Validation
+                is performed only if the peer is deployed (`is_deployed: true`)
+
+                and the peer interface is not administratively shutdown.
+
+                - `true`: Forces validation. Use this for connected endpoints not
+                managed by AVD.
+
+                - `false`: Disables validation for the interface.'
         sflow:
           type: dict
           keys:
@@ -5891,10 +5901,6 @@ keys:
     type: list
     primary_key: name
     display_name: IP Community Lists
-    description: 'Communities and regexp entries MUST not be configured in the same
-      community-list.
-
-      '
     items:
       type: dict
       keys:
@@ -5905,6 +5911,10 @@ keys:
           type: list
           required: true
           min_length: 1
+          description: 'Communities and regexp MUST not be configured in the same
+            entry.
+
+            '
           items:
             type: dict
             keys:
@@ -5942,9 +5952,7 @@ keys:
                 type: str
                 description: 'Regular Expression.
 
-                  If defined, a regex community-list will be configured.
-
-                  '
+                  If defined, a regex community-list will be configured.'
   ip_dhcp_relay:
     type: dict
     keys:
@@ -6266,6 +6274,90 @@ keys:
                 per-vlan.
 
                 '
+  ip_large_community_lists:
+    type: list
+    primary_key: name
+    display_name: IP Large Community Lists
+    description: 'A BGP large-community access list filters prefixes based on their
+      BGP large community values. Multiple large-community lists with the same name
+      may be specified.
+
+      '
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: IP Large-community-list Name.
+        entries:
+          type: list
+          required: true
+          min_length: 1
+          description: 'Large communities and regexp MUST not be configured in the
+            same entry.
+
+            '
+          items:
+            type: dict
+            keys:
+              action:
+                type: str
+                required: true
+                valid_values:
+                - permit
+                - deny
+              large_communities:
+                type: list
+                min_length: 1
+                items:
+                  type: str
+                description: 'If defined, a standard large-community-list will be
+                  configured.
+
+                  Large community values (ASN:Local-part-1:Local-part-2):
+
+                  - ASN:nn:nn
+
+                  '
+              regexp:
+                type: str
+                description: 'Regular Expression.
+
+                  If defined, a regex large-community-list will be configured.'
+  ip_name_server:
+    type: dict
+    keys:
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              description: 'VRF Name.
+
+                Use "default" for the default VRF.'
+              type: str
+              convert_types:
+              - int
+            servers:
+              type: list
+              required: true
+              primary_key: ip_address
+              items:
+                type: dict
+                keys:
+                  ip_address:
+                    type: str
+                    required: true
+                    description: IPv4 or IPv6 address for DNS server.
+                  priority:
+                    description: Priority value (lower is first).
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 4
   ip_name_server_groups:
     type: list
     primary_key: name
@@ -6347,28 +6439,13 @@ keys:
             remove_in_version: 6.0.0
   ip_name_servers:
     type: list
-    items:
-      type: dict
-      keys:
-        ip_address:
-          type: str
-          required: true
-          description: IPv4 or IPv6 address for DNS server.
-        vrf:
-          description: 'VRF Name.
-
-            Use "default" for the default VRF.'
-          required: true
-          type: str
-          convert_types:
-          - int
-        priority:
-          description: Priority value (lower is first).
-          type: int
-          convert_types:
-          - str
-          min: 0
-          max: 4
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+      new_key: ip_name_server
+    documentation_options:
+      table: ip-name-server
   ip_nat:
     type: dict
     keys:
@@ -8399,7 +8476,9 @@ keys:
                     '
                 ip_access_group:
                   type: str
-                  description: ACL name.
+                  description: -> ACL name. Only one transport in the same VRF can
+                    be configured with a service ACL; all transports in the same VRF
+                    use the same service ACL.
                 port:
                   type: int
                   description: 'GNMI port.
@@ -8841,6 +8920,7 @@ keys:
                       - str
       ssl_profiles:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
@@ -12705,8 +12785,18 @@ keys:
                 validation performed by the `anta_runner` role.
             validate_lldp:
               type: bool
-              description: Set to false to disable the LLDP topology validation performed
-                by the `anta_runner` role.
+              description: 'Controls LLDP topology validation performed by the `anta_runner`
+                role.
+
+                - Unset (Default): The peer is treated as an AVD-managed device. Validation
+                is performed only if the peer is deployed (`is_deployed: true`)
+
+                and the peer interface is not administratively shutdown.
+
+                - `true`: Forces validation. Use this for connected endpoints not
+                managed by AVD.
+
+                - `false`: Disables validation for the interface.'
         sflow:
           type: dict
           keys:
