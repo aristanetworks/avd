@@ -73,9 +73,9 @@ class UnderlayMixin(Protocol):
         return self.underlay_multicast_pim_sm_enabled or self.underlay_multicast_static_enabled
 
     @cached_property
-    def underlay_multicast_rp_interfaces(self: SharedUtilsProtocol) -> list[EosCliConfigGen.LoopbackInterfacesItem] | None:
+    def underlay_multicast_rp_interfaces(self: SharedUtilsProtocol) -> list[EosCliConfigGen.LoopbackInterfacesItem]:
         if not self.underlay_multicast_pim_sm_enabled or not self.inputs.underlay_multicast_rps:
-            return None
+            return []
 
         underlay_multicast_rp_interfaces = []
         for rp_entry in self.inputs.underlay_multicast_rps:
@@ -90,10 +90,7 @@ class UnderlayMixin(Protocol):
                 )
             )
 
-        if underlay_multicast_rp_interfaces:
-            return underlay_multicast_rp_interfaces
-
-        return None
+        return underlay_multicast_rp_interfaces
 
     @cached_property
     def underlay_ipv6_numbered(self: SharedUtilsProtocol) -> bool:
