@@ -1639,6 +1639,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/platform-settings.m
 
 ### Custom Platform
 
+--8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-platform-settings.md
 --8<--
 
