@@ -509,7 +509,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -527,7 +527,7 @@ router bgp 65666
    maximum-paths 4
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 100.64.21.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 100.64.21.2 remote-as 65000
    neighbor 100.64.21.2 default-originate always

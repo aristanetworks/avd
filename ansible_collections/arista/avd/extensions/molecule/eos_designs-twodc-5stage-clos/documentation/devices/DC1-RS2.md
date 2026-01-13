@@ -292,7 +292,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -335,7 +335,7 @@ router bgp 65102
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.16.20.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.20.1 remote-as 65201
    neighbor 172.16.20.1 description DC2-RS1_Loopback0

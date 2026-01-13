@@ -608,7 +608,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -684,7 +684,7 @@ router bgp 65104
    neighbor UNDERLAY_PEERS peer group
    neighbor UNDERLAY_PEERS password 7 <removed>
    neighbor UNDERLAY_PEERS send-community
-   neighbor UNDERLAY_PEERS maximum-routes 12000
+   neighbor UNDERLAY_PEERS maximum-routes 256000
    neighbor 10.23.23.2 peer group UNDERLAY_PEERS
    neighbor 10.23.23.2 remote-as 64900
    neighbor 10.23.23.2 description outside-r1

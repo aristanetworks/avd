@@ -855,7 +855,7 @@ ASN Notation: asplain
 | Address Family | ipv4 |
 | Allowas-in | Allowed, allowed 1 times |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### WAN-OVERLAY-PEERS
 
@@ -955,7 +955,7 @@ router bgp 65000
    neighbor IPv4-UNDERLAY-PEERS route-map RM-BGP-UNDERLAY-PEERS-IN in
    neighbor IPv4-UNDERLAY-PEERS route-map RM-BGP-UNDERLAY-PEERS-OUT out
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor WAN-OVERLAY-PEERS peer group
    neighbor WAN-OVERLAY-PEERS remote-as 65000
    neighbor WAN-OVERLAY-PEERS update-source Dps1
