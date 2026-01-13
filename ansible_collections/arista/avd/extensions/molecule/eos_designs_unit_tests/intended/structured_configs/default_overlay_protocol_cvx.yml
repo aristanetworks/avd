@@ -40,7 +40,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   redistribute:
     connected:
       enabled: true

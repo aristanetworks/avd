@@ -28,9 +28,15 @@ bgp_peer_groups:
   ipv4_underlay_peers:
     name: IPv6-UNDERLAY-PEERS
     password: F0bdF6JLcJtagc6PCN8W0Q==
+    structured_config:
+      # test to overwrite maximum_routes default value for IPv6-UNDERLAY-PEERS
+      maximum_routes: 12000
   mlag_ipv4_underlay_peer:
     name: MLAG-IPv6-UNDERLAY-PEER
     password: GNtuK+/vTwZwSZiwj1FK/Q==
+    structured_config:
+      # test to overwrite maximum_routes default value for MLAG-IPv6-UNDERLAY-PEER
+      maximum_routes: 12000
 
 # P2P interfaces MTU, includes VLANs 4093 and 4094 that are over peer-link
 # If you're running vEOS-lab or cEOS, you should use MTU of 1500 instead as shown in the following line
