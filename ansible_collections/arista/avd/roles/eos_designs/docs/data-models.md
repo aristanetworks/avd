@@ -1482,7 +1482,7 @@ for granular deployment of network services to the fabric leveraging the tenant 
 - This allows for the reuse of SVI/VLAN IDs across the fabric.
 - An error will be returned at runtime in case of duplicate or conflicting SVI/VLAN IDs or VNIs targeted towards the same device.
 
-### Network services settings
+### Settings
 
 The supported network services for each tenant cover:
 
@@ -1509,31 +1509,31 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/new-network-services-bgp-vrf-config.md
 --8<--
 
-#### Network services VRFs configuration
+#### VRFs
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-settings.md
 --8<--
 
-#### Network services VRF SVIs configuration
+#### VRF SVIs
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-svis-settings.md
 --8<--
 
-#### Network services VRF L3 Interfaces configuration
+#### VRF L3 Interfaces
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-interfaces-settings.md
 --8<--
 
-#### Network services VRF L3 Port-Channels configuration
+#### VRF L3 Port-Channels
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-port-channel-settings.md
 --8<--
 
-#### Network services VRF Loopbacks configuration
+#### VRF Loopbacks
 
 Loopbacks are usually configured with `vtep_diagnostic` which supports IP pools etc.
 
@@ -1544,31 +1544,31 @@ IP addresses on individual nodes.
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-loopbacks-settings.md
 --8<--
 
-#### Network services VRF BGP configuration
+#### VRF BGP
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-bgp-settings.md
 --8<--
 
-#### Network services VRF OSPF configuration
+#### VRF OSPF
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-ospf-settings.md
 --8<--
 
-#### Network services L2 VLANs configuration
+#### L2 VLANs
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-l2vlans-settings.md
 --8<--
 
-#### Network services point-to-point services configuration
+#### Point-to-point services
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-point-to-point-services-settings.md
 --8<--
 
-#### Network services multicast configuration
+#### Multicast
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-multicast-settings.md
