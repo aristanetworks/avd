@@ -275,6 +275,7 @@ repos:
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/design.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-input-validation.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
+          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/removed-keys.md
         pass_filenames: false
 
       - id: templates

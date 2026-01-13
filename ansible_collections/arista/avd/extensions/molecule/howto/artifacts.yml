@@ -1,0 +1,14 @@
+---
+# Connected Endpoints artifacts
+- file: inventory/intended/configs/dc1-leaf1a.cfg
+  sections:
+    - header: "interface Ethernet10"
+  artifact: "WEB-SERVER-01.cfg"
+  output_dir: "../../../../../../docs/howto/connected_endpoints/artifacts/"
+
+- file: inventory/intended/configs/dc1-leaf1a.cfg
+  sections:
+    - header: "interface Port-Channel11"
+    - header: "interface Ethernet11"
+  artifact: "ESXI-HOST-03.cfg"
+  output_dir: "../../../../../../docs/howto/connected_endpoints/artifacts/"

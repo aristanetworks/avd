@@ -194,6 +194,8 @@ class AvdSchemaBaseModel(BaseModel, ABC):
 
         Like "rootkey.subkey.[].mykey".
         """
+        if self._parent_schema is None:
+            return [self._key] if self._key else []
         # A list item has no key, so add "[]" to the parent schema for representing the list-item
         if not self._key:
             return [*self._parent_schema._path, "[]"]
