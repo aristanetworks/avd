@@ -189,7 +189,7 @@ nav:
       - Migrating to cv_deploy: docs/getting-started/cv-deploy-porting.md
   - User Manual:
       - Data Models:
-          - Overview: docs/input-variables/README.md
+          - Overview: docs/data-models/README.md
           - AVD Design: ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md
           - EOS Config: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md
       - Ansible Collection:

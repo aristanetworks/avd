@@ -9,7 +9,7 @@
 !!! NOTE
     - Some schema validations are not implemented yet.
 
-Arista AVD supports a wide range of data models described under the user manual's [data model](../input-variables/README.md) section.
+Arista AVD supports a wide range of data models described under the user manual's [data model](../data-models/README.md) section.
 
 Internally the supported data models are described in the proprietary "AVD Schema" format, which is used to perform validation of
 the input variables at run-time. The same schema is also used to generate the role documentation describing the supported data
