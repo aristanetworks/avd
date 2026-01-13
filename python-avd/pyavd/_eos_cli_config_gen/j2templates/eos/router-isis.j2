@@ -27,6 +27,7 @@ router isis {{ router_isis.instance }}
 {%     if router_isis.mpls_ldp_sync_default is arista.avd.defined(true) %}
    mpls ldp sync default
 {%     endif %}
+{# TODO: Need to check order for ospf and ospfv3 #}
 {%     for redistribute_route in router_isis.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
 {%         if redistribute_route.source_protocol is arista.avd.defined %}
 {%             set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
@@ -189,52 +190,36 @@ router isis {{ router_isis.instance }}
 {%         endif %}
 {%     endif %}
 {%     if router_isis.authentication is arista.avd.defined %}
+{%         set auth_keys = [] %}
 {%         set both_key_ids = [] %}
-{%         if router_isis.authentication.both.key_ids is arista.avd.defined %}
-{%             for auth_key in router_isis.authentication.both.key_ids | arista.avd.natural_sort("id") %}
-{%                 if auth_key.id is arista.avd.defined
-                       and auth_key.algorithm is arista.avd.defined
-                       and auth_key.key_type is arista.avd.defined
-                       and auth_key.key is arista.avd.defined %}
-{%                     do both_key_ids.append(auth_key.id) %}
-{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
-   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }}
-{%                     else %}
-   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }}
-{%                     endif %}
+{%         for auth_key in router_isis.authentication.both.key_ids | arista.avd.default([]) %}
+{%             do both_key_ids.append(auth_key.id) %}
+{%             set details = dict(auth_key, type='') %}
+{%             do auth_keys.append(details) %}
+{%         endfor %}
+{%         for auth_key in router_isis.authentication.level_1.key_ids | arista.avd.default([]) %}
+{%             if auth_key.id not in both_key_ids %}
+{%                 set details = dict(auth_key, type=' level-1') %}
+{%                 do auth_keys.append(details) %}
+{%             endif %}
+{%         endfor %}
+{%         for auth_key in router_isis.authentication.level_2.key_ids | arista.avd.default([]) %}
+{%             if auth_key.id not in both_key_ids %}
+{%                 set details = dict(auth_key, type=' level-2') %}
+{%                 do auth_keys.append(details) %}
+{%             endif %}
+{%         endfor %}
+{%         for auth_key in auth_keys | arista.avd.natural_sort('id') %}
+{%             if auth_key.algorithm is arista.avd.defined
+               and auth_key.key_type is arista.avd.defined
+               and auth_key.key is arista.avd.defined %}
+{%                 if auth_key.rfc_5310 is arista.avd.defined(true) %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }}{{ auth_key.type }}
+{%                 else %}
+   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }}{{ auth_key.type }}
 {%                 endif %}
-{%             endfor %}
-{%         endif %}
-{%         if router_isis.authentication.level_1.key_ids is arista.avd.defined %}
-{%             for auth_key in router_isis.authentication.level_1.key_ids %}
-{%                 if auth_key.id is arista.avd.defined
-                       and auth_key.id not in both_key_ids
-                       and auth_key.algorithm is arista.avd.defined
-                       and auth_key.key_type is arista.avd.defined
-                       and auth_key.key is arista.avd.defined %}
-{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
-   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }} level-1
-{%                     else %}
-   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }} level-1
-{%                     endif %}
-{%                 endif %}
-{%             endfor %}
-{%         endif %}
-{%         if router_isis.authentication.level_2.key_ids is arista.avd.defined %}
-{%             for auth_key in router_isis.authentication.level_2.key_ids %}
-{%                 if auth_key.id is arista.avd.defined
-                       and auth_key.id not in both_key_ids
-                       and auth_key.algorithm is arista.avd.defined
-                       and auth_key.key_type is arista.avd.defined
-                       and auth_key.key is arista.avd.defined %}
-{%                     if auth_key.rfc_5310 is arista.avd.defined(true) %}
-   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} rfc-5310 key {{ auth_key.key_type }} {{ auth_key.key }} level-2
-{%                     else %}
-   authentication key-id {{ auth_key.id }} algorithm {{ auth_key.algorithm }} key {{ auth_key.key_type }} {{ auth_key.key }} level-2
-{%                     endif %}
-{%                 endif %}
-{%             endfor %}
-{%         endif %}
+{%             endif %}
+{%         endfor %}
 {%         if router_isis.authentication.both.key_type is arista.avd.defined and router_isis.authentication.both.key is arista.avd.defined %}
    authentication key {{ router_isis.authentication.both.key_type }} {{ router_isis.authentication.both.key }}
 {%         else %}
