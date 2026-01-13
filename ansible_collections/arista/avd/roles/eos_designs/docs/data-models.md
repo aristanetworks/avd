@@ -1515,25 +1515,25 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/new-network-service
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-settings.md
 --8<--
 
-#### VRF SVIs
+##### SVIs
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-svis-settings.md
 --8<--
 
-#### VRF L3 Interfaces
+##### L3 interfaces
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-interfaces-settings.md
 --8<--
 
-#### VRF L3 Port-Channels
+##### L3 port-channels
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-port-channel-settings.md
 --8<--
 
-#### VRF Loopbacks
+##### Loopbacks
 
 Loopbacks are usually configured with `vtep_diagnostic` which supports IP pools etc.
 
@@ -1544,13 +1544,13 @@ IP addresses on individual nodes.
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-loopbacks-settings.md
 --8<--
 
-#### VRF BGP
+##### BGP
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-bgp-settings.md
 --8<--
 
-#### VRF OSPF
+##### OSPF
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-ospf-settings.md
