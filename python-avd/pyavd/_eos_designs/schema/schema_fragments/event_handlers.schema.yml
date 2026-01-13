@@ -8,6 +8,4 @@ type: dict
 keys:
   event_handlers:
     $ref: "eos_cli_config_gen#/keys/event_handlers"
-    documentation_options:
-      table: management-settings
     type: list

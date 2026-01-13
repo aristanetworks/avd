@@ -11,6 +11,8 @@ aaa_settings:
   # adding test for enable_password.password
   enable_password:
     password: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.
+    # Test to verify that password takes precedence over cleartext_password
+    cleartext_password: admin
   tacacs:
     servers:
       - host: 10.10.10.11
