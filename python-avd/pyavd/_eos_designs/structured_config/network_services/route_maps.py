@@ -76,7 +76,7 @@ class RouteMapsMixin(Protocol):
             return
 
         self._evpn_export_vrf_default_route_map()
-        self._bgp_underlay_peers_route_map()
+        # self._bgp_underlay_peers_route_map()
         self._redistribute_connected_to_bgp_route_map()
         self._redistribute_static_to_bgp_route_map()
 

@@ -124,6 +124,7 @@ class RouterBgpMixin(Protocol):
             and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"])
             and self.structured_config.router_bgp.peer_groups.get(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
         ):
+            self._bgp_underlay_peers_route_map()
             target_peer_group = self.structured_config.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
             target_peer_group.metadata.type = "ipv4"
             target_peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
