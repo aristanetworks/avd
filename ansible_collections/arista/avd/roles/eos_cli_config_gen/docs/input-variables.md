@@ -237,6 +237,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-extcommun
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-extcommunity-lists-regexp.md
 --8<--
 
+### IP large community lists
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-large-community-lists.md
+--8<--
+
 ### IPv6 prefix-lists
 
 --8<--
@@ -483,16 +489,16 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/hostname.md
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-domain-lookup.md
 --8<--
 
-### IP HTTP client source-interfaces
+### IP HTTP client
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-http-client-source-interfaces.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-http-client.md
 --8<--
 
-### IP name servers
+### IP name server
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-name-servers.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-name-server.md
 --8<--
 
 ### IP name server groups
@@ -501,10 +507,10 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-name-serv
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-name-server-groups.md
 --8<--
 
-### IP SSH client source-interfaces
+### IP SSH client
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-ssh-client-source-interfaces.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-ssh-client.md
 --8<--
 
 ### Management accounts
@@ -671,6 +677,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/management-a
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-connectivity.md
+--8<--
+
+### Monitor loop protection
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-loop-protection.md
 --8<--
 
 ### Monitor server Radius

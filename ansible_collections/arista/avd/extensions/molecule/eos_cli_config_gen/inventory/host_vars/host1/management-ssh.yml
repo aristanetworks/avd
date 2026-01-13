@@ -20,6 +20,8 @@ management_ssh:
       ipv6_access_group_in: ACL-SSH-VRF6
     - name: default
       enable: true
+    - name: VRF1
+      enable: true
   log_level: debug
   client_alive:
     count_max: 42

@@ -320,10 +320,10 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-POLICY-WITH-CP
     profiles:
-    - name: DEFAULT-POLICY-CONTROL-PLANE
-      id: 254
-    - name: DEFAULT-POLICY-DEFAULT
-      id: 1
+    - id: 254
+      name: DEFAULT-POLICY-CONTROL-PLANE
+    - id: 1
+      name: DEFAULT-POLICY-DEFAULT
 router_bfd:
   multihop:
     interval: 300

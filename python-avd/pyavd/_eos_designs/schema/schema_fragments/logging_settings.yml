@@ -7,8 +7,6 @@
 type: dict
 keys:
   logging_settings:
-    documentation_options:
-      table: management-settings
     type: dict
     description: |-
       Logging settings
@@ -86,6 +84,3 @@ keys:
       level:
         type: list
         $ref: eos_cli_config_gen#/keys/logging/keys/level
-      validate_no_errors_period:
-        type: int
-        $ref: eos_cli_config_gen#/keys/metadata/keys/validate_no_errors_period
