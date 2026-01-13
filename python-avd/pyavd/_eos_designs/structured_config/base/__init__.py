@@ -304,7 +304,7 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.queue_monitor_length = queue_monitor_length
 
     @structured_config_contributor
-    def ip_name_servers(self) -> None:
+    def ip_name_server(self) -> None:
         """Set ip name servers using old name_servers model and new dns_settings model. Results will be combined."""
         if not self.inputs.dns_settings:
             return
@@ -323,7 +323,8 @@ class AvdStructuredConfigBaseProtocol(
             if source_interface:
                 self.structured_config.ip_domain_lookup.source_interfaces.append_new(name=source_interface, vrf=server_vrf if server_vrf != "default" else None)
 
-            self.structured_config.ip_name_servers.append_new(ip_address=server.ip_address, vrf=server_vrf, priority=server.priority)
+            ip_name_server_vrf = self.structured_config.ip_name_server.vrfs.obtain(server_vrf)
+            ip_name_server_vrf.servers.append_new(ip_address=server.ip_address, priority=server.priority)
 
     @structured_config_contributor
     def logging(self) -> None:
