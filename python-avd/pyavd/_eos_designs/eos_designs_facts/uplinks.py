@@ -150,14 +150,17 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         uplinks = EosDesignsFactsProtocol.Uplinks()
         uplink_switches = self.shared_utils.uplink_switches
         uplink_switch_interfaces = self.uplink_switch_interfaces
-        for uplink_index, uplink_interface in enumerate(self.shared_utils.uplink_interfaces):
-            if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
-                # Invalid length of input variables. Skipping
-                continue
+        # Since we already checked the length of uplink_switches and uplink_interfaces in shared_utils
+        # Now, we only need to check the lengths of uplink_switch_interfaces
+        if len(uplink_switches) != len(uplink_switch_interfaces):
+            msg = (
+                f"Lengths of uplink_switches: {uplink_switches} and uplink_switch_interfaces: {uplink_switch_interfaces} are not equal please check the inputs."
+            )
+            raise AristaAvdInvalidInputsError(msg)
 
-            uplink_switch = uplink_switches[uplink_index]
-            uplink_switch_interface = uplink_switch_interfaces[uplink_index]
-
+        for uplink_index, uplink_interface, uplink_switch, uplink_switch_interface in zip(
+            range(len(uplink_switches)), self.shared_utils.uplink_interfaces, uplink_switches, uplink_switch_interfaces, strict=True
+        ):
             uplink = get_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)
             uplinks.append(uplink)
 

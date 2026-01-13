@@ -24,7 +24,7 @@ l3leaf:
     loopback_ipv6_pool: 2001:2::/64
     vtep_loopback_ipv4_pool: 172.16.0.0/24
     virtual_router_mac_address: cafe:cafe:cafe
-    uplink_switches: [UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1]
+    uplink_switches: [UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1, UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2]
     uplink_interfaces: [Ethernet1, Ethernet2]
     uplink_type: p2p-vrfs
     filter:
@@ -46,6 +46,8 @@ l3spine:
   nodes:
     - name: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
       id: 72
+    - name: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2
+      id: 73
 
 tenants:
   - name: TenantA

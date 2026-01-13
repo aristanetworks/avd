@@ -39,6 +39,41 @@ ethernet_interfaces:
     peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
     peer_interface: Ethernet3.42
     peer_type: l3spine
+- name: Ethernet2
+  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2_Ethernet4
+  shutdown: false
+  mtu: 9214
+  ipv6_enable: true
+  metadata:
+    peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2
+    peer_interface: Ethernet4
+    peer_type: l3spine
+  switchport:
+    enabled: false
+- name: Ethernet2.100
+  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2_Ethernet4.100_VRF_IT
+  shutdown: false
+  mtu: 9214
+  vrf: IT
+  encapsulation_dot1q:
+    vlan: 100
+  ipv6_enable: true
+  metadata:
+    peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2
+    peer_interface: Ethernet4.100
+    peer_type: l3spine
+- name: Ethernet2.42
+  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2_Ethernet4.42_VRF_PROD
+  shutdown: false
+  mtu: 9214
+  vrf: PROD
+  encapsulation_dot1q:
+    vlan: 42
+  ipv6_enable: true
+  metadata:
+    peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2
+    peer_interface: Ethernet4.42
+    peer_type: l3spine
 hostname: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
 ip_igmp_snooping:
   globally_enabled: true
@@ -78,6 +113,12 @@ router_bgp:
       peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
     peer_group: IPv4-UNDERLAY-PEERS
     description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet3
+  - name: Ethernet2
+    remote_as: '65000'
+    metadata:
+      peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2
+    peer_group: IPv4-UNDERLAY-PEERS
+    description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2_Ethernet4
   redistribute:
     connected:
       enabled: true
@@ -106,6 +147,10 @@ router_bgp:
       remote_as: '65000'
       peer_group: IPv4-UNDERLAY-PEERS
       description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet3.100_vrf_IT
+    - name: Ethernet2.100
+      remote_as: '65000'
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2_Ethernet4.100_vrf_IT
     redistribute:
       connected:
         enabled: true
@@ -120,6 +165,10 @@ router_bgp:
       remote_as: '65000'
       peer_group: IPv4-UNDERLAY-PEERS
       description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet3.42_vrf_PROD
+    - name: Ethernet2.42
+      remote_as: '65000'
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2_Ethernet4.42_vrf_PROD
     redistribute:
       connected:
         enabled: true
