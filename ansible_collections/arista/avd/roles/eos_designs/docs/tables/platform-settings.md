@@ -641,6 +641,41 @@
           digital_twin:
             platform: vEOS-lab
         - platforms:
+          - 7060X5
+          feature_support:
+            queue_monitor_length_notify: false
+            subinterface_mtu: false
+            per_interface_l2_mru: false
+            hardware_counter_features:
+              acl: false
+              decap_group: false
+              directflow: false
+              ecn: false
+              flow_spec: false
+              mpls_interface: false
+              mpls_lfib: false
+              mpls_tunnel: false
+              multicast: false
+              nexthop: false
+              pbr: false
+              pdp: false
+              policing_interface: false
+              qos: false
+              qos_dual_rate_policer: false
+              route: false
+              routed_port: false
+              segment_security: false
+              tapagg: false
+              traffic_class: false
+              traffic_policy: false
+              vlan: false
+            sflow_subinterfaces: false
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
           - 7280R
           - 7280R2
           - 7020R
@@ -662,6 +697,42 @@
           feature_support:
             evpn_gateway_all_active_multihoming: true
             private_vlan: false
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
+          - 7388X5
+          feature_support:
+            queue_monitor_length_notify: false
+            subinterface_mtu: false
+            per_interface_l2_mru: false
+            hardware_counter_features:
+              acl: false
+              decap_group: false
+              directflow: false
+              ecn: false
+              flow_spec: false
+              mpls_interface: false
+              mpls_lfib: false
+              mpls_tunnel: false
+              multicast: false
+              nexthop: false
+              pbr: false
+              pdp: false
+              policing_interface: false
+              qos: false
+              qos_dual_rate_policer: false
+              route: false
+              routed_port: false
+              segment_security: false
+              tapagg: false
+              traffic_class: false
+              traffic_policy: false
+              vlan: false
+            sflow_subinterfaces: false
+          management_interface: Management0
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
           digital_twin:
             platform: vEOS-lab
         - platforms:
