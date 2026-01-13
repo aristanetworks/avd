@@ -20,4 +20,4 @@ l3leaf:
       bgp_as: 65101
 
 expected_error_message: >-
-  'dns_settings' must be configured when cv_settings.onprem_clusters[].servers[].name' is set to a DNS name.
+  'dns_settings' must be configured when 'cv_settings.onprem_clusters[].servers[].name' is set to a DNS name.

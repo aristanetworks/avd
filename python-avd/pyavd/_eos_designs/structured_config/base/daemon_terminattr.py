@@ -152,13 +152,13 @@ class DaemonTerminattrMixin(Protocol):
         if not self.inputs.ntp_settings.servers:
             msg = (
                 "'ntp_settings.servers' must be configured when CloudVision "
-                "clusters cv_settings.onprem_clusters[].servers[] or cv_settings.cvaas.clusters[] are defined."
+                "clusters 'cv_settings.onprem_clusters[].servers[]' or 'cv_settings.cvaas.clusters[]' are defined."
             )
             raise AristaAvdInvalidInputsError(msg)
 
         # DNS is always required for CVaaS
         if any(isinstance(cluster, EosDesigns.CvSettings.Cvaas.ClustersItem) for cluster in clusters) and not self.inputs.dns_settings.servers:
-            msg = "'dns_settings' must be configured when cv_settings.cvaas.clusters[] are defined with cv_settings.cvaas.enabled: true."
+            msg = "'dns_settings' must be configured when 'cv_settings.cvaas.clusters[]' are defined with 'cv_settings.cvaas.enabled: true'."
             raise AristaAvdInvalidInputsError(msg)
 
         # DNS is required for on-prem clusters using DNS names
@@ -169,7 +169,7 @@ class DaemonTerminattrMixin(Protocol):
             )
             and not self.inputs.dns_settings.servers
         ):
-            msg = "'dns_settings' must be configured when cv_settings.onprem_clusters[].servers[].name' is set to a DNS name."
+            msg = "'dns_settings' must be configured when 'cv_settings.onprem_clusters[].servers[].name' is set to a DNS name."
             raise AristaAvdInvalidInputsError(msg)
 
     @staticmethod
