@@ -31011,8 +31011,8 @@ class EosDesigns(EosDesignsRootModel):
             `<network_services_key>[].evpn_l2_multi_domain` and
             `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
             Not supported in conjunction with EVPN vlan
-            aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-            or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+            aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+            Tenant.
             """
 
             if TYPE_CHECKING:
@@ -31203,8 +31203,8 @@ class EosDesigns(EosDesignsRootModel):
                            `<network_services_key>[].evpn_l2_multi_domain` and
                            `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
                            Not supported in conjunction with EVPN vlan
-                           aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-                           or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                           aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+                           Tenant.
 
                     """
 
@@ -32008,8 +32008,8 @@ class EosDesigns(EosDesignsRootModel):
         `<network_services_key>[].evpn_l2_multi_domain` and
         `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
         Not supported in conjunction with EVPN vlan
-        aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-        or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+        aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+        Tenant.
         """
 
         if TYPE_CHECKING:
@@ -32214,8 +32214,8 @@ class EosDesigns(EosDesignsRootModel):
                        `<network_services_key>[].evpn_l2_multi_domain` and
                        `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
                        Not supported in conjunction with EVPN vlan
-                       aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-                       or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                       aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+                       Tenant.
 
                 """
 
@@ -60887,8 +60887,8 @@ class EosDesigns(EosDesignsRootModel):
                             `<network_services_key>[].evpn_l2_multi_domain` and
                             `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
                             Not supported in conjunction with EVPN vlan
-                            aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-                            or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                            aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+                            Tenant.
                             """
 
                             if TYPE_CHECKING:
@@ -61086,8 +61086,8 @@ class EosDesigns(EosDesignsRootModel):
                                            `<network_services_key>[].evpn_l2_multi_domain` and
                                            `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
                                            Not supported in conjunction with EVPN vlan
-                                           aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-                                           or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                                           aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+                                           Tenant.
 
                                     """
 
@@ -61721,9 +61721,9 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
                         This setting overrides
-                        "evpn_vlan_bundle" set at tenant level.
-                        The common option "evpn_vlan_aware_bundles" is disregarded
-                        for this option.
+                        "evpn_vlan_bundle" set at the VRF or tenant level.
+                        The common option "evpn_vlan_aware_bundles" is
+                        disregarded for this option.
                         """
                         nodes: Nodes
                         """
@@ -61927,8 +61927,8 @@ class EosDesigns(EosDesignsRootModel):
                         `<network_services_key>[].evpn_l2_multi_domain` and
                         `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
                         Not supported in conjunction with EVPN vlan
-                        aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-                        or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                        aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+                        Tenant.
                         """
 
                         if TYPE_CHECKING:
@@ -62005,9 +62005,9 @@ class EosDesigns(EosDesignsRootModel):
                                     evpn_vlan_bundle:
                                        Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
                                        This setting overrides
-                                       "evpn_vlan_bundle" set at tenant level.
-                                       The common option "evpn_vlan_aware_bundles" is disregarded
-                                       for this option.
+                                       "evpn_vlan_bundle" set at the VRF or tenant level.
+                                       The common option "evpn_vlan_aware_bundles" is
+                                       disregarded for this option.
                                     nodes:
                                        Define node specific configuration, such as unique IP addresses.
                                        Any keys set here will be merged
@@ -62152,8 +62152,8 @@ class EosDesigns(EosDesignsRootModel):
                                        `<network_services_key>[].evpn_l2_multi_domain` and
                                        `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
                                        Not supported in conjunction with EVPN vlan
-                                       aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `<network_services_key>[].evpn_vlan_bundle`
-                                       or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+                                       aware bundles. i.e. `evpn_vlan_aware_bundles: true` or `evpn_vlan_bundle` set under SVI, VRF or
+                                       Tenant.
 
                                 """
 
@@ -65256,6 +65256,7 @@ class EosDesigns(EosDesignsRootModel):
                         "rt_override": {"type": str},
                         "rt_import": {"type": bool, "default": True},
                         "rt_export": {"type": bool, "default": True},
+                        "evpn_vlan_bundle": {"type": str},
                         "mlag_ibgp_peering_ipv4_pool": {"type": str},
                         "mlag_ibgp_peering_ipv6_pool": {"type": str},
                         "ip_helpers": {"type": IpHelpers},
@@ -65359,6 +65360,13 @@ class EosDesigns(EosDesignsRootModel):
                     `additional_route_targets`.
 
                     Default value: `True`
+                    """
+                    evpn_vlan_bundle: str | None
+                    """
+                    Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.
+                    This setting overrides "evpn_vlan_bundle" set at the Tenant level.
+                    The common option
+                    "evpn_vlan_aware_bundles" is disregarded for this option.
                     """
                     mlag_ibgp_peering_ipv4_pool: str | None
                     """
@@ -65581,6 +65589,7 @@ class EosDesigns(EosDesignsRootModel):
                             rt_override: str | None | UndefinedType = Undefined,
                             rt_import: bool | UndefinedType = Undefined,
                             rt_export: bool | UndefinedType = Undefined,
+                            evpn_vlan_bundle: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv4_pool: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv6_pool: str | None | UndefinedType = Undefined,
                             ip_helpers: IpHelpers | UndefinedType = Undefined,
@@ -65670,6 +65679,11 @@ class EosDesigns(EosDesignsRootModel):
                                    only to the automatically generated route targets
                                    and does not affect any entries defined under
                                    `additional_route_targets`.
+                                evpn_vlan_bundle:
+                                   Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.
+                                   This setting overrides "evpn_vlan_bundle" set at the Tenant level.
+                                   The common option
+                                   "evpn_vlan_aware_bundles" is disregarded for this option.
                                 mlag_ibgp_peering_ipv4_pool:
                                    Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                    The
@@ -87483,6 +87497,41 @@ class EosDesigns(EosDesignsRootModel):
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
+                        "platforms": ["7060X5"],
+                        "feature_support": {
+                            "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "hardware_counter_features": {
+                                "acl": False,
+                                "decap_group": False,
+                                "directflow": False,
+                                "ecn": False,
+                                "flow_spec": False,
+                                "mpls_interface": False,
+                                "mpls_lfib": False,
+                                "mpls_tunnel": False,
+                                "multicast": False,
+                                "nexthop": False,
+                                "pbr": False,
+                                "pdp": False,
+                                "policing_interface": False,
+                                "qos": False,
+                                "qos_dual_rate_policer": False,
+                                "route": False,
+                                "routed_port": False,
+                                "segment_security": False,
+                                "tapagg": False,
+                                "traffic_class": False,
+                                "traffic_policy": False,
+                                "vlan": False,
+                            },
+                            "sflow_subinterfaces": False,
+                        },
+                        "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
                         "platforms": ["7280R", "7280R2", "7020R"],
                         "lag_hardware_only": True,
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
@@ -87495,6 +87544,42 @@ class EosDesigns(EosDesignsRootModel):
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
                         "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False},
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
+                        "platforms": ["7388X5"],
+                        "feature_support": {
+                            "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "hardware_counter_features": {
+                                "acl": False,
+                                "decap_group": False,
+                                "directflow": False,
+                                "ecn": False,
+                                "flow_spec": False,
+                                "mpls_interface": False,
+                                "mpls_lfib": False,
+                                "mpls_tunnel": False,
+                                "multicast": False,
+                                "nexthop": False,
+                                "pbr": False,
+                                "pdp": False,
+                                "policing_interface": False,
+                                "qos": False,
+                                "qos_dual_rate_policer": False,
+                                "route": False,
+                                "routed_port": False,
+                                "segment_security": False,
+                                "tapagg": False,
+                                "traffic_class": False,
+                                "traffic_policy": False,
+                                "vlan": False,
+                            },
+                            "sflow_subinterfaces": False,
+                        },
+                        "management_interface": "Management0",
+                        "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
@@ -88441,9 +88526,10 @@ class EosDesigns(EosDesignsRootModel):
     in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-
     bundles using the VLAN name as the bundle name.
 
-    The `evpn_vlan_bundle` option under `svis` and
-    `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works
-    when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.
+    The `evpn_vlan_bundle` option under SVI, L2VLAN,
+    VRF or tenant level takes precedence and overrides this behavior. Per SVI/L2VLAN `evpn_vlan_bundle`
+    also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-
+    VRFs.
 
     Default value: `False`
     """
@@ -89149,7 +89235,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """
@@ -90420,9 +90506,10 @@ class EosDesigns(EosDesignsRootModel):
                    in a vlan-aware-bundle using the VRF name as the bundle name. `l2vlans` are bundled in vlan-aware-
                    bundles using the VLAN name as the bundle name.
 
-                   The `evpn_vlan_bundle` option under `svis` and
-                   `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works
-                   when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.
+                   The `evpn_vlan_bundle` option under SVI, L2VLAN,
+                   VRF or tenant level takes precedence and overrides this behavior. Per SVI/L2VLAN `evpn_vlan_bundle`
+                   also works when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-
+                   VRFs.
                 evpn_vlan_bundles: Subclass of AvdIndexedList with `EvpnVlanBundlesItem` items. Primary key is `name` (`str`).
                 fabric_evpn_encapsulation:
                    Should be set to mpls for evpn-mpls scenario. This overrides the evpn_encapsulation setting under
