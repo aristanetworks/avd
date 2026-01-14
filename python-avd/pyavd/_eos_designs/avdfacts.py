@@ -6,6 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, Protocol
 
+from pyavd._utils.run_once import RunOnceMethodStateHelper
+
 if TYPE_CHECKING:
     from collections.abc import MutableMapping
 
@@ -58,8 +60,9 @@ class AvdFactsProtocol(Protocol):
             self.__dict__.pop(key, None)
 
 
-class AvdFacts(AvdFactsProtocol):
+class AvdFacts(RunOnceMethodStateHelper, AvdFactsProtocol):
     def __init__(self, hostvars: MutableMapping, inputs: EosDesigns, shared_utils: SharedUtilsProtocol) -> None:
         self._hostvars = hostvars
         self.inputs = inputs
         self.shared_utils = shared_utils
+        super().__init__()
