@@ -177,7 +177,7 @@ The pool manager stores data in a YAML file per fabric. The default path is `<ro
 
 ## Node types
 
-The following tables provide information on the standard node types that are pre-defined in `eos_designs`.
+The following table provides information on the pre-defined node types available in `eos_designs`.
 
 To customize or create new node types, please refer to [node type customization](#customization) section.
 
@@ -524,7 +524,7 @@ AVD provides the capability to customize your node types, supporting a variety o
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-keys.md
 --8<--
 
-#### Context for ip_addressing templates
+#### IP addressing templates
 
 To help calculate the custom IP addressing, the following contextual variables are available to the custom templates:
 
@@ -581,7 +581,7 @@ vtep_ip:
 - `{{ loopback_ipv4_offset }}`
 - All group/hostvars
 
-#### Context for interface_descriptions templates
+#### Interface descriptions templates
 
 To help format the custom interface descriptions, the following contextual variables are available to the custom templates:
 
