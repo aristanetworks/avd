@@ -12,7 +12,7 @@
 
     `eos_designs` provides network-wide data models. Translate high-level network design parameters into structured intended configurations.
 
-    <a href="../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.html" target="_blank">Input Variables</a>
+    <a href="../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.html">Input Variables</a>
 
 - :material-file-document:{ .lg .middle } **eos_cli_config_gen**
 
@@ -20,6 +20,6 @@
 
     `eos_cli_config_gen` provides device-centric data models to express EOS configurations. Leverage `eos_designs` structured configuration to generate ready-to-deploy CLI configurations.
 
-    <a href="../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/input-variables.html" target="_blank">Input Variables</a>
+    <a href="../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/input-variables.html">Input Variables</a>
 
 </div>
