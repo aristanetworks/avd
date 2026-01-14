@@ -41,6 +41,7 @@ tenants:
               ipv6_pool: 2001:db8:1::-2001:db8:1:7fff::, 2001:db8:1:8000::/49
           # Defining loopback_ip_range should not change the configuration since pod_name and loopback_ip_pools are defined.
           loopback_ip_range: 10.255.1.0/24
+          loopback_ipv6_range: 2001:db8:1::-2001:db8:1:7fff::, 2001:db8:1:8001::/49
         svis:
           - id: 315
             name: Tenant_network_vrf_1
