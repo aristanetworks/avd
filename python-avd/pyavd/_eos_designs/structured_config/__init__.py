@@ -73,7 +73,7 @@ def get_structured_config(
         hostname:
             The hostname of the device.
         inputs:
-            Inputs loaded into the EosDesigns as found in the `design` attribute of the LoadAVDDesignResult returned from `pyavd.load_avd_design`.
+            Validated inputs loaded into an instance of the EosDesigns class.
         all_facts:
             Map of all devices and their facts.
         hostvars:

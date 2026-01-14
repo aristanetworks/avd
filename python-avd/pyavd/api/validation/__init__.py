@@ -12,26 +12,6 @@ from pyavd_utils.validation import ValidationResult
 if TYPE_CHECKING:
     from pyavd_utils.validation import ValidatedDataResult as _ValidatedDataResult
 
-    from pyavd.api.schemas import AVDDesign, EOSConfig
-
-
-@dataclass(frozen=True)
-class LoadAVDDesignResult:
-    design: AVDDesign | None
-    """Loaded AVD Design. None if we hit any schema violations."""
-
-    validation_result: ValidationResult
-    """Result of data validation."""
-
-
-@dataclass(frozen=True)
-class LoadEOSConfigResult:
-    eos_config: EOSConfig | None
-    """Loaded EOS Config data. None if we hit any schema violations."""
-
-    validation_result: ValidationResult
-    """Result of data validation."""
-
 
 @dataclass(frozen=True)
 class ValidatedDataResult:
@@ -50,4 +30,4 @@ class ValidatedDataResult:
         )
 
 
-__all__ = ["LoadAVDDesignResult", "LoadEOSConfigResult", "ValidatedDataResult", "ValidationResult"]
+__all__ = ["ValidatedDataResult", "ValidationResult"]

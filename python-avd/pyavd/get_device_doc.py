@@ -17,9 +17,8 @@ def get_device_doc(structured_config: EOSConfig | dict, add_md_toc: bool = False
         structured_config:
             EOSConfig instance or dictionary with the validated structured configuration.
 
-            - Preferably use the EOSConfig instance returned from `pyavd.get_device_structured_config`.
-            - Alternatively variables could be validated and loaded into EOSConfig using `pyavd.load_eos_config` (See notes).
-            - Finally, for backwards compatibility, variables can be given as a dictionary,
+            - Preferably, use the EOSConfig instance returned from `pyavd.get_device_structured_config`.
+            - Alternatively, for backwards compatibility, variables can be given as a dictionary,
               which should be converted and validated according to AVD `eos_cli_config_gen` schema first using `pyavd.validate_structured_config`,
               and take the data from the 'validated_data' attribute.
 

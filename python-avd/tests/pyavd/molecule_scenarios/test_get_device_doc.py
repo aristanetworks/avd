@@ -1,8 +1,6 @@
 # Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from copy import deepcopy
-
 import pytest
 
 from pyavd import get_device_doc, validate_structured_config
@@ -32,10 +30,7 @@ from tests.models import MoleculeHost
 def test_get_device_doc(molecule_host: MoleculeHost) -> None:
     """Test get_device_config."""
     # For eos_designs scenarios, only load structured config, so this will fail if any inputs are not covered by eos_designs schemas.
-    if molecule_host.scenario.name.startswith("eos_cli_config_gen"):
-        structured_config = deepcopy(molecule_host.hostvars)
-    else:
-        structured_config = deepcopy(molecule_host.structured_config)
+    structured_config = molecule_host.hostvars if molecule_host.scenario.name.startswith("eos_cli_config_gen") else molecule_host.structured_config
 
     if not get(structured_config, "eos_cli_config_gen_documentation.enable", default=True):
         return

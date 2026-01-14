@@ -1,7 +1,6 @@
 # Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from copy import deepcopy
 
 import pytest
 
@@ -31,6 +30,6 @@ from tests.models import MoleculeHost
 )
 def test_validate_inputs_with_valid_inputs(molecule_host: MoleculeHost) -> None:
     """Test validate_inputs."""
-    inputs = deepcopy(molecule_host.hostvars)
+    inputs = molecule_host.hostvars
     validated_data_result = validate_inputs(inputs)
     assert validated_data_result.validation_result.violations == []

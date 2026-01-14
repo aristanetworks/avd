@@ -4,7 +4,7 @@
 
 import pytest
 
-from pyavd import get_device_config, load_eos_config
+from pyavd import get_device_config, validate_structured_config
 from pyavd._utils import get
 from tests.models import MoleculeHost
 
@@ -41,9 +41,9 @@ def test_get_device_config(molecule_host: MoleculeHost) -> None:
     if not get(structured_config, "eos_cli_config_gen_configuration.enable", default=True):
         return
 
-    load_eos_config_result = load_eos_config(structured_config)
-    assert load_eos_config_result.eos_config is not None
-    device_config = get_device_config(load_eos_config_result.eos_config)
+    validated_data_result = validate_structured_config(structured_config)
+    assert validated_data_result.validated_data is not None
+    device_config = get_device_config(validated_data_result.validated_data)
 
     assert isinstance(device_config, str)
     assert device_config == expected_config

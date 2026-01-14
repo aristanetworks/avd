@@ -25,17 +25,18 @@ if TYPE_CHECKING:
     from ansible.playbook.task import Task
     from ansible.template import Templar
 
-    from pyavd import load_avd_design
+    from pyavd import validate_inputs
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
-    from pyavd._eos_designs.schema import EosDesigns
     from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
+    from pyavd.api.schemas import AVDDesign
 
 try:
-    from pyavd import load_avd_design
+    from pyavd import validate_inputs
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
     from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
+    from pyavd.api.schemas import AVDDesign
 
     HAS_PYAVD = True
 except ImportError:
@@ -118,7 +119,7 @@ class ActionModule(ActionBase):
 
         return result
 
-    def parse_inputs(self, fabric_hosts: list, hostvars: ActionPluginVars, result: dict) -> tuple[dict[str, EosDesigns], dict[str, dict]]:
+    def parse_inputs(self, fabric_hosts: list, hostvars: ActionPluginVars, result: dict) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
         """
         Fetch hostvars for all hosts and perform data conversion & validation.
 
@@ -135,7 +136,7 @@ class ActionModule(ActionBase):
                 Dict with the loaded data keyed by hostnames.
                 Dict of the raw hostvars keyed by hostnames.
         """
-        all_inputs: dict[str, EosDesigns] = {}
+        all_inputs: dict[str, AVDDesign] = {}
         all_hostvars: dict[str, dict] = {}
         data_validation_errors = 0
 
@@ -147,16 +148,16 @@ class ActionModule(ActionBase):
             host_hostvars = dict(hostvars[host])
 
             # Load input vars into the EosDesigns data class.
-            host_result = load_avd_design(host_hostvars)
+            validated_data_result = validate_inputs(host_hostvars)
 
-            data_validation_errors += parse_validation_result(validation_result=host_result.validation_result, hostname=host, ansible_display=display)
+            data_validation_errors += parse_validation_result(validation_result=validated_data_result.validation_result, hostname=host, ansible_display=display)
 
-            if data_validation_errors or host_result.design is None:
+            if data_validation_errors or validated_data_result.validated_data is None:
                 # Quickly continue if data validation failed
                 result["failed"] = True
                 continue
 
-            all_inputs[host] = host_result.avd_design
+            all_inputs[host] = AVDDesign._from_dict(validated_data_result.validated_data)
             all_hostvars[host] = host_hostvars
 
         # Build result message
@@ -164,7 +165,7 @@ class ActionModule(ActionBase):
 
         return all_inputs, all_hostvars
 
-    def render_facts(self, all_inputs: dict[str, EosDesigns], pool_manager: PoolManager, all_hostvars: dict[str, dict], templar: Templar) -> dict[str, dict]:
+    def render_facts(self, all_inputs: dict[str, AVDDesign], pool_manager: PoolManager, all_hostvars: dict[str, dict], templar: Templar) -> dict[str, dict]:
         """
         Render facts, reraising errors as AnsibleActionFail.
 

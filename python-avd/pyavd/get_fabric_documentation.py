@@ -41,7 +41,9 @@ def get_fabric_documentation(
 
     Args:
         avd_facts: Dictionary of avd_facts as returned from `pyavd.get_avd_facts`.
-        structured_configs: Dictionary of structured configurations for all devices, keyed by hostname.
+        structured_configs:
+            Dictionary of structured configurations for all devices, keyed by hostname.
+            The structured configuration can either be given as a dictionary or as an EOSConfig instance and they must all be of the same type.
         fabric_name: Name of the fabric. Only used for the main heading in the Markdown documentation.
         fabric_documentation: Returns fabric documentation when set to True.
         include_connected_endpoints: Includes connected endpoints in the fabric documentation when set to True.

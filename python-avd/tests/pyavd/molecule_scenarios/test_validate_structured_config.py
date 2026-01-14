@@ -6,10 +6,8 @@ from copy import deepcopy
 import pytest
 
 from pyavd import validate_structured_config
-from pyavd.api.schemas import EOSConfig
+from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS
 from tests.models import MoleculeHost
-
-VALID_STRUCTURED_CONFIG_KEYS = EOSConfig._fields.keys()
 
 
 @pytest.mark.molecule_scenarios(
@@ -36,10 +34,7 @@ VALID_STRUCTURED_CONFIG_KEYS = EOSConfig._fields.keys()
 @pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos", "digital_twin")
 def test_validate_structured_config_with_valid_data(molecule_host: MoleculeHost) -> None:
     """Test validate_structured_config."""
-    if molecule_host.scenario.name.startswith("eos_cli_config_gen"):
-        structured_config = deepcopy(molecule_host.hostvars)
-    else:
-        structured_config = deepcopy(molecule_host.structured_config)
+    structured_config = molecule_host.hostvars if molecule_host.scenario.name.startswith("eos_cli_config_gen") else molecule_host.structured_config
 
     validated_data_result = validate_structured_config(structured_config)
     assert validated_data_result.validation_result.violations == []
@@ -60,7 +55,7 @@ def test_validate_structured_config_with_invalid_data(molecule_host: MoleculeHos
     updated = False
     # Insert a bad key in a random dict (making sure the dict is covered by the schema)
     for key, value in structured_config.items():
-        if not isinstance(value, dict) or "structured_config" in key or key not in VALID_STRUCTURED_CONFIG_KEYS:
+        if not isinstance(value, dict) or "structured_config" in key or key not in EOS_CLI_CONFIG_GEN_INPUT_KEYS:
             continue
         value.update({"invalid_key": "some_value"})
         updated = True

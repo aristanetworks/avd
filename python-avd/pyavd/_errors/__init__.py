@@ -10,7 +10,7 @@ from pyavd._utils.json_path_to_string import json_path_to_string
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from pyavd_utils.validation import Deprecation, Violation
+    from pyavd_utils.validation import Violation
     from typing_extensions import Self
 
 
@@ -104,14 +104,6 @@ class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
 
         self.message = " ".join(messages)
         super().__init__(self.message)
-
-    def _as_validation_error(self) -> AvdValidationError:
-        """Converting AvdDeprecationWarning to AvdValidationError."""
-        return AvdValidationError(violation=self.message, path=self.path.split("."))
-
-    @classmethod
-    def from_deprecation(cls, deprecation: Deprecation) -> Self:
-        return cls(key=deprecation.path, new_key=deprecation.replacement, remove_in_version=deprecation.version, url=deprecation.url)
 
 
 class AristaAvdDuplicateDataError(AristaAvdError):

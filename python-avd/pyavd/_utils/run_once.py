@@ -35,10 +35,14 @@ def run_once(func: Callable[..., None]) -> Callable[..., None]:
         after acquiring the lock to ensure we only run the function once.
         """
         nonlocal has_run
-        if not has_run:
-            with lock:
-                if not has_run:
-                    has_run = True
-                    func(*args, **kwargs)
+        if has_run:
+            return
+
+        with lock:
+            if has_run:
+                return
+
+            has_run = True
+            func(*args, **kwargs)
 
     return wrapper

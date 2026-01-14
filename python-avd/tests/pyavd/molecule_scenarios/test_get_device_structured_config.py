@@ -2,13 +2,12 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import sys
-from copy import deepcopy
 from unittest.mock import patch
 
 import pytest
 
-from pyavd import get_device_structured_config, load_avd_design
-from pyavd.api.schemas import EOSConfig
+from pyavd import get_device_structured_config, validate_inputs
+from pyavd.api.schemas import AVDDesign, EOSConfig
 from tests.models import MoleculeHost
 
 
@@ -36,14 +35,14 @@ from tests.models import MoleculeHost
 @pytest.mark.digital_twin_molecule_scenarios("digital_twin")
 def test_get_device_structured_config(molecule_host: MoleculeHost) -> None:
     """Test get_device_structured_config."""
-    hostvars = deepcopy(molecule_host.hostvars)
+    hostvars = molecule_host.hostvars
 
-    # Load inputs
-    load_avd_design_result = load_avd_design(hostvars)
+    # Validate inputs
+    validated_data_result = validate_inputs(hostvars)
 
-    assert load_avd_design_result.design is not None
+    assert validated_data_result.validated_data is not None
 
-    design = load_avd_design_result.design
+    design = AVDDesign._from_dict(validated_data_result.validated_data)
 
     expected_structured_config = molecule_host.structured_config
 

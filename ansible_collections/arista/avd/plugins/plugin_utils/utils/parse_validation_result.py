@@ -54,6 +54,7 @@ def parse_validation_result(validation_result: ValidationResult, hostname: str, 
 
 def build_result_message(validation_errors: int) -> str | None:
     if validation_errors:
-        return f"{validation_errors} errors found during schema validation of input vars."
+        plural = "s" if validation_errors > 1 else ""
+        return f"{validation_errors} error{plural} found during schema validation of input variables."
 
     return None
