@@ -82,55 +82,31 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HO
 
 ## Filtering Network Services
 
-Control which services are deployed to specific devices using the `filter` settings under node type configuration.
+Control which services are deployed to specific devices using the `filter` settings.
 
-```yaml title="group_vars/DC1_L3_LEAVES/filter.yml"
+!!! note
+    By default, if no `filter` is defined, all network services are deployed to the device. You can use `filter` at different levels: node_types, node_groups, nodes, device_profiles and devices.
+
+```yaml title="Filtering at the node level"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC1_L3_LEAVES/filter.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HOW_TO_NETWORK_SERVICES/topology.yml
 --8<--
 ```
 
 1. Filter settings control which network services are deployed
-2. Limit to specific tenants or use `all` for all tenants
-3. Filter SVIs and L2 VLANs by tags
-4. Filter which VRFs are deployed (use `deny_vrfs` to exclude specific VRFs)
+2. Limit to specific tenants, by default all tenants are included
+3. Filter SVIs and L2 VLANs by tags, by default all tags are included
+4. Filter which VRFs are deployed (use `deny_vrfs` to exclude specific VRFs), by default all VRFs are included
 
 ### Using Tags for Granular Control
 
-Tags provide fine-grained control over which SVIs and L2 VLANs are deployed to each device:
+Earlier we saw SVI 200 is tagged with `development`, and the `howto-l3-leaf2` is filtering on the `development` tag. Therefore, the `howto-l3-leaf2` will only receive the `VRF_DEVELOPMENT` VRF and the SVI 200.
 
-```yaml title="group_vars/NETWORK_SERVICES/tagged_services.yml"
+```cli title="Services on howto-l3-leaf2"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/NETWORK_SERVICES/tagged_services.yml
---8<--
-```
-
-1. Tags control which devices receive this SVI
-
-Then filter by tags on specific node groups:
-
-```yaml title="Production Leaves Filter"
-l3leaf:
-  node_groups:
-    - group: PRODUCTION_LEAVES
-      filter:
-        tags:
-          - production
-          - app_servers
-```
-
-## L3 Interfaces in VRFs
-
-Configure routed interfaces within VRFs for external connectivity:
-
-```yaml title="group_vars/NETWORK_SERVICES/l3_interfaces.yml"
---8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/NETWORK_SERVICES/l3_interfaces.yml
+docs/howto/network_services/artifacts/howto-l3-leaf2-services.cfg
 --8<--
 ```
-
-1. L3 interfaces create routed interfaces inside the VRF
-2. Interfaces, IP addresses, and nodes lists must have the same length
 
 ## Best Practices
 
