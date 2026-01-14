@@ -1487,6 +1487,7 @@ The supported network services for each tenant cover:
 - VRFs
   - SVIs
   - L3 Interfaces
+  - L3 Port-Channels
   - Loopbacks
   - BGP routing
   - OSPF routing
@@ -1501,10 +1502,6 @@ The default available keys is `tenants`.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services.md
---8<--
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/new-network-services-bgp-vrf-config.md
 --8<--
 
 ### VRFs
@@ -1554,19 +1551,19 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vr
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-ospf-settings.md
 --8<--
 
-#### L2 VLANs
+### L2 VLANs
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-l2vlans-settings.md
 --8<--
 
-#### Point-to-point services
+### Point-to-point services
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-point-to-point-services-settings.md
 --8<--
 
-#### Multicast
+### Multicast
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-multicast-settings.md
