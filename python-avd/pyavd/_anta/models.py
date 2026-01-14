@@ -12,9 +12,12 @@ from logging import getLogger
 from typing import TYPE_CHECKING
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._errors import AristaAvdError
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData
+    from pyavd.api._anta.avd_fabric_data import AvdDeviceData, AvdEthernetInterface
 
 LOGGER = getLogger(__name__)
 
@@ -42,18 +45,36 @@ class InputFactoryDataSource:
 
     hostname: str
     structured_config: EosCliConfigGen
-    fabric_data: AvdFabricData
-    settings: AvdCatalogGenerationSettings
+    _fabric_data: AvdFabricData
+    _settings: AvdCatalogGenerationSettings
 
-    @cached_property
+    @property
     def is_vtep(self) -> bool:
         """Check if the device is a VTEP."""
-        return bool(self.structured_config.vxlan_interface.vxlan1.vxlan._get("source_interface"))
+        return self._device_data.is_vtep
 
-    @cached_property
+    @property
     def is_wan_router(self) -> bool:
         """Check if the device is a WAN router."""
-        return self.is_vtep and "Dps" in self.structured_config.vxlan_interface.vxlan1.vxlan._get("source_interface")
+        return self._device_data.is_wan_router
+
+    @property
+    def extra_fabric_validation(self) -> bool:
+        """Check if extra fabric-wide validation inputs should be generated."""
+        return self._settings.extra_fabric_validation
+
+    @cached_property
+    def _device_data(self) -> AvdDeviceData:
+        """Get the AvdDeviceData object for this device."""
+        device_data = self._fabric_data.devices.get(self.hostname)
+        if device_data is None:
+            raise AristaAvdError(message=f"Device '{self.hostname}' structured configuration is not loaded in AvdFabricData.")
+        return device_data
+
+    @cached_property
+    def special_ips(self) -> list[IPv4Address]:
+        """Get a sorted list of all 'special' IPv4 addresses (Loopback0, VTEP, and MLAG VTEP) from deployed non-WAN devices in the fabric."""
+        return natural_sort(self._fabric_data.special_ips)
 
     @cached_property
     def bgp_neighbors(self) -> list[ResolvedBgpNeighbor]:
@@ -86,6 +107,20 @@ class InputFactoryDataSource:
         )
 
         return neighbor_interfaces
+
+    def get_peer_device(self, peer_hostname: str) -> AvdDeviceData | None:
+        """Return the peer device data if it exists and is deployed."""
+        device = self._fabric_data.devices.get(peer_hostname)
+        if device and device.is_deployed:
+            return device
+        return None
+
+    def get_peer_interface(self, peer_hostname: str, interface_name: str) -> AvdEthernetInterface | None:
+        """Return the Ethernet interface data for a peer, or None if peer/interface is missing."""
+        peer = self.get_peer_device(peer_hostname)
+        if peer:
+            return peer.ethernet_interfaces.get(interface_name)
+        return None
 
     def _process_bgp_neighbor_interface(
         self, neighbor_interface: EosCliConfigGen.RouterBgp.NeighborInterfacesItem | EosCliConfigGen.RouterBgp.VrfsItem.NeighborInterfacesItem, vrf: str
@@ -121,7 +156,9 @@ class InputFactoryDataSource:
         if (
             from_default_vrf
             and neighbor_interface.metadata.peer
-            and (neighbor_interface.metadata.peer not in self.fabric_data.devices or not self.fabric_data.devices[neighbor_interface.metadata.peer].is_deployed)
+            and (
+                neighbor_interface.metadata.peer not in self._fabric_data.devices or not self._fabric_data.devices[neighbor_interface.metadata.peer].is_deployed
+            )
         ):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None
@@ -165,7 +202,7 @@ class InputFactoryDataSource:
         if (
             from_default_vrf
             and neighbor.metadata.peer
-            and (neighbor.metadata.peer not in self.fabric_data.devices or not self.fabric_data.devices[neighbor.metadata.peer].is_deployed)
+            and (neighbor.metadata.peer not in self._fabric_data.devices or not self._fabric_data.devices[neighbor.metadata.peer].is_deployed)
         ):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None

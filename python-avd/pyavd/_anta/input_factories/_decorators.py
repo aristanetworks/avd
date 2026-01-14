@@ -23,7 +23,7 @@ def skip_if_hardware_validation_disabled(func: T_AntaTestInputFactoryMethod) -> 
     """Decorator to skip execution of the input factory create method if hardware validation is disabled."""
 
     @wraps(func)
-    def wrapper(self: F) -> Iterator[R]:
+    def wrapper(self: AntaTestInputFactory) -> Iterator[AntaTest.Input]:
         if not self.structured_config.metadata.validate_hardware.enabled:
             self.logger_adapter.debug(LogMessage.HARDWARE_VALIDATION_DISABLED)
             return
@@ -36,8 +36,8 @@ def skip_if_extra_fabric_validation_disabled(func: T_AntaTestInputFactoryMethod)
     """Decorator to skip execution of the input factory create method if extra fabric validation is disabled."""
 
     @wraps(func)
-    def wrapper(self: F) -> Iterator[R]:
-        if not self.settings.extra_fabric_validation:
+    def wrapper(self: AntaTestInputFactory) -> Iterator[AntaTest.Input]:
+        if not self.data_source.extra_fabric_validation:
             self.logger_adapter.debug(LogMessage.EXTRA_FABRIC_VALIDATION_DISABLED)
             return
         yield from func(self)
@@ -49,7 +49,7 @@ def skip_if_wan_router(func: T_AntaTestInputFactoryMethod) -> T_AntaTestInputFac
     """Decorator to skip execution of the input factory create method if the device is a WAN router."""
 
     @wraps(func)
-    def wrapper(self: F) -> Iterator[R]:
+    def wrapper(self: AntaTestInputFactory) -> Iterator[AntaTest.Input]:
         if self.data_source.is_wan_router:
             self.logger_adapter.debug(LogMessage.DEVICE_IS_WAN_ROUTER)
             return
@@ -65,7 +65,7 @@ def skip_if_missing_config(*keys: StructuredConfigKey) -> Callable[[T_AntaTestIn
         key_values = [k.value for k in keys]
 
         @wraps(func)
-        def wrapper(self: F) -> Iterator[R]:
+        def wrapper(self: AntaTestInputFactory) -> Iterator[AntaTest.Input]:
             # Check if all keys resolve to a truthy value in the config
             if not all(get_v2(self.structured_config, value) for value in key_values):
                 self.logger_adapter.debug(LogMessage.INPUT_NO_DATA_MODELS, data_models=", ".join(key_values))
