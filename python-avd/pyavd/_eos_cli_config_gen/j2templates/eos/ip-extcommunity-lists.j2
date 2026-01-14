@@ -5,7 +5,6 @@
 #}
 {# eos - ip extcommunity lists #}
 {% for ip_extcommunity_list in ip_extcommunity_lists | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
-!
 {%     for entry in ip_extcommunity_list.entries %}
 ip extcommunity-list {{ ip_extcommunity_list.name }} {{ entry.type }} {{ entry.extcommunities }}
 {%     endfor %}
