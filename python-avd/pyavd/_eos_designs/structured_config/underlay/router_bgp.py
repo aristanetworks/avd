@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._utils.run_once import run_once
+from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
@@ -118,7 +118,7 @@ class RouterBgpMixin(Protocol):
                             bfd=link.bfd,
                         )
 
-    @run_once
+    @run_once_method
     def set_once_peer_group_ipv4_underlay_peers(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """
         Add IPv4 underlay peer group to structured_config.

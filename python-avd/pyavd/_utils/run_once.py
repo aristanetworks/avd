@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import threading
+from dataclasses import dataclass
 from functools import wraps
 from typing import TYPE_CHECKING
 
@@ -17,6 +18,7 @@ def run_once(func: Callable[..., None]) -> Callable[..., None]:
     Decorator to run a function only once.
 
     This is useful for functions that are called multiple times but should only run once.
+
     This only supports functions without a return value.
     If the function raises an Exception it will be raised on the first call. Subsequent calls will still be ignored.
     This is thread-safe.
@@ -35,6 +37,7 @@ def run_once(func: Callable[..., None]) -> Callable[..., None]:
         after acquiring the lock to ensure we only run the function once.
         """
         nonlocal has_run
+
         if not has_run:
             with lock:
                 if not has_run:
@@ -42,3 +45,56 @@ def run_once(func: Callable[..., None]) -> Callable[..., None]:
                     func(*args, **kwargs)
 
     return wrapper
+
+
+def run_once_method(method: Callable[..., None]) -> Callable[..., None]:
+    """
+    Decorator to run a method only once per instance.
+
+    This is useful for methods that are called multiple times but should only run once.
+
+    This only supports methods without a return value.
+    If the method raises an Exception it will be raised on the first call. Subsequent calls will still be ignored.
+    This is thread-safe.
+    """
+    common_lock = threading.Lock()
+    """Common lock used when creating the per instance locks."""
+
+    per_instance_locks_and_has_run: dict[int, RunOnceInstanceInfo] = {}
+    """
+    Per instance run_once details for this method.
+    """
+
+    @wraps(method)
+    def wrapper(instance: Any, *args: Any, **kwargs: Any) -> None:
+        """
+        Wrap the method to only call it once.
+
+        First we check if it was already run, and if so we return immediately.
+        After that we acquire the lock to ensure only one thread can run the method.
+        Since multiple threads could be waiting to acquire the lock, we need to check has_run again
+        after acquiring the lock to ensure we only run the method once.
+        """
+        nonlocal per_instance_locks_and_has_run
+
+        instance_id = id(instance)
+        if instance_id not in per_instance_locks_and_has_run:
+            with common_lock:
+                # Checking again in case it was set while waiting for the lock.
+                if instance_id not in per_instance_locks_and_has_run:
+                    per_instance_locks_and_has_run[instance_id] = RunOnceInstanceInfo(lock=threading.Lock(), has_run=False)
+
+        if not per_instance_locks_and_has_run[instance_id].has_run:
+            with per_instance_locks_and_has_run[instance_id].lock:
+                # Checking again in case it was set while waiting for the lock.
+                if not per_instance_locks_and_has_run[instance_id].has_run:
+                    per_instance_locks_and_has_run[instance_id].has_run = True
+                    method(instance, *args, **kwargs)
+
+    return wrapper
+
+
+@dataclass
+class RunOnceInstanceInfo:
+    lock: threading.Lock
+    has_run: bool

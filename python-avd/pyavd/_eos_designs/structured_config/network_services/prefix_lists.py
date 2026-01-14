@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._utils.run_once import run_once
+from pyavd._utils.run_once import run_once_method
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -67,7 +67,7 @@ class PrefixListsMixin(Protocol):
 
         return natural_sort(mlag_prefixes)
 
-    @run_once
+    @run_once_method
     def set_once_prefix_list_svi_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """Set prefix-list PL-SVI-VRF-DEFAULT."""
         sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
@@ -75,7 +75,7 @@ class PrefixListsMixin(Protocol):
             sequence_numbers.append_new(sequence=index * 10, action=f"permit {subnet}")
         self.structured_config.prefix_lists.append_new(name="PL-SVI-VRF-DEFAULT", sequence_numbers=sequence_numbers)
 
-    @run_once
+    @run_once_method
     def set_once_prefix_list_static_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """Set prefix-list PL-STATIC-VRF-DEFAULT."""
         sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()

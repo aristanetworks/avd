@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._utils import as_path_list_match_from_bgp_asns
-from pyavd._utils.run_once import run_once
+from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
@@ -20,7 +20,7 @@ class AsPathMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    @run_once
+    @run_once_method
     def set_once_as_path_acl_aspath_wan(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set as-path access-list ASPATH-WAN."""
         entries = EosCliConfigGen.AsPath.AccessListsItem.Entries()

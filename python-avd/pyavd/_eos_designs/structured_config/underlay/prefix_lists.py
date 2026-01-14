@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._utils import get_ipv4_networks_from_pool, get_ipv6_networks_from_pool
-from pyavd._utils.run_once import run_once
+from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
@@ -22,7 +22,7 @@ class PrefixListsMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    @run_once
+    @run_once_method
     def set_once_prefix_list_dps_wan_overlay(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """
         Set prefix-list PL-DPS-WAN-OVERLAY.
@@ -35,7 +35,7 @@ class PrefixListsMixin(Protocol):
         sequence_numbers_dps.append_new(sequence=(len(sequence_numbers_dps) + 1) * 10, action=f"permit {self.shared_utils.vtep_ip}/32 eq 32")
         self.structured_config.prefix_lists.append_new(name="PL-DPS-WAN-OVERLAY", sequence_numbers=sequence_numbers_dps)
 
-    @run_once
+    @run_once_method
     def set_once_prefix_list_p2p_links(self: AvdStructuredConfigUnderlayProtocol, subnets: list[str]) -> None:
         """Set prefix-list PL-P2P-LINKS."""
         p2p_links_sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
@@ -44,7 +44,7 @@ class PrefixListsMixin(Protocol):
 
         self.structured_config.prefix_lists.append_new(name="PL-P2P-LINKS", sequence_numbers=p2p_links_sequence_numbers)
 
-    @run_once
+    @run_once_method
     def set_once_prefix_list_loopbacks_pim_rp(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set prefix-list PL-LOOPBACKS-PIM-RP."""
         sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
@@ -52,7 +52,7 @@ class PrefixListsMixin(Protocol):
             sequence_numbers.append_new(sequence=index * 10, action=f"permit {interface.ip_address}")
         self.structured_config.prefix_lists.append_new(name="PL-LOOPBACKS-PIM-RP", sequence_numbers=sequence_numbers)
 
-    @run_once
+    @run_once_method
     def set_once_prefix_list_loopbacks_evpn_overlay_v6(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6."""
         sequence_numbers = EosCliConfigGen.Ipv6PrefixListsItem.SequenceNumbers()
@@ -65,7 +65,7 @@ class PrefixListsMixin(Protocol):
                 sequence_numbers.append_new(sequence=index * 10, action=f"permit {network} eq {self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length}")
         self.structured_config.ipv6_prefix_lists.append_new(name="PL-LOOPBACKS-EVPN-OVERLAY-V6", sequence_numbers=sequence_numbers)
 
-    @run_once
+    @run_once_method
     def set_once_prefix_list_loopbacks_evpn_overlay(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set prefix-list PL-LOOPBACKS-EVPN-OVERLAY."""
         sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
@@ -83,7 +83,7 @@ class PrefixListsMixin(Protocol):
 
         self.structured_config.prefix_lists.append_new(name="PL-LOOPBACKS-EVPN-OVERLAY", sequence_numbers=sequence_numbers)
 
-    @run_once
+    @run_once_method
     def set_once_prefix_list_wan_ha_prefixes(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set prefix-list PL-WAN-HA-PREFIXES."""
         sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
@@ -91,7 +91,7 @@ class PrefixListsMixin(Protocol):
             sequence_numbers.append_new(sequence=10 * index, action=f"permit {ipaddress.ip_network(ip_address, strict=False)}")
         self.structured_config.prefix_lists.append_new(name="PL-WAN-HA-PREFIXES", sequence_numbers=sequence_numbers)
 
-    @run_once
+    @run_once_method
     def set_once_prefix_list_wan_ha_peer_prefixes(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set prefix-list PL-WAN-HA-PEER-PREFIXES."""
         sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()

@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._utils.run_once import run_once
+from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigOverlayProtocol
@@ -34,7 +34,7 @@ class RouteMapsMixin(Protocol):
         route_maps_item.sequence_numbers.append_new(sequence=20, type="permit")
         self.structured_config.route_maps.append(route_maps_item)
 
-    @run_once
+    @run_once_method
     def set_once_route_map_evpn_soo_in(self: AvdStructuredConfigOverlayProtocol) -> None:
         """Set route-maps RM-EVPN-SOO-IN."""
         route_maps_item = EosCliConfigGen.RouteMapsItem(name="RM-EVPN-SOO-IN")
@@ -47,7 +47,7 @@ class RouteMapsMixin(Protocol):
         route_maps_item.sequence_numbers.append_new(sequence=20, type="permit")
         self.structured_config.route_maps.append(route_maps_item)
 
-    @run_once
+    @run_once_method
     def set_once_route_map_evpn_soo_out(self: AvdStructuredConfigOverlayProtocol) -> None:
         """Set route-maps RM-EVPN-SOO-OUT."""
         route_maps_item = EosCliConfigGen.RouteMapsItem(name="RM-EVPN-SOO-OUT")
@@ -58,7 +58,7 @@ class RouteMapsMixin(Protocol):
         )
         self.structured_config.route_maps.append(route_maps_item)
 
-    @run_once
+    @run_once_method
     def set_once_route_map_wan_ha_peer_in(self: AvdStructuredConfigOverlayProtocol) -> None:
         """Set route-maps RM-WAN-HA-PEER-IN."""
         route_maps_item = EosCliConfigGen.RouteMapsItem(name="RM-WAN-HA-PEER-IN")
@@ -70,7 +70,7 @@ class RouteMapsMixin(Protocol):
         )
         self.structured_config.route_maps.append(route_maps_item)
 
-    @run_once
+    @run_once_method
     def set_once_route_map_wan_ha_peer_out(self: AvdStructuredConfigOverlayProtocol) -> None:
         """Set route-maps RM-WAN-HA-PEER-OUT."""
         route_maps_item = EosCliConfigGen.RouteMapsItem(name="RM-WAN-HA-PEER-OUT")

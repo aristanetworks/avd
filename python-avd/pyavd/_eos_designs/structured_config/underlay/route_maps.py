@@ -7,7 +7,7 @@ from ipaddress import ip_network
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._utils.run_once import run_once
+from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
@@ -28,7 +28,7 @@ class RouteMapsMixin(Protocol):
         sequence_numbers.append_new(sequence=20, type="permit")
         self.structured_config.route_maps.append_new(name=route_map_name, sequence_numbers=sequence_numbers)
 
-    @run_once
+    @run_once_method
     def set_once_route_map_bgp_underlay_peers_in(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set route-map RM-BGP-UNDERLAY-PEERS-IN."""
         # RM-BGP-UNDERLAY-PEERS-IN
@@ -60,7 +60,7 @@ class RouteMapsMixin(Protocol):
 
         self.structured_config.route_maps.append_new(name="RM-BGP-UNDERLAY-PEERS-IN", sequence_numbers=sequence_numbers)
 
-    @run_once
+    @run_once_method
     def set_once_route_map_bgp_underlay_peers_out(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set route-map RM-BGP-UNDERLAY-PEERS-OUT."""
         sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
@@ -75,7 +75,7 @@ class RouteMapsMixin(Protocol):
 
         self.structured_config.route_maps.append_new(name="RM-BGP-UNDERLAY-PEERS-OUT", sequence_numbers=sequence_numbers)
 
-    @run_once
+    @run_once_method
     def set_once_route_map_connected_to_bgp(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """
         Set route-map RM-CONN-2-BGP.

@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._utils.run_once import run_once
+from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -106,7 +106,7 @@ class RouteMapsMixin(Protocol):
         )
         self.structured_config.route_maps.append(route_maps_item)
 
-    @run_once
+    @run_once_method
     def set_once_route_map_connected_to_bgp_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
         Set one route-map item.
@@ -125,7 +125,7 @@ class RouteMapsMixin(Protocol):
         )
         self.structured_config.route_maps.append(route_maps_item)
 
-    @run_once
+    @run_once_method
     def set_once_route_map_evpn_export_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
         Match the following prefixes to be exported in EVPN for VRF default.
@@ -169,7 +169,7 @@ class RouteMapsMixin(Protocol):
 
         self.structured_config.route_maps.append_new(name="RM-EVPN-EXPORT-VRF-DEFAULT", sequence_numbers=sequence_numbers)
 
-    @run_once
+    @run_once_method
     def set_once_route_map_bgp_underlay_peers_out(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
         For non WAN routers filter EVPN routes away from underlay.
