@@ -60,7 +60,7 @@ def run_once_method(method: Callable[..., None]) -> Callable[..., None]:
     common_lock = threading.Lock()
     """Common lock used when creating the per instance locks."""
 
-    per_instance_locks_and_has_run: dict[int, RunOnceInstanceInfo] = {}
+    instance_infos: dict[int, RunOnceInstanceInfo] = {}
     """
     Per instance run_once details for this method.
     """
@@ -75,20 +75,22 @@ def run_once_method(method: Callable[..., None]) -> Callable[..., None]:
         Since multiple threads could be waiting to acquire the lock, we need to check has_run again
         after acquiring the lock to ensure we only run the method once.
         """
-        nonlocal per_instance_locks_and_has_run
+        nonlocal instance_infos
 
         instance_id = id(instance)
-        if instance_id not in per_instance_locks_and_has_run:
+        if instance_id not in instance_infos:
             with common_lock:
                 # Checking again in case it was set while waiting for the lock.
-                if instance_id not in per_instance_locks_and_has_run:
-                    per_instance_locks_and_has_run[instance_id] = RunOnceInstanceInfo(lock=threading.Lock(), has_run=False)
+                if instance_id not in instance_infos:
+                    instance_infos[instance_id] = RunOnceInstanceInfo(lock=threading.Lock(), has_run=False)
 
-        if not per_instance_locks_and_has_run[instance_id].has_run:
-            with per_instance_locks_and_has_run[instance_id].lock:
+        instance_info = instance_infos[instance_id]
+
+        if not instance_info.has_run:
+            with instance_info.lock:
                 # Checking again in case it was set while waiting for the lock.
-                if not per_instance_locks_and_has_run[instance_id].has_run:
-                    per_instance_locks_and_has_run[instance_id].has_run = True
+                if not instance_info.has_run:
+                    instance_info.has_run = True
                     method(instance, *args, **kwargs)
 
     return wrapper
