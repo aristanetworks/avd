@@ -59559,10 +59559,10 @@ class EosDesigns(EosDesignsRootModel):
                         IPv4_address/Mask.
                         Loopback IPv4 range, a unique ip is derived from this range and assigned to each
                         l3 leaf based on it's unique id.
-                        `loopback_ip_pools` takes precedence for IPv4 if `pod_name` and
-                        `loopback_ip_pools` are defined.
-                        Loopback is not created unless `loopback_ip_range`,
-                        `loopback_ipv6_range` or `loopback_ip_pools` are set.
+                        If any `pod` under `loopback_ip_pools` matches the `pod_name` of
+                        the device, and is configured with an `ipv4_pool`, it takes precedence over `loopback_ipv4_range`.
+                        Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are
+                        set.
                         """
                         loopback_ipv6_range: str | None
                         """
@@ -59625,10 +59625,10 @@ class EosDesigns(EosDesignsRootModel):
                                        IPv4_address/Mask.
                                        Loopback IPv4 range, a unique ip is derived from this range and assigned to each
                                        l3 leaf based on it's unique id.
-                                       `loopback_ip_pools` takes precedence for IPv4 if `pod_name` and
-                                       `loopback_ip_pools` are defined.
-                                       Loopback is not created unless `loopback_ip_range`,
-                                       `loopback_ipv6_range` or `loopback_ip_pools` are set.
+                                       If any `pod` under `loopback_ip_pools` matches the `pod_name` of
+                                       the device, and is configured with an `ipv4_pool`, it takes precedence over `loopback_ipv4_range`.
+                                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are
+                                       set.
                                     loopback_ipv6_range:
                                        IPv6_address/Mask.
                                        Loopback IPv6 range, a unique IPv6 address is derived from this range and
