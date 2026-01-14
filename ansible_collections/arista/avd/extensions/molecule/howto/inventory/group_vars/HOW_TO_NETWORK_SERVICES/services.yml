@@ -1,0 +1,36 @@
+---
+tenants:
+  - name: TENANT1 # (1)!
+    mac_vrf_vni_base: 10000 # (2)!
+    vrfs:
+      - name: VRF_PRODUCTION
+        vrf_vni: 100 # (3)!
+        vtep_diagnostic: # (4)!
+          loopback: 10
+          loopback_ip_range: 10.255.10.0/27
+        svis:
+          - id: 100
+            name: Production_App1
+            ip_address_virtual: 10.100.100.1/24 # (5)!
+            profile: HIGH_MTU # (6)!
+            tags: [production, app_servers] # (7)!
+          - id: 101
+            name: Production_DB
+            ip_address_virtual: 10.100.101.1/24
+            profile: HIGH_MTU
+            tags: [production, app_servers]
+
+      - name: VRF_DEVELOPMENT
+        vrf_vni: 200
+        svis:
+          - id: 200
+            name: Dev_App1
+            enabled: true
+            ip_address_virtual: 10.200.100.1/24
+            tags: [development]
+
+    l2vlans: # (8)!
+      - id: 3401
+        name: L2_VLAN3401
+      - id: 3402
+        name: L2_VLAN3402

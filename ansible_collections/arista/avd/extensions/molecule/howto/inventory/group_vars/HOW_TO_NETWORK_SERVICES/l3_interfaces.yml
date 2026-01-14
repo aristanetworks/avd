@@ -1,0 +1,18 @@
+---
+tenants:
+  - name: TENANT1
+    vrfs:
+      - name: VRF10
+        l3_interfaces: # (1)!
+          - interfaces:
+              - Ethernet6
+              - Ethernet6
+            ip_addresses:
+              - 10.10.100.1/30
+              - 10.10.100.5/30
+            nodes:
+              - howto-l3-leaf1 # (2)!
+              - howto-l3-leaf2
+            description: External_Router_Connection
+            enabled: true
+            mtu: 9000

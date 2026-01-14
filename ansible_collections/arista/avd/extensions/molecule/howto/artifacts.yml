@@ -12,3 +12,20 @@
     - header: "interface Ethernet11"
   artifact: "ESXI-HOST-03.cfg"
   output_dir: "../../../../../../docs/howto/connected_endpoints/artifacts/"
+
+# Network Services artifacts
+- file: inventory/intended/configs/howto-l3-leaf1.cfg
+  sections:
+    - header: "vlan 100"
+    - header: "vlan 101"
+    - header: "vlan 200"
+    - header: "vlan 3401"
+    - header: "vlan 3402"
+    - header: "vrf instance VRF_PRODUCTION"
+    - header: "vrf instance VRF_DEVELOPMENT"
+    - header: "interface Vlan100"
+    - header: "interface Vlan101"
+    - header: "interface Vlan200"
+    - header: "interface Vxlan1"
+  artifact: "howto-l3-leaf1-services.cfg"
+  output_dir: "../../../../../../docs/howto/network_services/artifacts/"

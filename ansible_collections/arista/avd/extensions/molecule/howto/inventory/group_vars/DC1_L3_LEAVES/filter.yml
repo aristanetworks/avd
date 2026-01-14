@@ -1,0 +1,11 @@
+---
+l3leaf:
+  defaults:
+    filter: # (1)!
+      tenants:
+        - TENANT1 # (2)!
+      tags:
+        - all # (3)!
+      allow_vrfs:
+        - all # (4)!
+
