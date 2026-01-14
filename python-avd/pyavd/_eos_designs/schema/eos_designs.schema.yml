@@ -8114,7 +8114,7 @@ $defs:
                     description: 'IPv4_address/Mask.
 
                       Loopback IPv4 range, a unique ip is derived from this range
-                      and assigned to each l3 leaf based on it''s unique id.
+                      and assigned to each l3 leaf based on its unique id.
 
                       If any `pod` under `loopback_ip_pools` matches the `pod_name`
                       of the device, and is configured with an `ipv4_pool`, it takes
@@ -8129,7 +8129,7 @@ $defs:
                     description: 'IPv6_address/Mask.
 
                       Loopback IPv6 range, a unique IPv6 address is derived from this
-                      range and assigned to each L3 leaf based on it''s unique ID.
+                      range and assigned to each L3 leaf based on its unique ID.
 
                       If any `pod` under `loopback_ip_pools` matches the `pod_name`
                       of the device, and is configured with an `ipv6_pool`, it takes
@@ -8143,6 +8143,9 @@ $defs:
                     type: list
                     description: 'For inventories with multiple PODs a loopback range
                       can be set per POD to avoid overlaps.
+
+                      POD level pools take precedence over `loopback_ip_range` and
+                      `loopback_ipv6_range`.
 
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range`
                       or `loopback_ip_pools` are set.

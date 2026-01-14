@@ -59,3 +59,17 @@ tenants:
             tags: [opzone]
             enabled: true
             ip_address_virtual: 10.1.10.3/24
+      - name: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools
+        vrf_id: 24
+        vtep_diagnostic:
+          loopback: 400
+          loopback_ipv6_range: 2001:db8:2::/48
+          loopback_ip_pools:
+            - pod: TENANT_NETWORKS_POD
+              ipv4_pool: 10.101.103.0/24
+        svis:
+          - id: 320
+            name: Tenant_network_vrf_3
+            tags: [opzone]
+            enabled: true
+            ip_address_virtual: 10.1.10.4/24
