@@ -23,11 +23,9 @@ router general
 {%     set delimiter = false %}
 {%     if router_general.router_id.ipv4 is arista.avd.defined %}
    router-id ipv4 {{ router_general.router_id.ipv4 }}
-{%         set delimiter = true %}
 {%     endif %}
 {%     if router_general.router_id.ipv6 is arista.avd.defined %}
    router-id ipv6 {{ router_general.router_id.ipv6 }}
-{%         set delimiter = true %}
 {%     endif %}
 {%     if router_general.software_forwarding_hardware_offload_mtu is arista.avd.defined %}
    software forwarding hardware offload mtu {{ router_general.software_forwarding_hardware_offload_mtu }}
