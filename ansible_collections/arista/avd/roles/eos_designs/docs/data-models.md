@@ -189,7 +189,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/node-type-variables.md
 
 ### Configuration
 
-Node type settings are defined under the `node_type_keys.key` i.e `spine:`, `l3leaf:`, `l2leaf:` to configure management, underlay, overlay functionality.
+Node type settings are defined under the `node_type_keys.key` i.e `spine:`, `l3leaf:`, `l2leaf:`.
 
 #### Structure
 
@@ -679,10 +679,9 @@ vtep_loopback_interface:
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/type-setting.md
 --8<--
 
-#### Default assignment
+#### Auto assign
 
-Node types can be defined statically on each node or in each group of nodes.  By leveraging `default_node_types`, regular expressions can be used to determine the node type based
-on the hostname.
+By leveraging `default_node_types`, regular expressions can be used to determine the node type based on the hostname.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/default-node-types.md
