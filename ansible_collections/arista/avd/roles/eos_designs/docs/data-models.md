@@ -29,7 +29,7 @@ The data models are documented below in tables and YAML.
 
 ## Supported designs
 
-Arista AVD supports multiple network design types such as L3LS-EVPN with 3-stage, 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend Arista AVD to support your own topology by using [`node_type_keys`](#node-type-customization) to create your own node type.
+`eos_designs` supports multiple options such as L3LS-EVPN with 3-stage or 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](#customization) to create your own node type.
 
 ### 3-stage clos topology support (Leaf & Spine)
 
@@ -77,7 +77,7 @@ Any node group of 2 or more rr-routers will form a Route Reflector cluster.
 
 The MPLS design supports most fabric topology variables already supported by l3ls-evpn, barring the exceptions outlined below:
 
-- Connectivity is defined with the [`core_interfaces`](#core-interfaces-settings) settings instead of [Node type uplink](#node-type-uplink-management) settings.
+- Connectivity is defined with the [`core_interfaces`](#core-interfaces-settings) settings instead of [Node type uplink](#uplink-management) settings.
 - No MLAG support.
 - No VXLAN support.
 - EVPN overlay settings are set with `mpls_overlay_role` and `mpls_route_reflectors` instead of `evpn_role` and `evpn_route_servers`.
@@ -177,17 +177,151 @@ The pool manager stores data in a YAML file per fabric. The default path is `<ro
     It is possible to override the automatic assignments by editing the data files manually.
     Just make sure to have a backup or use source control like Git and rerun AVD after changing the file.
 
-## Node Type Variables
+## Node types
 
-The following tables provide information on the default node types that are pre-defined in AVD.
+The following tables provide information on the standard node types that are pre-defined in `eos_designs`.
 
-To customize or create new node types, please refer to [node type customization](#node-type-customization) section.
+To customize or create new node types, please refer to [node type customization](#customization) section.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/node-type-variables.md
 --8<--
 
-## Node type customization
+### Configuration
+
+Node type settings are defined under the `node_type_keys.key` i.e `spine:`, `l3leaf:`, `l2leaf:` to configure management, underlay, overlay functionality.
+
+#### Structure
+
+All node types have the same structure based on `defaults`, `node_group`, `node_group.node`, `node` and all variables can be defined in any section and support inheritance like this:
+
+Under `node_type_keys.key:`
+
+```bash
+defaults <- node_group <- node_group.node <- node
+```
+
+!!! tip
+    Define common node settings under defaults. This reduces user input requirements, limiting errors.
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-structure.md
+--8<--
+
+#### Common
+
+Define your nodes, id, management and common configuration elements.
+
+!!! tip
+    If a node is not deployed, leverage `is_deployed: false` to indicate the node as offline.
+
+!!! info
+    A static unique identifier (id) is assigned to each device. This is leveraged to derive the IP address assignment from each summary defined in the Fabric Underlay and Overlay Topology Variables.
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-common-configuration.md
+--8<--
+
+#### Inband management
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-inband-management-configuration.md
+--8<--
+
+#### Uplink management
+
+Connectivity is defined from the child's device perspective.
+Source uplink interfaces and parent interfaces are defined on the child.
+
+!!! tip
+    Leverage [`default_interfaces`](#default-interface-settings) data model to auto define uplink and downlink interfaces based on the node id.
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-uplink-configuration.md
+--8<--
+
+#### L2 and MLAG
+
+!!! tip
+    Alternate addressing schemes are available at [`fabric_ip_addressing`](#fabric-ip-addressing).
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l2-mlag-configuration.md
+--8<--
+
+#### Loopback and VTEP
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-loopback-vtep-configuration.md
+--8<--
+
+#### L3 interfaces
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l3-interfaces-configuration.md
+--8<--
+
+#### L3 port-channels
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l3-port-channels-configuration.md
+--8<--
+
+#### BGP
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-bgp-configuration.md
+--8<--
+
+#### Multicast
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-multicast.md
+--8<--
+
+#### Network services
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-services-configuration.md
+--8<--
+
+#### EVPN gateway
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-ipvpn-gateway-configuration.md
+--8<--
+
+#### EVPN multi-domain gateway
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-multi-domain-gateway-configuration.md
+--8<--
+
+#### ISIS
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-isis-configuration.md
+--8<--
+
+#### MPLS
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-mpls-configuration.md
+--8<--
+
+#### WAN
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-wan-configuration.md
+--8<--
+
+#### PTP
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-ptp-configuration.md
+--8<--
+
+### Customization
 
 AVD provides the capability to customize your node types, supporting a variety of designs.
 
@@ -392,7 +526,7 @@ AVD provides the capability to customize your node types, supporting a variety o
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-keys.md
 --8<--
 
-### Context for ip_addressing templates
+#### Context for ip_addressing templates
 
 To help calculate the custom IP addressing, the following contextual variables are available to the custom templates:
 
@@ -449,7 +583,7 @@ vtep_ip:
 - `{{ loopback_ipv4_offset }}`
 - All group/hostvars
 
-### Context for interface_descriptions templates
+#### Context for interface_descriptions templates
 
 To help format the custom interface descriptions, the following contextual variables are available to the custom templates:
 
@@ -509,13 +643,13 @@ vtep_loopback_interface:
 - `{{ vtep_loopback_description }}`
 - All group/hostvars
 
-## Type setting
+### Type setting
 
 - The `type:` variable needs to be defined for each device in the fabric.
 - This is leveraged to load the appropriate settings to generate the configuration.
 
 !!! tip
-    The node type setting can be automatically derived from a switch name by defining the patterns in the [`default_node_types`](#default-node-types-settings) data model.
+    The node type setting can be automatically derived from a switch name by defining the patterns in the [`default_node_types`](#default-assignment) data model.
 
 ??? example "Type setting example"
 
@@ -545,147 +679,13 @@ vtep_loopback_interface:
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/type-setting.md
 --8<--
 
-## Default node types settings
+#### Default assignment
 
 Node types can be defined statically on each node or in each group of nodes.  By leveraging `default_node_types`, regular expressions can be used to determine the node type based
 on the hostname.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/default-node-types.md
---8<--
-
-## Node type settings
-
-Node type settings are defined under the `node_type_keys.key` i.e `spine:`, `l3leaf:`, `l2leaf:` to configure management, underlay, overlay functionality.
-
-### Node type structure
-
-All node types have the same structure based on `defaults`, `node_group`, `node_group.node`, `node` and all variables can be defined in any section and support inheritance like this:
-
-Under `node_type_keys.key:`
-
-```bash
-defaults <- node_group <- node_group.node <- node
-```
-
-!!! tip
-    Define common node settings under defaults. This reduces user input requirements, limiting errors.
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-structure.md
---8<--
-
-### Node type common configuration
-
-Define your nodes, id, management and common configuration elements.
-
-!!! tip
-    If a node is not deployed, leverage `is_deployed: false` to indicate the node as offline.
-
-!!! info
-    A static unique identifier (id) is assigned to each device. This is leveraged to derive the IP address assignment from each summary defined in the Fabric Underlay and Overlay Topology Variables.
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-common-configuration.md
---8<--
-
-### Node type inband management
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-inband-management-configuration.md
---8<--
-
-### Node type uplink management
-
-Connectivity is defined from the child's device perspective.
-Source uplink interfaces and parent interfaces are defined on the child.
-
-!!! tip
-    Leverage [`default_interfaces`](#default-interface-settings) data model to auto define uplink and downlink interfaces based on the node id.
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-uplink-configuration.md
---8<--
-
-### Node type L2 and MLAG configuration
-
-!!! tip
-    Alternate addressing schemes are available at [`fabric_ip_addressing`](#fabric-ip-addressing).
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l2-mlag-configuration.md
---8<--
-
-### Node type Loopback and VTEP configuration
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-loopback-vtep-configuration.md
---8<--
-
-### Node type L3 interfaces configuration
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l3-interfaces-configuration.md
---8<--
-
-### Node type L3 port-channels configuration
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l3-port-channels-configuration.md
---8<--
-
-### Node type BGP configuration
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-bgp-configuration.md
---8<--
-
-### Node type Multicast configuration
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-multicast.md
---8<--
-
-### Node type network services configuration
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-services-configuration.md
---8<--
-
-### Node type EVPN gateway configuration
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-ipvpn-gateway-configuration.md
---8<--
-
-### Node type EVPN multi-domain gateway configuration
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-evpn-multi-domain-gateway-configuration.md
---8<--
-
-### Node type ISIS Configuration
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-isis-configuration.md
---8<--
-
-### Node type MPLS configuration
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-mpls-configuration.md
---8<--
-
-### Node type WAN configuration
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-wan-configuration.md
---8<--
-
-### Node type PTP configuration
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-ptp-configuration.md
 --8<--
 
 ## Default interface settings
@@ -1476,7 +1476,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/connected-endpoints
 The network services variables provide an abstracted model to define network services across the fabric.
 The network services are grouped by tenants. The definition of a tenant may vary between organizations. E.g. tenants can be organizations or departments.
 
-The filtering models defined under [Node type network services configuration](#node-type-network-services-configuration) allows
+The filtering models defined under [Node type network services configuration](#network-services) allows
 for granular deployment of network services to the fabric leveraging the tenant name and tags applied to the service definition.
 
 - This allows for the reuse of SVI/VLAN IDs across the fabric.
