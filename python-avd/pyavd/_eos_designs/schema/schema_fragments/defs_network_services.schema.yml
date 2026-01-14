@@ -540,6 +540,7 @@ $defs:
                     type: list
                     description: |
                       For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.
+                      POD level pools take precedence over `loopback_ip_range` and `loopback_ipv6_range`.
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
                     primary_key: pod
                     items:
