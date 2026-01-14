@@ -117,8 +117,8 @@ class MiscMixin(Protocol):
         if uplink_interface_candidates := range_expand(self.node_config.uplink_interfaces or self.cv_topology_config.uplink_interfaces):
             if len(uplink_interface_candidates) != len(self.uplink_switches):
                 msg = (
-                    f"Length of uplink_interfaces: {uplink_interface_candidates} does not match the length of uplink_switches: {self.uplink_switches} for host: "
-                    f"{self.hostname}."
+                    f"Length of uplink_interfaces: {uplink_interface_candidates} does not match the length of uplink_switches: {self.uplink_switches} for host:"
+                    f" {self.hostname}."
                 )
                 raise AristaAvdInvalidInputsError(msg)
             return uplink_interface_candidates
@@ -126,8 +126,8 @@ class MiscMixin(Protocol):
         uplink_interface_candidates = range_expand(self.default_interfaces.uplink_interfaces)
         if len(uplink_interface_candidates) < len(self.uplink_switches):
             msg = (
-                f"Length of default_interfaces.uplink_interfaces: {uplink_interface_candidates} is less than the length of uplink_switches: {self.uplink_switches} for host:"
-                f" {self.hostname}."
+                f"Length of default_interfaces.uplink_interfaces: {uplink_interface_candidates} is less than the length of uplink_switches: "
+                f"{self.uplink_switches} for host: {self.hostname}."
             )
             raise AristaAvdInvalidInputsError(msg)
 
