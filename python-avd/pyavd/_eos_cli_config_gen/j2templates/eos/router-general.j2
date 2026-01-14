@@ -23,9 +23,11 @@ router general
 {%     set delimiter = false %}
 {%     if router_general.router_id.ipv4 is arista.avd.defined %}
    router-id ipv4 {{ router_general.router_id.ipv4 }}
+{%         set delimiter = true %}
 {%     endif %}
 {%     if router_general.router_id.ipv6 is arista.avd.defined %}
    router-id ipv6 {{ router_general.router_id.ipv6 }}
+{%         set delimiter = true %}
 {%     endif %}
 {%     if router_general.software_forwarding_hardware_offload_mtu is arista.avd.defined %}
    software forwarding hardware offload mtu {{ router_general.software_forwarding_hardware_offload_mtu }}
@@ -41,7 +43,7 @@ router general
 {%     if delimiter is arista.avd.defined(true) and router_general.vrfs is arista.avd.defined %}
    !
 {%     endif %}
-{%     for vrf in router_general.vrfs | arista.avd.natural_sort(sort_key='name') %}
+{%     for vrf in router_general.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    vrf {{ vrf.name }}
 {%         if vrf.software_forwarding_hardware_offload_mtu is arista.avd.defined %}
       software forwarding hardware offload mtu {{ vrf.software_forwarding_hardware_offload_mtu }}
