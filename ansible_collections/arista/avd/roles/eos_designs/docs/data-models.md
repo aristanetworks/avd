@@ -1497,7 +1497,7 @@ The supported network services for each tenant cover:
 
 Typically services within each tenant share common VNI ranges and MAC VRF assignment pattern.
 
-The keys used to define network services are configurable using [`network_services_keys`](#network-services-keys-settings).
+The keys used to define network services are configurable using [`network_services_keys`](#network-services-keys).
 The default available keys is `tenants`.
 
 --8<--
