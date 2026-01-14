@@ -818,12 +818,6 @@ The following underlay routing protocols are supported:
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/fabric-settings.md
 --8<--
 
-## Management interface settings
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-interface-settings.md
---8<--
-
 ## BFD settings
 
 --8<--
