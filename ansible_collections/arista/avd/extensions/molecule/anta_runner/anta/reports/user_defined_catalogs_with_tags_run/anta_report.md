@@ -33,20 +33,20 @@
 
 ## 🧪 Test Results <a id="test-results"></a>
 
-| Device | Categories | Test | Description | Custom Field | Result | Messages |
-| :- | :- | :- | :- | :- | :- | :- |
-| dc1-leaf2a | VXLAN | VerifyVxlan1ConnSettings | Verifies Vxlan1 source interface and UDP port. | - | Unset | - |
-| dc1-leaf2a | VXLAN | VerifyVxlan1Interface | Verifies the Vxlan1 interface status. | - | Unset | - |
-| dc1-leaf2a | VXLAN | VerifyVxlanConfigSanity | Verifies there are no VXLAN config-sanity inconsistencies. | - | Unset | - |
-| dc1-leaf2a | VXLAN | VerifyVxlanVniBinding | Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface. | - | Unset | - |
-| dc1-leaf2a | VXLAN | VerifyVxlanVtep | Verifies Vxlan1 VTEP peers. | - | Unset | - |
-| dc2-leaf2a | VXLAN | VerifyVxlan1ConnSettings | Verifies Vxlan1 source interface and UDP port. | - | Unset | - |
-| dc2-leaf2a | VXLAN | VerifyVxlan1Interface | Verifies the Vxlan1 interface status. | - | Unset | - |
-| dc2-leaf2a | VXLAN | VerifyVxlanConfigSanity | Verifies there are no VXLAN config-sanity inconsistencies. | - | Unset | - |
-| dc2-leaf2a | VXLAN | VerifyVxlanVniBinding | Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface. | - | Unset | - |
-| dc2-leaf2a | VXLAN | VerifyVxlanVtep | Verifies Vxlan1 VTEP peers. | - | Unset | - |
-| dc2-leaf2b | VXLAN | VerifyVxlan1ConnSettings | Verifies Vxlan1 source interface and UDP port. | - | Unset | - |
-| dc2-leaf2b | VXLAN | VerifyVxlan1Interface | Verifies the Vxlan1 interface status. | - | Unset | - |
-| dc2-leaf2b | VXLAN | VerifyVxlanConfigSanity | Verifies there are no VXLAN config-sanity inconsistencies. | - | Unset | - |
-| dc2-leaf2b | VXLAN | VerifyVxlanVniBinding | Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface. | - | Unset | - |
-| dc2-leaf2b | VXLAN | VerifyVxlanVtep | Verifies Vxlan1 VTEP peers. | - | Unset | - |
+| Device | Categories | Test | Description | Result | Messages |
+| :- | :- | :- | :- | :- | :- |
+| dc1-leaf2a | VXLAN | VerifyVxlan1ConnSettings | Verifies Vxlan1 source interface and UDP port. | Unset | - |
+| dc1-leaf2a | VXLAN | VerifyVxlan1Interface | Verifies the Vxlan1 interface status. | Unset | - |
+| dc1-leaf2a | VXLAN | VerifyVxlanConfigSanity | Verifies there are no VXLAN config-sanity inconsistencies. | Unset | - |
+| dc1-leaf2a | VXLAN | VerifyVxlanVniBinding | Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface. | Unset | - |
+| dc1-leaf2a | VXLAN | VerifyVxlanVtep | Verifies Vxlan1 VTEP peers. | Unset | - |
+| dc2-leaf2a | VXLAN | VerifyVxlan1ConnSettings | Verifies Vxlan1 source interface and UDP port. | Unset | - |
+| dc2-leaf2a | VXLAN | VerifyVxlan1Interface | Verifies the Vxlan1 interface status. | Unset | - |
+| dc2-leaf2a | VXLAN | VerifyVxlanConfigSanity | Verifies there are no VXLAN config-sanity inconsistencies. | Unset | - |
+| dc2-leaf2a | VXLAN | VerifyVxlanVniBinding | Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface. | Unset | - |
+| dc2-leaf2a | VXLAN | VerifyVxlanVtep | Verifies Vxlan1 VTEP peers. | Unset | - |
+| dc2-leaf2b | VXLAN | VerifyVxlan1ConnSettings | Verifies Vxlan1 source interface and UDP port. | Unset | - |
+| dc2-leaf2b | VXLAN | VerifyVxlan1Interface | Verifies the Vxlan1 interface status. | Unset | - |
+| dc2-leaf2b | VXLAN | VerifyVxlanConfigSanity | Verifies there are no VXLAN config-sanity inconsistencies. | Unset | - |
+| dc2-leaf2b | VXLAN | VerifyVxlanVniBinding | Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface. | Unset | - |
+| dc2-leaf2b | VXLAN | VerifyVxlanVtep | Verifies Vxlan1 VTEP peers. | Unset | - |
