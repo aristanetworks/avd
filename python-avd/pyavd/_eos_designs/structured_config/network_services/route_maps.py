@@ -76,7 +76,6 @@ class RouteMapsMixin(Protocol):
             return
 
         self._evpn_export_vrf_default_route_map()
-        # self._bgp_underlay_peers_route_map()
         self._redistribute_connected_to_bgp_route_map()
         self._redistribute_static_to_bgp_route_map()
 
@@ -137,6 +136,8 @@ class RouteMapsMixin(Protocol):
         This should only be called when any one of self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"],
         self.shared_utils.is_wan_router is true.
         """
+        # Set prefix-lists from EVPN services in VRF "default" (if any)
+        self._set_prefix_lists_vrf_default()
         sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
         if self.shared_utils.is_wan_router:
             sequence_numbers.append_new(
@@ -175,6 +176,7 @@ class RouteMapsMixin(Protocol):
         if self.shared_utils.is_wan_router:
             return
 
+        self._set_prefix_lists_vrf_default()
         sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
 
         if self._vrf_default_ipv4_subnets:

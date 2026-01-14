@@ -29,9 +29,6 @@ class PrefixListsMixin(Protocol):
 
         Covers EVPN services in VRF "default" and redistribution of connected to BGP
         """
-        # Set prefix-lists from EVPN services in VRF "default" (if any)
-        self._set_prefix_lists_vrf_default()
-
         # Add prefix-list for VRFs where MLAG iBGP peering should not be redistributed
         if mlag_prefixes := self._mlag_ibgp_peering_subnets_without_redistribution:
             sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()

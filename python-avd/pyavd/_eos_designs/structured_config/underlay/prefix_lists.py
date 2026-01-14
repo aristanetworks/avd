@@ -65,7 +65,12 @@ class PrefixListsMixin(Protocol):
             self.structured_config.prefix_lists.append_new(name="PL-LOOPBACKS-PIM-RP", sequence_numbers=sequence_numbers)
 
         # For now only configure it with eBGP towards LAN.
-        if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha and self.shared_utils.underlay_routing_protocol == "ebgp":
+        if (
+            self.shared_utils.wan_ha
+            and self.shared_utils.use_uplinks_for_wan_ha
+            and self.shared_utils.underlay_routing_protocol == "ebgp"
+            and self.structured_config.router_bgp.peer_groups.get(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
+        ):
             if self.shared_utils.wan_ha_ip_addresses:
                 sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
                 for index, ip_address in enumerate(self.shared_utils.wan_ha_ip_addresses, start=1):
