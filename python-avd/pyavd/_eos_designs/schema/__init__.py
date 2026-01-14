@@ -7838,8 +7838,11 @@ class EosDesigns(EosDesignsRootModel):
             """
             By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
             relevant SVI, which is the recommended behaviour.
-            This can be set manually if required, for example,
-            to a value of "10.1.2.3".
+            This value can be set manually if required:
+            -
+            'router_id' will use the device router ID as the source IP.
+            - Any other value must be a valid IPv4
+            address and will be used directly.
             """
             mode: Mode
             """Default value: `"boundary"`"""
@@ -7920,8 +7923,11 @@ class EosDesigns(EosDesignsRootModel):
                         source_ip:
                            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                            relevant SVI, which is the recommended behaviour.
-                           This can be set manually if required, for example,
-                           to a value of "10.1.2.3".
+                           This value can be set manually if required:
+                           -
+                           'router_id' will use the device router ID as the source IP.
+                           - Any other value must be a valid IPv4
+                           address and will be used directly.
                         mode: mode
                         mode_one_step: mode_one_step
                         ttl: ttl
@@ -12894,8 +12900,11 @@ class EosDesigns(EosDesignsRootModel):
             """
             By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
             relevant SVI, which is the recommended behaviour.
-            This can be set manually if required, for example,
-            to a value of "10.1.2.3".
+            This value can be set manually if required:
+            -
+            'router_id' will use the device router ID as the source IP.
+            - Any other value must be a valid IPv4
+            address and will be used directly.
             """
             mode: Mode
             """Default value: `"boundary"`"""
@@ -12976,8 +12985,11 @@ class EosDesigns(EosDesignsRootModel):
                         source_ip:
                            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                            relevant SVI, which is the recommended behaviour.
-                           This can be set manually if required, for example,
-                           to a value of "10.1.2.3".
+                           This value can be set manually if required:
+                           -
+                           'router_id' will use the device router ID as the source IP.
+                           - Any other value must be a valid IPv4
+                           address and will be used directly.
                         mode: mode
                         mode_one_step: mode_one_step
                         ttl: ttl
@@ -35979,8 +35991,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        -
+                        'router_id' will use the device router ID as the source IP.
+                        - Any other value must be a valid IPv4
+                        address and will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -36061,8 +36076,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       -
+                                       'router_id' will use the device router ID as the source IP.
+                                       - Any other value must be a valid IPv4
+                                       address and will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -41011,8 +41029,11 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                             relevant SVI, which is the recommended behaviour.
-                            This can be set manually if required, for example,
-                            to a value of "10.1.2.3".
+                            This value can be set manually if required:
+                            -
+                            'router_id' will use the device router ID as the source IP.
+                            - Any other value must be a valid IPv4
+                            address and will be used directly.
                             """
                             mode: Mode
                             """Default value: `"boundary"`"""
@@ -41093,8 +41114,11 @@ class EosDesigns(EosDesignsRootModel):
                                         source_ip:
                                            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                            relevant SVI, which is the recommended behaviour.
-                                           This can be set manually if required, for example,
-                                           to a value of "10.1.2.3".
+                                           This value can be set manually if required:
+                                           -
+                                           'router_id' will use the device router ID as the source IP.
+                                           - Any other value must be a valid IPv4
+                                           address and will be used directly.
                                         mode: mode
                                         mode_one_step: mode_one_step
                                         ttl: ttl
@@ -46000,8 +46024,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        -
+                        'router_id' will use the device router ID as the source IP.
+                        - Any other value must be a valid IPv4
+                        address and will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -46082,8 +46109,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       -
+                                       'router_id' will use the device router ID as the source IP.
+                                       - Any other value must be a valid IPv4
+                                       address and will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -51055,8 +51085,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        -
+                        'router_id' will use the device router ID as the source IP.
+                        - Any other value must be a valid IPv4
+                        address and will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -51137,8 +51170,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       -
+                                       'router_id' will use the device router ID as the source IP.
+                                       - Any other value must be a valid IPv4
+                                       address and will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -68369,8 +68405,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        -
+                        'router_id' will use the device router ID as the source IP.
+                        - Any other value must be a valid IPv4
+                        address and will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -68451,8 +68490,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       -
+                                       'router_id' will use the device router ID as the source IP.
+                                       - Any other value must be a valid IPv4
+                                       address and will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -73401,8 +73443,11 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                             relevant SVI, which is the recommended behaviour.
-                            This can be set manually if required, for example,
-                            to a value of "10.1.2.3".
+                            This value can be set manually if required:
+                            -
+                            'router_id' will use the device router ID as the source IP.
+                            - Any other value must be a valid IPv4
+                            address and will be used directly.
                             """
                             mode: Mode
                             """Default value: `"boundary"`"""
@@ -73483,8 +73528,11 @@ class EosDesigns(EosDesignsRootModel):
                                         source_ip:
                                            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                            relevant SVI, which is the recommended behaviour.
-                                           This can be set manually if required, for example,
-                                           to a value of "10.1.2.3".
+                                           This value can be set manually if required:
+                                           -
+                                           'router_id' will use the device router ID as the source IP.
+                                           - Any other value must be a valid IPv4
+                                           address and will be used directly.
                                         mode: mode
                                         mode_one_step: mode_one_step
                                         ttl: ttl
@@ -78390,8 +78438,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        -
+                        'router_id' will use the device router ID as the source IP.
+                        - Any other value must be a valid IPv4
+                        address and will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -78472,8 +78523,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       -
+                                       'router_id' will use the device router ID as the source IP.
+                                       - Any other value must be a valid IPv4
+                                       address and will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -83445,8 +83499,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        -
+                        'router_id' will use the device router ID as the source IP.
+                        - Any other value must be a valid IPv4
+                        address and will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -83527,8 +83584,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       -
+                                       'router_id' will use the device router ID as the source IP.
+                                       - Any other value must be a valid IPv4
+                                       address and will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
