@@ -81,10 +81,8 @@ router adaptive-virtual-topology
 {%         if vrf.policy is arista.avd.defined %}
       avt policy {{ vrf.policy }}
 {%         endif %}
-{%         for profile in vrf.profiles | arista.avd.natural_sort(sort_key='id') %}
-{%             if profile.name is arista.avd.defined and profile.id is arista.avd.defined %}
+{%         for profile in vrf.profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
       avt profile {{ profile.name }} id {{ profile.id }}
-{%             endif %}
 {%         endfor %}
 {%     endfor %}
 {% endif %}

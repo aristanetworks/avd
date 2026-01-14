@@ -37696,12 +37696,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Action: TypeAlias = Literal["permit", "deny"]
             _fields: ClassVar[dict] = {"sequence": {"type": int}, "action": {"type": str}, "mode": {"type": str}, "command": {"type": str}}
-            sequence: int | None
+            sequence: int
             """Sequence number."""
-            action: Action | None
+            action: Action
             mode: str | None
             """"config", "config-all", "exec" or mode key as string."""
-            command: str | None
+            command: str
             """Command as string."""
 
             if TYPE_CHECKING:
@@ -37709,10 +37709,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    sequence: int | None | UndefinedType = Undefined,
-                    action: Action | None | UndefinedType = Undefined,
+                    sequence: int | UndefinedType = Undefined,
+                    action: Action | UndefinedType = Undefined,
                     mode: str | None | UndefinedType = Undefined,
-                    command: str | None | UndefinedType = Undefined,
+                    command: str | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SequenceNumbersItem.
@@ -37728,8 +37728,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class SequenceNumbers(AvdList[SequenceNumbersItem]):
-            """Subclass of AvdList with `SequenceNumbersItem` items."""
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
+            """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
+
+            _primary_key: ClassVar[str] = "sequence"
 
         SequenceNumbers._item_type = SequenceNumbersItem
 
@@ -37737,7 +37739,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         name: str
         """Role name."""
         sequence_numbers: SequenceNumbers
-        """Subclass of AvdList with `SequenceNumbersItem` items."""
+        """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
 
         if TYPE_CHECKING:
 
@@ -37750,7 +37752,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     name: Role name.
-                    sequence_numbers: Subclass of AvdList with `SequenceNumbersItem` items.
+                    sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
 
                 """
 
@@ -38216,15 +38218,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ProfilesItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"id": {"type": int}, "name": {"type": str}}
+                _fields: ClassVar[dict] = {"name": {"type": str}, "id": {"type": int}}
+                name: str
+                """Unique AVT profile name per VRF."""
                 id: int
-                """Unique ID for this AVT (per VRF)."""
-                name: str | None
-                """AVT profile name."""
+                """ID for this AVT (per VRF)."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, id: int | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, id: int | UndefinedType = Undefined) -> None:
                         """
                         ProfilesItem.
 
@@ -38232,15 +38234,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            id: Unique ID for this AVT (per VRF).
-                            name: AVT profile name.
+                            name: Unique AVT profile name per VRF.
+                            id: ID for this AVT (per VRF).
 
                         """
 
-            class Profiles(AvdIndexedList[int, ProfilesItem]):
-                """Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `id` (`int`)."""
+            class Profiles(AvdIndexedList[str, ProfilesItem]):
+                """Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`)."""
 
-                _primary_key: ClassVar[str] = "id"
+                _primary_key: ClassVar[str] = "name"
 
             Profiles._item_type = ProfilesItem
 
@@ -38253,8 +38255,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             AVT profiles in this VRF.
 
-            Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `id`
-            (`int`).
+            Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is
+            `name` (`str`).
             """
 
             if TYPE_CHECKING:
@@ -38278,8 +38280,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         profiles:
                            AVT profiles in this VRF.
 
-                           Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `id`
-                           (`int`).
+                           Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is
+                           `name` (`str`).
 
                     """
 

@@ -14499,6 +14499,7 @@ keys:
           description: Role name.
         sequence_numbers:
           type: list
+          primary_key: sequence
           items:
             type: dict
             keys:
@@ -14509,6 +14510,7 @@ keys:
                 description: Sequence number.
               action:
                 type: str
+                required: true
                 valid_values:
                 - permit
                 - deny
@@ -14519,6 +14521,7 @@ keys:
                   '
               command:
                 type: str
+                required: true
                 description: Command as string.
   route_maps:
     type: list
@@ -14756,17 +14759,17 @@ keys:
               description: AVT Policy name.
             profiles:
               type: list
-              primary_key: id
+              primary_key: name
               description: AVT profiles in this VRF.
               items:
                 type: dict
                 keys:
                   name:
                     type: str
-                    description: AVT profile name.
+                    description: Unique AVT profile name per VRF.
                   id:
                     type: int
-                    description: Unique ID for this AVT (per VRF).
+                    description: ID for this AVT (per VRF).
                     required: true
                     convert_types:
                     - str

@@ -779,8 +779,8 @@ router adaptive-virtual-topology
    !
    vrf default
       avt policy DEFAULT-POLICY-WITH-CP
-      avt profile DEFAULT-POLICY-DEFAULT id 1
       avt profile DEFAULT-POLICY-CONTROL-PLANE id 254
+      avt profile DEFAULT-POLICY-DEFAULT id 1
 ```
 
 ### Router Traffic-Engineering
