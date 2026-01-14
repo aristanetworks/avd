@@ -97,11 +97,6 @@ tenants:
         vtep_diagnostic:
           loopback: 100
           loopback_ip_range: 10.100.0.0/24
-          # If loopback_ip_pools and pod_name are defined then loopback_ip_pools takes precedence
-          # issue: https://github.com/aristanetworks/avd/issues/5010
-          # loopback_ip_pools:
-          #   - pod: DC1_POD1
-          #     ipv4_pool: 10.101.101.0/24
         svis:
           - id: 1100
             name: test_svi
