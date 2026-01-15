@@ -10,12 +10,12 @@ router multicast
 {%     if router_multicast.ipv4 is arista.avd.defined %}
    ipv4
 {%         for rpf_route in router_multicast.ipv4.rpf.routes | arista.avd.natural_sort('source_prefix') %}
-{%             set dest_with_dis = rpf_route.destinations | selectattr('distance', 'arista.avd.defined') | list %}
-{%             set default_dest = rpf_route.destinations | rejectattr('distance', 'arista.avd.defined') | list %}
-{%             for destination in default_dest | arista.avd.natural_sort(sort_key='nexthop') %}
+{%             set dest_with_dis = rpf_route.destinations | arista.avd.natural_sort(sort_key='nexthop') | selectattr('distance', 'arista.avd.defined') | list %}
+{%             set default_dest = rpf_route.destinations | arista.avd.natural_sort(sort_key='nexthop') | rejectattr('distance', 'arista.avd.defined') | list %}
+{%             for destination in default_dest %}
       rpf route {{ rpf_route.source_prefix }} {{ destination.nexthop }}
 {%             endfor %}
-{%             for destination in dest_with_dis | arista.avd.natural_sort(sort_key='nexthop') %}
+{%             for destination in dest_with_dis %}
       rpf route {{ rpf_route.source_prefix }} {{ destination.nexthop }} {{ destination.distance }}
 {%             endfor %}
 {%         endfor %}
