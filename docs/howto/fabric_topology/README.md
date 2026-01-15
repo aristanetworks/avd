@@ -64,7 +64,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FA
 
 Automatically assign interfaces based on node type and platform, eliminating repetitive per-node definitions:
 
-```yaml title="group_vars/FABRIC_TOPOLOGY/default_interfaces.yml"
+```yaml title="default_interfaces.yml"
 --8<--
 ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC_TOPOLOGY/default_interfaces.yml
 --8<--
@@ -72,14 +72,15 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FA
 
 1. Define interface mappings per node type and platform
 2. Spine downlink interfaces connect to leaves
-3. Leaf uplink interfaces connect to spines
-4. MLAG peer-link interfaces for leaf redundancy
+3. You can define different default interfaces for different platforms
+4. Leaf uplink interfaces connect to spines
+5. MLAG peer-link interfaces for leaf redundancy
 
 ### Spine Configuration
 
 Spines are the core of the fabric, providing connectivity between all leaves:
 
-```yaml title="group_vars/FABRIC_TOPOLOGY/spines.yml"
+```yaml title="spines.yml"
 --8<--
 ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC_TOPOLOGY/spines.yml
 --8<--
@@ -96,7 +97,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FA
 
 L3 leaves provide network services (VLANs, VRFs, SVIs) and connect to endpoints:
 
-```yaml title="group_vars/FABRIC_TOPOLOGY/l3_leaves.yml"
+```yaml title="l3_leaves.yml"
 --8<--
 ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC_TOPOLOGY/l3_leaves.yml
 --8<--
@@ -161,26 +162,6 @@ AVD supports flexible interface range notation:
 - `Ethernet1-4` expands to Ethernet1, Ethernet2, Ethernet3, Ethernet4
 - `Ethernet49-52/1` expands to Ethernet49/1, Ethernet50/1, Ethernet51/1, Ethernet52/1
 - `[Ethernet1, Ethernet2]` explicit list of interfaces
-
-### Platform-Specific Defaults
-
-You can define different default interfaces for different platforms:
-
-```yaml
-default_interfaces:
-  - types: [l3leaf]
-    platforms: [7280R3]
-    uplink_interfaces: [Ethernet49-52/1]
-    mlag_interfaces: [Ethernet53-54/1]
-  - types: [l3leaf]
-    platforms: [vEOS-lab, cEOS]
-    uplink_interfaces: [Ethernet1-2]
-    mlag_interfaces: [Ethernet3-4]
-  - types: [l3leaf]
-    platforms: [default]  # Fallback for unmatched platforms
-    uplink_interfaces: [Ethernet1-2]
-    mlag_interfaces: [Ethernet3-4]
-```
 
 ## Uplink Configuration
 
