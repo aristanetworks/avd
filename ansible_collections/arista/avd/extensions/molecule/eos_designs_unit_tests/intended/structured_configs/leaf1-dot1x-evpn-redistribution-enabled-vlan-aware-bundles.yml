@@ -9,11 +9,6 @@ dot1x:
   protocol_lldp_bypass: true
   protocol_bpdu_bypass: true
   dynamic_authorization: true
-  radius_av_pair_username_format:
-    delimiter: none
-    mac_string_case: lowercase
-  radius_av_pair:
-    service_type: true
 enable_password:
   disabled: true
 hostname: leaf1-dot1x-evpn-redistribution-enabled-vlan-aware-bundles

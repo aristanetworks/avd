@@ -90,8 +90,9 @@ class Dot1xMixin(Protocol):
             protocol_bpdu_bypass=dot1x_settings.bypass_bpdu,
             protocol_lldp_bypass=dot1x_settings.bypass_lldp,
             dynamic_authorization=dot1x_settings.dynamic_authorization.enabled,
-            radius_av_pair=EosCliConfigGen.Dot1x.RadiusAvPair(service_type=dot1x_settings.radius_av_pairs.service_type),
         )
+        if dot1x_settings.radius_av_pairs.service_type is True:
+            self.structured_config.dot1x.radius_av_pair.service_type = True
         if dot1x_settings.mac_based_authentication.username_format:
             self.structured_config.dot1x.radius_av_pair_username_format = EosCliConfigGen.Dot1x.RadiusAvPairUsernameFormat(
                 delimiter=dot1x_settings.mac_based_authentication.username_format.delimiter,
