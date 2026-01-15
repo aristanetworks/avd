@@ -3856,8 +3856,8 @@ load-balance cluster
 
 Note that when multiple profiles are assigned, then the monitor is triggered when the conditions in any of the profiles is met.
 
-- LFP3
 - LFP1
+- LFP3
 
 ### Monitor Link Flap Device Configuration
 
@@ -3868,6 +3868,7 @@ monitor link-flap policy
       penalty threshold reuse 2 suppression 100 maximum 5
       penalty mac fault local 5
       penalty mac fault remote 10
+      penalty decay half-life 5 seconds
    !
    profile LFP3 damping
    !
