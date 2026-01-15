@@ -229,7 +229,7 @@ class ActionModule(ActionBase):
         except Exception as error:
             # Recast errors as AnsibleActionFail
             msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from None
+            raise AnsibleActionFail(msg)
         finally:
             # Stop the logging queue listener
             listener.stop()
