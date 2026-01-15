@@ -1233,6 +1233,8 @@ keys:
                         convert_types:
                           - str
                         required: true
+                        min: 0
+                        max: 1000
             tap:
               type: dict
               $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/switchport/keys/tap"
