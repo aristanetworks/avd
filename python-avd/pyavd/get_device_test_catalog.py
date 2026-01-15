@@ -3,11 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from dataclasses import asdict
 from logging import getLogger
-from time import perf_counter
 from typing import TYPE_CHECKING
-
-from pyavd._utils import get
 
 if TYPE_CHECKING:
     from ._anta.lib import AntaCatalog
@@ -48,58 +46,22 @@ def get_device_test_catalog(
         The generated ANTA catalog for the device.
     """
     from ._anta.factories import create_catalog  # noqa: PLC0415
-    from ._anta.index import AVD_TEST_INDEX, AVD_TEST_NAMES  # noqa: PLC0415
-    from ._anta.lib import AntaCatalog  # noqa: PLC0415
-    from ._anta.utils import dump_anta_catalog  # noqa: PLC0415
+    from ._anta.models import InputFactoryDataSource  # noqa: PLC0415
+    from ._anta.utils import dump_anta_catalog, get_filtered_test_specs  # noqa: PLC0415
+    from ._eos_cli_config_gen.schema import EosCliConfigGen  # noqa: PLC0415
     from .api._anta import AvdCatalogGenerationSettings  # noqa: PLC0415
 
     settings = settings or AvdCatalogGenerationSettings()
 
-    start_time = perf_counter()
-    LOGGER.debug("<%s> Generating ANTA catalog with settings: %s", hostname, settings.model_dump(mode="json"))
+    LOGGER.debug("<%s> Generating ANTA catalog with settings: %s", hostname, asdict(settings))
 
-    if settings.ignore_is_deployed is False and not get(structured_config, "metadata.is_deployed", default=False):
-        LOGGER.info("<%s> Device is not deployed, returning an empty catalog", hostname)
-        return AntaCatalog()
+    data_source = InputFactoryDataSource(hostname, EosCliConfigGen._load(structured_config), fabric_data, settings)
 
-    # Check for invalid test names across all filters
-    invalid_tests = {
-        "run_tests": set(settings.run_tests) - set(AVD_TEST_NAMES),
-        "skip_tests": set(settings.skip_tests) - set(AVD_TEST_NAMES),
-    }
+    final_test_specs = get_filtered_test_specs(settings)
 
-    for filter_type, invalid_names in invalid_tests.items():
-        if invalid_names:
-            msg = f"Invalid test names in {filter_type}: {', '.join(invalid_names)}"
-            raise ValueError(msg)
-
-    # Remove any tests from run_tests that are in skip_tests
-    if settings.run_tests and settings.skip_tests:
-        settings.run_tests = [test for test in settings.run_tests if test not in settings.skip_tests]
-        LOGGER.debug("<%s> Cleaned up run_tests after removing skipped tests: %s", hostname, settings.run_tests)
-
-    # Filter test specs based on skip_tests and run_tests
-    filtered_test_specs = []
-
-    for test in AVD_TEST_INDEX:
-        # Skip tests explicitly mentioned in skip_tests
-        if test.test_class.name in settings.skip_tests:
-            continue
-        # If run_tests is specified, only include tests in that set
-        if settings.run_tests and test.test_class.name not in settings.run_tests:
-            continue
-
-        filtered_test_specs.append(test)
-
-    # Add custom test specs, avoiding duplicates
-    filtered_test_specs.extend([test for test in settings.custom_test_specs if test not in filtered_test_specs])
-
-    catalog = create_catalog(hostname, structured_config, fabric_data, settings, filtered_test_specs)
+    catalog = create_catalog(data_source, final_test_specs)
 
     if settings.output_dir:
         dump_anta_catalog(hostname, catalog, settings.output_dir)
-
-    stop_time = perf_counter()
-    LOGGER.debug("<%s> Generated ANTA catalog in %.4f seconds", hostname, stop_time - start_time)
 
     return catalog
