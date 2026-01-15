@@ -17,7 +17,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet19
+  description: P2P_LINK_Ethernet1_TO_DC1-SPINE1_Ethernet19
   shutdown: false
   speed: forced 40gfull
   mtu: 1500
