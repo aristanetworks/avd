@@ -1,0 +1,24 @@
+type: l3leaf
+cv_settings:
+  cvaas:
+    enabled: true
+    clusters:
+      - name: cvaas-oob  # Name with dash
+        vrf: use_mgmt_interface_vrf
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: 192.168.200.5
+    - name: 2001:db8::3
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    vtep_loopback: Loopback1
+  nodes:
+    - name: missing-dns-settings-when-cv-server-set-as-dns-name-cvaas
+      id: 3
+      bgp_as: 65101
+
+expected_error_message: >-
+  'dns_settings' must be configured when 'cv_settings.cvaas.clusters[]' are defined with 'cv_settings.cvaas.enabled: true'.
