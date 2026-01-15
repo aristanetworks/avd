@@ -12134,10 +12134,6 @@ mac access-list TEST5
 !
 vrf instance BLAH
 !
-vrf instance defauls
-!
-vrf instance defaulu
-!
 vrf instance MGMT
 !
 vrf instance TENANT_A_PROJECT01
@@ -12147,6 +12143,10 @@ vrf instance TENANT_A_PROJECT02
 vrf instance TEST1
 !
 vrf instance TEST2
+!
+vrf instance defauls
+!
+vrf instance defaulu
 ```
 
 ## Virtual Source NAT
