@@ -36,8 +36,8 @@ monitor link-flap policy
       penalty mac fault {{ fault.location }} {{ fault.penalty }}
 {%             endfor %}
 {%         endif %}
-{%         if profile.decay is arista.avd.defined %}
-      penalty decay half-life {{ profile.decay.half_life }} {{ profile.decay.units }}
+{%         if profile.damping_penalty.decay is arista.avd.defined %}
+      penalty decay half-life {{ profile.damping_penalty.decay.half_life }} {{ profile.damping_penalty.decay.units }}
 {%         endif %}
 {%         if not loop.last %}
    !
