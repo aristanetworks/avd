@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>dot1x</samp>](## "dot1x") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;system_auth_control</samp>](## "dot1x.system_auth_control") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;protocol_lldp_bypass</samp>](## "dot1x.protocol_lldp_bypass") | Boolean |  |  |  | Allow LLDP packets to be processed even if the port is not authenticated. |
+    | [<samp>&nbsp;&nbsp;protocol_lldp_bypass</samp>](## "dot1x.protocol_lldp_bypass") | Boolean |  |  |  | Allow LLDP packets to be processed even if the port is not authorized. |
     | [<samp>&nbsp;&nbsp;protocol_bpdu_bypass</samp>](## "dot1x.protocol_bpdu_bypass") | Boolean |  |  |  | Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection. |
     | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "dot1x.dynamic_authorization") | Boolean |  |  |  | Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to adjust an active client session. |
     | [<samp>&nbsp;&nbsp;statistics_packets_dropped</samp>](## "dot1x.statistics_packets_dropped") | Boolean |  |  |  | Enable the 802.1X port authentication dropped data packet statistics. |
@@ -92,7 +92,7 @@
     dot1x:
       system_auth_control: <bool>
 
-      # Allow LLDP packets to be processed even if the port is not authenticated.
+      # Allow LLDP packets to be processed even if the port is not authorized.
       protocol_lldp_bypass: <bool>
 
       # Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.

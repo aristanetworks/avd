@@ -2058,7 +2058,7 @@ keys:
         default: false
         description: 'Globally enable 802.1X port authentication on the switch.
 
-          Must be set for 802.1X to be active on any interface.'
+          Must be true for 802.1X to be active on any interface.'
       authentication:
         type: dict
         keys:
@@ -2071,7 +2071,7 @@ keys:
 
               The order of the list defines the server group priority.
 
-              Each group name must also be defined on at least one server under `aaa_settings.radius.servers`.'
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.'
             items:
               type: str
               description: RADIUS server group name.
@@ -2100,14 +2100,14 @@ keys:
 
               The order of the list defines the server group priority.
 
-              Each group name must also be defined on at least one server under `aaa_settings.radius.servers`.'
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.'
             items:
               type: str
               description: RADIUS server group name.
           multicast:
             type: bool
             default: false
-            description: Send Accounting-Request packets to all servers in a RADIUS
+            description: Send Accounting-Request messages to all servers in a RADIUS
               group at the same time.
           syslog:
             type: bool
@@ -2136,30 +2136,42 @@ keys:
 
               The order of the list defines the server group priority.
 
-              Each group name must also be defined on at least one server under `aaa_settings.radius.servers`.'
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.'
             items:
               type: str
               description: RADIUS server group name.
       mac_based_authentication:
         type: dict
         keys:
-          username_delimiter:
-            type: str
-            default: none
-            description: RADIUS User-Name attribute delimiter to use on the MAC address.
-            valid_values:
-            - colon
-            - hyphen
-            - none
-            - period
-          username_letter_case:
-            type: str
-            default: lowercase
-            description: RADIUS User-Name attribute letter case to use on the MAC
-              address.
-            valid_values:
-            - lowercase
-            - uppercase
+          username_format:
+            type: dict
+            keys:
+              delimiter:
+                type: str
+                description: RADIUS User-Name attribute delimiter to use on the MAC
+                  address.
+                required: true
+                valid_values:
+                - colon
+                - hyphen
+                - none
+                - period
+              letter_case:
+                type: str
+                description: RADIUS User-Name attribute letter case to use on the
+                  MAC address.
+                required: true
+                valid_values:
+                - lowercase
+                - uppercase
+      radius_av_pairs:
+        type: dict
+        keys:
+          service_type:
+            type: bool
+            default: false
+            description: Send RADIUS Service-Type attribute in Access-Request and
+              Accounting messages.
       redistribute_in_evpn:
         type: bool
         default: true

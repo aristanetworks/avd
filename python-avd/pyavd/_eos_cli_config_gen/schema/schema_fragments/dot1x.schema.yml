@@ -14,7 +14,7 @@ keys:
         type: bool
       protocol_lldp_bypass:
         type: bool
-        description: Allow LLDP packets to be processed even if the port is not authenticated.
+        description: Allow LLDP packets to be processed even if the port is not authorized.
       protocol_bpdu_bypass:
         type: bool
         description: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.

@@ -16949,9 +16949,7 @@ class EosDesigns(EosDesignsRootModel):
             provided, all defined RADIUS hosts are used.
             The order of the list defines the server group
             priority.
-            Each group name must also be defined on at least one server under
-            `aaa_settings.radius.servers`.
-
+            Each group name must also be defined on any server under `aaa_settings.radius.servers`.
             Subclass of AvdList with `str` items.
             """
 
@@ -16970,9 +16968,7 @@ class EosDesigns(EosDesignsRootModel):
                            provided, all defined RADIUS hosts are used.
                            The order of the list defines the server group
                            priority.
-                           Each group name must also be defined on at least one server under
-                           `aaa_settings.radius.servers`.
-
+                           Each group name must also be defined on any server under `aaa_settings.radius.servers`.
                            Subclass of AvdList with `str` items.
 
                     """
@@ -17014,14 +17010,14 @@ class EosDesigns(EosDesignsRootModel):
             defined RADIUS hosts are used.
             The order of the list defines the server group priority.
             Each group
-            name must also be defined on at least one server under `aaa_settings.radius.servers`.
+            name must also be defined on any server under `aaa_settings.radius.servers`.
 
-            Subclass of
-            AvdList with `str` items.
+            Subclass of AvdList
+            with `str` items.
             """
             multicast: bool
             """
-            Send Accounting-Request packets to all servers in a RADIUS group at the same time.
+            Send Accounting-Request messages to all servers in a RADIUS group at the same time.
 
             Default value: `False`
             """
@@ -17060,11 +17056,11 @@ class EosDesigns(EosDesignsRootModel):
                            defined RADIUS hosts are used.
                            The order of the list defines the server group priority.
                            Each group
-                           name must also be defined on at least one server under `aaa_settings.radius.servers`.
+                           name must also be defined on any server under `aaa_settings.radius.servers`.
 
-                           Subclass of
-                           AvdList with `str` items.
-                        multicast: Send Accounting-Request packets to all servers in a RADIUS group at the same time.
+                           Subclass of AvdList
+                           with `str` items.
+                        multicast: Send Accounting-Request messages to all servers in a RADIUS group at the same time.
                         syslog: Log all accounting messages to syslog if all RADIUS servers are unavailable or unresponsive.
 
                     """
@@ -17090,8 +17086,8 @@ class EosDesigns(EosDesignsRootModel):
             List of additional RADIUS server groups for dynamic authorization purposes only.
             The order of the
             list defines the server group priority.
-            Each group name must also be defined on at least one server
-            under `aaa_settings.radius.servers`.
+            Each group name must also be defined on any server under
+            `aaa_settings.radius.servers`.
 
             Subclass of AvdList with `str` items.
             """
@@ -17113,8 +17109,8 @@ class EosDesigns(EosDesignsRootModel):
                            List of additional RADIUS server groups for dynamic authorization purposes only.
                            The order of the
                            list defines the server group priority.
-                           Each group name must also be defined on at least one server
-                           under `aaa_settings.radius.servers`.
+                           Each group name must also be defined on any server under
+                           `aaa_settings.radius.servers`.
 
                            Subclass of AvdList with `str` items.
 
@@ -17123,30 +17119,39 @@ class EosDesigns(EosDesignsRootModel):
         class MacBasedAuthentication(AvdModel):
             """Subclass of AvdModel."""
 
-            UsernameDelimiter: TypeAlias = Literal["colon", "hyphen", "none", "period"]
-            UsernameLetterCase: TypeAlias = Literal["lowercase", "uppercase"]
-            _fields: ClassVar[dict] = {"username_delimiter": {"type": str, "default": "none"}, "username_letter_case": {"type": str, "default": "lowercase"}}
-            username_delimiter: UsernameDelimiter
-            """
-            RADIUS User-Name attribute delimiter to use on the MAC address.
+            class UsernameFormat(AvdModel):
+                """Subclass of AvdModel."""
 
-            Default value: `"none"`
-            """
-            username_letter_case: UsernameLetterCase
-            """
-            RADIUS User-Name attribute letter case to use on the MAC address.
+                Delimiter: TypeAlias = Literal["colon", "hyphen", "none", "period"]
+                LetterCase: TypeAlias = Literal["lowercase", "uppercase"]
+                _fields: ClassVar[dict] = {"delimiter": {"type": str}, "letter_case": {"type": str}}
+                delimiter: Delimiter
+                """RADIUS User-Name attribute delimiter to use on the MAC address."""
+                letter_case: LetterCase
+                """RADIUS User-Name attribute letter case to use on the MAC address."""
 
-            Default value: `"lowercase"`
-            """
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, delimiter: Delimiter | UndefinedType = Undefined, letter_case: LetterCase | UndefinedType = Undefined) -> None:
+                        """
+                        UsernameFormat.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            delimiter: RADIUS User-Name attribute delimiter to use on the MAC address.
+                            letter_case: RADIUS User-Name attribute letter case to use on the MAC address.
+
+                        """
+
+            _fields: ClassVar[dict] = {"username_format": {"type": UsernameFormat}}
+            username_format: UsernameFormat
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    username_delimiter: UsernameDelimiter | UndefinedType = Undefined,
-                    username_letter_case: UsernameLetterCase | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, username_format: UsernameFormat | UndefinedType = Undefined) -> None:
                     """
                     MacBasedAuthentication.
 
@@ -17154,8 +17159,32 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        username_delimiter: RADIUS User-Name attribute delimiter to use on the MAC address.
-                        username_letter_case: RADIUS User-Name attribute letter case to use on the MAC address.
+                        username_format: Subclass of AvdModel.
+
+                    """
+
+        class RadiusAvPairs(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"service_type": {"type": bool, "default": False}}
+            service_type: bool
+            """
+            Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, service_type: bool | UndefinedType = Undefined) -> None:
+                    """
+                    RadiusAvPairs.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        service_type: Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
 
                     """
 
@@ -17167,13 +17196,14 @@ class EosDesigns(EosDesignsRootModel):
             "bypass_lldp": {"type": bool, "default": True},
             "dynamic_authorization": {"type": DynamicAuthorization},
             "mac_based_authentication": {"type": MacBasedAuthentication},
+            "radius_av_pairs": {"type": RadiusAvPairs},
             "redistribute_in_evpn": {"type": bool, "default": True},
         }
         enabled: bool
         """
         Globally enable 802.1X port authentication on the switch.
-        Must be set for 802.1X to be active on any
-        interface.
+        Must be true for 802.1X to be active on
+        any interface.
 
         Default value: `False`
         """
@@ -17189,13 +17219,15 @@ class EosDesigns(EosDesignsRootModel):
         """
         bypass_lldp: bool
         """
-        Allow LLDP packets to be processed even if the port is not authenticated.
+        Allow LLDP packets to be processed even if the port is not authorized.
 
         Default value: `True`
         """
         dynamic_authorization: DynamicAuthorization
         """Subclass of AvdModel."""
         mac_based_authentication: MacBasedAuthentication
+        """Subclass of AvdModel."""
+        radius_av_pairs: RadiusAvPairs
         """Subclass of AvdModel."""
         redistribute_in_evpn: bool
         """
@@ -17217,6 +17249,7 @@ class EosDesigns(EosDesignsRootModel):
                 bypass_lldp: bool | UndefinedType = Undefined,
                 dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
                 mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                radius_av_pairs: RadiusAvPairs | UndefinedType = Undefined,
                 redistribute_in_evpn: bool | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -17228,14 +17261,15 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     enabled:
                        Globally enable 802.1X port authentication on the switch.
-                       Must be set for 802.1X to be active on any
-                       interface.
+                       Must be true for 802.1X to be active on
+                       any interface.
                     authentication: Subclass of AvdModel.
                     accounting: Subclass of AvdModel.
                     bypass_bpdu: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
-                    bypass_lldp: Allow LLDP packets to be processed even if the port is not authenticated.
+                    bypass_lldp: Allow LLDP packets to be processed even if the port is not authorized.
                     dynamic_authorization: Subclass of AvdModel.
                     mac_based_authentication: Subclass of AvdModel.
+                    radius_av_pairs: Subclass of AvdModel.
                     redistribute_in_evpn:
                        Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
                        configured MAC-VRFs.

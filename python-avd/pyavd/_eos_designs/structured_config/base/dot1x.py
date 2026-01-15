@@ -90,12 +90,13 @@ class Dot1xMixin(Protocol):
             protocol_bpdu_bypass=dot1x_settings.bypass_bpdu,
             protocol_lldp_bypass=dot1x_settings.bypass_lldp,
             dynamic_authorization=dot1x_settings.dynamic_authorization.enabled,
-            radius_av_pair=EosCliConfigGen.Dot1x.RadiusAvPair(service_type=True),
-            radius_av_pair_username_format=EosCliConfigGen.Dot1x.RadiusAvPairUsernameFormat(
-                delimiter=dot1x_settings.mac_based_authentication.username_delimiter,
-                mac_string_case=dot1x_settings.mac_based_authentication.username_letter_case,
-            ),
+            radius_av_pair=EosCliConfigGen.Dot1x.RadiusAvPair(service_type=dot1x_settings.radius_av_pairs.service_type),
         )
+        if dot1x_settings.mac_based_authentication.username_format:
+            self.structured_config.dot1x.radius_av_pair_username_format = EosCliConfigGen.Dot1x.RadiusAvPairUsernameFormat(
+                delimiter=dot1x_settings.mac_based_authentication.username_format.delimiter,
+                mac_string_case=dot1x_settings.mac_based_authentication.username_format.letter_case,
+            )
 
     def _validate_radius_groups(
         self: AvdStructuredConfigBaseProtocol,
@@ -112,8 +113,7 @@ class Dot1xMixin(Protocol):
 
         if undefined_groups:
             msg = (
-                f"The RADIUS {context_msg} groups '{', '.join(sorted(undefined_groups))}' "
-                "are not defined on at least one server under 'aaa_settings.radius.servers'."
+                f"The RADIUS {context_msg} group(s) '{', '.join(sorted(undefined_groups))}' are not defined on any server under 'aaa_settings.radius.servers'."
             )
             raise AristaAvdInvalidInputsError(msg)
 
