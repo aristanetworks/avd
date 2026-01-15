@@ -57,7 +57,7 @@ class TestLoggerAdapter(LoggerAdapter):
 
         prefix = f"<{device}> {test}"
         if context:
-            prefix += f" {context}"
+            prefix += f" ({context})"
 
         return f"{prefix} {formatted_msg}", kwargs
 

@@ -135,7 +135,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
         self._covered_destinations.clear()
 
         # Generate the P2P reachability inputs
-        with self.logger_adapter.context("P2P link"):
+        with self.logger_adapter.context("P2P Links"):
             p2p_hosts = natural_sort(self._get_p2p_hosts(), sort_key="destination")
             if p2p_hosts:
                 yield VerifyReachability.Input(
@@ -144,7 +144,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 )
 
         # Generate the VTEP fabric-wide underlay reachability inputs
-        with self.logger_adapter.context("VTEP underlay"):
+        with self.logger_adapter.context("VTEP Underlay"):
             vtep_hosts = natural_sort(self._get_vtep_underlay_hosts(), sort_key="destination")
             if vtep_hosts:
                 yield VerifyReachability.Input(
@@ -153,7 +153,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 )
 
         # Generate the BGP neighbor reachability inputs
-        with self.logger_adapter.context("BGP neighbor"):
+        with self.logger_adapter.context("BGP Neighbors"):
             bgp_hosts = natural_sort(self._get_bgp_hosts(), sort_key="destination")
             if bgp_hosts:
                 yield VerifyReachability.Input(
