@@ -1034,6 +1034,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/ssh-settings.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/inband-ztp-bootstrap-file.md
 --8<--
 
+## 802.1X Settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/dot1x-settings.md
+--8<--
+
 ## Monitoring
 
 ### Event monitor
