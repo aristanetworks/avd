@@ -27,4 +27,4 @@ tenants:
             name: "VLAN_1"
 
 expected_error_message: >-
-  Invalid 'admin_subfield' value '1.1.2'.The value must be a valid IPv4 address.
+  Invalid 'admin_subfield' value '1.1.2'. The value must be a valid IPv4 address.
