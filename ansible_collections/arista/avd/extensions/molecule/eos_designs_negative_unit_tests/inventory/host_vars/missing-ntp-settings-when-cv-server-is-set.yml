@@ -1,0 +1,18 @@
+type: l3leaf
+cv_settings:
+  onprem_clusters:
+    - name: test
+      servers:
+        - name: 10.10.10.10
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    vtep_loopback: Loopback1
+  nodes:
+    - name: missing-ntp-settings-when-cv-server-is-set
+      id: 3
+      bgp_as: 65101
+
+expected_error_message: >-
+  'ntp_settings.servers' must be configured when CloudVision clusters 'cv_settings.onprem_clusters[].servers[]' or 'cv_settings.cvaas.clusters[]' are defined.
