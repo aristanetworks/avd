@@ -7841,7 +7841,7 @@ class EosDesigns(EosDesignsRootModel):
             This value can be set manually if required:
             - Set
             to 'router_id' in order to use the device router ID as the source IP.
-            - Set to valid IPv4 address
+            - Set to a valid IPv4 address
             which will be used directly.
             """
             mode: Mode
@@ -7926,7 +7926,7 @@ class EosDesigns(EosDesignsRootModel):
                            This value can be set manually if required:
                            - Set
                            to 'router_id' in order to use the device router ID as the source IP.
-                           - Set to valid IPv4 address
+                           - Set to a valid IPv4 address
                            which will be used directly.
                         mode: mode
                         mode_one_step: mode_one_step
@@ -12903,7 +12903,7 @@ class EosDesigns(EosDesignsRootModel):
             This value can be set manually if required:
             - Set
             to 'router_id' in order to use the device router ID as the source IP.
-            - Set to valid IPv4 address
+            - Set to a valid IPv4 address
             which will be used directly.
             """
             mode: Mode
@@ -12988,7 +12988,7 @@ class EosDesigns(EosDesignsRootModel):
                            This value can be set manually if required:
                            - Set
                            to 'router_id' in order to use the device router ID as the source IP.
-                           - Set to valid IPv4 address
+                           - Set to a valid IPv4 address
                            which will be used directly.
                         mode: mode
                         mode_one_step: mode_one_step
@@ -35994,7 +35994,7 @@ class EosDesigns(EosDesignsRootModel):
                         This value can be set manually if required:
                         - Set
                         to 'router_id' in order to use the device router ID as the source IP.
-                        - Set to valid IPv4 address
+                        - Set to a valid IPv4 address
                         which will be used directly.
                         """
                         mode: Mode
@@ -36079,7 +36079,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This value can be set manually if required:
                                        - Set
                                        to 'router_id' in order to use the device router ID as the source IP.
-                                       - Set to valid IPv4 address
+                                       - Set to a valid IPv4 address
                                        which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
@@ -41032,7 +41032,7 @@ class EosDesigns(EosDesignsRootModel):
                             This value can be set manually if required:
                             - Set
                             to 'router_id' in order to use the device router ID as the source IP.
-                            - Set to valid IPv4 address
+                            - Set to a valid IPv4 address
                             which will be used directly.
                             """
                             mode: Mode
@@ -41117,7 +41117,7 @@ class EosDesigns(EosDesignsRootModel):
                                            This value can be set manually if required:
                                            - Set
                                            to 'router_id' in order to use the device router ID as the source IP.
-                                           - Set to valid IPv4 address
+                                           - Set to a valid IPv4 address
                                            which will be used directly.
                                         mode: mode
                                         mode_one_step: mode_one_step
@@ -46027,7 +46027,7 @@ class EosDesigns(EosDesignsRootModel):
                         This value can be set manually if required:
                         - Set
                         to 'router_id' in order to use the device router ID as the source IP.
-                        - Set to valid IPv4 address
+                        - Set to a valid IPv4 address
                         which will be used directly.
                         """
                         mode: Mode
@@ -46112,7 +46112,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This value can be set manually if required:
                                        - Set
                                        to 'router_id' in order to use the device router ID as the source IP.
-                                       - Set to valid IPv4 address
+                                       - Set to a valid IPv4 address
                                        which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
@@ -51088,7 +51088,7 @@ class EosDesigns(EosDesignsRootModel):
                         This value can be set manually if required:
                         - Set
                         to 'router_id' in order to use the device router ID as the source IP.
-                        - Set to valid IPv4 address
+                        - Set to a valid IPv4 address
                         which will be used directly.
                         """
                         mode: Mode
@@ -51173,7 +51173,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This value can be set manually if required:
                                        - Set
                                        to 'router_id' in order to use the device router ID as the source IP.
-                                       - Set to valid IPv4 address
+                                       - Set to a valid IPv4 address
                                        which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
@@ -68422,7 +68422,7 @@ class EosDesigns(EosDesignsRootModel):
                         This value can be set manually if required:
                         - Set
                         to 'router_id' in order to use the device router ID as the source IP.
-                        - Set to valid IPv4 address
+                        - Set to a valid IPv4 address
                         which will be used directly.
                         """
                         mode: Mode
@@ -68507,7 +68507,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This value can be set manually if required:
                                        - Set
                                        to 'router_id' in order to use the device router ID as the source IP.
-                                       - Set to valid IPv4 address
+                                       - Set to a valid IPv4 address
                                        which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
@@ -73460,7 +73460,7 @@ class EosDesigns(EosDesignsRootModel):
                             This value can be set manually if required:
                             - Set
                             to 'router_id' in order to use the device router ID as the source IP.
-                            - Set to valid IPv4 address
+                            - Set to a valid IPv4 address
                             which will be used directly.
                             """
                             mode: Mode
@@ -73545,7 +73545,7 @@ class EosDesigns(EosDesignsRootModel):
                                            This value can be set manually if required:
                                            - Set
                                            to 'router_id' in order to use the device router ID as the source IP.
-                                           - Set to valid IPv4 address
+                                           - Set to a valid IPv4 address
                                            which will be used directly.
                                         mode: mode
                                         mode_one_step: mode_one_step
@@ -78455,7 +78455,7 @@ class EosDesigns(EosDesignsRootModel):
                         This value can be set manually if required:
                         - Set
                         to 'router_id' in order to use the device router ID as the source IP.
-                        - Set to valid IPv4 address
+                        - Set to a valid IPv4 address
                         which will be used directly.
                         """
                         mode: Mode
@@ -78540,7 +78540,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This value can be set manually if required:
                                        - Set
                                        to 'router_id' in order to use the device router ID as the source IP.
-                                       - Set to valid IPv4 address
+                                       - Set to a valid IPv4 address
                                        which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
@@ -83516,7 +83516,7 @@ class EosDesigns(EosDesignsRootModel):
                         This value can be set manually if required:
                         - Set
                         to 'router_id' in order to use the device router ID as the source IP.
-                        - Set to valid IPv4 address
+                        - Set to a valid IPv4 address
                         which will be used directly.
                         """
                         mode: Mode
@@ -83601,7 +83601,7 @@ class EosDesigns(EosDesignsRootModel):
                                        This value can be set manually if required:
                                        - Set
                                        to 'router_id' in order to use the device router ID as the source IP.
-                                       - Set to valid IPv4 address
+                                       - Set to a valid IPv4 address
                                        which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
