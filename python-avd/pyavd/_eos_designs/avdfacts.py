@@ -6,8 +6,6 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Any, Protocol
 
-from pyavd._utils.run_once import RunOnceMethodStateHelper
-
 if TYPE_CHECKING:
     from collections.abc import MutableMapping
 
