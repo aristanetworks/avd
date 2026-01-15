@@ -11230,10 +11230,10 @@ $defs:
 
                   This value can be set manually if required:
 
-                  - ''router_id'' will use the device router ID as the source IP.
+                  - Set to ''router_id'' in order to use the device router ID as the
+                  source IP.
 
-                  - Any other value must be a valid IPv4 address and will be used
-                  directly.
+                  - Set to valid IPv4 address which will be used directly.
 
                   '
               mode:
