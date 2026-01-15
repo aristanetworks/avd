@@ -114,7 +114,7 @@ keys:
                   type: str
                   description: |-
                     Host IP address or name.
-                    Multiple server with the same host can be configured for TLS and no TLS.
+                    Multiple servers with the same hostname/IP address can be configured for TLS and no TLS.
                   required: true
                 groups:
                   type: list
