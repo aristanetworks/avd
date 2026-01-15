@@ -189,7 +189,7 @@ class ActionModule(ActionBase):
         try:
             all_facts = get_facts(all_inputs=all_inputs, pool_manager=pool_manager, all_hostvars=all_hostvars, templar=templar, digital_twin=self._digital_twin)
         except AristaAvdError as e:
-            raise AnsibleActionFail(message=str(e))
+            raise AnsibleActionFail(message=str(e)) from None
 
         all_facts_as_dicts: dict[str, dict] = {}
         for host, facts in all_facts.items():
