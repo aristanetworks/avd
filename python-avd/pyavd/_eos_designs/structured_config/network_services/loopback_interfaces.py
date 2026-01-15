@@ -73,8 +73,7 @@ class LoopbackInterfacesMixin(Protocol):
         loopback_ipv6_pool = vrf.vtep_diagnostic.loopback_ipv6_range
 
         # Override defaults if pod-specific pools exist
-        if pod_name and loopback_ip_pools:
-            if pod_pools := loopback_ip_pools.get(pod_name)
+        if pod_name and loopback_ip_pools and (pod_pools := loopback_ip_pools.get(pod_name)):
                 if ipv4_pool := pod_pools.ipv4_pool:
                     loopback_ipv4_pool = ipv4_pool
                 if ipv6_pool := pod_pools.ipv6_pool:
