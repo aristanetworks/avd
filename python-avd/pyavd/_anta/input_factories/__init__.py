@@ -16,13 +16,16 @@ from .hardware import (
     VerifyTransceiversManufacturersInputFactory,
     VerifyTransceiversTemperatureInputFactory,
 )
-from .interfaces import VerifyInterfacesStatusInputFactory, VerifyPortChannelsInputFactory, VerifyStormControlDropsInputFactory
+from .interfaces import VerifyIllegalLACPInputFactory, VerifyInterfacesStatusInputFactory, VerifyPortChannelsInputFactory, VerifyStormControlDropsInputFactory
 from .logging import VerifyLoggingErrorsInputFactory
+from .mlag import VerifyMlagConfigSanityInputFactory, VerifyMlagInterfacesInputFactory, VerifyMlagStatusInputFactory
 from .router_path_selection import VerifySpecificPathInputFactory
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
 from .routing_generic import VerifyRoutingProtocolModelInputFactory, VerifyRoutingTableEntryInputFactory
+from .routing_ospf import VerifyOSPFMaxLSAInputFactory, VerifyOSPFNeighborStateInputFactory
 from .security import VerifyAPIHttpsSSLInputFactory, VerifySpecificIPSecConnInputFactory
 from .system import VerifyReloadCauseInputFactory
+from .vxlan import VerifyVxlanConfigSanityInputFactory
 
 __all__ = [
     "VerifyAPIHttpsSSLInputFactory",
@@ -31,10 +34,16 @@ __all__ = [
     "VerifyEnvironmentCoolingInputFactory",
     "VerifyEnvironmentPowerInputFactory",
     "VerifyEnvironmentSystemCoolingInputFactory",
+    "VerifyIllegalLACPInputFactory",
     "VerifyInterfacesStatusInputFactory",
     "VerifyInventoryInputFactory",
     "VerifyLLDPNeighborsInputFactory",
     "VerifyLoggingErrorsInputFactory",
+    "VerifyMlagConfigSanityInputFactory",
+    "VerifyMlagInterfacesInputFactory",
+    "VerifyMlagStatusInputFactory",
+    "VerifyOSPFMaxLSAInputFactory",
+    "VerifyOSPFNeighborStateInputFactory",
     "VerifyPortChannelsInputFactory",
     "VerifyReachabilityInputFactory",
     "VerifyReloadCauseInputFactory",
@@ -46,4 +55,5 @@ __all__ = [
     "VerifyTemperatureInputFactory",
     "VerifyTransceiversManufacturersInputFactory",
     "VerifyTransceiversTemperatureInputFactory",
+    "VerifyVxlanConfigSanityInputFactory",
 ]

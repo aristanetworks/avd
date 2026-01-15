@@ -101,8 +101,7 @@ class FilteredTenantsMixin(Protocol):
                 continue
 
             merged_l2vlan = self.get_merged_l2vlan_config(l2vlan)
-            if tenant.evpn_vlan_bundle:
-                merged_l2vlan.evpn_vlan_bundle = merged_l2vlan.evpn_vlan_bundle or tenant.evpn_vlan_bundle
+            merged_l2vlan.evpn_vlan_bundle = default(merged_l2vlan.evpn_vlan_bundle, tenant.evpn_vlan_bundle)
 
             filtered_l2vlans.append(merged_l2vlan)
 
@@ -265,7 +264,7 @@ class FilteredTenantsMixin(Protocol):
             vrf.bgp_peers = vrf.bgp_peers._filtered(lambda bgp_peer: self.match_regexes(bgp_peer.nodes, self.hostname))._natural_sorted(sort_key="ip_address")
             vrf.static_routes = vrf.static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
             vrf.ipv6_static_routes = vrf.ipv6_static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
-            vrf.svis = self.filtered_svis(vrf)
+            vrf.svis = self.filtered_svis(vrf, tenant)
             vrf.l3_interfaces = self.filtered_l3_interfaces(vrf)
             vrf.l3_port_channels = self.filtered_l3_port_channels(vrf)
             vrf.loopbacks = vrf.loopbacks._filtered(lambda loopback: loopback.node == self.hostname)
@@ -309,10 +308,6 @@ class FilteredTenantsMixin(Protocol):
 
             if vrf.svis or vrf.l3_interfaces or vrf.loopbacks or vrf.l3_port_channels or self.is_forced_vrf(vrf, tenant.name):
                 filtered_vrfs.append(vrf)
-
-            if tenant_evpn_vlan_bundle := tenant.evpn_vlan_bundle:
-                for svi in vrf.svis:
-                    svi.evpn_vlan_bundle = svi.evpn_vlan_bundle or tenant_evpn_vlan_bundle
 
         return filtered_vrfs
 
@@ -363,7 +358,9 @@ class FilteredTenantsMixin(Protocol):
         return merged_svi
 
     def filtered_svis(
-        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
+        self: SharedUtilsProtocol,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis:
         """
         Return sorted and filtered svi list from given tenant vrf.
@@ -385,6 +382,8 @@ class FilteredTenantsMixin(Protocol):
             # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
             if not ("all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags))):
                 continue
+
+            merged_svi.evpn_vlan_bundle = default(merged_svi.evpn_vlan_bundle, vrf.evpn_vlan_bundle, tenant.evpn_vlan_bundle)
 
             filtered_svis.append(merged_svi)
 

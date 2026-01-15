@@ -1957,14 +1957,12 @@ keys:
         type: list
         required: true
         min_length: 1
-        $ref: eos_cli_config_gen#/keys/ip_name_servers
         items:
           type: dict
           keys:
             vrf:
               type: str
               default: use_default_mgmt_method_vrf
-              required: false
               description: "The value of `vrf` will be interpreted according to these
                 rules:\n- `use_mgmt_interface_vrf` will configure the DNS server under
                 the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface`
@@ -1980,6 +1978,17 @@ keys:
                 if needed."
               convert_types:
               - int
+            ip_address:
+              type: str
+              required: true
+              description: IPv4 or IPv6 address for DNS server.
+            priority:
+              description: Priority value (lower is first).
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 4
       vrfs:
         type: list
         primary_key: name
@@ -2237,9 +2246,10 @@ keys:
       using the VLAN name as the bundle name.
 
 
-      The `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and
-      overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this
-      setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.'
+      The `evpn_vlan_bundle` option under SVI, L2VLAN, VRF or tenant level takes precedence
+      and overrides this behavior. Per SVI/L2VLAN `evpn_vlan_bundle` also works when
+      this setting is disabled which allow mixing vlan-aware-bundles with regular
+      MAC-VRFs.'
     type: bool
     default: false
   evpn_vlan_bundles:
@@ -4213,7 +4223,7 @@ keys:
     $ref: eos_designs#/$defs/platform_settings
     type: list
     documentation_options:
-      table: platform-settings
+      table: custom-platform-settings
     description: Custom Platform settings to override the default `platform_settings`.
       This list will be prepended to the list of `platform_settings`. The first entry
       found where the `platform` node setting is fully matched by any regex in the
@@ -4324,6 +4334,41 @@ keys:
       digital_twin:
         platform: vEOS-lab
     - platforms:
+      - 7060X5
+      feature_support:
+        queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
+        hardware_counter_features:
+          acl: false
+          decap_group: false
+          directflow: false
+          ecn: false
+          flow_spec: false
+          mpls_interface: false
+          mpls_lfib: false
+          mpls_tunnel: false
+          multicast: false
+          nexthop: false
+          pbr: false
+          pdp: false
+          policing_interface: false
+          qos: false
+          qos_dual_rate_policer: false
+          route: false
+          routed_port: false
+          segment_security: false
+          tapagg: false
+          traffic_class: false
+          traffic_policy: false
+          vlan: false
+        sflow_subinterfaces: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 7280R
       - 7280R2
       - 7020R
@@ -4345,6 +4390,42 @@ keys:
       feature_support:
         evpn_gateway_all_active_multihoming: true
         private_vlan: false
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
+      - 7388X5
+      feature_support:
+        queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
+        hardware_counter_features:
+          acl: false
+          decap_group: false
+          directflow: false
+          ecn: false
+          flow_spec: false
+          mpls_interface: false
+          mpls_lfib: false
+          mpls_tunnel: false
+          multicast: false
+          nexthop: false
+          pbr: false
+          pdp: false
+          policing_interface: false
+          qos: false
+          qos_dual_rate_policer: false
+          route: false
+          routed_port: false
+          segment_security: false
+          tapagg: false
+          traffic_class: false
+          traffic_policy: false
+          vlan: false
+        sflow_subinterfaces: false
+      management_interface: Management0
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -4493,7 +4574,7 @@ keys:
         platform: CloudEOS
   platform_speed_groups:
     documentation_options:
-      table: platform-settings
+      table: platform-speed-groups
     type: list
     primary_key: platform
     description: Set Hardware Speed Groups per Platform.
@@ -7912,6 +7993,17 @@ $defs:
 
                   '
                 default: true
+              evpn_vlan_bundle:
+                type: str
+                description: 'Name of a bundle defined under ''evpn_vlan_bundles''
+                  which will be used for all SVIs under this VRF.
+
+                  This setting overrides "evpn_vlan_bundle" set at the Tenant level.
+
+                  The common option "evpn_vlan_aware_bundles" is disregarded for this
+                  option.
+
+                  '
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: 'Comma separated list of prefixes (IPv4 address/Mask)
@@ -8022,7 +8114,11 @@ $defs:
                     description: 'IPv4_address/Mask.
 
                       Loopback IPv4 range, a unique ip is derived from this range
-                      and assigned to each l3 leaf based on it''s unique id.
+                      and assigned to each l3 leaf based on its unique id.
+
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name`
+                      of the device, and is configured with an `ipv4_pool`, it takes
+                      precedence over `loopback_ipv4_range`.
 
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range`
                       or `loopback_ip_pools` are set.
@@ -8033,7 +8129,11 @@ $defs:
                     description: 'IPv6_address/Mask.
 
                       Loopback IPv6 range, a unique IPv6 address is derived from this
-                      range and assigned to each L3 leaf based on it''s unique ID.
+                      range and assigned to each L3 leaf based on its unique ID.
+
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name`
+                      of the device, and is configured with an `ipv6_pool`, it takes
+                      precedence over `loopback_ipv6_range`.
 
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range`
                       or `loopback_ip_pools` are set.
@@ -8044,8 +8144,8 @@ $defs:
                     description: 'For inventories with multiple PODs a loopback range
                       can be set per POD to avoid overlaps.
 
-                      `loopback_ip_range` takes precedence for IPv4 and `loopback_ipv6_range`
-                      takes precedence for IPV6.
+                      POD level pools take precedence over `loopback_ip_range` and
+                      `loopback_ipv6_range`.
 
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range`
                       or `loopback_ip_pools` are set.
@@ -8376,7 +8476,8 @@ $defs:
                       description: 'Name of a bundle defined under ''evpn_vlan_bundles''
                         to inherit configuration.
 
-                        This setting overrides "evpn_vlan_bundle" set at tenant level.
+                        This setting overrides "evpn_vlan_bundle" set at the VRF or
+                        tenant level.
 
                         The common option "evpn_vlan_aware_bundles" is disregarded
                         for this option.
@@ -13595,7 +13696,7 @@ $defs:
           Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
 
           Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles:
-          true` or `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+          true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant.
 
           '
   virtual_topology:

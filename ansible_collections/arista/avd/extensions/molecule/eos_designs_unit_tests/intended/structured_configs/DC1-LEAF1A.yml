@@ -17,7 +17,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet27
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet1/1
+  description: P2P_LINK_Ethernet27_TO_DC1-SPINE1_Ethernet1/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -29,7 +29,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet28
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/1/1
+  description: P2P_LINK_Ethernet28_TO_DC1-SPINE2_Ethernet1/1/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -41,7 +41,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet29
-  description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/1/1
+  description: P2P_LINK_Ethernet29_TO_DC1-SPINE3_Ethernet1/1/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -53,7 +53,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet30
-  description: P2P_LINK_TO_DC1-SPINE4_Ethernet1/1
+  description: P2P_LINK_Ethernet30_TO_DC1-SPINE4_Ethernet1/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -134,15 +134,14 @@ ip_igmp_snooping:
   vlans:
   - id: 120
     enabled: false
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
-- ip_address: 2001:db8::1
-  vrf: MGMT
-- ip_address: 2001:db8::2
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
+    - ip_address: 2001:db8::1
+    - ip_address: 2001:db8::2
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 local_users:

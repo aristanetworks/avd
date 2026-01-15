@@ -18,14 +18,14 @@ interface {{ loopback_interface.name }}
 {%     if loopback_interface.vrf is arista.avd.defined %}
    vrf {{ loopback_interface.vrf }}
 {%     endif %}
-{%     if loopback_interface.ip_proxy_arp is arista.avd.defined(true) %}
-   ip proxy-arp
-{%     endif %}
 {%     if loopback_interface.ip_address is arista.avd.defined %}
    ip address {{ loopback_interface.ip_address }}
 {%         for ip_address_secondary in loopback_interface.ip_address_secondaries | arista.avd.natural_sort %}
    ip address {{ ip_address_secondary }} secondary
 {%         endfor %}
+{%     endif %}
+{%     if loopback_interface.ip_proxy_arp is arista.avd.defined(true) %}
+   ip proxy-arp
 {%     endif %}
 {%     if loopback_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
