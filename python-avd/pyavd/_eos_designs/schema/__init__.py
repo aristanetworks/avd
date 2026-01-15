@@ -59558,27 +59558,34 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4_address/Mask.
                         Loopback IPv4 range, a unique ip is derived from this range and assigned to each
-                        l3 leaf based on it's unique id.
-                        Loopback is not created unless `loopback_ip_range`,
-                        `loopback_ipv6_range` or `loopback_ip_pools` are set.
+                        l3 leaf based on its unique id.
+                        If any `pod` under `loopback_ip_pools` matches the `pod_name` of the
+                        device, and is configured with an `ipv4_pool`, it takes precedence over `loopback_ipv4_range`.
+                        Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are
+                        set.
                         """
                         loopback_ipv6_range: str | None
                         """
                         IPv6_address/Mask.
                         Loopback IPv6 range, a unique IPv6 address is derived from this range and
-                        assigned to each L3 leaf based on it's unique ID.
-                        Loopback is not created unless
-                        `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
+                        assigned to each L3 leaf based on its unique ID.
+                        If any `pod` under `loopback_ip_pools` matches the
+                        `pod_name` of the device, and is configured with an `ipv6_pool`, it takes precedence over
+                        `loopback_ipv6_range`.
+                        Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or
+                        `loopback_ip_pools` are set.
                         """
                         loopback_ip_pools: LoopbackIpPools
                         """
                         For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.
-                        `loopback_ip_range` takes precedence for IPv4 and `loopback_ipv6_range` takes precedence for IPV6.
-                        Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are
-                        set.
+                        POD level
+                        pools take precedence over `loopback_ip_range` and `loopback_ipv6_range`.
+                        Loopback is not created
+                        unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
 
 
-                        Subclass of AvdIndexedList with `LoopbackIpPoolsItem` items. Primary key is `pod` (`str`).
+                        Subclass of
+                        AvdIndexedList with `LoopbackIpPoolsItem` items. Primary key is `pod` (`str`).
                         """
                         hardware_forwarding: bool | None
                         """
@@ -59623,23 +59630,30 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ip_range:
                                        IPv4_address/Mask.
                                        Loopback IPv4 range, a unique ip is derived from this range and assigned to each
-                                       l3 leaf based on it's unique id.
-                                       Loopback is not created unless `loopback_ip_range`,
-                                       `loopback_ipv6_range` or `loopback_ip_pools` are set.
+                                       l3 leaf based on its unique id.
+                                       If any `pod` under `loopback_ip_pools` matches the `pod_name` of the
+                                       device, and is configured with an `ipv4_pool`, it takes precedence over `loopback_ipv4_range`.
+                                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are
+                                       set.
                                     loopback_ipv6_range:
                                        IPv6_address/Mask.
                                        Loopback IPv6 range, a unique IPv6 address is derived from this range and
-                                       assigned to each L3 leaf based on it's unique ID.
-                                       Loopback is not created unless
-                                       `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
+                                       assigned to each L3 leaf based on its unique ID.
+                                       If any `pod` under `loopback_ip_pools` matches the
+                                       `pod_name` of the device, and is configured with an `ipv6_pool`, it takes precedence over
+                                       `loopback_ipv6_range`.
+                                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or
+                                       `loopback_ip_pools` are set.
                                     loopback_ip_pools:
                                        For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.
-                                       `loopback_ip_range` takes precedence for IPv4 and `loopback_ipv6_range` takes precedence for IPV6.
-                                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are
-                                       set.
+                                       POD level
+                                       pools take precedence over `loopback_ip_range` and `loopback_ipv6_range`.
+                                       Loopback is not created
+                                       unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
 
 
-                                       Subclass of AvdIndexedList with `LoopbackIpPoolsItem` items. Primary key is `pod` (`str`).
+                                       Subclass of
+                                       AvdIndexedList with `LoopbackIpPoolsItem` items. Primary key is `pod` (`str`).
                                     hardware_forwarding:
                                        Enable hardware forwarding for diagnostic loopbacks. This is required for correct forwarding in VRFs
                                        without physical interfaces.
