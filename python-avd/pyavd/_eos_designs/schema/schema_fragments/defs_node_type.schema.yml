@@ -1292,7 +1292,7 @@ $defs:
                   By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
                   This value can be set manually if required:
                   - Set to 'router_id' in order to use the device router ID as the source IP.
-                  - Set to valid IPv4 address which will be used directly.
+                  - Set to a valid IPv4 address which will be used directly.
               mode:
                 type: str
                 valid_values:
