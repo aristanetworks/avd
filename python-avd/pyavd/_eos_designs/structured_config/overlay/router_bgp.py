@@ -464,7 +464,7 @@ class RouterBgpMixin(Protocol):
                     data["ip_address"],
                     route_server,
                     self.inputs.bgp_peer_groups.evpn_overlay_peers.name,
-                    remote_as=remote_as,
+                    remote_as=data["bgp_as"],
                     overlay_peering_interface=data.get("overlay_peering_interface"),
                 )
                 if self.inputs.evpn_prevent_readvertise_to_server and self.inputs.evpn_prevent_readvertise_to_server_mode in ["source_peer_asn", "as_path_acl"]:
@@ -474,15 +474,11 @@ class RouterBgpMixin(Protocol):
                 neighbors.append(neighbor)
 
             for route_client, data in natural_sort(self._evpn_route_clients.items()):
-                remote_as = data["bgp_as"]
-                if remote_as is None:
-                    # Never happens but here to help the type checker.
-                    continue
                 neighbor = self._create_neighbor(
                     data["ip_address"],
                     route_client,
                     self.inputs.bgp_peer_groups.evpn_overlay_peers.name,
-                    remote_as=remote_as,
+                    remote_as=data["bgp_as"],
                     overlay_peering_interface=data.get("overlay_peering_interface"),
                 )
                 neighbors.append(neighbor)
