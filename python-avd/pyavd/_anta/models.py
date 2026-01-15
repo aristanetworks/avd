@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import cached_property
-from ipaddress import IPv4Address, IPv4Interface, IPv6Address, ip_interface
+from ipaddress import IPv4Address, IPv6Address, ip_interface
 from logging import getLogger
 from typing import TYPE_CHECKING
 
@@ -64,11 +64,16 @@ class InputFactoryDataSource:
     def extra_fabric_validation(self) -> bool:
         """Check if extra fabric-wide validation inputs should be generated."""
         return self._settings.extra_fabric_validation
-    
+
     @property
     def loopback0_ip(self) -> IPv4Address | None:
         """Get the Loopback0 IP of the device."""
         return self._device_data.loopback0_ip
+
+    @property
+    def fabric_loopback0_mapping(self) -> dict[str, IPv4Address]:
+        """Get a fabric mapping of device hostname to its Loopback0 IPv4 address."""
+        return self._fabric_data.loopback0_mapping
 
     @cached_property
     def _device_data(self) -> AvdDeviceData:
@@ -79,7 +84,7 @@ class InputFactoryDataSource:
         return device_data
 
     @cached_property
-    def special_ips(self) -> list[IPv4Address]:
+    def fabric_special_ips(self) -> list[IPv4Address]:
         """Get a sorted list of all 'special' IPv4 addresses (Loopback0, VTEP, and MLAG VTEP) from deployed non-WAN devices in the fabric."""
         return natural_sort(self._fabric_data.special_ips)
 
@@ -151,12 +156,12 @@ class InputFactoryDataSource:
             return None
 
         # Skip neighbor interfaces in shutdown peer groups
-        if self._is_neighbor_in_shutdown_peer_group(neighbor_interface):
+        if self._is_bgp_neighbor_in_shutdown_peer_group(neighbor_interface):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer group %s shutdown", self.hostname, identifier, neighbor_interface.peer_group)
             return None
 
         # Skip neighbor interfaces not in the fabric or not deployed (when `metadata.peer` is set)
-        if from_default_vrf and not self._is_neighbor_available(neighbor_interface):
+        if from_default_vrf and not self._is_bgp_neighbor_available(neighbor_interface):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None
 
@@ -191,12 +196,12 @@ class InputFactoryDataSource:
             return None
 
         # Skip neighbors in shutdown peer groups
-        if self._is_neighbor_in_shutdown_peer_group(neighbor):
+        if self._is_bgp_neighbor_in_shutdown_peer_group(neighbor):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer group %s shutdown", self.hostname, identifier, neighbor.peer_group)
             return None
 
         # Skip neighbors not in the fabric or not deployed (when `metadata.peer` is set)
-        if from_default_vrf and not self._is_neighbor_available(neighbor):
+        if from_default_vrf and not self._is_bgp_neighbor_available(neighbor):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None
 
@@ -213,7 +218,7 @@ class InputFactoryDataSource:
             description=neighbor.description or (neighbor.metadata.peer if from_default_vrf else None),
         )
 
-    def _is_neighbor_in_shutdown_peer_group(
+    def _is_bgp_neighbor_in_shutdown_peer_group(
         self,
         neighbor: EosCliConfigGen.RouterBgp.NeighborsItem
         | EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem
@@ -227,9 +232,9 @@ class InputFactoryDataSource:
             and self.structured_config.router_bgp.peer_groups[neighbor.peer_group].shutdown is True
         )
 
-    def _is_neighbor_available(self, neighbor: EosCliConfigGen.RouterBgp.NeighborsItem | EosCliConfigGen.RouterBgp.NeighborInterfacesItem) -> bool:
+    def _is_bgp_neighbor_available(self, neighbor: EosCliConfigGen.RouterBgp.NeighborsItem | EosCliConfigGen.RouterBgp.NeighborInterfacesItem) -> bool:
         """Check if the neighbor is in the fabric and deployed."""
         if not neighbor.metadata.peer:
             return True
 
-        return bool(neighbor.metadata.peer in self.fabric_data.devices and self.fabric_data.devices[neighbor.metadata.peer].is_deployed)
+        return self.get_peer_device(neighbor.metadata.peer) is not None

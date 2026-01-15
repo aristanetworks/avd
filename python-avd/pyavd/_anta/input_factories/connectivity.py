@@ -19,7 +19,7 @@ from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_not_v
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from pyavd._anta.models import DeviceTestContext
+    from pyavd._anta.models import InputFactoryDataSource
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
     class Metadata(Protocol):
@@ -113,10 +113,9 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
        with static IP addresses defined (not DHCP/unnumbered). The peer device must be deployed and the same requirements
        apply for its interface (not shutdown, not DHCP/unnumbered, etc.). IPv6 is not supported.
 
-    2. On VTEP devices (excluding WAN routers), generates inputs to verify underlay reachability
-       from the local Loopback0 to all other fabric non-WAN deployed devices Loopback0 addresses.
-       No inputs are generated if `extra_fabric_validation` is disabled. Fabric devices marked with
-       `exclude_as_extra_fabric_validation_target` are excluded from the destinations. IPv6 is not supported.
+    2. Generates inputs to verify underlay reachability from VTEP devices local Loopback0 to all other fabric devices Loopback0 addresses.
+       No inputs are generated if `extra_fabric_validation` is disabled. WAN routers and non-deployed devices are excluded.
+       Fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations. IPv6 is not supported.
 
     3. Generates inputs for BGP neighbor reachability across all VRFs.
        Includes neighbors that are not administratively shutdown or part of a shutdown peer group.
@@ -124,8 +123,8 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
        To avoid duplicate checks, neighbors already verified (same destination IP and VRF) by the P2P or VTEP tests are skipped.
     """
 
-    def __init__(self, device_context: DeviceTestContext, test_name: str) -> None:
-        super().__init__(device_context=device_context, test_name=test_name)
+    def __init__(self, data_source: InputFactoryDataSource, test_name: str) -> None:
+        super().__init__(data_source=data_source, test_name=test_name)
 
         self._covered_destinations: set[tuple[str, str]] = set()
         """Set of tuples (destination_ip, vrf) to track coverage and avoid duplicate checks. Source can be added to the tuple later if needed."""
@@ -192,23 +191,23 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
     @skip_if_wan_router
     def _get_vtep_underlay_hosts(self) -> Iterator[Host]:
         """Generate Host objects for the VTEP underlay reachability test."""
-        if not self.fabric_data.loopback0_mapping:
+        if not self.data_source.fabric_loopback0_mapping or not self.data_source.loopback0_ip:
             self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
-        for hostname, ip in self.fabric_data.loopback0_mapping.items():
-            if hostname == self.device.hostname:
+        for hostname, ip in self.data_source.fabric_loopback0_mapping.items():
+            if hostname == self.data_source.hostname:
                 # Don't ping ourself
                 continue
 
-            host = Host(destination=ip, source=self.device.loopback0_ip, description=hostname, vrf="default", repeat=1)
+            host = Host(destination=ip, source=self.data_source.loopback0_ip, description=hostname, vrf="default", repeat=1)
             if not self._is_host_seen(host):
                 self._track_host(host)
                 yield host
 
     def _get_bgp_hosts(self) -> Iterator[Host]:
         """Generate Host objects for the BGP neighbor reachability test."""
-        for neighbor in self.device.bgp_neighbors:
+        for neighbor in self.data_source.bgp_neighbors:
             if neighbor.update_source is not None:
                 host = Host(
                     destination=neighbor.ip_address,
