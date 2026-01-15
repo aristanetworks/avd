@@ -192,6 +192,8 @@ nav:
           - Overview: docs/input-variables/README.md
           - eos_designs:
               - Overview: ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md
+              - Connected Endpoints: ansible_collections/arista/avd/roles/eos_designs/docs/input-variables-connected-endpoints.md
+              - Network Ports: ansible_collections/arista/avd/roles/eos_designs/docs/input-variables-network-ports.md
               - Network Services: ansible_collections/arista/avd/roles/eos_designs/docs/input-variables-network-serivces.md
               - Node Types: ansible_collections/arista/avd/roles/eos_designs/docs/input-variables-node-type.md
           - eos_cli_config_gen: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/input-variables.md
