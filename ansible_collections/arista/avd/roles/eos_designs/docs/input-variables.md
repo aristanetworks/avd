@@ -307,12 +307,6 @@ The following underlay routing protocols are supported:
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/fabric-settings.md
 --8<--
 
-## Management interface settings
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/management-interface-settings.md
---8<--
-
 ## BFD settings
 
 --8<--
@@ -597,8 +591,22 @@ Management interface is modified for specific platforms like modular platforms w
     If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.
     If you need to add custom platforms, create them under `custom_platform_settings`; if named identically to default `platform_settings` entries, custom entries will replace the equivalent default entry.
 
+### Platform
+
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/platform-settings.md
+--8<--
+
+### Custom platform
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-platform-settings.md
+--8<--
+
+### Platform speed groups
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/platform-speed-groups.md
 --8<--
 
 ## Validation Profiles
