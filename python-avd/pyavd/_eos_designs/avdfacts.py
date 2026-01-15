@@ -60,7 +60,7 @@ class AvdFactsProtocol(Protocol):
             self.__dict__.pop(key, None)
 
 
-class AvdFacts(RunOnceMethodStateHelper, AvdFactsProtocol):
+class AvdFacts(AvdFactsProtocol):
     def __init__(self, hostvars: MutableMapping, inputs: EosDesigns, shared_utils: SharedUtilsProtocol) -> None:
         self._hostvars = hostvars
         self.inputs = inputs
