@@ -81,7 +81,7 @@ class OverlayMixin(Protocol):
         try:
             ip_address(admin_subfield)
         except ValueError:
-            msg = f"Invalid 'admin_subfield' value '{admin_subfield}'.The value must be a valid IPv4 address."
+            msg = f"Invalid 'admin_subfield' value '{admin_subfield}'. The value must be a valid IPv4 address."
             raise AristaAvdInvalidInputsError(msg) from None
 
         return admin_subfield
