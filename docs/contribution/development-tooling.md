@@ -76,7 +76,7 @@ make pyavd-editable-install
 ```
 
 !!! note
-    Make sure your pip version is above 25.0 to get support for `--group`
+    Make sure your pip version is above 25.1 to get support for `--group`
 
 !!! note
     It is important to confirm the Python interpreter Ansible is using.
