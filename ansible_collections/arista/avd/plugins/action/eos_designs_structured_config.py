@@ -102,7 +102,7 @@ class ActionModule(ActionBase):
                 digital_twin=digital_twin,
             )
         except Exception as error:
-            raise AnsibleActionFail(message=str(error)) from error
+            raise AnsibleActionFail(message=str(error))
 
         if result.get("failed") or not structured_config:
             # Something failed in schema validation.

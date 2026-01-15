@@ -139,7 +139,7 @@ class ActionModule(ActionBase):
         except Exception as error:
             # Recast errors as AnsibleActionFail
             msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from error
+            raise AnsibleActionFail(msg)
 
         return result
 
