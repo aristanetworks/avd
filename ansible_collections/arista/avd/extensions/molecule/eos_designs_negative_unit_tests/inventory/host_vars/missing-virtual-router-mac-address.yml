@@ -13,7 +13,7 @@ l3leaf:
   nodes:
     - name: missing-virtual-router-mac-address
       id: 1
-      mgmt_ip: 192.168.200.105/24missing-wan-ha-ipv4-pool
+      mgmt_ip: 192.168.200.105/24
 
 tenants:
   - name: Tenant_A
