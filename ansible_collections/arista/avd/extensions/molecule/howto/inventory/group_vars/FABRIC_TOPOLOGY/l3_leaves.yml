@@ -1,0 +1,30 @@
+---
+# Fabric Topology How-To Guide
+# L3 Leaf configuration
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.0.0/27 # (1)!
+    loopback_ipv4_offset: 2 # (2)!
+    vtep_loopback_ipv4_pool: 10.255.1.0/27 # (3)!
+    uplink_switches: [topo-spine1, topo-spine2] # (4)!
+    uplink_ipv4_pool: 10.255.255.0/26 # (5)!
+    mlag_peer_ipv4_pool: 10.255.1.64/27 # (6)!
+    mlag_peer_l3_ipv4_pool: 10.255.1.96/27 # (7)!
+    virtual_router_mac_address: 00:1c:73:00:00:99 # (8)!
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+  node_groups: # (9)!
+    - group: TOPO_LEAF1 # (10)!
+      bgp_as: 65101 # (11)!
+      nodes:
+        - name: topo-leaf1a
+          id: 1
+          mgmt_ip: 172.16.2.101/24
+          uplink_switch_interfaces: [Ethernet1, Ethernet1] # (12)!
+        - name: topo-leaf1b
+          id: 2
+          mgmt_ip: 172.16.2.102/24
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
