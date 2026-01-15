@@ -61,7 +61,7 @@ Connectivity is defined from the child's device perspective.
 Source uplink interfaces and parent interfaces are defined on the child.
 
 !!! tip
-    Leverage [`default_interfaces`](#default-interface-settings) data model to auto define uplink and downlink interfaces based on the node id.
+    Leverage [`default_interfaces`](input-variables.md#default-interface-settings) data model to auto define uplink and downlink interfaces based on the node id.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-uplink-configuration.md
@@ -70,7 +70,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-uplink-co
 ### L2 and MLAG
 
 !!! tip
-    Alternate addressing schemes are available at [`fabric_ip_addressing`](#fabric-ip-addressing).
+    Alternate addressing schemes are available at [`fabric_ip_addressing`](input-variables.md#fabric-ip-addressing).
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l2-mlag-configuration.md
@@ -476,7 +476,7 @@ vtep_loopback_interface:
 - This is leveraged to load the appropriate settings to generate the configuration.
 
 !!! tip
-    The node type setting can be automatically derived from a switch name by defining the patterns in the [`default_node_types`](#default-assignment) data model.
+    The node type setting can be automatically derived from a switch name by defining the patterns in the [`default_node_types`](#auto-assign) data model.
 
 ??? example "Type setting example"
 

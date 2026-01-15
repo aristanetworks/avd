@@ -9,7 +9,7 @@
 The network services variables provide an abstracted model to define network services across the fabric.
 The network services are grouped by tenants. The definition of a tenant may vary between organizations. E.g. tenants can be organizations or departments.
 
-The filtering models defined under [Node type network services configuration](#node-type-network-services-configuration) allows
+The filtering models defined under [Node type network services configuration](input-variables-node-type.md#network-services) allows
 for granular deployment of network services to the fabric leveraging the tenant name and tags applied to the service definition.
 
 - This allows for the reuse of SVI/VLAN IDs across the fabric.
