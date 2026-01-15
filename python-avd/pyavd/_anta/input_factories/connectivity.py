@@ -184,7 +184,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 vrf=neighbor.vrf,
                 repeat=1,
             )
-            for neighbor in self.device.bgp_neighbors
+            for neighbor in self.data_source.bgp_neighbors
             if neighbor.update_source is not None
         ]
 
