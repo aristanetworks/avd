@@ -1053,7 +1053,7 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.switchport.tool.dot1q_remove_outer_vlan_tag is arista.avd.defined %}
    switchport tool dot1q remove outer {{ ethernet_interface.switchport.tool.dot1q_remove_outer_vlan_tag }}
 {%         endif %}
-{# Need to double check this command #}
+{# TODO: his command was removed from EOS and will need to be removed from AVD #}
 {%         if ethernet_interface.switchport.tool.dzgre_preserve is arista.avd.defined(true) %}
    switchport tool dzgre preserve
 {%         endif %}
@@ -1078,7 +1078,7 @@ interface {{ ethernet_interface.name }}
 {%     elif ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback is arista.avd.defined %}
    traffic-engineering min-delay dynamic twamp-light fallback {{ ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.number }} {{ ethernet_interface.traffic_engineering.min_delay_dynamic.twamp_light_fallback.unit }}
 {%     endif %}
-{%     for link_tracking_group in ethernet_interface.link_tracking_groups | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
+{%     for link_tracking_group in ethernet_interface.link_tracking_groups | arista.avd.default([]) %}
    link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}
 {%     endfor %}
 {%     if ethernet_interface.link_tracking.direction is arista.avd.defined and ethernet_interface.link_tracking.groups is arista.avd.defined %}
