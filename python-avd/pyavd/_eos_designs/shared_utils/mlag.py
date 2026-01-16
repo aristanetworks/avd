@@ -265,7 +265,7 @@ class MlagMixin(Protocol):
             description=AvdStringFormatter().format(self.inputs.mlag_bgp_peer_group_description, mlag_peer=self.mlag_peer),
             password=self.get_bgp_password(bgp_peer_group),
             bfd=bgp_peer_group.bfd or None,
-            maximum_routes=256000,
+            maximum_routes=self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.maximum_routes,
             send_community="all",
         )
         peer_group.metadata.type = "ipv4"
