@@ -582,9 +582,9 @@ ip routing vrf RED
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-| MGMT | 0.0.0.0/0 | 192.168.17.1 | - | 1 | - | - | - |
-| default | 172.18.0.0/16 | 172.18.40.1 | - | 1 | - | - | - |
 | default | 100.64.0.0/16 | 100.64.40.1 | - | 1 | - | - | - |
+| default | 172.18.0.0/16 | 172.18.40.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 192.168.17.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
