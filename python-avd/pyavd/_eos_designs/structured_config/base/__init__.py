@@ -630,7 +630,7 @@ class AvdStructuredConfigBaseProtocol(
 
         if source_ip == "router_id":
             if self.shared_utils.router_id is None:
-                msg = "PTP source IP is set to 'router_id' but no router ID is configured for this device."
+                msg = "PTP source IP is set to 'ptp.source_ip: router_id' but no router ID is configured for this device."
                 raise AristaAvdInvalidInputsError(msg)
             self.structured_config.ptp.source.ip = self.shared_utils.router_id
         elif source_ip is not None:
