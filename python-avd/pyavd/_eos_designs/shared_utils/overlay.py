@@ -83,7 +83,7 @@ class OverlayMixin(Protocol):
         except ValueError:
             msg = (
                 f"Invalid value '{admin_subfield}' for 'overlay_rd_type.admin_subfield'. "
-                "Expected 'router_id', 'vtep_loopback', 'bgp_as', 'switch_id', a valid IPv4 address, or a numeric value (0–4294967295)."
+                "Expected 'router_id', 'vtep_loopback', 'bgp_as', 'switch_id', a valid IPv4 address, or a numeric value from 0 to 4294967295."
             )
 
             raise AristaAvdInvalidInputsError(msg) from None
