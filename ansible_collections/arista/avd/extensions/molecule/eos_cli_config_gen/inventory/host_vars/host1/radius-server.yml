@@ -8,7 +8,7 @@ radius_server:
     port: 1700
     tls_ssl_profile: SSL_PROFILE
   tls_ssl_profile: GLOBAL_RADIUS_SSL_PROFILE
-  hosts:
+  servers:
     - host: 10.10.10.158
       key: 071B245F5A
       timeout: 1

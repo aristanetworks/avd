@@ -27,7 +27,7 @@ radius-server tls ssl-profile {{ radius_server.tls_ssl_profile }}
 {%     if radius_server.dynamic_authorization.tls_ssl_profile is arista.avd.defined %}
 radius-server dynamic-authorization tls ssl-profile {{ radius_server.dynamic_authorization.tls_ssl_profile }}
 {%     endif %}
-{%     for radius_host in radius_server.hosts | arista.avd.default([]) %}
+{%     for radius_host in radius_server.servers | arista.avd.default([]) %}
 {%         set radius_cli = "radius-server host " ~ radius_host.host %}
 {%         if radius_host.tls.enabled is arista.avd.defined(true) %}
 {%             set radius_cli = radius_cli ~ " tls" %}
@@ -50,7 +50,7 @@ radius-server dynamic-authorization tls ssl-profile {{ radius_server.dynamic_aut
 {{ radius_cli }}
 {%     endfor %}
 {%     for radius_server_vrf in radius_server.vrfs | arista.avd.default([]) %}
-{%         for radius_host in radius_server_vrf.servers | arista.avd.default([]) %}
+{%         for radius_host in radius_server_vrf.servers %}
 {%             set radius_cli = "radius-server host " ~ radius_host.host ~ " vrf " ~ radius_server_vrf.name %}
 {%             if radius_host.tls.enabled is arista.avd.defined(true) %}
 {%                 set radius_cli = radius_cli ~ " tls" %}

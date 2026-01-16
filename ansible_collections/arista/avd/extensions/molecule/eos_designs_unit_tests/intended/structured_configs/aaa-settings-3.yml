@@ -70,7 +70,7 @@ metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 radius_server:
-  hosts:
+  servers:
   - host: 11.10.10.11
     key: 071B245F5A
   vrfs:

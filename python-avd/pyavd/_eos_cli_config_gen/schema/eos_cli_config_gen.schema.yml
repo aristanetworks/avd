@@ -14438,9 +14438,9 @@ keys:
           tls_ssl_profile:
             type: str
             description: Name of TLS profile.
-      hosts:
+      servers:
         type: list
-        description: Hosts configuration with default vrf.
+        description: Hosts configuration for VRF default.
         items:
           type: dict
           keys:
@@ -14448,7 +14448,7 @@ keys:
               type: str
               required: true
               description: -> Host IP address or name. Multiple server with the same
-                host can be configured for TLS and no TLS.
+                hostname/IP address can be configured for TLS and no TLS.
             tls:
               type: dict
               description: When TLS is configured, `key` is ignored.
@@ -14493,10 +14493,11 @@ keys:
               type: str
               convert_types:
               - int
-              description: VRF name.
+              description: Non-defualt VRF name.
             servers:
               type: list
-              $ref: eos_cli_config_gen#/keys/radius_server/keys/hosts
+              required: true
+              $ref: eos_cli_config_gen#/keys/radius_server/keys/servers
       tls_ssl_profile:
         type: str
         description: Name of global TLS profile.

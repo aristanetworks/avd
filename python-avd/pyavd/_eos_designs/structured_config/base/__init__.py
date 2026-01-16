@@ -692,9 +692,9 @@ class AvdStructuredConfigBaseProtocol(
                 )
             if server_vrf and server_vrf == "default":
                 if server.tls.enabled:
-                    self.structured_config.radius_server.hosts.append_new(host=server.host, tls=server.tls)
+                    self.structured_config.radius_server.servers.append_new(host=server.host, tls=server.tls)
                 else:
-                    self.structured_config.radius_server.hosts.append_new(host=server.host, key=self._get_tacacs_or_radius_server_password(server))
+                    self.structured_config.radius_server.servers.append_new(host=server.host, key=self._get_tacacs_or_radius_server_password(server))
             elif server_vrf:
                 radius_server_vrf = self.structured_config.radius_server.vrfs.obtain(server_vrf)
                 if server.tls.enabled:
