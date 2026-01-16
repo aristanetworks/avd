@@ -18,6 +18,7 @@ from pyavd.j2filters import natural_sort, secure_hash
 
 from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
+from .dot1x import Dot1xMixin
 from .management_ssh import ManagementSshMixin
 from .monitor_sessions import MonitorSessionsMixin
 from .ntp import NtpMixin
@@ -30,6 +31,7 @@ from .utils import UtilsMixin
 class AvdStructuredConfigBaseProtocol(
     AddressLockingMixin,
     DaemonTerminattrMixin,
+    Dot1xMixin,
     ManagementSshMixin,
     NtpMixin,
     SnmpServerMixin,
@@ -736,23 +738,26 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def aaa_authentication(self) -> None:
         """Assign AAA authentication configuration from inputs to structured config."""
-        if not (aaa_authentication := self.inputs.aaa_settings.authentication):
+        if not self.inputs.aaa_settings.authentication:
             return
-        self.structured_config.aaa_authentication = aaa_authentication
+
+        self.structured_config.aaa_authentication = self.inputs.aaa_settings.authentication._cast_as(new_type=EosCliConfigGen.AaaAuthentication)
 
     @structured_config_contributor
     def aaa_authorization(self) -> None:
         """Assign AAA authorization configuration from inputs to structured config."""
-        if not (aaa_authorization := self.inputs.aaa_settings.authorization):
+        if not self.inputs.aaa_settings.authorization:
             return
-        self.structured_config.aaa_authorization = aaa_authorization
+
+        self.structured_config.aaa_authorization = self.inputs.aaa_settings.authorization._cast_as(new_type=EosCliConfigGen.AaaAuthorization)
 
     @structured_config_contributor
     def aaa_accounting(self) -> None:
         """Assign AAA accounting configuration from inputs to structured config."""
-        if not (aaa_accounting := self.inputs.aaa_settings.accounting):
+        if not self.inputs.aaa_settings.accounting:
             return
-        self.structured_config.aaa_accounting = aaa_accounting
+
+        self.structured_config.aaa_accounting = self.inputs.aaa_settings.accounting._cast_as(new_type=EosCliConfigGen.AaaAccounting)
 
     @structured_config_contributor
     def aaa_root_login(self) -> None:

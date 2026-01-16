@@ -170,13 +170,46 @@ keys:
                     If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
       authentication:
         type: dict
-        $ref: "eos_cli_config_gen#/keys/aaa_authentication"
+        keys:
+          login:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authentication/keys/login"
+          enable:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authentication/keys/enable"
+          policies:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authentication/keys/policies"
       authorization:
         type: dict
-        $ref: "eos_cli_config_gen#/keys/aaa_authorization"
+        keys:
+          policy:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/policy"
+          exec:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/exec"
+          config_commands:
+            type: bool
+            $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/config_commands"
+          serial_console:
+            type: bool
+            $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/serial_console"
+          commands:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/commands"
       accounting:
         type: dict
-        $ref: "eos_cli_config_gen#/keys/aaa_accounting"
+        keys:
+          exec:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_accounting/keys/exec"
+          system:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_accounting/keys/system"
+          commands:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_accounting/keys/commands"
       root_login:
         type: dict
         keys:
