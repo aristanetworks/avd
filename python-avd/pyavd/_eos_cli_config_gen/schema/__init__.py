@@ -26007,37 +26007,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class MacFaultItem(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    Location: TypeAlias = Literal["local", "remote"]
-                    _fields: ClassVar[dict] = {"location": {"type": str}, "penalty": {"type": int}}
-                    location: Location
-                    penalty: int
-                    """0 refers to - No penalty, 1-5000 refers to penalty value for fault."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, location: Location | UndefinedType = Undefined, penalty: int | UndefinedType = Undefined) -> None:
-                            """
-                            MacFaultItem.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                location: location
-                                penalty: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
-
-                            """
-
-                class MacFault(AvdIndexedList[str, MacFaultItem]):
-                    """Subclass of AvdIndexedList with `MacFaultItem` items. Primary key is `location` (`str`)."""
-
-                    _primary_key: ClassVar[str] = "location"
-
-                MacFault._item_type = MacFaultItem
-
                 class Threshold(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -26071,16 +26040,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                _fields: ClassVar[dict] = {"decay": {"type": Decay}, "mac_fault": {"type": MacFault}, "threshold": {"type": Threshold}}
+                _fields: ClassVar[dict] = {
+                    "decay": {"type": Decay},
+                    "mac_fault_local_penalty": {"type": int},
+                    "mac_fault_remote_penalty": {"type": int},
+                    "threshold": {"type": Threshold},
+                }
                 decay: Decay
                 """Subclass of AvdModel."""
-                mac_fault: MacFault
-                """
-                Penalty for MAC fault change.
-
-                Subclass of AvdIndexedList with `MacFaultItem` items. Primary key is
-                `location` (`str`).
-                """
+                mac_fault_local_penalty: int | None
+                """0 refers to - No penalty, 1-5000 refers to penalty value for fault."""
+                mac_fault_remote_penalty: int | None
+                """0 refers to - No penalty, 1-5000 refers to penalty value for fault."""
                 threshold: Threshold
                 """Subclass of AvdModel."""
 
@@ -26090,7 +26061,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         decay: Decay | UndefinedType = Undefined,
-                        mac_fault: MacFault | UndefinedType = Undefined,
+                        mac_fault_local_penalty: int | None | UndefinedType = Undefined,
+                        mac_fault_remote_penalty: int | None | UndefinedType = Undefined,
                         threshold: Threshold | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -26101,11 +26073,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             decay: Subclass of AvdModel.
-                            mac_fault:
-                               Penalty for MAC fault change.
-
-                               Subclass of AvdIndexedList with `MacFaultItem` items. Primary key is
-                               `location` (`str`).
+                            mac_fault_local_penalty: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
+                            mac_fault_remote_penalty: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
                             threshold: Subclass of AvdModel.
 
                         """

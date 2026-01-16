@@ -37,26 +37,20 @@ keys:
                       valid_values:
                         - "minutes"
                         - "seconds"
-                mac_fault:
-                  type: list
-                  description: Penalty for MAC fault change.
-                  primary_key: location
-                  items:
-                    type: dict
-                    keys:
-                      location:
-                        type: str
-                        valid_values:
-                          - "local"
-                          - "remote"
-                      penalty:
-                        type: int
-                        description: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
-                        required: true
-                        convert_types:
-                          - str
-                        min: 0
-                        max: 5000
+                mac_fault_local_penalty:
+                  type: int
+                  description: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 5000
+                mac_fault_remote_penalty:
+                  type: int
+                  description: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 5000
                 threshold:
                   type: dict
                   keys:

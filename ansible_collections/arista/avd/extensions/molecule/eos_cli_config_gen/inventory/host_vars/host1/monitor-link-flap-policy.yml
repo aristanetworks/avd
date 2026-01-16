@@ -6,11 +6,8 @@ monitor_link_flap_policy:
         decay:
           half_life: 5
           units: "seconds"
-        mac_fault:
-          - location: "local"
-            penalty: 5
-          - location: "remote"
-            penalty: 10
+        mac_fault_local_penalty: 5
+        mac_fault_remote_penalty: 10
         threshold:
           maximum: 5
           reuse: 2

@@ -31,10 +31,11 @@ monitor link-flap policy
 {%             endif %}
       {{ monitor_flap_cli }}
 {%         endif %}
-{%         if profile.damping_penalty.mac_fault is arista.avd.defined %}
-{%             for fault in profile.damping_penalty.mac_fault | arista.avd.natural_sort('location') %}
-      penalty mac fault {{ fault.location }} {{ fault.penalty }}
-{%             endfor %}
+{%         if profile.damping_penalty.mac_fault_local_penalty is arista.avd.defined %}
+      penalty mac fault local {{ profile.damping_penalty.mac_fault_local_penalty }}
+{%         endif %}
+{%         if profile.damping_penalty.mac_fault_remote_penalty is arista.avd.defined %}
+      penalty mac fault remote {{ profile.damping_penalty.mac_fault_remote_penalty }}
 {%         endif %}
 {%         if profile.damping_penalty.decay is arista.avd.defined %}
       penalty decay half-life {{ profile.damping_penalty.decay.half_life }} {{ profile.damping_penalty.decay.units }}

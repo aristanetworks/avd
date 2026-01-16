@@ -14,9 +14,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decay</samp>](## "monitor_link_flap_policy.profiles.[].damping_penalty.decay") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;half_life</samp>](## "monitor_link_flap_policy.profiles.[].damping_penalty.decay.half_life") | Integer | Required |  | Min: 1<br>Max: 5000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "monitor_link_flap_policy.profiles.[].damping_penalty.decay.units") | String | Required |  | Valid Values:<br>- <code>minutes</code><br>- <code>seconds</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_fault</samp>](## "monitor_link_flap_policy.profiles.[].damping_penalty.mac_fault") | List, items: Dictionary |  |  |  | Penalty for MAC fault change. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;location</samp>](## "monitor_link_flap_policy.profiles.[].damping_penalty.mac_fault.[].location") | String | Required, Unique |  | Valid Values:<br>- <code>local</code><br>- <code>remote</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penalty</samp>](## "monitor_link_flap_policy.profiles.[].damping_penalty.mac_fault.[].penalty") | Integer | Required |  | Min: 0<br>Max: 5000 | 0 refers to - No penalty, 1-5000 refers to penalty value for fault. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_fault_local_penalty</samp>](## "monitor_link_flap_policy.profiles.[].damping_penalty.mac_fault_local_penalty") | Integer |  |  | Min: 0<br>Max: 5000 | 0 refers to - No penalty, 1-5000 refers to penalty value for fault. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_fault_remote_penalty</samp>](## "monitor_link_flap_policy.profiles.[].damping_penalty.mac_fault_remote_penalty") | Integer |  |  | Min: 0<br>Max: 5000 | 0 refers to - No penalty, 1-5000 refers to penalty value for fault. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "monitor_link_flap_policy.profiles.[].damping_penalty.threshold") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "monitor_link_flap_policy.profiles.[].damping_penalty.threshold.maximum") | Integer |  |  | Min: 0<br>Max: 1000000 | Maximum value of penalty for a link. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reuse</samp>](## "monitor_link_flap_policy.profiles.[].damping_penalty.threshold.reuse") | Integer |  |  | Min: 0<br>Max: 1000000 | Value of penalty below which suppressed link would be reused. |
@@ -42,12 +41,11 @@
               half_life: <int; 1-5000; required>
               units: <str; "minutes" | "seconds"; required>
 
-            # Penalty for MAC fault change.
-            mac_fault:
-              - location: <str; "local" | "remote"; required; unique>
+            # 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
+            mac_fault_local_penalty: <int; 0-5000>
 
-                # 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
-                penalty: <int; 0-5000; required>
+            # 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
+            mac_fault_remote_penalty: <int; 0-5000>
             threshold:
 
               # Maximum value of penalty for a link.

@@ -3844,10 +3844,10 @@ load-balance cluster
 
 ### Link-Flap Profiles
 
-| Name | Damping | Decay Half-Life | Decay Units | MAC Fault Location | MAC Fault Penalty | Threshold Max | Threshold Reuse | Threshold Suppression | Max Flaps | Time | Violations | Intervals |
-| ---- | ------- | --------------- | ----------- | ------------------ | ----------------- | ------------- | --------------- | --------------------- | --------- | ---- | ---------- | --------- |
+| Name | Damping | Decay Half-Life | Decay Units | MAC Fault - Local Penalty | MAC Fault - Remote Penalty | Threshold Max | Threshold Reuse | Threshold Suppression | Max Flaps | Time | Violations | Intervals |
+| ---- | ------- | --------------- | ----------- | ------------------------- | -------------------------- | ------------- | --------------- | --------------------- | --------- | ---- | ---------- | --------- |
 | LFP1 | False | - | - | - | - | - | - | - | 11 | 12 | 5 | 10 |
-| LFP2 | True | 5 | seconds | local<br>remote<br> | 5<br>10<br> | 5 | 2 | 100 | - | - | - | - |
+| LFP2 | True | 5 | seconds | - | - | 5 | 2 | 100 | - | - | - | - |
 | LFP3 | True | - | - | - | - | - | - | - | - | - | - | - |
 | LFP4 | False | - | - | - | - | - | - | - | 23 | 10 | - | - |
 | LFP5 | True | - | - | - | - | - | 1 | - | - | - | - | - |
