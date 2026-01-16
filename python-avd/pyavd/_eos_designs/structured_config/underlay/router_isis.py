@@ -58,7 +58,9 @@ class RouterIsisMixin(Protocol):
         if self.shared_utils.overlay_routing_protocol == "none":
             self.structured_config.router_isis.redistribute_routes.append_new(source_protocol="connected")
 
-        self.structured_config.router_isis.advertise.passive_only = self.inputs.isis_advertise_passive_only
+        # ISIS advertise passive-only - only set if true (default is false)
+        if self.inputs.isis_advertise_passive_only is True:
+            self.structured_config.router_isis.advertise.passive_only = True
 
         if self.shared_utils.underlay_sr is True:
             # TODO: - enabling IPv6 only in SR cases as per existing behavior
