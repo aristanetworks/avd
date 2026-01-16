@@ -35,6 +35,7 @@ class AvdDeviceData:
     mlag_vtep_ip: IPv4Address | None
     is_vtep: bool
     is_wan_router: bool
+    exclude_as_extra_fabric_validation_target: bool
 
     @classmethod
     def from_structured_config(cls, structured_config: dict[str, Any]) -> AvdDeviceData:
@@ -80,6 +81,7 @@ class AvdDeviceData:
             mlag_vtep_ip=mlag_vtep_ip,
             is_vtep=is_vtep,
             is_wan_router=is_wan_router,
+            exclude_as_extra_fabric_validation_target=get(structured_config, "metadata.exclude_as_extra_fabric_validation_target", default=False),
         )
 
     @staticmethod
@@ -155,15 +157,23 @@ class AvdFabricData:
     loopback0_mapping: dict[str, IPv4Address]
     """Mapping of device hostname to its Loopback0 IPv4 address.
 
-    Only includes deployed non-WAN devices that have a Loopback0 IP configured."""
-    special_ips_mapping: dict[str, set[IPv4Address]]
-    """Mapping of device hostname to a set of 'special' IPs (Loopback0, VTEP, and MLAG VTEP).
+    Includes deployed devices that have a Loopback0 IP configured.
 
-    Only includes deployed non-WAN devices with at least one special IP.
+    WAN devices and devices that are marked as excluded as targets from extra validation tests are excluded."""
+    special_ips_mapping: dict[str, set[IPv4Address]]
+    """Mapping of device hostname to a set of 'special' IPv4 addresses (Loopback0, VTEP, and MLAG VTEP).
+
+    Includes deployed devices with at least one special IP.
+
+    WAN devices and devices that are marked as excluded as targets from extra validation tests are excluded.
 
     Uses a set to deduplicate IPs in Multi-VTEP scenarios where Loopback0 is commonly reused as the local VTEP IP."""
     special_ips: set[IPv4Address]
-    """Set of all 'special' IPv4 addresses (Loopback0, VTEP, and MLAG VTEP) from deployed non-WAN devices in the fabric.
+    """Set of all 'special' IPv4 addresses (Loopback0, VTEP, and MLAG VTEP).
+
+    Includes IPs of all deployed devices.
+
+    IPs of WAN devices and devices that are marked as excluded as targets from extra validation tests are excluded.
 
     Uses a set to deduplicate IPs across devices (e.g., MLAG pairs sharing the same VTEP IP).
     """
@@ -191,14 +201,19 @@ class AvdFabricData:
             # Update the devices mapping
             devices[device] = device_data
 
+            # Devices excluded as destination targets are not added to the IP mappings
+            if device_data.exclude_as_extra_fabric_validation_target:
+                LOGGER.debug("<%s> Skipped from all IPv4 mappings - Device excluded as a target from extra validation tests", device)
+                continue
+
             # Undeployed devices are not added to the IP mappings
             if not device_data.is_deployed:
-                LOGGER.debug("<%s> Skipped from IPv4 mappings - Device is not deployed", device)
+                LOGGER.debug("<%s> Skipped from all IPv4 mappings - Device is not deployed", device)
                 continue
 
             # WAN routers are not added to the IP mappings for now
             if device_data.is_wan_router:
-                LOGGER.debug("<%s> Skipped from IPv4 mappings - Device is a WAN router", device)
+                LOGGER.debug("<%s> Skipped from all IPv4 mappings - Device is a WAN router", device)
                 continue
 
             # Track special IPs for this device

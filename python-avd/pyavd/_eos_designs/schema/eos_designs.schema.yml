@@ -129,8 +129,8 @@ keys:
                   type: str
                   description: 'Host IP address or name.
 
-                    Multiple server with the same host can be configured for TLS and
-                    no TLS.'
+                    Multiple servers with the same hostname/IP address can be configured
+                    for TLS and no TLS.'
                   required: true
                 groups:
                   type: list
@@ -194,13 +194,46 @@ keys:
                     this setting will take precedence.'
       authentication:
         type: dict
-        $ref: eos_cli_config_gen#/keys/aaa_authentication
+        keys:
+          login:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authentication/keys/login
+          enable:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authentication/keys/enable
+          policies:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authentication/keys/policies
       authorization:
         type: dict
-        $ref: eos_cli_config_gen#/keys/aaa_authorization
+        keys:
+          policy:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/policy
+          exec:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/exec
+          config_commands:
+            type: bool
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/config_commands
+          serial_console:
+            type: bool
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/serial_console
+          commands:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/commands
       accounting:
         type: dict
-        $ref: eos_cli_config_gen#/keys/aaa_accounting
+        keys:
+          exec:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_accounting/keys/exec
+          system:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_accounting/keys/system
+          commands:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_accounting/keys/commands
       root_login:
         type: dict
         keys:
@@ -2015,6 +2048,136 @@ keys:
 
           Can be set to `false` to avoid changes when migrating from the old `name_servers`
           model.'
+  dot1x_settings:
+    documentation_options:
+      table: dot1x-settings
+    type: dict
+    description: Settings for 802.1X deployments.
+    keys:
+      enabled:
+        type: bool
+        default: false
+        description: 'Globally enable 802.1X port authentication on the switch.
+
+          Must be true for 802.1X to be active on any interface.'
+      authentication:
+        type: dict
+        keys:
+          radius_groups:
+            type: list
+            min_length: 1
+            description: 'List of RADIUS server groups to be used for 802.1X authentication
+              when globally enabled. If not provided, all defined RADIUS hosts are
+              used.
+
+              The order of the list defines the server group priority.
+
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.'
+            items:
+              type: str
+              description: RADIUS server group name.
+      accounting:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: true
+            description: Enable 802.1X accounting.
+          mode:
+            type: str
+            valid_values:
+            - start-stop
+            - stop-only
+            default: start-stop
+            description: 'Determines whether to send accounting records when a session
+              is established and
+
+              when it ends (`start-stop`), or only when the session ends (`stop-only`).'
+          radius_groups:
+            type: list
+            min_length: 1
+            description: 'List of RADIUS server groups to be used for 802.1X accounting
+              when enabled. If not provided, all defined RADIUS hosts are used.
+
+              The order of the list defines the server group priority.
+
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.'
+            items:
+              type: str
+              description: RADIUS server group name.
+          multicast:
+            type: bool
+            default: false
+            description: Send Accounting-Request messages to all servers in a RADIUS
+              group at the same time.
+          syslog:
+            type: bool
+            default: false
+            description: Log all accounting messages to syslog if all RADIUS servers
+              are unavailable or unresponsive.
+      bypass_bpdu:
+        type: bool
+        default: true
+        $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_bpdu_bypass
+      bypass_lldp:
+        type: bool
+        default: true
+        $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_lldp_bypass
+      dynamic_authorization:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: true
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
+          additional_groups:
+            type: list
+            description: 'List of additional RADIUS server groups for dynamic authorization
+              purposes only.
+
+              The order of the list defines the server group priority.
+
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.'
+            items:
+              type: str
+              description: RADIUS server group name.
+      mac_based_authentication:
+        type: dict
+        keys:
+          username_format:
+            type: dict
+            keys:
+              delimiter:
+                type: str
+                description: RADIUS User-Name attribute delimiter to use on the MAC
+                  address.
+                required: true
+                valid_values:
+                - colon
+                - hyphen
+                - none
+                - period
+              letter_case:
+                type: str
+                description: RADIUS User-Name attribute letter case to use on the
+                  MAC address.
+                required: true
+                valid_values:
+                - lowercase
+                - uppercase
+      radius_av_pairs:
+        type: dict
+        keys:
+          service_type:
+            type: bool
+            default: false
+            description: Send RADIUS Service-Type attribute in Access-Request and
+              Accounting messages.
+      redistribute_in_evpn:
+        type: bool
+        default: true
+        description: Globally enable the redistribution of static 802.1X-learned MAC
+          addresses into EVPN under all configured MAC-VRFs.
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings
@@ -4224,7 +4387,7 @@ keys:
     $ref: eos_designs#/$defs/platform_settings
     type: list
     documentation_options:
-      table: platform-settings
+      table: custom-platform-settings
     description: Custom Platform settings to override the default `platform_settings`.
       This list will be prepended to the list of `platform_settings`. The first entry
       found where the `platform` node setting is fully matched by any regex in the
@@ -4575,7 +4738,7 @@ keys:
         platform: CloudEOS
   platform_speed_groups:
     documentation_options:
-      table: platform-settings
+      table: platform-speed-groups
     type: list
     primary_key: platform
     description: Set Hardware Speed Groups per Platform.
@@ -8115,7 +8278,11 @@ $defs:
                     description: 'IPv4_address/Mask.
 
                       Loopback IPv4 range, a unique ip is derived from this range
-                      and assigned to each l3 leaf based on it''s unique id.
+                      and assigned to each l3 leaf based on its unique id.
+
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name`
+                      of the device, and is configured with an `ipv4_pool`, it takes
+                      precedence over `loopback_ipv4_range`.
 
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range`
                       or `loopback_ip_pools` are set.
@@ -8126,7 +8293,11 @@ $defs:
                     description: 'IPv6_address/Mask.
 
                       Loopback IPv6 range, a unique IPv6 address is derived from this
-                      range and assigned to each L3 leaf based on it''s unique ID.
+                      range and assigned to each L3 leaf based on its unique ID.
+
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name`
+                      of the device, and is configured with an `ipv6_pool`, it takes
+                      precedence over `loopback_ipv6_range`.
 
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range`
                       or `loopback_ip_pools` are set.
@@ -8137,8 +8308,8 @@ $defs:
                     description: 'For inventories with multiple PODs a loopback range
                       can be set per POD to avoid overlaps.
 
-                      `loopback_ip_range` takes precedence for IPv4 and `loopback_ipv6_range`
-                      takes precedence for IPV6.
+                      POD level pools take precedence over `loopback_ip_range` and
+                      `loopback_ipv6_range`.
 
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range`
                       or `loopback_ip_pools` are set.

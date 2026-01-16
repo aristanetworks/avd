@@ -27,16 +27,6 @@ aaa_accounting:
       - method: group
         group: RADIUS1
       - method: logging
-  dot1x:
-    default:
-      type: start-stop
-      methods:
-      - multicast: true
-        method: group
-        group: radius
-      - method: group
-        group: radius
-      - method: logging
   commands:
     console:
     - commands: all
@@ -105,8 +95,6 @@ aaa_authentication:
     console: local
   enable:
     default: group TACACS1 local
-  dot1x:
-    default: group RADIUS1
   policies:
     on_failure_log: true
     on_success_log: true
@@ -123,10 +111,6 @@ aaa_authorization:
     default: group TACACS1 local
   config_commands: true
   serial_console: true
-  dynamic:
-    dot1x_additional_groups:
-    - radius
-    - RADIUS1
   commands:
     all_default: group TACACS1
     privilege:

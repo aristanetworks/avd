@@ -57,7 +57,7 @@ class TestLoggerAdapter(LoggerAdapter):
 
         prefix = f"<{device}> {test}"
         if context:
-            prefix += f" {context}"
+            prefix += f" ({context})"
 
         return f"{prefix} {formatted_msg}", kwargs
 
@@ -117,3 +117,4 @@ class LogMessage(Enum):
 
     # Device role message
     DEVICE_IS_WAN_ROUTER = "skipped - Device is a WAN router"
+    DEVICE_IS_NOT_VTEP = "skipped - Device is not a VTEP"
