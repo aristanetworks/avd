@@ -154,7 +154,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         # Now, we only need to check the lengths of uplink_switch_interfaces
         if len(uplink_switches) != len(uplink_switch_interfaces):
             msg = (
-                f"Lengths of uplink_switches: {uplink_switches} and uplink_switch_interfaces: {uplink_switch_interfaces} are not equal please check the inputs."
+                f"Lengths of uplink_switches: {uplink_switches} and uplink_switch_interfaces: {uplink_switch_interfaces} do not match. Please check the inputs."
             )
             raise AristaAvdInvalidInputsError(msg)
 
