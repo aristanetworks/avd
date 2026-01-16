@@ -11,7 +11,7 @@ from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
 
 from ._base_classes import AntaTestInputFactory
-from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_missing_config, skip_if_wan_router
+from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_missing_config, skip_if_not_vtep, skip_if_wan_router
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -45,13 +45,13 @@ class VerifyRoutingTableEntryInputFactory(AntaTestInputFactory[VerifyRoutingTabl
     No inputs are generated if `extra_fabric_validation` is disabled.
     """
 
-    @skip_if_missing_config(StructuredConfigKey.VXLAN1_INTERFACE)
     @skip_if_extra_fabric_validation_disabled
+    @skip_if_not_vtep
     @skip_if_wan_router
     def create(self) -> Iterator[VerifyRoutingTableEntry.Input]:
         """Generate the inputs for the `VerifyRoutingTableEntry` test."""
-        if not self.data_source.special_ips:
+        if not self.data_source.fabric_special_ips:
             self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
-        yield VerifyRoutingTableEntry.Input(routes=self.data_source.special_ips, collect="all")
+        yield VerifyRoutingTableEntry.Input(routes=self.data_source.fabric_special_ips, collect="all")
