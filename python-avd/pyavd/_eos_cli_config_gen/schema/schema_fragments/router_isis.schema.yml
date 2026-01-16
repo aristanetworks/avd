@@ -369,6 +369,7 @@ keys:
               type: dict
               keys:
                 prefix:
+                  required: true
                   type: str
                 index:
                   type: int

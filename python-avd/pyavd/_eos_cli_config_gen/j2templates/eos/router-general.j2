@@ -9,7 +9,7 @@
 router general
 {%     if router_general.control_functions is arista.avd.defined %}
    control-functions
-{%         for code_unit in router_general.control_functions.code_units | arista.avd.natural_sort(sort_key='name') %}
+{%         for code_unit in router_general.control_functions.code_units | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%             if code_unit.content is arista.avd.defined %}
 {%                 set content = code_unit.content %}
 {%                 if not content.rstrip().endswith('\nEOF') %}

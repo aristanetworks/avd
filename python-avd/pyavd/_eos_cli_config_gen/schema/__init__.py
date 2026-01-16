@@ -57488,12 +57488,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"prefix": {"type": str}, "index": {"type": int}}
-                prefix: str | None
+                prefix: str
                 index: int | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | None | UndefinedType = Undefined, index: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, prefix: str | UndefinedType = Undefined, index: int | None | UndefinedType = Undefined) -> None:
                         """
                         PrefixSegmentsItem.
 
