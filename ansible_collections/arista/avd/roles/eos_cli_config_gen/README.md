@@ -29,7 +29,7 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 **Inputs:**
 
-- EOS Config inputs according to supported data models.
+- [EOS Config](./docs/data-models.md) inputs according to supported data models.
 
 **Outputs:**
 
