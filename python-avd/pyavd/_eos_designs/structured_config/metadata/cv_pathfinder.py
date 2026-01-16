@@ -31,7 +31,7 @@ class CvPathfinderMixin(Protocol):
         """
         if not self.shared_utils.is_cv_pathfinder_router:
             return
-        if not self.inputs.wan_route_servers:
+        if self.shared_utils.is_cv_pathfinder_client and not self.inputs.wan_route_servers:
             msg = "'wan_route_servers' must be configured for WAN routers operating in 'cv_pathfinder' mode."
             raise AristaAvdInvalidInputsError(msg)
         region_name = self.shared_utils.wan_region.name if self.shared_utils.wan_region is not None else None
