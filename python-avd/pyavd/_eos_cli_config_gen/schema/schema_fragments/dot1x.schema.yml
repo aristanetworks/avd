@@ -14,10 +14,13 @@ keys:
         type: bool
       protocol_lldp_bypass:
         type: bool
+        description: Allow LLDP packets to be processed even if the port is not authorized.
       protocol_bpdu_bypass:
         type: bool
+        description: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
       dynamic_authorization:
         type: bool
+        description: Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to adjust an active client session.
       statistics_packets_dropped:
         type: bool
         description: Enable the 802.1X port authentication dropped data packet statistics.
@@ -61,6 +64,7 @@ keys:
         keys:
           service_type:
             type: bool
+            description: Include the Service-Type attribute in RADIUS accounting messages.
           framed_mtu:
             type: int
             min: 68
