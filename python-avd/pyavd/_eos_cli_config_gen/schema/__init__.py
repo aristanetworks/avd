@@ -25989,12 +25989,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Units: TypeAlias = Literal["minutes", "seconds"]
                     _fields: ClassVar[dict] = {"half_life": {"type": int}, "units": {"type": str}}
-                    half_life: int | None
+                    half_life: int
                     units: Units
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, half_life: int | None | UndefinedType = Undefined, units: Units | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, half_life: int | UndefinedType = Undefined, units: Units | UndefinedType = Undefined) -> None:
                             """
                             Decay.
 

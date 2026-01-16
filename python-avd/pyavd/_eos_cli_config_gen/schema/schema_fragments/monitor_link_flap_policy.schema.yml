@@ -30,6 +30,7 @@ keys:
                         - str
                       min: 1
                       max: 5000
+                      required: true
                     units:
                       type: str
                       required: true
@@ -114,6 +115,7 @@ keys:
                   max: 1000
       default_profiles:
         type: list
+        min_length: 1
         items:
           type: str
         description: The default-profile set may contain zero, one, or multiple profiles. When the default-profile set contains multiple profiles, error-disable criteria is satisfied when conditions match any profile.
