@@ -131,19 +131,39 @@ AVD generates complete device configurations based on your topology definitions.
 
 ### Spine Configuration
 
-```cli title="topo-spine1 - Links to Leaves"
---8<--
-docs/howto/fabric_topology/artifacts/topo-spine1-links.cfg
---8<--
-```
+=== "Links to Leaves"
+
+    ```cli
+    --8<--
+    docs/howto/fabric_topology/artifacts/topo-spine1-links.cfg
+    --8<--
+    ```
+
+=== "Full Configuration"
+
+    ```cli
+    --8<--
+    ansible_collections/arista/avd/extensions/molecule/howto/inventory/intended/configs/topo-spine1.cfg
+    --8<--
+    ```
 
 ### L3 Leaf Configuration
 
-```cli title="topo-leaf1a - Uplinks and MLAG"
---8<--
-docs/howto/fabric_topology/artifacts/topo-leaf1a-links.cfg
---8<--
-```
+=== "Uplinks and MLAG"
+
+    ```cli
+    --8<--
+    docs/howto/fabric_topology/artifacts/topo-leaf1a-links.cfg
+    --8<--
+    ```
+
+=== "Full Configuration"
+
+    ```cli
+    --8<--
+    ansible_collections/arista/avd/extensions/molecule/howto/inventory/intended/configs/topo-leaf1a.cfg
+    --8<--
+    ```
 
 ## Default Interfaces
 
@@ -192,15 +212,11 @@ Leaf side:  uplink_ipv4_pool + (node_id * 2 * uplink_count) + (uplink_index * 2)
 
 ## Best Practices
 
-1. **Use `default_interfaces`**: Define interface mappings once at the fabric level instead of on every node.
-
-2. **Consistent naming conventions**: Use predictable hostname patterns that work with `default_node_types`.
-
-3. **Leverage node_groups**: Group related nodes together to share configuration and enable automatic MLAG pairing.
-
-4. **Plan your IP pools**: Ensure IP pools are large enough for your fabric size with room for growth.
-
-5. **Use loopback offsets**: When sharing a loopback pool between node types, use `loopback_ipv4_offset` to prevent IP conflicts.
+1. **Consistent naming conventions**: Use predictable hostname patterns that work with `default_node_types`.
+2. **Leverage node_groups**: Group related nodes together to share configuration and enable automatic MLAG pairing.
+3. **Plan your IP pools**: Ensure IP pools are large enough for your fabric size with room for growth.
+4. **Use loopback offsets**: When sharing a loopback pool between node types, use `loopback_ipv4_offset` to prevent IP conflicts.
+5. **Use `default_interfaces`**: Define interface mappings once at the fabric level instead of on every node.
 
 ## Troubleshooting
 
