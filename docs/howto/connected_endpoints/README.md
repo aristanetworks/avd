@@ -8,7 +8,7 @@
 
 ## Introduction
 
-**connected_endpoints** is an endpoint-centric model intended for servers or other devices where most ports have unique configurations. Instead of manually creating `interface Ethernet...` configurations for every server, you describe the connections using adapters and profiles, and AVD generates the complete, standardized configuration for you.
+**connected_endpoints** is an endpoint-centric model intended for servers or other devices where most ports have unique configurations. Instead of manually creating `interface Ethernet` configurations for every server, you describe the connections using adapters and profiles, and AVD generates the complete, standardized configuration for you.
 
 This guide explains how to define port profiles, configure adapters for your endpoints, and generate the final switch configuration.
 
