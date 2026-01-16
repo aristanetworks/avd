@@ -72,6 +72,7 @@ include-package-data = true
     "avd_meta_schema.pickle",
     "eos_cli_config_gen.schema.pickle",
     "eos_designs.schema.pickle",
+    "schemas.json.gz",
 ]
 
 [tool.setuptools.packages.find]
