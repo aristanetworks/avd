@@ -638,7 +638,7 @@ class AvdStructuredConfigBaseProtocol(
                 IPv4Address(source_ip)
                 self.structured_config.ptp.source.ip = source_ip
             except AddressValueError:
-                msg = f"Invalid PTP source IP '{source_ip}'. The value must be either 'router_id' or a valid IPv4 address."
+                msg = f"Invalid PTP source IP 'ptp.source_ip: {source_ip}'. The value must be either 'router_id' or a valid IPv4 address."
                 raise AristaAvdInvalidInputsError(msg) from None
 
         self.structured_config.ptp.message_type.general.dscp = self.shared_utils.node_config.ptp.dscp.general_messages
