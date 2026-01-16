@@ -15,6 +15,7 @@ service_leaf:
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
+    validation_profile: profile3
 
   node_groups:
     - group: DC1_SVC_LEAF1
