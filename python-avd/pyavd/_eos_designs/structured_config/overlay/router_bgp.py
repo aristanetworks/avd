@@ -212,6 +212,9 @@ class RouterBgpMixin(Protocol):
                     route_map_in="RM-EVPN-SOO-IN",
                     route_map_out="RM-EVPN-SOO-OUT",
                 )
+                # Create the route-maps
+                self.set_once_route_map_evpn_soo_in()
+                self.set_once_route_map_evpn_soo_out()
             peer_groups.append(wan_overlay_peer_group)
 
         if self.shared_utils.overlay_routing_protocol == "ebgp":
@@ -271,6 +274,9 @@ class RouterBgpMixin(Protocol):
                     route_map_in="RM-EVPN-SOO-IN",
                     route_map_out="RM-EVPN-SOO-OUT",
                 )
+                # Create the route-maps
+                self.set_once_route_map_evpn_soo_in()
+                self.set_once_route_map_evpn_soo_out()
         if overlay_peer_group:
             peer_groups.append(overlay_peer_group)
 
@@ -450,6 +456,10 @@ class RouterBgpMixin(Protocol):
         neighbors = self.structured_config.router_bgp.neighbors
         if self.shared_utils.overlay_routing_protocol == "ebgp":
             for route_server, data in natural_sort(self._evpn_route_servers.items()):
+                remote_as = data["bgp_as"]
+                if remote_as is None:
+                    # Never happens but here to help the type checker.
+                    continue
                 neighbor = self._create_neighbor(
                     data["ip_address"],
                     route_server,
@@ -458,7 +468,9 @@ class RouterBgpMixin(Protocol):
                     overlay_peering_interface=data.get("overlay_peering_interface"),
                 )
                 if self.inputs.evpn_prevent_readvertise_to_server and self.inputs.evpn_prevent_readvertise_to_server_mode in ["source_peer_asn", "as_path_acl"]:
-                    neighbor.route_map_out = f"RM-EVPN-FILTER-AS{data['bgp_as']}"
+                    neighbor.route_map_out = f"RM-EVPN-FILTER-AS{remote_as}"
+                    # Create the route-map
+                    self.set_route_map_evpn_filter_as(remote_as)
                 neighbors.append(neighbor)
 
             for route_client, data in natural_sort(self._evpn_route_clients.items()):
@@ -466,7 +478,7 @@ class RouterBgpMixin(Protocol):
                     data["ip_address"],
                     route_client,
                     self.inputs.bgp_peer_groups.evpn_overlay_peers.name,
-                    remote_as=self.shared_utils.get_asn(data["bgp_as"]),
+                    remote_as=data["bgp_as"],
                     overlay_peering_interface=data.get("overlay_peering_interface"),
                 )
                 neighbors.append(neighbor)
@@ -534,6 +546,9 @@ class RouterBgpMixin(Protocol):
                     route_map_in="RM-WAN-HA-PEER-IN",
                     route_map_out="RM-WAN-HA-PEER-OUT",
                 )
+                # Create the route-maps
+                self.set_once_route_map_wan_ha_peer_in()
+                self.set_once_route_map_wan_ha_peer_out()
 
         elif self.shared_utils.is_wan_server:
             # No neighbor configured on the `wan_overlay_peers` peer group as it is covered by listen ranges

@@ -5,45 +5,60 @@ from __future__ import annotations
 
 import cProfile
 import pstats
-import warnings
 from collections import ChainMap
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_ABOVE_2_19, ActionPluginVars, get_templar
-
-PLUGIN_NAME = "arista.avd.eos_designs_facts"
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    ANSIBLE_ABOVE_2_19,
+    ActionPluginVars,
+    build_result_message,
+    get_templar,
+    parse_validation_result,
+)
 
 if TYPE_CHECKING:
+    from ansible.playbook.task import Task
     from ansible.template import Templar
 
-try:
+    from pyavd import validate_inputs
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
-    from pyavd._eos_designs.schema import EosDesigns
-    from pyavd._errors import AristaAvdError, AristaAvdModelDeprecationWarning
+    from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
-except ImportError as e:
-    get_facts = EosDesigns = SharedUtils = PoolManager = RaiseOnUse(
-        AnsibleActionFail(
-            f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
-            orig_exc=e,
-        ),
-    )
+    from pyavd.api.schemas import AVDDesign
+
+try:
+    from pyavd import validate_inputs
+    from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
+    from pyavd._errors import AristaAvdError
+    from pyavd.api.pool_manager import PoolManager
+    from pyavd.api.schemas import AVDDesign
+
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
 
 
 class ActionModule(ActionBase):
+    _task: Task
+    _templar: Templar
+
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
             task_vars = {}
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
+
+        if not HAS_PYAVD:
+            msg = "The arista.avd.eos_designs_facts' plugin requires the 'pyavd' Python library. Got import error"
+            raise AnsibleActionFail(msg)
+
+        self._task.args = cast("dict", self._task.args)
 
         cprofile_file = self._task.args.get("cprofile_file")
         if cprofile_file:
@@ -83,6 +98,11 @@ class ActionModule(ActionBase):
         all_inputs, all_hostvars = self.parse_inputs(fabric_hosts, hostvars, result)
         if result.get("failed"):
             # Stop here if any of the devices failed input data validation
+            if cprofile_file:
+                profiler.disable()
+                stats = pstats.Stats(profiler).sort_stats("cumtime")
+                stats.dump_stats(cprofile_file)
+
             return result
 
         avd_switch_facts = self.render_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, templar=templar)
@@ -99,7 +119,7 @@ class ActionModule(ActionBase):
 
         return result
 
-    def parse_inputs(self, fabric_hosts: list, hostvars: ActionPluginVars, result: dict) -> tuple[dict[str, EosDesigns], dict[str, dict]]:
+    def parse_inputs(self, fabric_hosts: list, hostvars: ActionPluginVars, result: dict) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
         """
         Fetch hostvars for all hosts and perform data conversion & validation.
 
@@ -116,16 +136,10 @@ class ActionModule(ActionBase):
                 Dict with the loaded data keyed by hostnames.
                 Dict of the raw hostvars keyed by hostnames.
         """
-        # Load schema tools once with empty host.
-        avdschematools = AvdSchemaTools(
-            hostname="",
-            ansible_display=display,
-            schema_id="eos_designs",
-        )
-
-        all_inputs: dict[str, EosDesigns] = {}
+        all_inputs: dict[str, AVDDesign] = {}
         all_hostvars: dict[str, dict] = {}
         data_validation_errors = 0
+
         for host in fabric_hosts:
             # Fetch all templated Ansible vars for this host
             # In Ansible versions <2.19 the vars will be templated best-effort. Ignoring failures.
@@ -133,44 +147,25 @@ class ActionModule(ActionBase):
             # NOTE: We need the dict() for conversion to work below, since it is inplace updating stuff. Otherwise it looses the updates.
             host_hostvars = dict(hostvars[host])
 
-            # Set correct hostname in schema tools and perform conversion and validation
-            avdschematools.hostname = host
-            host_result = avdschematools.convert_and_validate_data(host_hostvars, return_counters=True)
+            # Load input vars into the EosDesigns data class.
+            validated_data_result = validate_inputs(host_hostvars)
 
-            data_validation_errors += host_result["validation_errors"]
+            data_validation_errors += parse_validation_result(validation_result=validated_data_result.validation_result, hostname=host, ansible_display=display)
 
-            if host_result.get("failed"):
+            if data_validation_errors or validated_data_result.validated_data is None:
                 # Quickly continue if data validation failed
                 result["failed"] = True
                 continue
 
-            # Load input vars into the EosDesigns data class.
-            with warnings.catch_warnings(record=True) as caught_warnings:
-                # Configure AristaAvdModelDeprecationWarning to be always captured
-                warnings.simplefilter("always", category=AristaAvdModelDeprecationWarning)
-                host_inputs = EosDesigns._from_dict(host_hostvars)
-                # handle warnings
-                for warning in caught_warnings:
-                    # warning is undocumented type WarningMessage.
-                    if isinstance(warning.message, DeprecationWarning):
-                        # Deprecation warnings are displayed using Ansible's deprecation notices.
-                        display.deprecated(
-                            msg=warning.message.args[0],
-                            version="6.0.0",
-                            date=None,
-                            collection_name="arista.avd",
-                            removed=False,
-                        )
-
-            all_inputs[host] = host_inputs
+            all_inputs[host] = AVDDesign._from_dict(validated_data_result.validated_data)
             all_hostvars[host] = host_hostvars
 
         # Build result message
-        result["msg"] = avdschematools.build_result_message(validation_errors=data_validation_errors)
+        result["msg"] = build_result_message(data_validation_errors)
 
         return all_inputs, all_hostvars
 
-    def render_facts(self, all_inputs: dict[str, EosDesigns], pool_manager: PoolManager, all_hostvars: dict[str, dict], templar: Templar) -> dict[str, dict]:
+    def render_facts(self, all_inputs: dict[str, AVDDesign], pool_manager: PoolManager, all_hostvars: dict[str, dict], templar: Templar) -> dict[str, dict]:
         """
         Render facts, reraising errors as AnsibleActionFail.
 

@@ -41,6 +41,12 @@ default_node_types:
     match_hostnames:
       - "cv-pathfinder-edge.*"
 
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
 wan_router:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
