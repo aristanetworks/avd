@@ -116,12 +116,6 @@ pip install pyavd[ansible]
       show_root_toc_entry: false
       show_object_full_path: true
 
-::: pyavd.validation_result
-    options:
-      heading_level: 3
-      show_root_toc_entry: false
-      show_object_full_path: true
-
 ::: pyavd.api.fabric_documentation
     options:
       heading_level: 3
@@ -141,6 +135,12 @@ pip install pyavd[ansible]
       show_object_full_path: true
 
 ::: pyavd.api.pool_manager
+    options:
+      heading_level: 3
+      show_root_toc_entry: false
+      show_object_full_path: true
+
+::: pyavd.api.validation
     options:
       heading_level: 3
       show_root_toc_entry: false

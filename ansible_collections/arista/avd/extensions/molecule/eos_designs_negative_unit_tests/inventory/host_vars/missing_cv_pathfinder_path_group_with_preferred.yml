@@ -68,6 +68,9 @@ wan_virtual_topologies:
     - name: IT
       wan_vni: 100
 
+wan_route_servers:
+  - hostname: missing_cv_pathfinder_path_group_with_preferred
+
 expected_error_message: >-
   At least one path-group must be configured with preference '1' or 'preferred' for load-balance policy LB-DEFAULT-POLICY-DEFAULT'
   to use CloudVision integration. If this is an auto-generated policy, ensure that at least one default_preference for a non
