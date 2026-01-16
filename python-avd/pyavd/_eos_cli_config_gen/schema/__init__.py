@@ -5221,6 +5221,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "filter_id": {"type": FilterId},
             }
             service_type: bool | None
+            """Include the Service-Type attribute in RADIUS accounting messages."""
             framed_mtu: int | None
             lldp: Lldp
             """Subclass of AvdModel."""
@@ -5247,7 +5248,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        service_type: service_type
+                        service_type: Include the Service-Type attribute in RADIUS accounting messages.
                         framed_mtu: framed_mtu
                         lldp: Subclass of AvdModel.
                         dhcp: Subclass of AvdModel.
@@ -5763,8 +5764,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         system_auth_control: bool | None
         protocol_lldp_bypass: bool | None
+        """Allow LLDP packets to be processed even if the port is not authorized."""
         protocol_bpdu_bypass: bool | None
+        """Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection."""
         dynamic_authorization: bool | None
+        """
+        Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
+        adjust an active client session.
+        """
         statistics_packets_dropped: bool | None
         """Enable the 802.1X port authentication dropped data packet statistics."""
         mac_based_authentication: MacBasedAuthentication
@@ -5824,9 +5831,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     system_auth_control: system_auth_control
-                    protocol_lldp_bypass: protocol_lldp_bypass
-                    protocol_bpdu_bypass: protocol_bpdu_bypass
-                    dynamic_authorization: dynamic_authorization
+                    protocol_lldp_bypass: Allow LLDP packets to be processed even if the port is not authorized.
+                    protocol_bpdu_bypass: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                    dynamic_authorization:
+                       Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
+                       adjust an active client session.
                     statistics_packets_dropped: Enable the 802.1X port authentication dropped data packet statistics.
                     mac_based_authentication: Subclass of AvdModel.
                     radius_av_pair_username_format:

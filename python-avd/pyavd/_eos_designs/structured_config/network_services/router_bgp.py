@@ -486,6 +486,9 @@ class RouterBgpMixin(Protocol):
         ):
             bgp_vlan.redistribute_routes.append("igmp")
 
+        if self.inputs.dot1x_settings.enabled and self.inputs.dot1x_settings.redistribute_in_evpn:
+            bgp_vlan.redistribute_routes.append("dot1x")
+
         return bgp_vlan
 
     @staticmethod
@@ -667,6 +670,9 @@ class RouterBgpMixin(Protocol):
 
         if any(default(vlan.evpn_l2_multicast.enabled, tenant.evpn_l2_multicast.enabled) for vlan in vxlan_vlans):
             bundle.redistribute_routes.append("igmp")
+
+        if self.inputs.dot1x_settings.enabled and self.inputs.dot1x_settings.redistribute_in_evpn:
+            bundle.redistribute_routes.append("dot1x")
 
         return bundle
 
