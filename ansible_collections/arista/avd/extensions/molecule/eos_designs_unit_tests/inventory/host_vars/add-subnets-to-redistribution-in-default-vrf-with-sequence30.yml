@@ -77,3 +77,6 @@ cv_pathfinder_regions:
         id: 1
       - name: site2
         id: 2
+
+wan_route_servers:
+  - hostname: add-subnets-to-redistribution-in-default-vrf-with-sequence30
