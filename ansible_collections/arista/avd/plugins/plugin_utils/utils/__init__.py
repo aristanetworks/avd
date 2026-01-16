@@ -8,6 +8,7 @@ from .compile_searchpath import compile_searchpath
 from .constants import ANSIBLE_ABOVE_2_19
 from .cprofile_decorator import cprofile
 from .get_templar import get_templar
+from .get_tmp_path import get_tmp_path
 from .parse_validation_result import build_result_message, parse_validation_result
 from .python_to_ansible_logging_handler import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 from .write_file import write_file
@@ -29,6 +30,7 @@ __all__ = [
     "compile_searchpath",
     "cprofile",
     "get_templar",
+    "get_tmp_path",
     "parse_validation_result",
     "write_file",
 ]
