@@ -94,7 +94,7 @@ def expand_module(interface_string: str, data: InterfaceData) -> list[str]:
 
 def range_expand(range_to_expand: Sequence[str]) -> list[str]:
     if not isinstance(range_to_expand, Sequence):
-        msg = f"value must be a Sequence, got {type(range_to_expand)}"
+        msg = f"value must be a Sequence, got {type(range_to_expand)}: {range_to_expand}"
         raise TypeError(msg)
 
     result: list[str] = []
