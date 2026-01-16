@@ -82,12 +82,6 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - Increase test coverage in `anta_runner` support for AutoVPN and CV-Pathfinder
 - WAN HA for AutoVPN
 
-!!! info
-
-    `eos_cli_config_gen` schema should support all of the required keys to configure a WAN network, whether AutoVPN or Pathfinder except for the most recent features.
-    This means that any missing Arista AVD features should be supported using `custom_structured_configuration` functionality.
-    If you find any missing functionality, please open an issue on Github.
-
 ## Getting started with WAN
 
 ### Global settings
