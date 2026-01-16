@@ -68,7 +68,7 @@ l3leaf:
             remote_peers:
               - hostname: dc2-leaf2b
     - group: DC1_L3_LEAF3
-      # do not use this leaf - only testing legacy is_deployed in strutcured_config
+      # do not use this leaf - only testing legacy is_deployed in structured_config
       bgp_as: 65103
       nodes:
         - name: dc1-leaf3a

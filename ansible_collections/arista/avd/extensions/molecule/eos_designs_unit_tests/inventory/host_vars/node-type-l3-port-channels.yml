@@ -171,3 +171,6 @@ wan_carriers:
 wan_path_groups:
   - name: INET
     id: 101
+
+wan_route_servers:
+  - hostname: node-type-l3-port-channels

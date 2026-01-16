@@ -13,7 +13,7 @@ vlan {{ vlan.id }}
 {%     if vlan.state is arista.avd.defined %}
    state {{ vlan.state }}
 {%     endif %}
-{%     for trunk_group in vlan.trunk_groups | arista.avd.natural_sort %}
+{%     for trunk_group in vlan.trunk_groups | arista.avd.natural_sort(ignore_case=false) %}
    trunk group {{ trunk_group }}
 {%     endfor %}
 {%     if vlan.private_vlan.type is arista.avd.defined and
