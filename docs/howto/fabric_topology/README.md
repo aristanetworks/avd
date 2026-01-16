@@ -206,8 +206,8 @@ Uplinks connect lower-tier devices to higher-tier devices:
 AVD automatically allocates IPs from `uplink_ipv4_pool` using a deterministic algorithm based on node `id`:
 
 ```text
-Spine side: uplink_ipv4_pool + (node_id * 2 * uplink_count) + (uplink_index * 2)
-Leaf side:  uplink_ipv4_pool + (node_id * 2 * uplink_count) + (uplink_index * 2) + 1
+Spine interface: uplink_ipv4_pool + (node_id * 2 * uplink_count) + (uplink_index * 2)
+Leaf interface:  uplink_ipv4_pool + (node_id * 2 * uplink_count) + (uplink_index * 2) + 1
 ```
 
 ## Best Practices
