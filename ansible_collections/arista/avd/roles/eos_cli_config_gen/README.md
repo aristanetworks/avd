@@ -29,7 +29,7 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 **Inputs:**
 
-- Structured EOS configuration according to supported data models.
+- [EOS Config](./docs/data-models.md) inputs according to supported data models.
 
 **Outputs:**
 
@@ -46,9 +46,9 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 Requirements are located in the [collection installation guide](../../../../../docs/installation/collection-installation.md)
 
-## Input Variables
+## Data models
 
-The input variables are documented in the [Input Variables](docs/input-variables.md) section.
+The data models are documented in the [EOS Config data models](docs/data-models.md) section.
 
 ## Role Configuration
 
