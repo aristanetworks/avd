@@ -14,23 +14,32 @@ from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
+from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_not_vtep, skip_if_wan_router
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
+    from pyavd._anta.models import InputFactoryDataSource
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
-    class CandidateEthernetInterfacesItem(Protocol):
+    class Metadata(Protocol):
+        """Required metadata for a candidate interface."""
+
+        peer: str
+        peer_interface: str
+
+    class CandidateEthernetInterfacesItemLLDP(Protocol):
         """Protocol representing an interface that is a valid candidate for LLDP testing."""
-
-        class Metadata(Protocol):
-            """Required metadata for a candidate interface."""
-
-            peer: str
-            peer_interface: str
 
         name: str
         metadata: Metadata
+
+    class CandidateEthernetInterfacesItemP2P(Protocol):
+        """Protocol representing an interface that is a valid candidate for P2P reachability testing."""
+
+        name: str
+        metadata: Metadata
+        ip_address: str
 
 
 class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.Input]):
@@ -63,7 +72,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.I
 
         yield VerifyLLDPNeighbors.Input(neighbors=natural_sort(neighbors, sort_key="port"), require_fqdn=False)
 
-    def _is_interface_candidate(self, interface: EosCliConfigGen.EthernetInterfacesItem) -> TypeGuard[CandidateEthernetInterfacesItem]:
+    def _is_interface_candidate(self, interface: EosCliConfigGen.EthernetInterfacesItem) -> TypeGuard[CandidateEthernetInterfacesItemLLDP]:
         """Check if an interface is valid for LLDP testing."""
         if interface.metadata.validate_state is False or interface.metadata.validate_lldp is False:
             self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=interface.name)
@@ -97,97 +106,151 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
     """
     Input factory class for the `VerifyReachability` test.
 
-    Generates test inputs for verifying the following reachability checks:
+    Generates test inputs for verifying network reachability.
 
-    - Point-to-Point Ethernet Links:
-        Inputs are generated for Ethernet interfaces that meet all the following criteria:
-        * `peer`, `peer_interface` and `ip_address` are defined
-        * `ip_address` is static - *not* 'dhcp' and *not* 'unnumbered'
-        * Interface is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`
-        * `peer` device is deployed - `is_deployed=True`
-        * `peer_interface` on the `peer` device has a defined static `ip_address` - *not* 'dhcp' and *not* 'unnumbered'
-        * `peer_interface` is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`
+    1. Generates inputs for reachability between directly connected Ethernet interfaces (P2P).
+       Includes interfaces that are not administratively shutdown, considering `interface_defaults.ethernet.shutdown`,
+       with static IP addresses defined (not DHCP/unnumbered). The peer device must be deployed and the same requirements
+       apply for its interface (not shutdown, not DHCP/unnumbered, etc.). IPv6 is not supported.
 
-    - BGP Neighbors:
-        Inputs are generated for BGP neighbors that meet all the following criteria:
-        * `update_source` IP address defined
+    2. Generates inputs to verify underlay reachability from VTEP devices local Loopback0 to all other fabric devices Loopback0 addresses.
+       No inputs are generated if `extra_fabric_validation` is disabled. WAN routers and non-deployed devices are excluded.
+       Fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations. IPv6 is not supported.
+
+    3. Generates inputs for BGP neighbor reachability across all VRFs.
+       Includes neighbors that are not administratively shutdown or part of a shutdown peer group.
+       Also considers `metadata.validate_state` and ensures the peer is deployed if `metadata.peer` is set.
+       To avoid duplicate checks, neighbors already verified (same destination IP and VRF) by the P2P or VTEP tests are skipped.
     """
+
+    def __init__(self, data_source: InputFactoryDataSource, test_name: str) -> None:
+        super().__init__(data_source=data_source, test_name=test_name)
+
+        self._covered_destinations: set[tuple[str, str]] = set()
+        """Set of tuples (destination_ip, vrf) to track coverage and avoid duplicate checks. Source can be added to the tuple later if needed."""
 
     def create(self) -> Iterator[VerifyReachability.Input]:
         """Generate the inputs for the `VerifyReachability` test."""
+        # Reset tracker in case factory is reused
+        self._covered_destinations.clear()
+
         # Generate the P2P reachability inputs
-        with self.logger_adapter.context("P2P link"):
-            p2p_inputs = self._get_p2p_inputs()
-            if p2p_inputs.hosts:
-                yield p2p_inputs
+        with self.logger_adapter.context("P2P Links"):
+            p2p_hosts = natural_sort(self._get_p2p_hosts(), sort_key="destination")
+            if p2p_hosts:
+                yield VerifyReachability.Input(
+                    result_overwrite=AntaTest.Input.ResultOverwrite(description="Verifies point-to-point reachability between Ethernet interfaces."),
+                    hosts=p2p_hosts,
+                )
+
+        # Generate the VTEP fabric-wide underlay reachability inputs
+        with self.logger_adapter.context("VTEP Underlay"):
+            vtep_hosts = natural_sort(self._get_vtep_underlay_hosts(), sort_key="destination")
+            if vtep_hosts:
+                yield VerifyReachability.Input(
+                    result_overwrite=AntaTest.Input.ResultOverwrite(description="Verifies VTEP fabric-wide underlay reachability."),
+                    hosts=natural_sort(vtep_hosts, sort_key="destination"),
+                )
 
         # Generate the BGP neighbor reachability inputs
-        with self.logger_adapter.context("BGP neighbor"):
-            bgp_inputs = self._get_bgp_inputs()
-            if bgp_inputs.hosts:
-                yield bgp_inputs
+        with self.logger_adapter.context("BGP Neighbors"):
+            bgp_hosts = natural_sort(self._get_bgp_hosts(), sort_key="destination")
+            if bgp_hosts:
+                yield VerifyReachability.Input(
+                    result_overwrite=AntaTest.Input.ResultOverwrite(
+                        description="Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests."
+                    ),
+                    hosts=bgp_hosts,
+                )
 
-    def _get_p2p_inputs(self) -> VerifyReachability.Input:
-        """Get the inputs for the point-to-point reachability test."""
-        description = "Verifies point-to-point reachability between Ethernet interfaces."
-        hosts: list[Host] = []
-
+    def _get_p2p_hosts(self) -> Iterator[Host]:
+        """Generate Host objects for the point-to-point reachability test."""
         for intf in self.structured_config.ethernet_interfaces:
-            if intf.shutdown or (intf.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown):
-                self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=intf.name)
+            if not self._is_interface_candidate(intf):
                 continue
 
-            if not intf.ip_address or not intf.metadata.peer or not intf.metadata.peer_interface:
-                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="ip_address, metadata.peer, metadata.peer_interface")
-                continue
-
-            if intf.ip_address == "dhcp":
-                self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=intf.name)
-                continue
-
-            # TODO: Consider adding reachability check between lending interfaces without creating duplicate src-dst pairs
-            if "unnumbered" in intf.ip_address:
-                self.logger_adapter.debug(LogMessage.INTERFACE_UNNUMBERED, interface=intf.name)
-                continue
-
+            # Get and validate the peer interface
             if (peer_interface_ip := self.get_peer_interface_ip(intf.metadata.peer, intf.metadata.peer_interface, intf.name)) is None:
                 continue
 
             if self.is_peer_interface_shutdown(intf.metadata.peer, intf.metadata.peer_interface, intf.name) is True:
                 continue
 
-            hosts.append(
-                Host(
-                    destination=ip_interface(peer_interface_ip).ip,
-                    source=ip_interface(intf.ip_address).ip,
-                    vrf="default",
-                    repeat=1,
-                )
-            )
-
-        return VerifyReachability.Input(
-            result_overwrite=AntaTest.Input.ResultOverwrite(description=description), hosts=natural_sort(hosts, sort_key="destination")
-        )
-
-    # TODO: When https://github.com/aristanetworks/anta/issues/1112 is resolved, also add BGP direct neighbors
-    def _get_bgp_inputs(self) -> VerifyReachability.Input:
-        """
-        Get the inputs for the BGP neighbor reachability test.
-
-        Only support BGP neighbors with an update source configured for now.
-        """
-        description = "Verifies reachability to BGP neighbors with an update source configured."
-        hosts = [
-            Host(
-                destination=neighbor.ip_address,
-                source=neighbor.update_source,
-                vrf=neighbor.vrf,
+            host = Host(
+                destination=ip_interface(peer_interface_ip).ip,
+                source=ip_interface(intf.ip_address).ip,
+                description=f"{intf.metadata.peer}_{intf.metadata.peer_interface}",
+                vrf="default",
                 repeat=1,
             )
-            for neighbor in self.data_source.bgp_neighbors
-            if neighbor.update_source is not None
-        ]
+            self._track_host(host)
+            yield host
 
-        return VerifyReachability.Input(
-            result_overwrite=AntaTest.Input.ResultOverwrite(description=description), hosts=natural_sort(hosts, sort_key="destination")
-        )
+    @skip_if_extra_fabric_validation_disabled
+    @skip_if_not_vtep
+    @skip_if_wan_router
+    def _get_vtep_underlay_hosts(self) -> Iterator[Host]:
+        """Generate Host objects for the VTEP underlay reachability test."""
+        if not self.data_source.fabric_loopback0_mapping or not self.data_source.loopback0_ip:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
+            return
+
+        for hostname, ip in self.data_source.fabric_loopback0_mapping.items():
+            if hostname == self.data_source.hostname:
+                # Don't ping ourself
+                continue
+
+            host = Host(destination=ip, source=self.data_source.loopback0_ip, description=hostname, vrf="default", repeat=1)
+            if not self._is_host_seen(host):
+                self._track_host(host)
+                yield host
+
+    def _get_bgp_hosts(self) -> Iterator[Host]:
+        """Generate Host objects for the BGP neighbor reachability test."""
+        for neighbor in self.data_source.bgp_neighbors:
+            if neighbor.update_source is not None:
+                host = Host(
+                    destination=neighbor.ip_address,
+                    source=neighbor.update_source,
+                    description=neighbor.description,
+                    vrf=neighbor.vrf,
+                    repeat=1,
+                )
+            else:
+                # BGP direct neighbors (no source)
+                host = Host(
+                    destination=neighbor.ip_address,
+                    description=neighbor.description,
+                    vrf=neighbor.vrf,
+                    repeat=1,
+                )
+            if not self._is_host_seen(host):
+                self._track_host(host)
+                yield host
+
+    def _is_interface_candidate(self, interface: EosCliConfigGen.EthernetInterfacesItem) -> TypeGuard[CandidateEthernetInterfacesItemP2P]:
+        """Check if an interface is valid for P2P reachability testing."""
+        if interface.shutdown or (interface.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown):
+            self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=interface.name)
+            return False
+
+        if not interface.ip_address or not interface.metadata.peer or not interface.metadata.peer_interface:
+            self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=interface.name, fields="ip_address, metadata.peer, metadata.peer_interface")
+            return False
+
+        if interface.ip_address == "dhcp":
+            self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=interface.name)
+            return False
+
+        if "unnumbered" in interface.ip_address:
+            self.logger_adapter.debug(LogMessage.INTERFACE_UNNUMBERED, interface=interface.name)
+            return False
+        return True
+
+    def _track_host(self, host: Host) -> None:
+        """Register a Host destination in the covered_destinations tracker."""
+        self._covered_destinations.add((str(host.destination), host.vrf))
+
+    def _is_host_seen(self, host: Host) -> bool:
+        """Check if the destination for this Host has already been covered."""
+        return (str(host.destination), host.vrf) in self._covered_destinations

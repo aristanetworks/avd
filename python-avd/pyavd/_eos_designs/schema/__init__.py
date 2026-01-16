@@ -462,6 +462,116 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Authentication(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "login": {"type": EosCliConfigGen.AaaAuthentication.Login},
+                "enable": {"type": EosCliConfigGen.AaaAuthentication.Enable},
+                "policies": {"type": EosCliConfigGen.AaaAuthentication.Policies},
+            }
+            login: EosCliConfigGen.AaaAuthentication.Login
+            enable: EosCliConfigGen.AaaAuthentication.Enable
+            policies: EosCliConfigGen.AaaAuthentication.Policies
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    login: EosCliConfigGen.AaaAuthentication.Login | UndefinedType = Undefined,
+                    enable: EosCliConfigGen.AaaAuthentication.Enable | UndefinedType = Undefined,
+                    policies: EosCliConfigGen.AaaAuthentication.Policies | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Authentication.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        login: login
+                        enable: enable
+                        policies: policies
+
+                    """
+
+        class Authorization(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "policy": {"type": EosCliConfigGen.AaaAuthorization.Policy},
+                "exec": {"type": EosCliConfigGen.AaaAuthorization.Exec},
+                "config_commands": {"type": bool},
+                "serial_console": {"type": bool},
+                "commands": {"type": EosCliConfigGen.AaaAuthorization.Commands},
+            }
+            policy: EosCliConfigGen.AaaAuthorization.Policy
+            exec: EosCliConfigGen.AaaAuthorization.Exec
+            config_commands: bool | None
+            serial_console: bool | None
+            commands: EosCliConfigGen.AaaAuthorization.Commands
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    policy: EosCliConfigGen.AaaAuthorization.Policy | UndefinedType = Undefined,
+                    exec: EosCliConfigGen.AaaAuthorization.Exec | UndefinedType = Undefined,
+                    config_commands: bool | None | UndefinedType = Undefined,
+                    serial_console: bool | None | UndefinedType = Undefined,
+                    commands: EosCliConfigGen.AaaAuthorization.Commands | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Authorization.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        policy: policy
+                        exec: exec
+                        config_commands: config_commands
+                        serial_console: serial_console
+                        commands: commands
+
+                    """
+
+        class Accounting(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "exec": {"type": EosCliConfigGen.AaaAccounting.Exec},
+                "system": {"type": EosCliConfigGen.AaaAccounting.System},
+                "commands": {"type": EosCliConfigGen.AaaAccounting.Commands},
+            }
+            exec: EosCliConfigGen.AaaAccounting.Exec
+            system: EosCliConfigGen.AaaAccounting.System
+            commands: EosCliConfigGen.AaaAccounting.Commands
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    exec: EosCliConfigGen.AaaAccounting.Exec | UndefinedType = Undefined,
+                    system: EosCliConfigGen.AaaAccounting.System | UndefinedType = Undefined,
+                    commands: EosCliConfigGen.AaaAccounting.Commands | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Accounting.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        exec: exec
+                        system: system
+                        commands: commands
+
+                    """
+
         class RootLogin(AvdModel):
             """Subclass of AvdModel."""
 
@@ -603,9 +713,9 @@ class EosDesigns(EosDesignsRootModel):
             "enable_password": {"type": EnablePassword},
             "tacacs": {"type": Tacacs},
             "radius": {"type": Radius},
-            "authentication": {"type": EosCliConfigGen.AaaAuthentication},
-            "authorization": {"type": EosCliConfigGen.AaaAuthorization},
-            "accounting": {"type": EosCliConfigGen.AaaAccounting},
+            "authentication": {"type": Authentication},
+            "authorization": {"type": Authorization},
+            "accounting": {"type": Accounting},
             "root_login": {"type": RootLogin},
             "local_users": {"type": LocalUsers},
         }
@@ -615,9 +725,12 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         radius: Radius
         """Subclass of AvdModel."""
-        authentication: EosCliConfigGen.AaaAuthentication
-        authorization: EosCliConfigGen.AaaAuthorization
-        accounting: EosCliConfigGen.AaaAccounting
+        authentication: Authentication
+        """Subclass of AvdModel."""
+        authorization: Authorization
+        """Subclass of AvdModel."""
+        accounting: Accounting
+        """Subclass of AvdModel."""
         root_login: RootLogin
         """Subclass of AvdModel."""
         local_users: LocalUsers
@@ -631,9 +744,9 @@ class EosDesigns(EosDesignsRootModel):
                 enable_password: EnablePassword | UndefinedType = Undefined,
                 tacacs: Tacacs | UndefinedType = Undefined,
                 radius: Radius | UndefinedType = Undefined,
-                authentication: EosCliConfigGen.AaaAuthentication | UndefinedType = Undefined,
-                authorization: EosCliConfigGen.AaaAuthorization | UndefinedType = Undefined,
-                accounting: EosCliConfigGen.AaaAccounting | UndefinedType = Undefined,
+                authentication: Authentication | UndefinedType = Undefined,
+                authorization: Authorization | UndefinedType = Undefined,
+                accounting: Accounting | UndefinedType = Undefined,
                 root_login: RootLogin | UndefinedType = Undefined,
                 local_users: LocalUsers | UndefinedType = Undefined,
             ) -> None:
@@ -647,9 +760,9 @@ class EosDesigns(EosDesignsRootModel):
                     enable_password: Subclass of AvdModel.
                     tacacs: Subclass of AvdModel.
                     radius: Subclass of AvdModel.
-                    authentication: authentication
-                    authorization: authorization
-                    accounting: accounting
+                    authentication: Subclass of AvdModel.
+                    authorization: Subclass of AvdModel.
+                    accounting: Subclass of AvdModel.
                     root_login: Subclass of AvdModel.
                     local_users: Subclass of AvdIndexedList with `LocalUsersItem` items. Primary key is `name` (`str`).
 
@@ -16815,6 +16928,351 @@ class EosDesigns(EosDesignsRootModel):
                        `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
                        Can be set to `false` to avoid changes when
                        migrating from the old `name_servers` model.
+
+                """
+
+    class Dot1xSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Authentication(AvdModel):
+            """Subclass of AvdModel."""
+
+            class RadiusGroups(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            RadiusGroups._item_type = str
+
+            _fields: ClassVar[dict] = {"radius_groups": {"type": RadiusGroups}}
+            radius_groups: RadiusGroups
+            """
+            List of RADIUS server groups to be used for 802.1X authentication when globally enabled. If not
+            provided, all defined RADIUS hosts are used.
+            The order of the list defines the server group
+            priority.
+            Each group name must also be defined on any server under `aaa_settings.radius.servers`.
+            Subclass of AvdList with `str` items.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, radius_groups: RadiusGroups | UndefinedType = Undefined) -> None:
+                    """
+                    Authentication.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        radius_groups:
+                           List of RADIUS server groups to be used for 802.1X authentication when globally enabled. If not
+                           provided, all defined RADIUS hosts are used.
+                           The order of the list defines the server group
+                           priority.
+                           Each group name must also be defined on any server under `aaa_settings.radius.servers`.
+                           Subclass of AvdList with `str` items.
+
+                    """
+
+        class Accounting(AvdModel):
+            """Subclass of AvdModel."""
+
+            Mode: TypeAlias = Literal["start-stop", "stop-only"]
+
+            class RadiusGroups(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            RadiusGroups._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool, "default": True},
+                "mode": {"type": str, "default": "start-stop"},
+                "radius_groups": {"type": RadiusGroups},
+                "multicast": {"type": bool, "default": False},
+                "syslog": {"type": bool, "default": False},
+            }
+            enabled: bool
+            """
+            Enable 802.1X accounting.
+
+            Default value: `True`
+            """
+            mode: Mode
+            """
+            Determines whether to send accounting records when a session is established and
+            when it ends
+            (`start-stop`), or only when the session ends (`stop-only`).
+
+            Default value: `"start-stop"`
+            """
+            radius_groups: RadiusGroups
+            """
+            List of RADIUS server groups to be used for 802.1X accounting when enabled. If not provided, all
+            defined RADIUS hosts are used.
+            The order of the list defines the server group priority.
+            Each group
+            name must also be defined on any server under `aaa_settings.radius.servers`.
+
+            Subclass of AvdList
+            with `str` items.
+            """
+            multicast: bool
+            """
+            Send Accounting-Request messages to all servers in a RADIUS group at the same time.
+
+            Default value: `False`
+            """
+            syslog: bool
+            """
+            Log all accounting messages to syslog if all RADIUS servers are unavailable or unresponsive.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    mode: Mode | UndefinedType = Undefined,
+                    radius_groups: RadiusGroups | UndefinedType = Undefined,
+                    multicast: bool | UndefinedType = Undefined,
+                    syslog: bool | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Accounting.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Enable 802.1X accounting.
+                        mode:
+                           Determines whether to send accounting records when a session is established and
+                           when it ends
+                           (`start-stop`), or only when the session ends (`stop-only`).
+                        radius_groups:
+                           List of RADIUS server groups to be used for 802.1X accounting when enabled. If not provided, all
+                           defined RADIUS hosts are used.
+                           The order of the list defines the server group priority.
+                           Each group
+                           name must also be defined on any server under `aaa_settings.radius.servers`.
+
+                           Subclass of AvdList
+                           with `str` items.
+                        multicast: Send Accounting-Request messages to all servers in a RADIUS group at the same time.
+                        syslog: Log all accounting messages to syslog if all RADIUS servers are unavailable or unresponsive.
+
+                    """
+
+        class DynamicAuthorization(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AdditionalGroups(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            AdditionalGroups._item_type = str
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "additional_groups": {"type": AdditionalGroups}}
+            enabled: bool
+            """
+            Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
+            adjust an active client session.
+
+            Default value: `True`
+            """
+            additional_groups: AdditionalGroups
+            """
+            List of additional RADIUS server groups for dynamic authorization purposes only.
+            The order of the
+            list defines the server group priority.
+            Each group name must also be defined on any server under
+            `aaa_settings.radius.servers`.
+
+            Subclass of AvdList with `str` items.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, additional_groups: AdditionalGroups | UndefinedType = Undefined) -> None:
+                    """
+                    DynamicAuthorization.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
+                           adjust an active client session.
+                        additional_groups:
+                           List of additional RADIUS server groups for dynamic authorization purposes only.
+                           The order of the
+                           list defines the server group priority.
+                           Each group name must also be defined on any server under
+                           `aaa_settings.radius.servers`.
+
+                           Subclass of AvdList with `str` items.
+
+                    """
+
+        class MacBasedAuthentication(AvdModel):
+            """Subclass of AvdModel."""
+
+            class UsernameFormat(AvdModel):
+                """Subclass of AvdModel."""
+
+                Delimiter: TypeAlias = Literal["colon", "hyphen", "none", "period"]
+                LetterCase: TypeAlias = Literal["lowercase", "uppercase"]
+                _fields: ClassVar[dict] = {"delimiter": {"type": str}, "letter_case": {"type": str}}
+                delimiter: Delimiter
+                """RADIUS User-Name attribute delimiter to use on the MAC address."""
+                letter_case: LetterCase
+                """RADIUS User-Name attribute letter case to use on the MAC address."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, delimiter: Delimiter | UndefinedType = Undefined, letter_case: LetterCase | UndefinedType = Undefined) -> None:
+                        """
+                        UsernameFormat.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            delimiter: RADIUS User-Name attribute delimiter to use on the MAC address.
+                            letter_case: RADIUS User-Name attribute letter case to use on the MAC address.
+
+                        """
+
+            _fields: ClassVar[dict] = {"username_format": {"type": UsernameFormat}}
+            username_format: UsernameFormat
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, username_format: UsernameFormat | UndefinedType = Undefined) -> None:
+                    """
+                    MacBasedAuthentication.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        username_format: Subclass of AvdModel.
+
+                    """
+
+        class RadiusAvPairs(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"service_type": {"type": bool, "default": False}}
+            service_type: bool
+            """
+            Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, service_type: bool | UndefinedType = Undefined) -> None:
+                    """
+                    RadiusAvPairs.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        service_type: Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "enabled": {"type": bool, "default": False},
+            "authentication": {"type": Authentication},
+            "accounting": {"type": Accounting},
+            "bypass_bpdu": {"type": bool, "default": True},
+            "bypass_lldp": {"type": bool, "default": True},
+            "dynamic_authorization": {"type": DynamicAuthorization},
+            "mac_based_authentication": {"type": MacBasedAuthentication},
+            "radius_av_pairs": {"type": RadiusAvPairs},
+            "redistribute_in_evpn": {"type": bool, "default": True},
+        }
+        enabled: bool
+        """
+        Globally enable 802.1X port authentication on the switch.
+        Must be true for 802.1X to be active on
+        any interface.
+
+        Default value: `False`
+        """
+        authentication: Authentication
+        """Subclass of AvdModel."""
+        accounting: Accounting
+        """Subclass of AvdModel."""
+        bypass_bpdu: bool
+        """
+        Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+
+        Default value: `True`
+        """
+        bypass_lldp: bool
+        """
+        Allow LLDP packets to be processed even if the port is not authorized.
+
+        Default value: `True`
+        """
+        dynamic_authorization: DynamicAuthorization
+        """Subclass of AvdModel."""
+        mac_based_authentication: MacBasedAuthentication
+        """Subclass of AvdModel."""
+        radius_av_pairs: RadiusAvPairs
+        """Subclass of AvdModel."""
+        redistribute_in_evpn: bool
+        """
+        Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
+        configured MAC-VRFs.
+
+        Default value: `True`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                enabled: bool | UndefinedType = Undefined,
+                authentication: Authentication | UndefinedType = Undefined,
+                accounting: Accounting | UndefinedType = Undefined,
+                bypass_bpdu: bool | UndefinedType = Undefined,
+                bypass_lldp: bool | UndefinedType = Undefined,
+                dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
+                mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                radius_av_pairs: RadiusAvPairs | UndefinedType = Undefined,
+                redistribute_in_evpn: bool | UndefinedType = Undefined,
+            ) -> None:
+                """
+                Dot1xSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    enabled:
+                       Globally enable 802.1X port authentication on the switch.
+                       Must be true for 802.1X to be active on
+                       any interface.
+                    authentication: Subclass of AvdModel.
+                    accounting: Subclass of AvdModel.
+                    bypass_bpdu: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                    bypass_lldp: Allow LLDP packets to be processed even if the port is not authorized.
+                    dynamic_authorization: Subclass of AvdModel.
+                    mac_based_authentication: Subclass of AvdModel.
+                    radius_av_pairs: Subclass of AvdModel.
+                    redistribute_in_evpn:
+                       Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
+                       configured MAC-VRFs.
 
                 """
 
@@ -87250,6 +87708,7 @@ class EosDesigns(EosDesignsRootModel):
         "devices": {"type": Devices},
         "digital_twin": {"type": DigitalTwin},
         "dns_settings": {"type": DnsSettings},
+        "dot1x_settings": {"type": Dot1xSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
@@ -88404,6 +88863,12 @@ class EosDesigns(EosDesignsRootModel):
     dns_settings: DnsSettings
     """
     DNS settings
+
+    Subclass of AvdModel.
+    """
+    dot1x_settings: Dot1xSettings
+    """
+    Settings for 802.1X deployments.
 
     Subclass of AvdModel.
     """
@@ -89821,6 +90286,7 @@ class EosDesigns(EosDesignsRootModel):
             devices: Devices | UndefinedType = Undefined,
             digital_twin: DigitalTwin | UndefinedType = Undefined,
             dns_settings: DnsSettings | UndefinedType = Undefined,
+            dot1x_settings: Dot1xSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
@@ -90429,6 +90895,10 @@ class EosDesigns(EosDesignsRootModel):
                    AvdModel.
                 dns_settings:
                    DNS settings
+
+                   Subclass of AvdModel.
+                dot1x_settings:
+                   Settings for 802.1X deployments.
 
                    Subclass of AvdModel.
                 enable_trunk_groups:
