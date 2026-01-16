@@ -65,7 +65,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -497,7 +497,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -1181,7 +1181,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -1865,7 +1865,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -2129,7 +2129,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -2393,7 +2393,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -2729,7 +2729,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -3077,7 +3077,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -3473,7 +3473,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -3881,7 +3881,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -4241,7 +4241,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -4853,7 +4853,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5213,7 +5213,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5825,7 +5825,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -6185,7 +6185,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -6545,7 +6545,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -6833,7 +6833,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],

@@ -8,8 +8,6 @@
 type: dict
 keys:
   aaa_settings:
-    documentation_options:
-      table: management-settings
     type: dict
     keys:
       enable_password:
@@ -17,7 +15,22 @@ keys:
         keys:
           password:
             type: str
-            description: SHA512 hashed password.
+            description: |-
+              SHA512 hashed password.
+              Takes precedence over `cleartext_password`.
+              This variable is sensitive and SHOULD be configured using some vault.
+          cleartext_password:
+            type: str
+            description: |-
+              Cleartext enable password.
+              Encrypted using `password_type` by AVD.
+              This variable is sensitive and SHOULD be configured using some vault mechanism.
+          password_type:
+            type: str
+            # TODO: Later we may want to add Yescrypt and scrypt so need to update the code accordingly.
+            valid_values:
+              - sha512
+            default: sha512
       tacacs:
         type: dict
         keys:
@@ -157,13 +170,46 @@ keys:
                     If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
       authentication:
         type: dict
-        $ref: "eos_cli_config_gen#/keys/aaa_authentication"
+        keys:
+          login:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authentication/keys/login"
+          enable:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authentication/keys/enable"
+          policies:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authentication/keys/policies"
       authorization:
         type: dict
-        $ref: "eos_cli_config_gen#/keys/aaa_authorization"
+        keys:
+          policy:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/policy"
+          exec:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/exec"
+          config_commands:
+            type: bool
+            $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/config_commands"
+          serial_console:
+            type: bool
+            $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/serial_console"
+          commands:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_authorization/keys/commands"
       accounting:
         type: dict
-        $ref: "eos_cli_config_gen#/keys/aaa_accounting"
+        keys:
+          exec:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_accounting/keys/exec"
+          system:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_accounting/keys/system"
+          commands:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/aaa_accounting/keys/commands"
       root_login:
         type: dict
         keys:
@@ -175,3 +221,24 @@ keys:
       local_users:
         $ref: "eos_cli_config_gen#/keys/local_users"
         type: list
+        items:
+          type: dict
+          keys:
+            sha512_password:
+              type: str
+              description: |-
+                SHA512 Hash of Password.
+                Takes precedence over `cleartext_password`.
+                This variable is sensitive and SHOULD be configured using some vault mechanism.
+            cleartext_password:
+              type: str
+              description: |-
+                Cleartext user password.
+                Encrypted using `password_type` by AVD.
+                This variable is sensitive and SHOULD be configured using some vault mechanism.
+            password_type:
+              type: str
+              # TODO: Later we may want to add Yescrypt and scrypt so need to update the code accordingly.
+              valid_values:
+                - sha512
+              default: sha512

@@ -10,8 +10,6 @@ type: dict
 allow_other_keys: true
 keys:
   aaa_settings:
-    documentation_options:
-      table: management-settings
     type: dict
     keys:
       enable_password:
@@ -19,7 +17,24 @@ keys:
         keys:
           password:
             type: str
-            description: SHA512 hashed password.
+            description: 'SHA512 hashed password.
+
+              Takes precedence over `cleartext_password`.
+
+              This variable is sensitive and SHOULD be configured using some vault.'
+          cleartext_password:
+            type: str
+            description: 'Cleartext enable password.
+
+              Encrypted using `password_type` by AVD.
+
+              This variable is sensitive and SHOULD be configured using some vault
+              mechanism.'
+          password_type:
+            type: str
+            valid_values:
+            - sha512
+            default: sha512
       tacacs:
         type: dict
         keys:
@@ -178,13 +193,46 @@ keys:
                     this setting will take precedence.'
       authentication:
         type: dict
-        $ref: eos_cli_config_gen#/keys/aaa_authentication
+        keys:
+          login:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authentication/keys/login
+          enable:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authentication/keys/enable
+          policies:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authentication/keys/policies
       authorization:
         type: dict
-        $ref: eos_cli_config_gen#/keys/aaa_authorization
+        keys:
+          policy:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/policy
+          exec:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/exec
+          config_commands:
+            type: bool
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/config_commands
+          serial_console:
+            type: bool
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/serial_console
+          commands:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/commands
       accounting:
         type: dict
-        $ref: eos_cli_config_gen#/keys/aaa_accounting
+        keys:
+          exec:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_accounting/keys/exec
+          system:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_accounting/keys/system
+          commands:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_accounting/keys/commands
       root_login:
         type: dict
         keys:
@@ -196,6 +244,30 @@ keys:
       local_users:
         $ref: eos_cli_config_gen#/keys/local_users
         type: list
+        items:
+          type: dict
+          keys:
+            sha512_password:
+              type: str
+              description: 'SHA512 Hash of Password.
+
+                Takes precedence over `cleartext_password`.
+
+                This variable is sensitive and SHOULD be configured using some vault
+                mechanism.'
+            cleartext_password:
+              type: str
+              description: 'Cleartext user password.
+
+                Encrypted using `password_type` by AVD.
+
+                This variable is sensitive and SHOULD be configured using some vault
+                mechanism.'
+            password_type:
+              type: str
+              valid_values:
+              - sha512
+              default: sha512
   address_locking_settings:
     type: dict
     $ref: eos_cli_config_gen#/keys/address_locking
@@ -1908,8 +1980,6 @@ keys:
         description: In Digital Twin mode, AVD can either use the default interfaces
           of the original or the digital twin platform (as set in `platform_settings.[].digital_twin.platform`).
   dns_settings:
-    documentation_options:
-      table: management-settings
     type: dict
     description: DNS settings
     keys:
@@ -1920,14 +1990,12 @@ keys:
         type: list
         required: true
         min_length: 1
-        $ref: eos_cli_config_gen#/keys/ip_name_servers
         items:
           type: dict
           keys:
             vrf:
               type: str
               default: use_default_mgmt_method_vrf
-              required: false
               description: "The value of `vrf` will be interpreted according to these
                 rules:\n- `use_mgmt_interface_vrf` will configure the DNS server under
                 the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface`
@@ -1943,6 +2011,17 @@ keys:
                 if needed."
               convert_types:
               - int
+            ip_address:
+              type: str
+              required: true
+              description: IPv4 or IPv6 address for DNS server.
+            priority:
+              description: Priority value (lower is first).
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 4
       vrfs:
         type: list
         primary_key: name
@@ -1968,6 +2047,136 @@ keys:
 
           Can be set to `false` to avoid changes when migrating from the old `name_servers`
           model.'
+  dot1x_settings:
+    documentation_options:
+      table: dot1x-settings
+    type: dict
+    description: Settings for 802.1X deployments.
+    keys:
+      enabled:
+        type: bool
+        default: false
+        description: 'Globally enable 802.1X port authentication on the switch.
+
+          Must be true for 802.1X to be active on any interface.'
+      authentication:
+        type: dict
+        keys:
+          radius_groups:
+            type: list
+            min_length: 1
+            description: 'List of RADIUS server groups to be used for 802.1X authentication
+              when globally enabled. If not provided, all defined RADIUS hosts are
+              used.
+
+              The order of the list defines the server group priority.
+
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.'
+            items:
+              type: str
+              description: RADIUS server group name.
+      accounting:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: true
+            description: Enable 802.1X accounting.
+          mode:
+            type: str
+            valid_values:
+            - start-stop
+            - stop-only
+            default: start-stop
+            description: 'Determines whether to send accounting records when a session
+              is established and
+
+              when it ends (`start-stop`), or only when the session ends (`stop-only`).'
+          radius_groups:
+            type: list
+            min_length: 1
+            description: 'List of RADIUS server groups to be used for 802.1X accounting
+              when enabled. If not provided, all defined RADIUS hosts are used.
+
+              The order of the list defines the server group priority.
+
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.'
+            items:
+              type: str
+              description: RADIUS server group name.
+          multicast:
+            type: bool
+            default: false
+            description: Send Accounting-Request messages to all servers in a RADIUS
+              group at the same time.
+          syslog:
+            type: bool
+            default: false
+            description: Log all accounting messages to syslog if all RADIUS servers
+              are unavailable or unresponsive.
+      bypass_bpdu:
+        type: bool
+        default: true
+        $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_bpdu_bypass
+      bypass_lldp:
+        type: bool
+        default: true
+        $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_lldp_bypass
+      dynamic_authorization:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: true
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
+          additional_groups:
+            type: list
+            description: 'List of additional RADIUS server groups for dynamic authorization
+              purposes only.
+
+              The order of the list defines the server group priority.
+
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.'
+            items:
+              type: str
+              description: RADIUS server group name.
+      mac_based_authentication:
+        type: dict
+        keys:
+          username_format:
+            type: dict
+            keys:
+              delimiter:
+                type: str
+                description: RADIUS User-Name attribute delimiter to use on the MAC
+                  address.
+                required: true
+                valid_values:
+                - colon
+                - hyphen
+                - none
+                - period
+              letter_case:
+                type: str
+                description: RADIUS User-Name attribute letter case to use on the
+                  MAC address.
+                required: true
+                valid_values:
+                - lowercase
+                - uppercase
+      radius_av_pairs:
+        type: dict
+        keys:
+          service_type:
+            type: bool
+            default: false
+            description: Send RADIUS Service-Type attribute in Access-Request and
+              Accounting messages.
+      redistribute_in_evpn:
+        type: bool
+        default: true
+        description: Globally enable the redistribution of static 802.1X-learned MAC
+          addresses into EVPN under all configured MAC-VRFs.
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings
@@ -2044,8 +2253,6 @@ keys:
         description: Generate the table of content(TOC) on fabric documentation.
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
-    documentation_options:
-      table: management-settings
     type: list
   event_monitor:
     type: dict
@@ -2202,9 +2409,10 @@ keys:
       using the VLAN name as the bundle name.
 
 
-      The `evpn_vlan_bundle` option under `svis` and `l2vlans` takes precedence and
-      overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works when this
-      setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.'
+      The `evpn_vlan_bundle` option under SVI, L2VLAN, VRF or tenant level takes precedence
+      and overrides this behavior. Per SVI/L2VLAN `evpn_vlan_bundle` also works when
+      this setting is disabled which allow mixing vlan-aware-bundles with regular
+      MAC-VRFs.'
     type: bool
     default: false
   evpn_vlan_bundles:
@@ -2807,8 +3015,6 @@ keys:
       are used.
 
       Otherwise no value will be configured.'
-    documentation_options:
-      table: management-settings
   internal_vlan_order:
     documentation_options:
       table: system-settings
@@ -2953,7 +3159,7 @@ keys:
                   Example: "permit 10.255.0.0/27 eq 32"'
   ipv6_mgmt_destination_networks:
     documentation_options:
-      table: management-settings
+      table: management-interface-settings
     description: 'List of IPv6 prefixes to configure as static routes towards the
       OOB IPv6 Management interface gateway.
 
@@ -2966,7 +3172,7 @@ keys:
       description: IPv6_network/Mask.
   ipv6_mgmt_gateway:
     documentation_options:
-      table: management-settings
+      table: management-interface-settings
     type: str
     format: ipv6
     description: 'OOB Management interface gateway in IPv6 format.
@@ -3122,7 +3328,7 @@ keys:
     $ref: eos_cli_config_gen#/keys/load_interval
   local_users:
     documentation_options:
-      table: management-settings
+      table: removed-keys
     deprecation:
       warning: true
       removed: true
@@ -3130,8 +3336,6 @@ keys:
       new_key: aaa_settings.local_users
     type: list
   logging_settings:
-    documentation_options:
-      table: management-settings
     type: dict
     description: Logging settings
     keys:
@@ -3221,8 +3425,6 @@ keys:
     type: dict
     $ref: eos_cli_config_gen#/keys/mac_address_table
   management_eapi:
-    documentation_options:
-      table: management-settings
     description: 'Default is HTTPS management eAPI enabled.
 
       '
@@ -3471,7 +3673,7 @@ keys:
     default: MLAG_{mlag_peer}_{peer_interface}
   name_servers:
     documentation_options:
-      table: management-settings
+      table: removed-keys
     type: list
     deprecation:
       warning: true
@@ -3700,7 +3902,7 @@ keys:
         l3: true
   ntp_settings:
     documentation_options:
-      table: management-settings
+      table: time-configuration
     type: dict
     description: NTP settings
     keys:
@@ -4184,7 +4386,7 @@ keys:
     $ref: eos_designs#/$defs/platform_settings
     type: list
     documentation_options:
-      table: platform-settings
+      table: custom-platform-settings
     description: Custom Platform settings to override the default `platform_settings`.
       This list will be prepended to the list of `platform_settings`. The first entry
       found where the `platform` node setting is fully matched by any regex in the
@@ -4295,6 +4497,41 @@ keys:
       digital_twin:
         platform: vEOS-lab
     - platforms:
+      - 7060X5
+      feature_support:
+        queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
+        hardware_counter_features:
+          acl: false
+          decap_group: false
+          directflow: false
+          ecn: false
+          flow_spec: false
+          mpls_interface: false
+          mpls_lfib: false
+          mpls_tunnel: false
+          multicast: false
+          nexthop: false
+          pbr: false
+          pdp: false
+          policing_interface: false
+          qos: false
+          qos_dual_rate_policer: false
+          route: false
+          routed_port: false
+          segment_security: false
+          tapagg: false
+          traffic_class: false
+          traffic_policy: false
+          vlan: false
+        sflow_subinterfaces: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 7280R
       - 7280R2
       - 7020R
@@ -4316,6 +4553,42 @@ keys:
       feature_support:
         evpn_gateway_all_active_multihoming: true
         private_vlan: false
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
+      - 7388X5
+      feature_support:
+        queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
+        hardware_counter_features:
+          acl: false
+          decap_group: false
+          directflow: false
+          ecn: false
+          flow_spec: false
+          mpls_interface: false
+          mpls_lfib: false
+          mpls_tunnel: false
+          multicast: false
+          nexthop: false
+          pbr: false
+          pdp: false
+          policing_interface: false
+          qos: false
+          qos_dual_rate_policer: false
+          route: false
+          routed_port: false
+          segment_security: false
+          tapagg: false
+          traffic_class: false
+          traffic_policy: false
+          vlan: false
+        sflow_subinterfaces: false
+      management_interface: Management0
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -4354,7 +4627,7 @@ keys:
         queue_monitor_length_notify: false
         interface_storm_control: true
         bgp_update_wait_for_convergence: true
-        bgp_update_wait_install: false
+        bgp_update_wait_install: true
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -4464,7 +4737,7 @@ keys:
         platform: CloudEOS
   platform_speed_groups:
     documentation_options:
-      table: platform-settings
+      table: platform-speed-groups
     type: list
     primary_key: platform
     description: Set Hardware Speed Groups per Platform.
@@ -5145,8 +5418,6 @@ keys:
           new_key: dns_settings
   ssh_settings:
     type: dict
-    documentation_options:
-      table: management-settings
     keys:
       enabled:
         type: bool
@@ -5276,7 +5547,7 @@ keys:
       remove_in_version: 6.0.0
   timezone:
     documentation_options:
-      table: management-settings
+      table: time-configuration
     type: str
     description: Clock timezone like "CET" or "US/Pacific".
   trunk_groups:
@@ -7885,6 +8156,17 @@ $defs:
 
                   '
                 default: true
+              evpn_vlan_bundle:
+                type: str
+                description: 'Name of a bundle defined under ''evpn_vlan_bundles''
+                  which will be used for all SVIs under this VRF.
+
+                  This setting overrides "evpn_vlan_bundle" set at the Tenant level.
+
+                  The common option "evpn_vlan_aware_bundles" is disregarded for this
+                  option.
+
+                  '
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: 'Comma separated list of prefixes (IPv4 address/Mask)
@@ -7995,7 +8277,11 @@ $defs:
                     description: 'IPv4_address/Mask.
 
                       Loopback IPv4 range, a unique ip is derived from this range
-                      and assigned to each l3 leaf based on it''s unique id.
+                      and assigned to each l3 leaf based on its unique id.
+
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name`
+                      of the device, and is configured with an `ipv4_pool`, it takes
+                      precedence over `loopback_ipv4_range`.
 
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range`
                       or `loopback_ip_pools` are set.
@@ -8006,7 +8292,11 @@ $defs:
                     description: 'IPv6_address/Mask.
 
                       Loopback IPv6 range, a unique IPv6 address is derived from this
-                      range and assigned to each L3 leaf based on it''s unique ID.
+                      range and assigned to each L3 leaf based on its unique ID.
+
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name`
+                      of the device, and is configured with an `ipv6_pool`, it takes
+                      precedence over `loopback_ipv6_range`.
 
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range`
                       or `loopback_ip_pools` are set.
@@ -8017,8 +8307,8 @@ $defs:
                     description: 'For inventories with multiple PODs a loopback range
                       can be set per POD to avoid overlaps.
 
-                      `loopback_ip_range` takes precedence for IPv4 and `loopback_ipv6_range`
-                      takes precedence for IPV6.
+                      POD level pools take precedence over `loopback_ip_range` and
+                      `loopback_ipv6_range`.
 
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range`
                       or `loopback_ip_pools` are set.
@@ -8349,7 +8639,8 @@ $defs:
                       description: 'Name of a bundle defined under ''evpn_vlan_bundles''
                         to inherit configuration.
 
-                        This setting overrides "evpn_vlan_bundle" set at tenant level.
+                        This setting overrides "evpn_vlan_bundle" set at the VRF or
+                        tenant level.
 
                         The common option "evpn_vlan_aware_bundles" is disregarded
                         for this option.
@@ -13568,7 +13859,7 @@ $defs:
           Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
 
           Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles:
-          true` or `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle`.
+          true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant.
 
           '
   virtual_topology:

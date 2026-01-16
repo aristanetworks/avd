@@ -14,10 +14,11 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
 )
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, get_v2
-from pyavd.j2filters import natural_sort
+from pyavd.j2filters import natural_sort, secure_hash
 
 from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
+from .dot1x import Dot1xMixin
 from .management_ssh import ManagementSshMixin
 from .monitor_sessions import MonitorSessionsMixin
 from .ntp import NtpMixin
@@ -30,6 +31,7 @@ from .utils import UtilsMixin
 class AvdStructuredConfigBaseProtocol(
     AddressLockingMixin,
     DaemonTerminattrMixin,
+    Dot1xMixin,
     ManagementSshMixin,
     NtpMixin,
     SnmpServerMixin,
@@ -249,6 +251,10 @@ class AvdStructuredConfigBaseProtocol(
         """enable_password.disable is set to match EOS default config and historic configs if aaa_settings.enable_password.password is not defined."""
         if self.inputs.aaa_settings.enable_password.password:
             self.structured_config.enable_password._update(hash_algorithm="sha512", key=self.inputs.aaa_settings.enable_password.password)
+        elif self.inputs.aaa_settings.enable_password.cleartext_password:
+            salt = self.get_salt(self.shared_utils.hostname)
+            secure_hash_password = secure_hash(self.inputs.aaa_settings.enable_password.cleartext_password, salt)
+            self.structured_config.enable_password._update(hash_algorithm="sha512", key=secure_hash_password)
         else:
             self.structured_config.enable_password.disabled = True
 
@@ -300,7 +306,7 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.queue_monitor_length = queue_monitor_length
 
     @structured_config_contributor
-    def ip_name_servers(self) -> None:
+    def ip_name_server(self) -> None:
         """Set ip name servers using old name_servers model and new dns_settings model. Results will be combined."""
         if not self.inputs.dns_settings:
             return
@@ -319,7 +325,8 @@ class AvdStructuredConfigBaseProtocol(
             if source_interface:
                 self.structured_config.ip_domain_lookup.source_interfaces.append_new(name=source_interface, vrf=server_vrf if server_vrf != "default" else None)
 
-            self.structured_config.ip_name_servers.append_new(ip_address=server.ip_address, vrf=server_vrf, priority=server.priority)
+            ip_name_server_vrf = self.structured_config.ip_name_server.vrfs.obtain(server_vrf)
+            ip_name_server_vrf.servers.append_new(ip_address=server.ip_address, priority=server.priority)
 
     @structured_config_contributor
     def logging(self) -> None:
@@ -423,10 +430,41 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def local_users(self) -> None:
         """local_users set based on global aaa_settings.local_users data model."""
+        # Exit early if no local users are defined in inputs
         if not (local_users := self.inputs.aaa_settings.local_users):
             return
 
-        self.structured_config.local_users = local_users._natural_sorted()
+        for local_user in local_users._natural_sorted():
+            local_user_data = EosCliConfigGen.LocalUsersItem(name=local_user.name, disabled=local_user.disabled)
+
+            # If the user is disabled, append it as-is and skip further processing
+            if local_user_data.disabled is True:
+                self.structured_config.local_users.append(local_user_data)
+                continue
+            local_user_data._update(
+                privilege=local_user.privilege,
+                role=local_user.role,
+                ssh_key=local_user.ssh_key,
+                secondary_ssh_key=local_user.secondary_ssh_key,
+                shell=local_user.shell,
+            )
+
+            # Pre-hashed SHA-512 password
+            if local_user.sha512_password:
+                local_user_data.sha512_password = local_user.sha512_password
+            # Cleartext password (hashed using a deterministic salt)
+            elif local_user.cleartext_password:
+                salt = self.get_salt(f"{self.shared_utils.hostname}-{local_user.name}")
+                password = secure_hash(local_user.cleartext_password, salt)
+                local_user_data.sha512_password = password
+            # Explicitly configure user with no password
+            elif local_user.no_password:
+                local_user_data.no_password = True
+                # EOS requires either no_password: true or a secret to be set.
+            else:
+                msg = f"Either 'sha512_password', 'cleartext_password' or 'no_password: true' must be set for username '{local_user.name}'."
+                raise AristaAvdInvalidInputsError(msg)
+            self.structured_config.local_users.append(local_user_data)
 
     @structured_config_contributor
     def clock(self) -> None:
@@ -700,23 +738,26 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def aaa_authentication(self) -> None:
         """Assign AAA authentication configuration from inputs to structured config."""
-        if not (aaa_authentication := self.inputs.aaa_settings.authentication):
+        if not self.inputs.aaa_settings.authentication:
             return
-        self.structured_config.aaa_authentication = aaa_authentication
+
+        self.structured_config.aaa_authentication = self.inputs.aaa_settings.authentication._cast_as(new_type=EosCliConfigGen.AaaAuthentication)
 
     @structured_config_contributor
     def aaa_authorization(self) -> None:
         """Assign AAA authorization configuration from inputs to structured config."""
-        if not (aaa_authorization := self.inputs.aaa_settings.authorization):
+        if not self.inputs.aaa_settings.authorization:
             return
-        self.structured_config.aaa_authorization = aaa_authorization
+
+        self.structured_config.aaa_authorization = self.inputs.aaa_settings.authorization._cast_as(new_type=EosCliConfigGen.AaaAuthorization)
 
     @structured_config_contributor
     def aaa_accounting(self) -> None:
         """Assign AAA accounting configuration from inputs to structured config."""
-        if not (aaa_accounting := self.inputs.aaa_settings.accounting):
+        if not self.inputs.aaa_settings.accounting:
             return
-        self.structured_config.aaa_accounting = aaa_accounting
+
+        self.structured_config.aaa_accounting = self.inputs.aaa_settings.accounting._cast_as(new_type=EosCliConfigGen.AaaAccounting)
 
     @structured_config_contributor
     def aaa_root_login(self) -> None:
