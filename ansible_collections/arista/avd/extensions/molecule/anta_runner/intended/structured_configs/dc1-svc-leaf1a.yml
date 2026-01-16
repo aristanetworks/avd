@@ -90,6 +90,7 @@ metadata:
   fabric_name: FABRIC
   validate_hardware:
     enabled: false
+  exclude_as_extra_fabric_validation_target: true
 mlag_configuration:
   domain_id: DC1_SVC_LEAF1
   local_interface: Vlan4094

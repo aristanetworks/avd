@@ -89,7 +89,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l2leaf
 - name: Ethernet49/1
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet5/1
+  description: P2P_LINK_Ethernet49/1_TO_DC1-SPINE1_Ethernet5/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -104,7 +104,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet50/1
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/5/1
+  description: P2P_LINK_Ethernet50/1_TO_DC1-SPINE2_Ethernet1/5/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -119,7 +119,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet51/1
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/6/1
+  description: P2P_LINK_Ethernet51/1_TO_DC1-SPINE2_Ethernet1/6/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -134,7 +134,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet52/1
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet6/1
+  description: P2P_LINK_Ethernet52/1_TO_DC1-SPINE1_Ethernet6/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -149,7 +149,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet53/1
-  description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/5/1
+  description: P2P_LINK_Ethernet53/1_TO_DC1-SPINE3_Ethernet1/5/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -164,7 +164,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet54/1
-  description: P2P_LINK_TO_DC1-SPINE4_Ethernet5/1
+  description: P2P_LINK_Ethernet54/1_TO_DC1-SPINE4_Ethernet5/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -179,7 +179,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet55/1
-  description: P2P_LINK_TO_DC1-SPINE4_Ethernet6/1
+  description: P2P_LINK_Ethernet55/1_TO_DC1-SPINE4_Ethernet6/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -194,7 +194,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet56/1
-  description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/6/1
+  description: P2P_LINK_Ethernet56/1_TO_DC1-SPINE3_Ethernet1/6/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
