@@ -14,13 +14,13 @@ from pyavd._utils import get_v2
 from ._base_classes import AntaTestInputFactory
 
 F = TypeVar("F", bound=AntaTestInputFactory)
-R = TypeVar("R", bound=AntaTest.Input)
+R = TypeVar("R")
 
 T_AntaTestInputFactoryMethod = Callable[[F], Iterator[R]]
 
 
 def skip_if_hardware_validation_disabled(func: T_AntaTestInputFactoryMethod) -> T_AntaTestInputFactoryMethod:
-    """Decorator to skip execution of the input factory create method if hardware validation is disabled."""
+    """Decorator to skip execution of an input factory method if hardware validation is disabled."""
 
     @wraps(func)
     def wrapper(self: AntaTestInputFactory) -> Iterator[AntaTest.Input]:
@@ -33,7 +33,7 @@ def skip_if_hardware_validation_disabled(func: T_AntaTestInputFactoryMethod) -> 
 
 
 def skip_if_extra_fabric_validation_disabled(func: T_AntaTestInputFactoryMethod) -> T_AntaTestInputFactoryMethod:
-    """Decorator to skip execution of the input factory create method if extra fabric validation is disabled."""
+    """Decorator to skip execution of an input factory method if extra fabric validation is disabled."""
 
     @wraps(func)
     def wrapper(self: AntaTestInputFactory) -> Iterator[AntaTest.Input]:
@@ -46,7 +46,7 @@ def skip_if_extra_fabric_validation_disabled(func: T_AntaTestInputFactoryMethod)
 
 
 def skip_if_wan_router(func: T_AntaTestInputFactoryMethod) -> T_AntaTestInputFactoryMethod:
-    """Decorator to skip execution of the input factory create method if the device is a WAN router."""
+    """Decorator to skip execution of an input factory method if the device is a WAN router."""
 
     @wraps(func)
     def wrapper(self: AntaTestInputFactory) -> Iterator[AntaTest.Input]:
@@ -59,7 +59,7 @@ def skip_if_wan_router(func: T_AntaTestInputFactoryMethod) -> T_AntaTestInputFac
 
 
 def skip_if_missing_config(*keys: StructuredConfigKey) -> Callable[[T_AntaTestInputFactoryMethod], T_AntaTestInputFactoryMethod]:
-    """Decorator to skip execution of the input factory create method if specific keys are missing in the structured configuration."""
+    """Decorator to skip execution of an input factory method if specific keys are missing in the structured configuration."""
 
     def decorator(func: T_AntaTestInputFactoryMethod) -> T_AntaTestInputFactoryMethod:
         key_values = [k.value for k in keys]
@@ -75,3 +75,16 @@ def skip_if_missing_config(*keys: StructuredConfigKey) -> Callable[[T_AntaTestIn
         return wrapper
 
     return decorator
+
+
+def skip_if_not_vtep(func: T_AntaTestInputFactoryMethod) -> T_AntaTestInputFactoryMethod:
+    """Decorator to skip execution of an input factory method if the device is NOT a VTEP."""
+
+    @wraps(func)
+    def wrapper(self: AntaTestInputFactory) -> Iterator[AntaTest.Input]:
+        if not self.data_source.is_vtep:
+            self.logger_adapter.debug(LogMessage.DEVICE_IS_NOT_VTEP)
+            return
+        yield from func(self)
+
+    return wrapper

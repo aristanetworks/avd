@@ -29,6 +29,7 @@ class ResolvedBgpNeighbor:
     ip_address: IPv4Address | IPv6Address
     vrf: str
     update_source: str | None = None
+    description: str | None = None
 
 
 @dataclass(frozen=True)
@@ -37,6 +38,7 @@ class ResolvedBgpNeighborInterface:
 
     interface: str
     vrf: str
+    description: str | None = None
 
 
 @dataclass
@@ -63,6 +65,16 @@ class InputFactoryDataSource:
         """Check if extra fabric-wide validation inputs should be generated."""
         return self._settings.extra_fabric_validation
 
+    @property
+    def loopback0_ip(self) -> IPv4Address | None:
+        """Get the Loopback0 IP of the device."""
+        return self._device_data.loopback0_ip
+
+    @property
+    def fabric_loopback0_mapping(self) -> dict[str, IPv4Address]:
+        """Get a fabric mapping of device hostname to its Loopback0 IPv4 address."""
+        return self._fabric_data.loopback0_mapping
+
     @cached_property
     def _device_data(self) -> AvdDeviceData:
         """Get the AvdDeviceData object for this device."""
@@ -72,7 +84,7 @@ class InputFactoryDataSource:
         return device_data
 
     @cached_property
-    def special_ips(self) -> list[IPv4Address]:
+    def fabric_special_ips(self) -> list[IPv4Address]:
         """Get a sorted list of all 'special' IPv4 addresses (Loopback0, VTEP, and MLAG VTEP) from deployed non-WAN devices in the fabric."""
         return natural_sort(self._fabric_data.special_ips)
 
@@ -144,26 +156,20 @@ class InputFactoryDataSource:
             return None
 
         # Skip neighbor interfaces in shutdown peer groups
-        if (
-            neighbor_interface.peer_group
-            and neighbor_interface.peer_group in self.structured_config.router_bgp.peer_groups
-            and self.structured_config.router_bgp.peer_groups[neighbor_interface.peer_group].shutdown is True
-        ):
+        if self._is_bgp_neighbor_in_shutdown_peer_group(neighbor_interface):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer group %s shutdown", self.hostname, identifier, neighbor_interface.peer_group)
             return None
 
-        # When peer field is set, check if the peer device is in the fabric and deployed
-        if (
-            from_default_vrf
-            and neighbor_interface.metadata.peer
-            and (
-                neighbor_interface.metadata.peer not in self._fabric_data.devices or not self._fabric_data.devices[neighbor_interface.metadata.peer].is_deployed
-            )
-        ):
+        # Skip neighbor interfaces not in the fabric or not deployed (when `metadata.peer` is set)
+        if from_default_vrf and not self._is_bgp_neighbor_available(neighbor_interface):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None
 
-        return ResolvedBgpNeighborInterface(interface=neighbor_interface.name, vrf=vrf)
+        return ResolvedBgpNeighborInterface(
+            interface=neighbor_interface.name,
+            vrf=vrf,
+            description=neighbor_interface.description or (neighbor_interface.metadata.peer if from_default_vrf else None),
+        )
 
     def _process_bgp_neighbor(
         self, neighbor: EosCliConfigGen.RouterBgp.NeighborsItem | EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem, vrf: str
@@ -190,20 +196,12 @@ class InputFactoryDataSource:
             return None
 
         # Skip neighbors in shutdown peer groups
-        if (
-            neighbor.peer_group
-            and neighbor.peer_group in self.structured_config.router_bgp.peer_groups
-            and self.structured_config.router_bgp.peer_groups[neighbor.peer_group].shutdown is True
-        ):
+        if self._is_bgp_neighbor_in_shutdown_peer_group(neighbor):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer group %s shutdown", self.hostname, identifier, neighbor.peer_group)
             return None
 
-        # When peer field is set, check if the peer device is in the fabric and deployed
-        if (
-            from_default_vrf
-            and neighbor.metadata.peer
-            and (neighbor.metadata.peer not in self._fabric_data.devices or not self._fabric_data.devices[neighbor.metadata.peer].is_deployed)
-        ):
+        # Skip neighbors not in the fabric or not deployed (when `metadata.peer` is set)
+        if from_default_vrf and not self._is_bgp_neighbor_available(neighbor):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None
 
@@ -213,4 +211,30 @@ class InputFactoryDataSource:
             else None
         )
 
-        return ResolvedBgpNeighbor(ip_address=ip_interface(neighbor.ip_address).ip, vrf=vrf, update_source=update_source)
+        return ResolvedBgpNeighbor(
+            ip_address=ip_interface(neighbor.ip_address).ip,
+            vrf=vrf,
+            update_source=update_source,
+            description=neighbor.description or (neighbor.metadata.peer if from_default_vrf else None),
+        )
+
+    def _is_bgp_neighbor_in_shutdown_peer_group(
+        self,
+        neighbor: EosCliConfigGen.RouterBgp.NeighborsItem
+        | EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem
+        | EosCliConfigGen.RouterBgp.NeighborInterfacesItem
+        | EosCliConfigGen.RouterBgp.VrfsItem.NeighborInterfacesItem,
+    ) -> bool:
+        """Check if the neighbor is in a shutdown peer group."""
+        return bool(
+            neighbor.peer_group
+            and neighbor.peer_group in self.structured_config.router_bgp.peer_groups
+            and self.structured_config.router_bgp.peer_groups[neighbor.peer_group].shutdown is True
+        )
+
+    def _is_bgp_neighbor_available(self, neighbor: EosCliConfigGen.RouterBgp.NeighborsItem | EosCliConfigGen.RouterBgp.NeighborInterfacesItem) -> bool:
+        """Check if the neighbor is in the fabric and deployed."""
+        if not neighbor.metadata.peer:
+            return True
+
+        return self.get_peer_device(neighbor.metadata.peer) is not None

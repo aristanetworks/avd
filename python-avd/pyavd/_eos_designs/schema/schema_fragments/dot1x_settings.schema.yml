@@ -1,0 +1,124 @@
+# Copyright (c) 2025-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  dot1x_settings:
+    documentation_options:
+      table: dot1x-settings
+    type: dict
+    description: Settings for 802.1X deployments.
+    keys:
+      enabled:
+        type: bool
+        default: false
+        description: |-
+          Globally enable 802.1X port authentication on the switch.
+          Must be true for 802.1X to be active on any interface.
+      authentication:
+        type: dict
+        keys:
+          radius_groups:
+            type: list
+            min_length: 1
+            description: |-
+              List of RADIUS server groups to be used for 802.1X authentication when globally enabled. If not provided, all defined RADIUS hosts are used.
+              The order of the list defines the server group priority.
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.
+            items:
+              type: str
+              description: RADIUS server group name.
+      accounting:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: true
+            description: Enable 802.1X accounting.
+          mode:
+            type: str
+            valid_values: [start-stop, stop-only]
+            default: start-stop
+            description: |-
+              Determines whether to send accounting records when a session is established and
+              when it ends (`start-stop`), or only when the session ends (`stop-only`).
+          radius_groups:
+            type: list
+            min_length: 1
+            description: |-
+              List of RADIUS server groups to be used for 802.1X accounting when enabled. If not provided, all defined RADIUS hosts are used.
+              The order of the list defines the server group priority.
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.
+            items:
+              type: str
+              description: RADIUS server group name.
+          multicast:
+            type: bool
+            default: false
+            description: Send Accounting-Request messages to all servers in a RADIUS group at the same time.
+          syslog:
+            type: bool
+            default: false
+            description: |-
+              Log all accounting messages to syslog if all RADIUS servers are unavailable or unresponsive.
+      bypass_bpdu:
+        type: bool
+        default: true
+        $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_bpdu_bypass
+      bypass_lldp:
+        type: bool
+        default: true
+        $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_lldp_bypass
+      dynamic_authorization:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: true
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
+          additional_groups:
+            type: list
+            description: |-
+              List of additional RADIUS server groups for dynamic authorization purposes only.
+              The order of the list defines the server group priority.
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.
+            items:
+              type: str
+              description: RADIUS server group name.
+      mac_based_authentication:
+        type: dict
+        keys:
+          username_format:
+            type: dict
+            keys:
+              delimiter:
+                type: str
+                description: RADIUS User-Name attribute delimiter to use on the MAC address.
+                required: true
+                valid_values:
+                  - colon
+                  - hyphen
+                  - none
+                  - period
+              letter_case:
+                type: str
+                description: RADIUS User-Name attribute letter case to use on the MAC address.
+                required: true
+                valid_values:
+                  - lowercase
+                  - uppercase
+      radius_av_pairs:
+        type: dict
+        keys:
+          service_type:
+            type: bool
+            default: false
+            description: Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
+      redistribute_in_evpn:
+        type: bool
+        default: true
+        description: |-
+          Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all configured MAC-VRFs.
