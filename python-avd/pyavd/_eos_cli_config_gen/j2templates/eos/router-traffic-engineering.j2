@@ -50,10 +50,11 @@ router traffic-engineering
 {%                             endif %}
 {%                             if loop.first and pathgroup.explicit_null is arista.avd.defined %}
             !
-{%                             else %}
-            !
 {%                             endif %}
             segment-list label-stack {{ stack }}
+{%                             if not loop.last %}
+            !
+{%                             endif %}
 {%                         endfor %}
 {%                     endfor %}
 {%                 endfor %}
