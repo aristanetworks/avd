@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from ipaddress import AddressValueError, IPv4Address
 from typing import Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -621,7 +622,21 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.ptp.free_running.source_clock_hardware = default(
             self.shared_utils.node_config.ptp.free_running.source_clock_hardware, self.inputs.ptp_settings.free_running.source_clock_hardware
         )
-        self.structured_config.ptp.source.ip = self.shared_utils.node_config.ptp.source_ip
+        source_ip = self.shared_utils.node_config.ptp.source_ip
+
+        if source_ip == "router_id":
+            if self.shared_utils.router_id is None:
+                msg = "PTP source IP is set to 'ptp.source_ip: router_id' but no router ID is configured for this device."
+                raise AristaAvdInvalidInputsError(msg)
+            self.structured_config.ptp.source.ip = self.shared_utils.router_id
+        elif source_ip is not None:
+            try:
+                IPv4Address(source_ip)
+                self.structured_config.ptp.source.ip = source_ip
+            except AddressValueError:
+                msg = f"Invalid PTP source IP 'ptp.source_ip: {source_ip}'. The value must be either 'router_id' or a valid IPv4 address."
+                raise AristaAvdInvalidInputsError(msg) from None
+
         self.structured_config.ptp.message_type.general.dscp = self.shared_utils.node_config.ptp.dscp.general_messages
         self.structured_config.ptp.message_type.event.dscp = self.shared_utils.node_config.ptp.dscp.event_messages
 
