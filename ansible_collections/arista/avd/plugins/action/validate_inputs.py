@@ -109,20 +109,7 @@ class ActionModule(AvdActionPlugin):
         schema_name = get(plugin_args, "schema_name")
         template_inputs = get(plugin_args, "template_inputs")
 
-        groups = task_vars.get("groups", {})
-        fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
-        fabric_hosts = groups.get(fabric_name, [])
-        ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", [])
-
-        # Check if fabric_name is set and that all play hosts are part Ansible group set in "fabric_name".
-        if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
-            msg = (
-                "Invalid/missing 'fabric_name' variable. "
-                "All hosts in the play must have the same 'fabric_name' value "
-                "which must point to an Ansible Group containing the hosts."
-                f"play_hosts: {ansible_play_hosts_all}"
-            )
-            raise ValueError(msg)
+        fabric_hosts = task_vars.get("ansible_play_hosts_all", [])
 
         mp_workers, mt_workers = self._get_workers(len(fabric_hosts), task_vars.get("ansible_forks", 5))
         templated_path, validated_path = self._get_tmp_paths(schema_name)
