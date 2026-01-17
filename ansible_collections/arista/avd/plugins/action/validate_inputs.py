@@ -9,7 +9,7 @@ from json import loads as json_loads
 from multiprocessing import cpu_count, get_context
 from pathlib import Path
 from time import perf_counter
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 
 from ansible.plugins.action import display
 
@@ -55,17 +55,19 @@ class ValidateWorkerSuccess:
 TemplateWorkerResult = TemplateWorkerSuccess | WorkerFailure
 """Result from Phase 1 (templating, serializing, writing to file)."""
 ValidateWorkerResult = ValidateWorkerSuccess | WorkerFailure
-"""Result from Phase 2 (validating, rewriting to file)."""
+"""Result from Phase 2 (validating, writing to file)."""
 
 
 PLUGIN_NAME = "arista.avd.validate_inputs"
 
-# TODO: Create a pyavd_utils logger.
-TARGET_LOGGERS = ["ansible_collections.arista.avd", "validation", "pyvalidation"]
+# TODO: Create a single pyavd_utils logger.
+TARGET_LOGGERS = ["ansible_collections.arista.avd", "validation", "pyvalidation", "store"]
 
 ARGUMENT_SPEC = {
     # TODO: Need to figure out the proper default batch size.
     "batch_size": {"type": "int", "default": 10},
+    "schema_name": {"type": "str", "default": "eos_designs", "choices": ["eos_designs", "eos_cli_config_gen"]},
+    "template_inputs": {"type": "bool", "default": True},
 }
 
 _HOSTVARS_MANAGER: ActionPluginVars | None = None
@@ -104,6 +106,8 @@ class ActionModule(AvdActionPlugin):
         # Converting to JSON and back to remove any AnsibeUnsafe types.
         plugin_args = json_loads(json_dumps(validated_args))
         batch_size = get(plugin_args, "batch_size")
+        schema_name = get(plugin_args, "schema_name")
+        template_inputs = get(plugin_args, "template_inputs")
 
         groups = task_vars.get("groups", {})
         fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
@@ -121,18 +125,28 @@ class ActionModule(AvdActionPlugin):
             raise ValueError(msg)
 
         mp_workers, mt_workers = self._get_workers(len(fabric_hosts), task_vars.get("ansible_forks", 5))
-        templated_path, validated_path = self._get_tmp_paths()
+        templated_path, validated_path = self._get_tmp_paths(schema_name)
 
         set_worker_context(ActionPluginVars(self))
 
-        self.logger.info("Starting execution with %d multiprocessing workers and %d threads for %d hosts", mp_workers, mt_workers, len(fabric_hosts))
+        self.logger.info(
+            "Starting execution with %d multiprocessing workers and %d threads for %d hosts in batches of %d",
+            mp_workers,
+            mt_workers,
+            len(fabric_hosts),
+            batch_size,
+        )
 
         # Phase 1: Templating using multiprocessing.
-        successful_hosts = self._run_templating_phase(fabric_hosts, mp_workers, batch_size, templated_path)
+        if template_inputs:
+            hosts_to_validate = self._run_templating_phase(fabric_hosts, mp_workers, batch_size, templated_path)
+        else:
+            self.logger.info("Skipping templating phase for %s schema", schema_name)
+            hosts_to_validate = fabric_hosts
 
         # Phase 2: Validation using multithreading.
-        if successful_hosts:
-            self._run_validation_phase(successful_hosts, mt_workers, templated_path, validated_path)
+        if hosts_to_validate:
+            self._run_validation_phase(hosts_to_validate, mt_workers, templated_path, validated_path, schema_name)
 
     def _get_workers(self, num_hosts: int, ansible_forks: int) -> tuple[int, int]:
         """
@@ -148,13 +162,14 @@ class ActionModule(AvdActionPlugin):
         mt = min(ansible_forks, num_hosts) or 1
         return mp, mt
 
-    def _get_tmp_paths(self) -> tuple[Path, Path]:
+    # TODO: Use constants for paths.
+    def _get_tmp_paths(self, schema_name: Literal["eos_designs", "eos_cli_config_gen"]) -> tuple[Path, Path]:
         """Get the Path objects to store templated and validated JSON files."""
         base_tmp_path = get_tmp_path()
 
-        # Create separate directories for phases.
-        templated_path = base_tmp_path / "templated"
-        validated_path = base_tmp_path / "validated"
+        schema_path = base_tmp_path / schema_name
+        templated_path = schema_path / "templated"
+        validated_path = schema_path / "validated"
 
         templated_path.mkdir(parents=True, exist_ok=True)
         validated_path.mkdir(parents=True, exist_ok=True)
@@ -196,7 +211,9 @@ class ActionModule(AvdActionPlugin):
         self.logger.info("Phase 1 (Templating) complete in %.2fs", perf_counter() - start_time)
         return successful_hosts
 
-    def _run_validation_phase(self, hosts: list[str], workers: int, input_dir: Path, output_dir: Path) -> None:
+    def _run_validation_phase(
+        self, hosts: list[str], workers: int, input_dir: Path, output_dir: Path, schema_name: Literal["eos_designs", "eos_cli_config_gen"]
+    ) -> None:
         """
         Phase 2: Validation.
 
@@ -207,18 +224,16 @@ class ActionModule(AvdActionPlugin):
             workers: The amount of multithreading workers to use.
             input_dir: The directory containing the templated JSON files (from Phase 1).
             output_dir: The directory where validated JSON files will be written.
+            schema_name: Schema to use for validation.
         """
         start_time = perf_counter()
 
         data_validation_errors = 0
 
-        # This dict will store path mappings for successful hosts
-        validated_files_map = {}
-
         init_store()
 
-        # Partial to inject directories into the worker.
-        worker_func = partial(_validate_host_worker, input_dir=input_dir, output_dir=output_dir)
+        # Partial to inject directories and schema name into the worker.
+        worker_func = partial(_validate_host_worker, input_dir=input_dir, output_dir=output_dir, schema_name=schema_name)
 
         with ThreadPoolExecutor(max_workers=workers) as pool:
             results = pool.map(worker_func, hosts)
@@ -232,11 +247,11 @@ class ActionModule(AvdActionPlugin):
                 host_errors = parse_validation_result(validation_result=result.validation_result, hostname=result.host, ansible_display=display)
 
                 if host_errors:
+                    # TODO: Add a knob to not fail the task.
                     self.result["failed"] = True
                     data_validation_errors += host_errors
                 elif result.output_file:
                     self.logger.debug("Validated data for host %s saved to %s", result.host, result.output_file)
-                    validated_files_map[result.host] = result.output_file
                 else:
                     # This should never happen if validation succeeded and data exists.
                     self.result["failed"] = True
@@ -246,10 +261,7 @@ class ActionModule(AvdActionPlugin):
         if msg:
             self.result["msg"] = msg
 
-        # Return the paths as Ansible Facts so subsequent tasks can find the files easily.
-        if not self.result.get("failed"):
-            self.result["ansible_facts"] = {"avd_validated_files": validated_files_map}
-
+        # TODO: Improve error message when all worker fails.
         self.logger.info("Phase 2 (Validation) complete in %.2fs", perf_counter() - start_time)
 
 
@@ -271,7 +283,7 @@ def _template_host_worker(host: str, output_dir: Path) -> TemplateWorkerResult:
         return WorkerFailure(host=host, error=f"Unexpected error in templating worker process: {e}")
 
 
-def _validate_host_worker(host: str, input_dir: Path, output_dir: Path) -> ValidateWorkerResult:
+def _validate_host_worker(host: str, input_dir: Path, output_dir: Path, schema_name: Literal["eos_designs", "eos_cli_config_gen"]) -> ValidateWorkerResult:
     """Phase 2 multithreading worker: Read a single host JSON file from input_dir, validate in Rust, and write to output_dir."""
     try:
         input_file_path = input_dir / f"{host}.json"
@@ -284,7 +296,7 @@ def _validate_host_worker(host: str, input_dir: Path, output_dir: Path) -> Valid
             json_data = f.read()
 
         # Validation in Rust, releasing the GIL.
-        validated_data_result = get_validated_data(data_as_json=json_data, schema_name="eos_designs")
+        validated_data_result = get_validated_data(data_as_json=json_data, schema_name=schema_name)
         validation_result, validated_data = validated_data_result.validation_result, validated_data_result.validated_data
 
         output_file = None

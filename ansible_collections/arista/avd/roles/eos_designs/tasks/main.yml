@@ -25,9 +25,12 @@
   delegate_to: localhost
   run_once: true
 
+# TODO: Improve this.
 - name: Validate AVD inputs
   arista.avd.validate_inputs:
     batch_size: "{{ batch_size | arista.avd.default(10) }}"
+    schema_name: "eos_designs"
+    template_inputs: true
   delegate_to: localhost
   check_mode: false
   run_once: true

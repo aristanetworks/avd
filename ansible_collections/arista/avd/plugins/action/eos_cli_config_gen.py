@@ -17,20 +17,21 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     PythonToAnsibleContextFilter,
     PythonToAnsibleHandler,
     YamlLoader,
-    build_result_message,
     cprofile,
     get_templar,
-    parse_validation_result,
+    get_tmp_path,
 )
 
 if TYPE_CHECKING:
-    from pyavd import get_device_config, get_device_doc, validate_structured_config
+    from pyavd import get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
+    from pyavd.api.schemas import EOSConfig
     from pyavd.j2filters import add_md_toc
 
 try:
-    from pyavd import get_device_config, get_device_doc, validate_structured_config
+    from pyavd import get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
+    from pyavd.api.schemas import EOSConfig
     from pyavd.j2filters import add_md_toc
 
     HAS_PYAVD = True
@@ -79,49 +80,26 @@ class ActionModule(ActionBase):
         hostname = task_vars["inventory_hostname"]
         setup_module_logging(hostname, result)
 
-        return self.main(task_vars, result)
+        return self.main(hostname, result)
 
-    def main(self, task_vars: dict, result: dict) -> dict:
+    # TODO: Cleanup.
+    def main(self, hostname: str, result: dict) -> dict:
         """Main function in charge of validating the input variables and generating the device configuration and documentation."""
         LOGGER.debug("Validating task arguments...")
         validated_args = self.validate_args()
         LOGGER.debug("Validating task arguments [done].")
 
-        try:
-            # Read structured config from file or task_vars and run templating to handle inline jinja.
-            LOGGER.debug("Preparing task vars...")
-            task_vars = self.prepare_task_vars(
-                task_vars,
-                validated_args.get("structured_config_filename"),
-                read_structured_config_from_file=validated_args["read_structured_config_from_file"],
-            )
-            LOGGER.debug("Preparing task vars [done].")
+        eos_config, host_hostvars = self.load_validated_inputs(hostname)
 
-            LOGGER.debug("Validating structured configuration...")
-            # result dict will be in-place updated.
-            validated_task_vars = self.validate_task_vars(
-                hostname=task_vars["inventory_hostname"],
-                task_vars=task_vars,
-                result=result,
-            )
-            LOGGER.debug("Validating structured configuration [done].")
-        except Exception as e:
-            LOGGER.exception(e)  # noqa: TRY401 TODO: Improve code
-            return result
-
-        if result.get("failed"):
-            # Something failed in schema validation.
-            return result
-
-        has_custom_templates = bool(task_vars.get("custom_templates"))
+        has_custom_templates = bool(host_hostvars.get("custom_templates"))
         try:
             if validated_args["generate_device_config"]:
                 LOGGER.debug("Rendering configuration...")
-                device_config = get_device_config(validated_task_vars)
+                device_config = get_device_config(eos_config)
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering config custom templates...")
-                    rendered_custom_templates = self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
+                    rendered_custom_templates = self.render_template_with_ansible_templar(host_hostvars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
                     # Need to handle if `end` has been rendered already
                     if device_config.endswith("!\nend\n"):
                         device_config = device_config[:-6] + rendered_custom_templates + "!\nend\n"
@@ -134,11 +112,11 @@ class ActionModule(ActionBase):
 
             if validated_args["generate_device_doc"]:
                 LOGGER.debug("Rendering documentation...")
-                device_doc = get_device_doc(validated_task_vars, add_md_toc=False)
+                device_doc = get_device_doc(eos_config, add_md_toc=False)
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering documentation custom templates...")
-                    device_doc += self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_DOC_TEMPLATE)
+                    device_doc += self.render_template_with_ansible_templar(host_hostvars, CUSTOM_TEMPLATES_DOC_TEMPLATE)
                     LOGGER.debug("Rendering documentation custom templates [done].")
 
                 if validated_args["device_doc_toc"]:
@@ -169,67 +147,6 @@ class ActionModule(ActionBase):
 
         # Converting to json and back to remove any AnsibeUnsafe types
         return json.loads(json.dumps(validated_args))
-
-    def prepare_task_vars(self, task_vars: dict, structured_config_filename: str, *, read_structured_config_from_file: bool) -> dict:
-        """
-        Read the structured_config and render inline Jinja.
-
-        Parameters
-        ----------
-            task_vars: Dictionary of task variables
-            structured_config_filename: The filename where the structured_config for the device is stored.
-            read_structured_config_from_file: Flag to indicate whether or not the structured_config_filname should be read.
-
-        Returns:
-        -------
-            dict: Task vars updated with the structured_config content if read and all inline Jinja rendered.
-
-        Raises:
-        ------
-            AnsibleActionFail: If templating fails.
-
-        """
-        if read_structured_config_from_file:
-            task_vars.update(read_vars(structured_config_filename))
-
-        # Read ansible variables and perform templating to support inline jinja2
-        for var, value in task_vars.items():
-            # TODO: - reevaluate these variables
-            if str(var).startswith(("ansible", "molecule", "hostvars", "vars", "avd_switch_facts")):
-                continue
-            if self._templar.is_template(value):
-                # Var contains a jinja2 template.
-                try:
-                    task_vars[var] = self._templar.template(value, fail_on_undefined=False)
-                except Exception as e:
-                    msg = f"Exception during templating of task_var '{var}': '{e}'"
-                    raise AnsibleActionFail(msg) from e
-
-        if not isinstance(task_vars, dict):
-            # Corner case for ansible-test where the passed task_vars is a nested chain-map
-            task_vars = dict(task_vars)
-
-        return task_vars
-
-    def validate_task_vars(self, hostname: str, task_vars: dict, result: dict) -> dict:
-        """
-        Validate inputs and emit warnings and errors via Ansible display and in-place update the given result.
-
-        To simplify type checking this always return a dict even if validation fails.
-        The caller should check for result['failed'].
-        """
-        try:
-            validated_data_result = validate_structured_config(task_vars)
-        except (TypeError, ValueError, RecursionError) as e:
-            msg = f"Unable to load structured config from the given data: {e}"
-            raise ValueError(msg) from e
-
-        validation_errors = parse_validation_result(validated_data_result.validation_result, hostname, display)
-        if validation_errors:
-            result["failed"] = True
-            result["msg"] = build_result_message(validation_errors)
-
-        return validated_data_result.validated_data or {}
 
     def render_template_with_ansible_templar(self, task_vars: dict, templatefile: str) -> str:
         """Render a template with the Ansible Templar."""
@@ -265,6 +182,34 @@ class ActionModule(ActionBase):
 
         path.write_text(content, encoding="UTF-8")
         return True
+
+    def load_validated_inputs(self, host: str) -> tuple[EOSConfig, dict[str, Any]]:
+        """
+        Read validated hostvars from the temporary file for the host and load data into AVDDesign class.
+
+        Args:
+            host: Hostname.
+            avd_validated_files: Dictionary mapping hostnames to validated file paths.
+
+        Returns:
+            Tuple of an AVDDesign instance loaded from the host hostvars and a dict with the host raw hostvars.
+        """
+        # TODO: Use constants.
+        file_path = get_tmp_path() / "eos_cli_config_gen" / "validated" / f"{host}.json"
+        if not file_path.exists():
+            msg = (
+                f"Missing validated inputs for host '{host}'. "
+                "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
+            )
+            raise AnsibleActionFail(message=msg)
+
+        with file_path.open(mode="r", encoding="utf-8") as f:
+            host_hostvars = json.load(f)
+
+        # Load input vars into the AVDDesign data class.
+        eos_config = EOSConfig._from_dict(host_hostvars)
+
+        return eos_config, host_hostvars
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:

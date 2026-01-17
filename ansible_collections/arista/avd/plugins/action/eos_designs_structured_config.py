@@ -8,7 +8,6 @@ import json
 import logging
 import pstats
 from collections import ChainMap
-from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import yaml
@@ -84,10 +83,7 @@ class ActionModule(ActionBase):
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
 
-        ansible_facts = task_vars.get("ansible_facts", {})
-        avd_validated_files = ansible_facts.get("avd_validated_files", {})
-
-        avd_design, host_hostvars = self.load_validated_inputs(hostname, avd_validated_files)
+        avd_design, host_hostvars = self.load_validated_inputs(hostname)
 
         all_facts = self.load_facts(hostname)
 
@@ -172,8 +168,7 @@ class ActionModule(ActionBase):
         else:
             result["changed"] = True
 
-        # TODO: AVD 6.0.0 consider not setting facts at all.
-        result["ansible_facts"] = output
+        self.dump_template_vars(hostname, template_vars)
 
         if cprofile_file:
             profiler.disable()
@@ -182,19 +177,19 @@ class ActionModule(ActionBase):
 
         return result
 
-    def load_validated_inputs(self, host: str, avd_validated_files: dict[str, str]) -> tuple[AVDDesign, dict[str, Any]]:
+    def load_validated_inputs(self, host: str) -> tuple[AVDDesign, dict[str, Any]]:
         """
         Read validated hostvars from the temporary file for the host and load data into AVDDesign class.
 
         Args:
             host: Hostname.
-            avd_validated_files: Dictionary mapping hostnames to validated file paths.
 
         Returns:
             Tuple of an AVDDesign instance loaded from the host hostvars and a dict with the host raw hostvars.
         """
-        file_str = avd_validated_files.get(host)
-        if file_str is None or not (file_path := Path(file_str)).exists():
+        # TODO: Use constants.
+        file_path = get_tmp_path() / "eos_designs" / "validated" / f"{host}.json"
+        if not file_path.exists():
             msg = (
                 f"Missing validated inputs for host '{host}'. "
                 "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
@@ -231,3 +226,26 @@ class ActionModule(ActionBase):
             avd_switch_facts = json.load(f)
 
         return AvdSwitchFactsDefaultDict(avd_switch_facts)
+
+    def dump_template_vars(self, hostname: str, template_vars: ChainMap[str, Any]) -> None:
+        """
+        Dump the combined template_vars to the temporary AVD directory.
+
+        Args:
+            hostname: Hostname.
+            template_vars: ChainMap containing the final templated structured config and all other templated hostvars.
+        """
+        # Merge the two layers, structured_config wins.
+        flat_data = dict(template_vars)
+
+        base_tmp_path = get_tmp_path()
+
+        schema_path = base_tmp_path / "eos_cli_config_gen"
+        templated_path = schema_path / "templated"
+
+        templated_path.mkdir(parents=True, exist_ok=True)
+
+        file_path = templated_path / f"{hostname}.json"
+
+        with file_path.open(mode="w", encoding="utf-8") as f:
+            json.dump(flat_data, f, indent=4)

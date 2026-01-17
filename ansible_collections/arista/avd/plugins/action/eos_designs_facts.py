@@ -79,10 +79,7 @@ class ActionModule(ActionBase):
             )
             raise AnsibleActionFail(msg)
 
-        ansible_facts = task_vars.get("ansible_facts", {})
-        avd_validated_files = ansible_facts.get("avd_validated_files", {})
-
-        all_inputs, all_hostvars = self.load_validated_inputs(fabric_hosts, avd_validated_files)
+        all_inputs, all_hostvars = self.load_validated_inputs(fabric_hosts)
 
         # Get updated templar instance to be passed along to our simplified "templater".
         templar = get_templar(self, task_vars)
@@ -104,13 +101,12 @@ class ActionModule(ActionBase):
 
         return result
 
-    def load_validated_inputs(self, fabric_hosts: list, avd_validated_files: dict[str, str]) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
+    def load_validated_inputs(self, fabric_hosts: list) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
         """
         Read validated hostvars from temporary files for all hosts and load data into AVDDesign classes.
 
         Args:
             fabric_hosts: List of hostnames.
-            avd_validated_files: Dictionary mapping hostnames to validated file paths.
 
         Returns:
             Tuple of one dict with the loaded data keyed by hostnames and one dict of the raw hostvars also keyed by hostnames.
@@ -119,8 +115,9 @@ class ActionModule(ActionBase):
         all_hostvars: dict[str, dict] = {}
 
         for host in fabric_hosts:
-            file_str = avd_validated_files.get(host)
-            if file_str is None or not (file_path := Path(file_str)).exists():
+            # TODO: Use constants.
+            file_path = get_tmp_path() / "eos_designs" / "validated" / f"{host}.json"
+            if not file_path.exists():
                 msg = (
                     f"Missing validated inputs for host '{host}'. "
                     "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
