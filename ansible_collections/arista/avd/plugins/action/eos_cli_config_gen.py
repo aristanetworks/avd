@@ -135,7 +135,6 @@ class ActionModule(ActionBase):
         _validation_result, validated_args = self.validate_argument_spec(
             ARGUMENT_SPEC,
             required_if=[
-                ("read_structured_config_from_file", True, ("structured_config_filename",)),
                 ("generate_device_config", True, ("config_filename",)),
                 ("generate_device_doc", True, ("documentation_filename",)),
             ],

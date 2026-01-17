@@ -117,7 +117,6 @@ class ActionModule(ActionBase):
         _templated_path, validated_path = get_role_tmp_paths("eos_designs")
 
         for host in fabric_hosts:
-            # TODO: Use constants.
             file_path = validated_path / f"{host}.json"
             if not file_path.exists():
                 msg = (
