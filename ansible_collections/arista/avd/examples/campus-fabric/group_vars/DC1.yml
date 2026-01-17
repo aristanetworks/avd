@@ -21,6 +21,11 @@ aaa_settings:
       role: network-admin
       sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
 
+  radius:
+    servers:
+      - host: agni.arista.com
+        cleartext_key: super-secret-key
+
 # OOB Management network default gateway.
 mgmt_gateway: 172.16.100.1
 mgmt_interface: Management0

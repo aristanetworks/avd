@@ -93,6 +93,7 @@ ip_name_server:
     servers:
     - ip_address: 8.8.4.4
     - ip_address: 8.8.8.8
+ip_radius_source_interfaces: null
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 local_users:
@@ -181,6 +182,7 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 10,310,320,330
+radius_server: null
 router_ospf:
   process_ids:
   - id: 100

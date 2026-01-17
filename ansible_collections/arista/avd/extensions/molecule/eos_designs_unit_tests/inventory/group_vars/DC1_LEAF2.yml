@@ -11,3 +11,12 @@ overlay_rd_type:
 
 overlay_rt_type:
   admin_subfield: 100000
+
+dot1x_settings:
+  enabled: true
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        cleartext_key: super-secret-key
