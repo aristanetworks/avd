@@ -19,5 +19,5 @@ keys:
         # Specifically overriding the description for this key. Everything else is inherited by the $ref above.
         type: bool
         description: |
-          If True, `eos_designs` will configure `queue-monitor length notifying` according to the
+          If True, Arista AVD will configure `queue-monitor length notifying` according to the
           `platform_settings.[].feature_support.queue_monitor_length_notify` setting.

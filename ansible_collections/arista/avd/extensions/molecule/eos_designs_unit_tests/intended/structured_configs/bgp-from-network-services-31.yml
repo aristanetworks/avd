@@ -52,6 +52,14 @@ port_channel_interfaces:
       groups:
       - MLAG
 route_maps:
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
   - sequence: 10
