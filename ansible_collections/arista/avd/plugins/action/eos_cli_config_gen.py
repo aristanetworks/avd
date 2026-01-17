@@ -80,26 +80,26 @@ class ActionModule(ActionBase):
         hostname = task_vars["inventory_hostname"]
         setup_module_logging(hostname, result)
 
-        return self.main(hostname, result)
+        return self.main(hostname, task_vars, result)
 
     # TODO: Cleanup.
-    def main(self, hostname: str, result: dict) -> dict:
+    def main(self, hostname: str, task_vars: dict, result: dict) -> dict:
         """Main function in charge of validating the input variables and generating the device configuration and documentation."""
         LOGGER.debug("Validating task arguments...")
         validated_args = self.validate_args()
         LOGGER.debug("Validating task arguments [done].")
 
-        eos_config, host_hostvars = self.load_validated_inputs(hostname)
+        host_hostvars = self.load_validated_inputs(hostname)
 
         has_custom_templates = bool(host_hostvars.get("custom_templates"))
         try:
             if validated_args["generate_device_config"]:
                 LOGGER.debug("Rendering configuration...")
-                device_config = get_device_config(eos_config)
+                device_config = get_device_config(host_hostvars)
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering config custom templates...")
-                    rendered_custom_templates = self.render_template_with_ansible_templar(host_hostvars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
+                    rendered_custom_templates = self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
                     # Need to handle if `end` has been rendered already
                     if device_config.endswith("!\nend\n"):
                         device_config = device_config[:-6] + rendered_custom_templates + "!\nend\n"
@@ -112,11 +112,11 @@ class ActionModule(ActionBase):
 
             if validated_args["generate_device_doc"]:
                 LOGGER.debug("Rendering documentation...")
-                device_doc = get_device_doc(eos_config, add_md_toc=False)
+                device_doc = get_device_doc(host_hostvars, add_md_toc=False)
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering documentation custom templates...")
-                    device_doc += self.render_template_with_ansible_templar(host_hostvars, CUSTOM_TEMPLATES_DOC_TEMPLATE)
+                    device_doc += self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_DOC_TEMPLATE)
                     LOGGER.debug("Rendering documentation custom templates [done].")
 
                 if validated_args["device_doc_toc"]:
@@ -183,7 +183,7 @@ class ActionModule(ActionBase):
         path.write_text(content, encoding="UTF-8")
         return True
 
-    def load_validated_inputs(self, host: str) -> tuple[EOSConfig, dict[str, Any]]:
+    def load_validated_inputs(self, host: str) -> dict[str, Any]:
         """
         Read validated hostvars from the temporary file for the host and load data into AVDDesign class.
 
@@ -204,12 +204,7 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail(message=msg)
 
         with file_path.open(mode="r", encoding="utf-8") as f:
-            host_hostvars = json.load(f)
-
-        # Load input vars into the AVDDesign data class.
-        eos_config = EOSConfig._from_dict(host_hostvars)
-
-        return eos_config, host_hostvars
+            return json.load(f)
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:

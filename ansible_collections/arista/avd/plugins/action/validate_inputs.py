@@ -1,6 +1,7 @@
 # Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import json
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from dataclasses import dataclass
 from functools import partial
@@ -258,11 +259,10 @@ def _template_host_worker(host: str, output_dir: Path) -> TemplateWorkerResult:
         hostvars_manager = get_worker_hostvars()
         # TODO: Use a filtered_map to skip certain keys from being templated.
         host_hostvars = dict(hostvars_manager[host])
-        json_data = json_dumps(host_hostvars, skipkeys=True, default=lambda _: "<not serializable>")
 
         output_file_path = output_dir / f"{host}.json"
         with output_file_path.open(mode="w", encoding="utf-8") as f:
-            f.write(json_data)
+            json.dump(host_hostvars, f, skipkeys=True, default=lambda _: "<not serializable>", indent=4)
 
         return TemplateWorkerSuccess(host=host, output_file=str(output_file_path))
 
