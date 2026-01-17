@@ -4,6 +4,6 @@
 type: l3spine     # Must be either spine|l3spine
 underlay_ospf_graceful_restart: false
 
-# Override AAA RADIUS settings set onthe Fabric level
+# Override AAA RADIUS settings set on the Fabric level
 custom_structured_configuration_radius_server: Null
 custom_structured_configuration_ip_radius_source_interfaces: Null
