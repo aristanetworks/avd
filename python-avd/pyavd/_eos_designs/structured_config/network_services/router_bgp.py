@@ -124,10 +124,11 @@ class RouterBgpMixin(Protocol):
             and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"])
             and self.structured_config.router_bgp.peer_groups.get(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
         ):
-            self._bgp_underlay_peers_route_map()
             target_peer_group = self.structured_config.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
             target_peer_group.metadata.type = "ipv4"
             target_peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
+            # Create route-map
+            self.set_once_route_map_bgp_underlay_peers_out()
 
     def _router_bgp_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
@@ -298,6 +299,8 @@ class RouterBgpMixin(Protocol):
         if vrf.name == "default" and self._vrf_default_evpn and self._route_maps_vrf_default_check() and vrf.rt_export:
             # Special handling of vrf default with evpn.
             bgp_vrf.route_targets.export.obtain("evpn").route_targets.extend(["route-map RM-EVPN-EXPORT-VRF-DEFAULT"])
+            # Create route-map
+            self.set_once_route_map_evpn_export_vrf_default()
 
         # VRF default
         if vrf.name == "default":
@@ -318,6 +321,8 @@ class RouterBgpMixin(Protocol):
         """In-place update MLAG neighbor part of structured config for *one* VRF under router_bgp.vrfs."""
         if self._exclude_mlag_ibgp_peering_from_redistribute(vrf, tenant):
             bgp_vrf.redistribute.connected._update(enabled=True, route_map="RM-CONN-2-BGP-VRFS")
+            # Create route-map
+            self.set_once_route_map_connected_to_bgp_vrfs()
 
         interface_name = f"Vlan{vlan_id}"
 
@@ -490,6 +495,9 @@ class RouterBgpMixin(Protocol):
             or bool(default(vlan.evpn_l2_multicast.always_redistribute_igmp, tenant.evpn_l2_multicast.always_redistribute_igmp))
         ):
             bgp_vlan.redistribute_routes.append("igmp")
+
+        if self.inputs.dot1x_settings.enabled and self.inputs.dot1x_settings.redistribute_in_evpn:
+            bgp_vlan.redistribute_routes.append("dot1x")
 
         return bgp_vlan
 
@@ -672,6 +680,9 @@ class RouterBgpMixin(Protocol):
 
         if any(default(vlan.evpn_l2_multicast.enabled, tenant.evpn_l2_multicast.enabled) for vlan in vxlan_vlans):
             bundle.redistribute_routes.append("igmp")
+
+        if self.inputs.dot1x_settings.enabled and self.inputs.dot1x_settings.redistribute_in_evpn:
+            bundle.redistribute_routes.append("dot1x")
 
         return bundle
 

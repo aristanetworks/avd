@@ -462,6 +462,116 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Authentication(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "login": {"type": EosCliConfigGen.AaaAuthentication.Login},
+                "enable": {"type": EosCliConfigGen.AaaAuthentication.Enable},
+                "policies": {"type": EosCliConfigGen.AaaAuthentication.Policies},
+            }
+            login: EosCliConfigGen.AaaAuthentication.Login
+            enable: EosCliConfigGen.AaaAuthentication.Enable
+            policies: EosCliConfigGen.AaaAuthentication.Policies
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    login: EosCliConfigGen.AaaAuthentication.Login | UndefinedType = Undefined,
+                    enable: EosCliConfigGen.AaaAuthentication.Enable | UndefinedType = Undefined,
+                    policies: EosCliConfigGen.AaaAuthentication.Policies | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Authentication.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        login: login
+                        enable: enable
+                        policies: policies
+
+                    """
+
+        class Authorization(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "policy": {"type": EosCliConfigGen.AaaAuthorization.Policy},
+                "exec": {"type": EosCliConfigGen.AaaAuthorization.Exec},
+                "config_commands": {"type": bool},
+                "serial_console": {"type": bool},
+                "commands": {"type": EosCliConfigGen.AaaAuthorization.Commands},
+            }
+            policy: EosCliConfigGen.AaaAuthorization.Policy
+            exec: EosCliConfigGen.AaaAuthorization.Exec
+            config_commands: bool | None
+            serial_console: bool | None
+            commands: EosCliConfigGen.AaaAuthorization.Commands
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    policy: EosCliConfigGen.AaaAuthorization.Policy | UndefinedType = Undefined,
+                    exec: EosCliConfigGen.AaaAuthorization.Exec | UndefinedType = Undefined,
+                    config_commands: bool | None | UndefinedType = Undefined,
+                    serial_console: bool | None | UndefinedType = Undefined,
+                    commands: EosCliConfigGen.AaaAuthorization.Commands | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Authorization.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        policy: policy
+                        exec: exec
+                        config_commands: config_commands
+                        serial_console: serial_console
+                        commands: commands
+
+                    """
+
+        class Accounting(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "exec": {"type": EosCliConfigGen.AaaAccounting.Exec},
+                "system": {"type": EosCliConfigGen.AaaAccounting.System},
+                "commands": {"type": EosCliConfigGen.AaaAccounting.Commands},
+            }
+            exec: EosCliConfigGen.AaaAccounting.Exec
+            system: EosCliConfigGen.AaaAccounting.System
+            commands: EosCliConfigGen.AaaAccounting.Commands
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    exec: EosCliConfigGen.AaaAccounting.Exec | UndefinedType = Undefined,
+                    system: EosCliConfigGen.AaaAccounting.System | UndefinedType = Undefined,
+                    commands: EosCliConfigGen.AaaAccounting.Commands | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Accounting.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        exec: exec
+                        system: system
+                        commands: commands
+
+                    """
+
         class RootLogin(AvdModel):
             """Subclass of AvdModel."""
 
@@ -603,9 +713,9 @@ class EosDesigns(EosDesignsRootModel):
             "enable_password": {"type": EnablePassword},
             "tacacs": {"type": Tacacs},
             "radius": {"type": Radius},
-            "authentication": {"type": EosCliConfigGen.AaaAuthentication},
-            "authorization": {"type": EosCliConfigGen.AaaAuthorization},
-            "accounting": {"type": EosCliConfigGen.AaaAccounting},
+            "authentication": {"type": Authentication},
+            "authorization": {"type": Authorization},
+            "accounting": {"type": Accounting},
             "root_login": {"type": RootLogin},
             "local_users": {"type": LocalUsers},
         }
@@ -615,9 +725,12 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         radius: Radius
         """Subclass of AvdModel."""
-        authentication: EosCliConfigGen.AaaAuthentication
-        authorization: EosCliConfigGen.AaaAuthorization
-        accounting: EosCliConfigGen.AaaAccounting
+        authentication: Authentication
+        """Subclass of AvdModel."""
+        authorization: Authorization
+        """Subclass of AvdModel."""
+        accounting: Accounting
+        """Subclass of AvdModel."""
         root_login: RootLogin
         """Subclass of AvdModel."""
         local_users: LocalUsers
@@ -631,9 +744,9 @@ class EosDesigns(EosDesignsRootModel):
                 enable_password: EnablePassword | UndefinedType = Undefined,
                 tacacs: Tacacs | UndefinedType = Undefined,
                 radius: Radius | UndefinedType = Undefined,
-                authentication: EosCliConfigGen.AaaAuthentication | UndefinedType = Undefined,
-                authorization: EosCliConfigGen.AaaAuthorization | UndefinedType = Undefined,
-                accounting: EosCliConfigGen.AaaAccounting | UndefinedType = Undefined,
+                authentication: Authentication | UndefinedType = Undefined,
+                authorization: Authorization | UndefinedType = Undefined,
+                accounting: Accounting | UndefinedType = Undefined,
                 root_login: RootLogin | UndefinedType = Undefined,
                 local_users: LocalUsers | UndefinedType = Undefined,
             ) -> None:
@@ -647,9 +760,9 @@ class EosDesigns(EosDesignsRootModel):
                     enable_password: Subclass of AvdModel.
                     tacacs: Subclass of AvdModel.
                     radius: Subclass of AvdModel.
-                    authentication: authentication
-                    authorization: authorization
-                    accounting: accounting
+                    authentication: Subclass of AvdModel.
+                    authorization: Subclass of AvdModel.
+                    accounting: Subclass of AvdModel.
                     root_login: Subclass of AvdModel.
                     local_users: Subclass of AvdIndexedList with `LocalUsersItem` items. Primary key is `name` (`str`).
 
@@ -7838,8 +7951,11 @@ class EosDesigns(EosDesignsRootModel):
             """
             By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
             relevant SVI, which is the recommended behaviour.
-            This can be set manually if required, for example,
-            to a value of "10.1.2.3".
+            This value can be set manually if required:
+            - Set
+            to 'router_id' in order to use the device router ID as the source IP.
+            - Set to a valid IPv4 address
+            which will be used directly.
             """
             mode: Mode
             """Default value: `"boundary"`"""
@@ -7920,8 +8036,11 @@ class EosDesigns(EosDesignsRootModel):
                         source_ip:
                            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                            relevant SVI, which is the recommended behaviour.
-                           This can be set manually if required, for example,
-                           to a value of "10.1.2.3".
+                           This value can be set manually if required:
+                           - Set
+                           to 'router_id' in order to use the device router ID as the source IP.
+                           - Set to a valid IPv4 address
+                           which will be used directly.
                         mode: mode
                         mode_one_step: mode_one_step
                         ttl: ttl
@@ -12894,8 +13013,11 @@ class EosDesigns(EosDesignsRootModel):
             """
             By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
             relevant SVI, which is the recommended behaviour.
-            This can be set manually if required, for example,
-            to a value of "10.1.2.3".
+            This value can be set manually if required:
+            - Set
+            to 'router_id' in order to use the device router ID as the source IP.
+            - Set to a valid IPv4 address
+            which will be used directly.
             """
             mode: Mode
             """Default value: `"boundary"`"""
@@ -12976,8 +13098,11 @@ class EosDesigns(EosDesignsRootModel):
                         source_ip:
                            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                            relevant SVI, which is the recommended behaviour.
-                           This can be set manually if required, for example,
-                           to a value of "10.1.2.3".
+                           This value can be set manually if required:
+                           - Set
+                           to 'router_id' in order to use the device router ID as the source IP.
+                           - Set to a valid IPv4 address
+                           which will be used directly.
                         mode: mode
                         mode_one_step: mode_one_step
                         ttl: ttl
@@ -16815,6 +16940,351 @@ class EosDesigns(EosDesignsRootModel):
                        `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
                        Can be set to `false` to avoid changes when
                        migrating from the old `name_servers` model.
+
+                """
+
+    class Dot1xSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Authentication(AvdModel):
+            """Subclass of AvdModel."""
+
+            class RadiusGroups(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            RadiusGroups._item_type = str
+
+            _fields: ClassVar[dict] = {"radius_groups": {"type": RadiusGroups}}
+            radius_groups: RadiusGroups
+            """
+            List of RADIUS server groups to be used for 802.1X authentication when globally enabled. If not
+            provided, all defined RADIUS hosts are used.
+            The order of the list defines the server group
+            priority.
+            Each group name must also be defined on any server under `aaa_settings.radius.servers`.
+            Subclass of AvdList with `str` items.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, radius_groups: RadiusGroups | UndefinedType = Undefined) -> None:
+                    """
+                    Authentication.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        radius_groups:
+                           List of RADIUS server groups to be used for 802.1X authentication when globally enabled. If not
+                           provided, all defined RADIUS hosts are used.
+                           The order of the list defines the server group
+                           priority.
+                           Each group name must also be defined on any server under `aaa_settings.radius.servers`.
+                           Subclass of AvdList with `str` items.
+
+                    """
+
+        class Accounting(AvdModel):
+            """Subclass of AvdModel."""
+
+            Mode: TypeAlias = Literal["start-stop", "stop-only"]
+
+            class RadiusGroups(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            RadiusGroups._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "enabled": {"type": bool, "default": True},
+                "mode": {"type": str, "default": "start-stop"},
+                "radius_groups": {"type": RadiusGroups},
+                "multicast": {"type": bool, "default": False},
+                "syslog": {"type": bool, "default": False},
+            }
+            enabled: bool
+            """
+            Enable 802.1X accounting.
+
+            Default value: `True`
+            """
+            mode: Mode
+            """
+            Determines whether to send accounting records when a session is established and
+            when it ends
+            (`start-stop`), or only when the session ends (`stop-only`).
+
+            Default value: `"start-stop"`
+            """
+            radius_groups: RadiusGroups
+            """
+            List of RADIUS server groups to be used for 802.1X accounting when enabled. If not provided, all
+            defined RADIUS hosts are used.
+            The order of the list defines the server group priority.
+            Each group
+            name must also be defined on any server under `aaa_settings.radius.servers`.
+
+            Subclass of AvdList
+            with `str` items.
+            """
+            multicast: bool
+            """
+            Send Accounting-Request messages to all servers in a RADIUS group at the same time.
+
+            Default value: `False`
+            """
+            syslog: bool
+            """
+            Log all accounting messages to syslog if all RADIUS servers are unavailable or unresponsive.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | UndefinedType = Undefined,
+                    mode: Mode | UndefinedType = Undefined,
+                    radius_groups: RadiusGroups | UndefinedType = Undefined,
+                    multicast: bool | UndefinedType = Undefined,
+                    syslog: bool | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Accounting.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Enable 802.1X accounting.
+                        mode:
+                           Determines whether to send accounting records when a session is established and
+                           when it ends
+                           (`start-stop`), or only when the session ends (`stop-only`).
+                        radius_groups:
+                           List of RADIUS server groups to be used for 802.1X accounting when enabled. If not provided, all
+                           defined RADIUS hosts are used.
+                           The order of the list defines the server group priority.
+                           Each group
+                           name must also be defined on any server under `aaa_settings.radius.servers`.
+
+                           Subclass of AvdList
+                           with `str` items.
+                        multicast: Send Accounting-Request messages to all servers in a RADIUS group at the same time.
+                        syslog: Log all accounting messages to syslog if all RADIUS servers are unavailable or unresponsive.
+
+                    """
+
+        class DynamicAuthorization(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AdditionalGroups(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            AdditionalGroups._item_type = str
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "additional_groups": {"type": AdditionalGroups}}
+            enabled: bool
+            """
+            Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
+            adjust an active client session.
+
+            Default value: `True`
+            """
+            additional_groups: AdditionalGroups
+            """
+            List of additional RADIUS server groups for dynamic authorization purposes only.
+            The order of the
+            list defines the server group priority.
+            Each group name must also be defined on any server under
+            `aaa_settings.radius.servers`.
+
+            Subclass of AvdList with `str` items.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, additional_groups: AdditionalGroups | UndefinedType = Undefined) -> None:
+                    """
+                    DynamicAuthorization.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Enable RADIUS CoA (Change of Authorization) requests to be received to allow a RADIUS server to
+                           adjust an active client session.
+                        additional_groups:
+                           List of additional RADIUS server groups for dynamic authorization purposes only.
+                           The order of the
+                           list defines the server group priority.
+                           Each group name must also be defined on any server under
+                           `aaa_settings.radius.servers`.
+
+                           Subclass of AvdList with `str` items.
+
+                    """
+
+        class MacBasedAuthentication(AvdModel):
+            """Subclass of AvdModel."""
+
+            class UsernameFormat(AvdModel):
+                """Subclass of AvdModel."""
+
+                Delimiter: TypeAlias = Literal["colon", "hyphen", "none", "period"]
+                LetterCase: TypeAlias = Literal["lowercase", "uppercase"]
+                _fields: ClassVar[dict] = {"delimiter": {"type": str}, "letter_case": {"type": str}}
+                delimiter: Delimiter
+                """RADIUS User-Name attribute delimiter to use on the MAC address."""
+                letter_case: LetterCase
+                """RADIUS User-Name attribute letter case to use on the MAC address."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, delimiter: Delimiter | UndefinedType = Undefined, letter_case: LetterCase | UndefinedType = Undefined) -> None:
+                        """
+                        UsernameFormat.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            delimiter: RADIUS User-Name attribute delimiter to use on the MAC address.
+                            letter_case: RADIUS User-Name attribute letter case to use on the MAC address.
+
+                        """
+
+            _fields: ClassVar[dict] = {"username_format": {"type": UsernameFormat}}
+            username_format: UsernameFormat
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, username_format: UsernameFormat | UndefinedType = Undefined) -> None:
+                    """
+                    MacBasedAuthentication.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        username_format: Subclass of AvdModel.
+
+                    """
+
+        class RadiusAvPairs(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"service_type": {"type": bool, "default": False}}
+            service_type: bool
+            """
+            Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, service_type: bool | UndefinedType = Undefined) -> None:
+                    """
+                    RadiusAvPairs.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        service_type: Send RADIUS Service-Type attribute in Access-Request and Accounting messages.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "enabled": {"type": bool, "default": False},
+            "authentication": {"type": Authentication},
+            "accounting": {"type": Accounting},
+            "bypass_bpdu": {"type": bool, "default": True},
+            "bypass_lldp": {"type": bool, "default": True},
+            "dynamic_authorization": {"type": DynamicAuthorization},
+            "mac_based_authentication": {"type": MacBasedAuthentication},
+            "radius_av_pairs": {"type": RadiusAvPairs},
+            "redistribute_in_evpn": {"type": bool, "default": True},
+        }
+        enabled: bool
+        """
+        Globally enable 802.1X port authentication on the switch.
+        Must be true for 802.1X to be active on
+        any interface.
+
+        Default value: `False`
+        """
+        authentication: Authentication
+        """Subclass of AvdModel."""
+        accounting: Accounting
+        """Subclass of AvdModel."""
+        bypass_bpdu: bool
+        """
+        Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+
+        Default value: `True`
+        """
+        bypass_lldp: bool
+        """
+        Allow LLDP packets to be processed even if the port is not authorized.
+
+        Default value: `True`
+        """
+        dynamic_authorization: DynamicAuthorization
+        """Subclass of AvdModel."""
+        mac_based_authentication: MacBasedAuthentication
+        """Subclass of AvdModel."""
+        radius_av_pairs: RadiusAvPairs
+        """Subclass of AvdModel."""
+        redistribute_in_evpn: bool
+        """
+        Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
+        configured MAC-VRFs.
+
+        Default value: `True`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                enabled: bool | UndefinedType = Undefined,
+                authentication: Authentication | UndefinedType = Undefined,
+                accounting: Accounting | UndefinedType = Undefined,
+                bypass_bpdu: bool | UndefinedType = Undefined,
+                bypass_lldp: bool | UndefinedType = Undefined,
+                dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
+                mac_based_authentication: MacBasedAuthentication | UndefinedType = Undefined,
+                radius_av_pairs: RadiusAvPairs | UndefinedType = Undefined,
+                redistribute_in_evpn: bool | UndefinedType = Undefined,
+            ) -> None:
+                """
+                Dot1xSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    enabled:
+                       Globally enable 802.1X port authentication on the switch.
+                       Must be true for 802.1X to be active on
+                       any interface.
+                    authentication: Subclass of AvdModel.
+                    accounting: Subclass of AvdModel.
+                    bypass_bpdu: Allow BPDU packets from unauthenticated hosts/mac to be used for loop detection.
+                    bypass_lldp: Allow LLDP packets to be processed even if the port is not authorized.
+                    dynamic_authorization: Subclass of AvdModel.
+                    mac_based_authentication: Subclass of AvdModel.
+                    radius_av_pairs: Subclass of AvdModel.
+                    redistribute_in_evpn:
+                       Globally enable the redistribution of static 802.1X-learned MAC addresses into EVPN under all
+                       configured MAC-VRFs.
 
                 """
 
@@ -29041,7 +29511,7 @@ class EosDesigns(EosDesignsRootModel):
         enabled: bool
         notifying: bool | None
         """
-        If True, `eos_designs` will configure `queue-monitor length notifying` according to the
+        If True, Arista AVD will configure `queue-monitor length notifying` according to the
         `platform_settings.[].feature_support.queue_monitor_length_notify` setting.
         """
         default_thresholds: DefaultThresholds
@@ -29081,7 +29551,7 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     enabled: enabled
                     notifying:
-                       If True, `eos_designs` will configure `queue-monitor length notifying` according to the
+                       If True, Arista AVD will configure `queue-monitor length notifying` according to the
                        `platform_settings.[].feature_support.queue_monitor_length_notify` setting.
                     default_thresholds: Subclass of AvdModel.
                     log: Logging interval in seconds.
@@ -35979,8 +36449,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        - Set
+                        to 'router_id' in order to use the device router ID as the source IP.
+                        - Set to a valid IPv4 address
+                        which will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -36061,8 +36534,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       - Set
+                                       to 'router_id' in order to use the device router ID as the source IP.
+                                       - Set to a valid IPv4 address
+                                       which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -41011,8 +41487,11 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                             relevant SVI, which is the recommended behaviour.
-                            This can be set manually if required, for example,
-                            to a value of "10.1.2.3".
+                            This value can be set manually if required:
+                            - Set
+                            to 'router_id' in order to use the device router ID as the source IP.
+                            - Set to a valid IPv4 address
+                            which will be used directly.
                             """
                             mode: Mode
                             """Default value: `"boundary"`"""
@@ -41093,8 +41572,11 @@ class EosDesigns(EosDesignsRootModel):
                                         source_ip:
                                            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                            relevant SVI, which is the recommended behaviour.
-                                           This can be set manually if required, for example,
-                                           to a value of "10.1.2.3".
+                                           This value can be set manually if required:
+                                           - Set
+                                           to 'router_id' in order to use the device router ID as the source IP.
+                                           - Set to a valid IPv4 address
+                                           which will be used directly.
                                         mode: mode
                                         mode_one_step: mode_one_step
                                         ttl: ttl
@@ -46000,8 +46482,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        - Set
+                        to 'router_id' in order to use the device router ID as the source IP.
+                        - Set to a valid IPv4 address
+                        which will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -46082,8 +46567,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       - Set
+                                       to 'router_id' in order to use the device router ID as the source IP.
+                                       - Set to a valid IPv4 address
+                                       which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -51055,8 +51543,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        - Set
+                        to 'router_id' in order to use the device router ID as the source IP.
+                        - Set to a valid IPv4 address
+                        which will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -51137,8 +51628,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       - Set
+                                       to 'router_id' in order to use the device router ID as the source IP.
+                                       - Set to a valid IPv4 address
+                                       which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -59558,27 +60052,34 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         IPv4_address/Mask.
                         Loopback IPv4 range, a unique ip is derived from this range and assigned to each
-                        l3 leaf based on it's unique id.
-                        Loopback is not created unless `loopback_ip_range`,
-                        `loopback_ipv6_range` or `loopback_ip_pools` are set.
+                        l3 leaf based on its unique id.
+                        If any `pod` under `loopback_ip_pools` matches the `pod_name` of the
+                        device, and is configured with an `ipv4_pool`, it takes precedence over `loopback_ipv4_range`.
+                        Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are
+                        set.
                         """
                         loopback_ipv6_range: str | None
                         """
                         IPv6_address/Mask.
                         Loopback IPv6 range, a unique IPv6 address is derived from this range and
-                        assigned to each L3 leaf based on it's unique ID.
-                        Loopback is not created unless
-                        `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
+                        assigned to each L3 leaf based on its unique ID.
+                        If any `pod` under `loopback_ip_pools` matches the
+                        `pod_name` of the device, and is configured with an `ipv6_pool`, it takes precedence over
+                        `loopback_ipv6_range`.
+                        Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or
+                        `loopback_ip_pools` are set.
                         """
                         loopback_ip_pools: LoopbackIpPools
                         """
                         For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.
-                        `loopback_ip_range` takes precedence for IPv4 and `loopback_ipv6_range` takes precedence for IPV6.
-                        Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are
-                        set.
+                        POD level
+                        pools take precedence over `loopback_ip_range` and `loopback_ipv6_range`.
+                        Loopback is not created
+                        unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
 
 
-                        Subclass of AvdIndexedList with `LoopbackIpPoolsItem` items. Primary key is `pod` (`str`).
+                        Subclass of
+                        AvdIndexedList with `LoopbackIpPoolsItem` items. Primary key is `pod` (`str`).
                         """
                         hardware_forwarding: bool | None
                         """
@@ -59623,23 +60124,30 @@ class EosDesigns(EosDesignsRootModel):
                                     loopback_ip_range:
                                        IPv4_address/Mask.
                                        Loopback IPv4 range, a unique ip is derived from this range and assigned to each
-                                       l3 leaf based on it's unique id.
-                                       Loopback is not created unless `loopback_ip_range`,
-                                       `loopback_ipv6_range` or `loopback_ip_pools` are set.
+                                       l3 leaf based on its unique id.
+                                       If any `pod` under `loopback_ip_pools` matches the `pod_name` of the
+                                       device, and is configured with an `ipv4_pool`, it takes precedence over `loopback_ipv4_range`.
+                                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are
+                                       set.
                                     loopback_ipv6_range:
                                        IPv6_address/Mask.
                                        Loopback IPv6 range, a unique IPv6 address is derived from this range and
-                                       assigned to each L3 leaf based on it's unique ID.
-                                       Loopback is not created unless
-                                       `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
+                                       assigned to each L3 leaf based on its unique ID.
+                                       If any `pod` under `loopback_ip_pools` matches the
+                                       `pod_name` of the device, and is configured with an `ipv6_pool`, it takes precedence over
+                                       `loopback_ipv6_range`.
+                                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or
+                                       `loopback_ip_pools` are set.
                                     loopback_ip_pools:
                                        For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.
-                                       `loopback_ip_range` takes precedence for IPv4 and `loopback_ipv6_range` takes precedence for IPV6.
-                                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are
-                                       set.
+                                       POD level
+                                       pools take precedence over `loopback_ip_range` and `loopback_ipv6_range`.
+                                       Loopback is not created
+                                       unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
 
 
-                                       Subclass of AvdIndexedList with `LoopbackIpPoolsItem` items. Primary key is `pod` (`str`).
+                                       Subclass of
+                                       AvdIndexedList with `LoopbackIpPoolsItem` items. Primary key is `pod` (`str`).
                                     hardware_forwarding:
                                        Enable hardware forwarding for diagnostic loopbacks. This is required for correct forwarding in VRFs
                                        without physical interfaces.
@@ -68369,8 +68877,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        - Set
+                        to 'router_id' in order to use the device router ID as the source IP.
+                        - Set to a valid IPv4 address
+                        which will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -68451,8 +68962,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       - Set
+                                       to 'router_id' in order to use the device router ID as the source IP.
+                                       - Set to a valid IPv4 address
+                                       which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -73401,8 +73915,11 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                             relevant SVI, which is the recommended behaviour.
-                            This can be set manually if required, for example,
-                            to a value of "10.1.2.3".
+                            This value can be set manually if required:
+                            - Set
+                            to 'router_id' in order to use the device router ID as the source IP.
+                            - Set to a valid IPv4 address
+                            which will be used directly.
                             """
                             mode: Mode
                             """Default value: `"boundary"`"""
@@ -73483,8 +74000,11 @@ class EosDesigns(EosDesignsRootModel):
                                         source_ip:
                                            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                            relevant SVI, which is the recommended behaviour.
-                                           This can be set manually if required, for example,
-                                           to a value of "10.1.2.3".
+                                           This value can be set manually if required:
+                                           - Set
+                                           to 'router_id' in order to use the device router ID as the source IP.
+                                           - Set to a valid IPv4 address
+                                           which will be used directly.
                                         mode: mode
                                         mode_one_step: mode_one_step
                                         ttl: ttl
@@ -78390,8 +78910,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        - Set
+                        to 'router_id' in order to use the device router ID as the source IP.
+                        - Set to a valid IPv4 address
+                        which will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -78472,8 +78995,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       - Set
+                                       to 'router_id' in order to use the device router ID as the source IP.
+                                       - Set to a valid IPv4 address
+                                       which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -83445,8 +83971,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        - Set
+                        to 'router_id' in order to use the device router ID as the source IP.
+                        - Set to a valid IPv4 address
+                        which will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -83527,8 +84056,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       - Set
+                                       to 'router_id' in order to use the device router ID as the source IP.
+                                       - Set to a valid IPv4 address
+                                       which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -87236,6 +87768,7 @@ class EosDesigns(EosDesignsRootModel):
         "devices": {"type": Devices},
         "digital_twin": {"type": DigitalTwin},
         "dns_settings": {"type": DnsSettings},
+        "dot1x_settings": {"type": Dot1xSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
@@ -88038,19 +88571,22 @@ class EosDesigns(EosDesignsRootModel):
     will be merged with the structured config generated by the eos_designs role.
 
     The merge is done
-    recursively, so it is possible to update a sub-key of a variable set by `eos_designs` role already.
-    The merge follow these recursive merge strategies:
+    recursively, so it is possible to update a sub-key of a variable set by Arista AVD already.
+
+    The
+    merge follow these recursive merge strategies:
     - New keys will be added for all types.
-    -
-    Existing keys of type "List" with a "Primary key" set in the schema:
-      - Strategy can be changed
-    with `custom_structured_configuration_list_merge`. Default strategy:
-        - Existing list items with
-    the same "Primary key"-value will be updated.
-        - New unique items will be appended to the
-    existing list
+    - Existing
+    keys of type "List" with a "Primary key" set in the schema:
+      - Strategy can be changed with
+    `custom_structured_configuration_list_merge`. Default strategy:
+        - Existing list items with the
+    same "Primary key"-value will be updated.
+        - New unique items will be appended to the existing
+    list
     - Other keys of type "List" will have new unique items appended the the existing list.
-    - Existing keys of type "Dictionary" will recursively merge
+    -
+    Existing keys of type "Dictionary" will recursively merge
     - Other existing keys will be replaced.
     Subclass of AvdList with `str` items.
 
@@ -88088,12 +88624,12 @@ class EosDesigns(EosDesignsRootModel):
 
     Hostname or IP address of CloudVision host. Ex.
     "www.arista.io" for CVaaS.
-    For `eos_designs` this variable is only used for the WAN Internet-exit
-    integration with Zscaler.
-    The same variable name is also used by the `cv_deploy` role, and will
-    override the value of `ansible_host` on inventory 'cloudvision' host.
-    Make sure to set it in a
-    common group_vars file.
+    For AVD Design data models this variable is only used for the WAN
+    Internet-exit integration with Zscaler.
+    The same variable name is also used by the `cv_deploy` role,
+    and will override the value of `ansible_host` on inventory 'cloudvision' host.
+    Make sure to set it
+    in a common group_vars file.
     """
     cv_settings: CvSettings
     """
@@ -88112,12 +88648,12 @@ class EosDesigns(EosDesignsRootModel):
 
     Service account token as defined on CloudVision. This
     value should be using Ansible Vault.
-    For `eos_designs` this variable is only used for the WAN
-    Internet-exit integration with Zscaler.
-    The same variable name is also used by the `cv_deploy` role,
-    and will override the value of `ansible_password` on inventory 'cloudvision' host.
-    Make sure to set
-    it in a common group_vars file.
+    For AVD Design data models this variable is only used for the
+    WAN Internet-exit integration with Zscaler.
+    The same variable name is also used by the `cv_deploy`
+    role, and will override the value of `ansible_password` on inventory 'cloudvision' host.
+    Make sure
+    to set it in a common group_vars file.
     """
     cv_topology: CvTopology
     """
@@ -88230,21 +88766,21 @@ class EosDesigns(EosDesignsRootModel):
     default_mgmt_method: DefaultMgmtMethod
     """
     `default_mgmt_method` controls the default VRF and source interface used for the following
-    management and monitoring protocols configured with `eos_designs`:
+    management and monitoring protocols configured with AVD Design:
       - `aaa_settings`
-      -
-    `cv_settings`
-      - `logging_settings`
+      - `cv_settings`
+    - `logging_settings`
       - `management_eapi`
       - `ntp_settings`
       - `sflow_settings`
-    - `snmp_settings`
+      -
+    `snmp_settings`
       - `ssh_settings`
 
-    `oob` means the protocols will be configured with the VRF set
-    by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
-    `inband` means the protocols
-    will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
+    `oob` means the protocols will be configured with the VRF set by
+    `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
+    `inband` means the protocols will
+    be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
     interface.
     `none` means the VRF and or interface must be manually set for each protocol.
     This can be
@@ -88390,6 +88926,12 @@ class EosDesigns(EosDesignsRootModel):
     dns_settings: DnsSettings
     """
     DNS settings
+
+    Subclass of AvdModel.
+    """
+    dot1x_settings: Dot1xSettings
+    """
+    Settings for 802.1X deployments.
 
     Subclass of AvdModel.
     """
@@ -89099,7 +89641,7 @@ class EosDesigns(EosDesignsRootModel):
     with a common flood-list containing all VTEPs.
     This behavior can be changed to per-VNI flood-lists
     by setting `overlay_her_flood_list_per_vni: true`.
-    This will make `eos_designs` consider configured
+    This will make Arista AVD consider configured
     VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.
 
     Default value: `False`
@@ -89327,14 +89869,13 @@ class EosDesigns(EosDesignsRootModel):
     """
     source_interfaces: SourceInterfaces
     """
-    Configure source-interfaces based on the management interfaces set for other `eos_designs` data
-    models.
-    By default, no source-interfaces will be configured. They can still be configured manually
-    using `eos_cli_config_gen` and custom structured configuration.
-    EOS supports a single source-
-    interface per VRF, so an error will be raised in case of conflicts.
-    Errors will also be raised if an
-    interface is not found for a device.
+    Configure source-interfaces based on the management interfaces set for other AVD Design data models.
+    By default, no source-interfaces will be configured. They can still be configured manually using
+    `eos_cli_config_gen` and custom structured configuration.
+    EOS supports a single source-interface per
+    VRF, so an error will be raised in case of conflicts.
+    Errors will also be raised if an interface is
+    not found for a device.
 
     Subclass of AvdModel.
     """
@@ -89735,11 +90276,11 @@ class EosDesigns(EosDesignsRootModel):
 
     Special data model used for testing the WAN internet-exit
     integration with Zscaler.
-    The model is supposed to be autofilled per-device by `eos_designs`.
-    Manually setting this model will take precedence and prevent `eos_designs` from trying to contact
-    CloudVision.
-    This can be useful for offline testing or if CloudVision is not available or not
-    configured for Zscaler integration.
+    The model is supposed to be autofilled per-device by Arista AVD.
+    Manually
+    setting this model will take precedence and prevent Arista AVD from trying to contact CloudVision.
+    This can be useful for offline testing or if CloudVision is not available or not configured for
+    Zscaler integration.
 
     Subclass of AvdModel.
     """
@@ -89807,6 +90348,7 @@ class EosDesigns(EosDesignsRootModel):
             devices: Devices | UndefinedType = Undefined,
             digital_twin: DigitalTwin | UndefinedType = Undefined,
             dns_settings: DnsSettings | UndefinedType = Undefined,
+            dot1x_settings: Dot1xSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
@@ -90138,19 +90680,22 @@ class EosDesigns(EosDesignsRootModel):
                    will be merged with the structured config generated by the eos_designs role.
 
                    The merge is done
-                   recursively, so it is possible to update a sub-key of a variable set by `eos_designs` role already.
-                   The merge follow these recursive merge strategies:
+                   recursively, so it is possible to update a sub-key of a variable set by Arista AVD already.
+
+                   The
+                   merge follow these recursive merge strategies:
                    - New keys will be added for all types.
-                   -
-                   Existing keys of type "List" with a "Primary key" set in the schema:
-                     - Strategy can be changed
-                   with `custom_structured_configuration_list_merge`. Default strategy:
-                       - Existing list items with
-                   the same "Primary key"-value will be updated.
-                       - New unique items will be appended to the
-                   existing list
+                   - Existing
+                   keys of type "List" with a "Primary key" set in the schema:
+                     - Strategy can be changed with
+                   `custom_structured_configuration_list_merge`. Default strategy:
+                       - Existing list items with the
+                   same "Primary key"-value will be updated.
+                       - New unique items will be appended to the existing
+                   list
                    - Other keys of type "List" will have new unique items appended the the existing list.
-                   - Existing keys of type "Dictionary" will recursively merge
+                   -
+                   Existing keys of type "Dictionary" will recursively merge
                    - Other existing keys will be replaced.
                    Subclass of AvdList with `str` items.
                 cv_pathfinder_global_sites:
@@ -90178,12 +90723,12 @@ class EosDesigns(EosDesignsRootModel):
 
                    Hostname or IP address of CloudVision host. Ex.
                    "www.arista.io" for CVaaS.
-                   For `eos_designs` this variable is only used for the WAN Internet-exit
-                   integration with Zscaler.
-                   The same variable name is also used by the `cv_deploy` role, and will
-                   override the value of `ansible_host` on inventory 'cloudvision' host.
-                   Make sure to set it in a
-                   common group_vars file.
+                   For AVD Design data models this variable is only used for the WAN
+                   Internet-exit integration with Zscaler.
+                   The same variable name is also used by the `cv_deploy` role,
+                   and will override the value of `ansible_host` on inventory 'cloudvision' host.
+                   Make sure to set it
+                   in a common group_vars file.
                 cv_settings:
                    Settings for CloudVision telemetry streaming and provisioning.
 
@@ -90196,12 +90741,12 @@ class EosDesigns(EosDesignsRootModel):
 
                    Service account token as defined on CloudVision. This
                    value should be using Ansible Vault.
-                   For `eos_designs` this variable is only used for the WAN
-                   Internet-exit integration with Zscaler.
-                   The same variable name is also used by the `cv_deploy` role,
-                   and will override the value of `ansible_password` on inventory 'cloudvision' host.
-                   Make sure to set
-                   it in a common group_vars file.
+                   For AVD Design data models this variable is only used for the
+                   WAN Internet-exit integration with Zscaler.
+                   The same variable name is also used by the `cv_deploy`
+                   role, and will override the value of `ansible_password` on inventory 'cloudvision' host.
+                   Make sure
+                   to set it in a common group_vars file.
                 cv_topology:
                    Generate AVD configurations directly from the given CloudVision topology.
                    Activate this feature by
@@ -90289,21 +90834,21 @@ class EosDesigns(EosDesignsRootModel):
                    `DefaultInterfacesItem` items.
                 default_mgmt_method:
                    `default_mgmt_method` controls the default VRF and source interface used for the following
-                   management and monitoring protocols configured with `eos_designs`:
+                   management and monitoring protocols configured with AVD Design:
                      - `aaa_settings`
-                     -
-                   `cv_settings`
-                     - `logging_settings`
+                     - `cv_settings`
+                   - `logging_settings`
                      - `management_eapi`
                      - `ntp_settings`
                      - `sflow_settings`
-                   - `snmp_settings`
+                     -
+                   `snmp_settings`
                      - `ssh_settings`
 
-                   `oob` means the protocols will be configured with the VRF set
-                   by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
-                   `inband` means the protocols
-                   will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
+                   `oob` means the protocols will be configured with the VRF set by
+                   `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
+                   `inband` means the protocols will
+                   be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
                    interface.
                    `none` means the VRF and or interface must be manually set for each protocol.
                    This can be
@@ -90415,6 +90960,10 @@ class EosDesigns(EosDesignsRootModel):
                    AvdModel.
                 dns_settings:
                    DNS settings
+
+                   Subclass of AvdModel.
+                dot1x_settings:
+                   Settings for 802.1X deployments.
 
                    Subclass of AvdModel.
                 enable_trunk_groups:
@@ -90912,7 +91461,7 @@ class EosDesigns(EosDesignsRootModel):
                    with a common flood-list containing all VTEPs.
                    This behavior can be changed to per-VNI flood-lists
                    by setting `overlay_her_flood_list_per_vni: true`.
-                   This will make `eos_designs` consider configured
+                   This will make Arista AVD consider configured
                    VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.
                 overlay_her_flood_list_scope:
                    When using Head-End Replication, set the scope of flood-lists to Fabric or DC.
@@ -91071,14 +91620,13 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of AvdModel.
                 source_interfaces:
-                   Configure source-interfaces based on the management interfaces set for other `eos_designs` data
-                   models.
-                   By default, no source-interfaces will be configured. They can still be configured manually
-                   using `eos_cli_config_gen` and custom structured configuration.
-                   EOS supports a single source-
-                   interface per VRF, so an error will be raised in case of conflicts.
-                   Errors will also be raised if an
-                   interface is not found for a device.
+                   Configure source-interfaces based on the management interfaces set for other AVD Design data models.
+                   By default, no source-interfaces will be configured. They can still be configured manually using
+                   `eos_cli_config_gen` and custom structured configuration.
+                   EOS supports a single source-interface per
+                   VRF, so an error will be raised in case of conflicts.
+                   Errors will also be raised if an interface is
+                   not found for a device.
 
                    Subclass of AvdModel.
                 ssh_settings: Subclass of AvdModel.
@@ -91353,11 +91901,11 @@ class EosDesigns(EosDesignsRootModel):
 
                    Special data model used for testing the WAN internet-exit
                    integration with Zscaler.
-                   The model is supposed to be autofilled per-device by `eos_designs`.
-                   Manually setting this model will take precedence and prevent `eos_designs` from trying to contact
-                   CloudVision.
-                   This can be useful for offline testing or if CloudVision is not available or not
-                   configured for Zscaler integration.
+                   The model is supposed to be autofilled per-device by Arista AVD.
+                   Manually
+                   setting this model will take precedence and prevent Arista AVD from trying to contact CloudVision.
+                   This can be useful for offline testing or if CloudVision is not available or not configured for
+                   Zscaler integration.
 
                    Subclass of AvdModel.
                 _custom_structured_configurations: _custom_structured_configurations

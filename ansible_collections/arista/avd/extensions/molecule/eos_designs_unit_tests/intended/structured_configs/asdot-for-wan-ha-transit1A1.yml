@@ -4,6 +4,8 @@ application_traffic_recognition:
   field_sets:
     ipv4_prefixes:
     - name: PFX-PATHFINDERS
+      prefix_values:
+      - 6.6.6.6/32
   applications:
     ipv4_applications:
     - name: APP-CONTROL-PLANE
@@ -12,12 +14,6 @@ application_traffic_recognition:
   - name: APP-PROFILE-CONTROL-PLANE
     applications:
     - name: APP-CONTROL-PLANE
-as_path:
-  access_lists:
-  - name: ASPATH-WAN
-    entries:
-    - type: permit
-      match: _65000\.100_
 config_end: true
 dps_interfaces:
 - name: Dps1
@@ -189,6 +185,8 @@ metadata:
     site: Site422
     vtep_ip: 192.168.142.1
     ssl_profile: STUN-DTLS
+    pathfinders:
+    - vtep_ip: 6.6.6.6
     interfaces:
     - name: Ethernet1.42
       carrier: Comcast
@@ -206,10 +204,6 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 172.17.0.0/31
-- name: PL-WAN-HA-PEER-PREFIXES
-  sequence_numbers:
-  - sequence: 10
-    action: permit 172.17.0.2/31
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -223,35 +217,6 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-WAN-HA-PREFIXES
-- name: RM-BGP-UNDERLAY-PEERS-IN
-  sequence_numbers:
-  - sequence: 40
-    type: permit
-    description: Mark prefixes originated from the LAN
-    set:
-    - extcommunity soo 192.168.42.1:422 additive
-  - sequence: 10
-    type: permit
-    description: Allow WAN HA peer interface prefixes
-    match:
-    - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
-  - sequence: 20
-    type: deny
-    description: Deny other routes from the HA peer
-    match:
-    - as-path ASPATH-WAN
-- name: RM-BGP-UNDERLAY-PEERS-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Make routes learned from WAN HA peer less preferred on LAN routers
-    match:
-    - tag 50
-    - route-type internal
-    set:
-    - metric 50
-  - sequence: 20
-    type: permit
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -372,6 +337,11 @@ router_bgp:
     metadata:
       peer: asdot-for-wan-ha-leaf11
     description: asdot-for-wan-ha-leaf11_Ethernet1
+  - ip_address: 6.6.6.6
+    peer_group: WAN-OVERLAY-PEERS
+    metadata:
+      peer: cv-pathfinder-pathfinder3
+    description: cv-pathfinder-pathfinder3_Dps1
   - ip_address: 192.168.142.2
     remote_as: '65000.100'
     metadata:
@@ -445,15 +415,31 @@ router_path_selection:
     ipsec_profile: CP-PROFILE
     local_interfaces:
     - name: Ethernet1.42
+      stun:
+        server_profiles:
+        - INET-cv-pathfinder-pathfinder3-Ethernet2_1
     dynamic_peers:
       enabled: true
+    static_peers:
+    - router_ip: 6.6.6.6
+      name: cv-pathfinder-pathfinder3
+      ipv4_addresses:
+      - 10.50.50.50
   - name: MPLS
     id: 100
     ipsec_profile: CP-PROFILE
     local_interfaces:
     - name: Ethernet2.42
+      stun:
+        server_profiles:
+        - MPLS-cv-pathfinder-pathfinder3-Ethernet1
     dynamic_peers:
       enabled: true
+    static_peers:
+    - router_ip: 6.6.6.6
+      name: cv-pathfinder-pathfinder3
+      ipv4_addresses:
+      - 172.17.17.17
   - name: LAN_HA
     id: 65535
     flow_assignment: lan
@@ -482,6 +468,15 @@ router_traffic_engineering:
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
+stun:
+  client:
+    server_profiles:
+    - name: MPLS-cv-pathfinder-pathfinder3-Ethernet1
+      ip_address: 172.17.17.17
+      ssl_profile: STUN-DTLS
+    - name: INET-cv-pathfinder-pathfinder3-Ethernet2_1
+      ip_address: 10.50.50.50
+      ssl_profile: STUN-DTLS
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
 - name: MGMT

@@ -69,12 +69,6 @@ application_traffic_recognition:
     applications:
     - name: CUSTOM-VOICE-APPLICATION
   - name: MPLS-ONLY
-as_path:
-  access_lists:
-  - name: ASPATH-WAN
-    entries:
-    - type: permit
-      match: _65000_
 config_end: true
 dps_interfaces:
 - name: Dps1
@@ -346,10 +340,6 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 172.17.0.0/31
-- name: PL-WAN-HA-PEER-PREFIXES
-  sequence_numbers:
-  - sequence: 10
-    action: permit 172.17.0.2/31
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -363,35 +353,6 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-WAN-HA-PREFIXES
-- name: RM-BGP-UNDERLAY-PEERS-IN
-  sequence_numbers:
-  - sequence: 40
-    type: permit
-    description: Mark prefixes originated from the LAN
-    set:
-    - extcommunity soo 192.168.43.1:422 additive
-  - sequence: 10
-    type: permit
-    description: Allow WAN HA peer interface prefixes
-    match:
-    - ip address prefix-list PL-WAN-HA-PEER-PREFIXES
-  - sequence: 20
-    type: deny
-    description: Deny other routes from the HA peer
-    match:
-    - as-path ASPATH-WAN
-- name: RM-BGP-UNDERLAY-PEERS-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Make routes learned from WAN HA peer less preferred on LAN routers
-    match:
-    - tag 50
-    - route-type internal
-    set:
-    - metric 50
-  - sequence: 20
-    type: permit
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10

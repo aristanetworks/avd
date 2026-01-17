@@ -1,0 +1,28 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: dot1x-aaa-authorization-dynamic-radius-groups-not-defined
+      mgmt_ip: 192.168.0.2/24
+
+dot1x_settings:
+  enabled: true
+  authentication:
+    radius_groups: [agni-server-group]
+  accounting:
+    enabled: false
+  dynamic_authorization:
+    additional_groups: [coa-server-group]
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        groups:
+          - agni-server-group
+        cleartext_key: super-secret-key
+
+expected_error_message: >-
+  The RADIUS additional dynamic authorization server group(s) 'coa-server-group'
+  are not defined on any server under 'aaa_settings.radius.servers'.

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from ipaddress import AddressValueError, IPv4Address
 from typing import Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -18,6 +19,7 @@ from pyavd.j2filters import natural_sort, secure_hash
 
 from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
+from .dot1x import Dot1xMixin
 from .management_ssh import ManagementSshMixin
 from .monitor_sessions import MonitorSessionsMixin
 from .ntp import NtpMixin
@@ -30,6 +32,7 @@ from .utils import UtilsMixin
 class AvdStructuredConfigBaseProtocol(
     AddressLockingMixin,
     DaemonTerminattrMixin,
+    Dot1xMixin,
     ManagementSshMixin,
     NtpMixin,
     SnmpServerMixin,
@@ -88,12 +91,6 @@ class AvdStructuredConfigBaseProtocol(
 
         self.structured_config.router_bgp.bgp.default.ipv4_unicast = self.inputs.bgp_default_ipv4_unicast
         self.structured_config.router_bgp.maximum_paths._update(paths=self.inputs.bgp_maximum_paths or default_maximum_paths, ecmp=self.inputs.bgp_ecmp)
-
-        if self.shared_utils.underlay_bgp or self.shared_utils.is_wan_router or self.shared_utils.l3_bgp_neighbors:
-            self.structured_config.router_bgp.redistribute.connected.enabled = True
-            if (self.shared_utils.overlay_routing_protocol != "none" or self.shared_utils.is_wan_router) and self.inputs.underlay_filter_redistribute_connected:
-                # Use route-map for redistribution
-                self.structured_config.router_bgp.redistribute.connected.route_map = "RM-CONN-2-BGP"
 
         if self.inputs.bgp_update_wait_for_convergence and platform_bgp_update_wait_for_convergence:
             self.structured_config.router_bgp.updates.wait_for_convergence = True
@@ -625,7 +622,21 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.ptp.free_running.source_clock_hardware = default(
             self.shared_utils.node_config.ptp.free_running.source_clock_hardware, self.inputs.ptp_settings.free_running.source_clock_hardware
         )
-        self.structured_config.ptp.source.ip = self.shared_utils.node_config.ptp.source_ip
+        source_ip = self.shared_utils.node_config.ptp.source_ip
+
+        if source_ip == "router_id":
+            if self.shared_utils.router_id is None:
+                msg = "PTP source IP is set to 'ptp.source_ip: router_id' but no router ID is configured for this device."
+                raise AristaAvdInvalidInputsError(msg)
+            self.structured_config.ptp.source.ip = self.shared_utils.router_id
+        elif source_ip is not None:
+            try:
+                IPv4Address(source_ip)
+                self.structured_config.ptp.source.ip = source_ip
+            except AddressValueError:
+                msg = f"Invalid PTP source IP 'ptp.source_ip: {source_ip}'. The value must be either 'router_id' or a valid IPv4 address."
+                raise AristaAvdInvalidInputsError(msg) from None
+
         self.structured_config.ptp.message_type.general.dscp = self.shared_utils.node_config.ptp.dscp.general_messages
         self.structured_config.ptp.message_type.event.dscp = self.shared_utils.node_config.ptp.dscp.event_messages
 
@@ -736,23 +747,26 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def aaa_authentication(self) -> None:
         """Assign AAA authentication configuration from inputs to structured config."""
-        if not (aaa_authentication := self.inputs.aaa_settings.authentication):
+        if not self.inputs.aaa_settings.authentication:
             return
-        self.structured_config.aaa_authentication = aaa_authentication
+
+        self.structured_config.aaa_authentication = self.inputs.aaa_settings.authentication._cast_as(new_type=EosCliConfigGen.AaaAuthentication)
 
     @structured_config_contributor
     def aaa_authorization(self) -> None:
         """Assign AAA authorization configuration from inputs to structured config."""
-        if not (aaa_authorization := self.inputs.aaa_settings.authorization):
+        if not self.inputs.aaa_settings.authorization:
             return
-        self.structured_config.aaa_authorization = aaa_authorization
+
+        self.structured_config.aaa_authorization = self.inputs.aaa_settings.authorization._cast_as(new_type=EosCliConfigGen.AaaAuthorization)
 
     @structured_config_contributor
     def aaa_accounting(self) -> None:
         """Assign AAA accounting configuration from inputs to structured config."""
-        if not (aaa_accounting := self.inputs.aaa_settings.accounting):
+        if not self.inputs.aaa_settings.accounting:
             return
-        self.structured_config.aaa_accounting = aaa_accounting
+
+        self.structured_config.aaa_accounting = self.inputs.aaa_settings.accounting._cast_as(new_type=EosCliConfigGen.AaaAccounting)
 
     @structured_config_contributor
     def aaa_root_login(self) -> None:

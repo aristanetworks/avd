@@ -234,13 +234,6 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-DPS-WAN-OVERLAY
-- name: RM-BGP-UNDERLAY-PEERS-IN
-  sequence_numbers:
-  - sequence: 40
-    type: permit
-    description: Mark prefixes originated from the LAN
-    set:
-    - extcommunity soo 192.168.42.99:12 additive
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
