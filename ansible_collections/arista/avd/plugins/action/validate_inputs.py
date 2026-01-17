@@ -58,6 +58,7 @@ class ValidateWorkerSuccess:
     host: str
     validation_result: ValidationResult
     output_file: str | None
+    """None if validation fails."""
 
 
 TemplateWorkerResult = TemplateWorkerSuccess | WorkerFailure
@@ -77,6 +78,7 @@ ARGUMENT_SPEC = {
     "template_inputs": {"type": "bool", "default": True},
     "input_dir": {"type": "str"},
     "input_suffix": {"type": "str", "default": "yml", "choices": ["yml", "yaml", "json"]},
+    "fail_on_validation_errors": {"type": "bool", "default": True},
 }
 
 _HOSTVARS_MANAGER: ActionPluginVars | None = None
@@ -119,6 +121,7 @@ class ActionModule(AvdActionPlugin):
         template_inputs = get(plugin_args, "template_inputs")
         input_dir = get(plugin_args, "input_dir")
         input_suffix = get(plugin_args, "input_suffix")
+        fail_on_validation_errors = get(plugin_args, "fail_on_validation_errors")
 
         fabric_hosts = task_vars.get("ansible_play_hosts_all", [])
 
@@ -136,16 +139,22 @@ class ActionModule(AvdActionPlugin):
             batch_size,
         )
 
+        # Track worker failures globally for the task.
+        self.crashed_hosts = set()
+
         # Phase 1: Templating using multiprocessing.
         if template_inputs:
             hosts_to_validate = self._run_templating_phase(fabric_hosts, mp_workers, batch_size, input_path, input_suffix, templated_path)
         else:
-            self.logger.info("Skipping templating phase for %s schema", schema_name)
             hosts_to_validate = fabric_hosts
 
         # Phase 2: Validation using multithreading.
         if hosts_to_validate:
-            self._run_validation_phase(hosts_to_validate, mt_workers, templated_path, validated_path, schema_name)
+            self._run_validation_phase(hosts_to_validate, mt_workers, templated_path, validated_path, schema_name, fail_on_validation_errors)
+
+        if self.crashed_hosts:
+            msg = f"Unexpected errors occurred while processing {len(self.crashed_hosts)} host(s): {', '.join(sorted(self.crashed_hosts))}. "
+            raise RuntimeError(msg)
 
     def _run_templating_phase(self, hosts: list[str], workers: int, batch_size: int, input_dir: Path | None, input_suffix: str, output_dir: Path) -> list[str]:
         """
@@ -165,7 +174,7 @@ class ActionModule(AvdActionPlugin):
         start_time = perf_counter()
         successful_hosts = []
 
-        # Partial to inject output_dir into the worker.
+        # Partial to inject directories into the worker.
         worker_func = partial(_template_host_worker, input_dir=input_dir, input_suffix=input_suffix, output_dir=output_dir)
         ctx = get_context("fork")
 
@@ -174,7 +183,7 @@ class ActionModule(AvdActionPlugin):
 
             for result in results:
                 if isinstance(result, WorkerFailure):
-                    self.result["failed"] = True
+                    self.crashed_hosts.add(result.host)
                     self.logger.error("%s: %s", result.host, result.error)
                     continue
 
@@ -185,7 +194,13 @@ class ActionModule(AvdActionPlugin):
         return successful_hosts
 
     def _run_validation_phase(
-        self, hosts: list[str], workers: int, input_dir: Path, output_dir: Path, schema_name: Literal["eos_designs", "eos_cli_config_gen"]
+        self,
+        hosts: list[str],
+        workers: int,
+        input_dir: Path,
+        output_dir: Path,
+        schema_name: Literal["eos_designs", "eos_cli_config_gen"],
+        fail_on_validation_errors: bool,
     ) -> None:
         """
         Phase 2: Validation.
@@ -198,6 +213,7 @@ class ActionModule(AvdActionPlugin):
             input_dir: The directory containing the templated JSON files (from Phase 1).
             output_dir: The directory where validated JSON files will be written.
             schema_name: Schema to use for validation.
+            fail_on_validation_errors: Fail the task on schema validation errors.
         """
         start_time = perf_counter()
 
@@ -213,28 +229,28 @@ class ActionModule(AvdActionPlugin):
 
             for result in results:
                 if isinstance(result, WorkerFailure):
-                    self.result["failed"] = True
+                    self.crashed_hosts.add(result.host)
                     self.logger.error("%s: %s", result.host, result.error)
                     continue
 
                 host_errors = parse_validation_result(validation_result=result.validation_result, hostname=result.host, ansible_display=display)
 
                 if host_errors:
-                    # TODO: Add a knob to not fail the task.
-                    self.result["failed"] = True
                     data_validation_errors += host_errors
-                elif result.output_file:
-                    self.logger.debug("Validated data for host %s saved to %s", result.host, result.output_file)
-                else:
-                    # This should never happen if validation succeeded and data exists.
-                    self.result["failed"] = True
+                    if fail_on_validation_errors:
+                        self.result["failed"] = True
+
+                elif not result.output_file:
+                    self.crashed_hosts.add(result.host)
                     self.logger.error("Host %s passed validation but no output file was generated.", result.host)
+
+                else:
+                    self.logger.debug("Validated data for host %s saved to %s", result.host, result.output_file)
 
         msg = build_result_message(data_validation_errors)
         if msg:
             self.result["msg"] = msg
 
-        # TODO: Improve error message when all worker fails.
         self.logger.info("Phase 2 (Validation) complete in %.2fs", perf_counter() - start_time)
 
 

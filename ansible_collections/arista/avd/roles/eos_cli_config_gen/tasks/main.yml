@@ -20,6 +20,7 @@
     template_inputs: "{{ structured_config is not arista.avd.defined or structured_config.skipped is arista.avd.defined(true) }}"
     input_dir: "{{ structured_dir }}"
     input_suffix: "{{ avd_structured_config_file_format }}"
+    fail_on_validation_errors: "{{ avd_fail_on_validation_errors | arista.avd.default(true) }}"
   delegate_to: localhost
   check_mode: false
   run_once: true
