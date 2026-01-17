@@ -9,29 +9,25 @@ from contextlib import suppress
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     PythonToAnsibleContextFilter,
     PythonToAnsibleHandler,
-    YamlLoader,
     cprofile,
+    get_role_tmp_paths,
     get_templar,
-    get_tmp_path,
 )
 
 if TYPE_CHECKING:
     from pyavd import get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
-    from pyavd.api.schemas import EOSConfig
     from pyavd.j2filters import add_md_toc
 
 try:
     from pyavd import get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
-    from pyavd.api.schemas import EOSConfig
     from pyavd.j2filters import add_md_toc
 
     HAS_PYAVD = True
@@ -82,14 +78,15 @@ class ActionModule(ActionBase):
 
         return self.main(hostname, task_vars, result)
 
-    # TODO: Cleanup.
     def main(self, hostname: str, task_vars: dict, result: dict) -> dict:
         """Main function in charge of validating the input variables and generating the device configuration and documentation."""
         LOGGER.debug("Validating task arguments...")
         validated_args = self.validate_args()
         LOGGER.debug("Validating task arguments [done].")
 
+        LOGGER.debug("Loading validated inputs...")
         host_hostvars = self.load_validated_inputs(hostname)
+        LOGGER.debug("Loading validated inputs [done].")
 
         has_custom_templates = bool(host_hostvars.get("custom_templates"))
         try:
@@ -194,8 +191,8 @@ class ActionModule(ActionBase):
         Returns:
             Tuple of an AVDDesign instance loaded from the host hostvars and a dict with the host raw hostvars.
         """
-        # TODO: Use constants.
-        file_path = get_tmp_path() / "eos_cli_config_gen" / "validated" / f"{host}.json"
+        _templated_path, validated_path = get_role_tmp_paths("eos_cli_config_gen")
+        file_path = validated_path / f"{host}.json"
         if not file_path.exists():
             msg = (
                 f"Missing validated inputs for host '{host}'. "
@@ -222,38 +219,3 @@ def setup_module_logging(hostname: str, result: dict) -> None:
     LOGGER.addHandler(python_to_ansible_handler)
     # TODO: mechanism to manipulate the logger globally for pyavd
     LOGGER.setLevel(logging.DEBUG)
-
-
-def read_vars(filename: Path | str) -> dict:
-    """
-    Read the file at filename and return the content as dict.
-
-    The function supports either `json` or `yaml` format.
-
-    Parameters
-    ----------
-        filename: The path to the file to read as a string or a Path.
-
-    Returns:
-    -------
-        dict: The content of the file as dict or an empty dict if the file does not exist.
-
-    Raises:
-    ------
-        NotImplementedError: If the file extension is not json, yml or yaml.
-    """
-    if not isinstance(filename, Path):
-        filename = Path(filename)
-
-    if not filename.exists():
-        LOGGER.debug("File %s does not exist, skipping reading variables...", filename)
-        return {}
-
-    with filename.open(mode="r", encoding="UTF-8") as stream:
-        if filename.suffix in [".yml", ".yaml"]:
-            return yaml.load(stream, Loader=YamlLoader)  # noqa: S506 TODO: Figure out if we can move to safeloader everywhere
-        if filename.suffix == ".json":
-            return json.load(stream)
-
-        msg = f"Unsupported file suffix for file '{filename}'"
-        raise NotImplementedError(msg)

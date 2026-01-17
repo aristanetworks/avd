@@ -15,7 +15,7 @@ from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, get_tmp_path, write_file
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, get_eos_designs_facts_path, write_file
 
 PLUGIN_NAME = "arista.avd.eos_designs_documentation"
 try:
@@ -159,12 +159,10 @@ class ActionModule(ActionBase):
 
     def load_facts(self) -> dict[str, dict]:
         """Read facts from the temporary file."""
-        base_tmp_path = get_tmp_path()
-
-        file_path = base_tmp_path / "eos_designs_facts.json"
+        file_path = get_eos_designs_facts_path()
 
         if not file_path.exists():
-            msg = "Missing AVD facts to generate documentation. Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
+            msg = "Missing AVD eos_designs facts to generate documentation. Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
             raise AnsibleActionFail(message=msg)
 
         with file_path.open(mode="r", encoding="utf-8") as f:

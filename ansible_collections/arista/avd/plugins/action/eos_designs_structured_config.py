@@ -18,8 +18,9 @@ from ansible.plugins.action import ActionBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     ANSIBLE_ABOVE_2_19,
     AvdSwitchFactsDefaultDict,
+    get_eos_designs_facts_path,
+    get_role_tmp_paths,
     get_templar,
-    get_tmp_path,
     write_file,
 )
 
@@ -187,8 +188,8 @@ class ActionModule(ActionBase):
         Returns:
             Tuple of an AVDDesign instance loaded from the host hostvars and a dict with the host raw hostvars.
         """
-        # TODO: Use constants.
-        file_path = get_tmp_path() / "eos_designs" / "validated" / f"{host}.json"
+        _templated_path, validated_path = get_role_tmp_paths("eos_designs")
+        file_path = validated_path / f"{host}.json"
         if not file_path.exists():
             msg = (
                 f"Missing validated inputs for host '{host}'. "
@@ -214,12 +215,10 @@ class ActionModule(ActionBase):
         Returns:
             AvdSwitchFactsDefaultDict instance loaded from facts.
         """
-        base_tmp_path = get_tmp_path()
-
-        file_path = base_tmp_path / "eos_designs_facts.json"
+        file_path = get_eos_designs_facts_path()
 
         if not file_path.exists():
-            msg = f"Missing AVD facts for host '{host}'. Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
+            msg = f"Missing AVD eos_designs facts for host '{host}'. Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
             raise AnsibleActionFail(message=msg)
 
         with file_path.open(mode="r", encoding="utf-8") as f:
@@ -238,12 +237,7 @@ class ActionModule(ActionBase):
         # Merge the two layers, structured_config wins.
         flat_data = dict(template_vars)
 
-        base_tmp_path = get_tmp_path()
-
-        schema_path = base_tmp_path / "eos_cli_config_gen"
-        templated_path = schema_path / "templated"
-
-        templated_path.mkdir(parents=True, exist_ok=True)
+        templated_path, _validated_path = get_role_tmp_paths("eos_cli_config_gen")
 
         file_path = templated_path / f"{hostname}.json"
 

@@ -14,7 +14,7 @@ from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_ABOVE_2_19, get_templar, get_tmp_path
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_ABOVE_2_19, get_eos_designs_facts_path, get_role_tmp_paths, get_templar
 
 if TYPE_CHECKING:
     from ansible.playbook.task import Task
@@ -114,9 +114,11 @@ class ActionModule(ActionBase):
         all_inputs: dict[str, AVDDesign] = {}
         all_hostvars: dict[str, dict] = {}
 
+        _templated_path, validated_path = get_role_tmp_paths("eos_designs")
+
         for host in fabric_hosts:
             # TODO: Use constants.
-            file_path = get_tmp_path() / "eos_designs" / "validated" / f"{host}.json"
+            file_path = validated_path / f"{host}.json"
             if not file_path.exists():
                 msg = (
                     f"Missing validated inputs for host '{host}'. "
@@ -172,9 +174,7 @@ class ActionModule(ActionBase):
 
     def dump_facts(self, avd_switch_facts: dict[str, dict]) -> None:
         """Dump facts to the temporary AVD folder."""
-        base_tmp_path = get_tmp_path()
-
-        file_path = base_tmp_path / "eos_designs_facts.json"
+        file_path = get_eos_designs_facts_path()
 
         with file_path.open(mode="w", encoding="utf-8") as f:
             json.dump(avd_switch_facts, f, indent=4)

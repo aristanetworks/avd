@@ -7,14 +7,21 @@ from dataclasses import dataclass
 from functools import partial
 from json import dumps as json_dumps
 from json import loads as json_loads
-from multiprocessing import cpu_count, get_context
+from multiprocessing import get_context
 from pathlib import Path
 from time import perf_counter
 from typing import TYPE_CHECKING, Any, Literal
 
+import yaml
 from ansible.plugins.action import display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars, build_result_message, get_tmp_path, parse_validation_result
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    ActionPluginVars,
+    build_result_message,
+    get_role_tmp_paths,
+    get_workers,
+    parse_validation_result,
+)
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
 
 if TYPE_CHECKING:
@@ -62,13 +69,14 @@ ValidateWorkerResult = ValidateWorkerSuccess | WorkerFailure
 PLUGIN_NAME = "arista.avd.validate_inputs"
 
 # TODO: Create a single pyavd_utils logger.
-TARGET_LOGGERS = ["ansible_collections.arista.avd", "validation", "pyvalidation", "store"]
+TARGET_LOGGERS = ["ansible_collections.arista.avd", "validation", "pyvalidation"]
 
 ARGUMENT_SPEC = {
-    # TODO: Need to figure out the proper default batch size.
     "batch_size": {"type": "int", "default": 10},
     "schema_name": {"type": "str", "default": "eos_designs", "choices": ["eos_designs", "eos_cli_config_gen"]},
     "template_inputs": {"type": "bool", "default": True},
+    "input_dir": {"type": "str"},
+    "input_suffix": {"type": "str", "default": "yml", "choices": ["yml", "yaml", "json"]},
 }
 
 _HOSTVARS_MANAGER: ActionPluginVars | None = None
@@ -109,11 +117,14 @@ class ActionModule(AvdActionPlugin):
         batch_size = get(plugin_args, "batch_size")
         schema_name = get(plugin_args, "schema_name")
         template_inputs = get(plugin_args, "template_inputs")
+        input_dir = get(plugin_args, "input_dir")
+        input_suffix = get(plugin_args, "input_suffix")
 
         fabric_hosts = task_vars.get("ansible_play_hosts_all", [])
 
-        mp_workers, mt_workers = self._get_workers(len(fabric_hosts), task_vars.get("ansible_forks", 5))
-        templated_path, validated_path = self._get_tmp_paths(schema_name)
+        mp_workers, mt_workers = get_workers(len(fabric_hosts), task_vars.get("ansible_forks", 5))
+        templated_path, validated_path = get_role_tmp_paths(schema_name)
+        input_path = Path(input_dir) if input_dir else None
 
         set_worker_context(ActionPluginVars(self))
 
@@ -127,7 +138,7 @@ class ActionModule(AvdActionPlugin):
 
         # Phase 1: Templating using multiprocessing.
         if template_inputs:
-            hosts_to_validate = self._run_templating_phase(fabric_hosts, mp_workers, batch_size, templated_path)
+            hosts_to_validate = self._run_templating_phase(fabric_hosts, mp_workers, batch_size, input_path, input_suffix, templated_path)
         else:
             self.logger.info("Skipping templating phase for %s schema", schema_name)
             hosts_to_validate = fabric_hosts
@@ -136,35 +147,7 @@ class ActionModule(AvdActionPlugin):
         if hosts_to_validate:
             self._run_validation_phase(hosts_to_validate, mt_workers, templated_path, validated_path, schema_name)
 
-    def _get_workers(self, num_hosts: int, ansible_forks: int) -> tuple[int, int]:
-        """
-        Get the multiprocessing and multithreading worker counts.
-
-        MP workers count: The smallest between CPU count - 1 (leave one for main/OS) and ansible_forks.
-
-        MT workers count: Follow ansible_forks.
-        """
-        available_cores = max(1, cpu_count() - 1)
-        # Don't spawn more workers than there are hosts (to avoid creating idle process for small inventories).
-        mp = min(available_cores, ansible_forks, num_hosts) or 1
-        mt = min(ansible_forks, num_hosts) or 1
-        return mp, mt
-
-    # TODO: Use constants for paths.
-    def _get_tmp_paths(self, schema_name: Literal["eos_designs", "eos_cli_config_gen"]) -> tuple[Path, Path]:
-        """Get the Path objects to store templated and validated JSON files."""
-        base_tmp_path = get_tmp_path()
-
-        schema_path = base_tmp_path / schema_name
-        templated_path = schema_path / "templated"
-        validated_path = schema_path / "validated"
-
-        templated_path.mkdir(parents=True, exist_ok=True)
-        validated_path.mkdir(parents=True, exist_ok=True)
-
-        return templated_path, validated_path
-
-    def _run_templating_phase(self, hosts: list[str], workers: int, batch_size: int, output_dir: Path) -> list[str]:
+    def _run_templating_phase(self, hosts: list[str], workers: int, batch_size: int, input_dir: Path | None, input_suffix: str, output_dir: Path) -> list[str]:
         """
         Phase 1: Templating.
 
@@ -172,6 +155,8 @@ class ActionModule(AvdActionPlugin):
             hosts: List of hosts to process.
             workers: The amount of multiprocessing workers to use.
             batch_size: The amount of hosts to template per child process.
+            input_dir: Optional directory to load additional raw host variables to be templated.
+            input_suffix: File suffix to use when loading host files from input_dir.
             output_dir: The directory path where templated JSON files will be written.
 
         Returns:
@@ -181,7 +166,7 @@ class ActionModule(AvdActionPlugin):
         successful_hosts = []
 
         # Partial to inject output_dir into the worker.
-        worker_func = partial(_template_host_worker, output_dir=output_dir)
+        worker_func = partial(_template_host_worker, input_dir=input_dir, input_suffix=input_suffix, output_dir=output_dir)
         ctx = get_context("fork")
 
         with ProcessPoolExecutor(max_workers=workers, mp_context=ctx) as pool:
@@ -253,21 +238,34 @@ class ActionModule(AvdActionPlugin):
         self.logger.info("Phase 2 (Validation) complete in %.2fs", perf_counter() - start_time)
 
 
-def _template_host_worker(host: str, output_dir: Path) -> TemplateWorkerResult:
+def _template_host_worker(hostname: str, input_dir: Path | None, input_suffix: str, output_dir: Path) -> TemplateWorkerResult:
     """Phase 1 multiprocessing worker: Template, serialize, and dump a single host variables as JSON file to output_dir."""
     try:
+        # Get the "Ansible Hostvars Manager"-like object which includes task, role, and play vars.
         hostvars_manager = get_worker_hostvars()
+
+        overlay_data = {}
+        if input_dir:
+            input_file_path = input_dir / f"{hostname}.{input_suffix}"
+            if input_file_path.exists():
+                overlay_data = read_vars(input_file_path)
+
+        # Take the HostVarsVars for this host. All variables will be templated on access and cached by Ansible's tooling.
+        host_vars_wrapper = hostvars_manager.get_vars_with_overlay(hostname, overlay_data) if overlay_data else hostvars_manager[hostname]
+
+        # The dict() here will force templating of all variables at once, potentially triggering issues for
+        # missing variables in inline templates in Ansible 2.19.
         # TODO: Use a filtered_map to skip certain keys from being templated.
-        host_hostvars = dict(hostvars_manager[host])
+        host_templated_vars = dict(host_vars_wrapper)
 
-        output_file_path = output_dir / f"{host}.json"
+        output_file_path = output_dir / f"{hostname}.json"
         with output_file_path.open(mode="w", encoding="utf-8") as f:
-            json.dump(host_hostvars, f, skipkeys=True, default=lambda _: "<not serializable>", indent=4)
+            json.dump(host_templated_vars, f, skipkeys=True, default=lambda _: "<not serializable>", indent=4)
 
-        return TemplateWorkerSuccess(host=host, output_file=str(output_file_path))
+        return TemplateWorkerSuccess(host=hostname, output_file=str(output_file_path))
 
     except Exception as e:
-        return WorkerFailure(host=host, error=f"Unexpected error in templating worker process: {e}")
+        return WorkerFailure(host=hostname, error=f"Unexpected error in templating worker process: {e}")
 
 
 def _validate_host_worker(host: str, input_dir: Path, output_dir: Path, schema_name: Literal["eos_designs", "eos_cli_config_gen"]) -> ValidateWorkerResult:
@@ -277,7 +275,7 @@ def _validate_host_worker(host: str, input_dir: Path, output_dir: Path, schema_n
 
         # If the input file is missing (unexpected), fail early.
         if not input_file_path.exists():
-            return WorkerFailure(host=host, error=f"Templated data file missing: {input_file_path}")
+            return WorkerFailure(host=host, error=f"Missing templated data file: {input_file_path}")
 
         with input_file_path.open(mode="r", encoding="utf-8") as f:
             json_data = f.read()
@@ -297,3 +295,11 @@ def _validate_host_worker(host: str, input_dir: Path, output_dir: Path, schema_n
 
     except Exception as e:
         return WorkerFailure(host=host, error=f"Unexpected error in validation worker thread: {e}")
+
+
+def read_vars(path: Path) -> dict[str, Any]:
+    """TODO: Docstring."""
+    with path.open(mode="r", encoding="utf-8") as f:
+        if path.suffix in {".yml", ".yaml"}:
+            return yaml.load(f, Loader=yaml.CSafeLoader)
+        return json.load(f)
