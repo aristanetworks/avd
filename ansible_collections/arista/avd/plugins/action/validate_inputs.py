@@ -116,6 +116,7 @@ class ActionModule(AvdActionPlugin):
 
         # Converting to JSON and back to remove any AnsibeUnsafe types.
         plugin_args = json_loads(json_dumps(validated_args))
+
         batch_size = get(plugin_args, "batch_size")
         schema_name = get(plugin_args, "schema_name")
         template_inputs = get(plugin_args, "template_inputs")
@@ -123,9 +124,8 @@ class ActionModule(AvdActionPlugin):
         input_suffix = get(plugin_args, "input_suffix")
         fail_on_validation_errors = get(plugin_args, "fail_on_validation_errors")
 
-        fabric_hosts = task_vars.get("ansible_play_hosts_all", [])
-
-        mp_workers, mt_workers = get_workers(len(fabric_hosts), task_vars.get("ansible_forks", 5))
+        device_list = self._get_device_list(task_vars, schema_name)
+        mp_workers, mt_workers = get_workers(len(device_list), task_vars.get("ansible_forks", 5))
         templated_path, validated_path = get_role_tmp_paths(schema_name)
         input_path = Path(input_dir) if input_dir else None
 
@@ -135,7 +135,7 @@ class ActionModule(AvdActionPlugin):
             "Starting execution with %d multiprocessing workers and %d threads for %d hosts in batches of %d",
             mp_workers,
             mt_workers,
-            len(fabric_hosts),
+            len(device_list),
             batch_size,
         )
 
@@ -144,9 +144,9 @@ class ActionModule(AvdActionPlugin):
 
         # Phase 1: Templating using multiprocessing.
         if template_inputs:
-            hosts_to_validate = self._run_templating_phase(fabric_hosts, mp_workers, batch_size, input_path, input_suffix, templated_path)
+            hosts_to_validate = self._run_templating_phase(device_list, mp_workers, batch_size, input_path, input_suffix, templated_path)
         else:
-            hosts_to_validate = fabric_hosts
+            hosts_to_validate = device_list
 
         # Phase 2: Validation using multithreading.
         if hosts_to_validate:
@@ -155,6 +155,33 @@ class ActionModule(AvdActionPlugin):
         if self.crashed_hosts:
             msg = f"Unexpected errors occurred while processing {len(self.crashed_hosts)} host(s): {', '.join(sorted(self.crashed_hosts))}. "
             raise RuntimeError(msg)
+
+    def _get_device_list(self, task_vars: dict[str, Any], schema_name: Literal["eos_designs", "eos_cli_config_gen"]) -> list[str]:
+        """Get the list of device to process."""
+        ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", [])
+
+        # For eos_cli_config_gen, the validation is per-device.
+        # We only need to process the hosts currently targeted by the play.
+        if schema_name == "eos_cli_config_gen":
+            return ansible_play_hosts_all
+
+        # For eos_designs, we require fabric-wide facts.
+        # We need to process the entire fabric group, not just the play hosts.
+        groups = task_vars.get("groups", {})
+        fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
+        fabric_hosts = groups.get(fabric_name, [])
+
+        # Check if fabric_name is set and that all play hosts are part Ansible group set in "fabric_name".
+        if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
+            msg = (
+                "Invalid/missing 'fabric_name' variable. "
+                "All hosts in the play must have the same 'fabric_name' value "
+                "which must point to an Ansible Group containing the hosts."
+                f"play_hosts: {ansible_play_hosts_all}"
+            )
+            raise ValueError(msg)
+
+        return fabric_hosts
 
     def _run_templating_phase(self, hosts: list[str], workers: int, batch_size: int, input_dir: Path | None, input_suffix: str, output_dir: Path) -> list[str]:
         """
