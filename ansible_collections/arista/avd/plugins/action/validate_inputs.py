@@ -30,7 +30,7 @@ if TYPE_CHECKING:
     from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
     from pyavd._utils import get, strip_empties_from_dict
-    from pyavd._utils.filtered_map import FilteredMapView
+    from pyavd._utils.filtered_map_view import FilteredMapView
 
 try:
     from pyavd_utils.validation import ValidationResult, get_validated_data
@@ -38,7 +38,7 @@ try:
     from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
     from pyavd._utils import get, strip_empties_from_dict
-    from pyavd._utils.filtered_map import FilteredMapView
+    from pyavd._utils.filtered_map_view import FilteredMapView
 
     HAS_PYAVD = True
 except ImportError:
