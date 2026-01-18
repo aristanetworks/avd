@@ -162,7 +162,7 @@ class ActionModule(ActionBase):
         file_path = get_eos_designs_facts_path()
 
         if not file_path.exists():
-            msg = "Missing AVD eos_designs facts to generate documentation. Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
+            msg = f"Missing AVD eos_designs facts to generate documentation ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
             raise AnsibleActionFail(message=msg)
 
         with file_path.open(mode="r", encoding="utf-8") as f:

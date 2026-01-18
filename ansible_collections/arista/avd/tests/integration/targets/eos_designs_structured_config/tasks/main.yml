@@ -1,3 +1,22 @@
 ---
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    batch_size: "{{ batch_size | arista.avd.default(10) }}"
+    schema_name: eos_designs
+    template_inputs: true
+    fail_on_validation_errors: "{{ avd_fail_on_validation_errors | arista.avd.default(true) }}"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts
+  arista.avd.eos_designs_facts:
+    # cprofile_file: "eos_designs_facts.prof"
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+    digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
+  check_mode: false
+  run_once: true
+
 - name: Include test.yml
   ansible.builtin.include_tasks: test.yml

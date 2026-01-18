@@ -4,6 +4,7 @@
     state: absent
 
 - name: Test missing structured config file for device (warning but success)
+  delegate_to: localhost
   ignore_errors: false
   register: result
   arista.avd.eos_designs_documentation:
