@@ -40,6 +40,9 @@ try:
 except ImportError:
     HAS_PYAVD = False
 
+    # Workaround to make ansible-test sanity happy.
+    ValidationResult = object
+
 
 @dataclass(frozen=True, slots=True)
 class WorkerFailure:
@@ -56,7 +59,7 @@ class TemplateWorkerSuccess:
 @dataclass(frozen=True, slots=True)
 class ValidateWorkerSuccess:
     host: str
-    validation_result: ValidationResult
+    validation_result: ValidationResult  # pyright: ignore[reportInvalidTypeForm]
     output_file: str | None
     """None if validation fails."""
 
