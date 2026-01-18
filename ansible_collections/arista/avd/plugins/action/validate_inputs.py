@@ -27,14 +27,18 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin
 if TYPE_CHECKING:
     from pyavd_utils.validation import ValidationResult, get_validated_data
 
+    from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
     from pyavd._utils import get, strip_empties_from_dict
+    from pyavd._utils.filtered_map import FilteredMapView
 
 try:
     from pyavd_utils.validation import ValidationResult, get_validated_data
 
+    from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
     from pyavd._utils import get, strip_empties_from_dict
+    from pyavd._utils.filtered_map import FilteredMapView
 
     HAS_PYAVD = True
 except ImportError:
@@ -71,6 +75,7 @@ ValidateWorkerResult = ValidateWorkerSuccess | WorkerFailure
 
 
 PLUGIN_NAME = "arista.avd.validate_inputs"
+SCHEMA_NAME = Literal["eos_designs", "eos_cli_config_gen"]
 
 # TODO: Create a single pyavd_utils logger.
 TARGET_LOGGERS = ["ansible_collections.arista.avd", "validation", "pyvalidation"]
@@ -121,7 +126,7 @@ class ActionModule(AvdActionPlugin):
         plugin_args = json_loads(json_dumps(validated_args))
 
         batch_size = get(plugin_args, "batch_size")
-        schema_name = get(plugin_args, "schema_name")
+        schema_name: SCHEMA_NAME = get(plugin_args, "schema_name")
         template_inputs = get(plugin_args, "template_inputs")
         input_dir = get(plugin_args, "input_dir")
         input_suffix = get(plugin_args, "input_suffix")
@@ -147,7 +152,7 @@ class ActionModule(AvdActionPlugin):
 
         # Phase 1: Templating using multiprocessing.
         if template_inputs:
-            hosts_to_validate = self._run_templating_phase(device_list, mp_workers, batch_size, input_path, input_suffix, templated_path)
+            hosts_to_validate = self._run_templating_phase(device_list, mp_workers, batch_size, input_path, input_suffix, templated_path, schema_name)
         else:
             hosts_to_validate = device_list
 
@@ -159,7 +164,7 @@ class ActionModule(AvdActionPlugin):
             msg = f"Unexpected errors occurred while processing {len(self.crashed_hosts)} host(s): {', '.join(sorted(self.crashed_hosts))}. "
             raise RuntimeError(msg)
 
-    def _get_device_list(self, task_vars: dict[str, Any], schema_name: Literal["eos_designs", "eos_cli_config_gen"]) -> list[str]:
+    def _get_device_list(self, task_vars: dict[str, Any], schema_name: SCHEMA_NAME) -> list[str]:
         """Get the list of device to process."""
         ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", [])
 
@@ -186,7 +191,16 @@ class ActionModule(AvdActionPlugin):
 
         return fabric_hosts
 
-    def _run_templating_phase(self, hosts: list[str], workers: int, batch_size: int, input_dir: Path | None, input_suffix: str, output_dir: Path) -> list[str]:
+    def _run_templating_phase(
+        self,
+        hosts: list[str],
+        workers: int,
+        batch_size: int,
+        input_dir: Path | None,
+        input_suffix: str,
+        output_dir: Path,
+        schema_name: SCHEMA_NAME,
+    ) -> list[str]:
         """
         Phase 1: Templating.
 
@@ -197,6 +211,7 @@ class ActionModule(AvdActionPlugin):
             input_dir: Optional directory to load additional raw host variables to be templated.
             input_suffix: File suffix to use when loading host files from input_dir.
             output_dir: The directory path where templated JSON files will be written.
+            schema_name: Schema to use for validation.
 
         Returns:
             List of hosts that were templated successfully.
@@ -205,7 +220,7 @@ class ActionModule(AvdActionPlugin):
         successful_hosts = []
 
         # Partial to inject directories into the worker.
-        worker_func = partial(_template_host_worker, input_dir=input_dir, input_suffix=input_suffix, output_dir=output_dir)
+        worker_func = partial(_template_host_worker, input_dir=input_dir, input_suffix=input_suffix, output_dir=output_dir, schema_name=schema_name)
         ctx = get_context("fork")
 
         with ProcessPoolExecutor(max_workers=workers, mp_context=ctx) as pool:
@@ -284,7 +299,7 @@ class ActionModule(AvdActionPlugin):
         self.logger.info("Phase 2 (Validation) complete in %.2fs", perf_counter() - start_time)
 
 
-def _template_host_worker(hostname: str, input_dir: Path | None, input_suffix: str, output_dir: Path) -> TemplateWorkerResult:
+def _template_host_worker(hostname: str, input_dir: Path | None, input_suffix: str, output_dir: Path, schema_name: SCHEMA_NAME) -> TemplateWorkerResult:
     """Phase 1 multiprocessing worker: Template, serialize, and dump a single host variables as JSON file to output_dir."""
     try:
         # Get the "Ansible Hostvars Manager"-like object which includes task, role, and play vars.
@@ -296,12 +311,18 @@ def _template_host_worker(hostname: str, input_dir: Path | None, input_suffix: s
             if input_file_path.exists():
                 overlay_data = read_vars(input_file_path)
 
-        # Take the HostVarsVars for this host. All variables will be templated on access and cached by Ansible's tooling.
+        # Take the HostVarsVars for this host to be templated on access and cached by Ansible's tooling.
         host_vars_wrapper = hostvars_manager.get_vars_with_overlay(hostname, overlay_data) if overlay_data else hostvars_manager[hostname]
+
+        # Wrap the hostvars in a filter to only template variables used by eos_cli_config_gen.
+        # We cannot filter for eos_designs while we support dynamic keys.
+        if schema_name == "eos_cli_config_gen":
+            allowed_keys = {"inventory_hostname"}
+            allowed_keys.update(EOS_CLI_CONFIG_GEN_ROLE_KEYS, EOS_CLI_CONFIG_GEN_INPUT_KEYS)
+            host_vars_wrapper = FilteredMapView(host_vars_wrapper, allowed_keys)
 
         # The dict() here will force templating of all variables at once, potentially triggering issues for
         # missing variables in inline templates in Ansible 2.19.
-        # TODO: Use a filtered_map to skip certain keys from being templated.
         host_templated_vars = dict(host_vars_wrapper)
 
         output_file_path = output_dir / f"{hostname}.json"
@@ -314,7 +335,7 @@ def _template_host_worker(hostname: str, input_dir: Path | None, input_suffix: s
         return WorkerFailure(host=hostname, error=f"Unexpected error in templating worker process: {e}")
 
 
-def _validate_host_worker(host: str, input_dir: Path, output_dir: Path, schema_name: Literal["eos_designs", "eos_cli_config_gen"]) -> ValidateWorkerResult:
+def _validate_host_worker(host: str, input_dir: Path, output_dir: Path, schema_name: SCHEMA_NAME) -> ValidateWorkerResult:
     """Phase 2 multithreading worker: Read a single host JSON file from input_dir, validate in Rust, and write to output_dir."""
     try:
         input_file_path = input_dir / f"{host}.json"
@@ -344,7 +365,7 @@ def _validate_host_worker(host: str, input_dir: Path, output_dir: Path, schema_n
 
 
 def read_vars(path: Path) -> dict[str, Any]:
-    """TODO: Docstring."""
+    """Read YAML or JSON variables from a file."""
     with path.open(mode="r", encoding="utf-8") as f:
         if path.suffix in {".yml", ".yaml"}:
             return yaml.load(f, Loader=yaml.CSafeLoader)
