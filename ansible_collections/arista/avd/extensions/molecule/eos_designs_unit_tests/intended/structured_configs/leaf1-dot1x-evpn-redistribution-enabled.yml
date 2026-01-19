@@ -49,10 +49,11 @@ prefix_lists:
   - sequence: 20
     action: permit 10.1.1.0/24 eq 32
 radius_server:
-  hosts:
-  - host: agni.arista.com
-    vrf: MGMT
-    key: 1404071B09166738212B2130365E0C131A
+  vrfs:
+  - name: MGMT
+    servers:
+    - host: agni.arista.com
+      key: 1404071B09166738212B2130365E0C131A
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:

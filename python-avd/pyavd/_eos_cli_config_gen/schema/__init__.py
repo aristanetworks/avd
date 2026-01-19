@@ -37531,7 +37531,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class HostsItem(AvdModel):
+        class ServersItem(AvdModel):
             """Subclass of AvdModel."""
 
             class Tls(AvdModel):
@@ -37567,20 +37567,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {
-                "host": {"type": str},
-                "vrf": {"type": str},
-                "tls": {"type": Tls},
-                "timeout": {"type": int},
-                "retransmit": {"type": int},
-                "key": {"type": str},
-            }
+            _fields: ClassVar[dict] = {"host": {"type": str}, "tls": {"type": Tls}, "timeout": {"type": int}, "retransmit": {"type": int}, "key": {"type": str}}
             host: str
-            """Host IP address or name."""
-            vrf: str | None
+            """
+            -> Host IP address or name. Multiple server with the same hostname/IP address can be configured for
+            TLS and no TLS.
+            """
             tls: Tls
             """
-            When TLS is configured, `key` is ignored..
+            When TLS is configured, `key` is ignored.
 
             Subclass of AvdModel.
             """
@@ -37598,23 +37593,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     host: str | UndefinedType = Undefined,
-                    vrf: str | None | UndefinedType = Undefined,
                     tls: Tls | UndefinedType = Undefined,
                     timeout: int | None | UndefinedType = Undefined,
                     retransmit: int | None | UndefinedType = Undefined,
                     key: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
-                    HostsItem.
+                    ServersItem.
 
 
                     Subclass of AvdModel.
 
                     Args:
-                        host: Host IP address or name.
-                        vrf: vrf
+                        host:
+                           -> Host IP address or name. Multiple server with the same hostname/IP address can be configured for
+                           TLS and no TLS.
                         tls:
-                           When TLS is configured, `key` is ignored..
+                           When TLS is configured, `key` is ignored.
 
                            Subclass of AvdModel.
                         timeout: timeout
@@ -37625,18 +37620,155 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class Hosts(AvdIndexedList[str, HostsItem]):
-            """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `host` (`str`)."""
+        class Servers(AvdList[ServersItem]):
+            """Subclass of AvdList with `ServersItem` items."""
 
-            _primary_key: ClassVar[str] = "host"
+        Servers._item_type = ServersItem
 
-        Hosts._item_type = HostsItem
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class ServersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Tls(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "ssl_profile": {"type": str}, "port": {"type": int}}
+                    enabled: bool | None
+                    """Enable TLS for radius-server."""
+                    ssl_profile: str | None
+                    """Name of TLS profile."""
+                    port: int | None
+                    """TCP Port used for TLS. EOS default is 2083."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            ssl_profile: str | None | UndefinedType = Undefined,
+                            port: int | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Tls.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Enable TLS for radius-server.
+                                ssl_profile: Name of TLS profile.
+                                port: TCP Port used for TLS. EOS default is 2083.
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "host": {"type": str},
+                    "tls": {"type": Tls},
+                    "timeout": {"type": int},
+                    "retransmit": {"type": int},
+                    "key": {"type": str},
+                }
+                host: str
+                """
+                -> Host IP address or name. Multiple server with the same hostname/IP address can be configured for
+                TLS and no TLS.
+                """
+                tls: Tls
+                """
+                When TLS is configured, `key` is ignored.
+
+                Subclass of AvdModel.
+                """
+                timeout: int | None
+                retransmit: int | None
+                key: str | None
+                """
+                Encrypted key - only type 7 supported.
+                When TLS is configured, `key` is ignored.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        host: str | UndefinedType = Undefined,
+                        tls: Tls | UndefinedType = Undefined,
+                        timeout: int | None | UndefinedType = Undefined,
+                        retransmit: int | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ServersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            host:
+                               -> Host IP address or name. Multiple server with the same hostname/IP address can be configured for
+                               TLS and no TLS.
+                            tls:
+                               When TLS is configured, `key` is ignored.
+
+                               Subclass of AvdModel.
+                            timeout: timeout
+                            retransmit: retransmit
+                            key:
+                               Encrypted key - only type 7 supported.
+                               When TLS is configured, `key` is ignored.
+
+                        """
+
+            class Servers(AvdList[ServersItem]):
+                """Subclass of AvdList with `ServersItem` items."""
+
+            Servers._item_type = ServersItem
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "servers": {"type": Servers}}
+            name: str
+            """Non-defualt VRF name."""
+            servers: Servers
+            """
+            Hosts configuration for VRF default.
+
+            Subclass of AvdList with `ServersItem` items.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, servers: Servers | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Non-defualt VRF name.
+                        servers:
+                           Hosts configuration for VRF default.
+
+                           Subclass of AvdList with `ServersItem` items.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
 
         _fields: ClassVar[dict] = {
             "attribute_32_include_in_access_req": {"type": Attribute32IncludeInAccessReq},
             "deadtime": {"type": int},
             "dynamic_authorization": {"type": DynamicAuthorization},
-            "hosts": {"type": Hosts},
+            "servers": {"type": Servers},
+            "vrfs": {"type": Vrfs},
             "tls_ssl_profile": {"type": str},
         }
         attribute_32_include_in_access_req: Attribute32IncludeInAccessReq
@@ -37645,8 +37777,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Time to skip a non-responsive server in minutes."""
         dynamic_authorization: DynamicAuthorization
         """Subclass of AvdModel."""
-        hosts: Hosts
-        """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `host` (`str`)."""
+        servers: Servers
+        """
+        Hosts configuration for VRF default.
+
+        Subclass of AvdList with `ServersItem` items.
+        """
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         tls_ssl_profile: str | None
         """Name of global TLS profile."""
 
@@ -37658,7 +37796,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 attribute_32_include_in_access_req: Attribute32IncludeInAccessReq | UndefinedType = Undefined,
                 deadtime: int | None | UndefinedType = Undefined,
                 dynamic_authorization: DynamicAuthorization | UndefinedType = Undefined,
-                hosts: Hosts | UndefinedType = Undefined,
+                servers: Servers | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
                 tls_ssl_profile: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -37671,7 +37810,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     attribute_32_include_in_access_req: Subclass of AvdModel.
                     deadtime: Time to skip a non-responsive server in minutes.
                     dynamic_authorization: Subclass of AvdModel.
-                    hosts: Subclass of AvdIndexedList with `HostsItem` items. Primary key is `host` (`str`).
+                    servers:
+                       Hosts configuration for VRF default.
+
+                       Subclass of AvdList with `ServersItem` items.
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     tls_ssl_profile: Name of global TLS profile.
 
                 """
