@@ -11,6 +11,7 @@
     | [<samp>avd_digital_twin_mode</samp>](## "avd_digital_twin_mode") | Boolean |  | `False` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).<br>By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation) will replace original fabric artifacts.<br>To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated output location. |
     | [<samp>avd_eos_designs_debug</samp>](## "avd_eos_designs_debug") | Boolean |  | `False` |  | Dump all vars and facts per device after generating `avd_switch_facts`. |
     | [<samp>avd_eos_designs_enforce_duplication_checks_across_all_models</samp>](## "avd_eos_designs_enforce_duplication_checks_across_all_models") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
+    | [<samp>avd_eos_designs_return_structured_config</samp>](## "avd_eos_designs_return_structured_config") | Boolean |  | `False` |  | Return structured configuration as ansible_facts per device. |
     | [<samp>avd_eos_designs_structured_config</samp>](## "avd_eos_designs_structured_config") | Boolean |  | `True` |  | Generate structured configuration per device. |
     | [<samp>avd_eos_designs_unset_facts</samp>](## "avd_eos_designs_unset_facts") | Boolean |  | `True` |  | Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer variables. |
     | [<samp>eos_designs_documentation</samp>](## "eos_designs_documentation") | Dictionary |  |  |  | Control fabric documentation generation.<br> |
@@ -31,6 +32,9 @@
 
     # Dump all vars and facts per device after generating `avd_switch_facts`.
     avd_eos_designs_debug: <bool; default=False>
+
+    # Return structured configuration as ansible_facts per device.
+    avd_eos_designs_return_structured_config: <bool; default=False>
 
     # Generate structured configuration per device.
     avd_eos_designs_structured_config: <bool; default=True>

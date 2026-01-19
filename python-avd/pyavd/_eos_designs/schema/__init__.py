@@ -87696,6 +87696,7 @@ class EosDesigns(EosDesignsRootModel):
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_debug": {"type": bool, "default": False},
+        "avd_eos_designs_return_structured_config": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_eos_designs_unset_facts": {"type": bool, "default": True},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
@@ -88349,6 +88350,12 @@ class EosDesigns(EosDesignsRootModel):
     avd_eos_designs_debug: bool
     """
     Dump all vars and facts per device after generating `avd_switch_facts`.
+
+    Default value: `False`
+    """
+    avd_eos_designs_return_structured_config: bool
+    """
+    Return structured configuration as ansible_facts per device.
 
     Default value: `False`
     """
@@ -90298,6 +90305,7 @@ class EosDesigns(EosDesignsRootModel):
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
+            avd_eos_designs_return_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_unset_facts: bool | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
@@ -90523,6 +90531,7 @@ class EosDesigns(EosDesignsRootModel):
                    `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
                    dedicated output location.
                 avd_eos_designs_debug: Dump all vars and facts per device after generating `avd_switch_facts`.
+                avd_eos_designs_return_structured_config: Return structured configuration as ansible_facts per device.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
                 avd_eos_designs_unset_facts:
                    Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer
