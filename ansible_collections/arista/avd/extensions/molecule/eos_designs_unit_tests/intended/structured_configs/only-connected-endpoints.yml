@@ -263,10 +263,11 @@ port_channel_interfaces:
       allowed_vlan: 1-100
       native_vlan: 1000
 radius_server:
-  hosts:
-  - host: agni.arista.com
-    vrf: MGMT
-    key: 1404071B09166738212B2130365E0C131A
+  vrfs:
+  - name: MGMT
+    servers:
+    - host: agni.arista.com
+      key: 1404071B09166738212B2130365E0C131A
 service_routing_protocols_model: null
 spanning_tree: null
 transceiver_qsfp_default_mode_4x10: null

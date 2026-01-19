@@ -182,9 +182,9 @@ Enable password has been disabled
 
 #### RADIUS Server Hosts
 
-| VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
-| --- | -------------- | --- | ----------- | ------- | ---------- |
-| MGMT | agni.arista.com | - | - | - | - |
+| VRF | RADIUS Servers | TLS | TLS Port | SSL Profile | Timeout | Retransmit |
+| --- | -------------- | --- | ---- | ----------- | ------- | ---------- |
+| MGMT | agni.arista.com | - | - | - | - | - |
 
 #### RADIUS Server Device Configuration
 
