@@ -429,7 +429,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
     @remove_cached_property_type
     @cached_property
     def uplink_switch_interfaces(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.UplinkSwitchInterfaces:
-        if _uplink_switch_interfaces := range_expand(self.shared_utils.node_config.uplink_switch_interfaces or self.shared_utils.cv_topology_config.uplink_switch_interfaces):
+        if _uplink_switch_interfaces := range_expand(
+            self.shared_utils.node_config.uplink_switch_interfaces or self.shared_utils.cv_topology_config.uplink_switch_interfaces
+        ):
             if len(self.shared_utils.uplink_switches) != len(_uplink_switch_interfaces):
                 msg = (
                     f"Lengths of 'uplink_switches' {len(self.shared_utils.uplink_switches)} and 'uplink_switch_interfaces' {len(_uplink_switch_interfaces)} do "
