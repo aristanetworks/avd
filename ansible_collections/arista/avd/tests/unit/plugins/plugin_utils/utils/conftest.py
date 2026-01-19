@@ -7,12 +7,12 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 import pytest
-from ansible.cli import Display
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
 from ansible.playbook.block import Block
 from ansible.playbook.play import Play
 from ansible.playbook.task import Task
+from ansible.utils.display import Display
 from ansible.vars.manager import VariableManager
 
 TESTS_PATH = Path(__file__).parents[4]
