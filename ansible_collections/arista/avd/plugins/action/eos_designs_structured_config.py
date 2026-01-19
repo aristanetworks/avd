@@ -51,9 +51,6 @@ LOGGER = logging.getLogger()
 
 class ActionModule(AvdActionPlugin):
     def main(self, task_vars: dict) -> None:
-        if not HAS_PYAVD:
-            msg = "The 'arista.avd.eos_designs_structured_config' plugin requires the 'pyavd' Python library. Got import error"
-            raise AnsibleActionFail(msg)
 
         if not HAS_PYAVD:
             msg = "The 'arista.avd.eos_designs_structured_config' plugin requires the 'pyavd' Python library. Got import error"
