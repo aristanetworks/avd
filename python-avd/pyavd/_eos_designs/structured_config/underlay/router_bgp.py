@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
@@ -21,56 +22,29 @@ class RouterBgpMixin(Protocol):
 
     @structured_config_contributor
     def router_bgp(self: AvdStructuredConfigUnderlayProtocol) -> None:
-        """Return the structured config for router_bgp."""
+        """Set the structured config for router_bgp."""
+        if self.shared_utils.underlay_bgp or self.shared_utils.is_wan_router or self.shared_utils.l3_bgp_neighbors:
+            self.structured_config.router_bgp.redistribute.connected.enabled = True
+            if (self.shared_utils.overlay_routing_protocol != "none" or self.shared_utils.is_wan_router) and self.inputs.underlay_filter_redistribute_connected:
+                # Use route-map for redistribution
+                self.structured_config.router_bgp.redistribute.connected.route_map = "RM-CONN-2-BGP"
+                # Create route-map
+                self.set_once_route_map_connected_to_bgp()
+
         if not self.shared_utils.underlay_bgp:
             return
 
-        af_type = "ipv4" if not self.shared_utils.underlay_ipv6_numbered else "ipv6"
-
-        peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
-            name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-            password=self.shared_utils.get_bgp_password(self.inputs.bgp_peer_groups.ipv4_underlay_peers),
-            bfd=self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd or None,
-            maximum_routes=12000,
-            send_community="all",
-        )
-        peer_group.metadata.type = af_type
-        if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
-            self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
-                self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-            )
-
-        if self.shared_utils.is_cv_pathfinder_router:
-            peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"
-            if self.shared_utils.wan_ha:
-                peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
-                if self.shared_utils.use_uplinks_for_wan_ha:
-                    # For HA need to add allowas_in 1
-                    peer_group.allowas_in._update(enabled=True, times=1)
-
-        self.structured_config.router_bgp.peer_groups.append(peer_group)
-
-        # Address Families
-        # TODO: - see if it makes sense to extract logic in method
-        if not self.shared_utils.underlay_ipv6_numbered:
-            address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(
-                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
-            )
-            if self.inputs.underlay_rfc5549 is True:
-                address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
-
-            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(address_family_ipv4_peer_group)
-
-        if self.shared_utils.underlay_ipv6:
-            self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(
-                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
-            )
+        # TODO: Remove from here and do under each neighbor type.
+        self.set_once_peer_group_ipv4_underlay_peers()
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
         if self.inputs.underlay_rfc5549 is True:
             for link in self._underlay_links:
                 if link.type != "underlay_p2p":
                     continue
+
+                # Adding the peer-group first time we add a neighbor interface.
+                # TODO: self.set_once_peer_group_ipv4_underlay_peers()
 
                 self.structured_config.router_bgp.neighbor_interfaces.append_new(
                     name=link.interface,
@@ -99,6 +73,9 @@ class RouterBgpMixin(Protocol):
                 if link.type != "underlay_p2p":
                     continue
 
+                # Adding the peer-group first time we add a neighbor.
+                # TODO: self.set_once_peer_group_ipv4_underlay_peers()
+
                 neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
                     ip_address=cast("str", link.peer_ip_address),
                     peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
@@ -111,8 +88,10 @@ class RouterBgpMixin(Protocol):
                 if self.inputs.shutdown_bgp_towards_undeployed_peers and not link.peer_is_deployed:
                     neighbor.shutdown = True
 
-                if self.inputs.underlay_filter_peer_as:
+                if self.inputs.underlay_filter_peer_as and link.peer_bgp_as is not None:
                     neighbor.route_map_out = f"RM-BGP-AS{link.peer_bgp_as}-OUT"
+                    # Create the route-map
+                    self.set_route_map_underlay_filter_peer_as(link.peer_bgp_as)
 
                 self.structured_config.router_bgp.neighbors.append(neighbor)
 
@@ -138,3 +117,53 @@ class RouterBgpMixin(Protocol):
                             description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
                             bfd=link.bfd,
                         )
+
+    @run_once_method
+    def set_once_peer_group_ipv4_underlay_peers(self: AvdStructuredConfigUnderlayProtocol) -> None:
+        """
+        Add IPv4 underlay peer group to structured_config.
+
+        Also adds required route-maps and prefix-lists.
+        """
+        af_type = "ipv4" if not self.shared_utils.underlay_ipv6_numbered else "ipv6"
+
+        peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
+            name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+            password=self.shared_utils.get_bgp_password(self.inputs.bgp_peer_groups.ipv4_underlay_peers),
+            bfd=self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd or None,
+            maximum_routes=12000,
+            send_community="all",
+        )
+        peer_group.metadata.type = af_type
+        if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
+            self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
+                self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+            )
+
+        if self.shared_utils.is_cv_pathfinder_router:
+            peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"
+            self.set_once_route_map_bgp_underlay_peers_in()
+            if self.shared_utils.wan_ha:
+                peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
+                self.set_once_route_map_bgp_underlay_peers_out()
+                if self.shared_utils.use_uplinks_for_wan_ha:
+                    # For HA need to add allowas_in 1
+                    peer_group.allowas_in._update(enabled=True, times=1)
+
+        self.structured_config.router_bgp.peer_groups.append(peer_group)
+
+        # Address Families
+        # TODO: - see if it makes sense to extract logic in method
+        if not self.shared_utils.underlay_ipv6_numbered:
+            address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(
+                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
+            )
+            if self.inputs.underlay_rfc5549 is True:
+                address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
+
+            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(address_family_ipv4_peer_group)
+
+        if self.shared_utils.underlay_ipv6:
+            self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(
+                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
+            )
