@@ -15,19 +15,19 @@ trap 'rm -f "$TEMP_OUTPUT"' EXIT  # Cleanup temp file on script exit
 molecule "$@" 2>&1 | tee "$TEMP_OUTPUT"
 MOLECULE_EXIT_CODE=${PIPESTATUS[0]}
 
-if [ $MOLECULE_EXIT_CODE -eq 0 ]; then
+if [ "$MOLECULE_EXIT_CODE" -eq 0 ]; then
     exit 0
 fi
 
-if [ $MOLECULE_EXIT_CODE -ne 2 ]; then
-    exit $MOLECULE_EXIT_CODE
+if [ "$MOLECULE_EXIT_CODE" -ne 2 ]; then
+    exit "$MOLECULE_EXIT_CODE"
 fi
 
 # Exit code 2 - analyze PLAY RECAP to check if all failures were rescued
 PLAY_RECAP=$(sed -n '/^PLAY RECAP/,$p' "$TEMP_OUTPUT")
 
 if [ -z "$PLAY_RECAP" ]; then
-    exit $MOLECULE_EXIT_CODE
+    exit "$MOLECULE_EXIT_CODE"
 fi
 
 REAL_FAILURES=0
