@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from functools import cached_property
 from ipaddress import ip_address
-from re import fullmatch
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
