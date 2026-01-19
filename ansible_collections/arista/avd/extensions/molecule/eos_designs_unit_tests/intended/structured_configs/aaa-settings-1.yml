@@ -202,6 +202,11 @@ radius_server:
     key: 071B245F5A
   - host: 10.10.10.42
     key: 071B245F5A
+  - host: 11.10.10.12
+    tls:
+      enabled: true
+      ssl_profile: HOST_SSL_PROFILE
+      port: 2080
   vrfs:
   - name: MGMT
     servers:
