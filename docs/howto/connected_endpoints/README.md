@@ -51,7 +51,7 @@ A port profile can refer to another port profile using parent_profile to inherit
 - `storm_control`: To apply storm control policies.
 - `flowcontrol`: To configure flow control settings.
 
-Please consult the [User Manual](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#port-profiles-settings) for all available keys.
+Please consult the [User Manual](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#port-profiles-settings) for all available keys.
 
 ### Adapters
 
@@ -70,7 +70,7 @@ Adapters define the physical mapping between the endpoint and the switch fabric:
 !!! note
     The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
 
-Please consult [User Manual](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#connected-endpoints-settings) for all available keys.
+Please consult [User Manual](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#connected-endpoints-settings) for all available keys.
 
 ### Define port profiles
 
@@ -166,6 +166,6 @@ docs/howto/connected_endpoints/artifacts/ESXI-HOST-03.cfg
 
 For complete details on all available properties, see:
 
-- [Port Profiles Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#port-profiles-settings)
-- [Connected Endpoints Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#connected-endpoints-settings)
-- [Network Ports Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#network-ports-settings)
+- [Port Profiles Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#port-profiles-settings)
+- [Connected Endpoints Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#connected-endpoints-settings)
+- [Network Ports Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#network-ports-settings)
