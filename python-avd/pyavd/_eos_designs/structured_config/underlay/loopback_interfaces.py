@@ -94,10 +94,8 @@ class LoopbackInterfacesMixin(Protocol):
 
             self.structured_config.loopback_interfaces.append(vtep_loopback)
 
-        # Underlay Multicast RP Loopbacks
-        if self.shared_utils.underlay_multicast_rp_interfaces is not None:
-            for underlay_multicast_rp_interface in self.shared_utils.underlay_multicast_rp_interfaces:
-                self.structured_config.loopback_interfaces.append(underlay_multicast_rp_interface)
+        # Add Underlay Multicast RP Loopbacks if any
+        self.structured_config.loopback_interfaces.extend(self.shared_utils.underlay_multicast_rp_interfaces)
 
     @cached_property
     def _node_sid(self: AvdStructuredConfigUnderlayProtocol) -> int:

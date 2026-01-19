@@ -63,3 +63,4 @@ class AvdFacts(AvdFactsProtocol):
         self._hostvars = hostvars
         self.inputs = inputs
         self.shared_utils = shared_utils
+        super().__init__()
