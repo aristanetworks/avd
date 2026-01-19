@@ -108,7 +108,8 @@ Serial Number: DEADBEEFC0FFEW
   - [Load Balance Cluster](#load-balance-cluster)
   - [Load Balance Configuration](#load-balance-configuration)
 - [Monitor Link-Flap](#monitor-link-flap)
-  - [Link-Flap Profiles](#link-flap-profiles)
+  - [Damping Link-Flap Profiles](#damping-link-flap-profiles)
+  - [Max Flap Link Profiles](#max-flap-link-profiles)
   - [Default Profiles](#default-profiles)
   - [Monitor Link Flap Device Configuration](#monitor-link-flap-device-configuration)
   - [Link Tracking](#link-tracking)
@@ -3842,15 +3843,20 @@ load-balance cluster
 
 ## Monitor Link-Flap
 
-### Link-Flap Profiles
+### Damping Link-Flap Profiles
 
-| Name | Damping | Decay Half-Life | Decay Units | MAC Fault - Local Penalty | MAC Fault - Remote Penalty | Threshold Max | Threshold Reuse | Threshold Suppression | Max Flaps | Time | Violations | Intervals |
-| ---- | ------- | --------------- | ----------- | ------------------------- | -------------------------- | ------------- | --------------- | --------------------- | --------- | ---- | ---------- | --------- |
-| LFP1 | False | - | - | - | - | - | - | - | 11 | 12 | 5 | 10 |
-| LFP2 | True | 5 | seconds | - | - | 5 | 2 | 100 | - | - | - | - |
-| LFP3 | True | - | - | - | - | - | - | - | - | - | - | - |
-| LFP4 | False | - | - | - | - | - | - | - | 23 | 10 | - | - |
-| LFP5 | True | - | - | - | - | - | 1 | - | - | - | - | - |
+| Profile Name | Penalty Decay Half-Life | Penalty Decay Units | MAC Fault - Local Penalty | MAC Fault - Remote Penalty | Penalty Threshold Max | Penalty Threshold Reuse | Penalty Threshold Suppression |
+| ------------ | ----------------------- | ------------------- | ------------------------- | -------------------------- | --------------------- | ----------------------- | ---------------------------- |
+| LFP1 | 5 | seconds | 5 | 10 | 5 | 2 | 100 |
+| LFP2 | - | - | - | - | - | - | - |
+| LFP3 | - | - | - | - | - | 1 | - |
+
+### Max Flap Link Profiles
+
+| Profile Name | Max Flaps | Time | Violations | Intervals |
+| ------------ | --------- | ---- | ---------- | --------- |
+| LFP4 | 11 | 12 | 5 | 10 |
+| LFP5 | 23 | 10 | - | - |
 
 ### Default Profiles
 
@@ -3864,18 +3870,18 @@ Note that when multiple profiles are assigned, then the monitor is triggered whe
 ```eos
 !
 monitor link-flap policy
-   profile LFP2 damping
+   profile LFP1 damping
       penalty threshold reuse 2 suppression 100 maximum 5
       penalty mac fault local 5
       penalty mac fault remote 10
       penalty decay half-life 5 seconds
    !
-   profile LFP3 damping
+   profile LFP2 damping
    !
-   profile LFP5 damping
+   profile LFP3 damping
       penalty threshold reuse 1
-   profile LFP1 max-flaps 11 time 12 violations 5 intervals 10
-   profile LFP4 max-flaps 23 time 10
+   profile LFP4 max-flaps 11 time 12 violations 5 intervals 10
+   profile LFP5 max-flaps 23 time 10
    default-profiles LFP1 LFP3
 ```
 

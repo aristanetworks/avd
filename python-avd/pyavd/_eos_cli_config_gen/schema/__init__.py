@@ -25978,148 +25978,84 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class MonitorLinkFlapPolicy(AvdModel):
         """Subclass of AvdModel."""
 
-        class ProfilesItem(AvdModel):
+        class DampingProfilesItem(AvdModel):
             """Subclass of AvdModel."""
 
-            class DampingPenalty(AvdModel):
+            class PenaltyDecay(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Decay(AvdModel):
-                    """Subclass of AvdModel."""
+                Units: TypeAlias = Literal["minutes", "seconds"]
+                _fields: ClassVar[dict] = {"half_life": {"type": int}, "units": {"type": str}}
+                half_life: int
+                units: Units
 
-                    Units: TypeAlias = Literal["minutes", "seconds"]
-                    _fields: ClassVar[dict] = {"half_life": {"type": int}, "units": {"type": str}}
-                    half_life: int
-                    units: Units
+                if TYPE_CHECKING:
 
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, half_life: int | UndefinedType = Undefined, units: Units | UndefinedType = Undefined) -> None:
-                            """
-                            Decay.
+                    def __init__(self, *, half_life: int | UndefinedType = Undefined, units: Units | UndefinedType = Undefined) -> None:
+                        """
+                        PenaltyDecay.
 
 
-                            Subclass of AvdModel.
+                        Subclass of AvdModel.
 
-                            Args:
-                                half_life: half_life
-                                units: units
+                        Args:
+                            half_life: half_life
+                            units: units
 
-                            """
+                        """
 
-                class Threshold(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"maximum": {"type": int}, "reuse": {"type": int}, "suppression": {"type": int}}
-                    maximum: int | None
-                    """Maximum value of penalty for a link."""
-                    reuse: int | None
-                    """Value of penalty below which suppressed link would be reused."""
-                    suppression: int | None
-                    """Value of penalty above which link would be suppressed."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            maximum: int | None | UndefinedType = Undefined,
-                            reuse: int | None | UndefinedType = Undefined,
-                            suppression: int | None | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            Threshold.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                maximum: Maximum value of penalty for a link.
-                                reuse: Value of penalty below which suppressed link would be reused.
-                                suppression: Value of penalty above which link would be suppressed.
-
-                            """
-
-                _fields: ClassVar[dict] = {
-                    "decay": {"type": Decay},
-                    "mac_fault_local_penalty": {"type": int},
-                    "mac_fault_remote_penalty": {"type": int},
-                    "threshold": {"type": Threshold},
-                }
-                decay: Decay
+            class PenaltyThreshold(AvdModel):
                 """Subclass of AvdModel."""
-                mac_fault_local_penalty: int | None
-                """0 refers to - No penalty, 1-5000 refers to penalty value for fault."""
-                mac_fault_remote_penalty: int | None
-                """0 refers to - No penalty, 1-5000 refers to penalty value for fault."""
-                threshold: Threshold
-                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"maximum": {"type": int}, "reuse": {"type": int}, "suppression": {"type": int}}
+                maximum: int | None
+                """Maximum value of penalty for a link."""
+                reuse: int | None
+                """Value of penalty below which suppressed link would be reused."""
+                suppression: int | None
+                """Value of penalty above which link would be suppressed."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
                         self,
                         *,
-                        decay: Decay | UndefinedType = Undefined,
-                        mac_fault_local_penalty: int | None | UndefinedType = Undefined,
-                        mac_fault_remote_penalty: int | None | UndefinedType = Undefined,
-                        threshold: Threshold | UndefinedType = Undefined,
+                        maximum: int | None | UndefinedType = Undefined,
+                        reuse: int | None | UndefinedType = Undefined,
+                        suppression: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
-                        DampingPenalty.
+                        PenaltyThreshold.
 
 
                         Subclass of AvdModel.
 
                         Args:
-                            decay: Subclass of AvdModel.
-                            mac_fault_local_penalty: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
-                            mac_fault_remote_penalty: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
-                            threshold: Subclass of AvdModel.
+                            maximum: Maximum value of penalty for a link.
+                            reuse: Value of penalty below which suppressed link would be reused.
+                            suppression: Value of penalty above which link would be suppressed.
 
                         """
 
-            class MaxFlaps(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"flaps": {"type": int}, "time": {"type": int}, "violations": {"type": int}, "intervals": {"type": int}}
-                flaps: int
-                time: int
-                """The time period that flaps are counted (in seconds)."""
-                violations: int | None
-                """Number of violations to be detected."""
-                intervals: int | None
-                """Intervals for monitoring violations."""
-
-                if TYPE_CHECKING:
-
-                    def __init__(
-                        self,
-                        *,
-                        flaps: int | UndefinedType = Undefined,
-                        time: int | UndefinedType = Undefined,
-                        violations: int | None | UndefinedType = Undefined,
-                        intervals: int | None | UndefinedType = Undefined,
-                    ) -> None:
-                        """
-                        MaxFlaps.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            flaps: flaps
-                            time: The time period that flaps are counted (in seconds).
-                            violations: Number of violations to be detected.
-                            intervals: Intervals for monitoring violations.
-
-                        """
-
-            _fields: ClassVar[dict] = {"name": {"type": str}, "damping_penalty": {"type": DampingPenalty}, "max_flaps": {"type": MaxFlaps}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "penalty_decay": {"type": PenaltyDecay},
+                "mac_fault_local_penalty": {"type": int},
+                "mac_fault_remote_penalty": {"type": int},
+                "penalty_threshold": {"type": PenaltyThreshold},
+            }
             name: str
-            damping_penalty: DampingPenalty
-            """Subclass of AvdModel."""
-            max_flaps: MaxFlaps
+            penalty_decay: PenaltyDecay
+            """
+            Decay rate for penalty.
+
+            Subclass of AvdModel.
+            """
+            mac_fault_local_penalty: int | None
+            """0 refers to - No penalty, 1-5000 refers to penalty value for fault."""
+            mac_fault_remote_penalty: int | None
+            """0 refers to - No penalty, 1-5000 refers to penalty value for fault."""
+            penalty_threshold: PenaltyThreshold
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
@@ -26128,42 +26064,116 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    damping_penalty: DampingPenalty | UndefinedType = Undefined,
-                    max_flaps: MaxFlaps | UndefinedType = Undefined,
+                    penalty_decay: PenaltyDecay | UndefinedType = Undefined,
+                    mac_fault_local_penalty: int | None | UndefinedType = Undefined,
+                    mac_fault_remote_penalty: int | None | UndefinedType = Undefined,
+                    penalty_threshold: PenaltyThreshold | UndefinedType = Undefined,
                 ) -> None:
                     """
-                    ProfilesItem.
+                    DampingProfilesItem.
 
 
                     Subclass of AvdModel.
 
                     Args:
                         name: name
-                        damping_penalty: Subclass of AvdModel.
-                        max_flaps: Subclass of AvdModel.
+                        penalty_decay:
+                           Decay rate for penalty.
+
+                           Subclass of AvdModel.
+                        mac_fault_local_penalty: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
+                        mac_fault_remote_penalty: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
+                        penalty_threshold: Subclass of AvdModel.
 
                     """
 
-        class Profiles(AvdIndexedList[str, ProfilesItem]):
-            """Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`)."""
+        class DampingProfiles(AvdIndexedList[str, DampingProfilesItem]):
+            """Subclass of AvdIndexedList with `DampingProfilesItem` items. Primary key is `name` (`str`)."""
 
             _primary_key: ClassVar[str] = "name"
 
-        Profiles._item_type = ProfilesItem
+        DampingProfiles._item_type = DampingProfilesItem
+
+        class MaxFlapProfilesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "max_flaps": {"type": int},
+                "time": {"type": int},
+                "violations": {"type": int},
+                "intervals": {"type": int},
+            }
+            name: str
+            max_flaps: int
+            """Maximum number of flaps."""
+            time: int
+            """The time period that flaps are counted (in seconds)."""
+            violations: int | None
+            """Number of violations to be detected."""
+            intervals: int | None
+            """Intervals for monitoring violations. This key is required to configure violations."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    max_flaps: int | UndefinedType = Undefined,
+                    time: int | UndefinedType = Undefined,
+                    violations: int | None | UndefinedType = Undefined,
+                    intervals: int | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    MaxFlapProfilesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        max_flaps: Maximum number of flaps.
+                        time: The time period that flaps are counted (in seconds).
+                        violations: Number of violations to be detected.
+                        intervals: Intervals for monitoring violations. This key is required to configure violations.
+
+                    """
+
+        class MaxFlapProfiles(AvdIndexedList[str, MaxFlapProfilesItem]):
+            """Subclass of AvdIndexedList with `MaxFlapProfilesItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        MaxFlapProfiles._item_type = MaxFlapProfilesItem
 
         class DefaultProfiles(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
         DefaultProfiles._item_type = str
 
-        _fields: ClassVar[dict] = {"profiles": {"type": Profiles}, "default_profiles": {"type": DefaultProfiles}}
-        profiles: Profiles
+        _fields: ClassVar[dict] = {
+            "damping_profiles": {"type": DampingProfiles},
+            "max_flap_profiles": {"type": MaxFlapProfiles},
+            "default_profiles": {"type": DefaultProfiles},
+        }
+        damping_profiles: DampingProfiles
         """
         A list of damping profiles containing the set of parameters required by the damping logic, which is
-        based on is based on the BGP Route Flap Damping algorithm described in RFC2439.
+        based on the BGP Route Flap Damping algorithm described in RFC2439.
+        The profile name should be
+        unique over all defined profiles (damping_profiles and max_flap_profiles).
 
         Subclass of
-        AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`).
+        AvdIndexedList with `DampingProfilesItem` items. Primary key is `name` (`str`).
+        """
+        max_flap_profiles: MaxFlapProfiles
+        """
+        The profile name should be unique over all defined profiles (damping_profiles and
+        max_flap_profiles).
+
+        Subclass of AvdIndexedList with `MaxFlapProfilesItem` items. Primary key is
+        `name` (`str`).
         """
         default_profiles: DefaultProfiles
         """
@@ -26174,7 +26184,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, profiles: Profiles | UndefinedType = Undefined, default_profiles: DefaultProfiles | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                damping_profiles: DampingProfiles | UndefinedType = Undefined,
+                max_flap_profiles: MaxFlapProfiles | UndefinedType = Undefined,
+                default_profiles: DefaultProfiles | UndefinedType = Undefined,
+            ) -> None:
                 """
                 MonitorLinkFlapPolicy.
 
@@ -26182,12 +26198,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    profiles:
+                    damping_profiles:
                        A list of damping profiles containing the set of parameters required by the damping logic, which is
-                       based on is based on the BGP Route Flap Damping algorithm described in RFC2439.
+                       based on the BGP Route Flap Damping algorithm described in RFC2439.
+                       The profile name should be
+                       unique over all defined profiles (damping_profiles and max_flap_profiles).
 
                        Subclass of
-                       AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`).
+                       AvdIndexedList with `DampingProfilesItem` items. Primary key is `name` (`str`).
+                    max_flap_profiles:
+                       The profile name should be unique over all defined profiles (damping_profiles and
+                       max_flap_profiles).
+
+                       Subclass of AvdIndexedList with `MaxFlapProfilesItem` items. Primary key is
+                       `name` (`str`).
                     default_profiles:
                        The default-profile set may contain zero, one, or multiple profiles. When the default-profile set
                        contains multiple profiles, error-disable criteria is satisfied when conditions match any profile.
