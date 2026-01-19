@@ -11,13 +11,13 @@ monitor_link_flap_policy:
         maximum: 5
         reuse: 2
         suppression: 100
-    - name: LFP2
+    - name: lfp2
       penalty_threshold:
     - name: LFP3
       penalty_threshold:
         reuse: 1
   max_flap_profiles:
-    - name: LFP4
+    - name: lfp4
       max_flaps: 11
       time: 12
       violations: 5

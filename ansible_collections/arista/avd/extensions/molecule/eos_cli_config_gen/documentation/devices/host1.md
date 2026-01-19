@@ -3848,14 +3848,14 @@ load-balance cluster
 | Profile Name | Penalty Decay Half-Life | Penalty Decay Units | MAC Fault - Local Penalty | MAC Fault - Remote Penalty | Penalty Threshold Max | Penalty Threshold Reuse | Penalty Threshold Suppression |
 | ------------ | ----------------------- | ------------------- | ------------------------- | -------------------------- | --------------------- | ----------------------- | ---------------------------- |
 | LFP1 | 5 | seconds | 5 | 10 | 5 | 2 | 100 |
-| LFP2 | - | - | - | - | - | - | - |
+| lfp2 | - | - | - | - | - | - | - |
 | LFP3 | - | - | - | - | - | 1 | - |
 
 ### Max Flap Link Profiles
 
 | Profile Name | Max Flaps | Time | Violations | Intervals |
 | ------------ | --------- | ---- | ---------- | --------- |
-| LFP4 | 11 | 12 | 5 | 10 |
+| lfp4 | 11 | 12 | 5 | 10 |
 | LFP5 | 23 | 10 | - | - |
 
 ### Default Profiles
@@ -3876,12 +3876,12 @@ monitor link-flap policy
       penalty mac fault remote 10
       penalty decay half-life 5 seconds
    !
-   profile LFP2 damping
-   !
    profile LFP3 damping
       penalty threshold reuse 1
-   profile LFP4 max-flaps 11 time 12 violations 5 intervals 10
+   !
+   profile lfp2 damping
    profile LFP5 max-flaps 23 time 10
+   profile lfp4 max-flaps 11 time 12 violations 5 intervals 10
    default-profiles LFP1 LFP3
 ```
 
