@@ -9,13 +9,13 @@ from asyncio import gather, run
 from dataclasses import asdict
 from pathlib import Path
 from string import Template
-from typing import Any
 
 from ansible.errors import AnsibleActionFail
-from ansible.plugins.action import ActionBase, display
+from ansible.plugins.action import display
 from yaml import load
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin
 
 PLUGIN_NAME = "arista.avd.cv_workflow"
 
@@ -98,22 +98,16 @@ ARGUMENT_SPEC = {
 }
 
 
-class ActionModule(ActionBase):
-    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
+class ActionModule(AvdActionPlugin):
+    def main(self, task_vars: dict) -> None:
         self._supports_check_mode = False
-
-        if task_vars is None:
-            task_vars = {}
-
-        result = super().run(tmp, task_vars)
-        del tmp  # tmp no longer has any effect
 
         if not HAS_PYAVD:
             msg = "The arista.avd.cv_workflow' plugin requires the 'pyavd' Python library. Got import error"
             raise AnsibleActionFail(msg)
 
         # Setup module logging
-        setup_module_logging(result)
+        setup_module_logging(self.result)
 
         # Get task arguments and validate them
         _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
@@ -123,7 +117,7 @@ class ActionModule(ActionBase):
         validated_args = json.loads(json.dumps(validated_args))
 
         # Running asyncio coroutine to deploy everything.
-        return run(self.deploy(validated_args, result))
+        run(self.deploy(validated_args, self.result))
 
     async def deploy(self, validated_args: dict, result: dict) -> dict:
         """Prepare data, perform deployment and convert result data."""
@@ -247,7 +241,7 @@ class ActionModule(ActionBase):
         except Exception as error:
             # Recast errors as AnsibleActionFail
             msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from None
+            self.raise_action_fail(msg, error)
 
         return result
 

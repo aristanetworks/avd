@@ -7,11 +7,11 @@ import cProfile
 import pstats
 from collections import ChainMap
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, cast
 
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
-from ansible.plugins.action import ActionBase, display
+from ansible.plugins.action import display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     ANSIBLE_ABOVE_2_19,
@@ -20,6 +20,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     get_templar,
     parse_validation_result,
 )
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin
 
 if TYPE_CHECKING:
     from ansible.playbook.task import Task
@@ -43,17 +44,11 @@ except ImportError:
     HAS_PYAVD = False
 
 
-class ActionModule(ActionBase):
+class ActionModule(AvdActionPlugin):
     _task: Task
     _templar: Templar
 
-    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
-        if task_vars is None:
-            task_vars = {}
-
-        result = super().run(tmp, task_vars)
-        del tmp  # tmp no longer has any effect
-
+    def main(self, task_vars: dict) -> None:
         if not HAS_PYAVD:
             msg = "The arista.avd.eos_designs_facts' plugin requires the 'pyavd' Python library. Got import error"
             raise AnsibleActionFail(msg)
@@ -95,29 +90,27 @@ class ActionModule(ActionBase):
 
         pool_manager = PoolManager(Path(output_dir))
 
-        all_inputs, all_hostvars = self.parse_inputs(fabric_hosts, hostvars, result)
-        if result.get("failed"):
+        all_inputs, all_hostvars = self.parse_inputs(fabric_hosts, hostvars, self.result)
+        if self.result.get("failed"):
             # Stop here if any of the devices failed input data validation
             if cprofile_file:
                 profiler.disable()
                 stats = pstats.Stats(profiler).sort_stats("cumtime")
                 stats.dump_stats(cprofile_file)
 
-            return result
+            return
 
         avd_switch_facts = self.render_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, templar=templar)
 
         # Save any updated pools.
-        result["changed"] = pool_manager.save_updated_pools(dumper_cls=AnsibleDumper)
+        self.result["changed"] = pool_manager.save_updated_pools(dumper_cls=AnsibleDumper)
 
-        result["ansible_facts"] = {"avd_switch_facts": avd_switch_facts}
+        self.result["ansible_facts"] = {"avd_switch_facts": avd_switch_facts}
 
         if cprofile_file:
             profiler.disable()
             stats = pstats.Stats(profiler).sort_stats("cumtime")
             stats.dump_stats(cprofile_file)
-
-        return result
 
     def parse_inputs(self, fabric_hosts: list, hostvars: ActionPluginVars, result: dict) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
         """
@@ -184,7 +177,7 @@ class ActionModule(ActionBase):
         try:
             all_facts = get_facts(all_inputs=all_inputs, pool_manager=pool_manager, all_hostvars=all_hostvars, templar=templar, digital_twin=self._digital_twin)
         except AristaAvdError as e:
-            raise AnsibleActionFail(message=str(e)) from None
+            self.raise_action_fail(str(e), e)
 
         all_facts_as_dicts: dict[str, dict] = {}
         for host, facts in all_facts.items():

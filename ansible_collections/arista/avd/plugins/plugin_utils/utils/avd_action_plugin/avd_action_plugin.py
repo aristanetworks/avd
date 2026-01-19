@@ -35,6 +35,46 @@ class AvdActionPlugin(ActionBase):
             )
             raise ValueError(msg)
 
+    @staticmethod
+    def raise_action_fail(message: str, exception: Exception | None = None) -> None:
+        """
+        Raise AnsibleActionFail with exception chaining but without message duplication.
+
+        In Ansible 2.19+, using `raise AnsibleActionFail(msg) from exception` causes the
+        error message to be duplicated/concatenated. To avoid this while preserving the
+        full traceback chain, we recursively clear all exception messages in the chain
+        as we tend to add the deeper error message in our top level Exception.
+
+        TODO: re evaluate this as Ansible way of handling nested exceptions evolves. cf References.
+
+        Args:
+            message: The error message to display
+            exception: The original exception (optional). If provided, the full traceback
+                      chain will be preserved.
+
+        Raises:
+            AnsibleActionFail: Always raises with the provided message.
+
+        References:
+            https://docs.ansible.com/projects/ansible/latest/porting_guides/porting_guide_core_2.19.html#contextual-warnings-and-errors
+        """
+        if exception is None:
+            raise AnsibleActionFail(message) from None
+
+        # Recursively clear all exception messages in the chain to avoid duplication
+        # while preserving the full traceback chain
+        def clear_exception_chain(exc: BaseException) -> None:
+            """Recursively clear exception messages in the chain."""
+            if exc is not None:
+                exc.args = ()
+                if exc.__cause__ is not None:
+                    clear_exception_chain(exc.__cause__)
+                if exc.__context__ is not None and not exc.__suppress_context__:
+                    clear_exception_chain(exc.__context__)
+
+        clear_exception_chain(exception)
+        raise AnsibleActionFail(message) from exception
+
     @abstractmethod
     def main(self, task_vars: dict[str, Any]) -> None:
         """
@@ -103,11 +143,14 @@ class AvdActionPlugin(ActionBase):
                         # Catch-all for standard Python warnings from any library
                         self.result["warnings"].append(msg)
 
+        except AnsibleActionFail:
+            # Re-raise AnsibleActionFail as-is without wrapping
+            raise
         except Exception as exc:
-            # Recast errors as AnsibleActionFail
+            # Recast other errors as AnsibleActionFail
             # Ignoring Pyright since 'ansible_name' is not typed in Ansible world
             msg = f"Error during plugin '{self.ansible_name}' execution: '{exc}'"  # pyright: ignore[reportAttributeAccessIssue]
-            raise AnsibleActionFail(msg) from exc
+            self.raise_action_fail(msg, exc)
         else:
             return self.result
 

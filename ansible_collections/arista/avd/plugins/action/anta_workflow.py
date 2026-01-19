@@ -17,9 +17,10 @@ from uuid import uuid4
 
 import yaml
 from ansible.errors import AnsibleActionFail
-from ansible.plugins.action import ActionBase, display
+from ansible.plugins.action import display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars, AntaWorkflowFilter, AntaWorkflowHandler
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -142,17 +143,11 @@ USER_CATALOG: AntaCatalog | None = None
 LOG_QUEUE: Queue = Queue()
 
 
-class ActionModule(ActionBase):
-    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
+class ActionModule(AvdActionPlugin):
+    def main(self, task_vars: dict) -> None:
         global STRUCTURED_CONFIGS, FABRIC_DATA, PLUGIN_ARGS, ANSIBLE_VARS, USER_CATALOG  # noqa: PLW0603
 
         self._supports_check_mode = False
-
-        if task_vars is None:
-            task_vars = {}
-
-        result = super().run(tmp, task_vars)
-        del tmp  # tmp no longer has any effect
 
         if not HAS_PYAVD:
             msg = f"The {PLUGIN_NAME} plugin requires the 'pyavd' Python library. Got import error"
@@ -209,7 +204,7 @@ class ActionModule(ActionBase):
                 USER_CATALOG = load_user_catalogs(user_catalog_dir)
                 if not generate_avd_catalogs and not USER_CATALOG.tests:
                     LOGGER.warning("No tests found in the user-defined ANTA catalogs, exiting")
-                    return result
+                    return
 
             # Load the structured configs and build the minimal structured configs if needed
             if generate_avd_catalogs:
@@ -224,17 +219,15 @@ class ActionModule(ActionBase):
             # Build the ANTA reports and summary
             anta_tests_summary = build_reports(batch_results, report_settings=get(PLUGIN_ARGS, "report"))
 
-            result = update_ansible_result(result, anta_tests_summary, has_errors_ref)
+            self.result = update_ansible_result(self.result, anta_tests_summary, has_errors_ref)
 
         except Exception as error:
             # Recast errors as AnsibleActionFail
             msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from None
+            self.raise_action_fail(msg, error)
         finally:
             # Stop the logging queue listener
             listener.stop()
-
-        return result
 
 
 def run_anta(devices: list[str]) -> ResultManager:

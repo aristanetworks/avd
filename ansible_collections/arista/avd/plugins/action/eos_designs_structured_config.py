@@ -8,12 +8,12 @@ import json
 import logging
 import pstats
 from collections import ChainMap
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
-from ansible.plugins.action import ActionBase, display
+from ansible.plugins.action import display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     ANSIBLE_ABOVE_2_19,
@@ -24,6 +24,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     parse_validation_result,
     write_file,
 )
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin
 
 if TYPE_CHECKING:
     from pyavd import validate_inputs
@@ -48,14 +49,8 @@ except ImportError:
 LOGGER = logging.getLogger()
 
 
-class ActionModule(ActionBase):
-    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
-        if task_vars is None:
-            task_vars = {}
-
-        result = super().run(tmp, task_vars)
-        del tmp  # tmp no longer has any effect
-
+class ActionModule(AvdActionPlugin):
+    def main(self, task_vars: dict) -> None:
         if not HAS_PYAVD:
             msg = "The 'arista.avd.eos_designs_structured_config' plugin requires the 'pyavd' Python library. Got import error"
             raise AnsibleActionFail(msg)
@@ -73,7 +68,7 @@ class ActionModule(ActionBase):
 
         if self._task.args.get("structured_config") is False:
             # Not creating structured config
-            return result
+            return
 
         eos_designs_custom_templates = self._task.args.get("eos_designs_custom_templates", [])
         filename = str(self._task.args.get("dest", ""))
@@ -107,9 +102,9 @@ class ActionModule(ActionBase):
 
         if data_validation_errors or validated_data_result.validated_data is None:
             # Quickly continue if data validation failed
-            result["failed"] = True
-            result["msg"] = build_result_message(data_validation_errors)
-            return result
+            self.result["failed"] = True
+            self.result["msg"] = build_result_message(data_validation_errors)
+            return
 
         # Get Structured Config from modules in PyAVD using internal api so we can supply our own templar
         try:
@@ -122,7 +117,7 @@ class ActionModule(ActionBase):
                 digital_twin=digital_twin,
             )
         except Exception as error:
-            raise AnsibleActionFail(message=str(error)) from None
+            self.raise_action_fail(str(error), error)
 
         output = structured_config._as_dict()
 
@@ -164,7 +159,7 @@ class ActionModule(ActionBase):
                 try:
                     merge(output, *template_result_data, list_merge=list_merge, schema=output_schema)
                 except Exception as error:
-                    raise AnsibleActionFail(message=str(error)) from error
+                    self.raise_action_fail(str(error), error)
 
         # If the argument 'template_output' is set, run the output data through another jinja2 rendering.
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
@@ -176,13 +171,13 @@ class ActionModule(ActionBase):
         if filename:
             # Depending on the file suffix of 'filename' (default: 'json') we will format the data to yaml or just write the output data directly.
             if filename.endswith((".yml", ".yaml")):
-                result["changed"] = write_file(
+                self.result["changed"] = write_file(
                     content=yaml.dump(output, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130),
                     filename=filename,
                     file_mode=file_mode,
                 )
             else:
-                result["changed"] = write_file(
+                self.result["changed"] = write_file(
                     content=json.dumps(output),
                     filename=filename,
                     file_mode=file_mode,
@@ -190,14 +185,12 @@ class ActionModule(ActionBase):
 
         # If 'dest' (filename) is not set, hardcode 'changed' to true, since we don't know if something changed and later tasks may depend on this.
         else:
-            result["changed"] = True
+            self.result["changed"] = True
 
         # TODO: AVD 6.0.0 consider not setting facts at all.
-        result["ansible_facts"] = output
+        self.result["ansible_facts"] = output
 
         if cprofile_file:
             profiler.disable()
             stats = pstats.Stats(profiler).sort_stats("cumtime")
             stats.dump_stats(cprofile_file)
-
-        return result

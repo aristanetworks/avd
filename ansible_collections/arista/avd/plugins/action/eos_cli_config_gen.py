@@ -7,11 +7,11 @@ import json
 import logging
 from contextlib import suppress
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import yaml
 from ansible.errors import AnsibleActionFail
-from ansible.plugins.action import ActionBase, display
+from ansible.plugins.action import display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     PythonToAnsibleContextFilter,
@@ -22,6 +22,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     get_templar,
     parse_validation_result,
 )
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin
 
 if TYPE_CHECKING:
     from pyavd import get_device_config, get_device_doc, validate_structured_config
@@ -59,30 +60,20 @@ ARGUMENT_SPEC = {
 }
 
 
-class ActionModule(ActionBase):
+class ActionModule(AvdActionPlugin):
     """Action Module for eos_cli_config_gen."""
 
     @cprofile()
-    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
-        """Ansible Action entry point."""
-        if task_vars is None:
-            task_vars = {}
-
+    def main(self, task_vars: dict) -> None:
+        """Main function in charge of validating the input variables and generating the device configuration and documentation."""
         if not HAS_PYAVD:
             msg = "The arista.avd.eos_cli_config_gen' plugin requires the 'pyavd' Python library. Got import error"
             raise AnsibleActionFail(msg)
 
-        result = super().run(tmp, task_vars)
-        del tmp  # tmp no longer has any effect
-
         # Setup module logging
         hostname = task_vars["inventory_hostname"]
-        setup_module_logging(hostname, result)
+        setup_module_logging(hostname, self.result)
 
-        return self.main(task_vars, result)
-
-    def main(self, task_vars: dict, result: dict) -> dict:
-        """Main function in charge of validating the input variables and generating the device configuration and documentation."""
         LOGGER.debug("Validating task arguments...")
         validated_args = self.validate_args()
         LOGGER.debug("Validating task arguments [done].")
@@ -98,20 +89,20 @@ class ActionModule(ActionBase):
             LOGGER.debug("Preparing task vars [done].")
 
             LOGGER.debug("Validating structured configuration...")
-            # result dict will be in-place updated.
+            # self.result dict will be in-place updated.
             validated_task_vars = self.validate_task_vars(
                 hostname=task_vars["inventory_hostname"],
                 task_vars=task_vars,
-                result=result,
+                result=self.result,
             )
             LOGGER.debug("Validating structured configuration [done].")
         except Exception as e:
             LOGGER.exception(e)  # noqa: TRY401 TODO: Improve code
-            return result
+            return
 
-        if result.get("failed"):
+        if self.result.get("failed"):
             # Something failed in schema validation.
-            return result
+            return
 
         has_custom_templates = bool(task_vars.get("custom_templates"))
         try:
@@ -129,7 +120,7 @@ class ActionModule(ActionBase):
                         device_config += rendered_custom_templates
                     LOGGER.debug("Rendering config custom templates [done].")
 
-                result["changed"] = self.write_file(device_config, validated_args["config_filename"])
+                self.result["changed"] = self.write_file(device_config, validated_args["config_filename"])
                 LOGGER.debug("Rendering configuration [done].")
 
             if validated_args["generate_device_doc"]:
@@ -145,15 +136,11 @@ class ActionModule(ActionBase):
                     device_doc = add_md_toc(device_doc, skip_lines=3)
 
                 file_changed = self.write_file(device_doc, validated_args["documentation_filename"])
-                result["changed"] = result.get("changed") or file_changed
+                self.result["changed"] = self.result.get("changed") or file_changed
                 LOGGER.debug("Rendering documentation [done].")
 
         except Exception as error:
-            # Recast errors as AnsibleActionFail
-            msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from None
-
-        return result
+            self.raise_action_fail(f"Error during plugin execution: {error}", error)
 
     def validate_args(self) -> dict:
         """Get task arguments and validate them."""
@@ -203,7 +190,7 @@ class ActionModule(ActionBase):
                     task_vars[var] = self._templar.template(value, fail_on_undefined=False)
                 except Exception as e:
                     msg = f"Exception during templating of task_var '{var}': '{e}'"
-                    raise AnsibleActionFail(msg) from e
+                    self.raise_action_fail(msg, e)
 
         if not isinstance(task_vars, dict):
             # Corner case for ansible-test where the passed task_vars is a nested chain-map
