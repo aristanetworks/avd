@@ -75,7 +75,7 @@ class OverlayMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
             return str(self.id + admin_subfield_offset)
 
-        if fullmatch(r"\d+", str(admin_subfield)):
+        if admin_subfield.isdigit():
             return str(int(admin_subfield) + admin_subfield_offset)
 
         try:
