@@ -7,7 +7,7 @@ import cProfile
 import pstats
 from collections import ChainMap
 from pathlib import Path
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
@@ -52,14 +52,6 @@ class ActionModule(AvdActionPlugin):
         if not HAS_PYAVD:
             msg = "The arista.avd.eos_designs_facts' plugin requires the 'pyavd' Python library. Got import error"
             raise AnsibleActionFail(msg)
-
-        self._task.args = cast("dict", self._task.args)
-
-        if not HAS_PYAVD:
-            msg = "The arista.avd.eos_designs_facts' plugin requires the 'pyavd' Python library. Got import error"
-            raise AnsibleActionFail(msg)
-
-        self._task.args = cast("dict", self._task.args)
 
         cprofile_file = self._task.args.get("cprofile_file")
         if cprofile_file:
