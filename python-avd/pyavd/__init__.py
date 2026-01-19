@@ -9,7 +9,6 @@ from .get_device_test_catalog import get_device_test_catalog
 from .get_fabric_documentation import get_fabric_documentation
 from .validate_inputs import validate_inputs
 from .validate_structured_config import validate_structured_config
-from .validation_result import ValidationResult
 
 """ Library for running Arista AVD in Python
 """
@@ -22,7 +21,6 @@ __license__ = "Apache 2.0"
 __version__ = "6.0.0.dev6"
 
 __all__ = [
-    "ValidationResult",
     "get_avd_facts",
     "get_device_config",
     "get_device_doc",

@@ -3,13 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import json
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .validation_result import ValidationResult
+    from .api.validation import ValidatedDataResult
 
 
-def validate_inputs(inputs: dict) -> ValidationResult:
+def validate_inputs(inputs: dict) -> ValidatedDataResult:
     """
     Validate input variables according to the `eos_designs` schema as documented on avd.arista.com.
 
@@ -19,15 +20,24 @@ def validate_inputs(inputs: dict) -> ValidationResult:
         inputs: Dictionary with inputs for "eos_designs".
 
     Returns:
-        Validation result object with any validation errors or deprecation warnings.
+        ValidatedDataResult object with the ValidationResult containing validation errors, deprecation warnings
+        and the validated_data as a dict. If the validation fails, the validated_data will be None.
+
+    Raises:
+        ValueError: If the inputs are not JSON serializable.
     """
-    from .avd_schema_tools import EosDesignsAvdSchemaTools  # noqa: PLC0415
+    from pyavd_utils.validation import get_validated_data  # noqa: PLC0415
 
-    eos_designs_schema_tools = EosDesignsAvdSchemaTools()
+    from ._schema.store import init_store  # noqa: PLC0415
+    from .api.validation import ValidatedDataResult  # noqa: PLC0415
 
-    # Inplace conversion of data
-    validation_result = eos_designs_schema_tools.convert_data(inputs)
+    init_store()
 
-    # Validate input data
-    validation_result.merge(eos_designs_schema_tools.validate_data(inputs))
-    return validation_result
+    try:
+        data_as_json = json.dumps(inputs, skipkeys=True, default=lambda _: "<not serializable>")
+    except (TypeError, ValueError, RecursionError) as e:
+        msg = f"Unable to serialize inputs: {e}"
+        raise ValueError(msg) from e
+
+    pyavd_utils_validated_data_result = get_validated_data(data_as_json=data_as_json, schema_name="eos_designs")
+    return ValidatedDataResult._from_pyavd_utils_validated_data_result(pyavd_utils_validated_data_result)

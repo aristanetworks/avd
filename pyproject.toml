@@ -203,6 +203,10 @@ markers = [
     "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode.",
 ]
 asyncio_default_fixture_loop_scope = "function"
+# log_file = "pytest.log"
+# log_file_level = "DEBUG"
+log_file_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_file_date_format = "%Y-%m-%d %H:%M:%S.%f"
 
 [tool.coverage.run]
 branch = true
