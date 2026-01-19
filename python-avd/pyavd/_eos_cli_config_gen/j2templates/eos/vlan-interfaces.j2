@@ -307,7 +307,6 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ipv6_ospf_network_point_to_point is arista.avd.defined(true) %}
    ipv6 ospf network point-to-point
 {%     endif %}
-{# TODO: missing process id for ipv6 ospf area command #}
 {%     if vlan_interface.ipv6_ospf_area is arista.avd.defined %}
    ipv6 ospf area {{ vlan_interface.ipv6_ospf_area }}
 {%     endif %}
