@@ -90,6 +90,7 @@ class ActionModule(AvdActionPlugin):
 
             LOGGER.debug("Validating structured configuration...")
             # self.result dict will be in-place updated.
+            # result dict will be in-place updated.
             validated_task_vars = self.validate_task_vars(
                 hostname=task_vars["inventory_hostname"],
                 task_vars=task_vars,

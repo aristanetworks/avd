@@ -55,6 +55,12 @@ class ActionModule(AvdActionPlugin):
 
         self._task.args = cast("dict", self._task.args)
 
+        if not HAS_PYAVD:
+            msg = "The arista.avd.eos_designs_facts' plugin requires the 'pyavd' Python library. Got import error"
+            raise AnsibleActionFail(msg)
+
+        self._task.args = cast("dict", self._task.args)
+
         cprofile_file = self._task.args.get("cprofile_file")
         if cprofile_file:
             profiler = cProfile.Profile()
