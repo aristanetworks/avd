@@ -38229,7 +38229,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"name": {"type": str}, "id": {"type": int}}
                 name: str
-                """Unique AVT profile name per VRF."""
+                """AVT profile name."""
                 id: int
                 """ID for this AVT (per VRF)."""
 
@@ -38243,7 +38243,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: Unique AVT profile name per VRF.
+                            name: AVT profile name.
                             id: ID for this AVT (per VRF).
 
                         """

@@ -188,7 +188,7 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: Unique AVT profile name per VRF.
+                    description: AVT profile name.
                   id:
                     type: int
                     description: ID for this AVT (per VRF).

@@ -43,7 +43,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_adaptive_virtual_topology.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "router_adaptive_virtual_topology.vrfs.[].policy") | String |  |  |  | AVT Policy name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profiles</samp>](## "router_adaptive_virtual_topology.vrfs.[].profiles") | List, items: Dictionary |  |  |  | AVT profiles in this VRF. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_adaptive_virtual_topology.vrfs.[].profiles.[].name") | String | Required, Unique |  |  | Unique AVT profile name per VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_adaptive_virtual_topology.vrfs.[].profiles.[].name") | String | Required, Unique |  |  | AVT profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "router_adaptive_virtual_topology.vrfs.[].profiles.[].id") | Integer | Required |  | Min: 1<br>Max: 254 | ID for this AVT (per VRF). |
 
 === "YAML"
@@ -137,7 +137,7 @@
           # AVT profiles in this VRF.
           profiles:
 
-              # Unique AVT profile name per VRF.
+              # AVT profile name.
             - name: <str; required; unique>
 
               # ID for this AVT (per VRF).
