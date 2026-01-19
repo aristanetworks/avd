@@ -61,17 +61,15 @@ router isis {{ router_isis.instance }}
    timers local-convergence-delay protected-prefixes
 {%         endif %}
 {%     endif %}
-{%     if router_isis.set_overload_bit.enabled is arista.avd.defined %}
+{%     if router_isis.set_overload_bit.enabled is arista.avd.defined or router_isis.set_overload_bit.on_startup is arista.avd.defined %}
 {%         set overload_cli = "set-overload-bit" %}
-{%         if router_isis.set_overload_bit.on_startup is arista.avd.defined %}
-{%             if router_isis.set_overload_bit.on_startup.delay is arista.avd.defined %}
-{%                 set overload_cli = overload_cli ~ " on-startup " ~  router_isis.set_overload_bit.on_startup.delay %}
-{%             elif router_isis.set_overload_bit.on_startup.wait_for_bgp.enabled is arista.avd.defined(true) %}
-{%                 if router_isis.set_overload_bit.on_startup.wait_for_bgp.timeout is arista.avd.defined %}
-{%                     set overload_cli = overload_cli ~ " on-startup wait-for-bgp timeout " ~ router_isis.set_overload_bit.on_startup.wait_for_bgp.timeout %}
-{%                 else %}
-{%                     set overload_cli = overload_cli ~ " on-startup wait-for-bgp" %}
-{%                 endif %}
+{%         if router_isis.set_overload_bit.on_startup.delay is arista.avd.defined %}
+{%             set overload_cli = overload_cli ~ " on-startup " ~  router_isis.set_overload_bit.on_startup.delay %}
+{%         elif router_isis.set_overload_bit.on_startup.wait_for_bgp.enabled is arista.avd.defined(true) %}
+{%             if router_isis.set_overload_bit.on_startup.wait_for_bgp.timeout is arista.avd.defined %}
+{%                 set overload_cli = overload_cli ~ " on-startup wait-for-bgp timeout " ~ router_isis.set_overload_bit.on_startup.wait_for_bgp.timeout %}
+{%             else %}
+{%                 set overload_cli = overload_cli ~ " on-startup wait-for-bgp" %}
 {%             endif %}
 {%         endif %}
    {{ overload_cli }}
