@@ -194,6 +194,14 @@ route_maps:
     type: permit
     set:
     - extcommunity soo 192.168.1.1:1 additive
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
+  - sequence: 20
+    type: permit
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
