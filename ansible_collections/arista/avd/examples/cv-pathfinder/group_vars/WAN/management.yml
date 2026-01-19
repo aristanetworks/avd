@@ -14,6 +14,9 @@ cv_settings:
 
 # For each local user in this example, password == username
 aaa_settings:
+  authorization:
+    exec:
+      default: local
   local_users:
     # Username with no password configured
     - name: admin
@@ -90,11 +93,6 @@ dns_settings:
   domain: wan.example.local
   servers:
     - ip_address: 192.168.17.1
-
-# AAA
-custom_structured_configuration_aaa_authorization:
-  exec:
-    default: local
 
 # disabling LLDP on management interface
 custom_structured_configuration_management_interfaces:

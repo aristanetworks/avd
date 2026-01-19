@@ -60,6 +60,8 @@ core_router:
       id: 4
     - name: core-5-isis-sr-ldp
       id: 5
+    - name: core-6-isis-ldp
+      id: 6
 
 core_interfaces:
   p2p_links_ip_pools:
