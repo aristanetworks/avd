@@ -2,18 +2,18 @@ aaa_root:
   disabled: true
 as_path:
   access_lists:
-  - name: AS65101
-    entries:
-    - type: permit
-      match: _65101_
-  - name: AS65110.100
-    entries:
-    - type: permit
-      match: _65110\.100_
   - name: AS65111.100
     entries:
     - type: permit
       match: _65111\.100_
+  - name: AS65110.100
+    entries:
+    - type: permit
+      match: _65110\.100_
+  - name: AS65101
+    entries:
+    - type: permit
+      match: _65101_
 config_end: true
 domain_list:
 - structured-config.set.on.node
@@ -484,12 +484,12 @@ route_maps:
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
     set:
     - origin incomplete
-- name: RM-EVPN-FILTER-AS65101
+- name: RM-EVPN-FILTER-AS65111.100
   sequence_numbers:
   - sequence: 10
     type: deny
     match:
-    - as-path AS65101
+    - as-path AS65111.100
   - sequence: 20
     type: permit
 - name: RM-EVPN-FILTER-AS65110.100
@@ -500,12 +500,12 @@ route_maps:
     - as-path AS65110.100
   - sequence: 20
     type: permit
-- name: RM-EVPN-FILTER-AS65111.100
+- name: RM-EVPN-FILTER-AS65101
   sequence_numbers:
   - sequence: 10
     type: deny
     match:
-    - as-path AS65111.100
+    - as-path AS65101
   - sequence: 20
     type: permit
 router_bfd:

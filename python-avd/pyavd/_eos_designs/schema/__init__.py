@@ -7969,8 +7969,11 @@ class EosDesigns(EosDesignsRootModel):
             """
             By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
             relevant SVI, which is the recommended behaviour.
-            This can be set manually if required, for example,
-            to a value of "10.1.2.3".
+            This value can be set manually if required:
+            - Set
+            to 'router_id' in order to use the device router ID as the source IP.
+            - Set to a valid IPv4 address
+            which will be used directly.
             """
             mode: Mode
             """Default value: `"boundary"`"""
@@ -8051,8 +8054,11 @@ class EosDesigns(EosDesignsRootModel):
                         source_ip:
                            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                            relevant SVI, which is the recommended behaviour.
-                           This can be set manually if required, for example,
-                           to a value of "10.1.2.3".
+                           This value can be set manually if required:
+                           - Set
+                           to 'router_id' in order to use the device router ID as the source IP.
+                           - Set to a valid IPv4 address
+                           which will be used directly.
                         mode: mode
                         mode_one_step: mode_one_step
                         ttl: ttl
@@ -13025,8 +13031,11 @@ class EosDesigns(EosDesignsRootModel):
             """
             By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
             relevant SVI, which is the recommended behaviour.
-            This can be set manually if required, for example,
-            to a value of "10.1.2.3".
+            This value can be set manually if required:
+            - Set
+            to 'router_id' in order to use the device router ID as the source IP.
+            - Set to a valid IPv4 address
+            which will be used directly.
             """
             mode: Mode
             """Default value: `"boundary"`"""
@@ -13107,8 +13116,11 @@ class EosDesigns(EosDesignsRootModel):
                         source_ip:
                            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                            relevant SVI, which is the recommended behaviour.
-                           This can be set manually if required, for example,
-                           to a value of "10.1.2.3".
+                           This value can be set manually if required:
+                           - Set
+                           to 'router_id' in order to use the device router ID as the source IP.
+                           - Set to a valid IPv4 address
+                           which will be used directly.
                         mode: mode
                         mode_one_step: mode_one_step
                         ttl: ttl
@@ -29517,7 +29529,7 @@ class EosDesigns(EosDesignsRootModel):
         enabled: bool
         notifying: bool | None
         """
-        If True, `eos_designs` will configure `queue-monitor length notifying` according to the
+        If True, Arista AVD will configure `queue-monitor length notifying` according to the
         `platform_settings.[].feature_support.queue_monitor_length_notify` setting.
         """
         default_thresholds: DefaultThresholds
@@ -29557,7 +29569,7 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     enabled: enabled
                     notifying:
-                       If True, `eos_designs` will configure `queue-monitor length notifying` according to the
+                       If True, Arista AVD will configure `queue-monitor length notifying` according to the
                        `platform_settings.[].feature_support.queue_monitor_length_notify` setting.
                     default_thresholds: Subclass of AvdModel.
                     log: Logging interval in seconds.
@@ -36455,8 +36467,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        - Set
+                        to 'router_id' in order to use the device router ID as the source IP.
+                        - Set to a valid IPv4 address
+                        which will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -36537,8 +36552,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       - Set
+                                       to 'router_id' in order to use the device router ID as the source IP.
+                                       - Set to a valid IPv4 address
+                                       which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -41487,8 +41505,11 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                             relevant SVI, which is the recommended behaviour.
-                            This can be set manually if required, for example,
-                            to a value of "10.1.2.3".
+                            This value can be set manually if required:
+                            - Set
+                            to 'router_id' in order to use the device router ID as the source IP.
+                            - Set to a valid IPv4 address
+                            which will be used directly.
                             """
                             mode: Mode
                             """Default value: `"boundary"`"""
@@ -41569,8 +41590,11 @@ class EosDesigns(EosDesignsRootModel):
                                         source_ip:
                                            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                            relevant SVI, which is the recommended behaviour.
-                                           This can be set manually if required, for example,
-                                           to a value of "10.1.2.3".
+                                           This value can be set manually if required:
+                                           - Set
+                                           to 'router_id' in order to use the device router ID as the source IP.
+                                           - Set to a valid IPv4 address
+                                           which will be used directly.
                                         mode: mode
                                         mode_one_step: mode_one_step
                                         ttl: ttl
@@ -46476,8 +46500,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        - Set
+                        to 'router_id' in order to use the device router ID as the source IP.
+                        - Set to a valid IPv4 address
+                        which will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -46558,8 +46585,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       - Set
+                                       to 'router_id' in order to use the device router ID as the source IP.
+                                       - Set to a valid IPv4 address
+                                       which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -51531,8 +51561,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        - Set
+                        to 'router_id' in order to use the device router ID as the source IP.
+                        - Set to a valid IPv4 address
+                        which will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -51613,8 +51646,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       - Set
+                                       to 'router_id' in order to use the device router ID as the source IP.
+                                       - Set to a valid IPv4 address
+                                       which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -68859,8 +68895,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        - Set
+                        to 'router_id' in order to use the device router ID as the source IP.
+                        - Set to a valid IPv4 address
+                        which will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -68941,8 +68980,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       - Set
+                                       to 'router_id' in order to use the device router ID as the source IP.
+                                       - Set to a valid IPv4 address
+                                       which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -73891,8 +73933,11 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                             relevant SVI, which is the recommended behaviour.
-                            This can be set manually if required, for example,
-                            to a value of "10.1.2.3".
+                            This value can be set manually if required:
+                            - Set
+                            to 'router_id' in order to use the device router ID as the source IP.
+                            - Set to a valid IPv4 address
+                            which will be used directly.
                             """
                             mode: Mode
                             """Default value: `"boundary"`"""
@@ -73973,8 +74018,11 @@ class EosDesigns(EosDesignsRootModel):
                                         source_ip:
                                            By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                            relevant SVI, which is the recommended behaviour.
-                                           This can be set manually if required, for example,
-                                           to a value of "10.1.2.3".
+                                           This value can be set manually if required:
+                                           - Set
+                                           to 'router_id' in order to use the device router ID as the source IP.
+                                           - Set to a valid IPv4 address
+                                           which will be used directly.
                                         mode: mode
                                         mode_one_step: mode_one_step
                                         ttl: ttl
@@ -78880,8 +78928,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        - Set
+                        to 'router_id' in order to use the device router ID as the source IP.
+                        - Set to a valid IPv4 address
+                        which will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -78962,8 +79013,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       - Set
+                                       to 'router_id' in order to use the device router ID as the source IP.
+                                       - Set to a valid IPv4 address
+                                       which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -83935,8 +83989,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                         relevant SVI, which is the recommended behaviour.
-                        This can be set manually if required, for example,
-                        to a value of "10.1.2.3".
+                        This value can be set manually if required:
+                        - Set
+                        to 'router_id' in order to use the device router ID as the source IP.
+                        - Set to a valid IPv4 address
+                        which will be used directly.
                         """
                         mode: Mode
                         """Default value: `"boundary"`"""
@@ -84017,8 +84074,11 @@ class EosDesigns(EosDesignsRootModel):
                                     source_ip:
                                        By default in EOS, PTP packets are sourced with an IP address from the routed port or from the
                                        relevant SVI, which is the recommended behaviour.
-                                       This can be set manually if required, for example,
-                                       to a value of "10.1.2.3".
+                                       This value can be set manually if required:
+                                       - Set
+                                       to 'router_id' in order to use the device router ID as the source IP.
+                                       - Set to a valid IPv4 address
+                                       which will be used directly.
                                     mode: mode
                                     mode_one_step: mode_one_step
                                     ttl: ttl
@@ -88529,19 +88589,22 @@ class EosDesigns(EosDesignsRootModel):
     will be merged with the structured config generated by the eos_designs role.
 
     The merge is done
-    recursively, so it is possible to update a sub-key of a variable set by `eos_designs` role already.
-    The merge follow these recursive merge strategies:
+    recursively, so it is possible to update a sub-key of a variable set by Arista AVD already.
+
+    The
+    merge follow these recursive merge strategies:
     - New keys will be added for all types.
-    -
-    Existing keys of type "List" with a "Primary key" set in the schema:
-      - Strategy can be changed
-    with `custom_structured_configuration_list_merge`. Default strategy:
-        - Existing list items with
-    the same "Primary key"-value will be updated.
-        - New unique items will be appended to the
-    existing list
+    - Existing
+    keys of type "List" with a "Primary key" set in the schema:
+      - Strategy can be changed with
+    `custom_structured_configuration_list_merge`. Default strategy:
+        - Existing list items with the
+    same "Primary key"-value will be updated.
+        - New unique items will be appended to the existing
+    list
     - Other keys of type "List" will have new unique items appended the the existing list.
-    - Existing keys of type "Dictionary" will recursively merge
+    -
+    Existing keys of type "Dictionary" will recursively merge
     - Other existing keys will be replaced.
     Subclass of AvdList with `str` items.
 
@@ -88579,12 +88642,12 @@ class EosDesigns(EosDesignsRootModel):
 
     Hostname or IP address of CloudVision host. Ex.
     "www.arista.io" for CVaaS.
-    For `eos_designs` this variable is only used for the WAN Internet-exit
-    integration with Zscaler.
-    The same variable name is also used by the `cv_deploy` role, and will
-    override the value of `ansible_host` on inventory 'cloudvision' host.
-    Make sure to set it in a
-    common group_vars file.
+    For AVD Design data models this variable is only used for the WAN
+    Internet-exit integration with Zscaler.
+    The same variable name is also used by the `cv_deploy` role,
+    and will override the value of `ansible_host` on inventory 'cloudvision' host.
+    Make sure to set it
+    in a common group_vars file.
     """
     cv_settings: CvSettings
     """
@@ -88603,12 +88666,12 @@ class EosDesigns(EosDesignsRootModel):
 
     Service account token as defined on CloudVision. This
     value should be using Ansible Vault.
-    For `eos_designs` this variable is only used for the WAN
-    Internet-exit integration with Zscaler.
-    The same variable name is also used by the `cv_deploy` role,
-    and will override the value of `ansible_password` on inventory 'cloudvision' host.
-    Make sure to set
-    it in a common group_vars file.
+    For AVD Design data models this variable is only used for the
+    WAN Internet-exit integration with Zscaler.
+    The same variable name is also used by the `cv_deploy`
+    role, and will override the value of `ansible_password` on inventory 'cloudvision' host.
+    Make sure
+    to set it in a common group_vars file.
     """
     cv_topology: CvTopology
     """
@@ -88721,21 +88784,21 @@ class EosDesigns(EosDesignsRootModel):
     default_mgmt_method: DefaultMgmtMethod
     """
     `default_mgmt_method` controls the default VRF and source interface used for the following
-    management and monitoring protocols configured with `eos_designs`:
+    management and monitoring protocols configured with AVD Design:
       - `aaa_settings`
-      -
-    `cv_settings`
-      - `logging_settings`
+      - `cv_settings`
+    - `logging_settings`
       - `management_eapi`
       - `ntp_settings`
       - `sflow_settings`
-    - `snmp_settings`
+      -
+    `snmp_settings`
       - `ssh_settings`
 
-    `oob` means the protocols will be configured with the VRF set
-    by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
-    `inband` means the protocols
-    will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
+    `oob` means the protocols will be configured with the VRF set by
+    `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
+    `inband` means the protocols will
+    be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
     interface.
     `none` means the VRF and or interface must be manually set for each protocol.
     This can be
@@ -89596,7 +89659,7 @@ class EosDesigns(EosDesignsRootModel):
     with a common flood-list containing all VTEPs.
     This behavior can be changed to per-VNI flood-lists
     by setting `overlay_her_flood_list_per_vni: true`.
-    This will make `eos_designs` consider configured
+    This will make Arista AVD consider configured
     VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.
 
     Default value: `False`
@@ -89824,14 +89887,13 @@ class EosDesigns(EosDesignsRootModel):
     """
     source_interfaces: SourceInterfaces
     """
-    Configure source-interfaces based on the management interfaces set for other `eos_designs` data
-    models.
-    By default, no source-interfaces will be configured. They can still be configured manually
-    using `eos_cli_config_gen` and custom structured configuration.
-    EOS supports a single source-
-    interface per VRF, so an error will be raised in case of conflicts.
-    Errors will also be raised if an
-    interface is not found for a device.
+    Configure source-interfaces based on the management interfaces set for other AVD Design data models.
+    By default, no source-interfaces will be configured. They can still be configured manually using
+    `eos_cli_config_gen` and custom structured configuration.
+    EOS supports a single source-interface per
+    VRF, so an error will be raised in case of conflicts.
+    Errors will also be raised if an interface is
+    not found for a device.
 
     Subclass of AvdModel.
     """
@@ -90232,11 +90294,11 @@ class EosDesigns(EosDesignsRootModel):
 
     Special data model used for testing the WAN internet-exit
     integration with Zscaler.
-    The model is supposed to be autofilled per-device by `eos_designs`.
-    Manually setting this model will take precedence and prevent `eos_designs` from trying to contact
-    CloudVision.
-    This can be useful for offline testing or if CloudVision is not available or not
-    configured for Zscaler integration.
+    The model is supposed to be autofilled per-device by Arista AVD.
+    Manually
+    setting this model will take precedence and prevent Arista AVD from trying to contact CloudVision.
+    This can be useful for offline testing or if CloudVision is not available or not configured for
+    Zscaler integration.
 
     Subclass of AvdModel.
     """
@@ -90636,19 +90698,22 @@ class EosDesigns(EosDesignsRootModel):
                    will be merged with the structured config generated by the eos_designs role.
 
                    The merge is done
-                   recursively, so it is possible to update a sub-key of a variable set by `eos_designs` role already.
-                   The merge follow these recursive merge strategies:
+                   recursively, so it is possible to update a sub-key of a variable set by Arista AVD already.
+
+                   The
+                   merge follow these recursive merge strategies:
                    - New keys will be added for all types.
-                   -
-                   Existing keys of type "List" with a "Primary key" set in the schema:
-                     - Strategy can be changed
-                   with `custom_structured_configuration_list_merge`. Default strategy:
-                       - Existing list items with
-                   the same "Primary key"-value will be updated.
-                       - New unique items will be appended to the
-                   existing list
+                   - Existing
+                   keys of type "List" with a "Primary key" set in the schema:
+                     - Strategy can be changed with
+                   `custom_structured_configuration_list_merge`. Default strategy:
+                       - Existing list items with the
+                   same "Primary key"-value will be updated.
+                       - New unique items will be appended to the existing
+                   list
                    - Other keys of type "List" will have new unique items appended the the existing list.
-                   - Existing keys of type "Dictionary" will recursively merge
+                   -
+                   Existing keys of type "Dictionary" will recursively merge
                    - Other existing keys will be replaced.
                    Subclass of AvdList with `str` items.
                 cv_pathfinder_global_sites:
@@ -90676,12 +90741,12 @@ class EosDesigns(EosDesignsRootModel):
 
                    Hostname or IP address of CloudVision host. Ex.
                    "www.arista.io" for CVaaS.
-                   For `eos_designs` this variable is only used for the WAN Internet-exit
-                   integration with Zscaler.
-                   The same variable name is also used by the `cv_deploy` role, and will
-                   override the value of `ansible_host` on inventory 'cloudvision' host.
-                   Make sure to set it in a
-                   common group_vars file.
+                   For AVD Design data models this variable is only used for the WAN
+                   Internet-exit integration with Zscaler.
+                   The same variable name is also used by the `cv_deploy` role,
+                   and will override the value of `ansible_host` on inventory 'cloudvision' host.
+                   Make sure to set it
+                   in a common group_vars file.
                 cv_settings:
                    Settings for CloudVision telemetry streaming and provisioning.
 
@@ -90694,12 +90759,12 @@ class EosDesigns(EosDesignsRootModel):
 
                    Service account token as defined on CloudVision. This
                    value should be using Ansible Vault.
-                   For `eos_designs` this variable is only used for the WAN
-                   Internet-exit integration with Zscaler.
-                   The same variable name is also used by the `cv_deploy` role,
-                   and will override the value of `ansible_password` on inventory 'cloudvision' host.
-                   Make sure to set
-                   it in a common group_vars file.
+                   For AVD Design data models this variable is only used for the
+                   WAN Internet-exit integration with Zscaler.
+                   The same variable name is also used by the `cv_deploy`
+                   role, and will override the value of `ansible_password` on inventory 'cloudvision' host.
+                   Make sure
+                   to set it in a common group_vars file.
                 cv_topology:
                    Generate AVD configurations directly from the given CloudVision topology.
                    Activate this feature by
@@ -90787,21 +90852,21 @@ class EosDesigns(EosDesignsRootModel):
                    `DefaultInterfacesItem` items.
                 default_mgmt_method:
                    `default_mgmt_method` controls the default VRF and source interface used for the following
-                   management and monitoring protocols configured with `eos_designs`:
+                   management and monitoring protocols configured with AVD Design:
                      - `aaa_settings`
-                     -
-                   `cv_settings`
-                     - `logging_settings`
+                     - `cv_settings`
+                   - `logging_settings`
                      - `management_eapi`
                      - `ntp_settings`
                      - `sflow_settings`
-                   - `snmp_settings`
+                     -
+                   `snmp_settings`
                      - `ssh_settings`
 
-                   `oob` means the protocols will be configured with the VRF set
-                   by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
-                   `inband` means the protocols
-                   will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
+                   `oob` means the protocols will be configured with the VRF set by
+                   `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
+                   `inband` means the protocols will
+                   be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
                    interface.
                    `none` means the VRF and or interface must be manually set for each protocol.
                    This can be
@@ -91414,7 +91479,7 @@ class EosDesigns(EosDesignsRootModel):
                    with a common flood-list containing all VTEPs.
                    This behavior can be changed to per-VNI flood-lists
                    by setting `overlay_her_flood_list_per_vni: true`.
-                   This will make `eos_designs` consider configured
+                   This will make Arista AVD consider configured
                    VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.
                 overlay_her_flood_list_scope:
                    When using Head-End Replication, set the scope of flood-lists to Fabric or DC.
@@ -91573,14 +91638,13 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of AvdModel.
                 source_interfaces:
-                   Configure source-interfaces based on the management interfaces set for other `eos_designs` data
-                   models.
-                   By default, no source-interfaces will be configured. They can still be configured manually
-                   using `eos_cli_config_gen` and custom structured configuration.
-                   EOS supports a single source-
-                   interface per VRF, so an error will be raised in case of conflicts.
-                   Errors will also be raised if an
-                   interface is not found for a device.
+                   Configure source-interfaces based on the management interfaces set for other AVD Design data models.
+                   By default, no source-interfaces will be configured. They can still be configured manually using
+                   `eos_cli_config_gen` and custom structured configuration.
+                   EOS supports a single source-interface per
+                   VRF, so an error will be raised in case of conflicts.
+                   Errors will also be raised if an interface is
+                   not found for a device.
 
                    Subclass of AvdModel.
                 ssh_settings: Subclass of AvdModel.
@@ -91855,11 +91919,11 @@ class EosDesigns(EosDesignsRootModel):
 
                    Special data model used for testing the WAN internet-exit
                    integration with Zscaler.
-                   The model is supposed to be autofilled per-device by `eos_designs`.
-                   Manually setting this model will take precedence and prevent `eos_designs` from trying to contact
-                   CloudVision.
-                   This can be useful for offline testing or if CloudVision is not available or not
-                   configured for Zscaler integration.
+                   The model is supposed to be autofilled per-device by Arista AVD.
+                   Manually
+                   setting this model will take precedence and prevent Arista AVD from trying to contact CloudVision.
+                   This can be useful for offline testing or if CloudVision is not available or not configured for
+                   Zscaler integration.
 
                    Subclass of AvdModel.
                 _custom_structured_configurations: _custom_structured_configurations

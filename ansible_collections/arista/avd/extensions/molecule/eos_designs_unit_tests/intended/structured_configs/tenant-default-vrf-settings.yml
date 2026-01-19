@@ -52,12 +52,6 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-- name: RM-EVPN-EXPORT-VRF-DEFAULT
-  sequence_numbers:
-  - sequence: 20
-    type: permit
-    match:
-    - ip address prefix-list PL-STATIC-VRF-DEFAULT
 - name: RM-BGP-UNDERLAY-PEERS-OUT
   sequence_numbers:
   - sequence: 15
@@ -66,6 +60,12 @@ route_maps:
     - ip address prefix-list PL-STATIC-VRF-DEFAULT
   - sequence: 20
     type: permit
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 20
+    type: permit
+    match:
+    - ip address prefix-list PL-STATIC-VRF-DEFAULT
 router_bfd:
   multihop:
     interval: 300
