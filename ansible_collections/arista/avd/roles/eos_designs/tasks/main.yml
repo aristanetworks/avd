@@ -55,6 +55,7 @@
     debug_vars: "{{ avd_eos_designs_debug | arista.avd.default(false) }}"
     debug_vars_file: "{{ structured_dir }}/{{ inventory_hostname }}-debug-vars.yml"
     digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
+    return_structured_config: "{{ avd_eos_designs_return_structured_config | arista.avd.default(false) }}"
   delegate_to: localhost
   check_mode: false
   register: structured_config

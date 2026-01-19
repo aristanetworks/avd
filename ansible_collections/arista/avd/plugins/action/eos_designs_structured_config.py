@@ -80,6 +80,7 @@ class ActionModule(ActionBase):
         template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
 
         digital_twin = self._task.args.get("digital_twin", False)
+        return_structured_config = self._task.args.get("return_structured_config", False)
 
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
@@ -170,6 +171,8 @@ class ActionModule(ActionBase):
             result["changed"] = True
 
         self.dump_template_vars(hostname, template_vars)
+        if return_structured_config:
+            result["ansible_facts"] = output
 
         if cprofile_file:
             profiler.disable()

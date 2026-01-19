@@ -2,16 +2,17 @@
   ignore_errors: false
   register: result
   arista.avd.eos_designs_structured_config:
+    return_structured_config: true
 
-# - name: Set expected_ansible_facts variable
-#   ansible.builtin.include_vars:
-#     name: expected_ansible_facts
-#     file: "{{ expected_output_dir }}/eos_designs_structured_config_ansible_facts.yml"
+- name: Set expected_ansible_facts variable
+  ansible.builtin.include_vars:
+    name: expected_ansible_facts
+    file: "{{ expected_output_dir }}/eos_designs_structured_config_ansible_facts.yml"
 
 - name: Validate result
   ansible.builtin.assert:
     that:
       - result is success
       - result.changed == true
-      - result.ansible_facts is not defined
-      # - result.ansible_facts == expected_ansible_facts
+      - result.ansible_facts is defined
+      - result.ansible_facts == expected_ansible_facts

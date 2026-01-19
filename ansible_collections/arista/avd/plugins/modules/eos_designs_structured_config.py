@@ -75,6 +75,11 @@ options:
       Generate Digital Twin topology information.
     default: false
     type: bool
+  return_structured_config:
+    description: |-
+      Return the structured configuration as "ansible_facts".
+    default: false
+    type: bool
 """
 
 EXAMPLES = r"""

@@ -11,12 +11,13 @@
 
       arista.avd.eos_designs_structured_config:
         template_output: true
+        return_structured_config: true
 
     - ansible.builtin.assert:
         that:
           - result is success
           - result.ansible_facts is not defined
-          # - result.ansible_facts is defined
-          # - result.ansible_facts._inline_jinja_value == "test"
-          # - result.ansible_facts._inline_jinja is defined
-          # - result.ansible_facts._inline_jinja == "test"
+          - result.ansible_facts is defined
+          - result.ansible_facts._inline_jinja_value == "test"
+          - result.ansible_facts._inline_jinja is defined
+          - result.ansible_facts._inline_jinja == "test"
