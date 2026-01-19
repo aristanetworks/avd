@@ -169,8 +169,8 @@
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
 
-- name: Converge Negative tests for 'eos_designs_facts' - failure-cv-topology-uplink-switches
-  hosts: failure-cv-topology-uplink-switches
+- name: Converge Negative tests for 'eos_designs_facts' - failure-cv-topology-uplink-interfaces
+  hosts: failure-cv-topology-uplink-interfaces
   gather_facts: false
   connection: local
   tasks:
