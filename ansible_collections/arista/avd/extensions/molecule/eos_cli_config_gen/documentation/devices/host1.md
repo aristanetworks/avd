@@ -7227,7 +7227,7 @@ interface Vlan26
    ip ospf message-digest-key 55 md5 7 <removed>
    ip ospf message-digest-key 56 sha512 8a <removed>
    ipv6 ospf network point-to-point
-   ipv6 ospf 11area 0.0.0.29
+   ipv6 ospf 11 area 0.0.0.29
 !
 interface Vlan41
    description SVI Description
