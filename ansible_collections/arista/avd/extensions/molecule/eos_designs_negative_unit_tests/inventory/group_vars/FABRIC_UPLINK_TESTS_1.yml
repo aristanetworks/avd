@@ -23,6 +23,9 @@ l3leaf:
   nodes:
     - name: uplink-switches-length-less-than-uplink-interfaces
       id: 1
+      loopback_ipv4_pool: 192.168.1.0/24
+      bgp_as: 65000
+      vtep_loopback_ipv4_pool: 10.255.1.0/27
       mgmt_ip: 172.16.1.15/24
       uplink_interfaces: ['Ethernet1', 'Ethernet2']
       uplink_switches: ['uplink-switches-length-less-than-uplink-interfaces-1']
@@ -30,4 +33,4 @@ l3leaf:
         - Ethernet8
 
 expected_error_message: >-
-  Length of uplink_interfaces: 2 does not match the length of uplink_switches: 1 for host: uplink-switches-length-less-than-uplink-interfaces.
+  Length of uplink_interfaces: 2 does not match the length of uplink_switches: 1 for host 'uplink-switches-length-less-than-uplink-interfaces'.

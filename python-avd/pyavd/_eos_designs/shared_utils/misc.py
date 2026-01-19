@@ -119,18 +119,17 @@ class MiscMixin(Protocol):
             if len(uplink_interface_candidates) != len(self.uplink_switches):
                 msg = (
                     f"Length of uplink_interfaces: {len(uplink_interface_candidates)} does not match the length of uplink_switches: {len(self.uplink_switches)}"
-                    f" for host: {self.hostname}."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             return uplink_interface_candidates
 
         uplink_interface_candidates = range_expand(self.default_interfaces.uplink_interfaces)
         if len(uplink_interface_candidates) < len(self.uplink_switches):
             msg = (
                 f"Length of default_interfaces.uplink_interfaces: {len(uplink_interface_candidates)} is less than the length of uplink_switches: "
-                f"{len(self.uplink_switches)} for host: {self.hostname}."
+                f"{len(self.uplink_switches)}."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         return uplink_interface_candidates[: len(self.uplink_switches)]
 

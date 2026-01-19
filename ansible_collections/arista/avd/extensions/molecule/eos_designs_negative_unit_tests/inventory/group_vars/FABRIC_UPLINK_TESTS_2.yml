@@ -33,6 +33,9 @@ l3leaf:
   nodes:
     - name: uplink-interfaces-length-in-default-interfaces-less-than-uplink-switches
       id: 1
+      loopback_ipv4_pool: 192.168.1.0/24
+      bgp_as: 65000
+      vtep_loopback_ipv4_pool: 10.255.1.0/27
       mgmt_ip: 172.16.1.151/24
       uplink_switches: ['uplink-interfaces-length-in-default-interfaces-less-than-uplink-switches-1',
                         'uplink-interfaces-length-in-default-interfaces-less-than-uplink-switches-2']
@@ -42,4 +45,4 @@ l3leaf:
 
 expected_error_message: >-
   Length of default_interfaces.uplink_interfaces: 1 is less than the length of uplink_switches: 2 for
-  host: uplink-interfaces-length-in-default-interfaces-less-than-uplink-switches.
+  host 'uplink-interfaces-length-in-default-interfaces-less-than-uplink-switches'.
