@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import logging
+from collections import ChainMap
 from contextlib import suppress
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -45,10 +46,8 @@ with suppress(AttributeError):
     LOGGER.propagate = False
 
 ARGUMENT_SPEC = {
-    "structured_config_filename": {"type": "str"},
     "config_filename": {"type": "str"},
     "documentation_filename": {"type": "str"},
-    "read_structured_config_from_file": {"type": "bool", "default": True},
     "generate_device_config": {"type": "bool", "default": True},
     "generate_device_doc": {"type": "bool", "default": True},
     "device_doc_toc": {"type": "bool", "default": True},
@@ -88,6 +87,9 @@ class ActionModule(ActionBase):
         host_hostvars = self.load_validated_inputs(hostname)
         LOGGER.debug("Loading validated inputs [done].")
 
+        # Using ChainMap to access both host_hostvars and task_vars in custom templates
+        template_vars = ChainMap(host_hostvars, task_vars)
+
         has_custom_templates = bool(host_hostvars.get("custom_templates"))
         try:
             if validated_args["generate_device_config"]:
@@ -96,7 +98,7 @@ class ActionModule(ActionBase):
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering config custom templates...")
-                    rendered_custom_templates = self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
+                    rendered_custom_templates = self.render_template_with_ansible_templar(template_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
                     # Need to handle if `end` has been rendered already
                     if device_config.endswith("!\nend\n"):
                         device_config = device_config[:-6] + rendered_custom_templates + "!\nend\n"
@@ -113,7 +115,7 @@ class ActionModule(ActionBase):
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering documentation custom templates...")
-                    device_doc += self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_DOC_TEMPLATE)
+                    device_doc += self.render_template_with_ansible_templar(template_vars, CUSTOM_TEMPLATES_DOC_TEMPLATE)
                     LOGGER.debug("Rendering documentation custom templates [done].")
 
                 if validated_args["device_doc_toc"]:
@@ -144,13 +146,13 @@ class ActionModule(ActionBase):
         # Converting to json and back to remove any AnsibeUnsafe types
         return json.loads(json.dumps(validated_args))
 
-    def render_template_with_ansible_templar(self, task_vars: dict, templatefile: str) -> str:
+    def render_template_with_ansible_templar(self, template_vars: ChainMap[str, Any], templatefile: str) -> str:
         """Render a template with the Ansible Templar."""
         # Get updated templar instance to be passed along to our simplified "templater"
         if not hasattr(self, "ansible_templar"):
-            self.ansible_templar = get_templar(self, task_vars)
+            self.ansible_templar = get_templar(self, template_vars.maps[1])
 
-        return template(templatefile, task_vars, self.ansible_templar)
+        return template(templatefile, template_vars, self.ansible_templar)
 
     def write_file(self, content: str, filename: str) -> bool:
         """
