@@ -5,10 +5,9 @@ from __future__ import annotations
 
 from functools import cached_property
 from ipaddress import AddressValueError, IPv4Address
-from typing import Any, Protocol
+from typing import TYPE_CHECKING, Any, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGenerator,
     StructuredConfigGeneratorProtocol,
@@ -28,6 +27,9 @@ from .platform_mixin import PlatformMixin
 from .router_general import RouterGeneralMixin
 from .snmp_server import SnmpServerMixin
 from .utils import UtilsMixin
+
+if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
 
 
 class AvdStructuredConfigBaseProtocol(
