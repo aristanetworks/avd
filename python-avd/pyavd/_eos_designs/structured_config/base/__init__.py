@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 from ipaddress import AddressValueError, IPv4Address
-from typing import Protocol
+from typing import TYPE_CHECKING, Any, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import (
@@ -27,6 +27,9 @@ from .platform_mixin import PlatformMixin
 from .router_general import RouterGeneralMixin
 from .snmp_server import SnmpServerMixin
 from .utils import UtilsMixin
+
+if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
 
 
 class AvdStructuredConfigBaseProtocol(
@@ -682,6 +685,28 @@ class AvdStructuredConfigBaseProtocol(
         if eos_cli:
             self.structured_config.eos_cli = eos_cli
 
+    def _add_radius_server_config(self, server: EosDesigns.AaaSettings.Radius.ServersItem, server_vrf: str) -> None:
+        """
+        Add radius server configuration to the appropriate VRF.
+
+        Args:
+            server: The RADIUS server configuration from EOS Designs inputs.
+            server_vrf: The VRF name where the server should be configured.
+        """
+        server_kwargs: dict[str, Any] = {"host": server.host}
+        if server.tls.enabled:
+            server_kwargs["tls"] = server.tls
+        else:
+            server_kwargs["key"] = self._get_tacacs_or_radius_server_password(server)
+
+        if server_vrf == "default":
+            self.structured_config.radius_server.servers.append_new(**server_kwargs)
+        else:
+            radius_server_vrf = self.structured_config.radius_server.vrfs.obtain(server_vrf)
+            if server.tls.enabled:
+                server_kwargs["tls"] = server.tls._cast_as(EosCliConfigGen.RadiusServer.VrfsItem.ServersItem.Tls)
+            radius_server_vrf.servers.append_new(**server_kwargs)
+
     @structured_config_contributor
     def radius_servers(self) -> None:
         """Parse AAA radius server configurations and update structured config with server and source interface details."""
@@ -700,11 +725,7 @@ class AvdStructuredConfigBaseProtocol(
                     EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
                 )
 
-            if server.tls.enabled:
-                self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, tls=server.tls)
-            else:
-                server_key = self._get_tacacs_or_radius_server_password(server)
-                self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
+            self._add_radius_server_config(server, server_vrf)
 
             for group in server.groups:
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
