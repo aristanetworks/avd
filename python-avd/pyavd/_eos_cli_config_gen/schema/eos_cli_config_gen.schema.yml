@@ -20815,6 +20815,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
           on_startup:
             type: dict
             keys:

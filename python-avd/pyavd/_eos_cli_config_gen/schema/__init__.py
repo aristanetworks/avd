@@ -56593,13 +56593,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """
 
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "on_startup": {"type": OnStartup}}
-            enabled: bool | None
+            enabled: bool
             on_startup: OnStartup
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, on_startup: OnStartup | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, on_startup: OnStartup | UndefinedType = Undefined) -> None:
                     """
                     SetOverloadBit.
 

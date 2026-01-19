@@ -8098,6 +8098,7 @@ router general
            return true;
            }
          EOF
+   exit
    router-id ipv4 10.1.2.3
    router-id ipv6 2001:beef:cafe::1
    software forwarding hardware offload mtu 78
@@ -8107,6 +8108,7 @@ router general
    vrf BLUE3
       leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
       leak routes source-vrf BLUE-C2 subscribe rcf RCF_BLUE_C2()
+      exit
    !
    vrf BLUE-C2
       software forwarding hardware offload mtu 98
@@ -8114,6 +8116,7 @@ router general
       leak routes source-vrf BLUE-C3 subscribe-policy RM-BLUE-LEAKING
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_1
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_2
+      exit
    !
 ```
 

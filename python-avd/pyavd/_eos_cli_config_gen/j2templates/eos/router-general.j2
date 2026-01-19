@@ -19,6 +19,8 @@ router general
          {{ content | indent(width=9, first=False) }}
 {%             endif %}
 {%         endfor %}
+{#    EOS issue #}
+   exit
 {%     endif %}
 {%     set delimiter = false %}
 {%     if router_general.router_id.ipv4 is arista.avd.defined %}
@@ -60,6 +62,10 @@ router general
       routes dynamic prefix-list {{ dynamic_prefix_list.name }}
 {%             endif %}
 {%         endfor %}
+{#    EOS issue #}
+      exit
+{%         if router_general.vrfs | length > 1 %}
    !
+{%         endif %}
 {%     endfor %}
 {% endif %}
