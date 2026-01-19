@@ -8,8 +8,8 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>monitor_link_flap_policy</samp>](## "monitor_link_flap_policy") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;damping_profiles</samp>](## "monitor_link_flap_policy.damping_profiles") | List, items: Dictionary |  |  |  | A list of damping profiles containing the set of parameters required by the damping logic, which is based on the BGP Route Flap Damping algorithm described in RFC2439.<br>The profile name should be unique over all defined profiles (damping_profiles and max_flap_profiles). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_link_flap_policy.damping_profiles.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;damping_profiles</samp>](## "monitor_link_flap_policy.damping_profiles") | List, items: Dictionary |  |  |  | A list of damping profiles containing the set of parameters required by the damping logic, which is based on the BGP Route Flap Damping algorithm described in RFC2439. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_link_flap_policy.damping_profiles.[].name") | String | Required, Unique |  |  | The profile name should be unique over all defined profiles (damping_profiles and max_flap_profiles). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;penalty_decay</samp>](## "monitor_link_flap_policy.damping_profiles.[].penalty_decay") | Dictionary |  |  |  | Decay rate for penalty. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;half_life</samp>](## "monitor_link_flap_policy.damping_profiles.[].penalty_decay.half_life") | Integer | Required |  | Min: 1<br>Max: 5000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "monitor_link_flap_policy.damping_profiles.[].penalty_decay.units") | String | Required |  | Valid Values:<br>- <code>minutes</code><br>- <code>seconds</code> |  |
@@ -19,8 +19,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "monitor_link_flap_policy.damping_profiles.[].penalty_threshold.maximum") | Integer |  |  | Min: 0<br>Max: 1000000 | Maximum value of penalty for a link. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reuse</samp>](## "monitor_link_flap_policy.damping_profiles.[].penalty_threshold.reuse") | Integer |  |  | Min: 0<br>Max: 1000000 | Value of penalty below which suppressed link would be reused. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;suppression</samp>](## "monitor_link_flap_policy.damping_profiles.[].penalty_threshold.suppression") | Integer |  |  | Min: 0<br>Max: 1000000 | Value of penalty above which link would be suppressed. |
-    | [<samp>&nbsp;&nbsp;max_flap_profiles</samp>](## "monitor_link_flap_policy.max_flap_profiles") | List, items: Dictionary |  |  |  | The profile name should be unique over all defined profiles (damping_profiles and max_flap_profiles). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_link_flap_policy.max_flap_profiles.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;max_flap_profiles</samp>](## "monitor_link_flap_policy.max_flap_profiles") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_link_flap_policy.max_flap_profiles.[].name") | String | Required, Unique |  |  | The profile name should be unique over all defined profiles (damping_profiles and max_flap_profiles). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_flaps</samp>](## "monitor_link_flap_policy.max_flap_profiles.[].max_flaps") | Integer | Required |  | Min: 1<br>Max: 100 | Maximum number of flaps. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time</samp>](## "monitor_link_flap_policy.max_flap_profiles.[].time") | Integer | Required |  | Min: 1<br>Max: 1800 | The time period that flaps are counted (in seconds). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;violations</samp>](## "monitor_link_flap_policy.max_flap_profiles.[].violations") | Integer |  |  | Min: 1<br>Max: 1000 | Number of violations to be detected. |
@@ -34,8 +34,9 @@
     monitor_link_flap_policy:
 
       # A list of damping profiles containing the set of parameters required by the damping logic, which is based on the BGP Route Flap Damping algorithm described in RFC2439.
-      # The profile name should be unique over all defined profiles (damping_profiles and max_flap_profiles).
       damping_profiles:
+
+          # The profile name should be unique over all defined profiles (damping_profiles and max_flap_profiles).
         - name: <str; required; unique>
 
           # Decay rate for penalty.
@@ -58,9 +59,9 @@
 
             # Value of penalty above which link would be suppressed.
             suppression: <int; 0-1000000>
-
-      # The profile name should be unique over all defined profiles (damping_profiles and max_flap_profiles).
       max_flap_profiles:
+
+          # The profile name should be unique over all defined profiles (damping_profiles and max_flap_profiles).
         - name: <str; required; unique>
 
           # Maximum number of flaps.

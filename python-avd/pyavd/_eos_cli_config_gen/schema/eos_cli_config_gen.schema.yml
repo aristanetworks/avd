@@ -10084,18 +10084,17 @@ keys:
       damping_profiles:
         type: list
         primary_key: name
-        description: 'A list of damping profiles containing the set of parameters
-          required by the damping logic, which is based on the BGP Route Flap Damping
-          algorithm described in RFC2439.
-
-          The profile name should be unique over all defined profiles (damping_profiles
-          and max_flap_profiles).'
+        description: A list of damping profiles containing the set of parameters required
+          by the damping logic, which is based on the BGP Route Flap Damping algorithm
+          described in RFC2439.
         items:
           type: dict
           keys:
             name:
               type: str
               required: true
+              description: The profile name should be unique over all defined profiles
+                (damping_profiles and max_flap_profiles).
             penalty_decay:
               type: dict
               description: Decay rate for penalty.
@@ -10157,14 +10156,14 @@ keys:
       max_flap_profiles:
         type: list
         primary_key: name
-        description: The profile name should be unique over all defined profiles (damping_profiles
-          and max_flap_profiles).
         items:
           type: dict
           keys:
             name:
               type: str
               required: true
+              description: The profile name should be unique over all defined profiles
+                (damping_profiles and max_flap_profiles).
             max_flaps:
               type: int
               convert_types:

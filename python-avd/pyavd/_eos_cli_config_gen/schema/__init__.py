@@ -26045,6 +26045,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "penalty_threshold": {"type": PenaltyThreshold},
             }
             name: str
+            """
+            The profile name should be unique over all defined profiles (damping_profiles and
+            max_flap_profiles).
+            """
             penalty_decay: PenaltyDecay
             """
             Decay rate for penalty.
@@ -26076,7 +26080,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        name: name
+                        name:
+                           The profile name should be unique over all defined profiles (damping_profiles and
+                           max_flap_profiles).
                         penalty_decay:
                            Decay rate for penalty.
 
@@ -26105,6 +26111,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "intervals": {"type": int},
             }
             name: str
+            """
+            The profile name should be unique over all defined profiles (damping_profiles and
+            max_flap_profiles).
+            """
             max_flaps: int
             """Maximum number of flaps."""
             time: int
@@ -26132,7 +26142,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        name: name
+                        name:
+                           The profile name should be unique over all defined profiles (damping_profiles and
+                           max_flap_profiles).
                         max_flaps: Maximum number of flaps.
                         time: The time period that flaps are counted (in seconds).
                         violations: Number of violations to be detected.
@@ -26161,20 +26173,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         A list of damping profiles containing the set of parameters required by the damping logic, which is
         based on the BGP Route Flap Damping algorithm described in RFC2439.
-        The profile name should be
-        unique over all defined profiles (damping_profiles and max_flap_profiles).
 
-        Subclass of
-        AvdIndexedList with `DampingProfilesItem` items. Primary key is `name` (`str`).
+        Subclass of AvdIndexedList with
+        `DampingProfilesItem` items. Primary key is `name` (`str`).
         """
         max_flap_profiles: MaxFlapProfiles
-        """
-        The profile name should be unique over all defined profiles (damping_profiles and
-        max_flap_profiles).
-
-        Subclass of AvdIndexedList with `MaxFlapProfilesItem` items. Primary key is
-        `name` (`str`).
-        """
+        """Subclass of AvdIndexedList with `MaxFlapProfilesItem` items. Primary key is `name` (`str`)."""
         default_profiles: DefaultProfiles
         """
         The default-profile set may contain zero, one, or multiple profiles. When the default-profile set
@@ -26201,17 +26205,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     damping_profiles:
                        A list of damping profiles containing the set of parameters required by the damping logic, which is
                        based on the BGP Route Flap Damping algorithm described in RFC2439.
-                       The profile name should be
-                       unique over all defined profiles (damping_profiles and max_flap_profiles).
 
-                       Subclass of
-                       AvdIndexedList with `DampingProfilesItem` items. Primary key is `name` (`str`).
-                    max_flap_profiles:
-                       The profile name should be unique over all defined profiles (damping_profiles and
-                       max_flap_profiles).
-
-                       Subclass of AvdIndexedList with `MaxFlapProfilesItem` items. Primary key is
-                       `name` (`str`).
+                       Subclass of AvdIndexedList with
+                       `DampingProfilesItem` items. Primary key is `name` (`str`).
+                    max_flap_profiles: Subclass of AvdIndexedList with `MaxFlapProfilesItem` items. Primary key is `name` (`str`).
                     default_profiles:
                        The default-profile set may contain zero, one, or multiple profiles. When the default-profile set
                        contains multiple profiles, error-disable criteria is satisfied when conditions match any profile.
