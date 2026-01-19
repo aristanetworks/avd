@@ -99,7 +99,7 @@ ARGUMENT_SPEC = {
 
 
 class ActionModule(AvdActionPlugin):
-    def main(self, task_vars: dict) -> None:
+    def main(self, task_vars: dict) -> None:  # noqa: ARG002
         self._supports_check_mode = False
 
         if not HAS_PYAVD:
