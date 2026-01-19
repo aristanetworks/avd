@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Input variables for eos_designs
+title: AVD Design data models (eos_designs)
 ---
 <!--
   ~ Copyright (c) 2023-2026 Arista Networks, Inc.
@@ -8,16 +8,18 @@ title: Input variables for eos_designs
   ~ that can be found in the LICENSE file.
   -->
 
-# Input variables for eos_designs
+# AVD Design data models (eos_designs)
 
-This document describes the supported input variables for the role `arista.avd.eos_designs`.
+AVD Design data models provide opinionated yet flexible network-wide data models expressing the intent of your network design and configuration. AVD Design data models are transformed by the Arista AVD framework to generate configuration, documentation and tests. You can extend or override Arista AVD's behaviour by leveraging "structured config" or [custom structured configuration](../../eos_designs/docs/how-to/custom-structured-configuration.md) with data models described in [EOS Config](../../eos_cli_config_gen/docs/data-models.md).
+
+For Ansible users this document describes the supported input variables for the role `arista.avd.eos_designs`.
 
 Since several data models have changed between AVD versions 5.x and 6.x, it is recommended to study the [Porting Guide for AVD 6.x.x](../../../../../../docs/porting-guides/6.x.x.md) for existing deployments.
 
-The input variables are documented below in tables and YAML.
+The data models are documented below in tables and YAML.
 
 !!! note
-    All input variables are validated by a schema. If additional custom keys are desired, a key starting with an underscore `_`, will be ignored.
+    All AVD Design data models are validated by a schema. If additional custom keys are desired, a key starting with an underscore `_`, will be ignored.
 
 !!! warning
     Available features and variables may vary by platforms, refer to documentation on arista.com for specifics.
@@ -27,11 +29,11 @@ The input variables are documented below in tables and YAML.
 
 ## Supported designs
 
-`eos_designs` supports multiple options such as L3LS-EVPN with 3-stage or 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](#node-type-customization) to create your own node type.
+Arista AVD supports multiple network design types such as L3LS-EVPN with 3-stage, 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend Arista AVD to support your own topology by using [`node_type_keys`](#node-type-customization) to create your own node type.
 
 ### 3-stage clos topology support (Leaf & Spine)
 
-- The **eos_designs** role support various deployments with layer 3 leaf and spine (3-stage Clos) and optionally, with dedicated overlay controllers.
+- Arista AVD supports various deployments with layer 3 leaf and spine (3-stage Clos) and optionally, with dedicated overlay controllers.
 - 3 stage Clos fabric can be represented as spines, L3 leafs and L2 leafs, and also referred to as a "POD".
 
 See the following examples:
@@ -41,14 +43,14 @@ See the following examples:
 
 ### 5-stage clos topology support (Super Spine)
 
-- The **eos_designs** role support larger deployments with super-spines (5-stage Clos) and optionally, with dedicated overlay controllers.
+- Arista AVD supports larger deployments with super-spines (5-stage Clos) and optionally, with dedicated overlay controllers.
 - 5 stage Clos fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
 - The logic to deploy every leaf-spine POD fabric remains unchanged.
 - Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
 
 ### Layer 2 Leaf Spine
 
-- The **eos_designs** role support various deployments with layer 2 leaf and spine. For example, routing may terminate at the spine level or an external L3 device.
+- Arista AVD supports various deployments with layer 2 leaf and spine. For example, routing may terminate at the spine level or an external L3 device.
 - The Clos fabric can be represented as L3 spines, spines, and leafs.
 
 See the following examples:
@@ -58,7 +60,7 @@ See the following examples:
 
 ### MPLS
 
-The **eos_designs** role supports any arbitrary physical mesh topology by combining and interconnecting different node types with the `core_interfaces` settings.
+Arista AVD supports any arbitrary physical mesh topology by combining and interconnecting different node types with the `core_interfaces` settings.
 
 The following underlay routing protocols are supported:
 
@@ -87,7 +89,7 @@ See the following example:
 
 ### WAN - AutoVPN and CV Pathfinder
 
-The **eos_designs** role with the `l3ls-evpn` design type supports the node types `wan_rr` and `wan_router`.
+Arista AVD supports AutoVPN and CV Pathfinder deployments with the node types `wan_rr` and `wan_router`.
 The default underlay routing protocol is set to none but eBGP is supported as well.
 
 The following overlay routing protocols are supported:
@@ -177,7 +179,7 @@ The pool manager stores data in a YAML file per fabric. The default path is `<ro
 
 ## Node Type Variables
 
-The following tables provide information on the default node types that are pre-defined in `eos_designs`.
+The following tables provide information on the default node types that are pre-defined in AVD.
 
 To customize or create new node types, please refer to [node type customization](#node-type-customization) section.
 
@@ -865,7 +867,7 @@ The following overlay routing protocols are supported:
 - CVX (CloudVision eXchange)
 
 ¹ For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.<br />
-² By setting `overlay_routing_protocol:HER`, `eos_designs` will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.
+² By setting `overlay_routing_protocol:HER`, Arista AVD will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/overlay-settings.md

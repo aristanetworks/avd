@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Input variables for eos_cli_config_gen
+title: EOS Config data models (eos_cli_config_gen)
 ---
 <!--
   ~ Copyright (c) 2023-2026 Arista Networks, Inc.
@@ -8,13 +8,15 @@ title: Input variables for eos_cli_config_gen
   ~ that can be found in the LICENSE file.
   -->
 
-# Input variables for eos_cli_config_gen
+# EOS Config data models (eos_cli_config_gen)
 
-This document describes the supported input variables for the role `arista.avd.eos_cli_config_gen`.
+The EOS Config provides device-centric data models for expressing the Arista EOS device configurations syntax. These data models are also referred to as "structured config" within the AVD Design data models and can be leveraged with [custom structured configuration](../../eos_designs/docs/how-to/custom-structured-configuration.md) to extend or override the behaviour of Arista AVD.
+
+For Ansible users this document describes the supported input variables for the role `arista.avd.eos_cli_config_gen`.
 
 Since several data models have changed between AVD versions 5.x and 6.x, it is recommended to study the [Porting Guide for AVD 6.x.x](../../../../../../docs/porting-guides/6.x.x.md) for existing deployments.
 
-The input variables are documented below in tables and YAML.
+The data models are documented below in tables and YAML.
 
 All values are optional.
 

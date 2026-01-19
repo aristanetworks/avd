@@ -50,7 +50,7 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 
 ### Known limitations
 
-- Zones are not configurable for CV Pathfinder. All sites are being configured in a default zone `<region_name>-ZONE` with ID `1`. Hence, in `eos_designs`, the `transit` node type is always configured as `transit region`.
+- Zones are not configurable for CV Pathfinder. All sites are being configured in a default zone `<region_name>-ZONE` with ID `1`. Hence, with Arista AVD the `transit` node type is always configured as `transit region`.
 - All Pathfinders must be able to create a full mesh
 - No IPv6 support
 - Path-group ID is currently required under `wan_path_groups` until an algorithm is implemented to auto generate IDs.
@@ -82,12 +82,6 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - Increase test coverage in `anta_runner` support for AutoVPN and CV-Pathfinder
 - WAN HA for AutoVPN
 
-!!! info
-
-    `eos_cli_config_gen` schema should support all of the required keys to configure a WAN network, whether AutoVPN or Pathfinder except for the most recent features.
-    This means that any missing `eos_designs` feature should be supported using `custom_structured_configuration` functionality.
-    If you find any missing functionality, please open an issue on Github.
-
 ## Getting started with WAN
 
 ### Global settings
@@ -103,7 +97,7 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 
 #### Summary
 
-The following table list the `eos_designs` top level keys used for WAN and how they should be set:
+The following table list the AVD Design top level keys used for WAN and how they should be set:
 
 | Key | Must be the same for all the WAN routers | Comment |
 | --- | ---------------------------------------- | ------- |
