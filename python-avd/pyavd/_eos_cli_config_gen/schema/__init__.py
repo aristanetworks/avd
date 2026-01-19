@@ -66286,6 +66286,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Ipv6OspfProcessIdentifier(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"id": {"type": int}, "ipv6_ospf_area": {"type": str}}
+            id: int
+            """OSPF Process ID. Valid range is 1-65535."""
+            ipv6_ospf_area: str
+            """OSPF Area ID. Can be an integer (0-4294967295) or dotted-decimal (0.0.0.0)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, id: int | UndefinedType = Undefined, ipv6_ospf_area: str | UndefinedType = Undefined) -> None:
+                    """
+                    Ipv6OspfProcessIdentifier.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        id: OSPF Process ID. Valid range is 1-65535.
+                        ipv6_ospf_area: OSPF Area ID. Can be an integer (0-4294967295) or dotted-decimal (0.0.0.0).
+
+                    """
+
         OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
         OspfAuthenticationKeyType: TypeAlias = Literal["7", "8a"]
 
@@ -67590,7 +67614,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ospf_network_point_to_point": {"type": bool},
             "ipv6_ospf_network_point_to_point": {"type": bool},
             "ospf_area": {"type": str},
-            "ipv6_ospf_area": {"type": str},
+            "ipv6_ospf_process_identifier": {"type": Ipv6OspfProcessIdentifier},
             "ospf_cost": {"type": int},
             "ospf_authentication": {"type": str},
             "ospf_authentication_key": {"type": str},
@@ -67713,7 +67737,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ospf_network_point_to_point: bool | None
         ipv6_ospf_network_point_to_point: bool | None
         ospf_area: str | None
-        ipv6_ospf_area: str | None
+        ipv6_ospf_process_identifier: Ipv6OspfProcessIdentifier
+        """
+        Configuration for OSPFv3 specific process and area settings on the interface.
+
+        Subclass of AvdModel.
+        """
         ospf_cost: int | None
         ospf_authentication: OspfAuthentication | None
         ospf_authentication_key: str | None
@@ -67821,7 +67850,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
                 ipv6_ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
                 ospf_area: str | None | UndefinedType = Undefined,
-                ipv6_ospf_area: str | None | UndefinedType = Undefined,
+                ipv6_ospf_process_identifier: Ipv6OspfProcessIdentifier | UndefinedType = Undefined,
                 ospf_cost: int | None | UndefinedType = Undefined,
                 ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
@@ -67917,7 +67946,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ospf_network_point_to_point: ospf_network_point_to_point
                     ipv6_ospf_network_point_to_point: ipv6_ospf_network_point_to_point
                     ospf_area: ospf_area
-                    ipv6_ospf_area: ipv6_ospf_area
+                    ipv6_ospf_process_identifier:
+                       Configuration for OSPFv3 specific process and area settings on the interface.
+
+                       Subclass of AvdModel.
                     ospf_cost: ospf_cost
                     ospf_authentication: ospf_authentication
                     ospf_authentication_key: Encrypted password.

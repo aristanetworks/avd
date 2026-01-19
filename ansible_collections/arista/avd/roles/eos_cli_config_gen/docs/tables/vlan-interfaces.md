@@ -137,7 +137,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_network_point_to_point</samp>](## "vlan_interfaces.[].ospf_network_point_to_point") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_ospf_network_point_to_point</samp>](## "vlan_interfaces.[].ipv6_ospf_network_point_to_point") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_area</samp>](## "vlan_interfaces.[].ospf_area") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_ospf_area</samp>](## "vlan_interfaces.[].ipv6_ospf_area") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_ospf_process_identifier</samp>](## "vlan_interfaces.[].ipv6_ospf_process_identifier") | Dictionary |  |  |  | Configuration for OSPFv3 specific process and area settings on the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "vlan_interfaces.[].ipv6_ospf_process_identifier.id") | Integer | Required |  | Min: 1<br>Max: 65535 | OSPF Process ID. Valid range is 1-65535. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_ospf_area</samp>](## "vlan_interfaces.[].ipv6_ospf_process_identifier.ipv6_ospf_area") | String | Required |  |  | OSPF Area ID. Can be an integer (0-4294967295) or dotted-decimal (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_cost</samp>](## "vlan_interfaces.[].ospf_cost") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_authentication</samp>](## "vlan_interfaces.[].ospf_authentication") | String |  |  | Valid Values:<br>- <code>none</code><br>- <code>simple</code><br>- <code>message-digest</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_authentication_key</samp>](## "vlan_interfaces.[].ospf_authentication_key") | String |  |  |  | Encrypted password. |
@@ -534,7 +536,15 @@
         ospf_network_point_to_point: <bool>
         ipv6_ospf_network_point_to_point: <bool>
         ospf_area: <str>
-        ipv6_ospf_area: <str>
+
+        # Configuration for OSPFv3 specific process and area settings on the interface.
+        ipv6_ospf_process_identifier:
+
+          # OSPF Process ID. Valid range is 1-65535.
+          id: <int; 1-65535; required>
+
+          # OSPF Area ID. Can be an integer (0-4294967295) or dotted-decimal (0.0.0.0).
+          ipv6_ospf_area: <str; required>
         ospf_cost: <int>
         ospf_authentication: <str; "none" | "simple" | "message-digest">
 
