@@ -37,7 +37,7 @@ jobs:
             # Install Ansible collection
             python -m ansible.cli.galaxy collection install git+${{ github.event.pull_request.head.repo.clone_url }}#/ansible_collections/arista/avd/,${{ github.event.pull_request.head.ref }} --force
             cd test-avd-pr-${{ github.event.pull_request.number }}
-            # Run your playbook using `python -m ansible.cli.playbook path/to/playbook.yml ...`
+            # Run your playbook using \`python -m ansible.cli.playbook path/to/playbook.yml ...\`
             \`\`\`
         with:
           script: |-
