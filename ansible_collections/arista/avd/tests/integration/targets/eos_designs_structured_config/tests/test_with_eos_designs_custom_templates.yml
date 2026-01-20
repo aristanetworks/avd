@@ -26,3 +26,5 @@
       - result.ansible_facts.custom_template2_list == ["custom_template2_item", "base_item"]
       - result.ansible_facts.custom_template2_none_var is defined
       - result.ansible_facts.custom_template2_none_var is none
+      - result.ansible_facts.my_is_deployed is defined
+      - result.ansible_facts.my_is_deployed == true

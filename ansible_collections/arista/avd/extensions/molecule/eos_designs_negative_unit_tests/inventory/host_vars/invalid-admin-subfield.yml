@@ -1,0 +1,31 @@
+---
+# Test overlay_rd_type.admin_subfield invalid ipv4 address
+type: l3leaf
+mgmt_gateway: 192.168.200.1
+
+overlay_rd_type:
+  admin_subfield: 1.1.2
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: invalid-admin-subfield
+      bgp_as: 65001
+      id: 1
+      mgmt_ip: 192.168.200.101/24
+
+tenants:
+  - name: Tenant_A
+    vrfs:
+      - name: TEST1
+        svis:
+          - id: 1
+            name: "VLAN_1"
+
+expected_error_message: >-
+  Invalid value '1.1.2' for 'overlay_rd_type.admin_subfield'.
+  Expected 'router_id', 'vtep_loopback', 'bgp_as', 'switch_id', a valid IPv4 address, or a numeric value from 0 to 4294967295.
