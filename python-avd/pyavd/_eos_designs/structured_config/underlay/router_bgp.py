@@ -37,35 +37,8 @@ class RouterBgpMixin(Protocol):
         # Set BGP peer group only when underlay link is present.
         if not self._underlay_p2p_links:
             return
-
-        target_peer_group = self.structured_config.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
-
-        if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
-            self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(target_peer_group.name)._deepmerge(
-                self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-            )
-
-        self.shared_utils.set_underlay_bgp_peer_group(target_peer_group)
-
-        if self.shared_utils.is_cv_pathfinder_router:
-            target_peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"
-            if self.shared_utils.wan_ha:
-                target_peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
-                if self.shared_utils.use_uplinks_for_wan_ha:
-                    # For HA need to add allowas_in 1
-                    target_peer_group.allowas_in._update(enabled=True, times=1)
-
-        # Address Families
-        # TODO: - see if it makes sense to extract logic in method
-        if not self.shared_utils.underlay_ipv6_numbered:
-            target_address_family = self.structured_config.router_bgp.address_family_ipv4.peer_groups.obtain(
-                self.inputs.bgp_peer_groups.ipv4_underlay_peers.name
-            )
-            self.shared_utils.set_ipv4_address_family(target_address_family)
-
-        if self.shared_utils.underlay_ipv6:
-            ipv6_address_family = self.structured_config.router_bgp.address_family_ipv6.peer_groups.obtain(target_peer_group.name)
-            ipv6_address_family.activate = True
+        
+        self.shared_utils.set_once_peer_group_ipv4_underlay_peers(self.structured_config)
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
         if self.inputs.underlay_rfc5549 is True:
@@ -135,53 +108,3 @@ class RouterBgpMixin(Protocol):
                             description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
                             bfd=link.bfd,
                         )
-
-    @run_once_method
-    def set_once_peer_group_ipv4_underlay_peers(self: AvdStructuredConfigUnderlayProtocol) -> None:
-        """
-        Add IPv4 underlay peer group to structured_config.
-
-        Also adds required route-maps and prefix-lists.
-        """
-        af_type = "ipv4" if not self.shared_utils.underlay_ipv6_numbered else "ipv6"
-
-        peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
-            name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-            password=self.shared_utils.get_bgp_password(self.inputs.bgp_peer_groups.ipv4_underlay_peers),
-            bfd=self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd or None,
-            maximum_routes=12000,
-            send_community="all",
-        )
-        peer_group.metadata.type = af_type
-        if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
-            self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
-                self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-            )
-
-        if self.shared_utils.is_cv_pathfinder_router:
-            peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"
-            self.set_once_route_map_bgp_underlay_peers_in()
-            if self.shared_utils.wan_ha:
-                peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
-                self.set_once_route_map_bgp_underlay_peers_out()
-                if self.shared_utils.use_uplinks_for_wan_ha:
-                    # For HA need to add allowas_in 1
-                    peer_group.allowas_in._update(enabled=True, times=1)
-
-        self.structured_config.router_bgp.peer_groups.append(peer_group)
-
-        # Address Families
-        # TODO: - see if it makes sense to extract logic in method
-        if not self.shared_utils.underlay_ipv6_numbered:
-            address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(
-                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
-            )
-            if self.inputs.underlay_rfc5549 is True:
-                address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
-
-            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(address_family_ipv4_peer_group)
-
-        if self.shared_utils.underlay_ipv6:
-            self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(
-                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
-            )

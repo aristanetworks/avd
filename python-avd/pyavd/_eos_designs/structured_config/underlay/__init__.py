@@ -6,7 +6,6 @@ from typing import Protocol
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, StructuredConfigGeneratorProtocol
 
 from .agents import AgentsMixin
-from .as_path import AsPathMixin
 from .dhcp_servers import DhcpServersMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
 from .ip_access_lists import IpAccesslistsMixin
@@ -33,7 +32,6 @@ class AvdStructuredConfigUnderlayProtocol(
     PortChannelInterfacesMixin,
     LoopbackInterfacesMixin,
     RouterBgpMixin,
-    AsPathMixin,
     RouterOspfMixin,
     PrefixListsMixin,
     RouteMapsMixin,

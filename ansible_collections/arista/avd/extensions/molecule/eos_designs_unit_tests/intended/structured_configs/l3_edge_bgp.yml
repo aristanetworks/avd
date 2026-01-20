@@ -247,7 +247,6 @@ router_bgp:
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
-    description: Test_for_ipv4_underlay_peers
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
     maximum_routes: 12000

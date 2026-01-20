@@ -51,25 +51,7 @@ class RouterBgpMixin(Protocol):
                 msg = f"{self.data_model}.p2p_links.[].ip, .subnet or .ip_pool"
                 raise AristaAvdMissingVariableError(msg)
 
-            # Set Underlay BGP peer group first.
-            target_peer_group = self.structured_config.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
-
-            if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
-                self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(target_peer_group.name)._deepmerge(
-                    self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-                )
-
-            self.shared_utils.set_underlay_bgp_peer_group(target_peer_group)
-
-            if not self.shared_utils.underlay_ipv6_numbered:
-                target_address_family = self.structured_config.router_bgp.address_family_ipv4.peer_groups.obtain(
-                    self.inputs.bgp_peer_groups.ipv4_underlay_peers.name
-                )
-                self.shared_utils.set_ipv4_address_family(target_address_family)
-
-            if self.shared_utils.underlay_ipv6:
-                ipv6_address_family = self.structured_config.router_bgp.address_family_ipv6.peer_groups.obtain(target_peer_group.name)
-                ipv6_address_family.activate = True
+            self.shared_utils.set_once_peer_group_ipv4_underlay_peers(self.structured_config)
 
             self.structured_config.router_bgp.neighbors.append_new(
                 ip_address=get_ip_from_ip_prefix(p2p_link_data["peer_ip"]),
