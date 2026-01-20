@@ -32,7 +32,6 @@ l3leaf:
   nodes:
     - name: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
       bgp_as: 65106
-      uplink_interfaces: [Ethernet1]
       id: 8
       uplink_switch_interfaces: [Ethernet3]
 
