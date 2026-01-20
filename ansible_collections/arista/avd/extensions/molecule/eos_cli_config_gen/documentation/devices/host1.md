@@ -3848,15 +3848,15 @@ load-balance cluster
 | Profile Name | Penalty Decay Half-Life | Penalty Decay Units | MAC Fault - Local Penalty | MAC Fault - Remote Penalty | Penalty Threshold Max | Penalty Threshold Reuse | Penalty Threshold Suppression |
 | ------------ | ----------------------- | ------------------- | ------------------------- | -------------------------- | --------------------- | ----------------------- | ---------------------------- |
 | LFP1 | 5 | seconds | 5 | 10 | 5 | 2 | 100 |
-| lfp2 | - | - | - | - | - | - | - |
 | LFP3 | - | - | - | - | - | 1 | - |
+| lfp2 | - | - | - | - | - | - | - |
 
 ### Max Flap Link Profiles
 
 | Profile Name | Max Flaps | Time | Violations | Intervals |
 | ------------ | --------- | ---- | ---------- | --------- |
-| lfp4 | 11 | 12 | 5 | 10 |
 | LFP5 | 23 | 10 | - | - |
+| lfp4 | 11 | 12 | 5 | 10 |
 
 ### Default Profiles
 

@@ -13,7 +13,7 @@
 
 | Profile Name | Penalty Decay Half-Life | Penalty Decay Units | MAC Fault - Local Penalty | MAC Fault - Remote Penalty | Penalty Threshold Max | Penalty Threshold Reuse | Penalty Threshold Suppression |
 | ------------ | ----------------------- | ------------------- | ------------------------- | -------------------------- | --------------------- | ----------------------- | ---------------------------- |
-{%         for damping_profile in monitor_link_flap_policy.damping_profiles | arista.avd.natural_sort("name")  %}
+{%         for damping_profile in monitor_link_flap_policy.damping_profiles | arista.avd.natural_sort(sort_key="name", ignore_case=false)  %}
 | {{ damping_profile.name }} | {{ damping_profile.penalty_decay.half_life | arista.avd.default("-") }} | {{ damping_profile.penalty_decay.units | arista.avd.default("-") }} | {{ damping_profile.mac_fault_local_penalty | arista.avd.default("-") }} | {{ damping_profile.mac_fault_remote_penalty | arista.avd.default("-") }} | {{ damping_profile.penalty_threshold.maximum | arista.avd.default("-") }} | {{ damping_profile.penalty_threshold.reuse | arista.avd.default("-") }} | {{ damping_profile.penalty_threshold.suppression | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
@@ -23,7 +23,7 @@
 
 | Profile Name | Max Flaps | Time | Violations | Intervals |
 | ------------ | --------- | ---- | ---------- | --------- |
-{%         for max_flap_profile in monitor_link_flap_policy.max_flap_profiles | arista.avd.natural_sort("name")  %}
+{%         for max_flap_profile in monitor_link_flap_policy.max_flap_profiles | arista.avd.natural_sort(sort_key="name", ignore_case=false)  %}
 | {{ max_flap_profile.name }} | {{ max_flap_profile.max_flaps | arista.avd.default("-") }} | {{ max_flap_profile.time | arista.avd.default("-") }} | {{ max_flap_profile.violations | arista.avd.default("-") }} | {{ max_flap_profile.intervals | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
