@@ -191,7 +191,7 @@ jobs:
           - "eos_cli_config_gen_deprecated_vars"
           - "eos_cli_config_gen_negative_unit_tests"
         ansible_version:
-          - "ansible-core<2.20.0"
+          - "ansible-core<2.21.0"
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: "eos_cli_config_gen"
@@ -254,7 +254,7 @@ jobs:
           - "example-cv-pathfinder"
           - "howto"
         ansible_version:
-          - "ansible-core>=2.16.0,<2.20.0"
+          - "ansible-core>=2.16.0,<2.21.0"
         include:
           - avd_scenario: "eos_designs_negative_unit_tests"
             # Testing with 2.16.x, due to bug with in 2.17.0 with and the way we test eos_designs_negative_unit_tests https://github.com/ansible/ansible/issues/83292
@@ -265,6 +265,8 @@ jobs:
             ansible_version: "ansible-core<2.18.0"
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.19.0"
+          - avd_scenario: "eos_designs_unit_tests"
+            ansible_version: "ansible-core<2.20.0"
     steps:
       - uses: actions/checkout@v6
       - name: Download pyavd Artifact
@@ -343,7 +345,7 @@ jobs:
         avd_scenario:
           - "anta_runner"
         ansible_version:
-          - "ansible-core<2.20.0"
+          - "ansible-core<2.21.0"
         include:
           - avd_scenario: "anta_runner"
             ansible_version: "ansible-core==2.16.0"
@@ -382,7 +384,7 @@ jobs:
         ansible_version: [stable, devel]
         include:
           - ansibe_version: stable
-            pip_installation: "ansible-core<2.20.0"
+            pip_installation: "ansible-core<2.21.0"
           - ansibe_version: devel
             pip_installation: "--user https://github.com/ansible/ansible/archive/devel.tar.gz"
             skip_test: "--skip-test ansible-doc"
@@ -428,7 +430,7 @@ jobs:
           path: /tmp/pyavd/
       - name: Install pyavd and ansible requirements
         run: |
-          pip install "ansible-core<2.20.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
+          pip install "ansible-core<2.21.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
       - name: Run ansible-test units
         working-directory: ansible_collections/arista/avd
         run: |
@@ -457,7 +459,7 @@ jobs:
             3.13
       - name: Install Python requirements
         run: |
-          pip install "ansible-core<2.20.0" "./python-avd[ansible-collection]" --upgrade
+          pip install "ansible-core<2.21.0" "./python-avd[ansible-collection]" --upgrade
       - name: Run ansible-test integration test cases
         working-directory: ansible_collections/arista/avd
         run: |
@@ -485,7 +487,7 @@ jobs:
       - name: Install Python & Ansible requirements
         run: |
           # distlib is required when using manifest
-          pip install "ansible-core<2.20.0" distlib --upgrade
+          pip install "ansible-core<2.21.0" distlib --upgrade
       - name: Build Ansible collection
         run: |
           ansible-galaxy collection build -vvv --force ansible_collections/arista/avd
