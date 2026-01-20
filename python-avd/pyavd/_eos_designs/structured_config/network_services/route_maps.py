@@ -138,7 +138,6 @@ class RouteMapsMixin(Protocol):
         This should only be called when any one of self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"],
         self.shared_utils.is_wan_router is true.
         """
-        # Set prefix-lists from EVPN services in VRF "default" (if any)
         sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
         if self.shared_utils.is_wan_router:
             sequence_numbers.append_new(
