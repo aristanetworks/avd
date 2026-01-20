@@ -446,8 +446,8 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             return EosDesignsFactsProtocol.UplinkSwitchInterfaces()
 
         if self.id is None:
-            msg = f"'id' is not set on '{self.shared_utils.hostname}'."
-            raise AristaAvdInvalidInputsError(msg)
+            msg = "'id' is not set."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         uplink_switch_interfaces = EosDesignsFactsProtocol.UplinkSwitchInterfaces()
         uplink_switch_counter = {}
@@ -467,10 +467,10 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
             elif uplink_switch_downlink_interfaces_length == 0:
                 msg = (
-                    f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
-                    f"does not have any 'downlink_interfaces' set under 'default_interfaces'. At least one or the other must be defined."
+                    f"Either 'downlink_interfaces' must be set under 'default_interfaces' for uplink_switch' '{uplink_switch}' "
+                    "or 'uplink_switch_interfaces' must be set."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdError(msg, host=self.shared_utils.hostname)
             else:
                 msg = (
                     f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
@@ -478,6 +478,6 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     f"The uplink switch requires at least {downlink_index + 1} downlink_interfaces, but "
                     f"only {uplink_switch_downlink_interfaces_length} are configured."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdError(msg, host=uplink_switch)
 
         return uplink_switch_interfaces
