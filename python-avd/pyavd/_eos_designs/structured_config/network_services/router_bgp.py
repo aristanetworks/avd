@@ -122,7 +122,7 @@ class RouterBgpMixin(Protocol):
         if (
             self._vrf_default_evpn
             and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"])
-            and (target_peer_group :=self.structured_config.router_bgp.peer_groups.get(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name))
+            and (target_peer_group := self.structured_config.router_bgp.peer_groups.get(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name))
         ):
             # Set this only when peer group exists.
             target_peer_group.metadata.type = "ipv4"

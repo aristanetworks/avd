@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import ipaddress
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
@@ -16,7 +17,6 @@ from pyavd._utils.run_once import run_once_method
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import range_expand
-import ipaddress
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -518,9 +518,7 @@ class MiscMixin(Protocol):
             structured_config.router_bgp.address_family_ipv4.peer_groups.append(address_family_ipv4_peer_group)
 
         if self.underlay_ipv6:
-            structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(
-                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
-            )
+            structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True)
 
     @run_once_method
     def set_once_route_map_bgp_underlay_peers_in(self: SharedUtilsProtocol, structured_config: EosCliConfigGen) -> None:

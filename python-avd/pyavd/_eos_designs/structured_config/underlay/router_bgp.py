@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
@@ -37,7 +36,7 @@ class RouterBgpMixin(Protocol):
         # Set BGP peer group only when underlay link is present.
         if not self._underlay_p2p_links:
             return
-        
+
         self.shared_utils.set_once_peer_group_ipv4_underlay_peers(self.structured_config)
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
