@@ -19,7 +19,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: The profile name should be unique over all defined profiles (damping_profiles and max_flap_profiles).
             penalty_decay:
               type: dict
@@ -84,7 +83,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: The profile name should be unique over all defined profiles (damping_profiles and max_flap_profiles).
             max_flaps:
               type: int

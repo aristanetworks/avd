@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - monitor link flap policy #}
-{% if monitor_link_flap_policy is arista.avd.defined %}
+{% if monitor_link_flap_policy.damping_profiles is arista.avd.defined or monitor_link_flap_policy.max_flap_profiles is arista.avd.defined or monitor_link_flap_policy.default_profiles is arista.avd.defined %}
 !
 monitor link-flap policy
 {%     for damping_profile in monitor_link_flap_policy.damping_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
