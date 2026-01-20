@@ -17,15 +17,17 @@ EOS_DESIGNS_FACTS_FILENAME = "eos_designs_facts.json"
 
 def get_tmp_path() -> Path:
     """
-    Return a Path object set to the directory where to place temporary AVD files.
+    Return a Path object for the AVD temporary directory.
 
-    The Path will be created if missing with 700 permissions.
+    The directory will be created if missing with 700 permissions.
 
-    This can be set to one of the following (in order):
-    - The environment variable AVDTMPDIR.
-      Note this will *not* be cleaned up automatically. It should only be used for debugging or AVD CI purposes.
-    - An "arista_avd" directory under Ansible's "local_tmp" directory which will be removed after the play by Ansible.
-    - Fall back to "arista_avd_<random>" directory under the system default temp directory.
+    The location is determined in the following order:
+    1. Environment variable `AVDTMPDIR` (not cleaned up automatically, for debugging/CI).
+    2. An "arista_avd" subdirectory under Ansible's "local_tmp" directory (cleaned up by Ansible after the play).
+    3. Fall back to "arista_avd_<random>" directory under the system temp directory.
+
+    Returns:
+        Path object pointing to the AVD temporary directory.
     """
     # Return the same tmp_path as last time unless ansible cleaned it up in the meanwhile. Ansible maintains a separate local_tmp folder per play.
     tmp_path = _cached_tmp_path()
@@ -60,9 +62,15 @@ def _cached_tmp_path() -> Path:
 
 def get_eos_designs_facts_path() -> Path:
     """
-    Return the full Path object for the shared eos_designs facts file.
+    Return the Path object for the shared eos_designs facts file.
 
-    Ensures the parent temporary directory exists.
+    This file contains facts for all devices in the fabric, written by `eos_designs_facts`
+    and read by `eos_designs_structured_config`.
+
+    The parent directory is created if it doesn't exist.
+
+    Returns:
+        Path object pointing to the eos_designs facts JSON file.
     """
     base_tmp_path = get_tmp_path()
     eos_designs_path = base_tmp_path / "eos_designs"

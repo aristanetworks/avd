@@ -85,7 +85,7 @@ class ActionModule(ActionBase):
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
 
-        avd_design, host_hostvars = self.load_validated_inputs(hostname)
+        avd_design, device_hostvars = self.load_validated_inputs(hostname)
 
         all_facts = self.load_facts(hostname)
 
@@ -95,7 +95,7 @@ class ActionModule(ActionBase):
                 hostname=hostname,
                 inputs=avd_design,
                 all_facts=all_facts,
-                hostvars=host_hostvars,
+                hostvars=device_hostvars,
                 templar=self.templar,
                 digital_twin=digital_twin,
             )
@@ -108,7 +108,7 @@ class ActionModule(ActionBase):
         #  - output (containing structured_config at this point)
         #  - templated, converted and validated version of all other vars
         # Any var assignments will end up in output, so all other objects are protected.
-        template_vars = ChainMap(output, host_hostvars)
+        template_vars = ChainMap(output, device_hostvars)
 
         # eos_designs_custom_templates can contain a list of jinja templates to run after PyAVD
         if eos_designs_custom_templates:
@@ -181,39 +181,39 @@ class ActionModule(ActionBase):
 
         return result
 
-    def load_validated_inputs(self, host: str) -> tuple[AVDDesign, dict[str, Any]]:
+    def load_validated_inputs(self, device: str) -> tuple[AVDDesign, dict[str, Any]]:
         """
-        Read validated hostvars from the temporary file for the host and load data into AVDDesign class.
+        Read validated hostvars from the temporary file for the device and load data into AVDDesign class.
 
         Args:
-            host: Hostname.
+            device: Device name (inventory hostname).
 
         Returns:
-            Tuple of an AVDDesign instance loaded from the host hostvars and a dict with the host raw hostvars.
+            Tuple of an AVDDesign instance loaded from the device hostvars and a dict with the raw hostvars.
         """
         _templated_path, validated_path = get_role_tmp_paths("eos_designs")
-        file_path = validated_path / f"{host}.json"
+        file_path = validated_path / f"{device}.json"
         if not file_path.exists():
             msg = (
-                f"Missing validated inputs for host '{host}'. "
-                "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
+                f"Missing validated inputs for device '{device}'. "
+                "Ensure the 'arista.avd.validate_inputs' task ran successfully for this device and that no validation errors occurred."
             )
             raise AnsibleActionFail(message=msg)
 
         with file_path.open(mode="r", encoding="utf-8") as f:
-            host_hostvars = json.load(f)
+            device_hostvars = json.load(f)
 
         # Load input vars into the AVDDesign data class.
-        avd_design = AVDDesign._from_dict(host_hostvars)
+        avd_design = AVDDesign._from_dict(device_hostvars)
 
-        return avd_design, host_hostvars
+        return avd_design, device_hostvars
 
-    def load_facts(self, host: str) -> AvdSwitchFactsDefaultDict:
+    def load_facts(self, device: str) -> AvdSwitchFactsDefaultDict:
         """
         Read facts from the temporary file and load data into AvdSwitchFactsDefaultDict class.
 
         Args:
-            host: Hostname.
+            device: Device name (inventory hostname).
 
         Returns:
             AvdSwitchFactsDefaultDict instance loaded from facts.
@@ -221,7 +221,7 @@ class ActionModule(ActionBase):
         file_path = get_eos_designs_facts_path()
 
         if not file_path.exists():
-            msg = f"Missing AVD eos_designs facts for host '{host}'. Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
+            msg = f"Missing AVD eos_designs facts for device '{device}'. Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
             raise AnsibleActionFail(message=msg)
 
         with file_path.open(mode="r", encoding="utf-8") as f:
@@ -229,17 +229,17 @@ class ActionModule(ActionBase):
 
         return AvdSwitchFactsDefaultDict(avd_switch_facts)
 
-    def dump_structured_config(self, hostname: str, structured_config: dict[str, Any]) -> None:
+    def dump_structured_config(self, device: str, structured_config: dict[str, Any]) -> None:
         """
         Dump the structured_config to the temporary AVD directory for eos_cli_config_gen consumption.
 
         Args:
-            hostname: Hostname.
+            device: Device name (inventory hostname).
             structured_config: The structured config dictionary to dump.
         """
         templated_path, _validated_path = get_role_tmp_paths("eos_cli_config_gen")
 
-        file_path = templated_path / f"{hostname}.json"
+        file_path = templated_path / f"{device}.json"
 
         with file_path.open(mode="w", encoding="utf-8") as f:
             json.dump(structured_config, f, indent=4)

@@ -78,21 +78,21 @@ class ActionModule(ActionBase):
         return self.main(hostname, task_vars, result)
 
     def main(self, hostname: str, task_vars: dict, result: dict) -> dict:
-        """Main function in charge of validating the input variables and generating the device configuration and documentation."""
+        """Main function in charge of loading the input variables and generating the device configuration and documentation."""
         LOGGER.debug("Validating task arguments...")
         validated_args = self.validate_args()
         LOGGER.debug("Validating task arguments [done].")
 
         LOGGER.debug("Loading validated inputs...")
-        host_hostvars = self.load_validated_inputs(hostname)
+        device_hostvars = self.load_validated_inputs(hostname)
         LOGGER.debug("Loading validated inputs [done].")
 
         if has_custom_templates := bool(task_vars.get("custom_templates")):
-            template_vars = ChainMap(host_hostvars, task_vars)
+            template_vars = ChainMap(device_hostvars, task_vars)
         try:
             if validated_args["generate_device_config"]:
                 LOGGER.debug("Rendering configuration...")
-                device_config = get_device_config(host_hostvars)
+                device_config = get_device_config(device_hostvars)
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering config custom templates...")
@@ -109,7 +109,7 @@ class ActionModule(ActionBase):
 
             if validated_args["generate_device_doc"]:
                 LOGGER.debug("Rendering documentation...")
-                device_doc = get_device_doc(host_hostvars, add_md_toc=False)
+                device_doc = get_device_doc(device_hostvars, add_md_toc=False)
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering documentation custom templates...")
@@ -179,23 +179,22 @@ class ActionModule(ActionBase):
         path.write_text(content, encoding="UTF-8")
         return True
 
-    def load_validated_inputs(self, host: str) -> dict[str, Any]:
+    def load_validated_inputs(self, device: str) -> dict[str, Any]:
         """
-        Read validated hostvars from the temporary file for the host and load data into AVDDesign class.
+        Read validated hostvars from the temporary file for the device.
 
         Args:
-            host: Hostname.
-            avd_validated_files: Dictionary mapping hostnames to validated file paths.
+            device: Device name (inventory hostname).
 
         Returns:
-            Tuple of an AVDDesign instance loaded from the host hostvars and a dict with the host raw hostvars.
+            Dict containing the validated hostvars for the device.
         """
         _templated_path, validated_path = get_role_tmp_paths("eos_cli_config_gen")
-        file_path = validated_path / f"{host}.json"
+        file_path = validated_path / f"{device}.json"
         if not file_path.exists():
             msg = (
-                f"Missing validated inputs for host '{host}'. "
-                "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
+                f"Missing validated inputs for device '{device}'. "
+                "Ensure the 'arista.avd.validate_inputs' task ran successfully for this device and that no validation errors occurred."
             )
             raise AnsibleActionFail(message=msg)
 

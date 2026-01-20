@@ -198,7 +198,7 @@ class ActionModule(AvdActionPlugin):
                 device_list=device_list,
                 workers=mp_workers,
                 batch_size=batch_size,
-                output_dir=templated_path,
+                output_path=templated_path,
                 schema_name=schema_name,
             )
 
@@ -286,7 +286,7 @@ class ActionModule(AvdActionPlugin):
         device_list: list[str],
         workers: int,
         batch_size: int,
-        output_dir: Path,
+        output_path: Path,
         schema_name: SCHEMA_NAME,
     ) -> list[str]:
         """
@@ -299,7 +299,7 @@ class ActionModule(AvdActionPlugin):
             device_list: List of device names to process.
             workers: Number of multiprocessing workers to use.
             batch_size: Number of devices to process per child process.
-            output_dir: Directory path where templated JSON files will be written.
+            output_path: Directory path where templated JSON files will be written.
             schema_name: Schema name used for filtering hostvars.
 
         Returns:
@@ -309,7 +309,7 @@ class ActionModule(AvdActionPlugin):
         successful_devices = []
 
         # Partial to inject directories into the worker.
-        worker_func = partial(_template_device_worker, output_dir=output_dir, schema_name=schema_name)
+        worker_func = partial(_template_device_worker, output_path=output_path, schema_name=schema_name)
         ctx = get_context("fork")
 
         with ProcessPoolExecutor(max_workers=workers, mp_context=ctx) as pool:
@@ -393,7 +393,7 @@ class ActionModule(AvdActionPlugin):
         self.logger.info("Phase 2 (Validation) complete in %.2fs", perf_counter() - start_time)
 
 
-def _template_device_worker(device: str, output_dir: Path, schema_name: SCHEMA_NAME) -> TemplateWorkerResult:
+def _template_device_worker(device: str, output_path: Path, schema_name: SCHEMA_NAME) -> TemplateWorkerResult:
     """
     Phase 1 multiprocessing worker: Template hostvars for a device.
 
@@ -402,7 +402,7 @@ def _template_device_worker(device: str, output_dir: Path, schema_name: SCHEMA_N
 
     Args:
         device: Device name (inventory hostname) to process.
-        output_dir: Directory path where the templated JSON file will be written.
+        output_path: Directory path where the templated JSON file will be written.
         schema_name: Schema name used for filtering hostvars.
 
     Returns:
@@ -426,7 +426,7 @@ def _template_device_worker(device: str, output_dir: Path, schema_name: SCHEMA_N
         # missing variables in inline templates in Ansible 2.19.
         templated_hostvars = dict(hostvars_wrapper)
 
-        output_file_path = output_dir / f"{device}.json"
+        output_file_path = output_path / f"{device}.json"
         with output_file_path.open(mode="w", encoding="utf-8") as f:
             json.dump(templated_hostvars, f, skipkeys=True, default=lambda _: "<not serializable>", indent=4)
 

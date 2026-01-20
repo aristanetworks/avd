@@ -4,16 +4,25 @@
 from multiprocessing import cpu_count
 
 
-def get_workers(num_hosts: int, ansible_forks: int) -> tuple[int, int]:
+def get_workers(num_devices: int, ansible_forks: int) -> tuple[int, int]:
     """
-    Get the multiprocessing and multithreading worker counts.
+    Calculate the optimal number of multiprocessing and multithreading workers.
 
-    MP workers count: The smallest between CPU count - 1 (leave one for main/OS) and ansible_forks.
+    Multiprocessing workers are used for CPU-bound tasks (e.g., templating hostvars).
+    Multithreading workers are used for I/O-bound tasks (e.g., validation with GIL released).
 
-    MT workers count: Follow ansible_forks.
+    Args:
+        num_devices: Total number of devices to process.
+        ansible_forks: Ansible forks setting (controls parallelism).
+
+    Returns:
+        A tuple of (mp_workers, mt_workers):
+        - mp_workers: Number of multiprocessing workers. Limited by available CPU cores - 1
+          (leaving one for main process/OS), ansible_forks, and num_devices.
+        - mt_workers: Number of multithreading workers. Limited by ansible_forks and num_devices.
     """
     available_cores = max(1, cpu_count() - 1)
-    # Don't spawn more workers than there are hosts (to avoid creating idle process for small inventories).
-    mp = min(available_cores, ansible_forks, num_hosts) or 1
-    mt = min(ansible_forks, num_hosts) or 1
-    return mp, mt
+    # Don't spawn more workers than there are devices (to avoid creating idle processes for small inventories).
+    mp_workers = min(available_cores, ansible_forks, num_devices) or 1
+    mt_workers = min(ansible_forks, num_devices) or 1
+    return mp_workers, mt_workers
