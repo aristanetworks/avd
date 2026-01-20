@@ -37,7 +37,9 @@ l3leaf:
       bgp_as: 65000
       vtep_loopback_ipv4_pool: 10.255.1.0/27
       mgmt_ip: 172.16.1.151/24
-      uplink_switches: ['uplink-interfaces-length-in-default-interfaces-less-than-uplink-switches-1', 'uplink-interfaces-length-in-default-interfaces-less-than-uplink-switches-2']
+      uplink_switches:
+        - 'uplink-interfaces-length-in-default-interfaces-less-than-uplink-switches-1'
+        - 'uplink-interfaces-length-in-default-interfaces-less-than-uplink-switches-2'
       uplink_switch_interfaces:
         - Ethernet8
         - Ethernet9
