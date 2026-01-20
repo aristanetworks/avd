@@ -123,4 +123,6 @@ keys:
         min_length: 1
         items:
           type: str
+          convert_types:
+            - int
         description: The default-profile set may contain zero, one, or multiple profiles. When the default-profile set contains multiple profiles, error-disable criteria is satisfied when conditions match any profile.
