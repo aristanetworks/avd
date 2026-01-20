@@ -28,7 +28,6 @@ bgp_peer_groups:
   ipv4_underlay_peers:
     name: IPv6-UNDERLAY-PEERS
     password: F0bdF6JLcJtagc6PCN8W0Q==
-    structured_config:
     # test to overwrite maximum_routes default value for IPv6-UNDERLAY-PEERS
     maximum_routes: 12000
   mlag_ipv4_underlay_peer:
