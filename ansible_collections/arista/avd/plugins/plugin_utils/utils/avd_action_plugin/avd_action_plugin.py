@@ -8,7 +8,6 @@ from collections.abc import Generator
 from contextlib import contextmanager
 from typing import Any, ClassVar, final
 
-from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.raise_action_fail import raise_action_fail
