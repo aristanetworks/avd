@@ -3009,13 +3009,13 @@ keys:
                 type: bool
         ipv6_dhcp_relay_destinations:
           type: list
-          primary_key: address
           items:
             type: dict
             keys:
               address:
                 type: str
                 description: DHCP server's IPv6 address.
+                required: true
               vrf:
                 type: str
                 convert_types:
@@ -13130,6 +13130,9 @@ keys:
                         type: int
                         convert_types:
                         - str
+                        required: true
+                        min: 0
+                        max: 1000
             tap:
               type: dict
               $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/switchport/keys/tap
@@ -14438,22 +14441,20 @@ keys:
           tls_ssl_profile:
             type: str
             description: Name of TLS profile.
-      hosts:
+      servers:
         type: list
-        primary_key: host
+        description: Hosts configuration for VRF default.
         items:
           type: dict
           keys:
             host:
               type: str
-              description: Host IP address or name.
-            vrf:
-              type: str
-              convert_types:
-              - int
+              required: true
+              description: -> Host IP address or name. Multiple server with the same
+                hostname/IP address can be configured for TLS and no TLS.
             tls:
               type: dict
-              description: When TLS is configured, `key` is ignored..
+              description: When TLS is configured, `key` is ignored.
               keys:
                 enabled:
                   type: bool
@@ -14485,6 +14486,21 @@ keys:
               description: 'Encrypted key - only type 7 supported.
 
                 When TLS is configured, `key` is ignored.'
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+              - int
+              description: Non-defualt VRF name.
+            servers:
+              type: list
+              required: true
+              $ref: eos_cli_config_gen#/keys/radius_server/keys/servers
       tls_ssl_profile:
         type: str
         description: Name of global TLS profile.
@@ -24535,32 +24551,30 @@ keys:
                   type: bool
         ospf_network_point_to_point:
           type: bool
-        ipv6_ospf_network_point_to_point:
-          type: bool
         ospf_area:
           type: str
           convert_types:
           - int
-        ipv6_ospf_process_identifier:
+        ipv6_ospf:
           type: dict
           description: Configuration for OSPFv3 specific process and area settings
             on the interface.
           keys:
-            id:
+            process_identifier:
               type: int
-              required: true
-              description: OSPF Process ID. Valid range is 1-65535.
+              description: OSPF Process ID.
               min: 1
               max: 65535
               convert_types:
               - str
-            ipv6_ospf_area:
+            area:
               type: str
-              required: true
-              description: OSPF Area ID. Can be an integer (0-4294967295) or dotted-decimal
-                (0.0.0.0).
+              description: OSPF Area ID. Can be an integer (0-4294967295) or IP address
+                format (0.0.0.0).
               convert_types:
               - int
+            network_point_to_point:
+              type: bool
         ospf_cost:
           type: int
           convert_types:
