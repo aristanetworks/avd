@@ -87,11 +87,8 @@ class ActionModule(ActionBase):
         host_hostvars = self.load_validated_inputs(hostname)
         LOGGER.debug("Loading validated inputs [done].")
 
-        # Using ChainMap to access both host_hostvars and task_vars in custom templates
-        template_vars = ChainMap(host_hostvars, task_vars)
-
         if has_custom_templates := bool(task_vars.get("custom_templates")):
-            template_vars = ChainMap(validated_task_vars, task_vars)
+            template_vars = ChainMap(host_hostvars, task_vars)
         try:
             if validated_args["generate_device_config"]:
                 LOGGER.debug("Rendering configuration...")
@@ -147,75 +144,13 @@ class ActionModule(ActionBase):
         # Converting to json and back to remove any AnsibeUnsafe types
         return json.loads(json.dumps(validated_args))
 
-    def prepare_task_vars(self, task_vars: dict, structured_config_filename: str, *, read_structured_config_from_file: bool) -> dict:
-        """
-        Read the structured_config and render inline Jinja.
-
-        Parameters
-        ----------
-            task_vars: Dictionary of task variables
-            structured_config_filename: The filename where the structured_config for the device is stored.
-            read_structured_config_from_file: Flag to indicate whether or not the structured_config_filname should be read.
-
-        Returns:
-        -------
-            dict: Task vars updated with the structured_config content if read and all inline Jinja rendered.
-
-        Raises:
-        ------
-            AnsibleActionFail: If templating fails.
-
-        """
-        if read_structured_config_from_file:
-            task_vars.update(read_vars(structured_config_filename))
-
-        # Read ansible variables and perform templating to support inline jinja2
-        for var, value in task_vars.items():
-            # TODO: - reevaluate these variables
-            if str(var).startswith(("ansible", "molecule", "hostvars", "vars", "avd_switch_facts")):
-                continue
-            if self._templar.is_template(value):
-                # Var contains a jinja2 template.
-                try:
-                    task_vars[var] = self._templar.template(value, fail_on_undefined=False)
-                except Exception as e:
-                    msg = f"Exception during templating of task_var '{var}': '{e}'"
-                    raise AnsibleActionFail(msg) from e
-
-        if not isinstance(task_vars, dict):
-            # Corner case for ansible-test where the passed task_vars is a nested chain-map
-            task_vars = dict(task_vars)
-
-        return task_vars
-
-    def validate_task_vars(self, hostname: str, task_vars: dict, result: dict) -> dict:
-        """
-        Validate inputs and emit warnings and errors via Ansible display and in-place update the given result.
-
-        To simplify type checking this always return a dict even if validation fails.
-        The caller should check for result['failed'].
-        """
-        try:
-            validated_data_result = validate_structured_config(task_vars)
-        except (TypeError, ValueError, RecursionError) as e:
-            msg = f"Unable to load structured config from the given data: {e}"
-            raise ValueError(msg) from e
-
-        validation_errors = parse_validation_result(validated_data_result.validation_result, hostname, display)
-        if validation_errors:
-            result["failed"] = True
-            result["msg"] = build_result_message(validation_errors)
-
-        return validated_data_result.validated_data or {}
-
     def render_template_with_ansible_templar(self, template_vars: dict | ChainMap, templatefile: str) -> str:
-    def render_template_with_ansible_templar(self, template_vars: ChainMap[str, Any], templatefile: str) -> str:
         """Render a template with the Ansible Templar."""
         # Get updated templar instance to be passed along to our simplified "templater"
         if not hasattr(self, "ansible_templar"):
-            self.ansible_templar = get_templar(self, task_vars)
+            self.ansible_templar = get_templar(self, template_vars)
 
-        return template(templatefile, template_vars, self.ansible_templar)
+        return template(templatefile, template_vars, self.ansible_templar)  # pyright: ignore[reportArgumentType]
 
     def write_file(self, content: str, filename: str) -> bool:
         """
