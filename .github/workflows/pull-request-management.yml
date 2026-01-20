@@ -2,7 +2,7 @@
 name: "Collection code testing"
 
 "on":
-  pull_request:
+  # pull_request:
   merge_group:
     types: [checks_requested]
 
