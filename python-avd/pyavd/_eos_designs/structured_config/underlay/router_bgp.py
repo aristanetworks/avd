@@ -36,7 +36,7 @@ class RouterBgpMixin(Protocol):
         # Set BGP peer group only when underlay link is present.
         if not self._underlay_p2p_links:
             return
-
+        # Adding the peer-group first time we add a neighbor interface.
         self.shared_utils.set_once_peer_group_ipv4_underlay_peers(self.structured_config, self.custom_structured_configs)
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
