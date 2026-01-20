@@ -399,7 +399,7 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
+          when: inventory_hostname == ansible_play_batch[0]
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -416,7 +416,7 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
+          when: inventory_hostname == ansible_play_batch[0]
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -433,7 +433,7 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
+          when: inventory_hostname == ansible_play_batch[0]
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -450,7 +450,7 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
+          when: inventory_hostname == ansible_play_batch[0]
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -467,7 +467,7 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
+          when: inventory_hostname == ansible_play_batch[0]
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -484,7 +484,7 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
+          when: inventory_hostname == ansible_play_batch[0]
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -501,7 +501,7 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
+          when: inventory_hostname == ansible_play_batch[0]
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -518,7 +518,7 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
+          when: inventory_hostname == ansible_play_batch[0]
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -535,7 +535,7 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
+          when: inventory_hostname == ansible_play_batch[0]
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -552,7 +552,7 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
+          when: inventory_hostname == ansible_play_batch[0]
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -585,7 +585,7 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
+          when: inventory_hostname == ansible_play_batch[0]
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
