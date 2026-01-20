@@ -103,7 +103,7 @@ class ActionModule(ActionBase):
 
     def load_validated_inputs(self, fabric_devices: list) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
         """
-        Read validated hostvars from temporary files for all devices and load data into AVDDesign classes.
+        Load validated hostvars from temporary files for all devices and load data into AVDDesign classes.
 
         Args:
             fabric_devices: List of device names (inventory hostnames).

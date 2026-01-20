@@ -6,7 +6,6 @@
     underlay_routing_protocol: ABC
   arista.avd.validate_inputs:
     schema_name: eos_designs
-    template_inputs: true
     fail_on_validation_errors: true
     batch_size: 10
 
@@ -25,7 +24,6 @@
     underlay_routing_protocol: ABC
   arista.avd.validate_inputs:
     schema_name: eos_designs
-    template_inputs: true
     fail_on_validation_errors: false
     batch_size: 10
 

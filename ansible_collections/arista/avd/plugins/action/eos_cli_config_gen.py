@@ -83,16 +83,16 @@ class ActionModule(ActionBase):
         validated_args = self.validate_args()
         LOGGER.debug("Validating task arguments [done].")
 
-        LOGGER.debug("Loading validated inputs...")
-        device_hostvars = self.load_validated_inputs(hostname)
-        LOGGER.debug("Loading validated inputs [done].")
+        LOGGER.debug("Loading structured config...")
+        structured_config = self.load_structured_config(hostname)
+        LOGGER.debug("Loading structured config [done].")
 
         if has_custom_templates := bool(task_vars.get("custom_templates")):
-            template_vars = ChainMap(device_hostvars, task_vars)
+            template_vars = ChainMap(structured_config, task_vars)
         try:
             if validated_args["generate_device_config"]:
                 LOGGER.debug("Rendering configuration...")
-                device_config = get_device_config(device_hostvars)
+                device_config = get_device_config(structured_config)
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering config custom templates...")
@@ -109,7 +109,7 @@ class ActionModule(ActionBase):
 
             if validated_args["generate_device_doc"]:
                 LOGGER.debug("Rendering documentation...")
-                device_doc = get_device_doc(device_hostvars, add_md_toc=False)
+                device_doc = get_device_doc(structured_config, add_md_toc=False)
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering documentation custom templates...")
@@ -148,9 +148,9 @@ class ActionModule(ActionBase):
         """Render a template with the Ansible Templar."""
         # Get updated templar instance to be passed along to our simplified "templater"
         if not hasattr(self, "ansible_templar"):
-            self.ansible_templar = get_templar(self, template_vars)
+            self.ansible_templar = get_templar(self, template_vars)  # pyright: ignore[reportArgumentType]
 
-        return template(templatefile, template_vars, self.ansible_templar)  # pyright: ignore[reportArgumentType]
+        return template(templatefile, template_vars, self.ansible_templar)
 
     def write_file(self, content: str, filename: str) -> bool:
         """
@@ -179,21 +179,21 @@ class ActionModule(ActionBase):
         path.write_text(content, encoding="UTF-8")
         return True
 
-    def load_validated_inputs(self, device: str) -> dict[str, Any]:
+    def load_structured_config(self, device: str) -> dict[str, Any]:
         """
-        Read validated hostvars from the temporary file for the device.
+        Load the validated structured config from the temporary file for the device.
 
         Args:
             device: Device name (inventory hostname).
 
         Returns:
-            Dict containing the validated hostvars for the device.
+            Dict containing the validated structured config for the device.
         """
         _templated_path, validated_path = get_role_tmp_paths("eos_cli_config_gen")
         file_path = validated_path / f"{device}.json"
         if not file_path.exists():
             msg = (
-                f"Missing validated inputs for device '{device}'. "
+                f"Missing structured config for device '{device}'. "
                 "Ensure the 'arista.avd.validate_inputs' task ran successfully for this device and that no validation errors occurred."
             )
             raise AnsibleActionFail(message=msg)

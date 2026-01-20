@@ -158,7 +158,12 @@ class ActionModule(ActionBase):
             return json.load(stream)
 
     def load_facts(self) -> dict[str, dict]:
-        """Read facts from the temporary file."""
+        """
+        Load facts from the temporary file.
+
+        Returns:
+            Dict of facts keyed by device name.
+        """
         file_path = get_eos_designs_facts_path()
 
         if not file_path.exists():

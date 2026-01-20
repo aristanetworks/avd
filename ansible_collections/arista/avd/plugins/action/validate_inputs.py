@@ -10,7 +10,7 @@ from json import loads as json_loads
 from multiprocessing import get_context
 from pathlib import Path
 from time import perf_counter
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Any, Literal, NotRequired, TypedDict
 
 import yaml
 from ansible.plugins.action import display
@@ -29,7 +29,7 @@ if TYPE_CHECKING:
 
     from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
-    from pyavd._utils import get, strip_empties_from_dict
+    from pyavd._utils import strip_empties_from_dict
     from pyavd._utils.filtered_map_view import FilteredMapView
 
 try:
@@ -37,7 +37,7 @@ try:
 
     from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
-    from pyavd._utils import get, strip_empties_from_dict
+    from pyavd._utils import strip_empties_from_dict
     from pyavd._utils.filtered_map_view import FilteredMapView
 
     HAS_PYAVD = True
@@ -101,6 +101,17 @@ ARGUMENT_SPEC = {
     "fail_on_validation_errors": {"type": "bool", "default": True},
 }
 
+
+class PluginArgs(TypedDict):
+    """Plugin arguments."""
+
+    batch_size: int
+    schema_name: SCHEMA_NAME
+    input_dir: NotRequired[str]
+    input_suffix: Literal["yml", "yaml", "json"]
+    fail_on_validation_errors: bool
+
+
 _HOSTVARS_MANAGER: ActionPluginVars | None = None
 
 
@@ -131,48 +142,23 @@ def get_worker_hostvars() -> ActionPluginVars:
 
 
 class ActionModule(AvdActionPlugin):
-    """
-    Ansible Action Plugin for validating inputs against AVD schemas.
-
-    This plugin performs two phases:
-    1. **Templating Phase**: Resolves Ansible hostvars and writes them as JSON files.
-       This phase is skipped if `input_dir` is provided or pre-templated files exist.
-    2. **Validation Phase**: Validates the data against the specified AVD schema using pyavd-utils.
-
-    The plugin uses multiprocessing for templating (CPU-bound) and multithreading for validation
-    (I/O-bound with GIL released by Rust validation).
-    """
+    """Ansible Action Plugin for validating inputs against AVD schemas."""
 
     _logging_config = AvdLoggingConfig(target_loggers=TARGET_LOGGERS)
 
     def main(self, task_vars: dict[str, Any]) -> None:
-        """
-        Execute the validate_inputs action plugin.
-
-        Args:
-            task_vars: Ansible task variables including hostvars and play context.
-
-        Raises:
-            ImportError: If pyavd is not installed.
-            RuntimeError: If any devices fail during processing.
-            ValueError: If fabric_name is invalid for eos_designs schema.
-        """
+        """Execute the validate_inputs action plugin."""
         if not HAS_PYAVD:
-            msg = f"The {PLUGIN_NAME} plugin requires the 'pyavd' Python library. Got import error"
+            msg = f"The {PLUGIN_NAME} plugin requires the 'pyavd' Python library. Got import error."
             raise ImportError(msg)
 
-        # Get task arguments and validate them.
-        _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
-        validated_args = strip_empties_from_dict(validated_args)
+        plugin_args = self._get_plugin_args()
 
-        # Converting to JSON and back to remove any AnsibeUnsafe types.
-        plugin_args = json_loads(json_dumps(validated_args))
-
-        batch_size = get(plugin_args, "batch_size")
-        schema_name: SCHEMA_NAME = get(plugin_args, "schema_name")
-        input_dir = get(plugin_args, "input_dir")
-        input_suffix = get(plugin_args, "input_suffix")
-        fail_on_validation_errors = get(plugin_args, "fail_on_validation_errors")
+        batch_size = plugin_args["batch_size"]
+        schema_name = plugin_args["schema_name"]
+        input_dir = plugin_args.get("input_dir")
+        input_suffix = plugin_args["input_suffix"]
+        fail_on_validation_errors = plugin_args["fail_on_validation_errors"]
 
         device_list = self._get_device_list(task_vars, schema_name)
         mp_workers, mt_workers = get_workers(len(device_list), task_vars.get("ansible_forks", 5))
@@ -189,10 +175,8 @@ class ActionModule(AvdActionPlugin):
             batch_size,
         )
 
-        # Phase 1: Templating using multiprocessing (if needed).
-        if self._skip_templating(device_list, templated_path, input_dir):
-            devices_to_validate = device_list
-        else:
+        # Phase 1: If no input_dir is provided, run the templating phase on hostvars.
+        if input_dir is None:
             set_worker_context(ActionPluginVars(self))
             devices_to_validate = self._run_templating_phase(
                 device_list=device_list,
@@ -201,8 +185,11 @@ class ActionModule(AvdActionPlugin):
                 output_path=templated_path,
                 schema_name=schema_name,
             )
+            devices_to_validate = device_list
+        else:
+            devices_to_validate = device_list
 
-        # Phase 2: Validation using multithreading.
+        # Phase 2: Run the validation phase on the input_dir or the templated files.
         if devices_to_validate:
             self._run_validation_phase(
                 device_list=devices_to_validate,
@@ -217,6 +204,19 @@ class ActionModule(AvdActionPlugin):
         if self.crashed_devices:
             msg = f"Unexpected errors occurred while processing {len(self.crashed_devices)} device(s): {', '.join(sorted(self.crashed_devices))}. "
             raise RuntimeError(msg)
+
+    def _get_plugin_args(self) -> PluginArgs:
+        """
+        Get and validate plugin arguments.
+
+        Returns:
+            Plugin arguments as a dictionary.
+        """
+        _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
+        validated_args = strip_empties_from_dict(validated_args)
+
+        # Converting to JSON and back to remove any AnsibeUnsafe types.
+        return json_loads(json_dumps(validated_args))
 
     def _get_device_list(self, task_vars: dict[str, Any], schema_name: SCHEMA_NAME) -> list[str]:
         """
@@ -259,27 +259,6 @@ class ActionModule(AvdActionPlugin):
             raise ValueError(msg)
 
         return fabric_devices
-
-    def _skip_templating(self, device_list: list[str], templated_path: Path, input_dir: str | None) -> bool:
-        """
-        Check if the templating phase should be skipped.
-
-        Templating phase is skipped when:
-        - input_dir is provided: Files are read directly from the user-provided directory.
-        - Pre-templated files exist: Files are already available in the AVD temporary directory
-          (e.g., from eos_designs_structured_config).
-
-        Args:
-            device_list: List of device names to check.
-            templated_path: Path to the AVD temporary templated directory.
-            input_dir: Optional path to a directory containing files to validate directly.
-
-        Returns:
-            True if the templating phase should be skipped.
-        """
-        if input_dir:
-            return True
-        return any((templated_path / f"{device}.json").exists() for device in device_list)
 
     def _run_templating_phase(
         self,
@@ -444,10 +423,10 @@ def _validate_device_worker(device: str, input_path: Path, input_suffix: str, ou
     pyavd-utils, and writes the validated data as JSON to the output directory.
 
     Args:
-        device: Device name to process.
+        device: Device name (inventory hostname) to process.
         input_path: Directory containing the input file.
         input_suffix: File suffix for the input file (json, yml, yaml).
-        output_path: Directory where the validated JSON file will be written.
+        output_path: Directory path where the validated JSON file will be written.
         schema_name: Schema to validate against.
 
     Returns:

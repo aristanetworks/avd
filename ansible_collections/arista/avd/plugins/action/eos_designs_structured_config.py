@@ -170,7 +170,6 @@ class ActionModule(ActionBase):
         else:
             result["changed"] = True
 
-        self.dump_structured_config(hostname, output)
         if return_structured_config:
             result["ansible_facts"] = output
 
@@ -183,7 +182,7 @@ class ActionModule(ActionBase):
 
     def load_validated_inputs(self, device: str) -> tuple[AVDDesign, dict[str, Any]]:
         """
-        Read validated hostvars from the temporary file for the device and load data into AVDDesign class.
+        Load validated hostvars from the temporary file for the device and load them into AVDDesign class.
 
         Args:
             device: Device name (inventory hostname).
@@ -203,14 +202,14 @@ class ActionModule(ActionBase):
         with file_path.open(mode="r", encoding="utf-8") as f:
             device_hostvars = json.load(f)
 
-        # Load input vars into the AVDDesign data class.
+        # Load device hostvars into the AVDDesign data class.
         avd_design = AVDDesign._from_dict(device_hostvars)
 
         return avd_design, device_hostvars
 
     def load_facts(self, device: str) -> AvdSwitchFactsDefaultDict:
         """
-        Read facts from the temporary file and load data into AvdSwitchFactsDefaultDict class.
+        Load facts from the temporary file and load them into AvdSwitchFactsDefaultDict class.
 
         Args:
             device: Device name (inventory hostname).
@@ -221,25 +220,10 @@ class ActionModule(ActionBase):
         file_path = get_eos_designs_facts_path()
 
         if not file_path.exists():
-            msg = f"Missing AVD eos_designs facts for device '{device}'. Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
+            msg = f"Missing AVD eos_designs facts for device '{device}' ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
             raise AnsibleActionFail(message=msg)
 
         with file_path.open(mode="r", encoding="utf-8") as f:
             avd_switch_facts = json.load(f)
 
         return AvdSwitchFactsDefaultDict(avd_switch_facts)
-
-    def dump_structured_config(self, device: str, structured_config: dict[str, Any]) -> None:
-        """
-        Dump the structured_config to the temporary AVD directory for eos_cli_config_gen consumption.
-
-        Args:
-            device: Device name (inventory hostname).
-            structured_config: The structured config dictionary to dump.
-        """
-        templated_path, _validated_path = get_role_tmp_paths("eos_cli_config_gen")
-
-        file_path = templated_path / f"{device}.json"
-
-        with file_path.open(mode="w", encoding="utf-8") as f:
-            json.dump(structured_config, f, indent=4)
