@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -114,6 +114,6 @@ Please see the [release notes](https://avd.arista.com) for the latest updates to
 
 ## License Information
 
-Copyright (c) 2019-2024 Arista Networks, Inc.
+Copyright (c) 2019-2026 Arista Networks, Inc.
 
 The project is published under [Apache 2.0 License](https://github.com/aristanetworks/avd/blob/devel/ansible_collections/arista/avd/LICENSE)

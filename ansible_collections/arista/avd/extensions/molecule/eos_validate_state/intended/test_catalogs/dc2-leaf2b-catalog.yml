@@ -677,7 +677,7 @@ anta.tests.security:
       expiry_threshold: 30
       key_size: 4096
 - VerifyBannerLogin:
-    login_banner: '# Copyright (c) 2023-2024 Arista Networks, Inc.
+    login_banner: '# Copyright (c) 2023-2026 Arista Networks, Inc.
 
       # Use of this source code is governed by the Apache License 2.0
 
@@ -685,7 +685,7 @@ anta.tests.security:
 
       '
 - VerifyBannerMotd:
-    motd_banner: '# Copyright (c) 2023-2024 Arista Networks, Inc.
+    motd_banner: '# Copyright (c) 2023-2026 Arista Networks, Inc.
 
       # Use of this source code is governed by the Apache License 2.0
 
