@@ -136,9 +136,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "vlan_interfaces.[].multicast.ipv6.static") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_network_point_to_point</samp>](## "vlan_interfaces.[].ospf_network_point_to_point") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_area</samp>](## "vlan_interfaces.[].ospf_area") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_ospf</samp>](## "vlan_interfaces.[].ipv6_ospf") | Dictionary |  |  |  | Configuration for OSPFv3 specific process and area settings on the interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process_identifier</samp>](## "vlan_interfaces.[].ipv6_ospf.process_identifier") | Integer |  |  | Min: 1<br>Max: 65535 | OSPF Process ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "vlan_interfaces.[].ipv6_ospf.area") | String |  |  |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_ospf</samp>](## "vlan_interfaces.[].ipv6_ospf") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process_identifier</samp>](## "vlan_interfaces.[].ipv6_ospf.process_identifier") | Dictionary |  |  |  | Configuration for OSPFv3 specific process and area settings on the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "vlan_interfaces.[].ipv6_ospf.process_identifier.id") | Integer | Required |  | Min: 1<br>Max: 65535 | OSPF Process ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "vlan_interfaces.[].ipv6_ospf.process_identifier.area") | String | Required |  |  | OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_point_to_point</samp>](## "vlan_interfaces.[].ipv6_ospf.network_point_to_point") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_cost</samp>](## "vlan_interfaces.[].ospf_cost") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf_authentication</samp>](## "vlan_interfaces.[].ospf_authentication") | String |  |  | Valid Values:<br>- <code>none</code><br>- <code>simple</code><br>- <code>message-digest</code> |  |
@@ -535,15 +536,16 @@
             static: <bool>
         ospf_network_point_to_point: <bool>
         ospf_area: <str>
-
-        # Configuration for OSPFv3 specific process and area settings on the interface.
         ipv6_ospf:
 
-          # OSPF Process ID.
-          process_identifier: <int; 1-65535>
+          # Configuration for OSPFv3 specific process and area settings on the interface.
+          process_identifier:
 
-          # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
-          area: <str>
+            # OSPF Process ID.
+            id: <int; 1-65535; required>
+
+            # OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+            area: <str; required>
           network_point_to_point: <bool>
         ospf_cost: <int>
         ospf_authentication: <str; "none" | "simple" | "message-digest">

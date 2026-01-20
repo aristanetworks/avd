@@ -307,8 +307,8 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ipv6_ospf.network_point_to_point is arista.avd.defined(true) %}
    ipv6 ospf network point-to-point
 {%     endif %}
-{%     if vlan_interface.ipv6_ospf.process_identifier is arista.avd.defined and vlan_interface.ipv6_ospf.area is arista.avd.defined %}
-   ipv6 ospf {{ vlan_interface.ipv6_ospf.process_identifier }} area {{ vlan_interface.ipv6_ospf.area }}
+{%     if vlan_interface.ipv6_ospf.process_identifier is arista.avd.defined %}
+   ipv6 ospf {{ vlan_interface.ipv6_ospf.process_identifier.id }} area {{ vlan_interface.ipv6_ospf.process_identifier.area }}
 {%     endif %}
 {%     if vlan_interface.service_policy.pbr.input is arista.avd.defined %}
    service-policy type pbr input {{ vlan_interface.service_policy.pbr.input }}

@@ -460,8 +460,9 @@ vlan_interfaces:
   - name: Vlan26
     ntp_serve: true
     ipv6_ospf:
-      process_identifier: 11
-      area: 0.0.0.29
+      process_identifier:
+        id: 11
+        area: 0.0.0.29
       network_point_to_point: true
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.24
