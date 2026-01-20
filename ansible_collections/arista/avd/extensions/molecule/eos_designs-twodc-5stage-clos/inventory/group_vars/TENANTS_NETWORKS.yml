@@ -97,9 +97,6 @@ tenants:
         vtep_diagnostic:
           loopback: 100
           loopback_ip_range: 10.100.0.0/24
-          loopback_ip_pools: # This data should not be used since "loopback_ip_range takes precedence"
-            - pod: DC1_POD1
-              ipv4_pool: 10.101.101.0/24
         svis:
           - id: 1100
             name: test_svi

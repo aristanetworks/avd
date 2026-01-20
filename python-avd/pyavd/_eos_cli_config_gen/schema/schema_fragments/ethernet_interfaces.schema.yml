@@ -448,13 +448,13 @@ keys:
                 type: bool
         ipv6_dhcp_relay_destinations:
           type: list
-          primary_key: address
           items:
             type: dict
             keys:
               address:
                 type: str
                 description: DHCP server's IPv6 address.
+                required: true
               vrf:
                 type: str
                 convert_types:

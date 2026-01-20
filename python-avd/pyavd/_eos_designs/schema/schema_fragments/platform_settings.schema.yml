@@ -10,7 +10,7 @@ keys:
     $ref: eos_designs#/$defs/platform_settings
     type: list
     documentation_options:
-      table: platform-settings
+      table: custom-platform-settings
     description:
       Custom Platform settings to override the default `platform_settings`.
       This list will be prepended to the list of `platform_settings`.

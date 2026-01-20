@@ -1,0 +1,17 @@
+---
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: dot1x-network-ports-not-globally-enabled
+      mgmt_ip: 192.168.0.2/24
+
+# Configure network_ports with dot1x settings
+network_ports:
+  - switches: [dot1x-network-ports-not-globally-enabled]
+    switch_ports: [Ethernet1-2]
+    dot1x:
+      port_control: auto
+
+expected_error_message: >-
+  802.1X settings are configured under 'network_ports[0]' but 802.1X is not enabled globally.
+  802.1X must be enabled globally by setting 'dot1x_settings.enabled: true' before configuring 802.1X on any interface.

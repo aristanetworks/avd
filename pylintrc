@@ -10,12 +10,6 @@ ignore-paths=
   python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py,
   python-avd/tests/pyavd/schema/data_merging_schema_class.py,
 
-# A comma-separated list of package or module names from where C extensions may
-# be loaded. Extensions are loading into the active Python interpreter and may
-# run arbitrary code.
-extension-pkg-allow-list=
-  pyavd_utils
-
 [MESSAGES CONTROL]
 disable=
     attribute-defined-outside-init,
