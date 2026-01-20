@@ -106,7 +106,7 @@ class AvdActionPlugin(ActionBase):
                         self.result["warnings"].append(msg)
 
         except Exception as exc:
-            # Recast other errors as AnsibleActionFail
+            # Recast errors as AnsibleActionFail
             # Ignoring Pyright since 'ansible_name' is not typed in Ansible world
             msg = f"Error during plugin '{self.ansible_name}' execution: '{exc}'"  # pyright: ignore[reportAttributeAccessIssue]
             raise_action_fail(msg, exc)
