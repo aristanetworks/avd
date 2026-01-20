@@ -80,28 +80,3 @@ class ActionPluginVars:
             task=self.task,
             include_hostvars=False,
         )
-
-    def get_vars_with_overlay(self, hostname: str, overlay_data: dict[str, Any]) -> HostVarsVars:
-        """
-        Retrieves HostVarsVars for a host with additional custom data merged in.
-
-        The overlay_data takes precedence over existing host variables.
-
-        Args:
-            hostname: The name of the host.
-            overlay_data: Additional data supporting inline jinja.
-
-        Returns:
-            A HostVarsVars object wrapping the host's variables plus the overlay_data for templating.
-        """
-        variables = self._get_raw_variables(hostname).copy()
-
-        # This overwrites existing keys in 'variables' with values from 'overlay_data'.
-        variables.update(overlay_data)
-
-        # Instantiate HostVarsVars with the combined data, the internal Templar will now use this combined dict as its context.
-        # TODO: Cleanup once our oldest supported ansible-core version is 2.19. Gotta love breaking signatures.
-        if not ANSIBLE_ABOVE_2_19:
-            return HostVarsVars(variables=variables, loader=self.loader)  # pyright: ignore[reportCallIssue]
-
-        return HostVarsVars(variables=variables, loader=self.loader, host=hostname)  # pyright: ignore[reportCallIssue]

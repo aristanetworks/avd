@@ -170,7 +170,7 @@ class ActionModule(ActionBase):
         else:
             result["changed"] = True
 
-        self.dump_template_vars(hostname, template_vars)
+        self.dump_structured_config(hostname, output)
         if return_structured_config:
             result["ansible_facts"] = output
 
@@ -229,20 +229,17 @@ class ActionModule(ActionBase):
 
         return AvdSwitchFactsDefaultDict(avd_switch_facts)
 
-    def dump_template_vars(self, hostname: str, template_vars: ChainMap[str, Any]) -> None:
+    def dump_structured_config(self, hostname: str, structured_config: dict[str, Any]) -> None:
         """
-        Dump the combined template_vars to the temporary AVD directory.
+        Dump the structured_config to the temporary AVD directory for eos_cli_config_gen consumption.
 
         Args:
             hostname: Hostname.
-            template_vars: ChainMap containing the final templated structured config and all other templated hostvars.
+            structured_config: The structured config dictionary to dump.
         """
-        # Merge the two layers, structured_config wins.
-        flat_data = dict(template_vars)
-
         templated_path, _validated_path = get_role_tmp_paths("eos_cli_config_gen")
 
         file_path = templated_path / f"{hostname}.json"
 
         with file_path.open(mode="w", encoding="utf-8") as f:
-            json.dump(flat_data, f, indent=4)
+            json.dump(structured_config, f, indent=4)
