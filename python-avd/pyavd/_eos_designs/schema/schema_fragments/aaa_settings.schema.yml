@@ -114,7 +114,7 @@ keys:
                   type: str
                   description: |-
                     Host IP address or name.
-                    Combination of `host` and `vrf` should be unique.
+                    Multiple servers with the same hostname/IP address can be configured for TLS and no TLS.
                   required: true
                 groups:
                   type: list
@@ -150,7 +150,7 @@ keys:
                 tls:
                   type: dict
                   description: When TLS is configured, `key` and `cleartext_key` are ignored.
-                  $ref: "eos_cli_config_gen#/keys/radius_server/keys/hosts/items/keys/tls"
+                  $ref: "eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/tls"
           vrfs:
             type: list
             primary_key: name
