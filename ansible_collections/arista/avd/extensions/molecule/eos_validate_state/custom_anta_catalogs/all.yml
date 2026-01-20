@@ -106,12 +106,12 @@ anta.tests.security:
           key_size: 4096
   - VerifyBannerLogin:
       login_banner: |
-          # Copyright (c) 2023-2024 Arista Networks, Inc.
+          # Copyright (c) 2023-2026 Arista Networks, Inc.
           # Use of this source code is governed by the Apache License 2.0
           # that can be found in the LICENSE file.
   - VerifyBannerMotd:
       motd_banner: |
-          # Copyright (c) 2023-2024 Arista Networks, Inc.
+          # Copyright (c) 2023-2026 Arista Networks, Inc.
           # Use of this source code is governed by the Apache License 2.0
           # that can be found in the LICENSE file.
   - VerifyIPv4ACL:
