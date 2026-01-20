@@ -15,7 +15,7 @@ def raise_action_fail(message: str, exception: Exception | None = None) -> None:
     full traceback chain, we recursively clear all exception messages in the chain
     as we tend to add the deeper error message in our top level Exception.
 
-    TODO: re evaluate this as Ansible way of handling nested exceptions evolves. cf References.
+    TODO: Reevaluate this as Ansible way of handling nested exceptions evolves. Cf References.
 
     Args:
         message: The error message to display
