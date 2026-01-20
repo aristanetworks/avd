@@ -440,7 +440,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     "not match."
                 )
                 raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
-            return EosDesignsFactsProtocol.UplinkSwitchInterfaces(range_expand(_uplink_switch_interfaces))
+            return EosDesignsFactsProtocol.UplinkSwitchInterfaces(_uplink_switch_interfaces)
 
         if not self.shared_utils.uplink_switches:
             return EosDesignsFactsProtocol.UplinkSwitchInterfaces()
