@@ -397,7 +397,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
 
         These are used to generate the "avd_topology_peers" fact covering downlinks for all devices.
         """
-        return EosDesignsFactsProtocol.UplinkPeers(natural_sort(self.shared_utils.uplink_switches))
+        # Using set to only get unique uplink switches
+        unique_uplink_switches = set(self.shared_utils.uplink_switches)
+        return EosDesignsFactsProtocol.UplinkPeers(natural_sort(unique_uplink_switches))
 
     @cached_property
     def _default_downlink_interfaces(self: EosDesignsFactsGeneratorProtocol) -> list:
