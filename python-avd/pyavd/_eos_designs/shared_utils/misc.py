@@ -126,7 +126,7 @@ class MiscMixin(Protocol):
         uplink_interface_candidates = range_expand(self.default_interfaces.uplink_interfaces)
         if len(uplink_interface_candidates) < len(self.uplink_switches):
             msg = (
-                f"Length of default_interfaces.uplink_interfaces: {len(uplink_interface_candidates)} is less than the length of uplink_switches: "
+                f"Length of 'default_interfaces.uplink_interfaces': {len(uplink_interface_candidates)} is less than the length of 'uplink_switches': "
                 f"{len(self.uplink_switches)}."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname)
