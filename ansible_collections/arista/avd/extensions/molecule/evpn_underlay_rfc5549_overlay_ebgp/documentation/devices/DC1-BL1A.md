@@ -568,6 +568,7 @@ router general
       leak routes source-vrf Tenant_A_OP_Zone subscribe-policy RM-CONN-2-BGP
       leak routes source-vrf Tenant_C_OP_Zone subscribe-policy RM-CONN-2-BGP
       exit
+   exit
 ```
 
 ### Router BGP

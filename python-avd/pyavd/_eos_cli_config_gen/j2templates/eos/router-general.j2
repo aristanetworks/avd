@@ -19,6 +19,7 @@ router general
          {{ content | indent(width=9, first=False) }}
 {%             endif %}
 {%         endfor %}
+   !
 {#    EOS issue #}
    exit
 {%     endif %}
@@ -68,4 +69,6 @@ router general
    !
 {%         endif %}
 {%     endfor %}
+{#    EOS issue #}
+   exit
 {% endif %}

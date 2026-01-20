@@ -8104,6 +8104,7 @@ router general
            return true;
            }
          EOF
+   !
    exit
    router-id ipv4 10.1.2.3
    router-id ipv6 2001:beef:cafe::1
@@ -8124,6 +8125,7 @@ router general
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_2
       exit
    !
+   exit
 ```
 
 ## Router Service Insertion
