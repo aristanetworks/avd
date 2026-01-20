@@ -89,7 +89,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: l2leaf
 - name: Ethernet49/1
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet5/1
+  description: P2P_LINK_Ethernet49/1_TO_DC1-SPINE1_Ethernet5/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -104,7 +104,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet50/1
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/5/1
+  description: P2P_LINK_Ethernet50/1_TO_DC1-SPINE2_Ethernet1/5/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -119,7 +119,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet51/1
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/6/1
+  description: P2P_LINK_Ethernet51/1_TO_DC1-SPINE2_Ethernet1/6/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -134,7 +134,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet52/1
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet6/1
+  description: P2P_LINK_Ethernet52/1_TO_DC1-SPINE1_Ethernet6/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -149,7 +149,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet53/1
-  description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/5/1
+  description: P2P_LINK_Ethernet53/1_TO_DC1-SPINE3_Ethernet1/5/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -164,7 +164,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet54/1
-  description: P2P_LINK_TO_DC1-SPINE4_Ethernet5/1
+  description: P2P_LINK_Ethernet54/1_TO_DC1-SPINE4_Ethernet5/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -179,7 +179,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet55/1
-  description: P2P_LINK_TO_DC1-SPINE4_Ethernet6/1
+  description: P2P_LINK_Ethernet55/1_TO_DC1-SPINE4_Ethernet6/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -194,7 +194,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet56/1
-  description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/6/1
+  description: P2P_LINK_Ethernet56/1_TO_DC1-SPINE3_Ethernet1/6/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -323,15 +323,14 @@ ip_igmp_snooping:
   vlans:
   - id: 120
     enabled: false
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
-- ip_address: 2001:db8::1
-  vrf: MGMT
-- ip_address: 2001:db8::2
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
+    - ip_address: 2001:db8::1
+    - ip_address: 2001:db8::2
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 ipv6_static_routes:
@@ -345,9 +344,6 @@ link_tracking_groups:
 local_users:
 - name: admin
   disabled: true
-  privilege: 15
-  role: network-admin
-  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin

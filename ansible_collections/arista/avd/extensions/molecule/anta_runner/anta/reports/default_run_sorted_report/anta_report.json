@@ -985,510 +985,6 @@
     },
     {
         "name": "dc1-leaf1a",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1b",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1c",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2a",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2c",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine1",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine2",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1a",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1b",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan1",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan2",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1a",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1b",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1c",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2a",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2b",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2c",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3a.arista.com",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3b.arista.com",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine1",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine2",
-        "test": "VerifyEOSExtensions",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies that all EOS extensions installed on the device are enabled for boot persistence.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1a",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1b",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1c",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2a",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2c",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine1",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine2",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1a",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1b",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan1",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan2",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1a",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1b",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1c",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2a",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2b",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2c",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3a.arista.com",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3b.arista.com",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine1",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine2",
-        "test": "VerifyEOSVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the EOS version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1a",
         "test": "VerifyEnvironmentCooling",
         "categories": [
             "hardware"
@@ -5489,7 +4985,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5513,7 +5009,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5537,7 +5033,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5561,7 +5057,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5585,7 +5081,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5609,7 +5105,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5633,7 +5129,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5657,7 +5153,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5681,7 +5177,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5705,7 +5201,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5729,7 +5225,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5753,7 +5249,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5777,7 +5273,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5801,7 +5297,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5825,7 +5321,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5849,7 +5345,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -5873,7 +5369,7 @@
         "categories": [
             "connectivity"
         ],
-        "description": "Verifies reachability to BGP neighbors with an update source configured.",
+        "description": "Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests.",
         "result": "unset",
         "messages": [],
         "atomic_results": [],
@@ -7021,258 +6517,6 @@
     },
     {
         "name": "dc1-leaf1a",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1b",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1c",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2a",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2c",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine1",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine2",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1a",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1b",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan1",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan2",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1a",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1b",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1c",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2a",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2b",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2c",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3a.arista.com",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3b.arista.com",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine1",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine2",
-        "test": "VerifyTerminAttrVersion",
-        "categories": [
-            "software"
-        ],
-        "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1a",
         "test": "VerifyTransceiversManufacturers",
         "categories": [
             "hardware"
@@ -7390,78 +6634,6 @@
         "messages": [],
         "atomic_results": [],
         "custom_field": "Generated by AVD"
-    },
-    {
-        "name": "dc1-leaf2a",
-        "test": "VerifyVxlan1ConnSettings",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies Vxlan1 source interface and UDP port.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2a",
-        "test": "VerifyVxlan1ConnSettings",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies Vxlan1 source interface and UDP port.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2b",
-        "test": "VerifyVxlan1ConnSettings",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies Vxlan1 source interface and UDP port.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2a",
-        "test": "VerifyVxlan1Interface",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies the Vxlan1 interface status.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2a",
-        "test": "VerifyVxlan1Interface",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies the Vxlan1 interface status.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2b",
-        "test": "VerifyVxlan1Interface",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies the Vxlan1 interface status.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
     },
     {
         "name": "dc1-leaf1a",
@@ -7498,18 +6670,6 @@
         "messages": [],
         "atomic_results": [],
         "custom_field": "Generated by AVD"
-    },
-    {
-        "name": "dc1-leaf2a",
-        "test": "VerifyVxlanConfigSanity",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies there are no VXLAN config-sanity inconsistencies.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
     },
     {
         "name": "dc1-leaf2a",
@@ -7605,31 +6765,7 @@
         "result": "unset",
         "messages": [],
         "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2a",
-        "test": "VerifyVxlanConfigSanity",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies there are no VXLAN config-sanity inconsistencies.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
         "custom_field": "Generated by AVD"
-    },
-    {
-        "name": "dc2-leaf2b",
-        "test": "VerifyVxlanConfigSanity",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies there are no VXLAN config-sanity inconsistencies.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
     },
     {
         "name": "dc2-leaf2b",
@@ -7666,78 +6802,6 @@
         "messages": [],
         "atomic_results": [],
         "custom_field": "Generated by AVD"
-    },
-    {
-        "name": "dc1-leaf2a",
-        "test": "VerifyVxlanVniBinding",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2a",
-        "test": "VerifyVxlanVniBinding",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2b",
-        "test": "VerifyVxlanVniBinding",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2a",
-        "test": "VerifyVxlanVtep",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies Vxlan1 VTEP peers.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2a",
-        "test": "VerifyVxlanVtep",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies Vxlan1 VTEP peers.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2b",
-        "test": "VerifyVxlanVtep",
-        "categories": [
-            "vxlan"
-        ],
-        "description": "Verifies Vxlan1 VTEP peers.",
-        "result": "unset",
-        "messages": [],
-        "atomic_results": [],
-        "custom_field": null
     },
     {
         "name": "dc1-leaf1a",

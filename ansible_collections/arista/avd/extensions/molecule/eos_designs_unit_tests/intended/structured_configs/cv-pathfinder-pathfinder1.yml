@@ -505,6 +505,13 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
     - extcommunity soo 192.168.44.2:0 additive
+- name: RM-BGP-UNDERLAY-PEERS-IN
+  sequence_numbers:
+  - sequence: 40
+    type: permit
+    description: Mark prefixes originated from the LAN
+    set:
+    - extcommunity soo 192.168.44.2:0 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -573,53 +580,53 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
     profiles:
-    - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
-      id: 254
-    - name: DEFAULT-AVT-POLICY-VIDEO
-      id: 3
-    - name: DEFAULT-AVT-POLICY-DEFAULT
-      id: 1
+    - id: 254
+      name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+    - id: 3
+      name: DEFAULT-AVT-POLICY-VIDEO
+    - id: 1
+      name: DEFAULT-AVT-POLICY-DEFAULT
   - name: PROD
     policy: PROD-AVT-POLICY
     profiles:
-    - name: PROD-AVT-POLICY-VOICE
-      id: 2
-    - name: PROD-AVT-POLICY-VIDEO
-      id: 4
-    - name: PROD-AVT-POLICY-MPLS-ONLY
-      id: 5
-    - name: PROD-AVT-POLICY-DEFAULT
-      id: 1
+    - id: 2
+      name: PROD-AVT-POLICY-VOICE
+    - id: 4
+      name: PROD-AVT-POLICY-VIDEO
+    - id: 5
+      name: PROD-AVT-POLICY-MPLS-ONLY
+    - id: 1
+      name: PROD-AVT-POLICY-DEFAULT
   - name: IT
     policy: DEFAULT-AVT-POLICY
     profiles:
-    - name: DEFAULT-AVT-POLICY-VIDEO
-      id: 3
-    - name: DEFAULT-AVT-POLICY-DEFAULT
-      id: 1
+    - id: 3
+      name: DEFAULT-AVT-POLICY-VIDEO
+    - id: 1
+      name: DEFAULT-AVT-POLICY-DEFAULT
   - name: TRANSIT
     policy: TRANSIT-AVT-POLICY
     profiles:
-    - name: CUSTOM-VOICE-PROFILE-NAME
-      id: 42
-    - name: TRANSIT-AVT-POLICY-DEFAULT
-      id: 1
+    - id: 42
+      name: CUSTOM-VOICE-PROFILE-NAME
+    - id: 1
+      name: TRANSIT-AVT-POLICY-DEFAULT
   - name: ATTRACTED-VRF-FROM-UPLINK
     policy: DEFAULT-POLICY
     profiles:
-    - name: DEFAULT-POLICY-DEFAULT
-      id: 1
+    - id: 1
+      name: DEFAULT-POLICY-DEFAULT
   - name: WAN-VRF-NO-AF
     policy: PROD-AVT-POLICY
     profiles:
-    - name: PROD-AVT-POLICY-VOICE
-      id: 2
-    - name: PROD-AVT-POLICY-VIDEO
-      id: 4
-    - name: PROD-AVT-POLICY-MPLS-ONLY
-      id: 5
-    - name: PROD-AVT-POLICY-DEFAULT
-      id: 1
+    - id: 2
+      name: PROD-AVT-POLICY-VOICE
+    - id: 4
+      name: PROD-AVT-POLICY-VIDEO
+    - id: 5
+      name: PROD-AVT-POLICY-MPLS-ONLY
+    - id: 1
+      name: PROD-AVT-POLICY-DEFAULT
 router_bfd:
   multihop:
     interval: 300

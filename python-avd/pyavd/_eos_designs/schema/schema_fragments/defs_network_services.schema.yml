@@ -332,8 +332,13 @@ $defs:
               description: Will be enabled automatically if "evpn_l2_multicast" is enabled.
             source_address:
               type: str
-              format: ipv4
-              description: Default IP address of Loopback0.
+              description: |-
+                The value of `source_address` will be interpreted according to these rules:
+                - `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                - `diagnostic_loopback` will configure the VRF Diagnostic Loopback.
+                - `main_router_id` will configure the Loopback0 IP address.
+                - An IPv4 address will be used directly as the source address.
+              default: main_router_id
             version:
               type: int
               description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
@@ -423,6 +428,26 @@ $defs:
                   rt_override supports two formats:
                     - A single number will be used in the RT assigned number subfield (second part of the RT).
                     - A full RT string with colon separator which will override the full RT.
+              rt_import:
+                type: bool
+                description: |
+                  Enable or disable route target import for the VRF for all address families.
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              rt_export:
+                type: bool
+                description: |
+                  Enable or disable route target export for the VRF for all address families.
+                  This setting applies only to the automatically generated route targets
+                  and does not affect any entries defined under `additional_route_targets`.
+                default: true
+              evpn_vlan_bundle:
+                type: str
+                description: |
+                  Name of a bundle defined under 'evpn_vlan_bundles' which will be used for all SVIs under this VRF.
+                  This setting overrides "evpn_vlan_bundle" set at the Tenant level.
+                  The common option "evpn_vlan_aware_bundles" is disregarded for this option.
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: |-
@@ -506,19 +531,21 @@ $defs:
                     type: str
                     description: |
                       IPv4_address/Mask.
-                      Loopback IPv4 range, a unique ip is derived from this range and assigned to each l3 leaf based on it's unique id.
+                      Loopback IPv4 range, a unique ip is derived from this range and assigned to each l3 leaf based on its unique id.
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name` of the device, and is configured with an `ipv4_pool`, it takes precedence over `loopback_ipv4_range`.
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
                   loopback_ipv6_range:
                     type: str
                     description: |
                       IPv6_address/Mask.
-                      Loopback IPv6 range, a unique IPv6 address is derived from this range and assigned to each L3 leaf based on it's unique ID.
+                      Loopback IPv6 range, a unique IPv6 address is derived from this range and assigned to each L3 leaf based on its unique ID.
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name` of the device, and is configured with an `ipv6_pool`, it takes precedence over `loopback_ipv6_range`.
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
                   loopback_ip_pools:
                     type: list
                     description: |
                       For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.
-                      `loopback_ip_range` takes precedence for IPv4 and `loopback_ipv6_range` takes precedence for IPV6.
+                      POD level pools take precedence over `loopback_ip_range` and `loopback_ipv6_range`.
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range` or `loopback_ip_pools` are set.
                     primary_key: pod
                     items:
@@ -778,7 +805,7 @@ $defs:
                       type: str
                       description: |
                         Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
-                        This setting overrides "evpn_vlan_bundle" set at tenant level.
+                        This setting overrides "evpn_vlan_bundle" set at the VRF or tenant level.
                         The common option "evpn_vlan_aware_bundles" is disregarded for this option.
                     nodes:
                       type: list
@@ -1571,10 +1598,13 @@ $defs:
                       valid_values:
                         - import
                         - export
+                      required: true
                     address_family:
                       type: str
+                      required: true
                     route_target:
                       type: str
+                      required: true
                     nodes:
                       type: list
                       items:

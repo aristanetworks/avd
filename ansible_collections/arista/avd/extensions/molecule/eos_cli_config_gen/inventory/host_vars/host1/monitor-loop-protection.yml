@@ -1,0 +1,7 @@
+---
+monitor_loop_protection:
+  enabled: true
+  disabled_time: 100
+  protect_vlan: 1000-1100
+  rate_limit: 100
+  transmit_interval: 10

@@ -23,6 +23,20 @@ l2leaf:
       uplink_switch_interfaces:
         - Ethernet34
         - Ethernet34
+      flow_tracker_type: hardware
+
+cv_settings:
+  cvaas:
+    enabled: true
+
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: 192.168.200.5
+
+dns_settings:
+  servers:
+    - ip_address: 192.168.200.5
 
 flow_tracking_settings:
   trackers:
@@ -36,3 +50,5 @@ flow_tracking_settings:
             - host: 127.0.2.1
           template_interval: 40020
           local_interface: use_mgmt_interface
+      # Testing export_to_cloudvision for hardware
+      export_to_cloudvision: true

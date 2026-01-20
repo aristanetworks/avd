@@ -1,0 +1,45 @@
+aaa_authentication:
+  dot1x:
+    default: group radius
+aaa_root:
+  disabled: true
+config_end: true
+dot1x:
+  system_auth_control: true
+  protocol_lldp_bypass: false
+  protocol_bpdu_bypass: false
+  dynamic_authorization: false
+enable_password:
+  disabled: true
+hostname: dot1x-settings-3
+ip_igmp_snooping:
+  globally_enabled: true
+ip_radius_source_interfaces:
+- name: Management1
+  vrf: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.2/24
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+radius_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - host: agni.arista.com
+      key: 1404071B09166738212B2130365E0C131A
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

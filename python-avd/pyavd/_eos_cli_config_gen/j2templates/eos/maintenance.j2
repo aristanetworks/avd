@@ -8,7 +8,7 @@
 {% if maintenance is arista.avd.defined %}
 !
 maintenance
-{%     for bgp_profile in maintenance.bgp_profiles | arista.avd.natural_sort('name') %}
+{%     for bgp_profile in maintenance.bgp_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%         if loop.index0 > 0 %}
    !
 {%         endif %}
@@ -30,7 +30,7 @@ maintenance
 {%         set first_line = {'flag': False} %}
    profile unit {{ maintenance.default_unit_profile }} default
 {%     endif %}
-{%     for interface_profile in maintenance.interface_profiles | arista.avd.natural_sort('name') %}
+{%     for interface_profile in maintenance.interface_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%         if not first_line.flag %}
    !
 {%         endif %}
@@ -46,7 +46,7 @@ maintenance
       shutdown max-delay {{ interface_profile.shutdown.max_delay }}
 {%         endif %}
 {%     endfor %}
-{%     for unit_profile in maintenance.unit_profiles | arista.avd.natural_sort('name') %}
+{%     for unit_profile in maintenance.unit_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%         if not first_line.flag %}
    !
 {%         endif %}
@@ -56,16 +56,16 @@ maintenance
       on-boot duration {{ unit_profile.on_boot.duration }}
 {%         endif %}
 {%     endfor %}
-{%     for unit in maintenance.units | arista.avd.natural_sort('name') %}
+{%     for unit in maintenance.units | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%         if not first_line.flag %}
    !
 {%         endif %}
 {%         set first_line = {'flag': False} %}
    unit {{ unit.name }}
-{%         for bgp_group in unit.groups.bgp_groups | arista.avd.natural_sort %}
+{%         for bgp_group in unit.groups.bgp_groups | arista.avd.natural_sort(ignore_case=false) %}
       group bgp {{ bgp_group }}
 {%         endfor %}
-{%         for interface_group in unit.groups.interface_groups | arista.avd.natural_sort %}
+{%         for interface_group in unit.groups.interface_groups | arista.avd.natural_sort(ignore_case=false) %}
       group interface {{ interface_group }}
 {%         endfor %}
 {%         if unit.profile is arista.avd.defined %}

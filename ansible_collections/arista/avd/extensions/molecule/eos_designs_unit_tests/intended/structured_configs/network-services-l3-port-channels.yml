@@ -88,20 +88,20 @@ flow_tracking:
   sampled:
     sample: 10000
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER
+      record_export:
         on_inactive_timeout: 70000
         on_interval: 300000
-      name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
         collectors:
         - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 3600000
-    - record_export:
+    - name: FT_Test
+      record_export:
         on_inactive_timeout: 70000
         on_interval: 300000
-      name: FT_Test
       exporters:
       - name: CV-TELEMETRY
         collectors:

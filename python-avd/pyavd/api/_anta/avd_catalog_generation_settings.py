@@ -3,52 +3,38 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+if TYPE_CHECKING:
+    from .avd_test_spec import AvdTestSpec
 
-from .test_spec import TestSpec
 
-
-class AvdCatalogGenerationSettings(BaseModel):
+@dataclass(frozen=True)
+class AvdCatalogGenerationSettings:
     """
     Model defining settings for the AVD-generated ANTA catalog.
 
     Used in `pyavd.get_device_test_catalog` to customize the AVD test catalog generation.
-
-    Attributes:
-    ----------
-        run_tests : list[str]
-            List of ANTA test names to run.
-        skip_tests : list[str]
-            List of ANTA test names to skip. Takes precedence over `run_tests`.
-        custom_test_specs : list[TestSpec]
-            List of custom test specs.
-        output_dir : str | Path | None, optional
-            Directory to output test catalog.
-        ignore_is_deployed : bool
-            Whether to ignore the `is_deployed` key in the structured config.
-            When set to `True`, the catalog will still be generated even if the `is_deployed` key is `False`.
-        extra_fabric_validation : bool
-            Whether to include extra fabric-wide validation tests in the catalog.
     """
 
-    model_config = ConfigDict(extra="forbid", arbitrary_types_allowed=True)
+    run_tests: tuple[str, ...] = field(default_factory=tuple)
+    """List of ANTA test names to run. If provided, only these tests (minus skipped ones) will run."""
+    skip_tests: tuple[str, ...] = field(default_factory=tuple)
+    """List of ANTA test names to skip. Takes precedence over `run_tests`."""
+    custom_test_specs: tuple[AvdTestSpec, ...] = field(default_factory=tuple)
+    """List of custom AvdTestSpec instances to generate additional tests in the catalog."""
+    output_dir: str | Path | None = field(default=None)
+    """Directory to output the test catalog. Must exist if provided."""
+    extra_fabric_validation: bool = field(default=False)
+    """Whether to include extra fabric-wide validation tests in the catalog."""
 
-    run_tests: list[str] = Field(default_factory=list)
-    skip_tests: list[str] = Field(default_factory=list)
-    custom_test_specs: list[TestSpec] = Field(default_factory=list)
-    output_dir: str | Path | None = Field(default=None)
-    ignore_is_deployed: bool = Field(default=False)
-    extra_fabric_validation: bool = Field(default=False)
-
-    @field_validator("output_dir")
-    @classmethod
-    def validate_output_dir(cls, value: str | Path | None) -> Path | None:
-        if value is None:
-            return None
-        path = Path(value)
+    def __post_init__(self) -> None:
+        """Validate the `output_dir` attribute if provided."""
+        if self.output_dir is None:
+            return
+        path = Path(self.output_dir)
         if not (path.exists() and path.is_dir()):
-            msg = f"Provided output_dir {value} does not exist or is not a directory"
+            msg = f"Provided output_dir {self.output_dir} does not exist or is not a directory."
             raise ValueError(msg)
-        return path
