@@ -105,9 +105,6 @@ class AvdActionPlugin(ActionBase):
                         # Catch-all for standard Python warnings from any library
                         self.result["warnings"].append(msg)
 
-        except AnsibleActionFail:
-            # Re-raise AnsibleActionFail as-is without wrapping
-            raise
         except Exception as exc:
             # Recast other errors as AnsibleActionFail
             # Ignoring Pyright since 'ansible_name' is not typed in Ansible world
