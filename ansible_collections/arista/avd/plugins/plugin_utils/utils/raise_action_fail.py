@@ -31,16 +31,15 @@ def raise_action_fail(message: str, exception: Exception | None = None) -> None:
     if exception is None:
         raise AnsibleActionFail(message) from None
 
-    # Recursively clear all exception messages in the chain to avoid duplication
-    # while preserving the full traceback chain
-    def clear_exception_chain(exc: BaseException) -> None:
-        """Recursively clear exception messages in the chain."""
-        if exc is not None:
-            exc.args = ()
-            if exc.__cause__ is not None:
-                clear_exception_chain(exc.__cause__)
-            if exc.__context__ is not None and not exc.__suppress_context__:
-                clear_exception_chain(exc.__context__)
-
-    clear_exception_chain(exception)
+    _clear_exception_chain(exception)
     raise AnsibleActionFail(message) from exception
+
+
+def _clear_exception_chain(exc: BaseException) -> None:
+    """Recursively clear all exception messages in the chain to avoid duplication while preserving the full traceback chain."""
+    if exc is not None:
+        exc.args = ()
+        if exc.__cause__ is not None:
+            _clear_exception_chain(exc.__cause__)
+        if exc.__context__ is not None and not exc.__suppress_context__:
+            _clear_exception_chain(exc.__context__)
