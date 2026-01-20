@@ -19,6 +19,8 @@ from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
+
     from . import SharedUtilsProtocol
 
 
@@ -473,7 +475,7 @@ class MiscMixin(Protocol):
         structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)
 
     @run_once_method
-    def set_once_peer_group_ipv4_underlay_peers(self: SharedUtilsProtocol, structured_config: EosCliConfigGen) -> None:
+    def set_once_peer_group_ipv4_underlay_peers(self: SharedUtilsProtocol, structured_config: EosCliConfigGen, custom_structured_configs: StructCfgs) -> None:
         """
         Add IPv4 underlay peer group to structured_config.
 
@@ -489,10 +491,10 @@ class MiscMixin(Protocol):
             send_community="all",
         )
         peer_group.metadata.type = af_type
-        # if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
-        #     self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
-        #         self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-        #     )
+        if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
+            custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
+                self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=custom_structured_configs.list_merge_strategy
+            )
 
         if self.is_cv_pathfinder_router:
             peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"

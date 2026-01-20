@@ -51,7 +51,7 @@ class RouterBgpMixin(Protocol):
                 msg = f"{self.data_model}.p2p_links.[].ip, .subnet or .ip_pool"
                 raise AristaAvdMissingVariableError(msg)
 
-            self.shared_utils.set_once_peer_group_ipv4_underlay_peers(self.structured_config)
+            self.shared_utils.set_once_peer_group_ipv4_underlay_peers(self.structured_config, self.custom_structured_configs)
 
             self.structured_config.router_bgp.neighbors.append_new(
                 ip_address=get_ip_from_ip_prefix(p2p_link_data["peer_ip"]),
