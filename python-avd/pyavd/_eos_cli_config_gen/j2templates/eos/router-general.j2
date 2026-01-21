@@ -36,7 +36,7 @@ router general
    software forwarding hardware offload mtu {{ router_general.software_forwarding_hardware_offload_mtu }}
 {%         set delimiter = true %}
 {%     endif %}
-{%     if delimiter is arista.avd.defined(true) %}
+{%     if delimiter is arista.avd.defined(true) and router_general.nexthop_fast_failover is arista.avd.defined(true) %}
    !
 {%     endif %}
 {%     if router_general.nexthop_fast_failover is arista.avd.defined(true) %}
