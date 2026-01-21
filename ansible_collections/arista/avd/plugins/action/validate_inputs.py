@@ -84,14 +84,18 @@ ValidateWorkerResult = ValidateWorkerSuccess | WorkerFailure
 
 
 PLUGIN_NAME = "arista.avd.validate_inputs"
-SCHEMA_NAME = Literal["eos_designs", "eos_cli_config_gen"]
+SCHEMA_NAME = Literal["avd_design", "eos_config"]
+SCHEMA_MAP = {
+    "avd_design": "eos_designs",
+    "eos_config": "eos_cli_config_gen",
+}
 
 # TODO: Create a single pyavd_utils logger.
 TARGET_LOGGERS = ["ansible_collections.arista.avd", "validation", "pyvalidation"]
 
 ARGUMENT_SPEC = {
     "batch_size": {"type": "int", "default": 10},
-    "schema_name": {"type": "str", "default": "eos_designs", "choices": ["eos_designs", "eos_cli_config_gen"]},
+    "schema_name": {"type": "str", "default": "avd_design", "choices": ["avd_design", "eos_config"]},
     "input_dir": {"type": "str"},
     "input_suffix": {"type": "str", "default": "json", "choices": ["yml", "yaml", "json"]},
     "fail_on_validation_errors": {"type": "bool", "default": False},
@@ -217,8 +221,8 @@ class ActionModule(AvdActionPlugin):
         """
         Get the list of hostnames to process based on the schema.
 
-        For eos_cli_config_gen, returns hosts targeted by the current play.
-        For eos_designs, returns all hosts in the fabric group (needed to generate facts).
+        For eos_config, returns hosts targeted by the current play.
+        For avd_design, returns all hosts in the fabric group (needed to generate facts).
 
         Args:
             task_vars: Ansible task variables.
@@ -228,16 +232,16 @@ class ActionModule(AvdActionPlugin):
             List of hostnames to process.
 
         Raises:
-            ValueError: If fabric_name is invalid or missing for eos_designs.
+            ValueError: If fabric_name is invalid or missing for avd_design.
         """
         ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", [])
 
-        # For eos_cli_config_gen, the validation is per-host.
+        # For eos_config, the validation is per-host.
         # We only need to process the hosts currently targeted by the play.
-        if schema_name == "eos_cli_config_gen":
+        if schema_name == "eos_config":
             return ansible_play_hosts_all
 
-        # For eos_designs, we require fabric-wide facts.
+        # For avd_design, we require fabric-wide facts.
         # We need to process the entire fabric group, not just the play hosts.
         groups = task_vars.get("groups", {})
         fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
@@ -309,7 +313,7 @@ class ActionModule(AvdActionPlugin):
         input_path: Path,
         input_suffix: str,
         output_path: Path,
-        schema_name: Literal["eos_designs", "eos_cli_config_gen"],
+        schema_name: SCHEMA_NAME,
         fail_on_validation_errors: bool,
     ) -> None:
         """
@@ -391,9 +395,9 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
         # Take the HostVarsVars for this host to be templated on access and cached by Ansible's tooling.
         hostvars_wrapper = hostvars_manager[hostname]
 
-        # Wrap the hostvars in a filter to only template variables used by eos_cli_config_gen.
-        # We cannot filter for eos_designs while we support dynamic keys.
-        if schema_name == "eos_cli_config_gen":
+        # Wrap the hostvars in a filter to only template variables used by eos_config.
+        # We cannot filter for avd_design while we support dynamic keys.
+        if schema_name == "eos_config":
             allowed_keys = {"inventory_hostname"}
             allowed_keys.update(EOS_CLI_CONFIG_GEN_ROLE_KEYS, EOS_CLI_CONFIG_GEN_INPUT_KEYS)
             hostvars_wrapper = FilteredMapView(hostvars_wrapper, allowed_keys)
@@ -448,7 +452,7 @@ def _validate_host_worker(hostname: str, input_path: Path, input_suffix: str, ou
                 json_data = f.read()
 
         # Validation in Rust, releasing the GIL.
-        validated_data_result = get_validated_data(data_as_json=json_data, schema_name=schema_name)
+        validated_data_result = get_validated_data(data_as_json=json_data, schema_name=SCHEMA_MAP[schema_name])
         validation_result, validated_data = validated_data_result.validation_result, validated_data_result.validated_data
 
         output_file = None

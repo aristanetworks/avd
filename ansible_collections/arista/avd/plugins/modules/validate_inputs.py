@@ -21,11 +21,11 @@ options:
   schema_name:
     description:
       - The AVD schema to validate against.
-      - If set to `eos_designs`, the plugin will validate the inputs for the entire fabric (requiring `fabric_name` to be set).
-      - If set to `eos_cli_config_gen`, the plugin will validate the inputs for the devices in the current play.
+      - If set to `avd_design`, the plugin will validate the inputs for the entire fabric (requiring `fabric_name` to be set).
+      - If set to `eos_config`, the plugin will validate the inputs for the devices in the current play.
     type: str
-    default: "eos_designs"
-    choices: ["eos_designs", "eos_cli_config_gen"]
+    default: "avd_design"
+    choices: ["avd_design", "eos_config"]
   input_dir:
     description:
       - Optional path to a directory containing input files to validate directly.
