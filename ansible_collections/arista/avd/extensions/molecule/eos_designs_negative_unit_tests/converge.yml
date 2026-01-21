@@ -389,7 +389,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_INVALID_UPLINK_PORT_CHANNEL_ID_1
+  hosts: invalid-uplink-port-channel-id-1-l3leaf-1
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -399,14 +399,13 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_INVALID_UPLINK_PORT_CHANNEL_ID_2
+  hosts: invalid-uplink-port-channel-id-2-l3leaf-1
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -416,14 +415,13 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_INVALID_UPLINK_PORT_CHANNEL_ID_3
+  hosts: invalid-uplink-port-channel-id-3-l2leaf-1
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -433,14 +431,13 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_P2P_VRFS
+  hosts: invalid-uplink-type-p2p-vrfs-underlay-router-false
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -450,14 +447,13 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_DOWNLINK_POOLS_DUPLICATE
+  hosts: downlink-pools-duplicate-spine
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -467,14 +463,13 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_DOWNLINK_POOLS_MISSING
+  hosts: downlink-pools-missing-spine
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -484,14 +479,13 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_DOWNLINK_POOLS_MISSING_IPV6
+  hosts: downlink-pools-missing-spine-ipv6
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -501,14 +495,13 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_DOWNLINK_INTERFACES_TOO_SMALL
+  hosts: downlink-interfaces-too-small-l3leaf
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -518,7 +511,6 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -535,7 +527,6 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -552,7 +543,6 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -575,7 +565,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_ID_STATIC_AND_POOL_MANAGER_COLLISION
+  hosts: id-static-and-pool-manager-collision-a
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -585,7 +575,6 @@
             name: arista.avd.eos_designs
       rescue:
         - name: Assert eos_designs failed with the expected error message
-          run_once: true
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
