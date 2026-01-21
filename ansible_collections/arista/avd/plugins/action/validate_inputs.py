@@ -166,7 +166,8 @@ class ActionModule(AvdActionPlugin):
         )
 
         # Phase 1: If no input_dir is provided, run the templating phase on hostvars.
-        if plugin_args.input_dir is None:
+        if not plugin_args.input_dir:
+            self.logger.info("Reading inputs from hostvars")
             set_worker_context(ActionPluginVars(self))
             hosts_to_validate = self._run_templating_phase(
                 hostnames=hosts_to_process,
@@ -178,6 +179,7 @@ class ActionModule(AvdActionPlugin):
             validation_input_path = templated_path
             validation_input_suffix = "json"
         else:
+            self.logger.info("Reading inputs from '%s'", plugin_args.input_dir)
             hosts_to_validate = hosts_to_process
             validation_input_path = Path(plugin_args.input_dir)
             validation_input_suffix = plugin_args.input_suffix
@@ -277,6 +279,7 @@ class ActionModule(AvdActionPlugin):
         Returns:
             List of hostnames that were templated successfully.
         """
+        self.logger.info("Templating hostvars...")
         start_time = perf_counter()
         successful_hosts = []
 
@@ -296,7 +299,7 @@ class ActionModule(AvdActionPlugin):
                 self.logger.debug("Templated data for host %s saved to %s", result.hostname, result.output_file)
                 successful_hosts.append(result.hostname)
 
-        self.logger.info("Phase 1 (Templating) complete in %.2fs", perf_counter() - start_time)
+        self.logger.info("Templating of hostvars completed in %.2fs", perf_counter() - start_time)
         return successful_hosts
 
     def _run_validation_phase(
@@ -326,6 +329,7 @@ class ActionModule(AvdActionPlugin):
             schema_name: Schema to validate against.
             fail_on_validation_errors: Whether to fail the task on validation errors.
         """
+        self.logger.info("Validating inputs...")
         start_time = perf_counter()
 
         data_validation_errors = 0
@@ -362,7 +366,7 @@ class ActionModule(AvdActionPlugin):
         if msg:
             self.result["msg"] = msg
 
-        self.logger.info("Phase 2 (Validation) complete in %.2fs", perf_counter() - start_time)
+        self.logger.info("Validation of inputs completed in %.2fs", perf_counter() - start_time)
 
 
 def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_NAME) -> TemplateWorkerResult:
