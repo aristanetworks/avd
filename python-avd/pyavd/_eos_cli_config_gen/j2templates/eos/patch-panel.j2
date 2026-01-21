@@ -28,7 +28,13 @@ patch panel
 {%                 elif connector.type is arista.avd.defined("pseudowire") %}
 {%                     set connector_cli = "connector " ~ connector.id ~ " pseudowire " ~ connector.endpoint %}
 {%                 endif %}
+{%                 if loop.first and patch.enabled is arista.avd.defined(false) %}
+      !
+{%                 endif %}
       {{ connector_cli }}
+{%                 if not loop.last %}
+      !
+{%                 endif %}
 {%             endfor %}
 {%         endif %}
    !

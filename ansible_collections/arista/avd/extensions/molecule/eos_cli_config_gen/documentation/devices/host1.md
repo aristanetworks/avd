@@ -10835,11 +10835,14 @@ patch panel
    !
    patch TEN_A_site2_site5_eline
       shutdown
+      !
       connector 1 interface Ethernet6 dot1q vlan 123
+      !
       connector 2 pseudowire ldp LDP_PW_1
    !
    patch TEN_B_site2_site5_eline
       connector 1 interface Ethernet5
+      !
       connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_B_site2_site5_eline
    !
 ```
