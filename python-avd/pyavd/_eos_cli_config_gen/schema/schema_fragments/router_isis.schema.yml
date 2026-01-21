@@ -366,11 +366,11 @@ keys:
             type: str
           prefix_segments:
             type: list
+            primary_key: prefix
             items:
               type: dict
               keys:
                 prefix:
-                  required: true
                   type: str
                 index:
                   type: int
