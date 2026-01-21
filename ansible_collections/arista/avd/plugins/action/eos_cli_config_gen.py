@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import logging
+from collections import ChainMap
 from contextlib import suppress
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -113,7 +114,8 @@ class ActionModule(ActionBase):
             # Something failed in schema validation.
             return result
 
-        has_custom_templates = bool(task_vars.get("custom_templates"))
+        if has_custom_templates := bool(task_vars.get("custom_templates")):
+            template_vars = ChainMap(validated_task_vars, task_vars)
         try:
             if validated_args["generate_device_config"]:
                 LOGGER.debug("Rendering configuration...")
@@ -121,7 +123,7 @@ class ActionModule(ActionBase):
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering config custom templates...")
-                    rendered_custom_templates = self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
+                    rendered_custom_templates = self.render_template_with_ansible_templar(template_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
                     # Need to handle if `end` has been rendered already
                     if device_config.endswith("!\nend\n"):
                         device_config = device_config[:-6] + rendered_custom_templates + "!\nend\n"
@@ -138,7 +140,7 @@ class ActionModule(ActionBase):
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering documentation custom templates...")
-                    device_doc += self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_DOC_TEMPLATE)
+                    device_doc += self.render_template_with_ansible_templar(template_vars, CUSTOM_TEMPLATES_DOC_TEMPLATE)
                     LOGGER.debug("Rendering documentation custom templates [done].")
 
                 if validated_args["device_doc_toc"]:
@@ -231,13 +233,13 @@ class ActionModule(ActionBase):
 
         return validated_data_result.validated_data or {}
 
-    def render_template_with_ansible_templar(self, task_vars: dict, templatefile: str) -> str:
+    def render_template_with_ansible_templar(self, template_vars: dict | ChainMap, templatefile: str) -> str:
         """Render a template with the Ansible Templar."""
         # Get updated templar instance to be passed along to our simplified "templater"
         if not hasattr(self, "ansible_templar"):
-            self.ansible_templar = get_templar(self, task_vars)
+            self.ansible_templar = get_templar(self, template_vars)  # pyright: ignore[reportArgumentType]
 
-        return template(templatefile, task_vars, self.ansible_templar)
+        return template(templatefile, template_vars, self.ansible_templar)
 
     def write_file(self, content: str, filename: str) -> bool:
         """
