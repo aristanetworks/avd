@@ -78,7 +78,7 @@ class ActionModule(ActionBase):
         return self.main(hostname, task_vars, result)
 
     def main(self, hostname: str, task_vars: dict, result: dict) -> dict:
-        """Main function in charge of loading the input variables and generating the device configuration and documentation."""
+        """Main function in charge of loading the structured config and generating the device configuration and documentation."""
         LOGGER.debug("Validating task arguments...")
         validated_args = self.validate_args()
         LOGGER.debug("Validating task arguments [done].")
@@ -179,22 +179,22 @@ class ActionModule(ActionBase):
         path.write_text(content, encoding="UTF-8")
         return True
 
-    def load_structured_config(self, device: str) -> dict[str, Any]:
+    def load_structured_config(self, hostname: str) -> dict[str, Any]:
         """
-        Load the validated structured config from the temporary file for the device.
+        Load the validated structured config from the temporary file for the host.
 
         Args:
-            device: Device name (inventory hostname).
+            hostname: Inventory hostname.
 
         Returns:
-            Dict containing the validated structured config for the device.
+            Dict containing the validated structured config for the host.
         """
         _templated_path, validated_path = get_role_tmp_paths("eos_cli_config_gen")
-        file_path = validated_path / f"{device}.json"
+        file_path = validated_path / f"{hostname}.json"
         if not file_path.exists():
             msg = (
-                f"Missing structured config for device '{device}'. "
-                "Ensure the 'arista.avd.validate_inputs' task ran successfully for this device and that no validation errors occurred."
+                f"Missing structured config for host '{hostname}'. "
+                "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
             )
             raise AnsibleActionFail(message=msg)
 

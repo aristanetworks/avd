@@ -85,7 +85,7 @@ class ActionModule(ActionBase):
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
 
-        avd_design, device_hostvars = self.load_validated_inputs(hostname)
+        avd_design, host_hostvars = self.load_validated_inputs(hostname)
 
         all_facts = self.load_facts(hostname)
 
@@ -95,7 +95,7 @@ class ActionModule(ActionBase):
                 hostname=hostname,
                 inputs=avd_design,
                 all_facts=all_facts,
-                hostvars=device_hostvars,
+                hostvars=host_hostvars,
                 templar=self.templar,
                 digital_twin=digital_twin,
             )
@@ -108,7 +108,7 @@ class ActionModule(ActionBase):
         #  - output (containing structured_config at this point)
         #  - templated, converted and validated version of all other vars
         # Any var assignments will end up in output, so all other objects are protected.
-        template_vars = ChainMap(output, device_hostvars)
+        template_vars = ChainMap(output, host_hostvars)
 
         # eos_designs_custom_templates can contain a list of jinja templates to run after PyAVD
         if eos_designs_custom_templates:
@@ -180,39 +180,39 @@ class ActionModule(ActionBase):
 
         return result
 
-    def load_validated_inputs(self, device: str) -> tuple[AVDDesign, dict[str, Any]]:
+    def load_validated_inputs(self, hostname: str) -> tuple[AVDDesign, dict[str, Any]]:
         """
-        Load validated hostvars from the temporary file for the device and load them into AVDDesign class.
+        Load validated hostvars from the temporary file for the host and load them into AVDDesign class.
 
         Args:
-            device: Device name (inventory hostname).
+            hostname: Inventory hostname.
 
         Returns:
-            Tuple of an AVDDesign instance loaded from the device hostvars and a dict with the raw hostvars.
+            Tuple of an AVDDesign instance loaded from the host hostvars and a dict with the raw hostvars.
         """
         _templated_path, validated_path = get_role_tmp_paths("eos_designs")
-        file_path = validated_path / f"{device}.json"
+        file_path = validated_path / f"{hostname}.json"
         if not file_path.exists():
             msg = (
-                f"Missing validated inputs for device '{device}'. "
-                "Ensure the 'arista.avd.validate_inputs' task ran successfully for this device and that no validation errors occurred."
+                f"Missing validated inputs for host '{hostname}'. "
+                "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
             )
             raise AnsibleActionFail(message=msg)
 
         with file_path.open(mode="r", encoding="utf-8") as f:
-            device_hostvars = json.load(f)
+            host_hostvars = json.load(f)
 
-        # Load device hostvars into the AVDDesign data class.
-        avd_design = AVDDesign._from_dict(device_hostvars)
+        # Load host hostvars into the AVDDesign data class.
+        avd_design = AVDDesign._from_dict(host_hostvars)
 
-        return avd_design, device_hostvars
+        return avd_design, host_hostvars
 
-    def load_facts(self, device: str) -> AvdSwitchFactsDefaultDict:
+    def load_facts(self, hostname: str) -> AvdSwitchFactsDefaultDict:
         """
         Load facts from the temporary file and load them into AvdSwitchFactsDefaultDict class.
 
         Args:
-            device: Device name (inventory hostname).
+            hostname: Inventory hostname.
 
         Returns:
             AvdSwitchFactsDefaultDict instance loaded from facts.
@@ -220,7 +220,7 @@ class ActionModule(ActionBase):
         file_path = get_eos_designs_facts_path()
 
         if not file_path.exists():
-            msg = f"Missing AVD eos_designs facts for device '{device}' ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
+            msg = f"Missing AVD eos_designs facts for host '{hostname}' ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
             raise AnsibleActionFail(message=msg)
 
         with file_path.open(mode="r", encoding="utf-8") as f:

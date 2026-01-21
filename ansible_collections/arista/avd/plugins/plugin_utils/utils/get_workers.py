@@ -8,12 +8,9 @@ def get_workers(num_devices: int, ansible_forks: int) -> tuple[int, int]:
     """
     Calculate the optimal number of multiprocessing and multithreading workers.
 
-    Multiprocessing workers are used for CPU-bound tasks (e.g., templating hostvars).
-    Multithreading workers are used for I/O-bound tasks (e.g., validation with GIL released).
-
     Args:
         num_devices: Total number of devices to process.
-        ansible_forks: Ansible forks setting (controls parallelism).
+        ansible_forks: Ansible forks setting.
 
     Returns:
         A tuple of (mp_workers, mt_workers):
