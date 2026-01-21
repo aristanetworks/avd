@@ -162,7 +162,7 @@ class ActionModule(ActionBase):
         Load facts from the temporary file.
 
         Returns:
-            Dict of facts keyed by device name.
+            Dict of facts keyed by hostname.
         """
         file_path = get_eos_designs_facts_path()
 

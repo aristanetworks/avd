@@ -6,7 +6,7 @@ from multiprocessing import cpu_count
 
 def get_workers(num_devices: int, ansible_forks: int) -> tuple[int, int]:
     """
-    Calculate the optimal number of multiprocessing and multithreading workers.
+    Calculate the optimal number of multiprocessing and multithreading workers for a custom Ansible action plugin.
 
     Args:
         num_devices: Total number of devices to process.

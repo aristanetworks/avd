@@ -129,7 +129,7 @@ class ActionModule(ActionBase):
             with file_path.open(mode="r", encoding="utf-8") as f:
                 host_hostvars = json.load(f)
 
-            # Load input vars into the AVDDesign data class.
+            # Load host hostvars into the AVDDesign data class.
             all_inputs[host] = AVDDesign._from_dict(host_hostvars)
             all_hostvars[host] = host_hostvars
 

@@ -150,8 +150,8 @@ class ActionModule(AvdActionPlugin):
             raise ImportError(msg)
 
         plugin_args = self._get_plugin_args()
-        hostnames = self._get_hostnames(task_vars, plugin_args.schema_name)
-        mp_workers, mt_workers = get_workers(len(hostnames), task_vars.get("ansible_forks", 5))
+        hosts_to_process = self._get_hosts_to_process(task_vars, plugin_args.schema_name)
+        mp_workers, mt_workers = get_workers(len(hosts_to_process), task_vars.get("ansible_forks", 5))
         templated_path, validated_path = get_role_tmp_paths(plugin_args.schema_name)
 
         # Track worker failures globally for the task.
@@ -161,7 +161,7 @@ class ActionModule(AvdActionPlugin):
             "Starting execution with %d multiprocessing workers and %d threads for %d hosts in batches of %d",
             mp_workers,
             mt_workers,
-            len(hostnames),
+            len(hosts_to_process),
             plugin_args.batch_size,
         )
 
@@ -169,26 +169,26 @@ class ActionModule(AvdActionPlugin):
         if plugin_args.input_dir is None:
             set_worker_context(ActionPluginVars(self))
             hosts_to_validate = self._run_templating_phase(
-                hostnames=hostnames,
+                hostnames=hosts_to_process,
                 workers=mp_workers,
                 batch_size=plugin_args.batch_size,
                 output_path=templated_path,
                 schema_name=plugin_args.schema_name,
             )
-            input_path = templated_path
-            input_suffix = "json"
+            validation_input_path = templated_path
+            validation_input_suffix = "json"
         else:
-            hosts_to_validate = hostnames
-            input_path = Path(plugin_args.input_dir)
-            input_suffix = plugin_args.input_suffix
+            hosts_to_validate = hosts_to_process
+            validation_input_path = Path(plugin_args.input_dir)
+            validation_input_suffix = plugin_args.input_suffix
 
         # Phase 2: Run the validation phase on the input_dir files or the templated_path files.
         if hosts_to_validate:
             self._run_validation_phase(
                 hostnames=hosts_to_validate,
                 workers=mt_workers,
-                input_path=input_path,
-                input_suffix=input_suffix,
+                input_path=validation_input_path,
+                input_suffix=validation_input_suffix,
                 output_path=validated_path,
                 schema_name=plugin_args.schema_name,
                 fail_on_validation_errors=plugin_args.fail_on_validation_errors,
@@ -211,12 +211,12 @@ class ActionModule(AvdActionPlugin):
         validated_args = json.loads(json.dumps(validated_args))
         return PluginArgs(**validated_args)
 
-    def _get_hostnames(self, task_vars: dict[str, Any], schema_name: SCHEMA_NAME) -> list[str]:
+    def _get_hosts_to_process(self, task_vars: dict[str, Any], schema_name: SCHEMA_NAME) -> list[str]:
         """
         Get the list of hostnames to process based on the schema.
 
         For eos_cli_config_gen, returns hosts targeted by the current play.
-        For eos_designs, returns all hosts in the fabric group (fabric-wide processing).
+        For eos_designs, returns all hosts in the fabric group (needed to generate facts).
 
         Args:
             task_vars: Ansible task variables.
@@ -280,7 +280,7 @@ class ActionModule(AvdActionPlugin):
         start_time = perf_counter()
         successful_hosts = []
 
-        # Partial to inject directories into the worker.
+        # Partial to inject arguments into the worker.
         worker_func = partial(_template_host_worker, output_path=output_path, schema_name=schema_name)
         ctx = get_context("fork")
 
@@ -332,7 +332,7 @@ class ActionModule(AvdActionPlugin):
 
         init_store()
 
-        # Partial to inject directories and schema name into the worker.
+        # Partial to inject arguments into the worker.
         worker_func = partial(_validate_host_worker, input_path=input_path, input_suffix=input_suffix, output_path=output_path, schema_name=schema_name)
 
         with ThreadPoolExecutor(max_workers=workers) as pool:
