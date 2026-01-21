@@ -358,7 +358,6 @@ keys:
           keys:
             process:
               type: dict
-              description: Configuration for OSPFv3 specific process and area settings on the interface.
               keys:
                 id:
                   type: int
