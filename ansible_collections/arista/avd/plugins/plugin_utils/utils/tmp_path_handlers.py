@@ -53,7 +53,7 @@ def _cached_tmp_path() -> Path:
 
     try:
         tmp_path.mkdir(mode=0o700, parents=True, exist_ok=True)
-    except (PermissionError, OSError) as e:
+    except OSError as e:
         msg = f"Unable to create AVD temporary directory {tmp_path}: {e}"
         raise type(e)(msg) from e
 
