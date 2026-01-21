@@ -12,7 +12,6 @@ if TYPE_CHECKING:
     from pyavd._utils.json_path_to_string import json_path_to_string
 
 try:
-    from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._utils.json_path_to_string import json_path_to_string
 
     HAS_PYAVD = True
