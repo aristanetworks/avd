@@ -12,11 +12,11 @@ description: |-
 
   The plugin performs two phases:
 
-  1. **Templating Phase**: Resolves Ansible hostvars and writes them as JSON files. This phase is skipped if `input_dir` is provided
-     or pre-templated files already exist in the AVD temporary directory (e.g., from `eos_designs_structured_config`).
-  2. **Validation Phase**: Validates the data against the specified AVD schema using `pyavd-utils`.
+  1. **Templating Phase**: Resolves Ansible hostvars and writes the templated data as JSON files to the AVD temporary directory.
+      This phase is skipped if `input_dir` is provided, treating the input files as already templated.
+  2. **Validation Phase**: Validates the inputs against the specified AVD schema using `pyavd-utils` and writes the validated
+      data as JSON files to the AVD temporary directory.
 
-  The plugin uses multiprocessing for templating (CPU-bound) and multithreading for validation (I/O-bound with GIL released by Rust).
 options:
   schema_name:
     description:
@@ -30,7 +30,7 @@ options:
     description:
       - Optional path to a directory containing input files to validate directly.
       - If provided, the templating phase is skipped and files are read from this directory.
-      - Files must be named `<device_name>.<input_suffix>`.
+      - Files must be named `device_name.input_suffix`.
     type: str
     required: false
   input_suffix:
