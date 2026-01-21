@@ -461,7 +461,7 @@ vlan_interfaces:
     ntp_serve: true
     ipv6_ospf:
       process:
-        id: 11
+        id: 100
         area: 0.0.0.29
       network_point_to_point: true
     ospf_network_point_to_point: true
