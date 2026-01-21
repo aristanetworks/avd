@@ -377,6 +377,11 @@ keys:
     documentation_options:
       table: role-settings
     $ref: eos_cli_config_gen#/keys/avd_fail_on_validation_errors
+  avd_structured_config_file_format:
+    type: str
+    documentation_options:
+      table: role-settings
+    $ref: eos_cli_config_gen#/keys/avd_structured_config_file_format
   avd_validate_inputs_batch_size:
     type: int
     documentation_options:
