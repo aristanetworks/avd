@@ -35411,7 +35411,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Watchdog(AvdModel):
             """Subclass of AvdModel."""
 
-            Action: TypeAlias = Literal["drop", "no-drop"]
+            Action: TypeAlias = Literal["drop", "errdisable", "notify-only"]
             _fields: ClassVar[dict] = {
                 "action": {"type": str},
                 "timeout": {"type": str},
