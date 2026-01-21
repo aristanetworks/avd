@@ -1,5 +1,5 @@
 ---
-fabric_name: FABRIC_FAILURE_CV_TOPOLOGY_UPLINK_SWITCHES
+fabric_name: FABRIC_FAILURE_CV_TOPOLOGY_UPLINK_INTERFACES
 
 bgp_as: 65000
 
@@ -7,9 +7,9 @@ bgp_as: 65000
 type: l2leaf
 l2leaf:
   nodes:
-    - name: failure-cv-topology-uplink-switches
+    - name: failure-cv-topology-uplink-interfaces
       id: 1
-      uplink_switches: ["DC1-L3LEAF1"]
+      uplink_interfaces: ["Ethernet1"]
 
 use_cv_topology: true
 cv_topology:

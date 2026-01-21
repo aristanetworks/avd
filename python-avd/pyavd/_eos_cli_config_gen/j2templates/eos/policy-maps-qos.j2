@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - policy map qos #}
-{% for policy_map in policy_maps.qos | arista.avd.natural_sort('name') %}
+{% for policy_map in policy_maps.qos | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 policy-map type quality-of-service {{ policy_map.name }}
 {%     for class in policy_map.classes | arista.avd.default([]) %}
