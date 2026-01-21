@@ -57,7 +57,7 @@
         "result": "unset",
         "messages": [],
         "atomic_results": [],
-        "custom_field": null
+        "custom_field": "DC2 VXLAN VTEP reachability"
     },
     {
         "name": "dc2-leaf2a",
@@ -117,7 +117,7 @@
         "result": "unset",
         "messages": [],
         "atomic_results": [],
-        "custom_field": null
+        "custom_field": "DC2 VXLAN VTEP reachability"
     },
     {
         "name": "dc2-leaf2b",
@@ -177,6 +177,6 @@
         "result": "unset",
         "messages": [],
         "atomic_results": [],
-        "custom_field": null
+        "custom_field": "DC2 VXLAN VTEP reachability"
     }
 ]
