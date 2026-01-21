@@ -107,6 +107,11 @@ Serial Number: DEADBEEFC0FFEW
   - [Load Balance Profiles](#load-balance-profiles)
   - [Load Balance Cluster](#load-balance-cluster)
   - [Load Balance Configuration](#load-balance-configuration)
+- [Monitor Link-Flap](#monitor-link-flap)
+  - [Damping Link-Flap Profiles](#damping-link-flap-profiles)
+  - [Max Flap Link Profiles](#max-flap-link-profiles)
+  - [Default Profiles](#default-profiles)
+  - [Monitor Link Flap Device Configuration](#monitor-link-flap-device-configuration)
   - [Link Tracking](#link-tracking)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
@@ -3836,6 +3841,50 @@ load-balance cluster
       flow exhaustion action traffic-class 9
 ```
 
+## Monitor Link-Flap
+
+### Damping Link-Flap Profiles
+
+| Profile Name | Penalty Decay Half-Life | Penalty Decay Units | MAC Fault - Local Penalty | MAC Fault - Remote Penalty | Penalty Threshold Max | Penalty Threshold Reuse | Penalty Threshold Suppression |
+| ------------ | ----------------------- | ------------------- | ------------------------- | -------------------------- | --------------------- | ----------------------- | ---------------------------- |
+| LFP1 | 5 | seconds | 5 | 10 | 5 | 2 | 100 |
+| LFP3 | - | - | - | - | - | 1 | - |
+| lfp2 | - | - | - | - | - | - | - |
+
+### Max Flap Link Profiles
+
+| Profile Name | Max Flaps | Time | Violations | Intervals |
+| ------------ | --------- | ---- | ---------- | --------- |
+| LFP5 | 23 | 10 | - | - |
+| lfp4 | 11 | 12 | 5 | 10 |
+
+### Default Profiles
+
+Note that when multiple profiles are assigned, then the monitor is triggered when the conditions in any of the profiles is met.
+
+- LFP1
+- LFP3
+
+### Monitor Link Flap Device Configuration
+
+```eos
+!
+monitor link-flap policy
+   profile LFP1 damping
+      penalty threshold reuse 2 suppression 100 maximum 5
+      penalty mac fault local 5
+      penalty mac fault remote 10
+      penalty decay half-life 5 seconds
+   !
+   profile LFP3 damping
+      penalty threshold reuse 1
+   !
+   profile lfp2 damping
+   profile LFP5 max-flaps 23 time 10
+   profile lfp4 max-flaps 11 time 12 violations 5 intervals 10
+   default-profiles LFP1 LFP3
+```
+
 ### Link Tracking
 
 #### Link Tracking Groups Summary
@@ -4836,9 +4885,15 @@ interface Dps1
 #### Traffic Engineering
 
 | Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLGs |
-| --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
+| --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ----- |
 | Ethernet81/3 | True | 3,15-29,testgrp | 4 | 10 percent | 5 microseconds | 2,TEST-SRLG,ARISTA |
 | Ethernet81/4 | True | 4,7-100,testgrp | 2 | 100 mbps | twamp-light, fallback 2 milliseconds | - |
+
+#### Monitor - Link Flap Profiles
+
+| Interface | Link Flap Profiles |
+| --------- | ------------------ |
+| Ethernet81/4 | LFP1 lfp2 |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -5884,6 +5939,7 @@ interface Ethernet81/4
    traffic-engineering administrative-group 4,7-100,testgrp
    traffic-engineering metric 2
    traffic-engineering min-delay dynamic twamp-light fallback 2 milliseconds
+   monitor link-flap profiles LFP1 lfp2
 !
 interface Ethernet81/10
    description isis_port_channel_member
