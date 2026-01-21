@@ -69558,10 +69558,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     avd_eos_cli_config_gen_input_dir: str | None
     """
-    When running `eos_cli_config_gen` in standalone mode (not as part of `eos_designs` workflow),
-    this
-    variable can be used to point to a directory containing the structured configuration files to use as
-    input.
+    Specify a directory containing structured configuration files to use as input.
+    Can be set to null or
+    an empty string to force `eos_cli_config_gen` to use hostvars as input.
+    By default, this variable is
+    set to "{{ structured_dir }}" which is the directory where `eos_designs` outputs structured
+    configuration files.
     """
     avd_eos_cli_config_gen_validate_inputs_batch_size: int
     """
@@ -70325,10 +70327,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 arp: Subclass of AvdModel.
                 as_path: Subclass of AvdModel.
                 avd_eos_cli_config_gen_input_dir:
-                   When running `eos_cli_config_gen` in standalone mode (not as part of `eos_designs` workflow),
-                   this
-                   variable can be used to point to a directory containing the structured configuration files to use as
-                   input.
+                   Specify a directory containing structured configuration files to use as input.
+                   Can be set to null or
+                   an empty string to force `eos_cli_config_gen` to use hostvars as input.
+                   By default, this variable is
+                   set to "{{ structured_dir }}" which is the directory where `eos_designs` outputs structured
+                   configuration files.
                 avd_eos_cli_config_gen_validate_inputs_batch_size:
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
