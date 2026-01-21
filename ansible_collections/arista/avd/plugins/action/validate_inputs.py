@@ -10,10 +10,11 @@ from json import loads as json_loads
 from multiprocessing import get_context
 from pathlib import Path
 from time import perf_counter
-from typing import TYPE_CHECKING, Any, Literal, NotRequired, TypedDict
+from typing import TYPE_CHECKING, Any, Literal, TypedDict
 
 import yaml
 from ansible.plugins.action import display
+from typing_extensions import NotRequired
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     ActionPluginVars,

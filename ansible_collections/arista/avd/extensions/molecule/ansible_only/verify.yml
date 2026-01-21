@@ -3,9 +3,6 @@
   hosts: ANSIBLE_ONLY
   gather_facts: false
   connection: local
-  vars:
-    # This variable is used as inline jinja in eos_designs only but we need it here to support Ansible 2.19 when templating.
-    string_set_as_play_var: "test of var set under play vars"
   tasks:
     - name: Generate device intended config and documentation
       delegate_to: 127.0.0.1

@@ -8,3 +8,5 @@
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
+      vars:
+        avd_eos_cli_config_gen_input_dir: "{{ structured_dir }}"

@@ -1,1 +1,2 @@
 ---
+avd_eos_cli_config_gen_input_dir: '{{ structured_dir }}'

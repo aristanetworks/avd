@@ -1,3 +1,17 @@
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    schema_name: eos_designs
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts
+  arista.avd.eos_designs_facts:
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+  check_mode: false
+  run_once: true
+
 - name: Remove test output to force 'changed'
   ansible.builtin.file:
     path: "{{ actual_output_dir }}/eos_designs_documentation_missing_structured_cfg_file.md"

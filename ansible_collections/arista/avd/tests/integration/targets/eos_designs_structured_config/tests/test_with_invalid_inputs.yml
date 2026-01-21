@@ -7,7 +7,6 @@
   arista.avd.validate_inputs:
     schema_name: eos_designs
     fail_on_validation_errors: true
-    batch_size: 10
 
 - vars:
     error_msg: >-
@@ -25,7 +24,6 @@
   arista.avd.validate_inputs:
     schema_name: eos_designs
     fail_on_validation_errors: false
-    batch_size: 10
 
 - vars:
     error_msg: >-

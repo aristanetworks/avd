@@ -66,22 +66,22 @@ class ActionModule(ActionBase):
 
         groups = task_vars.get("groups", {})
         fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
-        fabric_devices = groups.get(fabric_name, [])
+        fabric_hosts = groups.get(fabric_name, [])
         ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", [])
 
-        # Check if fabric_name is set and that all play devices are part of the Ansible group set in "fabric_name".
-        if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_devices):
+        # Check if fabric_name is set and that all play hosts are part of the Ansible group set in "fabric_name".
+        if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
             msg = (
                 "Invalid/missing 'fabric_name' variable. "
                 "All hosts in the play must have the same 'fabric_name' value "
-                "which must point to an Ansible Group containing the hosts. "
+                "which must point to an Ansible Group containing the hosts."
                 f"play_hosts: {ansible_play_hosts_all}"
             )
             raise AnsibleActionFail(msg)
 
-        all_inputs, all_hostvars = self.load_validated_inputs(fabric_devices)
+        all_inputs, all_hostvars = self.load_validated_inputs(fabric_hosts)
 
-        # Get updated templar instance to be passed along to our simplified "templater".
+        # Get updated templar instance to be passed along to our simplified "templater"
         templar = get_templar(self, task_vars)
 
         pool_manager = PoolManager(Path(output_dir))
@@ -101,37 +101,37 @@ class ActionModule(ActionBase):
 
         return result
 
-    def load_validated_inputs(self, fabric_devices: list) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
+    def load_validated_inputs(self, fabric_hosts: list) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
         """
-        Load validated hostvars from temporary files for all devices and load data into AVDDesign classes.
+        Load validated hostvars from temporary files for all hosts and load data into AVDDesign classes.
 
         Args:
-            fabric_devices: List of device names (inventory hostnames).
+            fabric_hosts: List of inventory hostnames.
 
         Returns:
-            Tuple of one dict with the loaded AVDDesign instances keyed by device names
-            and one dict of the raw hostvars also keyed by device names.
+            Tuple of one dict with the loaded AVDDesign instances keyed by hostnames
+            and one dict of the raw hostvars also keyed by hostnames.
         """
         all_inputs: dict[str, AVDDesign] = {}
         all_hostvars: dict[str, dict] = {}
 
         _templated_path, validated_path = get_role_tmp_paths("eos_designs")
 
-        for device in fabric_devices:
-            file_path = validated_path / f"{device}.json"
+        for host in fabric_hosts:
+            file_path = validated_path / f"{host}.json"
             if not file_path.exists():
                 msg = (
-                    f"Missing validated inputs for device '{device}'. "
-                    "Ensure the 'arista.avd.validate_inputs' task ran successfully for this device and that no validation errors occurred."
+                    f"Missing validated inputs for host '{host}'. "
+                    "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
                 )
                 raise AnsibleActionFail(message=msg)
 
             with file_path.open(mode="r", encoding="utf-8") as f:
-                device_hostvars = json.load(f)
+                host_hostvars = json.load(f)
 
             # Load input vars into the AVDDesign data class.
-            all_inputs[device] = AVDDesign._from_dict(device_hostvars)
-            all_hostvars[device] = device_hostvars
+            all_inputs[host] = AVDDesign._from_dict(host_hostvars)
+            all_hostvars[host] = host_hostvars
 
         return all_inputs, all_hostvars
 
@@ -157,23 +157,28 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail(message=str(e)) from e
 
         all_facts_as_dicts: dict[str, dict] = {}
-        for device, facts in all_facts.items():
+        for host, facts in all_facts.items():
             facts._strip_empties()
             facts_dict = facts._as_dict()
 
             # If the argument 'template_output' is set, run the output data through jinja2 rendering.
             # This is to resolve any input values with inline jinja using variables/facts set by eos_designs_facts.
             if self.template_output:
-                available_variables = ChainMap({"switch": facts_dict}, all_hostvars[device])
+                available_variables = ChainMap({"switch": facts_dict}, all_hostvars[host])
                 with self._templar.set_temporary_context(available_variables=available_variables):
                     facts_dict = self._templar.template(facts_dict, fail_on_undefined=False)
 
-            all_facts_as_dicts[device] = facts_dict
+            all_facts_as_dicts[host] = facts_dict
 
         return all_facts_as_dicts
 
     def dump_facts(self, avd_switch_facts: dict[str, dict]) -> None:
-        """Dump facts to the temporary AVD folder."""
+        """
+        Dump facts to the temporary folder.
+
+        Args:
+            avd_switch_facts: Facts to dump as dict keyed by hostname.
+        """
         file_path = get_eos_designs_facts_path()
 
         with file_path.open(mode="w", encoding="utf-8") as f:
