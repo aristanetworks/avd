@@ -343,6 +343,7 @@
 {# QOS policy-map #}
 {% include 'eos/policy-maps-qos.j2' %}
 {# eos - priority flow control #}
+{# TODO - need to fix the order, priority-flow-control comes before class-maps and policy-maps in EOS CLI 4.35.1F #}
 {% include 'eos/priority-flow-control.j2' %}
 {# ip radius source interfaces #}
 {% include 'eos/ip-radius-source-interfaces.j2' %}

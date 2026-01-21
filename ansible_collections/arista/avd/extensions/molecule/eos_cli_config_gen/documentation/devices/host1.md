@@ -8228,6 +8228,7 @@ router traffic-engineering
          !
          path-group preference 180
             explicit-null ipv4 ipv6
+            !
             segment-list label-stack 900002 900003 900005 900006 index 200
       !
       policy endpoint 1.2.3.4 color 80810
@@ -8236,6 +8237,7 @@ router traffic-engineering
          !
          path-group preference 100
             explicit-null none
+            !
             segment-list label-stack 900002 900008 900007 900006 weight 20 index 100
       !
       policy endpoint 5.6.7.8 color 20320
@@ -8244,12 +8246,16 @@ router traffic-engineering
          !
          path-group preference 80
             explicit-null ipv4
+            !
             segment-list label-stack 900002 900003 900005 900006 weight 120 index 300
+            !
             segment-list label-stack 900002 900004 900007 900006 weight 220 index 400
          !
          path-group preference 120
             explicit-null ipv6
+            !
             segment-list label-stack 900002 900008 900009 900006
+            !
             segment-list label-stack 900002 900010 900011 900012
    router-id ipv4 10.0.0.1
    router-id ipv6 2001:beef:cafe::1
@@ -10573,6 +10579,12 @@ router rip vrf vrf2
 | CM_PBR_EXCLUDE | - | - | - | - |
 | CM_PBR_INCLUDE | - | - | 192.168.4.2 | True |
 
+##### pm_pbr
+
+| Class | Index | Drop | Nexthop | Recursive |
+| ----- | ----- | ---- | ------- | --------- |
+| CM_PBR_EXCLUDE | - | - | 192.168.4.2 | True |
+
 #### PBR Policy Maps Device Configuration
 
 ```eos
@@ -10581,6 +10593,10 @@ policy-map type pbr PM_PBR_BREAKOUT
    class CM_PBR_EXCLUDE
    !
    class CM_PBR_INCLUDE
+      set nexthop recursive 192.168.4.2
+!
+policy-map type pbr pm_pbr
+   class CM_PBR_EXCLUDE
       set nexthop recursive 192.168.4.2
 ```
 
@@ -10819,11 +10835,14 @@ patch panel
    !
    patch TEN_A_site2_site5_eline
       shutdown
+      !
       connector 1 interface Ethernet6 dot1q vlan 123
+      !
       connector 2 pseudowire ldp LDP_PW_1
    !
    patch TEN_B_site2_site5_eline
       connector 1 interface Ethernet5
+      !
       connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_B_site2_site5_eline
    !
 ```
@@ -11221,6 +11240,12 @@ ip large-community-list regexp aa_test3 deny ^65536:*:*
 
 #### Peer Filters Summary
 
+##### Filter1
+
+| Sequence | Match |
+| -------- | ----- |
+| 20 | as-range 1-2 result reject |
+
 ##### PF1
 
 | Sequence | Match |
@@ -11237,6 +11262,9 @@ ip large-community-list regexp aa_test3 deny ^65536:*:*
 #### Peer Filters Device Configuration
 
 ```eos
+!
+peer-filter Filter1
+   20 match as-range 1-2 result reject
 !
 peer-filter PF1
    10 match as-range 1-2 result reject
@@ -11292,6 +11320,8 @@ dynamic prefix-list aa_list_1
 | 10 | permit 192.168.255.0/24 eq 32 |
 | 20 | permit 192.168.254.0/24 eq 32 |
 
+##### pl-loopbacks
+
 #### Prefix-lists Device Configuration
 
 ```eos
@@ -11301,6 +11331,8 @@ ip prefix-list PL-IPV4-LOOPBACKS
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
    seq 20 permit 192.168.254.0/24 eq 32
+!
+ip prefix-list pl-loopbacks
 ```
 
 ### IPv6 Prefix-lists
@@ -12307,16 +12339,18 @@ platform trident l3 routing mac-address per-vlan
 platform trident forwarding-table partition 2
 platform sand forwarding mode arad
 platform sand lag mode 512x32
-platform sand lag hardware-only
 platform fap buffering egress profile unicast
-!
-platform fap voq credit rates unified
+platform sand lag hardware-only
 platform sand qos map traffic-class 0 to network-qos 0
 platform sand qos map traffic-class 1 to network-qos 7
 platform sand qos map traffic-class 2 to network-qos 15
 !
+platform fap voq credit rates unified
+!
 port-channel load-balance sand profile Profile_B
+!
 platform sand multicast replication default ingress
+!
 platform sand mdb profile l3-xxl
 platform sfe data-plane cpu allocation maximum 42
 !
@@ -13802,6 +13836,7 @@ QOS adaptive transmit queue percentage-based allocation: **enabled**
 ```eos
 !
 qos rewrite dscp
+qos random-detect ecn allow non-ect chip-based
 qos tx-queue shape rate percent adaptive
 qos tx-queue 1 scheduler profile responsive
 qos tx-queue 3 scheduler profile responsive
@@ -13810,12 +13845,10 @@ qos map cos 3 to traffic-class 3
 qos map dscp 8 9 10 11 12 13 14 15 16 17 19 21 23 24 25 27 29 31 32 33 35 37 39 40 41 42 43 44 45 47 49 50 51 52 53 54 55 57 58 59 60 61 62 63 to traffic-class 1
 qos map dscp 18 20 22 26 28 30 34 36 38 to traffic-class 4 drop-precedence 2
 qos map dscp 46 to traffic-class 5
+qos map exp 0 to traffic-class 0
 qos map traffic-class 1 to dscp 56
 qos map traffic-class 2 4 5 to cos 7
 qos map traffic-class 6 to tx-queue 2
-qos map exp 0 to traffic-class 0
-!
-qos random-detect ecn allow non-ect chip-based
 ```
 
 ### QOS Class Maps
@@ -14243,6 +14276,12 @@ qos profile test
       random-detect ecn minimum-threshold 320 segments maximum-threshold 320 segments weight 10
 !
 qos profile test_with_pfc
+   priority-flow-control on
+   priority-flow-control priority 0 no-drop
+   priority-flow-control priority 1 drop
+   priority-flow-control pause watchdog
+   priority-flow-control pause watchdog port timer timeout 0.05 polling-interval auto recovery-time 1.11 forced
+   priority-flow-control pause watchdog port action drop
    service-policy type qos input pmap_test1
    !
    tx-queue 0
@@ -14254,15 +14293,21 @@ qos profile test_with_pfc
    tx-queue 5
       no priority
       bandwidth percent 19
-   !
-   priority-flow-control on
-   priority-flow-control priority 0 no-drop
-   priority-flow-control priority 1 drop
-   priority-flow-control pause watchdog
-   priority-flow-control pause watchdog port action drop
-   priority-flow-control pause watchdog port timer timeout 0.05 polling-interval auto recovery-time 1.11 forced
 !
 qos profile uc_mc_queues_test
+   !
+   mc-tx-queue 1
+      no priority
+      bandwidth percent 50
+   !
+   mc-tx-queue 2
+      !! Test strict priority
+      priority strict
+      bandwidth percent 10
+   !
+   mc-tx-queue 4
+      !! Test guaranteed percent
+      bandwidth guaranteed percent 10
    !
    uc-tx-queue 1
       !! Test no priority
@@ -14279,19 +14324,6 @@ qos profile uc_mc_queues_test
       !! Test guaranteed percent
       bandwidth guaranteed percent 10
       random-detect ecn minimum-threshold 320 segments maximum-threshold 320 segments weight 10
-   !
-   mc-tx-queue 1
-      no priority
-      bandwidth percent 50
-   !
-   mc-tx-queue 2
-      !! Test strict priority
-      priority strict
-      bandwidth percent 10
-   !
-   mc-tx-queue 4
-      !! Test guaranteed percent
-      bandwidth guaranteed percent 10
 !
 qos profile wred_queues_test
    !
@@ -14458,7 +14490,7 @@ Priority Flow Control is **Off** on all interfaces.
 
 | Action | Timeout | Recovery | Polling | Override Action Drop |
 | ------ | ------- | -------- | ------- |
-| no-drop | 0.05 | 1.22 | 10.001 | False |
+| drop | 0.05 | 1.22 | 10.001 | False |
 
 ```eos
 !
@@ -14466,7 +14498,7 @@ priority-flow-control all off
 priority-flow-control pause watchdog default timeout 0.05
 priority-flow-control pause watchdog default recovery-time 1.22
 priority-flow-control pause watchdog default polling-interval 10.001
-priority-flow-control pause watchdog action no-drop
+priority-flow-control pause watchdog action drop
 ```
 
 ## STUN
