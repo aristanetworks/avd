@@ -19,12 +19,13 @@ Generate AVD EOS Designs structured configuration
 
 The `arista.avd.eos_designs_structured_config` module is an Ansible Action Plugin providing the following capabilities:
 
-- Validates input variables according to eos_designs schema
 - Generates structured configuration
 - Optionally run any custom jinja2 YAML templates and merge result onto structured configuration
 - Optionally run jinja2 templating the generated structured configuration
 - Optionally write structured configuration to a JSON or YAML file
 - Return structured configuration as &#34;ansible_facts&#34;
+
+Note: Input validation is performed by the `arista.avd.validate_inputs` plugin, which must be run before this plugin.
 
 ## Parameters
 
@@ -36,7 +37,6 @@ The `arista.avd.eos_designs_structured_config` module is an Ansible Action Plugi
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list_merge</samp> | str | False | append | - | Merge strategy for lists |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strip_empty_keys</samp> | bool | False | True | - | Filter out keys from the generated output if value is null/none/undefined<br>Only applies to templates. |
 | <samp>dest</samp> | str | False | None | - | Destination path. If set, the output facts will also be written to this path.<br>Autodetects data format based on file suffix. &#39;.yml&#39;, &#39;.yaml&#39; -&gt; YAML, default -&gt; JSON |
-| <samp>mode</samp> | str | False | None | - | File mode (ex. &#34;0o664&#34;) for dest file. See &#39;ansible.builtin.copy&#39; module for details. |
 | <samp>template_output</samp> | bool | False | None | - | If true, the output data will be run through another jinja2 rendering before returning.<br>This is to resolve any input values with inline jinja using variables/facts set by the input templates.<br>Ignored for ansible-core versions &gt;= 2.19, since it is no longer needed. |
 | <samp>cprofile_file</samp> | str | False | None | - | Filename for storing cprofile data used to debug performance issues.<br>Running cprofile will slow down performance in it self, so only set this while troubleshooting. |
 | <samp>digital_twin</samp> | bool | optional | False | - | PREVIEW: This option is marked as &#34;preview&#34;, meaning the data models or generated configuration can change at any time.<br>Generate Digital Twin topology information. |

@@ -11,12 +11,13 @@ short_description: Generate AVD EOS Designs structured configuration
 description: |-
   The `arista.avd.eos_designs_structured_config` module is an Ansible Action Plugin providing the following capabilities:
 
-  - Validates input variables according to eos_designs schema
   - Generates structured configuration
   - Optionally run any custom jinja2 YAML templates and merge result onto structured configuration
   - Optionally run jinja2 templating the generated structured configuration
   - Optionally write structured configuration to a JSON or YAML file
   - Return structured configuration as "ansible_facts"
+
+  Note: Input validation is performed by the `arista.avd.validate_inputs` plugin, which must be run before this plugin.
 options:
   eos_designs_custom_templates:
     description: List of dicts for Jinja2 templates to be run after generating the structured configuration
@@ -50,10 +51,6 @@ options:
     description:
       - Destination path. If set, the output facts will also be written to this path.
       - Autodetects data format based on file suffix. '.yml', '.yaml' -> YAML, default -> JSON
-    required: false
-    type: str
-  mode:
-    description: File mode (ex. "0o664") for dest file. See 'ansible.builtin.copy' module for details.
     required: false
     type: str
   template_output:
