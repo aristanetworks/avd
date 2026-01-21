@@ -25,10 +25,8 @@ qos profile {{ profile.name }}
 {%     endif %}
 {%     if profile.priority_flow_control is arista.avd.defined %}
 {%         if profile.priority_flow_control.enabled is arista.avd.defined(true) %}
-   !
    priority-flow-control on
 {%         elif profile.priority_flow_control.enabled is arista.avd.defined(false) %}
-   !
    no priority-flow-control
 {%         endif %}
 {%         for priority_block in profile.priority_flow_control.priorities | arista.avd.natural_sort(sort_key='priority') %}

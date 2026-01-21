@@ -10572,18 +10572,18 @@ router rip vrf vrf2
 
 #### PBR Policy Maps Summary
 
-##### pm_pbr
-
-| Class | Index | Drop | Nexthop | Recursive |
-| ----- | ----- | ---- | ------- | --------- |
-| CM_PBR_EXCLUDE | - | - | 192.168.4.2 | True |
-
 ##### PM_PBR_BREAKOUT
 
 | Class | Index | Drop | Nexthop | Recursive |
 | ----- | ----- | ---- | ------- | --------- |
 | CM_PBR_EXCLUDE | - | - | - | - |
 | CM_PBR_INCLUDE | - | - | 192.168.4.2 | True |
+
+##### pm_pbr
+
+| Class | Index | Drop | Nexthop | Recursive |
+| ----- | ----- | ---- | ------- | --------- |
+| CM_PBR_EXCLUDE | - | - | 192.168.4.2 | True |
 
 #### PBR Policy Maps Device Configuration
 
@@ -11313,14 +11313,14 @@ dynamic prefix-list aa_list_1
 
 ##### PL-IPV4-LOOPBACKS
 
-##### pl-loopbacks
-
 ##### PL-LOOPBACKS-EVPN-OVERLAY
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit 192.168.255.0/24 eq 32 |
 | 20 | permit 192.168.254.0/24 eq 32 |
+
+##### pl-loopbacks
 
 #### Prefix-lists Device Configuration
 
@@ -14276,7 +14276,6 @@ qos profile test
       random-detect ecn minimum-threshold 320 segments maximum-threshold 320 segments weight 10
 !
 qos profile test_with_pfc
-   !
    priority-flow-control on
    priority-flow-control priority 0 no-drop
    priority-flow-control priority 1 drop
