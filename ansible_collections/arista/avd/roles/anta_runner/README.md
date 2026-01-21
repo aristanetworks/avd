@@ -367,6 +367,11 @@ By default, filters apply to all devices targeted by the run. `device_list` can 
 !!! warning
     Not all ANTA tests currently support expanded results. For tests that do not support this feature yet, the report will display the standard aggregated result regardless of this setting.
 
+`anta_report_custom_field`: Controls whether the `custom_field` column is generated in the Markdown report.
+
+!!! info
+    ANTA test definitions can include an arbitrary string in the `custom_field` input that will be added to the test result.
+
 ```yaml
 # In the playbook
 - name: Run ANTA
@@ -380,6 +385,8 @@ By default, filters apply to all devices targeted by the run. `device_list` can 
       vars:
         # Expand results in the Markdown report
         anta_report_expand_results: true
+        # Generate the custom_field column in the Markdown report
+        anta_report_custom_field: true
 ```
 
 ## AVD-generated Catalog Test Index

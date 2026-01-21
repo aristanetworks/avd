@@ -59,7 +59,8 @@ The plugin offers the following capabilities:
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;tags</samp> | list | optional | None | - | List of tags used with user-defined catalogs to filter which tests to run on which devices.<br>These tags are used in conjunction with `anta_tags` variable assigned to devices in the Ansible inventory. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;dry_run</samp> | bool | optional | False | - | Run ANTA in dry-run mode. In this mode, only the test catalogs are generated,<br>and a report is created to preview the tests that would be run against each device. |
 | <samp>report</samp> | dict | optional | None | - | ANTA report settings. These settings define the output format and location of the ANTA reports. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;expand_results</samp> | bool | optional | False | - | Controls the granularity of the Markdown report.<br>When enabled, test entries are expanded to show the individual status of every check performed. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;expand_results</samp> | bool | optional | False | - | Controls the granularity of the Markdown report.<br>When enabled, test entries are expanded to show the individual status of every check performed.<br>Not all ANTA tests currently support expanded results. For tests that do not support this feature yet,<br>the report will display the standard aggregated result regardless of this setting. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;generate_custom_field</samp> | bool | optional | False | - | Controls whether the `custom_field` column is generated in the Markdown report.<br>ANTA test definitions can include an arbitrary string in the `custom_field` input that will be added to the test result. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;csv_output</samp> | str | optional | None | - | Path to the CSV report file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;md_output</samp> | str | optional | None | - | Path to the Markdown report file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;json_output</samp> | str | optional | None | - | Path to the JSON report file. |
@@ -121,6 +122,7 @@ The plugin offers the following capabilities:
           #   sort_fields:
           #     - categories
           # expand_results: true
+          # generate_custom_field: true
 ```
 
 ## Authors

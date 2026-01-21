@@ -82,7 +82,7 @@
         avd_catalogs_extra_fabric_validation: true
       run_once: true
 
-    - name: ANTA Default Run with Sorted and Expanded Report
+    - name: ANTA Default Run with Sorted, Expanded and Custom Field Report
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:
         name: arista.avd.anta_runner
@@ -93,4 +93,5 @@
         # Same test name on same device will be sorted by the custom field or description
         anta_report_sort_fields: ["test", "categories", "device", "custom_field", "description"]
         anta_report_expand_results: true
+        anta_report_custom_field: true
       run_once: true

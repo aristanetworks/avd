@@ -113,6 +113,14 @@ options:
         description: |-
           Controls the granularity of the Markdown report.
           When enabled, test entries are expanded to show the individual status of every check performed.
+          Not all ANTA tests currently support expanded results. For tests that do not support this feature yet,
+          the report will display the standard aggregated result regardless of this setting.
+        type: bool
+        default: false
+      generate_custom_field:
+        description: |
+          Controls whether the `custom_field` column is generated in the Markdown report.
+          ANTA test definitions can include an arbitrary string in the `custom_field` input that will be added to the test result.
         type: bool
         default: false
       csv_output:
@@ -201,4 +209,5 @@ EXAMPLES = r"""
           #   sort_fields:
           #     - categories
           # expand_results: true
+          # generate_custom_field: true
 """
