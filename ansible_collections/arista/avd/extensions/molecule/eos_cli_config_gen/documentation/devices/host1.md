@@ -7234,7 +7234,7 @@ interface Tunnel4
 
 | Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
 | --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
-| Vlan26 | True | 0.0.0.24 | 99 | message-digest | 11 | 0.0.0.29 | True |
+| Vlan26 | True | 0.0.0.24 | 99 | message-digest | 100 | 0.0.0.29 | True |
 
 ##### ISIS
 
@@ -7295,7 +7295,7 @@ interface Vlan26
    ip ospf message-digest-key 55 md5 7 <removed>
    ip ospf message-digest-key 56 sha512 8a <removed>
    ipv6 ospf network point-to-point
-   ipv6 ospf 11 area 0.0.0.29
+   ipv6 ospf 100 area 0.0.0.29
 !
 interface Vlan41
    description SVI Description
