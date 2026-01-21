@@ -64,10 +64,6 @@ class ActionModule(ActionBase):
 
         hostname = task_vars["inventory_hostname"]
 
-        if self._task.args.get("debug_vars") is True and (debug_vars_file := self._task.args.get("debug_vars_file")):
-            # Dump all hostvars to a file.
-            write_file(yaml.dump(task_vars["hostvars"][hostname], Dumper=AnsibleDumper, indent=2, sort_keys=False, width=2147483647), debug_vars_file)
-
         if self._task.args.get("structured_config") is False:
             # Not creating structured config
             return result

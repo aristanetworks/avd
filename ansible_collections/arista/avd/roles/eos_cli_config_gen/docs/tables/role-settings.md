@@ -7,6 +7,8 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>avd_eos_cli_config_gen_input_dir</samp>](## "avd_eos_cli_config_gen_input_dir") | String |  |  |  | When running `eos_cli_config_gen` in standalone mode (not as part of `eos_designs` workflow),<br>this variable can be used to point to a directory containing the structured configuration files to use as input.<br> |
+    | [<samp>avd_structured_config_file_format</samp>](## "avd_structured_config_file_format") | String |  | `yml` | Valid Values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | The file format to use when loading structured configuration files.<br> |
     | [<samp>eos_cli_config_gen_configuration</samp>](## "eos_cli_config_gen_configuration") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "eos_cli_config_gen_configuration.enable") | Boolean |  | `True` |  | Generate device EOS configurations. |
     | [<samp>&nbsp;&nbsp;hide_passwords</samp>](## "eos_cli_config_gen_configuration.hide_passwords") | Boolean |  | `False` |  | Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the configuration if true.<br> |
@@ -19,6 +21,12 @@
 === "YAML"
 
     ```yaml
+    # When running `eos_cli_config_gen` in standalone mode (not as part of `eos_designs` workflow),
+    # this variable can be used to point to a directory containing the structured configuration files to use as input.
+    avd_eos_cli_config_gen_input_dir: <str>
+
+    # The file format to use when loading structured configuration files.
+    avd_structured_config_file_format: <str; "yml" | "yaml" | "json"; default="yml">
     eos_cli_config_gen_configuration:
 
       # Generate device EOS configurations.

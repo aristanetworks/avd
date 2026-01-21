@@ -87814,10 +87814,8 @@ class EosDesigns(EosDesignsRootModel):
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_digital_twin_mode": {"type": bool, "default": False},
-        "avd_eos_designs_debug": {"type": bool, "default": False},
         "avd_eos_designs_return_structured_config": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
-        "avd_eos_designs_unset_facts": {"type": bool, "default": True},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
         "bgp_as_notation": {"type": str, "default": "auto"},
@@ -88466,12 +88464,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
-    avd_eos_designs_debug: bool
-    """
-    Dump all vars and facts per device after generating `avd_switch_facts`.
-
-    Default value: `False`
-    """
     avd_eos_designs_return_structured_config: bool
     """
     Return structured configuration as ansible_facts per device.
@@ -88481,13 +88473,6 @@ class EosDesigns(EosDesignsRootModel):
     avd_eos_designs_structured_config: bool
     """
     Generate structured configuration per device.
-
-    Default value: `True`
-    """
-    avd_eos_designs_unset_facts: bool
-    """
-    Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer
-    variables.
 
     Default value: `True`
     """
@@ -90423,10 +90408,8 @@ class EosDesigns(EosDesignsRootModel):
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
-            avd_eos_designs_debug: bool | UndefinedType = Undefined,
             avd_eos_designs_return_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
-            avd_eos_designs_unset_facts: bool | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
@@ -90649,12 +90632,8 @@ class EosDesigns(EosDesignsRootModel):
                    To keep Digital Twin artifacts separate, adjust the `output_dir_name` and
                    `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
                    dedicated output location.
-                avd_eos_designs_debug: Dump all vars and facts per device after generating `avd_switch_facts`.
                 avd_eos_designs_return_structured_config: Return structured configuration as ansible_facts per device.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
-                avd_eos_designs_unset_facts:
-                   Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer
-                   variables.
                 bfd_multihop:
                    BFD Multihop tuning.
 
