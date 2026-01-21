@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -59,7 +60,7 @@ class RouteMapsMixin(Protocol):
             self._bgp_mlag_peer_group_route_map()
 
         if self._mlag_ibgp_peering_subnets_without_redistribution:
-            self._connected_to_bgp_vrfs_route_map()
+            self.set_once_route_map_connected_to_bgp_vrfs()
 
     def _route_maps_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
@@ -75,8 +76,6 @@ class RouteMapsMixin(Protocol):
         if not any([self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"], self.shared_utils.is_wan_router]):
             return
 
-        self._evpn_export_vrf_default_route_map()
-        self._bgp_underlay_peers_route_map()
         self._redistribute_connected_to_bgp_route_map()
         self._redistribute_static_to_bgp_route_map()
 
@@ -107,7 +106,8 @@ class RouteMapsMixin(Protocol):
         )
         self.structured_config.route_maps.append(route_maps_item)
 
-    def _connected_to_bgp_vrfs_route_map(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+    @run_once_method
+    def set_once_route_map_connected_to_bgp_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
         Set one route-map item.
 
@@ -125,7 +125,8 @@ class RouteMapsMixin(Protocol):
         )
         self.structured_config.route_maps.append(route_maps_item)
 
-    def _evpn_export_vrf_default_route_map(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+    @run_once_method
+    def set_once_route_map_evpn_export_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
         Match the following prefixes to be exported in EVPN for VRF default.
 
@@ -144,6 +145,8 @@ class RouteMapsMixin(Protocol):
                 type="permit",
                 match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["extcommunity ECL-EVPN-SOO"]),
             )
+            # Create the extcommunity-list
+            self.shared_utils.set_once_ip_extcommunity_list_evpn_soo(self.structured_config)
         else:
             # TODO: refactor existing behavior to SoO?
             if self._vrf_default_ipv4_subnets:
@@ -152,6 +155,8 @@ class RouteMapsMixin(Protocol):
                     type="permit",
                     match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-SVI-VRF-DEFAULT"]),
                 )
+                # Create prefix-list
+                self.set_once_prefix_list_svi_vrf_default()
 
             if self._vrf_default_ipv4_static_routes["static_routes"]:
                 sequence_numbers.append_new(
@@ -159,10 +164,13 @@ class RouteMapsMixin(Protocol):
                     type="permit",
                     match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-STATIC-VRF-DEFAULT"]),
                 )
+                # Create prefix-list
+                self.set_once_prefix_list_static_vrf_default()
 
         self.structured_config.route_maps.append_new(name="RM-EVPN-EXPORT-VRF-DEFAULT", sequence_numbers=sequence_numbers)
 
-    def _bgp_underlay_peers_route_map(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+    @run_once_method
+    def set_once_route_map_bgp_underlay_peers_out(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
         For non WAN routers filter EVPN routes away from underlay.
 
@@ -172,9 +180,6 @@ class RouteMapsMixin(Protocol):
         This should only be called when any one of self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"],
         self.shared_utils.is_wan_router is true.
         """
-        if self.shared_utils.is_wan_router:
-            return
-
         sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
 
         if self._vrf_default_ipv4_subnets:
@@ -183,6 +188,8 @@ class RouteMapsMixin(Protocol):
                 type="deny",
                 match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-SVI-VRF-DEFAULT"]),
             )
+            # Create prefix-list
+            self.set_once_prefix_list_svi_vrf_default()
 
         if self._vrf_default_ipv4_static_routes["static_routes"]:
             sequence_numbers.append_new(
@@ -190,6 +197,8 @@ class RouteMapsMixin(Protocol):
                 type="deny",
                 match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-STATIC-VRF-DEFAULT"]),
             )
+            # Create prefix-list
+            self.set_once_prefix_list_static_vrf_default()
 
         sequence_numbers.append_new(
             sequence=20,
@@ -213,6 +222,9 @@ class RouteMapsMixin(Protocol):
             sequence_30 = EosCliConfigGen.RouteMapsItem.SequenceNumbersItem(
                 sequence=30, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-SVI-VRF-DEFAULT"])
             )
+            # Create prefix-list
+            self.set_once_prefix_list_svi_vrf_default()
+
             if self.shared_utils.wan_role:
                 sequence_30.set = EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Set([f"extcommunity soo {self.shared_utils.evpn_soo} additive"])
 

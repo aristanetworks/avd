@@ -172,7 +172,7 @@ ptp:
   forward_unicast: true
   clock_identity: 01:02:03:14:00:0a
   source:
-    ip: 10.255.0.1
+    ip: 10.255.0.2
   priority1: 20
   priority2: 10
   ttl: 128

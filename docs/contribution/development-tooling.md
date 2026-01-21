@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -76,12 +76,12 @@ make pyavd-editable-install
 ```
 
 !!! note
+    Make sure your pip version is above 25.1 to get support for `--group`
+
+!!! note
     It is important to confirm the Python interpreter Ansible is using.
     You may be required to set `ansible_python_interpreter` in your Ansible inventory.
     For more information consult with the [Ansible documentation](https://docs.ansible.com/ansible/latest/reference_appendices/python_3_support.html#using-python-3-on-the-managed-machines-with-commands-and-playbooks).
-
-!!! note
-    Make sure your pip version is above 25.0 to get support for `--group`
 
 ## Running from source
 

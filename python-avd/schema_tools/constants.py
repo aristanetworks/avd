@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """AVD schematools constants."""
@@ -53,3 +53,5 @@ SCHEMAS = {
         docs_path=REPO_ROOT.joinpath("docs/contribution/eos_designs_facts_internal"),
     ),
 }
+
+SCHEMA_STORE_GZ_FILE = PYAVD_DIR.joinpath("_schema/schemas.json.gz")

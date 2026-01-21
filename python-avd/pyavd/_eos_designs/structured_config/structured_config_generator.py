@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, cast, overload
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
 from pyavd._utils.get import get_v2
+from pyavd._utils.run_once import RunOnceMethodStateHelper
 
 if TYPE_CHECKING:
     from collections.abc import Callable, MutableMapping
@@ -150,7 +151,7 @@ class StructuredConfigGeneratorProtocol(AvdFactsProtocol, Protocol):
         return [method for key in cls._keys() if getattr(method := getattr(cls, key), "_is_structured_config_contributor", False)]
 
 
-class StructuredConfigGenerator(AvdFacts, StructuredConfigGeneratorProtocol):
+class StructuredConfigGenerator(AvdFacts, RunOnceMethodStateHelper, StructuredConfigGeneratorProtocol):
     """
     Base class for structured config generators.
 

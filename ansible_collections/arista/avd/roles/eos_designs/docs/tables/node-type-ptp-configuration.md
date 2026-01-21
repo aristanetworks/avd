@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -21,12 +21,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_clock_identity</samp>](## "<node_type_keys.key>.defaults.ptp.auto_clock_identity") | Boolean |  |  |  | If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity.<br>default -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clock_identity_prefix</samp>](## "<node_type_keys.key>.defaults.ptp.clock_identity_prefix") | String |  | `00:1C:73` |  | PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".<br>By default the 3-byte prefix is "00:1C:73".<br>This can be overridden if auto_clock_identity is set to true (which is the default).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clock_identity</samp>](## "<node_type_keys.key>.defaults.ptp.clock_identity") | String |  |  |  | Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "<node_type_keys.key>.defaults.ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This can be set manually if required, for example, to a value of "10.1.2.3".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "<node_type_keys.key>.defaults.ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This value can be set manually if required:<br>- Set to 'router_id' in order to use the device router ID as the source IP.<br>- Set to a valid IPv4 address which will be used directly.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.defaults.ptp.mode") | String |  | `boundary` | Valid Values:<br>- <code>boundary</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_one_step</samp>](## "<node_type_keys.key>.defaults.ptp.mode_one_step") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "<node_type_keys.key>.defaults.ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "<node_type_keys.key>.defaults.ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.defaults.ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free_running</samp>](## "<node_type_keys.key>.defaults.ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "<node_type_keys.key>.defaults.ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "<node_type_keys.key>.defaults.ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "<node_type_keys.key>.defaults.ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "<node_type_keys.key>.defaults.ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -65,12 +68,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_clock_identity</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.auto_clock_identity") | Boolean |  |  |  | If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity.<br>default -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clock_identity_prefix</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.clock_identity_prefix") | String |  | `00:1C:73` |  | PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".<br>By default the 3-byte prefix is "00:1C:73".<br>This can be overridden if auto_clock_identity is set to true (which is the default).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clock_identity</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.clock_identity") | String |  |  |  | Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This can be set manually if required, for example, to a value of "10.1.2.3".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This value can be set manually if required:<br>- Set to 'router_id' in order to use the device router ID as the source IP.<br>- Set to a valid IPv4 address which will be used directly.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.mode") | String |  | `boundary` | Valid Values:<br>- <code>boundary</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_one_step</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.mode_one_step") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free_running</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -105,12 +111,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_clock_identity</samp>](## "<node_type_keys.key>.node_groups.[].ptp.auto_clock_identity") | Boolean |  |  |  | If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity.<br>default -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clock_identity_prefix</samp>](## "<node_type_keys.key>.node_groups.[].ptp.clock_identity_prefix") | String |  | `00:1C:73` |  | PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".<br>By default the 3-byte prefix is "00:1C:73".<br>This can be overridden if auto_clock_identity is set to true (which is the default).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clock_identity</samp>](## "<node_type_keys.key>.node_groups.[].ptp.clock_identity") | String |  |  |  | Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "<node_type_keys.key>.node_groups.[].ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This can be set manually if required, for example, to a value of "10.1.2.3".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "<node_type_keys.key>.node_groups.[].ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This value can be set manually if required:<br>- Set to 'router_id' in order to use the device router ID as the source IP.<br>- Set to a valid IPv4 address which will be used directly.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.node_groups.[].ptp.mode") | String |  | `boundary` | Valid Values:<br>- <code>boundary</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_one_step</samp>](## "<node_type_keys.key>.node_groups.[].ptp.mode_one_step") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "<node_type_keys.key>.node_groups.[].ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "<node_type_keys.key>.node_groups.[].ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.node_groups.[].ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free_running</samp>](## "<node_type_keys.key>.node_groups.[].ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "<node_type_keys.key>.node_groups.[].ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "<node_type_keys.key>.node_groups.[].ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "<node_type_keys.key>.node_groups.[].ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "<node_type_keys.key>.node_groups.[].ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -147,12 +156,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_clock_identity</samp>](## "<node_type_keys.key>.nodes.[].ptp.auto_clock_identity") | Boolean |  |  |  | If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity.<br>default -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clock_identity_prefix</samp>](## "<node_type_keys.key>.nodes.[].ptp.clock_identity_prefix") | String |  | `00:1C:73` |  | PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".<br>By default the 3-byte prefix is "00:1C:73".<br>This can be overridden if auto_clock_identity is set to true (which is the default).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clock_identity</samp>](## "<node_type_keys.key>.nodes.[].ptp.clock_identity") | String |  |  |  | Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "<node_type_keys.key>.nodes.[].ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This can be set manually if required, for example, to a value of "10.1.2.3".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "<node_type_keys.key>.nodes.[].ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This value can be set manually if required:<br>- Set to 'router_id' in order to use the device router ID as the source IP.<br>- Set to a valid IPv4 address which will be used directly.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.nodes.[].ptp.mode") | String |  | `boundary` | Valid Values:<br>- <code>boundary</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_one_step</samp>](## "<node_type_keys.key>.nodes.[].ptp.mode_one_step") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "<node_type_keys.key>.nodes.[].ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "<node_type_keys.key>.nodes.[].ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.nodes.[].ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free_running</samp>](## "<node_type_keys.key>.nodes.[].ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "<node_type_keys.key>.nodes.[].ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "<node_type_keys.key>.nodes.[].ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "<node_type_keys.key>.nodes.[].ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "<node_type_keys.key>.nodes.[].ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -189,12 +201,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_clock_identity</samp>](## "device_profiles.[].ptp.auto_clock_identity") | Boolean |  |  |  | If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity.<br>default -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clock_identity_prefix</samp>](## "device_profiles.[].ptp.clock_identity_prefix") | String |  | `00:1C:73` |  | PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".<br>By default the 3-byte prefix is "00:1C:73".<br>This can be overridden if auto_clock_identity is set to true (which is the default).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clock_identity</samp>](## "device_profiles.[].ptp.clock_identity") | String |  |  |  | Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "device_profiles.[].ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This can be set manually if required, for example, to a value of "10.1.2.3".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "device_profiles.[].ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This value can be set manually if required:<br>- Set to 'router_id' in order to use the device router ID as the source IP.<br>- Set to a valid IPv4 address which will be used directly.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "device_profiles.[].ptp.mode") | String |  | `boundary` | Valid Values:<br>- <code>boundary</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_one_step</samp>](## "device_profiles.[].ptp.mode_one_step") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "device_profiles.[].ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "device_profiles.[].ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "device_profiles.[].ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free_running</samp>](## "device_profiles.[].ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "device_profiles.[].ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "device_profiles.[].ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "device_profiles.[].ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "device_profiles.[].ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -231,12 +246,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_clock_identity</samp>](## "devices.[].ptp.auto_clock_identity") | Boolean |  |  |  | If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity.<br>default -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clock_identity_prefix</samp>](## "devices.[].ptp.clock_identity_prefix") | String |  | `00:1C:73` |  | PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".<br>By default the 3-byte prefix is "00:1C:73".<br>This can be overridden if auto_clock_identity is set to true (which is the default).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clock_identity</samp>](## "devices.[].ptp.clock_identity") | String |  |  |  | Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "devices.[].ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This can be set manually if required, for example, to a value of "10.1.2.3".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "devices.[].ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This value can be set manually if required:<br>- Set to 'router_id' in order to use the device router ID as the source IP.<br>- Set to a valid IPv4 address which will be used directly.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "devices.[].ptp.mode") | String |  | `boundary` | Valid Values:<br>- <code>boundary</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_one_step</samp>](## "devices.[].ptp.mode_one_step") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "devices.[].ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "devices.[].ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "devices.[].ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;free_running</samp>](## "devices.[].ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "devices.[].ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "devices.[].ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "devices.[].ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "devices.[].ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -304,7 +322,9 @@
           clock_identity: <str>
 
           # By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
-          # This can be set manually if required, for example, to a value of "10.1.2.3".
+          # This value can be set manually if required:
+          # - Set to 'router_id' in order to use the device router ID as the source IP.
+          # - Set to a valid IPv4 address which will be used directly.
           source_ip: <str>
           mode: <str; "boundary"; default="boundary">
           mode_one_step: <bool; default=False>
@@ -315,6 +335,15 @@
 
           # Forward dataplane PTP V1 packets.
           forward_v1: <bool>
+          free_running:
+
+            # Enables PTP configuration in free-running mode.
+            # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+            # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+            enabled: <bool; required>
+
+            # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+            source_clock_hardware: <bool>
           dscp:
             general_messages: <int>
             event_messages: <int>
@@ -387,7 +416,9 @@
                 clock_identity: <str>
 
                 # By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
-                # This can be set manually if required, for example, to a value of "10.1.2.3".
+                # This value can be set manually if required:
+                # - Set to 'router_id' in order to use the device router ID as the source IP.
+                # - Set to a valid IPv4 address which will be used directly.
                 source_ip: <str>
                 mode: <str; "boundary"; default="boundary">
                 mode_one_step: <bool; default=False>
@@ -398,6 +429,15 @@
 
                 # Forward dataplane PTP V1 packets.
                 forward_v1: <bool>
+                free_running:
+
+                  # Enables PTP configuration in free-running mode.
+                  # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+                  # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+                  enabled: <bool; required>
+
+                  # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+                  source_clock_hardware: <bool>
                 dscp:
                   general_messages: <int>
                   event_messages: <int>
@@ -457,7 +497,9 @@
             clock_identity: <str>
 
             # By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
-            # This can be set manually if required, for example, to a value of "10.1.2.3".
+            # This value can be set manually if required:
+            # - Set to 'router_id' in order to use the device router ID as the source IP.
+            # - Set to a valid IPv4 address which will be used directly.
             source_ip: <str>
             mode: <str; "boundary"; default="boundary">
             mode_one_step: <bool; default=False>
@@ -468,6 +510,15 @@
 
             # Forward dataplane PTP V1 packets.
             forward_v1: <bool>
+            free_running:
+
+              # Enables PTP configuration in free-running mode.
+              # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+              # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+              enabled: <bool; required>
+
+              # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+              source_clock_hardware: <bool>
             dscp:
               general_messages: <int>
               event_messages: <int>
@@ -533,7 +584,9 @@
             clock_identity: <str>
 
             # By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
-            # This can be set manually if required, for example, to a value of "10.1.2.3".
+            # This value can be set manually if required:
+            # - Set to 'router_id' in order to use the device router ID as the source IP.
+            # - Set to a valid IPv4 address which will be used directly.
             source_ip: <str>
             mode: <str; "boundary"; default="boundary">
             mode_one_step: <bool; default=False>
@@ -544,6 +597,15 @@
 
             # Forward dataplane PTP V1 packets.
             forward_v1: <bool>
+            free_running:
+
+              # Enables PTP configuration in free-running mode.
+              # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+              # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+              enabled: <bool; required>
+
+              # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+              source_clock_hardware: <bool>
             dscp:
               general_messages: <int>
               event_messages: <int>
@@ -609,7 +671,9 @@
           clock_identity: <str>
 
           # By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
-          # This can be set manually if required, for example, to a value of "10.1.2.3".
+          # This value can be set manually if required:
+          # - Set to 'router_id' in order to use the device router ID as the source IP.
+          # - Set to a valid IPv4 address which will be used directly.
           source_ip: <str>
           mode: <str; "boundary"; default="boundary">
           mode_one_step: <bool; default=False>
@@ -620,6 +684,15 @@
 
           # Forward dataplane PTP V1 packets.
           forward_v1: <bool>
+          free_running:
+
+            # Enables PTP configuration in free-running mode.
+            # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+            # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+            enabled: <bool; required>
+
+            # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+            source_clock_hardware: <bool>
           dscp:
             general_messages: <int>
             event_messages: <int>
@@ -685,7 +758,9 @@
           clock_identity: <str>
 
           # By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
-          # This can be set manually if required, for example, to a value of "10.1.2.3".
+          # This value can be set manually if required:
+          # - Set to 'router_id' in order to use the device router ID as the source IP.
+          # - Set to a valid IPv4 address which will be used directly.
           source_ip: <str>
           mode: <str; "boundary"; default="boundary">
           mode_one_step: <bool; default=False>
@@ -696,6 +771,15 @@
 
           # Forward dataplane PTP V1 packets.
           forward_v1: <bool>
+          free_running:
+
+            # Enables PTP configuration in free-running mode.
+            # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+            # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+            enabled: <bool; required>
+
+            # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+            source_clock_hardware: <bool>
           dscp:
             general_messages: <int>
             event_messages: <int>

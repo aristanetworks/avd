@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -179,7 +179,7 @@ class PortChannelInterfacesMixin(Protocol):
 
         port_channel_interface.metadata._update(
             validate_state=False if adapter.validate_state is False else None,
-            validate_lldp=False if adapter.validate_lldp is False else None,
+            validate_lldp=adapter.validate_lldp,
         )
         port_channel_interface.sflow.enable = self.shared_utils.get_interface_sflow(
             port_channel_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)

@@ -260,8 +260,8 @@ management security
    !
    ssl profile STUN-DTLS
       tls versions 1.2
-      trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
       certificate STUN-DTLS.crt key STUN-DTLS.key
+      trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
 ```
 
 ## Kernel Settings
@@ -536,9 +536,9 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-| MGMT | 0.0.0.0/0 | 192.168.17.1 | - | 1 | - | - | - |
-| default | 172.18.0.0/16 | 172.18.200.1 | - | 1 | - | - | - |
 | default | 0.0.0.0/0 | 100.64.200.1 | - | 1 | - | - | - |
+| default | 172.18.0.0/16 | 172.18.200.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 192.168.17.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
@@ -977,7 +977,6 @@ route-map RM-EVPN-EXPORT-VRF-DEFAULT permit 10
 #### IP Extended Community Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.2:0
 ```
 

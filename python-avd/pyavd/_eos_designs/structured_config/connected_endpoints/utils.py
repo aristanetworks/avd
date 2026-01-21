@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -233,6 +233,24 @@ class UtilsMixin(Protocol):
             return adapter.l2_mtu
 
         return None
+
+    def _get_adapter_dot1x(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> EosCliConfigGen.EthernetInterfacesItem.Dot1x:
+        """
+        Return dot1x for one adapter.
+
+        Raise AristaAvdInvalidInputsError if dot1x is not globally enabled.
+        """
+        if not self.inputs.dot1x_settings.enabled:
+            msg = (
+                f"802.1X settings are configured under '{adapter._internal_data.context}' but 802.1X is not enabled globally. "
+                "802.1X must be enabled globally by setting 'dot1x_settings.enabled: true' before configuring 802.1X on any interface."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+        return adapter.dot1x
 
     def _get_adapter_l2_mru(
         self: AvdStructuredConfigConnectedEndpointsProtocol,

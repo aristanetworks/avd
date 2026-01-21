@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -19,5 +19,5 @@ keys:
         # Specifically overriding the description for this key. Everything else is inherited by the $ref above.
         type: bool
         description: |
-          If True, `eos_designs` will configure `queue-monitor length notifying` according to the
+          If True, Arista AVD will configure `queue-monitor length notifying` according to the
           `platform_settings.[].feature_support.queue_monitor_length_notify` setting.

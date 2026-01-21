@@ -1,8 +1,17 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
 
-from collections.abc import Sequence
+from typing import TYPE_CHECKING
+
+from pyavd._utils.json_path_to_string import json_path_to_string
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from pyavd_utils.validation import Violation
+    from typing_extensions import Self
 
 
 class AristaAvdError(Exception):
@@ -12,18 +21,6 @@ class AristaAvdError(Exception):
         self.host = host
         self.message = message
         super().__init__(self.message)
-
-    def _json_path_to_string(self, json_path: Sequence[str | int]) -> str:
-        path = ""
-        for index, elem in enumerate(json_path):
-            if isinstance(elem, int):
-                path += f"[{elem}]"
-            else:
-                if index == 0:
-                    path += elem
-                    continue
-                path += f".{elem}"
-        return path
 
 
 class AristaAvdInvalidInputsError(AristaAvdError):
@@ -49,23 +46,30 @@ class AristaAvdMissingVariableError(AristaAvdError):
 class AvdSchemaError(AristaAvdError):
     def __init__(self, message: str = "Schema Error", path: Sequence[str | int] | None = None) -> None:
         if path is not None:
-            self.path = self._json_path_to_string(path)
+            self.path = json_path_to_string(path)
             message = f"'Validation Error: {self.path}': {message}"
         super().__init__(message)
 
 
 class AvdValidationError(AristaAvdError):
-    def __init__(self, message: str = "Schema Error", path: Sequence[str | int] | None = None) -> None:
-        if path is not None:
-            self.path = self._json_path_to_string(path)
-            message = f"'Validation Error: {self.path}': {message}"
+    path: str
+    violation: str
+
+    def __init__(self, violation: str, path: Sequence[str | int]) -> None:
+        self.violation = violation
+        self.path = json_path_to_string(path)
+        message = f"Validation Error: [{self.path}] {violation}"
         super().__init__(message)
 
+    @classmethod
+    def from_violation(cls, violation: Violation) -> Self:
+        return cls(violation=violation.message, path=violation.path)
 
-class AvdDeprecationWarning(AristaAvdError):  # noqa: N818
+
+class AvdDeprecationWarning(AristaAvdError, DeprecationWarning):  # noqa: N818
     def __init__(
         self,
-        key: list[str | int],
+        key: Sequence[str | int],
         new_key: str | None = None,
         remove_in_version: str | None = None,
         remove_after_date: str | None = None,
@@ -75,7 +79,7 @@ class AvdDeprecationWarning(AristaAvdError):  # noqa: N818
         conflict: bool = False,
     ) -> None:
         messages = []
-        self.path = self._json_path_to_string(key)
+        self.path = json_path_to_string(key)
         self.version = remove_in_version
         self.date = remove_after_date
         self.removed = removed
@@ -84,7 +88,7 @@ class AvdDeprecationWarning(AristaAvdError):  # noqa: N818
         if removed:
             messages.append(f"The input data model '{self.path}' was removed.")
         elif conflict and new_key:
-            self.new_key_path = ".".join(item for item in [self._json_path_to_string(key[:-1]), new_key] if item)
+            self.new_key_path = ".".join(item for item in [json_path_to_string(key[:-1]), new_key] if item)
             messages.append(
                 f"The input data model '{self.path}' is deprecated and cannot be used in conjunction with the new data model '{self.new_key_path}'. "
                 "This usually happens when a data model has been updated and custom structured configuration still uses the old model."
@@ -100,10 +104,6 @@ class AvdDeprecationWarning(AristaAvdError):  # noqa: N818
 
         self.message = " ".join(messages)
         super().__init__(self.message)
-
-    def _as_validation_error(self) -> AvdValidationError:
-        """Converting AvdDeprecationWarning to AvdValidationError."""
-        return AvdValidationError(message=self.message, path=self.path.split("."))
 
 
 class AristaAvdDuplicateDataError(AristaAvdError):

@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """Fixtures for testing the utils modules."""
@@ -7,12 +7,12 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 import pytest
-from ansible.cli import Display
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
 from ansible.playbook.block import Block
 from ansible.playbook.play import Play
 from ansible.playbook.task import Task
+from ansible.utils.display import Display
 from ansible.vars.manager import VariableManager
 
 TESTS_PATH = Path(__file__).parents[4]

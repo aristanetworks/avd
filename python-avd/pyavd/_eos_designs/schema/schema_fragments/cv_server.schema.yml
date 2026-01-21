@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -13,7 +13,7 @@ keys:
       PREVIEW: These keys are in preview mode.
 
       Hostname or IP address of CloudVision host. Ex. "www.arista.io" for CVaaS.
-      For `eos_designs` this variable is only used for the WAN Internet-exit integration with Zscaler.
+      For AVD Design data models this variable is only used for the WAN Internet-exit integration with Zscaler.
       The same variable name is also used by the `cv_deploy` role, and will override the value of `ansible_host` on inventory 'cloudvision' host.
       Make sure to set it in a common group_vars file.
     type: str

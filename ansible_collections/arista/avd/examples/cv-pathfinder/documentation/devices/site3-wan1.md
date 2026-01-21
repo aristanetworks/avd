@@ -259,8 +259,8 @@ management security
    !
    ssl profile STUN-DTLS
       tls versions 1.2
-      trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
       certificate STUN-DTLS.crt key STUN-DTLS.key
+      trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
 ```
 
 ## Kernel Settings
@@ -1048,7 +1048,6 @@ route-map RM-EVPN-SOO-OUT permit 10
 #### IP Extended Community Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.11:203
 ```
 

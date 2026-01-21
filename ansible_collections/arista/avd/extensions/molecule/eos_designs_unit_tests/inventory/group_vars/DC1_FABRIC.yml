@@ -139,6 +139,9 @@ l3leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           ptp:
             enabled: false
+            # Test free_running should not render when ptp is not enabled
+            free_running:
+              enabled: true
           link_tracking:
             enabled: true
             groups:

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -63,3 +63,4 @@ class AvdFacts(AvdFactsProtocol):
         self._hostvars = hostvars
         self.inputs = inputs
         self.shared_utils = shared_utils
+        super().__init__()

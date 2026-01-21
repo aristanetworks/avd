@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -9,10 +9,12 @@ from typing import TYPE_CHECKING
 from anta.input_models.avt import AVTPath
 from anta.tests.avt import VerifyAVTSpecificPath
 
+from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
+from ._decorators import skip_if_missing_config
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -26,6 +28,7 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory[VerifyAVTSpecificPa
     `router_path_selection.path_groups.static_peers`.
     """
 
+    @skip_if_missing_config(StructuredConfigKey.ROUTER_AVT, StructuredConfigKey.ROUTER_PATH_SELECTION)
     def create(self) -> Iterator[VerifyAVTSpecificPath.Input]:
         """Generate the inputs for the `VerifyAVTSpecificPath` test."""
         avt_vrfs = self.structured_config.router_adaptive_virtual_topology.vrfs

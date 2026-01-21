@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -409,7 +409,7 @@ class FileSrc:
     def _render_imports(self) -> str:
         """Render the python source code for imports."""
         imports = set()
-        for cls in self.classes:
+        for cls in filter(None, self.classes):
             imports.update(cls.get_imports())
         return "\n".join(str(imp) for imp in imports)
 
