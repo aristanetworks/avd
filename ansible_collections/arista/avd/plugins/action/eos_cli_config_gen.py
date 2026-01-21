@@ -22,6 +22,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     cprofile,
     get_templar,
     parse_validation_result,
+    raise_action_fail,
 )
 
 if TYPE_CHECKING:
@@ -151,9 +152,7 @@ class ActionModule(ActionBase):
                 LOGGER.debug("Rendering documentation [done].")
 
         except Exception as error:
-            # Recast errors as AnsibleActionFail
-            msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from error
+            raise_action_fail(f"Error during plugin execution: {error}", error)
 
         return result
 
@@ -205,7 +204,7 @@ class ActionModule(ActionBase):
                     task_vars[var] = self._templar.template(value, fail_on_undefined=False)
                 except Exception as e:
                     msg = f"Exception during templating of task_var '{var}': '{e}'"
-                    raise AnsibleActionFail(msg) from e
+                    raise_action_fail(msg, e)
 
         if not isinstance(task_vars, dict):
             # Corner case for ansible-test where the passed task_vars is a nested chain-map
