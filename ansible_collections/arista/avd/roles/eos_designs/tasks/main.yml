@@ -27,7 +27,7 @@
 
 - name: Validate eos_designs inputs
   arista.avd.validate_inputs:
-    batch_size: "{{ batch_size | arista.avd.default(10) }}"
+    batch_size: "{{ avd_validate_inputs_batch_size | arista.avd.default(10) }}"
     schema_name: eos_designs
     fail_on_validation_errors: "{{ avd_fail_on_validation_errors | arista.avd.default(true) }}"
   delegate_to: localhost

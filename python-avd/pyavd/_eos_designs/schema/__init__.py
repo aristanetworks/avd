@@ -87816,6 +87816,8 @@ class EosDesigns(EosDesignsRootModel):
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_return_structured_config": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
+        "avd_fail_on_validation_errors": {"type": bool, "default": True},
+        "avd_validate_inputs_batch_size": {"type": int, "default": 10},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
         "bgp_as_notation": {"type": str, "default": "auto"},
@@ -88475,6 +88477,22 @@ class EosDesigns(EosDesignsRootModel):
     Generate structured configuration per device.
 
     Default value: `True`
+    """
+    avd_fail_on_validation_errors: bool
+    """
+    If `true`, the task will fail if any validation errors are detected.
+    If `false`, errors will be
+    reported but the task will succeed.
+
+    Default value: `True`
+    """
+    avd_validate_inputs_batch_size: int
+    """
+    The number of hosts to process in each batch when validating inputs.
+    Depending on your inventory
+    size and the available resources, you may want to adjust this number.
+
+    Default value: `10`
     """
     bfd_multihop: BfdMultihop
     """
@@ -90410,6 +90428,8 @@ class EosDesigns(EosDesignsRootModel):
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_return_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
+            avd_fail_on_validation_errors: bool | UndefinedType = Undefined,
+            avd_validate_inputs_batch_size: int | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
@@ -90634,6 +90654,14 @@ class EosDesigns(EosDesignsRootModel):
                    dedicated output location.
                 avd_eos_designs_return_structured_config: Return structured configuration as ansible_facts per device.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
+                avd_fail_on_validation_errors:
+                   If `true`, the task will fail if any validation errors are detected.
+                   If `false`, errors will be
+                   reported but the task will succeed.
+                avd_validate_inputs_batch_size:
+                   The number of hosts to process in each batch when validating inputs.
+                   Depending on your inventory
+                   size and the available resources, you may want to adjust this number.
                 bfd_multihop:
                    BFD Multihop tuning.
 

@@ -372,6 +372,16 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
+  avd_fail_on_validation_errors:
+    type: bool
+    documentation_options:
+      table: role-settings
+    $ref: eos_cli_config_gen#/keys/avd_fail_on_validation_errors
+  avd_validate_inputs_batch_size:
+    type: int
+    documentation_options:
+      table: role-settings
+    $ref: eos_cli_config_gen#/keys/avd_validate_inputs_batch_size
   bfd_multihop:
     documentation_options:
       table: bfd-settings
