@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from .api.validation import ValidatedDataResult
 
 
-def validate_inputs(inputs: dict) -> ValidatedDataResult:
+def validate_inputs(inputs: dict, *, warn_eos_cli_config_gen_keys: bool = True) -> ValidatedDataResult:
     """
     Validate input variables according to the `eos_designs` schema as documented on avd.arista.com.
 
@@ -18,6 +18,8 @@ def validate_inputs(inputs: dict) -> ValidatedDataResult:
 
     Args:
         inputs: Dictionary with inputs for "eos_designs".
+        warn_eos_cli_config_gen_keys: If True, warnings will be returned for any eos_cli_config_gen keys
+            found in the eos_designs input data.
 
     Returns:
         ValidatedDataResult object with the ValidationResult containing validation errors, deprecation warnings
@@ -26,7 +28,7 @@ def validate_inputs(inputs: dict) -> ValidatedDataResult:
     Raises:
         ValueError: If the inputs are not JSON serializable.
     """
-    from pyavd_utils.validation import get_validated_data  # noqa: PLC0415
+    from pyavd_utils.validation import Configuration, get_validated_data  # noqa: PLC0415
 
     from ._schema.store import init_store  # noqa: PLC0415
     from .api.validation import ValidatedDataResult  # noqa: PLC0415
@@ -39,5 +41,6 @@ def validate_inputs(inputs: dict) -> ValidatedDataResult:
         msg = f"Unable to serialize inputs: {e}"
         raise ValueError(msg) from e
 
-    pyavd_utils_validated_data_result = get_validated_data(data_as_json=data_as_json, schema_name="eos_designs")
+    configuration = Configuration(warn_eos_cli_config_gen_keys=warn_eos_cli_config_gen_keys)
+    pyavd_utils_validated_data_result = get_validated_data(data_as_json=data_as_json, schema_name="eos_designs", configuration=configuration)
     return ValidatedDataResult._from_pyavd_utils_validated_data_result(pyavd_utils_validated_data_result)

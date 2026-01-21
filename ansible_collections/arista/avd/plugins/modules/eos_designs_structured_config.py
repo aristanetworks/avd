@@ -75,6 +75,14 @@ options:
       Generate Digital Twin topology information.
     default: false
     type: bool
+  avd_eos_designs_warn_eos_cli_config_gen_keys:
+    description: |-
+      Enable warnings for eos_cli_config_gen keys used in eos_designs input data.
+      When enabled, warnings will be emitted during validation if any top-level keys
+      from the eos_cli_config_gen schema are found at the top level of eos_designs input data.
+      Note: These keys will be ignored during eos_cli_config_gen processing when used with eos_designs.
+    default: true
+    type: bool
 """
 
 EXAMPLES = r"""

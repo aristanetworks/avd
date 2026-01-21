@@ -33,3 +33,41 @@ def test_validate_inputs_with_valid_inputs(molecule_host: MoleculeHost) -> None:
     inputs = molecule_host.hostvars
     validated_data_result = validate_inputs(inputs)
     assert validated_data_result.validation_result.violations == []
+
+
+def test_validate_inputs_with_eos_cli_config_gen_keys() -> None:
+    """Test that validate_inputs returns ignored_eos_config_keys when eos_cli_config_gen keys are used."""
+    inputs = {
+        "fabric_name": "TEST-FABRIC",
+        "dns_domain": "this.should.warn.test",
+        "dns_settings": {"servers": [{"ip_address": "8.8.8.8"}]},
+    }
+
+    # Test with warnings enabled (default)
+    validated_data_result = validate_inputs(inputs)
+
+    # Should have no violations
+    assert validated_data_result.validation_result.violations == []
+
+    # Should have ignored_eos_config_keys
+    assert len(validated_data_result.validation_result.ignored_eos_config_keys) == 1
+    assert validated_data_result.validation_result.ignored_eos_config_keys[0].path == ["dns_domain"]
+    assert "dns_domain" in validated_data_result.validation_result.ignored_eos_config_keys[0].message
+
+
+def test_validate_inputs_with_eos_cli_config_gen_keys_disabled() -> None:
+    """Test that validate_inputs does not return ignored_eos_config_keys when warn_eos_cli_config_gen_keys is False."""
+    inputs = {
+        "fabric_name": "TEST-FABRIC",
+        "dns_domain": "this.should.not.warn.test",
+        "dns_settings": {"servers": [{"ip_address": "8.8.8.8"}]},
+    }
+
+    # Test with warnings disabled
+    validated_data_result = validate_inputs(inputs, warn_eos_cli_config_gen_keys=False)
+
+    # Should have no violations
+    assert validated_data_result.validation_result.violations == []
+
+    # Should NOT have ignored_eos_config_keys
+    assert len(validated_data_result.validation_result.ignored_eos_config_keys) == 0

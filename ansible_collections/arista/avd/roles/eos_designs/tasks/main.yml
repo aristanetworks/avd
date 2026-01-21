@@ -31,6 +31,7 @@
     template_output: true
     output_dir: "{{ output_dir }}"
     digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
+    avd_eos_designs_warn_eos_cli_config_gen_keys: "{{ avd_eos_designs_warn_eos_cli_config_gen_keys }}"
   check_mode: false
   run_once: true
 
@@ -45,6 +46,8 @@
     debug_vars: "{{ avd_eos_designs_debug | arista.avd.default(false) }}"
     debug_vars_file: "{{ structured_dir }}/{{ inventory_hostname }}-debug-vars.yml"
     digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
+    # Disable warnings here since they were already emitted by eos_designs_facts
+    avd_eos_designs_warn_eos_cli_config_gen_keys: false
   delegate_to: localhost
   check_mode: false
   register: structured_config

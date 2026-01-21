@@ -68,6 +68,7 @@ class ActionModule(ActionBase):
         self.template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
 
         self._digital_twin = self._task.args.get("digital_twin", False)
+        self._warn_eos_cli_config_gen_keys = self._task.args.get("avd_eos_designs_warn_eos_cli_config_gen_keys", True)
         output_dir = self._task.args.get("output_dir")
 
         groups = task_vars.get("groups", {})
@@ -147,7 +148,7 @@ class ActionModule(ActionBase):
             host_hostvars = dict(hostvars[host])
 
             # Load input vars into the EosDesigns data class.
-            validated_data_result = validate_inputs(host_hostvars)
+            validated_data_result = validate_inputs(host_hostvars, warn_eos_cli_config_gen_keys=self._warn_eos_cli_config_gen_keys)
 
             data_validation_errors += parse_validation_result(validation_result=validated_data_result.validation_result, hostname=host, ansible_display=display)
 

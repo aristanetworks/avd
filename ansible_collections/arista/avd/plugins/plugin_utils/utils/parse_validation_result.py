@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from pyavd._utils.json_path_to_string import json_path_to_string
 
 try:
+    from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._utils.json_path_to_string import json_path_to_string
 
     HAS_PYAVD = True
@@ -42,6 +43,20 @@ def parse_validation_result(validation_result: ValidationResult, hostname: str, 
             version=deprecation.version,
             collection_name=collection_name,
         )
+
+    for ignored_key in validation_result.ignored_eos_config_keys:
+        path = json_path_to_string(ignored_key.path)
+
+        # Skip warnings for eos_cli_config_gen role keys (these are expected to be used with eos_designs)
+        if len(ignored_key.path) == 1 and ignored_key.path[0] in EOS_CLI_CONFIG_GEN_ROLE_KEYS:
+            continue
+
+        message = (
+            f"[{hostname}]: The 'eos_cli_config_gen' key '{path}' is present in the input to 'eos_designs' and will be ignored. "
+            f"To address this: 1) Use the equivalent 'eos_designs' model if available, or 2) Use custom_structured_configuration. "
+            f"See https://avd.arista.com/stable/docs/warn-eos-cli-config-keys-usage-in-eos-designs.html for details."
+        )
+        ansible_display.warning(message, formatted=True)
 
     if (error_count := len(validation_result.violations)) > 0:
         for violation in validation_result.violations:

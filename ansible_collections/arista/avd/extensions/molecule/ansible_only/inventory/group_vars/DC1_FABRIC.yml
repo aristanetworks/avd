@@ -11,7 +11,6 @@ bgp_peer_groups:
   mlag_ipv4_underlay_peer:
     name: MLAG-PEERS
     password: "15AwQNBEJ1nyF/kBEtoAGw=="
-
 # test with inline jinja2 targeting eos_designs_facts
 spine_platform: "7050SX3"
 spine_bgp_defaults: ["distance bgp 20 200 200"]
@@ -94,3 +93,7 @@ l3leaf:
           mgmt_ip: 192.168.200.111/24
           mac_address: "0c:1d:c0:1d:62:01"
           uplink_switch_interfaces: [Ethernet3, Ethernet4]
+
+router_isis:
+  instance: TOTO
+dns_domain: i.am.from.eos_cli_config_gen

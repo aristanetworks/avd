@@ -3,7 +3,7 @@
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
-# Of using `eos_cli_config_gen` native keys when running `eos_designs`
+# Using `eos_cli_config_gen` native keys when running `eos_designs`
 
 ## Context
 
@@ -15,11 +15,14 @@ sometimes leading to configuration changes after a minor releases upgrade. This 
 [custom_structured_configuration](../ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md) which is the recommended way of
 using `eos_cli_config_gen` variables within `eos_designs`. However the direct usage of `eos_cli_config_gen` variables still works.
 
+!!! note
+    Only top-level keys from the `eos_cli_config_gen` schema are detected and warned about. Nested keys within `eos_designs` data structures are not affected by this validation.
+
 ## Changes
 
-### AVD 5.6
+### AVD 6.0 and Later
 
-Starting AVD 5.6, the `eos_designs` role emits deprecation warning identifying the native `eos_cli_config_gen` keys being used.
+Starting with AVD 6.0, the `eos_designs` role emits warnings identifying the native `eos_cli_config_gen` keys being used at the top level of input data. The nominal behavior of `eos_designs` is to ignore `eos_cli_config_gen` native keys found at the top level of input data.
 
 The solutions to address such warning should be in order of priority:
 
@@ -54,8 +57,32 @@ Following the less preferred option 2, it could have been changed to:
 custom_structured_configuration_dns_domain: my.awesome.domain.local
 ```
 
-### Future
+#### Disabling Warnings
 
-Starting AVD 6.0, the nominal behavior of `eos_designs` will be to ignore `eos_cli_config_gen` native keys.
+By default, warnings are enabled to help identify configuration that will be ignored. If you want to disable these warnings (for example, if you are aware of the ignored keys and want to suppress the notifications), you can set the `avd_eos_designs_warn_eos_cli_config_gen_keys` variable to `false`:
+
+**In playbook:**
+
+```yaml
+- name: Generate AVD Structured Configurations and Fabric Documentation
+  ansible.builtin.import_role:
+    name: arista.avd.eos_designs
+  vars:
+    avd_eos_designs_warn_eos_cli_config_gen_keys: false
+```
+
+**In group_vars or host_vars:**
+
+```yaml
+# group_vars/FABRIC.yml
+avd_eos_designs_warn_eos_cli_config_gen_keys: false
+```
+
+!!! warning
+    Even when warnings are disabled, the top-level `eos_cli_config_gen` keys in `eos_designs` input data will still be ignored during `eos_cli_config_gen` processing. Disabling the warnings only suppresses the notification; it does not change the behavior of ignoring these keys.
+
+### AVD 5.6
+
+Starting with AVD 5.6, the `eos_designs` role emitted deprecation warnings identifying the native `eos_cli_config_gen` keys being used. This behavior was enhanced in AVD 6.0 to use the new validation system.
 
 Please reach out to the maintainer team via [Github discussions](https://github.com/aristanetworks/avd/discussions) if you have any questions or concerns.

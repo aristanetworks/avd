@@ -83,6 +83,7 @@ class ActionModule(ActionBase):
         template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
 
         digital_twin = self._task.args.get("digital_twin", False)
+        warn_eos_cli_config_gen_keys = self._task.args.get("avd_eos_designs_warn_eos_cli_config_gen_keys", True)
 
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
@@ -101,7 +102,7 @@ class ActionModule(ActionBase):
         all_facts = AvdSwitchFactsDefaultDict(avd_switch_facts)
 
         # Load input vars into the EosDesigns data class.
-        validated_data_result = validate_inputs(host_hostvars)
+        validated_data_result = validate_inputs(host_hostvars, warn_eos_cli_config_gen_keys=warn_eos_cli_config_gen_keys)
 
         data_validation_errors = parse_validation_result(validation_result=validated_data_result.validation_result, hostname=hostname, ansible_display=display)
 
