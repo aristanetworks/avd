@@ -37,7 +37,7 @@
             run_tests:
               - VerifyReachability
           # Skip tests take precedence over run_tests
-          # All tests except VerifyLLDPNeighbors will run on DC2_SPINES devices
+          # No test will run on DC2_SPINES devices
           - device_list: "{{ groups['DC2_SPINES'] }}"
             run_tests:
               - VerifyLLDPNeighbors

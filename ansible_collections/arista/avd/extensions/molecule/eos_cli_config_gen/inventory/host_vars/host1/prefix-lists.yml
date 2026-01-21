@@ -10,3 +10,5 @@ prefix_lists:
 
   # prefix_list without sequence_numbers
   - name: PL-IPV4-LOOPBACKS
+  # prefix_list in lower case to test ignore_case
+  - name: pl-loopbacks

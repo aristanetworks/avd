@@ -12,6 +12,7 @@ from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default
 from pyavd._utils.password_utils.password import simple_7_encrypt
+from pyavd._utils.run_once import run_once_method
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import range_expand
@@ -114,9 +115,24 @@ class MiscMixin(Protocol):
 
     @cached_property
     def uplink_interfaces(self: SharedUtilsProtocol) -> list[str]:
-        return range_expand(
-            self.node_config.uplink_interfaces or self.cv_topology_config.uplink_interfaces or self.default_interfaces.uplink_interfaces,
-        )
+        if uplink_interface_candidates := range_expand(self.node_config.uplink_interfaces or self.cv_topology_config.uplink_interfaces):
+            if len(uplink_interface_candidates) != len(self.uplink_switches):
+                msg = (
+                    f"Length of 'uplink_interfaces': {len(uplink_interface_candidates)} does not match the length of 'uplink_switches':"
+                    f" {len(self.uplink_switches)}"
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+            return uplink_interface_candidates
+
+        uplink_interface_candidates = range_expand(self.default_interfaces.uplink_interfaces)
+        if len(uplink_interface_candidates) < len(self.uplink_switches):
+            msg = (
+                f"Length of 'default_interfaces.uplink_interfaces': {len(uplink_interface_candidates)} is less than the length of 'uplink_switches': "
+                f"{len(self.uplink_switches)}."
+            )
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
+
+        return uplink_interface_candidates[: len(self.uplink_switches)]
 
     @cached_property
     def uplink_switch_interfaces(self: SharedUtilsProtocol) -> list[str]:
@@ -462,3 +478,10 @@ class MiscMixin(Protocol):
     def is_campus_device(self: SharedUtilsProtocol) -> bool:
         """Return True if generation of the Campus tags is globally enabled and current device is a Campus device."""
         return bool(self.inputs.generate_cv_tags.campus_fabric and default(self.node_config.campus, self.inputs.campus))
+
+    @run_once_method
+    def set_once_ip_extcommunity_list_evpn_soo(self: SharedUtilsProtocol, structured_config: EosCliConfigGen) -> None:
+        """Set ip extcommunity-list ECL-EVPN-SOO."""
+        ip_extcommunity_list = EosCliConfigGen.IpExtcommunityListsItem(name="ECL-EVPN-SOO")
+        ip_extcommunity_list.entries.append_new(type="permit", extcommunities=f"soo {self.evpn_soo}")
+        structured_config.ip_extcommunity_lists.append(ip_extcommunity_list)

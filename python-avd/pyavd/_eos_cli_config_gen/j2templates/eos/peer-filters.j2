@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - peer filters #}
-{% for peer_filter in peer_filters | arista.avd.natural_sort('name') %}
+{% for peer_filter in peer_filters | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 peer-filter {{ peer_filter.name }}
 {%     for sequence in peer_filter.sequence_numbers | arista.avd.natural_sort('sequence') %}

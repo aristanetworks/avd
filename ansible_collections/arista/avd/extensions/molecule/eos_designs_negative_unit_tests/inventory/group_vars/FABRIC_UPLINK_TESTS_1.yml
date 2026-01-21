@@ -1,0 +1,36 @@
+---
+# Minimum config to only test the specific feature.
+fabric_name: FABRIC_UPLINK_TESTS_1
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - uplink-switches-length-less-than-uplink-interfaces-1
+  - node_type: l3leaf
+    match_hostnames:
+      - uplink-switches-length-less-than-uplink-interfaces
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+    bgp_as: 65000
+  nodes:
+    - name: uplink-switches-length-less-than-uplink-interfaces-1
+      id: 1
+      downlink_pools:
+        - ipv4_pool: 10.0.0.0/24
+
+l3leaf:
+  nodes:
+    - name: uplink-switches-length-less-than-uplink-interfaces
+      id: 1
+      loopback_ipv4_pool: 192.168.1.0/24
+      bgp_as: 65000
+      vtep_loopback_ipv4_pool: 10.255.1.0/27
+      mgmt_ip: 172.16.1.15/24
+      uplink_interfaces: ['Ethernet1', 'Ethernet2']
+      uplink_switches: ['uplink-switches-length-less-than-uplink-interfaces-1']
+      uplink_switch_interfaces:
+        - Ethernet8
+
+expected_error_message: >-
+  Length of 'uplink_interfaces': 2 does not match the length of 'uplink_switches': 1 for host 'uplink-switches-length-less-than-uplink-interfaces'.

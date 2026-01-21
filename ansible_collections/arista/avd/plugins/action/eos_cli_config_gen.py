@@ -5,19 +5,33 @@ from __future__ import annotations
 
 import json
 import logging
+from collections import ChainMap
 from contextlib import suppress
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler, YamlLoader, cprofile, get_templar
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    PythonToAnsibleContextFilter,
+    PythonToAnsibleHandler,
+    YamlLoader,
+    build_result_message,
+    cprofile,
+    get_templar,
+    parse_validation_result,
+    raise_action_fail,
+)
+
+if TYPE_CHECKING:
+    from pyavd import get_device_config, get_device_doc, validate_structured_config
+    from pyavd._utils import strip_empties_from_dict, template
+    from pyavd.j2filters import add_md_toc
 
 try:
-    from pyavd import get_device_config, get_device_doc
+    from pyavd import get_device_config, get_device_doc, validate_structured_config
     from pyavd._utils import strip_empties_from_dict, template
     from pyavd.j2filters import add_md_toc
 
@@ -51,7 +65,7 @@ class ActionModule(ActionBase):
     """Action Module for eos_cli_config_gen."""
 
     @cprofile()
-    def run(self, tmp: Any = None, task_vars: dict | None = None) -> None:
+    def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         """Ansible Action entry point."""
         if task_vars is None:
             task_vars = {}
@@ -87,7 +101,7 @@ class ActionModule(ActionBase):
 
             LOGGER.debug("Validating structured configuration...")
             # result dict will be in-place updated.
-            self.validate_task_vars(
+            validated_task_vars = self.validate_task_vars(
                 hostname=task_vars["inventory_hostname"],
                 task_vars=task_vars,
                 result=result,
@@ -101,15 +115,16 @@ class ActionModule(ActionBase):
             # Something failed in schema validation.
             return result
 
-        has_custom_templates = bool(task_vars.get("custom_templates"))
+        if has_custom_templates := bool(task_vars.get("custom_templates")):
+            template_vars = ChainMap(validated_task_vars, task_vars)
         try:
             if validated_args["generate_device_config"]:
                 LOGGER.debug("Rendering configuration...")
-                device_config = get_device_config(task_vars)
+                device_config = get_device_config(validated_task_vars)
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering config custom templates...")
-                    rendered_custom_templates = self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
+                    rendered_custom_templates = self.render_template_with_ansible_templar(template_vars, CUSTOM_TEMPLATES_CFG_TEMPLATE)
                     # Need to handle if `end` has been rendered already
                     if device_config.endswith("!\nend\n"):
                         device_config = device_config[:-6] + rendered_custom_templates + "!\nend\n"
@@ -122,11 +137,11 @@ class ActionModule(ActionBase):
 
             if validated_args["generate_device_doc"]:
                 LOGGER.debug("Rendering documentation...")
-                device_doc = get_device_doc(task_vars, add_md_toc=False)
+                device_doc = get_device_doc(validated_task_vars, add_md_toc=False)
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering documentation custom templates...")
-                    device_doc += self.render_template_with_ansible_templar(task_vars, CUSTOM_TEMPLATES_DOC_TEMPLATE)
+                    device_doc += self.render_template_with_ansible_templar(template_vars, CUSTOM_TEMPLATES_DOC_TEMPLATE)
                     LOGGER.debug("Rendering documentation custom templates [done].")
 
                 if validated_args["device_doc_toc"]:
@@ -137,9 +152,7 @@ class ActionModule(ActionBase):
                 LOGGER.debug("Rendering documentation [done].")
 
         except Exception as error:
-            # Recast errors as AnsibleActionFail
-            msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from error
+            raise_action_fail(f"Error during plugin execution: {error}", error)
 
         return result
 
@@ -191,7 +204,7 @@ class ActionModule(ActionBase):
                     task_vars[var] = self._templar.template(value, fail_on_undefined=False)
                 except Exception as e:
                     msg = f"Exception during templating of task_var '{var}': '{e}'"
-                    raise AnsibleActionFail(msg) from e
+                    raise_action_fail(msg, e)
 
         if not isinstance(task_vars, dict):
             # Corner case for ansible-test where the passed task_vars is a nested chain-map
@@ -199,22 +212,33 @@ class ActionModule(ActionBase):
 
         return task_vars
 
-    def validate_task_vars(self, hostname: str, task_vars: dict, result: dict) -> None:
-        # Load schema tools for input schema
-        input_schema_tools = AvdSchemaTools(
-            hostname=hostname,
-            ansible_display=display,
-            schema_id="eos_cli_config_gen",
-        )
-        result.update(input_schema_tools.convert_and_validate_data(task_vars))
+    def validate_task_vars(self, hostname: str, task_vars: dict, result: dict) -> dict:
+        """
+        Validate inputs and emit warnings and errors via Ansible display and in-place update the given result.
 
-    def render_template_with_ansible_templar(self, task_vars: dict, templatefile: str) -> str:
+        To simplify type checking this always return a dict even if validation fails.
+        The caller should check for result['failed'].
+        """
+        try:
+            validated_data_result = validate_structured_config(task_vars)
+        except (TypeError, ValueError, RecursionError) as e:
+            msg = f"Unable to load structured config from the given data: {e}"
+            raise ValueError(msg) from e
+
+        validation_errors = parse_validation_result(validated_data_result.validation_result, hostname, display)
+        if validation_errors:
+            result["failed"] = True
+            result["msg"] = build_result_message(validation_errors)
+
+        return validated_data_result.validated_data or {}
+
+    def render_template_with_ansible_templar(self, template_vars: dict | ChainMap, templatefile: str) -> str:
         """Render a template with the Ansible Templar."""
         # Get updated templar instance to be passed along to our simplified "templater"
         if not hasattr(self, "ansible_templar"):
-            self.ansible_templar = get_templar(self, task_vars)
+            self.ansible_templar = get_templar(self, template_vars)  # pyright: ignore[reportArgumentType]
 
-        return template(templatefile, task_vars, self.ansible_templar)
+        return template(templatefile, template_vars, self.ansible_templar)
 
     def write_file(self, content: str, filename: str) -> bool:
         """

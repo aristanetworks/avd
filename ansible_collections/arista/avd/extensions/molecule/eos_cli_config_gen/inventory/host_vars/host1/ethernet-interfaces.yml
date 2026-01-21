@@ -1255,10 +1255,25 @@ ethernet_interfaces:
     ipv6_dhcp_relay_destinations:
       - address: a0::2
         link_address: a0::3
+      - address: a0::1
+        link_address: a0::3
+        vrf: default
       - address: a0::4
         link_address: a0::5
         vrf: TEST
         local_interface: Loopback55
+      - address: a0::2
+        link_address: a0::5
+        vrf: TEST
+        local_interface: Loopback52
+      - address: a0::4
+        link_address: a0::5
+        vrf: aaa
+        local_interface: Loopback52
+      - address: a0::3
+        link_address: a0::5
+        vrf: aaa
+        local_interface: Loopback53
 
   - name: Ethernet56
     switchport:
@@ -1985,6 +2000,9 @@ ethernet_interfaces:
         twamp_light_fallback:
           number: 2
           unit: milliseconds
+    monitor_link_flap_profiles:
+      - lfp2
+      - LFP1
 
   - name: Ethernet82
     description: Switchport_tap_tool
