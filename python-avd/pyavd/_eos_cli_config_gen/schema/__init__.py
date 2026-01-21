@@ -66422,7 +66422,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Ipv6Ospf(AvdModel):
             """Subclass of AvdModel."""
 
-            class ProcessIdentifier(AvdModel):
+            class Process(AvdModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"id": {"type": int}, "area": {"type": str}}
@@ -66435,7 +66435,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     def __init__(self, *, id: int | UndefinedType = Undefined, area: str | UndefinedType = Undefined) -> None:
                         """
-                        ProcessIdentifier.
+                        Process.
 
 
                         Subclass of AvdModel.
@@ -66446,8 +66446,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"process_identifier": {"type": ProcessIdentifier}, "network_point_to_point": {"type": bool}}
-            process_identifier: ProcessIdentifier
+            _fields: ClassVar[dict] = {"process": {"type": Process}, "network_point_to_point": {"type": bool}}
+            process: Process
             """
             Configuration for OSPFv3 specific process and area settings on the interface.
 
@@ -66457,9 +66457,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, process_identifier: ProcessIdentifier | UndefinedType = Undefined, network_point_to_point: bool | None | UndefinedType = Undefined
-                ) -> None:
+                def __init__(self, *, process: Process | UndefinedType = Undefined, network_point_to_point: bool | None | UndefinedType = Undefined) -> None:
                     """
                     Ipv6Ospf.
 
@@ -66467,7 +66465,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        process_identifier:
+                        process:
                            Configuration for OSPFv3 specific process and area settings on the interface.
 
                            Subclass of AvdModel.

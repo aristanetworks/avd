@@ -356,7 +356,7 @@ keys:
         ipv6_ospf:
           type: dict
           keys:
-            process_identifier:
+            process:
               type: dict
               description: Configuration for OSPFv3 specific process and area settings on the interface.
               keys:
