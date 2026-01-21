@@ -1,3 +1,14 @@
+aaa_accounting:
+  dot1x:
+    default:
+      type: start-stop
+      methods:
+      - multicast: false
+        method: group
+        group: radius
+aaa_authentication:
+  dot1x:
+    default: group radius
 aaa_root:
   disabled: true
 boot:
@@ -13,6 +24,11 @@ daemon_terminattr:
   cvvrf: MGMT
   disable_aaa: false
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+dot1x:
+  system_auth_control: true
+  protocol_lldp_bypass: true
+  protocol_bpdu_bypass: true
+  dynamic_authorization: true
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -331,6 +347,9 @@ ip_name_server:
     - ip_address: 8.8.8.8
     - ip_address: 2001:db8::1
     - ip_address: 2001:db8::2
+ip_radius_source_interfaces:
+- name: Management99
+  vrf: MGMT
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 ipv6_static_routes:
@@ -578,6 +597,12 @@ prefix_lists:
     action: permit 192.168.254.192/29 eq 32
   - sequence: 80
     action: permit 192.168.254.200/32 eq 32
+radius_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - host: agni.arista.com
+      key: 1404071B09166738212B2130365E0C131A
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -705,6 +730,7 @@ router_bgp:
       - '100000:12'
     redistribute_routes:
     - learned
+    - dot1x
     vlan: 130-131
   - name: Tenant_A_DB_Zone
     rd: '65001:13'
@@ -713,6 +739,7 @@ router_bgp:
       - '100000:13'
     redistribute_routes:
     - learned
+    - dot1x
     vlan: 140-141
   - name: Tenant_A_OP_Zone
     rd: '65001:9'
@@ -721,6 +748,7 @@ router_bgp:
       - '100000:9'
     redistribute_routes:
     - learned
+    - dot1x
     vlan: 110-112
   - name: Tenant_A_WEB_Zone
     rd: '65001:11'
@@ -729,6 +757,7 @@ router_bgp:
       - '100000:11'
     redistribute_routes:
     - learned
+    - dot1x
     vlan: 120-121
   - name: Tenant_A_NFS
     metadata:
@@ -739,6 +768,7 @@ router_bgp:
       - 100000:20161
     redistribute_routes:
     - learned
+    - dot1x
     vlan: '161'
   - name: Tenant_A_VMOTION
     metadata:
@@ -749,6 +779,7 @@ router_bgp:
       - 100000:20160
     redistribute_routes:
     - learned
+    - dot1x
     vlan: '160'
   - name: Tenant_B_OP_Zone
     rd: '65001:20'
@@ -757,6 +788,7 @@ router_bgp:
       - '100000:20'
     redistribute_routes:
     - learned
+    - dot1x
     vlan: 210-211
   - name: Tenant_C_OP_Zone
     rd: '65001:30'
@@ -765,6 +797,7 @@ router_bgp:
       - '100000:30'
     redistribute_routes:
     - learned
+    - dot1x
     vlan: 310-311
   - name: '12345678'
     rd: '65001:41'
@@ -773,6 +806,7 @@ router_bgp:
       - '100000:41'
     redistribute_routes:
     - learned
+    - dot1x
     vlan: 450-452
   - name: Tenant_D_OP_Zone
     rd: '65001:40'
@@ -781,6 +815,7 @@ router_bgp:
       - '100000:40'
     redistribute_routes:
     - learned
+    - dot1x
     vlan: 410-413
   address_family_evpn:
     peer_groups:

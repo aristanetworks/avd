@@ -25,7 +25,7 @@ ip_igmp_snooping:
   - id: 2
     querier:
       enabled: true
-      address: 192.168.255.1
+      address: 10.1.1.1
       version: 3
   - id: 3
     querier:
@@ -37,7 +37,7 @@ ip_igmp_snooping:
   - id: 102
     querier:
       enabled: true
-      address: 192.168.255.1
+      address: 2.2.2.2
       version: 3
   - id: 103
     querier:
@@ -50,7 +50,7 @@ ip_igmp_snooping:
   - id: 12
     querier:
       enabled: true
-      address: 1.1.1.1
+      address: 10.1.2.1
       version: 2
   - id: 111
     querier:
@@ -72,7 +72,7 @@ ip_igmp_snooping:
   - id: 22
     querier:
       enabled: true
-      address: 1.1.1.1
+      address: 192.168.255.1
       version: 3
   - id: 23
     querier:
@@ -102,6 +102,16 @@ loopback_interfaces:
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.1/32
+- name: Loopback111
+  description: DIAG_VRF_IGMP_QUERIER_TEST_1
+  shutdown: false
+  vrf: IGMP_QUERIER_TEST_1
+  ip_address: 10.1.1.1/32
+- name: Loopback121
+  description: DIAG_VRF_IGMP_QUERIER_TEST_2
+  shutdown: false
+  vrf: IGMP_QUERIER_TEST_2
+  ip_address: 10.1.2.1/32
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -346,7 +356,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '11:11'
-    router_id: 192.168.255.1
+    router_id: 10.1.1.1
     redistribute:
       connected:
         enabled: true
@@ -386,6 +396,11 @@ static_routes:
   prefix: 0.0.0.0/0
   next_hop: 192.168.200.5
 transceiver_qsfp_default_mode_4x10: true
+virtual_source_nat_vrfs:
+- name: IGMP_QUERIER_TEST_1
+  ip_address: 10.1.1.1
+- name: IGMP_QUERIER_TEST_2
+  ip_address: 10.1.2.1
 vlan_interfaces:
 - name: Vlan1
   description: VLAN_1

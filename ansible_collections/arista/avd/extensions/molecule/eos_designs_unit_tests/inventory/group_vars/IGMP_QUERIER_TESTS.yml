@@ -27,6 +27,11 @@ tenants:
       - name: IGMP_QUERIER_TEST_1
         description: "IGMP_QUERIER_TEST_1"
         vrf_vni: 11
+        vtep_diagnostic:
+          loopback: 111
+          loopback_ip_range: 10.1.1.0/24
+        bgp:
+          router_id: diagnostic_loopback
         svis:
         # Expected results:
         # igmp querier enable, querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
@@ -44,6 +49,7 @@ tenants:
             ip_address_virtual: 10.0.2.1/24
             igmp_snooping_querier:
               version: 3
+              source_address: vrf_router_id
         # Expected results:
         # igmp querier disabled, querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
           - id: 3
@@ -66,6 +72,7 @@ tenants:
         tags: ['test_l2']
         igmp_snooping_querier:
           version: 3
+          source_address: 2.2.2.2
       # Expected results:
       # igmp querier disable querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
       - id: 103
@@ -85,6 +92,9 @@ tenants:
       - name: IGMP_QUERIER_TEST_2
         description: "IGMP_QUERIER_TEST_2"
         vrf_vni: 21
+        vtep_diagnostic:
+          loopback: 121
+          loopback_ip_range: 10.1.2.0/24
         svis:
         # Expected results:
         # igmp querier enable, querier address set to 1.1.1.1, and version set to 3
@@ -94,7 +104,7 @@ tenants:
             enabled: true
             ip_address_virtual: 10.0.11.1/24
         # Expected results:
-        # igmp querier enable, querier address set to 1.1.1.1, and version set to 2
+        # igmp querier enable, querier address set to diagnostic_loopback, and version set to 2
           - id: 12
             name: "VLAN_12"
             tags: ['test_l3']
@@ -102,6 +112,7 @@ tenants:
             ip_address_virtual: 10.0.12.1/24
             igmp_snooping_querier:
               version: 2
+              source_address: diagnostic_loopback
     l2vlans:
       # Expected results:
       # igmp querier enable, querier address set to 1.1.1.1, and version set to 3
@@ -140,13 +151,15 @@ tenants:
             ip_address_virtual: 10.0.21.1/24
             profile: IGMP_QUERIER_CHILD_1
           # Expected results:
-          # igmp querier enable, querier address set to 1.1.1.1, and version set to 3
+          # igmp querier enable, querier address set to main_router_id, and version set to 3
           - id: 22
             name: "VLAN_22"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.0.22.1/24
             profile: IGMP_QUERIER_CHILD_2
+            igmp_snooping_querier:
+              source_address: main_router_id
           # Expected results:
           # igmp querier enable, querier address set to 2.2.2.2, and version set to 1
           - id: 23
@@ -177,6 +190,7 @@ tenants:
         tags: ['test_l2']
         igmp_snooping_querier:
           enabled: true
+          source_address: vrf_router_id
       # Expected results:
       # igmp querier disabled, querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
       - id: 123
