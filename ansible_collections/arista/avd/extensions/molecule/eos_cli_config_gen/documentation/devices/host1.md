@@ -4893,7 +4893,7 @@ interface Dps1
 
 | Interface | Link Flap Profiles |
 | --------- | ------------------ |
-| Ethernet81/4 | LFP1 LFP2 |
+| Ethernet81/4 | LFP1 lfp2 |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -5939,7 +5939,7 @@ interface Ethernet81/4
    traffic-engineering administrative-group 4,7-100,testgrp
    traffic-engineering metric 2
    traffic-engineering min-delay dynamic twamp-light fallback 2 milliseconds
-   monitor link-flap profiles LFP1 LFP2
+   monitor link-flap profiles LFP1 lfp2
 !
 interface Ethernet81/10
    description isis_port_channel_member

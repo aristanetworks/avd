@@ -2001,7 +2001,7 @@ ethernet_interfaces:
           number: 2
           unit: milliseconds
     monitor_link_flap_profiles:
-      - LFP2
+      - lfp2
       - LFP1
 
   - name: Ethernet82
