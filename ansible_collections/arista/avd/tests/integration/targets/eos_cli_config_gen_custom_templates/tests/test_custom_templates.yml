@@ -1,0 +1,21 @@
+- name: Test custom templates in eos_cli_config_gen
+  register: result
+  arista.avd.eos_cli_config_gen:
+    config_filename: "{{ actual_output_dir }}/test_custom_templates.cfg"
+    structured_config_filename: "{{ structured_config_dir }}/test_custom_templates.yml"
+    read_structured_config_from_file: true
+    generate_device_doc: false
+  delegate_to: localhost
+
+- name: Compare actual output with expected output
+  ansible.builtin.shell: >-
+    diff "{{ expected_output_dir }}/test_custom_templates.cfg"
+    "{{ actual_output_dir }}/test_custom_templates.cfg"
+  failed_when: diff_output.rc > 0
+  register: diff_output
+  delegate_to: localhost
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success
