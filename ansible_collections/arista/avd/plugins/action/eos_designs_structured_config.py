@@ -21,6 +21,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     get_eos_designs_facts_path,
     get_role_tmp_paths,
     get_templar,
+    raise_action_fail,
     write_file,
 )
 
@@ -49,7 +50,6 @@ class ActionModule(ActionBase):
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
             task_vars = {}
-
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
 
@@ -96,7 +96,7 @@ class ActionModule(ActionBase):
                 digital_twin=digital_twin,
             )
         except Exception as error:
-            raise AnsibleActionFail(message=str(error)) from error
+            raise_action_fail(str(error), error)
 
         output = structured_config._as_dict()
 
@@ -138,7 +138,7 @@ class ActionModule(ActionBase):
                 try:
                     merge(output, *template_result_data, list_merge=list_merge, schema=output_schema)
                 except Exception as error:
-                    raise AnsibleActionFail(message=str(error)) from error
+                    raise_action_fail(str(error), error)
 
         # If the argument 'template_output' is set, run the output data through another jinja2 rendering.
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.

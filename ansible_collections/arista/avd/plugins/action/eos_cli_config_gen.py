@@ -19,6 +19,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     cprofile,
     get_role_tmp_paths,
     get_templar,
+    raise_action_fail,
 )
 
 if TYPE_CHECKING:
@@ -124,9 +125,7 @@ class ActionModule(ActionBase):
                 LOGGER.debug("Rendering documentation [done].")
 
         except Exception as error:
-            # Recast errors as AnsibleActionFail
-            msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from error
+            raise_action_fail(f"Error during plugin execution: {error}", error)
 
         return result
 
