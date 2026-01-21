@@ -1,6 +1,6 @@
 - name: Validate inputs reading from hostvars
   arista.avd.validate_inputs:
-    schema_name: eos_cli_config_gen
+    schema_name: eos_config
     # input_dir: Not set
     input_suffix: yml
   delegate_to: localhost

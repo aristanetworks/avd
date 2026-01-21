@@ -5,7 +5,7 @@
   vars:
     underlay_routing_protocol: ABC
   arista.avd.validate_inputs:
-    schema_name: eos_designs
+    schema_name: avd_design
     fail_on_validation_errors: true
 
 - vars:
@@ -22,7 +22,7 @@
   vars:
     underlay_routing_protocol: ABC
   arista.avd.validate_inputs:
-    schema_name: eos_designs
+    schema_name: avd_design
     fail_on_validation_errors: false
 
 - vars:

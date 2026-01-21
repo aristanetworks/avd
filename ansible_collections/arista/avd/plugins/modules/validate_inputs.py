@@ -57,12 +57,12 @@ EXAMPLES = r"""
 ---
 - name: Validate eos_designs inputs for the fabric
   arista.avd.validate_inputs:
-    schema_name: eos_designs
+    schema_name: avd_design
     fail_on_validation_errors: true
 
 - name: Validate eos_cli_config_gen inputs from structured config files
   arista.avd.validate_inputs:
-    schema_name: eos_cli_config_gen
+    schema_name: eos_config
     input_dir: "{{ inventory_dir }}/intended/structured_configs"
     input_suffix: "yml"
     fail_on_validation_errors: false

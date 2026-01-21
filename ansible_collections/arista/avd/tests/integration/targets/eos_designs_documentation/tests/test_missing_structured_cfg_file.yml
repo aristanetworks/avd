@@ -1,6 +1,6 @@
 - name: Validate eos_designs inputs
   arista.avd.validate_inputs:
-    schema_name: eos_designs
+    schema_name: avd_design
   delegate_to: localhost
   check_mode: false
   run_once: true
