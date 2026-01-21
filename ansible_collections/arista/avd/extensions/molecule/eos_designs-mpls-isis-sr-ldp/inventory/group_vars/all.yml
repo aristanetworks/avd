@@ -1,5 +1,4 @@
 ---
-avd_eos_cli_config_gen_input_dir: '{{ structured_dir }}'
 
 # Generate CSVs with fabric link info.
 eos_designs_documentation:
