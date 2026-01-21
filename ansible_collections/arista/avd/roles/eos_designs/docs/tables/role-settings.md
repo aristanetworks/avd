@@ -14,8 +14,8 @@
     | [<samp>avd_eos_designs_return_structured_config</samp>](## "avd_eos_designs_return_structured_config") | Boolean |  | `False` |  | Return structured configuration as ansible_facts per device. |
     | [<samp>avd_eos_designs_structured_config</samp>](## "avd_eos_designs_structured_config") | Boolean |  | `True` |  | Generate structured configuration per device. |
     | [<samp>avd_eos_designs_unset_facts</samp>](## "avd_eos_designs_unset_facts") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
-    | [<samp>avd_structured_config_file_format</samp>](## "avd_structured_config_file_format") | String |  | `yml` | Valid Values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | The file format to use when loading structured configuration files.<br> |
-    | [<samp>avd_validate_inputs_batch_size</samp>](## "avd_validate_inputs_batch_size") | Integer |  | `10` |  | The number of hosts to process in each batch when validating inputs.<br>Depending on your inventory size and the available resources, you may want to adjust this number. |
+    | [<samp>avd_eos_designs_validate_inputs_batch_size</samp>](## "avd_eos_designs_validate_inputs_batch_size") | Integer |  | `10` |  | The number of hosts to process in each batch when validating inputs.<br>Depending on your inventory size and the available resources, you may want to adjust this number. |
+    | [<samp>avd_structured_config_file_format</samp>](## "avd_structured_config_file_format") | String |  | `yml` | Valid Values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | The file format to use when dumping structured configuration files.<br> |
     | [<samp>eos_designs_documentation</samp>](## "eos_designs_documentation") | Dictionary |  |  |  | Control fabric documentation generation.<br> |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "eos_designs_documentation.enable") | Boolean |  | `True` |  | Generate fabric-wide documentation. |
     | [<samp>&nbsp;&nbsp;connected_endpoints</samp>](## "eos_designs_documentation.connected_endpoints") | Boolean |  | `False` |  | Include connected endpoints in the fabric-wide documentation.<br>This is `false` by default to avoid cluttering documentation for projects with thousands of endpoints. |
@@ -38,12 +38,12 @@
     # Generate structured configuration per device.
     avd_eos_designs_structured_config: <bool; default=True>
 
-    # The file format to use when loading structured configuration files.
-    avd_structured_config_file_format: <str; "yml" | "yaml" | "json"; default="yml">
-
     # The number of hosts to process in each batch when validating inputs.
     # Depending on your inventory size and the available resources, you may want to adjust this number.
-    avd_validate_inputs_batch_size: <int; default=10>
+    avd_eos_designs_validate_inputs_batch_size: <int; default=10>
+
+    # The file format to use when dumping structured configuration files.
+    avd_structured_config_file_format: <str; "yml" | "yaml" | "json"; default="yml">
 
     # Control fabric documentation generation.
     eos_designs_documentation:

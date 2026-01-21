@@ -7,9 +7,9 @@
 type: dict
 keys:
   avd_structured_config_file_format:
-    type: str
     documentation_options:
       table: role-settings
+    type: str
     default: "yml"
     valid_values: ["yml", "yaml", "json"]
     description: |

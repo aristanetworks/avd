@@ -87818,8 +87818,8 @@ class EosDesigns(EosDesignsRootModel):
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_return_structured_config": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
+        "avd_eos_designs_validate_inputs_batch_size": {"type": int, "default": 10},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
-        "avd_validate_inputs_batch_size": {"type": int, "default": 10},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
         "bgp_as_notation": {"type": str, "default": "auto"},
@@ -88480,19 +88480,19 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `True`
     """
-    avd_structured_config_file_format: AvdStructuredConfigFileFormat
-    """
-    The file format to use when loading structured configuration files.
-
-    Default value: `"yml"`
-    """
-    avd_validate_inputs_batch_size: int
+    avd_eos_designs_validate_inputs_batch_size: int
     """
     The number of hosts to process in each batch when validating inputs.
     Depending on your inventory
     size and the available resources, you may want to adjust this number.
 
     Default value: `10`
+    """
+    avd_structured_config_file_format: AvdStructuredConfigFileFormat
+    """
+    The file format to use when dumping structured configuration files.
+
+    Default value: `"yml"`
     """
     bfd_multihop: BfdMultihop
     """
@@ -90428,8 +90428,8 @@ class EosDesigns(EosDesignsRootModel):
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_return_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
+            avd_eos_designs_validate_inputs_batch_size: int | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
-            avd_validate_inputs_batch_size: int | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
@@ -90654,11 +90654,11 @@ class EosDesigns(EosDesignsRootModel):
                    dedicated output location.
                 avd_eos_designs_return_structured_config: Return structured configuration as ansible_facts per device.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
-                avd_structured_config_file_format: The file format to use when loading structured configuration files.
-                avd_validate_inputs_batch_size:
+                avd_eos_designs_validate_inputs_batch_size:
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
                    size and the available resources, you may want to adjust this number.
+                avd_structured_config_file_format: The file format to use when dumping structured configuration files.
                 bfd_multihop:
                    BFD Multihop tuning.
 

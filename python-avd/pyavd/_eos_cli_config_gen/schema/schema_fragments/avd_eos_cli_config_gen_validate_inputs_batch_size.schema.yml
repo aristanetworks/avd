@@ -6,10 +6,10 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  avd_validate_inputs_batch_size:
-    type: int
+  avd_eos_cli_config_gen_validate_inputs_batch_size:
     documentation_options:
       table: role-settings
+    type: int
     default: 10
     description: |-
       The number of hosts to process in each batch when validating inputs.

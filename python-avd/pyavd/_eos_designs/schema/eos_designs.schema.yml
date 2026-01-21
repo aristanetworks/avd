@@ -372,16 +372,27 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  avd_structured_config_file_format:
-    type: str
+  avd_eos_designs_validate_inputs_batch_size:
     documentation_options:
       table: role-settings
-    $ref: eos_cli_config_gen#/keys/avd_structured_config_file_format
-  avd_validate_inputs_batch_size:
     type: int
+    default: 10
+    description: 'The number of hosts to process in each batch when validating inputs.
+
+      Depending on your inventory size and the available resources, you may want to
+      adjust this number.'
+  avd_structured_config_file_format:
     documentation_options:
       table: role-settings
-    $ref: eos_cli_config_gen#/keys/avd_validate_inputs_batch_size
+    type: str
+    default: yml
+    valid_values:
+    - yml
+    - yaml
+    - json
+    description: 'The file format to use when dumping structured configuration files.
+
+      '
   bfd_multihop:
     documentation_options:
       table: bfd-settings

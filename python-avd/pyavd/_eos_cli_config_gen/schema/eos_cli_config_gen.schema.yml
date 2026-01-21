@@ -879,9 +879,9 @@ keys:
       removed: true
       remove_in_version: 6.0.0
   avd_eos_cli_config_gen_input_dir:
-    type: str
     documentation_options:
       table: role-settings
+    type: str
     description: 'When running `eos_cli_config_gen` in standalone mode (not as part
       of `eos_designs` workflow),
 
@@ -889,10 +889,19 @@ keys:
       configuration files to use as input.
 
       '
-  avd_structured_config_file_format:
-    type: str
+  avd_eos_cli_config_gen_validate_inputs_batch_size:
     documentation_options:
       table: role-settings
+    type: int
+    default: 10
+    description: 'The number of hosts to process in each batch when validating inputs.
+
+      Depending on your inventory size and the available resources, you may want to
+      adjust this number.'
+  avd_structured_config_file_format:
+    documentation_options:
+      table: role-settings
+    type: str
     default: yml
     valid_values:
     - yml
@@ -901,15 +910,6 @@ keys:
     description: 'The file format to use when loading structured configuration files.
 
       '
-  avd_validate_inputs_batch_size:
-    type: int
-    documentation_options:
-      table: role-settings
-    default: 10
-    description: 'The number of hosts to process in each batch when validating inputs.
-
-      Depending on your inventory size and the available resources, you may want to
-      adjust this number.'
   banners:
     type: dict
     keys:

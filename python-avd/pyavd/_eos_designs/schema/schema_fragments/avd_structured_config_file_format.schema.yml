@@ -7,7 +7,10 @@
 type: dict
 keys:
   avd_structured_config_file_format:
-    type: str
     documentation_options:
       table: role-settings
-    $ref: "eos_cli_config_gen#/keys/avd_structured_config_file_format"
+    type: str
+    default: "yml"
+    valid_values: ["yml", "yaml", "json"]
+    description: |
+      The file format to use when dumping structured configuration files.

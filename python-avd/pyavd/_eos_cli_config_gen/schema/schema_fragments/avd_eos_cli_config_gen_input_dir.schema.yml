@@ -7,9 +7,9 @@
 type: dict
 keys:
   avd_eos_cli_config_gen_input_dir:
-    type: str
     documentation_options:
       table: role-settings
+    type: str
     description: |
       When running `eos_cli_config_gen` in standalone mode (not as part of `eos_designs` workflow),
       this variable can be used to point to a directory containing the structured configuration files to use as input.
