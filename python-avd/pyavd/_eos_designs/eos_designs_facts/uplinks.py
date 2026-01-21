@@ -150,14 +150,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         uplinks = EosDesignsFactsProtocol.Uplinks()
         uplink_switches = self.shared_utils.uplink_switches
         uplink_switch_interfaces = self.uplink_switch_interfaces
-        for uplink_index, uplink_interface in enumerate(self.shared_utils.uplink_interfaces):
-            if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
-                # Invalid length of input variables. Skipping
-                continue
-
-            uplink_switch = uplink_switches[uplink_index]
-            uplink_switch_interface = uplink_switch_interfaces[uplink_index]
-
+        for uplink_index, uplink_interface, uplink_switch, uplink_switch_interface in zip(
+            range(len(uplink_switches)), self.shared_utils.uplink_interfaces, uplink_switches, uplink_switch_interfaces, strict=True
+        ):
             uplink = get_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)
             uplinks.append(uplink)
 
@@ -402,10 +397,8 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
 
         These are used to generate the "avd_topology_peers" fact covering downlinks for all devices.
         """
-        # Since uplinks logic silently skips extra entries in uplink vars, we only need to parse shortest list.
-        min_length = min(len(self.uplink_switch_interfaces), len(self.shared_utils.uplink_interfaces), len(self.shared_utils.uplink_switches))
         # Using set to only get unique uplink switches
-        unique_uplink_switches = set(self.shared_utils.uplink_switches[:min_length])
+        unique_uplink_switches = set(self.shared_utils.uplink_switches)
         return EosDesignsFactsProtocol.UplinkPeers(natural_sort(unique_uplink_switches))
 
     @cached_property
@@ -438,15 +431,23 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
     @remove_cached_property_type
     @cached_property
     def uplink_switch_interfaces(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.UplinkSwitchInterfaces:
-        if _uplink_switch_interfaces := self.shared_utils.node_config.uplink_switch_interfaces or self.shared_utils.cv_topology_config.uplink_switch_interfaces:
-            return EosDesignsFactsProtocol.UplinkSwitchInterfaces(range_expand(_uplink_switch_interfaces))
+        if _uplink_switch_interfaces := range_expand(
+            self.shared_utils.node_config.uplink_switch_interfaces or self.shared_utils.cv_topology_config.uplink_switch_interfaces
+        ):
+            if len(self.shared_utils.uplink_switches) != len(_uplink_switch_interfaces):
+                msg = (
+                    f"Lengths of 'uplink_switches' {len(self.shared_utils.uplink_switches)} and 'uplink_switch_interfaces' {len(_uplink_switch_interfaces)} do "
+                    "not match."
+                )
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
+            return EosDesignsFactsProtocol.UplinkSwitchInterfaces(_uplink_switch_interfaces)
 
         if not self.shared_utils.uplink_switches:
             return EosDesignsFactsProtocol.UplinkSwitchInterfaces()
 
         if self.id is None:
-            msg = f"'id' is not set on '{self.shared_utils.hostname}'."
-            raise AristaAvdInvalidInputsError(msg)
+            msg = "'id' is not set."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         uplink_switch_interfaces = EosDesignsFactsProtocol.UplinkSwitchInterfaces()
         uplink_switch_counter = {}
@@ -466,10 +467,10 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
             elif uplink_switch_downlink_interfaces_length == 0:
                 msg = (
-                    f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
-                    f"does not have any 'downlink_interfaces' set under 'default_interfaces'. At least one or the other must be defined."
+                    f"Either 'downlink_interfaces' must be set under 'default_interfaces' for uplink_switch' '{uplink_switch}' "
+                    "or 'uplink_switch_interfaces' must be set."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdError(msg, host=self.shared_utils.hostname)
             else:
                 msg = (
                     f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
@@ -477,6 +478,6 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     f"The uplink switch requires at least {downlink_index + 1} downlink_interfaces, but "
                     f"only {uplink_switch_downlink_interfaces_length} are configured."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdError(msg, host=uplink_switch)
 
         return uplink_switch_interfaces

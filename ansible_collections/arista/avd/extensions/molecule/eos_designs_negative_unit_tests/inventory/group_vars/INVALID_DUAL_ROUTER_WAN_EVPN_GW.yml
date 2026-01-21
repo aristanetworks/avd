@@ -60,12 +60,10 @@ wan_router:
     - group: dual router EVPN GW site
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site422
-      uplink_interfaces: [Ethernet52]
       uplink_type: p2p
       evpn_role: client
       nodes:
         - name: cv-pathfinder-edge-wan-use-evpn-on-lan-1
-          uplink_switch_interfaces: [Ethernet1]
           id: 12
           l3_interfaces:
             - name: Ethernet1
@@ -74,7 +72,6 @@ wan_router:
               dhcp_accept_default_route: true
               ip_address: dhcp
         - name: cv-pathfinder-edge-wan-use-evpn-on-lan-2
-          uplink_switch_interfaces: [Ethernet2]
           id: 13
           l3_interfaces:
             - name: Ethernet1

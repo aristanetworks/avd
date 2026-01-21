@@ -19,7 +19,7 @@ import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars, AntaWorkflowFilter, AntaWorkflowHandler
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars, AntaWorkflowFilter, AntaWorkflowHandler, raise_action_fail
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -104,6 +104,8 @@ ARGUMENT_SPEC = {
     "report": {
         "type": "dict",
         "options": {
+            "expand_results": {"type": "bool", "default": False},
+            "generate_custom_field": {"type": "bool", "default": False},
             "csv_output": {"type": "str"},
             "md_output": {"type": "str"},
             "json_output": {"type": "str"},
@@ -229,7 +231,7 @@ class ActionModule(ActionBase):
         except Exception as error:
             # Recast errors as AnsibleActionFail
             msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from error
+            raise_action_fail(msg, error)
         finally:
             # Stop the logging queue listener
             listener.stop()
@@ -268,6 +270,8 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
     csv_output_path = get(report_settings, "csv_output")
     md_output_path = get(report_settings, "md_output")
     json_output_path = get(report_settings, "json_output")
+    expand_results = get(report_settings, "expand_results")
+    generate_custom_field = get(report_settings, "generate_custom_field")
 
     # Merge all results
     result_manager = ResultManager()
@@ -298,7 +302,8 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
         LOGGER.info("Generating Markdown report at %s", md_output_path)
         path = Path(md_output_path)
         md_report = MDReportGenerator()
-        md_report.generate(filtered_result_manager, path)
+        extra_data = {"_report_options": {"expand_results": expand_results, "render_custom_field": generate_custom_field}}
+        md_report.generate(filtered_result_manager, path, extra_data=extra_data)
 
     if json_output_path:
         LOGGER.info("Generating JSON report at %s", json_output_path)
