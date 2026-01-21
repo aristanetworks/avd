@@ -19,6 +19,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     build_result_message,
     get_templar,
     parse_validation_result,
+    raise_action_fail,
 )
 
 if TYPE_CHECKING:
@@ -50,10 +51,8 @@ class ActionModule(ActionBase):
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
             task_vars = {}
-
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
-
         if not HAS_PYAVD:
             msg = "The arista.avd.eos_designs_facts' plugin requires the 'pyavd' Python library. Got import error"
             raise AnsibleActionFail(msg)
@@ -184,7 +183,7 @@ class ActionModule(ActionBase):
         try:
             all_facts = get_facts(all_inputs=all_inputs, pool_manager=pool_manager, all_hostvars=all_hostvars, templar=templar, digital_twin=self._digital_twin)
         except AristaAvdError as e:
-            raise AnsibleActionFail(message=str(e)) from e
+            raise_action_fail(str(e), e)
 
         all_facts_as_dicts: dict[str, dict] = {}
         for host, facts in all_facts.items():

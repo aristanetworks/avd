@@ -10,6 +10,7 @@ from .cprofile_decorator import cprofile
 from .get_templar import get_templar
 from .parse_validation_result import build_result_message, parse_validation_result
 from .python_to_ansible_logging_handler import PythonToAnsibleContextFilter, PythonToAnsibleHandler
+from .raise_action_fail import raise_action_fail
 from .write_file import write_file
 from .yaml_dumper import NoAliasDumper, YamlDumper
 from .yaml_loader import YamlLoader
@@ -30,5 +31,6 @@ __all__ = [
     "cprofile",
     "get_templar",
     "parse_validation_result",
+    "raise_action_fail",
     "write_file",
 ]
