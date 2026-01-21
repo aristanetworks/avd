@@ -456,6 +456,12 @@ interface Loopback1
 | Vlan3019 | Tenant_B_OP_Zone | 10.255.252.6/31 | - | - | - | - |
 | Vlan4094 | default | 10.255.252.6/31 | - | - | - | - |
 
+##### OSPF
+
+| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
+| --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
+| Vlan4094 | True | 0.0.0.0 | - | message-digest | - | - | - |
+
 #### VLAN Interfaces Device Configuration
 
 ```eos

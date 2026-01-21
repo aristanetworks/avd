@@ -66670,6 +66670,53 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Ipv6Ospf(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Process(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"id": {"type": int}, "area": {"type": str}}
+                id: int
+                """OSPF Process ID."""
+                area: str
+                """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, id: int | UndefinedType = Undefined, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Process.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            id: OSPF Process ID.
+                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                        """
+
+            _fields: ClassVar[dict] = {"process": {"type": Process}, "network_point_to_point": {"type": bool}}
+            process: Process
+            """Subclass of AvdModel."""
+            network_point_to_point: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, process: Process | UndefinedType = Undefined, network_point_to_point: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    Ipv6Ospf.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        process: Subclass of AvdModel.
+                        network_point_to_point: network_point_to_point
+
+                    """
+
         OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
         OspfAuthenticationKeyType: TypeAlias = Literal["7", "8a"]
 
@@ -67972,9 +68019,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ipv6_access_group_out": {"type": str},
             "multicast": {"type": Multicast},
             "ospf_network_point_to_point": {"type": bool},
-            "ipv6_ospf_network_point_to_point": {"type": bool},
             "ospf_area": {"type": str},
-            "ipv6_ospf_area": {"type": str},
+            "ipv6_ospf": {"type": Ipv6Ospf},
             "ospf_cost": {"type": int},
             "ospf_authentication": {"type": str},
             "ospf_authentication_key": {"type": str},
@@ -68095,9 +68141,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         multicast: Multicast
         """Subclass of AvdModel."""
         ospf_network_point_to_point: bool | None
-        ipv6_ospf_network_point_to_point: bool | None
         ospf_area: str | None
-        ipv6_ospf_area: str | None
+        ipv6_ospf: Ipv6Ospf
+        """
+        IPv6 OSPF configuration for the interface.
+
+        Subclass of AvdModel.
+        """
         ospf_cost: int | None
         ospf_authentication: OspfAuthentication | None
         ospf_authentication_key: str | None
@@ -68203,9 +68253,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_access_group_out: str | None | UndefinedType = Undefined,
                 multicast: Multicast | UndefinedType = Undefined,
                 ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
-                ipv6_ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
                 ospf_area: str | None | UndefinedType = Undefined,
-                ipv6_ospf_area: str | None | UndefinedType = Undefined,
+                ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
                 ospf_cost: int | None | UndefinedType = Undefined,
                 ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
@@ -68299,9 +68348,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_access_group_out: IPv6 access-list name.
                     multicast: Subclass of AvdModel.
                     ospf_network_point_to_point: ospf_network_point_to_point
-                    ipv6_ospf_network_point_to_point: ipv6_ospf_network_point_to_point
                     ospf_area: ospf_area
-                    ipv6_ospf_area: ipv6_ospf_area
+                    ipv6_ospf:
+                       IPv6 OSPF configuration for the interface.
+
+                       Subclass of AvdModel.
                     ospf_cost: ospf_cost
                     ospf_authentication: ospf_authentication
                     ospf_authentication_key: Encrypted password.
