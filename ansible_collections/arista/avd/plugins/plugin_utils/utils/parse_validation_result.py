@@ -47,10 +47,6 @@ def parse_validation_result(validation_result: ValidationResult, hostname: str, 
     for ignored_key in validation_result.ignored_eos_config_keys:
         path = json_path_to_string(ignored_key.path)
 
-        # Skip warnings for eos_cli_config_gen role keys (these are expected to be used with eos_designs)
-        if len(ignored_key.path) == 1 and ignored_key.path[0] in EOS_CLI_CONFIG_GEN_ROLE_KEYS:
-            continue
-
         message = (
             f"[{hostname}]: The 'eos_cli_config_gen' key '{path}' is present in the input to 'eos_designs' and will be ignored. "
             f"To address this: 1) Use the equivalent 'eos_designs' model if available, or 2) Use custom_structured_configuration. "
