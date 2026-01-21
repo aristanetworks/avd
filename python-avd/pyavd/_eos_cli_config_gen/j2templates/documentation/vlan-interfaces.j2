@@ -144,7 +144,7 @@
               vlan_interface.ospf_cost is arista.avd.defined or
               vlan_interface.ospf_authentication is arista.avd.defined or
               vlan_interface.ipv6_ospf is arista.avd.defined %}
-{%             set _ = ospf_vlan_interfaces.append(vlan_interface) %}
+{%             do ospf_vlan_interfaces.append(vlan_interface) %}
 {%         endif %}
 {%     endfor %}
 {%     if ospf_vlan_interfaces %}
