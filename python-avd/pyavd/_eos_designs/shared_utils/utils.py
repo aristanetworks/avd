@@ -194,23 +194,6 @@ class UtilsMixin(Protocol):
                 break
         return vlans
 
-    def set_underlay_bgp_peer_group(self: SharedUtilsProtocol, peer_group: EosCliConfigGen.RouterBgp.PeerGroupsItem) -> None:
-        """Set the structured config for Underlay BGP peer group."""
-        af_type = "ipv4" if not self.underlay_ipv6_numbered else "ipv6"
-        peer_group.metadata.type = af_type
-        if password := self.get_bgp_password(self.inputs.bgp_peer_groups.ipv4_underlay_peers):
-            peer_group.password = password
-        if self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd:
-            peer_group.bfd = True
-        peer_group.maximum_routes = 12000
-        peer_group.send_community = "all"
-
-    def set_ipv4_address_family(self: SharedUtilsProtocol, address_family: EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem) -> None:
-        """Set the structured config for address family IPv4."""
-        address_family.activate = True
-        if self.inputs.underlay_rfc5549:
-            address_family.next_hop.address_family_ipv6._update(enabled=True, originate=True)
-
     def get_vrf_and_source_interface(
         self: SharedUtilsProtocol,
         vrf_input: str | None,
