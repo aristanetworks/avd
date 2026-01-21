@@ -14,7 +14,13 @@ from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_ABOVE_2_19, get_eos_designs_facts_path, get_role_tmp_paths, get_templar, raise_action_fail
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    ANSIBLE_ABOVE_2_19,
+    get_eos_designs_facts_path,
+    get_role_tmp_paths,
+    get_templar,
+    raise_action_fail,
+)
 
 if TYPE_CHECKING:
     from ansible.playbook.task import Task
