@@ -193,7 +193,7 @@ class ActionModule(ActionBase):
         file_path = validated_path / f"{hostname}.json"
         if not file_path.exists():
             msg = (
-                f"Missing structured config for host '{hostname}'. "
+                f"Missing the validated structured config for host '{hostname}'. "
                 "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
             )
             raise AnsibleActionFail(message=msg)

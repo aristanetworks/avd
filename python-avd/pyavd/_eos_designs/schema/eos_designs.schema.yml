@@ -372,11 +372,6 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  avd_fail_on_validation_errors:
-    type: bool
-    documentation_options:
-      table: role-settings
-    $ref: eos_cli_config_gen#/keys/avd_fail_on_validation_errors
   avd_structured_config_file_format:
     type: str
     documentation_options:

@@ -87818,7 +87818,6 @@ class EosDesigns(EosDesignsRootModel):
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_return_structured_config": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
-        "avd_fail_on_validation_errors": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "avd_validate_inputs_batch_size": {"type": int, "default": 10},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
@@ -88478,14 +88477,6 @@ class EosDesigns(EosDesignsRootModel):
     avd_eos_designs_structured_config: bool
     """
     Generate structured configuration per device.
-
-    Default value: `True`
-    """
-    avd_fail_on_validation_errors: bool
-    """
-    If `true`, the task will fail if any validation errors are detected.
-    If `false`, errors will be
-    reported but the task will succeed.
 
     Default value: `True`
     """
@@ -90437,7 +90428,6 @@ class EosDesigns(EosDesignsRootModel):
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_return_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
-            avd_fail_on_validation_errors: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             avd_validate_inputs_batch_size: int | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
@@ -90664,10 +90654,6 @@ class EosDesigns(EosDesignsRootModel):
                    dedicated output location.
                 avd_eos_designs_return_structured_config: Return structured configuration as ansible_facts per device.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
-                avd_fail_on_validation_errors:
-                   If `true`, the task will fail if any validation errors are detected.
-                   If `false`, errors will be
-                   reported but the task will succeed.
                 avd_structured_config_file_format: The file format to use when loading structured configuration files.
                 avd_validate_inputs_batch_size:
                    The number of hosts to process in each batch when validating inputs.

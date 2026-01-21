@@ -94,7 +94,7 @@ ARGUMENT_SPEC = {
     "schema_name": {"type": "str", "default": "eos_designs", "choices": ["eos_designs", "eos_cli_config_gen"]},
     "input_dir": {"type": "str"},
     "input_suffix": {"type": "str", "default": "json", "choices": ["yml", "yaml", "json"]},
-    "fail_on_validation_errors": {"type": "bool", "default": True},
+    "fail_on_validation_errors": {"type": "bool", "default": False},
 }
 
 

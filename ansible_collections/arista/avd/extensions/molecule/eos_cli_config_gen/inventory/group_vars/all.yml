@@ -8,3 +8,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 10.73.255.122/24
     gateway: 10.73.255.2
+
+# By default eos_cli_config_gen reads from structured configs.
+# By overwriting this with null, we force it to read from hostvars.
+avd_eos_cli_config_gen_input_dir: null

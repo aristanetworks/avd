@@ -8,7 +8,6 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>avd_eos_cli_config_gen_input_dir</samp>](## "avd_eos_cli_config_gen_input_dir") | String |  |  |  | When running `eos_cli_config_gen` in standalone mode (not as part of `eos_designs` workflow),<br>this variable can be used to point to a directory containing the structured configuration files to use as input.<br> |
-    | [<samp>avd_fail_on_validation_errors</samp>](## "avd_fail_on_validation_errors") | Boolean |  | `True` |  | If `true`, the task will fail if any validation errors are detected.<br>If `false`, errors will be reported but the task will succeed. |
     | [<samp>avd_structured_config_file_format</samp>](## "avd_structured_config_file_format") | String |  | `yml` | Valid Values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | The file format to use when loading structured configuration files.<br> |
     | [<samp>avd_validate_inputs_batch_size</samp>](## "avd_validate_inputs_batch_size") | Integer |  | `10` |  | The number of hosts to process in each batch when validating inputs.<br>Depending on your inventory size and the available resources, you may want to adjust this number. |
     | [<samp>eos_cli_config_gen_configuration</samp>](## "eos_cli_config_gen_configuration") | Dictionary |  |  |  |  |
@@ -26,10 +25,6 @@
     # When running `eos_cli_config_gen` in standalone mode (not as part of `eos_designs` workflow),
     # this variable can be used to point to a directory containing the structured configuration files to use as input.
     avd_eos_cli_config_gen_input_dir: <str>
-
-    # If `true`, the task will fail if any validation errors are detected.
-    # If `false`, errors will be reported but the task will succeed.
-    avd_fail_on_validation_errors: <bool; default=True>
 
     # The file format to use when loading structured configuration files.
     avd_structured_config_file_format: <str; "yml" | "yaml" | "json"; default="yml">

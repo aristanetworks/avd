@@ -69082,7 +69082,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "arp": {"type": Arp},
         "as_path": {"type": AsPath},
         "avd_eos_cli_config_gen_input_dir": {"type": str},
-        "avd_fail_on_validation_errors": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "avd_validate_inputs_batch_size": {"type": int, "default": 10},
         "banners": {"type": Banners},
@@ -69311,14 +69310,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     this
     variable can be used to point to a directory containing the structured configuration files to use as
     input.
-    """
-    avd_fail_on_validation_errors: bool
-    """
-    If `true`, the task will fail if any validation errors are detected.
-    If `false`, errors will be
-    reported but the task will succeed.
-
-    Default value: `True`
     """
     avd_structured_config_file_format: AvdStructuredConfigFileFormat
     """
@@ -69864,7 +69855,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
             avd_eos_cli_config_gen_input_dir: str | None | UndefinedType = Undefined,
-            avd_fail_on_validation_errors: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             avd_validate_inputs_batch_size: int | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
@@ -70084,10 +70074,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    this
                    variable can be used to point to a directory containing the structured configuration files to use as
                    input.
-                avd_fail_on_validation_errors:
-                   If `true`, the task will fail if any validation errors are detected.
-                   If `false`, errors will be
-                   reported but the task will succeed.
                 avd_structured_config_file_format: The file format to use when loading structured configuration files.
                 avd_validate_inputs_batch_size:
                    The number of hosts to process in each batch when validating inputs.

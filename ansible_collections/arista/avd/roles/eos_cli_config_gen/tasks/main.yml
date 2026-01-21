@@ -19,7 +19,7 @@
     schema_name: eos_cli_config_gen
     input_dir: "{{ avd_eos_cli_config_gen_input_dir | arista.avd.default(omit) }}"
     input_suffix: "{{ avd_structured_config_file_format }}"
-    fail_on_validation_errors: "{{ avd_fail_on_validation_errors | arista.avd.default(true) }}"
+    fail_on_validation_errors: false
   delegate_to: localhost
   check_mode: false
   run_once: true

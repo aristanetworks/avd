@@ -45,7 +45,7 @@ options:
       - If `true`, the task will fail if any validation errors are detected.
       - If `false`, errors will be reported but the task will succeed.
     type: bool
-    default: true
+    default: false
   batch_size:
     description:
       - The number of devices to process per child process during the templating phase.

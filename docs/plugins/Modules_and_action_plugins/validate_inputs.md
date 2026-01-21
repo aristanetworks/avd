@@ -33,7 +33,7 @@ The plugin performs two phases:
 | <samp>schema_name</samp> | str | optional | eos_designs | Valid values:<br>- <code>eos_designs</code><br>- <code>eos_cli_config_gen</code> | The AVD schema to validate against.<br>If set to `eos_designs`, the plugin will validate the inputs for the entire fabric (requiring `fabric_name` to be set).<br>If set to `eos_cli_config_gen`, the plugin will validate the inputs for the devices in the current play. |
 | <samp>input_dir</samp> | str | False | None | - | Optional path to a directory containing input files to validate directly.<br>If provided, the templating phase is skipped and files are read from this directory.<br>Files must be named `device_name.input_suffix`. |
 | <samp>input_suffix</samp> | str | optional | json | Valid values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | File suffix for files located in `input_dir`.<br>Only used when `input_dir` is provided. |
-| <samp>fail_on_validation_errors</samp> | bool | optional | True | - | If `true`, the task will fail if any validation errors are detected.<br>If `false`, errors will be reported but the task will succeed. |
+| <samp>fail_on_validation_errors</samp> | bool | optional | False | - | If `true`, the task will fail if any validation errors are detected.<br>If `false`, errors will be reported but the task will succeed. |
 | <samp>batch_size</samp> | int | optional | 10 | - | The number of devices to process per child process during the templating phase. |
 
 ## Examples
