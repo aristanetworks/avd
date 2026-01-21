@@ -355,6 +355,7 @@ keys:
             - int
         ipv6_ospf:
           type: dict
+          description: IPv6 OSPF configuration for the interface.
           keys:
             process:
               type: dict
