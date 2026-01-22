@@ -87,6 +87,22 @@ Control which services are deployed to specific devices using the `filter` setti
 !!! note
     By default, if no `filter` is defined, all network services are deployed to the device. You can use `filter` at different levels: node_types, node_groups, nodes, device_profiles and devices.
 
+### Filter Options Reference
+
+| Option | Description | Default |
+| -------- | ------------- | --------- |
+| `tenants` | Limit configured Network Services to those defined under these tenants. Also limits tenants included by `always_include_vrfs_in_tenants`. | `['all']` |
+| `tags` | Limit configured VLANs/SVIs to those matching the given tags. Tags are matched against the `tags` list on SVIs and L2VLANs. | `['all']` |
+| `allow_vrfs` | Limit configured Network Services to those defined under these VRFs. Also limits VRFs included by `always_include_vrfs_in_tenants`. | `['all']` |
+| `deny_vrfs` | Prevent configuration of Network Services defined under these VRFs. **Takes precedence over all other filters.** | `[]` |
+| `always_include_vrfs_in_tenants` | List of tenants where VRFs will be configured even if VLANs are not included in tags. Useful for L3 "border" leaves. | `[]` |
+| `only_vlans_in_use` | Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches. | `false` |
+
+!!! warning "Filter Precedence"
+    `deny_vrfs` takes precedence over all other filters including `allow_vrfs` and `always_include_vrfs_in_tenants`. If a VRF is listed in `deny_vrfs`, it will **never** be configured on the device.
+
+### Filter Example
+
 ```yaml title="Filtering at the node level"
 --8<--
 ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HOW_TO_NETWORK_SERVICES/topology.yml
@@ -180,6 +196,6 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HO
 
 For complete details on all available properties, see:
 
-- [Network Services Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#network-services)
-- [SVI Profiles Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#svi-profiles-settings)
-- [Node Type Network Services Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#node-type-network-services-configuration)
+- [Network Services Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#network-services)
+- [SVI Profiles Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#svi-profiles-settings)
+- [Node Type Network Services Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#node-type-network-services-configuration)
