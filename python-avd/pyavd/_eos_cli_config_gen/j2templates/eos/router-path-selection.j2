@@ -38,7 +38,7 @@ router path-selection
 {%         endif %}
 {%     endfor %}
 {#  path group #}
-{%     for path_group in router_path_selection.path_groups | arista.avd.natural_sort('name') %}
+{%     for path_group in router_path_selection.path_groups | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%         set path_group_def = "path-group " ~ path_group.name %}
 {%         if path_group.id is arista.avd.defined %}
 {%             set path_group_def = path_group_def ~ " id " ~ path_group.id %}
@@ -78,7 +78,7 @@ router path-selection
       !
       {{ local_ip_def }}
 {%             if local_ip.stun.server_profiles is arista.avd.defined %}
-{%                 set server_profiles = local_ip.stun.server_profiles | arista.avd.natural_sort %}
+{%                 set server_profiles = local_ip.stun.server_profiles | arista.avd.natural_sort(ignore_case=false) %}
          stun server-profile {{ server_profiles | join(" ") }}
 {%             endif %}
 {%         endfor %}
@@ -109,7 +109,7 @@ router path-selection
 {%         endfor %}
 {%     endfor %}
 {#   load-balance policies #}
-{%     for load_balance_policy in router_path_selection.load_balance_policies | arista.avd.natural_sort('name') %}
+{%     for load_balance_policy in router_path_selection.load_balance_policies | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    load-balance policy {{ load_balance_policy.name }}
 {%         if load_balance_policy.latency is arista.avd.defined %}
@@ -125,7 +125,7 @@ router path-selection
       hop count lowest
 {%         endif %}
 {%         for priority, entries in load_balance_policy.path_groups | arista.avd.default([]) | groupby("priority", default=1) %}
-{%             for entry in entries | arista.avd.natural_sort("name") %}
+{%             for entry in entries | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 {%                 set path_group_cli = "path-group " ~ entry.name %}
 {%                 if entry.priority is arista.avd.defined %}
 {%                     set path_group_cli = path_group_cli ~ " priority " ~ entry.priority %}
@@ -135,7 +135,7 @@ router path-selection
 {%         endfor %}
 {%     endfor %}
 {#   DPS policies #}
-{%     for policy in router_path_selection.policies | arista.avd.natural_sort('name') %}
+{%     for policy in router_path_selection.policies | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    policy {{ policy.name }}
 {%         if policy.default_match is arista.avd.defined %}
@@ -157,7 +157,7 @@ router path-selection
 {%         endfor %}
 {%     endfor %}
 {#   VRFs #}
-{%     for vrf in router_path_selection.vrfs | arista.avd.natural_sort('name') %}
+{%     for vrf in router_path_selection.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    vrf {{ vrf.name }}
 {%         if vrf.path_selection_policy is arista.avd.defined %}

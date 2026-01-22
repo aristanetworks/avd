@@ -12718,6 +12718,19 @@ router segment-security
       20 application APP-TEST-2 action drop stateless log
       25 application APP-TEST-3 action redirect next-hop 198.51.100.1 stateless
    !
+   vrf SECURE
+      segment SEGMENT-TEST1
+         definition
+            match interface Ethernet1
+            match interface Ethernet2
+            match covered prefix-list ipv4 PREFIX-LIST10
+            match covered prefix-list ipv6 PREFIX-LIST1
+         !
+         policies
+            from MATCH-LIST20 policy policy-forward-all
+            from MATCH-LIST30 policy policy-drop-all
+            fallback policy policy-custom
+   !
    vrf default
       segment SEGMENT-TEST1
          definition
@@ -12736,19 +12749,6 @@ router segment-security
             from MATCH-LIST20 policy policy-forward-all
             from MATCH-LIST21 policy POLICY-TEST1
             from MATCH-LIST30 policy policy-drop-all
-   !
-   vrf SECURE
-      segment SEGMENT-TEST1
-         definition
-            match interface Ethernet1
-            match interface Ethernet2
-            match covered prefix-list ipv4 PREFIX-LIST10
-            match covered prefix-list ipv6 PREFIX-LIST1
-         !
-         policies
-            from MATCH-LIST20 policy policy-forward-all
-            from MATCH-LIST30 policy policy-drop-all
-            fallback policy policy-custom
    !
 ```
 
