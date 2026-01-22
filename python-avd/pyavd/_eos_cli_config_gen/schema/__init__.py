@@ -2450,6 +2450,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    AvdStructuredConfigFileFormat: TypeAlias = Literal["yml", "yaml", "json"]
+
     class Banners(AvdModel):
         """Subclass of AvdModel."""
 
@@ -69385,6 +69387,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "application_traffic_recognition": {"type": ApplicationTrafficRecognition},
         "arp": {"type": Arp},
         "as_path": {"type": AsPath},
+        "avd_eos_cli_config_gen_input_dir": {"type": str},
+        "avd_eos_cli_config_gen_validate_inputs_batch_size": {"type": int, "default": 10},
+        "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "banners": {"type": Banners},
         "bgp_groups": {"type": BgpGroups},
         "boot": {"type": Boot},
@@ -69606,6 +69611,29 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     as_path: AsPath
     """Subclass of AvdModel."""
+    avd_eos_cli_config_gen_input_dir: str | None
+    """
+    Specify a directory containing structured configuration files to use as input.
+    Can be set to null or
+    an empty string to force `eos_cli_config_gen` to use hostvars as input.
+    By default, this variable is
+    set to "{{ structured_dir }}" which is the directory where `eos_designs` outputs structured
+    configuration files.
+    """
+    avd_eos_cli_config_gen_validate_inputs_batch_size: int
+    """
+    The number of hosts to process in each batch when validating inputs.
+    Depending on your inventory
+    size and the available resources, you may want to adjust this number.
+
+    Default value: `10`
+    """
+    avd_structured_config_file_format: AvdStructuredConfigFileFormat
+    """
+    The file format to use when loading structured configuration files.
+
+    Default value: `"yml"`
+    """
     banners: Banners
     """Subclass of AvdModel."""
     bgp_groups: BgpGroups
@@ -70137,6 +70165,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             application_traffic_recognition: ApplicationTrafficRecognition | UndefinedType = Undefined,
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
+            avd_eos_cli_config_gen_input_dir: str | None | UndefinedType = Undefined,
+            avd_eos_cli_config_gen_validate_inputs_batch_size: int | UndefinedType = Undefined,
+            avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
@@ -70350,6 +70381,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 arp: Subclass of AvdModel.
                 as_path: Subclass of AvdModel.
+                avd_eos_cli_config_gen_input_dir:
+                   Specify a directory containing structured configuration files to use as input.
+                   Can be set to null or
+                   an empty string to force `eos_cli_config_gen` to use hostvars as input.
+                   By default, this variable is
+                   set to "{{ structured_dir }}" which is the directory where `eos_designs` outputs structured
+                   configuration files.
+                avd_eos_cli_config_gen_validate_inputs_batch_size:
+                   The number of hosts to process in each batch when validating inputs.
+                   Depending on your inventory
+                   size and the available resources, you may want to adjust this number.
+                avd_structured_config_file_format: The file format to use when loading structured configuration files.
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
                 boot:

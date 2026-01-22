@@ -25,26 +25,35 @@
   delegate_to: localhost
   run_once: true
 
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    batch_size: "{{ avd_eos_designs_validate_inputs_batch_size | arista.avd.default(10) }}"
+    schema_name: avd_design
+    fail_on_validation_errors: true
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
 - name: Set eos_designs facts
   arista.avd.eos_designs_facts:
     # cprofile_file: "eos_designs_facts.prof"
     template_output: true
     output_dir: "{{ output_dir }}"
     digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
+  delegate_to: localhost
   check_mode: false
   run_once: true
 
 - name: Generate device configuration in structured format
-  when: avd_eos_designs_structured_config | arista.avd.default(true) or avd_eos_designs_debug | arista.avd.default(false)
+  when: avd_eos_designs_structured_config | arista.avd.default(true)
   arista.avd.eos_designs_structured_config:
     eos_designs_custom_templates: "{{ eos_designs_custom_templates | arista.avd.default([]) }}"
     dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
     # cprofile_file: "structured-{{inventory_hostname}}.prof"
     template_output: true
     structured_config: "{{ avd_eos_designs_structured_config | arista.avd.default(true) }}"
-    debug_vars: "{{ avd_eos_designs_debug | arista.avd.default(false) }}"
-    debug_vars_file: "{{ structured_dir }}/{{ inventory_hostname }}-debug-vars.yml"
     digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
+    return_structured_config: "{{ avd_eos_designs_return_structured_config | arista.avd.default(false) }}"
   delegate_to: localhost
   check_mode: false
   register: structured_config
@@ -71,10 +80,3 @@
   delegate_to: localhost
   check_mode: false
   run_once: true
-
-- name: Remove avd_switch_facts
-  when: avd_eos_designs_unset_facts | arista.avd.default(true)
-  arista.avd.set_vars:
-    avd_switch_facts: null
-  run_once: true
-  check_mode: false
