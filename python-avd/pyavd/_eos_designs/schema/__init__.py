@@ -1052,6 +1052,7 @@ class EosDesigns(EosDesignsRootModel):
                 "password": {"type": str},
                 "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": False},
+                "maximum_routes": {"type": int, "default": 256000},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
             name: str
@@ -1069,6 +1070,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             bfd: bool
             """Default value: `False`"""
+            maximum_routes: int
+            """
+            Maximum number of routes (0 means unlimited).
+
+            Default value: `256000`
+            """
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
             """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
 
@@ -1081,6 +1088,7 @@ class EosDesigns(EosDesignsRootModel):
                     password: str | None | UndefinedType = Undefined,
                     cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
+                    maximum_routes: int | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -1099,6 +1107,7 @@ class EosDesigns(EosDesignsRootModel):
                            To protect the password at rest it is strongly recommended to
                            make use of a vault or similar.
                         bfd: bfd
+                        maximum_routes: Maximum number of routes (0 means unlimited).
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
                     """
