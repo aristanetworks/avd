@@ -75,7 +75,7 @@ def get_eos_designs_facts_path() -> Path:
     base_tmp_path = get_tmp_path()
     eos_designs_path = base_tmp_path / "eos_designs"
 
-    # Ensure directory exist. parents=True handles the creation of the 'eos_designs' intermediate dir if needed.
+    # Ensure directory exist.
     eos_designs_path.mkdir(parents=True, exist_ok=True)
 
     return eos_designs_path / EOS_DESIGNS_FACTS_FILENAME
