@@ -187,7 +187,7 @@ AVD supports flexible interface range notation:
 
 ### Understanding Uplinks
 
-Uplinks connect lower-tier devices to higher-tier devices:
+Uplinks connect lower-tier (L3 Leaves) devices to higher-tier devices (Spines):
 
 - **L3 Leaves** uplink to **Spines** using routed point-to-point links
 - **L2 Leaves** uplink to **L3 Leaves** using port-channels
