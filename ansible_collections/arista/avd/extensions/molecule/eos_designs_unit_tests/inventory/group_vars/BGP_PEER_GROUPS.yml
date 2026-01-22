@@ -1,3 +1,4 @@
+---
 # Minimum config to only test the specific feature.
 # This is in no way a "good" or working config.
 # Everything is tweaked to trigger config generation of all the different peer-groups
@@ -13,7 +14,7 @@ node_type_keys:
       l3: true
     vtep: true
     default_evpn_encapsulation: vxlan
-    default_overlay_address_families: [ vpn-ipv4, evpn ]
+    default_overlay_address_families: [vpn-ipv4, evpn]
   - key: pe
     type: pe
     mpls_lsr: true
@@ -25,23 +26,26 @@ node_type_keys:
       l3: true
     default_overlay_routing_protocol: ibgp
     default_underlay_routing_protocol: isis-sr
-    default_overlay_address_families: [ evpn ]
+    default_overlay_address_families: [evpn]
     default_evpn_encapsulation: mpls
 
 bgp_peer_groups:
   ipv4_underlay_peers:
     bfd: true
+    maximum_routes: 12001
     # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
     structured_config:
       description: Description for ipv4_underlay_peers via structured_config
   mlag_ipv4_underlay_peer:
     bfd: true
+    maximum_routes: 12002
     # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
     structured_config:
       description: Description for mlag_ipv4_underlay_peer via structured_config
   mlag_ipv4_vrfs_peer:
     name: MLAG-IPv4-VRFS-PEER
     bfd: false
+    maximum_routes: 12003
     structured_config:
       description: Description for mlag_ipv4_vrfs_peer via structured_config
   evpn_overlay_peers:
@@ -69,7 +73,6 @@ bgp_peer_groups:
     # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
     structured_config:
       description: Description for ipvpn_gateway_peers via structured_config
-
 type: l3leaf
 mgmt_gateway: 192.168.0.1
 overlay_routing_protocol: ibgp
@@ -83,15 +86,15 @@ l3leaf:
     vtep_loopback: Loopback0
     mlag_peer_l3_vlan: 4094
     mlag_peer_ipv4_pool: 192.168.253.0/24
-    mlag_interfaces: [ Ethernet3 ]
+    mlag_interfaces: [Ethernet3]
   node_groups:
     - group: mlag
       nodes:
         - name: bgp-peer-groups-1
           id: 103
           bgp_as: 103
-          evpn_route_servers: [ bgp-peer-groups-2 ]
-          mpls_route_reflectors: [ bgp-peer-groups-2 ]
+          evpn_route_servers: [bgp-peer-groups-2]
+          mpls_route_reflectors: [bgp-peer-groups-2]
           mpls_overlay_role: client
           mlag_peer_l3_vlan_structured_config:
             description: "Description from mlag_peer_l3_vlan_structured_config."
