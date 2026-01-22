@@ -1,3 +1,18 @@
+---
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts
+  arista.avd.eos_designs_facts:
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+  check_mode: false
+  run_once: true
+
 - name: Test with eos_designs_custom_templates
   ignore_errors: false
   register: result
@@ -14,6 +29,7 @@
         options:
           list_merge: prepend
           strip_empty_keys: false
+    return_structured_config: true
 
 - name: Validate result
   ansible.builtin.assert:

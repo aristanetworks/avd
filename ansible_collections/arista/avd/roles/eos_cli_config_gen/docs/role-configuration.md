@@ -27,8 +27,8 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/defaults/main/output_dir
 
 ## Input Variables Validation
 
-Schema validation is built in to the central Action plugins used in AVD. Each plugin runs variable type conversion first and then
-performs validation of the converted data.
+Schema validation is performed by the `validate_inputs` action plugin which is called automatically by the role.
+The plugin performs variable type conversion and validation of the converted data against the AVD schema.
 
 Any data validation issue will trigger errors - blocking further processing.
 
