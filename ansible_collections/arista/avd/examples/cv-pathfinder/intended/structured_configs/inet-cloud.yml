@@ -197,7 +197,6 @@ router_bgp:
       enabled: true
       always: true
     send_community: all
-    maximum_routes: 12000
   redistribute:
     connected:
       enabled: true
