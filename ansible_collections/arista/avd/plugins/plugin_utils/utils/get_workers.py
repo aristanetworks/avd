@@ -20,6 +20,6 @@ def get_workers(num_devices: int, ansible_forks: int) -> tuple[int, int]:
     """
     available_cores = max(1, cpu_count() - 1)
     # Don't spawn more workers than there are devices (to avoid creating idle processes for small inventories).
-    mp_workers = min(available_cores, ansible_forks, num_devices) or 1
-    mt_workers = min(ansible_forks, num_devices) or 1
+    mp_workers = max(min(available_cores, ansible_forks, num_devices), 1)
+    mt_workers = max(min(ansible_forks, num_devices), 1)
     return mp_workers, mt_workers
