@@ -131,7 +131,7 @@ class RouterBgpMixin(Protocol):
             name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
             password=self.shared_utils.get_bgp_password(self.inputs.bgp_peer_groups.ipv4_underlay_peers),
             bfd=self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd or None,
-            maximum_routes=12000,
+            maximum_routes=self.inputs.bgp_peer_groups.ipv4_underlay_peers.maximum_routes,
             send_community="all",
         )
         peer_group.metadata.type = af_type
