@@ -705,6 +705,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-sess
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-layer1.md
 --8<--
 
+### Monitor link flap policy
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-link-flap-policy.md
+--8<--
+
 ### Monitor telemetry
 
 --8<--

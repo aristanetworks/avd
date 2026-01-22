@@ -136,6 +136,27 @@
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
+{# OSPF #}
+{%     set ospf_vlan_interfaces = [] %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
+{%         if vlan_interface.ospf_network_point_to_point is arista.avd.defined or
+              vlan_interface.ospf_area is arista.avd.defined or
+              vlan_interface.ospf_cost is arista.avd.defined or
+              vlan_interface.ospf_authentication is arista.avd.defined or
+              vlan_interface.ipv6_ospf is arista.avd.defined %}
+{%             do ospf_vlan_interfaces.append(vlan_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if ospf_vlan_interfaces %}
+
+##### OSPF
+
+| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
+| --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
+{%         for vlan_interface in ospf_vlan_interfaces %}
+| {{ vlan_interface.name }} | {{ vlan_interface.ospf_network_point_to_point | arista.avd.default('-') }} | {{ vlan_interface.ospf_area | arista.avd.default('-') }} | {{ vlan_interface.ospf_cost | arista.avd.default('-') }} | {{ vlan_interface.ospf_authentication | arista.avd.default('-') }} | {{ vlan_interface.ipv6_ospf.process.id | arista.avd.default('-') }} | {{ vlan_interface.ipv6_ospf.process.area | arista.avd.default('-') }} | {{ vlan_interface.ipv6_ospf.network_point_to_point | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
 {# ISIS #}
 {%     set vlan_interface_isis = namespace() %}
 {%     set vlan_interface_isis.configured = false %}
