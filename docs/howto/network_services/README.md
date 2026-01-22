@@ -100,13 +100,25 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HO
 
 ### Using Tags for Granular Control
 
-Earlier we saw SVI 200 is tagged with `development`, and the `howto-l3-leaf2` is filtering on the `development` tag. Therefore, the `howto-l3-leaf2` will only receive the `VRF_DEVELOPMENT` VRF and the SVI 200.
+=== "Services on howto-l3-leaf2"
 
-```cli title="Services on howto-l3-leaf2"
---8<--
-docs/howto/network_services/artifacts/howto-l3-leaf2-services.cfg
---8<--
-```
+    Earlier we saw SVI 200 is tagged with `development`, and the `howto-l3-leaf2` is filtering on the `development` tag. Therefore, the `howto-l3-leaf2` will only receive the `VRF_DEVELOPMENT` VRF and the SVI 200.
+
+    ```cli title="Services on howto-l3-leaf2"
+    --8<--
+    docs/howto/network_services/artifacts/howto-l3-leaf2-services.cfg
+    --8<--
+    ```
+
+=== "Services on howto-l3-leaf1"
+
+    Since `howto-l3-leaf1` is not filtering on tags, it receives all services defined for the `TENANT1` tenant.
+
+    ```cli title="Services on howto-l3-leaf1"
+    --8<--
+    docs/howto/network_services/artifacts/howto-l3-leaf1-services.cfg
+    --8<--
+    ```
 
 ## Best Practices
 
