@@ -181,7 +181,7 @@ keys:
               description: AVT Policy name.
             profiles:
               type: list
-              primary_key: id
+              primary_key: name
               description: AVT profiles in this VRF.
               items:
                 type: dict
@@ -191,7 +191,7 @@ keys:
                     description: AVT profile name.
                   id:
                     type: int
-                    description: Unique ID for this AVT (per VRF).
+                    description: ID for this AVT (per VRF).
                     required: true
                     convert_types:
                       - str
