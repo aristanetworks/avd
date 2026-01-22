@@ -1,6 +1,7 @@
 name: "Daily Molecule Tests (Ansible devel)"
 
 "on":
+  # Added this just for testing CI in this PR, this should be removed before merging and schedule needs to be uncommented
   pull_request:
   # schedule:
   #   # Runs once per day at 2 AM
@@ -13,10 +14,11 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  ANSIBLE_VERBOSITY: 0
+  ANSIBLE_VERBOSITY: ${{ secrets.ACTIONS_STEP_DEBUG && 3 || 0 }}
   AVD_NEVER_RUN_FROM_SOURCE: 1
-  PY_COLORS: 1
-  ANSIBLE_FORCE_COLOR: 1
+  PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
+  ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
+  AVD_IGNORE_REQUIREMENTS: true
 
 jobs:
   # -------------------------------------- #
@@ -32,7 +34,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: |
-            3.12
+            3.13
       - name: Create pyavd wheel and output wheel path
         id: build_step
         working-directory: ./python-avd
@@ -54,8 +56,6 @@ jobs:
     name: Validate eos_cli_config_gen
     runs-on: ubuntu-latest
     needs: [build_pyavd]
-    env:
-      avd_ignore_requirements: true
     strategy:
       fail-fast: true
       matrix:
@@ -83,7 +83,7 @@ jobs:
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
-          molecule test --scenario-name ${{ matrix.avd_scenario }} -- --extra-vars "avd_ignore_requirements=${avd_ignore_requirements}"
+          molecule test --scenario-name ${{ matrix.avd_scenario }} -- --extra-vars "avd_ignore_requirements=${AVD_IGNORE_REQUIREMENTS}"
       - name: Check GIT status
         run: |
           sh .github/check-git-status.sh
@@ -95,8 +95,6 @@ jobs:
     name: Validate eos_designs
     runs-on: ubuntu-latest
     needs: [build_pyavd]
-    env:
-      avd_ignore_requirements: true
     strategy:
       fail-fast: true
       matrix:
@@ -140,7 +138,7 @@ jobs:
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
-          molecule test --scenario-name ${{ matrix.avd_scenario }} -- --extra-vars "avd_ignore_requirements=${avd_ignore_requirements}"
+          molecule test --scenario-name ${{ matrix.avd_scenario }} -- --extra-vars "avd_ignore_requirements=${AVD_IGNORE_REQUIREMENTS}"
       - name: Check GIT status
         run: |
           sh .github/check-git-status.sh
@@ -152,8 +150,6 @@ jobs:
     name: Validate anta_runner
     runs-on: ubuntu-latest
     needs: [build_pyavd]
-    env:
-      avd_ignore_requirements: true
     strategy:
       fail-fast: true
       matrix:
@@ -179,7 +175,7 @@ jobs:
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
-          molecule test --scenario-name ${{ matrix.avd_scenario }} -- --extra-vars "avd_ignore_requirements=${avd_ignore_requirements}"
+          molecule test --scenario-name ${{ matrix.avd_scenario }} -- --extra-vars "avd_ignore_requirements=${AVD_IGNORE_REQUIREMENTS}"
       - name: Check GIT status
         run: |
           sh .github/check-git-status.sh
