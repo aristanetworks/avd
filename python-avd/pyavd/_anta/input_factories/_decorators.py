@@ -88,3 +88,16 @@ def skip_if_not_vtep(func: T_AntaTestInputFactoryMethod) -> T_AntaTestInputFacto
         yield from func(self)
 
     return wrapper
+
+
+def skip_if_not_wan_router(func: T_AntaTestInputFactoryMethod) -> T_AntaTestInputFactoryMethod:
+    """Decorator to skip execution of an input factory method if the device is NOT a WAN router."""
+
+    @wraps(func)
+    def wrapper(self: AntaTestInputFactory) -> Iterator[AntaTest.Input]:
+        if not self.data_source.is_wan_router:
+            self.logger_adapter.debug(LogMessage.DEVICE_IS_NOT_WAN_ROUTER)
+            return
+        yield from func(self)
+
+    return wrapper

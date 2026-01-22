@@ -14,7 +14,7 @@ from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
-from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_not_vtep, skip_if_wan_router
+from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_not_vtep, skip_if_not_wan_router, skip_if_wan_router
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -152,6 +152,15 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                     hosts=natural_sort(vtep_hosts, sort_key="destination"),
                 )
 
+        # Generate the WAN router reachability inputs
+        with self.logger_adapter.context("WAN Routers"):
+            wan_hosts = natural_sort(self._get_wan_dps_hosts(), sort_key="destination")
+            if wan_hosts:
+                yield VerifyReachability.Input(
+                    result_overwrite=AntaTest.Input.ResultOverwrite(description="Verifies WAN router reachability between DPS interfaces."),
+                    hosts=natural_sort(wan_hosts, sort_key="destination"),
+                )
+
         # Generate the BGP neighbor reachability inputs
         with self.logger_adapter.context("BGP Neighbors"):
             bgp_hosts = natural_sort(self._get_bgp_hosts(), sort_key="destination")
@@ -201,6 +210,24 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 continue
 
             host = Host(destination=ip, source=self.data_source.loopback0_ip, description=hostname, vrf="default", repeat=1)
+            if not self._is_host_seen(host):
+                self._track_host(host)
+                yield host
+
+    @skip_if_extra_fabric_validation_disabled
+    @skip_if_not_wan_router
+    def _get_wan_dps_hosts(self) -> Iterator[Host]:
+        """Generate Host objects for the WAN router DPS reachability test."""
+        if not self.data_source.fabric_dps_mapping or not self.data_source.vtep_ip:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
+            return
+
+        for hostname, ip in self.data_source.fabric_dps_mapping.items():
+            if hostname == self.data_source.hostname:
+                # Don't ping ourself
+                continue
+
+            host = Host(destination=ip, source=self.data_source.vtep_ip, description=hostname, vrf="default", repeat=1)
             if not self._is_host_seen(host):
                 self._track_host(host)
                 yield host

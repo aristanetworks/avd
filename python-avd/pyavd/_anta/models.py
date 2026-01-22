@@ -71,9 +71,19 @@ class InputFactoryDataSource:
         return self._device_data.loopback0_ip
 
     @property
+    def vtep_ip(self) -> IPv4Address | None:
+        """Get the VTEP IP of the device."""
+        return self._device_data.vtep_ip
+
+    @property
     def fabric_loopback0_mapping(self) -> dict[str, IPv4Address]:
         """Get a fabric mapping of device hostname to its Loopback0 IPv4 address."""
         return self._fabric_data.loopback0_mapping
+
+    @property
+    def fabric_dps_mapping(self) -> dict[str, IPv4Address]:
+        """Get a fabric mapping of device hostname to its DPS IPv4 address."""
+        return self._fabric_data.dps_mapping
 
     @cached_property
     def _device_data(self) -> AvdDeviceData:

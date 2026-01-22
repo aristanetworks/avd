@@ -160,14 +160,13 @@ class AvdFabricData:
     Includes deployed devices that have a Loopback0 IP configured.
 
     WAN devices and devices that are marked as excluded as targets from extra validation tests are excluded."""
-    special_ips_mapping: dict[str, set[IPv4Address]]
-    """Mapping of device hostname to a set of 'special' IPv4 addresses (Loopback0, VTEP, and MLAG VTEP).
+    dps_mapping: dict[str, IPv4Address]
+    """Mapping of device hostname to its DPS IPv4 address.
 
-    Includes deployed devices with at least one special IP.
+    Includes deployed WAN routers that have a DPS interface configured as their VXLAN source interface.
 
-    WAN devices and devices that are marked as excluded as targets from extra validation tests are excluded.
-
-    Uses a set to deduplicate IPs in Multi-VTEP scenarios where Loopback0 is commonly reused as the local VTEP IP."""
+    Devices that are marked as excluded as targets from extra validation tests are excluded.
+    """
     special_ips: set[IPv4Address]
     """Set of all 'special' IPv4 addresses (Loopback0, VTEP, and MLAG VTEP).
 
@@ -175,7 +174,8 @@ class AvdFabricData:
 
     IPs of WAN devices and devices that are marked as excluded as targets from extra validation tests are excluded.
 
-    Uses a set to deduplicate IPs across devices (e.g., MLAG pairs sharing the same VTEP IP).
+    Uses a set to deduplicate IPs across devices (e.g., MLAG pairs sharing the same VTEP IP
+    or in Multi-VTEP scenarios where Loopback0 is commonly reused as the local VTEP IP).
     """
 
     @classmethod
@@ -192,7 +192,7 @@ class AvdFabricData:
         """
         devices: dict[str, AvdDeviceData] = {}
         loopback0_mapping: dict[str, IPv4Address] = {}
-        special_ips_mapping: dict[str, set[IPv4Address]] = {}
+        dps_mapping: dict[str, IPv4Address] = {}
         special_ips: set[IPv4Address] = set()
 
         for device, structured_config in structured_configs.items():
@@ -211,16 +211,20 @@ class AvdFabricData:
                 LOGGER.debug("<%s> Skipped from all IPv4 mappings - Device is not deployed", device)
                 continue
 
-            # WAN routers are not added to the IP mappings for now
-            if device_data.is_wan_router:
-                LOGGER.debug("<%s> Skipped from all IPv4 mappings - Device is a WAN router", device)
-                continue
-
             # Track special IPs for this device
             device_special_ips: set[IPv4Address] = set()
 
             # Track which IPs were skipped for logging
             skipped: list[str] = []
+
+            # Collect DPS IP
+            if device_data.is_wan_router:
+                if device_data.vtep_ip:
+                    dps_mapping[device] = device_data.vtep_ip
+                else:
+                    skipped.append("DPS")
+                # WAN routers are not added to the other IP mappings
+                continue
 
             # Collect Loopback0 IP
             if device_data.loopback0_ip:
@@ -241,11 +245,10 @@ class AvdFabricData:
 
             # Add to special IPs mapping if any IPs were found
             if device_special_ips:
-                special_ips_mapping[device] = device_special_ips
                 special_ips.update(device_special_ips)
 
             # Log what was skipped
             if skipped:
                 LOGGER.debug("<%s> Skipped from IPv4 mappings: %s - Not configured or IPv6-only", device, ", ".join(skipped))
 
-        return AvdFabricData(devices=devices, loopback0_mapping=loopback0_mapping, special_ips_mapping=special_ips_mapping, special_ips=special_ips)
+        return AvdFabricData(devices=devices, loopback0_mapping=loopback0_mapping, dps_mapping=dps_mapping, special_ips=special_ips)
