@@ -37,14 +37,18 @@ class VlanInterfacesMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 for svi in vrf.svis:
-                    self.structured_config.vlan_interfaces.append(self._get_vlan_interface_config_for_svi(svi, vrf, tenant), ignore_fields=("metadata",))
+                    interface_name = f"Vlan{svi.id}"
+                    vlan_interface = self._get_vlan_interface_config_for_svi(svi, vrf, tenant)
+                    self.structured_config.vlan_interfaces.obtain(interface_name)._combine(vlan_interface)
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is None:
                     continue
 
-                self.structured_config.vlan_interfaces.append(self._get_vlan_interface_config_for_mlag_peering(vrf, tenant, vlan_id), ignore_fields=("tenant",))
+                interface_name = f"Vlan{vlan_id}"
+                vlan_interface = self._get_vlan_interface_config_for_mlag_peering(vrf, tenant, vlan_id)
+                self.structured_config.vlan_interfaces.obtain(interface_name)._combine(vlan_interface)
 
     def _check_virtual_router_mac_address(self: AvdStructuredConfigNetworkServicesProtocol, variable: str) -> None:
         """Raise if virtual router mac address is required but missing, otherwise return None."""
@@ -76,9 +80,9 @@ class VlanInterfacesMixin(Protocol):
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
-        vlan_interface_config.metadata._update(
-            tenant=tenant.name, tags=EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
-        )  # Historic behavior is to not output the default ["all"])
+        vlan_interface_config.metadata.tenants.append(tenant.name)
+        # Historic behavior is to not output the default ["all"])
+        vlan_interface_config.metadata.tags = EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
 
         if svi.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(
@@ -183,7 +187,8 @@ class VlanInterfacesMixin(Protocol):
             vrf=vrf.name,
             mtu=self.shared_utils.get_interface_mtu(f"Vlan{vlan_id}", self.shared_utils.p2p_uplinks_mtu),
         )
-        vlan_interface_config.metadata._update(tenant=tenant.name, type="underlay_peering")
+        vlan_interface_config.metadata.tenants.append(tenant.name)
+        vlan_interface_config.metadata.type = "underlay_peering"
         vlan_interface_config._update(**self._get_vlan_ip_config_for_mlag_peering(vrf))
         return vlan_interface_config
 

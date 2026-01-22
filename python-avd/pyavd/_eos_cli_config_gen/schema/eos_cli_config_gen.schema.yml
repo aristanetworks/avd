@@ -16280,9 +16280,12 @@ keys:
             metadata:
               type: dict
               keys:
-                tenant:
-                  type: str
-                  description: Key only used for documentation or validation purposes.
+                tenants:
+                  type: list
+                  description: List of tenants where this VLAN is defined. Key only
+                    used for documentation or validation purposes.
+                  items:
+                    type: str
             rd:
               description: Route distinguisher.
               type: str
@@ -25076,9 +25079,12 @@ keys:
         metadata:
           type: dict
           keys:
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            tenants:
+              type: list
+              description: List of tenants where this VLAN interface is defined. Key
+                only used for documentation or validation purposes.
+              items:
+                type: str
             tags:
               type: list
               items:
@@ -25191,9 +25197,12 @@ keys:
 
             It will not affect the generated EOS configuration.'
           keys:
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            tenants:
+              type: list
+              description: List of tenants where this VLAN is defined. Key only used
+                for documentation or validation purposes.
+              items:
+                type: str
   vmtracer_sessions:
     type: list
     primary_key: name
@@ -25245,9 +25254,12 @@ keys:
 
             It will not affect the generated EOS configuration.'
           keys:
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            tenants:
+              type: list
+              description: List of tenants where this VRF is defined. Key only used
+                for documentation or validation purposes.
+              items:
+                type: str
   vxlan_interface:
     type: dict
     keys:

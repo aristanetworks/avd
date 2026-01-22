@@ -58,9 +58,7 @@ underlay OSPF process id '{self.inputs.underlay_ospf_process_id}'."
                 self._update_ospf_interface(process, vrf)
 
                 if vrf.ospf.structured_config:
-                    self.custom_structured_configs.nested.router_ospf.process_ids.obtain(process_id)._deepmerge(
-                        vrf.ospf.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-                    )
+                    self.custom_structured_configs.nested.router_ospf.process_ids.obtain(process_id)._combine(vrf.ospf.structured_config)
 
                 if vrf.name != "default":
                     process.vrf = vrf.name
@@ -68,7 +66,7 @@ underlay OSPF process id '{self.inputs.underlay_ospf_process_id}'."
                     process.bfd_enable = vrf.ospf.bfd
                 self._update_ospf_redistribute(process, vrf)
 
-                # In theory only the underlay could have created an OSPF process before that.
+                # Handle conflicting inputs across tenants for the same VRF.
                 maybe_existing_process = self.structured_config.router_ospf.process_ids.obtain(process_id)
                 maybe_existing_process._combine(process)
 

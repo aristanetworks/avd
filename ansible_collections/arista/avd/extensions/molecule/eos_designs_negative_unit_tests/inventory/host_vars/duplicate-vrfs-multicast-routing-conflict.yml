@@ -1,0 +1,58 @@
+# Testing duplicate VRF definitions with conflicting multicast routing settings.
+# When the same VRF is defined in multiple tenants with different evpn_l3_multicast.enabled settings,
+# the _combine method should detect the conflict and raise an error.
+
+type: l3leaf
+evpn_multicast: true
+underlay_multicast_pim_sm: true
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: duplicate-vrfs-multicast-routing-conflict
+      id: 101
+      bgp_as: 101
+      filter:
+        tenants:
+          - TENANT1
+          - DUPLICATE_TENANT1
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    evpn_l3_multicast:
+      enabled: true
+      evpn_underlay_l3_multicast_group_ipv4_pool: 232.0.0.0/20
+    vrfs:
+      - name: VRF1
+        vrf_id: 1
+        vtep_diagnostic:
+          loopback: 31
+          loopback_ip_range: 10.255.1.0/24
+        svis:
+          - id: 100
+            enabled: true
+            name: VLAN100
+            ip_address_virtual: 10.0.100.1/24
+
+  - name: DUPLICATE_TENANT1
+    mac_vrf_vni_base: 10000
+    evpn_l3_multicast:
+      # Conflicting multicast routing setting - disabled instead of enabled
+      enabled: false
+    vrfs:
+      - name: VRF1
+        vrf_id: 1
+        svis:
+          - id: 100
+            enabled: true
+            name: VLAN100
+            ip_address_virtual: 10.0.100.1/24
+
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for VrfsItem.
+  {'name': 'VRF1', 'rd': '192.168.255.101:1', 'evpn_multicast': False, 'route_targets': {'import': [{'address_family': 'evpn', 'route_targets': ['1:1']}], 'export': [{'address_family': 'evpn', 'route_targets': ['1:1']}]}, 'router_id': '192.168.255.101', 'neighbors': [], 'redistribute': {'connected': {'enabled': True}}}
+  conflicts with {'name': 'VRF1', 'rd': '192.168.255.101:1', 'evpn_multicast': True, 'route_targets': {'import': [{'address_family': 'evpn', 'route_targets': ['1:1']}], 'export': [{'address_family': 'evpn', 'route_targets': ['1:1']}]}, 'router_id': '192.168.255.101', 'neighbors': [], 'redistribute': {'connected': {'enabled': True}}}.
+

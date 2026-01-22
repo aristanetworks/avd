@@ -23,5 +23,5 @@ tenants:
             name: vlan2
 
 expected_error_message: >-
-  Found duplicate objects with conflicting data while generating configuration for Vlans.
-  {'id': 2, 'name': 'vlan2', 'metadata': {'tenant': 'TenantB'}} conflicts with {'id': 2, 'name': 'vlan1', 'metadata': {'tenant': 'TenantA'}}.
+  Found duplicate objects with conflicting data while generating configuration for VlansItem.
+  {'id': 2, 'name': 'vlan1', 'metadata': {'tenants': ['TenantA']}} conflicts with {'id': 2, 'name': 'vlan2', 'metadata': {'tenants': ['TenantB']}}.

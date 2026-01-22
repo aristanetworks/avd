@@ -25,7 +25,7 @@ class RouterPimSparseModeMixin(Protocol):
         """
         Set structured config for router_pim.
 
-        Used for to configure RPs on the VRF
+        Used for to configure RPs on the VRF.
         """
         if not self.shared_utils.network_services_l3:
             return
@@ -42,4 +42,7 @@ class RouterPimSparseModeMixin(Protocol):
                         for access_list in get(rps, "access_lists", []):
                             rpaddress.access_lists.append(access_list)
                         ipv4_config.rp_addresses.append_unique(rpaddress)
-                    self.structured_config.router_pim_sparse_mode.vrfs.append_new(name=vrf.name, ipv4=ipv4_config)
+
+                    pim_vrf = EosCliConfigGen.RouterPimSparseMode.VrfsItem(name=vrf.name, ipv4=ipv4_config)
+                    maybe_existing_vrf = self.structured_config.router_pim_sparse_mode.vrfs.obtain(vrf.name)
+                    maybe_existing_vrf._combine(pim_vrf)

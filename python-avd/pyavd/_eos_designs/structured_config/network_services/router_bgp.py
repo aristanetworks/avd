@@ -148,9 +148,7 @@ class RouterBgpMixin(Protocol):
                     bgp_vrf.eos_cli = vrf.bgp.raw_eos_cli
 
                 if vrf.bgp.structured_config:
-                    self.custom_structured_configs.nested.router_bgp.vrfs.obtain(vrf.name)._deepmerge(
-                        vrf.bgp.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-                    )
+                    self.custom_structured_configs.nested.router_bgp.vrfs.obtain(vrf.name)._combine(vrf.bgp.structured_config)
 
                 vrf_address_families = {af for af in vrf.address_families if af in self.shared_utils.overlay_address_families}
                 if self.shared_utils.is_wan_vrf(vrf):
@@ -260,7 +258,7 @@ class RouterBgpMixin(Protocol):
                 if vrf.name == "default":
                     # VRF default is added directly under router_bgp
                     bgp_vrf = cast("EosCliConfigGen.RouterBgp", bgp_vrf)
-                    self.structured_config.router_bgp._deepmerge(bgp_vrf)
+                    self.structured_config.router_bgp._combine(bgp_vrf)
                 else:
                     bgp_vrf = cast("EosCliConfigGen.RouterBgp.VrfsItem", bgp_vrf)
                     bgp_vrf.name = vrf.name
@@ -432,7 +430,7 @@ class RouterBgpMixin(Protocol):
             for vrf in tenant.vrfs:
                 for svi in tenant_svis_l2vlans_dict[tenant.name]["svi_non_bundle"][vrf.name]:
                     if (vlan := self._router_bgp_vlans_vlan(svi, tenant, vrf)) is not None:
-                        self.structured_config.router_bgp.vlans.append(vlan, ignore_fields=("metadata",))
+                        self.structured_config.router_bgp.vlans.obtain(svi.id)._combine(vlan)
 
             # L2 Vlans per Tenant
             for l2vlans in tenant_svis_l2vlans_dict[tenant.name]["l2vlan_non_bundle"].values():
@@ -442,7 +440,7 @@ class RouterBgpMixin(Protocol):
                             l2vlan, tenant, vrf=EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem()
                         )
                     ) is not None:
-                        self.structured_config.router_bgp.vlans.append(vlan, ignore_fields=("metadata",))
+                        self.structured_config.router_bgp.vlans.obtain(l2vlan.id)._combine(vlan)
 
     def _router_bgp_vlans_vlan(
         self: AvdStructuredConfigNetworkServicesProtocol,
@@ -462,7 +460,7 @@ class RouterBgpMixin(Protocol):
             id=vlan.id,
             rd=vlan_rd,
         )
-        bgp_vlan.metadata.tenant = tenant.name
+        bgp_vlan.metadata.tenants.append(tenant.name)
         bgp_vlan.route_targets.both.append(vlan_rt)
         bgp_vlan.redistribute_routes.append("learned")
 
@@ -470,9 +468,7 @@ class RouterBgpMixin(Protocol):
             bgp_vlan.eos_cli = vlan.bgp.raw_eos_cli
 
         if vlan.bgp.structured_config:
-            self.custom_structured_configs.nested.router_bgp.vlans.obtain(vlan.id)._deepmerge(
-                vlan.bgp.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-            )
+            self.custom_structured_configs.nested.router_bgp.vlans.obtain(vlan.id)._combine(vlan.bgp.structured_config)
 
         if self.shared_utils.node_config.evpn_gateway.evpn_l2.enabled and default(
             vlan.evpn_l2_multi_domain, vrf.evpn_l2_multi_domain, tenant.evpn_l2_multi_domain

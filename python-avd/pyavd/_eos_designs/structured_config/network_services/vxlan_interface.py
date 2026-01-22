@@ -167,7 +167,8 @@ class VxlanInterfaceMixin(Protocol):
                         tenant.evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset,
                     )
 
-            self.structured_config.vxlan_interface.vxlan1.vxlan.vrfs.append(vxlan_vrf)
+            maybe_existing_vrf = self.structured_config.vxlan_interface.vxlan1.vxlan.vrfs.obtain(vrf.name)
+            maybe_existing_vrf._combine(vxlan_vrf)
             vnis[vni].add(VniContext(vni=vni, name=vxlan_vrf.name, tenant=tenant.name, source_type="VRF"))
 
     def _set_vxlan_interface_config_for_vlan(

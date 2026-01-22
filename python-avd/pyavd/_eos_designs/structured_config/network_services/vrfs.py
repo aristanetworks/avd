@@ -28,8 +28,9 @@ class VrfsMixin(Protocol):
 
         Used for creating VRFs except VRF "default".
 
-        This function also detects duplicate vrfs and raise an error in case of duplicates between
-        all Tenants deployed on this device.
+        This function detects duplicate VRFs across tenants and uses _combine to merge compatible
+        settings (like enabling both ip_routing and ipv6_routing from different tenants) while
+        raising errors for conflicting settings.
         """
         if not self.shared_utils.network_services_l3:
             return
@@ -39,8 +40,9 @@ class VrfsMixin(Protocol):
                 vrf_name = vrf.name
                 if vrf_name == "default":
                     continue
+
                 new_vrf = EosCliConfigGen.VrfsItem(name=vrf_name)
-                new_vrf.metadata.tenant = tenant.name
+                new_vrf.metadata.tenants.append(tenant.name)
 
                 # MLAG IBGP Peering VLANs per VRF
                 if self.inputs.overlay_mlag_rfc5549 and self._mlag_ibgp_peering_enabled(vrf, tenant):
@@ -53,7 +55,8 @@ class VrfsMixin(Protocol):
 
                 if vrf.description:
                     new_vrf.description = vrf.description
-                self.structured_config.vrfs.append(new_vrf, ignore_fields=("metadata",))
+
+                self.structured_config.vrfs.obtain(vrf_name)._combine(new_vrf)
 
     def _has_ipv6(
         self: AvdStructuredConfigNetworkServicesProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem

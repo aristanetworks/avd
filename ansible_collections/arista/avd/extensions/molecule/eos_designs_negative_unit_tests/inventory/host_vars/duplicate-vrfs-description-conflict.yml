@@ -1,3 +1,4 @@
+---
 # Testing duplicate VRF definitions according to the following rules documented in the schema.
 # Also see eos_designs_unit_tests for testing of the intended functionality.
 
@@ -11,7 +12,7 @@ l3leaf:
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     virtual_router_mac_address: 00:dc:00:00:00:0a
   nodes:
-    - name: duplicate-vrfs-duplicate-svi-name-conflict
+    - name: duplicate-vrfs-description-conflict
       id: 101
       bgp_as: 101
       filter:
@@ -24,6 +25,7 @@ tenants:
     mac_vrf_vni_base: 10000
     vrfs:
       - name: VRF1
+        description: "Production VRF"
         vrf_id: 1
         svis:
           - id: 100
@@ -35,15 +37,17 @@ tenants:
     mac_vrf_vni_base: 10000
     vrfs:
       - name: VRF1
+        # Conflicting description on VRF so an error will be raised.
+        description: "Development VRF"
         vrf_id: 1
         svis:
-          # Duplicate definition of VLAN 100 with conflicting name.
           - id: 100
             enabled: true
-            name: VLAN100_CONFLICTING_NAME
+            name: VLAN100
             ip_address_virtual: 10.0.100.1/24
 
 expected_error_message: >-
-  Found duplicate objects with conflicting data while generating configuration for VlansItem.
-  {'id': 100, 'name': 'VLAN100_CONFLICTING_NAME', 'metadata': {'tenants': ['DUPLICATE_TENANT1']}} conflicts with
-  {'id': 100, 'name': 'VLAN100', 'metadata': {'tenants': ['TENANT1']}}.
+  Found duplicate objects with conflicting data while generating configuration for VrfsItem.
+  {'name': 'VRF1', 'description': 'Development VRF', 'ip_routing': True, 'metadata': {'tenants': ['DUPLICATE_TENANT1', 'TENANT1']}} conflicts with
+  {'name': 'VRF1', 'description': 'Production VRF', 'ip_routing': True, 'metadata': {'tenants': ['TENANT1']}}.
+
