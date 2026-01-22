@@ -75,7 +75,6 @@ spine:
               default_originate:
                 enabled: true
                 always: true
-              maximum_routes: 12000
               send_community: all
           address_family_ipv4:
             neighbors:
