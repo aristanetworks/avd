@@ -2,6 +2,10 @@
 ### peer-filters ###
 
 peer_filters:
+  - name: Filter1
+    sequence_numbers:
+      - sequence: 20
+        match: "as-range 1-2 result reject"
   - name: PF1
     sequence_numbers:
       - sequence: 10

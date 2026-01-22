@@ -349,16 +349,33 @@ keys:
                   type: bool
         ospf_network_point_to_point:
           type: bool
-        ipv6_ospf_network_point_to_point:
-          type: bool
         ospf_area:
           type: str
           convert_types:
             - int
-        ipv6_ospf_area:
-          type: str
-          convert_types:
-            - int
+        ipv6_ospf:
+          type: dict
+          description: IPv6 OSPF configuration for the interface.
+          keys:
+            process:
+              type: dict
+              keys:
+                id:
+                  type: int
+                  description: OSPF Process ID.
+                  min: 1
+                  max: 65535
+                  required: true
+                  convert_types:
+                    - str
+                area:
+                  type: str
+                  description: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                  convert_types:
+                    - int
+                  required: true
+            network_point_to_point:
+              type: bool
         ospf_cost:
           type: int
           convert_types:
