@@ -53,6 +53,10 @@ options:
       - Autodetects data format based on file suffix. '.yml', '.yaml' -> YAML, default -> JSON
     required: false
     type: str
+  mode:
+    description: File mode (ex. "0o664") for dest file. See 'ansible.builtin.copy' module for details.
+    required: false
+    type: str
   template_output:
     description:
       - If true, the output data will be run through another jinja2 rendering before returning.
