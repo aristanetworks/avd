@@ -169,10 +169,10 @@ jobs:
         with:
           name: pyavd
           path: /tmp/pyavd/
-      - name: Set up Python 3.11
+      - name: Set up Python 3.13
         uses: actions/setup-python@v6
         with:
-          python-version: "3.11"
+          python-version: "3.13"
       - name: Install pyavd and Ansible requirements
         run: |
           python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" --group molecule
