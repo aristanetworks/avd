@@ -8155,9 +8155,23 @@ router adaptive-virtual-topology
 ```eos
 !
 router general
+   control-functions
+      code unit code1
+         function ACCEPT_ALL() {
+           return true;
+           }
+         EOF
+      code unit code2
+         function DENY_ALL() {
+           return true;
+           }
+         EOF
+   !
+   exit
    router-id ipv4 10.1.2.3
    router-id ipv6 2001:beef:cafe::1
    software forwarding hardware offload mtu 78
+   !
    hardware next-hop fast-failover
    !
    vrf BLUE3
@@ -8172,18 +8186,6 @@ router general
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_1
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_2
       exit
-   !
-   control-functions
-      code unit code1
-         function ACCEPT_ALL() {
-           return true;
-           }
-         EOF
-      code unit code2
-         function DENY_ALL() {
-           return true;
-           }
-         EOF
    !
    exit
 ```
@@ -8720,7 +8722,6 @@ router isis EVPN_UNDERLAY
    redistribute ospfv3 match external
    redistribute static include leaked route-map RM-STATIC-TO-ISIS
    timers local-convergence-delay 15000 protected-prefixes
-   set-overload-bit
    set-overload-bit on-startup wait-for-bgp timeout 10
    advertise passive-only
    spf-interval 250 seconds 10 milliseconds 20 milliseconds
@@ -8736,11 +8737,11 @@ router isis EVPN_UNDERLAY
    graceful-restart t2 level-1 10
    graceful-restart t2 level-2 20
    graceful-restart restart-hold-time 10
+   authentication key-id 1 algorithm sha-1 key 0 password level-1
+   authentication key-id 1 algorithm sha-1 key 0 password level-2
    authentication key-id 2 algorithm sha-512 key 0 password
    authentication key-id 3 algorithm sha-512 rfc-5310 key 0 password1
-   authentication key-id 1 algorithm sha-1 key 0 password level-1
    authentication key-id 4 algorithm sha-1 rfc-5310 key 0 password level-1
-   authentication key-id 1 algorithm sha-1 key 0 password level-2
    authentication key-id 5 algorithm sha-1 rfc-5310 key 0 password level-2
    authentication key 0 password level-1
    authentication key 0 password level-2

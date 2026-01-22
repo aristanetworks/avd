@@ -56977,13 +56977,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """
 
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "on_startup": {"type": OnStartup}}
-            enabled: bool | None
+            enabled: bool
             on_startup: OnStartup
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, on_startup: OnStartup | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, on_startup: OnStartup | UndefinedType = Undefined) -> None:
                     """
                     SetOverloadBit.
 
@@ -57872,12 +57872,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"prefix": {"type": str}, "index": {"type": int}}
-                prefix: str | None
+                prefix: str
                 index: int | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | None | UndefinedType = Undefined, index: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, prefix: str | UndefinedType = Undefined, index: int | None | UndefinedType = Undefined) -> None:
                         """
                         PrefixSegmentsItem.
 
@@ -57890,8 +57890,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class PrefixSegments(AvdList[PrefixSegmentsItem]):
-                """Subclass of AvdList with `PrefixSegmentsItem` items."""
+            class PrefixSegments(AvdIndexedList[str, PrefixSegmentsItem]):
+                """Subclass of AvdIndexedList with `PrefixSegmentsItem` items. Primary key is `prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "prefix"
 
             PrefixSegments._item_type = PrefixSegmentsItem
 
@@ -57899,7 +57901,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             enabled: bool | None
             router_id: str | None
             prefix_segments: PrefixSegments
-            """Subclass of AvdList with `PrefixSegmentsItem` items."""
+            """Subclass of AvdIndexedList with `PrefixSegmentsItem` items. Primary key is `prefix` (`str`)."""
 
             if TYPE_CHECKING:
 
@@ -57919,7 +57921,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         enabled: enabled
                         router_id: router_id
-                        prefix_segments: Subclass of AvdList with `PrefixSegmentsItem` items.
+                        prefix_segments: Subclass of AvdIndexedList with `PrefixSegmentsItem` items. Primary key is `prefix` (`str`).
 
                     """
 

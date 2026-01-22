@@ -20965,6 +20965,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
           on_startup:
             type: dict
             keys:
@@ -21215,6 +21216,7 @@ keys:
             type: str
           prefix_segments:
             type: list
+            primary_key: prefix
             items:
               type: dict
               keys:
