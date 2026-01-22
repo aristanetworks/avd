@@ -4,7 +4,7 @@ collection_path: "{{ lookup('env', 'ANSIBLE_COLLECTIONS_PATH') }}/ansible_collec
 expected_output_dir: "{{ collection_path }}/inventory/eos_designs_structured_config/expected_output"
 actual_output_dir: "{{ collection_path }}/output"
 
-fabric_name: integration_tests
+fabric_name: testgroup
 type: l2leaf
 l2leaf:
   nodes:

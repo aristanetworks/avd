@@ -1,9 +1,25 @@
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts
+  arista.avd.eos_designs_facts:
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
 - name: Remove test output to force 'changed'
   ansible.builtin.file:
     path: "{{ actual_output_dir }}/eos_designs_documentation_missing_structured_cfg_file.md"
     state: absent
 
 - name: Test missing structured config file for device (warning but success)
+  delegate_to: localhost
   ignore_errors: false
   register: result
   arista.avd.eos_designs_documentation:
