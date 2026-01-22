@@ -501,6 +501,12 @@ interface Loopback0
 | Vlan4093 | default | 10.1.1.1/31 | - | - | - | - |
 | Vlan4094 | default | 192.168.0.1/31 | - | - | - | - |
 
+##### OSPF
+
+| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
+| --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
+| Vlan4093 | True | 0.0.0.0 | - | - | - | - | - |
+
 #### VLAN Interfaces Device Configuration
 
 ```eos

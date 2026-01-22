@@ -28,6 +28,7 @@ router_isis:
         enable: true
         strict: false
   set_overload_bit:
+    enabled: true
     on_startup:
       wait_for_bgp:
         enabled: true

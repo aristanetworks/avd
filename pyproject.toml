@@ -52,7 +52,7 @@ molecule = [
     "molecule-plugins[docker]>=25.8.12",
 ]
 pytest = [
-    "ansible-core>=2.16.0,<2.20.0",
+    "ansible-core>=2.16.0,<2.21.0",
     "anta>=1.7.0",
     "pytest>=8.2.0",
     "pytest-asyncio>=1.2.0",

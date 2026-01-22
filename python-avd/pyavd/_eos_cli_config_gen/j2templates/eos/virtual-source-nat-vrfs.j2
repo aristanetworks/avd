@@ -8,7 +8,7 @@
 !
 {%     set ipv4_address_list = [] %}
 {%     set ipv6_address_list = [] %}
-{%     for vrf in virtual_source_nat_vrfs | arista.avd.natural_sort('name') %}
+{%     for vrf in virtual_source_nat_vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%         if vrf.ip_address is arista.avd.defined %}
 {%             do ipv4_address_list.append("ip address virtual source-nat vrf " + vrf.name + " address " + vrf.ip_address) %}
 {%         endif %}
