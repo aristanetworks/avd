@@ -14,6 +14,17 @@ ethernet_interfaces:
     peer: bgp-peer-groups-1
     peer_interface: Ethernet3
     peer_type: mlag_peer
+- name: Ethernet1
+  description: P2P_bgp-peer-groups-3_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.252.207/31
+  metadata:
+    peer: bgp-peer-groups-3
+    peer_interface: Ethernet2
+    peer_type: pe
+  switchport:
+    enabled: false
 hostname: bgp-peer-groups-2
 ip_igmp_snooping:
   globally_enabled: true
@@ -130,6 +141,12 @@ router_bgp:
     metadata:
       peer: bgp-peer-groups-1
     description: bgp-peer-groups-1_Vlan4094
+  - ip_address: 192.168.252.206
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: bgp-peer-groups-3
+    description: bgp-peer-groups-3_Ethernet2
   - ip_address: 192.168.255.111
     peer_group: EVPN-OVERLAY-PEERS
     metadata:
