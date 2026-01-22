@@ -38091,12 +38091,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Action: TypeAlias = Literal["permit", "deny"]
             _fields: ClassVar[dict] = {"sequence": {"type": int}, "action": {"type": str}, "mode": {"type": str}, "command": {"type": str}}
-            sequence: int | None
+            sequence: int
             """Sequence number."""
-            action: Action | None
+            action: Action
             mode: str | None
             """"config", "config-all", "exec" or mode key as string."""
-            command: str | None
+            command: str
             """Command as string."""
 
             if TYPE_CHECKING:
@@ -38104,10 +38104,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    sequence: int | None | UndefinedType = Undefined,
-                    action: Action | None | UndefinedType = Undefined,
+                    sequence: int | UndefinedType = Undefined,
+                    action: Action | UndefinedType = Undefined,
                     mode: str | None | UndefinedType = Undefined,
-                    command: str | None | UndefinedType = Undefined,
+                    command: str | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SequenceNumbersItem.
@@ -38123,8 +38123,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class SequenceNumbers(AvdList[SequenceNumbersItem]):
-            """Subclass of AvdList with `SequenceNumbersItem` items."""
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
+            """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
+
+            _primary_key: ClassVar[str] = "sequence"
 
         SequenceNumbers._item_type = SequenceNumbersItem
 
@@ -38132,7 +38134,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         name: str
         """Role name."""
         sequence_numbers: SequenceNumbers
-        """Subclass of AvdList with `SequenceNumbersItem` items."""
+        """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
 
         if TYPE_CHECKING:
 
@@ -38145,7 +38147,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     name: Role name.
-                    sequence_numbers: Subclass of AvdList with `SequenceNumbersItem` items.
+                    sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
 
                 """
 
@@ -38611,15 +38613,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ProfilesItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"id": {"type": int}, "name": {"type": str}}
-                id: int
-                """Unique ID for this AVT (per VRF)."""
-                name: str | None
+                _fields: ClassVar[dict] = {"name": {"type": str}, "id": {"type": int}}
+                name: str
                 """AVT profile name."""
+                id: int
+                """ID for this AVT (per VRF)."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, id: int | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, id: int | UndefinedType = Undefined) -> None:
                         """
                         ProfilesItem.
 
@@ -38627,15 +38629,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            id: Unique ID for this AVT (per VRF).
                             name: AVT profile name.
+                            id: ID for this AVT (per VRF).
 
                         """
 
-            class Profiles(AvdIndexedList[int, ProfilesItem]):
-                """Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `id` (`int`)."""
+            class Profiles(AvdIndexedList[str, ProfilesItem]):
+                """Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`)."""
 
-                _primary_key: ClassVar[str] = "id"
+                _primary_key: ClassVar[str] = "name"
 
             Profiles._item_type = ProfilesItem
 
@@ -38648,8 +38650,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             AVT profiles in this VRF.
 
-            Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `id`
-            (`int`).
+            Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is
+            `name` (`str`).
             """
 
             if TYPE_CHECKING:
@@ -38673,8 +38675,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         profiles:
                            AVT profiles in this VRF.
 
-                           Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `id`
-                           (`int`).
+                           Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is
+                           `name` (`str`).
 
                     """
 
@@ -56979,13 +56981,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """
 
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "on_startup": {"type": OnStartup}}
-            enabled: bool | None
+            enabled: bool
             on_startup: OnStartup
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, on_startup: OnStartup | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, on_startup: OnStartup | UndefinedType = Undefined) -> None:
                     """
                     SetOverloadBit.
 
@@ -57874,12 +57876,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"prefix": {"type": str}, "index": {"type": int}}
-                prefix: str | None
+                prefix: str
                 index: int | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | None | UndefinedType = Undefined, index: int | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, prefix: str | UndefinedType = Undefined, index: int | None | UndefinedType = Undefined) -> None:
                         """
                         PrefixSegmentsItem.
 
@@ -57892,8 +57894,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class PrefixSegments(AvdList[PrefixSegmentsItem]):
-                """Subclass of AvdList with `PrefixSegmentsItem` items."""
+            class PrefixSegments(AvdIndexedList[str, PrefixSegmentsItem]):
+                """Subclass of AvdIndexedList with `PrefixSegmentsItem` items. Primary key is `prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "prefix"
 
             PrefixSegments._item_type = PrefixSegmentsItem
 
@@ -57901,7 +57905,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             enabled: bool | None
             router_id: str | None
             prefix_segments: PrefixSegments
-            """Subclass of AvdList with `PrefixSegmentsItem` items."""
+            """Subclass of AvdIndexedList with `PrefixSegmentsItem` items. Primary key is `prefix` (`str`)."""
 
             if TYPE_CHECKING:
 
@@ -57921,7 +57925,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         enabled: enabled
                         router_id: router_id
-                        prefix_segments: Subclass of AvdList with `PrefixSegmentsItem` items.
+                        prefix_segments: Subclass of AvdIndexedList with `PrefixSegmentsItem` items. Primary key is `prefix` (`str`).
 
                     """
 
@@ -66672,6 +66676,53 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Ipv6Ospf(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Process(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"id": {"type": int}, "area": {"type": str}}
+                id: int
+                """OSPF Process ID."""
+                area: str
+                """OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, id: int | UndefinedType = Undefined, area: str | UndefinedType = Undefined) -> None:
+                        """
+                        Process.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            id: OSPF Process ID.
+                            area: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+
+                        """
+
+            _fields: ClassVar[dict] = {"process": {"type": Process}, "network_point_to_point": {"type": bool}}
+            process: Process
+            """Subclass of AvdModel."""
+            network_point_to_point: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, process: Process | UndefinedType = Undefined, network_point_to_point: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    Ipv6Ospf.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        process: Subclass of AvdModel.
+                        network_point_to_point: network_point_to_point
+
+                    """
+
         OspfAuthentication: TypeAlias = Literal["none", "simple", "message-digest"]
         OspfAuthenticationKeyType: TypeAlias = Literal["7", "8a"]
 
@@ -67974,9 +68025,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ipv6_access_group_out": {"type": str},
             "multicast": {"type": Multicast},
             "ospf_network_point_to_point": {"type": bool},
-            "ipv6_ospf_network_point_to_point": {"type": bool},
             "ospf_area": {"type": str},
-            "ipv6_ospf_area": {"type": str},
+            "ipv6_ospf": {"type": Ipv6Ospf},
             "ospf_cost": {"type": int},
             "ospf_authentication": {"type": str},
             "ospf_authentication_key": {"type": str},
@@ -68097,9 +68147,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         multicast: Multicast
         """Subclass of AvdModel."""
         ospf_network_point_to_point: bool | None
-        ipv6_ospf_network_point_to_point: bool | None
         ospf_area: str | None
-        ipv6_ospf_area: str | None
+        ipv6_ospf: Ipv6Ospf
+        """
+        IPv6 OSPF configuration for the interface.
+
+        Subclass of AvdModel.
+        """
         ospf_cost: int | None
         ospf_authentication: OspfAuthentication | None
         ospf_authentication_key: str | None
@@ -68205,9 +68259,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_access_group_out: str | None | UndefinedType = Undefined,
                 multicast: Multicast | UndefinedType = Undefined,
                 ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
-                ipv6_ospf_network_point_to_point: bool | None | UndefinedType = Undefined,
                 ospf_area: str | None | UndefinedType = Undefined,
-                ipv6_ospf_area: str | None | UndefinedType = Undefined,
+                ipv6_ospf: Ipv6Ospf | UndefinedType = Undefined,
                 ospf_cost: int | None | UndefinedType = Undefined,
                 ospf_authentication: OspfAuthentication | None | UndefinedType = Undefined,
                 ospf_authentication_key: str | None | UndefinedType = Undefined,
@@ -68301,9 +68354,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_access_group_out: IPv6 access-list name.
                     multicast: Subclass of AvdModel.
                     ospf_network_point_to_point: ospf_network_point_to_point
-                    ipv6_ospf_network_point_to_point: ipv6_ospf_network_point_to_point
                     ospf_area: ospf_area
-                    ipv6_ospf_area: ipv6_ospf_area
+                    ipv6_ospf:
+                       IPv6 OSPF configuration for the interface.
+
+                       Subclass of AvdModel.
                     ospf_cost: ospf_cost
                     ospf_authentication: ospf_authentication
                     ospf_authentication_key: Encrypted password.
