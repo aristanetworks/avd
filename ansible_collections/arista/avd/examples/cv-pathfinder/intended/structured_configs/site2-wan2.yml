@@ -609,8 +609,6 @@ router_bgp:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: WAN-OVERLAY-PEERS
-      activate: false
     neighbors:
     - ip_address: 100.64.21.1
       activate: true

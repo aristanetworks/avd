@@ -473,10 +473,6 @@ router bgp 65001
    neighbor 10.255.2.2 peer group RR-OVERLAY-PEERS
    neighbor 10.255.2.2 description rr2_Loopback0
    !
-   address-family ipv4
-      no neighbor MPLS-OVERLAY-PEERS activate
-      no neighbor RR-OVERLAY-PEERS activate
-   !
    address-family vpn-ipv4
       neighbor MPLS-OVERLAY-PEERS activate
       neighbor RR-OVERLAY-PEERS activate

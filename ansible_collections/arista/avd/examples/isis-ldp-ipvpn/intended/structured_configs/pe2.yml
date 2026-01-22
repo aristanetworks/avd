@@ -172,10 +172,6 @@ router_bgp:
     metadata:
       peer: rr2
     description: rr2_Loopback0
-  address_family_ipv4:
-    peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: false
   address_family_vpn_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
