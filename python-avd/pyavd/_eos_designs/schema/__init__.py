@@ -87817,6 +87817,7 @@ class EosDesigns(EosDesignsRootModel):
         "avd_eos_designs_debug": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_eos_designs_unset_facts": {"type": bool, "default": True},
+        "avd_remove_bgp_redundant_command": {"type": bool, "default": False},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
         "bgp_as_notation": {"type": str, "default": "auto"},
@@ -88492,6 +88493,16 @@ class EosDesigns(EosDesignsRootModel):
     variables.
 
     Default value: `True`
+    """
+    avd_remove_bgp_redundant_command: bool
+    """
+    When set to `true`, suppress rendering of the redundant IPv4 address-family command
+    `no neighbor
+    <peer-group> activate` when IPv4 unicast is already globally disabled
+    using
+    `bgp_default_ipv4_unicast: false`.
+
+    Default value: `False`
     """
     bfd_multihop: BfdMultihop
     """
@@ -90428,6 +90439,7 @@ class EosDesigns(EosDesignsRootModel):
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_unset_facts: bool | UndefinedType = Undefined,
+            avd_remove_bgp_redundant_command: bool | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
@@ -90655,6 +90667,12 @@ class EosDesigns(EosDesignsRootModel):
                 avd_eos_designs_unset_facts:
                    Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer
                    variables.
+                avd_remove_bgp_redundant_command:
+                   When set to `true`, suppress rendering of the redundant IPv4 address-family command
+                   `no neighbor
+                   <peer-group> activate` when IPv4 unicast is already globally disabled
+                   using
+                   `bgp_default_ipv4_unicast: false`.
                 bfd_multihop:
                    BFD Multihop tuning.
 

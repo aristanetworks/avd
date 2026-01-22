@@ -334,6 +334,10 @@ router_bgp:
     peer_groups:
     - name: UNDERLAY-PEERS
       activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+    - name: IPVPN-INTERWORKING-PEERS
+      activate: false
     - name: Tenant_C_BGP_PEER_GROUP
       activate: true
       prefix_list_in: PL_In_Test_1

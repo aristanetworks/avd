@@ -400,6 +400,10 @@ router_bgp:
       activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+    - name: EVPN-OVERLAY-CORE
+      activate: false
   vrfs:
   - name: VRF10
     rd: 10.255.128.16:10

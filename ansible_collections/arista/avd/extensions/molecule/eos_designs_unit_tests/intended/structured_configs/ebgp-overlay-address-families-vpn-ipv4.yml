@@ -264,6 +264,10 @@ router_bgp:
       route_map_out: RM-EVPN-SOO-OUT
       domain_remote: true
       encapsulation: path-selection
+  address_family_ipv4:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: false
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS

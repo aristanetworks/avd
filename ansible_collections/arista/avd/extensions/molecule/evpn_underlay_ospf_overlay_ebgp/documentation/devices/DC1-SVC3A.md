@@ -755,6 +755,7 @@ router bgp 65103
       host-flap detection window 180 threshold 30
    !
    address-family ipv4
+      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
    vrf Tenant_B_OP_Zone

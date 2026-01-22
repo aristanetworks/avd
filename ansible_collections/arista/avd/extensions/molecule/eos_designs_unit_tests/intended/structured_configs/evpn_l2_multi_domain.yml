@@ -276,6 +276,10 @@ router_bgp:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+    - name: EVPN-OVERLAY-CORE
+      activate: false
   vrfs:
   - name: L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:11

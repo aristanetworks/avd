@@ -662,6 +662,9 @@ router bgp 65104
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
       host-flap detection window 180 threshold 30
+   !
+   address-family ipv4
+      no neighbor EVPN-OVERLAY-PEERS activate
 ```
 
 ## BFD

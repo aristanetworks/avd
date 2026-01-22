@@ -484,6 +484,8 @@ router_bgp:
     peer_groups:
     - name: UNDERLAY-PEERS
       activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com

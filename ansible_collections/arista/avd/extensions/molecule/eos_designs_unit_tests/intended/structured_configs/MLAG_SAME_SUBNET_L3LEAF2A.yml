@@ -178,6 +178,8 @@ router_bgp:
       activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   vrfs:
   - name: TEST
     rd: 192.168.255.34:1

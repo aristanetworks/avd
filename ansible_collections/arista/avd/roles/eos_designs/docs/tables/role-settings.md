@@ -13,6 +13,7 @@
     | [<samp>avd_eos_designs_enforce_duplication_checks_across_all_models</samp>](## "avd_eos_designs_enforce_duplication_checks_across_all_models") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
     | [<samp>avd_eos_designs_structured_config</samp>](## "avd_eos_designs_structured_config") | Boolean |  | `True` |  | Generate structured configuration per device. |
     | [<samp>avd_eos_designs_unset_facts</samp>](## "avd_eos_designs_unset_facts") | Boolean |  | `True` |  | Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer variables. |
+    | [<samp>avd_remove_bgp_redundant_command</samp>](## "avd_remove_bgp_redundant_command") | Boolean |  | `False` |  | When set to `true`, suppress rendering of the redundant IPv4 address-family command<br>`no neighbor <peer-group> activate` when IPv4 unicast is already globally disabled<br>using `bgp_default_ipv4_unicast: false`. |
     | [<samp>eos_designs_documentation</samp>](## "eos_designs_documentation") | Dictionary |  |  |  | Control fabric documentation generation.<br> |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "eos_designs_documentation.enable") | Boolean |  | `True` |  | Generate fabric-wide documentation. |
     | [<samp>&nbsp;&nbsp;connected_endpoints</samp>](## "eos_designs_documentation.connected_endpoints") | Boolean |  | `False` |  | Include connected endpoints in the fabric-wide documentation.<br>This is `false` by default to avoid cluttering documentation for projects with thousands of endpoints. |
@@ -37,6 +38,11 @@
 
     # Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer variables.
     avd_eos_designs_unset_facts: <bool; default=True>
+
+    # When set to `true`, suppress rendering of the redundant IPv4 address-family command
+    # `no neighbor <peer-group> activate` when IPv4 unicast is already globally disabled
+    # using `bgp_default_ipv4_unicast: false`.
+    avd_remove_bgp_redundant_command: <bool; default=False>
 
     # Control fabric documentation generation.
     eos_designs_documentation:

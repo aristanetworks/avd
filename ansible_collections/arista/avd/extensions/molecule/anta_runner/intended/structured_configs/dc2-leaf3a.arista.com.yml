@@ -382,6 +382,8 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
   vrfs:

@@ -1128,6 +1128,7 @@ router bgp 65102
       host-flap detection window 20 threshold 30
    !
    address-family ipv4
+      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor MLAG_PEER activate
       neighbor MLAG_PEER next-hop address-family ipv6 originate
       neighbor UNDERLAY_PEERS activate

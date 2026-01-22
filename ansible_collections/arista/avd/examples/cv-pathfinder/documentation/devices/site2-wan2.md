@@ -956,6 +956,7 @@ router bgp 65000
    !
    address-family ipv4
       neighbor IPv4-UNDERLAY-PEERS activate
+      no neighbor WAN-OVERLAY-PEERS activate
       neighbor 100.64.21.1 activate
    !
    address-family ipv4 sr-te

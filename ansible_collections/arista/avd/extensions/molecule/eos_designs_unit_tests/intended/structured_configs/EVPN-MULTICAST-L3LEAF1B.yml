@@ -601,6 +601,8 @@ router_bgp:
       activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   vrfs:
   - name: MULTICAST_DISABLED_310_311
     rd: 192.168.255.4:13

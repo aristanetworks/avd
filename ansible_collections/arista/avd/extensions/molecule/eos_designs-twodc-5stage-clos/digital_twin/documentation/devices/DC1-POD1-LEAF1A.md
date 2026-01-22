@@ -472,6 +472,7 @@ router bgp 65111.100
       route import match-failure action discard
    !
    address-family ipv4
+      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
    !
    address-family rt-membership

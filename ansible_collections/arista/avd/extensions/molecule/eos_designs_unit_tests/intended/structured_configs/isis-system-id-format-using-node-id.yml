@@ -53,6 +53,10 @@ router_bgp:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
       activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: MPLS-OVERLAY-PEERS
+      activate: false
 router_isis:
   instance: CORE
   net: 49.0001.0000.0001.0099.00

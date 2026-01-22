@@ -873,6 +873,10 @@ router bgp 65000
       neighbor WAN-RR-OVERLAY-PEERS encapsulation path-selection
       next-hop resolution disabled
    !
+   address-family ipv4
+      no neighbor WAN-OVERLAY-PEERS activate
+      no neighbor WAN-RR-OVERLAY-PEERS activate
+   !
    address-family ipv4 sr-te
       neighbor WAN-OVERLAY-PEERS activate
       neighbor WAN-RR-OVERLAY-PEERS activate

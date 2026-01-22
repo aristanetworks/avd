@@ -363,6 +363,8 @@ router_bgp:
     peer_groups:
     - name: UNDERLAY-PEERS
       activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   vrfs:
   - name: Tenant_A_APP_Zone
     rd: 192.168.255.109:12

@@ -822,6 +822,9 @@ router bgp 65000
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
       neighbor MPLS-OVERLAY-PEERS activate
    !
+   address-family ipv4
+      no neighbor MPLS-OVERLAY-PEERS activate
+   !
    vrf TENANT_B_INTRA
       rd 100.70.0.5:19
       route-target import evpn 65000:19

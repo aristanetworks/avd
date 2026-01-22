@@ -390,6 +390,10 @@ router bgp 65000
    neighbor 100.70.0.9 peer group RR-OVERLAY-PEERS
    neighbor 100.70.0.9 description SITE2-RR1_Loopback0
    !
+   address-family ipv4
+      no neighbor MPLS-OVERLAY-PEERS activate
+      no neighbor RR-OVERLAY-PEERS activate
+   !
    address-family vpn-ipv4
       neighbor MPLS-OVERLAY-PEERS activate
       neighbor RR-OVERLAY-PEERS activate
