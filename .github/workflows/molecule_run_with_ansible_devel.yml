@@ -54,6 +54,8 @@ jobs:
     name: Validate eos_cli_config_gen
     runs-on: ubuntu-latest
     needs: [build_pyavd]
+    env:
+      avd_ignore_requirements: true
     strategy:
       fail-fast: true
       matrix:
@@ -81,7 +83,7 @@ jobs:
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
-          molecule test --scenario-name ${{ matrix.avd_scenario }}
+          molecule test --scenario-name ${{ matrix.avd_scenario }} -- --extra-vars "avd_ignore_requirements=${avd_ignore_requirements}"
       - name: Check GIT status
         run: |
           sh .github/check-git-status.sh
@@ -93,6 +95,8 @@ jobs:
     name: Validate eos_designs
     runs-on: ubuntu-latest
     needs: [build_pyavd]
+    env:
+      avd_ignore_requirements: true
     strategy:
       fail-fast: true
       matrix:
@@ -136,7 +140,7 @@ jobs:
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
-          molecule test --scenario-name ${{ matrix.avd_scenario }}
+          molecule test --scenario-name ${{ matrix.avd_scenario }} -- --extra-vars "avd_ignore_requirements=${avd_ignore_requirements}"
       - name: Check GIT status
         run: |
           sh .github/check-git-status.sh
@@ -148,6 +152,8 @@ jobs:
     name: Validate anta_runner
     runs-on: ubuntu-latest
     needs: [build_pyavd]
+    env:
+      avd_ignore_requirements: true
     strategy:
       fail-fast: true
       matrix:
@@ -173,7 +179,7 @@ jobs:
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
-          molecule test --scenario-name ${{ matrix.avd_scenario }}
+          molecule test --scenario-name ${{ matrix.avd_scenario }} -- --extra-vars "avd_ignore_requirements=${avd_ignore_requirements}"
       - name: Check GIT status
         run: |
           sh .github/check-git-status.sh
