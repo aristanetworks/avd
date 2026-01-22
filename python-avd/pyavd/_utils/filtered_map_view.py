@@ -42,7 +42,7 @@ class FilteredMapView(Mapping):
 
     def __iter__(self) -> Iterator[Any]:
         """Return an iterator over the keys in the filtered mapping."""
-        return (key for key in self._data if key in self._allowed_keys)
+        return (key for key in self._allowed_keys if key in self._data)
 
     def __repr__(self) -> str:
         """Return a string representation of the filtered mapping."""
