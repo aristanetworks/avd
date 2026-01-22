@@ -17,6 +17,11 @@ loopback_interfaces:
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.101/32
+- name: Loopback31
+  description: DIAG_VRF_VRF1
+  shutdown: false
+  vrf: VRF1
+  ip_address: 10.255.1.101/32
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -70,7 +75,9 @@ router_bgp:
   vlans:
   - id: 100
     metadata:
-      tenant: DUPLICATE_TENANT1
+      tenants:
+      - DUPLICATE_TENANT1
+      - TENANT1
     rd: 192.168.255.101:10100
     route_targets:
       both:
@@ -79,7 +86,8 @@ router_bgp:
     - learned
   - id: 200
     metadata:
-      tenant: DUPLICATE_TENANT1
+      tenants:
+      - DUPLICATE_TENANT1
     rd: 192.168.255.101:10200
     route_targets:
       both:
@@ -99,6 +107,7 @@ router_bgp:
   vrfs:
   - name: VRF1
     rd: 192.168.255.101:1
+    evpn_multicast: true
     route_targets:
       import:
       - address_family: evpn
@@ -112,23 +121,59 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+router_multicast:
+  ipv4:
+    routing: true
+    software_forwarding: sfe
+  vrfs:
+  - name: VRF1
+    ipv4:
+      routing: true
+router_pim_sparse_mode:
+  vrfs:
+  - name: VRF1
+    ipv4:
+      rp_addresses:
+      - address: 192.168.100.3
+        groups:
+        - 239.3.0.0/24
+      - address: 192.168.100.1
+        groups:
+        - 239.1.0.0/24
+      - address: 192.168.100.2
+        groups:
+        - 239.2.0.0/24
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
+virtual_source_nat_vrfs:
+- name: VRF1
+  ip_address: 10.255.1.101
 vlan_interfaces:
 - name: Vlan100
   description: VLAN100
   shutdown: false
   vrf: VRF1
   ip_address_virtual: 10.0.100.1/24
+  ip_igmp: true
+  pim:
+    ipv4:
+      local_interface: Loopback31
   metadata:
-    tenant: DUPLICATE_TENANT1
+    tenants:
+    - DUPLICATE_TENANT1
+    - TENANT1
 - name: Vlan200
   description: VLAN200
   shutdown: false
   vrf: VRF1
   ip_address_virtual: 10.0.200.1/24
+  ip_igmp: true
+  pim:
+    ipv4:
+      local_interface: Loopback31
   metadata:
-    tenant: DUPLICATE_TENANT1
+    tenants:
+    - DUPLICATE_TENANT1
 vlan_internal_order:
   allocation: ascending
   range:
@@ -138,18 +183,23 @@ vlans:
 - id: 100
   name: VLAN100
   metadata:
-    tenant: DUPLICATE_TENANT1
+    tenants:
+    - DUPLICATE_TENANT1
+    - TENANT1
 - id: 200
   name: VLAN200
   metadata:
-    tenant: DUPLICATE_TENANT1
+    tenants:
+    - DUPLICATE_TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
   metadata:
-    tenant: DUPLICATE_TENANT1
+    tenants:
+    - DUPLICATE_TENANT1
+    - TENANT1
 vxlan_interface:
   vxlan1:
     description: duplicate-vrfs_VTEP
@@ -164,3 +214,4 @@ vxlan_interface:
       vrfs:
       - name: VRF1
         vni: 1
+        multicast_group: 232.0.0.0

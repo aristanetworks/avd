@@ -1,0 +1,55 @@
+---
+# Testing that the same VRF with OSPF defined in multiple tenants with compatible data is correctly merged.
+# This test verifies:
+# 1. VRF metadata contains both tenant names
+# 2. OSPF process configuration is merged (TENANT_A sets max_lsa, TENANT_B enables BFD)
+# 3. SVIs from both tenants are merged
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.169.255.0/24
+    vtep_loopback_ipv4_pool: 192.169.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0c
+  nodes:
+    - name: combine-same-vrf-ospf-in-different-tenants
+      id: 1
+      bgp_as: 65301
+      filter:
+        tenants:
+          - TENANT_A
+          - TENANT_B
+
+tenants:
+  - name: TENANT_A
+    mac_vrf_vni_base: 30000
+    vrfs:
+      - name: OSPF_VRF
+        vrf_id: 300
+        ospf:
+          enabled: true
+          max_lsa: 15000
+        svis:
+          - id: 200
+            name: VLAN200
+            enabled: true
+            ip_address_virtual: 10.200.200.1/24
+            ospf:
+              enabled: true
+
+  - name: TENANT_B
+    mac_vrf_vni_base: 30000
+    vrfs:
+      - name: OSPF_VRF
+        vrf_id: 300
+        ospf:
+          enabled: true
+          bfd: true
+        svis:
+          - id: 201
+            name: VLAN201
+            enabled: true
+            ip_address_virtual: 10.200.201.1/24
+            ospf:
+              enabled: true

@@ -50,4 +50,3 @@ expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for VrfsItem.
   {'name': 'VRF1', 'description': 'Development VRF', 'ip_routing': True, 'metadata': {'tenants': ['DUPLICATE_TENANT1', 'TENANT1']}} conflicts with
   {'name': 'VRF1', 'description': 'Production VRF', 'ip_routing': True, 'metadata': {'tenants': ['TENANT1']}}.
-

@@ -1,0 +1,56 @@
+---
+# Testing that the same VRF defined in multiple tenants with compatible data is correctly merged.
+# This test verifies:
+# 1. VRF metadata contains both tenant names
+# 2. SVIs from both tenants are merged (duplicate SVI 100 is deduplicated, unique SVIs 101 and 102 are added)
+# 3. VLANs from both tenants are merged
+# 4. BGP VLANs from both tenants are merged
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0b
+  nodes:
+    - name: combine-same-vrf-in-different-tenants
+      id: 201
+      bgp_as: 65201
+      filter:
+        tenants:
+          - TENANT_A
+          - TENANT_B
+
+tenants:
+  - name: TENANT_A
+    mac_vrf_vni_base: 20000
+    vrfs:
+      - name: SHARED_VRF
+        vrf_id: 200
+        svis:
+          - id: 100
+            name: VLAN100
+            enabled: true
+            ip_address_virtual: 10.100.100.1/24
+          - id: 101
+            name: VLAN101
+            enabled: true
+            ip_address_virtual: 10.100.101.1/24
+
+  - name: TENANT_B
+    mac_vrf_vni_base: 20000
+    vrfs:
+      - name: SHARED_VRF
+        vrf_id: 200
+        svis:
+          # Same SVI as in TENANT_A - should be merged
+          - id: 100
+            name: VLAN100
+            enabled: true
+            ip_address_virtual: 10.100.100.1/24
+          # Unique SVI - should be added to the list
+          - id: 102
+            name: VLAN102
+            enabled: true
+            ip_address_virtual: 10.100.102.1/24

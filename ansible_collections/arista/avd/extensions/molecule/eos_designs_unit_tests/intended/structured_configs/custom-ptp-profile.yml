@@ -109,7 +109,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: PTP
+      tenants:
+      - PTP
     rd: 10.42.42.42:10011
     route_targets:
       both:
@@ -151,7 +152,8 @@ vlan_interfaces:
   vrf: VRF1
   ip_address: 172.16.11.1/24
   metadata:
-    tenant: PTP
+    tenants:
+    - PTP
 vlan_internal_order:
   allocation: ascending
   range:
@@ -161,14 +163,16 @@ vlans:
 - id: 11
   name: VLAN11
   metadata:
-    tenant: PTP
+    tenants:
+    - PTP
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
   metadata:
-    tenant: PTP
+    tenants:
+    - PTP
 vxlan_interface:
   vxlan1:
     description: custom-ptp-profile_VTEP

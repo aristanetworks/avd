@@ -51,7 +51,8 @@ router_bgp:
   vlans:
   - id: 42
     metadata:
-      tenant: Tenant-A
+      tenants:
+      - Tenant-A
     rd: 192.168.255.110:50111
     route_targets:
       both:
@@ -99,7 +100,8 @@ vlan_interfaces:
   ospf_network_point_to_point: false
   ospf_area: 0.0.0.0
   metadata:
-    tenant: Tenant-A
+    tenants:
+    - Tenant-A
 vlan_internal_order:
   allocation: ascending
   range:
@@ -109,7 +111,8 @@ vlans:
 - id: 42
   name: test-1
   metadata:
-    tenant: Tenant-A
+    tenants:
+    - Tenant-A
 vrfs:
 - name: MGMT
   ip_routing: false

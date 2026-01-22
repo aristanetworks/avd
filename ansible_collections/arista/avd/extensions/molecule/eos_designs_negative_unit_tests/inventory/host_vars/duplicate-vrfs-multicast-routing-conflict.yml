@@ -53,6 +53,11 @@ tenants:
 
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for VrfsItem.
-  {'name': 'VRF1', 'rd': '192.168.255.101:1', 'evpn_multicast': False, 'route_targets': {'import': [{'address_family': 'evpn', 'route_targets': ['1:1']}], 'export': [{'address_family': 'evpn', 'route_targets': ['1:1']}]}, 'router_id': '192.168.255.101', 'neighbors': [], 'redistribute': {'connected': {'enabled': True}}}
-  conflicts with {'name': 'VRF1', 'rd': '192.168.255.101:1', 'evpn_multicast': True, 'route_targets': {'import': [{'address_family': 'evpn', 'route_targets': ['1:1']}], 'export': [{'address_family': 'evpn', 'route_targets': ['1:1']}]}, 'router_id': '192.168.255.101', 'neighbors': [], 'redistribute': {'connected': {'enabled': True}}}.
-
+  {'name': 'VRF1', 'rd': '192.168.255.101:1', 'evpn_multicast': False,
+  'route_targets': {'import': [{'address_family': 'evpn', 'route_targets': ['1:1']}],
+  'export': [{'address_family': 'evpn', 'route_targets': ['1:1']}]},
+  'router_id': '192.168.255.101', 'neighbors': [], 'redistribute': {'connected': {'enabled': True}}}
+  conflicts with {'name': 'VRF1', 'rd': '192.168.255.101:1', 'evpn_multicast': True,
+  'route_targets': {'import': [{'address_family': 'evpn', 'route_targets': ['1:1']}],
+  'export': [{'address_family': 'evpn', 'route_targets': ['1:1']}]},
+  'router_id': '192.168.255.101', 'neighbors': [], 'redistribute': {'connected': {'enabled': True}}}.

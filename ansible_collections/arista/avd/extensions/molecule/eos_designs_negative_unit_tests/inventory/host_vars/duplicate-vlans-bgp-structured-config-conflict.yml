@@ -50,4 +50,3 @@ tenants:
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for VlansItem.
   {'id': 100, 'rd': '65101:100'} conflicts with {'rd': '65101:200'}.
-

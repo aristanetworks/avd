@@ -1,0 +1,194 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: combine-same-vrf-ospf-in-different-tenants
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:dc:00:00:00:0c
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.169.255.1/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.169.254.1/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.169.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.169.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65301'
+  router_id: 192.169.255.1
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    send_community: all
+    maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    metadata:
+      type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 200
+    metadata:
+      tenants:
+      - TENANT_A
+    rd: 192.169.255.1:30200
+    route_targets:
+      both:
+      - 30200:30200
+    redistribute_routes:
+    - learned
+  - id: 201
+    metadata:
+      tenants:
+      - TENANT_B
+    rd: 192.169.255.1:30201
+    route_targets:
+      both:
+      - 30201:30201
+    redistribute_routes:
+    - learned
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  vrfs:
+  - name: OSPF_VRF
+    rd: 192.169.255.1:300
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 300:300
+      export:
+      - address_family: evpn
+        route_targets:
+        - 300:300
+    router_id: 192.169.255.1
+    redistribute:
+      connected:
+        enabled: true
+      ospf:
+        enabled: true
+router_ospf:
+  process_ids:
+  - id: 300
+    vrf: OSPF_VRF
+    passive_interface_default: true
+    router_id: 192.169.255.1
+    bfd_enable: true
+    no_passive_interfaces:
+    - Vlan200
+    - Vlan201
+    max_lsa: 15000
+    redistribute:
+      bgp:
+        enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan200
+  description: VLAN200
+  shutdown: false
+  vrf: OSPF_VRF
+  ip_address_virtual: 10.200.200.1/24
+  ospf_network_point_to_point: false
+  ospf_area: 0.0.0.0
+  metadata:
+    tenants:
+    - TENANT_A
+- name: Vlan201
+  description: VLAN201
+  shutdown: false
+  vrf: OSPF_VRF
+  ip_address_virtual: 10.200.201.1/24
+  ospf_network_point_to_point: false
+  ospf_area: 0.0.0.0
+  metadata:
+    tenants:
+    - TENANT_B
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 200
+  name: VLAN200
+  metadata:
+    tenants:
+    - TENANT_A
+- id: 201
+  name: VLAN201
+  metadata:
+    tenants:
+    - TENANT_B
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: OSPF_VRF
+  ip_routing: true
+  metadata:
+    tenants:
+    - TENANT_A
+    - TENANT_B
+vxlan_interface:
+  vxlan1:
+    description: combine-same-vrf-ospf-in-different-tenants_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 200
+        vni: 30200
+      - id: 201
+        vni: 30201
+      vrfs:
+      - name: OSPF_VRF
+        vni: 300

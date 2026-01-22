@@ -397,7 +397,8 @@ vrfs:
   ip_routing: true
   ipv6_routing: true
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vxlan_interface:
   vxlan1:
     description: uplink_lan_wan_router2_VTEP

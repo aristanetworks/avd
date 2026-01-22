@@ -53,4 +53,3 @@ tenants:
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for VrfsItem.
   {'name': 'VRF1', 'rd': '65101:100'} conflicts with {'rd': '65101:200'}.
-

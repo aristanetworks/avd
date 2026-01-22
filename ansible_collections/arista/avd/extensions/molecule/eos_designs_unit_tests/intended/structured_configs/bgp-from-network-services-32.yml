@@ -125,7 +125,8 @@ vlan_interfaces:
   ipv6_enable: true
   mtu: 9214
   metadata:
-    tenant: TEST4
+    tenants:
+    - TEST4
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -138,13 +139,15 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 3103
   name: MLAG_L3_VRF_default
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TEST4
+    tenants:
+    - TEST4
 vrfs:
 - name: MGMT
   ip_routing: false
