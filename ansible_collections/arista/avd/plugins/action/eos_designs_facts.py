@@ -115,6 +115,11 @@ class ActionModule(ActionBase):
         Returns:
             Tuple of one dict with the loaded AVDDesign instances keyed by hostnames
             and one dict of the raw hostvars also keyed by hostnames.
+
+        TODO: Since hostvars are only used for custom templates, we should just give the raw hostvars object instead.
+              This will allow us to only serialize and deserialize what is relevant to the schema, and drop everything else.
+              As long as we support dynamic keys it would only be possible to drop the keys after validation, where we have
+              identified the relevant keys correctly.
         """
         all_inputs: dict[str, AVDDesign] = {}
         all_hostvars: dict[str, dict] = {}

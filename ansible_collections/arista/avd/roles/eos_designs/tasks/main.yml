@@ -40,6 +40,7 @@
     template_output: true
     output_dir: "{{ output_dir }}"
     digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
+  delegate_to: localhost
   check_mode: false
   run_once: true
 

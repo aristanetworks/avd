@@ -19,7 +19,7 @@ Validate variables against AVD schemas
 
 The `arista.avd.validate_inputs` module is an Ansible Action Plugin designed to validate device variables against Arista AVD schemas.
 
-The plugin performs two phases:
+The plugin consists of two phases:
 
 1. **Templating Phase**: Resolves Ansible hostvars and writes the templated data as JSON files to the AVD temporary directory.
     This phase is skipped if `input_dir` is provided, treating the input files as already templated.
