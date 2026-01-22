@@ -167,8 +167,8 @@ class AvdFabricData:
 
     Devices that are marked as excluded as targets from extra validation tests are excluded.
     """
-    special_ips: set[IPv4Address]
-    """Set of all 'special' IPv4 addresses (Loopback0, VTEP, and MLAG VTEP).
+    underlay_reachability_targets: set[IPv4Address]
+    """Set of all underlay reachability target IPv4 addresses (Loopback0, VTEP, and MLAG VTEP).
 
     Includes IPs of all deployed devices.
 
@@ -193,7 +193,7 @@ class AvdFabricData:
         devices: dict[str, AvdDeviceData] = {}
         loopback0_mapping: dict[str, IPv4Address] = {}
         dps_mapping: dict[str, IPv4Address] = {}
-        special_ips: set[IPv4Address] = set()
+        underlay_reachability_targets: set[IPv4Address] = set()
 
         for device, structured_config in structured_configs.items():
             device_data = AvdDeviceData.from_structured_config(structured_config)
@@ -211,44 +211,37 @@ class AvdFabricData:
                 LOGGER.debug("<%s> Skipped from all IPv4 mappings - Device is not deployed", device)
                 continue
 
-            # Track special IPs for this device
-            device_special_ips: set[IPv4Address] = set()
-
-            # Track which IPs were skipped for logging
-            skipped: list[str] = []
-
             # Collect DPS IP
             if device_data.is_wan_router:
                 if device_data.vtep_ip:
                     dps_mapping[device] = device_data.vtep_ip
                 else:
-                    skipped.append("DPS")
+                    LOGGER.debug("<%s> Skipped DPS IP from DPS mapping - IP address not configured or IPv6-only", device)
                 # WAN routers are not added to the other IP mappings
                 continue
 
             # Collect Loopback0 IP
             if device_data.loopback0_ip:
                 loopback0_mapping[device] = device_data.loopback0_ip
-                device_special_ips.add(device_data.loopback0_ip)
+                underlay_reachability_targets.add(device_data.loopback0_ip)
             else:
-                skipped.append("Loopback0")
+                LOGGER.debug(
+                    "<%s> Skipped Loopback0 IP from Loopback0 mapping and underlay reachability targets - IP address not configured or IPv6-only", device
+                )
 
             # Collect VTEP IPs
             if device_data.vtep_ip:
-                device_special_ips.add(device_data.vtep_ip)
+                underlay_reachability_targets.add(device_data.vtep_ip)
             else:
-                skipped.append("VTEP")
+                LOGGER.debug("<%s> Skipped VTEP IP from underlay reachability targets - IP address not configured or IPv6-only", device)
             if device_data.mlag_vtep_ip:
-                device_special_ips.add(device_data.mlag_vtep_ip)
+                underlay_reachability_targets.add(device_data.mlag_vtep_ip)
             else:
-                skipped.append("MLAG VTEP")
+                LOGGER.debug("<%s> Skipped MLAG VTEP IP from underlay reachability targets - IP address not configured or IPv6-only", device)
 
-            # Add to special IPs mapping if any IPs were found
-            if device_special_ips:
-                special_ips.update(device_special_ips)
-
-            # Log what was skipped
-            if skipped:
-                LOGGER.debug("<%s> Skipped from IPv4 mappings: %s - Not configured or IPv6-only", device, ", ".join(skipped))
-
-        return AvdFabricData(devices=devices, loopback0_mapping=loopback0_mapping, dps_mapping=dps_mapping, special_ips=special_ips)
+        return AvdFabricData(
+            devices=devices,
+            loopback0_mapping=loopback0_mapping,
+            dps_mapping=dps_mapping,
+            underlay_reachability_targets=underlay_reachability_targets,
+        )

@@ -117,10 +117,14 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
        No inputs are generated if `extra_fabric_validation` is disabled. WAN routers and non-deployed devices are excluded.
        Fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations. IPv6 is not supported.
 
-    3. Generates inputs for BGP neighbor reachability across all VRFs.
+    3. Generates inputs to verify DPS-to-DPS reachability between WAN routers using their DPS interface IP addresses.
+       No inputs are generated if `extra_fabric_validation` is disabled. Non-deployed devices are excluded.
+       Fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations. IPv6 is not supported.
+
+    4. Generates inputs for BGP neighbor reachability across all VRFs.
        Includes neighbors that are not administratively shutdown or part of a shutdown peer group.
        Also considers `metadata.validate_state` and ensures the peer is deployed if `metadata.peer` is set.
-       To avoid duplicate checks, neighbors already verified (same destination IP and VRF) by the P2P or VTEP tests are skipped.
+       To avoid duplicate checks, neighbors already verified (same destination IP and VRF) by the P2P, VTEP, or DPS tests are skipped.
     """
 
     def __init__(self, data_source: InputFactoryDataSource, test_name: str) -> None:

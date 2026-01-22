@@ -94,9 +94,9 @@ class InputFactoryDataSource:
         return device_data
 
     @cached_property
-    def fabric_special_ips(self) -> list[IPv4Address]:
-        """Get a sorted list of all 'special' IPv4 addresses (Loopback0, VTEP, and MLAG VTEP) from deployed non-WAN devices in the fabric."""
-        return natural_sort(self._fabric_data.special_ips)
+    def fabric_underlay_reachability_targets(self) -> list[IPv4Address]:
+        """Get a sorted list of all underlay reachability target IPv4 addresses (Loopback0, VTEP, and MLAG VTEP) from deployed non-WAN devices in the fabric."""
+        return natural_sort(self._fabric_data.underlay_reachability_targets)
 
     @cached_property
     def bgp_neighbors(self) -> list[ResolvedBgpNeighbor]:
