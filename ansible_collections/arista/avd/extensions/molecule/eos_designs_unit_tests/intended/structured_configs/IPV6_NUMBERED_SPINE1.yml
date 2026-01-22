@@ -167,10 +167,6 @@ router_bgp:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   address_family_ipv6:
     peer_groups:
     - name: IPv6-UNDERLAY-PEERS

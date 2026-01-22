@@ -178,10 +178,6 @@ router_bgp:
       window: 180
       threshold: 5
       expiry_timeout: 10
-  address_family_ipv4:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 router_ospf:
   process_ids:
   - id: 100

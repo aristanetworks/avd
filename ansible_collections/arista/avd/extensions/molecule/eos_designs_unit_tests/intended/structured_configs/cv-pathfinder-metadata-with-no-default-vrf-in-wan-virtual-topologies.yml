@@ -292,10 +292,6 @@ router_bgp:
       encapsulation: path-selection
     next_hop:
       resolution_disabled: true
-  address_family_ipv4:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: false
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS

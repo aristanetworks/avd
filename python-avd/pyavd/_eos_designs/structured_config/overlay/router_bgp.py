@@ -172,6 +172,9 @@ class RouterBgpMixin(Protocol):
     def _set_address_family_ipv4(self: AvdStructuredConfigOverlayProtocol) -> None:
         """Deactivate the relevant peer_groups in address_family_ipv4."""
         peer_groups = self.structured_config.router_bgp.address_family_ipv4.peer_groups
+        if self.structured_config.router_bgp.bgp.default.ipv4_unicast is False:
+            return
+
         if self.shared_utils.is_wan_router:
             peer_groups.append_new(name=self.inputs.bgp_peer_groups.wan_overlay_peers.name, activate=False)
             if self._is_wan_server_with_peers:

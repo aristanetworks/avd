@@ -110,10 +110,6 @@ router_bgp:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
-    - name: IPVPN-GATEWAY-PEERS
-      activate: false
   address_family_vpn_ipv4:
     domain_identifier: '65555:20'
     peer_groups:

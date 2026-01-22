@@ -997,8 +997,6 @@ router_bgp:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: WAN-OVERLAY-PEERS
-      activate: false
     neighbors:
     - ip_address: 172.29.0.13
       activate: true

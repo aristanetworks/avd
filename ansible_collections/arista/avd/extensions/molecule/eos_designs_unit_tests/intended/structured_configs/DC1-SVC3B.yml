@@ -1112,8 +1112,6 @@ router_bgp:
       activate: true
     - name: UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: Tenant_A_APP_Zone
     rd: '65103:12'

@@ -492,10 +492,6 @@ router_bgp:
     peer_groups:
     - name: UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
-    - name: EVPN-OVERLAY-CORE
-      activate: false
     - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       activate: true
       route_map_in: TEST_IN
