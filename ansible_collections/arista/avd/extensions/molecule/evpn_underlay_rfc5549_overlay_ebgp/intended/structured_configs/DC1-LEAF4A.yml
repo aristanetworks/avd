@@ -340,8 +340,6 @@ router_bgp:
         address_family_ipv6:
           enabled: true
           originate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   address_family_ipv6:
     peer_groups:
     - name: MLAG_PEER

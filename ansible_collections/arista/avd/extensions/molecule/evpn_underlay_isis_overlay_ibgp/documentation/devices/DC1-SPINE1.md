@@ -551,9 +551,6 @@ router bgp 65000
    !
    address-family evpn
       neighbor OVERLAY-PEERS activate
-   !
-   address-family ipv4
-      no neighbor OVERLAY-PEERS activate
 ```
 
 ## BFD

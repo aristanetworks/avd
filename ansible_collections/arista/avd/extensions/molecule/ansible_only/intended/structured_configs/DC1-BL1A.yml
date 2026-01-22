@@ -185,8 +185,6 @@ router_bgp:
     peer_groups:
     - name: UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 router_general:
   router_id:
     ipv4: 192.168.255.14

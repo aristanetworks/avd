@@ -202,10 +202,6 @@ router_bgp:
       enabled: true
       window: 180
       threshold: 30
-  address_family_ipv4:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 router_ospf:
   process_ids:
   - id: 101

@@ -270,8 +270,6 @@ router_bgp:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
     neighbors:
     - ip_address: 123.1.1.10
       activate: true

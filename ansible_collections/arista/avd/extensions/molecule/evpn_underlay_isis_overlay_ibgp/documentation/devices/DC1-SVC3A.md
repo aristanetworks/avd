@@ -690,9 +690,6 @@ router bgp 65000
       neighbor OVERLAY-PEERS activate
       neighbor OVERLAY-PEERS route-map RM-EVPN-SOO-IN in
       neighbor OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out
-   !
-   address-family ipv4
-      no neighbor OVERLAY-PEERS activate
 ```
 
 ## BFD

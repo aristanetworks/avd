@@ -744,10 +744,6 @@ router_bgp:
       activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
-    - name: EVPN-OVERLAY-CORE
-      activate: false
   vrfs:
   - name: Common_VRF
     rd: 172.16.110.4:1025

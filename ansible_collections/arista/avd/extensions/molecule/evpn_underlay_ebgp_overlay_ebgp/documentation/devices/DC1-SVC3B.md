@@ -1493,7 +1493,6 @@ router bgp 65103
       no host-flap detection
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor MLAG-PEERS activate
       neighbor UNDERLAY-PEERS activate
    !

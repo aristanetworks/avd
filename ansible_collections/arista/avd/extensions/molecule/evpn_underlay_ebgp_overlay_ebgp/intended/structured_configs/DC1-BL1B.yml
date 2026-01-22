@@ -334,8 +334,6 @@ router_bgp:
     peer_groups:
     - name: UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: Tenant_A_WAN_Zone
     rd: 192.168.255.15:14

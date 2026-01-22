@@ -151,8 +151,6 @@ router_bgp:
     peer_groups:
     - name: UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 service_routing_protocols_model: multi-agent
 sflow:
   vrfs:

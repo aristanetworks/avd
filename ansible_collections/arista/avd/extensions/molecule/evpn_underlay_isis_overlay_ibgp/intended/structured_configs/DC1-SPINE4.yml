@@ -243,10 +243,6 @@ router_bgp:
     peer_groups:
     - name: OVERLAY-PEERS
       activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: OVERLAY-PEERS
-      activate: false
 router_isis:
   instance: EVPN_UNDERLAY
   net: 49.0001.1921.6825.5004.00

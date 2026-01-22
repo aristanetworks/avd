@@ -236,10 +236,6 @@ router_bgp:
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
-  address_family_ipv4:
-    peer_groups:
-    - name: OVERLAY-PEERS
-      activate: false
 router_isis:
   instance: EVPN_UNDERLAY
   net: 49.0001.1921.6825.5011.00

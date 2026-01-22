@@ -683,7 +683,6 @@ router bgp 65101
       host-flap detection window 20 threshold 30
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor UNDERLAY_PEERS activate
       neighbor UNDERLAY_PEERS next-hop address-family ipv6 originate
    !
