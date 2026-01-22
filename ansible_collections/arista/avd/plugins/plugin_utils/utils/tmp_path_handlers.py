@@ -23,7 +23,7 @@ def get_tmp_path() -> Path:
 
     The location is determined in the following order:
     1. Environment variable `AVDTMPDIR` (not cleaned up automatically, for debugging/CI).
-    2. An "arista_avd" subdirectory under Ansible's "local_tmp" directory (cleaned up by Ansible after the play).
+    2. An "arista_avd" subdirectory under Ansible "local_tmp" directory (cleaned up by Ansible after the play).
     3. Fall back to "arista_avd_<random>" directory under the system temp directory.
 
     Returns:
