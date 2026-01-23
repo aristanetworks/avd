@@ -515,7 +515,7 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 100.64.21.2 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 100.64.21.2 | 65000 | default | - | all | - | - | - | - | - | - | - |
 
 #### Router BGP Device Configuration
 
@@ -528,13 +528,14 @@ router bgp 65666
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
-   neighbor 100.64.21.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 100.64.21.2 remote-as 65000
    neighbor 100.64.21.2 default-originate always
+   neighbor 100.64.21.2 send-community
    redistribute connected
    !
    address-family ipv4
       neighbor IPv4-UNDERLAY-PEERS activate
+      neighbor 100.64.21.2 activate
 ```
 
 ## VRF Instances
