@@ -271,7 +271,6 @@ spanning-tree mst configuration
 ```eos
 !
 router isis EVPN_UNDERLAY
-   set-overload-bit
    set-overload-bit on-startup 55
    spf-interval 250 30
    authentication mode shared-secret profile test1 algorithm md5 rx-disabled

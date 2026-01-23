@@ -146,7 +146,7 @@ router_bgp:
     description: UNDERLAY-MULTICAST-L3LEAF1A
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:

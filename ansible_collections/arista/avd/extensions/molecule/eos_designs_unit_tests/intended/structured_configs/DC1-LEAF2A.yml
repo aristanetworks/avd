@@ -623,9 +623,9 @@ port_channel_interfaces:
   - name: l2leaf-server01
     direction: downstream
   evpn_ethernet_segment:
-    identifier: 0000:0000:a8be:743c:0a1a
-    route_target: a8:be:74:3c:0a:1a
-  lacp_id: a8be.743c.0a1a
+    identifier: 0000:0000:de57:eb43:ffb8
+    route_target: de:57:eb:43:ff:b8
+  lacp_id: de57.eb43.ffb8
   switchport:
     enabled: true
     mode: trunk

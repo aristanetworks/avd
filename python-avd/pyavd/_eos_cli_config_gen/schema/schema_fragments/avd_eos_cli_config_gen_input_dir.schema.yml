@@ -1,0 +1,16 @@
+# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  avd_eos_cli_config_gen_input_dir:
+    documentation_options:
+      table: role-settings
+    type: str
+    description: |
+      Specify a directory containing structured configuration files to use as input.
+      Can be set to null or an empty string to force `eos_cli_config_gen` to use hostvars as input.
+      By default, this variable is set to "{{ structured_dir }}" which is the directory where `eos_designs` outputs structured configuration files.

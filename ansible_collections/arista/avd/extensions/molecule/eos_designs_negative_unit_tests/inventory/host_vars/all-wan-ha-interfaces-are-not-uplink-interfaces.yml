@@ -31,7 +31,7 @@ wan_router:
     vtep_loopback_ipv4_pool: 192.168.142.0/24
     filter:
       always_include_vrfs_in_tenants: [TenantA]
-    uplink_ipv4_pool: 172.17.0.0/16
+    uplink_ipv4_pool: 171.17.0.0/16
     bgp_as: 65000
   node_groups:
     - group: Site511
@@ -46,7 +46,7 @@ wan_router:
         - name: all-wan-ha-interfaces-are-not-uplink-interfaces
           id: 2
           uplink_switches: [ipv4-acls-internet-exit-access-lists]
-          uplink_switch_interfaces: [Ethernet1, Ethernet2]
+          uplink_switch_interfaces: [Ethernet1]
           l3_interfaces:
             - name: Ethernet3
               wan_carrier: ATT

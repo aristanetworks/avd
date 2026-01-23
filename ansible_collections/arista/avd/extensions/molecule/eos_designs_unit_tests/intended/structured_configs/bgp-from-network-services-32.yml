@@ -85,7 +85,7 @@ router_bgp:
     description: bgp-from-network-services-31
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbor_interfaces:
   - name: Vlan3103

@@ -8,7 +8,7 @@ ip_igmp_snooping:
   globally_enabled: true
 metadata:
   is_deployed: true
-  fabric_name: integration_tests
+  fabric_name: testgroup
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:

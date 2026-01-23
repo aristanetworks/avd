@@ -17,6 +17,7 @@ keys:
           description: Role name.
         sequence_numbers:
           type: list
+          primary_key: sequence
           items:
             type: dict
             keys:
@@ -27,6 +28,7 @@ keys:
                 description: Sequence number.
               action:
                 type: str
+                required: true
                 valid_values: ["permit", "deny"]
               mode:
                 type: str
@@ -34,4 +36,5 @@ keys:
                   "config", "config-all", "exec" or mode key as string.
               command:
                 type: str
+                required: true
                 description: Command as string.

@@ -7,7 +7,7 @@
 {% if router_msdp is arista.avd.defined %}
 !
 router msdp
-{%     for group_limit in router_msdp.group_limits | arista.avd.default([]) %}
+{%     for group_limit in router_msdp.group_limits | arista.avd.natural_sort(sort_key='source_prefix') %}
    group-limit {{ group_limit.limit }} source {{ group_limit.source_prefix }}
 {%     endfor %}
 {%     if router_msdp.originator_id_local_interface is arista.avd.defined %}
@@ -22,50 +22,48 @@ router msdp
 {%     if router_msdp.connection_retry_interval is arista.avd.defined %}
    connection retry interval {{ router_msdp.connection_retry_interval }}
 {%     endif %}
-{%     for peer in router_msdp.peers | arista.avd.default([]) | arista.avd.natural_sort('ipv4_address') %}
-{%         if peer.ipv4_address is arista.avd.defined %}
+{%     for peer in router_msdp.peers | arista.avd.natural_sort(sort_key='ipv4_address') %}
    !
    peer {{ peer.ipv4_address }}
-{%             if peer.default_peer.enabled is arista.avd.defined(true) %}
-{%                 set default_peer_cli = "default-peer" %}
-{%                 if peer.default_peer.prefix_list is arista.avd.defined %}
-{%                     set default_peer_cli = default_peer_cli ~ " prefix-list " ~ peer.default_peer.prefix_list %}
-{%                 endif %}
+{%         if peer.default_peer.enabled is arista.avd.defined(true) %}
+{%             set default_peer_cli = "default-peer" %}
+{%             if peer.default_peer.prefix_list is arista.avd.defined %}
+{%                 set default_peer_cli = default_peer_cli ~ " prefix-list " ~ peer.default_peer.prefix_list %}
+{%             endif %}
       {{ default_peer_cli }}
-{%             endif %}
-{%             for mesh_group in peer.mesh_groups | arista.avd.default([]) | arista.avd.natural_sort('name') %}
-{%                 if mesh_group.name is arista.avd.defined %}
+{%         endif %}
+{%         for mesh_group in peer.mesh_groups | arista.avd.natural_sort('name', ignore_case=false) %}
+{%             if mesh_group.name is arista.avd.defined %}
       mesh-group {{ mesh_group.name }}
-{%                 endif %}
-{%             endfor %}
-{%             if peer.local_interface is arista.avd.defined %}
+{%             endif %}
+{%         endfor %}
+{%         if peer.local_interface is arista.avd.defined %}
       local-interface {{ peer.local_interface }}
-{%             endif %}
-{%             if peer.keepalive.keepalive_timer is arista.avd.defined and peer.keepalive.hold_timer is arista.avd.defined %}
+{%         endif %}
+{%         if peer.keepalive.keepalive_timer is arista.avd.defined and peer.keepalive.hold_timer is arista.avd.defined %}
       keepalive {{ peer.keepalive.keepalive_timer }} {{ peer.keepalive.hold_timer }}
-{%             endif %}
-{%             if peer.sa_filter.in_list is arista.avd.defined %}
+{%         endif %}
+{%         if peer.sa_filter.in_list is arista.avd.defined %}
       sa-filter in list {{ peer.sa_filter.in_list }}
-{%             endif %}
-{%             if peer.sa_filter.out_list is arista.avd.defined %}
+{%         endif %}
+{%         if peer.sa_filter.out_list is arista.avd.defined %}
       sa-filter out list {{ peer.sa_filter.out_list }}
-{%             endif %}
-{%             if peer.description is arista.avd.defined %}
+{%         endif %}
+{%         if peer.description is arista.avd.defined %}
       description {{ peer.description }}
-{%             endif %}
-{%             if peer.disabled is arista.avd.defined(true) %}
+{%         endif %}
+{%         if peer.disabled is arista.avd.defined(true) %}
       disabled
-{%             endif %}
-{%             if peer.sa_limit is arista.avd.defined %}
+{%         endif %}
+{%         if peer.sa_limit is arista.avd.defined %}
       sa-limit {{ peer.sa_limit }}
-{%             endif %}
 {%         endif %}
 {%     endfor %}
-{%     for vrf in  router_msdp.vrfs | arista.avd.default([]) | arista.avd.natural_sort('name') %}
-{%         if vrf.name is arista.avd.defined and vrf.name != "default" %}
+{%     for vrf in  router_msdp.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
+{%         if vrf.name != "default" %}
    !
    vrf {{ vrf.name }}
-{%             for group_limit in vrf.group_limits | arista.avd.default([]) | arista.avd.natural_sort('source_prefix') %}
+{%             for group_limit in vrf.group_limits | arista.avd.natural_sort('source_prefix') %}
       group-limit {{ group_limit.limit }} source {{ group_limit.source_prefix }}
 {%             endfor %}
 {%             if vrf.originator_id_local_interface is arista.avd.defined %}
@@ -80,7 +78,7 @@ router msdp
 {%             if vrf.connection_retry_interval is arista.avd.defined %}
       connection retry interval {{ vrf.connection_retry_interval }}
 {%             endif %}
-{%             for peer in vrf.peers | arista.avd.default([]) | arista.avd.natural_sort('ipv4_address') %}
+{%             for peer in vrf.peers | arista.avd.natural_sort('ipv4_address') %}
       !
       peer {{ peer.ipv4_address }}
 {%                 if peer.default_peer.enabled is arista.avd.defined(true) %}
@@ -90,10 +88,8 @@ router msdp
 {%                     endif %}
          {{ default_peer_cli }}
 {%                 endif %}
-{%                 for mesh_group in peer.mesh_groups | arista.avd.default([]) %}
-{%                     if mesh_group.name is arista.avd.defined %}
+{%                 for mesh_group in peer.mesh_groups | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
          mesh-group {{ mesh_group.name }}
-{%                     endif %}
 {%                 endfor %}
 {%                 if peer.local_interface is arista.avd.defined %}
          local-interface {{ peer.local_interface }}

@@ -180,7 +180,7 @@ router_bgp:
     next_hop_self: true
     password: GNtuK+/vTwZwSZiwj1FK/Q==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv6-UNDERLAY-PEERS
     metadata:

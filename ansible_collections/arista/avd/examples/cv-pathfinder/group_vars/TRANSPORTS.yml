@@ -72,10 +72,17 @@ spine:
           neighbors:
             - ip_address: 100.64.21.2
               remote_as: 65000
-              peer_group: IPv4-UNDERLAY-PEERS
               default_originate:
                 enabled: true
                 always: true
+              send_community: all
+          address_family_ipv4:
+            neighbors:
+              - ip_address: 100.64.21.2
+                activate: true
+            peer_groups:
+              - name: IPv4-UNDERLAY-PEERS
+                activate: true
           # Adding peer group.
           peer_groups:
             - name: IPv4-UNDERLAY-PEERS
@@ -83,10 +90,6 @@ spine:
                 type: ipv4
               send_community: all
               maximum_routes: 12000
-          address_family_ipv4:
-            peer_groups:
-              - name: IPv4-UNDERLAY-PEERS
-                activate: true
         dhcp_servers:
           - disabled: false
             vrf: default

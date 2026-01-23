@@ -672,7 +672,7 @@ ASN Notation: asplain
 | Remote AS | 65104 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -728,7 +728,7 @@ router bgp 65104
    neighbor MLAG-IPv4-UNDERLAY-PEER description site4-border1
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
-   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
+   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 256000
    neighbor 10.0.4.59 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.0.4.59 remote-as 65000
    neighbor 10.0.4.59 description site4-wan1_Ethernet2
