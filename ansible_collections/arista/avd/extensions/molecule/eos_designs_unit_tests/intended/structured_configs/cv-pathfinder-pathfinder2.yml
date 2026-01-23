@@ -674,7 +674,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: WAN-OVERLAY-PEERS
     metadata:
