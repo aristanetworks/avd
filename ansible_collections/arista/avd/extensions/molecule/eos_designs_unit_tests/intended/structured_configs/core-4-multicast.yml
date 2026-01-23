@@ -61,20 +61,30 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
+  ip_address: 10.0.0.4/32
   ipv6_address: 2000:1234:ffff:ffff::4/128
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.0.0.0/24 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
   - sequence: 30
     type: permit
     match:
     - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
 router_bgp:
   as: '65000'
-  router_id: 10.255.1.4
+  router_id: 10.0.0.4
   maximum_paths:
     paths: 4
   updates:
@@ -85,7 +95,7 @@ router_bgp:
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     metadata:
-      type: ipv6
+      type: ipv4
     send_community: all
     maximum_routes: 256000
   neighbors:
@@ -114,6 +124,10 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
   address_family_ipv6:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS

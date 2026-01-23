@@ -1,5 +1,2 @@
 ---
 underlay_multicast_pim_sm: true
-
-# test for underlay_ipv6_numbered: true
-underlay_ipv6_numbered: true
