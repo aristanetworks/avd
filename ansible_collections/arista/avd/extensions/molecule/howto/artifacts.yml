@@ -60,3 +60,10 @@ artifacts:
       - header: "interface Loopback1"
     artifact: "htft-leaf1a-links.cfg"
     output_dir: "docs/howto/fabric_topology/artifacts/"
+  # IP Addressing artifacts
+  - file: inventory/intended/configs/howto-addressing-leaf1.cfg
+    sections:
+      - header: "interface Ethernet1"
+      - header: "interface Ethernet2"
+    artifact: "leaf1-to-spines.cfg"
+    output_dir: "../../../../../../docs/howto/ip_addressing/artifacts/"
