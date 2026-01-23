@@ -114,6 +114,7 @@ router_bgp:
       type: ipv4
     description: Description for ipv4_underlay_peers via structured_config
     bfd: true
+    password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
     maximum_routes: 12001
   - name: EVPN-OVERLAY-PEERS

@@ -422,14 +422,6 @@ ASN Notation: asplain
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-##### IPv4-UNDERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | ipv4 |
-| Send community | all |
-| Maximum routes | 256000 |
-
 #### Router BGP EVPN Address Family
 
 ##### EVPN Peer Groups
@@ -453,9 +445,6 @@ router bgp 65042
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
@@ -463,7 +452,6 @@ router bgp 65042
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
-      neighbor IPv4-UNDERLAY-PEERS activate
 ```
 
 ## BFD

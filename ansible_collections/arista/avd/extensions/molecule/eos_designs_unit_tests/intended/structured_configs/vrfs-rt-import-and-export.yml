@@ -42,14 +42,6 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-SVI-VRF-DEFAULT
-- name: RM-BGP-UNDERLAY-PEERS-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: deny
-    match:
-    - ip address prefix-list PL-SVI-VRF-DEFAULT
-  - sequence: 20
-    type: permit
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -72,12 +64,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 256000
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -124,8 +110,6 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   vrfs:

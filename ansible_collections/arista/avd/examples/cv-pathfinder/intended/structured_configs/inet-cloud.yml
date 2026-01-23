@@ -184,12 +184,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 256000
   neighbors:
   - ip_address: 100.64.21.2
     remote_as: '65000'
@@ -201,9 +195,6 @@ router_bgp:
     connected:
       enabled: true
   address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
     neighbors:
     - ip_address: 100.64.21.2
       activate: true

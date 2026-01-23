@@ -108,12 +108,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    password: 0nsCUm70mvSTxVO0ldytrg==
-    send_community: all
-    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -301,8 +295,6 @@ router_bgp:
       expiry_timeout: 10
   address_family_ipv4:
     peer_groups:
-    - name: UNDERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
 service_routing_protocols_model: multi-agent
