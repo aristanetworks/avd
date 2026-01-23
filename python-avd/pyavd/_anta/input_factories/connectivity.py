@@ -153,7 +153,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
             if vtep_hosts:
                 yield VerifyReachability.Input(
                     result_overwrite=AntaTest.Input.ResultOverwrite(description="Verifies VTEP fabric-wide underlay reachability."),
-                    hosts=natural_sort(vtep_hosts, sort_key="destination"),
+                    hosts=vtep_hosts,
                 )
 
         # Generate the WAN router reachability inputs
@@ -162,7 +162,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
             if wan_hosts:
                 yield VerifyReachability.Input(
                     result_overwrite=AntaTest.Input.ResultOverwrite(description="Verifies WAN router reachability between DPS interfaces."),
-                    hosts=natural_sort(wan_hosts, sort_key="destination"),
+                    hosts=wan_hosts,
                 )
 
         # Generate the BGP neighbor reachability inputs
