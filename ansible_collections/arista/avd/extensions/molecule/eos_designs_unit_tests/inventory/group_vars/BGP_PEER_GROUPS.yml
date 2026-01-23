@@ -1,5 +1,4 @@
 ---
----
 # Minimum config to only test the specific feature.
 # This is in no way a "good" or working config.
 # Everything is tweaked to trigger config generation of all the different peer-groups
