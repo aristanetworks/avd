@@ -794,7 +794,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv6 |
 | Send community | all |
-| Maximum routes | 256000 |
+| Maximum routes | 12000 |
 
 ##### MLAG-IPv6-UNDERLAY-PEER
 
@@ -866,7 +866,7 @@ router bgp 65102
    neighbor IPv6-UNDERLAY-PEERS peer group
    neighbor IPv6-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv6-UNDERLAY-PEERS send-community
-   neighbor IPv6-UNDERLAY-PEERS maximum-routes 256000
+   neighbor IPv6-UNDERLAY-PEERS maximum-routes 12000
    neighbor MLAG-IPv6-UNDERLAY-PEER peer group
    neighbor MLAG-IPv6-UNDERLAY-PEER remote-as 65102
    neighbor MLAG-IPv6-UNDERLAY-PEER next-hop-self
