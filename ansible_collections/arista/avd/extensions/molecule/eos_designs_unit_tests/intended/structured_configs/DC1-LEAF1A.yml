@@ -129,6 +129,21 @@ ethernet_interfaces:
       vlan: 113
       trunk: tagged
 hostname: DC1-LEAF1A
+ip_access_lists:
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan132
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 10.1.32.1
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan132
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - action: permit
+    protocol: ip
+    source: 10.1.32.1
+    destination: any
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -497,6 +512,8 @@ vlan_interfaces:
   - 10.1.32.254
   - 10.2.32.254/24
   - 10.3.32.254/24
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan132
+  access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan132
   metadata:
     tenant: Tenant_A
     tags:
