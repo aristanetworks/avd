@@ -80,16 +80,6 @@ spine:
             neighbors:
               - ip_address: 100.64.21.2
                 activate: true
-            peer_groups:
-              - name: IPv4-UNDERLAY-PEERS
-                activate: true
-          # Adding peer group.
-          peer_groups:
-            - name: IPv4-UNDERLAY-PEERS
-              metadata:
-                type: ipv4
-              send_community: all
-              maximum_routes: 12000
         dhcp_servers:
           - disabled: false
             vrf: default
