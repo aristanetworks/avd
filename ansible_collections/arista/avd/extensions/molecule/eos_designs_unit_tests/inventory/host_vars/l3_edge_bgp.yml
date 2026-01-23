@@ -9,12 +9,6 @@ spine:
       loopback_ipv4_pool: 1.2.3.4/24
       bgp_as: 65000
 
-bgp_peer_groups:
-  ipv4_underlay_peers:
-    cleartext_password: arista
-    structured_config:
-      description: Test_for_ipv4_underlay_peers
-
 l3_edge:
   p2p_links_profiles:
     - name: profile1
