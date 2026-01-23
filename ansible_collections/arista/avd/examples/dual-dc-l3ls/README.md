@@ -224,7 +224,7 @@ In this section, only additions to the previous example will be discussed. The o
 
 ```yaml title="FABRIC.yml"
 --8<--
-ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/FABRIC.yml:77:98
+ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/FABRIC.yml:80:101
 --8<--
 ```
 
