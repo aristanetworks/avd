@@ -8,6 +8,8 @@ type: dict
 keys:
   generate_default_config:
     type: bool
+    documentation_options:
+      table: role-settings
     default: false
     description: |
       The `generate_default_config` knob allows to omit default EOS configuration.
