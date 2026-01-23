@@ -5,7 +5,7 @@
 #}
 {# eos - platform trident #}
 {% if platform is arista.avd.defined %}
-{%     for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort(sort_key='name') %}
+{%     for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 platform trident mmu queue profile {{ profile.name }}
 {%         if profile.ingress.reserved.memory is arista.avd.defined %}

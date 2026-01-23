@@ -428,7 +428,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### Router BGP EVPN Address Family
 
@@ -455,7 +455,7 @@ router bgp 65042
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

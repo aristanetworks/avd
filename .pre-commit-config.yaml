@@ -30,7 +30,7 @@ repos:
         exclude: ansible_collections/arista/avd/extensions/molecule
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.5.5
+    rev: v1.5.6
     hooks:
       - id: insert-license
         name: Check and insert license on Python files.
@@ -104,7 +104,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.14.11
+    rev: v0.14.13
     hooks:
       # Run the linter.
       - id: ruff
@@ -123,7 +123,7 @@ repos:
         # use --group dev or some othergroup to avoid maintaining this here
         # as well.
         additional_dependencies:
-          - 'ansible-core>=2.16.0,<2.20.0'
+          - 'ansible-core>=2.16.0,<2.21.0'
           - 'anta==1.7.0'
           - 'deepmerge>=1.1.0'
           - 'jsonschema-rs>=0.24'
@@ -150,7 +150,7 @@ repos:
           - --rcfile=ansible_collections/arista/avd/pylintrc
 
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: "v1.37.1"
+    rev: "v1.38.0"
     hooks:
       - id: yamllint
         name: Check for Linting errors on YAML files with settings defined in `.github/yamllintrc`.

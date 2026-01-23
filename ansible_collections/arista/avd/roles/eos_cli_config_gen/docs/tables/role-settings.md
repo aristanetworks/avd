@@ -7,6 +7,9 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>avd_eos_cli_config_gen_input_dir</samp>](## "avd_eos_cli_config_gen_input_dir") | String |  |  |  | Specify a directory containing structured configuration files to use as input.<br>Can be set to null or an empty string to force `eos_cli_config_gen` to use hostvars as input.<br>By default, this variable is set to "{{ structured_dir }}" which is the directory where `eos_designs` outputs structured configuration files.<br> |
+    | [<samp>avd_eos_cli_config_gen_validate_inputs_batch_size</samp>](## "avd_eos_cli_config_gen_validate_inputs_batch_size") | Integer |  | `10` |  | The number of hosts to process in each batch when validating inputs.<br>Depending on your inventory size and the available resources, you may want to adjust this number. |
+    | [<samp>avd_structured_config_file_format</samp>](## "avd_structured_config_file_format") | String |  | `yml` | Valid Values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | The file format to use when loading structured configuration files.<br> |
     | [<samp>eos_cli_config_gen_configuration</samp>](## "eos_cli_config_gen_configuration") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "eos_cli_config_gen_configuration.enable") | Boolean |  | `True` |  | Generate device EOS configurations. |
     | [<samp>&nbsp;&nbsp;hide_passwords</samp>](## "eos_cli_config_gen_configuration.hide_passwords") | Boolean |  | `False` |  | Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the configuration if true.<br> |
@@ -19,6 +22,17 @@
 === "YAML"
 
     ```yaml
+    # Specify a directory containing structured configuration files to use as input.
+    # Can be set to null or an empty string to force `eos_cli_config_gen` to use hostvars as input.
+    # By default, this variable is set to "{{ structured_dir }}" which is the directory where `eos_designs` outputs structured configuration files.
+    avd_eos_cli_config_gen_input_dir: <str>
+
+    # The number of hosts to process in each batch when validating inputs.
+    # Depending on your inventory size and the available resources, you may want to adjust this number.
+    avd_eos_cli_config_gen_validate_inputs_batch_size: <int; default=10>
+
+    # The file format to use when loading structured configuration files.
+    avd_structured_config_file_format: <str; "yml" | "yaml" | "json"; default="yml">
     eos_cli_config_gen_configuration:
 
       # Generate device EOS configurations.

@@ -34,6 +34,14 @@ keys:
           bfd:
             type: bool
             default: false
+          maximum_routes:
+            type: int
+            convert_types:
+              - str
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
           structured_config:
             type: dict
             relaxed_validation: true
@@ -67,6 +75,14 @@ keys:
           bfd:
             type: bool
             default: false
+          maximum_routes:
+            type: int
+            convert_types:
+              - str
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
           structured_config:
             type: dict
             relaxed_validation: true
@@ -94,6 +110,14 @@ keys:
           bfd:
             type: bool
             default: false
+          maximum_routes:
+            type: int
+            convert_types:
+              - str
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
           structured_config:
             type: dict
             relaxed_validation: true

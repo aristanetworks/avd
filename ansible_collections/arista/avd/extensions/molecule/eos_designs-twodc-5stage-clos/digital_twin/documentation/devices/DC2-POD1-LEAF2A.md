@@ -408,7 +408,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -444,7 +444,7 @@ router bgp 65212
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.16.210.3 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.210.3 remote-as 65211
    neighbor 172.16.210.3 description DC2-POD1-LEAF1A_Loopback0
