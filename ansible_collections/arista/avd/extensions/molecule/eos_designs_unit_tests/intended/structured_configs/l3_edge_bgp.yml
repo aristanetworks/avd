@@ -250,7 +250,7 @@ router_bgp:
     description: Test_for_ipv4_underlay_peers
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   neighbors:
   - ip_address: 192.168.0.3
     peer_group: IPv4-UNDERLAY-PEERS
