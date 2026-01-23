@@ -323,7 +323,7 @@ ASN Notation: asdot
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -351,7 +351,7 @@ router bgp 65110.100
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.16.11.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.11.2 remote-as 65100
    neighbor 172.16.11.2 description DC1-SUPER-SPINE1_Ethernet2

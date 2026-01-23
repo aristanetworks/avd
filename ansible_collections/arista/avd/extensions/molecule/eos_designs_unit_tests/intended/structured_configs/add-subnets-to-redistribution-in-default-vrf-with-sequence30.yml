@@ -194,14 +194,6 @@ route_maps:
     type: permit
     set:
     - extcommunity soo 192.168.1.1:1 additive
-- name: RM-BGP-UNDERLAY-PEERS-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: deny
-    match:
-    - ip address prefix-list PL-SVI-VRF-DEFAULT
-  - sequence: 20
-    type: permit
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -268,10 +260,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ttl_maximum_hops: 1
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   redistribute:
     connected:
       enabled: true
