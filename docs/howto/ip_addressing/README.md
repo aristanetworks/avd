@@ -159,7 +159,7 @@ AVD supports three MLAG IP allocation algorithms configured via `fabric_ip_addre
       defaults:
         mlag_peer_ipv4_pool: 10.255.3.64/27
       node_groups:
-        - group: HOW_TO_L3_LEAFS
+        - group: HOW_TO_L3_LEAVES
           nodes:
             - name: howto-addressing-leaf1
               id: 1  # Primary: 10.255.3.64/31
@@ -180,7 +180,7 @@ AVD supports three MLAG IP allocation algorithms configured via `fabric_ip_addre
 
     l3leaf:
       node_groups:
-        - group: DC1_LEAF1
+        - group: HOW_TO_L3_LEAVES
           nodes:
             - name: howto-addressing-leaf1
               id: 1  # Odd - determines subnet

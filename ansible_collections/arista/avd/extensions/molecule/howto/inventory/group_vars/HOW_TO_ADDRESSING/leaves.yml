@@ -14,7 +14,7 @@ l3leaf:
     spanning_tree_mode: mstp
 
   node_groups:
-    - group: HOW_TO_L3_LEAFS
+    - group: HOW_TO_L3_LEAVES
       bgp_as: 65101
       loopback_ipv4_pool: 10.255.1.0/24
       nodes:

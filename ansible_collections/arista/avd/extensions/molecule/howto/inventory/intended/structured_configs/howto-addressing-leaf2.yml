@@ -102,7 +102,7 @@ metadata:
   validate_hardware:
     enabled: false
 mlag_configuration:
-  domain_id: HOW_TO_L3_LEAFS
+  domain_id: HOW_TO_L3_LEAVES
   local_interface: Vlan4094
   peer_address: 10.255.3.64
   peer_link: Port-Channel3
