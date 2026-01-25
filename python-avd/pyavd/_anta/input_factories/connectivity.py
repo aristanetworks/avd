@@ -10,11 +10,12 @@ from anta.input_models.connectivity import Host, LLDPNeighbor
 from anta.models import AntaTest
 from anta.tests.connectivity import VerifyLLDPNeighbors, VerifyReachability
 
+from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
-from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_not_vtep, skip_if_not_wan_router, skip_if_wan_router
+from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_missing_config, skip_if_not_vtep, skip_if_not_wan_router, skip_if_wan_router
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -117,14 +118,19 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
        No inputs are generated if `extra_fabric_validation` is disabled. WAN routers and non-deployed devices are excluded.
        Fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations. IPv6 is not supported.
 
-    3. Generates inputs to verify DPS-to-DPS reachability between WAN routers using their DPS interface IP addresses.
+    3. Generates inputs to verify inband management reachability from devices with inband management SVIs to all other fabric devices Loopback0 addresses.
+    No inputs are generated if `extra_fabric_validation` is disabled.
+       Non-deployed devices or fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations.
+       IPv6 is not supported.
+
+    4. Generates inputs to verify DPS-to-DPS reachability between WAN routers using their DPS interface IP addresses.
        No inputs are generated if `extra_fabric_validation` is disabled. Non-deployed devices are excluded.
        Fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations. IPv6 is not supported.
 
-    4. Generates inputs for BGP neighbor reachability across all VRFs.
+    5. Generates inputs for BGP neighbor reachability across all VRFs.
        Includes neighbors that are not administratively shutdown or part of a shutdown peer group.
        Also considers `metadata.validate_state` and ensures the peer is deployed if `metadata.peer` is set.
-       To avoid duplicate checks, neighbors already verified (same destination IP and VRF) by the P2P, VTEP, or DPS tests are skipped.
+       To avoid duplicate checks, neighbors already verified (same destination IP and VRF) by the P2P, VTEP, Inband Management, or DPS tests are skipped.
     """
 
     def __init__(self, data_source: InputFactoryDataSource, test_name: str) -> None:
@@ -154,6 +160,15 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 yield VerifyReachability.Input(
                     result_overwrite=AntaTest.Input.ResultOverwrite(description="Verifies VTEP fabric-wide underlay reachability."),
                     hosts=vtep_hosts,
+                )
+
+        # Generate the Inband management reachability inputs
+        with self.logger_adapter.context("Inband Management"):
+            inband_hosts = natural_sort(self._get_inband_management_hosts(), sort_key="destination")
+            if inband_hosts:
+                yield VerifyReachability.Input(
+                    result_overwrite=AntaTest.Input.ResultOverwrite(description="Verifies inband management reachability."),
+                    hosts=inband_hosts,
                 )
 
         # Generate the WAN router reachability inputs
@@ -217,6 +232,39 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
             if not self._is_host_seen(host):
                 self._track_host(host)
                 yield host
+
+    @skip_if_extra_fabric_validation_disabled
+    @skip_if_missing_config(StructuredConfigKey.VLAN_INTERFACES)
+    def _get_inband_management_hosts(self) -> Iterator[Host]:
+        """Generate Host objects for the inband management reachability test."""
+        for svi in self.structured_config.vlan_interfaces:
+            if svi.metadata.type != "inband_mgmt":
+                self.logger_adapter.debug(LogMessage.INTERFACE_NOT_INBAND_MGMT, svi=svi.name)
+                continue
+
+            if svi.shutdown:
+                self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=svi.name)
+                continue
+
+            if not svi.ip_address:
+                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=svi.name, fields="ip_address")
+                continue
+
+            if svi.ip_address == "dhcp":
+                self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=svi.name)
+                continue
+
+            vrf = svi.vrf or "default"
+
+            for hostname, ip in self.data_source.fabric_loopback0_mapping.items():
+                if hostname == self.data_source.hostname:
+                    # Don't ping ourself
+                    continue
+
+                host = Host(destination=ip, source=ip_interface(svi.ip_address).ip, description=hostname, vrf=vrf, repeat=1)
+                if not self._is_host_seen(host):
+                    self._track_host(host)
+                    yield host
 
     @skip_if_extra_fabric_validation_disabled
     @skip_if_not_wan_router
