@@ -32,17 +32,21 @@ node_type_keys:
 bgp_peer_groups:
   ipv4_underlay_peers:
     bfd: true
+    maximum_routes: 12001
+    cleartext_password: arista
     # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
     structured_config:
       description: Description for ipv4_underlay_peers via structured_config
   mlag_ipv4_underlay_peer:
     bfd: true
+    maximum_routes: 12002
     # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
     structured_config:
       description: Description for mlag_ipv4_underlay_peer via structured_config
   mlag_ipv4_vrfs_peer:
     name: MLAG-IPv4-VRFS-PEER
     bfd: false
+    maximum_routes: 12003
     structured_config:
       description: Description for mlag_ipv4_vrfs_peer via structured_config
   evpn_overlay_peers:
@@ -84,6 +88,9 @@ l3leaf:
     mlag_peer_l3_vlan: 4094
     mlag_peer_ipv4_pool: 192.168.253.0/24
     mlag_interfaces: [Ethernet3]
+    uplink_interfaces: [Ethernet1]
+    uplink_switches: [bgp-peer-groups-3]
+    uplink_ipv4_pool: 192.168.252.0/24
   node_groups:
     - group: mlag
       nodes:
@@ -95,6 +102,7 @@ l3leaf:
           mpls_overlay_role: client
           mlag_peer_l3_vlan_structured_config:
             description: "Description from mlag_peer_l3_vlan_structured_config."
+          uplink_switch_interfaces: [Ethernet1]
           evpn_gateway:
             evpn_l3:
               enabled: true
@@ -102,6 +110,7 @@ l3leaf:
           id: 104
           bgp_as: 104
           evpn_role: server
+          uplink_switch_interfaces: [Ethernet2]
           mpls_overlay_role: server
     - group: bgp-peer-groups-ipv6
       # Overwriting the bgp_peer_groups in this node to test some keys in underlay_ipv6_numbered case
