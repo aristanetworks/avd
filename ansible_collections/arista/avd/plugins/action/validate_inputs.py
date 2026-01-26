@@ -8,7 +8,7 @@ from functools import partial
 from multiprocessing import get_context
 from pathlib import Path
 from time import perf_counter
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Any, Literal, cast
 
 import yaml
 from ansible.plugins.action import display
@@ -97,9 +97,14 @@ ARGUMENT_SPEC = {
     "batch_size": {"type": "int", "default": 10},
     "schema_name": {"type": "str", "default": "avd_design", "choices": ["avd_design", "eos_config"]},
     "input_dir": {"type": "str"},
-    "input_suffix": {"type": "str", "default": "json", "choices": ["yml", "yaml", "json"]},
+    "input_suffix": {"type": "str", "default": "yml", "choices": ["yml", "yaml", "json"]},
+    "read_from_input_dir": {"type": "bool", "default": False},
     "fail_on_validation_errors": {"type": "bool", "default": False},
 }
+
+REQUIRED_IF = [
+    ("read_from_input_dir", True, ("input_dir",)),
+]
 
 
 @dataclass(frozen=True, slots=True)
@@ -110,6 +115,7 @@ class PluginArgs:
     schema_name: SCHEMA_NAME
     input_dir: str | None
     input_suffix: Literal["yml", "yaml", "json"]
+    read_from_input_dir: bool
     fail_on_validation_errors: bool
 
 
@@ -169,8 +175,8 @@ class ActionModule(AvdActionPlugin):
             plugin_args.batch_size,
         )
 
-        # Phase 1: If no input_dir is provided, run the templating phase on hostvars.
-        if not plugin_args.input_dir:
+        # Phase 1: If read_from_input_dir is False, run the templating phase on hostvars.
+        if not plugin_args.read_from_input_dir:
             self.logger.info("Reading inputs from hostvars")
             set_worker_context(ActionPluginVars(self))
             hosts_to_validate = self._run_templating_phase(
@@ -183,9 +189,11 @@ class ActionModule(AvdActionPlugin):
             validation_input_path = templated_path
             validation_input_suffix = "json"
         else:
-            self.logger.info("Reading inputs from '%s'", plugin_args.input_dir)
+            # At this point, input_dir is guaranteed to be set by the Ansible argument spec validator (via required_if).
+            input_dir = cast("str", plugin_args.input_dir)
+            self.logger.info("Reading inputs from '%s'", input_dir)
             hosts_to_validate = hosts_to_process
-            validation_input_path = Path(plugin_args.input_dir)
+            validation_input_path = Path(input_dir)
             validation_input_suffix = plugin_args.input_suffix
 
         # Phase 2: Run the validation phase on the input_dir files or the templated_path files.
@@ -211,7 +219,10 @@ class ActionModule(AvdActionPlugin):
         Returns:
             PluginArgs instance with the validated arguments.
         """
-        _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
+        _validation_result, validated_args = self.validate_argument_spec(
+            argument_spec=ARGUMENT_SPEC,
+            required_if=REQUIRED_IF,
+        )
 
         # Converting to JSON and back to remove any AnsibeUnsafe types.
         validated_args = json.loads(json.dumps(validated_args))
