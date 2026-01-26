@@ -16,7 +16,7 @@ sometimes leading to configuration changes after a minor releases upgrade. This 
 using `eos_cli_config_gen` variables within `eos_designs`. However the direct usage of `eos_cli_config_gen` variables still works.
 
 !!! note
-    Only top-level keys from the `eos_cli_config_gen` schema are detected and warned about. Nested keys within `eos_designs` data structures are not affected by this validation.
+    Only top-level keys from the EOS Config inputs are detected and warned about. Nested keys within AVD Design data models are not affected by this validation.
 
 ## Changes
 
