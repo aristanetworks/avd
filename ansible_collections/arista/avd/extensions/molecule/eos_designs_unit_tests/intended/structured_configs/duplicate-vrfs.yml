@@ -140,6 +140,9 @@ router_pim_sparse_mode:
       - address: 192.168.100.1
         groups:
         - 239.1.0.0/24
+      - address: 192.168.100.4
+        groups:
+        - 239.1.0.0/24
       - address: 192.168.100.2
         groups:
         - 239.2.0.0/24

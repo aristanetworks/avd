@@ -1,3 +1,4 @@
+---
 # Testing duplicate VRF definitions according to the following rules documented in the schema.
 # Also see eos_designs_negative_unit_tests for testing of the raised errors.
 
@@ -74,6 +75,11 @@ tenants:
           # Duplicate RP address with same groups - should be deduplicated by append_unique
           - rps:
               - 192.168.100.1
+            groups:
+              - 239.1.0.0/24
+          # Multiple RPs for the same group across tenant - valid for redundancy
+          - rps:
+              - 192.168.100.4
             groups:
               - 239.1.0.0/24
         svis:
