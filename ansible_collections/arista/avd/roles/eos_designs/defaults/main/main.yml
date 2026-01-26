@@ -1,10 +1,14 @@
+---
 # Roles Defaults - main
 
 avd_structured_config_file_format: "yml"
 
-# Enable warnings for eos_cli_config_gen keys used in eos_designs input data.
-# When enabled, warnings will be emitted during validation if any top-level keys
-# from the eos_cli_config_gen schema are found at the top level of eos_designs input data.
-# Note: These keys will be ignored during eos_cli_config_gen processing when used with eos_designs.
-# Set to false to disable these warnings.
-avd_eos_designs_warn_eos_cli_config_gen_keys: true
+# Validation configuration for AVD Design input data.
+# This dictionary is passed to the validate_inputs action plugin.
+# Available options:
+#   warn_eos_config_keys: (bool, default: true)
+#     When enabled, warnings will be emitted during validation if any top-level keys
+#     from the EOS Config inputs are found at the top level of AVD Design input data.
+#     Note: These keys will be ignored during eos_cli_config_gen processing when used with eos_designs.
+avd_validation_configuration:
+  warn_eos_config_keys: true

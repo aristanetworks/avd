@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 
 import pytest
+from pyavd_utils.validation import Configuration
 
 from pyavd import validate_inputs
 from tests.models import MoleculeHost
@@ -36,15 +37,20 @@ def test_validate_inputs_with_valid_inputs(molecule_host: MoleculeHost) -> None:
 
 
 def test_validate_inputs_with_eos_cli_config_gen_keys() -> None:
-    """Test that validate_inputs returns ignored_eos_config_keys when eos_cli_config_gen keys are used."""
+    """
+    Test that validate_inputs returns ignored_eos_config_keys warning.
+
+    When eos_cli_config_gen keys are used in the inputs and the configuration object has warn_eos_config_keys set to True.
+    """
     inputs = {
         "fabric_name": "TEST-FABRIC",
         "dns_domain": "this.should.warn.test",
         "dns_settings": {"servers": [{"ip_address": "8.8.8.8"}]},
     }
 
-    # Test with warnings enabled (default)
-    validated_data_result = validate_inputs(inputs)
+    # Test with warnings enabled
+    configuration = Configuration(warn_eos_cli_config_gen_keys=True)
+    validated_data_result = validate_inputs(inputs, configuration=configuration)
 
     # Should have no violations
     assert validated_data_result.validation_result.violations == []
@@ -56,15 +62,20 @@ def test_validate_inputs_with_eos_cli_config_gen_keys() -> None:
 
 
 def test_validate_inputs_with_eos_cli_config_gen_keys_disabled() -> None:
-    """Test that validate_inputs does not return ignored_eos_config_keys when warn_eos_cli_config_gen_keys is False."""
+    """
+    Test that validate_inputs does not return ignored_eos_config_keys warning.
+
+    When eos_cli_config_gen keys are used in the inputs and the configuration object has warn_eos_config_keys set to False.
+    """
     inputs = {
         "fabric_name": "TEST-FABRIC",
         "dns_domain": "this.should.not.warn.test",
         "dns_settings": {"servers": [{"ip_address": "8.8.8.8"}]},
     }
 
-    # Test with warnings disabled
-    validated_data_result = validate_inputs(inputs, warn_eos_cli_config_gen_keys=False)
+    # Test with warnings disabled using Configuration object
+    configuration = Configuration(warn_eos_cli_config_gen_keys=False)
+    validated_data_result = validate_inputs(inputs, configuration=configuration)
 
     # Should have no violations
     assert validated_data_result.validation_result.violations == []
