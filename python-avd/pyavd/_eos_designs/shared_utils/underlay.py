@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default
 from pyavd._utils.password_utils.password import isis_encrypt
 
@@ -117,8 +117,8 @@ class UnderlayMixin(Protocol):
                 )
                 raise AristaAvdInvalidInputsError(msg)
             if not self.underlay_ipv6:
-                msg = "Invalid combination of inputs. underlay_ipv6 must be enabled when using numbered IPv6 underlay"
-                raise AristaAvdInvalidInputsError(msg)
+                msg = "underlay_ipv6: true"
+                raise AristaAvdMissingVariableError(msg)
         return self.inputs.underlay_ipv6_numbered
 
     @cached_property
