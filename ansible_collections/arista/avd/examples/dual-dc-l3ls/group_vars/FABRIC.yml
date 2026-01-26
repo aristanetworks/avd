@@ -72,7 +72,7 @@ default_interfaces:
     platforms: [vEOS-lab]
     uplink_interfaces: [Ethernet1-8]
     mlag_interfaces: [Ethernet3-4]
-    downlink_interfaces: [Ethernet8, Ethernet8]
+    downlink_interfaces: [Ethernet8]
   - types: [l2leaf]
     platforms: [vEOS-lab]
     uplink_interfaces: [Ethernet1-2]
