@@ -1,3 +1,4 @@
+---
 # Testing conflict detection when the same VRF is defined in different tenants
 # with conflicting evpn_l3_multicast.enabled settings (one True, one False)
 
@@ -50,7 +51,5 @@ tenants:
             name: "MULTICAST_DISABLED_101"
             enabled: true
             ip_address_virtual: 10.1.101.1/24
-
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for VrfsItem.
-
