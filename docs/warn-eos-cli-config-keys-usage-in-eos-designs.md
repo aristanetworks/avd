@@ -22,7 +22,7 @@ using `eos_cli_config_gen` variables within `eos_designs`. However the direct us
 
 ### AVD 6.0 and Later
 
-Starting with AVD 6.0, the `eos_designs` role emits warnings identifying the native `eos_cli_config_gen` keys being used at the top level of input data. The nominal behavior of `eos_designs` is to ignore `eos_cli_config_gen` native keys found at the top level of input data.
+Starting with AVD 6.0, the `eos_designs` role emits warnings identifying the native EOS Config input keys being used at the top level of AVD Design input data. The behavior of `eos_designs` is to ignore these keys.
 
 The solutions to address such warning should be in order of priority:
 
