@@ -94,6 +94,8 @@ class UnderlayMixin(Protocol):
 
     @cached_property
     def underlay_ipv6_numbered(self: SharedUtilsProtocol) -> bool:
+        if not self.underlay_router:
+            return False
         if self.inputs.underlay_ipv6_numbered:
             if self.is_wan_router:
                 msg = "Invalid combination of inputs. WAN is not yet supported with IPv6 underlay"
