@@ -59,7 +59,7 @@ custom_structured_configuration_dns_domain: my.awesome.domain.local
 
 #### Disabling Warnings
 
-By default, warnings are enabled to help identify configuration that will be ignored. If you want to disable these warnings (for example, if you are aware of the ignored keys and want to suppress the notifications), you can set the `avd_eos_designs_warn_eos_cli_config_gen_keys` variable to `false`:
+By default, warnings are enabled to help identify configuration that will be ignored. If you want to disable these warnings, you can set the `avd_eos_designs_warn_eos_cli_config_gen_keys` variable to `false`:
 
 **In playbook:**
 
