@@ -29,6 +29,16 @@ node_type_keys:
     default_overlay_address_families: [evpn]
     default_evpn_encapsulation: mpls
 
+default_node_types:
+  - match_hostnames:
+      - bgp-peer-groups-3
+      - bgp-peer-groups-4
+    node_type: pe
+  # All others are l3leaf
+  - match_hostnames:
+      - bgp-peer-groups-.*
+    node_type: l3leaf
+
 bgp_peer_groups:
   ipv4_underlay_peers:
     bfd: true
@@ -74,7 +84,6 @@ bgp_peer_groups:
     # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
     structured_config:
       description: Description for ipvpn_gateway_peers via structured_config
-type: l3leaf
 mgmt_gateway: 192.168.0.1
 overlay_routing_protocol: ibgp
 bgp_as: 65001
@@ -142,6 +151,16 @@ pe:
           mpls_overlay_role: client
           ipvpn_gateway:
             enabled: true
+    - group: bgp-peer-group-rr-overlay-peer
+      # Adding another RR to test the rr_overlay_peers
+      # To trigger the peer-group generation, overlay_routing_protocol needs to be set to ibgp which is done in host_vars
+      nodes:
+        - name: bgp-peer-groups-4
+          mpls_route_reflectors: [bgp-peer-groups-2]
+          id: 107
+          bgp_as: 107
+          evpn_role: server
+          mpls_overlay_role: server
 
 # MPLS Beta code is hardcoded to look for this dictionary.
 rr:

@@ -68,14 +68,6 @@ router_bgp:
     bfd: true
     send_community: all
     maximum_routes: 0
-  - name: RR-OVERLAY-PEERS
-    metadata:
-      type: mpls
-    remote_as: '65233'
-    update_source: Loopback0
-    bfd: true
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -97,8 +89,6 @@ router_bgp:
   address_family_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
-      activate: false
-    - name: RR-OVERLAY-PEERS
       activate: false
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true

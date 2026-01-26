@@ -1,0 +1,4 @@
+---
+# Setting overlay_routing_protocol to ibgp to trigger generation of the RR peer group
+# This device is seen as a server with peers
+overlay_routing_protocol: ibgp

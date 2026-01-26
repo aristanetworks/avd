@@ -11,6 +11,7 @@ from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import AvdStringFormatter, default, strip_empties_from_dict
+from pyavd._utils.run_once import run_once_method
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -124,12 +125,6 @@ class RouterBgpMixin(Protocol):
                     evpn_overlay_peer_group.route_reflector_client = True
                 peer_groups.append(evpn_overlay_peer_group)
 
-            # RR Overlay peer group rendered either for MPLS route servers
-            if self._is_mpls_server is True:
-                rr_overlay_peer_group = self._generate_base_peer_group("mpls", "rr_overlay_peers")
-                rr_overlay_peer_group.remote_as = self.shared_utils.formatted_bgp_as
-                peer_groups.append(rr_overlay_peer_group)
-
         # Always render the WAN routers
         # TODO: probably should move from overlay
         if self.shared_utils.is_wan_router:
@@ -185,12 +180,8 @@ class RouterBgpMixin(Protocol):
         ):
             peer_groups.append_new(name=self.inputs.bgp_peer_groups.evpn_overlay_core.name, activate=False)
 
-        if self.shared_utils.overlay_routing_protocol == "ibgp":
-            if self.shared_utils.overlay_mpls is True:
-                peer_groups.append_new(name=self.inputs.bgp_peer_groups.mpls_overlay_peers.name, activate=False)
-
-            if self._is_mpls_server is True:
-                peer_groups.append_new(name=self.inputs.bgp_peer_groups.rr_overlay_peers.name, activate=False)
+        if self.shared_utils.overlay_routing_protocol == "ibgp" and self.shared_utils.overlay_mpls is True:
+            peer_groups.append_new(name=self.inputs.bgp_peer_groups.mpls_overlay_peers.name, activate=False)
 
         if self.shared_utils.overlay_ipvpn_gateway is True:
             peer_groups.append_new(name=self.inputs.bgp_peer_groups.ipvpn_gateway_peers.name, activate=False)
@@ -264,9 +255,6 @@ class RouterBgpMixin(Protocol):
                 self.structured_config.router_bgp.address_family_evpn.neighbor_default.encapsulation = "mpls"
                 if self.shared_utils.overlay_ler is True:
                     self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_source_interface = "Loopback0"
-
-                if self._is_mpls_server is True:
-                    peer_groups.append_new(name=self.inputs.bgp_peer_groups.rr_overlay_peers.name, activate=True)
 
             # TODO: this is written for matching either evpn_mpls or evpn_vlxan based for iBGP see if we cannot make this better.
             if self.shared_utils.overlay_vtep is True and self.shared_utils.evpn_role == "client" and overlay_peer_group:
@@ -414,12 +402,8 @@ class RouterBgpMixin(Protocol):
         if self.shared_utils.overlay_ipvpn_gateway:
             af_vpn.peer_groups.append_new(name=self.inputs.bgp_peer_groups.ipvpn_gateway_peers.name, activate=True)
 
-        if self.shared_utils.overlay_routing_protocol == "ibgp":
-            if self.shared_utils.overlay_mpls:
-                af_vpn.peer_groups.append_new(name=self.inputs.bgp_peer_groups.mpls_overlay_peers.name, activate=True)
-
-            if self.shared_utils.mpls_overlay_role == "server":
-                af_vpn.peer_groups.append_new(name=self.inputs.bgp_peer_groups.rr_overlay_peers.name, activate=True)
+        if self.shared_utils.overlay_routing_protocol == "ibgp" and self.shared_utils.overlay_mpls:
+            af_vpn.peer_groups.append_new(name=self.inputs.bgp_peer_groups.mpls_overlay_peers.name, activate=True)
 
         if self.shared_utils.overlay_dpath:
             af_vpn.domain_identifier = self.shared_utils.node_config.ipvpn_gateway.ipvpn_domain_id
@@ -684,6 +668,7 @@ class RouterBgpMixin(Protocol):
                 overlay_peering_interface="Loopback0",
             )
             self.structured_config.router_bgp.neighbors.append(neighbor)
+            self._set_once_peer_group_rr_overlay_peers()
 
         for route_reflector_client in self.facts.mpls_route_reflector_clients:
             if route_reflector_client in self.facts.mpls_route_reflectors:
@@ -702,3 +687,27 @@ class RouterBgpMixin(Protocol):
                 overlay_peering_interface="Loopback0",
             )
             self.structured_config.router_bgp.neighbors.append(neighbor)
+            self._set_once_peer_group_rr_overlay_peers()
+
+    @run_once_method
+    def _set_once_peer_group_rr_overlay_peers(self: AvdStructuredConfigOverlayProtocol) -> None:
+        """Add rr_overlay_peers peer group to structured_config."""
+        peer_group = self._generate_base_peer_group("mpls", "rr_overlay_peers")
+        peer_group.remote_as = self.shared_utils.formatted_bgp_as
+        self.structured_config.router_bgp.peer_groups.append(peer_group)
+
+        # Disable the peer group for IPv4 address-family
+        self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=self.inputs.bgp_peer_groups.rr_overlay_peers.name, activate=False)
+        # Activate in AF vpn-ipv4 and vpn-ipv6 if we are a mpls server
+        if self.shared_utils.mpls_overlay_role == "server":
+            if self.shared_utils.overlay_vpn_ipv4:
+                self.structured_config.router_bgp.address_family_vpn_ipv4.peer_groups.append_new(
+                    name=self.inputs.bgp_peer_groups.rr_overlay_peers.name, activate=True
+                )
+            if self.shared_utils.overlay_vpn_ipv6:
+                self.structured_config.router_bgp.address_family_vpn_ipv6.peer_groups.append_new(
+                    name=self.inputs.bgp_peer_groups.rr_overlay_peers.name, activate=True
+                )
+        # Activate in AF evpn if overlay_evpn_mpls is True and overlay_evpn_vxlan is not True
+        if self.shared_utils.overlay_evpn_mpls is True and self.shared_utils.overlay_evpn_vxlan is not True:
+            self.structured_config.router_bgp.address_family_evpn.peer_groups.append_new(name=self.inputs.bgp_peer_groups.rr_overlay_peers.name, activate=True)
