@@ -239,7 +239,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
         """Generate Host objects for the inband management reachability test."""
         for svi in self.structured_config.vlan_interfaces:
             if svi.metadata.type != "inband_mgmt":
-                self.logger_adapter.debug(LogMessage.INTERFACE_NOT_INBAND_MGMT, svi=svi.name)
+                self.logger_adapter.debug(LogMessage.INTERFACE_NOT_INBAND_MGMT, interface=svi.name)
                 continue
 
             if svi.shutdown:
