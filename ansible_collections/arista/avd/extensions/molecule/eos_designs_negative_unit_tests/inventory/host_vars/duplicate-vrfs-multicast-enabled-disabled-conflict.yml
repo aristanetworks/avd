@@ -1,0 +1,56 @@
+# Testing conflict detection when the same VRF is defined in different tenants
+# with conflicting evpn_l3_multicast.enabled settings (one True, one False)
+
+type: l3leaf
+evpn_multicast: true
+underlay_multicast_pim_sm: true
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: duplicate-vrfs-multicast-enabled-disabled-conflict
+      id: 101
+      bgp_as: 101
+      filter:
+        tenants:
+          - TENANT_A
+          - TENANT_B
+
+tenants:
+  # Tenant A defines VRF with multicast ENABLED
+  - name: TENANT_A
+    mac_vrf_vni_base: 10000
+    evpn_l3_multicast:
+      enabled: true
+      evpn_underlay_l3_multicast_group_ipv4_pool: 232.0.0.0/20
+    vrfs:
+      - name: MULTICAST_CONFLICT_VRF
+        vrf_id: 100
+        vtep_diagnostic:
+          loopback: 100
+          loopback_ip_range: 10.255.100.0/24
+        svis:
+          - id: 100
+            name: "MULTICAST_ENABLED_100"
+            enabled: true
+            ip_address_virtual: 10.1.100.1/24
+
+  # Tenant B defines the SAME VRF with multicast DISABLED
+  - name: TENANT_B
+    mac_vrf_vni_base: 10000
+    evpn_l3_multicast:
+      enabled: false
+    vrfs:
+      - name: MULTICAST_CONFLICT_VRF
+        vrf_id: 100
+        svis:
+          - id: 101
+            name: "MULTICAST_DISABLED_101"
+            enabled: true
+            ip_address_virtual: 10.1.101.1/24
+
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for VrfsItem.
+
