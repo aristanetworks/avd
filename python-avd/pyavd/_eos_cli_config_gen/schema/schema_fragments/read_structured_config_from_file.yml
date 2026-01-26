@@ -6,11 +6,11 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  avd_eos_cli_config_gen_input_dir:
+  read_structured_config_from_file:
     documentation_options:
       table: role-settings
-    type: str
+    type: bool
+    default: true
     description: |
-      Specify a directory containing structured configuration files to use as input.
-      Can be set to null or an empty string to force `eos_cli_config_gen` to use hostvars as input.
-      By default, this variable is set to "{{ structured_dir }}" which is the directory where `eos_designs` outputs structured configuration files.
+      Read structured configuration from files in `structured_dir` (default directory also used by the `eos_designs` role).
+      If set to false, `eos_cli_config_gen` will read structured configuration from hostvars.

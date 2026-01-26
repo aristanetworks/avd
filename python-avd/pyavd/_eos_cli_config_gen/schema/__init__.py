@@ -69393,7 +69393,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "application_traffic_recognition": {"type": ApplicationTrafficRecognition},
         "arp": {"type": Arp},
         "as_path": {"type": AsPath},
-        "avd_eos_cli_config_gen_input_dir": {"type": str},
         "avd_eos_cli_config_gen_validate_inputs_batch_size": {"type": int, "default": 10},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "banners": {"type": Banners},
@@ -69527,6 +69526,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "queue_monitor_streaming": {"type": QueueMonitorStreaming},
         "radius_proxy": {"type": RadiusProxy},
         "radius_server": {"type": RadiusServer},
+        "read_structured_config_from_file": {"type": bool, "default": True},
         "redundancy": {"type": Redundancy},
         "roles": {"type": Roles},
         "route_maps": {"type": RouteMaps},
@@ -69617,15 +69617,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     as_path: AsPath
     """Subclass of AvdModel."""
-    avd_eos_cli_config_gen_input_dir: str | None
-    """
-    Specify a directory containing structured configuration files to use as input.
-    Can be set to null or
-    an empty string to force `eos_cli_config_gen` to use hostvars as input.
-    By default, this variable is
-    set to "{{ structured_dir }}" which is the directory where `eos_designs` outputs structured
-    configuration files.
-    """
     avd_eos_cli_config_gen_validate_inputs_batch_size: int
     """
     The number of hosts to process in each batch when validating inputs.
@@ -70019,6 +70010,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     radius_server: RadiusServer
     """Subclass of AvdModel."""
+    read_structured_config_from_file: bool
+    """
+    Read structured configuration from files in `structured_dir` (default directory also used by the
+    `eos_designs` role).
+    If set to false, `eos_cli_config_gen` will read structured configuration from
+    hostvars.
+
+    Default value: `True`
+    """
     redundancy: Redundancy
     """Subclass of AvdModel."""
     roles: Roles
@@ -70171,7 +70171,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             application_traffic_recognition: ApplicationTrafficRecognition | UndefinedType = Undefined,
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
-            avd_eos_cli_config_gen_input_dir: str | None | UndefinedType = Undefined,
             avd_eos_cli_config_gen_validate_inputs_batch_size: int | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
@@ -70305,6 +70304,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             queue_monitor_streaming: QueueMonitorStreaming | UndefinedType = Undefined,
             radius_proxy: RadiusProxy | UndefinedType = Undefined,
             radius_server: RadiusServer | UndefinedType = Undefined,
+            read_structured_config_from_file: bool | UndefinedType = Undefined,
             redundancy: Redundancy | UndefinedType = Undefined,
             roles: Roles | UndefinedType = Undefined,
             route_maps: RouteMaps | UndefinedType = Undefined,
@@ -70387,13 +70387,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 arp: Subclass of AvdModel.
                 as_path: Subclass of AvdModel.
-                avd_eos_cli_config_gen_input_dir:
-                   Specify a directory containing structured configuration files to use as input.
-                   Can be set to null or
-                   an empty string to force `eos_cli_config_gen` to use hostvars as input.
-                   By default, this variable is
-                   set to "{{ structured_dir }}" which is the directory where `eos_designs` outputs structured
-                   configuration files.
                 avd_eos_cli_config_gen_validate_inputs_batch_size:
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
@@ -70631,6 +70624,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 radius_server: Subclass of AvdModel.
+                read_structured_config_from_file:
+                   Read structured configuration from files in `structured_dir` (default directory also used by the
+                   `eos_designs` role).
+                   If set to false, `eos_cli_config_gen` will read structured configuration from
+                   hostvars.
                 redundancy: Subclass of AvdModel.
                 roles: Subclass of AvdIndexedList with `RolesItem` items. Primary key is `name` (`str`).
                 route_maps: Subclass of AvdIndexedList with `RouteMapsItem` items. Primary key is `name` (`str`).

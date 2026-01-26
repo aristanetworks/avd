@@ -38,6 +38,23 @@ ethernet_interfaces:
     peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet61
+  description: P2P_bgp-peer-groups-ipv6-1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 2001:db8:a11:beef::d0/127
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  mpls:
+    ip: true
+  metadata:
+    peer: bgp-peer-groups-ipv6-1
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: bgp-peer-groups-3
 ip_igmp_snooping:
   globally_enabled: true
