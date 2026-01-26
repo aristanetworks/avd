@@ -42,7 +42,6 @@ Note: Input validation is performed by the `arista.avd.validate_inputs` plugin, 
 | <samp>cprofile_file</samp> | str | False | None | - | Filename for storing cprofile data used to debug performance issues.<br>Running cprofile will slow down performance in it self, so only set this while troubleshooting. |
 | <samp>digital_twin</samp> | bool | optional | False | - | PREVIEW: This option is marked as &#34;preview&#34;, meaning the data models or generated configuration can change at any time.<br>Generate Digital Twin topology information. |
 | <samp>return_structured_config</samp> | bool | optional | False | - | Return the structured configuration as &#34;ansible_facts&#34;. |
-| <samp>avd_eos_designs_warn_eos_cli_config_gen_keys</samp> | any | optional | True | - | Enable warnings for eos_cli_config_gen keys used in eos_designs input data.<br>When enabled, warnings will be emitted during validation if any top-level keys<br>from the eos_cli_config_gen schema are found at the top level of eos_designs input data.<br>Note: These keys will be ignored during eos_cli_config_gen processing when used with eos_designs. |
 
 ## Examples
 
