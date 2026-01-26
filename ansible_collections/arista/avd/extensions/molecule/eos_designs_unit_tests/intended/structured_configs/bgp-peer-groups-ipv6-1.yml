@@ -3,6 +3,18 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_bgp-peer-groups-3_Ethernet61
+  shutdown: false
+  mtu: 9214
+  ipv6_address: 2001:db8:a11:beef::d1/127
+  metadata:
+    peer: bgp-peer-groups-3
+    peer_interface: Ethernet61
+    peer_type: pe
+  switchport:
+    enabled: false
 hostname: bgp-peer-groups-ipv6-1
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
@@ -69,7 +81,7 @@ router_bgp:
     description: Description for ipv4_underlay_peers via structured_config for IPv6 underlay numbered
     bfd: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -78,6 +90,13 @@ router_bgp:
     bfd: true
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 2001:db8:a11:beef::d0
+    peer_group: IPV6-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: bgp-peer-groups-3
+    description: bgp-peer-groups-3_Ethernet61
   redistribute:
     connected:
       enabled: true
