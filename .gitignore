@@ -26,6 +26,7 @@ coverage.xml
 
 # ansible-lint ignores
 ansible_collections/arista/avd/.ansible
+.ansible/.lock
 
 # Development
 build/

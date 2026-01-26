@@ -23,14 +23,14 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
 
 if TYPE_CHECKING:
-    from pyavd_utils.validation import ValidationResult, get_validated_data
+    from pyavd_utils.validation import Configuration, ValidationResult, get_validated_data
 
     from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
     from pyavd._utils.filtered_map_view import FilteredMapView
 
 try:
-    from pyavd_utils.validation import ValidationResult, get_validated_data
+    from pyavd_utils.validation import Configuration, ValidationResult, get_validated_data
 
     from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
@@ -99,6 +99,7 @@ ARGUMENT_SPEC = {
     "input_dir": {"type": "str"},
     "input_suffix": {"type": "str", "default": "json", "choices": ["yml", "yaml", "json"]},
     "fail_on_validation_errors": {"type": "bool", "default": False},
+    "avd_eos_designs_warn_eos_cli_config_gen_keys": {"type": "bool", "default": True},
 }
 
 
@@ -111,6 +112,7 @@ class PluginArgs:
     input_dir: str | None
     input_suffix: Literal["yml", "yaml", "json"]
     fail_on_validation_errors: bool
+    avd_eos_designs_warn_eos_cli_config_gen_keys: bool
 
 
 _HOSTVARS_MANAGER: ActionPluginVars | None = None
@@ -198,6 +200,7 @@ class ActionModule(AvdActionPlugin):
                 output_path=validated_path,
                 schema_name=plugin_args.schema_name,
                 fail_on_validation_errors=plugin_args.fail_on_validation_errors,
+                warn_eos_cli_config_gen_keys=plugin_args.avd_eos_designs_warn_eos_cli_config_gen_keys,
             )
 
         if self.crashed_hosts:
@@ -315,6 +318,7 @@ class ActionModule(AvdActionPlugin):
         output_path: Path,
         schema_name: SCHEMA_NAME,
         fail_on_validation_errors: bool,
+        warn_eos_cli_config_gen_keys: bool,
     ) -> None:
         """
         Run Phase 2: Validation.
@@ -332,6 +336,7 @@ class ActionModule(AvdActionPlugin):
             output_path: Directory where validated JSON files will be written.
             schema_name: Schema to validate against.
             fail_on_validation_errors: Whether to fail the task on validation errors.
+            warn_eos_cli_config_gen_keys: Whether to warn about eos_cli_config_gen keys in eos_designs input.
         """
         self.logger.info("Validating inputs...")
         start_time = perf_counter()
@@ -341,7 +346,14 @@ class ActionModule(AvdActionPlugin):
         init_store()
 
         # Partial to inject arguments into the worker.
-        worker_func = partial(_validate_host_worker, input_path=input_path, input_suffix=input_suffix, output_path=output_path, schema_name=schema_name)
+        worker_func = partial(
+            _validate_host_worker,
+            input_path=input_path,
+            input_suffix=input_suffix,
+            output_path=output_path,
+            schema_name=schema_name,
+            warn_eos_cli_config_gen_keys=warn_eos_cli_config_gen_keys,
+        )
 
         with ThreadPoolExecutor(max_workers=workers) as pool:
             results = pool.map(worker_func, hostnames)
@@ -416,7 +428,9 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
         return WorkerFailure(hostname=hostname, error=f"Unexpected error in templating worker process: {e}")
 
 
-def _validate_host_worker(hostname: str, input_path: Path, input_suffix: str, output_path: Path, schema_name: SCHEMA_NAME) -> ValidateWorkerResult:
+def _validate_host_worker(
+    hostname: str, input_path: Path, input_suffix: str, output_path: Path, schema_name: SCHEMA_NAME, warn_eos_cli_config_gen_keys: bool
+) -> ValidateWorkerResult:
     """
     Phase 2 multithreading worker: Validate input data for a host.
 
@@ -429,6 +443,7 @@ def _validate_host_worker(hostname: str, input_path: Path, input_suffix: str, ou
         input_suffix: File suffix for the input file (json, yml, yaml).
         output_path: Directory path where the validated JSON file will be written.
         schema_name: Schema to validate against.
+        warn_eos_cli_config_gen_keys: Whether to warn about eos_cli_config_gen keys in eos_designs input.
 
     Returns:
         ValidateWorkerSuccess on success (with validation result), WorkerFailure on error.
@@ -452,7 +467,13 @@ def _validate_host_worker(hostname: str, input_path: Path, input_suffix: str, ou
                 json_data = f.read()
 
         # Validation in Rust, releasing the GIL.
-        validated_data_result = get_validated_data(data_as_json=json_data, schema_name=SCHEMA_MAP[schema_name])
+        # Only pass configuration for avd_design schema
+        if schema_name == "avd_design":
+            configuration = Configuration(warn_eos_cli_config_gen_keys=warn_eos_cli_config_gen_keys)
+            validated_data_result = get_validated_data(data_as_json=json_data, schema_name=SCHEMA_MAP[schema_name], configuration=configuration)
+        else:
+            validated_data_result = get_validated_data(data_as_json=json_data, schema_name=SCHEMA_MAP[schema_name])
+
         validation_result, validated_data = validated_data_result.validation_result, validated_data_result.validated_data
 
         output_file = None

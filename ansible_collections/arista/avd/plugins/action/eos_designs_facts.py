@@ -66,7 +66,6 @@ class ActionModule(ActionBase):
         self.template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
 
         self._digital_twin = self._task.args.get("digital_twin", False)
-        self._warn_eos_cli_config_gen_keys = self._task.args.get("avd_eos_designs_warn_eos_cli_config_gen_keys", True)
         output_dir = self._task.args.get("output_dir")
 
         groups = task_vars.get("groups", {})

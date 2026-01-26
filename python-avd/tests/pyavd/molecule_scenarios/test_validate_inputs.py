@@ -52,7 +52,7 @@ def test_validate_inputs_with_eos_cli_config_gen_keys() -> None:
     # Should have ignored_eos_config_keys
     assert len(validated_data_result.validation_result.ignored_eos_config_keys) == 1
     assert validated_data_result.validation_result.ignored_eos_config_keys[0].path == ["dns_domain"]
-    assert "dns_domain" in validated_data_result.validation_result.ignored_eos_config_keys[0].message
+    assert "eos_cli_config_gen" in validated_data_result.validation_result.ignored_eos_config_keys[0].message
 
 
 def test_validate_inputs_with_eos_cli_config_gen_keys_disabled() -> None:
