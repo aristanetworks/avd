@@ -415,6 +415,8 @@ Forwarding requests with additional IPv6 addresses in the "giaddr" field is allo
 
 Add Option 79 - Link Layer Address Option.
 
+Add RemoteID option 37 in format MAC address, hostname and interface name.
+
 ### IPv6 DHCP Relay Device Configuration
 
 ```eos
