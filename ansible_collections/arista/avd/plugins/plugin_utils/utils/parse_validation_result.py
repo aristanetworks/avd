@@ -48,7 +48,7 @@ def parse_validation_result(validation_result: ValidationResult, hostname: str, 
 
         message = (
             f"[{hostname}]: The 'eos_cli_config_gen' key '{path}' is present in the input to 'eos_designs' and will be ignored. "
-            f"To address this: 1) Use the equivalent 'eos_designs' model if available, or 2) Use custom_structured_configuration. "
+            f"To address this, use the equivalent AVD Design input model if available or use custom_structured_configuration. "
             f"See https://avd.arista.com/stable/docs/warn-eos-cli-config-keys-usage-in-eos-designs.html for details."
         )
         ansible_display.warning(message, formatted=True)
