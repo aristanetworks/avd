@@ -460,7 +460,7 @@ class RouterBgpMixin(Protocol):
             id=vlan.id,
             rd=vlan_rd,
         )
-        bgp_vlan.metadata.tenants.append(tenant.name)
+        bgp_vlan.metadata.tenants.append_unique(tenant.name)
         bgp_vlan.route_targets.both.append(vlan_rt)
         bgp_vlan.redistribute_routes.append("learned")
 
