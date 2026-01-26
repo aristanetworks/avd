@@ -116,6 +116,9 @@ class UnderlayMixin(Protocol):
                     "underlay_routing_protocol must be set to 'ebgp'"
                 )
                 raise AristaAvdInvalidInputsError(msg)
+            if not self.underlay_ipv6:
+                msg = "Invalid combination of inputs. underlay_ipv6 must be enabled when using numbered IPv6 underlay"
+                raise AristaAvdInvalidInputsError(msg)
         return self.inputs.underlay_ipv6_numbered
 
     @cached_property

@@ -1,6 +1,7 @@
 ---
 # test for underlay_ipv6_numbered: true
 underlay_ipv6_numbered: true
+underlay_ipv6: true
 
 bgp_peer_groups:
   ipv4_underlay_peers:
