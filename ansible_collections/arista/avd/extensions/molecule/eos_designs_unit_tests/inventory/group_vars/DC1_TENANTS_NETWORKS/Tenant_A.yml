@@ -127,6 +127,8 @@ tenant_a:
             nodes:
               - node: DC1-LEAF1A
                 ip_address: 10.1.32.1/24
+                ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+                ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
                 static_routes:
                   - prefix: 10.10.10.0/24
                     next_hop: 10.10.10.1
