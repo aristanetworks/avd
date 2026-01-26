@@ -7230,6 +7230,12 @@ interface Tunnel4
 | Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
 | Vlan667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8:667::1 | text |
 
+##### OSPF
+
+| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
+| --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
+| Vlan26 | True | 0.0.0.24 | 99 | message-digest | 100 | 0.0.0.29 | True |
+
 ##### ISIS
 
 | Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode |
@@ -7289,7 +7295,7 @@ interface Vlan26
    ip ospf message-digest-key 55 md5 7 <removed>
    ip ospf message-digest-key 56 sha512 8a <removed>
    ipv6 ospf network point-to-point
-   ipv6 ospf area 0.0.0.29
+   ipv6 ospf 100 area 0.0.0.29
 !
 interface Vlan41
    description SVI Description
@@ -8149,9 +8155,23 @@ router adaptive-virtual-topology
 ```eos
 !
 router general
+   control-functions
+      code unit code1
+         function ACCEPT_ALL() {
+           return true;
+           }
+         EOF
+      code unit code2
+         function DENY_ALL() {
+           return true;
+           }
+         EOF
+   !
+   exit
    router-id ipv4 10.1.2.3
    router-id ipv6 2001:beef:cafe::1
    software forwarding hardware offload mtu 78
+   !
    hardware next-hop fast-failover
    !
    vrf BLUE3
@@ -8166,18 +8186,6 @@ router general
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_1
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_2
       exit
-   !
-   control-functions
-      code unit code1
-         function ACCEPT_ALL() {
-           return true;
-           }
-         EOF
-      code unit code2
-         function DENY_ALL() {
-           return true;
-           }
-         EOF
    !
    exit
 ```
@@ -8714,7 +8722,6 @@ router isis EVPN_UNDERLAY
    redistribute ospfv3 match external
    redistribute static include leaked route-map RM-STATIC-TO-ISIS
    timers local-convergence-delay 15000 protected-prefixes
-   set-overload-bit
    set-overload-bit on-startup wait-for-bgp timeout 10
    advertise passive-only
    spf-interval 250 seconds 10 milliseconds 20 milliseconds
@@ -8730,11 +8737,11 @@ router isis EVPN_UNDERLAY
    graceful-restart t2 level-1 10
    graceful-restart t2 level-2 20
    graceful-restart restart-hold-time 10
+   authentication key-id 1 algorithm sha-1 key 0 password level-1
+   authentication key-id 1 algorithm sha-1 key 0 password level-2
    authentication key-id 2 algorithm sha-512 key 0 password
    authentication key-id 3 algorithm sha-512 rfc-5310 key 0 password1
-   authentication key-id 1 algorithm sha-1 key 0 password level-1
    authentication key-id 4 algorithm sha-1 rfc-5310 key 0 password level-1
-   authentication key-id 1 algorithm sha-1 key 0 password level-2
    authentication key-id 5 algorithm sha-1 rfc-5310 key 0 password level-2
    authentication key 0 password level-1
    authentication key 0 password level-2
@@ -12712,6 +12719,19 @@ router segment-security
       20 application APP-TEST-2 action drop stateless log
       25 application APP-TEST-3 action redirect next-hop 198.51.100.1 stateless
    !
+   vrf SECURE
+      segment SEGMENT-TEST1
+         definition
+            match interface Ethernet1
+            match interface Ethernet2
+            match covered prefix-list ipv4 PREFIX-LIST10
+            match covered prefix-list ipv6 PREFIX-LIST1
+         !
+         policies
+            from MATCH-LIST20 policy policy-forward-all
+            from MATCH-LIST30 policy policy-drop-all
+            fallback policy policy-custom
+   !
    vrf default
       segment SEGMENT-TEST1
          definition
@@ -12730,19 +12750,6 @@ router segment-security
             from MATCH-LIST20 policy policy-forward-all
             from MATCH-LIST21 policy POLICY-TEST1
             from MATCH-LIST30 policy policy-drop-all
-   !
-   vrf SECURE
-      segment SEGMENT-TEST1
-         definition
-            match interface Ethernet1
-            match interface Ethernet2
-            match covered prefix-list ipv4 PREFIX-LIST10
-            match covered prefix-list ipv6 PREFIX-LIST1
-         !
-         policies
-            from MATCH-LIST20 policy policy-forward-all
-            from MATCH-LIST30 policy policy-drop-all
-            fallback policy policy-custom
    !
 ```
 

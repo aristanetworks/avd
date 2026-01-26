@@ -289,6 +289,7 @@
           - 7050X3
           feature_support:
             queue_monitor_length_notify: false
+            sflow_subinterfaces: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -301,6 +302,7 @@
           feature_support:
             poe: true
             queue_monitor_length_notify: false
+            sflow_subinterfaces: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -317,6 +319,7 @@
             poe: true
             queue_monitor_length_notify: false
             per_interface_mtu: false
+            sflow_subinterfaces: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -330,6 +333,7 @@
             poe: true
             queue_monitor_length_notify: false
             per_interface_mtu: false
+            sflow_subinterfaces: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -341,6 +345,7 @@
           feature_support:
             queue_monitor_length_notify: false
             poe: true
+            sflow_subinterfaces: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -350,6 +355,7 @@
           - 720DF
           feature_support:
             queue_monitor_length_notify: false
+            sflow_subinterfaces: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -361,6 +367,7 @@
           feature_support:
             queue_monitor_length_notify: false
             per_interface_mtu: false
+            sflow_subinterfaces: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -498,6 +505,7 @@
             interface_storm_control: true
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: true
+            sflow_subinterfaces: false
           digital_twin:
             platform: vEOS-lab
         - platforms:
@@ -506,6 +514,8 @@
           reload_delay:
             mlag: 300
             non_mlag: 330
+          feature_support:
+            sflow_subinterfaces: false
           digital_twin:
             platform: vEOS-lab
         - platforms:
@@ -514,6 +524,8 @@
           reload_delay:
             mlag: 1200
             non_mlag: 1320
+          feature_support:
+            sflow_subinterfaces: false
           trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
             131072
           digital_twin:
@@ -529,6 +541,7 @@
             interface_storm_control: false
             queue_monitor_length_notify: false
             evpn_gateway_all_active_multihoming: true
+            sflow_subinterfaces: false
             hardware_validation: false
           reload_delay:
             mlag: 300
@@ -546,6 +559,7 @@
             interface_storm_control: false
             queue_monitor_length_notify: false
             evpn_gateway_all_active_multihoming: true
+            sflow_subinterfaces: false
             hardware_validation: false
           management_interface: Management0
           reload_delay:
@@ -559,6 +573,7 @@
             bgp_update_wait_install: false
             interface_storm_control: false
             queue_monitor_length_notify: false
+            sflow: false
             hardware_validation: false
           p2p_uplinks_mtu: 9194
           digital_twin:
@@ -574,6 +589,7 @@
             platform_sfe_interface_profile:
               supported: true
               max_rx_queues: 6
+            sflow: false
           management_interface: Management1/1
           p2p_uplinks_mtu: 9194
           digital_twin:
@@ -589,6 +605,7 @@
             platform_sfe_interface_profile:
               supported: true
               max_rx_queues: 16
+            sflow: false
           management_interface: Management1/1
           p2p_uplinks_mtu: 9194
           digital_twin:
@@ -601,6 +618,7 @@
             interface_storm_control: false
             queue_monitor_length_notify: false
             poe: true
+            sflow: false
           management_interface: Management1
           p2p_uplinks_mtu: 9194
           digital_twin:

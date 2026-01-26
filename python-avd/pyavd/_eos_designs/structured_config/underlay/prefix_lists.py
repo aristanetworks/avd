@@ -90,11 +90,3 @@ class PrefixListsMixin(Protocol):
         for index, ip_address in enumerate(self.shared_utils.wan_ha_ip_addresses, start=1):
             sequence_numbers.append_new(sequence=10 * index, action=f"permit {ipaddress.ip_network(ip_address, strict=False)}")
         self.structured_config.prefix_lists.append_new(name="PL-WAN-HA-PREFIXES", sequence_numbers=sequence_numbers)
-
-    @run_once_method
-    def set_once_prefix_list_wan_ha_peer_prefixes(self: AvdStructuredConfigUnderlayProtocol) -> None:
-        """Set prefix-list PL-WAN-HA-PEER-PREFIXES."""
-        sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
-        for index, ip_address in enumerate(self.shared_utils.wan_ha_peer_ip_addresses, start=1):
-            sequence_numbers.append_new(sequence=10 * index, action=f"permit {ipaddress.ip_network(ip_address, strict=False)}")
-        self.structured_config.prefix_lists.append_new(name="PL-WAN-HA-PEER-PREFIXES", sequence_numbers=sequence_numbers)

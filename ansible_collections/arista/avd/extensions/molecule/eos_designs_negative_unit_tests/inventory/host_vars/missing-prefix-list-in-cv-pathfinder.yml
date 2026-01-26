@@ -60,7 +60,6 @@ wan_router:
       nodes:
         - name: missing-prefix-list-in-cv-pathfinder
           id: 1
-          uplink_switch_interfaces: [Ethernet1]
           l3_interfaces:
             - name: Ethernet1
               peer: peer3

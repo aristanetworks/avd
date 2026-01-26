@@ -1,0 +1,468 @@
+# Copyright (c) 2025-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+import json
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from dataclasses import dataclass
+from functools import partial
+from multiprocessing import get_context
+from pathlib import Path
+from time import perf_counter
+from typing import TYPE_CHECKING, Any, Literal
+
+import yaml
+from ansible.plugins.action import display
+
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    ActionPluginVars,
+    build_result_message,
+    get_role_tmp_paths,
+    get_workers,
+    parse_validation_result,
+)
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
+
+if TYPE_CHECKING:
+    from pyavd_utils.validation import ValidationResult, get_validated_data
+
+    from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
+    from pyavd._schema.store import init_store
+    from pyavd._utils.filtered_map_view import FilteredMapView
+
+try:
+    from pyavd_utils.validation import ValidationResult, get_validated_data
+
+    from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
+    from pyavd._schema.store import init_store
+    from pyavd._utils.filtered_map_view import FilteredMapView
+
+    HAS_PYAVD = True
+except ImportError:
+    HAS_PYAVD = False
+
+    # Workaround to make ansible-test sanity happy.
+    ValidationResult = object
+
+
+@dataclass(frozen=True, slots=True)
+class WorkerFailure:
+    """Result returned when a worker encounters an error."""
+
+    hostname: str
+    """Hostname that failed processing."""
+    error: str
+    """Error message describing the failure."""
+
+
+@dataclass(frozen=True, slots=True)
+class TemplateWorkerSuccess:
+    """Result returned when a worker successfully completes the templating phase for a host."""
+
+    hostname: str
+    """Hostname that was processed."""
+    output_file: str
+    """Path to the output JSON file containing templated data."""
+
+
+@dataclass(frozen=True, slots=True)
+class ValidateWorkerSuccess:
+    """Result returned when a worker successfully completes the validation phase for a host."""
+
+    hostname: str
+    """Hostname that was processed."""
+    validation_result: ValidationResult  # pyright: ignore[reportInvalidTypeForm]
+    """Validation result from pyavd-utils."""
+    output_file: str | None
+    """Path to the output JSON file, or None if validation failed."""
+
+
+TemplateWorkerResult = TemplateWorkerSuccess | WorkerFailure
+"""Result type from Phase 1 (templating hostvars and writing to file)."""
+
+ValidateWorkerResult = ValidateWorkerSuccess | WorkerFailure
+"""Result type from Phase 2 (validating data and writing to file)."""
+
+
+PLUGIN_NAME = "arista.avd.validate_inputs"
+SCHEMA_NAME = Literal["avd_design", "eos_config"]
+SCHEMA_MAP = {
+    "avd_design": "eos_designs",
+    "eos_config": "eos_cli_config_gen",
+}
+
+# TODO: Create a single pyavd_utils logger.
+TARGET_LOGGERS = ["ansible_collections.arista.avd", "validation", "pyvalidation"]
+
+ARGUMENT_SPEC = {
+    "batch_size": {"type": "int", "default": 10},
+    "schema_name": {"type": "str", "default": "avd_design", "choices": ["avd_design", "eos_config"]},
+    "input_dir": {"type": "str"},
+    "input_suffix": {"type": "str", "default": "json", "choices": ["yml", "yaml", "json"]},
+    "fail_on_validation_errors": {"type": "bool", "default": False},
+}
+
+
+@dataclass(frozen=True, slots=True)
+class PluginArgs:
+    """Plugin arguments."""
+
+    batch_size: int
+    schema_name: SCHEMA_NAME
+    input_dir: str | None
+    input_suffix: Literal["yml", "yaml", "json"]
+    fail_on_validation_errors: bool
+
+
+_HOSTVARS_MANAGER: ActionPluginVars | None = None
+
+
+def set_worker_context(hostvars: ActionPluginVars) -> None:
+    """
+    Set the global worker context.
+
+    Must be called by the parent process before forking.
+
+    Args:
+        hostvars: ActionPluginVars instance for the current action plugin context.
+    """
+    global _HOSTVARS_MANAGER  # noqa: PLW0603
+    _HOSTVARS_MANAGER = hostvars
+
+
+def get_worker_hostvars() -> ActionPluginVars:
+    """
+    Retrieve the global worker context.
+
+    Returns:
+        ActionPluginVars instance for the current action plugin context.
+    """
+    if _HOSTVARS_MANAGER is None:
+        msg = "Worker context not initialized. 'set_worker_context' was not called before forking."
+        raise RuntimeError(msg)
+    return _HOSTVARS_MANAGER
+
+
+class ActionModule(AvdActionPlugin):
+    """Ansible Action Plugin for validating inputs against AVD schemas."""
+
+    _logging_config = AvdLoggingConfig(target_loggers=TARGET_LOGGERS)
+
+    def main(self, task_vars: dict[str, Any]) -> None:
+        """Execute the validate_inputs action plugin."""
+        if not HAS_PYAVD:
+            msg = f"The {PLUGIN_NAME} plugin requires the 'pyavd' Python library. Got import error."
+            raise ImportError(msg)
+
+        plugin_args = self._get_plugin_args()
+        hosts_to_process = self._get_hosts_to_process(task_vars, plugin_args.schema_name)
+        mp_workers, mt_workers = get_workers(len(hosts_to_process), task_vars["ansible_forks"])
+        templated_path, validated_path = get_role_tmp_paths(SCHEMA_MAP[plugin_args.schema_name])
+
+        # Track worker failures globally for the task.
+        self.crashed_hosts = set()
+
+        self.logger.info(
+            "Starting execution with %d multiprocessing workers and %d threads for %d hosts in batches of %d",
+            mp_workers,
+            mt_workers,
+            len(hosts_to_process),
+            plugin_args.batch_size,
+        )
+
+        # Phase 1: If no input_dir is provided, run the templating phase on hostvars.
+        if not plugin_args.input_dir:
+            self.logger.info("Reading inputs from hostvars")
+            set_worker_context(ActionPluginVars(self))
+            hosts_to_validate = self._run_templating_phase(
+                hostnames=hosts_to_process,
+                workers=mp_workers,
+                batch_size=plugin_args.batch_size,
+                output_path=templated_path,
+                schema_name=plugin_args.schema_name,
+            )
+            validation_input_path = templated_path
+            validation_input_suffix = "json"
+        else:
+            self.logger.info("Reading inputs from '%s'", plugin_args.input_dir)
+            hosts_to_validate = hosts_to_process
+            validation_input_path = Path(plugin_args.input_dir)
+            validation_input_suffix = plugin_args.input_suffix
+
+        # Phase 2: Run the validation phase on the input_dir files or the templated_path files.
+        if hosts_to_validate:
+            self._run_validation_phase(
+                hostnames=hosts_to_validate,
+                workers=mt_workers,
+                input_path=validation_input_path,
+                input_suffix=validation_input_suffix,
+                output_path=validated_path,
+                schema_name=plugin_args.schema_name,
+                fail_on_validation_errors=plugin_args.fail_on_validation_errors,
+            )
+
+        if self.crashed_hosts:
+            msg = f"Unexpected errors occurred while processing {len(self.crashed_hosts)} host(s): {', '.join(sorted(self.crashed_hosts))}. "
+            raise RuntimeError(msg)
+
+    def _get_plugin_args(self) -> PluginArgs:
+        """
+        Get and validate plugin arguments.
+
+        Returns:
+            PluginArgs instance with the validated arguments.
+        """
+        _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
+
+        # Converting to JSON and back to remove any AnsibeUnsafe types.
+        validated_args = json.loads(json.dumps(validated_args))
+        return PluginArgs(**validated_args)
+
+    def _get_hosts_to_process(self, task_vars: dict[str, Any], schema_name: SCHEMA_NAME) -> list[str]:
+        """
+        Get the list of hostnames to process based on the schema.
+
+        For eos_config, returns hosts targeted by the current play.
+        For avd_design, returns all hosts in the fabric group (needed to generate facts).
+
+        Args:
+            task_vars: Ansible task variables.
+            schema_name: The schema being validated.
+
+        Returns:
+            List of hostnames to process.
+
+        Raises:
+            ValueError: If fabric_name is invalid or missing for avd_design.
+        """
+        ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", [])
+
+        # For eos_config, the validation is per-host.
+        # We only need to process the hosts currently targeted by the play.
+        if schema_name == "eos_config":
+            return ansible_play_hosts_all
+
+        # For avd_design, we require fabric-wide facts.
+        # We need to process the entire fabric group, not just the play hosts.
+        groups = task_vars.get("groups", {})
+        fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
+        fabric_hosts = groups.get(fabric_name, [])
+
+        # Check if fabric_name is set and that all play hosts are part of the Ansible group set in "fabric_name".
+        if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
+            msg = (
+                "Invalid/missing 'fabric_name' variable. "
+                "All hosts in the play must have the same 'fabric_name' value "
+                "which must point to an Ansible Group containing the hosts."
+                f"play_hosts: {ansible_play_hosts_all}"
+            )
+            raise ValueError(msg)
+
+        return fabric_hosts
+
+    def _run_templating_phase(
+        self,
+        hostnames: list[str],
+        workers: int,
+        batch_size: int,
+        output_path: Path,
+        schema_name: SCHEMA_NAME,
+    ) -> list[str]:
+        """
+        Run Phase 1: Templating.
+
+        Resolves Ansible hostvars for each host and writes them as JSON files.
+        Uses multiprocessing for parallel execution across hosts.
+
+        Args:
+            hostnames: List of hostnames to process.
+            workers: Number of multiprocessing workers to use.
+            batch_size: Number of hosts to process per child process.
+            output_path: Directory path where templated JSON files will be written.
+            schema_name: Schema name used for filtering hostvars.
+
+        Returns:
+            List of hostnames that were templated successfully.
+        """
+        self.logger.info("Templating hostvars...")
+        start_time = perf_counter()
+        successful_hosts = []
+
+        # Partial to inject arguments into the worker.
+        worker_func = partial(_template_host_worker, output_path=output_path, schema_name=schema_name)
+        ctx = get_context("fork")
+
+        with ProcessPoolExecutor(max_workers=workers, mp_context=ctx) as pool:
+            results = pool.map(worker_func, hostnames, chunksize=batch_size)
+
+            for result in results:
+                if isinstance(result, WorkerFailure):
+                    self.crashed_hosts.add(result.hostname)
+                    self.logger.error("%s: %s", result.hostname, result.error)
+                    continue
+
+                self.logger.debug("Templated data for host %s saved to %s", result.hostname, result.output_file)
+                successful_hosts.append(result.hostname)
+
+        self.logger.info("Templating of hostvars completed in %.2fs", perf_counter() - start_time)
+        return successful_hosts
+
+    def _run_validation_phase(
+        self,
+        hostnames: list[str],
+        workers: int,
+        input_path: Path,
+        input_suffix: str,
+        output_path: Path,
+        schema_name: SCHEMA_NAME,
+        fail_on_validation_errors: bool,
+    ) -> None:
+        """
+        Run Phase 2: Validation.
+
+        Reads input files (JSON or YAML), validates against the schema using pyavd-utils,
+        and writes validated JSON files. Uses multithreading for parallel execution.
+
+        Updates self.result directly with validation statistics.
+
+        Args:
+            hostnames: List of hostnames to process.
+            workers: Number of multithreading workers to use.
+            input_path: Directory containing input files (templated or user-provided).
+            input_suffix: File suffix for input files (json, yml, yaml).
+            output_path: Directory where validated JSON files will be written.
+            schema_name: Schema to validate against.
+            fail_on_validation_errors: Whether to fail the task on validation errors.
+        """
+        self.logger.info("Validating inputs...")
+        start_time = perf_counter()
+
+        data_validation_errors = 0
+
+        init_store()
+
+        # Partial to inject arguments into the worker.
+        worker_func = partial(_validate_host_worker, input_path=input_path, input_suffix=input_suffix, output_path=output_path, schema_name=schema_name)
+
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            results = pool.map(worker_func, hostnames)
+
+            for result in results:
+                if isinstance(result, WorkerFailure):
+                    self.crashed_hosts.add(result.hostname)
+                    self.logger.error("%s: %s", result.hostname, result.error)
+                    continue
+
+                host_errors = parse_validation_result(validation_result=result.validation_result, hostname=result.hostname, ansible_display=display)
+
+                if host_errors:
+                    data_validation_errors += host_errors
+                    if fail_on_validation_errors:
+                        self.result["failed"] = True
+
+                elif not result.output_file:
+                    self.crashed_hosts.add(result.hostname)
+                    self.logger.error("Host %s passed validation but no output file was generated.", result.hostname)
+
+                else:
+                    self.logger.debug("Validated data for host %s saved to %s", result.hostname, result.output_file)
+
+        msg = build_result_message(data_validation_errors)
+        if msg:
+            self.result["msg"] = msg
+
+        self.logger.info("Validation of inputs completed in %.2fs", perf_counter() - start_time)
+
+
+def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_NAME) -> TemplateWorkerResult:
+    """
+    Phase 1 multiprocessing worker: Template hostvars for a host.
+
+    Retrieves Ansible hostvars for the host, templates them, and writes
+    the result as a JSON file to the output directory.
+
+    Args:
+        hostname: Hostname to process.
+        output_path: Directory path where the templated JSON file will be written.
+        schema_name: Schema name used for filtering hostvars.
+
+    Returns:
+        TemplateWorkerSuccess on success, WorkerFailure on error.
+    """
+    try:
+        # Get the "Ansible Hostvars Manager"-like object which includes task, role, and play vars.
+        hostvars_manager = get_worker_hostvars()
+
+        # Take the HostVarsVars for this host to be templated on access and cached by Ansible's tooling.
+        hostvars_wrapper = hostvars_manager[hostname]
+
+        # Wrap the hostvars in a filter to only template variables used by eos_config.
+        # We cannot filter for avd_design while we support dynamic keys.
+        if schema_name == "eos_config":
+            allowed_keys = {"inventory_hostname"}
+            allowed_keys.update(EOS_CLI_CONFIG_GEN_ROLE_KEYS, EOS_CLI_CONFIG_GEN_INPUT_KEYS)
+            hostvars_wrapper = FilteredMapView(hostvars_wrapper, allowed_keys)
+
+        # The dict() here will force templating of all variables at once, potentially triggering issues for
+        # missing variables in inline templates in Ansible 2.19.
+        templated_hostvars = dict(hostvars_wrapper)
+
+        output_file_path = output_path / f"{hostname}.json"
+        with output_file_path.open(mode="w", encoding="utf-8") as f:
+            json.dump(templated_hostvars, f, skipkeys=True, default=lambda _: "<not serializable>", indent=4)
+
+        return TemplateWorkerSuccess(hostname=hostname, output_file=str(output_file_path))
+
+    except Exception as e:
+        return WorkerFailure(hostname=hostname, error=f"Unexpected error in templating worker process: {e}")
+
+
+def _validate_host_worker(hostname: str, input_path: Path, input_suffix: str, output_path: Path, schema_name: SCHEMA_NAME) -> ValidateWorkerResult:
+    """
+    Phase 2 multithreading worker: Validate input data for a host.
+
+    Reads the input file (JSON or YAML), validates it against the schema using
+    pyavd-utils, and writes the validated data as JSON to the output directory.
+
+    Args:
+        hostname: Hostname to process.
+        input_path: Directory containing the input file.
+        input_suffix: File suffix for the input file (json, yml, yaml).
+        output_path: Directory path where the validated JSON file will be written.
+        schema_name: Schema to validate against.
+
+    Returns:
+        ValidateWorkerSuccess on success (with validation result), WorkerFailure on error.
+    """
+    try:
+        input_file_path = input_path / f"{hostname}.{input_suffix}"
+
+        # If the input file is missing (unexpected), fail early.
+        if not input_file_path.exists():
+            return WorkerFailure(hostname=hostname, error=f"Missing input data file: {input_file_path}")
+
+        # Load data based on file suffix.
+        if input_suffix in {"yml", "yaml"}:
+            # YAML input: load and convert to JSON for validation.
+            with input_file_path.open(mode="r", encoding="utf-8") as f:
+                data = yaml.load(f, Loader=yaml.CSafeLoader)
+            json_data = json.dumps(data)
+        else:
+            # JSON input: read directly.
+            with input_file_path.open(mode="r", encoding="utf-8") as f:
+                json_data = f.read()
+
+        # Validation in Rust, releasing the GIL.
+        validated_data_result = get_validated_data(data_as_json=json_data, schema_name=SCHEMA_MAP[schema_name])
+        validation_result, validated_data = validated_data_result.validation_result, validated_data_result.validated_data
+
+        output_file = None
+        if validated_data:
+            output_file_path = output_path / f"{hostname}.json"
+            with output_file_path.open(mode="w", encoding="utf-8") as f:
+                f.write(validated_data)
+            output_file = str(output_file_path)
+
+        return ValidateWorkerSuccess(hostname=hostname, validation_result=validation_result, output_file=output_file)
+
+    except Exception as e:
+        return WorkerFailure(hostname=hostname, error=f"Unexpected error in validation worker thread: {e}")

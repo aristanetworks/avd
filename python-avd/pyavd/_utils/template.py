@@ -66,7 +66,7 @@ def template(template_file: str, template_vars: dict[str, Any] | ChainMap[str, A
         from ansible.module_utils._text import to_text  # noqa: PLC0415
 
         j2template, _ = dataloader._get_file_contents(template_file_path)
-        j2template = to_text(j2template)
+        j2template = to_text(j2template)  # pyright: ignore [reportCallIssue] because of the redirection in ansible-core newer versions
 
         with templar.set_temporary_context(available_variables=template_vars):
             output = templar.template(j2template, convert_data=True, escape_backslashes=False)

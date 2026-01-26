@@ -193,10 +193,6 @@ l3leaf:
     vtep_loopback_ipv4_pool: 10.10.20.0/24
     mlag_interfaces:
       - Ethernet3
-    uplink_interfaces:
-      - Ethernet1
-    uplink_switch_interfaces:
-      - Ethernet2
     mlag_peer_ipv4_pool: 10.10.30.0/24
     mlag_peer_l3_ipv4_pool: 10.10.40.0/24
     uplink_ipv4_pool: 10.10.50.0/24
@@ -219,12 +215,20 @@ l3leaf:
         - name: HARDWARE_FEATURES_CLOUDEOS
           id: 3
           platform: cloudEOS
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet2
           uplink_switches:
             - HARDWARE_FEATURES_VEOS_LAB
         - name: HARDWARE_FEATURES_720XP
           id: 4
           # Supports PoE
           platform: 720XP
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet2
           uplink_switches:
             - HARDWARE_FEATURES_CEOS_LAB
     - group: group_3
@@ -233,12 +237,20 @@ l3leaf:
           id: 5
           # Supports queue-monitor length notifying
           platform: 7280R
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet2
           uplink_switches:
             - HARDWARE_FEATURES_CLOUDEOS
         - name: HARDWARE_FEATURES_CUSTOM_PLATFORM
           id: 6
           platform: customplatform
           uplink_type: port-channel
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet2
           uplink_switches:
             - HARDWARE_FEATURES_CLOUDEOS_2
     - group: group_4
@@ -247,6 +259,10 @@ l3leaf:
         - name: HARDWARE_FEATURES_CLOUDEOS_2
           id: 7
           platform: cloudEOS
+          uplink_interfaces:
+            - Ethernet1
+          uplink_switch_interfaces:
+            - Ethernet2
           uplink_type: port-channel
           uplink_switches:
             - HARDWARE_FEATURES_7280R

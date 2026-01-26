@@ -954,7 +954,7 @@ ASN Notation: asplain
 | Remote AS | 65102 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### UNDERLAY_PEERS
 
@@ -962,7 +962,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -1051,11 +1051,11 @@ router bgp 65102
    neighbor MLAG_PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG_PEER password 7 <removed>
    neighbor MLAG_PEER send-community
-   neighbor MLAG_PEER maximum-routes 12000
+   neighbor MLAG_PEER maximum-routes 256000
    neighbor UNDERLAY_PEERS peer group
    neighbor UNDERLAY_PEERS password 7 <removed>
    neighbor UNDERLAY_PEERS send-community
-   neighbor UNDERLAY_PEERS maximum-routes 12000
+   neighbor UNDERLAY_PEERS maximum-routes 256000
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1_Loopback0

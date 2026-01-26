@@ -878,6 +878,41 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
+  avd_eos_cli_config_gen_input_dir:
+    documentation_options:
+      table: role-settings
+    type: str
+    description: 'Specify a directory containing structured configuration files to
+      use as input.
+
+      Can be set to null or an empty string to force `eos_cli_config_gen` to use hostvars
+      as input.
+
+      By default, this variable is set to "{{ structured_dir }}" which is the directory
+      where `eos_designs` outputs structured configuration files.
+
+      '
+  avd_eos_cli_config_gen_validate_inputs_batch_size:
+    documentation_options:
+      table: role-settings
+    type: int
+    default: 10
+    description: 'The number of hosts to process in each batch when validating inputs.
+
+      Depending on your inventory size and the available resources, you may want to
+      adjust this number.'
+  avd_structured_config_file_format:
+    documentation_options:
+      table: role-settings
+    type: str
+    default: yml
+    valid_values:
+    - yml
+    - yaml
+    - json
+    description: 'The file format to use when loading structured configuration files.
+
+      '
   banners:
     type: dict
     keys:
@@ -13514,7 +13549,8 @@ keys:
             type: str
             valid_values:
             - drop
-            - no-drop
+            - errdisable
+            - notify-only
             description: 'Action on stuck queue.
 
               '
@@ -14654,6 +14690,7 @@ keys:
           description: Role name.
         sequence_numbers:
           type: list
+          primary_key: sequence
           items:
             type: dict
             keys:
@@ -14664,6 +14701,7 @@ keys:
                 description: Sequence number.
               action:
                 type: str
+                required: true
                 valid_values:
                 - permit
                 - deny
@@ -14674,6 +14712,7 @@ keys:
                   '
               command:
                 type: str
+                required: true
                 description: Command as string.
   route_maps:
     type: list
@@ -14911,7 +14950,7 @@ keys:
               description: AVT Policy name.
             profiles:
               type: list
-              primary_key: id
+              primary_key: name
               description: AVT profiles in this VRF.
               items:
                 type: dict
@@ -14921,7 +14960,7 @@ keys:
                     description: AVT profile name.
                   id:
                     type: int
-                    description: Unique ID for this AVT (per VRF).
+                    description: ID for this AVT (per VRF).
                     required: true
                     convert_types:
                     - str
@@ -20964,6 +21003,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
           on_startup:
             type: dict
             keys:
@@ -21214,6 +21254,7 @@ keys:
             type: str
           prefix_segments:
             type: list
+            primary_key: prefix
             items:
               type: dict
               keys:
@@ -24684,16 +24725,34 @@ keys:
                   type: bool
         ospf_network_point_to_point:
           type: bool
-        ipv6_ospf_network_point_to_point:
-          type: bool
         ospf_area:
           type: str
           convert_types:
           - int
-        ipv6_ospf_area:
-          type: str
-          convert_types:
-          - int
+        ipv6_ospf:
+          type: dict
+          description: IPv6 OSPF configuration for the interface.
+          keys:
+            process:
+              type: dict
+              keys:
+                id:
+                  type: int
+                  description: OSPF Process ID.
+                  min: 1
+                  max: 65535
+                  required: true
+                  convert_types:
+                  - str
+                area:
+                  type: str
+                  description: OSPF Area ID. Can be an integer (0-4294967295) or IP
+                    address format (0.0.0.0).
+                  convert_types:
+                  - int
+                  required: true
+            network_point_to_point:
+              type: bool
         ospf_cost:
           type: int
           convert_types:

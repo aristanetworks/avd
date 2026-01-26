@@ -198,7 +198,7 @@ router_bgp:
       type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   neighbors:
   - ip_address: 172.17.110.12
     peer_group: IPv4-UNDERLAY-PEERS
