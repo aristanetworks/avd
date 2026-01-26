@@ -49,7 +49,7 @@ def parse_validation_result(validation_result: ValidationResult, hostname: str, 
         message = (
             f"[{hostname}]: The EOS config input key '{path}' is present in the input to 'eos_designs' and will be ignored. "
             f"To address this, use the equivalent AVD Design input model if available or use custom_structured_configuration. "
-            f"See https://avd.arista.com/stable/docs/warn-eos-cli-config-keys-usage-in-eos-designs.html for details."
+            f"See https://avd.arista.com/6.x/docs/porting-guides/6.x.x.html for details."
         )
         ansible_display.warning(message, formatted=True)
 
