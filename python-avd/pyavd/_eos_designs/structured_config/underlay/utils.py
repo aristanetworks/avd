@@ -311,3 +311,8 @@ class UtilsMixin(Protocol):
             interface_ip=interface_ip,
             peer_ip=interface.peer_ip,
         )
+
+    @cached_property
+    def _underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:
+        """Return a list of P2P underlay links."""
+        return [link for link in self._underlay_links if link.type == "underlay_p2p"]

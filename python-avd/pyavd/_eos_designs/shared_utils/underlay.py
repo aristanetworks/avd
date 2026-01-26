@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default
 from pyavd._utils.password_utils.password import isis_encrypt
 
@@ -94,6 +94,8 @@ class UnderlayMixin(Protocol):
 
     @cached_property
     def underlay_ipv6_numbered(self: SharedUtilsProtocol) -> bool:
+        if not self.underlay_router:
+            return False
         if self.inputs.underlay_ipv6_numbered:
             if self.is_wan_router:
                 msg = "Invalid combination of inputs. WAN is not yet supported with IPv6 underlay"
@@ -116,6 +118,9 @@ class UnderlayMixin(Protocol):
                     "underlay_routing_protocol must be set to 'ebgp'"
                 )
                 raise AristaAvdInvalidInputsError(msg)
+            if not self.underlay_ipv6:
+                msg = "underlay_ipv6: true"
+                raise AristaAvdMissingVariableError(msg)
         return self.inputs.underlay_ipv6_numbered
 
     @cached_property

@@ -114,7 +114,7 @@ router_bgp:
     metadata:
       type: ipv6
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   neighbors:
   - ip_address: 2001:db8:3:8::1
     peer_group: IPv4-UNDERLAY-PEERS

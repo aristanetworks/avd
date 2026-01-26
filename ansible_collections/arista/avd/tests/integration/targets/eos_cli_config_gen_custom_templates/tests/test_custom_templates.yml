@@ -3,7 +3,7 @@
     schema_name: eos_config
     input_dir: "{{ structured_config_dir }}"
     input_suffix: yml
-  vars:
+    read_from_input_dir: true
   delegate_to: localhost
   check_mode: false
   run_once: true

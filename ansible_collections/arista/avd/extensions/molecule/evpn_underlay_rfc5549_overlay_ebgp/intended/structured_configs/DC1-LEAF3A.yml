@@ -208,7 +208,7 @@ router_bgp:
     next_hop_self: true
     password: arwUnrq9ydqIhjfTwRhAlg==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: MLAG_VRFS_PEER
     metadata:
@@ -217,14 +217,14 @@ router_bgp:
     description: DC1-LEAF3B
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: UNDERLAY_PEERS
     metadata:
       type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn

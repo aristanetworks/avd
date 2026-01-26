@@ -1,7 +1,3 @@
 ---
 root_dir: '{{ playbook_dir }}'
 is_for_test: true
-
-# By default eos_cli_config_gen reads from structured configs.
-# By overwriting this with null, we force it to read from hostvars.
-avd_eos_cli_config_gen_input_dir: null

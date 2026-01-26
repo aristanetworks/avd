@@ -3,6 +3,7 @@
     schema_name: eos_config
     input_dir: "{{ input_dir }}"
     input_suffix: yml
+    read_from_input_dir: true
   delegate_to: localhost
   check_mode: false
   run_once: true

@@ -244,7 +244,7 @@ router_bgp:
     next_hop_self: true
     password: 4b21pAdCvWeAqpcKDFMdWw==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbors:
   - ip_address: 10.255.128.11

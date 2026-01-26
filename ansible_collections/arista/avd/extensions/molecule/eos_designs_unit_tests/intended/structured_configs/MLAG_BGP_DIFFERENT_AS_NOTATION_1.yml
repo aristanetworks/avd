@@ -110,13 +110,8 @@ router_bgp:
     description: MLAG_BGP_DIFFERENT_AS_NOTATION_2
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -142,8 +137,6 @@ router_bgp:
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
-      activate: true
-    - name: IPv4-UNDERLAY-PEERS
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
