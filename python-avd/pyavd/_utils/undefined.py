@@ -3,13 +3,15 @@
 # that can be found in the LICENSE file.
 from typing import Any, Literal
 
+from typing_extensions import Self
+
 
 class UndefinedType:
     """Singleton used instead of None to detect fields that are not set specifically."""
 
-    _instance: "UndefinedType"
+    _instance: Self
 
-    def __new__(cls, *_args: Any, **_kwargs: Any) -> "UndefinedType":
+    def __new__(cls, *_args: Any, **_kwargs: Any) -> Self:
         if not hasattr(cls, "_instance"):
             cls._instance = object.__new__(cls)
         return cls._instance
