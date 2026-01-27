@@ -112,6 +112,17 @@ l3leaf:
           evpn_role: server
           uplink_switch_interfaces: [Ethernet2]
           mpls_overlay_role: server
+    - group: bgp-peer-groups-ipv6
+      # Overwriting the bgp_peer_groups in this node to test some keys in underlay_ipv6_numbered case
+      nodes:
+        - name: bgp-peer-groups-ipv6-1
+          loopback_ipv6_pool: 2001:db8:dead:beef::/64
+          vtep_loopback_ipv6_pool: 2001:db8:600d:cafe::/64
+          uplink_ipv6_pool: 2001:db8:a11:beef::/64
+          id: 105
+          bgp_as: 105
+          router_id_pool: 10.255.1.0/24
+          uplink_switch_interfaces: [Ethernet61]
 
 pe:
   defaults:

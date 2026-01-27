@@ -1,8 +1,7 @@
 - name: Validate inputs reading from hostvars
   arista.avd.validate_inputs:
     schema_name: eos_config
-    # input_dir: Not set
-    input_suffix: yml
+    read_from_input_dir: false
   delegate_to: localhost
   check_mode: false
   run_once: true
