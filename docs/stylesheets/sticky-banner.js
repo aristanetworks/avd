@@ -70,4 +70,3 @@ document.addEventListener("DOMContentLoaded", function() {
   // Initial check
   checkHeaderVisibility();
 });
-
