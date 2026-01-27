@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block announce %}
+  <!-- Add your custom banner HTML here -->
+  <div class="custom-banner" style="background-color: #e9d554; padding: 10px; text-align: center; color: #333;">
+    EOS Config keys work directly with the `eos_cli_config_gen` role. When using AVD Design (eos_designs), apply these keys via `custom_structured_configuration`.
+  </div>
+{% endblock %}
+
+{% block content %}
+  <!-- This block renders the actual Markdown content of your page -->
+  {{ super() }}
+{% endblock %}
