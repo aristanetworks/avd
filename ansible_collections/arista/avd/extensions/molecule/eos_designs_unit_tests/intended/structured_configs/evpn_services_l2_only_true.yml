@@ -123,6 +123,9 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:12
     route_targets:
       both:
@@ -131,6 +134,9 @@ router_bgp:
     - learned
     vlan: 130-132
   - name: Tenant_A_DB_Zone
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:13
     route_targets:
       both:
@@ -139,6 +145,9 @@ router_bgp:
     - learned
     vlan: 140-141
   - name: Tenant_A_ERP_Zone
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:17
     route_targets:
       both:
@@ -147,6 +156,9 @@ router_bgp:
     - learned
     vlan: '122'
   - name: Tenant_A_OP_Zone
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:9
     route_targets:
       both:
@@ -155,6 +167,9 @@ router_bgp:
     - learned
     vlan: 110-113
   - name: Tenant_A_WAN_Zone
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:14
     route_targets:
       both:
@@ -163,6 +178,9 @@ router_bgp:
     - learned
     vlan: 150-151,166
   - name: Tenant_A_WEB_Zone
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:11
     route_targets:
       both:
@@ -172,7 +190,8 @@ router_bgp:
     vlan: 120-121
   - name: L2VLAN_AND_SVI
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:20166
     route_targets:
       both:
@@ -182,7 +201,8 @@ router_bgp:
     vlan: '166'
   - name: Tenant_A_NFS
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:20161
     route_targets:
       both:
@@ -192,7 +212,8 @@ router_bgp:
     vlan: '161'
   - name: Tenant_A_VMOTION
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:20160
     route_targets:
       both:
@@ -202,7 +223,8 @@ router_bgp:
     vlan: '160'
   - name: l2vlan_with_no_tags
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:20162
     route_targets:
       both:
@@ -212,7 +234,8 @@ router_bgp:
     vlan: '162'
   - name: overlapping_name
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:20163
     route_targets:
       both:
@@ -221,6 +244,9 @@ router_bgp:
     - learned
     vlan: 163-165
   - name: Tenant_B_OP_Zone
+    metadata:
+      tenants:
+      - Tenant_B
     rd: 192.168.255.109:20
     route_targets:
       both:
@@ -229,6 +255,9 @@ router_bgp:
     - learned
     vlan: 210-211
   - name: Tenant_B_WAN_Zone
+    metadata:
+      tenants:
+      - Tenant_B
     rd: 192.168.255.109:21
     route_targets:
       both:
@@ -237,6 +266,9 @@ router_bgp:
     - learned
     vlan: '250'
   - name: Tenant_C_OP_Zone
+    metadata:
+      tenants:
+      - Tenant_C
     rd: 192.168.255.109:30
     route_targets:
       both:
@@ -245,6 +277,9 @@ router_bgp:
     - learned
     vlan: 310-311
   - name: Tenant_C_WAN_Zone
+    metadata:
+      tenants:
+      - Tenant_C
     rd: 192.168.255.109:31
     route_targets:
       both:
@@ -253,6 +288,9 @@ router_bgp:
     - learned
     vlan: '350'
   - name: '12345678'
+    metadata:
+      tenants:
+      - Tenant_D
     rd: 192.168.255.109:41
     route_targets:
       both:
@@ -261,6 +299,9 @@ router_bgp:
     - learned
     vlan: 450-452
   - name: default
+    metadata:
+      tenants:
+      - Tenant_D
     rd: 192.168.255.109:123
     route_targets:
       both:
@@ -269,6 +310,9 @@ router_bgp:
     - learned
     vlan: '1234'
   - name: Tenant_D_OP_Zone
+    metadata:
+      tenants:
+      - Tenant_D
     rd: 192.168.255.109:40
     route_targets:
       both:
@@ -277,6 +321,9 @@ router_bgp:
     - learned
     vlan: 410-413
   - name: TENANT_D_WAN_ZONE
+    metadata:
+      tenants:
+      - Tenant_D
     rd: 192.168.255.109:42
     route_targets:
       both:
@@ -315,147 +362,183 @@ vlans:
 - id: 130
   name: Tenant_A_APP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 131
   name: Tenant_A_APP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 132
   name: Tenant_A_APP_Zone_3
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 140
   name: Tenant_A_DB_BZone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 141
   name: Tenant_A_DB_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 122
   name: Tenant_A_ERP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 110
   name: Tenant_A_OP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 111
   name: Tenant_A_OP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 112
   name: Tenant_A_OP_Zone_3
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 113
   name: Tenant_A_OP_Zone_4
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 150
   name: Tenant_A_WAN_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 151
   name: svi_with_no_tags
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 166
   name: L2VLAN_AND_SVI
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 121
   name: Tenant_A_WEBZone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 160
   name: Tenant_A_VMOTION
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 161
   name: Tenant_A_NFS
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 162
   name: l2vlan_with_no_tags
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 163
   name: overlapping_name
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 164
   name: overlapping_name
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 165
   name: overlapping_name
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 210
   name: Tenant_B_OP_Zone_1
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 211
   name: Tenant_B_OP_Zone_2
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 250
   name: Tenant_B_WAN_Zone_1
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 310
   name: Tenant_C_OP_Zone_1
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 311
   name: Tenant_C_OP_Zone_2
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 350
   name: Tenant_C_WAN_Zone_1
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 450
   name: Tenant_D_v6_WAN_Zone_1
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 451
   name: Tenant_D_v6_WAN_Zone_2
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 452
   name: Tenant_D_v6_WAN_Zone_3
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 1234
   name: VRF_DEFAULT_SVI_WITH_OSPF
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 410
   name: Tenant_D_v6_OP_Zone_1
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 411
   name: Tenant_D_v6_OP_Zone_2
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 412
   name: Tenant_D_v6_OP_Zone_1
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 413
   name: Tenant_D_v6_OP_Zone_3
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 453
   name: Tenant_D_WAN_Zone_1
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 vrfs:
 - name: MGMT
   ip_routing: false

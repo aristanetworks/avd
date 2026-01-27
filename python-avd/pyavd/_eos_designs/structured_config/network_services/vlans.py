@@ -48,13 +48,13 @@ class VlansMixin(Protocol):
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is None:
                     continue
 
-                new_vlan = EosCliConfigGen.VlansItem(
+                vlan = EosCliConfigGen.VlansItem(
                     id=vlan_id,
                     name=AvdStringFormatter().format(self.inputs.mlag_peer_l3_vrf_vlan_name, mlag_peer=self.shared_utils.mlag_peer, vlan=vlan_id, vrf=vrf.name),
                     trunk_groups=EosCliConfigGen.VlansItem.TrunkGroups([self.inputs.trunk_groups.mlag_l3.name]),
                 )
-                new_vlan.metadata.tenants.append(tenant.name)
-                self.structured_config.vlans.obtain(vlan_id)._combine(new_vlan)
+                vlan.metadata.tenants.append(tenant.name)
+                self.structured_config.vlans.append(vlan, ignore_fields=("metadata",))
 
             # L2 Vlans per Tenant
             for l2vlan in tenant.l2vlans:

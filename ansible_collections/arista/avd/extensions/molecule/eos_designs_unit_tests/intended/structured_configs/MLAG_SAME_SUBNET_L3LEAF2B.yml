@@ -147,7 +147,8 @@ router_bgp:
   vlans:
   - id: 10
     metadata:
-      tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+      tenants:
+      - TEST_MLAG_SAME_SUBNET_ON_VRF
     rd: 192.168.255.35:10
     route_targets:
       both:
@@ -156,7 +157,8 @@ router_bgp:
     - learned
   - id: 101
     metadata:
-      tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+      tenants:
+      - TEST_MLAG_SAME_SUBNET_ON_VRF
     rd: 192.168.255.35:101
     route_targets:
       both:
@@ -240,7 +242,8 @@ vlan_interfaces:
   vrf: TEST
   ip_address_virtual: 10.10.10.1/24
   metadata:
-    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    tenants:
+    - TEST_MLAG_SAME_SUBNET_ON_VRF
 - name: Vlan3000
   description: MLAG_L3_VRF_TEST
   shutdown: false
@@ -248,7 +251,8 @@ vlan_interfaces:
   ip_address: 10.10.224.2/30
   mtu: 9214
   metadata:
-    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    tenants:
+    - TEST_MLAG_SAME_SUBNET_ON_VRF
     type: underlay_peering
 - name: Vlan101
   description: VLAN101
@@ -256,7 +260,8 @@ vlan_interfaces:
   vrf: TEST_COMMA_SEPERATED_MLAG_IBGP_PEERING_POOL
   ip_address_virtual: 10.10.11.1/24
   metadata:
-    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    tenants:
+    - TEST_MLAG_SAME_SUBNET_ON_VRF
 - name: Vlan3001
   description: MLAG_L3_VRF_TEST_COMMA_SEPERATED_MLAG_IBGP_PEERING_POOL
   shutdown: false
@@ -264,7 +269,8 @@ vlan_interfaces:
   ip_address: 10.255.240.2/30
   mtu: 9214
   metadata:
-    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    tenants:
+    - TEST_MLAG_SAME_SUBNET_ON_VRF
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -277,44 +283,52 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 10
   name: VLAN10
   metadata:
-    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    tenants:
+    - TEST_MLAG_SAME_SUBNET_ON_VRF
 - id: 3000
   name: MLAG_L3_VRF_TEST
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    tenants:
+    - TEST_MLAG_SAME_SUBNET_ON_VRF
 - id: 101
   name: VLAN101
   metadata:
-    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    tenants:
+    - TEST_MLAG_SAME_SUBNET_ON_VRF
 - id: 3001
   name: MLAG_L3_VRF_TEST_COMMA_SEPERATED_MLAG_IBGP_PEERING_POOL
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    tenants:
+    - TEST_MLAG_SAME_SUBNET_ON_VRF
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST
   ip_routing: true
   metadata:
-    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    tenants:
+    - TEST_MLAG_SAME_SUBNET_ON_VRF
 - name: TEST_COMMA_SEPERATED_MLAG_IBGP_PEERING_POOL
   ip_routing: true
   metadata:
-    tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
+    tenants:
+    - TEST_MLAG_SAME_SUBNET_ON_VRF
 vxlan_interface:
   vxlan1:
     description: MLAG_SAME_SUBNET_L3LEAF2B_VTEP

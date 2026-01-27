@@ -58,7 +58,8 @@ vlans:
 - id: 66
   name: TEST-L2VLAN-ATTRACTION
   metadata:
-    tenant: TenantC
+    tenants:
+    - TenantC
 vrfs:
 - name: MGMT
   ip_routing: false
