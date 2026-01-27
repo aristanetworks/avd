@@ -21,7 +21,7 @@ def validate_inputs(inputs: dict, *, configuration: Configuration | None = None)
     Args:
         inputs: Dictionary with inputs for "eos_designs".
         configuration: Optional Configuration object from pyavd_utils.validation.
-           If not provided use a default configuration enabling warnings for eos_cli_config_gen keys.
+            If not provided use a default configuration enabling warnings for eos_cli_config_gen keys.
 
     Returns:
         ValidatedDataResult object with the ValidationResult containing validation errors, deprecation warnings
