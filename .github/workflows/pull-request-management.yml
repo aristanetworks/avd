@@ -603,13 +603,15 @@ jobs:
             id: Main-Tests
             pytest_args: >-
               --ignore=python-avd/tests/pyavd/molecule_scenarios/test_get_device_config.py
+              --ignore=python-avd/tests/pyavd/molecule_scenarios/test_get_device_config_tree.py
               --ignore=python-avd/tests/pyavd/molecule_scenarios/test_negative_eos_designs.py
               --ignore=python-avd/tests/schema_tools/metaschema/test_meta_schema_model.py
             upload_compiled_templates: true
-          - name: "Excluded-Tests (test_get_device_config and test_meta_schema_model)"
+          - name: "Excluded-Tests (test_get_device_config, test_get_device_config_tree and test_meta_schema_model)"
             id: Excluded-test_get_device_config-and-test_meta_schema_model
             pytest_args: >-
               python-avd/tests/pyavd/molecule_scenarios/test_get_device_config.py
+              python-avd/tests/pyavd/molecule_scenarios/test_get_device_config_tree.py
               python-avd/tests/schema_tools/metaschema/test_meta_schema_model.py
           - name: "Excluded-Tests (test_negative_eos_designs)"
             id: Excluded-test_negative_eos_designs
