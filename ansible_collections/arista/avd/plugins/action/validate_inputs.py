@@ -1,6 +1,8 @@
 # Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
+
 import json
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from dataclasses import dataclass
@@ -233,7 +235,7 @@ class ActionModule(AvdActionPlugin):
 
         return PluginArgs(**validated_args)
 
-    def _get_validation_configuration(self, plugin_args: PluginArgs) -> "Configuration | None":
+    def _get_validation_configuration(self, plugin_args: PluginArgs) -> Configuration | None:
         """
         Build the Configuration object for validation based on plugin arguments.
 
@@ -349,7 +351,7 @@ class ActionModule(AvdActionPlugin):
         output_path: Path,
         schema_name: SCHEMA_NAME,
         fail_on_validation_errors: bool,
-        configuration: "Configuration | None",
+        configuration: Configuration | None,
     ) -> None:
         """
         Run Phase 2: Validation.
@@ -460,7 +462,7 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
 
 
 def _validate_host_worker(
-    hostname: str, input_path: Path, input_suffix: str, output_path: Path, schema_name: SCHEMA_NAME, configuration: "Configuration | None"
+    hostname: str, input_path: Path, input_suffix: str, output_path: Path, schema_name: SCHEMA_NAME, configuration: Configuration | None
 ) -> ValidateWorkerResult:
     """
     Phase 2 multithreading worker: Validate input data for a host.
