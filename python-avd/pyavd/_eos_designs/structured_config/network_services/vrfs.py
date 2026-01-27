@@ -40,7 +40,7 @@ class VrfsMixin(Protocol):
                 if vrf_name == "default":
                     continue
                 new_vrf = EosCliConfigGen.VrfsItem(name=vrf_name)
-                new_vrf.metadata.tenant = tenant.name
+                new_vrf.metadata.tenants.append(tenant.name)
 
                 # MLAG IBGP Peering VLANs per VRF
                 if self.inputs.overlay_mlag_rfc5549 and self._mlag_ibgp_peering_enabled(vrf, tenant):

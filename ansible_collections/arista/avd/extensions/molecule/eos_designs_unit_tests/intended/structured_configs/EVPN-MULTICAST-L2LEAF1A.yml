@@ -63,151 +63,188 @@ vlans:
 - id: 310
   name: MULTICAST_DISABLED_310
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 311
   name: MULTICAST_DISABLED_311
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 110
   name: MULTICAST_ENABLED_110
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 111
   name: MULTICAST_ENABLED_111
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 210
   name: MULTICAST_ENABLED_210
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 211
   name: MULTICAST_DISABLED_211
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 256
   name: MULTICAST_DISABLED_256
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 257
   name: MULTICAST_ENABLED_257
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 4092
   name: MULTICAST_ENABLED_4092
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 5
   name: MULTICAST_DISABLED_5
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 6
   name: MULTICAST_DISABLED_6
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 1
   name: MULTICAST_ENABLED_1
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 2
   name: MULTICAST_ENABLED_2
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 3
   name: MULTICAST_ENABLED_3
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 4
   name: MULTICAST_DISABLED_4
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 7
   name: MULTICAST_DISABLED_7
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 8
   name: MULTICAST_ENABLED_8
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 9
   name: MULTICAST_ENABLED_9
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 10
   name: MULTICAST_VXLAN_FLOOD_ENABLED_WITH_UNDERLAY_MULTICAST_GROUP
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 330
   name: L3_MULTICAST_DISABLED_330
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 331
   name: L3_MULTICAST_DISABLED_331
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 130
   name: L3_MULTICAST_ENABLED_130
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 131
   name: L3_MULTICAST_ENABLED_131
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 136
   name: L3_L2_MULTICAST_ENABLED_136
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 137
   name: L3_L2_MULTICAST_ENABLED_137
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 230
   name: L3_MULTICAST_ENABLED_230
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 231
   name: L3_MULTICAST_DISABLED_231
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 240
   name: L3_MULTICAST_DISABLED_240
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 241
   name: L3_MULTICAST_DISABLED_241
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 140
   name: L3_MULTICAST_ENABLED_140
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 141
   name: L3_MULTICAST_DISABLED_141
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 550
   name: L3_MULTICAST_ENABLED_550
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
 - id: 260
   name: L3_MULTICAST_ENABLED_260
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
 - id: 250
   name: L3_MULTICAST_ENABLED_250
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
 - id: 150
   name: L3_MULTICAST_ENABLED_150
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
 - id: 251
   name: MULTICAST_DISABLED_251
   metadata:
-    tenant: Tenant_F
+    tenants:
+    - Tenant_F
 - id: 252
   name: MULTICAST_ENABLED_252
   metadata:
-    tenant: Tenant_F
+    tenants:
+    - Tenant_F
 vrfs:
 - name: MGMT
   ip_routing: false
