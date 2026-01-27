@@ -1073,7 +1073,7 @@ keys:
               keys:
                 tenants:
                   type: list
-                  description: List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                  description: List of tenants where this bundle is defined. Key only used for documentation or validation purposes.
                 description:
                   type: str
                   description: Key only used for documentation or validation purposes.
