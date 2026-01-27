@@ -17,4 +17,4 @@ keys:
         type: bool
         default: true
         description: |-
-          Emit a warning when EOS Config keys are detected in the inputs.
+          Emit a warning when EOS Config keys are detected in the AVD Design inputs.
