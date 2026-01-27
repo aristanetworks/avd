@@ -19,7 +19,7 @@ def validate_inputs(inputs: dict, *, configuration: Configuration | None = None)
     Where supported by the schema, types will be auto type-converted like from "int" to "str".
 
     Args:
-        inputs: Dictionary with inputs for "eos_designs".
+        inputs: Dictionary with inputs for AVD Design.
         configuration: Optional Configuration object from pyavd_utils.validation.
             If not provided use a default configuration enabling warnings for eos_cli_config_gen keys.
 
