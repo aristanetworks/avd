@@ -153,6 +153,11 @@ router_bgp:
     metadata:
       peer: bgp-peer-groups-1
     description: bgp-peer-groups-1_Loopback0
+  - ip_address: 192.168.255.114
+    peer_group: EVPN-OVERLAY-PEERS
+    metadata:
+      peer: bgp-peer-groups-3
+    description: bgp-peer-groups-3_Loopback0
   redistribute:
     connected:
       enabled: true

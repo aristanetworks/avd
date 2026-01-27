@@ -75,6 +75,25 @@ router_bgp:
     ebgp_multihop: 15
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65233'
+    metadata:
+      peer: evpn_gateway_all_active_mh_gw
+    description: evpn_gateway_all_active_mh_gw_Loopback0
+  - ip_address: 192.168.255.2
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65233'
+    metadata:
+      peer: evpn_gateway_all_active_mh_gw_enabled_d_path_false
+    description: evpn_gateway_all_active_mh_gw_enabled_d_path_false_Loopback0
+  - ip_address: 192.168.100.10
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65002'
+    metadata:
+      peer: DCI_TEST
+    description: DCI_TEST
   redistribute:
     connected:
       enabled: true
