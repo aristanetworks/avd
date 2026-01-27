@@ -397,7 +397,7 @@ keys:
     documentation_options:
       table: role-settings
     type: dict
-    description: Validation configuration when validatin AVD Design inputs.
+    description: Validation configuration when validating AVD Design inputs.
     keys:
       warn_eos_config_keys:
         type: bool

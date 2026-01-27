@@ -88558,7 +88558,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     avd_validation_configuration: AvdValidationConfiguration
     """
-    Validation configuration when validatin AVD Design inputs.
+    Validation configuration when validating AVD Design inputs.
 
     Subclass of AvdModel.
     """
@@ -90729,7 +90729,7 @@ class EosDesigns(EosDesignsRootModel):
                    size and the available resources, you may want to adjust this number.
                 avd_structured_config_file_format: The file format to use when dumping structured configuration files.
                 avd_validation_configuration:
-                   Validation configuration when validatin AVD Design inputs.
+                   Validation configuration when validating AVD Design inputs.
 
                    Subclass of AvdModel.
                 bfd_multihop:
