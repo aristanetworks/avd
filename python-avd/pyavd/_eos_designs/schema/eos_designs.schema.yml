@@ -393,7 +393,7 @@ keys:
     description: 'The file format to use when dumping structured configuration files.
 
       '
-  eos_designs_validation_configuration:
+  avd_eos_designs_validation_configuration:
     documentation_options:
       table: role-settings
     type: dict

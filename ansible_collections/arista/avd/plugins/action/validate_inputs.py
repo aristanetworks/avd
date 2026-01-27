@@ -102,7 +102,7 @@ ARGUMENT_SPEC = {
     "input_suffix": {"type": "str", "default": "yml", "choices": ["yml", "yaml", "json"]},
     "read_from_input_dir": {"type": "bool", "default": False},
     "fail_on_validation_errors": {"type": "bool", "default": False},
-    "validation_configuration": {"type": "dict"},
+    "validation_configuration": {"type": "dict", "options": {"warn_eos_config_keys": {"type": "bool"}}},
 }
 
 REQUIRED_IF = [
@@ -111,7 +111,7 @@ REQUIRED_IF = [
 
 
 @dataclass(frozen=True, slots=True)
-class PluginArgs:
+class ResolvedPluginArgs:
     """Plugin arguments."""
 
     batch_size: int
@@ -120,7 +120,7 @@ class PluginArgs:
     input_suffix: Literal["yml", "yaml", "json"]
     read_from_input_dir: bool
     fail_on_validation_errors: bool
-    validation_configuration: dict | None
+    validation_configuration: Configuration | None
 
 
 _HOSTVARS_MANAGER: ActionPluginVars | None = None
@@ -202,7 +202,6 @@ class ActionModule(AvdActionPlugin):
 
         # Phase 2: Run the validation phase on the input_dir files or the templated_path files.
         if hosts_to_validate:
-            configuration = self._get_validation_configuration(plugin_args)
             self._run_validation_phase(
                 hostnames=hosts_to_validate,
                 workers=mt_workers,
@@ -211,19 +210,19 @@ class ActionModule(AvdActionPlugin):
                 output_path=validated_path,
                 schema_name=plugin_args.schema_name,
                 fail_on_validation_errors=plugin_args.fail_on_validation_errors,
-                configuration=configuration,
+                configuration=plugin_args.validation_configuration,
             )
 
         if self.crashed_hosts:
             msg = f"Unexpected errors occurred while processing {len(self.crashed_hosts)} host(s): {', '.join(sorted(self.crashed_hosts))}. "
             raise RuntimeError(msg)
 
-    def _get_plugin_args(self) -> PluginArgs:
+    def _get_plugin_args(self) -> ResolvedPluginArgs:
         """
         Get and validate plugin arguments.
 
         Returns:
-            PluginArgs instance with the validated arguments.
+            ResolvedPluginArgs instance with the validated arguments.
         """
         _validation_result, validated_args = self.validate_argument_spec(
             argument_spec=ARGUMENT_SPEC,
@@ -232,24 +231,26 @@ class ActionModule(AvdActionPlugin):
 
         # Converting to JSON and back to remove any AnsibeUnsafe types.
         validated_args = json.loads(json.dumps(validated_args))
+        configuration = self._get_validation_configuration(validated_args)
+        validated_args.update({"validation_configuration": configuration})
 
-        return PluginArgs(**validated_args)
+        return ResolvedPluginArgs(**validated_args)
 
-    def _get_validation_configuration(self, plugin_args: PluginArgs) -> Configuration | None:
+    def _get_validation_configuration(self, validated_args: dict[Any, Any]) -> Configuration | None:
         """
         Build the Configuration object for validation based on plugin arguments.
 
         Args:
-            plugin_args: Plugin arguments containing validation_configuration dict or None.
+            validated_args: Validated plugin arguments containing validation_configuration dict or None.
 
         Returns:
             Configuration object from the plugin arguments or None when validation_configuration is None.
         """
-        if plugin_args.validation_configuration is None:
+        if "validation_configuration" not in validated_args or (validation_configuration := validated_args["validation_configuration"]) is None:
             return None
 
         configuration = Configuration()
-        if (warn_eos_config_keys := plugin_args.validation_configuration.get("warn_eos_config_keys")) is not None:
+        if (warn_eos_config_keys := validation_configuration.get("warn_eos_config_keys")) is not None:
             configuration.warn_eos_cli_config_gen_keys = warn_eos_config_keys
 
         return configuration

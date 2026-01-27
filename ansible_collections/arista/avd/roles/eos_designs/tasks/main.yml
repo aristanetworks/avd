@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
@@ -30,7 +30,7 @@
     batch_size: "{{ avd_eos_designs_validate_inputs_batch_size | arista.avd.default(10) }}"
     schema_name: avd_design
     fail_on_validation_errors: true
-    validation_configuration: "{{ eos_designs_validation_configuration }}"
+    validation_configuration: "{{ avd_eos_designs_validation_configuration }}"
   delegate_to: localhost
   check_mode: false
   run_once: true
@@ -60,10 +60,11 @@
   register: structured_config
 
 - name: Generate fabric documentation
-  when: eos_designs_documentation.enable | arista.avd.default(true)
-        or eos_designs_documentation.topology_csv | arista.avd.default(false)
-        or eos_designs_documentation.p2p_links_csv | arista.avd.default(false)
-        or avd_digital_twin_mode | arista.avd.default(false)
+  when: |-
+    eos_designs_documentation.enable | arista.avd.default(true)
+    or eos_designs_documentation.topology_csv | arista.avd.default(false)
+    or eos_designs_documentation.p2p_links_csv | arista.avd.default(false)
+    or avd_digital_twin_mode | arista.avd.default(false)
   arista.avd.eos_designs_documentation:
     structured_config_dir: "{{ structured_dir }}"
     structured_config_suffix: "{{ avd_structured_config_file_format }}"

@@ -911,7 +911,7 @@ class EosDesigns(EosDesignsRootModel):
 
     AvdStructuredConfigFileFormat: TypeAlias = Literal["yml", "yaml", "json"]
 
-    class EosDesignsValidationConfiguration(AvdModel):
+    class AvdEosDesignsValidationConfiguration(AvdModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {"warn_eos_config_keys": {"type": bool, "default": True}}
@@ -926,7 +926,7 @@ class EosDesigns(EosDesignsRootModel):
 
             def __init__(self, *, warn_eos_config_keys: bool | UndefinedType = Undefined) -> None:
                 """
-                EosDesignsValidationConfiguration.
+                AvdEosDesignsValidationConfiguration.
 
 
                 Subclass of AvdModel.
@@ -87872,7 +87872,7 @@ class EosDesigns(EosDesignsRootModel):
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_eos_designs_validate_inputs_batch_size": {"type": int, "default": 10},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
-        "eos_designs_validation_configuration": {"type": EosDesignsValidationConfiguration},
+        "avd_eos_designs_validation_configuration": {"type": AvdEosDesignsValidationConfiguration},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
         "bgp_as_notation": {"type": str, "default": "auto"},
@@ -88556,7 +88556,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"yml"`
     """
-    eos_designs_validation_configuration: EosDesignsValidationConfiguration
+    avd_eos_designs_validation_configuration: AvdEosDesignsValidationConfiguration
     """
     Validation configuration options when validating AVD Design inputs.
 
@@ -90498,7 +90498,7 @@ class EosDesigns(EosDesignsRootModel):
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_validate_inputs_batch_size: int | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
-            eos_designs_validation_configuration: EosDesignsValidationConfiguration | UndefinedType = Undefined,
+            avd_eos_designs_validation_configuration: AvdEosDesignsValidationConfiguration | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
@@ -90728,7 +90728,7 @@ class EosDesigns(EosDesignsRootModel):
                    Depending on your inventory
                    size and the available resources, you may want to adjust this number.
                 avd_structured_config_file_format: The file format to use when dumping structured configuration files.
-                eos_designs_validation_configuration:
+                avd_eos_designs_validation_configuration:
                    Validation configuration options when validating AVD Design inputs.
 
                    Subclass of AvdModel.
