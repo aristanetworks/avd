@@ -193,6 +193,10 @@
         },
         "interfaces": [
           {
+            "name": "Dps1",
+            "status": "up"
+          },
+          {
             "name": "Ethernet1",
             "status": "up"
           },
