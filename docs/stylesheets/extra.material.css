@@ -178,6 +178,14 @@
     position: sticky;
     top: 4.8rem;
     z-index: 5;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* When header is hidden, hide banner */
+.custom-banner.header-hidden {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .custom-banner strong {
