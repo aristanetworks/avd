@@ -94,7 +94,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: EVPN_GATEWAY_TESTS
+      tenants:
+      - EVPN_GATEWAY_TESTS
     rd: 192.168.255.2:10011
     route_targets:
       both:
@@ -103,7 +104,8 @@ router_bgp:
     - learned
   - id: 12
     metadata:
-      tenant: EVPN_GATEWAY_TESTS
+      tenants:
+      - EVPN_GATEWAY_TESTS
     rd: 192.168.255.2:10012
     route_targets:
       both:
@@ -112,7 +114,8 @@ router_bgp:
     - learned
   - id: 21
     metadata:
-      tenant: EVPN_GATEWAY_TESTS
+      tenants:
+      - EVPN_GATEWAY_TESTS
     rd: 192.168.255.2:10021
     route_targets:
       both:
@@ -121,7 +124,8 @@ router_bgp:
     - learned
   - id: 22
     metadata:
-      tenant: EVPN_GATEWAY_TESTS
+      tenants:
+      - EVPN_GATEWAY_TESTS
     rd: 192.168.255.2:10022
     route_targets:
       both:
@@ -130,7 +134,8 @@ router_bgp:
     - learned
   - id: 300
     metadata:
-      tenant: EVPN_GATEWAY_TESTS
+      tenants:
+      - EVPN_GATEWAY_TESTS
     rd: 192.168.255.2:10300
     route_targets:
       both:
@@ -139,7 +144,8 @@ router_bgp:
     - learned
   - id: 3401
     metadata:
-      tenant: EVPN_GATEWAY_TESTS
+      tenants:
+      - EVPN_GATEWAY_TESTS
     rd: 192.168.255.2:13401
     route_targets:
       both:
@@ -148,7 +154,8 @@ router_bgp:
     - learned
   - id: 3402
     metadata:
-      tenant: EVPN_GATEWAY_TESTS
+      tenants:
+      - EVPN_GATEWAY_TESTS
     rd: 192.168.255.2:13402
     route_targets:
       both:
@@ -224,34 +231,39 @@ vlan_interfaces:
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 - name: Vlan21
   description: VRF11_VLAN21
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.21.1/24
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 - name: Vlan300
   description: VRF11_VLAN300
   shutdown: false
   vrf: VRF11
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 vlan_internal_order:
   allocation: ascending
   range:
@@ -261,42 +273,51 @@ vlans:
 - id: 11
   name: VRF10_VLAN11
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 - id: 12
   name: VRF10_VLAN12
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 - id: 21
   name: VRF11_VLAN21
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 - id: 22
   name: VRF11_VLAN22
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 - id: 300
   name: VRF11_VLAN300
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 - id: 3401
   name: L2_VLAN3401
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 - id: 3402
   name: L2_VLAN3402
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF10
   ip_routing: true
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 - name: VRF11
   ip_routing: true
   metadata:
-    tenant: EVPN_GATEWAY_TESTS
+    tenants:
+    - EVPN_GATEWAY_TESTS
 vxlan_interface:
   vxlan1:
     description: evpn_gateway_all_active_mh_gw_enabled_d_path_false_VTEP

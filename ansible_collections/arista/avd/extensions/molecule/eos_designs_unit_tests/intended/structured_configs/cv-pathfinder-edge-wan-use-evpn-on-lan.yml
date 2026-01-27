@@ -562,19 +562,23 @@ vrfs:
 - name: PROD
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: VRF-NO-WAN
   ip_routing: true
   metadata:
-    tenant: TenantD
+    tenants:
+    - TenantD
 - name: VRF-NO-WAN-NO-AF
   ip_routing: true
   metadata:
-    tenant: TenantD
+    tenants:
+    - TenantD
 - name: WAN-VRF-NO-AF
   ip_routing: true
   metadata:
-    tenant: TenantD
+    tenants:
+    - TenantD
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-edge-wan-use-evpn-on-lan_VTEP

@@ -68,7 +68,8 @@ router_bgp:
   vlans:
   - id: 101
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.109:10101
     route_targets:
       both:
@@ -77,7 +78,8 @@ router_bgp:
     - learned
   - id: 102
     metadata:
-      tenant: TENANT2
+      tenants:
+      - TENANT2
     rd: 192.168.255.109:10103
     route_targets:
       both:
@@ -108,7 +110,8 @@ vlan_interfaces:
   shutdown: false
   vrf: TEST_ADDRESS_LOCKING
   metadata:
-    tenant: TENANT2
+    tenants:
+    - TENANT2
 vlan_internal_order:
   allocation: ascending
   range:
@@ -121,21 +124,24 @@ vlans:
     address_family:
       ipv4: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 102
   name: test-address-locking-2
   address_locking:
     address_family:
       ipv6: true
   metadata:
-    tenant: TENANT2
+    tenants:
+    - TENANT2
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST_ADDRESS_LOCKING
   ip_routing: true
   metadata:
-    tenant: TENANT2
+    tenants:
+    - TENANT2
 vxlan_interface:
   vxlan1:
     description: address-locking_VTEP
