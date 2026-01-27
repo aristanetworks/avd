@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 def validate_inputs(inputs: dict, *, configuration: Configuration | None = None) -> ValidatedDataResult:
     """
-    Validate input variables according to the `eos_designs` schema as documented on avd.arista.com.
+    Validate input variables according to the AVD Design schema as documented on avd.arista.com.
 
     Where supported by the schema, types will be auto type-converted like from "int" to "str".
 
