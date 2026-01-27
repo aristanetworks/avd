@@ -67,7 +67,9 @@ AVD supports the following upgrade paths:
 
 - Between any minor versions in the same release train, i.e., from 5.3.0 to 5.7.2.
   - Skipping minor versions is supported.
-- Between major release trains, i.e., from 5.7 to 6.0.0.
+- Between major release trains, i.e., from 5.7.2 to 6.0.0.
+  - Recommended upgrade path is to do a minor version upgrade to the latest minor version in the current major release train before upgrading to the next major release train.
+    - The upgrade should be done sequentially, i.e., from 5.5.0 to 5.7.2, and address all deprecations warnings before proceeding to upgrade to 6.0.0.
   - Skipping a major version is not supported, i.e, from 4.10.0 to 6.0.0.
   - Major versions may contain changes requiring updates to the inventory variables. Required updates will be described in a Porting Guide for each major version.
 
