@@ -84,7 +84,8 @@ router_bgp:
   vlans:
   - id: 101
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.109:10101
     route_targets:
       both:
@@ -113,7 +114,8 @@ vlans:
     address_family:
       ipv4: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false

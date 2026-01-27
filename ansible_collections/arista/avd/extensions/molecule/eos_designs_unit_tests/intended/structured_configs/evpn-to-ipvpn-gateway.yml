@@ -95,7 +95,8 @@ router_bgp:
   vlans:
   - id: 10
     metadata:
-      tenant: mytenant
+      tenants:
+      - mytenant
     rd: 10.10.0.1:10010
     route_targets:
       both:
@@ -145,7 +146,8 @@ vlan_interfaces:
   vrf: testvrf
   ip_address_virtual: 10.10.10.10/24
   metadata:
-    tenant: mytenant
+    tenants:
+    - mytenant
 vlan_internal_order:
   allocation: ascending
   range:
@@ -155,14 +157,16 @@ vlans:
 - id: 10
   name: TEST_SVI_VLAN_10
   metadata:
-    tenant: mytenant
+    tenants:
+    - mytenant
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: testvrf
   ip_routing: true
   metadata:
-    tenant: mytenant
+    tenants:
+    - mytenant
 vxlan_interface:
   vxlan1:
     description: evpn-to-ipvpn-gateway_VTEP

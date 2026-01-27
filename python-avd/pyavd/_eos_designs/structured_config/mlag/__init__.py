@@ -31,7 +31,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         if self.shared_utils.mlag_peer_l3_vlan is not None and self.shared_utils.underlay_routing_protocol != "none":
             self.structured_config.vlans.append_new(
                 id=self.shared_utils.mlag_peer_l3_vlan,
-                metadata=EosCliConfigGen.VlansItem.Metadata(tenant="system"),
+                metadata=EosCliConfigGen.VlansItem.Metadata(tenants=EosCliConfigGen.VlansItem.Metadata.Tenants(["system"])),
                 name=AvdStringFormatter().format(
                     self.inputs.mlag_peer_l3_vlan_name, mlag_peer=self.shared_utils.mlag_peer, mlag_peer_l3_vlan=self.shared_utils.mlag_peer_l3_vlan
                 ),
@@ -40,7 +40,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
 
         self.structured_config.vlans.append_new(
             id=self.shared_utils.node_config.mlag_peer_vlan,
-            metadata=EosCliConfigGen.VlansItem.Metadata(tenant="system"),
+            metadata=EosCliConfigGen.VlansItem.Metadata(tenants=EosCliConfigGen.VlansItem.Metadata.Tenants(["system"])),
             name=AvdStringFormatter().format(
                 self.inputs.mlag_peer_vlan_name, mlag_peer=self.shared_utils.mlag_peer, mlag_peer_vlan=self.shared_utils.node_config.mlag_peer_vlan
             ),
