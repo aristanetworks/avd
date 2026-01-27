@@ -119,7 +119,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
        Fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations. IPv6 is not supported.
 
     3. Generates inputs to verify inband management reachability from devices with inband management SVIs to all other fabric devices Loopback0 addresses.
-    No inputs are generated if `extra_fabric_validation` is disabled.
+       No inputs are generated if `extra_fabric_validation` is disabled.
        Non-deployed devices or fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations.
        IPv6 is not supported.
 
