@@ -65,7 +65,7 @@ def test_validate_inputs_with_eos_cli_config_gen_keys_disabled() -> None:
     """
     Test that validate_inputs does not return ignored_eos_config_keys warning.
 
-    When eos_cli_config_gen keys are used in the inputs and the configuration object has warn_eos_config_keys set to False.
+    When EOS Config keys are used in the inputs and the configuration object has warn_eos_config_keys set to False.
     """
     inputs = {
         "fabric_name": "TEST-FABRIC",
