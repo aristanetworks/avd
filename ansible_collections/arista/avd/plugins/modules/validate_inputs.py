@@ -53,8 +53,7 @@ options:
     default: 10
   validation_configuration:
     description: |-
-      Optional dictionary containing validation configuration options.
-      This dictionary is passed to the validation engine to control validation behavior.
+      Optional dictionary containing configuration options to control validation behavior.
     type: dict
     required: false
     suboptions:
