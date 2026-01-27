@@ -370,6 +370,9 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlan_aware_bundles:
   - name: MULTICAST_DISABLED_310_311
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.3:13
     route_targets:
       both:
@@ -378,6 +381,9 @@ router_bgp:
     - learned
     vlan: 310-311
   - name: MULTICAST_ENABLED_110_111
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.3:11
     route_targets:
       both:
@@ -387,6 +393,9 @@ router_bgp:
     - igmp
     vlan: 110-111
   - name: MULTICAST_ENABLED_210_DISABLED_211
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.3:12
     route_targets:
       both:
@@ -396,6 +405,9 @@ router_bgp:
     - igmp
     vlan: 210-211
   - name: MULTICAST_DISABLED_256
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.3:10256
     route_targets:
       both:
@@ -404,6 +416,9 @@ router_bgp:
     - learned
     vlan: '256'
   - name: MULTICAST_ENABLED_257
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.3:10257
     route_targets:
       both:
@@ -413,6 +428,9 @@ router_bgp:
     - igmp
     vlan: '257'
   - name: MULTICAST_ENABLED_4092
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.3:14092
     route_targets:
       both:
@@ -422,6 +440,9 @@ router_bgp:
     - igmp
     vlan: '4092'
   - name: MULTICAST_DISABLED_5_6
+    metadata:
+      tenants:
+      - Tenant_B
     rd: 192.168.255.3:23
     route_targets:
       both:
@@ -430,6 +451,9 @@ router_bgp:
     - learned
     vlan: 5-6
   - name: MULTICAST_ENABLED_1_2
+    metadata:
+      tenants:
+      - Tenant_B
     rd: 192.168.255.3:21
     route_targets:
       both:
@@ -439,6 +463,9 @@ router_bgp:
     - igmp
     vlan: 1-2
   - name: MULTICAST_ENABLED_3_DISABLED_4
+    metadata:
+      tenants:
+      - Tenant_B
     rd: 192.168.255.3:22
     route_targets:
       both:
@@ -448,6 +475,9 @@ router_bgp:
     - igmp
     vlan: 3-4
   - name: MULTICAST_DISABLED_7
+    metadata:
+      tenants:
+      - Tenant_B
     rd: 192.168.255.3:10007
     route_targets:
       both:
@@ -456,6 +486,9 @@ router_bgp:
     - learned
     vlan: '7'
   - name: MULTICAST_ENABLED_8
+    metadata:
+      tenants:
+      - Tenant_B
     rd: 192.168.255.3:10008
     route_targets:
       both:
@@ -465,6 +498,9 @@ router_bgp:
     - igmp
     vlan: '8'
   - name: MULTICAST_ENABLED_9
+    metadata:
+      tenants:
+      - Tenant_B
     rd: 192.168.255.3:10009
     route_targets:
       both:
@@ -474,6 +510,9 @@ router_bgp:
     - igmp
     vlan: '9'
   - name: MULTICAST_VXLAN_FLOOD_ENABLED_WITH_UNDERLAY_MULTICAST_GROUP
+    metadata:
+      tenants:
+      - Tenant_B
     rd: 192.168.255.3:10010
     route_targets:
       both:
@@ -482,6 +521,9 @@ router_bgp:
     - learned
     vlan: '10'
   - name: TEN_C_L3_MULTICAST_DISABLED_330_331
+    metadata:
+      tenants:
+      - Tenant_C
     rd: 192.168.255.3:33
     route_targets:
       both:
@@ -490,6 +532,9 @@ router_bgp:
     - learned
     vlan: 330-331
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
+    metadata:
+      tenants:
+      - Tenant_C
     rd: 192.168.255.3:66
     route_targets:
       both:
@@ -499,6 +544,9 @@ router_bgp:
     - igmp
     vlan: 130-131,136-137
   - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
+    metadata:
+      tenants:
+      - Tenant_C
     rd: 192.168.255.3:32
     route_targets:
       both:
@@ -507,6 +555,9 @@ router_bgp:
     - learned
     vlan: 230-231
   - name: TEN_D_L3_MULTICAST_DISABLED_240_241
+    metadata:
+      tenants:
+      - Tenant_D
     rd: 192.168.255.3:42
     route_targets:
       both:
@@ -515,6 +566,9 @@ router_bgp:
     - learned
     vlan: 240-241
   - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
+    metadata:
+      tenants:
+      - Tenant_D
     rd: 192.168.255.3:41
     route_targets:
       both:
@@ -523,6 +577,9 @@ router_bgp:
     - learned
     vlan: 140-141
   - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
+    metadata:
+      tenants:
+      - Tenant_E
     rd: 192.168.255.3:55
     route_targets:
       both:
@@ -531,6 +588,9 @@ router_bgp:
     - learned
     vlan: '550'
   - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
+    metadata:
+      tenants:
+      - Tenant_E
     rd: 192.168.255.3:60
     route_targets:
       both:
@@ -539,6 +599,9 @@ router_bgp:
     - learned
     vlan: '260'
   - name: TEN_E_L3_MULTICAST_TRANSIT
+    metadata:
+      tenants:
+      - Tenant_E
     rd: 192.168.255.3:52
     route_targets:
       both:
@@ -547,6 +610,9 @@ router_bgp:
     - learned
     vlan: '250'
   - name: TEN_E_PEG_L3_MULTICAST_ENABLED
+    metadata:
+      tenants:
+      - Tenant_E
     rd: 192.168.255.3:51
     route_targets:
       both:
@@ -555,6 +621,9 @@ router_bgp:
     - learned
     vlan: '150'
   - name: MULTICAST_DISABLED_251
+    metadata:
+      tenants:
+      - Tenant_F
     rd: 192.168.255.3:10251
     route_targets:
       both:
@@ -563,6 +632,9 @@ router_bgp:
     - learned
     vlan: '251'
   - name: MULTICAST_ENABLED_252
+    metadata:
+      tenants:
+      - Tenant_F
     rd: 192.168.255.3:10252
     route_targets:
       both:

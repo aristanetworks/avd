@@ -41677,15 +41677,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"tenant": {"type": str}, "description": {"type": str}}
-                tenant: str | None
-                """Key only used for documentation or validation purposes."""
+                class Tenants(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Tenants._item_type = str
+
+                _fields: ClassVar[dict] = {"tenants": {"type": Tenants}, "description": {"type": str}}
+                tenants: Tenants
+                """
+                List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                Subclass of AvdList with `str` items.
+                """
                 description: str | None
                 """Key only used for documentation or validation purposes."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, tenant: str | None | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, tenants: Tenants | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -41693,7 +41701,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            tenant: Key only used for documentation or validation purposes.
+                            tenants:
+                               List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                               Subclass of AvdList with `str` items.
                             description: Key only used for documentation or validation purposes.
 
                         """

@@ -71,6 +71,9 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlan_aware_bundles:
   - name: svi_profile_tests_vrf
+    metadata:
+      tenants:
+      - svi_profile_tests
     rd: 192.168.255.1:1
     route_targets:
       both:

@@ -123,6 +123,9 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:12
     route_targets:
       both:
@@ -131,6 +134,9 @@ router_bgp:
     - learned
     vlan: 130-132
   - name: Tenant_A_DB_Zone
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:13
     route_targets:
       both:
@@ -139,6 +145,9 @@ router_bgp:
     - learned
     vlan: 140-141
   - name: Tenant_A_ERP_Zone
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:17
     route_targets:
       both:
@@ -147,6 +156,9 @@ router_bgp:
     - learned
     vlan: '122'
   - name: Tenant_A_OP_Zone
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:9
     route_targets:
       both:
@@ -155,6 +167,9 @@ router_bgp:
     - learned
     vlan: 110-113
   - name: Tenant_A_WAN_Zone
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:14
     route_targets:
       both:
@@ -163,6 +178,9 @@ router_bgp:
     - learned
     vlan: 150-151,166
   - name: Tenant_A_WEB_Zone
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:11
     route_targets:
       both:
@@ -171,6 +189,9 @@ router_bgp:
     - learned
     vlan: 120-121
   - name: L2VLAN_AND_SVI
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:20166
     route_targets:
       both:
@@ -179,6 +200,9 @@ router_bgp:
     - learned
     vlan: '166'
   - name: Tenant_A_NFS
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:20161
     route_targets:
       both:
@@ -187,6 +211,9 @@ router_bgp:
     - learned
     vlan: '161'
   - name: Tenant_A_VMOTION
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:20160
     route_targets:
       both:
@@ -195,6 +222,9 @@ router_bgp:
     - learned
     vlan: '160'
   - name: l2vlan_with_no_tags
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:20162
     route_targets:
       both:
@@ -203,6 +233,9 @@ router_bgp:
     - learned
     vlan: '162'
   - name: overlapping_name
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.109:20163
     route_targets:
       both:
@@ -211,6 +244,9 @@ router_bgp:
     - learned
     vlan: 163-165
   - name: Tenant_B_OP_Zone
+    metadata:
+      tenants:
+      - Tenant_B
     rd: 192.168.255.109:20
     route_targets:
       both:
@@ -219,6 +255,9 @@ router_bgp:
     - learned
     vlan: 210-211
   - name: Tenant_B_WAN_Zone
+    metadata:
+      tenants:
+      - Tenant_B
     rd: 192.168.255.109:21
     route_targets:
       both:
@@ -227,6 +266,9 @@ router_bgp:
     - learned
     vlan: '250'
   - name: Tenant_C_OP_Zone
+    metadata:
+      tenants:
+      - Tenant_C
     rd: 192.168.255.109:30
     route_targets:
       both:
@@ -235,6 +277,9 @@ router_bgp:
     - learned
     vlan: 310-311
   - name: Tenant_C_WAN_Zone
+    metadata:
+      tenants:
+      - Tenant_C
     rd: 192.168.255.109:31
     route_targets:
       both:
@@ -243,6 +288,9 @@ router_bgp:
     - learned
     vlan: '350'
   - name: '12345678'
+    metadata:
+      tenants:
+      - Tenant_D
     rd: 192.168.255.109:41
     route_targets:
       both:
@@ -251,6 +299,9 @@ router_bgp:
     - learned
     vlan: 450-452
   - name: default
+    metadata:
+      tenants:
+      - Tenant_D
     rd: 192.168.255.109:123
     route_targets:
       both:
@@ -259,6 +310,9 @@ router_bgp:
     - learned
     vlan: '1234'
   - name: Tenant_D_OP_Zone
+    metadata:
+      tenants:
+      - Tenant_D
     rd: 192.168.255.109:40
     route_targets:
       both:
@@ -267,6 +321,9 @@ router_bgp:
     - learned
     vlan: 410-413
   - name: TENANT_D_WAN_ZONE
+    metadata:
+      tenants:
+      - Tenant_D
     rd: 192.168.255.109:42
     route_targets:
       both:

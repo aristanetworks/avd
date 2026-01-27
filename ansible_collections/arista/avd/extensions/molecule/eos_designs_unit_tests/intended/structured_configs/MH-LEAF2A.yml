@@ -260,6 +260,9 @@ router_bgp:
       enabled: true
   vlan_aware_bundles:
   - name: default
+    metadata:
+      tenants:
+      - Tenant_X
     rd: 192.168.255.35:21
     route_targets:
       both:
@@ -268,6 +271,9 @@ router_bgp:
     - learned
     vlan: '311'
   - name: Tenant_X_OP_Zone
+    metadata:
+      tenants:
+      - Tenant_X
     rd: 192.168.255.35:20
     route_targets:
       both:
@@ -276,6 +282,9 @@ router_bgp:
     - learned
     vlan: '310'
   - name: VRF_with_loopback_ip_pools
+    metadata:
+      tenants:
+      - Tenant_X
     rd: 192.168.255.35:22
     route_targets:
       both:
@@ -284,6 +293,9 @@ router_bgp:
     - learned
     vlan: '315'
   - name: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools
+    metadata:
+      tenants:
+      - Tenant_X
     rd: 192.168.255.35:24
     route_targets:
       both:
@@ -292,6 +304,9 @@ router_bgp:
     - learned
     vlan: '320'
   - name: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools
+    metadata:
+      tenants:
+      - Tenant_X
     rd: 192.168.255.35:25
     route_targets:
       both:
@@ -300,6 +315,9 @@ router_bgp:
     - learned
     vlan: '324'
   - name: VRF_without_loopback_ip_pools
+    metadata:
+      tenants:
+      - Tenant_X
     rd: 192.168.255.35:23
     route_targets:
       both:
