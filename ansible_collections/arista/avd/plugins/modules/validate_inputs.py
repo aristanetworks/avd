@@ -51,14 +51,20 @@ options:
       - The number of devices to process per child process during the templating phase.
     type: int
     default: 10
-  avd_eos_designs_warn_eos_cli_config_gen_keys:
+  validation_configuration:
     description: |-
-      Enable warnings for eos_cli_config_gen keys used in eos_designs input data.
-      When enabled, warnings will be emitted during validation if any top-level keys
-      from the eos_cli_config_gen schema are found at the top level of eos_designs input data.
-      Note: These keys will be ignored during eos_cli_config_gen processing when used with eos_designs.
-    default: true
-    type: bool
+      Optional dictionary containing validation configuration options.
+      This dictionary is passed to the validation engine to control validation behavior.
+    type: dict
+    required: false
+    suboptions:
+      warn_eos_config_keys:
+        description: |-
+          Enable warnings for EOS Config keys used in AVD Design input data.
+          When enabled, warnings will be emitted during validation if any top-level keys
+          from the EOS Config schema are found at the top level of AVD Design input data.
+        type: bool
+        default: true
 """
 
 EXAMPLES = r"""
@@ -67,6 +73,13 @@ EXAMPLES = r"""
   arista.avd.validate_inputs:
     schema_name: avd_design
     fail_on_validation_errors: true
+
+- name: Validate eos_designs inputs with custom validation configuration
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    fail_on_validation_errors: true
+    validation_configuration:
+      warn_eos_config_keys: false
 
 - name: Validate eos_cli_config_gen inputs from structured config files
   arista.avd.validate_inputs:

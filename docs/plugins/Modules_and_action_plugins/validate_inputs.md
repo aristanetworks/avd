@@ -35,7 +35,8 @@ The plugin performs two phases:
 | <samp>input_suffix</samp> | str | optional | json | Valid values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | File suffix for files located in `input_dir`.<br>Only used when `input_dir` is provided. |
 | <samp>fail_on_validation_errors</samp> | bool | optional | False | - | If `true`, the task will fail if any validation errors are detected.<br>If `false`, errors will be reported but the task will succeed. |
 | <samp>batch_size</samp> | int | optional | 10 | - | The number of devices to process per child process during the templating phase. |
-| <samp>avd_eos_designs_warn_eos_cli_config_gen_keys</samp> | bool | optional | True | - | Enable warnings for eos_cli_config_gen keys used in eos_designs input data.<br>When enabled, warnings will be emitted during validation if any top-level keys<br>from the eos_cli_config_gen schema are found at the top level of eos_designs input data.<br>Note: These keys will be ignored during eos_cli_config_gen processing when used with eos_designs. |
+| <samp>validation_configuration</samp> | dict | False | None | - | Optional dictionary containing validation configuration options.<br>This dictionary is passed to the validation engine to control validation behavior. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;warn_eos_config_keys</samp> | bool | optional | True | - | Enable warnings for EOS Config keys used in AVD Design input data.<br>When enabled, warnings will be emitted during validation if any top-level keys<br>from the EOS Config schema are found at the top level of AVD Design input data. |
 
 ## Examples
 
@@ -45,6 +46,13 @@ The plugin performs two phases:
   arista.avd.validate_inputs:
     schema_name: avd_design
     fail_on_validation_errors: true
+
+- name: Validate eos_designs inputs with custom validation configuration
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    fail_on_validation_errors: true
+    validation_configuration:
+      warn_eos_config_keys: false
 
 - name: Validate eos_cli_config_gen inputs from structured config files
   arista.avd.validate_inputs:
