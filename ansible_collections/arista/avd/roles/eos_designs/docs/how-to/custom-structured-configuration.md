@@ -10,7 +10,7 @@ With Custom Structured Configuration the user can override built-in `eos_designs
 
 There are multiple ways of supplying Custom Structured Configuration and they can all be combined:
 
-- `structured_config` in `eos_designs` data models
+- `structured_config` in AVD Design data models
 - `custom_structured_configuration` - described in this document
 
 ## Overview
