@@ -10,5 +10,5 @@ avd_structured_config_file_format: "yml"
 #     When enabled, warnings will be emitted during validation if any top-level keys
 #     from the EOS Config inputs are found at the top level of AVD Design input data.
 #     Note: These keys will be ignored during eos_cli_config_gen processing when used with eos_designs.
-avd_validation_configuration:
+eos_designs_validation_configuration:
   warn_eos_config_keys: true

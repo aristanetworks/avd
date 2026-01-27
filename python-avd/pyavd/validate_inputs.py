@@ -21,6 +21,7 @@ def validate_inputs(inputs: dict, *, configuration: Configuration | None = None)
     Args:
         inputs: Dictionary with inputs for "eos_designs".
         configuration: Optional Configuration object from pyavd_utils.validation.
+           If not provided use a default configuration enabling warnings for eos_cli_config_gen keys.
 
     Returns:
         ValidatedDataResult object with the ValidationResult containing validation errors, deprecation warnings
@@ -29,7 +30,10 @@ def validate_inputs(inputs: dict, *, configuration: Configuration | None = None)
     Raises:
         ValueError: If the inputs are not JSON serializable.
     """
-    from pyavd_utils.validation import get_validated_data  # noqa: PLC0415
+    from pyavd_utils.validation import Configuration, get_validated_data  # noqa: PLC0415
+
+    # Use default configuration if not provided
+    configuration = configuration or Configuration(warn_eos_cli_config_gen_keys=True)
 
     from ._schema.store import init_store  # noqa: PLC0415
     from .api.validation import ValidatedDataResult  # noqa: PLC0415
