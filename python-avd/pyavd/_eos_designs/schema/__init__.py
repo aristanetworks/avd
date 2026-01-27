@@ -87847,6 +87847,7 @@ class EosDesigns(EosDesignsRootModel):
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_eos_designs_validate_inputs_batch_size": {"type": int, "default": 10},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
+        "avd_tmp_dir": {"type": str},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
         "bgp_as_notation": {"type": str, "default": "auto"},
@@ -88526,11 +88527,18 @@ class EosDesigns(EosDesignsRootModel):
     """
     avd_structured_config_file_format: AvdStructuredConfigFileFormat
     """
-    Optional path to use as the AVD temporary directory for storing templated and validated data used
-    internally by the validate_inputs action plugin.
-    Useful for debugging or CI purposes.
+    The file format to use when dumping structured configuration files.
 
     Default value: `"yml"`
+    """
+    avd_tmp_dir: str | None
+    """
+    Optional path for the AVD temporary directory.
+    Contains templated inputs, validated inputs, and
+    facts data used internally by AVD plugins.
+    Defaults to the Ansible temporary directory, which is
+    cleaned up after the play.
+    Set a custom path to persist data for debugging.
     """
     bfd_multihop: BfdMultihop
     """
@@ -90468,6 +90476,7 @@ class EosDesigns(EosDesignsRootModel):
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_validate_inputs_batch_size: int | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
+            avd_tmp_dir: str | None | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
@@ -90696,10 +90705,14 @@ class EosDesigns(EosDesignsRootModel):
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
                    size and the available resources, you may want to adjust this number.
-                avd_structured_config_file_format:
-                   Optional path to use as the AVD temporary directory for storing templated and validated data used
-                   internally by the validate_inputs action plugin.
-                   Useful for debugging or CI purposes.
+                avd_structured_config_file_format: The file format to use when dumping structured configuration files.
+                avd_tmp_dir:
+                   Optional path for the AVD temporary directory.
+                   Contains templated inputs, validated inputs, and
+                   facts data used internally by AVD plugins.
+                   Defaults to the Ansible temporary directory, which is
+                   cleaned up after the play.
+                   Set a custom path to persist data for debugging.
                 bfd_multihop:
                    BFD Multihop tuning.
 

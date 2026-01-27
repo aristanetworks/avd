@@ -390,10 +390,21 @@ keys:
     - yml
     - yaml
     - json
-    description: 'Optional path to use as the AVD temporary directory for storing
-      templated and validated data used internally by the validate_inputs action plugin.
+    description: 'The file format to use when dumping structured configuration files.
 
-      Useful for debugging or CI purposes.
+      '
+  avd_tmp_dir:
+    documentation_options:
+      table: role-settings
+    type: str
+    description: 'Optional path for the AVD temporary directory.
+
+      Contains templated inputs, validated inputs, and facts data used internally
+      by AVD plugins.
+
+      Defaults to the Ansible temporary directory, which is cleaned up after the play.
+
+      Set a custom path to persist data for debugging.
 
       '
   bfd_multihop:

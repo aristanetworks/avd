@@ -8,7 +8,8 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>avd_eos_cli_config_gen_validate_inputs_batch_size</samp>](## "avd_eos_cli_config_gen_validate_inputs_batch_size") | Integer |  | `10` |  | The number of hosts to process in each batch when validating inputs.<br>Depending on your inventory size and the available resources, you may want to adjust this number. |
-    | [<samp>avd_structured_config_file_format</samp>](## "avd_structured_config_file_format") | String |  | `yml` | Valid Values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | Optional path to use as the AVD temporary directory for storing templated and validated data used internally by the validate_inputs action plugin.<br>Useful for debugging or CI purposes.<br> |
+    | [<samp>avd_structured_config_file_format</samp>](## "avd_structured_config_file_format") | String |  | `yml` | Valid Values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | The file format to use when loading structured configuration files.<br> |
+    | [<samp>avd_tmp_dir</samp>](## "avd_tmp_dir") | String |  |  |  | Optional path for the AVD temporary directory.<br>Contains templated inputs, validated inputs, and facts data used internally by AVD plugins.<br>Defaults to the Ansible temporary directory, which is cleaned up after the play.<br>Set a custom path to persist data for debugging.<br> |
     | [<samp>eos_cli_config_gen_configuration</samp>](## "eos_cli_config_gen_configuration") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "eos_cli_config_gen_configuration.enable") | Boolean |  | `True` |  | Generate device EOS configurations. |
     | [<samp>&nbsp;&nbsp;hide_passwords</samp>](## "eos_cli_config_gen_configuration.hide_passwords") | Boolean |  | `False` |  | Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the configuration if true.<br> |
@@ -27,9 +28,14 @@
     # Depending on your inventory size and the available resources, you may want to adjust this number.
     avd_eos_cli_config_gen_validate_inputs_batch_size: <int; default=10>
 
-    # Optional path to use as the AVD temporary directory for storing templated and validated data used internally by the validate_inputs action plugin.
-    # Useful for debugging or CI purposes.
+    # The file format to use when loading structured configuration files.
     avd_structured_config_file_format: <str; "yml" | "yaml" | "json"; default="yml">
+
+    # Optional path for the AVD temporary directory.
+    # Contains templated inputs, validated inputs, and facts data used internally by AVD plugins.
+    # Defaults to the Ansible temporary directory, which is cleaned up after the play.
+    # Set a custom path to persist data for debugging.
+    avd_tmp_dir: <str>
     eos_cli_config_gen_configuration:
 
       # Generate device EOS configurations.

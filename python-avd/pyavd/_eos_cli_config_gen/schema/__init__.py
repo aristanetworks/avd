@@ -69445,6 +69445,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "as_path": {"type": AsPath},
         "avd_eos_cli_config_gen_validate_inputs_batch_size": {"type": int, "default": 10},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
+        "avd_tmp_dir": {"type": str},
         "banners": {"type": Banners},
         "bgp_groups": {"type": BgpGroups},
         "boot": {"type": Boot},
@@ -69677,11 +69678,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     avd_structured_config_file_format: AvdStructuredConfigFileFormat
     """
-    Optional path to use as the AVD temporary directory for storing templated and validated data used
-    internally by the validate_inputs action plugin.
-    Useful for debugging or CI purposes.
+    The file format to use when loading structured configuration files.
 
     Default value: `"yml"`
+    """
+    avd_tmp_dir: str | None
+    """
+    Optional path for the AVD temporary directory.
+    Contains templated inputs, validated inputs, and
+    facts data used internally by AVD plugins.
+    Defaults to the Ansible temporary directory, which is
+    cleaned up after the play.
+    Set a custom path to persist data for debugging.
     """
     banners: Banners
     """Subclass of AvdModel."""
@@ -70225,6 +70233,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             as_path: AsPath | UndefinedType = Undefined,
             avd_eos_cli_config_gen_validate_inputs_batch_size: int | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
+            avd_tmp_dir: str | None | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
@@ -70443,10 +70452,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
                    size and the available resources, you may want to adjust this number.
-                avd_structured_config_file_format:
-                   Optional path to use as the AVD temporary directory for storing templated and validated data used
-                   internally by the validate_inputs action plugin.
-                   Useful for debugging or CI purposes.
+                avd_structured_config_file_format: The file format to use when loading structured configuration files.
+                avd_tmp_dir:
+                   Optional path for the AVD temporary directory.
+                   Contains templated inputs, validated inputs, and
+                   facts data used internally by AVD plugins.
+                   Defaults to the Ansible temporary directory, which is
+                   cleaned up after the play.
+                   Set a custom path to persist data for debugging.
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
                 boot:

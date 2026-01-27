@@ -6,10 +6,12 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  avd_structured_config_file_format:
+  avd_tmp_dir:
     documentation_options:
       table: role-settings
     type: str
     description: |
-      Optional path to use as the AVD temporary directory for storing templated and validated data used internally by the validate_inputs action plugin.
-      Useful for debugging or CI purposes.
+      Optional path for the AVD temporary directory.
+      Contains templated inputs, validated inputs, and facts data used internally by AVD plugins.
+      Defaults to the Ansible temporary directory, which is cleaned up after the play.
+      Set a custom path to persist data for debugging.
