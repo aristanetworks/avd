@@ -757,6 +757,9 @@ router_bgp:
     - learned
     vlan: 120-124
   - name: Tenant_A_FTP
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.13:10162
     route_targets:
       both:
@@ -765,6 +768,9 @@ router_bgp:
     - learned
     vlan: '162'
   - name: Tenant_A_NFS
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.13:10161
     route_targets:
       both:
@@ -773,6 +779,9 @@ router_bgp:
     - learned
     vlan: '161'
   - name: Tenant_A_VMOTION
+    metadata:
+      tenants:
+      - Tenant_A
     rd: 192.168.255.13:10160
     route_targets:
       both:

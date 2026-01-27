@@ -1,0 +1,64 @@
+# Testing vlan_aware_bundle conflict when the same bundle is used across different tenants
+# with incompatible route target configurations.
+
+fabric_name: DUPLICATE_VLAN_AWARE_BUNDLE_CROSS_TENANT
+
+# Enable vlan aware bundles
+evpn_vlan_aware_bundles: true
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    # LOOPBACK AND VTEP MANAGEMENT
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    vtep_loopback: Loopback1
+    evpn_services_l2_only: false
+  nodes:
+    - name: duplicate-vlan-aware-bundle-cross-tenant-conflict
+      id: 3
+      bgp_as: 65101
+      filter:
+        tenants: [TENANT1, TENANT2]
+        tags: [tenant1, tenant2]
+
+tenants:
+  - name: TENANT1
+    vlan_aware_bundle_number_base: 300
+    mac_vrf_vni_base: 20000
+    l2vlans:
+      - id: 90
+        name: vlan90
+        tags: ['tenant1']
+        evpn_vlan_bundle: bundle1
+      - id: 100
+        name: vlan100
+        tags: ['tenant1']
+        evpn_vlan_bundle: bundle1
+  - name: TENANT2
+    # Different vlan_aware_bundle_number_base will generate different route targets
+    vlan_aware_bundle_number_base: 500
+    mac_vrf_vni_base: 30000
+    l2vlans:
+      - id: 130
+        name: vlan130
+        tags: ['tenant2']
+        evpn_vlan_bundle: bundle1
+      - id: 140
+        name: vlan140
+        tags: ['tenant2']
+        evpn_vlan_bundle: bundle1
+
+evpn_vlan_bundles:
+  - name: bundle1
+    id: 1
+    rt_override: 111
+    rd_override: 1.1.1.1:111
+
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for VlanAwareBundles.
+  {'name': 'bundle1', 'metadata': {'tenants': ['TENANT2']}, 'rd': '1.1.1.1:111', 'route_targets': {'both': ['501:111']}, 'redistribute_routes': ['learned'], 'vlan': '130,140'}
+  conflicts with
+  {'name': 'bundle1', 'metadata': {'tenants': ['TENANT1']}, 'rd': '1.1.1.1:111', 'route_targets': {'both': ['301:111']}, 'redistribute_routes': ['learned'], 'vlan': '90,100'}.
+

@@ -89,9 +89,6 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlan_aware_bundles:
   - name: DEV
-    metadata:
-      tenants:
-      - Tenant_A
     rd: 10.1.0.14:500
     route_targets:
       both:

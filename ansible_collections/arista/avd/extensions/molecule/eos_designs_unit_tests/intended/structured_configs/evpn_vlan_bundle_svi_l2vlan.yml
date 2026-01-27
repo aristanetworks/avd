@@ -63,9 +63,6 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlan_aware_bundles:
   - name: bundle3
-    metadata:
-      tenants:
-      - SIT
     rd: 1.1.1.1:333
     route_targets:
       both:
