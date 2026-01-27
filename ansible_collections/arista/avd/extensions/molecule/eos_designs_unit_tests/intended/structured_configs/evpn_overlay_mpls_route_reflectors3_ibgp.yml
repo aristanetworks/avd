@@ -52,15 +52,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: MPLS-OVERLAY-PEERS
-    metadata:
-      type: mpls
-    remote_as: '65233'
-    update_source: Loopback0
-    route_reflector_client: true
-    bfd: true
-    send_community: all
-    maximum_routes: 0
   - name: RR-OVERLAY-PEERS
     metadata:
       type: mpls
@@ -85,18 +76,8 @@ router_bgp:
     peer_groups:
     - name: RR-OVERLAY-PEERS
       activate: true
-    - name: MPLS-OVERLAY-PEERS
-      activate: true
-  address_family_rtc:
-    peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: true
-      default_route_target:
-        only: true
   address_family_ipv4:
     peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: false
     - name: RR-OVERLAY-PEERS
       activate: false
 service_routing_protocols_model: multi-agent
