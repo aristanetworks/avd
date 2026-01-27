@@ -10698,19 +10698,23 @@ vlans:
 - id: 210
   name: IDF2-Data
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 220
   name: IDF2-Voice
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 230
   name: IDF2-Guest
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 10
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

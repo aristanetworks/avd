@@ -423,9 +423,6 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlan_aware_bundles:
   - name: Tenant_A_WAN_Zone
-    metadata:
-      tenants:
-      - Tenant_A
     rd: 192.168.254.15:14
     rd_evpn_domain:
       domain: remote
@@ -440,9 +437,6 @@ router_bgp:
     - learned
     vlan: '150'
   - name: Tenant_B_WAN_Zone
-    metadata:
-      tenants:
-      - Tenant_B
     rd: 192.168.254.15:21
     route_targets:
       both:
@@ -451,9 +445,6 @@ router_bgp:
     - learned
     vlan: '250'
   - name: Tenant_C_WAN_Zone
-    metadata:
-      tenants:
-      - Tenant_C
     rd: 192.168.254.15:31
     route_targets:
       both:
@@ -462,9 +453,6 @@ router_bgp:
     - learned
     vlan: '350'
   - name: TENANT_D_WAN_ZONE
-    metadata:
-      tenants:
-      - Tenant_D
     rd: 192.168.254.15:42
     rd_evpn_domain:
       domain: remote
