@@ -17909,14 +17909,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Option(AvdModel):
             """Subclass of AvdModel."""
 
-            RemoteIdFormat: TypeAlias = Literal["%m:%i", "%m:%p"]
+            RemoteIdFormat: TypeAlias = Literal["%m:%h:%p", "%m:%i", "%m:%p"]
             _fields: ClassVar[dict] = {"link_layer_address": {"type": bool}, "remote_id_format": {"type": str}}
             link_layer_address: bool | None
             """Add Option 79 (Link Layer Address Option)."""
             remote_id_format: RemoteIdFormat | None
             """
-            Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface
-            name (`%m:%p`).
+            Add RemoteID option 37 in format
+            - MAC address, hostname and interface name (`%m:%h:%p`)
+            - MAC
+            address and interface ID (`%m:%i`)
+            - MAC address and interface name (`%m:%p`)
             """
 
             if TYPE_CHECKING:
@@ -17933,8 +17936,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         link_layer_address: Add Option 79 (Link Layer Address Option).
                         remote_id_format:
-                           Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface
-                           name (`%m:%p`).
+                           Add RemoteID option 37 in format
+                           - MAC address, hostname and interface name (`%m:%h:%p`)
+                           - MAC
+                           address and interface ID (`%m:%i`)
+                           - MAC address and interface name (`%m:%p`)
 
                     """
 
