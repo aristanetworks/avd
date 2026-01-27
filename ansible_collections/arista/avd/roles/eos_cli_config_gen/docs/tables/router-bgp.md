@@ -290,7 +290,7 @@
     | [<samp>&nbsp;&nbsp;vlan_aware_bundles</samp>](## "router_bgp.vlan_aware_bundles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.vlan_aware_bundles.[].name") | String | Required, Unique |  |  | VLAN aware bundle name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.vlan_aware_bundles.[].metadata") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "router_bgp.vlan_aware_bundles.[].metadata.tenant") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenants</samp>](## "router_bgp.vlan_aware_bundles.[].metadata.tenants") | List |  |  |  | List of tenants where this VLAN is defined. Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "router_bgp.vlan_aware_bundles.[].metadata.description") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd</samp>](## "router_bgp.vlan_aware_bundles.[].rd") | String |  |  |  | Route distinguisher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd_evpn_domain</samp>](## "router_bgp.vlan_aware_bundles.[].rd_evpn_domain") | Dictionary |  |  |  |  |
@@ -321,7 +321,7 @@
     | [<samp>&nbsp;&nbsp;vlans</samp>](## "router_bgp.vlans") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "router_bgp.vlans.[].id") | Integer | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "router_bgp.vlans.[].metadata") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "router_bgp.vlans.[].metadata.tenant") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenants</samp>](## "router_bgp.vlans.[].metadata.tenants") | List |  |  |  | List of tenants where this VLAN is defined. Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd</samp>](## "router_bgp.vlans.[].rd") | String |  |  |  | Route distinguisher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd_evpn_domain</samp>](## "router_bgp.vlans.[].rd_evpn_domain") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain</samp>](## "router_bgp.vlans.[].rd_evpn_domain.domain") | String |  |  | Valid Values:<br>- <code>remote</code><br>- <code>all</code> |  |
@@ -2196,8 +2196,8 @@
         - name: <str; required; unique>
           metadata:
 
-            # Key only used for documentation or validation purposes.
-            tenant: <str>
+            # List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+            tenants: <list>
 
             # Key only used for documentation or validation purposes.
             description: <str>
@@ -2239,8 +2239,8 @@
         - id: <int; required; unique>
           metadata:
 
-            # Key only used for documentation or validation purposes.
-            tenant: <str>
+            # List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+            tenants: <list>
 
           # Route distinguisher.
           rd: <str>

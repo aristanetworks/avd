@@ -16155,9 +16155,10 @@ keys:
             metadata:
               type: dict
               keys:
-                tenant:
-                  type: str
-                  description: Key only used for documentation or validation purposes.
+                tenants:
+                  type: list
+                  description: List of tenants where this VLAN is defined. Key only
+                    used for documentation or validation purposes.
                 description:
                   type: str
                   description: Key only used for documentation or validation purposes.
@@ -16256,9 +16257,10 @@ keys:
             metadata:
               type: dict
               keys:
-                tenant:
-                  type: str
-                  description: Key only used for documentation or validation purposes.
+                tenants:
+                  type: list
+                  description: List of tenants where this VLAN is defined. Key only
+                    used for documentation or validation purposes.
             rd:
               description: Route distinguisher.
               type: str
@@ -25052,9 +25054,10 @@ keys:
         metadata:
           type: dict
           keys:
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            tenants:
+              type: list
+              description: List of tenants where this VLAN interface is defined. Key
+                only used for documentation or validation purposes.
             tags:
               type: list
               items:
@@ -25167,9 +25170,10 @@ keys:
 
             It will not affect the generated EOS configuration.'
           keys:
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            tenants:
+              type: list
+              description: List of tenants where this VLAN is defined. Key only used
+                for documentation or validation purposes.
   vmtracer_sessions:
     type: list
     primary_key: name
@@ -25221,8 +25225,8 @@ keys:
 
             It will not affect the generated EOS configuration.'
           keys:
-            tenant:
-              type: str
+            tenants:
+              type: list
               description: Key only used for documentation or validation purposes.
   vxlan_interface:
     type: dict

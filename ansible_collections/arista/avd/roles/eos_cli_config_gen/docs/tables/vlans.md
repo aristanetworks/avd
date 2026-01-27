@@ -25,7 +25,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "vlans.[].private_vlan.type") | String |  |  | Valid Values:<br>- <code>community</code><br>- <code>isolated</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_vlan</samp>](## "vlans.[].private_vlan.primary_vlan") | Integer |  |  |  | Primary VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "vlans.[].metadata") | Dictionary |  |  |  | The data under `metadata` is used for documentation, validation or integration purposes.<br>It will not affect the generated EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "vlans.[].metadata.tenant") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenants</samp>](## "vlans.[].metadata.tenants") | List |  |  |  | List of tenants where this VLAN is defined. Key only used for documentation or validation purposes. |
 
 === "YAML"
 
@@ -70,6 +70,6 @@
         # It will not affect the generated EOS configuration.
         metadata:
 
-          # Key only used for documentation or validation purposes.
-          tenant: <str>
+          # List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+          tenants: <list>
     ```

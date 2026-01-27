@@ -1071,9 +1071,9 @@ keys:
             metadata:
               type: dict
               keys:
-                tenant:
-                  type: str
-                  description: Key only used for documentation or validation purposes.
+                tenants:
+                  type: list
+                  description: List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
                 description:
                   type: str
                   description: Key only used for documentation or validation purposes.
@@ -1171,9 +1171,9 @@ keys:
             metadata:
               type: dict
               keys:
-                tenant:
-                  type: str
-                  description: Key only used for documentation or validation purposes.
+                tenants:
+                  type: list
+                  description: List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
             rd:
               description: Route distinguisher.
               type: str

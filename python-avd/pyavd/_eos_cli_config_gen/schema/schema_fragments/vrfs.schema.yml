@@ -34,6 +34,6 @@ keys:
             It will not affect the generated EOS configuration.
 
           keys:
-            tenant:
-              type: str
+            tenants:
+              type: list
               description: Key only used for documentation or validation purposes.
