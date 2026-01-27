@@ -77,7 +77,7 @@ class VlanInterfacesMixin(Protocol):
             eos_cli=svi.raw_eos_cli,
         )
         vlan_interface_config.metadata.tenants.append(tenant.name)
-        # Historic behavior is to not output the default ["all"])
+        # Historic behavior is to not output the default ["all"]
         vlan_interface_config.metadata.tags = EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
 
         if svi.ipv4_acl_in:
