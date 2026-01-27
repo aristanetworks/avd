@@ -24,7 +24,7 @@ custom_structured_configuration_vlan_interfaces:
 - name: Vlan100
   description: SVI100_INBAND_MGMT
   shutdown: true
-  vrf: MGMT
+  vrf: MGMT_BACKUP
   ip_address: 10.100.100.1/24
   metadata:
     type: inband_mgmt
@@ -32,14 +32,14 @@ custom_structured_configuration_vlan_interfaces:
 - name: Vlan101
   description: SVI101_INBAND_MGMT
   shutdown: false
-  vrf: MGMT
+  vrf: MGMT_BACKUP
   metadata:
     type: inband_mgmt
 # SVI ignored because it uses DHCP
 - name: Vlan102
   description: SVI102_INBAND_MGMT
   shutdown: false
-  vrf: MGMT
+  vrf: MGMT_BACKUP
   ip_address: dhcp
   metadata:
     type: inband_mgmt
