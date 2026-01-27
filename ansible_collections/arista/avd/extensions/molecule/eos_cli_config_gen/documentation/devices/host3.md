@@ -405,6 +405,28 @@ router multicast
       multipath deterministic
 ```
 
+## IPv6 DHCP Relay
+
+### IPv6 DHCP Relay Summary
+
+DhcpRelay Agent is in always-on mode.
+
+Forwarding requests with additional IPv6 addresses in the "giaddr" field is allowed.
+
+Add Option 79 - Link Layer Address Option.
+
+Add RemoteID option 37 in format MAC address, hostname and interface name.
+
+### IPv6 DHCP Relay Device Configuration
+
+```eos
+!
+ipv6 dhcp relay always-on
+ipv6 dhcp relay all-subnets default
+ipv6 dhcp relay option link-layer address
+ipv6 dhcp relay option remote-id format %m:%h:%p
+```
+
 ## Errdisable
 
 ### Errdisable Summary

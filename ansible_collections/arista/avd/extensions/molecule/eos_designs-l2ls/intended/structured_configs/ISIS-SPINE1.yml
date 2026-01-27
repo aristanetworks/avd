@@ -89,7 +89,8 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.0.110.1/24
   metadata:
-    tenant: L2LS_ISIS
+    tenants:
+    - L2LS_ISIS
 - name: Vlan4092
   description: Inband Management
   shutdown: false
@@ -106,11 +107,13 @@ vlans:
 - id: 110
   name: SVI_110
   metadata:
-    tenant: L2LS_ISIS
+    tenants:
+    - L2LS_ISIS
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -17909,14 +17909,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Option(AvdModel):
             """Subclass of AvdModel."""
 
-            RemoteIdFormat: TypeAlias = Literal["%m:%i", "%m:%p"]
+            RemoteIdFormat: TypeAlias = Literal["%m:%h:%p", "%m:%i", "%m:%p"]
             _fields: ClassVar[dict] = {"link_layer_address": {"type": bool}, "remote_id_format": {"type": str}}
             link_layer_address: bool | None
             """Add Option 79 (Link Layer Address Option)."""
             remote_id_format: RemoteIdFormat | None
             """
-            Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface
-            name (`%m:%p`).
+            Add RemoteID option 37 in format
+            - MAC address, hostname and interface name (`%m:%h:%p`)
+            - MAC
+            address and interface ID (`%m:%i`)
+            - MAC address and interface name (`%m:%p`)
             """
 
             if TYPE_CHECKING:
@@ -17933,8 +17936,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         link_layer_address: Add Option 79 (Link Layer Address Option).
                         remote_id_format:
-                           Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface
-                           name (`%m:%p`).
+                           Add RemoteID option 37 in format
+                           - MAC address, hostname and interface name (`%m:%h:%p`)
+                           - MAC
+                           address and interface ID (`%m:%i`)
+                           - MAC address and interface name (`%m:%p`)
 
                     """
 
@@ -41677,15 +41683,25 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"tenant": {"type": str}, "description": {"type": str}}
-                tenant: str | None
-                """Key only used for documentation or validation purposes."""
+                class Tenants(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Tenants._item_type = str
+
+                _fields: ClassVar[dict] = {"tenants": {"type": Tenants}, "description": {"type": str}}
+                tenants: Tenants
+                """
+                List of tenants where this bundle is defined. Key only used for documentation or validation
+                purposes.
+
+                Subclass of AvdList with `str` items.
+                """
                 description: str | None
                 """Key only used for documentation or validation purposes."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, tenant: str | None | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, tenants: Tenants | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -41693,7 +41709,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            tenant: Key only used for documentation or validation purposes.
+                            tenants:
+                               List of tenants where this bundle is defined. Key only used for documentation or validation
+                               purposes.
+
+                               Subclass of AvdList with `str` items.
                             description: Key only used for documentation or validation purposes.
 
                         """
@@ -41967,13 +41987,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"tenant": {"type": str}}
-                tenant: str | None
-                """Key only used for documentation or validation purposes."""
+                class Tenants(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Tenants._item_type = str
+
+                _fields: ClassVar[dict] = {"tenants": {"type": Tenants}}
+                tenants: Tenants
+                """
+                List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                Subclass of AvdList with `str` items.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, tenants: Tenants | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -41981,7 +42009,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            tenant: Key only used for documentation or validation purposes.
+                            tenants:
+                               List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                               Subclass of AvdList with `str` items.
 
                         """
 
@@ -67938,14 +67968,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
+            class Tenants(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tenants._item_type = str
+
             class Tags(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
             Tags._item_type = str
 
-            _fields: ClassVar[dict] = {"tenant": {"type": str}, "tags": {"type": Tags}, "type": {"type": str}}
-            tenant: str | None
-            """Key only used for documentation or validation purposes."""
+            _fields: ClassVar[dict] = {"tenants": {"type": Tenants}, "tags": {"type": Tags}, "type": {"type": str}}
+            tenants: Tenants
+            """
+            List of tenants where this VLAN interface is defined. Key only used for documentation or validation
+            purposes.
+
+            Subclass of AvdList with `str` items.
+            """
             tags: Tags
             """
             Key only used for documentation or validation purposes.
@@ -67958,11 +67998,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self,
-                    *,
-                    tenant: str | None | UndefinedType = Undefined,
-                    tags: Tags | UndefinedType = Undefined,
-                    type: str | None | UndefinedType = Undefined,
+                    self, *, tenants: Tenants | UndefinedType = Undefined, tags: Tags | UndefinedType = Undefined, type: str | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     Metadata.
@@ -67971,7 +68007,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        tenant: Key only used for documentation or validation purposes.
+                        tenants:
+                           List of tenants where this VLAN interface is defined. Key only used for documentation or validation
+                           purposes.
+
+                           Subclass of AvdList with `str` items.
                         tags:
                            Key only used for documentation or validation purposes.
 
@@ -68568,13 +68608,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"tenant": {"type": str}}
-            tenant: str | None
-            """Key only used for documentation or validation purposes."""
+            class Tenants(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tenants._item_type = str
+
+            _fields: ClassVar[dict] = {"tenants": {"type": Tenants}}
+            tenants: Tenants
+            """
+            List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+            Subclass of AvdList with `str` items.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, tenants: Tenants | UndefinedType = Undefined) -> None:
                     """
                     Metadata.
 
@@ -68582,7 +68630,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        tenant: Key only used for documentation or validation purposes.
+                        tenants:
+                           List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                           Subclass of AvdList with `str` items.
 
                     """
 
@@ -68727,13 +68777,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"tenant": {"type": str}}
-            tenant: str | None
-            """Key only used for documentation or validation purposes."""
+            class Tenants(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tenants._item_type = str
+
+            _fields: ClassVar[dict] = {"tenants": {"type": Tenants}}
+            tenants: Tenants
+            """
+            Key only used for documentation or validation purposes.
+
+            Subclass of AvdList with `str` items.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, tenants: Tenants | UndefinedType = Undefined) -> None:
                     """
                     Metadata.
 
@@ -68741,7 +68800,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        tenant: Key only used for documentation or validation purposes.
+                        tenants:
+                           Key only used for documentation or validation purposes.
+
+                           Subclass of AvdList with `str` items.
 
                     """
 

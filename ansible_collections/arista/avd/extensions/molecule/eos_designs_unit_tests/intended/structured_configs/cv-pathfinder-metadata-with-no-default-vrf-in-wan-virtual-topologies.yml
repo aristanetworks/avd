@@ -400,11 +400,13 @@ vrfs:
 - name: IT
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: PROD
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-metadata-with-no-default-vrf-in-wan-virtual-topologies_VTEP

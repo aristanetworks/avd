@@ -917,7 +917,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {"warn_eos_config_keys": {"type": bool, "default": True}}
         warn_eos_config_keys: bool
         """
-        Emit a warning when EOS Config keys are detected in the inputs.
+        Emit a warning when EOS Config keys are detected in the AVD Design inputs.
 
         Default value: `True`
         """
@@ -932,7 +932,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    warn_eos_config_keys: Emit a warning when EOS Config keys are detected in the inputs.
+                    warn_eos_config_keys: Emit a warning when EOS Config keys are detected in the AVD Design inputs.
 
                 """
 
@@ -88558,7 +88558,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     eos_designs_validation_configuration: EosDesignsValidationConfiguration
     """
-    Validation configuration when validating AVD Design inputs.
+    Validation configuration options when validating AVD Design inputs.
 
     Subclass of AvdModel.
     """
@@ -90729,7 +90729,7 @@ class EosDesigns(EosDesignsRootModel):
                    size and the available resources, you may want to adjust this number.
                 avd_structured_config_file_format: The file format to use when dumping structured configuration files.
                 eos_designs_validation_configuration:
-                   Validation configuration when validating AVD Design inputs.
+                   Validation configuration options when validating AVD Design inputs.
 
                    Subclass of AvdModel.
                 bfd_multihop:
