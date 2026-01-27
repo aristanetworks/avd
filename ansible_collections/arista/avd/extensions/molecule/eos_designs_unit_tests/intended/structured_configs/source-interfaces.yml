@@ -50,7 +50,8 @@ vlans:
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: default
   ip_routing: false

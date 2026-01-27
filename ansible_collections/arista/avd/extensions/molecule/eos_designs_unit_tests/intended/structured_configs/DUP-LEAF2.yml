@@ -73,7 +73,8 @@ router_bgp:
   vlans:
   - id: 100
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 10.0.0.2:10100
     route_targets:
       both:
@@ -82,7 +83,8 @@ router_bgp:
     - learned
   - id: 200
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 10.0.0.2:10200
     route_targets:
       both:
@@ -121,7 +123,8 @@ vlan_interfaces:
   shutdown: false
   vrf: TEST
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - DUP-LEAF2
 vlan_internal_order:
@@ -133,11 +136,13 @@ vlans:
 - id: 100
   name: Duplicate_SVI_100_LEAF2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 200
   name: Duplicate_L2VLAN_200_LEAF2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -145,7 +150,8 @@ vrfs:
   description: TEST
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vxlan_interface:
   vxlan1:
     description: DUP-LEAF2_VTEP

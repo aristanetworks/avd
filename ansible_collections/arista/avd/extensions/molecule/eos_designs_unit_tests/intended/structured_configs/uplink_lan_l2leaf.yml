@@ -67,15 +67,18 @@ vlans:
 - id: 10
   name: VLAN10_NATIVE
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 100
   name: VLAN100
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 102
   name: VLAN102
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vrfs:
 - name: MGMT
   ip_routing: false

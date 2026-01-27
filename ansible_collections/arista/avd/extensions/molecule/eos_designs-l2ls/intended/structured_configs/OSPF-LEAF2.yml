@@ -89,11 +89,13 @@ vlans:
 - id: 100
   name: SVI_100
   metadata:
-    tenant: L2LS_OSPF
+    tenants:
+    - L2LS_OSPF
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

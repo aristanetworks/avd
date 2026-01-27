@@ -783,11 +783,13 @@ vrfs:
 - name: BLUE
   ip_routing: true
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: RED
   ip_routing: true
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vxlan_interface:
   vxlan1:
     description: site2-wan2_VTEP

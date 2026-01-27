@@ -131,7 +131,8 @@ router_bgp:
     vlan: 1014-1015
   - name: storage_prod
     metadata:
-      tenant: StorageProd
+      tenants:
+      - StorageProd
     rd: 10.10.0.3:10010
     route_targets:
       both:
@@ -216,7 +217,8 @@ vlan_interfaces:
   shutdown: false
   vrf: research1
   metadata:
-    tenant: research
+    tenants:
+    - research
     tags:
     - research
 - name: Vlan1017
@@ -224,7 +226,8 @@ vlan_interfaces:
   shutdown: false
   vrf: research1
   metadata:
-    tenant: research
+    tenants:
+    - research
     tags:
     - research
 - name: Vlan1011
@@ -232,7 +235,8 @@ vlan_interfaces:
   shutdown: false
   vrf: SIT2
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 - name: Vlan1012
@@ -240,7 +244,8 @@ vlan_interfaces:
   shutdown: false
   vrf: SIT2
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 - name: Vlan1013
@@ -248,7 +253,8 @@ vlan_interfaces:
   shutdown: false
   vrf: SIT2
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 - name: Vlan1014
@@ -256,7 +262,8 @@ vlan_interfaces:
   shutdown: false
   vrf: SIT3
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 - name: Vlan1015
@@ -264,7 +271,8 @@ vlan_interfaces:
   shutdown: false
   vrf: SIT3
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 - name: Vlan1008
@@ -272,7 +280,8 @@ vlan_interfaces:
   shutdown: false
   vrf: SIT_VRF
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 - name: Vlan1009
@@ -280,7 +289,8 @@ vlan_interfaces:
   shutdown: false
   vrf: SIT_VRF
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 - name: Vlan1010
@@ -288,7 +298,8 @@ vlan_interfaces:
   shutdown: false
   vrf: SIT_VRF
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 vlan_internal_order:
@@ -300,102 +311,126 @@ vlans:
 - id: 50
   name: ipmi
   metadata:
-    tenant: FABRIC
+    tenants:
+    - FABRIC
 - id: 60
   name: ipmi
   metadata:
-    tenant: FABRIC
+    tenants:
+    - FABRIC
 - id: 70
   name: vmotion
   metadata:
-    tenant: FABRIC
+    tenants:
+    - FABRIC
 - id: 80
   name: vstorage
   metadata:
-    tenant: FABRIC
+    tenants:
+    - FABRIC
 - id: 1016
   name: SVI_9
   metadata:
-    tenant: research
+    tenants:
+    - research
 - id: 1017
   name: SVI_10
   metadata:
-    tenant: research
+    tenants:
+    - research
 - id: 110
   name: research1
   metadata:
-    tenant: research
+    tenants:
+    - research
 - id: 120
   name: research2
   metadata:
-    tenant: research
+    tenants:
+    - research
 - id: 1011
   name: SVI_4
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 1012
   name: SVI_5
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 1013
   name: SVI_6
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 1014
   name: SVI_7
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 1015
   name: SVI_8
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 1008
   name: SVI_1
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 1009
   name: SVI_2
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 1010
   name: SVI_3
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 90
   name: vlan90
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 100
   name: vlan100
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 10
   name: storage_prod
   metadata:
-    tenant: StorageProd
+    tenants:
+    - StorageProd
 - id: 20
   name: storage_prod
   metadata:
-    tenant: StorageProd
+    tenants:
+    - StorageProd
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: research1
   ip_routing: true
   metadata:
-    tenant: research
+    tenants:
+    - research
 - name: SIT2
   ip_routing: true
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - name: SIT3
   ip_routing: true
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - name: SIT_VRF
   ip_routing: true
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 vxlan_interface:
   vxlan1:
     description: evpn_vlan_bundle_VTEP
