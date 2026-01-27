@@ -41685,7 +41685,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"tenants": {"type": Tenants}, "description": {"type": str}}
                 tenants: Tenants
                 """
-                List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                List of tenants where this bundle is defined. Key only used for documentation or validation
+                purposes.
+
                 Subclass of AvdList with `Any` items.
                 """
                 description: str | None
@@ -41702,7 +41704,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             tenants:
-                               List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                               List of tenants where this bundle is defined. Key only used for documentation or validation
+                               purposes.
+
                                Subclass of AvdList with `Any` items.
                             description: Key only used for documentation or validation purposes.
 
