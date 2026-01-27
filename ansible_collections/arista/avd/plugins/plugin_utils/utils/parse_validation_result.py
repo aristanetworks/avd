@@ -47,7 +47,7 @@ def parse_validation_result(validation_result: ValidationResult, hostname: str, 
         path = json_path_to_string(ignored_key.path)
 
         message = (
-            f"[{hostname}]: The EOS config input key '{path}' is present in the input to 'eos_designs' and will be ignored. "
+            f"[{hostname}]: The EOS Config input key '{path}' is present in the input to 'eos_designs' and will be ignored. "
             f"To address this, use the equivalent AVD Design input model if available or use custom_structured_configuration. "
             f"See https://avd.arista.com/6.x/docs/porting-guides/6.x.x.html for details."
         )
