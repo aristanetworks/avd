@@ -304,7 +304,8 @@ class RouterBgpMixin(Protocol):
             return
 
         # Not VRF default
-        bgp_vrf.evpn_multicast = getattr(vrf._internal_data, "evpn_l3_multicast_enabled", None)
+        if (evpn_l3_multicast_enabled := getattr(vrf._internal_data, "evpn_l3_multicast_enabled", None)) is not None:
+            bgp_vrf.evpn_multicast = evpn_l3_multicast_enabled
         if evpn_multicast_transit_mode := getattr(vrf._internal_data, "evpn_l3_multicast_evpn_peg_transit", False):
             bgp_vrf.evpn_multicast_address_family.ipv4.transit = evpn_multicast_transit_mode
 
