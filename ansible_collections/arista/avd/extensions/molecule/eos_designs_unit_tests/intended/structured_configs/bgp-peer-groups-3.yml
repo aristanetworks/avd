@@ -108,6 +108,18 @@ router_bgp:
     bfd: false
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.255.112
+    peer_group: MPLS-OVERLAY-PEERS
+    metadata:
+      peer: bgp-peer-groups-2
+    description: bgp-peer-groups-2_Loopback0
+  - ip_address: 192.168.250.1
+    peer_group: IPVPN-GATEWAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: bgp-peer-groups-4
+    description: bgp-peer-groups-4
   address_family_evpn:
     domain_identifier: '65535:1'
     neighbor_default:
