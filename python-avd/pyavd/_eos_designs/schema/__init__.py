@@ -909,6 +909,8 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    AvdStructuredConfigFileFormat: TypeAlias = Literal["yml", "yaml", "json"]
+
     class BfdMultihop(AvdModel):
         """Subclass of AvdModel."""
 
@@ -980,6 +982,7 @@ class EosDesigns(EosDesignsRootModel):
                 "password": {"type": str},
                 "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": False},
+                "maximum_routes": {"type": int, "default": 256000},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
             name: str
@@ -1001,6 +1004,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             bfd: bool
             """Default value: `False`"""
+            maximum_routes: int
+            """
+            Maximum number of routes (0 means unlimited).
+
+            Default value: `256000`
+            """
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
             """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
 
@@ -1013,6 +1022,7 @@ class EosDesigns(EosDesignsRootModel):
                     password: str | None | UndefinedType = Undefined,
                     cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
+                    maximum_routes: int | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -1031,6 +1041,7 @@ class EosDesigns(EosDesignsRootModel):
                            To protect the password at rest it is strongly recommended to
                            make use of a vault or similar.
                         bfd: bfd
+                        maximum_routes: Maximum number of routes (0 means unlimited).
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
                     """
@@ -1043,6 +1054,7 @@ class EosDesigns(EosDesignsRootModel):
                 "password": {"type": str},
                 "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": False},
+                "maximum_routes": {"type": int, "default": 256000},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
             name: str
@@ -1060,6 +1072,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             bfd: bool
             """Default value: `False`"""
+            maximum_routes: int
+            """
+            Maximum number of routes (0 means unlimited).
+
+            Default value: `256000`
+            """
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
             """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
 
@@ -1072,6 +1090,7 @@ class EosDesigns(EosDesignsRootModel):
                     password: str | None | UndefinedType = Undefined,
                     cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
+                    maximum_routes: int | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -1090,6 +1109,7 @@ class EosDesigns(EosDesignsRootModel):
                            To protect the password at rest it is strongly recommended to
                            make use of a vault or similar.
                         bfd: bfd
+                        maximum_routes: Maximum number of routes (0 means unlimited).
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
                     """
@@ -1102,6 +1122,7 @@ class EosDesigns(EosDesignsRootModel):
                 "password": {"type": str},
                 "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": False},
+                "maximum_routes": {"type": int, "default": 256000},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
             name: str
@@ -1123,6 +1144,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             bfd: bool
             """Default value: `False`"""
+            maximum_routes: int
+            """
+            Maximum number of routes (0 means unlimited).
+
+            Default value: `256000`
+            """
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
             """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
 
@@ -1135,6 +1162,7 @@ class EosDesigns(EosDesignsRootModel):
                     password: str | None | UndefinedType = Undefined,
                     cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
+                    maximum_routes: int | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -1153,6 +1181,7 @@ class EosDesigns(EosDesignsRootModel):
                            To protect the password at rest it is strongly recommended to
                            make use of a vault or similar.
                         bfd: bfd
+                        maximum_routes: Maximum number of routes (0 means unlimited).
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
                     """
@@ -87814,9 +87843,10 @@ class EosDesigns(EosDesignsRootModel):
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_digital_twin_mode": {"type": bool, "default": False},
-        "avd_eos_designs_debug": {"type": bool, "default": False},
+        "avd_eos_designs_return_structured_config": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
-        "avd_eos_designs_unset_facts": {"type": bool, "default": True},
+        "avd_eos_designs_validate_inputs_batch_size": {"type": int, "default": 10},
+        "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
         "bgp_as_notation": {"type": str, "default": "auto"},
@@ -88474,9 +88504,9 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
-    avd_eos_designs_debug: bool
+    avd_eos_designs_return_structured_config: bool
     """
-    Dump all vars and facts per device after generating `avd_switch_facts`.
+    Return structured configuration as ansible_facts per device.
 
     Default value: `False`
     """
@@ -88486,12 +88516,19 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `True`
     """
-    avd_eos_designs_unset_facts: bool
+    avd_eos_designs_validate_inputs_batch_size: int
     """
-    Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer
-    variables.
+    The number of hosts to process in each batch when validating inputs.
+    Depending on your inventory
+    size and the available resources, you may want to adjust this number.
 
-    Default value: `True`
+    Default value: `10`
+    """
+    avd_structured_config_file_format: AvdStructuredConfigFileFormat
+    """
+    The file format to use when dumping structured configuration files.
+
+    Default value: `"yml"`
     """
     bfd_multihop: BfdMultihop
     """
@@ -90425,9 +90462,10 @@ class EosDesigns(EosDesignsRootModel):
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
-            avd_eos_designs_debug: bool | UndefinedType = Undefined,
+            avd_eos_designs_return_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
-            avd_eos_designs_unset_facts: bool | UndefinedType = Undefined,
+            avd_eos_designs_validate_inputs_batch_size: int | UndefinedType = Undefined,
+            avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
@@ -90650,11 +90688,13 @@ class EosDesigns(EosDesignsRootModel):
                    To keep Digital Twin artifacts separate, adjust the `output_dir_name` and
                    `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
                    dedicated output location.
-                avd_eos_designs_debug: Dump all vars and facts per device after generating `avd_switch_facts`.
+                avd_eos_designs_return_structured_config: Return structured configuration as ansible_facts per device.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
-                avd_eos_designs_unset_facts:
-                   Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer
-                   variables.
+                avd_eos_designs_validate_inputs_batch_size:
+                   The number of hosts to process in each batch when validating inputs.
+                   Depending on your inventory
+                   size and the available resources, you may want to adjust this number.
+                avd_structured_config_file_format: The file format to use when dumping structured configuration files.
                 bfd_multihop:
                    BFD Multihop tuning.
 

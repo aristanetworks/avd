@@ -878,6 +878,27 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
+  avd_eos_cli_config_gen_validate_inputs_batch_size:
+    documentation_options:
+      table: role-settings
+    type: int
+    default: 10
+    description: 'The number of hosts to process in each batch when validating inputs.
+
+      Depending on your inventory size and the available resources, you may want to
+      adjust this number.'
+  avd_structured_config_file_format:
+    documentation_options:
+      table: role-settings
+    type: str
+    default: yml
+    valid_values:
+    - yml
+    - yaml
+    - json
+    description: 'The file format to use when loading structured configuration files.
+
+      '
   banners:
     type: dict
     keys:
@@ -5484,31 +5505,9 @@ keys:
             type: bool
   generate_default_config:
     type: bool
+    documentation_options:
+      table: role-settings
     default: false
-    description: 'The `generate_default_config` knob allows to omit default EOS configuration.
-
-      This can be useful when leveraging `eos_cli_config_gen` to generate configlets
-      with CloudVision.
-
-
-      The following commands will be omitted when `generate_default_config` is set
-      to `false`:
-
-
-      - RANCID Content Type
-
-      - Hostname (even if `hostname` variable is not set. Then the hostname is picked
-      up from `inventory_hostname`)
-
-      - Default configuration for `aaa`
-
-      - Default configuration for `enable password`
-
-      - Transceiver qsfp default mode
-
-      - End of configuration delimiter
-
-      '
     deprecation:
       warning: true
       removed: true
@@ -14638,6 +14637,18 @@ keys:
       tls_ssl_profile:
         type: str
         description: Name of global TLS profile.
+  read_structured_config_from_file:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: 'Read structured configuration from files in `structured_dir` (default
+      directory also used by the `eos_designs` role).
+
+      If set to false, `eos_cli_config_gen` will read structured configuration from
+      hostvars.
+
+      '
   redundancy:
     type: dict
     keys:
@@ -14655,6 +14666,7 @@ keys:
           description: Role name.
         sequence_numbers:
           type: list
+          primary_key: sequence
           items:
             type: dict
             keys:
@@ -14665,6 +14677,7 @@ keys:
                 description: Sequence number.
               action:
                 type: str
+                required: true
                 valid_values:
                 - permit
                 - deny
@@ -14675,6 +14688,7 @@ keys:
                   '
               command:
                 type: str
+                required: true
                 description: Command as string.
   route_maps:
     type: list
@@ -14912,7 +14926,7 @@ keys:
               description: AVT Policy name.
             profiles:
               type: list
-              primary_key: id
+              primary_key: name
               description: AVT profiles in this VRF.
               items:
                 type: dict
@@ -14922,7 +14936,7 @@ keys:
                     description: AVT profile name.
                   id:
                     type: int
-                    description: Unique ID for this AVT (per VRF).
+                    description: ID for this AVT (per VRF).
                     required: true
                     convert_types:
                     - str
@@ -20965,6 +20979,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
           on_startup:
             type: dict
             keys:
@@ -21215,6 +21230,7 @@ keys:
             type: str
           prefix_segments:
             type: list
+            primary_key: prefix
             items:
               type: dict
               keys:
