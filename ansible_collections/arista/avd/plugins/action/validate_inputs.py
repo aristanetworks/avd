@@ -248,10 +248,11 @@ class ActionModule(AvdActionPlugin):
         if plugin_args.validation_configuration is None:
             return None
 
+        configuration = Configuration()
         if (warn_eos_config_keys := plugin_args.validation_configuration.get("warn_eos_config_keys")) is not None:
-            return Configuration(warn_eos_cli_config_gen_keys=warn_eos_config_keys)
+            configuration.warn_eos_cli_config_gen_keys = warn_eos_config_keys
 
-        return Configuration()
+        return configuration
 
     def _get_hosts_to_process(self, task_vars: dict[str, Any], schema_name: SCHEMA_NAME) -> list[str]:
         """
