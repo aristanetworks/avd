@@ -42,6 +42,13 @@ if TYPE_CHECKING:
         metadata: Metadata
         ip_address: str
 
+    class CandidateVlanInterfacesItemInbandMgmt(Protocol):
+        """Protocol representing an SVI that is a valid candidate for inband management reachability testing."""
+
+        name: str
+        ip_address: str
+        vrf: str | None
+
 
 class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory[VerifyLLDPNeighbors.Input]):
     """
@@ -238,20 +245,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
     def _get_inband_management_hosts(self) -> Iterator[Host]:
         """Generate Host objects for the inband management reachability test."""
         for svi in self.structured_config.vlan_interfaces:
-            if svi.metadata.type != "inband_mgmt":
-                self.logger_adapter.debug(LogMessage.INTERFACE_NOT_INBAND_MGMT, interface=svi.name)
-                continue
-
-            if svi.shutdown:
-                self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=svi.name)
-                continue
-
-            if not svi.ip_address:
-                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=svi.name, fields="ip_address")
-                continue
-
-            if svi.ip_address == "dhcp":
-                self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=svi.name)
+            if not self._is_svi_candidate(svi):
                 continue
 
             vrf = svi.vrf or "default"
@@ -324,6 +318,26 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
         if "unnumbered" in interface.ip_address:
             self.logger_adapter.debug(LogMessage.INTERFACE_UNNUMBERED, interface=interface.name)
             return False
+        return True
+
+    def _is_svi_candidate(self, svi: EosCliConfigGen.VlanInterfacesItem) -> TypeGuard[CandidateVlanInterfacesItemInbandMgmt]:
+        """Check if an SVI is valid for inband management reachability testing."""
+        if svi.metadata.type != "inband_mgmt":
+            self.logger_adapter.debug(LogMessage.INTERFACE_NOT_INBAND_MGMT, interface=svi.name)
+            return False
+
+        if svi.shutdown:
+            self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=svi.name)
+            return False
+
+        if not svi.ip_address:
+            self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=svi.name, fields="ip_address")
+            return False
+
+        if svi.ip_address == "dhcp":
+            self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=svi.name)
+            return False
+
         return True
 
     def _track_host(self, host: Host) -> None:
