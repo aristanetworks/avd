@@ -7,7 +7,6 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>avd_eos_cli_config_gen_input_dir</samp>](## "avd_eos_cli_config_gen_input_dir") | String |  |  |  | Specify a directory containing structured configuration files to use as input.<br>Can be set to null or an empty string to force `eos_cli_config_gen` to use hostvars as input.<br>By default, this variable is set to "{{ structured_dir }}" which is the directory where `eos_designs` outputs structured configuration files.<br> |
     | [<samp>avd_eos_cli_config_gen_validate_inputs_batch_size</samp>](## "avd_eos_cli_config_gen_validate_inputs_batch_size") | Integer |  | `10` |  | The number of hosts to process in each batch when validating inputs.<br>Depending on your inventory size and the available resources, you may want to adjust this number. |
     | [<samp>avd_structured_config_file_format</samp>](## "avd_structured_config_file_format") | String |  | `yml` | Valid Values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | The file format to use when loading structured configuration files.<br> |
     | [<samp>eos_cli_config_gen_configuration</samp>](## "eos_cli_config_gen_configuration") | Dictionary |  |  |  |  |
@@ -19,15 +18,11 @@
     | [<samp>&nbsp;&nbsp;toc</samp>](## "eos_cli_config_gen_documentation.toc") | Boolean |  | `True` |  | Generate the table of content(TOC) on device documentation. |
     | [<samp>generate_default_config</samp>](## "generate_default_config") <span style="color:red">removed</span> | Boolean |  | `False` |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. See [here](https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#default-eos-configuration-is-no-longer-automatically-generated) for details.</span> |
     | [<samp>generate_device_documentation</samp>](## "generate_device_documentation") <span style="color:red">removed</span> | Boolean |  | `True` |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>eos_cli_config_gen_documentation.enable</samp> instead.</span> |
+    | [<samp>read_structured_config_from_file</samp>](## "read_structured_config_from_file") | Boolean |  | `True` |  | Read structured configuration from files in `structured_dir` (default directory also used by the `eos_designs` role).<br>If set to false, `eos_cli_config_gen` will read structured configuration from hostvars.<br> |
 
 === "YAML"
 
     ```yaml
-    # Specify a directory containing structured configuration files to use as input.
-    # Can be set to null or an empty string to force `eos_cli_config_gen` to use hostvars as input.
-    # By default, this variable is set to "{{ structured_dir }}" which is the directory where `eos_designs` outputs structured configuration files.
-    avd_eos_cli_config_gen_input_dir: <str>
-
     # The number of hosts to process in each batch when validating inputs.
     # Depending on your inventory size and the available resources, you may want to adjust this number.
     avd_eos_cli_config_gen_validate_inputs_batch_size: <int; default=10>
@@ -51,4 +46,8 @@
 
       # Generate the table of content(TOC) on device documentation.
       toc: <bool; default=True>
+
+    # Read structured configuration from files in `structured_dir` (default directory also used by the `eos_designs` role).
+    # If set to false, `eos_cli_config_gen` will read structured configuration from hostvars.
+    read_structured_config_from_file: <bool; default=True>
     ```

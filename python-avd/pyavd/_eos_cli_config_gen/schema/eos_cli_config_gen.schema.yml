@@ -878,20 +878,6 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  avd_eos_cli_config_gen_input_dir:
-    documentation_options:
-      table: role-settings
-    type: str
-    description: 'Specify a directory containing structured configuration files to
-      use as input.
-
-      Can be set to null or an empty string to force `eos_cli_config_gen` to use hostvars
-      as input.
-
-      By default, this variable is set to "{{ structured_dir }}" which is the directory
-      where `eos_designs` outputs structured configuration files.
-
-      '
   avd_eos_cli_config_gen_validate_inputs_batch_size:
     documentation_options:
       table: role-settings
@@ -14651,6 +14637,18 @@ keys:
       tls_ssl_profile:
         type: str
         description: Name of global TLS profile.
+  read_structured_config_from_file:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: 'Read structured configuration from files in `structured_dir` (default
+      directory also used by the `eos_designs` role).
+
+      If set to false, `eos_cli_config_gen` will read structured configuration from
+      hostvars.
+
+      '
   redundancy:
     type: dict
     keys:
