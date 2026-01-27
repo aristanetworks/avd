@@ -47,6 +47,7 @@ with suppress(AttributeError):
     LOGGER.propagate = False
 
 ARGUMENT_SPEC = {
+    "avd_tmp_dir": {"type": "str"},
     "config_filename": {"type": "str"},
     "documentation_filename": {"type": "str"},
     "generate_device_config": {"type": "bool", "default": True},
@@ -85,7 +86,7 @@ class ActionModule(ActionBase):
         LOGGER.debug("Validating task arguments [done].")
 
         LOGGER.debug("Loading structured config...")
-        structured_config = self.load_structured_config(hostname)
+        structured_config = self.load_structured_config(hostname, avd_tmp_dir=validated_args.get("avd_tmp_dir"))
         LOGGER.debug("Loading structured config [done].")
 
         if has_custom_templates := bool(task_vars.get("custom_templates")):
@@ -178,17 +179,18 @@ class ActionModule(ActionBase):
         path.write_text(content, encoding="UTF-8")
         return True
 
-    def load_structured_config(self, hostname: str) -> dict[str, Any]:
+    def load_structured_config(self, hostname: str, avd_tmp_dir: str | None = None) -> dict[str, Any]:
         """
         Load the validated structured config from the temporary file for the host.
 
         Args:
             hostname: Inventory hostname.
+            avd_tmp_dir: Optional path to use as the AVD temporary directory.
 
         Returns:
             Dict containing the validated structured config for the host.
         """
-        _templated_path, validated_path = get_role_tmp_paths("eos_cli_config_gen")
+        _templated_path, validated_path = get_role_tmp_paths("eos_cli_config_gen", avd_tmp_dir)
         file_path = validated_path / f"{hostname}.json"
         if not file_path.exists():
             msg = (

@@ -390,7 +390,10 @@ keys:
     - yml
     - yaml
     - json
-    description: 'The file format to use when dumping structured configuration files.
+    description: 'Optional path to use as the AVD temporary directory for storing
+      templated and validated data used internally by the validate_inputs action plugin.
+
+      Useful for debugging or CI purposes.
 
       '
   bfd_multihop:

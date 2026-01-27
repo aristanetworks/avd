@@ -35,6 +35,7 @@ LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
 ARGUMENT_SPEC = {
+    "avd_tmp_dir": {"type": "str"},
     "structured_config_dir": {"type": "str", "required": True},
     "structured_config_suffix": {"type": "str", "default": "yml"},
     "fabric_documentation_file": {"type": "str", "required": True},
@@ -74,7 +75,7 @@ class ActionModule(ActionBase):
         return self.main(validated_args, task_vars, result)
 
     def main(self, validated_args: dict, task_vars: dict, result: dict) -> dict:
-        avd_switch_facts = self.load_facts()
+        avd_switch_facts = self.load_facts(avd_tmp_dir=validated_args.get("avd_tmp_dir"))
         device_list = list(avd_switch_facts.keys())
 
         # Create dict of all facts.
@@ -157,14 +158,17 @@ class ActionModule(ActionBase):
             # JSON
             return json.load(stream)
 
-    def load_facts(self) -> dict[str, dict]:
+    def load_facts(self, avd_tmp_dir: str | None = None) -> dict[str, dict]:
         """
         Load facts from the temporary file.
+
+        Args:
+            avd_tmp_dir: Optional path to use as the AVD temporary directory.
 
         Returns:
             Dict of facts keyed by hostname.
         """
-        file_path = get_eos_designs_facts_path()
+        file_path = get_eos_designs_facts_path(avd_tmp_dir)
 
         if not file_path.exists():
             msg = f"Missing AVD eos_designs facts to generate documentation ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."

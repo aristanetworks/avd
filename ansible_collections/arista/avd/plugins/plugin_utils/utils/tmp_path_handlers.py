@@ -1,7 +1,6 @@
 # Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import os
 import tempfile
 from functools import cache
 from pathlib import Path
@@ -15,32 +14,35 @@ VALIDATED_DIR_NAME = "validated"
 EOS_DESIGNS_FACTS_FILENAME = "eos_designs_facts.json"
 
 
-def get_tmp_path() -> Path:
+def get_tmp_path(avd_tmp_dir: str | None = None) -> Path:
     """
     Return a Path object for the AVD temporary directory.
 
     The directory will be created if missing with 700 permissions.
 
     The location is determined in the following order:
-    1. Environment variable `AVDTMPDIR` (not cleaned up automatically, for debugging/CI).
+    1. If `avd_tmp_dir` is provided, use it directly.
     2. An "arista_avd" subdirectory under Ansible "local_tmp" directory (cleaned up by Ansible after the play).
     3. Fall back to "arista_avd_<random>" directory under the system temp directory.
+
+    Args:
+        avd_tmp_dir: Optional path to use as the AVD temporary directory.
 
     Returns:
         Path object pointing to the AVD temporary directory.
     """
     # Return the same tmp_path as last time unless ansible cleaned it up in the meanwhile. Ansible maintains a separate local_tmp folder per play.
-    tmp_path = _cached_tmp_path()
+    tmp_path = _cached_tmp_path(avd_tmp_dir)
     if not tmp_path.exists():
         _cached_tmp_path.cache_clear()
-        return _cached_tmp_path()
+        return _cached_tmp_path(avd_tmp_dir)
     return tmp_path
 
 
 @cache
-def _cached_tmp_path() -> Path:
+def _cached_tmp_path(avd_tmp_dir: str | None = None) -> Path:
     """Create and return a new tmp_path. Cached for next time."""
-    path_str = os.environ.get("AVDTMPDIR")
+    path_str = avd_tmp_dir
     if not path_str and hasattr(ansible_constants, "DEFAULT_LOCAL_TMP"):
         path_str = ansible_constants.DEFAULT_LOCAL_TMP
     if not path_str:
@@ -60,7 +62,7 @@ def _cached_tmp_path() -> Path:
     return tmp_path
 
 
-def get_eos_designs_facts_path() -> Path:
+def get_eos_designs_facts_path(avd_tmp_dir: str | None = None) -> Path:
     """
     Return the Path object for the shared eos_designs facts file.
 
@@ -69,10 +71,13 @@ def get_eos_designs_facts_path() -> Path:
 
     The parent directory is created if it doesn't exist.
 
+    Args:
+        avd_tmp_dir: Optional path to use as the AVD temporary directory.
+
     Returns:
         Path object pointing to the eos_designs facts JSON file.
     """
-    base_tmp_path = get_tmp_path()
+    base_tmp_path = get_tmp_path(avd_tmp_dir)
     eos_designs_path = base_tmp_path / "eos_designs"
 
     # Ensure directory exist.
@@ -81,7 +86,7 @@ def get_eos_designs_facts_path() -> Path:
     return eos_designs_path / EOS_DESIGNS_FACTS_FILENAME
 
 
-def get_role_tmp_paths(role_name: Literal["eos_designs", "eos_cli_config_gen"]) -> tuple[Path, Path]:
+def get_role_tmp_paths(role_name: Literal["eos_designs", "eos_cli_config_gen"], avd_tmp_dir: str | None = None) -> tuple[Path, Path]:
     """
     Return the temporary paths for 'templated' and 'validated' directories to be used by a specific Ansible role.
 
@@ -89,11 +94,12 @@ def get_role_tmp_paths(role_name: Literal["eos_designs", "eos_cli_config_gen"]) 
 
     Args:
         role_name: The role name. Either 'eos_designs' or 'eos_cli_config_gen'.
+        avd_tmp_dir: Optional path to use as the AVD temporary directory.
 
     Returns:
         A tuple of Path objects containing (templated_path, validated_path).
     """
-    base_tmp_path = get_tmp_path()
+    base_tmp_path = get_tmp_path(avd_tmp_dir)
     role_path = base_tmp_path / role_name
 
     templated_path = role_path / TEMPLATED_DIR_NAME

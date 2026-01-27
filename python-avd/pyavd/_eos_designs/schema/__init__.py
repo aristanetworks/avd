@@ -88526,7 +88526,9 @@ class EosDesigns(EosDesignsRootModel):
     """
     avd_structured_config_file_format: AvdStructuredConfigFileFormat
     """
-    The file format to use when dumping structured configuration files.
+    Optional path to use as the AVD temporary directory for storing templated and validated data used
+    internally by the validate_inputs action plugin.
+    Useful for debugging or CI purposes.
 
     Default value: `"yml"`
     """
@@ -90694,7 +90696,10 @@ class EosDesigns(EosDesignsRootModel):
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
                    size and the available resources, you may want to adjust this number.
-                avd_structured_config_file_format: The file format to use when dumping structured configuration files.
+                avd_structured_config_file_format:
+                   Optional path to use as the AVD temporary directory for storing templated and validated data used
+                   internally by the validate_inputs action plugin.
+                   Useful for debugging or CI purposes.
                 bfd_multihop:
                    BFD Multihop tuning.
 
