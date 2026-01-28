@@ -76,9 +76,9 @@ class VlanInterfacesMixin(Protocol):
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
-        vlan_interface_config.metadata._update(
-            tenant=tenant.name, tags=EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
-        )  # Historic behavior is to not output the default ["all"])
+        vlan_interface_config.metadata.tenants.append(tenant.name)
+        # Historic behavior is to not output the default ["all"]
+        vlan_interface_config.metadata.tags = EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
 
         if svi.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(
@@ -183,7 +183,8 @@ class VlanInterfacesMixin(Protocol):
             vrf=vrf.name,
             mtu=self.shared_utils.get_interface_mtu(f"Vlan{vlan_id}", self.shared_utils.p2p_uplinks_mtu),
         )
-        vlan_interface_config.metadata._update(tenant=tenant.name, type="underlay_peering")
+        vlan_interface_config.metadata.tenants.append(tenant.name)
+        vlan_interface_config.metadata.type = "underlay_peering"
         vlan_interface_config._update(**self._get_vlan_ip_config_for_mlag_peering(vrf))
         return vlan_interface_config
 

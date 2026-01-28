@@ -27,11 +27,14 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             # otherwise it is created via obtain and updated accordingly.
             inband_mgmt_vlan = self.structured_config.vlans.obtain(self.shared_utils.node_config.inband_mgmt_vlan)
             inband_mgmt_vlan.name = self.shared_utils.node_config.inband_mgmt_vlan_name
-            inband_mgmt_vlan.metadata.tenant = "system"
+            inband_mgmt_vlan.metadata.tenants.append_unique("system")
             return
         for svi in self.shared_utils.inband_management_parent_vlans:
+            # TODO: explore combine here
             self.structured_config.vlans.append_new(
-                id=svi, metadata=EosCliConfigGen.VlansItem.Metadata(tenant="system"), name=self.shared_utils.node_config.inband_mgmt_vlan_name
+                id=svi,
+                metadata=EosCliConfigGen.VlansItem.Metadata(tenants=EosCliConfigGen.VlansItem.Metadata.Tenants(["system"])),
+                name=self.shared_utils.node_config.inband_mgmt_vlan_name,
             )
 
     @structured_config_contributor

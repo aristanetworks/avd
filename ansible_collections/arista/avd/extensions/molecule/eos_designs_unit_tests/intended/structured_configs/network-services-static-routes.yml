@@ -221,7 +221,8 @@ router_bgp:
   vlans:
   - id: 2
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.109:10002
     route_targets:
       both:
@@ -230,7 +231,8 @@ router_bgp:
     - learned
   - id: 3
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.109:10003
     route_targets:
       both:
@@ -330,14 +332,16 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.40.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan3
   description: Tenant1_VRF_SVI
   shutdown: false
   vrf: TESTING
   ip_address_virtual: 10.1.40.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vlan_internal_order:
   allocation: ascending
   range:
@@ -347,26 +351,31 @@ vlans:
 - id: 2
   name: Tenant1_SVI
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3
   name: Tenant1_VRF_SVI
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TESTING
   ip_routing: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: VRF_STATIC_ROUTE_ON_L3_INTERFACE
   ip_routing: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: VRF_STATIC_ROUTE_ON_L3_PORT_CHANNEL
   ip_routing: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vxlan_interface:
   vxlan1:
     description: network-services-static-routes_VTEP

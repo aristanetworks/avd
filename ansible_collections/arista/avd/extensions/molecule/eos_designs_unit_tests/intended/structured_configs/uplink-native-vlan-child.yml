@@ -44,7 +44,8 @@ vlans:
 - id: 100
   name: NETWORK_SERVICES_VLAN
   metadata:
-    tenant: test
+    tenants:
+    - test
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -1,8 +1,9 @@
+---
 l3leaf:
   defaults:
     loopback_ipv4_pool: 10.42.0.0/24
     vtep_loopback_ipv4_pool: 10.43.0.0/24
-    mlag_interfaces: [ Ethernet5, Ethernet6 ]
+    mlag_interfaces: [Ethernet5, Ethernet6]
     mlag_peer_ipv4_pool: 10.255.252.0/24
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
 
@@ -16,7 +17,6 @@ l3leaf:
         - name: duplicate-vlans-mlag-b
           bgp_as: 6500
           id: 40
-
 type: l3leaf
 
 tenants:
@@ -35,8 +35,7 @@ tenants:
         svis:
           - id: 350
             name: Tenant_C_WAN_Zone_1
-
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for Vlans.
-  {'id': 2, 'name': 'MLAG_L3_VRF_Tenant_C_WAN_Zone', 'trunk_groups': ['MLAG'], 'metadata': {'tenant': 'Tenant_C'}}
-  conflicts with {'id': 2, 'name': 'MLAG_L3_VRF_Tenant_C_OP_Zone', 'trunk_groups': ['MLAG'], 'metadata': {'tenant': 'Tenant_C'}}.
+  {'id': 2, 'name': 'MLAG_L3_VRF_Tenant_C_WAN_Zone', 'trunk_groups': ['MLAG'], 'metadata': {'tenants': ['Tenant_C']}}
+  conflicts with {'id': 2, 'name': 'MLAG_L3_VRF_Tenant_C_OP_Zone', 'trunk_groups': ['MLAG'], 'metadata': {'tenants': ['Tenant_C']}}.

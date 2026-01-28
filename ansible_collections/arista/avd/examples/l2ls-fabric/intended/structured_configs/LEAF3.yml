@@ -170,15 +170,18 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 10
   name: BLUE-NET
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 30
   name: ORANGE-NET
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 vrfs:
 - name: MGMT
   ip_routing: false

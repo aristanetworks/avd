@@ -94,7 +94,8 @@ router_bgp:
   vlans:
   - id: 111
     metadata:
-      tenant: TEST
+      tenants:
+      - TEST
     rd: 10.10.0.3:10111
     route_targets:
       both:
@@ -133,7 +134,8 @@ vlan_interfaces:
   description: svi_with_default_vrf
   shutdown: true
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
     tags:
     - fabric
 vlan_internal_order:
@@ -148,7 +150,8 @@ vlans:
 - id: 111
   name: svi_with_default_vrf
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vrfs:
 - name: MGMT
   ip_routing: false

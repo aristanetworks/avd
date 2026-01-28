@@ -38,11 +38,13 @@ vlans:
 - id: 2
   name: vlan2
   metadata:
-    tenant: test
+    tenants:
+    - test
 - id: 1
   name: vlan1
   metadata:
-    tenant: test
+    tenants:
+    - test
 vrfs:
 - name: MGMT
   ip_routing: false

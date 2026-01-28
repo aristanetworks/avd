@@ -50,8 +50,8 @@ class VerifyRoutingTableEntryInputFactory(AntaTestInputFactory[VerifyRoutingTabl
     @skip_if_wan_router
     def create(self) -> Iterator[VerifyRoutingTableEntry.Input]:
         """Generate the inputs for the `VerifyRoutingTableEntry` test."""
-        if not self.data_source.fabric_special_ips:
+        if not self.data_source.fabric_underlay_reachability_targets:
             self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
-        yield VerifyRoutingTableEntry.Input(routes=self.data_source.fabric_special_ips, collect="all")
+        yield VerifyRoutingTableEntry.Input(routes=self.data_source.fabric_underlay_reachability_targets, collect="all")

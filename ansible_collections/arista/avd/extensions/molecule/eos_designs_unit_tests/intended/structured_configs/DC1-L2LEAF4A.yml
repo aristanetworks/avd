@@ -120,39 +120,48 @@ vlans:
 - id: 130
   name: Tenant_A_APP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 131
   name: Tenant_A_APP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 110
   name: Tenant_A_OP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 111
   name: Tenant_A_OP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 112
   name: Tenant_A_OP_Zone_3
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 121
   name: Tenant_A_WEBZone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 160
   name: Tenant_A_VMOTION
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 161
   name: Tenant_A_NFS
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false

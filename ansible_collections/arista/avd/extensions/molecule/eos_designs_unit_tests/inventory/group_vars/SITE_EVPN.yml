@@ -39,6 +39,7 @@ l3leaf:
   nodes:
     - name: leaf-wan-use-evpn-on-lan
       id: 13
+      evpn_route_servers: [cv-pathfinder-spine1]
 
 wan_route_servers:
   - hostname: cv-pathfinder-pathfinder
@@ -58,6 +59,7 @@ wan_router:
       cv_pathfinder_site: Site12
       # Adding uplink to leaf for EVPN
       uplink_switches: [leaf-wan-use-evpn-on-lan]
+      evpn_route_servers: [cv-pathfinder-spine1]
       uplink_type: p2p
       uplink_interfaces: [Ethernet52]
       uplink_switch_interfaces: [Ethernet1]
