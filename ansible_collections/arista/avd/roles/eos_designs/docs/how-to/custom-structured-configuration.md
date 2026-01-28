@@ -18,7 +18,7 @@ There are multiple ways of supplying Custom Structured Configuration and they ca
 AVD `eos_designs` role flow is expected to work as follow:
 
 1. from the input variables (inventory, group_vars, host_vars, ...) the `eos_designs` role generates a *structured configuration* object.
-   The `structured_config` inputs in AVD Design data models and custom_structured_configuration occurences are merged at the very end of `eos_designs` processing to generate the final *structured_configuration* used by `eos_cli_config_gen`.
+   The `structured_config` inputs in AVD Design data models and custom_structured_configuration occurrences are merged at the very end of `eos_designs` processing to generate the final *structured_configuration* used by `eos_cli_config_gen`.
 2. The "structured_config" is used as input to the `eos_cli_config_gen` role to generate the intended EOS configuration.
 
 ## `structured_config` in `eos_designs` data models
