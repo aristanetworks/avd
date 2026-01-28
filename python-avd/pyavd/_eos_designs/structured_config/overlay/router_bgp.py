@@ -264,9 +264,8 @@ class RouterBgpMixin(Protocol):
 
         self.structured_config.router_bgp.address_family_evpn.peer_groups.append(evpn_wan_overlay_peer_group)
 
-        if self.shared_utils.is_wan_router:
-            # Path-selection Address Family
-            self.structured_config.router_bgp.address_family_path_selection.peer_groups.append_new(name=peer_group_name, activate=True)
+        # Path-selection Address Family
+        self.structured_config.router_bgp.address_family_path_selection.peer_groups.append_new(name=peer_group_name, activate=True)
 
         if self.shared_utils.is_cv_pathfinder_router:
             # IPv4 SR-TE Address Family
@@ -303,9 +302,8 @@ class RouterBgpMixin(Protocol):
             name=peer_group_name, activate=True, encapsulation=self.inputs.wan_encapsulation
         )
 
-        if self.shared_utils.is_wan_router:
-            # Path-selection Address Family
-            self.structured_config.router_bgp.address_family_path_selection.peer_groups.append_new(name=peer_group_name, activate=True)
+        # Path-selection Address Family
+        self.structured_config.router_bgp.address_family_path_selection.peer_groups.append_new(name=peer_group_name, activate=True)
 
         if self.shared_utils.is_cv_pathfinder_router:
             # IPv4 SR-TE Address Family
