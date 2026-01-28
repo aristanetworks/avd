@@ -21,10 +21,6 @@ The `eos_cli_config_gen` role is the foundation of AVD. It converts structured c
 graph LR
     A[EOS Config Input Model] --> B{eos_cli_config_gen}
     B --> C[EOS CLI Configuration]
-
-    style A fill:#3d2f5f,stroke:#9575cd,stroke-width:2px,color:#fff
-    style B fill:#5f4c2e,stroke:#d4a574,stroke-width:2px,color:#fff
-    style C fill:#2d4a2e,stroke:#7cb342,stroke-width:2px,color:#fff
 ```
 
 ### Explanation
@@ -57,10 +53,6 @@ ip_name_servers:
 graph LR
     A["ip_name_servers:<br/>&nbsp;&nbsp;- ip_address: 10.10.128.10<br/>&nbsp;&nbsp;&nbsp;&nbsp;vrf: MGMT<br/>&nbsp;&nbsp;- ip_address: 10.10.128.11<br/>&nbsp;&nbsp;&nbsp;&nbsp;vrf: MGMT"] --> B{eos_cli_config_gen}
     B --> C["ip name-server vrf MGMT 10.10.128.10<br/>ip name-server vrf MGMT 10.10.128.11"]
-
-    style A fill:#3d2f5f,stroke:#9575cd,stroke-width:2px,color:#fff,text-align:left,font-family:monospace
-    style B fill:#5f4c2e,stroke:#d4a574,stroke-width:2px,color:#fff
-    style C fill:#2d4a2e,stroke:#7cb342,stroke-width:2px,color:#fff,text-align:left,font-family:monospace
 ```
 
 #### Generated EOS CLI Output
@@ -84,12 +76,6 @@ graph LR
     B --> C[Structured Configuration<br/>EOS Config Input Model]
     C --> D{eos_cli_config_gen}
     D --> E[EOS CLI Configuration]
-
-    style A fill:#1e3a5f,stroke:#4a90e2,stroke-width:2px,color:#fff
-    style B fill:#5f4c2e,stroke:#d4a574,stroke-width:2px,color:#fff
-    style C fill:#3d2f5f,stroke:#9575cd,stroke-width:2px,color:#fff
-    style D fill:#5f4c2e,stroke:#d4a574,stroke-width:2px,color:#fff
-    style E fill:#2d4a2e,stroke:#7cb342,stroke-width:2px,color:#fff
 ```
 
 ### Explanation
@@ -121,12 +107,6 @@ graph LR
     B --> C["ip_name_servers:<br/>&nbsp;&nbsp;- ip_address: 10.10.128.10<br/>&nbsp;&nbsp;&nbsp;&nbsp;vrf: MGMT<br/>&nbsp;&nbsp;- ip_address: 10.10.128.11<br/>&nbsp;&nbsp;&nbsp;&nbsp;vrf: MGMT"]
     C --> D{eos_cli_config_gen}
     D --> E["ip name-server vrf MGMT 10.10.128.10<br/>ip name-server vrf MGMT 10.10.128.11"]
-
-    style A fill:#1e3a5f,stroke:#4a90e2,stroke-width:2px,color:#fff,font-family:monospace,text-align:left
-    style B fill:#5f4c2e,stroke:#d4a574,stroke-width:2px,color:#fff
-    style C fill:#3d2f5f,stroke:#9575cd,stroke-width:2px,color:#fff,font-family:monospace,text-align:left
-    style D fill:#5f4c2e,stroke:#d4a574,stroke-width:2px,color:#fff
-    style E fill:#2d4a2e,stroke:#7cb342,stroke-width:2px,color:#fff,font-family:monospace,text-align:left
 ```
 
 #### Generated Structured Configuration (Intermediate)
@@ -176,17 +156,6 @@ graph LR
         B1{Input Processing<br/>Design Modules} --> B2[Intermediate<br/>Structured Config]
         B2 --> B4{Merge<br/>Overrides}
     end
-
-    style A fill:#1e3a5f,stroke:#4a90e2,stroke-width:3px,color:#fff
-    style A1 fill:#2d5a8f,stroke:#4a90e2,stroke-width:1px,color:#fff
-    style A2 fill:#2d5a8f,stroke:#4a90e2,stroke-width:1px,color:#fff
-    style B fill:#5f4c2e,stroke:#d4a574,stroke-width:3px,color:#fff
-    style B1 fill:#7a6340,stroke:#d4a574,stroke-width:2px,color:#fff
-    style B2 fill:#3d2f5f,stroke:#9575cd,stroke-width:2px,color:#fff
-    style B4 fill:#7a6340,stroke:#d4a574,stroke-width:2px,color:#fff
-    style C fill:#3d2f5f,stroke:#9575cd,stroke-width:2px,color:#fff
-    style D fill:#5f4c2e,stroke:#d4a574,stroke-width:2px,color:#fff
-    style E fill:#2d4a2e,stroke:#7cb342,stroke-width:2px,color:#fff
 ```
 
 ### Explanation
@@ -256,17 +225,6 @@ graph LR
         B1{Process<br/>dns_settings} --> B2["ip_name_servers:<br/>&nbsp;&nbsp;- ip_address: 10.10.128.10<br/>&nbsp;&nbsp;&nbsp;&nbsp;vrf: MGMT<br/>&nbsp;&nbsp;- ip_address: 10.10.128.11<br/>&nbsp;&nbsp;&nbsp;&nbsp;vrf: MGMT"]
         B2 --> B4{Merge<br/>Overrides}
     end
-
-    style A fill:#1e3a5f,stroke:#4a90e2,stroke-width:3px,color:#fff
-    style A1 fill:#2d5a8f,stroke:#4a90e2,stroke-width:1px,color:#fff,text-align:left,font-family:monospace
-    style A2 fill:#2d5a8f,stroke:#4a90e2,stroke-width:1px,color:#fff,text-align:left,font-family:monospace
-    style B fill:#5f4c2e,stroke:#d4a574,stroke-width:3px,color:#fff
-    style B1 fill:#7a6340,stroke:#d4a574,stroke-width:2px,color:#fff
-    style B2 fill:#3d2f5f,stroke:#9575cd,stroke-width:2px,color:#fff,text-align:left,font-family:monospace
-    style B4 fill:#7a6340,stroke:#d4a574,stroke-width:2px,color:#fff
-    style C fill:#3d2f5f,stroke:#9575cd,stroke-width:2px,color:#fff,text-align:left,font-family:monospace
-    style D fill:#5f4c2e,stroke:#d4a574,stroke-width:2px,color:#fff
-    style E fill:#2d4a2e,stroke:#7cb342,stroke-width:2px,color:#fff,text-align:left,font-family:monospace
 ```
 
 #### Generated EOS CLI Output (leaf1 only)
@@ -306,17 +264,6 @@ graph LR
         B1{Input Processing<br/>Design Modules} --> B2[Intermediate<br/>Structured Config]
         B2 --> B4{Merge<br/>Overrides}
     end
-
-    style A fill:#1e3a5f,stroke:#4a90e2,stroke-width:3px,color:#fff
-    style A1 fill:#2d5a8f,stroke:#4a90e2,stroke-width:1px,color:#fff
-    style A2 fill:#2d5a8f,stroke:#4a90e2,stroke-width:1px,color:#fff
-    style B fill:#5f4c2e,stroke:#d4a574,stroke-width:3px,color:#fff
-    style B1 fill:#7a6340,stroke:#d4a574,stroke-width:2px,color:#fff
-    style B2 fill:#3d2f5f,stroke:#9575cd,stroke-width:2px,color:#fff
-    style B4 fill:#7a6340,stroke:#d4a574,stroke-width:2px,color:#fff
-    style C fill:#3d2f5f,stroke:#9575cd,stroke-width:2px,color:#fff
-    style D fill:#5f4c2e,stroke:#d4a574,stroke-width:2px,color:#fff
-    style E fill:#2d4a2e,stroke:#7cb342,stroke-width:2px,color:#fff
 ```
 
 ### Explanation
@@ -380,17 +327,6 @@ graph LR
         B1{Process<br/>dns_settings} --> B2["ip_name_servers:<br/>&nbsp;&nbsp;- ip_address: 10.10.128.10<br/>&nbsp;&nbsp;&nbsp;&nbsp;vrf: MGMT<br/>&nbsp;&nbsp;- ip_address: 10.10.128.11<br/>&nbsp;&nbsp;&nbsp;&nbsp;vrf: MGMT"]
         B2 --> B4{Merge<br/>Overrides}
     end
-
-    style A fill:#1e3a5f,stroke:#4a90e2,stroke-width:3px,color:#fff
-    style A1 fill:#2d5a8f,stroke:#4a90e2,stroke-width:1px,color:#fff,text-align:left,font-family:monospace
-    style A2 fill:#2d5a8f,stroke:#4a90e2,stroke-width:1px,color:#fff,text-align:left,font-family:monospace
-    style B fill:#5f4c2e,stroke:#d4a574,stroke-width:3px,color:#fff
-    style B1 fill:#7a6340,stroke:#d4a574,stroke-width:2px,color:#fff
-    style B2 fill:#3d2f5f,stroke:#9575cd,stroke-width:2px,color:#fff,text-align:left,font-family:monospace
-    style B4 fill:#7a6340,stroke:#d4a574,stroke-width:2px,color:#fff
-    style C fill:#3d2f5f,stroke:#9575cd,stroke-width:2px,color:#fff,text-align:left,font-family:monospace
-    style D fill:#5f4c2e,stroke:#d4a574,stroke-width:2px,color:#fff
-    style E fill:#2d4a2e,stroke:#7cb342,stroke-width:2px,color:#fff,text-align:left,font-family:monospace
 ```
 
 #### Generated EOS CLI Output (leaf1 only)
