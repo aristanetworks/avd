@@ -60,6 +60,8 @@ ARGUMENT_SPEC = {
 class ActionModule(ActionBase):
     """Action Module for eos_cli_config_gen."""
 
+    avd_tmp_dir: str | None
+
     @cprofile()
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         """Ansible Action entry point."""
@@ -83,10 +85,11 @@ class ActionModule(ActionBase):
         """Main function in charge of loading the structured config and generating the device configuration and documentation."""
         LOGGER.debug("Validating task arguments...")
         validated_args = self.validate_args()
+        self.avd_tmp_dir = validated_args.get("avd_tmp_dir")
         LOGGER.debug("Validating task arguments [done].")
 
         LOGGER.debug("Loading structured config...")
-        structured_config = self.load_structured_config(hostname, avd_tmp_dir=validated_args.get("avd_tmp_dir"))
+        structured_config = self.load_structured_config(hostname)
         LOGGER.debug("Loading structured config [done].")
 
         if has_custom_templates := bool(task_vars.get("custom_templates")):
@@ -179,18 +182,17 @@ class ActionModule(ActionBase):
         path.write_text(content, encoding="UTF-8")
         return True
 
-    def load_structured_config(self, hostname: str, avd_tmp_dir: str | None = None) -> dict[str, Any]:
+    def load_structured_config(self, hostname: str) -> dict[str, Any]:
         """
         Load the validated structured config from the temporary file for the host.
 
         Args:
             hostname: Inventory hostname.
-            avd_tmp_dir: Optional path to use as the AVD temporary directory.
 
         Returns:
             Dict containing the validated structured config for the host.
         """
-        _templated_path, validated_path = get_role_tmp_paths("eos_cli_config_gen", avd_tmp_dir)
+        _templated_path, validated_path = get_role_tmp_paths("eos_cli_config_gen", self.avd_tmp_dir)
         file_path = validated_path / f"{hostname}.json"
         if not file_path.exists():
             msg = (

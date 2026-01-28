@@ -53,6 +53,8 @@ ARGUMENT_SPEC = {
 
 
 class ActionModule(ActionBase):
+    avd_tmp_dir: str | None
+
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         self._supports_check_mode = False
 
@@ -72,10 +74,12 @@ class ActionModule(ActionBase):
         # Converting to json and back to remove any AnsibeUnsafe types
         validated_args = json.loads(json.dumps(validated_args))
 
+        self.avd_tmp_dir = validated_args.get("avd_tmp_dir")
+
         return self.main(validated_args, task_vars, result)
 
     def main(self, validated_args: dict, task_vars: dict, result: dict) -> dict:
-        avd_switch_facts = self.load_facts(avd_tmp_dir=validated_args.get("avd_tmp_dir"))
+        avd_switch_facts = self.load_facts()
         device_list = list(avd_switch_facts.keys())
 
         # Create dict of all facts.
@@ -158,17 +162,14 @@ class ActionModule(ActionBase):
             # JSON
             return json.load(stream)
 
-    def load_facts(self, avd_tmp_dir: str | None = None) -> dict[str, dict]:
+    def load_facts(self) -> dict[str, dict]:
         """
         Load facts from the temporary file.
-
-        Args:
-            avd_tmp_dir: Optional path to use as the AVD temporary directory.
 
         Returns:
             Dict of facts keyed by hostname.
         """
-        file_path = get_eos_designs_facts_path(avd_tmp_dir)
+        file_path = get_eos_designs_facts_path(self.avd_tmp_dir)
 
         if not file_path.exists():
             msg = f"Missing AVD eos_designs facts to generate documentation ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."

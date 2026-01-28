@@ -45,6 +45,7 @@ except ImportError:
 class ActionModule(ActionBase):
     _task: Task
     _templar: Templar
+    avd_tmp_dir: str | None
 
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
@@ -67,7 +68,7 @@ class ActionModule(ActionBase):
 
         self._digital_twin = self._task.args.get("digital_twin", False)
         output_dir = self._task.args.get("output_dir")
-        avd_tmp_dir = self._task.args.get("avd_tmp_dir")
+        self.avd_tmp_dir = self._task.args.get("avd_tmp_dir")
 
         groups = task_vars.get("groups", {})
         fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
@@ -84,7 +85,7 @@ class ActionModule(ActionBase):
             )
             raise AnsibleActionFail(msg)
 
-        all_inputs, all_hostvars = self.load_validated_inputs(fabric_hosts, avd_tmp_dir)
+        all_inputs, all_hostvars = self.load_validated_inputs(fabric_hosts)
 
         # Get updated templar instance to be passed along to our simplified "templater"
         templar = get_templar(self, task_vars)
@@ -94,7 +95,7 @@ class ActionModule(ActionBase):
         avd_switch_facts = self.render_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, templar=templar)
 
         # Dump facts to file.
-        self.dump_facts(avd_switch_facts, avd_tmp_dir)
+        self.dump_facts(avd_switch_facts)
 
         # Save any updated pools.
         result["changed"] = pool_manager.save_updated_pools(dumper_cls=AnsibleDumper)
@@ -106,13 +107,12 @@ class ActionModule(ActionBase):
 
         return result
 
-    def load_validated_inputs(self, fabric_hosts: list, avd_tmp_dir: str | None = None) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
+    def load_validated_inputs(self, fabric_hosts: list) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
         """
         Load validated hostvars from temporary files for all hosts and load data into AVDDesign classes.
 
         Args:
             fabric_hosts: List of inventory hostnames.
-            avd_tmp_dir: Optional path to use as the AVD temporary directory.
 
         Returns:
             Tuple of one dict with the loaded AVDDesign instances keyed by hostnames
@@ -126,7 +126,7 @@ class ActionModule(ActionBase):
         all_inputs: dict[str, AVDDesign] = {}
         all_hostvars: dict[str, dict] = {}
 
-        _templated_path, validated_path = get_role_tmp_paths("eos_designs", avd_tmp_dir)
+        _templated_path, validated_path = get_role_tmp_paths("eos_designs", self.avd_tmp_dir)
 
         for host in fabric_hosts:
             file_path = validated_path / f"{host}.json"
@@ -183,15 +183,14 @@ class ActionModule(ActionBase):
 
         return all_facts_as_dicts
 
-    def dump_facts(self, avd_switch_facts: dict[str, dict], avd_tmp_dir: str | None = None) -> None:
+    def dump_facts(self, avd_switch_facts: dict[str, dict]) -> None:
         """
         Dump facts to the temporary folder.
 
         Args:
             avd_switch_facts: Facts to dump as dict keyed by hostname.
-            avd_tmp_dir: Optional path to use as the AVD temporary directory.
         """
-        file_path = get_eos_designs_facts_path(avd_tmp_dir)
+        file_path = get_eos_designs_facts_path(self.avd_tmp_dir)
 
         with file_path.open(mode="w", encoding="utf-8") as f:
             json.dump(avd_switch_facts, f, indent=4)
