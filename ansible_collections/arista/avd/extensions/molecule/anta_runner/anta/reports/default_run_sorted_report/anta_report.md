@@ -15,33 +15,33 @@
 
 | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error |
 | :- | :- | :- | :- | :- |
-| 588 | 0 | 0 | 0 | 0 |
+| 571 | 0 | 0 | 0 | 0 |
 
 ### 🔌 Summary Totals Device Under Test <a id="summary-totals-device-under-test"></a>
 
 | Device | Total Tests | ✅&nbsp;Success | ⏭️&nbsp;Skipped | ❌&nbsp;Failure | ❗&nbsp;Error | Categories Skipped | Categories Failed |
 | :- | :- | :- | :- | :- | :- | :- | :- |
-| **dc1-leaf1a** | 36 | 0 | 0 | 0 | 0 | - | - |
-| **dc1-leaf1b** | 35 | 0 | 0 | 0 | 0 | - | - |
+| **dc1-leaf1a** | 35 | 0 | 0 | 0 | 0 | - | - |
+| **dc1-leaf1b** | 34 | 0 | 0 | 0 | 0 | - | - |
 | **dc1-leaf1c** | 22 | 0 | 0 | 0 | 0 | - | - |
-| **dc1-leaf2a** | 36 | 0 | 0 | 0 | 0 | - | - |
+| **dc1-leaf2a** | 35 | 0 | 0 | 0 | 0 | - | - |
 | **dc1-leaf2c** | 21 | 0 | 0 | 0 | 0 | - | - |
-| **dc1-spine1** | 22 | 0 | 0 | 0 | 0 | - | - |
-| **dc1-spine2** | 22 | 0 | 0 | 0 | 0 | - | - |
-| **dc1-svc-leaf1a** | 28 | 0 | 0 | 0 | 0 | - | - |
-| **dc1-svc-leaf1b** | 28 | 0 | 0 | 0 | 0 | - | - |
-| **dc1-wan1** | 33 | 0 | 0 | 0 | 0 | - | - |
-| **dc1-wan2** | 35 | 0 | 0 | 0 | 0 | - | - |
-| **dc2-leaf1a** | 30 | 0 | 0 | 0 | 0 | - | - |
-| **dc2-leaf1b** | 30 | 0 | 0 | 0 | 0 | - | - |
+| **dc1-spine1** | 21 | 0 | 0 | 0 | 0 | - | - |
+| **dc1-spine2** | 21 | 0 | 0 | 0 | 0 | - | - |
+| **dc1-svc-leaf1a** | 27 | 0 | 0 | 0 | 0 | - | - |
+| **dc1-svc-leaf1b** | 27 | 0 | 0 | 0 | 0 | - | - |
+| **dc1-wan1** | 32 | 0 | 0 | 0 | 0 | - | - |
+| **dc1-wan2** | 34 | 0 | 0 | 0 | 0 | - | - |
+| **dc2-leaf1a** | 29 | 0 | 0 | 0 | 0 | - | - |
+| **dc2-leaf1b** | 29 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf1c** | 21 | 0 | 0 | 0 | 0 | - | - |
-| **dc2-leaf2a** | 30 | 0 | 0 | 0 | 0 | - | - |
-| **dc2-leaf2b** | 30 | 0 | 0 | 0 | 0 | - | - |
+| **dc2-leaf2a** | 29 | 0 | 0 | 0 | 0 | - | - |
+| **dc2-leaf2b** | 29 | 0 | 0 | 0 | 0 | - | - |
 | **dc2-leaf2c** | 21 | 0 | 0 | 0 | 0 | - | - |
-| **dc2-leaf3a.arista.com** | 30 | 0 | 0 | 0 | 0 | - | - |
-| **dc2-leaf3b.arista.com** | 30 | 0 | 0 | 0 | 0 | - | - |
-| **dc2-spine1** | 24 | 0 | 0 | 0 | 0 | - | - |
-| **dc2-spine2** | 24 | 0 | 0 | 0 | 0 | - | - |
+| **dc2-leaf3a.arista.com** | 29 | 0 | 0 | 0 | 0 | - | - |
+| **dc2-leaf3b.arista.com** | 29 | 0 | 0 | 0 | 0 | - | - |
+| **dc2-spine1** | 23 | 0 | 0 | 0 | 0 | - | - |
+| **dc2-spine2** | 23 | 0 | 0 | 0 | 0 | - | - |
 
 ### 🗂️ Summary Totals Per Category <a id="summary-totals-per-category"></a>
 
@@ -50,7 +50,7 @@
 | **AVT** | 2 | 0 | 0 | 0 | 0 |
 | **BGP** | 17 | 0 | 0 | 0 | 0 |
 | **Configuration** | 42 | 0 | 0 | 0 | 0 |
-| **Connectivity** | 55 | 0 | 0 | 0 | 0 |
+| **Connectivity** | 38 | 0 | 0 | 0 | 0 |
 | **Hardware** | 35 | 0 | 0 | 0 | 0 |
 | **Interfaces** | 139 | 0 | 0 | 0 | 0 |
 | **Logging** | 21 | 0 | 0 | 0 | 0 |
@@ -482,39 +482,22 @@
 | dc2-leaf3a.arista.com | Interfaces | VerifyPortChannels | Verifies there are no inactive ports in port channels. | Unset | - |
 | dc2-leaf3b.arista.com | Interfaces | VerifyPortChannels | Verifies there are no inactive ports in port channels. | Unset | - |
 | dc1-leaf1a | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc1-leaf1a | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc1-leaf1b | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc1-leaf1b | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc1-leaf2a | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc1-leaf2a | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc1-spine1 | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc1-spine1 | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc1-spine2 | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc1-spine2 | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc1-svc-leaf1a | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc1-svc-leaf1a | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc1-svc-leaf1b | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc1-svc-leaf1b | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc1-wan1 | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc1-wan1 | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc1-wan2 | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc1-wan2 | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc2-leaf1a | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc2-leaf1a | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc2-leaf1b | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc2-leaf1b | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc2-leaf2a | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc2-leaf2a | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc2-leaf2b | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc2-leaf2b | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc2-leaf3a.arista.com | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc2-leaf3a.arista.com | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc2-leaf3b.arista.com | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc2-leaf3b.arista.com | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc2-spine1 | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc2-spine1 | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc2-spine2 | Connectivity | VerifyReachability | Verifies point-to-point reachability between Ethernet interfaces. | Unset | - |
-| dc2-spine2 | Connectivity | VerifyReachability | Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests. | Unset | - |
 | dc1-leaf1a | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc1-leaf1b | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
 | dc1-leaf1c | System | VerifyReloadCause | Verifies the last reload cause of the device. | Unset | - |
