@@ -13,6 +13,8 @@ VALIDATED_DIR_NAME = "validated"
 
 EOS_DESIGNS_FACTS_FILENAME = "eos_designs_facts.json"
 
+AVD_TMP_DIR_MODE = 0o700
+
 
 def get_tmp_path(avd_tmp_dir: str | None = None) -> Path:
     """
@@ -31,34 +33,49 @@ def get_tmp_path(avd_tmp_dir: str | None = None) -> Path:
     Returns:
         Path object pointing to the AVD temporary directory.
     """
-    # Return the same tmp_path as last time unless ansible cleaned it up in the meanwhile. Ansible maintains a separate local_tmp folder per play.
-    tmp_path = _cached_tmp_path(avd_tmp_dir)
+    if avd_tmp_dir is not None:
+        tmp_path = Path(avd_tmp_dir)
+        _create_avd_tmp_dir(tmp_path)
+        return tmp_path
+
+    # Return the same tmp_path as last time unless Ansible cleaned it up in the meanwhile. Ansible maintains a separate local_tmp folder per play.
+    tmp_path = _cached_tmp_path()
     if not tmp_path.exists():
         _cached_tmp_path.cache_clear()
-        return _cached_tmp_path(avd_tmp_dir)
+        return _cached_tmp_path()
     return tmp_path
 
 
-@cache
-def _cached_tmp_path(avd_tmp_dir: str | None = None) -> Path:
-    """Create and return a new tmp_path. Cached for next time."""
-    path_str = avd_tmp_dir
-    if not path_str and hasattr(ansible_constants, "DEFAULT_LOCAL_TMP"):
-        path_str = ansible_constants.DEFAULT_LOCAL_TMP
-    if not path_str:
-        path_str = tempfile.mkdtemp(prefix="arista_avd_")
+def _create_avd_tmp_dir(path: Path) -> None:
+    """
+    Create the AVD temporary directory with 700 permissions if it doesn't exist.
 
-    # If using Ansible/system tmp, append our subdir to keep things organized.
-    tmp_path = Path(path_str)
-    if "arista_avd" not in tmp_path.name:
-        tmp_path = tmp_path / "arista_avd"
+    Args:
+        path: The directory path to create.
+
+    Raises:
+        OSError: If directory creation fails.
+    """
+    if path.exists():
+        return
 
     try:
-        tmp_path.mkdir(mode=0o700, parents=True, exist_ok=True)
+        path.mkdir(mode=AVD_TMP_DIR_MODE, parents=True)
     except OSError as e:
-        msg = f"Unable to create AVD temporary directory {tmp_path}: {e}"
+        msg = f"Unable to create AVD temporary directory {path}: {e}"
         raise type(e)(msg) from e
 
+
+@cache
+def _cached_tmp_path() -> Path:
+    """Create and return a new tmp_path. Cached for next time."""
+    if hasattr(ansible_constants, "DEFAULT_LOCAL_TMP"):
+        # If using Ansible tmp dir, append our subdir to keep things organized.
+        tmp_path = Path(ansible_constants.DEFAULT_LOCAL_TMP) / "arista_avd"
+    else:
+        tmp_path = Path(tempfile.mkdtemp(prefix="arista_avd_"))
+
+    _create_avd_tmp_dir(tmp_path)
     return tmp_path
 
 
