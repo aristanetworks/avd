@@ -118,3 +118,4 @@ class LogMessage(Enum):
     # Device role message
     DEVICE_IS_WAN_ROUTER = "skipped - Device is a WAN router"
     DEVICE_IS_NOT_VTEP = "skipped - Device is not a VTEP"
+    DEVICE_IS_NOT_WAN_ROUTER = "skipped - Device is not a WAN router"

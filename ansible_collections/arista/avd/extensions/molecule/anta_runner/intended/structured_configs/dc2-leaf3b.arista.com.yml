@@ -1,6 +1,10 @@
 aaa_root:
   disabled: true
 config_end: true
+dps_interfaces:
+- name: Dps1
+  description: WAN_DPS
+  ip_address: 10.99.99.1/24
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -547,7 +551,7 @@ vxlan_interface:
   vxlan1:
     description: dc2-leaf3b.arista.com_VTEP
     vxlan:
-      source_interface: Loopback1
+      source_interface: Dps1
       udp_port: 4789
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:

@@ -7016,10 +7016,16 @@ keys:
           remote_id_format:
             type: str
             valid_values:
+            - '%m:%h:%p'
             - '%m:%i'
             - '%m:%p'
-            description: Add RemoteID option 37 in format MAC address and interface
-              ID (`%m:%i`) or MAC address and interface name (`%m:%p`).
+            description: 'Add RemoteID option 37 in format
+
+              - MAC address, hostname and interface name (`%m:%h:%p`)
+
+              - MAC address and interface ID (`%m:%i`)
+
+              - MAC address and interface name (`%m:%p`)'
   ipv6_hardware:
     type: dict
     keys:
