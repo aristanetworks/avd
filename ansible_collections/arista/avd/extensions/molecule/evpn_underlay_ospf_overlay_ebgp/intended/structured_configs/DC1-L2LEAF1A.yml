@@ -105,7 +105,8 @@ vlans:
 - id: 210
   name: Tenant_B_OP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false

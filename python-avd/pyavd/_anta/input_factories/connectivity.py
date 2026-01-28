@@ -14,7 +14,7 @@ from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
-from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_not_vtep, skip_if_wan_router
+from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_not_vtep, skip_if_not_wan_router, skip_if_wan_router
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -117,10 +117,14 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
        No inputs are generated if `extra_fabric_validation` is disabled. WAN routers and non-deployed devices are excluded.
        Fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations. IPv6 is not supported.
 
-    3. Generates inputs for BGP neighbor reachability across all VRFs.
+    3. Generates inputs to verify DPS-to-DPS reachability between WAN routers using their DPS interface IP addresses.
+       No inputs are generated if `extra_fabric_validation` is disabled. Non-deployed devices are excluded.
+       Fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations. IPv6 is not supported.
+
+    4. Generates inputs for BGP neighbor reachability across all VRFs.
        Includes neighbors that are not administratively shutdown or part of a shutdown peer group.
        Also considers `metadata.validate_state` and ensures the peer is deployed if `metadata.peer` is set.
-       To avoid duplicate checks, neighbors already verified (same destination IP and VRF) by the P2P or VTEP tests are skipped.
+       To avoid duplicate checks, neighbors already verified (same destination IP and VRF) by the P2P, VTEP, or DPS tests are skipped.
     """
 
     def __init__(self, data_source: InputFactoryDataSource, test_name: str) -> None:
@@ -149,7 +153,16 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
             if vtep_hosts:
                 yield VerifyReachability.Input(
                     result_overwrite=AntaTest.Input.ResultOverwrite(description="Verifies VTEP fabric-wide underlay reachability."),
-                    hosts=natural_sort(vtep_hosts, sort_key="destination"),
+                    hosts=vtep_hosts,
+                )
+
+        # Generate the WAN router reachability inputs
+        with self.logger_adapter.context("WAN Routers"):
+            wan_hosts = natural_sort(self._get_wan_dps_hosts(), sort_key="destination")
+            if wan_hosts:
+                yield VerifyReachability.Input(
+                    result_overwrite=AntaTest.Input.ResultOverwrite(description="Verifies WAN router reachability between DPS interfaces."),
+                    hosts=wan_hosts,
                 )
 
         # Generate the BGP neighbor reachability inputs
@@ -201,6 +214,24 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 continue
 
             host = Host(destination=ip, source=self.data_source.loopback0_ip, description=hostname, vrf="default", repeat=1)
+            if not self._is_host_seen(host):
+                self._track_host(host)
+                yield host
+
+    @skip_if_extra_fabric_validation_disabled
+    @skip_if_not_wan_router
+    def _get_wan_dps_hosts(self) -> Iterator[Host]:
+        """Generate Host objects for the WAN router DPS reachability test."""
+        if not self.data_source.fabric_dps_mapping or not self.data_source.vtep_ip:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
+            return
+
+        for hostname, ip in self.data_source.fabric_dps_mapping.items():
+            if hostname == self.data_source.hostname:
+                # Don't ping ourself
+                continue
+
+            host = Host(destination=ip, source=self.data_source.vtep_ip, description=hostname, vrf="default", repeat=1)
             if not self._is_host_seen(host):
                 self._track_host(host)
                 yield host

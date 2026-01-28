@@ -414,11 +414,13 @@ vrfs:
 - name: TESTING
   ip_routing: true
   metadata:
-    tenant: L3PO
+    tenants:
+    - L3PO
 - name: subIntVRF
   ip_routing: true
   metadata:
-    tenant: Subinterface
+    tenants:
+    - Subinterface
 vxlan_interface:
   vxlan1:
     description: network-services-l3-port-channels_VTEP

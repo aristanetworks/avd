@@ -1,5 +1,6 @@
 ---
 # Test when overlay_address_families is "vpn-ipv4", hence not an overlay_evpn
+# TODO: Figure out what the expected behavior is here, since we have no LAN EVPN peerings.
 type: wan_router
 
 overlay_routing_protocol: ebgp
@@ -54,4 +55,4 @@ wan_carriers:
     trusted: true
 
 wan_route_servers:
-  - hostname: ebgp-overlay-address-families-vpn-ipv4
+  - hostname: cv-pathfinder-pathfinder

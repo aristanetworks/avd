@@ -558,6 +558,12 @@ router_bgp:
       peer: DC1_UNDEPLOYED_LEAF1B
     description: DC1_UNDEPLOYED_LEAF1B
     shutdown: true
+  - ip_address: 10.10.0.1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '4266393700'
+    metadata:
+      peer: evpn-to-ipvpn-gateway
+    description: evpn-to-ipvpn-gateway
   - ip_address: 192.168.255.33
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65151'

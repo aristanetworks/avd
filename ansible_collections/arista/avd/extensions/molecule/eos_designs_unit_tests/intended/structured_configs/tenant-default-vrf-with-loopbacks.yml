@@ -67,7 +67,8 @@ router_bgp:
   vlans:
   - id: 1008
     metadata:
-      tenant: SIT
+      tenants:
+      - SIT
     rd: 10.10.0.3:21008
     route_targets:
       both:
@@ -76,7 +77,8 @@ router_bgp:
     - learned
   - id: 10
     metadata:
-      tenant: SIT
+      tenants:
+      - SIT
     rd: 10.10.0.3:20010
     route_targets:
       both:
@@ -110,7 +112,8 @@ vlan_interfaces:
   description: SVI_1
   shutdown: false
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 vlan_internal_order:
@@ -122,11 +125,13 @@ vlans:
 - id: 1008
   name: SVI_1
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 10
   name: storage_prod
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 vrfs:
 - name: MGMT
   ip_routing: false
