@@ -8,15 +8,15 @@
 
 This guide demonstrates the different ways to use Arista AVD roles, starting from basic usage and progressively introducing more advanced patterns. Each section builds upon the previous one, showing how AVD's flexibility allows you to customize configurations to meet your specific needs.
 
-- [eos_cli_config_gen Directly](#eos_cli_config_gen-directly)
+- [Ansible Role: eos_cli_config_gen](#ansible-role-eos_cli_config_gen)
 - [eos_designs with eos_cli_config_gen (recommended)](#eos_designs-with-eos_cli_config_gen)
   - [AVD Design Data Model with eos_designs](#avd-design-data-model-with-eos_designs)
   - [structured_config with eos_designs](#structured_config-with-eos_designs)
   - [custom_structured_configuration Prefix](#custom_structured_configuration-prefix)
 
-## eos_cli_config_gen Directly
+## Ansible Role: eos_cli_config_gen
 
-The `eos_cli_config_gen` role is the foundation of AVD. It converts structured configuration data (in YAML format) into EOS CLI commands.
+The `eos_cli_config_gen` role is the EOS configuration layer of AVD. It converts structured configuration data (in YAML format) into EOS CLI commands.
 
 !!! warning "Not Recommended for Most Users"
     Using `eos_cli_config_gen` directly is **not the typical way** to use AVD. Most users should start with the `eos_designs` role, which provides a higher-level abstraction and automatically generates the structured configuration for you.
