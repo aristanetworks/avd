@@ -215,6 +215,7 @@ nav:
               - anta_runner: ansible_collections/arista/avd/roles/anta_runner/README.md
           - Plugins: docs/plugins/
       - PyAVD: docs/pyavd/pyavd.md
+      - Usage Patterns: docs/getting-started/avd-usage-patterns.md
   - Release Notes:
       - 6.x.x: docs/release-notes/6.x.x.md
       - Porting Guide: docs/porting-guides/6.x.x.md
