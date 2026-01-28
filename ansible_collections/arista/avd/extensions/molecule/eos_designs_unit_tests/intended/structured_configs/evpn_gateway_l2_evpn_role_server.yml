@@ -226,6 +226,8 @@ router_bgp:
         only: true
     - name: EVPN-OVERLAY-PEERS
       activate: true
+      default_route_target:
+        only: true
   address_family_ipv4:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS

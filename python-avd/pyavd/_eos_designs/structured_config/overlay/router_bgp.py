@@ -378,14 +378,11 @@ class RouterBgpMixin(Protocol):
                 peer_group_obj = EosCliConfigGen.RouterBgp.AddressFamilyRtc.PeerGroupsItem(
                     name=self.inputs.bgp_peer_groups.evpn_overlay_core.name, activate=True
                 )
-                # TODO: (@Claus) told me to remove this
                 if self.shared_utils.evpn_role == "server":
                     peer_group_obj.default_route_target.only = True
                 peer_groups.append(peer_group_obj)
 
-            # Transposing the Jinja2 logic: if the evpn_overlay_core peer group is not
-            # configured then the default_route_target is applied in the evpn_overlay_peers peer group.
-            elif self.shared_utils.evpn_role == "server":
+            if self.shared_utils.evpn_role == "server":
                 peer_groups_evpn.default_route_target.only = True
 
         if self.shared_utils.overlay_routing_protocol == "ibgp":
