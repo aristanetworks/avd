@@ -167,6 +167,8 @@ graph LR
         direction TB
         A1[Design Model]
         A2[structured_config in the model]
+        %% This forces A1 above A2 without a visible line
+        A1 ~~~ A2
     end
 
     subgraph B[eos_designs]
@@ -295,6 +297,8 @@ graph LR
         direction TB
         A1[Design Model]
         A2[custom_structured_configuration_*s]
+        %% This forces A1 above A2 without a visible line
+        A1 ~~~ A2
     end
 
     subgraph B[eos_designs]
@@ -404,7 +408,7 @@ ip name-server vrf MGMT 10.20.20.10
 ## Summary and Comparison
 
 | Approach | Use Case | Complexity | Flexibility |
-|----------|----------|------------|-------------|
+| -------- | -------- | ---------- | ----------- |
 | **eos_cli_config_gen only** | Small deployments, full control, migration from manual config, non-fabric use cases | Low | High (full control) |
 | **eos_designs + eos_cli_config_gen** | Standard fabric deployments, best practices (recommended starting point) | Medium | Medium (design-driven) |
 | **structured_config** | Device-specific overrides within design model | Medium-High | High (targeted overrides) |
