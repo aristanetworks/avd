@@ -18,3 +18,7 @@ keys:
       As an example, if you define an Ethernet interface under `l3_edge` and use the same interface for connectivity under `servers`:
       - With this option disabled (default), AVD will merge these configurations together for the interface and not raise an error.
       - With this option enabled, AVD will raise an error about duplicate interface definitions.
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 6.0.0
