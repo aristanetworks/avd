@@ -295,7 +295,7 @@ custom_structured_configuration_ip_name_servers:
     priority: 2
 ```
 
-```mermaid title="Workflow Diagram"
+```mermaid
 graph LR
     A1 --> B1
     A2 --> B4
