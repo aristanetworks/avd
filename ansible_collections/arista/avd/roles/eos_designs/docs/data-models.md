@@ -29,7 +29,7 @@ The data models are documented below in tables and YAML.
 
 ## Supported designs
 
-Arista AVD supports multiple network design types such as L3LS-EVPN with 3-stage, 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend Arista AVD to support your own topology by using [`node_type_keys`](#customization) to create your own node type.
+Arista AVD supports multiple network design types such as L3LS-EVPN with 3-stage, 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend Arista AVD to support your own topology by using [`node_type_keys`](#node-type-customization) to create your own node type.
 
 ### 3-stage clos topology support (Leaf & Spine)
 
@@ -181,13 +181,59 @@ The pool manager stores data in a YAML file per fabric. The default path is `<ro
 
 The following table provides information on the pre-defined node types available in `eos_designs`.
 
-To customize or create new node types, please refer to [node type customization](#customization) section.
+To customize or create new node types, please refer to [node type customization](#node-type-customization) section.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/node-type-variables.md
 --8<--
 
-### Configuration
+### Type variable
+
+The variable set on each device (or group) that references a node type defined in `node_type_keys` or `custom_node_type_keys`
+
+- The `type:` variable needs to be defined for each device in the fabric.
+- This is leveraged to load the appropriate settings to generate the configuration.
+
+!!! tip
+    The type variable can be automatically derived from a switch name by defining the patterns in the [`default_node_types`](#auto-assign) data model.
+
+??? example "Type variable example"
+
+    ```yaml
+    # Defined in SPINE.yml file
+    # Can also be set directly in your inventory file under spine group
+    type: spine
+
+    # Defined in L3LEAFS.yml
+    # Can also be set directly in your inventory file under l3leaf group
+    type: l3leaf
+
+    # Defined in L2LEAFS.yml
+    # Can also be set directly in your inventory file under l2leaf group
+    type: l2leaf
+
+    # Defined in SUPER-SPINES.yml
+    # Can also be set directly in your inventory file under super-spine group
+    type: super-spine
+
+    # Defined in ROUTE-SERVERS.yml
+    # Can also be set directly in your inventory file under route-server group
+    type: overlay-controller
+    ```
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/type-setting.md
+--8<--
+
+#### Auto assign
+
+By leveraging `default_node_types`, regular expressions can be used to determine the node type based on the hostname.
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/default-node-types.md
+--8<--
+
+### Node type settings
 
 Node type settings are defined under the `node_type_keys.key` i.e `spine:`, `l3leaf:`, `l2leaf:`.
 
@@ -321,7 +367,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-wan-confi
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-ptp-configuration.md
 --8<--
 
-### Customization
+### Node type customization
 
 AVD provides the capability to customize your node types, supporting a variety of designs.
 
@@ -642,50 +688,6 @@ vtep_loopback_interface:
 
 - `{{ vtep_loopback_description }}`
 - All group/hostvars
-
-### Type setting
-
-- The `type:` variable needs to be defined for each device in the fabric.
-- This is leveraged to load the appropriate settings to generate the configuration.
-
-!!! tip
-    The node type setting can be automatically derived from a switch name by defining the patterns in the [`default_node_types`](#default-assignment) data model.
-
-??? example "Type setting example"
-
-    ```yaml
-    # Defined in SPINE.yml file
-    # Can also be set directly in your inventory file under spine group
-    type: spine
-
-    # Defined in L3LEAFS.yml
-    # Can also be set directly in your inventory file under l3leaf group
-    type: l3leaf
-
-    # Defined in L2LEAFS.yml
-    # Can also be set directly in your inventory file under l2leaf group
-    type: l2leaf
-
-    # Defined in SUPER-SPINES.yml
-    # Can also be set directly in your inventory file under super-spine group
-    type: super-spine
-
-    # Defined in ROUTE-SERVERS.yml
-    # Can also be set directly in your inventory file under route-server group
-    type: overlay-controller
-    ```
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/type-setting.md
---8<--
-
-#### Auto assign
-
-By leveraging `default_node_types`, regular expressions can be used to determine the node type based on the hostname.
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/default-node-types.md
---8<--
 
 ## Default interface settings
 
