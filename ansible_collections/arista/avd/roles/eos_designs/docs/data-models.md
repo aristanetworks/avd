@@ -29,7 +29,7 @@ The data models are documented below in tables and YAML.
 
 ## Supported designs
 
-`eos_designs` supports multiple options such as L3LS-EVPN with 3-stage or 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](#customization) to create your own node type.
+Arista AVD supports multiple network design types such as L3LS-EVPN with 3-stage, 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend Arista AVD to support your own topology by using [`node_type_keys`](#customization) to create your own node type.
 
 ### 3-stage clos topology support (Leaf & Spine)
 
