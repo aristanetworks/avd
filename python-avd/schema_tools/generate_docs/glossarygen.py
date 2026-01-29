@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from collections import defaultdict
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -131,4 +130,3 @@ def get_glossary(schema: AristaAvdSchema, target_table: str | None = None) -> st
         lines.append(str(entry))
 
     return "\n".join(lines)
-

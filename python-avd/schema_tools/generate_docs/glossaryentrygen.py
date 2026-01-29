@@ -157,19 +157,13 @@ class GlossaryEntryGenBase:
 class GlossaryEntryGenBool(GlossaryEntryGenBase):
     """Glossary entry generator for boolean fields."""
 
-    pass
-
 
 class GlossaryEntryGenInt(GlossaryEntryGenBase):
     """Glossary entry generator for integer fields."""
 
-    pass
-
 
 class GlossaryEntryGenStr(GlossaryEntryGenBase):
     """Glossary entry generator for string fields."""
-
-    pass
 
 
 class GlossaryEntryGenList(GlossaryEntryGenBase):
@@ -225,5 +219,3 @@ class GlossaryEntryGenDict(GlossaryEntryGenBase):
                 yield from child_schema._generate_glossary_entries(
                     target_table=self.target_table,
                 )
-
-

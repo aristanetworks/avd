@@ -8,6 +8,7 @@ Generate avd_meta_schema.json from the Pydantic model.
 This script generates the JSON schema file that is used to validate
 AVD schema fragments in YAML files.
 """
+
 import json
 import logging
 from pathlib import Path
@@ -24,21 +25,20 @@ if __name__ == "__main__":
     log_level_str = argv[1].upper() if len(argv) > 1 else "INFO"
     log_level = logging.getLevelName(log_level_str)
     logging.basicConfig(level=log_level, format="[generate_meta_schema] - %(message)s")
-    
+
     logger = logging.getLogger(__name__)
-    
+
     logger.info("Generating avd_meta_schema.json from Pydantic model...")
-    
+
     # Generate JSON schema from the Pydantic model
     json_schema = AristaAvdSchema.model_json_schema(
         by_alias=True,
         mode="validation",
     )
-    
+
     # Write to file with pretty formatting
     with METASCHEMA_JSON_PATH.open(mode="w", encoding="UTF-8") as f:
         json.dump(json_schema, f, indent=2, ensure_ascii=False)
         f.write("\n")  # Add final newline
-    
-    logger.info(f"Successfully generated {METASCHEMA_JSON_PATH}")
 
+    logger.info(f"Successfully generated {METASCHEMA_JSON_PATH}")

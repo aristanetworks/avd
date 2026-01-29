@@ -45,7 +45,7 @@ def test_get_glossary(table_name: str, schema_store: dict, artifacts_path: Path,
 
     with Path(output_file).open(mode="w", encoding="UTF-8") as file:
         file.write(glossary)
-    
+
     # Only check if expected file exists (for initial test run, it won't exist)
     if expected_file.exists():
         with Path(expected_file).open(encoding="UTF-8") as file:
@@ -84,10 +84,10 @@ def test_glossary_with_explicit_options() -> None:
 
     # Check that explicitly included field is present
     assert "included_field" in glossary
-    
+
     # Check that explicitly excluded field is NOT present
     assert "excluded_field" not in glossary
-    
+
     # Check that auto-included field is present (top-level with description)
     assert "auto_included_field" in glossary
 
@@ -157,11 +157,10 @@ def test_glossary_alphabetical_grouping() -> None:
 
     # Check that table of contents exists
     assert "Table of Contents" in glossary
-    
+
     # Check that alphabetical sections exist
     assert "## A" in glossary
     assert "## Z" in glossary
-    
+
     # Check that A comes before Z in the output
     assert glossary.index("## A") < glossary.index("## Z")
-

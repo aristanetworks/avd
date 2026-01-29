@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2026 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # Glossary Documentation
 
 This directory contains the custom glossary definitions for the AVD documentation.
@@ -15,6 +21,7 @@ This directory contains the custom glossary definitions for the AVD documentatio
 ## Generated Output
 
 The generated glossary is located at:
+
 - **`docs/glossary/glossary.md`** - The consolidated glossary (auto-generated, do not edit manually)
 
 ## How the Glossary Works
@@ -35,6 +42,7 @@ update_default_result_permit:
 ```
 
 **Important Notes:**
+
 - Only leaf fields (str, int, bool) are included in the glossary
 - Container types (dict, list) are automatically excluded
 - Terms are automatically formatted in Title Case with spaces (e.g., `update_default_result_permit` → "Update Default Result Permit")
@@ -103,5 +111,5 @@ The glossary is clean and minimal, showing only the term heading and description
 ## Location in Documentation
 
 The glossary is accessible in the MkDocs navigation under:
-- **Glossary** → `docs/glossary/glossary.md`
 
+- **Glossary** → `docs/glossary/glossary.md`
