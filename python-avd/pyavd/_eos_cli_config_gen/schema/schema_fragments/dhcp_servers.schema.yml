@@ -146,11 +146,6 @@ keys:
         subnets:
           type: list
           primary_key: subnet
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: ipv4_subnets or ipv6_subnets in 6.0
           items:
             type: dict
             keys:

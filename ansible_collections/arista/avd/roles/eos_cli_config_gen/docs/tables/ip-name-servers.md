@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_name_servers</samp>](## "ip_name_servers") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ip_name_server in 6.0</samp> instead.</span> |
+    | [<samp>ip_name_servers</samp>](## "ip_name_servers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "ip_name_servers.[].ip_address") | String | Required |  |  | IPv4 or IPv6 address for DNS server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_name_servers.[].vrf") | String |  |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "ip_name_servers.[].priority") | Integer |  |  | Min: 0<br>Max: 4 | Priority value (lower is first). |
@@ -16,9 +16,6 @@
 === "YAML"
 
     ```yaml
-    # This key is deprecated.
-    # Support will be removed in AVD version 6.0.0.
-    # Use `ip_name_server in 6.0` instead.
     ip_name_servers:
 
         # IPv4 or IPv6 address for DNS server.

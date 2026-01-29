@@ -70,11 +70,6 @@ keys:
               description: VRF name.
               convert_types:
                 - int
-              deprecation:
-                warning: true
-                removed: false
-                remove_in_version: 6.0.0
-                new_key: ntp.vrf in 6.0
       authenticate:
         type: bool
       authenticate_servers_only:

@@ -8,11 +8,6 @@ type: dict
 keys:
   ip_ssh_client_source_interfaces:
     type: list
-    deprecation:
-      warning: true
-      removed: false
-      remove_in_version: 6.0.0
-      new_key: ip_ssh_client in 6.0
     items:
       type: dict
       keys:

@@ -862,10 +862,6 @@ keys:
       "warning" will produce warning messages.
 
       '
-    deprecation:
-      warning: true
-      removed: false
-      remove_in_version: 6.0.0
   banners:
     type: dict
     keys:
@@ -1842,11 +1838,6 @@ keys:
         subnets:
           type: list
           primary_key: subnet
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: ipv4_subnets or ipv6_subnets in 6.0
           items:
             type: dict
             keys:
@@ -6149,11 +6140,6 @@ keys:
                 description: Regular Expression.
   ip_ftp_client_source_interfaces:
     type: list
-    deprecation:
-      warning: true
-      removed: false
-      remove_in_version: 6.0.0
-      new_key: ip_ftp_client in 6.0
     items:
       type: dict
       keys:
@@ -6215,11 +6201,6 @@ keys:
                     - str
   ip_http_client_source_interfaces:
     type: list
-    deprecation:
-      warning: true
-      removed: false
-      remove_in_version: 6.0.0
-      new_key: ip_http_client in 6.0
     items:
       type: dict
       keys:
@@ -6400,11 +6381,6 @@ keys:
             type: str
   ip_name_servers:
     type: list
-    deprecation:
-      warning: true
-      removed: false
-      remove_in_version: 6.0.0
-      new_key: ip_name_server in 6.0
     items:
       type: dict
       keys:
@@ -6876,11 +6852,6 @@ keys:
         description: Match source interface of the IPsec connection.
   ip_ssh_client_source_interfaces:
     type: list
-    deprecation:
-      warning: true
-      removed: false
-      remove_in_version: 6.0.0
-      new_key: ip_ssh_client in 6.0
     items:
       type: dict
       keys:
@@ -6907,11 +6878,6 @@ keys:
           - int
   ip_telnet_client_source_interfaces:
     type: list
-    deprecation:
-      warning: true
-      removed: false
-      remove_in_version: 6.0.0
-      new_key: ip_telnet_client in 6.0
     items:
       type: dict
       keys:
@@ -6924,11 +6890,6 @@ keys:
           description: VRF Name.
   ip_tftp_client_source_interfaces:
     type: list
-    deprecation:
-      warning: true
-      removed: false
-      remove_in_version: 6.0.0
-      new_key: ip_tftp_client in 6.0
     items:
       type: dict
       keys:
@@ -10892,11 +10853,6 @@ keys:
               description: VRF name.
               convert_types:
               - int
-              deprecation:
-                warning: true
-                removed: false
-                remove_in_version: 6.0.0
-                new_key: ntp.vrf in 6.0
       authenticate:
         type: bool
       authenticate_servers_only:
