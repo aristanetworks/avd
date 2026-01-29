@@ -878,15 +878,6 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  avd_eos_cli_config_gen_validate_inputs_batch_size:
-    documentation_options:
-      table: role-settings
-    type: int
-    default: 10
-    description: 'The number of hosts to process in each batch when validating inputs.
-
-      Depending on your inventory size and the available resources, you may want to
-      adjust this number.'
   avd_structured_config_file_format:
     documentation_options:
       table: role-settings
@@ -2392,6 +2383,15 @@ keys:
         type: bool
         default: true
         description: Generate the table of content(TOC) on device documentation.
+  eos_cli_config_gen_validate_inputs_batch_size:
+    documentation_options:
+      table: role-settings
+    type: int
+    default: 10
+    description: 'The number of hosts to process in each batch when validating inputs.
+
+      Depending on your inventory size and the available resources, you may want to
+      adjust this number.'
   errdisable:
     type: dict
     keys:

@@ -11,10 +11,8 @@
     | [<samp>avd_digital_twin_mode</samp>](## "avd_digital_twin_mode") | Boolean |  | `False` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).<br>By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation) will replace original fabric artifacts.<br>To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated output location. |
     | [<samp>avd_eos_designs_debug</samp>](## "avd_eos_designs_debug") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
     | [<samp>avd_eos_designs_enforce_duplication_checks_across_all_models</samp>](## "avd_eos_designs_enforce_duplication_checks_across_all_models") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
-    | [<samp>avd_eos_designs_return_structured_config</samp>](## "avd_eos_designs_return_structured_config") | Boolean |  | `False` |  | Return structured configuration as ansible_facts per device. |
     | [<samp>avd_eos_designs_structured_config</samp>](## "avd_eos_designs_structured_config") | Boolean |  | `True` |  | Generate structured configuration per device. |
     | [<samp>avd_eos_designs_unset_facts</samp>](## "avd_eos_designs_unset_facts") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
-    | [<samp>avd_eos_designs_validate_inputs_batch_size</samp>](## "avd_eos_designs_validate_inputs_batch_size") | Integer |  | `10` |  | The number of hosts to process in each batch when validating inputs.<br>Depending on your inventory size and the available resources, you may want to adjust this number. |
     | [<samp>avd_structured_config_file_format</samp>](## "avd_structured_config_file_format") | String |  | `yml` | Valid Values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | The file format to use when dumping structured configuration files.<br> |
     | [<samp>eos_designs_documentation</samp>](## "eos_designs_documentation") | Dictionary |  |  |  | Control fabric documentation generation.<br> |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "eos_designs_documentation.enable") | Boolean |  | `True` |  | Generate fabric-wide documentation. |
@@ -22,6 +20,8 @@
     | [<samp>&nbsp;&nbsp;topology_csv</samp>](## "eos_designs_documentation.topology_csv") | Boolean |  | `False` |  | Generate Topology CSV with all interfaces towards other devices. |
     | [<samp>&nbsp;&nbsp;p2p_links_csv</samp>](## "eos_designs_documentation.p2p_links_csv") | Boolean |  | `False` |  | Generate P2P links CSV with all routed point-to-point links between devices. |
     | [<samp>&nbsp;&nbsp;toc</samp>](## "eos_designs_documentation.toc") | Boolean |  | `True` |  | Generate the table of content(TOC) on fabric documentation. |
+    | [<samp>eos_designs_return_structured_config</samp>](## "eos_designs_return_structured_config") | Boolean |  | `False` |  | Return structured configuration as ansible_facts per device. |
+    | [<samp>eos_designs_validate_inputs_batch_size</samp>](## "eos_designs_validate_inputs_batch_size") | Integer |  | `10` |  | The number of hosts to process in each batch when validating inputs.<br>Depending on your inventory size and the available resources, you may want to adjust this number. |
 
 === "YAML"
 
@@ -32,15 +32,8 @@
     # To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated output location.
     avd_digital_twin_mode: <bool; default=False>
 
-    # Return structured configuration as ansible_facts per device.
-    avd_eos_designs_return_structured_config: <bool; default=False>
-
     # Generate structured configuration per device.
     avd_eos_designs_structured_config: <bool; default=True>
-
-    # The number of hosts to process in each batch when validating inputs.
-    # Depending on your inventory size and the available resources, you may want to adjust this number.
-    avd_eos_designs_validate_inputs_batch_size: <int; default=10>
 
     # The file format to use when dumping structured configuration files.
     avd_structured_config_file_format: <str; "yml" | "yaml" | "json"; default="yml">
@@ -63,4 +56,11 @@
 
       # Generate the table of content(TOC) on fabric documentation.
       toc: <bool; default=True>
+
+    # Return structured configuration as ansible_facts per device.
+    eos_designs_return_structured_config: <bool; default=False>
+
+    # The number of hosts to process in each batch when validating inputs.
+    # Depending on your inventory size and the available resources, you may want to adjust this number.
+    eos_designs_validate_inputs_batch_size: <int; default=10>
     ```
