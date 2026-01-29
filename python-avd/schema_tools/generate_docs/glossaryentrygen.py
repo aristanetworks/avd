@@ -32,7 +32,7 @@ class GlossaryEntry(BaseModel):
     """Description of the field"""
     default: str | None = None
     """Default value if applicable"""
-    valid_values: list[str] | None = None
+    valid_values: list[str | int | float | bool] | None = None
     """List of valid values if applicable"""
     deprecated: bool = False
     """Whether this field is deprecated"""
@@ -172,10 +172,11 @@ class GlossaryEntryGenBase:
             return str(self.schema.default)
         return None
 
-    def get_valid_values(self) -> list[str] | None:
+    def get_valid_values(self) -> list[str | int | float | bool] | None:
         """Returns list of valid values if applicable."""
         if hasattr(self.schema, "valid_values") and self.schema.valid_values:
-            return self.schema.valid_values
+            # Cast to the expected type to handle variance
+            return list(self.schema.valid_values)
         return None
 
     def render_children(self) -> Generator[GlossaryEntry]:
