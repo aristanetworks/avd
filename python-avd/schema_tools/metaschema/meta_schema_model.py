@@ -30,6 +30,15 @@ from typing import TYPE_CHECKING, Annotated, Any, ClassVar, Literal
 from pydantic import BaseModel, ConfigDict, Field, constr
 
 from schema_tools.generate_classes.class_src_gen import SrcGenBase, SrcGenBool, SrcGenDict, SrcGenInt, SrcGenList, SrcGenRootDict, SrcGenStr
+from schema_tools.generate_docs.glossaryentrygen import (
+    GlossaryEntry,
+    GlossaryEntryGenBase,
+    GlossaryEntryGenBool,
+    GlossaryEntryGenDict,
+    GlossaryEntryGenInt,
+    GlossaryEntryGenList,
+    GlossaryEntryGenStr,
+)
 from schema_tools.generate_docs.tablerowgen import TableRow, TableRowGenBase, TableRowGenBool, TableRowGenDict, TableRowGenInt, TableRowGenList, TableRowGenStr
 from schema_tools.generate_docs.yamllinegen import YamlLine, YamlLineGenBase, YamlLineGenBool, YamlLineGenDict, YamlLineGenInt, YamlLineGenList, YamlLineGenStr
 
@@ -87,6 +96,14 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         The 'table' option is inherited to all child keys, unless specifically set on the child.
         """
 
+        glossary: bool | None = None
+        """
+        Include this field in the generated glossary.
+        If None, the glossary generator will use heuristics to decide (top-level keys with descriptions, fields with display_name, etc.).
+        If True, always include in glossary.
+        If False, always exclude from glossary.
+        """
+
     # Pydantic config option to forbid keys in the inputs that are not covered by the model
     model_config = ConfigDict(extra="forbid")
 
@@ -109,6 +126,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     # Type of schema docs generators to use for this schema field.
     _table_row_generator: type[TableRowGenBase]
     _yaml_line_generator: type[YamlLineGenBase]
+    _glossary_entry_generator: type[GlossaryEntryGenBase]
     # Type of class source generator to use for this schema field.
     _class_src_generator: type[SrcGenBase]
 
@@ -221,6 +239,15 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         # Using the Type of yaml line generator set in the subclass attribute _yaml_line_generator
         yield from self._yaml_line_generator().generate_yaml_lines(schema=self, target_table=target_table)
 
+    def _generate_glossary_entries(self, target_table: str | None = None) -> Generator[GlossaryEntry]:
+        """
+        Yields "GlossaryEntry" objects to be used in schema glossary.
+
+        The function is called recursively inside the GlossaryEntryGen classes for parsing children.
+        """
+        # Using the Type of glossary entry generator set in the subclass attribute _glossary_entry_generator
+        yield from self._glossary_entry_generator().generate_glossary_entries(schema=self, target_table=target_table)
+
     def _generate_class_src(self, class_name: str | None = None) -> SrcData:
         """
         Returns one instance of "Src" to be used for generating python class models based on the schemas.
@@ -269,6 +296,7 @@ class AvdSchemaInt(AvdSchemaBaseModel):
     # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenInt
     _yaml_line_generator = YamlLineGenInt
+    _glossary_entry_generator = GlossaryEntryGenInt
     # Type of class source generator to use for this schema field.
     _class_src_generator = SrcGenInt
 
@@ -306,6 +334,7 @@ class AvdSchemaBool(AvdSchemaBaseModel):
     # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenBool
     _yaml_line_generator = YamlLineGenBool
+    _glossary_entry_generator = GlossaryEntryGenBool
     # Type of class source generator to use for this schema field.
     _class_src_generator = SrcGenBool
 
@@ -373,6 +402,7 @@ class AvdSchemaStr(AvdSchemaBaseModel):
     # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenStr
     _yaml_line_generator = YamlLineGenStr
+    _glossary_entry_generator = GlossaryEntryGenStr
     # Type of class source generator to use for this schema field.
     _class_src_generator = SrcGenStr
 
@@ -429,6 +459,7 @@ class AvdSchemaList(AvdSchemaBaseModel):
     # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenList
     _yaml_line_generator = YamlLineGenList
+    _glossary_entry_generator = GlossaryEntryGenList
     # Type of class source generator to use for this schema field.
     _class_src_generator = SrcGenList
 
@@ -537,6 +568,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenDict
     _yaml_line_generator = YamlLineGenDict
+    _glossary_entry_generator = GlossaryEntryGenDict
     # Type of class source generator to use for this schema field.
     _class_src_generator = SrcGenDict
 
