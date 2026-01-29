@@ -78,12 +78,18 @@ class GlossaryEntryGenBase:
         Yields GlossaryEntry for this schema field if the field should be included in the glossary.
 
         Recursively walks children if applicable (only for lists and dicts).
+
+        If target_table is None, includes all fields (consolidated glossary).
+        If target_table is set, only includes fields from that table.
         """
         self.schema = schema
         self.target_table = target_table
 
-        # The render_schema_field function contains all the logic to decide whether this field should be part of the target_table or not.
-        if render_schema_field(schema, target_table):
+        # For consolidated glossary (target_table=None), include all fields
+        # For table-specific glossary, use render_schema_field to filter by table
+        should_render = target_table is None or render_schema_field(schema, target_table)
+
+        if should_render:
             if schema._path and self._should_include_in_glossary():
                 # Only render this field when there is a path (not the root dict)
                 yield GlossaryEntry(

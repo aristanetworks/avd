@@ -113,24 +113,11 @@ def build_schema_tables(schema_store: dict) -> None:
             LOGGER.info("Deleting file %s", file.absolute())
             file.unlink()
 
-        # Build glossaries
-        glossary_dir = schema_paths.docs_path.joinpath("glossaries")
-        glossary_dir.mkdir(exist_ok=True)
-
-        for table_name in table_names:
-            LOGGER.debug("Building glossary: %s from schema %s", table_name, schema_name)
-            glossary_file = glossary_dir.joinpath(f"{table_name}-glossary.md")
-            with Path(glossary_file).open(mode="w", encoding="UTF-8") as file:
-                file.write(get_glossary(schema, table_name))
-
-        # Clean up other glossary files not covered by the tables.
-        remove_glossary_files = [
-            file for file in glossary_dir.glob("*.md")
-            if file.is_file() and file.name.removesuffix("-glossary.md") not in table_names
-        ]
-        for file in remove_glossary_files:
-            LOGGER.info("Deleting glossary file %s", file.absolute())
-            file.unlink()
+        # Build single consolidated glossary
+        LOGGER.debug("Building glossary from schema %s", schema_name)
+        glossary_file = schema_paths.docs_path.joinpath("glossary.md")
+        with Path(glossary_file).open(mode="w", encoding="UTF-8") as file:
+            file.write(get_glossary(schema, target_table=None))
 
 
 def build_schema_classes() -> None:
