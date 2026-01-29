@@ -63,7 +63,7 @@ options:
           When enabled, warnings will be emitted during validation if any top-level keys
           from the EOS Config schema are found at the top level of AVD Design input data.
         type: bool
-        default: true
+        default: false
 """
 
 EXAMPLES = r"""
