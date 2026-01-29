@@ -17,6 +17,7 @@ from yaml import load as yaml_load
 from .constants import LICENSE_HEADER, SCHEMA_STORE_GZ_FILE, SCHEMAS
 from .generate_classes.src_generators import FileSrc
 from .generate_classes.utils import generate_class_name
+from .generate_docs.glossarygen import get_glossary
 from .generate_docs.mdtabsgen import get_md_tabs
 from .metaschema.meta_schema_model import AristaAvdSchema
 from .store import create_store
@@ -89,7 +90,7 @@ def validate_schemas(schema_store: dict) -> None:
 
 
 def build_schema_tables(schema_store: dict) -> None:
-    """Build schema tables."""
+    """Build schema tables and glossaries."""
     LOGGER.info("Rebuilding schema documentation tables...")
     for schema_name, schema_paths in SCHEMAS.items():
         if not schema_paths.docs_path:
@@ -97,6 +98,8 @@ def build_schema_tables(schema_store: dict) -> None:
 
         schema = AristaAvdSchema(**schema_store[schema_name])
         table_names = sorted(schema._descendant_tables)
+
+        # Build tables
         output_dir = schema_paths.docs_path.joinpath("tables")
         for table_name in table_names:
             LOGGER.debug("Building table: %s from schema %s", table_name, schema_name)
@@ -108,6 +111,25 @@ def build_schema_tables(schema_store: dict) -> None:
         remove_files = [file for file in output_dir.glob("*.md") if file.is_file() and file.name.removesuffix(".md") not in table_names]
         for file in remove_files:
             LOGGER.info("Deleting file %s", file.absolute())
+            file.unlink()
+
+        # Build glossaries
+        glossary_dir = schema_paths.docs_path.joinpath("glossaries")
+        glossary_dir.mkdir(exist_ok=True)
+
+        for table_name in table_names:
+            LOGGER.debug("Building glossary: %s from schema %s", table_name, schema_name)
+            glossary_file = glossary_dir.joinpath(f"{table_name}-glossary.md")
+            with Path(glossary_file).open(mode="w", encoding="UTF-8") as file:
+                file.write(get_glossary(schema, table_name))
+
+        # Clean up other glossary files not covered by the tables.
+        remove_glossary_files = [
+            file for file in glossary_dir.glob("*.md")
+            if file.is_file() and file.name.removesuffix("-glossary.md") not in table_names
+        ]
+        for file in remove_glossary_files:
+            LOGGER.info("Deleting glossary file %s", file.absolute())
             file.unlink()
 
 

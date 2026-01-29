@@ -10,4 +10,10 @@ Generate AvdSchema documentation.
   - Generates table rows by recursively walking the schema with the relevant TableRowGen<type>
 - YAML code block representing the schema using "yamlgen.py"
   - Generates YAML lines by recursively walking the schema with the relevant YamlLineGen<type>
+
+"glossarygen.py" generates a markdown glossary file for one given "table name":
+- Alphabetically organized glossary of schema fields using "glossaryentrygen.py":
+  - Generates glossary entries by recursively walking the schema with the relevant GlossaryEntryGen<type>
+  - Respects documentation_options.glossary for explicit opt-in/opt-out
+  - Uses heuristics to auto-include important fields when glossary option is not set
 """

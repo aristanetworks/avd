@@ -15,6 +15,8 @@ keys:
           mechanism:
             type: str
             valid_values: ["algomatch", "none", "tcam"]
+            documentation_options:
+              glossary: true
           update_default_result_permit:
             type: bool
             description: Accept the packets when access-list is being updated.
