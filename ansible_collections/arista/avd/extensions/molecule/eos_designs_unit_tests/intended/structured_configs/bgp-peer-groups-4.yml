@@ -36,16 +36,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: MPLS-OVERLAY-PEERS
-    metadata:
-      type: mpls
-    remote_as: '65001'
-    description: Description for mpls_overlay_peers via structured_config
-    update_source: Loopback0
-    route_reflector_client: true
-    bfd: false
-    send_community: all
-    maximum_routes: 0
   - name: RR-OVERLAY-PEERS
     metadata:
       type: mpls
@@ -63,14 +53,10 @@ router_bgp:
     description: bgp-peer-groups-2_Loopback0
   address_family_ipv4:
     peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: false
     - name: RR-OVERLAY-PEERS
       activate: false
   address_family_vpn_ipv4:
     peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: true
     - name: RR-OVERLAY-PEERS
       activate: true
 router_isis:

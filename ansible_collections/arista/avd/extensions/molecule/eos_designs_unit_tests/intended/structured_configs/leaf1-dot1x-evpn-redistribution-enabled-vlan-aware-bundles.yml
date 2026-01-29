@@ -74,15 +74,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -97,14 +88,6 @@ router_bgp:
     - learned
     - dot1x
     vlan: 100,200
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: DEV
     rd: 10.1.0.13:500
