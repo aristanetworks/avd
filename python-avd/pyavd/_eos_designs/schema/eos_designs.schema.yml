@@ -267,10 +267,6 @@ keys:
       "warning" will produce warning messages.
 
       '
-    deprecation:
-      warning: true
-      removed: false
-      remove_in_version: 6.0.0
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -295,10 +291,6 @@ keys:
     type: bool
     default: false
     description: Dump all vars and facts per device after generating `avd_switch_facts`.
-    deprecation:
-      warning: true
-      removed: false
-      remove_in_version: 6.0.0
   avd_eos_designs_enforce_duplication_checks_across_all_models:
     documentation_options:
       table: role-settings
@@ -321,10 +313,6 @@ keys:
 
       - With this option enabled, AVD will raise an error about duplicate interface
       definitions.'
-    deprecation:
-      warning: true
-      removed: false
-      remove_in_version: 6.0.0
   avd_eos_designs_structured_config:
     documentation_options:
       table: role-settings
@@ -338,10 +326,6 @@ keys:
     default: true
     description: Unset `avd_switch_facts` to gain a small performance improvement
       since Ansible needs to handle fewer variables.
-    deprecation:
-      warning: true
-      removed: false
-      remove_in_version: 6.0.0
   bfd_multihop:
     documentation_options:
       table: bfd-settings
@@ -6482,10 +6466,6 @@ keys:
       this requires a restart of the KernelFib agent.
 
       - `false`: For newer EOS versions (starting 4.33.2) use the proper CLI.'
-    deprecation:
-      warning: true
-      removed: false
-      remove_in_version: 6.0.0
   wan_use_evpn_node_settings_for_lan:
     type: bool
     documentation_options:
