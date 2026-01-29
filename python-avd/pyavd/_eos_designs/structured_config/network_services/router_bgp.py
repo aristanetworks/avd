@@ -465,7 +465,7 @@ class RouterBgpMixin(Protocol):
             id=vlan.id,
             rd=vlan_rd,
         )
-        bgp_vlan.metadata.tenant = tenant.name
+        bgp_vlan.metadata.tenants.append_unique(tenant.name)
         bgp_vlan.route_targets.both.append(vlan_rt)
         bgp_vlan.redistribute_routes.append("learned")
 
@@ -673,6 +673,8 @@ class RouterBgpMixin(Protocol):
             redistribute_routes=EosCliConfigGen.RouterBgp.VlanAwareBundlesItem.RedistributeRoutes(["learned"]),
             vlan=list_compress([vlan.id for vlan in vxlan_vlans]),
         )
+        # TODO: consider if doing this is required in the long run.
+        # using this bundle.metadata.tenants.append_unique(tenant.name)
         if self.shared_utils.node_config.evpn_gateway.evpn_l2.enabled and evpn_l2_multi_domain:
             bundle.rd_evpn_domain._update(domain="remote", rd=rd)
             bundle.route_targets.import_export_evpn_domains.append_new(domain="remote", route_target=rt)

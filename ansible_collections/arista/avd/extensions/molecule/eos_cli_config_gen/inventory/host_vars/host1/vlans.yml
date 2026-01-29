@@ -3,7 +3,7 @@
 vlans:
   - id: 110
     metadata:
-      tenant: Tenant_A
+      tenants: [Tenant_A]
     name: PR01-DMZ
     address_locking:
       address_family:
@@ -11,7 +11,7 @@ vlans:
         ipv6: true
   - id: 111
     metadata:
-      tenant: Tenant_A
+      tenants: [Tenant_A]
     name: PRIVATE_VLAN_COMMUNITY
     private_vlan:
       type: community
@@ -20,21 +20,21 @@ vlans:
       ipv4_enforcement_disabled: true
   - id: 112
     metadata:
-      tenant: Tenant_A
+      tenants: [Tenant_A]
     name: PRIVATE_VLAN_ISOLATED
     private_vlan:
       type: isolated
       primary_vlan: 110
   - id: 201
     metadata:
-      tenant: Tenant_B
+      tenants: [Tenant_B]
     name: ETREE_LEAF
     e_tree:
       leaf_role: true
       remote_leaf_host_drop: true
   - id: 3010
     metadata:
-      tenant: Tenant_A
+      tenants: [Tenant_A]
     name: MLAG_iBGP_TENANT_A_PROJECT01
     trunk_groups:
       - LEAF_PEER_L3

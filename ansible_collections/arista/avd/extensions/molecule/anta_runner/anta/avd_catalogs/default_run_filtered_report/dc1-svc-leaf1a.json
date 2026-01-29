@@ -185,13 +185,6 @@
             "description": "dc2-leaf3a.arista.com",
             "vrf": "default",
             "repeat": 1
-          },
-          {
-            "destination": "10.255.128.18",
-            "source": "10.33.0.5",
-            "description": "dc2-leaf3b.arista.com",
-            "vrf": "default",
-            "repeat": 1
           }
         ]
       }
@@ -470,10 +463,8 @@
           "10.255.128.15",
           "10.255.128.16",
           "10.255.128.17",
-          "10.255.128.18",
           "10.255.129.13",
-          "10.255.129.15",
-          "10.255.129.17"
+          "10.255.129.15"
         ],
         "collect": "all"
       }

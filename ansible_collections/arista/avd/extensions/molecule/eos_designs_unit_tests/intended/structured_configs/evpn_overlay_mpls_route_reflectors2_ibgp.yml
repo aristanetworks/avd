@@ -76,6 +76,17 @@ router_bgp:
     bfd: true
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.255.1
+    peer_group: MPLS-OVERLAY-PEERS
+    metadata:
+      peer: evpn_overlay_mpls_route_reflectors_ibgp
+    description: evpn_overlay_mpls_route_reflectors_ibgp_Loopback0
+  - ip_address: 192.168.255.4
+    peer_group: RR-OVERLAY-PEERS
+    metadata:
+      peer: evpn_overlay_mpls_route_reflectors3_ibgp
+    description: evpn_overlay_mpls_route_reflectors3_ibgp_Loopback0
   redistribute:
     connected:
       enabled: true

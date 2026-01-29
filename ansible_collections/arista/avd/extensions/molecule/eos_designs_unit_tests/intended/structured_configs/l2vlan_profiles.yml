@@ -64,7 +64,8 @@ router_bgp:
   vlans:
   - id: 110
     metadata:
-      tenant: research
+      tenants:
+      - research
     rd: 10.10.0.3:10110
     route_targets:
       both:
@@ -73,7 +74,8 @@ router_bgp:
     - learned
   - id: 120
     metadata:
-      tenant: research
+      tenants:
+      - research
     rd: 10.10.0.3:10120
     route_targets:
       both:
@@ -82,7 +84,8 @@ router_bgp:
     - learned
   - id: 130
     metadata:
-      tenant: research
+      tenants:
+      - research
     rd: 10.10.0.3:10130
     route_targets:
       both:
@@ -111,21 +114,24 @@ vlans:
     type: isolated
     primary_vlan: 120
   metadata:
-    tenant: research
+    tenants:
+    - research
 - id: 120
   name: research2
   private_vlan:
     type: community
     primary_vlan: 110
   metadata:
-    tenant: research
+    tenants:
+    - research
 - id: 130
   name: research3
   private_vlan:
     type: community
     primary_vlan: 120
   metadata:
-    tenant: research
+    tenants:
+    - research
 vrfs:
 - name: MGMT
   ip_routing: false

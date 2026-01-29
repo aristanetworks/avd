@@ -269,7 +269,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ntp_serve</samp>](## "vlan_interfaces.[].ntp_serve") | Boolean |  |  |  | Enable/disable serving NTP to clients. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;pvlan_mapping</samp>](## "vlan_interfaces.[].pvlan_mapping") | String |  |  |  | List of VLANs as string. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;metadata</samp>](## "vlan_interfaces.[].metadata") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "vlan_interfaces.[].metadata.tenant") | String |  |  |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenants</samp>](## "vlan_interfaces.[].metadata.tenants") | List, items: String |  |  |  | List of tenants where this VLAN interface is defined. Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].metadata.tenants.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "vlan_interfaces.[].metadata.tags") | List, items: String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].metadata.tags.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "vlan_interfaces.[].metadata.type") | String |  |  |  | Key only used for documentation or validation purposes. |
@@ -813,8 +814,9 @@
         pvlan_mapping: <str>
         metadata:
 
-          # Key only used for documentation or validation purposes.
-          tenant: <str>
+          # List of tenants where this VLAN interface is defined. Key only used for documentation or validation purposes.
+          tenants:
+            - <str>
 
           # Key only used for documentation or validation purposes.
           tags:

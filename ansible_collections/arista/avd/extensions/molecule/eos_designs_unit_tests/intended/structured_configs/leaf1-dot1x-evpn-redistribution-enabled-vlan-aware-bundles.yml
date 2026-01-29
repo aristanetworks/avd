@@ -130,14 +130,16 @@ vlan_interfaces:
   vrf: DEV
   ip_address_virtual: 192.168.100.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: Vlan200
   description: VRFDEV_VLAN200
   shutdown: false
   vrf: DEV
   ip_address_virtual: 192.168.200.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vlan_internal_order:
   allocation: ascending
   range:
@@ -147,18 +149,21 @@ vlans:
 - id: 100
   name: VRFDEV_VLAN100
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 200
   name: VRFDEV_VLAN200
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: DEV
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vxlan_interface:
   vxlan1:
     description: leaf1-dot1x-evpn-redistribution-enabled-vlan-aware-bundles_VTEP
