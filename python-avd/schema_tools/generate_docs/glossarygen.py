@@ -29,24 +29,16 @@ def get_glossary(schema: AristaAvdSchema, target_table: str | None = None) -> st
     if not entries:
         return "# Glossary\n\nNo glossary entries found.\n"
 
-    # Group by first letter
-    grouped = defaultdict(list)
-    for entry in sorted(entries, key=lambda e: e.term.lower()):
-        first_letter = entry.term[0].upper()
-        # Handle special characters
-        if not first_letter.isalpha():
-            first_letter = "#"
-        grouped[first_letter].append(entry)
+    # Sort entries alphabetically
+    sorted_entries = sorted(entries, key=lambda e: e.term.lower())
 
     # Build markdown
     lines = ["# Glossary\n"]
 
-    # Add entries grouped by letter
-    for letter in sorted(grouped.keys()):
-        lines.append(f"## {letter}\n")
-        for entry in grouped[letter]:
-            lines.append(str(entry))
-            lines.append("---\n")
+    # Add all entries without letter grouping
+    for entry in sorted_entries:
+        lines.append(str(entry))
+        lines.append("---\n")
 
     return "\n".join(lines)
 

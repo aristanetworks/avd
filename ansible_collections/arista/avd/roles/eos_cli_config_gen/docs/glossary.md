@@ -1,10 +1,10 @@
 # Glossary
 
-## M
+### update_default_result_permit
 
-### mechanism
+**Type**: Boolean  
+**Path**: `hardware.access_list.update_default_result_permit`  
 
-**Type**: String  
-**Path**: `hardware.access_list.mechanism`  
-**Valid Values**: `algomatch`, `none`, `tcam`  
+Accept the packets when access-list is being updated.
+
 ---
