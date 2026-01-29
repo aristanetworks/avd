@@ -78,7 +78,7 @@ EXAMPLES = r"""
     schema_name: avd_design
     fail_on_validation_errors: true
     validation_configuration:
-      warn_eos_config_keys: false
+      warn_eos_config_keys: true
 
 - name: Validate eos_cli_config_gen inputs from structured config files
   arista.avd.validate_inputs:
