@@ -1,9 +1,5 @@
 # Glossary
 
-## Table of Contents
-
-- [M](#m)
-
 ## M
 
 ### mechanism

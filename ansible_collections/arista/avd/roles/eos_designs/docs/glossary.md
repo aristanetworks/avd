@@ -1,9 +1,5 @@
 # Glossary
 
-## Table of Contents
-
-- [M](#m)
-
 ## M
 
 ### mgmt_interface_description

@@ -41,12 +41,6 @@ def get_glossary(schema: AristaAvdSchema, target_table: str | None = None) -> st
     # Build markdown
     lines = ["# Glossary\n"]
 
-    # Add table of contents
-    lines.append("## Table of Contents\n")
-    for letter in sorted(grouped.keys()):
-        lines.append(f"- [{letter}](#{letter.lower()})")
-    lines.append("")
-
     # Add entries grouped by letter
     for letter in sorted(grouped.keys()):
         lines.append(f"## {letter}\n")
