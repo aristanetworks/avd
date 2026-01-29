@@ -108,41 +108,15 @@ class GlossaryEntryGenBase:
         """
         Determine if this field should be in the glossary.
 
-        Uses explicit documentation_options.glossary if set, otherwise uses heuristics.
+        Only includes fields that explicitly have `glossary: true` in documentation_options.
+        This makes the glossary opt-in only.
         """
         # Skip if no key (list items without keys)
         if not self.schema._key:
             return False
 
-        # Explicit control via documentation_options.glossary
-        if self.schema.documentation_options:
-            if self.schema.documentation_options.glossary is True:
-                return True
-            if self.schema.documentation_options.glossary is False:
-                return False
-
-        # Fallback heuristics when glossary option is None
-        return self._auto_include_heuristic()
-
-    def _auto_include_heuristic(self) -> bool:
-        """
-        Heuristic for auto-including fields when glossary option not set.
-
-        Includes:
-        - Top-level keys with descriptions
-        - Fields with display_name (indicates importance)
-        - Fields with valid_values (useful reference)
-        """
-        # Include top-level keys with descriptions
-        if len(self.schema._path) == 1 and self.schema.description:
-            return True
-
-        # Include if has display_name (indicates importance)
-        if self.schema.display_name:
-            return True
-
-        # Include if has valid_values (useful reference)
-        if hasattr(self.schema, "valid_values") and self.schema.valid_values:
+        # Only include if explicitly set to True
+        if self.schema.documentation_options and self.schema.documentation_options.glossary is True:
             return True
 
         return False

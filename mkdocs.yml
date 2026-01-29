@@ -212,6 +212,7 @@ nav:
               - anta_runner: ansible_collections/arista/avd/roles/anta_runner/README.md
           - Plugins: docs/plugins/
       - PyAVD: docs/pyavd/pyavd.md
+      - Glossary: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/glossary.md
   - Release Notes:
       - 6.x.x: docs/release-notes/6.x.x.md
       - Porting Guide: docs/porting-guides/6.x.x.md
