@@ -41,21 +41,8 @@ class GlossaryEntry(BaseModel):
         """Render as markdown."""
         lines = [f"### {self.term}\n"]
 
-        lines.append(f"**Type**: {self.type}  ")
-        lines.append(f"**Path**: `{self.path}`  ")
-
-        if self.default is not None:
-            lines.append(f"**Default**: `{self.default}`  ")
-
-        if self.valid_values:
-            values_str = ", ".join(f"`{v}`" for v in self.valid_values)
-            lines.append(f"**Valid Values**: {values_str}  ")
-
-        if self.deprecated:
-            lines.append("**Status**: ⚠️ DEPRECATED  ")
-
         if self.description:
-            lines.append(f"\n{self.description}\n")
+            lines.append(f"{self.description}\n")
 
         return "\n".join(lines)
 
