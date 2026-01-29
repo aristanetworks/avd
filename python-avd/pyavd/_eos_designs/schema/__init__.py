@@ -88484,7 +88484,15 @@ class EosDesigns(EosDesignsRootModel):
     }
     _allow_other_keys: ClassVar[bool] = True
     aaa_settings: AaaSettings
-    """Subclass of AvdModel."""
+    """
+    Arista EOS AAA (Authentication, Authorization, and Accounting) settings provide secure network
+    access control via local user databases, RADIUS, or TACACS+ servers.
+    Core configuration involves
+    enabling AAA, defining server groups, and applying methods to console or VTY lines. Key commands
+    include aaa authentication, aaa authorization, and aaa accounting
+
+    Subclass of AvdModel.
+    """
     address_locking_settings: AddressLockingSettings
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
@@ -90674,7 +90682,14 @@ class EosDesigns(EosDesignsRootModel):
             Subclass of EosDesignsRootModel.
 
             Args:
-                aaa_settings: Subclass of AvdModel.
+                aaa_settings:
+                   Arista EOS AAA (Authentication, Authorization, and Accounting) settings provide secure network
+                   access control via local user databases, RADIUS, or TACACS+ servers.
+                   Core configuration involves
+                   enabling AAA, defining server groups, and applying methods to console or VTY lines. Key commands
+                   include aaa authentication, aaa authorization, and aaa accounting
+
+                   Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
                 avd_digital_twin_mode:

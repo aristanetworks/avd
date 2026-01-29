@@ -11,6 +11,15 @@ allow_other_keys: true
 keys:
   aaa_settings:
     type: dict
+    description: 'Arista EOS AAA (Authentication, Authorization, and Accounting) settings
+      provide secure network access control via local user databases, RADIUS, or TACACS+
+      servers.
+
+      Core configuration involves enabling AAA, defining server groups, and applying
+      methods to console or VTY lines. Key commands include aaa authentication, aaa
+      authorization, and aaa accounting'
+    documentation_options:
+      glossary: true
     keys:
       enable_password:
         type: dict

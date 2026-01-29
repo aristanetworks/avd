@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>aaa_settings</samp>](## "aaa_settings") | Dictionary |  |  |  |  |
+    | [<samp>aaa_settings</samp>](## "aaa_settings") | Dictionary |  |  |  | Arista EOS AAA (Authentication, Authorization, and Accounting) settings provide secure network access control via local user databases, RADIUS, or TACACS+ servers.<br>Core configuration involves enabling AAA, defining server groups, and applying methods to console or VTY lines. Key commands include aaa authentication, aaa authorization, and aaa accounting |
     | [<samp>&nbsp;&nbsp;enable_password</samp>](## "aaa_settings.enable_password") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "aaa_settings.enable_password.password") | String |  |  |  | SHA512 hashed password.<br>Takes precedence over `cleartext_password`.<br>This variable is sensitive and SHOULD be configured using some vault. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "aaa_settings.enable_password.cleartext_password") | String |  |  |  | Cleartext enable password.<br>Encrypted using `password_type` by AVD.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
@@ -127,6 +127,8 @@
 === "YAML"
 
     ```yaml
+    # Arista EOS AAA (Authentication, Authorization, and Accounting) settings provide secure network access control via local user databases, RADIUS, or TACACS+ servers.
+    # Core configuration involves enabling AAA, defining server groups, and applying methods to console or VTY lines. Key commands include aaa authentication, aaa authorization, and aaa accounting
     aaa_settings:
       enable_password:
 
