@@ -96,15 +96,10 @@ class GlossaryEntryGenBase:
         Determine if this field should be in the glossary.
 
         Only includes fields that explicitly have `glossary: true` in documentation_options.
-        Excludes container types (dict/list) - only includes leaf fields (str/int/bool).
         This makes the glossary opt-in only for actual data fields.
         """
         # Skip if no key (list items without keys)
         if not self.schema._key:
-            return False
-
-        # Skip container types (dict/list) - only include leaf fields
-        if self.schema.type in ("dict", "list"):
             return False
 
         # Only include if explicitly set to True

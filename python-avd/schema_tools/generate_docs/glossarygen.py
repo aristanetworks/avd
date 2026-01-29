@@ -36,7 +36,6 @@ def get_consolidated_glossary(schemas: dict[str, AristaAvdSchema]) -> str:
     # Add all entries
     for entry in sorted_entries:
         lines.append(str(entry))
-        lines.append("---\n")
 
     return "\n".join(lines)
 
@@ -69,7 +68,6 @@ def get_glossary(schema: AristaAvdSchema, target_table: str | None = None) -> st
     # Add all entries without letter grouping
     for entry in sorted_entries:
         lines.append(str(entry))
-        lines.append("---\n")
 
     return "\n".join(lines)
 
