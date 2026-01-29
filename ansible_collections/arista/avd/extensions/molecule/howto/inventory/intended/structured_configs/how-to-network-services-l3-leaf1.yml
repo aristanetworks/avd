@@ -15,26 +15,36 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet3
-  description: MLAG_howto-l3-leaf2_Ethernet3
+  description: MLAG_how-to-network-services-l3-leaf2_Ethernet3
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: howto-l3-leaf2
+    peer: how-to-network-services-l3-leaf2
     peer_interface: Ethernet3
     peer_type: mlag_peer
 - name: Ethernet4
-  description: MLAG_howto-l3-leaf2_Ethernet4
+  description: MLAG_how-to-network-services-l3-leaf2_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: howto-l3-leaf2
+    peer: how-to-network-services-l3-leaf2
     peer_interface: Ethernet4
     peer_type: mlag_peer
-hostname: howto-l3-leaf1
+- name: Ethernet8
+  description: L2_how-to-network-services-l2-leaf1_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 8
+    mode: active
+  metadata:
+    peer: how-to-network-services-l2-leaf1
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+hostname: how-to-network-services-l3-leaf1
 ip_domain_lookup:
   source_interfaces:
   - name: Management1
@@ -85,7 +95,7 @@ metadata:
   validate_hardware:
     enabled: false
 mlag_configuration:
-  domain_id: HOW_TO_L3_LEAFS
+  domain_id: HOW_TO_NETWORK_SERVICES_L3_LEAFS
   local_interface: Vlan4094
   peer_address: 10.255.1.65
   peer_link: Port-Channel3
@@ -101,7 +111,7 @@ ntp:
   vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_howto-l3-leaf2_Port-Channel3
+  description: MLAG_how-to-network-services-l3-leaf2_Port-Channel3
   shutdown: false
   switchport:
     enabled: true
@@ -109,6 +119,14 @@ port_channel_interfaces:
     trunk:
       groups:
       - MLAG
+- name: Port-Channel8
+  description: L2_how-to-network-services-l2-leaf1_Port-Channel1
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100-101
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -160,7 +178,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65101'
-    description: howto-l3-leaf2
+    description: how-to-network-services-l3-leaf2
     next_hop_self: true
     password: 4b21pAdCvWeAqpcKDFMdWw==
     send_community: all
@@ -179,8 +197,8 @@ router_bgp:
   - ip_address: 10.255.1.97
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: howto-l3-leaf2
-    description: howto-l3-leaf2_Vlan4093
+      peer: how-to-network-services-l3-leaf2
+    description: how-to-network-services-l3-leaf2_Vlan4093
   redistribute:
     connected:
       enabled: true
@@ -257,7 +275,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.1.97
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: howto-l3-leaf2_Vlan3199
+      description: how-to-network-services-l3-leaf2_Vlan3199
     redistribute:
       connected:
         enabled: true
@@ -277,7 +295,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.1.97
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: howto-l3-leaf2_Vlan3099
+      description: how-to-network-services-l3-leaf2_Vlan3099
     redistribute:
       connected:
         enabled: true
@@ -417,7 +435,7 @@ vrfs:
     tenant: TENANT1
 vxlan_interface:
   vxlan1:
-    description: howto-l3-leaf1_VTEP
+    description: how-to-network-services-l3-leaf1_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
