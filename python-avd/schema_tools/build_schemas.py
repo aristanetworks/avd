@@ -14,10 +14,10 @@ from yaml import CSafeDumper, CSafeLoader
 from yaml import dump as yaml_dump
 from yaml import load as yaml_load
 
-from .constants import LICENSE_HEADER, SCHEMA_STORE_GZ_FILE, SCHEMAS
+from .constants import LICENSE_HEADER, REPO_ROOT, SCHEMA_STORE_GZ_FILE, SCHEMAS
 from .generate_classes.src_generators import FileSrc
 from .generate_classes.utils import generate_class_name
-from .generate_docs.glossarygen import get_glossary
+from .generate_docs.glossarygen import get_consolidated_glossary
 from .generate_docs.mdtabsgen import get_md_tabs
 from .metaschema.meta_schema_model import AristaAvdSchema
 from .store import create_store
@@ -90,13 +90,22 @@ def validate_schemas(schema_store: dict) -> None:
 
 
 def build_schema_tables(schema_store: dict) -> None:
-    """Build schema tables and glossaries."""
+    """Build schema tables and consolidated glossary."""
     LOGGER.info("Rebuilding schema documentation tables...")
+
+    # Collect all schemas for glossary generation
+    schemas_for_glossary = {}
+
     for schema_name, schema_paths in SCHEMAS.items():
         if not schema_paths.docs_path:
             continue
 
         schema = AristaAvdSchema(**schema_store[schema_name])
+
+        # Add to glossary collection (exclude meta schema)
+        if schema_name != "avd_meta_schema":
+            schemas_for_glossary[schema_name] = schema
+
         table_names = sorted(schema._descendant_tables)
 
         # Build tables
@@ -113,11 +122,13 @@ def build_schema_tables(schema_store: dict) -> None:
             LOGGER.info("Deleting file %s", file.absolute())
             file.unlink()
 
-        # Build single consolidated glossary
-        LOGGER.debug("Building glossary from schema %s", schema_name)
-        glossary_file = schema_paths.docs_path.joinpath("glossary.md")
-        with Path(glossary_file).open(mode="w", encoding="UTF-8") as file:
-            file.write(get_glossary(schema, target_table=None))
+    # Build single consolidated glossary for all schemas
+    LOGGER.info("Building consolidated glossary from all schemas")
+    glossary_dir = REPO_ROOT.joinpath("docs/glossary")
+    glossary_dir.mkdir(parents=True, exist_ok=True)
+    glossary_file = glossary_dir.joinpath("glossary.md")
+    with Path(glossary_file).open(mode="w", encoding="UTF-8") as file:
+        file.write(get_consolidated_glossary(schemas_for_glossary))
 
 
 def build_schema_classes() -> None:
