@@ -1,0 +1,34 @@
+# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+---
+# Custom Glossary Definitions
+#
+# This file allows you to add custom terms to the glossary that are not part of the schema.
+# Each entry should have a 'term' and 'description' field.
+#
+# Format:
+#   - term: "Your Term Here"
+#     description: |
+#       Your description here.
+#       Can be multiline.
+#
+# Example:
+#   - term: "BGP"
+#     description: |
+#       Border Gateway Protocol - A standardized exterior gateway protocol designed to exchange
+#       routing and reachability information among autonomous systems on the Internet.
+
+
+- term: "AVD Design"
+  description: |
+    AVD Design data models provide opinionated yet flexible network-wide data models expressing the
+    intent of your network design and configuration. AVD Design data models are transformed by the
+    Arista AVD framework to generate configuration, documentation and tests
+
+- term: "EOS Config"
+  description: |
+    The EOS Config provides device-centric data models for expressing the Arista EOS device
+    configurations syntax. These data models are also referred to as “structured config” within
+    the AVD Design data models and can be leveraged with custom structured configuration to
+    extend or override the behaviour of Arista AVD.

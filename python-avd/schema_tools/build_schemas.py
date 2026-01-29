@@ -127,8 +127,9 @@ def build_schema_tables(schema_store: dict) -> None:
     glossary_dir = REPO_ROOT.joinpath("docs/glossary")
     glossary_dir.mkdir(parents=True, exist_ok=True)
     glossary_file = glossary_dir.joinpath("glossary.md")
+    custom_glossary_file = Path(__file__).parent.joinpath("generate_docs/glossary/custom_glossary.yml")
     with Path(glossary_file).open(mode="w", encoding="UTF-8") as file:
-        file.write(get_consolidated_glossary(schemas_for_glossary))
+        file.write(get_consolidated_glossary(schemas_for_glossary, custom_glossary_path=custom_glossary_file))
 
 
 def build_schema_classes() -> None:

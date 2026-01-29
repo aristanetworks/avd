@@ -5,6 +5,20 @@
 Arista EOS AAA (Authentication, Authorization, and Accounting) settings provide secure network access control via local user databases, RADIUS, or TACACS+ servers.
 Core configuration involves enabling AAA, defining server groups, and applying methods to console or VTY lines. Key commands include aaa authentication, aaa authorization, and aaa accounting
 
+### AVD Design
+
+AVD Design data models provide opinionated yet flexible network-wide data models expressing the
+intent of your network design and configuration. AVD Design data models are transformed by the
+Arista AVD framework to generate configuration, documentation and tests
+
+
+### EOS Config
+
+The EOS Config provides device-centric data models for expressing the Arista EOS device
+configurations syntax. These data models are also referred to as “structured config” within
+the AVD Design data models and can be leveraged with custom structured configuration to
+extend or override the behaviour of Arista AVD.
+
 ### Mgmt Interface Description
 
 Management interface description.
