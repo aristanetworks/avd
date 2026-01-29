@@ -472,11 +472,11 @@ router_bgp:
         enable: true
         inter_domain: false
     peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     - name: EVPN-OVERLAY-CORE
       activate: true
       domain_remote: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
     evpn_hostflap_detection:
       enabled: true
       window: 180
@@ -484,9 +484,9 @@ router_bgp:
       expiry_timeout: 10
   address_family_rtc:
     peer_groups:
-    - name: EVPN-OVERLAY-CORE
-      activate: true
     - name: EVPN-OVERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-CORE
       activate: true
   address_family_ipv4:
     peer_groups:

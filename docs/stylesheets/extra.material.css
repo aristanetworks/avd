@@ -166,3 +166,49 @@
 .v-ygr {
     color: yellowgreen
 }
+
+/* Custom banner for data-models page */
+.custom-banner {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.2rem;
+    box-shadow: 0 0.1rem 0.3rem rgba(0,0,0,0.1);
+    position: sticky;
+    top: 4.8rem;
+    z-index: 5;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* When header is hidden, hide banner */
+.custom-banner.header-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.custom-banner strong {
+    color: #856404;
+}
+
+.custom-banner code {
+    background-color: rgba(0,0,0,0.05);
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.2rem;
+    font-size: 0.85em;
+}
+
+/* Dark mode adjustments */
+[data-md-color-scheme="slate"] .custom-banner {
+    background-color: #3d3d1f;
+    border-left-color: #ffc107;
+}
+
+[data-md-color-scheme="slate"] .custom-banner strong {
+    color: #ffc107;
+}
+
+[data-md-color-scheme="slate"] .custom-banner code {
+    background-color: rgba(255,255,255,0.1);
+}

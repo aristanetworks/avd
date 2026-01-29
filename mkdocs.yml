@@ -64,6 +64,7 @@ extra_css:
 extra_javascript:
   - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
   - docs/stylesheets/tables.js
+  - docs/stylesheets/sticky-banner.js
 
 plugins:
   - exclude:
