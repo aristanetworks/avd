@@ -36,7 +36,7 @@ The plugin performs two phases:
 | <samp>fail_on_validation_errors</samp> | bool | optional | False | - | If `true`, the task will fail if any validation errors are detected.<br>If `false`, errors will be reported but the task will succeed. |
 | <samp>batch_size</samp> | int | optional | 10 | - | The number of devices to process per child process during the templating phase. |
 | <samp>validation_configuration</samp> | dict | False | None | - | Optional dictionary containing configuration options to control validation behavior. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;warn_eos_config_keys</samp> | bool | optional | True | - | Enable warnings for EOS Config keys used in AVD Design input data.<br>When enabled, warnings will be emitted during validation if any top-level keys<br>from the EOS Config schema are found at the top level of AVD Design input data. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;warn_eos_config_keys</samp> | bool | optional | False | - | Enable warnings for EOS Config keys used in AVD Design input data.<br>When enabled, warnings will be emitted during validation if any top-level keys<br>from the EOS Config schema are found at the top level of AVD Design input data. |
 
 ## Examples
 

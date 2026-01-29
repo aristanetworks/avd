@@ -7,7 +7,7 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  avd_eos_designs_validation_configuration:
+  eos_designs_validation_configuration:
     documentation_options:
       table: role-settings
     type: dict
