@@ -10,3 +10,4 @@ keys:
     documentation_options:
       table: evpn-settings
     type: bool
+    description: This will be removed in AVD version 6.0.0.
