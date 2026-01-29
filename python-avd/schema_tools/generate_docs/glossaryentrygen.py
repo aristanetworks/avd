@@ -123,10 +123,13 @@ class GlossaryEntryGenBase:
 
     def get_term(self) -> str:
         """Returns the term to display in the glossary."""
-        # Use display_name if available, otherwise use the key
+        # Use display_name if available, otherwise format the key
         if self.schema.display_name:
             return self.schema.display_name
-        return self.schema._key or f"<{self.schema.type}>"
+
+        # Convert key from snake_case to Title Case with spaces
+        key = self.schema._key or f"<{self.schema.type}>"
+        return key.replace("_", " ").title()
 
     def get_path(self) -> str:
         """Returns the full path to the field."""

@@ -1,6 +1,6 @@
 # Glossary
 
-### update_default_result_permit
+### Update Default Result Permit
 
 **Type**: Boolean  
 **Path**: `hardware.access_list.update_default_result_permit`  

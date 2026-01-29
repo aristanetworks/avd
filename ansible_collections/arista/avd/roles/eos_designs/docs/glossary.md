@@ -1,6 +1,6 @@
 # Glossary
 
-### mgmt_interface_description
+### Mgmt Interface Description
 
 **Type**: String  
 **Path**: `mgmt_interface_description`  
@@ -11,7 +11,7 @@ Management interface description.
 
 ---
 
-### svi_profiles
+### Svi Profiles
 
 **Type**: List, items: Dictionary  
 **Path**: `svi_profiles`  
