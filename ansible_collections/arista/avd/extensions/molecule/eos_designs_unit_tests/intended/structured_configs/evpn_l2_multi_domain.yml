@@ -276,16 +276,16 @@ router_bgp:
     - learned
   address_family_evpn:
     peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     - name: EVPN-OVERLAY-CORE
       activate: true
       domain_remote: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_rtc:
     peer_groups:
-    - name: EVPN-OVERLAY-CORE
-      activate: true
     - name: EVPN-OVERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-CORE
       activate: true
   address_family_ipv4:
     peer_groups:
