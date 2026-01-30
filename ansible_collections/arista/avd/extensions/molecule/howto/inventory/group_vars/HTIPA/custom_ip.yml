@@ -1,7 +1,7 @@
 ---
 custom_node_type_keys:
-  - key: l3leaf
-    type: l3leaf
+  - key: custom_l3leaf
+    type: custom_l3leaf
     connected_endpoints: true
     default_evpn_role: client
     mlag_support: true
