@@ -19,19 +19,19 @@ from pyavd import (
     get_device_doc,
     get_device_structured_config,
     validate_inputs,
-    validate_structured_config,
 )
 
 if TYPE_CHECKING:
     # Importing internal objects only for type hinting.
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-    from pyavd import ValidationResult
+    from pyavd.api.schemas import EOSConfig
+    from pyavd.api.validation import ValidatedDataResult
 
 # 'generate_inventory' is a module which generates a test inventory
 # This should be replaced with something that reads a proper inventory like the ansible inventory.
 from generate_inventory import generate_hostvars
 
-if main() -> None:
+def main() -> None:
     # Prepare output directories
     config_dir = Path(__file__).parent / "configs"
     config_dir.mkdir(exist_ok=True)
@@ -44,22 +44,21 @@ if main() -> None:
 
     # Validating and inplace update with coerced types
     for device, hostvars in inventory.items():
-        validation_result: ValidationResult = validate_inputs(inputs=hostvars)
-        if validation_result.failed:
-            msg: str = f"Validation of hostvars failed for {device}: {validation_result.validation_errors}"
+        validated_data_result: ValidatedDataResult = validate_inputs(inputs=hostvars)
+        if validated_data_result.validated_data is None:
+            msg: str = f"Validation of hostvars failed for {device}: {validated_data_result.validation_result.violations}"
             raise ValueError(msg)
 
+        inventory[device] = validated_data_result.validated_data
+
     # Get AVD Facts
-    avd_facts: dict[str, EosDesignsFacts] = get_avd_facts(all_inputs=inventory)
+    # We may be using custom Python modules for IP addressing or Descriptions, so we need to pass the hostvars as well since they can be used there.
+    avd_facts: dict[str, EosDesignsFacts] = get_avd_facts(all_inputs=inventory, all_hostvars=inventory)
 
     # Get Device Structured Configs
     for device, hostvars in inventory.items():
-        structured_config: dict = get_device_structured_config(hostname=device, inputs=hostvars, avd_facts=avd_facts)
-        # Validating and inplace update with coerced types
-        validation_result: ValidationResult = validate_structured_config(structured_config=structured_config)
-        if validation_result.failed:
-            msg: str = f"Validation of structured config failed for {device}: {validation_result.validation_errors}"
-            raise ValueError(msg)
+        # We may be using custom Python modules for IP addressing or Descriptions, so we need to pass the hostvars as well since they can be used there.
+        structured_config: EOSConfig = get_device_structured_config(hostname=device, inputs=hostvars, hostvars=hostvars, avd_facts=avd_facts)
 
         # Get Device Configs
         config: str = get_device_config(structured_config=structured_config)
