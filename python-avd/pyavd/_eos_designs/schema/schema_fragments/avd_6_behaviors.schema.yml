@@ -13,7 +13,7 @@ keys:
     documentation_options:
       table: role-settings
     deprecation:
-      warning: false
+      warning: true
       remove_in_version: 6.0.0
     keys:
       snmp_settings_vrfs:
