@@ -193,7 +193,7 @@ override_radius_server:
       timeout: 5
 ```
 
-In this example the `aaa_settings.radius.servers` variable will be read by `eos_designs` the `radius_server` structured configuration will be generated accordingly:
+In this example the `aaa_settings.radius.servers` variable will be read by `eos_designs` and the `radius_server` structured configuration will be generated accordingly:
 
 ```yaml
 radius_server:
