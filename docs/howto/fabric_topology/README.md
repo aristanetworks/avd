@@ -29,15 +29,15 @@ all:
   children:
     FABRIC:
       children:
-        FABRIC_TOPOLOGY:
+        HTFT:
           children:
-            FABRIC_TOPOLOGY_SPINES:
+            HTFT_SPINES:
               hosts:
-                topo-spine1:
+                htft-spine1:
                   ansible_host: 172.16.2.11
-                topo-spine2:
+                htft-spine2:
                   ansible_host: 172.16.2.12
-            FABRIC_TOPOLOGY_LEAVES:
+            HTFT_LEAVES:
               hosts:
                 topo-leaf1a:
                   ansible_host: 172.16.2.101
@@ -51,7 +51,7 @@ Define global settings that apply to all devices in the fabric:
 
 ```yaml title="fabric.yml"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC_TOPOLOGY/fabric.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTFT/fabric.yml
 --8<--
 ```
 
@@ -66,7 +66,7 @@ Automatically assign interfaces based on node type and platform, eliminating rep
 
 ```yaml title="default_interfaces.yml"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC_TOPOLOGY/default_interfaces.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTFT/default_interfaces.yml
 --8<--
 ```
 
@@ -82,7 +82,7 @@ Spines are the core of the fabric, providing connectivity between all leaves:
 
 ```yaml title="spines.yml"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC_TOPOLOGY/spines.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTFT_SPINES/spines.yml
 --8<--
 ```
 
@@ -99,7 +99,7 @@ L3 leaves provide network services (VLANs, VRFs, SVIs) and connect to endpoints:
 
 ```yaml title="l3_leaves.yml"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/FABRIC_TOPOLOGY/l3_leaves.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTFT_LEAVES/l3_leaves.yml
 --8<--
 ```
 
@@ -135,7 +135,7 @@ AVD generates complete device configurations based on your topology definitions.
 
     ```cli
     --8<--
-    docs/howto/fabric_topology/artifacts/topo-spine1-links.cfg
+    docs/howto/fabric_topology/artifacts/htft-spine1-links.cfg
     --8<--
     ```
 
@@ -143,7 +143,7 @@ AVD generates complete device configurations based on your topology definitions.
 
     ```cli
     --8<--
-    ansible_collections/arista/avd/extensions/molecule/howto/inventory/intended/configs/topo-spine1.cfg
+    ansible_collections/arista/avd/extensions/molecule/howto/inventory/intended/configs/htft-spine1.cfg
     --8<--
     ```
 
@@ -153,7 +153,7 @@ AVD generates complete device configurations based on your topology definitions.
 
     ```cli
     --8<--
-    docs/howto/fabric_topology/artifacts/topo-leaf1a-links.cfg
+    docs/howto/fabric_topology/artifacts/htft-leaf1a-links.cfg
     --8<--
     ```
 
@@ -161,7 +161,7 @@ AVD generates complete device configurations based on your topology definitions.
 
     ```cli
     --8<--
-    ansible_collections/arista/avd/extensions/molecule/howto/inventory/intended/configs/topo-leaf1a.cfg
+    ansible_collections/arista/avd/extensions/molecule/howto/inventory/intended/configs/htft-leaf1a.cfg
     --8<--
     ```
 

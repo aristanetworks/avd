@@ -9,9 +9,9 @@ spine:
     bgp_as: 65100 # (3)!
 
   nodes: # (4)!
-    - name: topo-spine1
+    - name: htft-spine1
       id: 1 # (5)!
       mgmt_ip: 172.16.2.11/24 # (6)!
-    - name: topo-spine2
+    - name: htft-spine2
       id: 2
       mgmt_ip: 172.16.2.12/24

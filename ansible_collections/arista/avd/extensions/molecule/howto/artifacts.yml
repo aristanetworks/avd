@@ -47,16 +47,16 @@ artifacts:
     artifact: "ESXI-HOST-03.cfg"
     output_dir: "../../../../../../docs/howto/connected_endpoints/artifacts/"
 
-# Fabric Topology artifacts
-  - file: inventory/intended/configs/topo-spine1.cfg
+  # Fabric Topology artifacts
+  - file: inventory/intended/configs/htft-spine1.cfg
     sections:
       - header: "interface Ethernet1"
       - header: "interface Ethernet2"
       - header: "interface Loopback0"
-    artifact: "topo-spine1-links.cfg"
-    output_dir: "fabric_topology/artifacts/"
+    artifact: "htft-spine1-links.cfg"
+    output_dir: "../../../../../../docs/howto/fabric_topology/artifacts/"
 
-  - file: inventory/intended/configs/topo-leaf1a.cfg
+  - file: inventory/intended/configs/htft-leaf1a.cfg
     sections:
       - header: "interface Port-Channel3"
       - header: "interface Ethernet1"
@@ -65,5 +65,5 @@ artifacts:
       - header: "interface Ethernet4"
       - header: "interface Loopback0"
       - header: "interface Loopback1"
-    artifact: "topo-leaf1a-links.cfg"
-    output_dir: "fabric_topology/artifacts/"
+    artifact: "htft-leaf1a-links.cfg"
+    output_dir: "../../../../../../docs/howto/fabric_topology/artifacts/"
