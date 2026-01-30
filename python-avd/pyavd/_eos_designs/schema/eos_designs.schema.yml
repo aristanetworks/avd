@@ -291,7 +291,7 @@ keys:
     documentation_options:
       table: role-settings
     deprecation:
-      warning: false
+      warning: true
       removed: true
       remove_in_version: 6.0.0
   avd_data_validation_mode:
@@ -5473,8 +5473,7 @@ keys:
           removed: true
           remove_in_version: 6.0.0
           new_key: 'snmp_settings.vrfs[].source_interface or snmp_settings.hosts[].vrf:
-            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf
-            or avd_6_behaviors.snmp_settings_vrfs'
+            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf'
       radius:
         type: dict
         deprecation:
