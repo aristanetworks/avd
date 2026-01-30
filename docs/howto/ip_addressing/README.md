@@ -108,7 +108,7 @@ subnet_offset = ((node_id - 1) * max_uplink_switches * max_parallel_uplinks) + u
 Where:
 
 - `node_id`: The leaf's ID
-- `max_uplink_switches`: Maximum number of uplink switches (default: 4)
+- `max_uplink_switches`: Maximum number of uplink switches (default: length of `uplink_switches`)
 - `max_parallel_uplinks`: Maximum parallel uplinks per switch (default: 1)
 - `uplink_switch_index`: Index of the uplink switch (0-based)
 
@@ -277,7 +277,6 @@ Available override variables:
 | ----------------- | -------------- |
 | `loopback_ipv4_address` | `loopback_ipv4_pool` |
 | `vtep_loopback_ipv4_address` | `vtep_loopback_ipv4_pool` |
-| `uplink_ipv4_address` | `uplink_ipv4_pool` |
 
 ## Global IP Addressing Settings
 
