@@ -508,7 +508,6 @@
             non_mlag: 1020
           tcam_profile: vxlan-routing
           feature_support:
-            subinterface_mtu: false
             per_interface_l2_mtu: false
             evpn_gateway_all_active_multihoming: true
             private_vlan: false
