@@ -47,7 +47,7 @@ Pools can be defined at multiple levels with the following precedence (highest t
 
 ```yaml hl_lines="5 19 25" title="Pool Hierarchy Example"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HOW_TO_ADDRESSING/leaves.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIPA_L3_LEAFS/leafs.yml
 --8<--
 ```
 
@@ -62,7 +62,7 @@ IP = pool_base + node_id + loopback_ipv4_offset
 ```
 
 !!! note
-    When spines and leaves share the same pool, use `loopback_ipv4_offset` to prevent IP conflicts
+    When spines and leafs share the same pool, use `loopback_ipv4_offset` to prevent IP conflicts
 
 ### Example
 
@@ -70,15 +70,15 @@ In the example below, spine1 will be assigned 10.255.0.1/32 (10.255.0.0 + id(1))
 
 ```yaml hl_lines="5 9 12" title="Loopback0 for spines"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HOW_TO_ADDRESSING/spines.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIPA_SPINES/spines.yml
 --8<--
 ```
 
 In the example below, leaf1 will get 10.255.2.3/32 (node specific pool + id(1) + offset(2)) and leaf2 will get 10.255.1.4/32 (group specific pool + id(2) + offset(2)).
 
-```yaml hl_lines="5 6 19 22 25 27" title="Loopback0 for leaves"
+```yaml hl_lines="5 6 19 22 25 27" title="Loopback0 for leafs"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HOW_TO_ADDRESSING/leaves.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIPA_L3_LEAFS/leafs.yml
 --8<--
 ```
 
@@ -86,9 +86,9 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HO
 
 VTEP loopbacks (Loopback1) use `vtep_loopback_ipv4_pool`:
 
-```yaml hl_lines="7" title="VTEP Loopback for leaves"
+```yaml hl_lines="7" title="VTEP Loopback for leafs"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HOW_TO_ADDRESSING/leaves.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIPA_L3_LEAFS/leafs.yml
 --8<--
 ```
 
@@ -114,9 +114,9 @@ Where:
 
 ### Example
 
-```yaml hl_lines="8 9 22 24" title="P2P Uplink for leaves"
+```yaml hl_lines="8 9 22 24" title="P2P Uplink for leafs"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HOW_TO_ADDRESSING/leaves.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTPIA_L3_LEAFS/leafs.yml
 --8<--
 ```
 
@@ -159,11 +159,11 @@ AVD supports three MLAG IP allocation algorithms configured via `fabric_ip_addre
       defaults:
         mlag_peer_ipv4_pool: 10.255.3.64/27
       node_groups:
-        - group: HOW_TO_L3_LEAVES
+        - group: HOW_TO_L3_LEAFS
           nodes:
-            - name: howto-addressing-leaf1
+            - name: htipa-leaf1
               id: 1  # Primary: 10.255.3.64/31
-            - name: howto-addressing-leaf2
+            - name: htipa-leaf2
               id: 2  # Secondary: 10.255.3.65/31
     ```
 
@@ -180,11 +180,11 @@ AVD supports three MLAG IP allocation algorithms configured via `fabric_ip_addre
 
     l3leaf:
       node_groups:
-        - group: HOW_TO_L3_LEAVES
+        - group: HOW_TO_L3_LEAFS
           nodes:
-            - name: howto-addressing-leaf1
+            - name: htipa-leaf1
               id: 1  # Odd - determines subnet
-            - name: howto-addressing-leaf2
+            - name: htipa-leaf2
               id: 2  # Even - must pair with odd
     ```
 
@@ -215,9 +215,9 @@ Manually assign IDs to each node:
 ```yaml
 spine:
   nodes:
-    - name: howto-addressing-spine1
+    - name: htipa-spine1
       id: 1
-    - name: howto-addressing-spine2
+    - name: htipa-spine2
       id: 2
 ```
 
@@ -265,7 +265,7 @@ Override any pool-calculated address with a static value:
 ```yaml
 l3leaf:
   nodes:
-    - name: howto-addressing-leaf1
+    - name: htipa-leaf1
       id: 1
       loopback_ipv4_address: 10.100.100.1  # Override loopback pool
       vtep_loopback_ipv4_address: 10.100.101.1  # Override VTEP pool

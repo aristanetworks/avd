@@ -5,7 +5,7 @@ l3leaf:
     loopback_ipv4_pool: 10.255.0.0/27
     loopback_ipv4_offset: 2
     vtep_loopback_ipv4_pool: 10.255.3.0/27
-    uplink_switches: ['howto-addressing-spine1', 'howto-addressing-spine2']
+    uplink_switches: ['htipa-spine1', 'htipa-spine2']
     uplink_ipv4_pool: 10.255.255.0/26
     mlag_peer_ipv4_pool: 10.255.3.64/27
     mlag_peer_l3_ipv4_pool: 10.255.3.96/27
@@ -14,16 +14,16 @@ l3leaf:
     spanning_tree_mode: mstp
 
   node_groups:
-    - group: HOW_TO_L3_LEAVES
+    - group: HTIPA_L3_LEAFS
       bgp_as: 65101
       loopback_ipv4_pool: 10.255.1.0/24
       nodes:
-        - name: howto-addressing-leaf1
+        - name: htipa-leaf1
           id: 1
           mgmt_ip: 172.16.2.101/24
           uplink_switch_interfaces: [Ethernet1, Ethernet1]
           loopback_ipv4_pool: 10.255.2.0/24
-        - name: howto-addressing-leaf2
+        - name: htipa-leaf2
           id: 2
           uplink_switch_interfaces: [Ethernet2, Ethernet2]
           mgmt_ip: 172.16.2.102/24

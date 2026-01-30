@@ -61,7 +61,7 @@ artifacts:
     artifact: "htft-leaf1a-links.cfg"
     output_dir: "docs/howto/fabric_topology/artifacts/"
   # IP Addressing artifacts
-  - file: inventory/intended/configs/howto-addressing-leaf1.cfg
+  - file: inventory/intended/configs/htipa-leaf1.cfg
     sections:
       - header: "interface Ethernet1"
       - header: "interface Ethernet2"

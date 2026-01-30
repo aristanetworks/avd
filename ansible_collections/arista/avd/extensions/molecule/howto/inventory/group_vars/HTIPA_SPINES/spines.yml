@@ -5,9 +5,9 @@ spine:
     loopback_ipv4_pool: 10.255.0.0/27
     bgp_as: 65100
   nodes:
-    - name: howto-addressing-spine1
+    - name: htipa-spine1
       id: 1
       mgmt_ip: 172.16.2.11/24
-    - name: howto-addressing-spine2
+    - name: htipa-spine2
       id: 2
       mgmt_ip: 172.16.2.12/24
