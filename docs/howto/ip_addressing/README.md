@@ -235,7 +235,7 @@ fabric_numbering:
     pools_file: intended/data/fabric-ids.yml
 ```
 
-IDs are assigned based on: `fabric_name`, `dc_name`, `pod_name`, `rack` and `type`.
+IDs are assigned based on: `fabric_name`, `dc_name`, `pod_name`, `type`, and `rack`.
 
 ## Pool Formats
 
