@@ -74,7 +74,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 --8<--
 ```
 
-In the example below, leaf1 will get 10.255.2.3/32 (node specific pool + id(1) + offset(2)) and leaf2 will get 10.255.1.4/32 (group specific pool + id(2) + offset(2)).
+In the example below, leaf1 will get 10.255.2.3/32 (node specific pool + id[1] + offset[2]) and leaf2 will get 10.255.1.4/32 (group specific pool + id[2] + offset[(2]).
 
 ```yaml hl_lines="5 6 19 22 25 27" title="Loopback0 for leafs"
 --8<--
