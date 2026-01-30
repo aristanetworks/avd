@@ -8,12 +8,12 @@
 
 ## Introduction
 
-**Fabric Topology** defines how devices are physically and logically connected in your network. AVD uses a hierarchical data model to describe the relationships between spines, leaves, and other network devices. This guide explains how to define your fabric topology, configure uplinks, and leverage automatic interface allocation.
+**Fabric Topology** defines how devices are physically and logically connected in your network. AVD uses a hierarchical data model to describe the relationships between spines, leafs, and other network devices. This guide explains how to define your fabric topology, configure uplinks, and leverage automatic interface allocation.
 
 ### Key Concepts
 
 - **Node Types**: Define the role of each device (spine, l3leaf, l2leaf, etc.)
-- **Uplinks**: Connections from leaves to spines or from L2 leaves to L3 leaves
+- **Uplinks**: Connections from leafs to spines or from L2 leafs to L3 leafs
 - **MLAG**: Multi-Chassis Link Aggregation for leaf redundancy
 - **Default Interfaces**: Automatic interface assignment based on node type and platform
 
@@ -37,7 +37,7 @@ all:
                   ansible_host: 172.16.2.11
                 htft-spine2:
                   ansible_host: 172.16.2.12
-            HTFT_LEAVES:
+            HTFT_LEAFS:
               hosts:
                 topo-leaf1a:
                   ansible_host: 172.16.2.101
@@ -71,14 +71,14 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 ```
 
 1. Define interface mappings per node type and platform
-2. Spine downlink interfaces connect to leaves
+2. Spine downlink interfaces connect to leafs
 3. You can define different default interfaces for different platforms
 4. Leaf uplink interfaces connect to spines
 5. MLAG peer-link interfaces for leaf redundancy
 
 ### Spine Configuration
 
-Spines are the core of the fabric, providing connectivity between all leaves:
+Spines are the core of the fabric, providing connectivity between all leafs:
 
 ```yaml title="spines.yml"
 --8<--
@@ -95,11 +95,11 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 
 ### L3 Leaf Configuration
 
-L3 leaves provide network services (VLANs, VRFs, SVIs) and connect to endpoints:
+L3 leafs provide network services (VLANs, VRFs, SVIs) and connect to endpoints:
 
-```yaml title="l3_leaves.yml"
+```yaml title="l3_leas.yml"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTFT_LEAVES/l3_leaves.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTFT_LEAFS/l3_leafs.yml
 --8<--
 ```
 
@@ -131,7 +131,7 @@ AVD generates complete device configurations based on your topology definitions.
 
 ### Spine Configuration
 
-=== "Links to Leaves"
+=== "Links to Leafs"
 
     ```cli
     --8<--
@@ -187,10 +187,10 @@ AVD supports flexible interface range notation:
 
 ### Understanding Uplinks
 
-Uplinks connect lower-tier (L3 Leaves) devices to higher-tier devices (Spines):
+Uplinks connect lower-tier (L3 Leafs) devices to higher-tier devices (Spines):
 
-- **L3 Leaves** uplink to **Spines** using routed point-to-point links
-- **L2 Leaves** uplink to **L3 Leaves** using port-channels
+- **L3 Leafs** uplink to **Spines** using routed point-to-point links
+- **L2 Leafs** uplink to **L3 Leafs** using port-channels
 
 ### Key Uplink Variables
 
@@ -227,7 +227,7 @@ Leaf interface:  uplink_ipv4_pool + (node_id * 2 * uplink_count) + (uplink_index
 **Solution**:
 
 - Verify `uplink_switches` and `uplink_switch_interfaces` are correctly defined
-- Check that the spine's `downlink_interfaces` in `default_interfaces` includes the interfaces used by leaves
+- Check that the spine's `downlink_interfaces` in `default_interfaces` includes the interfaces used by leafs
 - Ensure `uplink_ipv4_pool` has sufficient addresses
 
 ### MLAG Not Forming
