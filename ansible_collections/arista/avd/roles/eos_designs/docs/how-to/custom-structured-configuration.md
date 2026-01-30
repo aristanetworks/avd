@@ -239,9 +239,9 @@ All relevant `structured_config` sections will be merged.
           structured_config: < dictionary >
 ```
 
-See [Connected Endpoints]('connected-endpoints.md')
+See [Connected Endpoints](../input-variables.md#connected-endpoints-settings)
 
-### Fabric Topology
+### Node type settings
 
 Only the most specific `structured_config` key will be used
 
@@ -265,7 +265,7 @@ Only the most specific `structured_config` key will be used
           structured_config: < dictionary >
 ```
 
-See [Fabric Topology]('fabric-topology.md')
+See [Node Type Settings](../input-variables.md#node-type-common-configuration)
 
 ### Network Services (a.k.a. "tenants")
 
@@ -291,7 +291,7 @@ tenants:
               structured_config: < dictionary >
 ```
 
-See [Network Services]('network-services.md')
+See [Network Services VRFs Configuration](../input-variables.md#network-services-vrfs-configuration) and [Network Services SVIs Configuration](../input-variables.md#network-services-vrf-svis-configuration)
 
 All `structured_config` knobs honor the `list_merge` strategy set in `custom_structured_configuration_list_merge` described in the next section.
 
