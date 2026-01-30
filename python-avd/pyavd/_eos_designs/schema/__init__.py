@@ -911,6 +911,31 @@ class EosDesigns(EosDesignsRootModel):
 
     AvdStructuredConfigFileFormat: TypeAlias = Literal["yml", "yaml", "json"]
 
+    class EosDesignsValidationConfiguration(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"warn_eos_config_keys": {"type": bool, "default": True}}
+        warn_eos_config_keys: bool
+        """
+        Emit a warning when EOS Config keys are detected in the AVD Design inputs.
+
+        Default value: `True`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, warn_eos_config_keys: bool | UndefinedType = Undefined) -> None:
+                """
+                EosDesignsValidationConfiguration.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    warn_eos_config_keys: Emit a warning when EOS Config keys are detected in the AVD Design inputs.
+
+                """
+
     class BfdMultihop(AvdModel):
         """Subclass of AvdModel."""
 
@@ -87845,6 +87870,7 @@ class EosDesigns(EosDesignsRootModel):
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
+        "eos_designs_validation_configuration": {"type": EosDesignsValidationConfiguration},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
         "bgp_as_notation": {"type": str, "default": "auto"},
@@ -88515,6 +88541,12 @@ class EosDesigns(EosDesignsRootModel):
     The file format to use when dumping structured configuration files.
 
     Default value: `"yml"`
+    """
+    eos_designs_validation_configuration: EosDesignsValidationConfiguration
+    """
+    Validation configuration options when validating AVD Design inputs.
+
+    Subclass of AvdModel.
     """
     bfd_multihop: BfdMultihop
     """
@@ -90464,6 +90496,7 @@ class EosDesigns(EosDesignsRootModel):
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
+            eos_designs_validation_configuration: EosDesignsValidationConfiguration | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
@@ -90690,6 +90723,10 @@ class EosDesigns(EosDesignsRootModel):
                    dedicated output location.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
                 avd_structured_config_file_format: The file format to use when dumping structured configuration files.
+                eos_designs_validation_configuration:
+                   Validation configuration options when validating AVD Design inputs.
+
+                   Subclass of AvdModel.
                 bfd_multihop:
                    BFD Multihop tuning.
 

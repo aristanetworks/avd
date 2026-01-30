@@ -30,6 +30,7 @@
     batch_size: "{{ eos_designs_validate_inputs_batch_size | arista.avd.default(10) }}"
     schema_name: avd_design
     fail_on_validation_errors: true
+    validation_configuration: "{{ eos_designs_validation_configuration }}"
   delegate_to: localhost
   check_mode: false
   run_once: true
