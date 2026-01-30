@@ -10,7 +10,7 @@
 
 AVD provides a powerful automatic IP addressing system that assigns IP addresses to fabric devices based on pools and node identifiers. This eliminates manual IP planning and ensures consistent, predictable addressing across your network.
 
-This guide covers all IP pool types, allocation mechanisms, and customization options available in AVD.
+This guide covers IP pool types, allocation mechanisms, and customization options available in AVD.
 
 ## Key Concepts
 
