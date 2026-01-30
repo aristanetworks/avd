@@ -95,7 +95,7 @@ Control which services are deployed to specific devices using the `filter` setti
 | `tags` | Limit configured VLANs/SVIs to those matching the given tags. Tags are matched against the `tags` list on SVIs and L2VLANs. | `['all']` |
 | `allow_vrfs` | Limit configured Network Services to those defined under these VRFs. Also limits VRFs included by `always_include_vrfs_in_tenants`. | `['all']` |
 | `deny_vrfs` | Prevent configuration of Network Services defined under these VRFs. **Takes precedence over all other filters.** | `[]` |
-| `always_include_vrfs_in_tenants` | List of tenants where VRFs will be configured even if VLANs are not included in tags. Useful for L3 "border" leaves. | `[]` |
+| `always_include_vrfs_in_tenants` | List of tenants where VRFs will be configured even if VLANs are not included in tags. Useful for L3 "border" leafs. | `[]` |
 | `only_vlans_in_use` | Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches. | `false` |
 
 !!! warning "Filter Precedence"
@@ -107,7 +107,7 @@ The `only_vlans_in_use` filter dynamically limits VLANs, SVIs, and VRFs to only 
 
 ```yaml title="only_vlans_in_use Example"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTNS_L2_LEAVES/all.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTNS_L2_LEAFS/all.yml
 --8<--
 ```
 
@@ -129,7 +129,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/intended/conf
 
 ```yaml title="Filtering at the node level"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTNS_L3_LEAVES/l3leaf.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTNS_L3_LEAFS/l3leaf.yml
 --8<--
 ```
 
