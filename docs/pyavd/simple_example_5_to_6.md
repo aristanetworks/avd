@@ -23,7 +23,7 @@ from pyavd import (
 )
 
 if TYPE_CHECKING:
-    # Importing internal objects only for type hinting.
+    # Importing internal objects only for type hinting to improve script readability.
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 -    from pyavd import ValidationResult
 +    from pyavd.api.schemas import EOSConfig
