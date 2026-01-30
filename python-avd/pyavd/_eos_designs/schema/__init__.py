@@ -4303,7 +4303,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             include_in_underlay_protocol: bool
             """
-            Add this interface to underlay routing protocol.
+            Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
 
             Default value: `True`
             """
@@ -4506,7 +4506,7 @@ class EosDesigns(EosDesignsRootModel):
                            Interface descriptions.
 
                            Subclass of AvdList with `str` items.
-                        include_in_underlay_protocol: Add this interface to underlay routing protocol.
+                        include_in_underlay_protocol: Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -5082,7 +5082,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             include_in_underlay_protocol: bool
             """
-            Add this interface to underlay routing protocol.
+            Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
 
             Default value: `True`
             """
@@ -5285,7 +5285,7 @@ class EosDesigns(EosDesignsRootModel):
                            Interface descriptions.
 
                            Subclass of AvdList with `str` items.
-                        include_in_underlay_protocol: Add this interface to underlay routing protocol.
+                        include_in_underlay_protocol: Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -20716,7 +20716,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             include_in_underlay_protocol: bool
             """
-            Add this interface to underlay routing protocol.
+            Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
 
             Default value: `True`
             """
@@ -20919,7 +20919,7 @@ class EosDesigns(EosDesignsRootModel):
                            Interface descriptions.
 
                            Subclass of AvdList with `str` items.
-                        include_in_underlay_protocol: Add this interface to underlay routing protocol.
+                        include_in_underlay_protocol: Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -21495,7 +21495,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             include_in_underlay_protocol: bool
             """
-            Add this interface to underlay routing protocol.
+            Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
 
             Default value: `True`
             """
@@ -21698,7 +21698,7 @@ class EosDesigns(EosDesignsRootModel):
                            Interface descriptions.
 
                            Subclass of AvdList with `str` items.
-                        include_in_underlay_protocol: Add this interface to underlay routing protocol.
+                        include_in_underlay_protocol: Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type

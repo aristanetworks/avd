@@ -100,7 +100,7 @@ $defs:
         include_in_underlay_protocol:
           type: bool
           default: true
-          description: Add this interface to underlay routing protocol.
+          description: Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
         isis_hello_padding:
           type: bool
           default: true

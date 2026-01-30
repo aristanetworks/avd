@@ -121,7 +121,9 @@ class UtilsMixin(Protocol):
               - interface: <interface on this node>
                 peer_interface: <interface on peer>
             ip: <ip if set | None>
+            ipv6: <ipv6 if set | None>
             peer_ip: <peer ip if set | None>
+            peer_ipv6: <peer ipv6 if set | None>
             bgp_as: <as if set | None>
             peer_bgp_as: <peer as if set | None>
         }
