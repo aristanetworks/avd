@@ -298,17 +298,26 @@ fabric_ip_addressing:
 
 For complex requirements, create a custom Python module:
 
-```yaml
-# In your inventory
-node_type_keys:
-  - key: l3leaf
-    ip_addressing:
-      router_id: custom_ip_addressing/router_id.j2
-      mlag_ip_primary: custom_ip_addressing/mlag_primary.j2
+First, create the custom node type keys and set your custom Python module and class name:
+
+```yaml title="Custom Node Type with Custom IP Addressing"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIPA/custom_ip.yml
+--8<--
+```
+
+Second, create your custom python module and class:
+
+```python title="Custom IP Addressing Module"
+--8<--
+ansible_collections/arista/avd/extensions/molecule/howto/custom_modules/avd_overrides.py
+--8<--
 ```
 
 !!! note
-    For a list of available variables in custom IP addressing templates, refer to the [documentation](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#context-for-ip_addressing-templates).
+    The custom python module must be in the `PYTHONPATH` for Ansible to find it. `export PYTHONPATH="${PYTHONPATH}:$(pwd)/custom_modules"`
+
+For a list of available variables in custom IP addressing templates, refer to the [documentation](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#context-for-ip_addressing-templates).
 
 ## Best Practices
 

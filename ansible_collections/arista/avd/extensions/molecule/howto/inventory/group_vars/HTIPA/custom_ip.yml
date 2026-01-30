@@ -1,0 +1,19 @@
+---
+custom_node_type_keys:
+  - key: l3leaf
+    type: l3leaf
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    default_ptp_priority1: 30
+    cv_tags_topology_type: leaf
+    ip_addressing:
+      python_module: custom_modules.avd_overrides
+      python_class_name: MyCustomIpAddressing
+
+# Optional: pass custom variables to your module
+custom_ip_offset: 25
