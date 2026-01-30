@@ -70837,7 +70837,6 @@ class EosDesigns(EosDesignsRootModel):
     """
     event_monitor: EosCliConfigGen.EventMonitor
     evpn_ebgp_gateway_inter_domain: bool | None
-    """This will be removed in AVD version 6.0.0."""
     evpn_ebgp_gateway_multihop: int
     """
     Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI
@@ -72900,7 +72899,7 @@ class EosDesigns(EosDesignsRootModel):
                    customize the system behavior, and
                    implement workarounds to problems discovered in the field.
                 event_monitor: event_monitor
-                evpn_ebgp_gateway_inter_domain: This will be removed in AVD version 6.0.0.
+                evpn_ebgp_gateway_inter_domain: evpn_ebgp_gateway_inter_domain
                 evpn_ebgp_gateway_multihop:
                    Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI
                    networks.
