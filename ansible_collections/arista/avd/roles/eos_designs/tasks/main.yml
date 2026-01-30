@@ -27,7 +27,7 @@
 
 - name: Validate eos_designs inputs
   arista.avd.validate_inputs:
-    batch_size: "{{ avd_eos_designs_validate_inputs_batch_size | arista.avd.default(10) }}"
+    batch_size: "{{ eos_designs_validate_inputs_batch_size | arista.avd.default(10) }}"
     schema_name: avd_design
     fail_on_validation_errors: true
     validation_configuration: "{{ eos_designs_validation_configuration }}"
@@ -54,7 +54,7 @@
     template_output: true
     structured_config: "{{ avd_eos_designs_structured_config | arista.avd.default(true) }}"
     digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
-    return_structured_config: "{{ avd_eos_designs_return_structured_config | arista.avd.default(false) }}"
+    return_structured_config: "{{ eos_designs_return_structured_config | arista.avd.default(false) }}"
   delegate_to: localhost
   check_mode: false
   register: structured_config

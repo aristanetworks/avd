@@ -22,3 +22,4 @@ class StructuredConfigKey(Enum):
     ROUTER_AVT = "router_adaptive_virtual_topology"
     ROUTER_PATH_SELECTION = "router_path_selection"
     ROUTER_OSPF = "router_ospf"
+    VLAN_INTERFACES = "vlan_interfaces"

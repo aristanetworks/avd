@@ -95,6 +95,7 @@ class LogMessage(Enum):
     INTERFACE_VALIDATION_DISABLED = "{interface} skipped - validate_state or validate_lldp disabled"
     INTERFACE_NO_IP = "{interface} skipped - No IP address configured"
     INTERFACE_UNNUMBERED = "{interface} skipped - IP unnumbered interface"
+    INTERFACE_NOT_INBAND_MGMT = "{interface} skipped - Not an inband management interface"
 
     # Vxlan interface state messages
     INTERFACE_VXLAN1_NO_VNI = "Vxlan1 skipped - No VNI configured"
