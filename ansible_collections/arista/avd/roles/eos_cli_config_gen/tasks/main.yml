@@ -15,7 +15,7 @@
 
 - name: Validate eos_cli_config_gen inputs
   arista.avd.validate_inputs:
-    batch_size: "{{ avd_eos_cli_config_gen_validate_inputs_batch_size | arista.avd.default(10) }}"
+    batch_size: "{{ eos_cli_config_gen_validate_inputs_batch_size | arista.avd.default(10) }}"
     schema_name: eos_config
     input_dir: "{{ structured_dir }}"
     input_suffix: "{{ avd_structured_config_file_format }}"
@@ -27,8 +27,8 @@
 
 - name: Generate EOS intended configuration and device documentation
   when: >-
-      eos_cli_config_gen_configuration.enable | arista.avd.default(true) or
-      (eos_cli_config_gen_documentation.enable | arista.avd.default(true))
+    eos_cli_config_gen_configuration.enable | arista.avd.default(true) or
+    (eos_cli_config_gen_documentation.enable | arista.avd.default(true))
   arista.avd.eos_cli_config_gen:
     config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
     documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"

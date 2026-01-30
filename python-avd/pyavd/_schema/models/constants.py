@@ -8,7 +8,7 @@ EOS_CLI_CONFIG_GEN_ROLE_KEYS = {
     "custom_templates",
     "eos_cli_config_gen_configuration",
     "read_structured_config_from_file",
-    "avd_eos_cli_config_gen_validate_inputs_batch_size",
+    "eos_cli_config_gen_validate_inputs_batch_size",
     "avd_structured_config_file_format",
 }
 """
