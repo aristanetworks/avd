@@ -211,9 +211,9 @@ AVD supports three MLAG IP allocation algorithms configured via `fabric_ip_addre
 
 Node IDs are critical for IP allocation. AVD supports two assignment methods:
 
-### Static Assignment (Default)
+### Static Assignment
 
-Manually assign IDs to each node:
+Manually assign IDs to each node (default):
 
 ```yaml
 spine:
