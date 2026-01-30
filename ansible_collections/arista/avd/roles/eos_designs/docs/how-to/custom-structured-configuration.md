@@ -93,7 +93,7 @@ tenants:
               structured_config: < dictionary >
 ```
 
-See [Network Services VRFs configuration](../data-models.html#network-services-vrfs-configuration) and [Network Services SVIs configuration](../data-models.html#network-services-vrf-svis-configuration)
+See [Network Services VRFs configuration](../data-models.md#network-services-vrfs-configuration) and [Network Services SVIs configuration](../data-models.md#network-services-vrf-svis-configuration)
 
 All `structured_config` knobs honor the `list_merge` strategy set in `custom_structured_configuration_list_merge` described in the next section.
 
