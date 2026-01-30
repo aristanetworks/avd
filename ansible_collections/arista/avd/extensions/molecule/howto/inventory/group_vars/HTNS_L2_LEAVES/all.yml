@@ -8,10 +8,10 @@ l2leaf:
     spanning_tree_priority: 16384
 
   nodes:
-    - name: how-to-network-services-l2-leaf1
+    - name: htns-l2-leaf1
       id: 1
       mgmt_ip: 172.16.1.251/24
-      uplink_switches: [how-to-network-services-l3-leaf1]
+      uplink_switches: [htns-l3-leaf1]
       uplink_switch_interfaces: [ Ethernet8 ]
       uplink_interfaces: [Ethernet1]
       filter:
@@ -20,9 +20,8 @@ l2leaf:
 servers:  # (2)!
   - name: webserver1
     adapters:
-      - switches: [how-to-network-services-l2-leaf1]
+      - switches: [htns-l2-leaf1]
         switch_ports: [Ethernet2]
         endpoint_ports: [NIC1 ]
         vlans: 100-101
         mode: trunk
-

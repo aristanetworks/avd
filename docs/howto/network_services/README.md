@@ -41,7 +41,7 @@ The example shows a network services configuration which defines a tenant with V
 
 ```yaml title="Network Services"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HOW_TO_NETWORK_SERVICES/services.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTNS/services.yml
 --8<--
 ```
 
@@ -60,7 +60,7 @@ AVD generates the complete configuration including VLANs, VRFs, and SVIs:
 
 ```cli title="VLAN, VRF, and SVI Configuration"
 --8<--
-docs/howto/network_services/artifacts/how-to-network-services-l3-leaf1-services.cfg
+docs/howto/network_services/artifacts/htns-l3-leaf1-services.cfg
 --8<--
 ```
 
@@ -70,7 +70,7 @@ Use **SVI profiles** to share common settings across multiple SVIs, reducing dup
 
 ```yaml title="SVI Profiles"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HOW_TO_NETWORK_SERVICES/svi_profiles.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTNS/svi_profiles.yml
 --8<--
 ```
 
@@ -101,35 +101,35 @@ Control which services are deployed to specific devices using the `filter` setti
 !!! warning "Filter Precedence"
     `deny_vrfs` takes precedence over all other filters including `allow_vrfs` and `always_include_vrfs_in_tenants`. If a VRF is listed in `deny_vrfs`, it will **never** be configured on the device.
 
-### Example: Using `only_vlans_in_use`
+### Dynamic Filtering with `only_vlans_in_use`
 
 The `only_vlans_in_use` filter dynamically limits VLANs, SVIs, and VRFs to only those actually in use by connected endpoints or downstream L2 switches. This is useful for keeping switch configurations minimal and avoiding unused VLANs.
 
 ```yaml title="only_vlans_in_use Example"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HOW_TO_NETWORK_SERVICES_L2_LEAVES/all.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTNS_L2_LEAVES/all.yml
 --8<--
 ```
 
 1. Enable `only_vlans_in_use` to filter VLANs based on actual endpoint usage
-2. The server uses VLANs 100-101 on its trunk port - only these VLANs will be configured on `how-to-l2-leaf1`
+2. The server uses VLANs 100-101 on its trunk port - only these VLANs will be configured on `htns-l2-leaf1`
 
 With this configuration, only VLANs that are actually in use by connected endpoints will be configured on the L2 leaf. Any VLANs defined in tenants but not used by endpoints will be excluded from the device configuration.
 
-```cli title="how-to-leaf2 configuration"
+```cli title="htns-leaf2 configuration"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/intended/configs/how-to-network-services-l2-leaf1.cfg
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/intended/configs/htns-l2-leaf1.cfg
 --8<--
 ```
 
 !!! note
     The `only_vlans_in_use` filter only considers configuration managed by eos_designs. It does not account for `structured_config`, `custom_structured_configuration_`, `raw_eos_cli`, `eos_cli`, custom templates, or configlets.
 
-### Filter Example
+### Filter with Tags
 
 ```yaml title="Filtering at the node level"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HOW_TO_NETWORK_SERVICES_L3_LEAVES/l3leaf.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTNS_L3_LEAVES/l3leaf.yml
 --8<--
 ```
 
@@ -140,23 +140,23 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HO
 
 ### Using Tags for Granular Control
 
-=== "Services on how-to-l3-leaf2"
+=== "Services on htns-l3-leaf2"
 
-    Earlier we saw SVI 200 is tagged with `development`, and the `how-to-l3-leaf2` is filtering on the `development` tag. Therefore, the `how-to-l3-leaf2` will only receive the `VRF_DEVELOPMENT` VRF and the SVI 200.
+    Earlier we saw SVI 200 is tagged with `development`, and the `htns-l3-leaf2` is filtering on the `development` tag. Therefore, the `htns-l3-leaf2` will only receive the `VRF_DEVELOPMENT` VRF and the SVI 200.
 
-    ```cli title="Services on how-to-l3-leaf2"
+    ```cli title="Services on htns-l3-leaf2"
     --8<--
-    docs/howto/network_services/artifacts/how-to-network-services-l3-leaf2-services.cfg
+    docs/howto/network_services/artifacts/htns-l3-leaf2-services.cfg
     --8<--
     ```
 
-=== "Services on how-to-l3-leaf1"
+=== "Services on htns-l3-leaf1"
 
-    Since `how-to-l3-leaf1` is not filtering on tags, it receives all services defined for the `TENANT1` tenant.
+    Since `htns-l3-leaf1` is not filtering on tags, it receives all services defined for the `TENANT1` tenant.
 
-    ```cli title="Services on how-to-l3-leaf1"
+    ```cli title="Services on htns-l3-leaf1"
     --8<--
-    docs/howto/network_services/artifacts/how-to-network-services-l3-leaf1-services.cfg
+    docs/howto/network_services/artifacts/htns-l3-leaf1-services.cfg
     --8<--
     ```
 

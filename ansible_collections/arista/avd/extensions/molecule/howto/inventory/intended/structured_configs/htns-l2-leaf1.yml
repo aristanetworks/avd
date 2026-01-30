@@ -15,13 +15,13 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: L2_how-to-network-services-l3-leaf1_Ethernet8
+  description: L2_htns-l3-leaf1_Ethernet8
   shutdown: false
   channel_group:
     id: 1
     mode: active
   metadata:
-    peer: how-to-network-services-l3-leaf1
+    peer: htns-l3-leaf1
     peer_interface: Ethernet8
     peer_type: l3leaf
 - name: Ethernet2
@@ -37,7 +37,7 @@ ethernet_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 100-101
-hostname: how-to-network-services-l2-leaf1
+hostname: htns-l2-leaf1
 ip_domain_lookup:
   source_interfaces:
   - name: Management1
@@ -81,7 +81,7 @@ ntp:
   vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel1
-  description: L2_HOW_TO_NETWORK_SERVICES_L3_LEAFS_Port-Channel8
+  description: L2_HTNS_L3_LEAFS_Port-Channel8
   shutdown: false
   switchport:
     enabled: true
@@ -104,11 +104,13 @@ vlans:
 - id: 100
   name: Production_App1
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 101
   name: Production_DB
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
