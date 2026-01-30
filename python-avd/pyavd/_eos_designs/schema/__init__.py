@@ -87843,9 +87843,7 @@ class EosDesigns(EosDesignsRootModel):
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_digital_twin_mode": {"type": bool, "default": False},
-        "avd_eos_designs_return_structured_config": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
-        "avd_eos_designs_validate_inputs_batch_size": {"type": int, "default": 10},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
@@ -87921,6 +87919,8 @@ class EosDesigns(EosDesignsRootModel):
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
+        "eos_designs_return_structured_config": {"type": bool, "default": False},
+        "eos_designs_validate_inputs_batch_size": {"type": int, "default": 10},
         "event_handlers": {"type": EosCliConfigGen.EventHandlers},
         "event_monitor": {"type": EosCliConfigGen.EventMonitor},
         "evpn_ebgp_gateway_multihop": {"type": int, "default": 15},
@@ -88504,25 +88504,11 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
-    avd_eos_designs_return_structured_config: bool
-    """
-    Return structured configuration as ansible_facts per device.
-
-    Default value: `False`
-    """
     avd_eos_designs_structured_config: bool
     """
     Generate structured configuration per device.
 
     Default value: `True`
-    """
-    avd_eos_designs_validate_inputs_batch_size: int
-    """
-    The number of hosts to process in each batch when validating inputs.
-    Depending on your inventory
-    size and the available resources, you may want to adjust this number.
-
-    Default value: `10`
     """
     avd_structured_config_file_format: AvdStructuredConfigFileFormat
     """
@@ -89121,6 +89107,20 @@ class EosDesigns(EosDesignsRootModel):
 
 
     Subclass of AvdModel.
+    """
+    eos_designs_return_structured_config: bool
+    """
+    Return structured configuration as ansible_facts per device.
+
+    Default value: `False`
+    """
+    eos_designs_validate_inputs_batch_size: int
+    """
+    The number of hosts to process in each batch when validating inputs.
+    Depending on your inventory
+    size and the available resources, you may want to adjust this number.
+
+    Default value: `10`
     """
     event_handlers: EosCliConfigGen.EventHandlers
     """
@@ -90462,9 +90462,7 @@ class EosDesigns(EosDesignsRootModel):
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
-            avd_eos_designs_return_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
-            avd_eos_designs_validate_inputs_batch_size: int | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
@@ -90518,6 +90516,8 @@ class EosDesigns(EosDesignsRootModel):
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
+            eos_designs_return_structured_config: bool | UndefinedType = Undefined,
+            eos_designs_validate_inputs_batch_size: int | UndefinedType = Undefined,
             event_handlers: EosCliConfigGen.EventHandlers | UndefinedType = Undefined,
             event_monitor: EosCliConfigGen.EventMonitor | UndefinedType = Undefined,
             evpn_ebgp_gateway_multihop: int | UndefinedType = Undefined,
@@ -90688,12 +90688,7 @@ class EosDesigns(EosDesignsRootModel):
                    To keep Digital Twin artifacts separate, adjust the `output_dir_name` and
                    `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
                    dedicated output location.
-                avd_eos_designs_return_structured_config: Return structured configuration as ansible_facts per device.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
-                avd_eos_designs_validate_inputs_batch_size:
-                   The number of hosts to process in each batch when validating inputs.
-                   Depending on your inventory
-                   size and the available resources, you may want to adjust this number.
                 avd_structured_config_file_format: The file format to use when dumping structured configuration files.
                 bfd_multihop:
                    BFD Multihop tuning.
@@ -91149,6 +91144,11 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdModel.
+                eos_designs_return_structured_config: Return structured configuration as ansible_facts per device.
+                eos_designs_validate_inputs_batch_size:
+                   The number of hosts to process in each batch when validating inputs.
+                   Depending on your inventory
+                   size and the available resources, you may want to adjust this number.
                 event_handlers:
                    Gives the ability to monitor and react to Syslog messages.
                    Event Handlers provide a powerful and

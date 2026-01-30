@@ -150,16 +150,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    password: q+VNViP5i4rVjW1cxFv2wA==
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -337,18 +327,11 @@ router_bgp:
     - learned
     vlan: '453'
   address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
     evpn_hostflap_detection:
       enabled: true
       window: 180
       threshold: 5
       expiry_timeout: 10
-  address_family_ipv4:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: Tenant_A_APP_Zone
     rd: 192.168.255.109:12

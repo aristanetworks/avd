@@ -16,11 +16,6 @@ ethernet_interfaces:
   switchport:
     enabled: false
 hostname: bgp-peer-groups-ipv6-1
-ip_extcommunity_lists:
-- name: ECL-EVPN-SOO
-  entries:
-  - type: permit
-    extcommunities: soo 10.255.1.113:1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -45,20 +40,6 @@ route_maps:
     type: permit
     match:
     - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
-- name: RM-EVPN-SOO-IN
-  sequence_numbers:
-  - sequence: 10
-    type: deny
-    match:
-    - extcommunity ECL-EVPN-SOO
-  - sequence: 20
-    type: permit
-- name: RM-EVPN-SOO-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    set:
-    - extcommunity soo 10.255.1.113:1 additive
 router_bfd:
   multihop:
     interval: 300
@@ -82,14 +63,6 @@ router_bgp:
     bfd: true
     send_community: all
     maximum_routes: 256000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    remote_as: '65001'
-    update_source: Loopback0
-    bfd: true
-    send_community: all
-    maximum_routes: 0
   neighbors:
   - ip_address: 2001:db8:a11:beef::d0
     peer_group: IPV6-UNDERLAY-PEERS
@@ -101,16 +74,6 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-      route_map_in: RM-EVPN-SOO-IN
-      route_map_out: RM-EVPN-SOO-OUT
-  address_family_ipv4:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   address_family_ipv6:
     peer_groups:
     - name: IPV6-UNDERLAY-PEERS
