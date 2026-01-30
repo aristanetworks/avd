@@ -20,7 +20,6 @@ from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_missi
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from pyavd._anta.models import InputFactoryDataSource
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
     class Metadata(Protocol):
@@ -114,43 +113,32 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
     """
     Input factory class for the `VerifyReachability` test.
 
-    Generates test inputs for verifying network reachability.
+    Generates test inputs for verifying the following reachability scenarios:
 
-    1. Generates inputs for reachability between directly connected Ethernet interfaces (P2P).
+    1. Reachability between directly connected Ethernet interfaces (P2P).
        Includes interfaces that are not administratively shutdown, considering `interface_defaults.ethernet.shutdown`,
-       with static IP addresses defined (not DHCP/unnumbered). The peer device must be deployed and the same requirements
-       apply for its interface (not shutdown, not DHCP/unnumbered, etc.). IPv6 is not supported.
+       with static IP addresses defined (not DHCP/unnumbered). This also applies to the peer interface.
 
-    2. Generates inputs to verify underlay reachability from VTEP devices local Loopback0 to all other fabric devices Loopback0 addresses.
-       No inputs are generated if `extra_fabric_validation` is disabled. WAN routers and non-deployed devices are excluded.
-       Fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations. IPv6 is not supported.
+    2. Reachability from VTEP devices local Loopback0 to all other fabric devices Loopback0 addresses.
+       WAN routers are excluded (see scenario 3 for WAN reachability).
 
-    3. Generates inputs to verify inband management reachability from devices with inband management SVIs to all other fabric devices Loopback0 addresses.
-       No inputs are generated if `extra_fabric_validation` is disabled.
-       Non-deployed devices or fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations.
-       IPv6 is not supported.
+    3. Reachability between DPS interfaces (VXLAN source interfaces) of WAN routers.
 
-    4. Generates inputs to verify DPS-to-DPS reachability between WAN routers using their DPS interface IP addresses.
-       No inputs are generated if `extra_fabric_validation` is disabled. Non-deployed devices are excluded.
-       Fabric devices marked with `exclude_as_extra_fabric_validation_target` are excluded from the destinations. IPv6 is not supported.
+    4. Reachability from devices with inband management SVIs to all other fabric devices Loopback0 addresses.
 
-    5. Generates inputs for BGP neighbor reachability across all VRFs.
+    5. Reachability to BGP neighbors across all VRFs.
        Includes neighbors that are not administratively shutdown or part of a shutdown peer group.
-       Also considers `metadata.validate_state` and ensures the peer is deployed if `metadata.peer` is set.
-       To avoid duplicate checks, neighbors already verified (same destination IP and VRF) by the P2P, VTEP, Inband Management, or DPS tests are skipped.
+       Also considers `metadata.validate_state` on the neighbor.
+
+    Notes:
+        - For all scenarios, destination peers must be available via `metadata.is_deployed`.
+        - For all scenarios except P2P (1), `extra_fabric_validation` must be enabled and
+        destination peers with `metadata.exclude_as_extra_fabric_validation_target` enabled are excluded.
+        - For all scenarios except BGP (5), IPv6 is not supported.
     """
-
-    def __init__(self, data_source: InputFactoryDataSource, test_name: str) -> None:
-        super().__init__(data_source=data_source, test_name=test_name)
-
-        self._covered_destinations: set[tuple[str, str]] = set()
-        """Set of tuples (destination_ip, vrf) to track coverage and avoid duplicate checks. Source can be added to the tuple later if needed."""
 
     def create(self) -> Iterator[VerifyReachability.Input]:
         """Generate the inputs for the `VerifyReachability` test."""
-        # Reset tracker in case factory is reused
-        self._covered_destinations.clear()
-
         # Generate the P2P reachability inputs
         with self.logger_adapter.context("P2P Links"):
             p2p_hosts = natural_sort(self._get_p2p_hosts(), sort_key="destination")
@@ -192,9 +180,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
             bgp_hosts = natural_sort(self._get_bgp_hosts(), sort_key="destination")
             if bgp_hosts:
                 yield VerifyReachability.Input(
-                    result_overwrite=AntaTest.Input.ResultOverwrite(
-                        description="Verifies reachability to BGP neighbors. Some neighbor destinations might already be covered in other reachability tests."
-                    ),
+                    result_overwrite=AntaTest.Input.ResultOverwrite(description="Verifies reachability to BGP neighbors."),
                     hosts=bgp_hosts,
                 )
 
@@ -211,15 +197,13 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
             if self.is_peer_interface_shutdown(intf.metadata.peer, intf.metadata.peer_interface, intf.name) is True:
                 continue
 
-            host = Host(
+            yield Host(
                 destination=ip_interface(peer_interface_ip).ip,
                 source=ip_interface(intf.ip_address).ip,
                 description=f"{intf.metadata.peer}_{intf.metadata.peer_interface}",
                 vrf="default",
                 repeat=1,
             )
-            self._track_host(host)
-            yield host
 
     @skip_if_extra_fabric_validation_disabled
     @skip_if_not_vtep
@@ -235,10 +219,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 # Don't ping ourself
                 continue
 
-            host = Host(destination=ip, source=self.data_source.loopback0_ip, description=hostname, vrf="default", repeat=1)
-            if not self._is_host_seen(host):
-                self._track_host(host)
-                yield host
+            yield Host(destination=ip, source=self.data_source.loopback0_ip, description=hostname, vrf="default", repeat=1)
 
     @skip_if_extra_fabric_validation_disabled
     @skip_if_missing_config(StructuredConfigKey.VLAN_INTERFACES)
@@ -255,10 +236,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                     # Don't ping ourself
                     continue
 
-                host = Host(destination=ip, source=ip_interface(svi.ip_address).ip, description=hostname, vrf=vrf, repeat=1)
-                if not self._is_host_seen(host):
-                    self._track_host(host)
-                    yield host
+                yield Host(destination=ip, source=ip_interface(svi.ip_address).ip, description=hostname, vrf=vrf, repeat=1)
 
     @skip_if_extra_fabric_validation_disabled
     @skip_if_not_wan_router
@@ -273,11 +251,9 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 # Don't ping ourself
                 continue
 
-            host = Host(destination=ip, source=self.data_source.vtep_ip, description=hostname, vrf="default", repeat=1)
-            if not self._is_host_seen(host):
-                self._track_host(host)
-                yield host
+            yield Host(destination=ip, source=self.data_source.vtep_ip, description=hostname, vrf="default", repeat=1)
 
+    @skip_if_extra_fabric_validation_disabled
     def _get_bgp_hosts(self) -> Iterator[Host]:
         """Generate Host objects for the BGP neighbor reachability test."""
         for neighbor in self.data_source.bgp_neighbors:
@@ -297,9 +273,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                     vrf=neighbor.vrf,
                     repeat=1,
                 )
-            if not self._is_host_seen(host):
-                self._track_host(host)
-                yield host
+            yield host
 
     def _is_interface_candidate(self, interface: EosCliConfigGen.EthernetInterfacesItem) -> TypeGuard[CandidateEthernetInterfacesItemP2P]:
         """Check if an interface is valid for P2P reachability testing."""
@@ -339,11 +313,3 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
             return False
 
         return True
-
-    def _track_host(self, host: Host) -> None:
-        """Register a Host destination in the covered_destinations tracker."""
-        self._covered_destinations.add((str(host.destination), host.vrf))
-
-    def _is_host_seen(self, host: Host) -> bool:
-        """Check if the destination for this Host has already been covered."""
-        return (str(host.destination), host.vrf) in self._covered_destinations
