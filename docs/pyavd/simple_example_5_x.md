@@ -4,7 +4,7 @@
   ~ that can be found in the LICENSE file.
   -->
 
-```diff title="avdbuild.py"
+```python title="avdbuild.py"
 #!/usr/bin/env python3
 # Copyright (c) 2026 Arista Networks, Inc.
 
