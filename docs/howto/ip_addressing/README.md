@@ -224,7 +224,7 @@ spine:
       id: 2
 ```
 
-### Dynamic Assignment (Pool Manager)
+### Dynamic Assignment
 
 Automatically assign IDs based on fabric topology:
 
@@ -235,7 +235,7 @@ fabric_numbering:
     pools_file: intended/data/fabric-ids.yml
 ```
 
-IDs are assigned based on: `fabric_name`, `dc_name`, `pod_name`, and `type`.
+IDs are assigned based on: `fabric_name`, `dc_name`, `pod_name`, `rack` and `type`.
 
 ## Pool Formats
 
