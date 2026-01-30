@@ -24,8 +24,8 @@ coverage.xml
 # mkdocs
 /site
 
-# ansible-lint ignores
-ansible_collections/arista/avd/.ansible
+# ansible-lint cache and .ansible/.lock file
+.ansible/
 
 # Development
 build/

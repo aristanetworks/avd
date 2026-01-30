@@ -14,6 +14,8 @@
     | [<samp>avd_eos_designs_structured_config</samp>](## "avd_eos_designs_structured_config") | Boolean |  | `True` |  | Generate structured configuration per device. |
     | [<samp>avd_eos_designs_unset_facts</samp>](## "avd_eos_designs_unset_facts") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
     | [<samp>avd_structured_config_file_format</samp>](## "avd_structured_config_file_format") | String |  | `yml` | Valid Values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | The file format to use when dumping structured configuration files.<br> |
+    | [<samp>eos_designs_validation_configuration</samp>](## "eos_designs_validation_configuration") | Dictionary |  |  |  | Validation configuration options when validating AVD Design inputs. |
+    | [<samp>&nbsp;&nbsp;warn_eos_config_keys</samp>](## "eos_designs_validation_configuration.warn_eos_config_keys") | Boolean |  | `True` |  | Emit a warning when EOS Config keys are detected in the AVD Design inputs. |
     | [<samp>eos_designs_documentation</samp>](## "eos_designs_documentation") | Dictionary |  |  |  | Control fabric documentation generation.<br> |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "eos_designs_documentation.enable") | Boolean |  | `True` |  | Generate fabric-wide documentation. |
     | [<samp>&nbsp;&nbsp;connected_endpoints</samp>](## "eos_designs_documentation.connected_endpoints") | Boolean |  | `False` |  | Include connected endpoints in the fabric-wide documentation.<br>This is `false` by default to avoid cluttering documentation for projects with thousands of endpoints. |
@@ -37,6 +39,12 @@
 
     # The file format to use when dumping structured configuration files.
     avd_structured_config_file_format: <str; "yml" | "yaml" | "json"; default="yml">
+
+    # Validation configuration options when validating AVD Design inputs.
+    eos_designs_validation_configuration:
+
+      # Emit a warning when EOS Config keys are detected in the AVD Design inputs.
+      warn_eos_config_keys: <bool; default=True>
 
     # Control fabric documentation generation.
     eos_designs_documentation:

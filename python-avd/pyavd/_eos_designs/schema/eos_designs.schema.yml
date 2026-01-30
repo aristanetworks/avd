@@ -378,6 +378,17 @@ keys:
     description: 'The file format to use when dumping structured configuration files.
 
       '
+  eos_designs_validation_configuration:
+    documentation_options:
+      table: role-settings
+    type: dict
+    description: Validation configuration options when validating AVD Design inputs.
+    keys:
+      warn_eos_config_keys:
+        type: bool
+        default: true
+        description: Emit a warning when EOS Config keys are detected in the AVD Design
+          inputs.
   bfd_multihop:
     documentation_options:
       table: bfd-settings
