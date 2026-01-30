@@ -66,10 +66,10 @@ IP = pool_base + node_id + loopback_ipv4_offset
 
 ### Example
 
-In the example below, 
-- spine1 will be assigned `10.255.0.1/32` - calculation  (10.255.0.0 + id[1]) 
-- spine2 will get `10.255.0.2/32` - calculation (10.255.0.0 + id[2]).
+In the example below,
 
+- spine1 will be assigned `10.255.0.1/32` - calculation  (10.255.0.0 + id[1])
+- spine2 will get `10.255.0.2/32` - calculation (10.255.0.0 + id[2]).
 
 ```yaml hl_lines="5 9 12" title="Loopback0 for spines"
 --8<--
