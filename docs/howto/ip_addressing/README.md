@@ -119,7 +119,7 @@ Where:
 
 ```yaml hl_lines="8 9 22 24" title="P2P Uplink for leafs"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTPIA_L3_LEAFS/leafs.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIPA_L3_LEAFS/leafs.yml
 --8<--
 ```
 
@@ -317,7 +317,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/custom_modules/avd_over
 !!! note
     The custom python module must be in the `PYTHONPATH` for Ansible to find it. `export PYTHONPATH="${PYTHONPATH}:$(pwd)/custom_modules"`
 
-For a list of available variables in custom IP addressing templates, refer to the [documentation](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#context-for-ip_addressing-templates).
+For a list of available methods, refer to the pyavd [documentation](../../pyavd/pyavd.md#pyavd.api.ip_addressing.AvdIpAddressing).
 
 ## Best Practices
 
