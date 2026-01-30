@@ -102,7 +102,7 @@ Uplink IP addresses are calculated using a more complex formula to ensure unique
 ### Formula
 
 ```text
-subnet_offset = ((node_id - 1) * max_uplink_switches * max_parallel_uplinks) + uplink_switch_index
+subnet_offset = ([node_id - 1] * max_uplink_switches * max_parallel_uplinks) + uplink_switch_index
 ```
 
 Where:
