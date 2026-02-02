@@ -58,7 +58,7 @@ def main() -> None:
 
     # Get AVD Facts
 -   avd_facts: dict[str, EosDesignsFacts] = get_avd_facts(all_inputs=inventory)
-    +# We may be using custom Python modules for IP addressing or Descriptions, so we need to pass the hostvars as well since they can be used there.
++    # We may be using custom Python modules for IP addressing or Descriptions, so we need to pass the hostvars as well since they can be used there.
 +   avd_facts: dict[str, EosDesignsFacts] = get_avd_facts(all_inputs=inventory, all_hostvars=inventory)
 
     # Get Device Structured Configs
