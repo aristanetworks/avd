@@ -154,6 +154,7 @@ When using `pool_manager` for node IDs the pools are dynamically built and match
 - `dc_name`
 - `pod_name`
 - `type`
+- `rack`
 
 Each pool will assign the first available ID starting from 1. Any statically set ID under node settings will be reserved in the pool if possible, otherwise an error will be raised.
 

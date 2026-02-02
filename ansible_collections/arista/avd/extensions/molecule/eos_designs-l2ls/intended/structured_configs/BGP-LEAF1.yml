@@ -108,6 +108,7 @@ ethernet_interfaces:
   metadata:
     peer_type: network_port
     peer_key: network_ports
+    validate_state: false
   switchport:
     enabled: true
     mode: trunk phone
@@ -206,6 +207,8 @@ metadata:
         value: AVD-Managed
     - interface: Ethernet14
       tags:
+      - name: test_of_bool_false_value
+        value: 'False'
       - name: Link-Type
         value: AVD-Managed
     - interface: Management1

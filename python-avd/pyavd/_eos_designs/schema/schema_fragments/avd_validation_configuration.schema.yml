@@ -1,4 +1,5 @@
-# Copyright (c) 2023-2026 Arista Networks, Inc.
+---
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -6,11 +7,14 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  avd_6_behaviors:
-    type: dict
+  eos_designs_validation_configuration:
     documentation_options:
       table: role-settings
-    deprecation:
-      warning: true
-      removed: true
-      remove_in_version: 6.0.0
+    type: dict
+    description: Validation configuration options when validating AVD Design inputs.
+    keys:
+      warn_eos_config_keys:
+        type: bool
+        default: true
+        description: |-
+          Emit a warning when EOS Config keys are detected in the AVD Design inputs.

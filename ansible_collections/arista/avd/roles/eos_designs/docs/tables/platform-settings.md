@@ -290,6 +290,8 @@
           feature_support:
             queue_monitor_length_notify: false
             sflow_subinterfaces: false
+            subinterface_mtu: false
+            per_interface_l2_mru: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -303,6 +305,8 @@
             poe: true
             queue_monitor_length_notify: false
             sflow_subinterfaces: false
+            subinterface_mtu: false
+            per_interface_l2_mru: false
           reload_delay:
             mlag: 300
             non_mlag: 330
@@ -318,7 +322,9 @@
           feature_support:
             poe: true
             queue_monitor_length_notify: false
+            subinterface_mtu: false
             per_interface_mtu: false
+            per_interface_l2_mru: false
             sflow_subinterfaces: false
           reload_delay:
             mlag: 300
@@ -332,7 +338,9 @@
           feature_support:
             poe: true
             queue_monitor_length_notify: false
+            subinterface_mtu: false
             per_interface_mtu: false
+            per_interface_l2_mru: false
             sflow_subinterfaces: false
           reload_delay:
             mlag: 300
@@ -345,6 +353,8 @@
           feature_support:
             queue_monitor_length_notify: false
             poe: true
+            subinterface_mtu: false
+            per_interface_l2_mru: false
             sflow_subinterfaces: false
           reload_delay:
             mlag: 300
@@ -355,6 +365,8 @@
           - 720DF
           feature_support:
             queue_monitor_length_notify: false
+            subinterface_mtu: false
+            per_interface_l2_mru: false
             sflow_subinterfaces: false
           reload_delay:
             mlag: 300
@@ -366,7 +378,9 @@
           - 7010TX
           feature_support:
             queue_monitor_length_notify: false
+            subinterface_mtu: false
             per_interface_mtu: false
+            per_interface_l2_mru: false
             sflow_subinterfaces: false
           reload_delay:
             mlag: 300
@@ -418,6 +432,8 @@
             non_mlag: 1020
           tcam_profile: vxlan-routing
           feature_support:
+            subinterface_mtu: false
+            per_interface_l2_mtu: false
             private_vlan: false
           digital_twin:
             platform: vEOS-lab
@@ -429,6 +445,7 @@
           tcam_profile: vxlan-routing
           feature_support:
             evpn_gateway_all_active_multihoming: true
+            per_interface_l2_mtu: false
             private_vlan: false
           digital_twin:
             platform: vEOS-lab
@@ -478,11 +495,25 @@
             non_mlag: 1020
           tcam_profile: vxlan-routing
           feature_support:
+            subinterface_mtu: false
+            per_interface_l2_mtu: false
             private_vlan: false
           digital_twin:
             platform: vEOS-lab
         - platforms:
           - 7500R3
+          management_interface: Management0
+          reload_delay:
+            mlag: 900
+            non_mlag: 1020
+          tcam_profile: vxlan-routing
+          feature_support:
+            per_interface_l2_mtu: false
+            evpn_gateway_all_active_multihoming: true
+            private_vlan: false
+          digital_twin:
+            platform: vEOS-lab
+        - platforms:
           - 7800R3
           management_interface: Management0
           reload_delay:
@@ -490,6 +521,7 @@
             non_mlag: 1020
           tcam_profile: vxlan-routing
           feature_support:
+            per_interface_l2_mtu: false
             evpn_gateway_all_active_multihoming: true
             private_vlan: false
           digital_twin:
@@ -503,6 +535,8 @@
           feature_support:
             queue_monitor_length_notify: false
             interface_storm_control: true
+            subinterface_mtu: false
+            per_interface_l2_mru: false
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: true
             sflow_subinterfaces: false
@@ -515,6 +549,8 @@
             mlag: 300
             non_mlag: 330
           feature_support:
+            subinterface_mtu: false
+            per_interface_l2_mru: false
             sflow_subinterfaces: false
           digital_twin:
             platform: vEOS-lab
@@ -525,6 +561,8 @@
             mlag: 1200
             non_mlag: 1320
           feature_support:
+            subinterface_mtu: false
+            per_interface_l2_mru: false
             sflow_subinterfaces: false
           trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
             131072
@@ -540,6 +578,9 @@
             bgp_update_wait_install: false
             interface_storm_control: false
             queue_monitor_length_notify: false
+            subinterface_mtu: false
+            per_interface_l2_mtu: false
+            per_interface_l2_mru: false
             evpn_gateway_all_active_multihoming: true
             sflow_subinterfaces: false
             hardware_validation: false
@@ -558,6 +599,9 @@
             bgp_update_wait_install: false
             interface_storm_control: false
             queue_monitor_length_notify: false
+            subinterface_mtu: false
+            per_interface_l2_mtu: false
+            per_interface_l2_mru: false
             evpn_gateway_all_active_multihoming: true
             sflow_subinterfaces: false
             hardware_validation: false
@@ -572,6 +616,7 @@
           feature_support:
             bgp_update_wait_install: false
             interface_storm_control: false
+            per_interface_l2_mru: false
             queue_monitor_length_notify: false
             sflow: false
             hardware_validation: false
@@ -586,6 +631,8 @@
             bgp_update_wait_install: false
             interface_storm_control: false
             queue_monitor_length_notify: false
+            subinterface_mtu: false
+            per_interface_l2_mru: false
             platform_sfe_interface_profile:
               supported: true
               max_rx_queues: 6
@@ -602,6 +649,8 @@
             bgp_update_wait_install: false
             interface_storm_control: false
             queue_monitor_length_notify: false
+            subinterface_mtu: false
+            per_interface_l2_mru: false
             platform_sfe_interface_profile:
               supported: true
               max_rx_queues: 16
@@ -618,6 +667,7 @@
             interface_storm_control: false
             queue_monitor_length_notify: false
             poe: true
+            per_interface_l2_mru: false
             sflow: false
           management_interface: Management1
           p2p_uplinks_mtu: 9194

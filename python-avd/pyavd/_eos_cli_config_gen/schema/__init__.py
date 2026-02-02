@@ -69449,7 +69449,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "application_traffic_recognition": {"type": ApplicationTrafficRecognition},
         "arp": {"type": Arp},
         "as_path": {"type": AsPath},
-        "avd_eos_cli_config_gen_validate_inputs_batch_size": {"type": int, "default": 10},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "banners": {"type": Banners},
         "bgp_groups": {"type": BgpGroups},
@@ -69474,6 +69473,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "eos_cli": {"type": str},
         "eos_cli_config_gen_configuration": {"type": EosCliConfigGenConfiguration},
         "eos_cli_config_gen_documentation": {"type": EosCliConfigGenDocumentation},
+        "eos_cli_config_gen_validate_inputs_batch_size": {"type": int, "default": 10},
         "errdisable": {"type": Errdisable},
         "ethernet_interfaces": {"type": EthernetInterfaces},
         "event_handlers": {"type": EventHandlers},
@@ -69673,14 +69673,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     as_path: AsPath
     """Subclass of AvdModel."""
-    avd_eos_cli_config_gen_validate_inputs_batch_size: int
-    """
-    The number of hosts to process in each batch when validating inputs.
-    Depending on your inventory
-    size and the available resources, you may want to adjust this number.
-
-    Default value: `10`
-    """
     avd_structured_config_file_format: AvdStructuredConfigFileFormat
     """
     The file format to use when loading structured configuration files.
@@ -69801,6 +69793,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     eos_cli_config_gen_documentation: EosCliConfigGenDocumentation
     """Subclass of AvdModel."""
+    eos_cli_config_gen_validate_inputs_batch_size: int
+    """
+    The number of hosts to process in each batch when validating inputs.
+    Depending on your inventory
+    size and the available resources, you may want to adjust this number.
+
+    Default value: `10`
+    """
     errdisable: Errdisable
     """Subclass of AvdModel."""
     ethernet_interfaces: EthernetInterfaces
@@ -70227,7 +70227,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             application_traffic_recognition: ApplicationTrafficRecognition | UndefinedType = Undefined,
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
-            avd_eos_cli_config_gen_validate_inputs_batch_size: int | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
@@ -70252,6 +70251,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             eos_cli: str | None | UndefinedType = Undefined,
             eos_cli_config_gen_configuration: EosCliConfigGenConfiguration | UndefinedType = Undefined,
             eos_cli_config_gen_documentation: EosCliConfigGenDocumentation | UndefinedType = Undefined,
+            eos_cli_config_gen_validate_inputs_batch_size: int | UndefinedType = Undefined,
             errdisable: Errdisable | UndefinedType = Undefined,
             ethernet_interfaces: EthernetInterfaces | UndefinedType = Undefined,
             event_handlers: EventHandlers | UndefinedType = Undefined,
@@ -70443,10 +70443,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 arp: Subclass of AvdModel.
                 as_path: Subclass of AvdModel.
-                avd_eos_cli_config_gen_validate_inputs_batch_size:
-                   The number of hosts to process in each batch when validating inputs.
-                   Depending on your inventory
-                   size and the available resources, you may want to adjust this number.
                 avd_structured_config_file_format: The file format to use when loading structured configuration files.
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
@@ -70527,6 +70523,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 eos_cli: Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration.
                 eos_cli_config_gen_configuration: Subclass of AvdModel.
                 eos_cli_config_gen_documentation: Subclass of AvdModel.
+                eos_cli_config_gen_validate_inputs_batch_size:
+                   The number of hosts to process in each batch when validating inputs.
+                   Depending on your inventory
+                   size and the available resources, you may want to adjust this number.
                 errdisable: Subclass of AvdModel.
                 ethernet_interfaces: Subclass of AvdIndexedList with `EthernetInterfacesItem` items. Primary key is `name` (`str`).
                 event_handlers:
