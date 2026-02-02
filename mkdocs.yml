@@ -97,6 +97,9 @@ plugins:
         - docs/porting-guides/4.x.x.md
         - docs/porting-guides/5.x.x.md
         - ansible_collections/arista/avd/roles/*/docs/tables/*
+        # Exclude the table used only as a snippet to avoid mkdocs info log
+        - ansible_collections/arista/avd/roles/eos_designs/docs/node-type-variables.md
+
         - development/*
         - galaxy-importer/*
         - python-avd/*
@@ -229,4 +232,3 @@ nav:
 not_in_nav: |-
   /ansible_collections/arista/avd/examples/single-dc-l3ls/documentation/*
   /docs/contribution/eos_designs_facts_internal/tables/eos_designs_facts.md
-  /docs/warn-eos-cli-config-keys-usage-in-eos-designs.md
