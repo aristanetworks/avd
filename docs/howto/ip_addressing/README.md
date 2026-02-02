@@ -66,10 +66,10 @@ IP = pool_base + node_id + loopback_ipv4_offset
 
 ### Example
 
-In the example below,
+Spine assignment:
 
-- spine1 will be assigned `10.255.0.1/32` - calculation  (10.255.0.0 + id[1])
-- spine2 will get `10.255.0.2/32` - calculation (10.255.0.0 + id[2]).
+- spine1 will be assigned `10.255.0.1/32` - calculation  (node type default pool + id[1])
+- spine2 will get `10.255.0.2/32` - calculation (node type default pool + id[2])
 
 ```yaml hl_lines="5 9 12" title="Loopback0 for spines"
 --8<--
@@ -77,11 +77,38 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 --8<--
 ```
 
-In the example below, leaf1 will get 10.255.2.3/32 (node specific pool + id[1] + offset[2]) and leaf2 will get 10.255.1.4/32 (group specific pool + id[2] + offset[(2]).
+```cli title="spine1 configuration"
+--8<--
+docs/howto/ip_addressing/artifacts/spine1-loopback.cfg
+--8<--
+```
+
+```cli title="spine2 configuration"
+--8<--
+docs/howto/ip_addressing/artifacts/spine2-loopback.cfg
+--8<--
+```
+
+Leaf assignment:
+
+- leaf1 will get 10.255.2.3/32 (node specific pool + id[1] + offset[2])
+- leaf2 will get 10.255.1.4/32 (group specific pool + id[2] + offset[(2])
 
 ```yaml hl_lines="5 6 19 22 25 27" title="Loopback0 for leafs"
 --8<--
 ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIPA_L3_LEAFS/leafs.yml
+--8<--
+```
+
+```cli title="leaf1 configuration"
+--8<--
+docs/howto/ip_addressing/artifacts/leaf1-loopback.cfg
+--8<--
+```
+
+```cli title="leaf2 configuration"
+--8<--
+docs/howto/ip_addressing/artifacts/leaf2-loopback.cfg
 --8<--
 ```
 
@@ -130,7 +157,7 @@ Resulting allocations for leaf1 (id=1):
 | To spine1 | 0 | 10.255.255.1/31 | 10.255.255.0/31 |
 | To spine2 | 1 | 10.255.255.3/31 | 10.255.255.2/31 |
 
-```cfg title="leaf1 P2P to spines"
+```cli title="leaf1 P2P to spines"
 --8<--
 docs/howto/ip_addressing/artifacts/leaf1-to-spines.cfg
 --8<--
