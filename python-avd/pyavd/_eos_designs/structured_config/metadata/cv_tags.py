@@ -168,7 +168,7 @@ class CvTagsMixin(Protocol):
                 raise AristaAvdError(msg)
 
             # Silently ignoring empty values since structured config may vary between devices.
-            if value:
+            if value is not None and value != "":
                 self.structured_config.metadata.cv_tags.device_tags.append_new(name=generate_tag.name, value=str(value))
 
     def _set_interface_tags(self: AvdStructuredConfigMetadataProtocol) -> None:
