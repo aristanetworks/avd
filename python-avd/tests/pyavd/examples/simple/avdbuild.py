@@ -16,13 +16,13 @@ from pyavd import (
 )
 
 if TYPE_CHECKING:
-    # Importing internal objects only for type hinting.
+    # Importing internal objects only for type hinting to improve script readability.
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd.api.schemas import EOSConfig
     from pyavd.api.validation import ValidatedDataResult
 
-# 'generate_inventory' is a module which generates a test inventory
-# This should be replaced with something that reads a proper inventory like the ansible inventory.
+# 'generate_inventory' is a module which generates a test inventory.
+# This should be replaced with something that reads a proper inventory like the Ansible inventory.
 from generate_inventory import generate_hostvars
 
 
