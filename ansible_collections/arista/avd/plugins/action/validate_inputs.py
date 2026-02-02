@@ -1,6 +1,8 @@
 # Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
+
 import contextlib
 import json
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
@@ -12,7 +14,6 @@ from time import perf_counter
 from typing import TYPE_CHECKING, Any, Literal, cast
 
 import yaml
-from ansible.parsing.dataloader import DataLoader
 from ansible.parsing.vault import AnsibleVaultError
 from ansible.plugins.action import display
 
@@ -26,14 +27,15 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
 
 if TYPE_CHECKING:
-    from pyavd_utils.validation import ValidationResult, get_validated_data
+    from ansible.parsing.dataloader import DataLoader
+    from pyavd_utils.validation import Configuration, ValidationResult, get_validated_data
 
     from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
     from pyavd._utils.filtered_map_view import FilteredMapView
 
 try:
-    from pyavd_utils.validation import ValidationResult, get_validated_data
+    from pyavd_utils.validation import Configuration, ValidationResult, get_validated_data
 
     from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
     from pyavd._schema.store import init_store
@@ -88,13 +90,13 @@ ValidateWorkerResult = ValidateWorkerSuccess | WorkerFailure
 
 PLUGIN_NAME = "arista.avd.validate_inputs"
 SCHEMA_NAME = Literal["avd_design", "eos_config"]
-SCHEMA_MAP = {
+SCHEMA_MAP: dict[SCHEMA_NAME, Literal["eos_designs", "eos_cli_config_gen"]] = {
     "avd_design": "eos_designs",
     "eos_config": "eos_cli_config_gen",
 }
 
 # TODO: Create a single pyavd_utils logger.
-TARGET_LOGGERS = ["ansible_collections.arista.avd", "validation", "pyvalidation"]
+TARGET_LOGGERS = ("ansible_collections.arista.avd", "validation", "pyvalidation")
 
 ARGUMENT_SPEC = {
     "batch_size": {"type": "int", "default": 10},
@@ -103,6 +105,7 @@ ARGUMENT_SPEC = {
     "input_suffix": {"type": "str", "default": "yml", "choices": ["yml", "yaml", "json"]},
     "read_from_input_dir": {"type": "bool", "default": False},
     "fail_on_validation_errors": {"type": "bool", "default": False},
+    "validation_configuration": {"type": "dict", "options": {"warn_eos_config_keys": {"type": "bool"}}},
 }
 
 REQUIRED_IF = [
@@ -111,7 +114,7 @@ REQUIRED_IF = [
 
 
 @dataclass(frozen=True, slots=True)
-class PluginArgs:
+class ResolvedPluginArgs:
     """Plugin arguments."""
 
     batch_size: int
@@ -120,6 +123,7 @@ class PluginArgs:
     input_suffix: Literal["yml", "yaml", "json"]
     read_from_input_dir: bool
     fail_on_validation_errors: bool
+    validation_configuration: Configuration | None
 
 
 _HOSTVARS_MANAGER: ActionPluginVars | None = None
@@ -215,18 +219,19 @@ class ActionModule(AvdActionPlugin):
                 output_path=validated_path,
                 schema_name=plugin_args.schema_name,
                 fail_on_validation_errors=plugin_args.fail_on_validation_errors,
+                configuration=plugin_args.validation_configuration,
             )
 
         if self.crashed_hosts:
             msg = f"Unexpected errors occurred while processing {len(self.crashed_hosts)} host(s): {', '.join(sorted(self.crashed_hosts))}. "
             raise RuntimeError(msg)
 
-    def _get_plugin_args(self) -> PluginArgs:
+    def _get_plugin_args(self) -> ResolvedPluginArgs:
         """
         Get and validate plugin arguments.
 
         Returns:
-            PluginArgs instance with the validated arguments.
+            ResolvedPluginArgs instance with the validated arguments.
         """
         _validation_result, validated_args = self.validate_argument_spec(
             argument_spec=ARGUMENT_SPEC,
@@ -235,7 +240,29 @@ class ActionModule(AvdActionPlugin):
 
         # Converting to JSON and back to remove any AnsibeUnsafe types.
         validated_args = json.loads(json.dumps(validated_args))
-        return PluginArgs(**validated_args)
+        configuration = self._get_validation_configuration(validated_args)
+        validated_args.update({"validation_configuration": configuration})
+
+        return ResolvedPluginArgs(**validated_args)
+
+    def _get_validation_configuration(self, validated_args: dict[Any, Any]) -> Configuration | None:
+        """
+        Build the Configuration object for validation based on plugin arguments.
+
+        Args:
+            validated_args: Validated plugin arguments containing validation_configuration dict or None.
+
+        Returns:
+            Configuration object from the plugin arguments or None when validation_configuration is None.
+        """
+        if "validation_configuration" not in validated_args or (validation_configuration := validated_args["validation_configuration"]) is None:
+            return None
+
+        configuration = Configuration()
+        if (warn_eos_config_keys := validation_configuration.get("warn_eos_config_keys")) is not None:
+            configuration.warn_eos_cli_config_gen_keys = warn_eos_config_keys
+
+        return configuration
 
     def _get_hosts_to_process(self, task_vars: dict[str, Any], schema_name: SCHEMA_NAME) -> list[str]:
         """
@@ -337,6 +364,7 @@ class ActionModule(AvdActionPlugin):
         output_path: Path,
         schema_name: SCHEMA_NAME,
         fail_on_validation_errors: bool,
+        configuration: Configuration | None,
     ) -> None:
         """
         Run Phase 2: Validation.
@@ -354,6 +382,7 @@ class ActionModule(AvdActionPlugin):
             output_path: Directory where validated JSON files will be written.
             schema_name: Schema to validate against.
             fail_on_validation_errors: Whether to fail the task on validation errors.
+            configuration: Configuration for validation or None.
         """
         self.logger.info("Validating inputs...")
         start_time = perf_counter()
@@ -370,6 +399,7 @@ class ActionModule(AvdActionPlugin):
             input_suffix=input_suffix,
             output_path=output_path,
             schema_name=schema_name,
+            configuration=configuration,
             loader=self._loader,
         )
 
@@ -459,12 +489,7 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
 
 
 def _validate_host_worker(
-    hostname: str,
-    input_path: Path,
-    input_suffix: str,
-    output_path: Path,
-    schema_name: SCHEMA_NAME,
-    loader: DataLoader,
+    hostname: str, input_path: Path, input_suffix: str, output_path: Path, schema_name: SCHEMA_NAME, configuration: Configuration | None, loader: DataLoader
 ) -> ValidateWorkerResult:
     """
     Phase 2 multithreading worker: Validate input data for a host.
@@ -478,6 +503,7 @@ def _validate_host_worker(
         input_suffix: File suffix for the input file (json, yml, yaml).
         output_path: Directory path where the validated JSON file will be written.
         schema_name: Schema to validate against.
+        configuration: Configuration for validation or None.
         loader: Ansible DataLoader for unvaulting files if needed.
 
     Returns:
@@ -501,7 +527,7 @@ def _validate_host_worker(
             json_data = loader.get_text_file_contents(str(input_file_path))
 
         # Validation in Rust, releasing the GIL.
-        validated_data_result = get_validated_data(data_as_json=json_data, schema_name=SCHEMA_MAP[schema_name])
+        validated_data_result = get_validated_data(data_as_json=json_data, schema_name=SCHEMA_MAP[schema_name], configuration=configuration)
         validation_result, validated_data = validated_data_result.validation_result, validated_data_result.validated_data
 
         output_file = None
