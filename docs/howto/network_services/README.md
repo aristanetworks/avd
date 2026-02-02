@@ -54,17 +54,7 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 7. Tags can be assigned to network services to control which devices receive the configuration.
 8. L2 VLANs are bridged across VXLAN without an SVI
 
-### Generated Configuration
-
-AVD generates the complete configuration including VLANs, VRFs, and SVIs:
-
-```cli title="VLAN, VRF, and SVI Configuration"
---8<--
-docs/howto/network_services/artifacts/htns-l3-leaf1-services.cfg
---8<--
-```
-
-## SVI Profiles
+### SVI Profiles
 
 Use **SVI profiles** to share common settings across multiple SVIs, reducing duplication and ensuring consistency.
 
@@ -79,6 +69,16 @@ ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HT
 
 !!! note
     We see the `HIGH_MTU` profile applied to the SVIs in the generated configuration above.
+
+### Generated Configuration
+
+AVD generates the complete configuration including VLANs, VRFs, and SVIs:
+
+```cli title="VLAN, VRF, and SVI Configuration"
+--8<--
+docs/howto/network_services/artifacts/htns-l3-leaf1-services.cfg
+--8<--
+```
 
 ## Filtering Network Services
 
