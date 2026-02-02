@@ -5,7 +5,9 @@
 #}
 {# eos - global priority-flow-control #}
 {% if priority_flow_control is arista.avd.defined %}
+{%     if qos is not arista.avd.defined %}
 !
+{%     endif %}
 {%     if priority_flow_control.all_off is arista.avd.defined(true) %}
 priority-flow-control all off
 {%     endif %}
