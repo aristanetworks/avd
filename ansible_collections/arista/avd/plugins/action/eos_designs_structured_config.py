@@ -195,8 +195,11 @@ class ActionModule(ActionBase):
             )
             raise AnsibleActionFail(message=msg)
 
-        with file_path.open(mode="r", encoding="utf-8") as f:
-            host_hostvars = json.load(f)
+        # Read and unvault the file if required
+        json_data = self._loader.get_text_file_contents(str(file_path))
+
+        # Parse the JSON data
+        host_hostvars = json.loads(json_data)
 
         # Load host hostvars into the AVDDesign data class.
         avd_design = AVDDesign._from_dict(host_hostvars)
@@ -219,6 +222,7 @@ class ActionModule(ActionBase):
             msg = f"Missing AVD eos_designs facts for host '{hostname}' ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
             raise AnsibleActionFail(message=msg)
 
+        # fact file is not vaulted.
         with file_path.open(mode="r", encoding="utf-8") as f:
             avd_switch_facts = json.load(f)
 

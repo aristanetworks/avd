@@ -197,8 +197,11 @@ class ActionModule(ActionBase):
             )
             raise AnsibleActionFail(message=msg)
 
-        with file_path.open(mode="r", encoding="utf-8") as f:
-            return json.load(f)
+        # Read and unvault the file if required
+        json_data = self._loader.get_text_file_contents(str(file_path))
+
+        # Parse and return the JSON data
+        return json.loads(json_data)
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:

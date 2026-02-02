@@ -135,8 +135,11 @@ class ActionModule(ActionBase):
                 )
                 raise AnsibleActionFail(message=msg)
 
-            with file_path.open(mode="r", encoding="utf-8") as f:
-                host_hostvars = json.load(f)
+            # Read and unvault the file if required
+            json_data = self._loader.get_text_file_contents(str(file_path))
+
+            # Parse the JSON data
+            host_hostvars = json.loads(json_data)
 
             # Load host hostvars into the AVDDesign data class.
             all_inputs[host] = AVDDesign._from_dict(host_hostvars)
