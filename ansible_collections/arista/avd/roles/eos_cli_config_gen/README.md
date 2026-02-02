@@ -12,7 +12,7 @@ title: Ansible Collection Role eos_cli_config_gen
 
 ## Overview
 
-**eos_cli_config_gen**, is a role that generates eos cli syntax and device documentation.
+**eos_cli_config_gen**, is a role that generates EOS CLI syntax and device documentation.
 
 The **eos_cli_config_gen** role:
 
@@ -34,13 +34,14 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 **Outputs:**
 
 - EOS configuration in CLI format.
-- Device Documentation in Markdown format.
+- Device documentation in Markdown format.
 
 **Tasks:**
 
-1. Import device structured configuration from YAML file unless `structured_config` flag is set by `eos_designs`.
-2. Generate EOS configuration in CLI format.
-3. Generate Device Documentation in Markdown format.
+1. Read the structured configurations from files if `read_structured_config_from_file` is set to `true`, otherwise read and template the variables from Ansible hostvars.
+2. Validate the structured configurations according to the EOS Config schema.
+3. Generate EOS configuration in CLI format.
+4. Generate device documentation in Markdown format.
 
 ## Requirements
 
