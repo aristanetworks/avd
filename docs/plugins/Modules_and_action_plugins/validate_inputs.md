@@ -35,6 +35,8 @@ The plugin performs two phases:
 | <samp>input_suffix</samp> | str | optional | json | Valid values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | File suffix for files located in `input_dir`.<br>Only used when `input_dir` is provided. |
 | <samp>fail_on_validation_errors</samp> | bool | optional | False | - | If `true`, the task will fail if any validation errors are detected.<br>If `false`, errors will be reported but the task will succeed. |
 | <samp>batch_size</samp> | int | optional | 10 | - | The number of devices to process per child process during the templating phase. |
+| <samp>validation_configuration</samp> | dict | False | None | - | Optional dictionary containing configuration options to control validation behavior. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;warn_eos_config_keys</samp> | bool | optional | False | - | Enable warnings for EOS Config keys used in AVD Design input data.<br>When enabled, warnings will be emitted during validation if any top-level keys<br>from the EOS Config schema are found at the top level of AVD Design input data. |
 
 ## Examples
 
@@ -44,6 +46,13 @@ The plugin performs two phases:
   arista.avd.validate_inputs:
     schema_name: avd_design
     fail_on_validation_errors: true
+
+- name: Validate eos_designs inputs with custom validation configuration
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    fail_on_validation_errors: true
+    validation_configuration:
+      warn_eos_config_keys: true
 
 - name: Validate eos_cli_config_gen inputs from structured config files
   arista.avd.validate_inputs:
