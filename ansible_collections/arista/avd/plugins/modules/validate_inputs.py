@@ -51,6 +51,19 @@ options:
       - The number of devices to process per child process during the templating phase.
     type: int
     default: 10
+  validation_configuration:
+    description: |-
+      Optional dictionary containing configuration options to control validation behavior.
+    type: dict
+    required: false
+    suboptions:
+      warn_eos_config_keys:
+        description: |-
+          Enable warnings for EOS Config keys used in AVD Design input data.
+          When enabled, warnings will be emitted during validation if any top-level keys
+          from the EOS Config schema are found at the top level of AVD Design input data.
+        type: bool
+        default: false
 """
 
 EXAMPLES = r"""
@@ -59,6 +72,13 @@ EXAMPLES = r"""
   arista.avd.validate_inputs:
     schema_name: avd_design
     fail_on_validation_errors: true
+
+- name: Validate eos_designs inputs with custom validation configuration
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    fail_on_validation_errors: true
+    validation_configuration:
+      warn_eos_config_keys: true
 
 - name: Validate eos_cli_config_gen inputs from structured config files
   arista.avd.validate_inputs:
