@@ -44,7 +44,8 @@ def main() -> None:
 
     inventory: dict[str, dict[str, Any]] = generate_hostvars(spine_count=2, l3leaf_count=2, l2leaf_count=2, vrf_count=2, per_vrf_svi_count=2)
 
-    # Validating and inplace update with coerced types
+-   # Validating and inplace update with coerced types
++   # Validating and get back the validated inputs with coerced types
     for device, hostvars in inventory.items():
 -       validation_result: ValidationResult = validate_inputs(inputs=hostvars)
 +       validated_data_result: ValidatedDataResult = validate_inputs(inputs=hostvars)

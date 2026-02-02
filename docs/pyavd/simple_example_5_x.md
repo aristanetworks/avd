@@ -28,10 +28,10 @@ if TYPE_CHECKING:
     from pyavd import ValidationResult
 
 # 'generate_inventory' is a module which generates a test inventory
-# This should be replaced with something that reads a proper inventory like the ansible inventory.
+# This should be replaced with something that reads a proper inventory like the Ansible inventory.
 from generate_inventory import generate_hostvars
 
-if main() -> None:
+def main() -> None:
     # Prepare output directories
     config_dir = Path(__file__).parent / "configs"
     config_dir.mkdir(exist_ok=True)
