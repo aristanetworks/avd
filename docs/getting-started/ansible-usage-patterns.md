@@ -4,9 +4,9 @@
   ~ that can be found in the LICENSE file.
 -->
 
-# Usage Patterns
+# Ansible Usage Patterns
 
-This guide demonstrates the different ways to use Arista AVD roles, starting from basic usage and progressively introducing more advanced patterns. Each section builds upon the previous one, showing how AVD's flexibility allows you to customize configurations to meet your specific needs.
+This guide demonstrates the different ways to use Arista AVD Ansible roles, starting from basic usage and progressively introducing more advanced patterns. Each section builds upon the previous one, showing how AVD's flexibility allows you to customize configurations to meet your specific needs.
 
 - [Ansible Role: eos_cli_config_gen](#ansible-role-eos_cli_config_gen)
 - [eos_designs with eos_cli_config_gen (recommended)](#eos_designs-with-eos_cli_config_gen)
@@ -16,7 +16,7 @@ This guide demonstrates the different ways to use Arista AVD roles, starting fro
 
 ## Ansible Role: eos_cli_config_gen
 
-The `eos_cli_config_gen` role is the EOS configuration layer of AVD. It converts structured configuration data (in YAML format) into EOS CLI commands.
+The `eos_cli_config_gen` role is the EOS configuration layer of AVD. It converts structured configuration data (in YAML format) into EOS configuration syntax.
 
 !!! warning "Not Recommended for Most Users"
     Using `eos_cli_config_gen` directly is **not the typical way** to use AVD. Most users should start with the `eos_designs` role, which provides a higher-level abstraction and automatically generates the structured configuration for you.
@@ -27,6 +27,8 @@ The `eos_cli_config_gen` role is the EOS configuration layer of AVD. It converts
 graph LR
     A[EOS Config Data Model] --> B{eos_cli_config_gen}
     B --> C[EOS CLI Configuration]
+
+    click A "../../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.html"
 ```
 
 When using `eos_cli_config_gen` directly, you provide structured configuration using the EOS CLI Config Gen data model. The role processes this input and generates the corresponding EOS CLI configuration file.
