@@ -51,6 +51,8 @@ If you were using standard Ansible connection variables with `eos_validate_state
 
 The output directory structure has changed:
 
+<div class="grid" markdown>
+
 === "eos_validate_state"
 
     ```text
@@ -80,6 +82,8 @@ The output directory structure has changed:
             └── anta_report.md
     ```
 
+</div>
+
 To customize directory and report paths in `anta_runner`:
 
 ```yaml
@@ -103,6 +107,8 @@ Additionally, the device targeting mechanism has changed:
 
 - In `eos_validate_state`, catalogs were targeted to specific devices or groups based on the **filename** (`<hostname>.yml`, `<group>.yml`, or `all.yml`).
 - In `anta_runner`, all catalogs are merged together and targeting is done using **tags** in the catalog files and `anta_tags` in the Ansible inventory.
+
+<div class="grid" markdown>
 
 === "eos_validate_state"
 
@@ -134,11 +140,15 @@ Additionally, the device targeting mechanism has changed:
               anta_tags: [ leaf ]
     ```
 
+</div>
+
 For more details on tag-based filtering, see [Tag-Based Filtering](../../ansible_collections/arista/avd/roles/anta_runner/README.md#tag-based-filtering).
 
 ## Test Filtering
 
 The `skip_tests` variable has been replaced with `avd_catalogs_filters`. The key difference is that `anta_runner` no longer uses AVD test categories (e.g., `AvdTestHardware`, `AvdTestNTP`). Instead, you specify ANTA test class names directly (e.g., `VerifyNTP`, `VerifyEnvironmentPower`).
+
+<div class="grid" markdown>
 
 === "eos_validate_state"
 
@@ -160,6 +170,8 @@ The `skip_tests` variable has been replaced with `avd_catalogs_filters`. The key
           - VerifyNTP
     ```
 
+</div>
+
 !!! note
     The `anta_runner` role generates additional tests compared to `eos_validate_state`. If you want to match the exact test coverage of `eos_validate_state`, you can use `avd_catalogs_filters` to skip specific tests.
 
@@ -170,6 +182,8 @@ For a complete list of available ANTA test names, see the [AVD-generated Catalog
 In `eos_validate_state`, logging verbosity was controlled by the `logging_level` variable.
 
 In `anta_runner`, logging verbosity is controlled by **Ansible standard verbosity flags** (`-v`, `-vv`, `-vvv`, `-vvvv`):
+
+<div class="grid" markdown>
 
 === "eos_validate_state"
 
@@ -183,6 +197,8 @@ In `anta_runner`, logging verbosity is controlled by **Ansible standard verbosit
     # Use Ansible verbosity flags instead
     ansible-playbook playbooks/fabric-validate.yaml -vvv
     ```
+
+</div>
 
 For more details, see [Logging and Troubleshooting](../../ansible_collections/arista/avd/roles/anta_runner/README.md#logging-and-troubleshooting).
 
@@ -208,6 +224,8 @@ user_catalogs_enabled: true
 
 The `anta_runner` role does **not** support Ansible check mode (`--check`). To generate tests without executing them, use the `anta_runner_dry_run` variable instead:
 
+<div class="grid" markdown>
+
 === "eos_validate_state"
 
     ```shell
@@ -220,6 +238,8 @@ The `anta_runner` role does **not** support Ansible check mode (`--check`). To g
     anta_runner_dry_run: true
     ```
 
+</div>
+
 ## Report Generation
 
 ### Showing Only Failed Tests
@@ -227,6 +247,8 @@ The `anta_runner` role does **not** support Ansible check mode (`--check`). To g
 In `eos_validate_state`, the `only_failed_tests` variable controlled whether reports showed only failed tests.
 
 In `anta_runner`, use `anta_report_exclude_statuses` to exclude specific test statuses from reports:
+
+<div class="grid" markdown>
 
 === "eos_validate_state"
 
@@ -240,11 +262,15 @@ In `anta_runner`, use `anta_report_exclude_statuses` to exclude specific test st
     anta_report_exclude_statuses: [ success, skipped ]
     ```
 
+</div>
+
 ### Disabling Report Generation
 
 In `eos_validate_state`, CSV and Markdown report generations were controlled by boolean variables.
 
 In `anta_runner`, set the report path to `null` to disable generation of a specific report format:
+
+<div class="grid" markdown>
 
 === "eos_validate_state"
 
@@ -261,6 +287,8 @@ In `anta_runner`, set the report path to `null` to disable generation of a speci
     # Markdown report will still be generated
     anta_report_md_path: "{{ anta_reports_dir }}/anta_report.md"
     ```
+
+</div>
 
 ## Markdown Report Formatting
 
@@ -282,6 +310,8 @@ anta_report_custom_field: true
 The ANTA tests for fan and power supply validation have been improved. The `accepted_fan_states` and `accepted_pwr_supply_states` variables are no longer required.
 
 If you are expecting that not all fans and power supplies are inserted in specific devices, you can use **validation profiles** to define the expected number of fans and power supplies.
+
+<div class="grid" markdown>
 
 === "eos_validate_state"
 
@@ -307,6 +337,8 @@ If you are expecting that not all fans and power supplies are inserted in specif
         validation_profile: chassis_profile
     ```
 
+</div>
+
 For more details, see [Validation Profiles](../../ansible_collections/arista/avd/roles/anta_runner/README.md#validation-profiles).
 
 ## Transceiver Manufacturers
@@ -314,6 +346,8 @@ For more details, see [Validation Profiles](../../ansible_collections/arista/avd
 In `eos_validate_state`, accepted transceiver manufacturers were configured using the `accepted_xcvr_manufacturers` variable.
 
 In `anta_runner`, this setting has moved to `eos_designs` and is configured through `validation_profiles`:
+
+<div class="grid" markdown>
 
 === "eos_validate_state"
 
@@ -344,6 +378,8 @@ In `anta_runner`, this setting has moved to `eos_designs` and is configured thro
       defaults:
         validation_profile: datacenter
     ```
+
+</div>
 
 For more details, see [Validation Profiles](../../ansible_collections/arista/avd/roles/anta_runner/README.md#validation-profiles).
 
@@ -398,6 +434,8 @@ custom_platform_settings:
 
 The following example shows a complete migration from `eos_validate_state` to `anta_runner` with equivalent behavior:
 
+<div class="grid" markdown>
+
 === "eos_validate_state"
 
     ```yaml
@@ -434,6 +472,8 @@ The following example shows a complete migration from `eos_validate_state` to `a
             anta_report_expand_results: true
             anta_report_custom_field: true
     ```
+
+</div>
 
 For information about new features available in `anta_runner`, see the [anta_runner documentation](../../ansible_collections/arista/avd/roles/anta_runner/README.md).
 
