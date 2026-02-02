@@ -7,7 +7,7 @@
 {% if monitor_telemetry_influx is arista.avd.defined %}
 !
 monitor telemetry influx
-{%     for destination in monitor_telemetry_influx.destinations | arista.avd.natural_sort('name') %}
+{%     for destination in monitor_telemetry_influx.destinations | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    destination influxdb {{ destination.name }}
 {%         if destination.url is arista.avd.defined %}
       url {{ destination.url }}
@@ -28,7 +28,7 @@ monitor telemetry influx
    !
 {%         endif %}
 {%     endfor %}
-{%     for socket in monitor_telemetry_influx.source_sockets | arista.avd.natural_sort('name') %}
+{%     for socket in monitor_telemetry_influx.source_sockets | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    source socket {{ socket.name }}
 {%         if socket.url is arista.avd.defined %}
       url {{ socket.url }}
@@ -40,10 +40,8 @@ monitor telemetry influx
    !
 {%         endif %}
 {%     endfor %}
-{%     for tag in monitor_telemetry_influx.tags | arista.avd.natural_sort('name') %}
-{%         if tag.value is arista.avd.defined %}
+{%     for tag in monitor_telemetry_influx.tags | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    tag global {{ tag.name }} {{ tag.value }}
-{%         endif %}
 {%     endfor %}
 {%     if monitor_telemetry_influx.source_group_standard_disabled is arista.avd.defined(true) %}
    source group standard disabled

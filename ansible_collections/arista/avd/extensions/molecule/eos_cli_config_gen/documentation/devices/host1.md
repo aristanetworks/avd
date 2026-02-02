@@ -3591,7 +3591,7 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 | --------- | ----------- | ------------ | -------------- | --------------------- | ------------ | --- |
 | server1 | server1_connectivity_monitor | 10.10.10.1 | - | HOST_SET | True | https://server1.local.com |
 | server2 | server2_connectivity_monitor | 10.10.10.2 | - | HOST_SET | True | https://server2.local.com |
-| server3 | server3_connectivity_monitor | 10.10.10.3 | 1200 | HOST_SET | False | - |
+| Server3 | server3_connectivity_monitor | 10.10.10.3 | 1200 | HOST_SET | False | - |
 | server4 | - | - | - | - | True | - |
 
 ### VRF Configuration
@@ -3600,7 +3600,7 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 | ---- | ----------- | --------------------- | ------------ |
 | blue | - | VRF_GLOBAL_SET | False |
 | red | vrf_connectivity_monitor | VRF_GLOBAL_SET | True |
-| yellow | - | - | True |
+| Yellow | - | - | True |
 
 #### Vrf blue Configuration
 
@@ -3615,7 +3615,7 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 | Host Name | Description | IPv4 Address | ICMP Echo Size | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | -------------- | --------------------- | ------------ | --- |
 | server4 | server4_connectivity_monitor | 10.10.20.1 | - | VRF_GLOBAL_SET | False | https://server2.local.com |
-| server5 | server5_connectivity_monitor | 10.10.20.11 | - | VRF_GLOBAL_SET | True | https://server5.local.com |
+| Server5 | server5_connectivity_monitor | 10.10.20.11 | - | VRF_GLOBAL_SET | True | https://server5.local.com |
 | server6 | - | - | - | - | True | - |
 
 #### Vrf red Configuration
@@ -3633,7 +3633,7 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 | --------- | ----------- | ------------ | -------------- | --------------------- | ------------ | --- |
 | server2 | server2_connectivity_monitor | 10.10.20.1 | 1300 | VRF_HOST_SET | True | https://server2.local.com |
 
-#### Vrf yellow Configuration
+#### Vrf Yellow Configuration
 
 ##### Interface Sets
 
@@ -3656,6 +3656,13 @@ monitor connectivity
    interface set HOST_SET Loopback2-4, Loopback10-12
    local-interfaces GLOBAL_SET address-only default
    !
+   host Server3
+      description
+      server3_connectivity_monitor
+      local-interfaces HOST_SET
+      ip 10.10.10.3
+      icmp echo size 1200
+   !
    host server1
       description
       server1_connectivity_monitor
@@ -3670,18 +3677,20 @@ monitor connectivity
       ip 10.10.10.2
       url https://server2.local.com
    !
-   host server3
-      description
-      server3_connectivity_monitor
-      local-interfaces HOST_SET
-      ip 10.10.10.3
-      icmp echo size 1200
-   !
    host server4
+   !
+   vrf Yellow
    !
    vrf blue
       interface set VRF_GLOBAL_SET Vlan21-24, Vlan29-32
       local-interfaces VRF_GLOBAL_SET default
+      !
+      host Server5
+         description
+         server5_connectivity_monitor
+         local-interfaces VRF_GLOBAL_SET address-only
+         ip 10.10.20.11
+         url https://server5.local.com
       !
       host server4
          description
@@ -3689,13 +3698,6 @@ monitor connectivity
          local-interfaces VRF_GLOBAL_SET
          ip 10.10.20.1
          url https://server2.local.com
-      !
-      host server5
-         description
-         server5_connectivity_monitor
-         local-interfaces VRF_GLOBAL_SET address-only
-         ip 10.10.20.11
-         url https://server5.local.com
       !
       host server6
    !
@@ -3713,8 +3715,6 @@ monitor connectivity
          ip 10.10.20.1
          icmp echo size 1300
          url https://server2.local.com
-   !
-   vrf yellow
 ```
 
 ## Monitor Layer 1 Logging
@@ -14500,7 +14500,7 @@ Source Group Standard Disabled : True
 | Destination | Database | URL | VRF | Username |
 | ----------- | -------- | --- | --- | -------- |
 | test | test | https://influx_test.localhost | test | test |
-| test1 | test1 | https://influx_test1.localhost | test | test1 |
+| Test1 | test1 | https://influx_test1.localhost | test | test1 |
 
 #### InfluxDB Telemetry Sources
 
@@ -14521,19 +14521,19 @@ Source Group Standard Disabled : True
 ```eos
 !
 monitor telemetry influx
+   destination influxdb Test1
+      url https://influx_test1.localhost
+      database name test1
+      retention policy test1
+      vrf test
+      username test1 password 7 <removed>
+   !
    destination influxdb test
       url https://influx_test.localhost
       database name test
       retention policy test
       vrf test
       username test password 7 <removed>
-   !
-   destination influxdb test1
-      url https://influx_test1.localhost
-      database name test1
-      retention policy test1
-      vrf test
-      username test1 password 7 <removed>
    !
    source socket socket1
       url unix:///var/run/example2.sock
