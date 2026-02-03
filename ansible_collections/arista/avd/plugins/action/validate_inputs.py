@@ -12,6 +12,7 @@ from pathlib import Path
 from time import perf_counter
 from typing import TYPE_CHECKING, Any, Literal, cast
 
+from ansible.parsing.vault import match_encrypt_secret
 from ansible.plugins.action import display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
@@ -105,6 +106,7 @@ ARGUMENT_SPEC = {
     "read_from_input_dir": {"type": "bool", "default": False},
     "fail_on_validation_errors": {"type": "bool", "default": False},
     "validation_configuration": {"type": "dict", "options": {"warn_eos_config_keys": {"type": "bool"}}},
+    "avd_vault_id": {"type": "str"},
 }
 
 REQUIRED_IF = [
@@ -123,6 +125,7 @@ class ResolvedPluginArgs:
     read_from_input_dir: bool
     fail_on_validation_errors: bool
     validation_configuration: Configuration | None
+    avd_vault_id: str | None
 
 
 _HOSTVARS_MANAGER: ActionPluginVars | None = None
@@ -139,9 +142,17 @@ class LoaderWrapper:
     where the loader is inherited from the parent process.
     """
 
-    def __init__(self, loader: DataLoader) -> None:
-        """Initialize the wrapper with a DataLoader instance."""
+    def __init__(self, loader: DataLoader, vault_id: str | None = None) -> None:
+        """
+        Initialize the wrapper with a DataLoader instance.
+
+        Args:
+            loader: The Ansible DataLoader instance.
+            vault_id: Optional vault identity to use for encryption. If None, uses the first
+                     vault identity in the list (default Ansible behavior).
+        """
         self._loader = loader
+        self._vault_id = vault_id
 
     def __call__(self) -> DataLoader:
         """Return the wrapped DataLoader instance."""
@@ -156,10 +167,27 @@ class LoaderWrapper:
 
         Returns:
             Encrypted data if vault is configured, otherwise the original data.
+
+        Note:
+            - If vault_id is None, uses the first vault identity in the list.
+            - If vault_id is specified, uses that specific vault identity's secret.
+            - We use match_encrypt_secret() to find the correct secret and pass both
+              secret and vault_id to encrypt() due to an Ansible bug where
+              encrypt(data, secret=None, vault_id='X') sets the header to 'X' but
+              uses the first secret for encryption.
         """
-        if self._loader._vault.secrets:
-            return self._loader._vault.encrypt(data, secret=None)
-        return data
+        if not self._loader._vault.secrets:
+            return data
+
+        # Use Ansible's match_encrypt_secret to find the correct secret
+        # This handles both None (first secret) and specific vault_id cases
+        # and raises a proper error if the vault_id is not found.
+        vault_id, secret = match_encrypt_secret(self._loader._vault.secrets, self._vault_id)
+
+        # Pass both secret and vault_id to work around Ansible VaultLib bug
+        # match_encrypt_secret is called without passing the vault_id if secret=None...
+        # https://github.com/ansible/ansible/blob/29086acfa61f32a9e5b087abdaf4336330ab5456/lib/ansible/parsing/vault/__init__.py#L606
+        return self._loader._vault.encrypt(data, secret=secret, vault_id=vault_id)
 
 
 def set_worker_context(hostvars: ActionPluginVars) -> None:
@@ -231,6 +259,7 @@ class ActionModule(AvdActionPlugin):
                 batch_size=plugin_args.batch_size,
                 output_path=templated_path,
                 schema_name=plugin_args.schema_name,
+                avd_vault_id=plugin_args.avd_vault_id,
             )
             validation_input_path = templated_path
             validation_input_suffix = "json"
@@ -253,6 +282,7 @@ class ActionModule(AvdActionPlugin):
                 schema_name=plugin_args.schema_name,
                 fail_on_validation_errors=plugin_args.fail_on_validation_errors,
                 configuration=plugin_args.validation_configuration,
+                avd_vault_id=plugin_args.avd_vault_id,
             )
 
         if self.crashed_hosts:
@@ -346,6 +376,7 @@ class ActionModule(AvdActionPlugin):
         batch_size: int,
         output_path: Path,
         schema_name: SCHEMA_NAME,
+        avd_vault_id: str | None = None,
     ) -> list[str]:
         """
         Run Phase 1: Templating.
@@ -359,6 +390,7 @@ class ActionModule(AvdActionPlugin):
             batch_size: Number of hosts to process per child process.
             output_path: Directory path where templated JSON files will be written.
             schema_name: Schema name used for filtering hostvars.
+            avd_vault_id: Optional vault identity to use for encryption.
 
         Returns:
             List of hostnames that were templated successfully.
@@ -369,7 +401,7 @@ class ActionModule(AvdActionPlugin):
 
         # Create a get_loader callable that returns the loader
         # We need to capture self._loader in a way that's picklable
-        get_loader = LoaderWrapper(self._loader)
+        get_loader = LoaderWrapper(self._loader, vault_id=avd_vault_id)
 
         # Partial to inject arguments into the worker.
         worker_func = partial(_template_host_worker, output_path=output_path, schema_name=schema_name, get_loader=get_loader)
@@ -400,6 +432,7 @@ class ActionModule(AvdActionPlugin):
         schema_name: SCHEMA_NAME,
         fail_on_validation_errors: bool,
         configuration: Configuration | None,
+        avd_vault_id: str | None = None,
     ) -> None:
         """
         Run Phase 2: Validation.
@@ -418,6 +451,7 @@ class ActionModule(AvdActionPlugin):
             schema_name: Schema to validate against.
             fail_on_validation_errors: Whether to fail the task on validation errors.
             configuration: Configuration for validation or None.
+            avd_vault_id: Optional vault identity to use for encryption.
         """
         self.logger.info("Validating inputs...")
         start_time = perf_counter()
@@ -428,7 +462,7 @@ class ActionModule(AvdActionPlugin):
         init_store()
 
         # Create a get_loader callable that returns the loader
-        get_loader = LoaderWrapper(self._loader)
+        get_loader = LoaderWrapper(self._loader, vault_id=avd_vault_id)
 
         # Partial to inject arguments into the worker.
         worker_func = partial(
