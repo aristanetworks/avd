@@ -1,0 +1,4 @@
+galaxy_info:
+  description: This role has been removed. Use arista.avd.anta_runner instead.
+  standalone: false
+

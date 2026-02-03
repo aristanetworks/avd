@@ -1,0 +1,4 @@
+galaxy_info:
+  description: This role has been removed and is not compatible with modern DHCP servers.
+  standalone: false
+

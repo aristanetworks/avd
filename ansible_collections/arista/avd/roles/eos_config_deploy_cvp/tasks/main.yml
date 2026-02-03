@@ -1,0 +1,5 @@
+---
+- name: Role Removal Notice
+  ansible.builtin.fail:
+    msg: "The 'eos_config_deploy_cvp' role has been removed. Use 'cv_deploy' instead. Please refer to the porting guide at https://avd.arista.com/devel/docs/porting-guides/6.x.x.html for migration instructions."
+
