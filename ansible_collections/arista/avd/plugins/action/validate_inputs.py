@@ -243,6 +243,9 @@ class ActionModule(AvdActionPlugin):
             plugin_args.batch_size,
         )
 
+        # Create a loader wrapper
+        loader = LoaderWrapper(self._loader, vault_id=plugin_args.vault_id)
+
         # Phase 1: If read_from_input_dir is False, run the templating phase on hostvars.
         if not plugin_args.read_from_input_dir:
             self.logger.info("Reading inputs from hostvars")
@@ -253,7 +256,7 @@ class ActionModule(AvdActionPlugin):
                 batch_size=plugin_args.batch_size,
                 output_path=templated_path,
                 schema_name=plugin_args.schema_name,
-                vault_id=plugin_args.vault_id,
+                loader=loader,
             )
             validation_input_path = templated_path
             validation_input_suffix = "json"
@@ -276,7 +279,7 @@ class ActionModule(AvdActionPlugin):
                 schema_name=plugin_args.schema_name,
                 fail_on_validation_errors=plugin_args.fail_on_validation_errors,
                 configuration=plugin_args.validation_configuration,
-                vault_id=plugin_args.vault_id,
+                loader=loader,
             )
 
         if self.crashed_hosts:
@@ -370,7 +373,7 @@ class ActionModule(AvdActionPlugin):
         batch_size: int,
         output_path: Path,
         schema_name: SCHEMA_NAME,
-        vault_id: str | None = None,
+        loader: LoaderWrapper,
     ) -> list[str]:
         """
         Run Phase 1: Templating.
@@ -384,7 +387,7 @@ class ActionModule(AvdActionPlugin):
             batch_size: Number of hosts to process per child process.
             output_path: Directory path where templated JSON files will be written.
             schema_name: Schema name used for filtering hostvars.
-            vault_id: Optional vault identity to use for encryption.
+            loader: LoaderWrapper instance holding the Ansible DataLoader for vault encryption if needed.
 
         Returns:
             List of hostnames that were templated successfully.
@@ -392,9 +395,6 @@ class ActionModule(AvdActionPlugin):
         self.logger.info("Templating hostvars...")
         start_time = perf_counter()
         successful_hosts = []
-
-        # Create a loader wrapper
-        loader = LoaderWrapper(self._loader, vault_id=vault_id)
 
         # Partial to inject arguments into the worker.
         worker_func = partial(_template_host_worker, output_path=output_path, schema_name=schema_name, loader=loader)
@@ -425,7 +425,7 @@ class ActionModule(AvdActionPlugin):
         schema_name: SCHEMA_NAME,
         fail_on_validation_errors: bool,
         configuration: Configuration | None,
-        vault_id: str | None = None,
+        loader: LoaderWrapper,
     ) -> None:
         """
         Run Phase 2: Validation.
@@ -444,18 +444,14 @@ class ActionModule(AvdActionPlugin):
             schema_name: Schema to validate against.
             fail_on_validation_errors: Whether to fail the task on validation errors.
             configuration: Configuration for validation or None.
-            vault_id: Optional vault identity to use for encryption.
+            loader: LoaderWrapper instance holding the Ansible DataLoader for reading vaulted files and vault encryption if needed.
         """
         self.logger.info("Validating inputs...")
         start_time = perf_counter()
 
         data_validation_errors = 0
-        output_files = []
 
         init_store()
-
-        # Create a loader wrapper
-        loader = LoaderWrapper(self._loader, vault_id=vault_id)
 
         # Partial to inject arguments into the worker.
         worker_func = partial(
@@ -490,7 +486,6 @@ class ActionModule(AvdActionPlugin):
 
                 else:
                     self.logger.debug("Validated data for host %s saved to %s", result.hostname, result.output_file)
-                    output_files.append(result.output_file)
 
         msg = build_result_message(data_validation_errors)
         if msg:
