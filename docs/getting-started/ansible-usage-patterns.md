@@ -8,18 +8,18 @@
 
 This guide demonstrates the different ways to use Arista AVD Ansible roles, starting from basic usage and progressively introducing more advanced patterns. Each section builds upon the previous one, showing how AVD's flexibility allows you to customize configurations to meet your specific needs.
 
-- [Ansible Role: eos_cli_config_gen](#ansible-role-eos_cli_config_gen)
+- [eos_cli_config_gen](#eos_cli_config_gen)
 - [eos_designs with eos_cli_config_gen (recommended)](#eos_designs-with-eos_cli_config_gen)
   - [AVD Design Data Model with eos_designs](#avd-design-data-model-with-eos_designs)
   - [structured_config with eos_designs](#structured_config-with-eos_designs)
   - [custom_structured_configuration Prefix](#custom_structured_configuration-prefix)
 
-## Ansible Role: eos_cli_config_gen
+## eos_cli_config_gen
 
-The `eos_cli_config_gen` role is the EOS configuration layer of AVD. It converts structured configuration data (in YAML format) into EOS configuration syntax.
+The [eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) role is the EOS config generation layer of AVD. It converts structured configuration data (in YAML format) into EOS configuration syntax.
 
 !!! warning "Not Recommended for Most Users"
-    Using `eos_cli_config_gen` directly is **not the typical way** to use AVD. Most users should start with the `eos_designs` role, which provides a higher-level abstraction and automatically generates the structured configuration for you.
+    Using `eos_cli_config_gen` directly is **not the typical way** to use AVD. Most users should leverage the `eos_designs` role, which provides a higher-level abstraction and automatically generates the structured configuration for you.
 
 ### Workflow
 
@@ -28,17 +28,16 @@ graph LR
     A[EOS Config Data Model] --> B{eos_cli_config_gen}
     B --> C[EOS CLI Configuration]
 
-    click A "../../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.html"
 ```
 
-When using `eos_cli_config_gen` directly, you provide structured configuration using the EOS Config data model. The role processes this input and generates the corresponding EOS CLI configuration file.
+When using [eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md)  role directly, you provide structured configuration using the [EOS Config](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md) data model. The role processes this input and generates the corresponding EOS CLI configuration file.
 
 This approach might be useful in specific cases:
 
-- You want full control over the exact configuration
-- You're working with a small number of devices
-- You're migrating from manual configuration to automation
-- You're using AVD for non-fabric use cases
+- You want full control over the exact configuration.
+- You're working with a small number of devices.
+- You're migrating from manual configuration to automation.
+- You're using AVD for non-fabric use cases.
 
 ### Example
 
@@ -69,7 +68,7 @@ ip name-server vrf MGMT 10.10.128.11
 
 ## eos_designs with eos_cli_config_gen
 
-The `eos_designs` role provides a higher level of abstraction. Instead of defining low-level structured configuration, you describe your network design intent, and `eos_designs` generates the structured configuration, which is then processed by `eos_cli_config_gen`.
+The [eos_designs](../../ansible_collections/arista/avd/roles/eos_designs/README.md) role uses an abstracted data model, [AVD Design](../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md), to deploy various network designs. Instead of defining low-level device configuration, you describe your network design intent; then `eos_designs` generates the structured configuration, which is then processed by [eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) role.
 
 ### AVD Design Data Model with eos_designs
 
@@ -83,10 +82,10 @@ graph LR
     D --> E[EOS CLI Configuration]
 ```
 
-The `eos_designs` role implements Arista's best practices and design patterns. You provide high-level design parameters (like fabric topology, VLANs, VRFs), and the role:
+The [eos_designs](../../ansible_collections/arista/avd/roles/eos_designs/README.md) role implements Arista's best practices and design patterns. You provide high-level design parameters with the [AVD Design](../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md) data model, like fabric topology, VLANs and VRFs, and the role will:
 
-1. Generates the complete structured configuration following the EOS Config Data Model
-2. Passes this to `eos_cli_config_gen` for CLI generation
+1. Generates the complete structured configuration following the [EOS Config](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md) data model.
+2. Passes this to [eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) for EOS configuration generation.
 
 This two-stage process separates design intent from configuration rendering, making it easier to manage large-scale deployments.
 
@@ -130,7 +129,7 @@ ip name-server vrf MGMT 10.10.128.11
 
 ### structured_config with eos_designs
 
-Sometimes you need to override or extend the configuration generated by `eos_designs` for specific devices. The `structured_config` key allows you to inject custom structured configuration that will be merged with the auto-generated configuration.
+To override or extend the configuration generated by [eos_designs](../../ansible_collections/arista/avd/roles/eos_designs/README.md) for specific devices use the `structured_config` key. This allows you to inject configuration following the [EOS Config](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md) Data Model that will be merged with the auto-generated configuration.
 
 #### Workflow
 
@@ -140,7 +139,7 @@ graph LR
     A2 --> B4
     B4 --> C[Final Structured Configuration<br/>EOS Config Data Model]
     C --> D{eos_cli_config_gen}
-    D --> E[EOS CLI Configuration]
+    D --> E[EOS Configuration]
 
     subgraph A[AVD Design Inputs]
         direction TB
@@ -157,18 +156,18 @@ graph LR
     end
 ```
 
-The `eos_designs` role processes your design inputs in multiple stages:
+The [eos_designs](../../ansible_collections/arista/avd/roles/eos_designs/README.md) role processes your design inputs in multiple stages:
 
-1. **Input Processing & Design Modules**: Generate structured configuration based on your fabric design (topology, VLANs, VRFs, etc.)
-2. **Intermediate Structured Config**: The auto-generated configuration following the EOS Config Data Model
-3. **Merge Overrides**: Apply any device-specific `structured_config` (and/or `custom_structured_configuration_*` variables) on top of the generated configuration
-4. **Final Output**: The complete structured configuration ready for `eos_cli_config_gen`
+1. **Input Processing & Design Modules**: Generate structured configuration based on your fabric design (topology, VLANs, VRFs, etc.).
+2. **Intermediate Structured Config**: The auto-generated configuration following the EOS Config Data Model.
+3. **Merge Overrides**: Apply any device-specific `structured_config` (and/or `custom_structured_configuration_*` variables) on top of the generated configuration.
+4. **Final Output**: The complete structured configuration ready for [eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md).
 
 This allows you to:
 
-- Override specific values generated by `eos_designs`
-- Add configuration elements not covered by the design model
-- Customize individual devices while maintaining fabric-wide consistency
+- Override specific values generated by `eos_designs`.
+- Add configuration elements not covered by the design model.
+- Customize individual devices while maintaining fabric-wide consistency.
 
 The merge is recursive, so you can update specific sub-keys without replacing entire configuration sections.
 
@@ -270,9 +269,9 @@ The `custom_structured_configuration` prefix approach works similarly to `struct
 
 This approach is useful when:
 
-- You want to organize custom configuration separately from design inputs
-- You need to apply custom configuration at different inventory levels
-- You prefer a flatter variable structure
+- You want to organize custom configuration separately from design inputs.
+- You need to apply custom configuration at different inventory levels.
+- You prefer a flatter variable structure.
 
 **Important**: Both `structured_config` and `custom_structured_configuration_*` can be used together in the same deployment. They are both merged onto the intermediate structured configuration during the same merge step.
 
@@ -338,19 +337,19 @@ ip name-server vrf MGMT 10.20.20.10
 | -------- | -------- | ---------- | ----------- |
 | **eos_cli_config_gen only** | Small deployments, full control, migration from manual config, non-fabric use cases | Low | High (full control) |
 | **eos_designs + eos_cli_config_gen** | Standard fabric deployments, best practices (recommended starting point) | Medium | Medium (design-driven) |
-| **structured_config** | Device-specific overrides within design model | Medium-High | High (targeted overrides) |
+| **structured_config** | Device-specific overrides within AVD design data model | Medium-High | High (targeted overrides) |
 | **custom_structured_configuration** | Flexible overrides across inventory levels | Medium-High | Very High (maximum flexibility) |
 
 ### Key Takeaways
 
-1. **Start with eos_designs**: Most users should begin with `eos_designs` for fabric deployments, not `eos_cli_config_gen` directly
-2. **Override When Needed**: Use `structured_config` or `custom_structured_configuration_` for exceptions
-3. **Combine Approaches**: The last two approaches can be used together - both `structured_config` and `custom_structured_configuration_*` variables are merged during the same step
-4. **Understand Precedence**: Custom configuration is merged *after* design generation, allowing overrides
-5. **Choose Your Style**: Pick the override method that fits your workflow - nested `structured_config` or prefixed variables
+1. **Start with eos_designs**: Most users should begin with [eos_designs](../../ansible_collections/arista/avd/roles/eos_designs/README.md) for fabric deployments, not [eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) directly.
+2. **Override When Needed**: Use `structured_config` or `custom_structured_configuration_` for exceptions.
+3. **Combine Approaches**: The last two approaches can be used together - both `structured_config` and `custom_structured_configuration_*` variables are merged during the same step.
+4. **Understand Precedence**: Custom configuration is merged *after* design generation, allowing overrides.
+5. **Choose Your Style**: Pick the override method that fits your workflow - nested `structured_config` or prefixed variables.
 
 ### Next Steps
 
-- Review the [Custom Structured Configuration How-To](../../ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md) for advanced patterns
-- Explore the [eos_designs data model](../../ansible_collections/arista/avd/roles/eos_designs/README.md) for available design options
-- Check the [eos_cli_config_gen data model](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) for all configuration options
+- Review the [Custom Structured Configuration How-To](../../ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md) for advanced patterns.
+- Explore the [eos_designs data model](../../ansible_collections/arista/avd/roles/eos_designs/README.md) for available design options.
+- Check the [eos_cli_config_gen data model](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) for all configuration options.
