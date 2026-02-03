@@ -25,8 +25,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
-
     from ansible.parsing.dataloader import DataLoader
     from pyavd_utils.validation import Configuration, ValidationResult, get_validated_data
 
@@ -106,7 +104,7 @@ ARGUMENT_SPEC = {
     "read_from_input_dir": {"type": "bool", "default": False},
     "fail_on_validation_errors": {"type": "bool", "default": False},
     "validation_configuration": {"type": "dict", "options": {"warn_eos_config_keys": {"type": "bool"}}},
-    "avd_vault_id": {"type": "str"},
+    "vault_id": {"type": "str"},
 }
 
 REQUIRED_IF = [
@@ -125,7 +123,7 @@ class ResolvedPluginArgs:
     read_from_input_dir: bool
     fail_on_validation_errors: bool
     validation_configuration: Configuration | None
-    avd_vault_id: str | None
+    vault_id: str | None
 
 
 _HOSTVARS_MANAGER: ActionPluginVars | None = None
@@ -151,12 +149,8 @@ class LoaderWrapper:
             vault_id: Optional vault identity to use for encryption. If None, uses the first
                      vault identity in the list (default Ansible behavior).
         """
-        self._loader = loader
+        self.loader = loader
         self._vault_id = vault_id
-
-    def __call__(self) -> DataLoader:
-        """Return the wrapped DataLoader instance."""
-        return self._loader
 
     def encrypt_if_needed(self, data: bytes) -> bytes:
         """
@@ -176,18 +170,18 @@ class LoaderWrapper:
               encrypt(data, secret=None, vault_id='X') sets the header to 'X' but
               uses the first secret for encryption.
         """
-        if not self._loader._vault.secrets:
+        if not self.loader._vault.secrets:
             return data
 
         # Use Ansible's match_encrypt_secret to find the correct secret
         # This handles both None (first secret) and specific vault_id cases
         # and raises a proper error if the vault_id is not found.
-        vault_id, secret = match_encrypt_secret(self._loader._vault.secrets, self._vault_id)
+        vault_id, secret = match_encrypt_secret(self.loader._vault.secrets, self._vault_id)
 
         # Pass both secret and vault_id to work around Ansible VaultLib bug
         # match_encrypt_secret is called without passing the vault_id if secret=None...
         # https://github.com/ansible/ansible/blob/29086acfa61f32a9e5b087abdaf4336330ab5456/lib/ansible/parsing/vault/__init__.py#L606
-        return self._loader._vault.encrypt(data, secret=secret, vault_id=vault_id)
+        return self.loader._vault.encrypt(data, secret=secret, vault_id=vault_id)
 
 
 def set_worker_context(hostvars: ActionPluginVars) -> None:
@@ -259,7 +253,7 @@ class ActionModule(AvdActionPlugin):
                 batch_size=plugin_args.batch_size,
                 output_path=templated_path,
                 schema_name=plugin_args.schema_name,
-                avd_vault_id=plugin_args.avd_vault_id,
+                vault_id=plugin_args.vault_id,
             )
             validation_input_path = templated_path
             validation_input_suffix = "json"
@@ -282,7 +276,7 @@ class ActionModule(AvdActionPlugin):
                 schema_name=plugin_args.schema_name,
                 fail_on_validation_errors=plugin_args.fail_on_validation_errors,
                 configuration=plugin_args.validation_configuration,
-                avd_vault_id=plugin_args.avd_vault_id,
+                vault_id=plugin_args.vault_id,
             )
 
         if self.crashed_hosts:
@@ -376,7 +370,7 @@ class ActionModule(AvdActionPlugin):
         batch_size: int,
         output_path: Path,
         schema_name: SCHEMA_NAME,
-        avd_vault_id: str | None = None,
+        vault_id: str | None = None,
     ) -> list[str]:
         """
         Run Phase 1: Templating.
@@ -390,7 +384,7 @@ class ActionModule(AvdActionPlugin):
             batch_size: Number of hosts to process per child process.
             output_path: Directory path where templated JSON files will be written.
             schema_name: Schema name used for filtering hostvars.
-            avd_vault_id: Optional vault identity to use for encryption.
+            vault_id: Optional vault identity to use for encryption.
 
         Returns:
             List of hostnames that were templated successfully.
@@ -399,12 +393,11 @@ class ActionModule(AvdActionPlugin):
         start_time = perf_counter()
         successful_hosts = []
 
-        # Create a get_loader callable that returns the loader
-        # We need to capture self._loader in a way that's picklable
-        get_loader = LoaderWrapper(self._loader, vault_id=avd_vault_id)
+        # Create a loader wrapper
+        loader = LoaderWrapper(self._loader, vault_id=vault_id)
 
         # Partial to inject arguments into the worker.
-        worker_func = partial(_template_host_worker, output_path=output_path, schema_name=schema_name, get_loader=get_loader)
+        worker_func = partial(_template_host_worker, output_path=output_path, schema_name=schema_name, loader=loader)
         ctx = get_context("fork")
 
         with ProcessPoolExecutor(max_workers=workers, mp_context=ctx) as pool:
@@ -432,7 +425,7 @@ class ActionModule(AvdActionPlugin):
         schema_name: SCHEMA_NAME,
         fail_on_validation_errors: bool,
         configuration: Configuration | None,
-        avd_vault_id: str | None = None,
+        vault_id: str | None = None,
     ) -> None:
         """
         Run Phase 2: Validation.
@@ -451,7 +444,7 @@ class ActionModule(AvdActionPlugin):
             schema_name: Schema to validate against.
             fail_on_validation_errors: Whether to fail the task on validation errors.
             configuration: Configuration for validation or None.
-            avd_vault_id: Optional vault identity to use for encryption.
+            vault_id: Optional vault identity to use for encryption.
         """
         self.logger.info("Validating inputs...")
         start_time = perf_counter()
@@ -461,8 +454,8 @@ class ActionModule(AvdActionPlugin):
 
         init_store()
 
-        # Create a get_loader callable that returns the loader
-        get_loader = LoaderWrapper(self._loader, vault_id=avd_vault_id)
+        # Create a loader wrapper
+        loader = LoaderWrapper(self._loader, vault_id=vault_id)
 
         # Partial to inject arguments into the worker.
         worker_func = partial(
@@ -472,7 +465,7 @@ class ActionModule(AvdActionPlugin):
             output_path=output_path,
             schema_name=schema_name,
             configuration=configuration,
-            get_loader=get_loader,
+            loader=loader,
         )
 
         with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -506,7 +499,7 @@ class ActionModule(AvdActionPlugin):
         self.logger.info("Validation of inputs completed in %.2fs", perf_counter() - start_time)
 
 
-def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_NAME, get_loader: Callable[[], DataLoader]) -> TemplateWorkerResult:
+def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_NAME, loader: LoaderWrapper) -> TemplateWorkerResult:
     """
     Phase 1 multiprocessing worker: Template hostvars for a host.
 
@@ -517,7 +510,7 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
         hostname: Hostname to process.
         output_path: Directory path where the templated JSON file will be written.
         schema_name: Schema name used for filtering hostvars.
-        get_loader: Callable that returns the Ansible DataLoader for vault encryption if needed.
+        loader: LoaderWrapper instance holding the Ansible DataLoader for vault encryption if needed.
 
     Returns:
         TemplateWorkerSuccess on success, WorkerFailure on error.
@@ -547,7 +540,7 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
         data = data.encode("utf-8")
 
         # Encrypt data if vault is configured
-        data = get_loader.encrypt_if_needed(data)
+        data = loader.loader.encrypt_if_needed(data)
 
         # Write data to file
         output_file_path = output_path / f"{hostname}.json"
@@ -566,7 +559,7 @@ def _validate_host_worker(
     output_path: Path,
     schema_name: SCHEMA_NAME,
     configuration: Configuration | None,
-    get_loader: Callable[[], DataLoader],
+    loader: LoaderWrapper,
 ) -> ValidateWorkerResult:
     """
     Phase 2 multithreading worker: Validate input data for a host.
@@ -581,7 +574,7 @@ def _validate_host_worker(
         output_path: Directory path where the validated JSON file will be written.
         schema_name: Schema to validate against.
         configuration: Configuration for validation or None.
-        get_loader: Callable that returns the Ansible DataLoader for reading vaulted files and vault encryption if needed.
+        loader: LoaderWrapper instance holding the Ansible DataLoader for reading vaulted files and vault encryption if needed.
 
     Returns:
         ValidateWorkerSuccess on success (with validation result), WorkerFailure on error.
@@ -594,8 +587,7 @@ def _validate_host_worker(
             return WorkerFailure(hostname=hostname, error=f"Missing input data file: {input_file_path}")
 
         # Load data using Ansible DataLoader (handles both YAML/JSON and vault decryption)
-        loader = get_loader()
-        data = loader.load_from_file(str(input_file_path))
+        data = loader.loader.load_from_file(str(input_file_path))
         json_data = json.dumps(data)
 
         # Validation in Rust, releasing the GIL.
@@ -608,7 +600,7 @@ def _validate_host_worker(
             validated_data = validated_data.encode("utf-8")
 
             # Encrypt data if vault is configured
-            validated_data = get_loader.encrypt_if_needed(validated_data)
+            validated_data = loader.loader.encrypt_if_needed(validated_data)
 
             # Write data to file
             output_file_path = output_path / f"{hostname}.json"
