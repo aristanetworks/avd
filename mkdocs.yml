@@ -96,6 +96,9 @@ plugins:
         - docs/release-notes/5.x.x.md
         - docs/porting-guides/4.x.x.md
         - docs/porting-guides/5.x.x.md
+        - docs/pyavd/simple_example_5_to_6.md
+        - docs/pyavd/simple_example_5_x.md
+        - docs/pyavd/simple_example_6_x.md
         - ansible_collections/arista/avd/roles/*/docs/tables/*
         # Exclude the table used only as a snippet to avoid mkdocs info log
         - ansible_collections/arista/avd/roles/eos_designs/docs/node-type-variables.md
