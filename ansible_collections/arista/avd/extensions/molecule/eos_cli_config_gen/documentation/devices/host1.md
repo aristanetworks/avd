@@ -14560,7 +14560,6 @@ Priority Flow Control is **Off** on all interfaces.
 | drop | 0.05 | 1.22 | 10.001 | False |
 
 ```eos
-!
 priority-flow-control all off
 priority-flow-control pause watchdog default timeout 0.05
 priority-flow-control pause watchdog default recovery-time 1.22
