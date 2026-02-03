@@ -5,4 +5,6 @@
 # TODO: Update the URL below to point to the specific PR once it is merged
 - name: Role Removal Notice
   ansible.builtin.fail:
-    msg: "The 'eos_validate_state' role has been removed. Use 'anta_runner' instead. Please refer to the porting guide at https://avd.arista.com/devel/docs/porting-guides/6.x.x.html for migration instructions."
+    msg: |-
+      The 'eos_validate_state' role has been removed. Use 'anta_runner' instead.
+      Please refer to https://avd.arista.com/6.x/docs/porting-guides/6.x.x.html for migration instructions.

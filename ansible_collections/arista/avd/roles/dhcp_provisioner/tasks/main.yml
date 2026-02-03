@@ -4,4 +4,8 @@
 ---
 - name: Role Removal Notice
   ansible.builtin.fail:
-    msg: "The 'dhcp_provisioner' role has been removed. The role is not compatible with modern DHCP servers and should not be used for production. The 'arista.avd.dhcp_provisioner' role is released as open source, so it can be copied and reused according to the license and copyright. Please refer to the porting guide at https://avd.arista.com/devel/docs/porting-guides/6.x.x.html for more information."
+    msg: |-
+      The 'dhcp_provisioner' role has been removed. The role is not compatible with modern DHCP servers
+      and should not be used for production. The 'arista.avd.dhcp_provisioner' role is released as open
+      source, so it can be copied and reused according to the license and copyright.
+      Please refer to https://avd.arista.com/6.x/docs/porting-guides/6.x.x.html for more information.

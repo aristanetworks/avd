@@ -5,6 +5,6 @@
 - name: Role Removal Notice
   ansible.builtin.fail:
     msg: |-
-      The 'cvp_confilet_upload' role has been removed. Use 'cv_deploy' instead.
+      The 'cvp_configlet_upload' role has been removed. Use 'cv_deploy' instead.
       Please refer to https://avd.arista.com/6.x/docs/getting-started/cv-deploy-porting.html
       for migration instructions.
