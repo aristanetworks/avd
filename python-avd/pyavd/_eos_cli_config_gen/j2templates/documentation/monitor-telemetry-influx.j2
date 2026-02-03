@@ -19,7 +19,7 @@ Source Group Standard Disabled : {{ monitor_telemetry_influx.source_group_standa
 
 | Destination | Database | URL | VRF | Username |
 | ----------- | -------- | --- | --- | -------- |
-{%         for destination in monitor_telemetry_influx.destinations | arista.avd.natural_sort('name') %}
+{%         for destination in monitor_telemetry_influx.destinations | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 | {{ destination.name | arista.avd.default('-') }} | {{ destination.database | arista.avd.default('-') }} | {{ destination.url | arista.avd.default('-') }} | {{ monitor_telemetry_influx.vrf | arista.avd.default('-') }} | {{ destination.username | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
@@ -29,7 +29,7 @@ Source Group Standard Disabled : {{ monitor_telemetry_influx.source_group_standa
 
 | Source Name | URL | Connection Limit |
 | ----------- | --- | ---------------- |
-{%         for source in monitor_telemetry_influx.source_sockets | arista.avd.natural_sort('name') %}
+{%         for source in monitor_telemetry_influx.source_sockets | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 | {{ source.name | arista.avd.default('-') }} | {{ source.url | arista.avd.default('-') }} | {{ source.connection_limit | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
