@@ -540,7 +540,7 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
         data = data.encode("utf-8")
 
         # Encrypt data if vault is configured
-        data = loader.loader.encrypt_if_needed(data)
+        data = loader.encrypt_if_needed(data)
 
         # Write data to file
         output_file_path = output_path / f"{hostname}.json"
@@ -600,7 +600,7 @@ def _validate_host_worker(
             validated_data = validated_data.encode("utf-8")
 
             # Encrypt data if vault is configured
-            validated_data = loader.loader.encrypt_if_needed(validated_data)
+            validated_data = loader.encrypt_if_needed(validated_data)
 
             # Write data to file
             output_file_path = output_path / f"{hostname}.json"
