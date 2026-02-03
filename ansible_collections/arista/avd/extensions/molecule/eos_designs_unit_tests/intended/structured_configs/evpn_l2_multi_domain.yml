@@ -58,11 +58,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -80,6 +75,12 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   neighbors:
+  - ip_address: 192.168.255.4
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65233'
+    metadata:
+      peer: evpn_gateway_l2_l3_disabled
+    description: evpn_gateway_l2_l3_disabled_Loopback0
   - ip_address: 192.168.100.10
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65002'
@@ -93,7 +94,8 @@ router_bgp:
   vlans:
   - id: 150
     metadata:
-      tenant: L2_MULTI_DOMAIN_DISABLED
+      tenants:
+      - L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10150
     rd_evpn_domain:
       domain: remote
@@ -108,7 +110,8 @@ router_bgp:
     - learned
   - id: 160
     metadata:
-      tenant: L2_MULTI_DOMAIN_DISABLED
+      tenants:
+      - L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10160
     rd_evpn_domain:
       domain: remote
@@ -123,7 +126,8 @@ router_bgp:
     - learned
   - id: 170
     metadata:
-      tenant: L2_MULTI_DOMAIN_DISABLED
+      tenants:
+      - L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10170
     route_targets:
       both:
@@ -132,7 +136,8 @@ router_bgp:
     - learned
   - id: 110
     metadata:
-      tenant: L2_MULTI_DOMAIN_DISABLED
+      tenants:
+      - L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10110
     route_targets:
       both:
@@ -141,7 +146,8 @@ router_bgp:
     - learned
   - id: 111
     metadata:
-      tenant: L2_MULTI_DOMAIN_DISABLED
+      tenants:
+      - L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10111
     rd_evpn_domain:
       domain: remote
@@ -156,7 +162,8 @@ router_bgp:
     - learned
   - id: 190
     metadata:
-      tenant: L2_MULTI_DOMAIN_DISABLED
+      tenants:
+      - L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10190
     rd_evpn_domain:
       domain: remote
@@ -171,7 +178,8 @@ router_bgp:
     - learned
   - id: 180
     metadata:
-      tenant: L2_MULTI_DOMAIN_DISABLED
+      tenants:
+      - L2_MULTI_DOMAIN_DISABLED
     rd: 192.168.255.5:10180
     route_targets:
       both:
@@ -180,7 +188,8 @@ router_bgp:
     - learned
   - id: 250
     metadata:
-      tenant: L2_MULTI_DOMAIN_ENABLED
+      tenants:
+      - L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20250
     route_targets:
       both:
@@ -189,7 +198,8 @@ router_bgp:
     - learned
   - id: 260
     metadata:
-      tenant: L2_MULTI_DOMAIN_ENABLED
+      tenants:
+      - L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20260
     route_targets:
       both:
@@ -198,7 +208,8 @@ router_bgp:
     - learned
   - id: 270
     metadata:
-      tenant: L2_MULTI_DOMAIN_ENABLED
+      tenants:
+      - L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20270
     rd_evpn_domain:
       domain: remote
@@ -213,7 +224,8 @@ router_bgp:
     - learned
   - id: 210
     metadata:
-      tenant: L2_MULTI_DOMAIN_ENABLED
+      tenants:
+      - L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20210
     rd_evpn_domain:
       domain: remote
@@ -228,7 +240,8 @@ router_bgp:
     - learned
   - id: 211
     metadata:
-      tenant: L2_MULTI_DOMAIN_ENABLED
+      tenants:
+      - L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20211
     route_targets:
       both:
@@ -237,7 +250,8 @@ router_bgp:
     - learned
   - id: 290
     metadata:
-      tenant: L2_MULTI_DOMAIN_ENABLED
+      tenants:
+      - L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20290
     route_targets:
       both:
@@ -246,7 +260,8 @@ router_bgp:
     - learned
   - id: 280
     metadata:
-      tenant: L2_MULTI_DOMAIN_ENABLED
+      tenants:
+      - L2_MULTI_DOMAIN_ENABLED
     rd: 192.168.255.5:20280
     rd_evpn_domain:
       domain: remote
@@ -261,21 +276,19 @@ router_bgp:
     - learned
   address_family_evpn:
     peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     - name: EVPN-OVERLAY-CORE
       activate: true
       domain_remote: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_rtc:
     peer_groups:
-    - name: EVPN-OVERLAY-CORE
-      activate: true
     - name: EVPN-OVERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-CORE
       activate: true
   address_family_ipv4:
     peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
     - name: EVPN-OVERLAY-CORE
@@ -350,70 +363,80 @@ vlan_interfaces:
   vrf: L2_MULTI_DOMAIN_ENABLED
   ip_address_virtual: 10.1.50.1/24
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - name: Vlan160
   description: L2_MULTI_DOMAIN_NEUTRAL
   shutdown: false
   vrf: L2_MULTI_DOMAIN_ENABLED
   ip_address_virtual: 10.1.60.1/24
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - name: Vlan170
   description: L2_MULTI_DOMAIN_DISABLED
   shutdown: false
   vrf: L2_MULTI_DOMAIN_ENABLED
   ip_address_virtual: 10.1.70.1/24
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - name: Vlan110
   description: L2_MULTI_DOMAIN_NEUTRAL
   shutdown: false
   vrf: L2_MULTI_DOMAIN_NEUTRAL_1
   ip_address_virtual: 10.1.10.1/24
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - name: Vlan111
   description: L2_MULTI_DOMAIN_ENABLED
   shutdown: false
   vrf: L2_MULTI_DOMAIN_NEUTRAL_1
   ip_address_virtual: 10.1.11.1/24
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - name: Vlan250
   description: L2_MULTI_DOMAIN_NEUTRAL
   shutdown: false
   vrf: L2_MULTI_DOMAIN_DISBLED
   ip_address_virtual: 10.2.50.1/24
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 - name: Vlan260
   description: L2_MULTI_DOMAIN_NEUTRAL
   shutdown: false
   vrf: L2_MULTI_DOMAIN_DISBLED
   ip_address_virtual: 10.2.60.1/24
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 - name: Vlan270
   description: L2_MULTI_DOMAIN_ENABLED
   shutdown: false
   vrf: L2_MULTI_DOMAIN_DISBLED
   ip_address_virtual: 10.2.70.1/24
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 - name: Vlan210
   description: L2_MULTI_DOMAIN_NEUTRAL
   shutdown: false
   vrf: L2_MULTI_DOMAIN_NEUTRAL_2
   ip_address_virtual: 10.2.10.1/24
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 - name: Vlan211
   description: L2_MULTI_DOMAIN_DISABLED
   shutdown: false
   vrf: L2_MULTI_DOMAIN_NEUTRAL_2
   ip_address_virtual: 10.2.11.1/24
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 vlan_internal_order:
   allocation: ascending
   range:
@@ -423,78 +446,96 @@ vlans:
 - id: 150
   name: L2_MULTI_DOMAIN_NEUTRAL
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - id: 160
   name: L2_MULTI_DOMAIN_NEUTRAL
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - id: 170
   name: L2_MULTI_DOMAIN_DISABLED
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - id: 110
   name: L2_MULTI_DOMAIN_NEUTRAL
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - id: 111
   name: L2_MULTI_DOMAIN_ENABLED
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - id: 180
   name: L2_MULTI_DOMAIN_NEUTRAL
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - id: 190
   name: L2_MULTI_DOMAIN_ENABLED
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - id: 250
   name: L2_MULTI_DOMAIN_NEUTRAL
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 - id: 260
   name: L2_MULTI_DOMAIN_NEUTRAL
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 - id: 270
   name: L2_MULTI_DOMAIN_ENABLED
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 - id: 210
   name: L2_MULTI_DOMAIN_NEUTRAL
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 - id: 211
   name: L2_MULTI_DOMAIN_DISABLED
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 - id: 280
   name: L2_MULTI_DOMAIN_NEUTRAL
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 - id: 290
   name: L2_MULTI_DOMAIN_DISABLED
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: L2_MULTI_DOMAIN_ENABLED
   ip_routing: true
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - name: L2_MULTI_DOMAIN_NEUTRAL_1
   ip_routing: true
   metadata:
-    tenant: L2_MULTI_DOMAIN_DISABLED
+    tenants:
+    - L2_MULTI_DOMAIN_DISABLED
 - name: L2_MULTI_DOMAIN_DISBLED
   ip_routing: true
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 - name: L2_MULTI_DOMAIN_NEUTRAL_2
   ip_routing: true
   metadata:
-    tenant: L2_MULTI_DOMAIN_ENABLED
+    tenants:
+    - L2_MULTI_DOMAIN_ENABLED
 vxlan_interface:
   vxlan1:
     description: evpn_l2_multi_domain_VTEP

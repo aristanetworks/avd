@@ -44,20 +44,10 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
@@ -66,7 +56,8 @@ vlan_interfaces:
   shutdown: true
   vrf: TEST
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
     tags:
     - leaf1
     - leaf2
@@ -76,7 +67,8 @@ vlan_interfaces:
   shutdown: true
   vrf: TEST
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
     tags:
     - leaf1
 - name: Vlan3902
@@ -84,7 +76,8 @@ vlan_interfaces:
   shutdown: true
   vrf: TEST
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
     tags:
     - leaf1
     - leaf2
@@ -97,34 +90,41 @@ vlans:
 - id: 3900
   name: SVI_ON_ALL_LEAFS
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 3901
   name: SVI_ON_LEAF1
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 3902
   name: SVI_ON_LEAF1-2
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 2900
   name: L2VLAN_ON_ALL_LEAFS
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 2901
   name: L2VLAN_ON_LEAF1
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 2902
   name: L2VLAN_ON_LEAF1-2
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST
   ip_routing: true
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vxlan_interface:
   vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF1_VTEP

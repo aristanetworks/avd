@@ -526,7 +526,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     allowas_in:
       enabled: true
       times: 1
@@ -793,15 +793,18 @@ vrfs:
 - name: IT
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: PROD
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: ATTRACTED-VRF-FROM-UPLINK
   ip_routing: true
   metadata:
-    tenant: TenantC
+    tenants:
+    - TenantC
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-edge2B_VTEP

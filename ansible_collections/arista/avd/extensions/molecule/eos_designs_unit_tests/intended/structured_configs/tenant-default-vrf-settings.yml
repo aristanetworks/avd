@@ -52,14 +52,6 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-- name: RM-BGP-UNDERLAY-PEERS-OUT
-  sequence_numbers:
-  - sequence: 15
-    type: deny
-    match:
-    - ip address prefix-list PL-STATIC-VRF-DEFAULT
-  - sequence: 20
-    type: permit
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 20
@@ -81,21 +73,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   aggregate_addresses:
   - prefix: 10.1.1.0/8
     advertise_only: true
@@ -108,23 +85,14 @@ router_bgp:
   vlans:
   - id: 111
     metadata:
-      tenant: TEST
+      tenants:
+      - TEST
     rd: 10.10.0.3:10111
     route_targets:
       both:
       - 10111:10111
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: default
     rd: 10.10.0.3:111
@@ -149,7 +117,8 @@ vlan_interfaces:
   description: svi_with_default_vrf
   shutdown: true
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
     tags:
     - fabric
 vlan_internal_order:
@@ -164,7 +133,8 @@ vlans:
 - id: 111
   name: svi_with_default_vrf
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vrfs:
 - name: MGMT
   ip_routing: false

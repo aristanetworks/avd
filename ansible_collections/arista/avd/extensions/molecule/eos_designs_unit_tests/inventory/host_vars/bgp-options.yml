@@ -18,4 +18,4 @@ bgp_maximum_paths: 600
 bgp_ecmp: 600
 
 # Test for remove redundant command no neighbor activate when no bgp default ipv4-unicast is configured
-avd_remove_bgp_redundant_command: true
+bgp_always_disable_ipv4_unicast_for_peer_groups: false

@@ -6,12 +6,10 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  avd_remove_bgp_redundant_command:
+  bgp_always_disable_ipv4_unicast_for_peer_groups:
     documentation_options:
       table: role-settings
     type: bool
     description: |-
-      When set to `true`, suppress rendering of the redundant IPv4 address-family command
-      `no neighbor <peer-group> activate` when IPv4 unicast is already globally disabled
-      using `bgp_default_ipv4_unicast: false`.
-    default: false
+      Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by default.
+    default: true

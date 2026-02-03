@@ -160,15 +160,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
+    maximum_routes: 256000
   neighbors:
   - ip_address: 10.10.50.14
     peer_group: IPv4-UNDERLAY-PEERS
@@ -194,16 +186,10 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: VRF10
     rd: 10.10.10.8:10
@@ -249,7 +235,8 @@ vrfs:
 - name: VRF10
   ip_routing: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vxlan_interface:
   vxlan1:
     description: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_VTEP

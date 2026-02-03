@@ -234,7 +234,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -263,7 +263,8 @@ router_bgp:
   vlans:
   - id: 310
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.6:10310
     route_targets:
       both:
@@ -272,7 +273,8 @@ router_bgp:
     - learned
   - id: 311
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.6:10311
     route_targets:
       both:
@@ -281,7 +283,8 @@ router_bgp:
     - learned
   - id: 110
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.6:10110
     route_targets:
       both:
@@ -291,7 +294,8 @@ router_bgp:
     - igmp
   - id: 111
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.6:10111
     route_targets:
       both:
@@ -301,7 +305,8 @@ router_bgp:
     - igmp
   - id: 210
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.6:10210
     route_targets:
       both:
@@ -311,7 +316,8 @@ router_bgp:
     - igmp
   - id: 211
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.6:10211
     route_targets:
       both:
@@ -320,7 +326,8 @@ router_bgp:
     - learned
   - id: 256
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.6:10256
     route_targets:
       both:
@@ -329,7 +336,8 @@ router_bgp:
     - learned
   - id: 257
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.6:10257
     route_targets:
       both:
@@ -339,7 +347,8 @@ router_bgp:
     - igmp
   - id: 4092
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.6:14092
     route_targets:
       both:
@@ -349,7 +358,8 @@ router_bgp:
     - igmp
   - id: 5
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.6:10005
     route_targets:
       both:
@@ -358,7 +368,8 @@ router_bgp:
     - learned
   - id: 6
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.6:10006
     route_targets:
       both:
@@ -367,7 +378,8 @@ router_bgp:
     - learned
   - id: 1
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.6:10001
     route_targets:
       both:
@@ -377,7 +389,8 @@ router_bgp:
     - igmp
   - id: 2
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.6:10002
     route_targets:
       both:
@@ -387,7 +400,8 @@ router_bgp:
     - igmp
   - id: 3
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.6:10003
     route_targets:
       both:
@@ -397,7 +411,8 @@ router_bgp:
     - igmp
   - id: 4
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.6:10004
     route_targets:
       both:
@@ -406,7 +421,8 @@ router_bgp:
     - learned
   - id: 7
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.6:10007
     route_targets:
       both:
@@ -415,7 +431,8 @@ router_bgp:
     - learned
   - id: 8
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.6:10008
     route_targets:
       both:
@@ -425,7 +442,8 @@ router_bgp:
     - igmp
   - id: 9
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.6:10009
     route_targets:
       both:
@@ -435,7 +453,8 @@ router_bgp:
     - igmp
   - id: 10
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.6:10010
     route_targets:
       both:
@@ -444,7 +463,8 @@ router_bgp:
     - learned
   - id: 330
     metadata:
-      tenant: Tenant_C
+      tenants:
+      - Tenant_C
     rd: 192.168.255.6:10330
     route_targets:
       both:
@@ -453,7 +473,8 @@ router_bgp:
     - learned
   - id: 331
     metadata:
-      tenant: Tenant_C
+      tenants:
+      - Tenant_C
     rd: 192.168.255.6:10331
     route_targets:
       both:
@@ -462,7 +483,8 @@ router_bgp:
     - learned
   - id: 130
     metadata:
-      tenant: Tenant_C
+      tenants:
+      - Tenant_C
     rd: 192.168.255.6:10130
     route_targets:
       both:
@@ -471,7 +493,8 @@ router_bgp:
     - learned
   - id: 131
     metadata:
-      tenant: Tenant_C
+      tenants:
+      - Tenant_C
     rd: 192.168.255.6:10131
     route_targets:
       both:
@@ -480,7 +503,8 @@ router_bgp:
     - learned
   - id: 136
     metadata:
-      tenant: Tenant_C
+      tenants:
+      - Tenant_C
     rd: 192.168.255.6:10136
     route_targets:
       both:
@@ -490,7 +514,8 @@ router_bgp:
     - igmp
   - id: 137
     metadata:
-      tenant: Tenant_C
+      tenants:
+      - Tenant_C
     rd: 192.168.255.6:10137
     route_targets:
       both:
@@ -499,7 +524,8 @@ router_bgp:
     - learned
   - id: 230
     metadata:
-      tenant: Tenant_C
+      tenants:
+      - Tenant_C
     rd: 192.168.255.6:10230
     route_targets:
       both:
@@ -508,7 +534,8 @@ router_bgp:
     - learned
   - id: 231
     metadata:
-      tenant: Tenant_C
+      tenants:
+      - Tenant_C
     rd: 192.168.255.6:10231
     route_targets:
       both:
@@ -517,7 +544,8 @@ router_bgp:
     - learned
   - id: 240
     metadata:
-      tenant: Tenant_D
+      tenants:
+      - Tenant_D
     rd: 192.168.255.6:10240
     route_targets:
       both:
@@ -526,7 +554,8 @@ router_bgp:
     - learned
   - id: 241
     metadata:
-      tenant: Tenant_D
+      tenants:
+      - Tenant_D
     rd: 192.168.255.6:10241
     route_targets:
       both:
@@ -535,7 +564,8 @@ router_bgp:
     - learned
   - id: 140
     metadata:
-      tenant: Tenant_D
+      tenants:
+      - Tenant_D
     rd: 192.168.255.6:10140
     route_targets:
       both:
@@ -544,7 +574,8 @@ router_bgp:
     - learned
   - id: 141
     metadata:
-      tenant: Tenant_D
+      tenants:
+      - Tenant_D
     rd: 192.168.255.6:10141
     route_targets:
       both:
@@ -553,7 +584,8 @@ router_bgp:
     - learned
   - id: 550
     metadata:
-      tenant: Tenant_E
+      tenants:
+      - Tenant_E
     rd: 192.168.255.6:10550
     route_targets:
       both:
@@ -562,7 +594,8 @@ router_bgp:
     - learned
   - id: 260
     metadata:
-      tenant: Tenant_E
+      tenants:
+      - Tenant_E
     rd: 192.168.255.6:10260
     route_targets:
       both:
@@ -571,7 +604,8 @@ router_bgp:
     - learned
   - id: 250
     metadata:
-      tenant: Tenant_E
+      tenants:
+      - Tenant_E
     rd: 192.168.255.6:10250
     route_targets:
       both:
@@ -580,7 +614,8 @@ router_bgp:
     - learned
   - id: 150
     metadata:
-      tenant: Tenant_E
+      tenants:
+      - Tenant_E
     rd: 192.168.255.6:10150
     route_targets:
       both:
@@ -589,7 +624,8 @@ router_bgp:
     - learned
   - id: 251
     metadata:
-      tenant: Tenant_F
+      tenants:
+      - Tenant_F
     rd: 192.168.255.6:10251
     route_targets:
       both:
@@ -598,7 +634,8 @@ router_bgp:
     - learned
   - id: 252
     metadata:
-      tenant: Tenant_F
+      tenants:
+      - Tenant_F
     rd: 192.168.255.6:10252
     route_targets:
       both:
@@ -961,7 +998,8 @@ vlan_interfaces:
   vrf: MULTICAST_DISABLED_310_311
   ip_address_virtual: 10.3.10.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 - name: Vlan311
@@ -970,7 +1008,8 @@ vlan_interfaces:
   vrf: MULTICAST_DISABLED_310_311
   ip_address_virtual: 10.3.11.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 - name: Vlan110
@@ -979,7 +1018,8 @@ vlan_interfaces:
   vrf: MULTICAST_ENABLED_110_111
   ip_address_virtual: 10.1.10.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 - name: Vlan111
@@ -988,7 +1028,8 @@ vlan_interfaces:
   vrf: MULTICAST_ENABLED_110_111
   ip_address_virtual: 10.1.11.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 - name: Vlan210
@@ -997,7 +1038,8 @@ vlan_interfaces:
   vrf: MULTICAST_ENABLED_210_DISABLED_211
   ip_address_virtual: 10.2.10.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 - name: Vlan211
@@ -1006,7 +1048,8 @@ vlan_interfaces:
   vrf: MULTICAST_ENABLED_210_DISABLED_211
   ip_address_virtual: 10.2.11.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 - name: Vlan5
@@ -1015,7 +1058,8 @@ vlan_interfaces:
   vrf: MULTICAST_DISABLED_5_6
   ip_address_virtual: 10.0.5.1/24
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
     tags:
     - test_l3
 - name: Vlan6
@@ -1024,7 +1068,8 @@ vlan_interfaces:
   vrf: MULTICAST_DISABLED_5_6
   ip_address_virtual: 10.0.6.1/24
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
     tags:
     - test_l3
 - name: Vlan1
@@ -1033,7 +1078,8 @@ vlan_interfaces:
   vrf: MULTICAST_ENABLED_1_2
   ip_address_virtual: 10.0.1.1/24
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
     tags:
     - test_l3
 - name: Vlan2
@@ -1042,7 +1088,8 @@ vlan_interfaces:
   vrf: MULTICAST_ENABLED_1_2
   ip_address_virtual: 10.0.2.1/24
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
     tags:
     - test_l3
 - name: Vlan3
@@ -1051,7 +1098,8 @@ vlan_interfaces:
   vrf: MULTICAST_ENABLED_3_DISABLED_4
   ip_address_virtual: 10.0.3.1/24
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
     tags:
     - test_l3
 - name: Vlan4
@@ -1060,7 +1108,8 @@ vlan_interfaces:
   vrf: MULTICAST_ENABLED_3_DISABLED_4
   ip_address_virtual: 10.0.4.1/24
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
     tags:
     - test_l3
 - name: Vlan330
@@ -1069,7 +1118,8 @@ vlan_interfaces:
   vrf: TEN_C_L3_MULTICAST_DISABLED_330_331
   ip_address_virtual: 10.3.33.1/24
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
     tags:
     - test_l3
 - name: Vlan331
@@ -1078,7 +1128,8 @@ vlan_interfaces:
   vrf: TEN_C_L3_MULTICAST_DISABLED_330_331
   ip_address_virtual: 10.3.34.1/24
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
     tags:
     - test_l3
 - name: Vlan130
@@ -1091,7 +1142,8 @@ vlan_interfaces:
     ipv4:
       local_interface: Loopback31
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
     tags:
     - test_l3
 - name: Vlan131
@@ -1103,7 +1155,8 @@ vlan_interfaces:
   - 10.1.14.1
   ip_igmp: true
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
     tags:
     - test_l3
 - name: Vlan136
@@ -1115,7 +1168,8 @@ vlan_interfaces:
     ipv4:
       local_interface: Loopback31
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - name: Vlan137
   description: L3_L2_MULTICAST_ENABLED_137
   shutdown: false
@@ -1125,7 +1179,8 @@ vlan_interfaces:
     ipv4:
       local_interface: Loopback31
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - name: Vlan230
   description: L3_MULTICAST_ENABLED_230
   shutdown: false
@@ -1136,7 +1191,8 @@ vlan_interfaces:
     ipv4:
       local_interface: Loopback32
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
     tags:
     - test_l3
 - name: Vlan231
@@ -1145,7 +1201,8 @@ vlan_interfaces:
   vrf: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
   ip_address_virtual: 10.2.24.1/24
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
     tags:
     - test_l3
 - name: Vlan240
@@ -1154,7 +1211,8 @@ vlan_interfaces:
   vrf: TEN_D_L3_MULTICAST_DISABLED_240_241
   ip_address_virtual: 10.1.24.1/24
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
     tags:
     - test_l3
 - name: Vlan241
@@ -1163,7 +1221,8 @@ vlan_interfaces:
   vrf: TEN_D_L3_MULTICAST_DISABLED_240_241
   ip_address_virtual: 10.1.25.1/24
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
     tags:
     - test_l3
 - name: Vlan140
@@ -1176,7 +1235,8 @@ vlan_interfaces:
     ipv4:
       local_interface: Loopback41
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
     tags:
     - test_l3
 - name: Vlan141
@@ -1185,7 +1245,8 @@ vlan_interfaces:
   vrf: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
   ip_address_virtual: 10.1.15.1/24
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
     tags:
     - test_l3
 - name: Vlan550
@@ -1198,7 +1259,8 @@ vlan_interfaces:
     ipv4:
       local_interface: Loopback55
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
     tags:
     - test_l3
 - name: Vlan260
@@ -1211,7 +1273,8 @@ vlan_interfaces:
     ipv4:
       local_interface: Loopback60
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
     tags:
     - test_l3
 - name: Vlan250
@@ -1224,7 +1287,8 @@ vlan_interfaces:
     ipv4:
       local_interface: Loopback52
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
     tags:
     - test_l3
 - name: Vlan150
@@ -1237,7 +1301,8 @@ vlan_interfaces:
     ipv4:
       local_interface: Loopback51
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
     tags:
     - test_l3
 vlan_internal_order:
@@ -1249,151 +1314,188 @@ vlans:
 - id: 310
   name: MULTICAST_DISABLED_310
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 311
   name: MULTICAST_DISABLED_311
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 110
   name: MULTICAST_ENABLED_110
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 111
   name: MULTICAST_ENABLED_111
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 210
   name: MULTICAST_ENABLED_210
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 211
   name: MULTICAST_DISABLED_211
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 256
   name: MULTICAST_DISABLED_256
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 257
   name: MULTICAST_ENABLED_257
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 4092
   name: MULTICAST_ENABLED_4092
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 5
   name: MULTICAST_DISABLED_5
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 6
   name: MULTICAST_DISABLED_6
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 1
   name: MULTICAST_ENABLED_1
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 2
   name: MULTICAST_ENABLED_2
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 3
   name: MULTICAST_ENABLED_3
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 4
   name: MULTICAST_DISABLED_4
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 7
   name: MULTICAST_DISABLED_7
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 8
   name: MULTICAST_ENABLED_8
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 9
   name: MULTICAST_ENABLED_9
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 10
   name: MULTICAST_VXLAN_FLOOD_ENABLED_WITH_UNDERLAY_MULTICAST_GROUP
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 330
   name: L3_MULTICAST_DISABLED_330
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 331
   name: L3_MULTICAST_DISABLED_331
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 130
   name: L3_MULTICAST_ENABLED_130
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 131
   name: L3_MULTICAST_ENABLED_131
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 136
   name: L3_L2_MULTICAST_ENABLED_136
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 137
   name: L3_L2_MULTICAST_ENABLED_137
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 230
   name: L3_MULTICAST_ENABLED_230
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 231
   name: L3_MULTICAST_DISABLED_231
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 240
   name: L3_MULTICAST_DISABLED_240
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 241
   name: L3_MULTICAST_DISABLED_241
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 140
   name: L3_MULTICAST_ENABLED_140
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 141
   name: L3_MULTICAST_DISABLED_141
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 550
   name: L3_MULTICAST_ENABLED_550
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
 - id: 260
   name: L3_MULTICAST_ENABLED_260
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
 - id: 250
   name: L3_MULTICAST_ENABLED_250
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
 - id: 150
   name: L3_MULTICAST_ENABLED_150
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
 - id: 251
   name: MULTICAST_DISABLED_251
   metadata:
-    tenant: Tenant_F
+    tenants:
+    - Tenant_F
 - id: 252
   name: MULTICAST_ENABLED_252
   metadata:
-    tenant: Tenant_F
+    tenants:
+    - Tenant_F
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -1401,77 +1503,92 @@ vrfs:
   description: MULTICAST_DISABLED_310_311
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: MULTICAST_ENABLED_110_111
   description: MULTICAST_ENABLED_110_111
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: MULTICAST_ENABLED_210_DISABLED_211
   description: MULTICAST_ENABLED_210_DISABLED_211
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: MULTICAST_DISABLED_5_6
   description: MULTICAST_DISABLED_5_6
   ip_routing: true
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - name: MULTICAST_ENABLED_1_2
   description: MULTICAST_ENABLED_1_2
   ip_routing: true
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - name: MULTICAST_ENABLED_3_DISABLED_4
   description: MULTICAST_ENABLED_3_DISABLED_4
   ip_routing: true
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - name: TEN_C_L3_MULTICAST_DISABLED_330_331
   description: L3_MULTICAST_DISABLED_330_331
   ip_routing: true
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - name: TEN_C_L3_MULTICAST_ENABLED_130_131
   description: L3_MULTICAST_ENABLED_130_131
   ip_routing: true
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
   description: L3_MULTICAST_ENABLED_230_DISABLED_231
   ip_routing: true
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - name: TEN_D_L3_MULTICAST_DISABLED_240_241
   description: L3_MULTICAST_DISABLED_240_241
   ip_routing: true
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
   description: L3_MULTICAST_ENABLED_140_DISABLED_141
   ip_routing: true
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
   description: L3_MULTICAST_ENABLED_PEG_OVERRIDE
   ip_routing: true
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
 - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
   description: L3_MULTICAST_TRANSIT
   ip_routing: true
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
 - name: TEN_E_L3_MULTICAST_TRANSIT
   description: L3_MULTICAST_TRANSIT
   ip_routing: true
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
 - name: TEN_E_PEG_L3_MULTICAST_ENABLED
   description: PEG_L3_MULTICAST_ENABLED in Tenant E
   ip_routing: true
   metadata:
-    tenant: Tenant_E
+    tenants:
+    - Tenant_E
 vxlan_interface:
   vxlan1:
     description: EVPN-MULTICAST-L3LEAF3A_VTEP

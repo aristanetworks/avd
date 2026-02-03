@@ -297,8 +297,8 @@ vlan 350
 | Ethernet7 | test | - | 10.10.10.10/24 | Tenant_A_WAN_Zone | 9000 | False | - | - |
 | Ethernet8 | test | - | 10.10.10.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
 | Ethernet9 | test | - | 10.10.20.20/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
-| Ethernet10.100 | subinterface test | - | 10.10.11.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
-| Ethernet10.200 | subinterface test with vlan override | - | 10.10.21.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
+| Ethernet10.100 | subinterface test | - | 10.10.11.10/24 | Tenant_L3_VRF_Zone | - | False | - | - |
+| Ethernet10.200 | subinterface test with vlan override | - | 10.10.21.10/24 | Tenant_L3_VRF_Zone | - | False | - | - |
 | Ethernet41 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet6 | - | 172.31.255.81/31 | default | 1500 | False | - | - |
 | Ethernet42 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet6 | - | 172.31.255.83/31 | default | 1500 | False | - | - |
 | Ethernet43 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet6 | - | 172.31.255.85/31 | default | 1500 | False | - | - |
@@ -340,7 +340,6 @@ interface Ethernet10
 interface Ethernet10.100
    description subinterface test
    no shutdown
-   mtu 9000
    encapsulation dot1q vlan 100
    vrf Tenant_L3_VRF_Zone
    ip address 10.10.11.10/24
@@ -348,7 +347,6 @@ interface Ethernet10.100
 interface Ethernet10.200
    description subinterface test with vlan override
    no shutdown
-   mtu 9000
    encapsulation dot1q vlan 121
    vrf Tenant_L3_VRF_Zone
    ip address 10.10.21.10/24
@@ -634,7 +632,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -704,7 +702,7 @@ router bgp 65104
    neighbor UNDERLAY-PEERS peer group
    neighbor UNDERLAY-PEERS password 7 <removed>
    neighbor UNDERLAY-PEERS send-community
-   neighbor UNDERLAY-PEERS maximum-routes 12000
+   neighbor UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.31.255.80 peer group UNDERLAY-PEERS
    neighbor 172.31.255.80 remote-as 65001
    neighbor 172.31.255.80 description DC1-SPINE1_Ethernet6

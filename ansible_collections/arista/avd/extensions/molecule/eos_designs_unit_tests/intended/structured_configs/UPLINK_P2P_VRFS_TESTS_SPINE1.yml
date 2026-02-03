@@ -110,7 +110,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   neighbors:
   - ip_address: 10.42.42.9
     peer_group: IPv4-UNDERLAY-PEERS
@@ -169,8 +169,10 @@ vrfs:
 - name: PROD
   ip_routing: true
   metadata:
-    tenant: TenantB
+    tenants:
+    - TenantB
 - name: ONLY-ON-L2LEAF
   ip_routing: true
   metadata:
-    tenant: TenantC
+    tenants:
+    - TenantC

@@ -200,13 +200,13 @@ router_bgp:
     description: site4-border2
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -241,7 +241,8 @@ router_bgp:
   vlans:
   - id: 666
     metadata:
-      tenant: WAN-EXAMPLE-TENANT
+      tenants:
+      - WAN-EXAMPLE-TENANT
     rd: 192.168.255.13:10666
     route_targets:
       both:
@@ -250,7 +251,8 @@ router_bgp:
     - learned
   - id: 42
     metadata:
-      tenant: WAN-EXAMPLE-TENANT
+      tenants:
+      - WAN-EXAMPLE-TENANT
     rd: 192.168.255.13:10042
     route_targets:
       both:
@@ -336,7 +338,8 @@ vlan_interfaces:
   vrf: BLUE
   ip_address: 10.66.4.1/24
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: Vlan3099
   description: MLAG_L3_VRF_BLUE
   shutdown: false
@@ -344,7 +347,8 @@ vlan_interfaces:
   ip_address: 10.255.251.24/31
   mtu: 9214
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
     type: underlay_peering
 - name: Vlan42
   description: RED-TEST
@@ -352,7 +356,8 @@ vlan_interfaces:
   vrf: RED
   ip_address: 10.42.4.1/24
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: Vlan3100
   description: MLAG_L3_VRF_RED
   shutdown: false
@@ -360,7 +365,8 @@ vlan_interfaces:
   ip_address: 10.255.251.24/31
   mtu: 9214
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -373,44 +379,52 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 666
   name: BLUE-TEST
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - id: 3099
   name: MLAG_L3_VRF_BLUE
   trunk_groups:
   - MLAG
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - id: 42
   name: RED-TEST
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - id: 3100
   name: MLAG_L3_VRF_RED
   trunk_groups:
   - MLAG
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: BLUE
   ip_routing: true
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: RED
   ip_routing: true
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vxlan_interface:
   vxlan1:
     description: site4-border1_VTEP

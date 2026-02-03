@@ -141,14 +141,16 @@ vlans:
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 100
   name: svi100_with_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 200
   name: svi200_with_trunk_groups
   trunk_groups:
@@ -156,7 +158,8 @@ vlans:
   - CUSTOM_UPLINK_TG_NAME
   - TG_200
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 300
   name: svi300_with_trunk_groups
   trunk_groups:
@@ -164,21 +167,24 @@ vlans:
   - CUSTOM_UPLINK_TG_NAME
   - TG_300
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 398
   name: svi398_without_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 110
   name: l2vlan110_with_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 210
   name: l2vlan210_with_trunk_groups
   trunk_groups:
@@ -186,7 +192,8 @@ vlans:
   - CUSTOM_UPLINK_TG_NAME
   - TG_200
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 310
   name: l2vlan310_with_trunk_groups
   trunk_groups:
@@ -194,14 +201,16 @@ vlans:
   - CUSTOM_UPLINK_TG_NAME
   - TG_300
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 399
   name: l2vlan399_without_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false

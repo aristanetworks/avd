@@ -878,6 +878,18 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
+  avd_structured_config_file_format:
+    documentation_options:
+      table: role-settings
+    type: str
+    default: yml
+    valid_values:
+    - yml
+    - yaml
+    - json
+    description: 'The file format to use when loading structured configuration files.
+
+      '
   banners:
     type: dict
     keys:
@@ -2371,6 +2383,15 @@ keys:
         type: bool
         default: true
         description: Generate the table of content(TOC) on device documentation.
+  eos_cli_config_gen_validate_inputs_batch_size:
+    documentation_options:
+      table: role-settings
+    type: int
+    default: 10
+    description: 'The number of hosts to process in each batch when validating inputs.
+
+      Depending on your inventory size and the available resources, you may want to
+      adjust this number.'
   errdisable:
     type: dict
     keys:
@@ -5484,31 +5505,9 @@ keys:
             type: bool
   generate_default_config:
     type: bool
+    documentation_options:
+      table: role-settings
     default: false
-    description: 'The `generate_default_config` knob allows to omit default EOS configuration.
-
-      This can be useful when leveraging `eos_cli_config_gen` to generate configlets
-      with CloudVision.
-
-
-      The following commands will be omitted when `generate_default_config` is set
-      to `false`:
-
-
-      - RANCID Content Type
-
-      - Hostname (even if `hostname` variable is not set. Then the hostname is picked
-      up from `inventory_hostname`)
-
-      - Default configuration for `aaa`
-
-      - Default configuration for `enable password`
-
-      - Transceiver qsfp default mode
-
-      - End of configuration delimiter
-
-      '
     deprecation:
       warning: true
       removed: true
@@ -7017,10 +7016,16 @@ keys:
           remote_id_format:
             type: str
             valid_values:
+            - '%m:%h:%p'
             - '%m:%i'
             - '%m:%p'
-            description: Add RemoteID option 37 in format MAC address and interface
-              ID (`%m:%i`) or MAC address and interface name (`%m:%p`).
+            description: 'Add RemoteID option 37 in format
+
+              - MAC address, hostname and interface name (`%m:%h:%p`)
+
+              - MAC address and interface ID (`%m:%i`)
+
+              - MAC address and interface name (`%m:%p`)'
   ipv6_hardware:
     type: dict
     keys:
@@ -14638,6 +14643,18 @@ keys:
       tls_ssl_profile:
         type: str
         description: Name of global TLS profile.
+  read_structured_config_from_file:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: 'Read structured configuration from files in `structured_dir` (default
+      directory also used by the `eos_designs` role).
+
+      If set to false, `eos_cli_config_gen` will read structured configuration from
+      hostvars.
+
+      '
   redundancy:
     type: dict
     keys:
@@ -16144,9 +16161,12 @@ keys:
             metadata:
               type: dict
               keys:
-                tenant:
-                  type: str
-                  description: Key only used for documentation or validation purposes.
+                tenants:
+                  type: list
+                  description: List of tenants where this bundle is defined. Key only
+                    used for documentation or validation purposes.
+                  items:
+                    type: str
                 description:
                   type: str
                   description: Key only used for documentation or validation purposes.
@@ -16245,9 +16265,12 @@ keys:
             metadata:
               type: dict
               keys:
-                tenant:
-                  type: str
-                  description: Key only used for documentation or validation purposes.
+                tenants:
+                  type: list
+                  description: List of tenants where this VLAN is defined. Key only
+                    used for documentation or validation purposes.
+                  items:
+                    type: str
             rd:
               description: Route distinguisher.
               type: str
@@ -25041,9 +25064,12 @@ keys:
         metadata:
           type: dict
           keys:
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            tenants:
+              type: list
+              description: List of tenants where this VLAN interface is defined. Key
+                only used for documentation or validation purposes.
+              items:
+                type: str
             tags:
               type: list
               items:
@@ -25156,9 +25182,12 @@ keys:
 
             It will not affect the generated EOS configuration.'
           keys:
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            tenants:
+              type: list
+              description: List of tenants where this VLAN is defined. Key only used
+                for documentation or validation purposes.
+              items:
+                type: str
   vmtracer_sessions:
     type: list
     primary_key: name
@@ -25210,9 +25239,11 @@ keys:
 
             It will not affect the generated EOS configuration.'
           keys:
-            tenant:
-              type: str
+            tenants:
+              type: list
               description: Key only used for documentation or validation purposes.
+              items:
+                type: str
   vxlan_interface:
     type: dict
     keys:

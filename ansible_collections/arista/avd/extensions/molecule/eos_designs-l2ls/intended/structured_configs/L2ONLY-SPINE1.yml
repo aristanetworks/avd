@@ -125,11 +125,13 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 100
   name: L2VLAN_100
   metadata:
-    tenant: L2LS_L2ONLY
+    tenants:
+    - L2LS_L2ONLY
 vrfs:
 - name: MGMT
   ip_routing: false

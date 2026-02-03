@@ -2450,6 +2450,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    AvdStructuredConfigFileFormat: TypeAlias = Literal["yml", "yaml", "json"]
+
     class Banners(AvdModel):
         """Subclass of AvdModel."""
 
@@ -17907,14 +17909,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Option(AvdModel):
             """Subclass of AvdModel."""
 
-            RemoteIdFormat: TypeAlias = Literal["%m:%i", "%m:%p"]
+            RemoteIdFormat: TypeAlias = Literal["%m:%h:%p", "%m:%i", "%m:%p"]
             _fields: ClassVar[dict] = {"link_layer_address": {"type": bool}, "remote_id_format": {"type": str}}
             link_layer_address: bool | None
             """Add Option 79 (Link Layer Address Option)."""
             remote_id_format: RemoteIdFormat | None
             """
-            Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface
-            name (`%m:%p`).
+            Add RemoteID option 37 in format
+            - MAC address, hostname and interface name (`%m:%h:%p`)
+            - MAC
+            address and interface ID (`%m:%i`)
+            - MAC address and interface name (`%m:%p`)
             """
 
             if TYPE_CHECKING:
@@ -17931,8 +17936,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         link_layer_address: Add Option 79 (Link Layer Address Option).
                         remote_id_format:
-                           Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface
-                           name (`%m:%p`).
+                           Add RemoteID option 37 in format
+                           - MAC address, hostname and interface name (`%m:%h:%p`)
+                           - MAC
+                           address and interface ID (`%m:%i`)
+                           - MAC address and interface name (`%m:%p`)
 
                     """
 
@@ -41675,15 +41683,25 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"tenant": {"type": str}, "description": {"type": str}}
-                tenant: str | None
-                """Key only used for documentation or validation purposes."""
+                class Tenants(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Tenants._item_type = str
+
+                _fields: ClassVar[dict] = {"tenants": {"type": Tenants}, "description": {"type": str}}
+                tenants: Tenants
+                """
+                List of tenants where this bundle is defined. Key only used for documentation or validation
+                purposes.
+
+                Subclass of AvdList with `str` items.
+                """
                 description: str | None
                 """Key only used for documentation or validation purposes."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, tenant: str | None | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, tenants: Tenants | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -41691,7 +41709,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            tenant: Key only used for documentation or validation purposes.
+                            tenants:
+                               List of tenants where this bundle is defined. Key only used for documentation or validation
+                               purposes.
+
+                               Subclass of AvdList with `str` items.
                             description: Key only used for documentation or validation purposes.
 
                         """
@@ -41965,13 +41987,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Metadata(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"tenant": {"type": str}}
-                tenant: str | None
-                """Key only used for documentation or validation purposes."""
+                class Tenants(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Tenants._item_type = str
+
+                _fields: ClassVar[dict] = {"tenants": {"type": Tenants}}
+                tenants: Tenants
+                """
+                List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                Subclass of AvdList with `str` items.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, tenants: Tenants | UndefinedType = Undefined) -> None:
                         """
                         Metadata.
 
@@ -41979,7 +42009,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            tenant: Key only used for documentation or validation purposes.
+                            tenants:
+                               List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                               Subclass of AvdList with `str` items.
 
                         """
 
@@ -67936,14 +67968,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
+            class Tenants(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tenants._item_type = str
+
             class Tags(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
             Tags._item_type = str
 
-            _fields: ClassVar[dict] = {"tenant": {"type": str}, "tags": {"type": Tags}, "type": {"type": str}}
-            tenant: str | None
-            """Key only used for documentation or validation purposes."""
+            _fields: ClassVar[dict] = {"tenants": {"type": Tenants}, "tags": {"type": Tags}, "type": {"type": str}}
+            tenants: Tenants
+            """
+            List of tenants where this VLAN interface is defined. Key only used for documentation or validation
+            purposes.
+
+            Subclass of AvdList with `str` items.
+            """
             tags: Tags
             """
             Key only used for documentation or validation purposes.
@@ -67956,11 +67998,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self,
-                    *,
-                    tenant: str | None | UndefinedType = Undefined,
-                    tags: Tags | UndefinedType = Undefined,
-                    type: str | None | UndefinedType = Undefined,
+                    self, *, tenants: Tenants | UndefinedType = Undefined, tags: Tags | UndefinedType = Undefined, type: str | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     Metadata.
@@ -67969,7 +68007,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        tenant: Key only used for documentation or validation purposes.
+                        tenants:
+                           List of tenants where this VLAN interface is defined. Key only used for documentation or validation
+                           purposes.
+
+                           Subclass of AvdList with `str` items.
                         tags:
                            Key only used for documentation or validation purposes.
 
@@ -68566,13 +68608,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"tenant": {"type": str}}
-            tenant: str | None
-            """Key only used for documentation or validation purposes."""
+            class Tenants(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tenants._item_type = str
+
+            _fields: ClassVar[dict] = {"tenants": {"type": Tenants}}
+            tenants: Tenants
+            """
+            List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+            Subclass of AvdList with `str` items.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, tenants: Tenants | UndefinedType = Undefined) -> None:
                     """
                     Metadata.
 
@@ -68580,7 +68630,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        tenant: Key only used for documentation or validation purposes.
+                        tenants:
+                           List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                           Subclass of AvdList with `str` items.
 
                     """
 
@@ -68725,13 +68777,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Metadata(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"tenant": {"type": str}}
-            tenant: str | None
-            """Key only used for documentation or validation purposes."""
+            class Tenants(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Tenants._item_type = str
+
+            _fields: ClassVar[dict] = {"tenants": {"type": Tenants}}
+            tenants: Tenants
+            """
+            Key only used for documentation or validation purposes.
+
+            Subclass of AvdList with `str` items.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, tenant: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, tenants: Tenants | UndefinedType = Undefined) -> None:
                     """
                     Metadata.
 
@@ -68739,7 +68800,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        tenant: Key only used for documentation or validation purposes.
+                        tenants:
+                           Key only used for documentation or validation purposes.
+
+                           Subclass of AvdList with `str` items.
 
                     """
 
@@ -69385,6 +69449,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "application_traffic_recognition": {"type": ApplicationTrafficRecognition},
         "arp": {"type": Arp},
         "as_path": {"type": AsPath},
+        "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "banners": {"type": Banners},
         "bgp_groups": {"type": BgpGroups},
         "boot": {"type": Boot},
@@ -69408,6 +69473,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "eos_cli": {"type": str},
         "eos_cli_config_gen_configuration": {"type": EosCliConfigGenConfiguration},
         "eos_cli_config_gen_documentation": {"type": EosCliConfigGenDocumentation},
+        "eos_cli_config_gen_validate_inputs_batch_size": {"type": int, "default": 10},
         "errdisable": {"type": Errdisable},
         "ethernet_interfaces": {"type": EthernetInterfaces},
         "event_handlers": {"type": EventHandlers},
@@ -69516,6 +69582,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "queue_monitor_streaming": {"type": QueueMonitorStreaming},
         "radius_proxy": {"type": RadiusProxy},
         "radius_server": {"type": RadiusServer},
+        "read_structured_config_from_file": {"type": bool, "default": True},
         "redundancy": {"type": Redundancy},
         "roles": {"type": Roles},
         "route_maps": {"type": RouteMaps},
@@ -69606,6 +69673,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     as_path: AsPath
     """Subclass of AvdModel."""
+    avd_structured_config_file_format: AvdStructuredConfigFileFormat
+    """
+    The file format to use when loading structured configuration files.
+
+    Default value: `"yml"`
+    """
     banners: Banners
     """Subclass of AvdModel."""
     bgp_groups: BgpGroups
@@ -69720,6 +69793,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     eos_cli_config_gen_documentation: EosCliConfigGenDocumentation
     """Subclass of AvdModel."""
+    eos_cli_config_gen_validate_inputs_batch_size: int
+    """
+    The number of hosts to process in each batch when validating inputs.
+    Depending on your inventory
+    size and the available resources, you may want to adjust this number.
+
+    Default value: `10`
+    """
     errdisable: Errdisable
     """Subclass of AvdModel."""
     ethernet_interfaces: EthernetInterfaces
@@ -69985,6 +70066,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     radius_server: RadiusServer
     """Subclass of AvdModel."""
+    read_structured_config_from_file: bool
+    """
+    Read structured configuration from files in `structured_dir` (default directory also used by the
+    `eos_designs` role).
+    If set to false, `eos_cli_config_gen` will read structured configuration from
+    hostvars.
+
+    Default value: `True`
+    """
     redundancy: Redundancy
     """Subclass of AvdModel."""
     roles: Roles
@@ -70137,6 +70227,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             application_traffic_recognition: ApplicationTrafficRecognition | UndefinedType = Undefined,
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
+            avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
@@ -70160,6 +70251,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             eos_cli: str | None | UndefinedType = Undefined,
             eos_cli_config_gen_configuration: EosCliConfigGenConfiguration | UndefinedType = Undefined,
             eos_cli_config_gen_documentation: EosCliConfigGenDocumentation | UndefinedType = Undefined,
+            eos_cli_config_gen_validate_inputs_batch_size: int | UndefinedType = Undefined,
             errdisable: Errdisable | UndefinedType = Undefined,
             ethernet_interfaces: EthernetInterfaces | UndefinedType = Undefined,
             event_handlers: EventHandlers | UndefinedType = Undefined,
@@ -70268,6 +70360,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             queue_monitor_streaming: QueueMonitorStreaming | UndefinedType = Undefined,
             radius_proxy: RadiusProxy | UndefinedType = Undefined,
             radius_server: RadiusServer | UndefinedType = Undefined,
+            read_structured_config_from_file: bool | UndefinedType = Undefined,
             redundancy: Redundancy | UndefinedType = Undefined,
             roles: Roles | UndefinedType = Undefined,
             route_maps: RouteMaps | UndefinedType = Undefined,
@@ -70350,6 +70443,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 arp: Subclass of AvdModel.
                 as_path: Subclass of AvdModel.
+                avd_structured_config_file_format: The file format to use when loading structured configuration files.
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
                 boot:
@@ -70429,6 +70523,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 eos_cli: Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration.
                 eos_cli_config_gen_configuration: Subclass of AvdModel.
                 eos_cli_config_gen_documentation: Subclass of AvdModel.
+                eos_cli_config_gen_validate_inputs_batch_size:
+                   The number of hosts to process in each batch when validating inputs.
+                   Depending on your inventory
+                   size and the available resources, you may want to adjust this number.
                 errdisable: Subclass of AvdModel.
                 ethernet_interfaces: Subclass of AvdIndexedList with `EthernetInterfacesItem` items. Primary key is `name` (`str`).
                 event_handlers:
@@ -70582,6 +70680,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 radius_server: Subclass of AvdModel.
+                read_structured_config_from_file:
+                   Read structured configuration from files in `structured_dir` (default directory also used by the
+                   `eos_designs` role).
+                   If set to false, `eos_cli_config_gen` will read structured configuration from
+                   hostvars.
                 redundancy: Subclass of AvdModel.
                 roles: Subclass of AvdIndexedList with `RolesItem` items. Primary key is `name` (`str`).
                 route_maps: Subclass of AvdIndexedList with `RouteMapsItem` items. Primary key is `name` (`str`).

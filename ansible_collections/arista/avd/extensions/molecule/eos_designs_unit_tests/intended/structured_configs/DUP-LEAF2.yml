@@ -57,20 +57,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -78,7 +64,8 @@ router_bgp:
   vlans:
   - id: 100
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 10.0.0.2:10100
     route_targets:
       both:
@@ -87,23 +74,14 @@ router_bgp:
     - learned
   - id: 200
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 10.0.0.2:10200
     route_targets:
       both:
       - 10200:10200
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: TEST
     rd: 10.0.0.2:10
@@ -128,7 +106,8 @@ vlan_interfaces:
   shutdown: false
   vrf: TEST
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - DUP-LEAF2
 vlan_internal_order:
@@ -140,11 +119,13 @@ vlans:
 - id: 100
   name: Duplicate_SVI_100_LEAF2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 200
   name: Duplicate_L2VLAN_200_LEAF2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -152,7 +133,8 @@ vrfs:
   description: TEST
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vxlan_interface:
   vxlan1:
     description: DUP-LEAF2_VTEP

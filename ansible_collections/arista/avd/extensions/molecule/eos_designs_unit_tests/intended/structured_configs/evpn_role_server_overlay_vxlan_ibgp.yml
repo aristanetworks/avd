@@ -59,11 +59,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -73,6 +68,12 @@ router_bgp:
     bfd: true
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.255.2
+    peer_group: EVPN-OVERLAY-PEERS
+    metadata:
+      peer: evpn_overlay_mpls_route_reflectors2_ibgp
+    description: evpn_overlay_mpls_route_reflectors2_ibgp_Loopback0
   redistribute:
     connected:
       enabled: true
@@ -89,8 +90,6 @@ router_bgp:
         only: true
   address_family_ipv4:
     peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
 service_routing_protocols_model: multi-agent

@@ -178,18 +178,6 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-SVI-VRF-DEFAULT
-- name: RM-BGP-UNDERLAY-PEERS-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: deny
-    match:
-    - ip address prefix-list PL-SVI-VRF-DEFAULT
-  - sequence: 15
-    type: deny
-    match:
-    - ip address prefix-list PL-STATIC-VRF-DEFAULT
-  - sequence: 20
-    type: permit
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -215,21 +203,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -239,7 +212,8 @@ router_bgp:
   vlans:
   - id: 2
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.109:10002
     route_targets:
       both:
@@ -248,23 +222,14 @@ router_bgp:
     - learned
   - id: 3
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 192.168.255.109:10003
     route_targets:
       both:
       - 10003:10003
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: default
     rd: 192.168.255.109:1
@@ -350,14 +315,16 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.40.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan3
   description: Tenant1_VRF_SVI
   shutdown: false
   vrf: TESTING
   ip_address_virtual: 10.1.40.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vlan_internal_order:
   allocation: ascending
   range:
@@ -367,26 +334,31 @@ vlans:
 - id: 2
   name: Tenant1_SVI
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3
   name: Tenant1_VRF_SVI
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TESTING
   ip_routing: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: VRF_STATIC_ROUTE_ON_L3_INTERFACE
   ip_routing: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: VRF_STATIC_ROUTE_ON_L3_PORT_CHANNEL
   ip_routing: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vxlan_interface:
   vxlan1:
     description: network-services-static-routes_VTEP

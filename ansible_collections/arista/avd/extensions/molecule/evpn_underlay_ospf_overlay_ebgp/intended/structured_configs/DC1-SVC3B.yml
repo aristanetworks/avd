@@ -264,7 +264,7 @@ router_bgp:
     next_hop_self: true
     password: vnEaG8gMeQf3d3cN6PktXQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbors:
   - ip_address: 192.168.255.1
@@ -382,7 +382,8 @@ vlan_interfaces:
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.10.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
 - name: Vlan3019
@@ -392,7 +393,8 @@ vlan_interfaces:
   ip_address: 10.255.252.7/31
   mtu: 1500
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -405,24 +407,28 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 210
   name: Tenant_B_OP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 3019
   name: MLAG_L3_VRF_Tenant_B_OP_Zone
   trunk_groups:
   - MLAG
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_B_OP_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vxlan_interface:
   vxlan1:
     description: DC1-SVC3B_VTEP

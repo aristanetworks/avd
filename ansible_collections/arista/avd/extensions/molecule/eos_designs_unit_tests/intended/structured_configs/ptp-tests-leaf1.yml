@@ -354,13 +354,13 @@ router_bgp:
     description: ptp-tests-leaf2
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -400,7 +400,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: PTP
+      tenants:
+      - PTP
     rd: 10.254.1.1:10011
     route_targets:
       both:
@@ -470,7 +471,8 @@ vlan_interfaces:
   vrf: VRF1
   ip_address: 172.16.11.1/24
   metadata:
-    tenant: PTP
+    tenants:
+    - PTP
 - name: Vlan3000
   description: MLAG_L3_VRF_VRF1
   shutdown: false
@@ -478,7 +480,8 @@ vlan_interfaces:
   ip_address: 10.254.1.96/31
   mtu: 9214
   metadata:
-    tenant: PTP
+    tenants:
+    - PTP
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -491,30 +494,35 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 11
   name: VLAN11
   metadata:
-    tenant: PTP
+    tenants:
+    - PTP
 - id: 3000
   name: MLAG_L3_VRF_VRF1
   trunk_groups:
   - MLAG
   metadata:
-    tenant: PTP
+    tenants:
+    - PTP
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
   metadata:
-    tenant: PTP
+    tenants:
+    - PTP
 vxlan_interface:
   vxlan1:
     description: ptp-tests-leaf1_VTEP

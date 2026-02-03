@@ -59,11 +59,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
   - name: MPLS-OVERLAY-PEERS
     metadata:
       type: mpls
@@ -81,6 +76,17 @@ router_bgp:
     bfd: true
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.255.1
+    peer_group: MPLS-OVERLAY-PEERS
+    metadata:
+      peer: evpn_overlay_mpls_route_reflectors_ibgp
+    description: evpn_overlay_mpls_route_reflectors_ibgp_Loopback0
+  - ip_address: 192.168.255.4
+    peer_group: RR-OVERLAY-PEERS
+    metadata:
+      peer: evpn_overlay_mpls_route_reflectors3_ibgp
+    description: evpn_overlay_mpls_route_reflectors3_ibgp_Loopback0
   redistribute:
     connected:
       enabled: true
@@ -89,9 +95,9 @@ router_bgp:
     neighbor_default:
       encapsulation: mpls
     peer_groups:
-    - name: RR-OVERLAY-PEERS
-      activate: true
     - name: MPLS-OVERLAY-PEERS
+      activate: true
+    - name: RR-OVERLAY-PEERS
       activate: true
   address_family_rtc:
     peer_groups:
@@ -101,8 +107,6 @@ router_bgp:
         only: true
   address_family_ipv4:
     peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
     - name: MPLS-OVERLAY-PEERS
       activate: false
     - name: RR-OVERLAY-PEERS

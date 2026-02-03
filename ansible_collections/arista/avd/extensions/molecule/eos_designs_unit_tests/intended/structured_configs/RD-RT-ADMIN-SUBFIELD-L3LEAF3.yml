@@ -58,20 +58,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -79,7 +65,8 @@ router_bgp:
   vlans:
   - id: 1
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 65003:10001
     route_targets:
       both:
@@ -88,7 +75,8 @@ router_bgp:
     - learned
   - id: 2
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 65003:10002
     route_targets:
       both:
@@ -97,7 +85,8 @@ router_bgp:
     - learned
   - id: 3
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 65003:33333
     route_targets:
       both:
@@ -106,7 +95,8 @@ router_bgp:
     - learned
   - id: 4
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 33333:33333
     route_targets:
       both:
@@ -115,23 +105,14 @@ router_bgp:
     - learned
   - id: 5
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: auto
     route_targets:
       both:
       - 15:10005
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: TEST1
     rd: '123:11'
@@ -176,7 +157,8 @@ vlan_interfaces:
   vrf: TEST1
   ip_address_virtual: 10.0.1.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 - name: Vlan2
@@ -185,7 +167,8 @@ vlan_interfaces:
   vrf: TEST1
   ip_address_virtual: 10.0.2.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 - name: Vlan3
@@ -194,7 +177,8 @@ vlan_interfaces:
   vrf: TEST1
   ip_address_virtual: 10.0.3.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 - name: Vlan4
@@ -203,7 +187,8 @@ vlan_interfaces:
   vrf: TEST1
   ip_address_virtual: 10.0.4.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 - name: Vlan5
@@ -212,7 +197,8 @@ vlan_interfaces:
   vrf: TEST1
   ip_address_virtual: 10.0.5.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 vlan_internal_order:
@@ -224,23 +210,28 @@ vlans:
 - id: 1
   name: VLAN_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 2
   name: VLAN_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 3
   name: VLAN_3
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 4
   name: VLAN_4
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 5
   name: VLAN_5
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -248,12 +239,14 @@ vrfs:
   description: TEST1
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: TEST2
   description: VRF with router-id
   ip_routing: true
   metadata:
-    tenant: TENANT_WITH_VRFS_WITHOUT_SVIS
+    tenants:
+    - TENANT_WITH_VRFS_WITHOUT_SVIS
 vxlan_interface:
   vxlan1:
     description: RD-RT-ADMIN-SUBFIELD-L3LEAF3_VTEP

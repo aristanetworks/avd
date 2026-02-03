@@ -48,20 +48,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -78,7 +64,8 @@ router_bgp:
   vlans:
   - id: 1010
     metadata:
-      tenant: SIT
+      tenants:
+      - SIT
     rd: 10.10.0.3:21010
     route_targets:
       both:
@@ -87,23 +74,14 @@ router_bgp:
     - learned
   - id: 20
     metadata:
-      tenant: SIT
+      tenants:
+      - SIT
     rd: 10.10.0.3:20020
     route_targets:
       both:
       - 20020:20020
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: SIT_VRF
     rd: 10.10.0.3:789654
@@ -128,7 +106,8 @@ vlan_interfaces:
   shutdown: false
   vrf: SIT_VRF
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 - name: Vlan1009
@@ -136,7 +115,8 @@ vlan_interfaces:
   shutdown: false
   vrf: SIT_VRF
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 - name: Vlan1010
@@ -144,7 +124,8 @@ vlan_interfaces:
   shutdown: false
   vrf: SIT_VRF
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 - name: Vlan1011
@@ -152,7 +133,8 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF_ID_VNI_NONE
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 vlan_internal_order:
@@ -164,46 +146,56 @@ vlans:
 - id: 1008
   name: SVI_1
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 1009
   name: SVI_2
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 1010
   name: SVI_3
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 1011
   name: SVI_4
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 10
   name: storage_prod
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 20
   name: storage_prod
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 90
   name: vlan90
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - id: 100
   name: vlan100
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: SIT_VRF
   ip_routing: true
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 - name: VRF_ID_VNI_NONE
   ip_routing: true
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
 vxlan_interface:
   vxlan1:
     description: evpn_vlan_bundle_svi_l2vlan_VTEP

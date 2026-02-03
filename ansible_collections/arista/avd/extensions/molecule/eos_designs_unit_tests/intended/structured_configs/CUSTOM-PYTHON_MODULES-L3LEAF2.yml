@@ -79,15 +79,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
+    maximum_routes: 256000
   neighbors:
   - ip_address: 172.31.255.24
     peer_group: IPv4-UNDERLAY-PEERS
@@ -102,23 +94,18 @@ router_bgp:
   vlans:
   - id: 110
     metadata:
-      tenant: CUSTOM_PYTHON_MODULES_TENANT
+      tenants:
+      - CUSTOM_PYTHON_MODULES_TENANT
     rd: 192.168.255.23:11110
     route_targets:
       both:
       - 11110:11110
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: TEST_VRF
     rd: 192.168.255.23:1
@@ -153,7 +140,8 @@ vlan_interfaces:
   vrf: TEST_VRF
   ip_address_virtual: 10.1.10.1/24
   metadata:
-    tenant: CUSTOM_PYTHON_MODULES_TENANT
+    tenants:
+    - CUSTOM_PYTHON_MODULES_TENANT
     tags:
     - opzone
 vlan_internal_order:
@@ -165,14 +153,16 @@ vlans:
 - id: 110
   name: Tenant_A_OP_Zone_1
   metadata:
-    tenant: CUSTOM_PYTHON_MODULES_TENANT
+    tenants:
+    - CUSTOM_PYTHON_MODULES_TENANT
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST_VRF
   ip_routing: true
   metadata:
-    tenant: CUSTOM_PYTHON_MODULES_TENANT
+    tenants:
+    - CUSTOM_PYTHON_MODULES_TENANT
 vxlan_interface:
   vxlan1:
     description: CUSTOM-PYTHON_MODULES-L3LEAF2_VTEP

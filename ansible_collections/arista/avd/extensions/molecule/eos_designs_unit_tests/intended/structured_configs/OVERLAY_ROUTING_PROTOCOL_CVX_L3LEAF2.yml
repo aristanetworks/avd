@@ -51,20 +51,10 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
@@ -73,7 +63,8 @@ vlan_interfaces:
   shutdown: true
   vrf: TEST
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vlan_internal_order:
   allocation: ascending
   range:
@@ -83,22 +74,26 @@ vlans:
 - id: 3910
   name: SVI_3910
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 2910
   name: L2VLAN_2910
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 2911
   name: L2VLAN_2911
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST
   ip_routing: true
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vxlan_interface:
   vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF2_VTEP

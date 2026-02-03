@@ -309,13 +309,13 @@ router_bgp:
     description: sflow-tests-leaf3
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -357,7 +357,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: SFLOW
+      tenants:
+      - SFLOW
     rd: 10.254.1.6:10011
     route_targets:
       both:
@@ -439,7 +440,8 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF1
   metadata:
-    tenant: SFLOW
+    tenants:
+    - SFLOW
 - name: Vlan3000
   description: MLAG_L3_VRF_VRF1
   shutdown: false
@@ -447,7 +449,8 @@ vlan_interfaces:
   ip_address: 10.254.1.105/31
   mtu: 9214
   metadata:
-    tenant: SFLOW
+    tenants:
+    - SFLOW
     type: underlay_peering
 - name: Vlan4092
   description: Inband Management
@@ -470,34 +473,40 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 11
   name: VLAN11
   metadata:
-    tenant: SFLOW
+    tenants:
+    - SFLOW
 - id: 3000
   name: MLAG_L3_VRF_VRF1
   trunk_groups:
   - MLAG
   metadata:
-    tenant: SFLOW
+    tenants:
+    - SFLOW
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
   metadata:
-    tenant: SFLOW
+    tenants:
+    - SFLOW
 vxlan_interface:
   vxlan1:
     description: sflow-tests-leaf4_VTEP

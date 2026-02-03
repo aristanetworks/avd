@@ -132,7 +132,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -167,7 +167,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: SFLOW
+      tenants:
+      - SFLOW
     rd: 10.254.1.1:10011
     route_targets:
       both:
@@ -231,7 +232,8 @@ vlan_interfaces:
   vrf: VRF1
   ip_address: 172.16.11.1/24
   metadata:
-    tenant: SFLOW
+    tenants:
+    - SFLOW
 vlan_internal_order:
   allocation: ascending
   range:
@@ -241,14 +243,16 @@ vlans:
 - id: 11
   name: VLAN11
   metadata:
-    tenant: SFLOW
+    tenants:
+    - SFLOW
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
   metadata:
-    tenant: SFLOW
+    tenants:
+    - SFLOW
 vxlan_interface:
   vxlan1:
     description: sflow-tests-leaf1_VTEP
