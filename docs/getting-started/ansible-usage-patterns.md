@@ -31,7 +31,7 @@ graph LR
     click A "../../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.html"
 ```
 
-When using `eos_cli_config_gen` directly, you provide structured configuration using the EOS CLI Config Gen data model. The role processes this input and generates the corresponding EOS CLI configuration file.
+When using `eos_cli_config_gen` directly, you provide structured configuration using the EOS Config data model. The role processes this input and generates the corresponding EOS CLI configuration file.
 
 This approach might be useful in specific cases:
 
