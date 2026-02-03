@@ -25,4 +25,3 @@
         that:
           - validate_result is success
         fail_msg: "Validation should succeed with vault configured"
-

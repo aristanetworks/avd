@@ -94,4 +94,3 @@ rm -rf "$TEST_TMP_DIR"
 
 echo ""
 echo "=== All tests passed ==="
-
