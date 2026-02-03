@@ -170,11 +170,8 @@ class ActionModule(ActionBase):
             msg = f"Missing AVD eos_designs facts to generate documentation ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
             raise AnsibleActionFail(message=msg)
 
-        # Read and unvault the file if required
-        json_data = self._loader.get_text_file_contents(str(file_path))
-
-        # Parse and return the JSON data
-        return json.loads(json_data)
+        # Read, unvault, and parse the JSON file
+        return self._loader.load_from_file(str(file_path), json_only=True)
 
 
 def setup_module_logging(result: dict) -> None:
