@@ -14496,8 +14496,8 @@ Source Group Standard Disabled : True
 
 | Destination | Database | URL | VRF | Username |
 | ----------- | -------- | --- | --- | -------- |
-| test | test | https://influx_test.localhost | test | test |
 | Test1 | test1 | https://influx_test1.localhost | test | test1 |
+| test | test | https://influx_test.localhost | test | test |
 
 #### InfluxDB Telemetry Sources
 
