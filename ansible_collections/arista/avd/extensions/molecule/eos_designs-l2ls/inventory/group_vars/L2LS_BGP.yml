@@ -109,6 +109,8 @@ network_ports:
     phone_trunk_mode: untagged
     mode: trunk phone
     description: IP Phone with no native VLAN
+    # Used for testing cv_tags with boolean false value.
+    validate_state: false
 
   # Standalone interface labeled as Campus Egress
   - switches:
@@ -305,5 +307,8 @@ core_interfaces:
 generate_cv_tags:
   topology_hints: true
   campus_fabric: true
+  interface_tags:
+    - name: test_of_bool_false_value
+      data_path: metadata.validate_state
 
 campus: City_A
