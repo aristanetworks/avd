@@ -479,8 +479,7 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
         with contextlib.suppress(AnsibleVaultError):
             data = loader._vault.encrypt(data, secret=None)
 
-        with output_file_path.open("wb") as f:
-            f.write(data)
+        output_file_path.write_bytes(data)
 
         return TemplateWorkerSuccess(hostname=hostname, output_file=str(output_file_path))
 
