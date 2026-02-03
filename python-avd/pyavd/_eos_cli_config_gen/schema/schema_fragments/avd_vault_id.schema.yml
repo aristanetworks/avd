@@ -38,4 +38,3 @@ keys:
           - With `avd_vault_id: 'prod'`: Uses 'prod' for encryption.
 
       **Note**: If Ansible Vault is not configured, this parameter has no effect and files are written as plain JSON.
-
