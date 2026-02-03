@@ -12,3 +12,5 @@ exclude_paths:
   # Excluding task files depending on other collections since ansible-lint is running in offline mode on galaxy/automation hub
   - roles/eos_config_deploy_eapi/tasks/main.yml
   - roles/eos_snapshot/tasks/main.yml
+  # Excluding Molecule artifacts configuration file (not a playbook)
+  - extensions/molecule/howto/artifacts.yml
