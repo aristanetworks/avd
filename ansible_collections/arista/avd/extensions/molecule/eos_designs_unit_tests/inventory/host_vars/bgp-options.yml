@@ -16,6 +16,3 @@ bgp_as_notation: asdot
 
 bgp_maximum_paths: 600
 bgp_ecmp: 600
-
-# Test for remove redundant command no neighbor activate when no bgp default ipv4-unicast is configured
-bgp_always_disable_ipv4_unicast_for_peer_groups: false

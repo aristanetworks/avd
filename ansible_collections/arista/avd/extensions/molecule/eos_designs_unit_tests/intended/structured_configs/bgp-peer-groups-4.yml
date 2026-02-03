@@ -51,10 +51,6 @@ router_bgp:
     metadata:
       peer: bgp-peer-groups-2
     description: bgp-peer-groups-2_Loopback0
-  address_family_ipv4:
-    peer_groups:
-    - name: RR-OVERLAY-PEERS
-      activate: false
   address_family_vpn_ipv4:
     peer_groups:
     - name: RR-OVERLAY-PEERS
