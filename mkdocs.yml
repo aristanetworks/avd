@@ -217,8 +217,8 @@ nav:
               - cv_deploy: ansible_collections/arista/avd/roles/cv_deploy/README.md
               - anta_runner: ansible_collections/arista/avd/roles/anta_runner/README.md
           - Plugins: docs/plugins/
+          - AVD and Ansible Automation Platform: docs/getting-started/avd-aap.md
       - PyAVD: docs/pyavd/pyavd.md
-      - AVD and Ansible Automation Platform: docs/getting-started/avd-aap.md
   - Release Notes:
       - 6.x.x: docs/release-notes/6.x.x.md
       - Porting Guide: docs/porting-guides/6.x.x.md
