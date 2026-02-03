@@ -87871,6 +87871,7 @@ class EosDesigns(EosDesignsRootModel):
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "eos_designs_validation_configuration": {"type": EosDesignsValidationConfiguration},
+        "avd_vault_id": {"type": str},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
         "bgp_as_notation": {"type": str, "default": "auto"},
@@ -88611,6 +88612,52 @@ class EosDesigns(EosDesignsRootModel):
     Validation configuration options when validating AVD Design inputs.
 
     Subclass of AvdModel.
+    """
+    avd_vault_id: str | None
+    """
+    Vault identity to use for encrypting temporary files when Ansible Vault is configured.
+
+    When Ansible
+    Vault is configured (via `--vault-password-file`, `--vault-id`, or `vault_identity_list` in
+    ansible.cfg),
+    AVD encrypts temporary files containing templated and validated data to prevent
+    sensitive information
+    from being exposed in logs or temporary directories.
+
+    **Default Behavior**
+    (when `avd_vault_id` is not specified):
+      - If Ansible Vault is configured, AVD uses the *first*
+    vault identity in the list for encryption.
+      - This is the standard Ansible behavior when no vault
+    ID is explicitly specified.
+      - Files encrypted this way can only be decrypted with the password of
+    the first vault identity.
+
+    **Advanced Use Case** (when `avd_vault_id` is specified):
+      - AVD uses
+    the specified vault identity for encryption.
+      - This is useful when multiple vault identities are
+    configured and you want to control which one is used.
+      - The specified vault identity must exist in
+    the configured vault identities.
+
+    **Examples**:
+      - Single vault password: `avd_vault_id` is not
+    needed, the single vault password is used automatically.
+      - Multiple vault identities via
+    `vault_identity_list = dev@.vault_dev, prod@.vault_prod`:
+        - Without `avd_vault_id`: Uses 'dev'
+    (first in list) for encryption.
+        - With `avd_vault_id: 'prod'`: Uses 'prod' for encryption.
+      -
+    Multiple vault identities via `--vault-id dev@.vault_dev --vault-id prod@.vault_prod`:
+        - Without
+    `avd_vault_id`: Uses 'dev' (first specified) for encryption.
+        - With `avd_vault_id: 'prod'`: Uses
+    'prod' for encryption.
+
+    **Note**: If Ansible Vault is not configured, this parameter has no effect
+    and files are written as plain JSON.
     """
     bfd_multihop: BfdMultihop
     """
@@ -90561,6 +90608,7 @@ class EosDesigns(EosDesignsRootModel):
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             eos_designs_validation_configuration: EosDesignsValidationConfiguration | UndefinedType = Undefined,
+            avd_vault_id: str | None | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
@@ -90791,6 +90839,50 @@ class EosDesigns(EosDesignsRootModel):
                    Validation configuration options when validating AVD Design inputs.
 
                    Subclass of AvdModel.
+                avd_vault_id:
+                   Vault identity to use for encrypting temporary files when Ansible Vault is configured.
+
+                   When Ansible
+                   Vault is configured (via `--vault-password-file`, `--vault-id`, or `vault_identity_list` in
+                   ansible.cfg),
+                   AVD encrypts temporary files containing templated and validated data to prevent
+                   sensitive information
+                   from being exposed in logs or temporary directories.
+
+                   **Default Behavior**
+                   (when `avd_vault_id` is not specified):
+                     - If Ansible Vault is configured, AVD uses the *first*
+                   vault identity in the list for encryption.
+                     - This is the standard Ansible behavior when no vault
+                   ID is explicitly specified.
+                     - Files encrypted this way can only be decrypted with the password of
+                   the first vault identity.
+
+                   **Advanced Use Case** (when `avd_vault_id` is specified):
+                     - AVD uses
+                   the specified vault identity for encryption.
+                     - This is useful when multiple vault identities are
+                   configured and you want to control which one is used.
+                     - The specified vault identity must exist in
+                   the configured vault identities.
+
+                   **Examples**:
+                     - Single vault password: `avd_vault_id` is not
+                   needed, the single vault password is used automatically.
+                     - Multiple vault identities via
+                   `vault_identity_list = dev@.vault_dev, prod@.vault_prod`:
+                       - Without `avd_vault_id`: Uses 'dev'
+                   (first in list) for encryption.
+                       - With `avd_vault_id: 'prod'`: Uses 'prod' for encryption.
+                     -
+                   Multiple vault identities via `--vault-id dev@.vault_dev --vault-id prod@.vault_prod`:
+                       - Without
+                   `avd_vault_id`: Uses 'dev' (first specified) for encryption.
+                       - With `avd_vault_id: 'prod'`: Uses
+                   'prod' for encryption.
+
+                   **Note**: If Ansible Vault is not configured, this parameter has no effect
+                   and files are written as plain JSON.
                 bfd_multihop:
                    BFD Multihop tuning.
 
