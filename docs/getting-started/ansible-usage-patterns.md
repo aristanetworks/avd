@@ -265,10 +265,10 @@ graph LR
 
 The `custom_structured_configuration` prefix approach works similarly to `structured_config`, but offers more flexibility in where you define the variables:
 
-- Variables are prefixed with `custom_structured_configuration_` (by default)
-- They can be defined at any level: group_vars, host_vars, or even in inventory
-- The prefix is stripped, and the remaining variable name must match an `eos_cli_config_gen` key
-- Multiple custom variables are merged together, then merged on top of `eos_designs` generated configuration
+- Variables are prefixed with `custom_structured_configuration_` (by default).
+- They can be defined at any level: group_vars, host_vars, or even in inventory.
+- The prefix is stripped, and the remaining variable name must match an [EOS Config](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md) data model key.
+- Multiple custom variables are merged together, then merged on top of `eos_designs` generated configuration.
 
 This approach is useful when:
 
@@ -354,6 +354,8 @@ ip name-server vrf MGMT 10.20.20.10
 
 ### Next Steps
 
-- Review the [Custom Structured Configuration How-To](../../ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md) for advanced patterns.
-- Explore the [eos_designs data model](../../ansible_collections/arista/avd/roles/eos_designs/README.md) for available design options.
-- Check the [eos_cli_config_gen data model](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) for all configuration options.
+Review the following resources to learn more:
+
+- [Custom Structured Configuration How-To](../../ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md) for advanced patterns.
+- [AVD Design](../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md) data model for available design options.
+- [EOS Config](../../ansible_collections/arista/avd/roles/eos_designs/README.md) data model for available EOS configuration options.
