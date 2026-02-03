@@ -4,7 +4,7 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# CloudVision Integration: Porting to `cv_deploy`
+# CloudVision Integration: Migrate to `cv_deploy`
 
 This guide provides a step-by-step process for updating your Ansible inventory and playbooks to ensure a smooth and successful transition from legacy roles `eos_config_deploy_cvp` and `cvp_configlet_upload` to `cv_deploy`.
 

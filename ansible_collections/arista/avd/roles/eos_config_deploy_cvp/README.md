@@ -15,7 +15,7 @@ title: Ansible Collection Role eos_config_deploy_cvp - REMOVED
 
 ## Migration
 
-Please refer to the [cv_deploy porting guide](https://avd.arista.com/6.x/docs/getting-started/cv-deploy-porting.html) for migration instructions.
+Please refer to the [cv_deploy porting guide](https://avd.arista.com/6.x/docs/howto/migrate-to-cv-deploy.html) for migration instructions.
 
 ## License
 
