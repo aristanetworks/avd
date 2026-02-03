@@ -18,7 +18,7 @@ This guide demonstrates the different ways to use Arista AVD Ansible roles, star
 
 The [eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) role is the EOS config generation layer of AVD. It converts structured configuration data (in YAML format) into EOS configuration syntax.
 
-!!! warning "Not Recommended for Most Users"
+!!! warning "Warning"
     Using `eos_cli_config_gen` directly is **not the typical way** to use AVD. Most users should leverage the `eos_designs` role, which provides a higher-level abstraction and automatically generates the structured configuration for you.
 
 ### Workflow
