@@ -78,7 +78,13 @@ repos:
       - id: insert-license
         name: Check and insert license on Markdown files.
         files: .*\.md$
-        exclude: (ansible_collections/arista/avd/extensions/molecule|.github|ansible_collections/arista/avd/examples/.+/documentation/).*
+        exclude: >-
+          (?x)
+          (ansible_collections/arista/avd/extensions/molecule
+          |.github
+          |ansible_collections/arista/avd/examples/.+/documentation/
+          |python-avd/tests/pyavd/examples/simple/docs/
+          )
         args:
           - --license-filepath
           - development/license-short.txt
