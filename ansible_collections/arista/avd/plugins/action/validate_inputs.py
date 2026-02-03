@@ -539,8 +539,7 @@ def _validate_host_worker(
                 validated_data = loader._vault.encrypt(validated_data, secret=None)
 
             output_file_path = output_path / f"{hostname}.json"
-            with output_file_path.open(mode="wb") as f:
-                f.write(validated_data)
+            output_file_path.write_bytes(validated_data)
             output_file = str(output_file_path)
 
         return ValidateWorkerSuccess(hostname=hostname, validation_result=validation_result, output_file=output_file)
