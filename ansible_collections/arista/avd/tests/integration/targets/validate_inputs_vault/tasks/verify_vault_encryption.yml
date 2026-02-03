@@ -27,13 +27,15 @@
     fail_msg: "Temporary files should exist"
 
 - name: Read first line of templated file
-  ansible.builtin.shell: head -1 "{{ templated_file }}"
+  ansible.builtin.command:
+    cmd: head -1 "{{ templated_file }}"
   register: templated_first_line
   changed_when: false
   delegate_to: localhost
 
 - name: Read first line of validated file
-  ansible.builtin.shell: head -1 "{{ validated_file }}"
+  ansible.builtin.command:
+    cmd: head -1 "{{ validated_file }}"
   register: validated_first_line
   changed_when: false
   delegate_to: localhost
@@ -67,6 +69,10 @@
     - expected_vault_id is defined
 
 - name: Test decryption with specified vault password (when vault_password_file is specified)
+  when:
+    - expected_encrypted
+    - vault_password_file is defined
+    - can_decrypt is defined
   block:
     - name: Try to decrypt templated file
       ansible.builtin.command:
@@ -86,7 +92,3 @@
           Decryption result unexpected:
           expected can_decrypt={{ can_decrypt }},
           got rc={{ decrypt_result.rc }}
-  when:
-    - expected_encrypted
-    - vault_password_file is defined
-    - can_decrypt is defined
