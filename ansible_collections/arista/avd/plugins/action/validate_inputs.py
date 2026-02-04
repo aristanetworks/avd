@@ -12,6 +12,7 @@ from pathlib import Path
 from time import perf_counter
 from typing import TYPE_CHECKING, Any, Literal, cast
 
+import yaml
 from ansible.parsing.vault import match_encrypt_secret
 from ansible.plugins.action import display
 
@@ -20,6 +21,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     build_result_message,
     get_role_tmp_paths,
     get_workers,
+    load_vaulted_file,
     parse_validation_result,
 )
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
@@ -150,7 +152,8 @@ class LoaderWrapper:
                      vault identity in the list (default Ansible behavior).
         """
         self.loader = loader
-        self._vault_id = vault_id
+        self.vault_id = vault_id
+        self.has_vault = bool(loader._vault.secrets)
 
     def encrypt_if_needed(self, data: bytes) -> bytes:
         """
@@ -170,13 +173,13 @@ class LoaderWrapper:
               encrypt(data, secret=None, vault_id='X') sets the header to 'X' but
               uses the first secret for encryption.
         """
-        if not self.loader._vault.secrets:
+        if not self.has_vault:
             return data
 
         # Use Ansible's match_encrypt_secret to find the correct secret
         # This handles both None (first secret) and specific vault_id cases
         # and raises a proper error if the vault_id is not found.
-        vault_id, secret = match_encrypt_secret(self.loader._vault.secrets, self._vault_id)
+        vault_id, secret = match_encrypt_secret(self.loader._vault.secrets, self.vault_id)
 
         # Pass both secret and vault_id to work around Ansible VaultLib bug
         # match_encrypt_secret is called without passing the vault_id if secret=None...
@@ -581,19 +584,25 @@ def _validate_host_worker(
         if not input_file_path.exists():
             return WorkerFailure(hostname=hostname, error=f"Missing input data file: {input_file_path}")
 
-        # Load data using Ansible DataLoader (handles both YAML/JSON and vault decryption)
-        data = loader.loader.load_from_file(str(input_file_path))
-        json_data = json.dumps(data)
+        # Load file content (decrypted if vaulted)
+        file_content = load_vaulted_file(loader.loader, str(input_file_path))
+
+        # Parse data based on file suffix
+        if input_suffix in {"yml", "yaml"}:
+            # YAML input: parse and convert to JSON for validation
+            data = yaml.load(file_content, Loader=yaml.CSafeLoader)
+            json_data = json.dumps(data).encode("utf-8")
+        else:
+            # JSON input: use directly (already in JSON format)
+            json_data = file_content
 
         # Validation in Rust, releasing the GIL.
-        validated_data_result = get_validated_data(data_as_json=json_data, schema_name=SCHEMA_MAP[schema_name], configuration=configuration)
+        validated_data_result = get_validated_data(data=json_data, schema_name=SCHEMA_MAP[schema_name], configuration=configuration)
         validation_result, validated_data = validated_data_result.validation_result, validated_data_result.validated_data
 
         output_file = None
         if validated_data:
-            # Convert to bytes for binary file write
-            validated_data = validated_data.encode("utf-8")
-
+            # validated_data is already bytes (JSON format) from pyavd-utils
             # Encrypt data if vault is configured
             validated_data = loader.encrypt_if_needed(validated_data)
 

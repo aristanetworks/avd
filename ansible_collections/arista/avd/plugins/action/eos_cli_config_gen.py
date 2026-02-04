@@ -19,6 +19,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     cprofile,
     get_role_tmp_paths,
     get_templar,
+    load_vaulted_file,
     raise_action_fail,
 )
 
@@ -198,7 +199,7 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail(message=msg)
 
         # Read, unvault, and parse the JSON file
-        return self._loader.load_from_file(str(file_path), json_only=True)
+        return json.loads(load_vaulted_file(self._loader, file_path))
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:
