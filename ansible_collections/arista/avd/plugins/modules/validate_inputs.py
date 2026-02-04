@@ -72,7 +72,7 @@ options:
 
       When Ansible Vault is configured (via `--vault-password-file`, `--vault-id`, or `vault_identity_list` in ansible.cfg),
       the plugin encrypts temporary files containing templated and validated data to prevent sensitive information
-      from being exposed in logs or temporary directories.
+      from being exposed in temporary directories.
 
       **Default Behavior** (when`vault_id` is not specified):
         - If Ansible Vault is configured, the plugin uses the first vault identity in the list for encryption.
