@@ -33,6 +33,14 @@
   run_once: true
   when: avd_tmp_dir != (lookup('ansible.builtin.config', 'DEFAULT_LOCAL_TMP') ~ '/' ~ avd_tmp_dir_name)
 
+- name: Debug avd_tmp_dir
+  ansible.builtin.debug:
+    msg: "***** avd_tmp_dir *****: {{ avd_tmp_dir }}"
+
+- name: Debug lookup('ansible.builtin.config', 'DEFAULT_LOCAL_TMP')
+  ansible.builtin.debug:
+    msg: "***** DEFAULT_LOCAL_TMP *****: {{ lookup('ansible.builtin.config', 'DEFAULT_LOCAL_TMP') }}"
+
 - name: Validate eos_designs inputs
   arista.avd.validate_inputs:
     tmp_dir: "{{ avd_tmp_dir }}"
