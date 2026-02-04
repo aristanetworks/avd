@@ -21,12 +21,10 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     get_templar,
     raise_action_fail,
 )
-from ansible_collections.arista.avd.plugins.plugin_utils.vault_handler import create_vault_handler
 
 if TYPE_CHECKING:
     from ansible.playbook.task import Task
     from ansible.template import Templar
-    from pyavd_utils.passwords import vault_decrypt
 
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
     from pyavd._errors import AristaAvdError
@@ -34,8 +32,6 @@ if TYPE_CHECKING:
     from pyavd.api.schemas import AVDDesign
 
 try:
-    from pyavd_utils.passwords import vault_decrypt
-
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
     from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
@@ -130,9 +126,6 @@ class ActionModule(ActionBase):
 
         _templated_path, validated_path = get_role_tmp_paths("eos_designs")
 
-        # TODO: need  vault_id to pick the right password in multivault case.
-        vault_handler = create_vault_handler(self._loader)
-
         for host in fabric_hosts:
             file_path = validated_path / f"{host}.json"
             if not file_path.exists():
@@ -142,14 +135,8 @@ class ActionModule(ActionBase):
                 )
                 raise AnsibleActionFail(message=msg)
 
-            # Read the file
-            host_hostvars = file_path.read_bytes()
-
-            # Decrypt if vault is configured
-            if vault_handler:
-                host_hostvars, _vault_id = vault_decrypt(host_hostvars.decode("utf-8"), vault_handler.secret)
-
-            host_hostvars = json.loads(host_hostvars)
+            # Read, unvault, and parse the JSON file
+            host_hostvars = self._loader.load_from_file(str(file_path), json_only=True)
 
             # Load host hostvars into the AVDDesign data class.
             all_inputs[host] = AVDDesign._from_dict(host_hostvars)
