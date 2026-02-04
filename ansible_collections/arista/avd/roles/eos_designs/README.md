@@ -63,7 +63,7 @@ To understand the interaction between `eos_designs` input variables and `eos_cli
 
 ## Reference Designs
 
-The following reference design types are included in the roles default variables:
+The following reference design types are included in the role's default variables:
 
 - L3LS EVPN: Layer 3 Leaf Spine with VXLAN EVPN
 - L2LS: Layer 2 Leaf Spine
