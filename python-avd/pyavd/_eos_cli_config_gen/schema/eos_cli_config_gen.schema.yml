@@ -5537,8 +5537,6 @@ keys:
             - tcam
           update_default_result_permit:
             type: bool
-            documentation_options:
-              glossary: true
             description: Accept the packets when access-list is being updated.
       speed_groups:
         type: list

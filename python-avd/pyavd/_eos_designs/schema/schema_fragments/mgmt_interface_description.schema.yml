@@ -9,7 +9,6 @@ keys:
   mgmt_interface_description:
     documentation_options:
       table: management-interface-settings
-      glossary: true
     type: str
     description: |
       Management interface description.

@@ -18,8 +18,6 @@ keys:
       Core configuration involves enabling AAA, defining server groups, and applying
       methods to console or VTY lines. Key commands include aaa authentication, aaa
       authorization, and aaa accounting'
-    documentation_options:
-      glossary: true
     keys:
       enable_password:
         type: dict
@@ -3571,7 +3569,6 @@ keys:
   mgmt_interface_description:
     documentation_options:
       table: management-interface-settings
-      glossary: true
     type: str
     description: 'Management interface description.
 
@@ -5546,8 +5543,6 @@ keys:
   svi_profiles:
     type: list
     primary_key: profile
-    documentation_options:
-      glossary: true
     description: 'Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
 
       Keys are the same used under SVIs. Keys defined under SVIs take precedence.
