@@ -3657,22 +3657,19 @@ monitor connectivity
    local-interfaces GLOBAL_SET address-only default
    !
    host Server3
-      description
-      server3_connectivity_monitor
+      description server3_connectivity_monitor
       local-interfaces HOST_SET
       ip 10.10.10.3
       icmp echo size 1200
    !
    host server1
-      description
-      server1_connectivity_monitor
+      description server1_connectivity_monitor
       local-interfaces HOST_SET address-only
       ip 10.10.10.1
       url https://server1.local.com
    !
    host server2
-      description
-      server2_connectivity_monitor
+      description server2_connectivity_monitor
       local-interfaces HOST_SET address-only
       ip 10.10.10.2
       url https://server2.local.com
@@ -3686,15 +3683,13 @@ monitor connectivity
       local-interfaces VRF_GLOBAL_SET default
       !
       host Server5
-         description
-         server5_connectivity_monitor
+         description server5_connectivity_monitor
          local-interfaces VRF_GLOBAL_SET address-only
          ip 10.10.20.11
          url https://server5.local.com
       !
       host server4
-         description
-         server4_connectivity_monitor
+         description server4_connectivity_monitor
          local-interfaces VRF_GLOBAL_SET
          ip 10.10.20.1
          url https://server2.local.com
@@ -3708,8 +3703,7 @@ monitor connectivity
       local-interfaces VRF_GLOBAL_SET address-only default
       !
       host server2
-         description
-         server2_connectivity_monitor
+         description server2_connectivity_monitor
          local-interfaces VRF_HOST_SET address-only
          ip 10.10.20.1
          icmp echo size 1300

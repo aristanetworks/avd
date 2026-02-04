@@ -32,8 +32,7 @@ monitor connectivity
    !
    host {{ host.name }}
 {%         if host.description is arista.avd.defined %}
-      description
-      {{ host.description }}
+      description {{ host.description }}
 {%         endif %}
 {%         if host.local_interfaces is arista.avd.defined %}
 {%             set local_interfaces_cli = "local-interfaces " ~ host.local_interfaces %}
@@ -72,8 +71,7 @@ monitor connectivity
       !
       host {{ host.name }}
 {%             if host.description is arista.avd.defined %}
-         description
-         {{ host.description }}
+         description {{ host.description }}
 {%             endif %}
 {%             if host.local_interfaces is arista.avd.defined %}
 {%                 set local_interfaces_cli = "local-interfaces " ~ host.local_interfaces %}
