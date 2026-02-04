@@ -66,7 +66,7 @@ options:
         default: false
   vault_id:
     description: |-
-      Optional vault identity to use for encrypting temporary files when Ansible Vault is configured.
+      Optional vault identity to use for encrypting temporary files created by this plugin when Ansible Vault is configured.
 
       When Ansible Vault is configured (via C(--vault-password-file), C(--vault-id), or C(vault_identity_list) in ansible.cfg),
       the plugin encrypts temporary files containing templated and validated data to prevent sensitive information
