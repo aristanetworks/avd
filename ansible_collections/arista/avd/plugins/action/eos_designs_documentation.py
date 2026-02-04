@@ -35,7 +35,7 @@ LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
 ARGUMENT_SPEC = {
-    "avd_tmp_dir": {"type": "str"},
+    "tmp_dir": {"type": "str", "required": True},
     "structured_config_dir": {"type": "str", "required": True},
     "structured_config_suffix": {"type": "str", "default": "yml"},
     "fabric_documentation_file": {"type": "str", "required": True},
@@ -53,7 +53,7 @@ ARGUMENT_SPEC = {
 
 
 class ActionModule(ActionBase):
-    avd_tmp_dir: str | None
+    tmp_dir: str
 
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         self._supports_check_mode = False
@@ -74,7 +74,7 @@ class ActionModule(ActionBase):
         # Converting to json and back to remove any AnsibeUnsafe types
         validated_args = json.loads(json.dumps(validated_args))
 
-        self.avd_tmp_dir = validated_args.get("avd_tmp_dir")
+        self.tmp_dir = validated_args.get("tmp_dir")
 
         return self.main(validated_args, task_vars, result)
 
@@ -169,7 +169,7 @@ class ActionModule(ActionBase):
         Returns:
             Dict of facts keyed by hostname.
         """
-        file_path = get_eos_designs_facts_path(self.avd_tmp_dir)
+        file_path = get_eos_designs_facts_path(self.tmp_dir)
 
         if not file_path.exists():
             msg = f"Missing AVD eos_designs facts to generate documentation ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."

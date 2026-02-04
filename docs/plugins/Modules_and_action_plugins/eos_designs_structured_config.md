@@ -31,7 +31,7 @@ Note: Input validation is performed by the `arista.avd.validate_inputs` plugin, 
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>avd_tmp_dir</samp> | str | optional | None | - | Optional path to use as the AVD temporary directory for storing templated and validated data used internally by the plugin.<br>Useful for debugging or CI purposes. |
+| <samp>tmp_dir</samp> | str | True | None | - | Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.<br>Must be the same across all plugins. |
 | <samp>eos_designs_custom_templates</samp> | list | False | None | - | List of dicts for Jinja2 templates to be run after generating the structured configuration |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;template</samp> | str | True | None | - | Template file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;options</samp> | dict | False | None | - | Template options |

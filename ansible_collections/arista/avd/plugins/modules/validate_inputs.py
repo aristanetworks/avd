@@ -18,10 +18,11 @@ description: |-
       data as JSON files to the AVD temporary directory.
 
 options:
-  avd_tmp_dir:
+  tmp_dir:
     description:
-      - Optional path to use as the AVD temporary directory for storing templated and validated data used internally by the plugin.
-      - Useful for debugging or CI purposes.
+      - Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.
+      - Must be the same across all plugins.
+    required: true
     type: str
   schema_name:
     description:

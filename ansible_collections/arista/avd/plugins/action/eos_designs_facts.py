@@ -45,7 +45,7 @@ except ImportError:
 class ActionModule(ActionBase):
     _task: Task
     _templar: Templar
-    avd_tmp_dir: str | None
+    tmp_dir: str
 
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
@@ -68,7 +68,7 @@ class ActionModule(ActionBase):
 
         self._digital_twin = self._task.args.get("digital_twin", False)
         output_dir = self._task.args.get("output_dir")
-        self.avd_tmp_dir = self._task.args.get("avd_tmp_dir")
+        self.tmp_dir = self._task.args.get("tmp_dir")
 
         groups = task_vars.get("groups", {})
         fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
@@ -126,7 +126,7 @@ class ActionModule(ActionBase):
         all_inputs: dict[str, AVDDesign] = {}
         all_hostvars: dict[str, dict] = {}
 
-        _templated_path, validated_path = get_role_tmp_paths("eos_designs", self.avd_tmp_dir)
+        _templated_path, validated_path = get_role_tmp_paths("eos_designs", self.tmp_dir)
 
         for host in fabric_hosts:
             file_path = validated_path / f"{host}.json"
@@ -190,7 +190,7 @@ class ActionModule(ActionBase):
         Args:
             avd_switch_facts: Facts to dump as dict keyed by hostname.
         """
-        file_path = get_eos_designs_facts_path(self.avd_tmp_dir)
+        file_path = get_eos_designs_facts_path(self.tmp_dir)
 
         with file_path.open(mode="w", encoding="utf-8") as f:
             json.dump(avd_switch_facts, f, indent=4)

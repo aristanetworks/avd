@@ -88609,11 +88609,11 @@ class EosDesigns(EosDesignsRootModel):
     """
     avd_tmp_dir: str | None
     """
-    Optional path for the AVD temporary directory.
-    Contains templated inputs, validated inputs, and
-    facts data used internally by AVD plugins.
-    Defaults to the Ansible temporary directory, which is
-    cleaned up after the play.
+    Path for the AVD temporary directory.
+    Contains templated inputs, validated inputs, and facts data
+    used internally by AVD plugins.
+    Defaults to the Ansible temporary directory, which is cleaned up
+    after the play.
     Set a custom path to persist data for debugging.
     """
     eos_designs_validation_configuration: EosDesignsValidationConfiguration
@@ -90799,11 +90799,11 @@ class EosDesigns(EosDesignsRootModel):
                 avd_eos_designs_structured_config: Generate structured configuration per device.
                 avd_structured_config_file_format: The file format to use when dumping structured configuration files.
                 avd_tmp_dir:
-                   Optional path for the AVD temporary directory.
-                   Contains templated inputs, validated inputs, and
-                   facts data used internally by AVD plugins.
-                   Defaults to the Ansible temporary directory, which is
-                   cleaned up after the play.
+                   Path for the AVD temporary directory.
+                   Contains templated inputs, validated inputs, and facts data
+                   used internally by AVD plugins.
+                   Defaults to the Ansible temporary directory, which is cleaned up
+                   after the play.
                    Set a custom path to persist data for debugging.
                 eos_designs_validation_configuration:
                    Validation configuration options when validating AVD Design inputs.

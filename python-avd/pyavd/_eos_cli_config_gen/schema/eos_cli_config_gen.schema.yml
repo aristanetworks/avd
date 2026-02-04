@@ -894,7 +894,7 @@ keys:
     documentation_options:
       table: role-settings
     type: str
-    description: 'Optional path for the AVD temporary directory.
+    description: 'Path for the AVD temporary directory.
 
       Contains templated inputs, validated inputs, and facts data used internally
       by AVD plugins.
