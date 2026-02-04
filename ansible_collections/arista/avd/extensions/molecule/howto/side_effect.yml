@@ -10,22 +10,22 @@
 
   tasks:
     - name: Sanity check - config exists
-      stat:
+      ansible.builtin.stat:
         path: "{{ config_file }}"
       register: cfg_stat
 
     - name: Fail if config is missing
-      fail:
+      ansible.builtin.fail:
         msg: "Config not found at {{ config_file }}"
       when: not cfg_stat.stat.exists
 
     - name: Execute Config Parser for EOS Artifacts
       # Syntax: python3 <script> <config_input>
       # Each artifact in the config specifies its own output_dir
-      command: "python3 {{ script_path }} {{ config_file }}"
+      ansible.builtin.command: "python3 {{ script_path }} {{ config_file }}"
       register: parser_output
       changed_when: false
 
     - name: Show Parser Output
-      debug:
+      ansible.builtin.debug:
         msg: "{{ parser_output.stdout_lines }}"
