@@ -591,13 +591,13 @@ def _validate_host_worker(
         if input_suffix in {"yml", "yaml"}:
             # YAML input: parse and convert to JSON for validation
             data = yaml.load(file_content, Loader=yaml.CSafeLoader)
-            json_data = json.dumps(data).encode("utf-8")
+            json_data = json.dumps(data)
         else:
             # JSON input: use directly (already in JSON format)
-            json_data = file_content
+            json_data = file_content.decode("utf-8")
 
         # Validation in Rust, releasing the GIL.
-        validated_data_result = get_validated_data(data=json_data, schema_name=SCHEMA_MAP[schema_name], configuration=configuration)
+        validated_data_result = get_validated_data(data_as_json=json_data, schema_name=SCHEMA_MAP[schema_name], configuration=configuration)
         validation_result, validated_data = validated_data_result.validation_result, validated_data_result.validated_data
 
         output_file = None
