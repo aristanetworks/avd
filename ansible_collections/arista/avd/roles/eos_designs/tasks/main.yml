@@ -39,7 +39,7 @@
 
 - name: Debug lookup('ansible.builtin.config', 'DEFAULT_LOCAL_TMP')
   ansible.builtin.debug:
-    msg: "***** DEFAULT_LOCAL_TMP *****: {{ lookup('ansible.builtin.config', 'DEFAULT_LOCAL_TMP') }}"
+    msg: "***** DEFAULT_LOCAL_TMP *****: {{ lookup('ansible.builtin.config', 'DEFAULT_LOCAL_TMP') }}/{{ avd_tmp_dir_name }}"
 
 - name: Validate eos_designs inputs
   arista.avd.validate_inputs:
