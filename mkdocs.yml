@@ -96,6 +96,9 @@ plugins:
         - docs/release-notes/5.x.x.md
         - docs/porting-guides/4.x.x.md
         - docs/porting-guides/5.x.x.md
+        - docs/pyavd/simple_example_5_to_6.md
+        - docs/pyavd/simple_example_5_x.md
+        - docs/pyavd/simple_example_6_x.md
         - ansible_collections/arista/avd/roles/*/docs/tables/*
         # Exclude the table used only as a snippet to avoid mkdocs info log
         - ansible_collections/arista/avd/roles/eos_designs/docs/node-type-variables.md
@@ -198,7 +201,7 @@ nav:
           - EOS Config: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md
       - Ansible Collection:
           - Introduction to Ansible and AVD: docs/getting-started/intro-to-ansible-and-avd.md
-          - AVD and Ansible Automation Platform: docs/getting-started/avd-aap.md
+          - Ansible Usage Patterns: docs/getting-started/ansible-usage-patterns.md
           - Roles:
               - eos_designs:
                   - Overview: ansible_collections/arista/avd/roles/eos_designs/README.md
@@ -214,6 +217,7 @@ nav:
               - cv_deploy: ansible_collections/arista/avd/roles/cv_deploy/README.md
               - anta_runner: ansible_collections/arista/avd/roles/anta_runner/README.md
           - Plugins: docs/plugins/
+          - AVD and Ansible Automation Platform: docs/getting-started/avd-aap.md
       - PyAVD: docs/pyavd/pyavd.md
   - Release Notes:
       - 6.x.x: docs/release-notes/6.x.x.md
