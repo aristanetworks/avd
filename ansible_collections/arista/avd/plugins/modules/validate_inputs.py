@@ -68,30 +68,30 @@ options:
     description: |-
       Optional vault identity to use for encrypting temporary files created by this plugin when Ansible Vault is configured.
 
-      When Ansible Vault is configured (via C(--vault-password-file), C(--vault-id), or C(vault_identity_list) in ansible.cfg),
+      When Ansible Vault is configured (via `--vault-password-file`, `--vault-id`, or `vault_identity_list` in ansible.cfg),
       the plugin encrypts temporary files containing templated and validated data to prevent sensitive information
       from being exposed in logs or temporary directories.
 
-      B(Default Behavior) (when C(vault_id) is not specified):
+      **Default Behavior** (when`vault_id` is not specified):
         - If Ansible Vault is configured, the plugin uses the I(first) vault identity in the list for encryption.
         - This is the standard Ansible behavior when no vault ID is explicitly specified.
         - Files encrypted this way can only be decrypted with the password of the first vault identity.
 
-      B(Advanced Use Case) (when C(vault_id) is specified):
+      **Advanced Use Case** (when `vault_id` is specified):
         - The plugin uses the specified vault identity for encryption.
         - This is useful when multiple vault identities are configured and you want to control which one is used.
         - The specified vault identity must exist in the configured vault identities.
 
-      B(Examples):
-        - Single vault password: C(vault_id) is not needed, the single vault password is used automatically.
-        - Multiple vault identities via C(vault_identity_list = dev@.vault_dev, prod@.vault_prod):
-          - Without C(vault_id): Uses 'dev' (first in list) for encryption.
-          - With C(vault_id: 'prod'): Uses 'prod' for encryption.
-        - Multiple vault identities via C(--vault-id dev@.vault_dev --vault-id prod@.vault_prod):
-          - Without C(vault_id): Uses 'dev' (first specified) for encryption.
-          - With C(vault_id: 'prod'): Uses 'prod' for encryption.
+      **Examples**:
+        - Single vault password: `vault_id` is not needed, the single vault password is used automatically.
+        - Multiple vault identities via `vault_identity_list = dev@.vault_dev, prod@.vault_prod`:
+          - Without `vault_id`: Uses 'dev' (first in list) for encryption.
+          - With `vault_id: 'prod'`: Uses 'prod' for encryption.
+        - Multiple vault identities via `--vault-id dev@.vault_dev --vault-id prod@.vault_prod`:
+          - Without `vault_id`: Uses 'dev' (first specified) for encryption.
+          - With `vault_id: 'prod'`: Uses 'prod' for encryption.
 
-      B(Note): If Ansible Vault is not configured, this parameter has no effect and files are written as plain JSON.
+      **Note**: If Ansible Vault is not configured, this parameter has no effect and files are written as plain JSON.
     type: str
     required: false
 """
