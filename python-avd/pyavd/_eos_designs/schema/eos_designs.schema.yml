@@ -422,7 +422,7 @@ keys:
       multiplier: 3
   bgp_always_disable_ipv4_unicast_for_peer_groups:
     documentation_options:
-      table: role-settings
+      table: bgp-settings
     type: bool
     description: Deactivate the IPv4 unicast Address Family for BGP Peer Groups even
       when IPv4 is not activated by default.

@@ -105,7 +105,7 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(evpn_overlay_peer_group)
 
         # Deactivate IPv4 Address Family
-        if self.inputs.bgp_always_disable_ipv4_unicast_for_peer_groups:
+        if self._disable_ipv4_unicast_for_peer_groups:
             self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
 
         # EVPN Address Family
@@ -142,7 +142,7 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(evpn_overlay_core_peer_group)
 
         # Deactivate IPv4 Address Family
-        if self.inputs.bgp_always_disable_ipv4_unicast_for_peer_groups:
+        if self._disable_ipv4_unicast_for_peer_groups:
             self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
 
         # EVPN Address Family
@@ -173,7 +173,7 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(mpls_peer_group)
 
         # Deactivate IPv4 Address Family
-        if self.inputs.bgp_always_disable_ipv4_unicast_for_peer_groups:
+        if self._disable_ipv4_unicast_for_peer_groups:
             self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
 
         # EVPN Address Family
@@ -214,7 +214,7 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(rr_overlay_peer_group)
 
         # Deactivate IPv4 Address Family
-        if self.inputs.bgp_always_disable_ipv4_unicast_for_peer_groups:
+        if self._disable_ipv4_unicast_for_peer_groups:
             self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
 
         # IPv4 VPN Address Family
@@ -245,7 +245,7 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(wan_overlay_peer_group)
 
         # Deactivate IPv4 Address Family
-        if self.inputs.bgp_always_disable_ipv4_unicast_for_peer_groups:
+        if self._disable_ipv4_unicast_for_peer_groups:
             self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
 
         # Activate EVPN Address Family
@@ -300,7 +300,7 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(wan_rr_overlay_peer_group)
 
         # Deactivate IPv4 Address Family
-        if self.inputs.bgp_always_disable_ipv4_unicast_for_peer_groups:
+        if self._disable_ipv4_unicast_for_peer_groups:
             self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
 
         # EVPN Address Family
@@ -329,7 +329,7 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(ipvpn_gateway_peer_group)
 
         # Deactivate IPv4 Address Family
-        if self.inputs.bgp_always_disable_ipv4_unicast_for_peer_groups:
+        if self._disable_ipv4_unicast_for_peer_groups:
             self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(
                 name=self.inputs.bgp_peer_groups.ipvpn_gateway_peers.name, activate=False
             )
