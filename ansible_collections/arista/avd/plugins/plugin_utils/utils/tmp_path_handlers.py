@@ -1,7 +1,6 @@
 # Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-
 from pathlib import Path
 from typing import Literal
 
@@ -13,11 +12,11 @@ EOS_DESIGNS_FACTS_FILENAME = "eos_designs_facts.json"
 AVD_TMP_DIR_MODE = 0o700
 
 
-def _get_tmp_path(tmp_dir: str) -> Path:
+def _get_base_tmp_path(tmp_dir: str) -> Path:
     """
-    Return a Path object for the AVD temporary directory.
+    Return a Path object for the base AVD temporary directory.
 
-    The directory will be created with 700 permissions if it doesn't exist.
+    The directory will be created if missing with 700 permissions.
 
     Args:
         tmp_dir: Path to use as the AVD temporary directory.
@@ -50,8 +49,8 @@ def get_eos_designs_facts_path(tmp_dir: str) -> Path:
     Returns:
         Path object pointing to the eos_designs facts JSON file.
     """
-    tmp_path = _get_tmp_path(tmp_dir)
-    eos_designs_path = tmp_path / "eos_designs"
+    base_tmp_path = _get_base_tmp_path(tmp_dir)
+    eos_designs_path = base_tmp_path / "eos_designs"
 
     # Ensure directory exist.
     eos_designs_path.mkdir(parents=True, exist_ok=True)
@@ -72,8 +71,8 @@ def get_role_tmp_paths(role_name: Literal["eos_designs", "eos_cli_config_gen"], 
     Returns:
         A tuple of Path objects containing (templated_path, validated_path).
     """
-    tmp_path = _get_tmp_path(tmp_dir)
-    role_path = tmp_path / role_name
+    base_tmp_path = _get_base_tmp_path(tmp_dir)
+    role_path = base_tmp_path / role_name
 
     templated_path = role_path / TEMPLATED_DIR_NAME
     validated_path = role_path / VALIDATED_DIR_NAME
