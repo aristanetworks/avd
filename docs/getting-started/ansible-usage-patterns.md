@@ -83,10 +83,10 @@ graph LR
     D --> E[EOS CLI Configuration]
 ```
 
-The [eos_designs](../../ansible_collections/arista/avd/roles/eos_designs/README.md) role implements Arista's best practices and design patterns. You provide high-level design parameters with the [AVD Design](../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md) data model, like fabric topology, VLANs and VRFs, and the role will:
+The [eos_designs](../../ansible_collections/arista/avd/roles/eos_designs/README.md) role implements Arista's best practices and design patterns. You provide high-level design parameters using the [AVD Design](../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md) data model, like fabric topology, VLANs and VRFs, and the role will:
 
-1. Generates the complete structured configuration following the [EOS Config](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md) data model.
-2. Passes this to [eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) for EOS configuration generation.
+1. Generate the complete structured configuration following the [EOS Config](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md) data model.
+2. Pass this to [eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md) for EOS configuration generation.
 
 This two-stage process separates design intent from configuration rendering, making it easier to manage large-scale deployments.
 
