@@ -1,6 +1,7 @@
 ---
 # This title is used for search results
 title: EOS Config data models (eos_cli_config_gen)
+template: custom-banner.html
 ---
 <!--
   ~ Copyright (c) 2023-2026 Arista Networks, Inc.
