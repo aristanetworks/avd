@@ -13,7 +13,6 @@ from .parse_validation_result import build_result_message, parse_validation_resu
 from .python_to_ansible_logging_handler import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 from .raise_action_fail import raise_action_fail
 from .tmp_path_handlers import get_eos_designs_facts_path, get_role_tmp_paths, get_tmp_path
-from .vault_handler import VaultHandler
 from .write_file import write_file
 from .yaml_dumper import NoAliasDumper, YamlDumper
 from .yaml_loader import YamlLoader
@@ -27,7 +26,6 @@ __all__ = [
     "NoAliasDumper",
     "PythonToAnsibleContextFilter",
     "PythonToAnsibleHandler",
-    "VaultHandler",
     "YamlDumper",
     "YamlLoader",
     "build_result_message",
