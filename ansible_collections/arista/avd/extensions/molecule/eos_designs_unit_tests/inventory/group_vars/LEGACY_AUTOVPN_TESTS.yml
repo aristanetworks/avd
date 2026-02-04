@@ -182,3 +182,6 @@ application_classification:
     - name: VIDEO
     - name: IT
     - name: VOICE
+
+# Test for remove redundant command no neighbor activate when no bgp default ipv4-unicast is configured
+bgp_always_disable_ipv4_unicast_for_peer_groups: false
