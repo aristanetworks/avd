@@ -68,12 +68,14 @@ options:
     description: |-
       Optional vault identity to use for encrypting temporary files created by this plugin when Ansible Vault is configured.
 
+      **Note**: If Ansible Vault is not configured, this parameter has no effect and files are written as plain JSON.
+
       When Ansible Vault is configured (via `--vault-password-file`, `--vault-id`, or `vault_identity_list` in ansible.cfg),
       the plugin encrypts temporary files containing templated and validated data to prevent sensitive information
       from being exposed in logs or temporary directories.
 
       **Default Behavior** (when`vault_id` is not specified):
-        - If Ansible Vault is configured, the plugin uses the I(first) vault identity in the list for encryption.
+        - If Ansible Vault is configured, the plugin uses the first vault identity in the list for encryption.
         - This is the standard Ansible behavior when no vault ID is explicitly specified.
         - Files encrypted this way can only be decrypted with the password of the first vault identity.
 
@@ -90,8 +92,6 @@ options:
         - Multiple vault identities via `--vault-id dev@.vault_dev --vault-id prod@.vault_prod`:
           - Without `vault_id`: Uses 'dev' (first specified) for encryption.
           - With `vault_id: 'prod'`: Uses 'prod' for encryption.
-
-      **Note**: If Ansible Vault is not configured, this parameter has no effect and files are written as plain JSON.
     type: str
     required: false
 """
