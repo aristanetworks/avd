@@ -43,7 +43,7 @@ In `eos_config_deploy_cvp`, we targeted the definition of a CloudVision host as 
 
 <div class="grid" markdown>
 
-=== "Previous"
+=== "eos_config_deploy_cvp"
 
     Inventory
 
@@ -111,7 +111,7 @@ In `eos_config_deploy_cvp`, we targeted the definition of a CloudVision host as 
 
 ## Authentication
 
-We recommend using the `cv_server` and `cv_token` keys for CloudVision authentication. For secure workflows, generate the `cv_token` from a service account with the required permissions. Refer to the `cv_deploy` role [documentation](../../ansible_collections/arista/avd/roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision) for step-by-step instructions on creating these tokens.
+We recommend using the `cv_server` and `cv_token` keys for CloudVision authentication. Generate the `cv_token` from a service account with the required permissions. Refer to the `cv_deploy` role [documentation](../../ansible_collections/arista/avd/roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision) for step-by-step instructions on creating these tokens.
 
 ```yaml hl_lines="6 7 9 10"
   tasks:
@@ -161,7 +161,7 @@ Use this approach when your playbook deploys AVD-generated configurations to Clo
 
 === "Previous (Separate Tasks)"
 
-    You first deploy device configs and then upload the static configlets.
+    You first deploy device configs with `eos_config_deploy_cvp` and then upload the static configlets with `cvp_configlet_upload`.
 
     ```yaml
     ---
@@ -225,7 +225,7 @@ Use this approach to replace a playbook whose **only** job was to upload configl
 
 <div class="grid" markdown>
 
-=== "Previous (`cvp_configlet_upload` only)"
+=== "cvp_configlet_upload"
 
     The playbook has a single purpose: to scan a directory and upload configlets.
 
@@ -245,7 +245,7 @@ Use this approach to replace a playbook whose **only** job was to upload configl
             configlets_cvp_prefix: "DC1-AVD"
     ```
 
-=== "cv_deploy (Manifest-Only Mode)"
+=== "cv_deploy"
 
     By setting `cv_devices: []`, it instructs the role to skip all device-specific operations and only process the manifest.
 
