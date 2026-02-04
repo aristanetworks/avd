@@ -16,23 +16,19 @@ from ansible.plugins.action import ActionBase, display
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     PythonToAnsibleContextFilter,
     PythonToAnsibleHandler,
+    VaultHandler,
     cprofile,
     get_role_tmp_paths,
     get_templar,
     raise_action_fail,
 )
-from ansible_collections.arista.avd.plugins.plugin_utils.vault_handler import create_vault_handler
 
 if TYPE_CHECKING:
-    from pyavd_utils.passwords import vault_decrypt
-
     from pyavd import get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
     from pyavd.j2filters import add_md_toc
 
 try:
-    from pyavd_utils.passwords import vault_decrypt
-
     from pyavd import get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
     from pyavd.j2filters import add_md_toc
@@ -206,11 +202,9 @@ class ActionModule(ActionBase):
         structured_config = file_path.read_bytes()
 
         # Decrypt if vault is configured
-        # TODO: need  vault_id to pick the right password in multivault case.
-        # TODO: create vault handler once for all host and pass it to the function.
-        vault_handler = create_vault_handler(self._loader)
-        if vault_handler:
-            structured_config, _vault_id = vault_decrypt(structured_config.decode("utf-8"), vault_handler.secret)
+        # TODO: need vault_id to initialize the vault or we may pick up the wrong comment
+        vault_handler = VaultHandler(self._loader)
+        structured_config = vault_handler.maybe_decrypt(structured_config)
 
         return json.loads(structured_config)
 

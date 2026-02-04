@@ -17,16 +17,15 @@ from ansible.plugins.action import display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     ActionPluginVars,
+    VaultHandler,
     build_result_message,
     get_role_tmp_paths,
     get_workers,
     parse_validation_result,
 )
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
-from ansible_collections.arista.avd.plugins.plugin_utils.vault_handler import VaultHandler, create_vault_handler
 
 if TYPE_CHECKING:
-    from pyavd_utils.passwords import vault_decrypt, vault_encrypt
     from pyavd_utils.validation import Configuration, ValidationResult, get_validated_data
 
     from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
@@ -34,7 +33,6 @@ if TYPE_CHECKING:
     from pyavd._utils.filtered_map_view import FilteredMapView
 
 try:
-    from pyavd_utils.passwords import vault_decrypt, vault_encrypt
     from pyavd_utils.validation import Configuration, ValidationResult, get_validated_data
 
     from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
@@ -184,9 +182,9 @@ class ActionModule(AvdActionPlugin):
             plugin_args.batch_size,
         )
 
-        # Create a vault handler if vault is configured
-        vault_handler = create_vault_handler(self._loader, vault_id=plugin_args.vault_id)
-        if vault_handler:
+        # Create a vault handler
+        vault_handler = VaultHandler(self._loader, vault_id=plugin_args.vault_id)
+        if vault_handler.secret is not None:
             self.logger.info("Ansible Vault is configured - temporary files will be encrypted")
         else:
             self.logger.info("Ansible Vault is not configured - temporary files will not be encrypted")
@@ -474,9 +472,9 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
         templated_hostvars = dict(hostvars_wrapper)
 
         json_data = json.dumps(templated_hostvars, skipkeys=True, default=lambda _: "<not serializable>", indent=4).encode("utf-8")
-        if vault_handler:
-            # Encrypt using vault_encrypt with password and vault_id
-            json_data = vault_encrypt(json_data, vault_handler.secret, vault_id=vault_handler.vault_id).encode("utf-8")
+
+        # Encrypt if vault is configured
+        json_data = vault_handler.maybe_encrypt(json_data)
 
         output_file_path = output_path / f"{hostname}.json"
         output_file_path.write_bytes(json_data)
@@ -531,9 +529,9 @@ def _validate_host_worker(
         else:
             # JSON input: read directly.
             json_data = input_file_path.read_bytes()
-            if vault_handler:
-                # Decrypt using vault_decrypt with password
-                json_data, _vault_id = vault_decrypt(json_data.decode("utf-8"), vault_handler.secret)
+
+            # Decrypt if vault is configured
+            json_data = vault_handler.maybe_decrypt(json_data)
 
         # Validation in Rust, releasing the GIL.
         validated_data_result = get_validated_data(data=json_data, schema_name=SCHEMA_MAP[schema_name], configuration=configuration)
@@ -541,9 +539,8 @@ def _validate_host_worker(
 
         output_file = None
         if validated_data:
-            if vault_handler:
-                # Encrypt using vault_encrypt with password and vault_id
-                validated_data = vault_encrypt(validated_data, vault_handler.secret, vault_id=vault_handler.vault_id).encode("utf-8")
+            # Encrypt if vault is configured
+            validated_data = vault_handler.maybe_encrypt(validated_data)
 
             # Write data to file
             output_file_path = output_path / f"{hostname}.json"

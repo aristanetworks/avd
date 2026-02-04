@@ -18,17 +18,15 @@ from ansible.plugins.action import ActionBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     ANSIBLE_ABOVE_2_19,
     AvdSwitchFactsDefaultDict,
+    VaultHandler,
     get_eos_designs_facts_path,
     get_role_tmp_paths,
     get_templar,
     raise_action_fail,
     write_file,
 )
-from ansible_collections.arista.avd.plugins.plugin_utils.vault_handler import create_vault_handler
 
 if TYPE_CHECKING:
-    from pyavd_utils.passwords import vault_decrypt
-
     from pyavd._eos_designs.structured_config import get_structured_config
     from pyavd._schema.avdschema import AvdSchema
     from pyavd._utils import merge, strip_null_from_data
@@ -36,8 +34,6 @@ if TYPE_CHECKING:
     from pyavd.api.schemas import AVDDesign
 
 try:
-    from pyavd_utils.passwords import vault_decrypt
-
     from pyavd._eos_designs.structured_config import get_structured_config
     from pyavd._schema.avdschema import AvdSchema
     from pyavd._utils import merge, strip_null_from_data
@@ -203,11 +199,9 @@ class ActionModule(ActionBase):
         # Read the file
         host_hostvars = file_path.read_bytes()
 
-        # Decrypt if vault is configured
         # TODO: need  vault_id to pick the right password in multivault case.
-        vault_handler = create_vault_handler(self._loader)
-        if vault_handler:
-            host_hostvars, _vault_id = vault_decrypt(host_hostvars.decode("utf-8"), vault_handler.secret)
+        vault_handler = VaultHandler(self._loader)
+        host_hostvars = vault_handler.maybe_decrypt(host_hostvars)
 
         host_hostvars = json.loads(host_hostvars)
 
