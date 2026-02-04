@@ -21,13 +21,18 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     get_templar,
     raise_action_fail,
 )
+from ansible_collections.arista.avd.plugins.plugin_utils.vault_handler import create_vault_handler
 
 if TYPE_CHECKING:
+    from pyavd_utils.passwords import vault_decrypt
+
     from pyavd import get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
     from pyavd.j2filters import add_md_toc
 
 try:
+    from pyavd_utils.passwords import vault_decrypt
+
     from pyavd import get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
     from pyavd.j2filters import add_md_toc
@@ -197,8 +202,17 @@ class ActionModule(ActionBase):
             )
             raise AnsibleActionFail(message=msg)
 
-        # Read, unvault, and parse the JSON file
-        return self._loader.load_from_file(str(file_path), json_only=True)
+        # Read the file
+        structured_config = file_path.read_bytes()
+
+        # Decrypt if vault is configured
+        # TODO: need  vault_id to pick the right password in multivault case.
+        # TODO: create vault handler once for all host and pass it to the function.
+        vault_handler = create_vault_handler(self._loader)
+        if vault_handler:
+            structured_config, _vault_id = vault_decrypt(structured_config.decode("utf-8"), vault_handler.secret)
+
+        return json.loads(structured_config)
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:

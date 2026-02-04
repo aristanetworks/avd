@@ -24,8 +24,11 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     raise_action_fail,
     write_file,
 )
+from ansible_collections.arista.avd.plugins.plugin_utils.vault_handler import create_vault_handler
 
 if TYPE_CHECKING:
+    from pyavd_utils.passwords import vault_decrypt
+
     from pyavd._eos_designs.structured_config import get_structured_config
     from pyavd._schema.avdschema import AvdSchema
     from pyavd._utils import merge, strip_null_from_data
@@ -33,6 +36,8 @@ if TYPE_CHECKING:
     from pyavd.api.schemas import AVDDesign
 
 try:
+    from pyavd_utils.passwords import vault_decrypt
+
     from pyavd._eos_designs.structured_config import get_structured_config
     from pyavd._schema.avdschema import AvdSchema
     from pyavd._utils import merge, strip_null_from_data
@@ -195,8 +200,16 @@ class ActionModule(ActionBase):
             )
             raise AnsibleActionFail(message=msg)
 
-        # Read, unvault, and parse the JSON file
-        host_hostvars = self._loader.load_from_file(str(file_path), json_only=True)
+        # Read the file
+        host_hostvars = file_path.read_bytes()
+
+        # Decrypt if vault is configured
+        # TODO: need  vault_id to pick the right password in multivault case.
+        vault_handler = create_vault_handler(self._loader)
+        if vault_handler:
+            host_hostvars, _vault_id = vault_decrypt(host_hostvars.decode("utf-8"), vault_handler.secret)
+
+        host_hostvars = json.loads(host_hostvars)
 
         # Load host hostvars into the AVDDesign data class.
         avd_design = AVDDesign._from_dict(host_hostvars)
