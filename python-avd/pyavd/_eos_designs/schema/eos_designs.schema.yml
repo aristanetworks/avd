@@ -393,28 +393,7 @@ keys:
     documentation_options:
       table: role-settings
     type: str
-    description: "Vault identity to use for encrypting temporary files when Ansible
-      Vault is configured.\n\nWhen Ansible Vault is configured (via `--vault-password-file`,
-      `--vault-id`, or `vault_identity_list` in ansible.cfg),\nAVD encrypts temporary
-      files containing templated and validated data to prevent sensitive information\nfrom
-      being exposed in logs or temporary directories.\n\n**Default Behavior** (when
-      `avd_vault_id` is not specified):\n  - If Ansible Vault is configured, AVD uses
-      the *first* vault identity in the list for encryption.\n  - This is the standard
-      Ansible behavior when no vault ID is explicitly specified.\n  - Files encrypted
-      this way can only be decrypted with the password of the first vault identity.\n\n**Advanced
-      Use Case** (when `avd_vault_id` is specified):\n  - AVD uses the specified vault
-      identity for encryption.\n  - This is useful when multiple vault identities
-      are configured and you want to control which one is used.\n  - The specified
-      vault identity must exist in the configured vault identities.\n\n**Examples**:\n
-      \ - Single vault password: `avd_vault_id` is not needed, the single vault password
-      is used automatically.\n  - Multiple vault identities via `vault_identity_list
-      = dev@.vault_dev, prod@.vault_prod`:\n    - Without `avd_vault_id`: Uses 'dev'
-      (first in list) for encryption.\n    - With `avd_vault_id: 'prod'`: Uses 'prod'
-      for encryption.\n  - Multiple vault identities via `--vault-id dev@.vault_dev
-      --vault-id prod@.vault_prod`:\n    - Without `avd_vault_id`: Uses 'dev' (first
-      specified) for encryption.\n    - With `avd_vault_id: 'prod'`: Uses 'prod' for
-      encryption.\n\n**Note**: If Ansible Vault is not configured, this parameter
-      has no effect and files are written as plain JSON."
+    $ref: eos_cli_config_gen#/keys/avd_vault_id
   bfd_multihop:
     documentation_options:
       table: bfd-settings

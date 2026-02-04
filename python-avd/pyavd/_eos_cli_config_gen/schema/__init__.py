@@ -69683,48 +69683,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     avd_vault_id: str | None
     """
     Vault identity to use for encrypting temporary files when Ansible Vault is configured.
-
     When Ansible
-    Vault is configured (via `--vault-password-file`, `--vault-id`, or `vault_identity_list` in
-    ansible.cfg),
-    AVD encrypts temporary files containing templated and validated data to prevent
-    sensitive information
-    from being exposed in logs or temporary directories.
-
-    **Default Behavior**
-    (when `avd_vault_id` is not specified):
-      - If Ansible Vault is configured, AVD uses the *first*
-    vault identity in the list for encryption.
-      - This is the standard Ansible behavior when no vault
-    ID is explicitly specified.
-      - Files encrypted this way can only be decrypted with the password of
-    the first vault identity.
-
-    **Advanced Use Case** (when `avd_vault_id` is specified):
-      - AVD uses
-    the specified vault identity for encryption.
-      - This is useful when multiple vault identities are
-    configured and you want to control which one is used.
-      - The specified vault identity must exist in
-    the configured vault identities.
-
-    **Examples**:
-      - Single vault password: `avd_vault_id` is not
-    needed, the single vault password is used automatically.
-      - Multiple vault identities via
-    `vault_identity_list = dev@.vault_dev, prod@.vault_prod`:
-        - Without `avd_vault_id`: Uses 'dev'
-    (first in list) for encryption.
-        - With `avd_vault_id: 'prod'`: Uses 'prod' for encryption.
-      -
-    Multiple vault identities via `--vault-id dev@.vault_dev --vault-id prod@.vault_prod`:
-        - Without
-    `avd_vault_id`: Uses 'dev' (first specified) for encryption.
-        - With `avd_vault_id: 'prod'`: Uses
-    'prod' for encryption.
-
-    **Note**: If Ansible Vault is not configured, this parameter has no effect
-    and files are written as plain JSON.
+    Vault is not configured, this parameter has no effect and files are written as plain JSON.
+    When
+    Ansible Vault is configured AVD encrypts temporary files containing templated and validated data
+    to
+    prevent sensitive information from being exposed in temporary directories.
+      * when `avd_vault_id`
+    is not specified, AVD uses the *first* vault identity in the list for encryption.
+      * when
+    `avd_vault_id` is specified, AVD uses the specified vault identity for encryption.
     """
     banners: Banners
     """Subclass of AvdModel."""
@@ -70494,48 +70462,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 avd_structured_config_file_format: The file format to use when loading structured configuration files.
                 avd_vault_id:
                    Vault identity to use for encrypting temporary files when Ansible Vault is configured.
-
                    When Ansible
-                   Vault is configured (via `--vault-password-file`, `--vault-id`, or `vault_identity_list` in
-                   ansible.cfg),
-                   AVD encrypts temporary files containing templated and validated data to prevent
-                   sensitive information
-                   from being exposed in logs or temporary directories.
-
-                   **Default Behavior**
-                   (when `avd_vault_id` is not specified):
-                     - If Ansible Vault is configured, AVD uses the *first*
-                   vault identity in the list for encryption.
-                     - This is the standard Ansible behavior when no vault
-                   ID is explicitly specified.
-                     - Files encrypted this way can only be decrypted with the password of
-                   the first vault identity.
-
-                   **Advanced Use Case** (when `avd_vault_id` is specified):
-                     - AVD uses
-                   the specified vault identity for encryption.
-                     - This is useful when multiple vault identities are
-                   configured and you want to control which one is used.
-                     - The specified vault identity must exist in
-                   the configured vault identities.
-
-                   **Examples**:
-                     - Single vault password: `avd_vault_id` is not
-                   needed, the single vault password is used automatically.
-                     - Multiple vault identities via
-                   `vault_identity_list = dev@.vault_dev, prod@.vault_prod`:
-                       - Without `avd_vault_id`: Uses 'dev'
-                   (first in list) for encryption.
-                       - With `avd_vault_id: 'prod'`: Uses 'prod' for encryption.
-                     -
-                   Multiple vault identities via `--vault-id dev@.vault_dev --vault-id prod@.vault_prod`:
-                       - Without
-                   `avd_vault_id`: Uses 'dev' (first specified) for encryption.
-                       - With `avd_vault_id: 'prod'`: Uses
-                   'prod' for encryption.
-
-                   **Note**: If Ansible Vault is not configured, this parameter has no effect
-                   and files are written as plain JSON.
+                   Vault is not configured, this parameter has no effect and files are written as plain JSON.
+                   When
+                   Ansible Vault is configured AVD encrypts temporary files containing templated and validated data
+                   to
+                   prevent sensitive information from being exposed in temporary directories.
+                     * when `avd_vault_id`
+                   is not specified, AVD uses the *first* vault identity in the list for encryption.
+                     * when
+                   `avd_vault_id` is specified, AVD uses the specified vault identity for encryption.
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
                 boot:
