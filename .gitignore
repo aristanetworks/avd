@@ -51,6 +51,9 @@ dist/
 python-avd/pyavd/*/j2templates/.hash
 python-avd/pyavd/*/schema/schema_fragments/.hash
 
+# gz of schema store
+python-avd/pyavd/_schema/schemas.json.gz
+
 # Dynamically-created molecule artifacts
 ansible_collections/arista/avd/extensions/molecule/cv_deploy/intended/structured_configs/test_duplicated_devices_configs/
 
