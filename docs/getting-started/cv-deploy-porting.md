@@ -190,7 +190,7 @@ Use this approach when your playbook deploys AVD-generated configurations to Clo
             configlets_cvp_prefix: "DC1-AVD"
     ```
 
-=== "cv_depoy (Single Task)"
+=== "cv_deploy (Single Task)"
 
     With `cv_deploy`, you define a **"manifest"** using `cv_static_config_manifest` within the same task that deploys your device configurations.
 
