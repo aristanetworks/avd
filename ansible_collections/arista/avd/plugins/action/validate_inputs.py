@@ -475,8 +475,6 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
 
         # Convert to JSON string and write to file
         data = json.dumps(templated_hostvars, skipkeys=True, default=lambda _: "<not serializable>", indent=4)
-
-        # Convert to bytes for binary file write
         data = data.encode("utf-8")
 
         # Encrypt data if vault is configured
