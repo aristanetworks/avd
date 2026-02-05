@@ -168,7 +168,7 @@ class ActionModule(AvdActionPlugin):
         plugin_args = self._get_plugin_args()
         hosts_to_process = self._get_hosts_to_process(task_vars, plugin_args.schema_name)
         mp_workers, mt_workers = get_workers(len(hosts_to_process), task_vars["ansible_forks"])
-        templated_path, validated_path = get_role_tmp_paths(role_name=SCHEMA_MAP[plugin_args.schema_name], tmp_dir=plugin_args.tmp_dir)
+        templated_path, validated_path = get_role_tmp_paths(role_name=SCHEMA_MAP[plugin_args.schema_name], tmp_dir=plugin_args.tmp_dir, clean=True)
 
         # Track worker failures globally for the task.
         self.crashed_hosts = set()

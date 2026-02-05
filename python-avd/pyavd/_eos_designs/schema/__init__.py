@@ -88612,9 +88612,8 @@ class EosDesigns(EosDesignsRootModel):
     Path for the AVD temporary directory.
     Contains templated inputs, validated inputs, and facts data
     used internally by AVD plugins.
-    Defaults to the Ansible temporary directory, which is cleaned up
-    after the play.
-    Set a custom path to persist data for debugging.
+    Defaults to 'intended/tmp'. The temporary directory is cleaned up at
+    the end of each role.
     """
     eos_designs_validation_configuration: EosDesignsValidationConfiguration
     """
@@ -90802,9 +90801,8 @@ class EosDesigns(EosDesignsRootModel):
                    Path for the AVD temporary directory.
                    Contains templated inputs, validated inputs, and facts data
                    used internally by AVD plugins.
-                   Defaults to the Ansible temporary directory, which is cleaned up
-                   after the play.
-                   Set a custom path to persist data for debugging.
+                   Defaults to 'intended/tmp'. The temporary directory is cleaned up at
+                   the end of each role.
                 eos_designs_validation_configuration:
                    Validation configuration options when validating AVD Design inputs.
 

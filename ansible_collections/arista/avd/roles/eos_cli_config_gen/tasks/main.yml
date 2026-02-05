@@ -13,14 +13,6 @@
   run_once: true
   register: avd_requirements
 
-- name: Clean up AVD temporary directory
-  ansible.builtin.file:
-    path: "{{ avd_tmp_dir }}/eos_cli_config_gen"
-    state: absent
-  delegate_to: localhost
-  run_once: true
-  when: avd_tmp_dir != (lookup('ansible.builtin.config', 'DEFAULT_LOCAL_TMP') ~ '/' ~ avd_tmp_dir_name)
-
 - name: Validate eos_cli_config_gen inputs
   arista.avd.validate_inputs:
     tmp_dir: "{{ avd_tmp_dir }}"
@@ -47,3 +39,11 @@
     device_doc_toc: "{{ eos_cli_config_gen_documentation.toc | arista.avd.default(true) }}"
     cprofile_file: "{{ eos_cli_config_gen_cprofile_file | default(omit) }}"
   delegate_to: localhost
+
+- name: Clean up AVD temporary directory
+  ansible.builtin.file:
+    path: "{{ avd_tmp_dir }}"
+    state: absent
+  delegate_to: localhost
+  run_once: true
+  changed_when: false

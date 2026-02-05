@@ -34,7 +34,7 @@ def _get_base_tmp_path(tmp_dir: str) -> Path:
     return path
 
 
-def get_eos_designs_facts_path(tmp_dir: str) -> Path:
+def get_eos_designs_facts_path(tmp_dir: str, clean: bool = False) -> Path:
     """
     Return the Path object for the shared eos_designs facts file.
 
@@ -45,20 +45,26 @@ def get_eos_designs_facts_path(tmp_dir: str) -> Path:
 
     Args:
         tmp_dir: Path to use as the AVD temporary directory.
+        clean: If True, remove the file if it exists before returning.
 
     Returns:
         Path object pointing to the eos_designs facts JSON file.
     """
     base_tmp_path = _get_base_tmp_path(tmp_dir)
     eos_designs_path = base_tmp_path / "eos_designs"
+    eos_designs_facts_path = eos_designs_path / EOS_DESIGNS_FACTS_FILENAME
 
-    # Ensure directory exist.
-    eos_designs_path.mkdir(parents=True, exist_ok=True)
+    # Ensure directory exists.
+    # Clean file if requested.
+    if eos_designs_facts_path.exists() and clean:
+        eos_designs_facts_path.unlink()
+    else:
+        eos_designs_path.mkdir(parents=True, exist_ok=True)
 
-    return eos_designs_path / EOS_DESIGNS_FACTS_FILENAME
+    return eos_designs_facts_path
 
 
-def get_role_tmp_paths(role_name: Literal["eos_designs", "eos_cli_config_gen"], tmp_dir: str) -> tuple[Path, Path]:
+def get_role_tmp_paths(role_name: Literal["eos_designs", "eos_cli_config_gen"], tmp_dir: str, clean: bool = False) -> tuple[Path, Path]:
     """
     Return the temporary paths for 'templated' and 'validated' directories to be used by a specific Ansible role.
 
@@ -67,6 +73,7 @@ def get_role_tmp_paths(role_name: Literal["eos_designs", "eos_cli_config_gen"], 
     Args:
         role_name: The role name. Either 'eos_designs' or 'eos_cli_config_gen'.
         tmp_dir: Path to use as the AVD temporary directory.
+        clean: If True, remove all files in the role's temporary directory before returning.
 
     Returns:
         A tuple of Path objects containing (templated_path, validated_path).
@@ -78,7 +85,12 @@ def get_role_tmp_paths(role_name: Literal["eos_designs", "eos_cli_config_gen"], 
     validated_path = role_path / VALIDATED_DIR_NAME
 
     # Ensure directories exist. parents=True handles the creation of the 'role_name' intermediate dir if needed.
-    templated_path.mkdir(parents=True, exist_ok=True)
-    validated_path.mkdir(parents=True, exist_ok=True)
+    # Clean if requested.
+    for path in [templated_path, validated_path]:
+        if path.exists() and clean:
+            for file in path.iterdir():
+                file.unlink()
+        else:
+            path.mkdir(parents=True, exist_ok=True)
 
     return templated_path, validated_path

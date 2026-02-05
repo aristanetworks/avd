@@ -69685,9 +69685,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     Path for the AVD temporary directory.
     Contains templated inputs, validated inputs, and facts data
     used internally by AVD plugins.
-    Defaults to the Ansible temporary directory, which is cleaned up
-    after the play.
-    Set a custom path to persist data for debugging.
+    Defaults to 'intended/tmp'. The temporary directory is cleaned up at
+    the end of each role.
     """
     banners: Banners
     """Subclass of AvdModel."""
@@ -70459,9 +70458,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Path for the AVD temporary directory.
                    Contains templated inputs, validated inputs, and facts data
                    used internally by AVD plugins.
-                   Defaults to the Ansible temporary directory, which is cleaned up
-                   after the play.
-                   Set a custom path to persist data for debugging.
+                   Defaults to 'intended/tmp'. The temporary directory is cleaned up at
+                   the end of each role.
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
                 boot:
