@@ -7906,6 +7906,13 @@ keys:
       source_interface:
         type: str
         description: Source Interface Name.
+      local_interface:
+        type: str
+        description: 'Source Interface Name. `logging source-interface xxxx` is deprecated
+          in latest EOS versions(4.35.1). This key sets new
+
+          command `logging local-interface xxxx`. `source_interface` takes precedence
+          over `local_interface`.'
       vrfs:
         type: list
         primary_key: name
@@ -7920,6 +7927,14 @@ keys:
             source_interface:
               type: str
               description: Source interface name.
+            local_interface:
+              type: str
+              description: 'Source Interface Name. `logging vrf xxxx source-interface
+                xxxx` is deprecated in latest EOS versions(4.35.1). This key sets
+                new
+
+                command `logging vrf xxxx local-interface xxxx`. `source_interface`
+                takes precedence over `local_interface`.'
             hosts:
               type: list
               primary_key: name
