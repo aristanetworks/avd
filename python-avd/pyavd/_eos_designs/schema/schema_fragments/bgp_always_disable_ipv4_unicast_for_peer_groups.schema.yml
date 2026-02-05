@@ -12,4 +12,5 @@ keys:
     type: bool
     description: |-
       Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by default.
+    # TODO AVD 7.0 change the default to false.
     default: true
