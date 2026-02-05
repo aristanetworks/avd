@@ -46,7 +46,7 @@
 {%         endif %}
 | RFC5424 | {{ logging.format.rfc5424 | arista.avd.default(false) }} |
 {%     endif %}
-{%     if logging.vrfs is arista.avd.defined %}
+{%     if logging.vrfs is arista.avd.defined or logging.source_interface is arista.avd.defined %}
 
 | VRF | Source Interface |
 | --- | ---------------- |
@@ -58,6 +58,8 @@
 | {{ vrf.name }} | {{ vrf.source_interface }} |
 {%             endif %}
 {%         endfor %}
+{%     endif %}
+{%     if logging.vrfs is arista.avd.defined %}
 
 | VRF | Hosts | Ports | Protocol | SSL-profile |
 | --- | ----- | ----- | -------- | ----------- |
