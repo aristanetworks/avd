@@ -473,14 +473,10 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
         # missing variables in inline templates in Ansible 2.19.
         templated_hostvars = dict(hostvars_wrapper)
 
-        # Convert to JSON string and write to file
-        data = json.dumps(templated_hostvars, skipkeys=True, default=lambda _: "<not serializable>", indent=4)
-        data = data.encode("utf-8")
-
+        data = json.dumps(templated_hostvars, skipkeys=True, default=lambda _: "<not serializable>", indent=4).encode("utf-8")
         # Encrypt data if vault is configured
         data = loader.encrypt_if_needed(data)
 
-        # Write data to file
         output_file_path = output_path / f"{hostname}.json"
         output_file_path.write_bytes(data)
 
@@ -527,13 +523,11 @@ def _validate_host_worker(
         # Load file content (decrypted if vaulted)
         file_content = loader.load_file(input_file_path)
 
-        # Parse data based on file suffix
         if input_suffix in {"yml", "yaml"}:
             # YAML input: parse and convert to JSON string for validation
             data = yaml.load(file_content, Loader=yaml.CSafeLoader)
             json_data = json.dumps(data)
         else:
-            # JSON input: decode bytes to string
             json_data = file_content.decode("utf-8")
 
         # Validation in Rust, releasing the GIL.
@@ -542,7 +536,6 @@ def _validate_host_worker(
 
         output_file = None
         if validated_data:
-            # validated_data is already bytes (JSON format) from pyavd-utils
             # Encrypt data if vault is configured
             validated_data = loader.encrypt_if_needed(validated_data.encode("utf-8"))
 
