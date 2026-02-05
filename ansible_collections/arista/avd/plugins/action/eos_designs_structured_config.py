@@ -47,6 +47,8 @@ LOGGER = logging.getLogger()
 
 
 class ActionModule(ActionBase):
+    tmp_dir: str
+
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
             task_vars = {}
@@ -77,6 +79,7 @@ class ActionModule(ActionBase):
 
         digital_twin = self._task.args.get("digital_twin", False)
         return_structured_config = self._task.args.get("return_structured_config", False)
+        self.tmp_dir = self._task.args.get("tmp_dir")
 
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
@@ -186,7 +189,7 @@ class ActionModule(ActionBase):
         Returns:
             Tuple of an AVDDesign instance loaded from the host hostvars and a dict with the raw hostvars.
         """
-        _templated_path, validated_path = get_role_tmp_paths("eos_designs")
+        _templated_path, validated_path = get_role_tmp_paths("eos_designs", self.tmp_dir)
         file_path = validated_path / f"{hostname}.json"
         if not file_path.exists():
             msg = (
@@ -213,7 +216,7 @@ class ActionModule(ActionBase):
         Returns:
             AvdSwitchFactsDefaultDict instance loaded from facts.
         """
-        file_path = get_eos_designs_facts_path()
+        file_path = get_eos_designs_facts_path(self.tmp_dir)
 
         if not file_path.exists():
             msg = f"Missing AVD eos_designs facts for host '{hostname}' ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."

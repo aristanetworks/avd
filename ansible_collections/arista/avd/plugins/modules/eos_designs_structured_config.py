@@ -19,6 +19,12 @@ description: |-
 
   Note: Input validation is performed by the `arista.avd.validate_inputs` plugin, which must be run before this plugin.
 options:
+  tmp_dir:
+    description:
+      - Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.
+      - Must be the same across all plugins.
+    required: true
+    type: str
   eos_designs_custom_templates:
     description: List of dicts for Jinja2 templates to be run after generating the structured configuration
     required: false

@@ -96,6 +96,7 @@ SCHEMA_MAP: dict[SCHEMA_NAME, Literal["eos_designs", "eos_cli_config_gen"]] = {
 TARGET_LOGGERS = ("ansible_collections.arista.avd", "validation", "pyvalidation")
 
 ARGUMENT_SPEC = {
+    "tmp_dir": {"type": "str", "required": True},
     "batch_size": {"type": "int", "default": 10},
     "schema_name": {"type": "str", "default": "avd_design", "choices": ["avd_design", "eos_config"]},
     "input_dir": {"type": "str"},
@@ -114,6 +115,7 @@ REQUIRED_IF = [
 class ResolvedPluginArgs:
     """Plugin arguments."""
 
+    tmp_dir: str
     batch_size: int
     schema_name: SCHEMA_NAME
     input_dir: str | None
@@ -166,7 +168,7 @@ class ActionModule(AvdActionPlugin):
         plugin_args = self._get_plugin_args()
         hosts_to_process = self._get_hosts_to_process(task_vars, plugin_args.schema_name)
         mp_workers, mt_workers = get_workers(len(hosts_to_process), task_vars["ansible_forks"])
-        templated_path, validated_path = get_role_tmp_paths(SCHEMA_MAP[plugin_args.schema_name])
+        templated_path, validated_path = get_role_tmp_paths(role_name=SCHEMA_MAP[plugin_args.schema_name], tmp_dir=plugin_args.tmp_dir, clean=True)
 
         # Track worker failures globally for the task.
         self.crashed_hosts = set()

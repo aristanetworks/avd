@@ -378,6 +378,19 @@ keys:
     description: 'The file format to use when dumping structured configuration files.
 
       '
+  avd_tmp_dir:
+    documentation_options:
+      table: role-settings
+    type: str
+    description: 'Path for the AVD temporary directory.
+
+      Contains templated inputs, validated inputs, and facts data used internally
+      by AVD plugins.
+
+      Defaults to ''intended/tmp''. The temporary directory is cleaned up at the end
+      of each role.
+
+      '
   eos_designs_validation_configuration:
     documentation_options:
       table: role-settings

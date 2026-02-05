@@ -14,6 +14,7 @@
     | [<samp>avd_eos_designs_structured_config</samp>](## "avd_eos_designs_structured_config") | Boolean |  | `True` |  | Generate structured configuration per device. |
     | [<samp>avd_eos_designs_unset_facts</samp>](## "avd_eos_designs_unset_facts") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
     | [<samp>avd_structured_config_file_format</samp>](## "avd_structured_config_file_format") | String |  | `yml` | Valid Values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | The file format to use when dumping structured configuration files.<br> |
+    | [<samp>avd_tmp_dir</samp>](## "avd_tmp_dir") | String |  |  |  | Path for the AVD temporary directory.<br>Contains templated inputs, validated inputs, and facts data used internally by AVD plugins.<br>Defaults to 'intended/tmp'. The temporary directory is cleaned up at the end of each role.<br> |
     | [<samp>eos_designs_validation_configuration</samp>](## "eos_designs_validation_configuration") | Dictionary |  |  |  | Validation configuration options when validating AVD Design inputs. |
     | [<samp>&nbsp;&nbsp;warn_eos_config_keys</samp>](## "eos_designs_validation_configuration.warn_eos_config_keys") | Boolean |  | `True` |  | Emit a warning when EOS Config keys are detected in the AVD Design inputs. |
     | [<samp>eos_designs_documentation</samp>](## "eos_designs_documentation") | Dictionary |  |  |  | Control fabric documentation generation.<br> |
@@ -39,6 +40,11 @@
 
     # The file format to use when dumping structured configuration files.
     avd_structured_config_file_format: <str; "yml" | "yaml" | "json"; default="yml">
+
+    # Path for the AVD temporary directory.
+    # Contains templated inputs, validated inputs, and facts data used internally by AVD plugins.
+    # Defaults to 'intended/tmp'. The temporary directory is cleaned up at the end of each role.
+    avd_tmp_dir: <str>
 
     # Validation configuration options when validating AVD Design inputs.
     eos_designs_validation_configuration:

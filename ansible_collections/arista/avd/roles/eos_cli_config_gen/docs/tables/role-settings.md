@@ -8,6 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>avd_structured_config_file_format</samp>](## "avd_structured_config_file_format") | String |  | `yml` | Valid Values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | The file format to use when loading structured configuration files.<br> |
+    | [<samp>avd_tmp_dir</samp>](## "avd_tmp_dir") | String |  |  |  | Path for the AVD temporary directory.<br>Contains templated inputs, validated inputs, and facts data used internally by AVD plugins.<br>Defaults to 'intended/tmp'. The temporary directory is cleaned up at the end of each role.<br> |
     | [<samp>eos_cli_config_gen_configuration</samp>](## "eos_cli_config_gen_configuration") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "eos_cli_config_gen_configuration.enable") | Boolean |  | `True` |  | Generate device EOS configurations. |
     | [<samp>&nbsp;&nbsp;hide_passwords</samp>](## "eos_cli_config_gen_configuration.hide_passwords") | Boolean |  | `False` |  | Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the configuration if true.<br> |
@@ -25,6 +26,11 @@
     ```yaml
     # The file format to use when loading structured configuration files.
     avd_structured_config_file_format: <str; "yml" | "yaml" | "json"; default="yml">
+
+    # Path for the AVD temporary directory.
+    # Contains templated inputs, validated inputs, and facts data used internally by AVD plugins.
+    # Defaults to 'intended/tmp'. The temporary directory is cleaned up at the end of each role.
+    avd_tmp_dir: <str>
     eos_cli_config_gen_configuration:
 
       # Generate device EOS configurations.

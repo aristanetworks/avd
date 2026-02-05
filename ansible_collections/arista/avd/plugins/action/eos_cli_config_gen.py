@@ -47,6 +47,7 @@ with suppress(AttributeError):
     LOGGER.propagate = False
 
 ARGUMENT_SPEC = {
+    "tmp_dir": {"type": "str", "required": True},
     "config_filename": {"type": "str"},
     "documentation_filename": {"type": "str"},
     "generate_device_config": {"type": "bool", "default": True},
@@ -58,6 +59,8 @@ ARGUMENT_SPEC = {
 
 class ActionModule(ActionBase):
     """Action Module for eos_cli_config_gen."""
+
+    tmp_dir: str
 
     @cprofile()
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
@@ -82,6 +85,7 @@ class ActionModule(ActionBase):
         """Main function in charge of loading the structured config and generating the device configuration and documentation."""
         LOGGER.debug("Validating task arguments...")
         validated_args = self.validate_args()
+        self.tmp_dir = validated_args.get("tmp_dir")
         LOGGER.debug("Validating task arguments [done].")
 
         LOGGER.debug("Loading structured config...")
@@ -188,7 +192,7 @@ class ActionModule(ActionBase):
         Returns:
             Dict containing the validated structured config for the host.
         """
-        _templated_path, validated_path = get_role_tmp_paths("eos_cli_config_gen")
+        _templated_path, validated_path = get_role_tmp_paths("eos_cli_config_gen", self.tmp_dir)
         file_path = validated_path / f"{hostname}.json"
         if not file_path.exists():
             msg = (

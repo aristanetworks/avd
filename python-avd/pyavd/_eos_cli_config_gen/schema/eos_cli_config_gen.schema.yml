@@ -890,6 +890,19 @@ keys:
     description: 'The file format to use when loading structured configuration files.
 
       '
+  avd_tmp_dir:
+    documentation_options:
+      table: role-settings
+    type: str
+    description: 'Path for the AVD temporary directory.
+
+      Contains templated inputs, validated inputs, and facts data used internally
+      by AVD plugins.
+
+      Defaults to ''intended/tmp''. The temporary directory is cleaned up at the end
+      of each role.
+
+      '
   banners:
     type: dict
     keys:
