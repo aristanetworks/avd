@@ -35,6 +35,8 @@
         fail_on_validation_errors: true
         validation_configuration: "{{ eos_designs_validation_configuration }}"
       delegate_to: localhost
+      check_mode: false
+      run_once: true
 
     - name: Set eos_designs facts
       arista.avd.eos_designs_facts:
