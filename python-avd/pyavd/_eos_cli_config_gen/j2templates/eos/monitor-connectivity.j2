@@ -59,7 +59,8 @@ monitor connectivity
       interface set {{ interface_set.name }} {{ interface_set.interfaces }}
 {%         endfor %}
 {%         if vrf.description is arista.avd.defined %}
-      description {{ vrf.description }}
+      description
+      {{ vrf.description }}
 {%         endif %}
 {%         if vrf.local_interfaces is arista.avd.defined %}
 {%             set local_interfaces_cli = "local-interfaces " ~ vrf.local_interfaces %}

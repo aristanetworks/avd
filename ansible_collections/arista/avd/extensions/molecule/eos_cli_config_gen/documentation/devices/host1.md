@@ -3704,7 +3704,8 @@ monitor connectivity
    vrf red
       interface set VRF_GLOBAL_SET Vlan21-24, Vlan29-32
       interface set VRF_HOST_SET Loopback12-14, 19-23
-      description vrf_connectivity_monitor
+      description
+      vrf_connectivity_monitor
       local-interfaces VRF_GLOBAL_SET address-only default
       !
       host server2
