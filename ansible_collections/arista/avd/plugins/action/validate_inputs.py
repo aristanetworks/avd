@@ -548,7 +548,6 @@ def _validate_host_worker(
             # Encrypt data if vault is configured
             validated_data = loader.encrypt_if_needed(validated_data.encode("utf-8"))
 
-            # Write data to file
             output_file_path = output_path / f"{hostname}.json"
             output_file_path.write_bytes(validated_data)
             output_file = str(output_file_path)
