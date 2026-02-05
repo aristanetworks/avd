@@ -171,8 +171,11 @@ class ActionModule(AvdActionPlugin):
         mp_workers, mt_workers = get_workers(len(hosts_to_process), task_vars["ansible_forks"])
         templated_path, validated_path = get_role_tmp_paths(SCHEMA_MAP[plugin_args.schema_name])
 
+        # Create a loader wrapper
+        loader = LoaderWrapper(self._loader, vault_id=plugin_args.vault_id)
+
         # Check if vault is configured for encrypting temporary files
-        if self._loader._vault.secrets:
+        if loader.has_vault:
             self.logger.info("Ansible Vault is configured - temporary files will be encrypted")
         else:
             self.logger.info("Ansible Vault is not configured - temporary files will not be encrypted")
@@ -187,9 +190,6 @@ class ActionModule(AvdActionPlugin):
             len(hosts_to_process),
             plugin_args.batch_size,
         )
-
-        # Create a loader wrapper
-        loader = LoaderWrapper(self._loader, vault_id=plugin_args.vault_id)
 
         # Phase 1: If read_from_input_dir is False, run the templating phase on hostvars.
         if not plugin_args.read_from_input_dir:
