@@ -2,6 +2,6 @@
 
 avd_structured_config_file_format: "yml"
 
-# Vault identity to use for encrypting temporary files.
+# Vault ID to use for encrypting temporary files.
 # See role documentation for details.
 avd_vault_id: null
