@@ -193,7 +193,7 @@ nav:
       - Custom Descriptions and Names: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.md
       - Custom Structured Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md
       - Generate CloudVision Tags: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/cloudvision-tags.md
-      - Migrating to cv_deploy: docs/getting-started/cv-deploy-porting.md
+      - Migrate to cv_deploy: docs/howto/migrate-to-cv-deploy.md
   - User Manual:
       - Data Models:
           - Overview: docs/data-models/README.md
