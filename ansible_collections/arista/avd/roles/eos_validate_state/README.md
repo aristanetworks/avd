@@ -15,7 +15,7 @@ title: Ansible Collection Role eos_validate_state - REMOVED
 
 ## Migration
 
-Please refer to the [porting guide](https://avd.arista.com/6.x/docs/porting-guides/6.x.x.html) for migration instructions.
+Please refer to the [how-to guide](https://avd.arista.com/6.x/docs/howto/migrate-to-anta-runner.html) for migration instructions.
 
 <!-- TODO: Update the URL above to point to the specific PR once it is merged -->
 
