@@ -14,6 +14,12 @@ description: |-
   - Generate fabric documentation using AVD facts and structured configuration files.
   - Optionally include connected endpoints documentation.
 options:
+  tmp_dir:
+    description:
+      - Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.
+      - Must be the same across all plugins.
+    required: true
+    type: str
   structured_config_dir:
     description: Path to directory containing files with AVD structured configurations.
     required: true

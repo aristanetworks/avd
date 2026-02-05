@@ -69450,6 +69450,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "arp": {"type": Arp},
         "as_path": {"type": AsPath},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
+        "avd_tmp_dir": {"type": str},
         "banners": {"type": Banners},
         "bgp_groups": {"type": BgpGroups},
         "boot": {"type": Boot},
@@ -69678,6 +69679,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     The file format to use when loading structured configuration files.
 
     Default value: `"yml"`
+    """
+    avd_tmp_dir: str | None
+    """
+    Path for the AVD temporary directory.
+    Contains templated inputs, validated inputs, and facts data
+    used internally by AVD plugins.
+    Defaults to 'intended/tmp'. The temporary directory is cleaned up at
+    the end of each role.
     """
     banners: Banners
     """Subclass of AvdModel."""
@@ -70228,6 +70237,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
+            avd_tmp_dir: str | None | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
@@ -70444,6 +70454,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 arp: Subclass of AvdModel.
                 as_path: Subclass of AvdModel.
                 avd_structured_config_file_format: The file format to use when loading structured configuration files.
+                avd_tmp_dir:
+                   Path for the AVD temporary directory.
+                   Contains templated inputs, validated inputs, and facts data
+                   used internally by AVD plugins.
+                   Defaults to 'intended/tmp'. The temporary directory is cleaned up at
+                   the end of each role.
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
                 boot:
