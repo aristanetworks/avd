@@ -4,16 +4,21 @@
 from __future__ import annotations
 
 import logging
+import sys
+from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, StrictUndefined
+from jinja2 import Environment, FileSystemLoader, ModuleLoader, StrictUndefined, TemplateNotFound
+from jinja2.compiler import generate
 
 from .constants import JINJA2_EXTENSIONS, RUNNING_FROM_SRC
 
 if TYPE_CHECKING:
     import os
-    from collections.abc import Sequence
+    from collections.abc import MutableMapping, Sequence
+
+    from jinja2 import Template
 
 LOGGER = logging.getLogger(__name__)
 
@@ -44,18 +49,100 @@ class Undefined(StrictUndefined):
         return self
 
 
+class CustomModuleLoader(ModuleLoader):
+    """Custom ModuleLoader that handles readable module names."""
+
+    def __init__(self, path: str | Path) -> None:
+        # Ensure the path is in sys.path so modules can be imported
+        path_str = str(Path(path).resolve())
+        if path_str not in sys.path:
+            sys.path.insert(0, path_str)
+            LOGGER.debug("Added %s to sys.path", path_str)
+
+        super().__init__(path)
+
+        # Load the module mapping
+        self._module_dict = {}
+        self._path = path_str
+
+        # Try to load the mapping from the compiled templates __init__.py
+        try:
+            init_file = Path(path) / "__init__.py"
+            if init_file.exists():
+                # Load module from file path
+                spec = spec_from_file_location("_compiled_templates", init_file)
+                if spec and spec.loader:
+                    module = module_from_spec(spec)
+                    sys.modules["_compiled_templates"] = module
+                    spec.loader.exec_module(module)
+
+                    if hasattr(module, "__module_dict__"):
+                        self._module_dict = module.__module_dict__
+                        LOGGER.debug("Loaded module mapping with %d templates", len(self._module_dict))
+                        # Log a sample of the mapping for debugging
+                        sample_keys = list(self._module_dict.keys())[:3]
+                        for key in sample_keys:
+                            LOGGER.debug("  Mapping: %r -> %r", key, self._module_dict[key])
+                    else:
+                        LOGGER.debug("Module at %s has no __module_dict__ attribute", init_file)
+            else:
+                LOGGER.debug("No __init__.py found at %s", init_file)
+        except Exception as e:
+            LOGGER.debug("Could not load module mapping from %s: %s", path, e)
+
+    def load(self, environment: Environment, name: str, globals: MutableMapping[str, Any] | None = None) -> Template:  # noqa: A002
+        """Load template using the module name mapping."""
+        # Get the module name for this template
+        module_name = self._module_dict.get(name)
+
+        # Convert template name to module name if no mapping exists
+        if module_name is None:
+            module_name = self._template_name_to_module_name(name)
+            LOGGER.debug("No mapping for '%s', using converted name '%s'", name, module_name)
+        else:
+            LOGGER.debug("Found mapping for '%s' -> '%s'", name, module_name)
+
+        # Build the full module path
+        module_path = f"{self.package_name}.{module_name}"
+
+        # Try to import the module
+        mod = getattr(self.module, module_name, None)
+
+        if mod is None:
+            try:
+                mod = __import__(module_path, None, None, ["root"])
+                LOGGER.debug("Imported module '%s'", module_path)
+            except ImportError as e:
+                LOGGER.debug("Failed to import '%s': %s", module_path, e)
+                raise TemplateNotFound(name) from e
+
+            # Remove from sys.modules to keep it only as an attribute on self.module
+            sys.modules.pop(module_path, None)
+
+        globals_dict = globals if globals is not None else {}
+
+        # Create template from module dict
+        result = environment.template_class.from_module_dict(environment, mod.__dict__, globals_dict)
+        LOGGER.debug("Successfully loaded template '%s' from module '%s'", name, module_name)
+        return result
+
+    @staticmethod
+    def _template_name_to_module_name(template_name: str) -> str:
+        """Convert a template name to a module name."""
+        module_name = template_name.replace("/", "__").replace("\\", "__")
+        module_name = module_name.removesuffix(".j2")
+        return module_name.replace(".", "_").replace("-", "_")
+
+
 class Templar:
     def __init__(self, precompiled_templates_path: str | Path, searchpaths: list[str | Path] | None = None) -> None:
-        if not RUNNING_FROM_SRC:
-            self.loader = ModuleLoader(precompiled_templates_path)
-        else:
-            searchpaths = searchpaths or []
-            self.loader = ChoiceLoader(
-                [
-                    ModuleLoader(precompiled_templates_path),
-                    FileSystemLoader(searchpaths),
-                ],
-            )
+        LOGGER.debug("Initializing Templar with RUNNING_FROM_SRC=%s", RUNNING_FROM_SRC)
+        LOGGER.debug("precompiled_templates_path=%s", precompiled_templates_path)
+        LOGGER.debug("searchpaths=%s", searchpaths)
+
+        # Always use CustomModuleLoader for compiled templates
+        # When running from source, templates must be recompiled after changes
+        self.loader = CustomModuleLoader(precompiled_templates_path)
 
         # Accepting SonarLint issue: No autoescaping is ok, since we are not using this for a website, so XSS is not applicable.
         self.environment = Environment(  # NOSONAR # noqa: S701
@@ -112,11 +199,12 @@ class Templar:
         )
 
     def render_template_from_file(self, template_file: str, template_vars: dict) -> str:
+        LOGGER.debug("Rendering template: %s", template_file)
         return self.environment.get_template(template_file).render(template_vars)
 
     def compile_templates_in_paths(self, precompiled_templates_path: str | Path, searchpaths: list[str | Path]) -> None:
         """
-        Compile the Jinja2 templates in the path.
+        Compile the Jinja2 templates in the path with readable module names.
 
         The FileSystemLoader tries to compile any file in the path no matter the extension so
         this uses a custom one.
@@ -125,13 +213,64 @@ class Templar:
         ----------
             searchpaths: The list of path to search templates in.
         """
+        precompiled_path = Path(precompiled_templates_path)
+        precompiled_path.mkdir(parents=True, exist_ok=True)
+
         self.environment.loader = ExtensionFileSystemLoader(searchpaths)
-        self.environment.compile_templates(
-            zip=None,
-            log_function=LOGGER.debug,
-            target=precompiled_templates_path,
-            ignore_errors=False,
-        )
+
+        # Get all templates
+        templates = self.environment.loader.list_templates()
+
+        LOGGER.info("Compiling %d templates to %s", len(templates), precompiled_path)
+
+        # Store mapping of template names to module names
+        module_dict_entries = []
+
+        # Compile each template with a readable name
+        for template_name in templates:
+            LOGGER.debug("Compiling template: %s", template_name)
+
+            # Get the template source
+            source, filename, _uptodate = self.environment.loader.get_source(self.environment, template_name)
+
+            # Parse and compile to Python source code
+            try:
+                code = self.environment.parse(source, template_name, filename)
+                # Use defer_init=True to avoid undefined references at import time
+                module_code = generate(code, self.environment, template_name, filename, defer_init=True)
+            except Exception:
+                LOGGER.exception("Failed to compile template %s", template_name)
+                raise
+
+            if not module_code:
+                msg = f"Generated code is empty for template {template_name}"
+                raise ValueError(msg)
+
+            # Create a readable module name from template path
+            module_name = CustomModuleLoader._template_name_to_module_name(template_name)
+
+            # Write to file with proper module structure for ModuleLoader
+            output_file = precompiled_path / f"{module_name}.py"
+            output_file.parent.mkdir(parents=True, exist_ok=True)
+
+            with output_file.open("w", encoding="utf-8") as f:
+                # Write the generated code (already includes necessary imports and name)
+                f.write(module_code)
+
+            # Store mapping for __init__.py
+            module_dict_entries.append(f"    {template_name!r}: {module_name!r},")
+
+        # Create __init__.py with template name to module name mapping
+        init_file = precompiled_path / "__init__.py"
+        with init_file.open("w") as f:
+            f.write("# Precompiled Jinja2 templates\n")
+            f.write("# Template name to module name mapping\n")
+            f.write("__module_dict__ = {\n")
+            f.write("\n".join(module_dict_entries))
+            f.write("\n}\n")
+
+        LOGGER.info("Compilation complete. Created mapping for %d templates", len(module_dict_entries))
+
         self.environment.loader = self.loader
 
 
