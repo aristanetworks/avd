@@ -170,7 +170,6 @@ class ActionModule(ActionBase):
             msg = f"Missing AVD eos_designs facts to generate documentation ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
             raise AnsibleActionFail(message=msg)
 
-        # fact file is not vaulted.
         with file_path.open(mode="r", encoding="utf-8") as f:
             return json.load(f)
 
