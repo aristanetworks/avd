@@ -1765,7 +1765,6 @@ qos map cos 3 to traffic-class 3
 | errdisable | - | - | - | True |
 
 ```eos
-!
 priority-flow-control pause watchdog override action drop
 ```
 
