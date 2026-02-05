@@ -7,3 +7,4 @@
     msg: |-
       The 'eos_validate_state' role has been removed. Use 'anta_runner' instead.
       Please refer to https://avd.arista.com/6.x/docs/howto/migrate-to-anta-runner.html for migration instructions.
+  run_once: true

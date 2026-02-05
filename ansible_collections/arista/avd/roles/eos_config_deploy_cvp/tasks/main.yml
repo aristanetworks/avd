@@ -8,3 +8,4 @@
       The 'eos_config_deploy_cvp' role has been removed. Use 'cv_deploy' instead.
       Please refer to https://avd.arista.com/6.x/docs/howto/migrate-to-cv-deploy.html
       for migration instructions.
+  run_once: true
