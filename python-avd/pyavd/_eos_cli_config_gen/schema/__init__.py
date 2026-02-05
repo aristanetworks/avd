@@ -19493,11 +19493,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"name": {"type": str}, "action": {"type": str}}
                     name: str
                     """Match list."""
-                    action: Literal["discard"] | None
+                    action: Literal["discard"]
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, name: str | UndefinedType = Undefined, action: Literal["discard"] | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, name: str | UndefinedType = Undefined, action: Literal["discard"] | UndefinedType = Undefined) -> None:
                             """
                             MatchListsItem.
 
@@ -19640,27 +19640,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"facility": {"type": str}, "severity": {"type": str}}
             facility: str
-            severity: (
-                Literal[
-                    "alerts",
-                    "critical",
-                    "debugging",
-                    "emergencies",
-                    "errors",
-                    "informational",
-                    "notifications",
-                    "warnings",
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6",
-                    "7",
-                ]
-                | None
-            )
+            severity: Literal[
+                "alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "0", "1", "2", "3", "4", "5", "6", "7"
+            ]
             """
             Severity of facility. Below are the supported severities.
             emergencies    System is unusable
@@ -19702,7 +19684,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "6",
                         "7",
                     ]
-                    | None
                     | UndefinedType = Undefined,
                 ) -> None:
                     """

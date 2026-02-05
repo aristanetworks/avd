@@ -532,6 +532,10 @@ daemon TerminAttr
 | Sequence-numbers | false |
 | RFC5424 | False |
 
+| VRF | Source Interface |
+| --- | ---------------- |
+| - | Ethernet1 |
+
 **Syslog facility value:** syslog
 
 #### Logging Servers and Features Device Configuration
@@ -546,6 +550,7 @@ logging monitor debugging
 no logging synchronous
 logging format hostname ipv4
 logging facility syslog
+logging source-interface Ethernet1
 !
 logging event link-status global
 ```
