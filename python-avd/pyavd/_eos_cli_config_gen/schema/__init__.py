@@ -19984,11 +19984,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"name": {"type": str}, "action": {"type": str}}
                     name: str
                     """Match list."""
-                    action: Action | None
+                    action: Action
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, name: str | UndefinedType = Undefined, action: Action | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, name: str | UndefinedType = Undefined, action: Action | UndefinedType = Undefined) -> None:
                             """
                             MatchListsItem.
 
@@ -20134,7 +20134,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ]
             _fields: ClassVar[dict] = {"facility": {"type": str}, "severity": {"type": str}}
             facility: str
-            severity: Severity | None
+            severity: Severity
             """
             Severity of facility. Below are the supported severities.
             emergencies    System is unusable
@@ -20154,7 +20154,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, facility: str | UndefinedType = Undefined, severity: Severity | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, facility: str | UndefinedType = Undefined, severity: Severity | UndefinedType = Undefined) -> None:
                     """
                     LevelItem.
 
