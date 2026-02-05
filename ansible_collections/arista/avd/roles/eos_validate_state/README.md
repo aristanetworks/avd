@@ -17,7 +17,6 @@ title: Ansible Collection Role eos_validate_state - REMOVED
 
 Please refer to the [how-to guide](https://avd.arista.com/6.x/docs/howto/migrate-to-anta-runner.html) for migration instructions.
 
-
 ## License
 
 Project is published under [Apache 2.0 License](https://github.com/aristanetworks/avd/blob/devel/LICENSE)
