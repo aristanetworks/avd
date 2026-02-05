@@ -17,8 +17,9 @@ from ansible.plugins.action import ActionBase
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     ANSIBLE_ABOVE_2_19,
+    AVDFileHandler,
     AvdSwitchFactsDefaultDict,
-    LoaderWrapper,
+    AVDVaultHandler,
     get_eos_designs_facts_path,
     get_role_tmp_paths,
     get_templar,
@@ -197,8 +198,9 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail(message=msg)
 
         # Read, unvault, and parse the JSON file
-        loader = LoaderWrapper(self._loader)
-        host_hostvars = loader.load_file_as_json(file_path)
+        vault_handler = AVDVaultHandler(self._loader)
+        file_handler = AVDFileHandler(vault_handler)
+        host_hostvars = file_handler.load_json(file_path)
 
         # Load host hostvars into the AVDDesign data class.
         avd_design = AVDDesign._from_dict(host_hostvars)

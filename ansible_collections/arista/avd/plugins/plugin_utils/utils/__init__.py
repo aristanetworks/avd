@@ -3,13 +3,14 @@
 # that can be found in the LICENSE file.
 from .action_plugin_vars import ActionPluginVars
 from .anta_workflow_logging import AntaWorkflowFilter, AntaWorkflowHandler
+from .avd_file_handler import AVDFileHandler
 from .avd_switch_facts_default_dict import AvdSwitchFactsDefaultDict
+from .avd_vault_handler import AVDVaultHandler
 from .compile_searchpath import compile_searchpath
 from .constants import ANSIBLE_ABOVE_2_19
 from .cprofile_decorator import cprofile
 from .get_templar import get_templar
 from .get_workers import get_workers
-from .loader_wrapper import LoaderWrapper
 from .parse_validation_result import build_result_message, parse_validation_result
 from .python_to_ansible_logging_handler import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 from .raise_action_fail import raise_action_fail
@@ -20,11 +21,12 @@ from .yaml_loader import YamlLoader
 
 __all__ = [
     "ANSIBLE_ABOVE_2_19",
+    "AVDFileHandler",
+    "AVDVaultHandler",
     "ActionPluginVars",
     "AntaWorkflowFilter",
     "AntaWorkflowHandler",
     "AvdSwitchFactsDefaultDict",
-    "LoaderWrapper",
     "NoAliasDumper",
     "PythonToAnsibleContextFilter",
     "PythonToAnsibleHandler",
