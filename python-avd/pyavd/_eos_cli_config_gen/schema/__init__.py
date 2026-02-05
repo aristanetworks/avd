@@ -19941,9 +19941,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Source interface name."""
             local_interface: str | None
             """
-            Source Interface Name. `logging vrf xxxx source-interface xxxx` is deprecated in latest EOS
-            versions(4.35.1). This key sets new
-            command `logging vrf xxxx local-interface xxxx`.
+            Source Interface Name.
+            `logging vrf xxxx source-interface xxxx` is deprecated in latest EOS
+            versions(4.35.1).
+            This key sets new command `logging vrf xxxx local-interface xxxx`.
             `source_interface` takes precedence over `local_interface`.
             """
             hosts: Hosts
@@ -19969,9 +19970,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: VRF name.
                         source_interface: Source interface name.
                         local_interface:
-                           Source Interface Name. `logging vrf xxxx source-interface xxxx` is deprecated in latest EOS
-                           versions(4.35.1). This key sets new
-                           command `logging vrf xxxx local-interface xxxx`.
+                           Source Interface Name.
+                           `logging vrf xxxx source-interface xxxx` is deprecated in latest EOS
+                           versions(4.35.1).
+                           This key sets new command `logging vrf xxxx local-interface xxxx`.
                            `source_interface` takes precedence over `local_interface`.
                         hosts: Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`).
 
@@ -20236,9 +20238,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Source Interface Name."""
         local_interface: str | None
         """
-        Source Interface Name. `logging source-interface xxxx` is deprecated in latest EOS versions(4.35.1).
-        This key sets new
-        command `logging local-interface xxxx`. `source_interface` takes precedence over
+        Source Interface Name.
+        `logging source-interface xxxx` is deprecated in latest EOS versions(4.35.1).
+        This key sets new command `logging local-interface xxxx`.
+        `source_interface` takes precedence over
         `local_interface`.
         """
         vrfs: Vrfs
@@ -20292,9 +20295,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     facility: facility
                     source_interface: Source Interface Name.
                     local_interface:
-                       Source Interface Name. `logging source-interface xxxx` is deprecated in latest EOS versions(4.35.1).
-                       This key sets new
-                       command `logging local-interface xxxx`. `source_interface` takes precedence over
+                       Source Interface Name.
+                       `logging source-interface xxxx` is deprecated in latest EOS versions(4.35.1).
+                       This key sets new command `logging local-interface xxxx`.
+                       `source_interface` takes precedence over
                        `local_interface`.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     policy: Subclass of AvdModel.
