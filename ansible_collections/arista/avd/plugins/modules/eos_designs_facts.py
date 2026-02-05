@@ -19,6 +19,12 @@ description:
   - The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by jinja templates
     and python module in `arista.avd.eos_designs` to generate the `structured_configuration`.
 options:
+  tmp_dir:
+    description:
+      - Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.
+      - Must be the same across all plugins.
+    required: true
+    type: str
   template_output:
     description:
       - If true, the output data will be run through another jinja2 rendering before returning.

@@ -30,6 +30,7 @@ The plugin performs two phases:
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| <samp>tmp_dir</samp> | str | True | None | - | Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.<br>Must be the same across all plugins. |
 | <samp>schema_name</samp> | str | optional | avd_design | Valid values:<br>- <code>avd_design</code><br>- <code>eos_config</code> | The AVD schema to validate against.<br>If set to `avd_design`, the plugin will validate the inputs for the entire fabric (requiring `fabric_name` to be set).<br>If set to `eos_config`, the plugin will validate the inputs for the devices in the current play. |
 | <samp>input_dir</samp> | str | False | None | - | Optional path to a directory containing input files to validate directly.<br>If provided, the templating phase is skipped and files are read from this directory.<br>Files must be named `device_name.input_suffix`. |
 | <samp>input_suffix</samp> | str | optional | json | Valid values:<br>- <code>yml</code><br>- <code>yaml</code><br>- <code>json</code> | File suffix for files located in `input_dir`.<br>Only used when `input_dir` is provided. |

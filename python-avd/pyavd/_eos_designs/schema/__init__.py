@@ -87870,6 +87870,7 @@ class EosDesigns(EosDesignsRootModel):
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
+        "avd_tmp_dir": {"type": str},
         "eos_designs_validation_configuration": {"type": EosDesignsValidationConfiguration},
         "avd_vault_id": {"type": str},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
@@ -88606,6 +88607,14 @@ class EosDesigns(EosDesignsRootModel):
     The file format to use when dumping structured configuration files.
 
     Default value: `"yml"`
+    """
+    avd_tmp_dir: str | None
+    """
+    Path for the AVD temporary directory.
+    Contains templated inputs, validated inputs, and facts data
+    used internally by AVD plugins.
+    Defaults to 'intended/tmp'. The temporary directory is cleaned up at
+    the end of each role.
     """
     eos_designs_validation_configuration: EosDesignsValidationConfiguration
     """
@@ -90575,6 +90584,7 @@ class EosDesigns(EosDesignsRootModel):
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
+            avd_tmp_dir: str | None | UndefinedType = Undefined,
             eos_designs_validation_configuration: EosDesignsValidationConfiguration | UndefinedType = Undefined,
             avd_vault_id: str | None | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
@@ -90803,6 +90813,12 @@ class EosDesigns(EosDesignsRootModel):
                    dedicated output location.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
                 avd_structured_config_file_format: The file format to use when dumping structured configuration files.
+                avd_tmp_dir:
+                   Path for the AVD temporary directory.
+                   Contains templated inputs, validated inputs, and facts data
+                   used internally by AVD plugins.
+                   Defaults to 'intended/tmp'. The temporary directory is cleaned up at
+                   the end of each role.
                 eos_designs_validation_configuration:
                    Validation configuration options when validating AVD Design inputs.
 
