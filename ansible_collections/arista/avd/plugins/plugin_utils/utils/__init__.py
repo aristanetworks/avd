@@ -9,7 +9,7 @@ from .constants import ANSIBLE_ABOVE_2_19
 from .cprofile_decorator import cprofile
 from .get_templar import get_templar
 from .get_workers import get_workers
-from .load_vaulted_file import load_vaulted_file
+from .loader_wrapper import LoaderWrapper
 from .parse_validation_result import build_result_message, parse_validation_result
 from .python_to_ansible_logging_handler import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 from .raise_action_fail import raise_action_fail
@@ -24,6 +24,7 @@ __all__ = [
     "AntaWorkflowFilter",
     "AntaWorkflowHandler",
     "AvdSwitchFactsDefaultDict",
+    "LoaderWrapper",
     "NoAliasDumper",
     "PythonToAnsibleContextFilter",
     "PythonToAnsibleHandler",
@@ -37,7 +38,6 @@ __all__ = [
     "get_templar",
     "get_tmp_path",
     "get_workers",
-    "load_vaulted_file",
     "parse_validation_result",
     "raise_action_fail",
     "write_file",

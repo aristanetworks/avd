@@ -13,21 +13,19 @@ from time import perf_counter
 from typing import TYPE_CHECKING, Any, Literal, cast
 
 import yaml
-from ansible.parsing.vault import match_encrypt_secret
 from ansible.plugins.action import display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     ActionPluginVars,
+    LoaderWrapper,
     build_result_message,
     get_role_tmp_paths,
     get_workers,
-    load_vaulted_file,
     parse_validation_result,
 )
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
 
 if TYPE_CHECKING:
-    from ansible.parsing.dataloader import DataLoader
     from pyavd_utils.validation import Configuration, ValidationResult, get_validated_data
 
     from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS, EOS_CLI_CONFIG_GEN_ROLE_KEYS
@@ -129,62 +127,6 @@ class ResolvedPluginArgs:
 
 
 _HOSTVARS_MANAGER: ActionPluginVars | None = None
-
-
-class LoaderWrapper:
-    """
-    Picklable wrapper for DataLoader that handles vault encryption.
-
-    This class wraps a DataLoader instance and provides methods to encrypt
-    data if vault secrets are configured.
-
-    Note: This class is designed to work with multiprocessing using the 'fork' context,
-    where the loader is inherited from the parent process.
-    """
-
-    def __init__(self, loader: DataLoader, vault_id: str | None = None) -> None:
-        """
-        Initialize the wrapper with a DataLoader instance.
-
-        Args:
-            loader: The Ansible DataLoader instance.
-            vault_id: Optional vault identity to use for encryption. If None, uses the first
-                     vault identity in the list (default Ansible behavior).
-        """
-        self.loader = loader
-        self.vault_id = vault_id
-        self.has_vault = bool(loader._vault.secrets)
-
-    def encrypt_if_needed(self, data: bytes) -> bytes:
-        """
-        Encrypt data if vault secrets are configured.
-
-        Args:
-            data: Data to potentially encrypt.
-
-        Returns:
-            Encrypted data if vault is configured, otherwise the original data.
-
-        Note:
-            - If vault_id is None, uses the first vault identity in the list.
-            - If vault_id is specified, uses that specific vault identity's secret.
-            - We use match_encrypt_secret() to find the correct secret and pass both
-              secret and vault_id to encrypt() due to an Ansible bug where
-              encrypt(data, secret=None, vault_id='X') sets the header to 'X' but
-              uses the first secret for encryption.
-        """
-        if not self.has_vault:
-            return data
-
-        # Use Ansible's match_encrypt_secret to find the correct secret
-        # This handles both None (first secret) and specific vault_id cases
-        # and raises a proper error if the vault_id is not found.
-        vault_id, secret = match_encrypt_secret(self.loader._vault.secrets, self.vault_id)
-
-        # Pass both secret and vault_id to work around Ansible VaultLib bug
-        # match_encrypt_secret is called without passing the vault_id if secret=None...
-        # https://github.com/ansible/ansible/blob/29086acfa61f32a9e5b087abdaf4336330ab5456/lib/ansible/parsing/vault/__init__.py#L606
-        return self.loader._vault.encrypt(data, secret=secret, vault_id=vault_id)
 
 
 def set_worker_context(hostvars: ActionPluginVars) -> None:
@@ -585,7 +527,7 @@ def _validate_host_worker(
             return WorkerFailure(hostname=hostname, error=f"Missing input data file: {input_file_path}")
 
         # Load file content (decrypted if vaulted)
-        file_content = load_vaulted_file(loader.loader, str(input_file_path))
+        file_content = loader.load_file(input_file_path)
 
         # Parse data based on file suffix
         if input_suffix in {"yml", "yaml"}:

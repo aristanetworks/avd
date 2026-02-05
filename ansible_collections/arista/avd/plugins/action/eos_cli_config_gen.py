@@ -14,12 +14,12 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    LoaderWrapper,
     PythonToAnsibleContextFilter,
     PythonToAnsibleHandler,
     cprofile,
     get_role_tmp_paths,
     get_templar,
-    load_vaulted_file,
     raise_action_fail,
 )
 
@@ -199,7 +199,8 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail(message=msg)
 
         # Read, unvault, and parse the JSON file
-        return json.loads(load_vaulted_file(self._loader, file_path))
+        loader = LoaderWrapper(self._loader)
+        return loader.load_file_as_json(file_path)
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:
