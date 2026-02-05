@@ -1140,15 +1140,3 @@
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
-
-- name: Clean up AVD temporary directory
-  hosts: localhost
-  connection: local
-  tasks:
-    - name: Delete AVD temporary directory
-      ansible.builtin.file:
-        path: "intended/tmp"
-        state: absent
-      delegate_to: localhost
-      run_once: true
-      changed_when: false
