@@ -589,11 +589,11 @@ def _validate_host_worker(
 
         # Parse data based on file suffix
         if input_suffix in {"yml", "yaml"}:
-            # YAML input: parse and convert to JSON for validation
+            # YAML input: parse and convert to JSON string for validation
             data = yaml.load(file_content, Loader=yaml.CSafeLoader)
             json_data = json.dumps(data)
         else:
-            # JSON input: use directly (already in JSON format)
+            # JSON input: decode bytes to string
             json_data = file_content.decode("utf-8")
 
         # Validation in Rust, releasing the GIL.
@@ -604,7 +604,7 @@ def _validate_host_worker(
         if validated_data:
             # validated_data is already bytes (JSON format) from pyavd-utils
             # Encrypt data if vault is configured
-            validated_data = loader.encrypt_if_needed(validated_data)
+            validated_data = loader.encrypt_if_needed(validated_data.encode("utf-8"))
 
             # Write data to file
             output_file_path = output_path / f"{hostname}.json"
