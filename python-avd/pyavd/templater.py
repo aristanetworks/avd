@@ -90,16 +90,17 @@ class CustomModuleLoader(ModuleLoader):
 
 class Templar:
     def __init__(self, precompiled_templates_path: str | Path, searchpaths: list[str | Path] | None = None) -> None:
-        if RUNNING_FROM_SRC:
+        if not RUNNING_FROM_SRC:
+            self.loader = CustomModuleLoader(precompiled_templates_path)
+
+        else:
             searchpaths = searchpaths or []
             self.loader = ChoiceLoader(
                 [
                     CustomModuleLoader(precompiled_templates_path),
-                    ExtensionFileSystemLoader(searchpaths),
+                    FileSystemLoader(searchpaths),
                 ],
             )
-        else:
-            self.loader = CustomModuleLoader(precompiled_templates_path)
 
         # Accepting SonarLint issue: No autoescaping is ok, since we are not using this for a website, so XSS is not applicable.
         self.environment = Environment(  # NOSONAR # noqa: S701
