@@ -967,18 +967,18 @@ router bgp 65000
       router-id 192.168.255.15
       redistribute connected
    !
-   vrf default
-      rd 192.168.255.15:1
-      route-target import evpn 1:1
-      route-target export evpn 1:1
-      route-target export evpn route-map RM-EVPN-EXPORT-VRF-DEFAULT
-   !
    vrf RED
       rd 192.168.255.15:101
       route-target import evpn 101:101
       route-target export evpn 101:101
       router-id 192.168.255.15
       redistribute connected
+   !
+   vrf default
+      rd 192.168.255.15:1
+      route-target import evpn 1:1
+      route-target export evpn 1:1
+      route-target export evpn route-map RM-EVPN-EXPORT-VRF-DEFAULT
 ```
 
 ## BFD

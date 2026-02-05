@@ -1021,12 +1021,6 @@ router bgp 65000
       neighbor 10.0.1.14 description site1-border2_Ethernet4.100_vrf_BLUE
       redistribute connected
    !
-   vrf default
-      rd 192.168.255.4:1
-      route-target import evpn 1:1
-      route-target export evpn 1:1
-      route-target export evpn route-map RM-EVPN-EXPORT-VRF-DEFAULT
-   !
    vrf RED
       rd 192.168.255.4:101
       route-target import evpn 101:101
@@ -1039,6 +1033,12 @@ router bgp 65000
       neighbor 10.0.1.14 remote-as 65101
       neighbor 10.0.1.14 description site1-border2_Ethernet4.101_vrf_RED
       redistribute connected
+   !
+   vrf default
+      rd 192.168.255.4:1
+      route-target import evpn 1:1
+      route-target export evpn 1:1
+      route-target export evpn route-map RM-EVPN-EXPORT-VRF-DEFAULT
 ```
 
 ## BFD
