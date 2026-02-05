@@ -4,7 +4,7 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# CloudVision Integration: Porting to `cv_deploy`
+# Migrate to `cv_deploy`
 
 This guide provides a step-by-step process for updating your Ansible inventory and playbooks to ensure a smooth and successful transition from legacy roles `eos_config_deploy_cvp` and `cvp_configlet_upload` to `cv_deploy`.
 
@@ -14,7 +14,7 @@ The `cv_deploy` role is part of the `arista.avd` Ansible collection. The `arista
 
 <div class="grid" markdown>
 
-=== "Old Requirements"
+=== "Previous Requirements"
 
     ```yaml
     ---
@@ -25,7 +25,7 @@ The `cv_deploy` role is part of the `arista.avd` Ansible collection. The `arista
         version: 3.12.0
 
     ```
-=== "New Requirements"
+=== "cv_deploy Requirements"
 
     ```yaml
     ---
@@ -43,7 +43,7 @@ In `eos_config_deploy_cvp`, we targeted the definition of a CloudVision host as 
 
 <div class="grid" markdown>
 
-=== "Old"
+=== "eos_config_deploy_cvp"
 
     Inventory
 
@@ -84,7 +84,7 @@ In `eos_config_deploy_cvp`, we targeted the definition of a CloudVision host as 
 
     ```
 
-=== "New"
+=== "cv_deploy"
 
     !!! note
         Defining the CloudVision host in the Ansible inventory is no longer required.
@@ -111,7 +111,7 @@ In `eos_config_deploy_cvp`, we targeted the definition of a CloudVision host as 
 
 ## Authentication
 
-We recommend leveraging the `cv_server` and `cv_token` keys to specify the authentication to your CloudVision instance. The `cv_token` should be generated from a **service account** with the appropriate permissions in your workflows. You can find step-by-step instructions on creating service account tokens in the `cv_deploy` role [documentation](../../ansible_collections/arista/avd/roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision).
+We recommend using the `cv_server` and `cv_token` keys for CloudVision authentication. Generate the `cv_token` from a service account with the required permissions. Refer to the `cv_deploy` role [documentation](../../ansible_collections/arista/avd/roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision) for step-by-step instructions on creating these tokens.
 
 ```yaml hl_lines="6 7 9 10"
   tasks:
@@ -159,9 +159,9 @@ Use this approach when your playbook deploys AVD-generated configurations to Clo
 
 <div class="grid" markdown>
 
-=== "Old (Separate Tasks)"
+=== "Previous (Separate Tasks)"
 
-    You would first deploy device configs and then upload the static configlets.
+    You first deploy device configs with `eos_config_deploy_cvp` and then upload the static configlets with `cvp_configlet_upload`.
 
     ```yaml
     ---
@@ -190,7 +190,7 @@ Use this approach when your playbook deploys AVD-generated configurations to Clo
             configlets_cvp_prefix: "DC1-AVD"
     ```
 
-=== "New (Single, Unified Task)"
+=== "cv_deploy (Single Task)"
 
     With `cv_deploy`, you define a **"manifest"** using `cv_static_config_manifest` within the same task that deploys your device configurations.
 
@@ -225,7 +225,7 @@ Use this approach to replace a playbook whose **only** job was to upload configl
 
 <div class="grid" markdown>
 
-=== "Old (`cvp_configlet_upload` only)"
+=== "cvp_configlet_upload"
 
     The playbook has a single purpose: to scan a directory and upload configlets.
 
@@ -245,7 +245,7 @@ Use this approach to replace a playbook whose **only** job was to upload configl
             configlets_cvp_prefix: "DC1-AVD"
     ```
 
-=== "New (Manifest-Only Mode)"
+=== "cv_deploy"
 
     By setting `cv_devices: []`, it instructs the role to skip all device-specific operations and only process the manifest.
 
@@ -278,7 +278,7 @@ Use this approach to replace a playbook whose **only** job was to upload configl
 
 ### Migration considerations for CloudVision
 
-When migrating AVD from `cvp_configlet_upload` to `cv_deploy` role, the EOS devices should be removed from CloudVision `Network Provisioning` to avoid multiple config sources and configuration overlap.
+When migrating from `cvp_configlet_upload` to `cv_deploy` role, the EOS devices should be removed from CloudVision `Network Provisioning` to avoid multiple config sources and configuration overlap.
 
 Omitting to clean up Network Provisioning configlets mapping will result in configuration not being removed from device configuration when removing it from the static configlet studios because it would still be defined in the Network Provisioning configlet.
 

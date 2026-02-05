@@ -157,6 +157,7 @@ jobs:
           - "3.11"
           - "3.12"
           - "3.13"
+          - "3.14"
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python 3
@@ -274,6 +275,13 @@ jobs:
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.20.0"
             python_version: "3.11"
+          # Test latest ansible-core with latest Python
+          - avd_scenario: "eos_designs_unit_tests"
+            ansible_version: "ansible-core<2.21.0"
+            python_version: "3.14"
+          - avd_scenario: "eos_designs_negative_unit_tests"
+            ansible_version: "ansible-core<2.21.0"
+            python_version: "3.14"
     steps:
       - uses: actions/checkout@v6
       - name: Download pyavd Artifact
@@ -408,6 +416,7 @@ jobs:
             3.11
             3.12
             3.13
+            3.14
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v7
         with:
@@ -467,6 +476,7 @@ jobs:
             3.10
             3.12
             3.13
+            3.14
       - name: Install Python requirements
         run: |
           pip install "ansible-core<2.21.0" "./python-avd[ansible-collection]" --upgrade
@@ -560,6 +570,7 @@ jobs:
             3.11
             3.12
             3.13
+            3.14
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v7
         with:
@@ -597,7 +608,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.10", "3.11", "3.12", "3.13"]
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
         suite:
           - name: "Main-Tests"
             id: Main-Tests
