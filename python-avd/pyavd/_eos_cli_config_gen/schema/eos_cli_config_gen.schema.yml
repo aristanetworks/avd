@@ -878,6 +878,20 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
+  avd_debug:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: false
+    description: 'Enable debug mode for AVD.
+
+      In this mode, the AVD temporary directory defined by `avd_tmp_dir` is not cleaned
+      up at the end of each role.
+
+      This allows for inspecting templated inputs, validated inputs, and facts data
+      used internally by AVD plugins.
+
+      '
   avd_structured_config_file_format:
     documentation_options:
       table: role-settings

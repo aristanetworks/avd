@@ -7,6 +7,10 @@ avd_structured_config_file_format: "yml"
 # See role documentation for details.
 avd_vault_id: null
 
+# Enable debug mode for AVD.
+# In this mode, the AVD temporary directory defined by `avd_tmp_dir` is not cleaned up at the end of each role.
+avd_debug: false
+
 # Validation configuration for AVD Design input data.
 # This dictionary is passed to the validate_inputs action plugin.
 eos_designs_validation_configuration:

@@ -69449,6 +69449,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "application_traffic_recognition": {"type": ApplicationTrafficRecognition},
         "arp": {"type": Arp},
         "as_path": {"type": AsPath},
+        "avd_debug": {"type": bool, "default": False},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "avd_tmp_dir": {"type": str},
         "avd_vault_id": {"type": str},
@@ -69675,6 +69676,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     as_path: AsPath
     """Subclass of AvdModel."""
+    avd_debug: bool
+    """
+    Enable debug mode for AVD.
+    In this mode, the AVD temporary directory defined by `avd_tmp_dir` is not
+    cleaned up at the end of each role.
+    This allows for inspecting templated inputs, validated inputs,
+    and facts data used internally by AVD plugins.
+
+    Default value: `False`
+    """
     avd_structured_config_file_format: AvdStructuredConfigFileFormat
     """
     The file format to use when loading structured configuration files.
@@ -70251,6 +70262,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             application_traffic_recognition: ApplicationTrafficRecognition | UndefinedType = Undefined,
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
+            avd_debug: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             avd_tmp_dir: str | None | UndefinedType = Undefined,
             avd_vault_id: str | None | UndefinedType = Undefined,
@@ -70469,6 +70481,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 arp: Subclass of AvdModel.
                 as_path: Subclass of AvdModel.
+                avd_debug:
+                   Enable debug mode for AVD.
+                   In this mode, the AVD temporary directory defined by `avd_tmp_dir` is not
+                   cleaned up at the end of each role.
+                   This allows for inspecting templated inputs, validated inputs,
+                   and facts data used internally by AVD plugins.
                 avd_structured_config_file_format: The file format to use when loading structured configuration files.
                 avd_tmp_dir:
                    Path for the AVD temporary directory.

@@ -92,6 +92,7 @@
 
   always:
     - name: Clean up AVD temporary directory
+      when: not avd_debug
       ansible.builtin.file:
         path: "{{ avd_tmp_dir }}"
         state: absent
