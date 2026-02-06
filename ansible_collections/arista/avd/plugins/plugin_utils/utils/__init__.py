@@ -3,7 +3,9 @@
 # that can be found in the LICENSE file.
 from .action_plugin_vars import ActionPluginVars
 from .anta_workflow_logging import AntaWorkflowFilter, AntaWorkflowHandler
+from .avd_file_handler import AVDFileHandler
 from .avd_switch_facts_default_dict import AvdSwitchFactsDefaultDict
+from .avd_vault_handler import AVDVaultHandler
 from .compile_searchpath import compile_searchpath
 from .constants import ANSIBLE_ABOVE_2_19
 from .cprofile_decorator import cprofile
@@ -19,6 +21,8 @@ from .yaml_loader import YamlLoader
 
 __all__ = [
     "ANSIBLE_ABOVE_2_19",
+    "AVDFileHandler",
+    "AVDVaultHandler",
     "ActionPluginVars",
     "AntaWorkflowFilter",
     "AntaWorkflowHandler",

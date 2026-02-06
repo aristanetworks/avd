@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
@@ -24,6 +24,7 @@
         input_suffix: "{{ avd_structured_config_file_format }}"
         read_from_input_dir: "{{ read_structured_config_from_file | arista.avd.default(true) }}"
         fail_on_validation_errors: false
+        vault_id: "{{ avd_vault_id }}"
       delegate_to: localhost
       check_mode: false
       run_once: true

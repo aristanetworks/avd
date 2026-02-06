@@ -14,6 +14,8 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    AVDFileHandler,
+    AVDVaultHandler,
     PythonToAnsibleContextFilter,
     PythonToAnsibleHandler,
     cprofile,
@@ -201,8 +203,10 @@ class ActionModule(ActionBase):
             )
             raise AnsibleActionFail(message=msg)
 
-        with file_path.open(mode="r", encoding="utf-8") as f:
-            return json.load(f)
+        # Read, unvault, and parse the JSON file
+        vault_handler = AVDVaultHandler(self._loader)
+        file_handler = AVDFileHandler(vault_handler)
+        return file_handler.load_json(file_path)
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:
