@@ -176,6 +176,7 @@ jobs:
           - "3.11"
           - "3.12"
           - "3.13"
+          - "3.14"
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python 3
@@ -686,7 +687,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.10", "3.11", "3.12", "3.13"]
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
         suite:
           - name: "Main-Tests"
             id: Main-Tests
