@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 class AVDFileHandler:
     """Handles file operations with automatic vault support."""
 
-    vault_handler: AVDVaultHandler
+    _vault_handler: AVDVaultHandler
 
     def __init__(self, vault_handler: AVDVaultHandler) -> None:
         """
@@ -25,7 +25,7 @@ class AVDFileHandler:
         Args:
             vault_handler: The AVDVaultHandler instance to use for vault operations.
         """
-        self.vault_handler = vault_handler
+        self._vault_handler = vault_handler
 
     def read_file(self, file_path: Path | str) -> bytes:
         """
@@ -40,7 +40,20 @@ class AVDFileHandler:
             Raw file content as bytes (decrypted if vaulted).
         """
         file_content = Path(file_path).read_bytes()
-        return self.vault_handler.decrypt_if_needed(file_content)
+        return self._vault_handler.decrypt_if_needed(file_content)
+
+    def write_file(self, file_path: Path | str, data: bytes) -> None:
+        """
+        Write bytes to a file with automatic vault encryption.
+
+        This method encrypts the data if vault is configured, then writes to the file.
+
+        Args:
+            file_path: Path to the file to write.
+            data: Raw bytes to write.
+        """
+        encrypted_data = self._vault_handler.encrypt_if_needed(data)
+        Path(file_path).write_bytes(encrypted_data)
 
     def load_json(self, file_path: Path | str) -> Any:
         """

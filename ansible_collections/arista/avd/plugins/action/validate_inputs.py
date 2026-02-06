@@ -174,11 +174,11 @@ class ActionModule(AvdActionPlugin):
         mp_workers, mt_workers = get_workers(len(hosts_to_process), task_vars["ansible_forks"])
         templated_path, validated_path = get_role_tmp_paths(role_name=SCHEMA_MAP[plugin_args.schema_name], tmp_dir=plugin_args.tmp_dir, clean=True)
 
-        # Create vault and file handlers
+        # Create vault and file handlers.
         vault_handler = AVDVaultHandler(self._loader, vault_id=plugin_args.vault_id)
         file_handler = AVDFileHandler(vault_handler)
 
-        # Check if vault is configured for encrypting temporary files
+        # Check if vault is configured for encrypting temporary files.
         if vault_handler.has_vault:
             self.logger.info("Ansible Vault is configured - temporary files will be encrypted")
         else:
@@ -478,11 +478,8 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
         templated_hostvars = dict(hostvars_wrapper)
 
         data = json.dumps(templated_hostvars, skipkeys=True, default=lambda _: "<not serializable>", indent=4).encode("utf-8")
-        # Encrypt data if vault is configured
-        data = file_handler.vault_handler.encrypt_if_needed(data)
-
         output_file_path = output_path / f"{hostname}.json"
-        output_file_path.write_bytes(data)
+        file_handler.write_file(output_file_path, data)
 
         return TemplateWorkerSuccess(hostname=hostname, output_file=str(output_file_path))
 
@@ -524,14 +521,15 @@ def _validate_host_worker(
         if not input_file_path.exists():
             return WorkerFailure(hostname=hostname, error=f"Missing input data file: {input_file_path}")
 
-        # Load file content (decrypted if vaulted)
+        # Load file content (decrypted if vaulted).
         file_content = file_handler.read_file(input_file_path)
 
         if input_suffix in {"yml", "yaml"}:
-            # YAML input: parse and convert to JSON string for validation
+            # YAML input: parse and convert to JSON string for validation.
             data = yaml.load(file_content, Loader=yaml.CSafeLoader)
             json_data = json.dumps(data)
         else:
+            # JSON input: decode bytes to string.
             json_data = file_content.decode("utf-8")
 
         # Validation in Rust, releasing the GIL.
@@ -540,11 +538,8 @@ def _validate_host_worker(
 
         output_file = None
         if validated_data:
-            # Encrypt data if vault is configured
-            validated_data = file_handler.vault_handler.encrypt_if_needed(validated_data.encode("utf-8"))
-
             output_file_path = output_path / f"{hostname}.json"
-            output_file_path.write_bytes(validated_data)
+            file_handler.write_file(output_file_path, validated_data.encode("utf-8"))
             output_file = str(output_file_path)
 
         return ValidateWorkerSuccess(hostname=hostname, validation_result=validation_result, output_file=output_file)
