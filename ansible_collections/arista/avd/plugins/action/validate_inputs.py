@@ -336,7 +336,7 @@ class ActionModule(AvdActionPlugin):
             batch_size: Number of hosts to process per child process.
             output_path: Directory path where templated JSON files will be written.
             schema_name: Schema name used for filtering hostvars.
-            file_handler: AVDFileHandler, used to load and write files, handling encryption if needed.
+            file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
 
         Returns:
             List of hostnames that were templated successfully.
@@ -393,7 +393,7 @@ class ActionModule(AvdActionPlugin):
             schema_name: Schema to validate against.
             fail_on_validation_errors: Whether to fail the task on validation errors.
             configuration: Configuration for validation or None.
-            file_handler: AVDFileHandler, used to load and write files, handling encryption if needed.
+            file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
         """
         self.logger.info("Validating inputs...")
         start_time = perf_counter()
