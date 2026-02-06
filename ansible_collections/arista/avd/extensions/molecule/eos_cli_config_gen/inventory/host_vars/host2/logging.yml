@@ -14,3 +14,5 @@ logging:
     level: disabled
   format:
     hostname: ipv4
+  # Test to check table created for source_interface without vrfs key.
+  source_interface: Ethernet1

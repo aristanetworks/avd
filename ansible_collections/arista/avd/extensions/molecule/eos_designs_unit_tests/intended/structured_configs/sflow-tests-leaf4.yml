@@ -5,16 +5,15 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet11
-  description: SERVER_port-channel-interface-true_PCI2
+  description: MLAG_sflow-tests-leaf3_Ethernet11
   shutdown: false
   channel_group:
     id: 11
-    mode: 'on'
+    mode: active
   metadata:
-    peer: port-channel-interface-true
-    peer_interface: PCI2
-    peer_type: server
-    peer_key: servers
+    peer: sflow-tests-leaf3
+    peer_interface: Ethernet11
+    peer_type: mlag_peer
 - name: Ethernet12
   description: MLAG_sflow-tests-leaf3_Ethernet12
   shutdown: false
@@ -51,6 +50,26 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
+- name: Ethernet6
+  description: L2_sflow-settings-2_Ethernet2
+  shutdown: false
+  channel_group:
+    id: 6
+    mode: active
+  metadata:
+    peer: sflow-settings-2
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+- name: Ethernet7
+  description: L2_sflow-settings-1_Ethernet2
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  metadata:
+    peer: sflow-settings-1
+    peer_interface: Ethernet2
+    peer_type: l2leaf
 - name: Ethernet16
   description: L2_sflow-tests-l2-leaf1_Ethernet2
   shutdown: false
@@ -71,6 +90,17 @@ ethernet_interfaces:
     peer: sflow-tests-l2-leaf2
     peer_interface: Ethernet2
     peer_type: l2leaf
+- name: Ethernet21
+  description: SERVER_port-channel-interface-true_PCI2
+  shutdown: false
+  channel_group:
+    id: 21
+    mode: 'on'
+  metadata:
+    peer: port-channel-interface-true
+    peer_interface: PCI2
+    peer_type: server
+    peer_key: servers
 - name: Ethernet13
   description: SERVER_port-channel-interface-false_PCI12
   shutdown: false
@@ -119,6 +149,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: SFLOW_TESTS
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: sflow-tests-leaf-mlag
   local_interface: Vlan4094
@@ -128,19 +160,38 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel11
-  description: SERVER_port-channel-interface-true
+  description: MLAG_sflow-tests-leaf3_Port-Channel11
   shutdown: false
-  mlag: 11
-  spanning_tree_portfast: edge
   sflow:
     enable: true
   switchport:
     enabled: true
-    mode: access
-    access_vlan: 11
+    mode: trunk
     trunk:
       groups:
       - MLAG
+- name: Port-Channel6
+  description: L2_sflow-settings-2_Port-Channel1
+  shutdown: false
+  mlag: 6
+  sflow:
+    enable: true
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
+- name: Port-Channel7
+  description: L2_sflow-settings-1_Port-Channel1
+  shutdown: false
+  mlag: 7
+  sflow:
+    enable: true
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 11,4092
 - name: Port-Channel16
   description: L2_sflow-tests-l2-leaf1_Port-Channel1
   shutdown: false
@@ -163,6 +214,17 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 11,4092
+- name: Port-Channel21
+  description: SERVER_port-channel-interface-true
+  shutdown: false
+  mlag: 21
+  spanning_tree_portfast: edge
+  sflow:
+    enable: true
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 11
 - name: Port-Channel13
   description: SERVER_port-channel-interface-false
   shutdown: false
@@ -247,13 +309,13 @@ router_bgp:
     description: sflow-tests-leaf3
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -295,7 +357,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: SFLOW
+      tenants:
+      - SFLOW
     rd: 10.254.1.6:10011
     route_targets:
       both:
@@ -377,7 +440,8 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF1
   metadata:
-    tenant: SFLOW
+    tenants:
+    - SFLOW
 - name: Vlan3000
   description: MLAG_L3_VRF_VRF1
   shutdown: false
@@ -385,7 +449,8 @@ vlan_interfaces:
   ip_address: 10.254.1.105/31
   mtu: 9214
   metadata:
-    tenant: SFLOW
+    tenants:
+    - SFLOW
     type: underlay_peering
 - name: Vlan4092
   description: Inband Management
@@ -407,29 +472,41 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 11
   name: VLAN11
-  tenant: SFLOW
+  metadata:
+    tenants:
+    - SFLOW
 - id: 3000
   name: MLAG_L3_VRF_VRF1
   trunk_groups:
   - MLAG
-  tenant: SFLOW
+  metadata:
+    tenants:
+    - SFLOW
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: SFLOW
+  metadata:
+    tenants:
+    - SFLOW
 vxlan_interface:
   vxlan1:
     description: sflow-tests-leaf4_VTEP

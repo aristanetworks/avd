@@ -1,10 +1,10 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - policy map qos #}
-{% for policy_map in policy_maps.qos | arista.avd.natural_sort('name') %}
+{% for policy_map in policy_maps.qos | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 policy-map type quality-of-service {{ policy_map.name }}
 {%     for class in policy_map.classes | arista.avd.default([]) %}
@@ -12,12 +12,18 @@ policy-map type quality-of-service {{ policy_map.name }}
    !
 {%         endif %}
    class {{ class.name }}
-{%         for set in class.set | arista.avd.default([]) %}
-{%             set cli_set = set | replace('_','-') | lower %}
-{%             if cli_set in ['cos', 'dscp', 'traffic-class', 'drop-precedence'] %}
-      set {{ cli_set }} {{ class.set[set] }}
-{%             endif %}
-{%         endfor %}
+{%         if class.set.cos is arista.avd.defined %}
+      set cos {{ class.set.cos }}
+{%         endif %}
+{%         if class.set.dscp is arista.avd.defined %}
+      set dscp {{ class.set.dscp }}
+{%         endif %}
+{%         if class.set.traffic_class is arista.avd.defined %}
+      set traffic-class {{ class.set.traffic_class }}
+{%         endif %}
+{%         if class.set.drop_precedence is arista.avd.defined %}
+      set drop-precedence {{ class.set.drop_precedence }}
+{%         endif %}
 {%         if class.police is arista.avd.defined %}
 {%             set police_cli = "police rate " %}
 {%             if class.police.rate is arista.avd.defined and class.police.rate_burst_size is arista.avd.defined %}

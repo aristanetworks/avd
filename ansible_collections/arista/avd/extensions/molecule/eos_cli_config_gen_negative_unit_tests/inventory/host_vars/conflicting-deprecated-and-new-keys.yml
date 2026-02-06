@@ -68,4 +68,6 @@ router_bgp:
           connected:
             enabled: true
 
-expected_error_message: "11 errors found during schema validation of input vars."
+expected_error_message: >-
+  Missing the validated structured config for host 'conflicting-deprecated-and-new-keys'.
+  Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred.

@@ -124,10 +124,14 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 100
   name: L2VLAN_100
-  tenant: L2LS_L2ONLY
+  metadata:
+    tenants:
+    - L2LS_L2ONLY
 vrfs:
 - name: MGMT
   ip_routing: false

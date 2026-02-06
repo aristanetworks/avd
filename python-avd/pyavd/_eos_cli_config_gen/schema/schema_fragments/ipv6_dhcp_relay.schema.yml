@@ -1,4 +1,5 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+---
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -24,5 +25,12 @@ keys:
             description: Add Option 79 (Link Layer Address Option).
           remote_id_format:
             type: str
-            valid_values: ["%m:%i", "%m:%p"]
-            description: Add RemoteID option 37 in format MAC address and interface ID (`%m:%i`) or MAC address and interface name (`%m:%p`).
+            valid_values:
+              - "%m:%h:%p"
+              - "%m:%i"
+              - "%m:%p"
+            description: |-
+              Add RemoteID option 37 in format
+              - MAC address, hostname and interface name (`%m:%h:%p`)
+              - MAC address and interface ID (`%m:%i`)
+              - MAC address and interface name (`%m:%p`)

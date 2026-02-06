@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -36,7 +36,7 @@ AAA Authentication on-success log has been enabled
 Policy local allow-nopassword-remote-login has been enabled.
 {%             endif %}
 {%         endif %}
-{%         if aaa_authentication.policies.lockout.failure is arista.avd.defined and aaa_authentication.policies.lockout.duration is arista.avd.defined %}
+{%         if aaa_authentication.policies.lockout is arista.avd.defined %}
 
 Policy lockout has been enabled. After **{{ aaa_authentication.policies.lockout.failure }}** failed login attempts within **{{ aaa_authentication.policies.lockout.window | arista.avd.default('1440') }}** minutes, you'll be locked out for **{{ aaa_authentication.policies.lockout.duration }}** minutes.
 {%         endif %}
@@ -45,6 +45,7 @@ Policy lockout has been enabled. After **{{ aaa_authentication.policies.lockout.
 #### AAA Authentication Device Configuration
 
 ```eos
+{%     include 'eos/aaa-authentication-policy-nopassword.j2' %}
 {%     include 'eos/aaa-authentication.j2' %}
 !
 ```

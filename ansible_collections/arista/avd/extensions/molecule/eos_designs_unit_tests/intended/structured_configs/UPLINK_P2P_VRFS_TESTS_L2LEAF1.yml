@@ -57,7 +57,9 @@ vlan_internal_order:
 vlans:
 - id: 66
   name: TEST-L2VLAN-ATTRACTION
-  tenant: TenantC
+  metadata:
+    tenants:
+    - TenantC
 vrfs:
 - name: MGMT
   ip_routing: false

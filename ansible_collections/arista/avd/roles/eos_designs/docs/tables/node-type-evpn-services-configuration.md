@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -71,6 +71,38 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].filter.always_include_vrfs_in_tenants.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_vlans_in_use</samp>](## "<node_type_keys.key>.nodes.[].filter.only_vlans_in_use") | Boolean |  | `False` |  | Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.<br>Note! This feature only considers configuration managed by eos_designs.<br>This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping_enabled</samp>](## "<node_type_keys.key>.nodes.[].igmp_snooping_enabled") | Boolean |  |  |  | Activate or deactivate IGMP snooping on device level. |
+    | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_services_l2_only</samp>](## "device_profiles.[].evpn_services_l2_only") | Boolean |  | `False` |  | Possibility to prevent configuration of Tenant VRFs and SVIs.<br>Override node definition "network_services_l3" from node_type_keys.<br>This allows support for centralized routing.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;filter</samp>](## "device_profiles.[].filter") | Dictionary |  |  |  | Filter L3 and L2 network services based on tenant and tags (and operation filter).<br>If filter is not defined it will default to all.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenants</samp>](## "device_profiles.[].filter.tenants") | List, items: String |  | `['all']` |  | Limit configured Network Services to those defined under these Tenants. Set to ['all'] for all Tenants (default).<br>This list also limits Tenants included by `always_include_vrfs_in_tenants`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].filter.tenants.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "device_profiles.[].filter.tags") | List, items: String |  | `['all']` |  | Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].filter.tags.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vrfs</samp>](## "device_profiles.[].filter.allow_vrfs") | List, items: String |  | `['all']` |  | Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).<br>This list also limits VRFs included by `always_include_vrfs_in_tenants`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].filter.allow_vrfs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deny_vrfs</samp>](## "device_profiles.[].filter.deny_vrfs") | List, items: String |  | `['all']` |  | Prevent configuration of Network Services defined under these VRFs.<br>This list prevents the given VRFs to be included by any other filtering mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].filter.deny_vrfs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always_include_vrfs_in_tenants</samp>](## "device_profiles.[].filter.always_include_vrfs_in_tenants") | List, items: String |  |  |  | List of tenants where VRFs will be configured even if VLANs are not included in tags.<br>Useful for L3 "border" leaf.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].filter.always_include_vrfs_in_tenants.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_vlans_in_use</samp>](## "device_profiles.[].filter.only_vlans_in_use") | Boolean |  | `False` |  | Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.<br>Note! This feature only considers configuration managed by eos_designs.<br>This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping_enabled</samp>](## "device_profiles.[].igmp_snooping_enabled") | Boolean |  |  |  | Activate or deactivate IGMP snooping on device level. |
+    | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_services_l2_only</samp>](## "devices.[].evpn_services_l2_only") | Boolean |  | `False` |  | Possibility to prevent configuration of Tenant VRFs and SVIs.<br>Override node definition "network_services_l3" from node_type_keys.<br>This allows support for centralized routing.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;filter</samp>](## "devices.[].filter") | Dictionary |  |  |  | Filter L3 and L2 network services based on tenant and tags (and operation filter).<br>If filter is not defined it will default to all.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenants</samp>](## "devices.[].filter.tenants") | List, items: String |  | `['all']` |  | Limit configured Network Services to those defined under these Tenants. Set to ['all'] for all Tenants (default).<br>This list also limits Tenants included by `always_include_vrfs_in_tenants`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].filter.tenants.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tags</samp>](## "devices.[].filter.tags") | List, items: String |  | `['all']` |  | Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].filter.tags.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vrfs</samp>](## "devices.[].filter.allow_vrfs") | List, items: String |  | `['all']` |  | Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).<br>This list also limits VRFs included by `always_include_vrfs_in_tenants`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].filter.allow_vrfs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deny_vrfs</samp>](## "devices.[].filter.deny_vrfs") | List, items: String |  | `['all']` |  | Prevent configuration of Network Services defined under these VRFs.<br>This list prevents the given VRFs to be included by any other filtering mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].filter.deny_vrfs.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always_include_vrfs_in_tenants</samp>](## "devices.[].filter.always_include_vrfs_in_tenants") | List, items: String |  |  |  | List of tenants where VRFs will be configured even if VLANs are not included in tags.<br>Useful for L3 "border" leaf.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].filter.always_include_vrfs_in_tenants.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_vlans_in_use</samp>](## "devices.[].filter.only_vlans_in_use") | Boolean |  | `False` |  | Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.<br>Note! This feature only considers configuration managed by eos_designs.<br>This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping_enabled</samp>](## "devices.[].igmp_snooping_enabled") | Boolean |  |  |  | Activate or deactivate IGMP snooping on device level. |
 
 === "YAML"
 
@@ -262,4 +294,98 @@
 
           # Activate or deactivate IGMP snooping on device level.
           igmp_snooping_enabled: <bool>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    device_profiles:
+
+        # Profile Name
+      - name: <str; required; unique>
+
+        # Possibility to prevent configuration of Tenant VRFs and SVIs.
+        # Override node definition "network_services_l3" from node_type_keys.
+        # This allows support for centralized routing.
+        evpn_services_l2_only: <bool; default=False>
+
+        # Filter L3 and L2 network services based on tenant and tags (and operation filter).
+        # If filter is not defined it will default to all.
+        filter:
+
+          # Limit configured Network Services to those defined under these Tenants. Set to ['all'] for all Tenants (default).
+          # This list also limits Tenants included by `always_include_vrfs_in_tenants`.
+          tenants: # default=['all']
+            - <str>
+
+          # Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default).
+          tags: # default=['all']
+            - <str>
+
+          # Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).
+          # This list also limits VRFs included by `always_include_vrfs_in_tenants`.
+          allow_vrfs: # default=['all']
+            - <str>
+
+          # Prevent configuration of Network Services defined under these VRFs.
+          # This list prevents the given VRFs to be included by any other filtering mechanism.
+          deny_vrfs: # default=['all']
+            - <str>
+
+          # List of tenants where VRFs will be configured even if VLANs are not included in tags.
+          # Useful for L3 "border" leaf.
+          always_include_vrfs_in_tenants:
+            - <str>
+
+          # Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.
+          # Note! This feature only considers configuration managed by eos_designs.
+          # This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.
+          only_vlans_in_use: <bool; default=False>
+
+        # Activate or deactivate IGMP snooping on device level.
+        igmp_snooping_enabled: <bool>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    devices:
+
+        # The Node Name is used as "hostname".
+        name: <str; required; unique>
+
+        # Possibility to prevent configuration of Tenant VRFs and SVIs.
+        # Override node definition "network_services_l3" from node_type_keys.
+        # This allows support for centralized routing.
+        evpn_services_l2_only: <bool; default=False>
+
+        # Filter L3 and L2 network services based on tenant and tags (and operation filter).
+        # If filter is not defined it will default to all.
+        filter:
+
+          # Limit configured Network Services to those defined under these Tenants. Set to ['all'] for all Tenants (default).
+          # This list also limits Tenants included by `always_include_vrfs_in_tenants`.
+          tenants: # default=['all']
+            - <str>
+
+          # Limit configured VLANs to those matching the given tags. Set to ['all'] for all VLANs (default).
+          tags: # default=['all']
+            - <str>
+
+          # Limit configured Network Services to those defined under these VRFs. Set to ['all'] for all VRFs (default).
+          # This list also limits VRFs included by `always_include_vrfs_in_tenants`.
+          allow_vrfs: # default=['all']
+            - <str>
+
+          # Prevent configuration of Network Services defined under these VRFs.
+          # This list prevents the given VRFs to be included by any other filtering mechanism.
+          deny_vrfs: # default=['all']
+            - <str>
+
+          # List of tenants where VRFs will be configured even if VLANs are not included in tags.
+          # Useful for L3 "border" leaf.
+          always_include_vrfs_in_tenants:
+            - <str>
+
+          # Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.
+          # Note! This feature only considers configuration managed by eos_designs.
+          # This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.
+          only_vlans_in_use: <bool; default=False>
+
+        # Activate or deactivate IGMP snooping on device level.
+        igmp_snooping_enabled: <bool>
     ```

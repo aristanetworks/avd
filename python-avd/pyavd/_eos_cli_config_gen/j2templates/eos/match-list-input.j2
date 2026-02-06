@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -10,9 +10,7 @@
 {%         for match_list in match_list_input.string | arista.avd.natural_sort('name') %}
 match-list input string {{ match_list.name }}
 {%             for sequence in match_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
-{%                 if sequence.match_regex is arista.avd.defined %}
    {{ sequence.sequence }} match regex {{ sequence.match_regex }}
-{%                 endif %}
 {%             endfor %}
 {%         endfor %}
 {%     endif %}

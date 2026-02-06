@@ -213,7 +213,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -238,8 +238,8 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-LEAF1A_Ethernet3 | - | 172.31.255.4/31 | default | 1500 | False | - | - |
 | Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-LEAF2A_Ethernet3 | - | 172.31.255.20/31 | default | 1500 | False | - | - |
 | Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-LEAF2B_Ethernet3 | - | 172.31.255.36/31 | default | 1500 | False | - | - |
@@ -424,7 +424,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -474,7 +474,7 @@ router bgp 65001
    neighbor UNDERLAY-PEERS peer group
    neighbor UNDERLAY-PEERS password 7 <removed>
    neighbor UNDERLAY-PEERS send-community
-   neighbor UNDERLAY-PEERS maximum-routes 12000
+   neighbor UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.31.255.5 peer group UNDERLAY-PEERS
    neighbor 172.31.255.5 remote-as 65101
    neighbor 172.31.255.5 description DC1-LEAF1A_Ethernet3

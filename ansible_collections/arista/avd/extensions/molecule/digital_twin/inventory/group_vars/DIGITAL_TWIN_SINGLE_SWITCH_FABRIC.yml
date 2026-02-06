@@ -1,0 +1,8 @@
+---
+fabric_name: DIGITAL_TWIN_SINGLE_SWITCH_FABRIC
+
+l2leaf:
+  nodes:
+    - name: digital-twin-single-switch-fabric-1
+      id: 1
+      mgmt_ip: 192.168.2.1/32

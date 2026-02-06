@@ -80,7 +80,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -121,7 +121,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: PTP
+      tenants:
+      - PTP
     rd: 192.168.3.4:10011
     route_targets:
       both:
@@ -166,7 +167,8 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF1
   metadata:
-    tenant: PTP
+    tenants:
+    - PTP
 vlan_internal_order:
   allocation: ascending
   range:
@@ -175,13 +177,17 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VLAN11
-  tenant: PTP
+  metadata:
+    tenants:
+    - PTP
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: PTP
+  metadata:
+    tenants:
+    - PTP
 vxlan_interface:
   vxlan1:
     description: ptp-tests-leaf6_VTEP

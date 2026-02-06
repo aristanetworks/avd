@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -14,16 +14,11 @@
 {{ persistent_cli }}
 {%     endif %}
 {%     if ipv6_neighbor.static_entries is arista.avd.defined %}
-{%         for neighbor in ipv6_neighbor.static_entries %}
-{%             if neighbor.ipv6_address is arista.avd.defined and neighbor.interface is arista.avd.defined and neighbor.mac_address is arista.avd.defined %}
-{%                 set neighbor_cli = neighbor.ipv6_address ~ " " ~ neighbor.interface ~ " " ~ neighbor.mac_address %}
-{%                 if neighbor.vrf is arista.avd.defined %}
-{%                     set neighbor_cli = "ipv6 neighbor vrf " ~ neighbor.vrf ~ " " ~ neighbor_cli  %}
-{%                 else %}
-{%                     set neighbor_cli = "ipv6 neighbor " ~ neighbor_cli %}
-{%                 endif %}
-{{ neighbor_cli }}
-{%             endif %}
+{%         for neighbor in ipv6_neighbor.static_entries | rejectattr("vrf", "arista.avd.defined") | arista.avd.natural_sort(sort_key='interface') | arista.avd.natural_sort(sort_key='ipv6_address') %}
+ipv6 neighbor {{ neighbor.ipv6_address }} {{ neighbor.interface }} {{ neighbor.mac_address }}
+{%         endfor %}
+{%         for neighbor in ipv6_neighbor.static_entries | selectattr("vrf", "arista.avd.defined") | arista.avd.natural_sort(sort_key='interface') | arista.avd.natural_sort(sort_key='ipv6_address') | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
+ipv6 neighbor vrf {{ neighbor.vrf }} {{ neighbor.ipv6_address }} {{ neighbor.interface }} {{ neighbor.mac_address }}
 {%         endfor %}
 {%     endif %}
 {% endif %}

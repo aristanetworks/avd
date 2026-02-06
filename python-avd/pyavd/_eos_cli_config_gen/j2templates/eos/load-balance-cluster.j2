@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2025 Arista Networks, Inc.
+ Copyright (c) 2025-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -28,7 +28,7 @@ load-balance cluster
    flow source learning
       aging timeout {{ load_balance.cluster.flow.source_learning_aging_timeout }} seconds
 {%     endif %}
-{%     for port_group in load_balance.cluster.port_groups | arista.avd.natural_sort('group')  %}
+{%     for port_group in load_balance.cluster.port_groups | arista.avd.natural_sort(sort_key='group', ignore_case=false)  %}
    !
    port group host {{ port_group.group }}
 {%         if port_group.interface is arista.avd.defined %}

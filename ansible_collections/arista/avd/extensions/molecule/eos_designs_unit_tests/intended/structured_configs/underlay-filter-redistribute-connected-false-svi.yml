@@ -34,27 +34,14 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
   vlans:
   - id: 1008
     metadata:
-      tenant: SIT
+      tenants:
+      - SIT
     rd: 10.10.0.3:21008
     route_targets:
       both:
@@ -63,23 +50,14 @@ router_bgp:
     - learned
   - id: 10
     metadata:
-      tenant: SIT
+      tenants:
+      - SIT
     rd: 10.10.0.3:20010
     route_targets:
       both:
       - 20010:20010
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: default
     rd: 10.10.0.3:789654
@@ -99,7 +77,8 @@ vlan_interfaces:
   description: SVI_1
   shutdown: false
   metadata:
-    tenant: SIT
+    tenants:
+    - SIT
     tags:
     - sit
 vlan_internal_order:
@@ -110,10 +89,14 @@ vlan_internal_order:
 vlans:
 - id: 1008
   name: SVI_1
-  tenant: SIT
+  metadata:
+    tenants:
+    - SIT
 - id: 10
   name: storage_prod
-  tenant: SIT
+  metadata:
+    tenants:
+    - SIT
 vrfs:
 - name: MGMT
   ip_routing: false

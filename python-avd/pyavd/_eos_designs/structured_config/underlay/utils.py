@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol, overload
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import Undefined, default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -89,6 +89,18 @@ class UtilsMixin(Protocol):
                     port_channel_structured_config=uplink.peer_port_channel_structured_config,
                 )
 
+                if self.shared_utils.node_config.link_tracking.downlinks.enabled and self.shared_utils.link_tracking_groups is not None:
+                    if (downlink_group := self.shared_utils.node_config.link_tracking.downlinks.group) is None:
+                        first_group = next(iter(self.shared_utils.link_tracking_groups.values()))
+                        downlink.link_tracking_groups.append_new(name=first_group.name, direction="downstream")
+                    elif downlink_group not in self.shared_utils.link_tracking_groups:
+                        msg = (
+                            f"Link tracking group '{downlink_group}' referenced under node setting 'link_tracking.downlinks.group' "
+                            f"is not defined in 'link_tracking.groups' for device '{self.shared_utils.hostname}'."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
+                    else:
+                        downlink.link_tracking_groups.append_new(name=downlink_group, direction="downstream")
                 if peer_facts.inband_ztp:
                     # l2 inband ztp
                     downlink.inband_ztp_vlan = peer_facts.inband_ztp_vlan
@@ -299,3 +311,8 @@ class UtilsMixin(Protocol):
             interface_ip=interface_ip,
             peer_ip=interface.peer_ip,
         )
+
+    @cached_property
+    def _underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:
+        """Return a list of P2P underlay links."""
+        return [link for link in self._underlay_links if link.type == "underlay_p2p"]

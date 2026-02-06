@@ -64,6 +64,8 @@ ptp:
         delay_resp: 3
         follow_up: 3
         sync: 3
+  free_running:
+    enabled: false
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -86,20 +88,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -107,23 +95,14 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: PTP
+      tenants:
+      - PTP
     rd: 10.42.42.42:10011
     route_targets:
       both:
       - 10011:10011
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: VRF1
     rd: 10.42.42.42:1
@@ -149,7 +128,8 @@ vlan_interfaces:
   vrf: VRF1
   ip_address: 172.16.11.1/24
   metadata:
-    tenant: PTP
+    tenants:
+    - PTP
 vlan_internal_order:
   allocation: ascending
   range:
@@ -158,13 +138,17 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VLAN11
-  tenant: PTP
+  metadata:
+    tenants:
+    - PTP
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: PTP
+  metadata:
+    tenants:
+    - PTP
 vxlan_interface:
   vxlan1:
     description: custom-ptp-profile_VTEP

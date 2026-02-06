@@ -14,6 +14,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: DIGITAL_TWIN
+  validate_hardware:
+    enabled: false
   digital_twin:
     environment: act
     node_type: veos
@@ -40,7 +42,9 @@ vlan_internal_order:
 vlans:
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

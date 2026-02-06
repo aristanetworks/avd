@@ -141,10 +141,14 @@ vlan_internal_order:
 vlans:
 - id: 100
   name: SVI_100
-  tenant: L2LS_BGP
+  metadata:
+    tenants:
+    - L2LS_BGP
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

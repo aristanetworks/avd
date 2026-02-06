@@ -172,6 +172,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: FLOW_TRACKING_TESTS
+  validate_hardware:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -204,7 +206,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -245,7 +247,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: FLOW_TRACKING
+      tenants:
+      - FLOW_TRACKING
     rd: 10.254.1.1:10011
     route_targets:
       both:
@@ -296,7 +299,8 @@ vlan_interfaces:
   vrf: VRF1
   ip_address: 172.16.11.1/24
   metadata:
-    tenant: FLOW_TRACKING
+    tenants:
+    - FLOW_TRACKING
 vlan_internal_order:
   allocation: ascending
   range:
@@ -305,13 +309,17 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VLAN11
-  tenant: FLOW_TRACKING
+  metadata:
+    tenants:
+    - FLOW_TRACKING
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
   ip_routing: true
-  tenant: FLOW_TRACKING
+  metadata:
+    tenants:
+    - FLOW_TRACKING
 vxlan_interface:
   vxlan1:
     description: flow-tracking-tests-leaf1_VTEP

@@ -11,6 +11,7 @@ spine:
     - name: dc1-spine1
       id: 1
       mgmt_ip: 172.16.1.11/24
+      validation_profile: profile2
       # Custom BGP configuration for BGP tests
       structured_config:
         router_bgp:

@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2024-2025 Arista Networks, Inc.
+ Copyright (c) 2024-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -24,7 +24,7 @@ No connected endpoint configured!
 ### {{ key | replace("_", " ") | title }}
 
 | Name | Type | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
-| ---- | ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----------- | ------------------- | ------- |
+| ---- | ---- | ---- | ------------- | ----------- | ----------- | -------- | ---- | ----------- | ------------------- | ------- |
 {%         for connected_endpoint in all_connected_endpoints[key] %}
 {%             set port = connected_endpoint.peer_interface %}
 {%             set type = connected_endpoint.peer_type | arista.avd.default("-") %}

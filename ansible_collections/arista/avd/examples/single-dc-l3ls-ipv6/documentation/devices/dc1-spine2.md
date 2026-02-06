@@ -206,7 +206,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -232,7 +232,7 @@ vlan internal order ascending range 1006 1199
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 | Ethernet1 | P2P_dc1-leaf1a_Ethernet2 | - | 2001:db8:2:1::1/64 | default | 1500 | False | - | - | - | - |
 | Ethernet2 | P2P_dc1-leaf1b_Ethernet2 | - | 2001:db8:2:3::1/64 | default | 1500 | False | - | - | - | - |
 | Ethernet3 | P2P_dc1-leaf2a_Ethernet2 | - | 2001:db8:2:5::1/64 | default | 1500 | False | - | - | - | - |
@@ -391,7 +391,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv6 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -433,7 +433,7 @@ router bgp 65100
    neighbor IPv6-UNDERLAY-PEERS peer group
    neighbor IPv6-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv6-UNDERLAY-PEERS send-community
-   neighbor IPv6-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv6-UNDERLAY-PEERS maximum-routes 256000
    neighbor 2001:db8:1:1::1 peer group EVPN-OVERLAY-PEERS
    neighbor 2001:db8:1:1::1 remote-as 65101
    neighbor 2001:db8:1:1::1 description dc1-leaf1a_Loopback0

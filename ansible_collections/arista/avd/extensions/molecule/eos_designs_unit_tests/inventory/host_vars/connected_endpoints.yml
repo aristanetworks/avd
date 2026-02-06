@@ -10,6 +10,7 @@ l2leaf:
         enabled: true
       filter:
         only_vlans_in_use: true
+      mgmt_ip: 192.168.1.2
 
 custom_connected_endpoints_keys:
   - key: servers
@@ -18,10 +19,10 @@ custom_connected_endpoints_keys:
     type: monitor
 
 connected_endpoints_keys:
-  - key: Testing_1
+  - key: testing_1
     type: Testing_Type_1
 
-Testing_1:
+testing_1:
   - name: testing
     adapters:
       - endpoint_ports: [Nic1]
@@ -244,3 +245,12 @@ monitor:
       - endpoint_ports: [Nic101]
         switch_ports: [Ethernet31]
         switches: [connected_endpoints]
+
+dot1x_settings:
+  enabled: true
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        cleartext_key: super-secret-key

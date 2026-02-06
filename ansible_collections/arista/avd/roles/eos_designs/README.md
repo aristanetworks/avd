@@ -3,7 +3,7 @@
 title: Ansible Collection Role eos_designs
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -35,10 +35,11 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 
 **Inputs:**
 
+- [AVD Design](./docs/data-models.md) inputs according to supported data models.
 - Desired variables are defined in: role defaults, group_vars, and host_vars variables.
 - If desired, the role can be extended to leverage data from dynamic sources such as an IPAM or CMDB.
 
-To understand the interaction between `eos_designs` input variables and `eos_cli_config_gen` input variables refer to the [Variables Precedence section](docs/how-to/custom-structured-configuration.md#variables-precedence)
+To understand the interaction between `eos_designs` input variables and `eos_cli_config_gen` input variables refer to the [Variables Precedence section](docs/how-to/custom-structured-configuration.md#precedence)
 
 **Outputs:**
 
@@ -152,7 +153,7 @@ Requirements are located in the [collection installation guide](../../../../../d
 
 ## Input Variables
 
-The input variables are documented in the [Input Variables](docs/input-variables.md) section.
+The input variables are documented in the [Input Variables](docs/data-models.md) section.
 
 Input variables are grouped by configuration elements and are typically stored in different group_vars files.
 

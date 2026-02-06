@@ -4,8 +4,8 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet1.1
-  description: P2P_HARDWARE_FEATURES_VEOS_LAB_Ethernet2.2
+- name: Ethernet10
+  description: P2P_HARDWARE_FEATURES_VEOS_LAB_Ethernet10
   shutdown: false
   mtu: 9214
   ip_address: 10.10.50.15/31
@@ -20,8 +20,10 @@ ethernet_interfaces:
     transport: ipv4
   metadata:
     peer: HARDWARE_FEATURES_VEOS_LAB
-    peer_interface: Ethernet2.2
+    peer_interface: Ethernet10
     peer_type: l3leaf
+  sflow:
+    enable: true
   switchport:
     enabled: false
 - name: Ethernet4.4
@@ -158,22 +160,14 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
+    maximum_routes: 256000
   neighbors:
   - ip_address: 10.10.50.14
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
       peer: HARDWARE_FEATURES_VEOS_LAB
-    description: HARDWARE_FEATURES_VEOS_LAB_Ethernet2.2
+    description: HARDWARE_FEATURES_VEOS_LAB_Ethernet10
   - ip_address: 10.10.30.41
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
@@ -192,16 +186,10 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: VRF10
     rd: 10.10.10.8:10
@@ -228,6 +216,13 @@ router_bgp:
       - ip_address: 10.10.40.100
         activate: true
 service_routing_protocols_model: multi-agent
+sflow:
+  sample: 1000000
+  polling_interval: 5
+  destinations:
+  - destination: 10.10.10.10
+  source_interface: Vlan10
+  run: true
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
@@ -239,7 +234,9 @@ vrfs:
   ip_routing: false
 - name: VRF10
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 vxlan_interface:
   vxlan1:
     description: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_VTEP

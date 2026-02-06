@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -10,8 +10,8 @@
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 {%         set description = vlan_interface.description | arista.avd.default('-') %}
 {%         set vrf = vlan_interface.vrf | arista.avd.default('default') %}
@@ -52,7 +52,7 @@
 {%         set row_varp = vlan_interface.ip_virtual_router_addresses | arista.avd.default('-') | join(", ") %}
 {%         set row_acl_in = vlan_interface.access_group_in | arista.avd.default('-') %}
 {%         set row_acl_out = vlan_interface.access_group_out | arista.avd.default('-') %}
-| {{ vlan_interface.name }} |  {{ row_vrf }}  |  {{ row_ip_addr }}  |  {{ row_ip_vaddr }}  |  {{ row_varp }}  |  {{ row_acl_in }}  |  {{ row_acl_out }}  |
+| {{ vlan_interface.name }} | {{ row_vrf }} | {{ row_ip_addr }} | {{ row_ip_vaddr }} | {{ row_varp }} | {{ row_acl_in }} | {{ row_acl_out }} |
 {%     endfor %}
 {# IP NAT Documentation #}
 {%     set ip_nat_interfaces = vlan_interfaces %}
@@ -95,7 +95,7 @@
 ##### VRRP Details
 
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| --------- | ------- | -------- | ---------------------- | ------- | ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
 {%         for vlan_interface in vlan_interfaces_vrrp_details | arista.avd.natural_sort('name') %}
 {%             for vrid in vlan_interface.vrrp_ids if vrid.id is arista.avd.defined %}
 {%                 set row_id = vrid.id %}
@@ -127,10 +127,34 @@
 {%                 if vrid.ipv4.secondary_addresses is arista.avd.defined %}
 {%                     do row_ipv4_virtual_ips.extend(vrid.ipv4.secondary_addresses) %}
 {%                 endif %}
+{%                 if row_ipv4_virtual_ips | length == 0 %}
+{%                     set row_ipv4_virtual_ips = ["-"] %}
+{%                 endif %}
 {%                 set row_ipv4_version = vrid.ipv4.version | arista.avd.default('2') %}
 {%                 set row_ipv6_virtual_ips = vrid.ipv6.addresses | arista.avd.default('-') | join(', ') %}
 | {{ vlan_interface.name }} | {{ row_id }} | {{ row_prio_level }} | {{ row_ad_interval }} | {{ row_preempt }} | {{ row_tracked_object_name | arista.avd.default('-') }} | {{ row_tracked_object_action | arista.avd.default('-') }} | {{ row_ipv4_virtual_ips | join(", ") | arista.avd.default("-") }} | {{ row_ipv4_version }} | {{ row_ipv6_virtual_ips }} | {{ peer_auth_mode }} |
 {%             endfor %}
+{%         endfor %}
+{%     endif %}
+{# OSPF #}
+{%     set ospf_vlan_interfaces = [] %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
+{%         if vlan_interface.ospf_network_point_to_point is arista.avd.defined or
+              vlan_interface.ospf_area is arista.avd.defined or
+              vlan_interface.ospf_cost is arista.avd.defined or
+              vlan_interface.ospf_authentication is arista.avd.defined or
+              vlan_interface.ipv6_ospf is arista.avd.defined %}
+{%             do ospf_vlan_interfaces.append(vlan_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if ospf_vlan_interfaces %}
+
+##### OSPF
+
+| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
+| --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
+{%         for vlan_interface in ospf_vlan_interfaces %}
+| {{ vlan_interface.name }} | {{ vlan_interface.ospf_network_point_to_point | arista.avd.default('-') }} | {{ vlan_interface.ospf_area | arista.avd.default('-') }} | {{ vlan_interface.ospf_cost | arista.avd.default('-') }} | {{ vlan_interface.ospf_authentication | arista.avd.default('-') }} | {{ vlan_interface.ipv6_ospf.process.id | arista.avd.default('-') }} | {{ vlan_interface.ipv6_ospf.process.area | arista.avd.default('-') }} | {{ vlan_interface.ipv6_ospf.network_point_to_point | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
 {# ISIS #}

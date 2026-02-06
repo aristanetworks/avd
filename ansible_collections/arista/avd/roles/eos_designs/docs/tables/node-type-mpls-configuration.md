@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -39,6 +39,22 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_route_reflectors</samp>](## "<node_type_keys.key>.nodes.[].mpls_route_reflectors") | List, items: String |  |  |  | List of inventory hostname acting as MPLS route-reflectors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].mpls_route_reflectors.[]") | String |  |  |  | Inventory_hostname_of_mpls_route_reflectors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_cluster_id</samp>](## "<node_type_keys.key>.nodes.[].bgp_cluster_id") | String |  |  |  | Set BGP cluster id. |
+    | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls_overlay_role</samp>](## "device_profiles.[].mpls_overlay_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code><br>- <code>none</code> | Set the default mpls overlay role.<br>Acting role in overlay control plane.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;overlay_address_families</samp>](## "device_profiles.[].overlay_address_families") | List, items: String |  |  |  | Set the default overlay address families.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].overlay_address_families.[]") | String |  |  | Valid Values:<br>- <code>evpn</code><br>- <code>vpn-ipv4</code><br>- <code>vpn-ipv6</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls_route_reflectors</samp>](## "device_profiles.[].mpls_route_reflectors") | List, items: String |  |  |  | List of inventory hostname acting as MPLS route-reflectors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].mpls_route_reflectors.[]") | String |  |  |  | Inventory_hostname_of_mpls_route_reflectors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_cluster_id</samp>](## "device_profiles.[].bgp_cluster_id") | String |  |  |  | Set BGP cluster id. |
+    | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls_overlay_role</samp>](## "devices.[].mpls_overlay_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code><br>- <code>none</code> | Set the default mpls overlay role.<br>Acting role in overlay control plane.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;overlay_address_families</samp>](## "devices.[].overlay_address_families") | List, items: String |  |  |  | Set the default overlay address families.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].overlay_address_families.[]") | String |  |  | Valid Values:<br>- <code>evpn</code><br>- <code>vpn-ipv4</code><br>- <code>vpn-ipv6</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls_route_reflectors</samp>](## "devices.[].mpls_route_reflectors") | List, items: String |  |  |  | List of inventory hostname acting as MPLS route-reflectors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].mpls_route_reflectors.[]") | String |  |  |  | Inventory_hostname_of_mpls_route_reflectors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_cluster_id</samp>](## "devices.[].bgp_cluster_id") | String |  |  |  | Set BGP cluster id. |
 
 === "YAML"
 
@@ -134,4 +150,50 @@
 
           # Set BGP cluster id.
           bgp_cluster_id: <str>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    device_profiles:
+
+        # Profile Name
+      - name: <str; required; unique>
+
+        # Set the default mpls overlay role.
+        # Acting role in overlay control plane.
+        mpls_overlay_role: <str; "client" | "server" | "none">
+
+        # Set the default overlay address families.
+        overlay_address_families:
+          - <str; "evpn" | "vpn-ipv4" | "vpn-ipv6">
+
+        # List of inventory hostname acting as MPLS route-reflectors.
+        mpls_route_reflectors:
+
+            # Inventory_hostname_of_mpls_route_reflectors.
+          - <str>
+
+        # Set BGP cluster id.
+        bgp_cluster_id: <str>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    devices:
+
+        # The Node Name is used as "hostname".
+        name: <str; required; unique>
+
+        # Set the default mpls overlay role.
+        # Acting role in overlay control plane.
+        mpls_overlay_role: <str; "client" | "server" | "none">
+
+        # Set the default overlay address families.
+        overlay_address_families:
+          - <str; "evpn" | "vpn-ipv4" | "vpn-ipv6">
+
+        # List of inventory hostname acting as MPLS route-reflectors.
+        mpls_route_reflectors:
+
+            # Inventory_hostname_of_mpls_route_reflectors.
+          - <str>
+
+        # Set BGP cluster id.
+        bgp_cluster_id: <str>
     ```

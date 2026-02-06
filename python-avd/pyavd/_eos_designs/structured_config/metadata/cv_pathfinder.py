@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -31,7 +31,9 @@ class CvPathfinderMixin(Protocol):
         """
         if not self.shared_utils.is_cv_pathfinder_router:
             return
-
+        if self.shared_utils.is_cv_pathfinder_client and not self.inputs.wan_route_servers:
+            msg = "'wan_route_servers' must be configured for WAN routers operating in 'cv_pathfinder' mode."
+            raise AristaAvdInvalidInputsError(msg)
         region_name = self.shared_utils.wan_region.name if self.shared_utils.wan_region is not None else None
         site_name = self.shared_utils.wan_site.name if self.shared_utils.wan_site is not None else None
         self.structured_config.metadata.cv_pathfinder._update(

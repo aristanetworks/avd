@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -39,6 +39,22 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "<node_type_keys.key>.nodes.[].evpn_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code><br>- <code>none</code> | Acting role in EVPN control plane.<br>Default is set in node_type definition from node_type_keys.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "<node_type_keys.key>.nodes.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].evpn_route_servers.[]") | String |  |  |  |  |
+    | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "device_profiles.[].bgp_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.<br>Required with eBGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_defaults</samp>](## "device_profiles.[].bgp_defaults") | List, items: String |  |  |  | List of EOS commands to apply to BGP daemon. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].bgp_defaults.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "device_profiles.[].evpn_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code><br>- <code>none</code> | Acting role in EVPN control plane.<br>Default is set in node_type definition from node_type_keys.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "device_profiles.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "device_profiles.[].evpn_route_servers.[]") | String |  |  |  |  |
+    | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "devices.[].bgp_as") | String |  |  |  | BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.<br>Required with eBGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_defaults</samp>](## "devices.[].bgp_defaults") | List, items: String |  |  |  | List of EOS commands to apply to BGP daemon. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].bgp_defaults.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "devices.[].evpn_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code><br>- <code>none</code> | Acting role in EVPN control plane.<br>Default is set in node_type definition from node_type_keys.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "devices.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "devices.[].evpn_route_servers.[]") | String |  |  |  |  |
 
 === "YAML"
 
@@ -134,4 +150,50 @@
           # List of nodes acting as EVPN Route-Servers / Route-Reflectors.
           evpn_route_servers:
             - <str>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    device_profiles:
+
+        # Profile Name
+      - name: <str; required; unique>
+
+        # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+        # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+        # Required with eBGP.
+        bgp_as: <str>
+
+        # List of EOS commands to apply to BGP daemon.
+        bgp_defaults:
+          - <str>
+
+        # Acting role in EVPN control plane.
+        # Default is set in node_type definition from node_type_keys.
+        evpn_role: <str; "client" | "server" | "none">
+
+        # List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+        evpn_route_servers:
+          - <str>
+
+    # PREVIEW - This datamodel is still under development and may change or get removed at any time.
+    devices:
+
+        # The Node Name is used as "hostname".
+        name: <str; required; unique>
+
+        # BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".
+        # For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number.
+        # Required with eBGP.
+        bgp_as: <str>
+
+        # List of EOS commands to apply to BGP daemon.
+        bgp_defaults:
+          - <str>
+
+        # Acting role in EVPN control plane.
+        # Default is set in node_type definition from node_type_keys.
+        evpn_role: <str; "client" | "server" | "none">
+
+        # List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+        evpn_route_servers:
+          - <str>
     ```

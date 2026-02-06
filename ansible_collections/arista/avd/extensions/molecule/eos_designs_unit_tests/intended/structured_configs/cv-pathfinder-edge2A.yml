@@ -1,10 +1,5 @@
 aaa_root:
   disabled: true
-agents:
-- name: KernelFib
-  environment_variables:
-  - name: KERNELFIB_PROGRAM_ALL_ECMP
-    value: '1'
 application_traffic_recognition:
   categories:
   - name: VIDEO1
@@ -79,7 +74,7 @@ as_path:
   - name: ASPATH-WAN
     entries:
     - type: permit
-      match: '65000'
+      match: _65000_
 config_end: true
 dps_interfaces:
 - name: Dps1
@@ -253,6 +248,8 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+kernel:
+  software_forwarding_ecmp: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -546,7 +543,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     allowas_in:
       enabled: true
       times: 1
@@ -813,13 +810,19 @@ vrfs:
   ip_routing: false
 - name: IT
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenants:
+    - TenantA
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenants:
+    - TenantA
 - name: ATTRACTED-VRF-FROM-UPLINK
   ip_routing: true
-  tenant: TenantC
+  metadata:
+    tenants:
+    - TenantC
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-edge2A_VTEP

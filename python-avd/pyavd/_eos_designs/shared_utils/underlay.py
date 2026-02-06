@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default
 from pyavd._utils.password_utils.password import isis_encrypt
 
@@ -73,11 +73,11 @@ class UnderlayMixin(Protocol):
         return self.underlay_multicast_pim_sm_enabled or self.underlay_multicast_static_enabled
 
     @cached_property
-    def underlay_multicast_rp_interfaces(self: SharedUtilsProtocol) -> list[EosCliConfigGen.LoopbackInterfacesItem] | None:
+    def underlay_multicast_rp_interfaces(self: SharedUtilsProtocol) -> EosCliConfigGen.LoopbackInterfaces:
+        underlay_multicast_rp_interfaces = EosCliConfigGen.LoopbackInterfaces()
         if not self.underlay_multicast_pim_sm_enabled or not self.inputs.underlay_multicast_rps:
-            return None
+            return underlay_multicast_rp_interfaces
 
-        underlay_multicast_rp_interfaces = []
         for rp_entry in self.inputs.underlay_multicast_rps:
             if self.hostname not in rp_entry.nodes:
                 continue
@@ -90,13 +90,12 @@ class UnderlayMixin(Protocol):
                 )
             )
 
-        if underlay_multicast_rp_interfaces:
-            return underlay_multicast_rp_interfaces
-
-        return None
+        return underlay_multicast_rp_interfaces
 
     @cached_property
     def underlay_ipv6_numbered(self: SharedUtilsProtocol) -> bool:
+        if not self.underlay_router:
+            return False
         if self.inputs.underlay_ipv6_numbered:
             if self.is_wan_router:
                 msg = "Invalid combination of inputs. WAN is not yet supported with IPv6 underlay"
@@ -119,6 +118,9 @@ class UnderlayMixin(Protocol):
                     "underlay_routing_protocol must be set to 'ebgp'"
                 )
                 raise AristaAvdInvalidInputsError(msg)
+            if not self.underlay_ipv6:
+                msg = "underlay_ipv6: true"
+                raise AristaAvdMissingVariableError(msg)
         return self.inputs.underlay_ipv6_numbered
 
     @cached_property

@@ -88,6 +88,9 @@ metadata:
   platform: vEOS-lab
   dc_name: DC1
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
+  exclude_as_extra_fabric_validation_target: true
 mlag_configuration:
   domain_id: DC1_SVC_LEAF1
   local_interface: Vlan4094
@@ -152,14 +155,14 @@ router_bgp:
     next_hop_self: true
     password: 4b21pAdCvWeAqpcKDFMdWw==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -249,12 +252,16 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -262,6 +269,9 @@ vxlan_interface:
   vxlan1:
     description: dc1-svc-leaf1b_VTEP
     vxlan:
-      source_interface: Loopback1
+      source_interface: Loopback10
       udp_port: 4789
       virtual_router_encapsulation_mac_address: mlag-system-id
+      vlans:
+      - id: 11
+        vni: 10011

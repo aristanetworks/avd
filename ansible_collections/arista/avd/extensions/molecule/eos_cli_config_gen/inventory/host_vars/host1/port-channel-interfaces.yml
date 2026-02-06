@@ -72,6 +72,12 @@ port_channel_interfaces:
       profile:
         g8275_1:
           destination_mac_address: forwardable
+    # test for ospf_authentication_key_type: "8a"
+    ospf_authentication_key: $kUVyoj7FVQ//yw9D2lbqjA==$kxxohBiofI46IX3pw18KYQ==$DOOM0l9uU4TrQt2kyA7XCKtjUA==
+    ospf_authentication_key_type: "8a"
+    address_locking:
+      address_family:
+        ipv4: false
 
   - name: Port-Channel15
     comment: |
@@ -238,6 +244,7 @@ port_channel_interfaces:
           - range: 1-3
             mac_address_maximum: 3
           - range: 4-5
+            mac_address_maximum: 4
     ipv6_nd_prefixes:
       - ipv6_prefix: a1::/64
         valid_lifetime: infinite
@@ -538,6 +545,10 @@ port_channel_interfaces:
       - id: 55
         hash_algorithm: md5
         key: dRx9sULvl+hzkCMYJLEQCw==
+      - id: 56
+        hash_algorithm: sha512
+        key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
+        key_type: "8a"
 
   - name: Port-Channel17
     description: PBR Description

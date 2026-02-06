@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -49,6 +49,8 @@ Serial Number: {{ metadata.serial_number }}
 {% include 'documentation/tcam-profile.j2' %}
 {# Load Balance #}
 {% include 'documentation/load-balance.j2' %}
+{# monitor link flap profiles #}
+{% include 'documentation/monitor-link-flap-policy.j2' %}
 {# Link Tracking Groups #}
 {% include 'documentation/link-tracking-groups.j2' %}
 {# MLAG #}
@@ -81,6 +83,8 @@ Serial Number: {{ metadata.serial_number }}
 {% include 'documentation/routing.j2' %}
 {# BFD #}
 {% include 'documentation/bfd.j2' %}
+{# Monitor Loop Protection #}
+{% include 'documentation/monitor-loop-protection.j2' %}
 {# MPLS #}
 {% include 'documentation/mpls.j2' %}
 {# Patch Panel #}

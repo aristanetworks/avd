@@ -14,7 +14,7 @@ ethernet_interfaces:
     peer: dc2-leaf3b.arista.com
     peer_interface: Ethernet3
     peer_type: mlag_peer
-  validate_state: false
+    validate_state: false
 - name: Ethernet4
   description: MLAG_dc2-leaf3b.arista.com_Ethernet4
   shutdown: false
@@ -25,7 +25,7 @@ ethernet_interfaces:
     peer: dc2-leaf3b.arista.com
     peer_interface: Ethernet4
     peer_type: mlag_peer
-  validate_lldp: false
+    validate_lldp: false
 - name: Ethernet1
   description: P2P_dc2-spine1_Ethernet5
   shutdown: false
@@ -169,6 +169,10 @@ loopback_interfaces:
   shutdown: false
   vrf: VRF11
   ip_address: 10.255.11.17/32
+- name: Loopback66
+  description: MLAG_VTEP_IP
+  shutdown: false
+  ip_address: 10.66.66.66/32
 management_api_http:
   enable_https: true
   https_ssl_profile: eAPI_SSL_Profile
@@ -187,6 +191,8 @@ metadata:
   platform: vEOS-lab
   dc_name: DC2
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: DC2_L3_LEAF3
   local_interface: Vlan4094
@@ -248,13 +254,6 @@ prefix_lists:
   - sequence: 10
     action: permit 10.255.129.124/31
 route_maps:
-- name: RM-MLAG-PEER-IN
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-    set:
-    - origin incomplete
 - name: RM-CONN-2-BGP-VRFS
   sequence_numbers:
   - sequence: 10
@@ -263,6 +262,13 @@ route_maps:
     - ip address prefix-list PL-MLAG-PEER-VRFS
   - sequence: 20
     type: permit
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+    set:
+    - origin incomplete
 router_bfd:
   multihop:
     interval: 300
@@ -294,7 +300,7 @@ router_bgp:
     next_hop_self: true
     password: 4b21pAdCvWeAqpcKDFMdWw==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbors:
   - ip_address: 10.255.128.11
@@ -309,10 +315,17 @@ router_bgp:
     metadata:
       peer: dc2-spine2
     description: dc2-spine2_Loopback0
+  neighbor_interfaces:
+  - name: Vlan4093
+    remote_as: '65133'
+    metadata:
+      peer: dc1-svc-leaf1a
+      validate_state: true
   vlans:
   - id: 11
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.17:10011
     route_targets:
       both:
@@ -321,7 +334,8 @@ router_bgp:
     - learned
   - id: 12
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.17:10012
     route_targets:
       both:
@@ -330,7 +344,8 @@ router_bgp:
     - learned
   - id: 21
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.17:10021
     route_targets:
       both:
@@ -339,7 +354,8 @@ router_bgp:
     - learned
   - id: 22
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.17:10022
     route_targets:
       both:
@@ -348,7 +364,8 @@ router_bgp:
     - learned
   - id: 3401
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.17:13401
     route_targets:
       both:
@@ -357,7 +374,8 @@ router_bgp:
     - learned
   - id: 3402
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.17:13402
     route_targets:
       both:
@@ -465,14 +483,16 @@ vlan_interfaces:
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan3009
   description: MLAG_L3_VRF_VRF10
   shutdown: false
@@ -480,7 +500,8 @@ vlan_interfaces:
   ip_address: 10.255.129.124/31
   mtu: 1500
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
     type: underlay_peering
 - name: Vlan21
   description: VRF11_VLAN21
@@ -488,14 +509,16 @@ vlan_interfaces:
   vrf: VRF11
   ip_address_virtual: 10.10.21.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan3010
   description: MLAG_L3_VRF_VRF11
   shutdown: false
@@ -503,7 +526,8 @@ vlan_interfaces:
   ip_address: 10.255.129.124/31
   mtu: 1500
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -515,54 +539,79 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 11
   name: VRF10_VLAN11
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 12
   name: VRF10_VLAN12
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3009
   name: MLAG_L3_VRF_VRF10
   trunk_groups:
   - MLAG
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 21
   name: VRF11_VLAN21
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 22
   name: VRF11_VLAN22
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3010
   name: MLAG_L3_VRF_VRF11
   trunk_groups:
   - MLAG
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3401
   name: L2_VLAN3401
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3402
   name: L2_VLAN3402
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF10
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - name: VRF11
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 vxlan_interface:
   vxlan1:
     description: dc2-leaf3a.arista.com_VTEP
     vxlan:
-      source_interface: Loopback1
+      source_interface: Loopback0
+      mlag_source_interface: Loopback66
       udp_port: 4789
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:

@@ -1,0 +1,54 @@
+---
+# Testing local_interface as use_mgmt_interface
+type: l2leaf
+
+default_mgmt_method: inband
+
+fabric_flow_tracking:
+  uplinks:
+    enabled: true
+    name: FLOW-TRACKER-11
+
+l2leaf:
+  defaults:
+    platform: vEOS-lab
+    uplink_interfaces: ['Ethernet1', 'Ethernet2']
+    uplink_switches: ['flow-tracking-tests-leaf3', 'flow-tracking-tests-leaf4']
+    inband_mgmt_subnet: "10.254.254.0/24"
+
+  nodes:
+    - name: flow-tracking-tests-l2-leaf4
+      id: 3
+      mgmt_ip: 192.168.0.204/24
+      uplink_switch_interfaces:
+        - Ethernet34
+        - Ethernet34
+      flow_tracker_type: hardware
+
+cv_settings:
+  cvaas:
+    enabled: true
+
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: 192.168.200.5
+
+dns_settings:
+  servers:
+    - ip_address: 192.168.200.5
+
+flow_tracking_settings:
+  trackers:
+    - name: FLOW-TRACKER-11
+      record_export:
+        on_inactive_timeout: 50020
+        on_interval: 300321
+      exporters:
+        - name: ayush_exporter
+          collectors:
+            - host: 127.0.2.1
+          template_interval: 40020
+          local_interface: use_mgmt_interface
+      # Testing export_to_cloudvision for hardware
+      export_to_cloudvision: true

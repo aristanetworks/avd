@@ -1,0 +1,22 @@
+---
+- name: Validate inputs reading from json file
+  arista.avd.validate_inputs:
+    schema_name: eos_config
+    input_dir: "{{ input_dir }}/missing_dir"
+    input_suffix: json
+    read_from_input_dir: true
+    tmp_dir: "{{ actual_output_dir }}/tmp"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+  ignore_errors: true
+  register: result
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is failed
+      - expected_error in result.msg
+  vars:
+    expected_error: |-
+      Error during plugin 'arista.avd.validate_inputs' execution: 'Unexpected errors occurred while processing 1 host(s): testhost.

@@ -24,7 +24,7 @@ spine:
       mgmt_ip: 192.168.0.21/24
       ptp:
         enabled: true
-        source_ip: 10.255.0.1
+        source_ip: router_id
         ttl: 128
         forward_unicast: true
         dscp:

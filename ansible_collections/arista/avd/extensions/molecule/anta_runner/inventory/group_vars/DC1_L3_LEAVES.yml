@@ -15,10 +15,11 @@ l3leaf:
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
+    validation_profile: profile1
 
   node_groups:
     - group: DC1_L3_LEAF1
-      platform: vEOS-lab_with_storm_control
+      platform: custom_hardware_test_platform
       bgp_as: 65101
       nodes:
         - name: dc1-leaf1a
@@ -35,7 +36,7 @@ l3leaf:
             - Ethernet2
 
     - group: DC1_L3_LEAF2
-      platform: vEOS-lab_with_storm_control
+      platform: custom_hardware_test_platform
       bgp_as: 65102
       evpn_gateway:
         evpn_l2:
@@ -67,7 +68,7 @@ l3leaf:
             remote_peers:
               - hostname: dc2-leaf2b
     - group: DC1_L3_LEAF3
-      # do not use this leaf - only testing legacy is_deployed in strutcured_config
+      # do not use this leaf - only testing legacy is_deployed in structured_config
       bgp_as: 65103
       nodes:
         - name: dc1-leaf3a

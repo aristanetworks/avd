@@ -1,0 +1,17 @@
+# Copyright (c) 2025-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  device_profile:
+    type: str
+    documentation_options:
+      table: devices
+    description: |-
+      PREVIEW - This datamodel is still under development and may change or get removed at any time.
+      Inherit settings from a device profile defined under `device_profiles`.
+      If the device is defined under `devices` it is recommended to set the `profile` there instead.
+      Max two levels of profile inheritance: device -> profile -> parent_profile

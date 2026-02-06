@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -24,7 +24,7 @@ router adaptive-virtual-topology
    site {{ router_adaptive_virtual_topology.site.name }} id {{ router_adaptive_virtual_topology.site.id }}
 {%     endif %}
 {#    AVT Policies #}
-{%     for policy in router_adaptive_virtual_topology.policies | arista.avd.natural_sort('name') %}
+{%     for policy in router_adaptive_virtual_topology.policies | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    policy {{ policy.name }}
 {%         for match in policy.matches %}
@@ -44,7 +44,7 @@ router adaptive-virtual-topology
 {%         endfor %}
 {%     endfor %}
 {#    AVT Profiles #}
-{%     for profile in router_adaptive_virtual_topology.profiles | arista.avd.natural_sort('name') %}
+{%     for profile in router_adaptive_virtual_topology.profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    profile {{ profile.name }}
 {%         if profile.internet_exit_policy is arista.avd.defined %}
@@ -75,16 +75,14 @@ router adaptive-virtual-topology
 {%         endif %}
 {%     endfor %}
 {#   VRFs #}
-{%     for vrf in router_adaptive_virtual_topology.vrfs | arista.avd.natural_sort('name') %}
+{%     for vrf in router_adaptive_virtual_topology.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    vrf {{ vrf.name }}
 {%         if vrf.policy is arista.avd.defined %}
       avt policy {{ vrf.policy }}
 {%         endif %}
-{%         for profile in vrf.profiles | arista.avd.natural_sort('id') %}
-{%             if profile.name is arista.avd.defined and profile.id is arista.avd.defined %}
+{%         for profile in vrf.profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
       avt profile {{ profile.name }} id {{ profile.id }}
-{%             endif %}
 {%         endfor %}
 {%     endfor %}
 {% endif %}

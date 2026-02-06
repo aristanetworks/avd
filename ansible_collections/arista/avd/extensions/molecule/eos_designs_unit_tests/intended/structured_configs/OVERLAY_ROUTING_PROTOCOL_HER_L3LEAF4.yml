@@ -3,6 +3,18 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet5
+  description: P2P_OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1_Ethernet5
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.31.255.9/31
+  metadata:
+    peer: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1
+    peer_interface: Ethernet5
+    peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF4
 ip_igmp_snooping:
   globally_enabled: true
@@ -49,7 +61,14 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
+  neighbors:
+  - ip_address: 172.31.255.8
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1
+    description: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1_Ethernet5
   redistribute:
     connected:
       enabled: true

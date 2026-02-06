@@ -1,0 +1,68 @@
+# Copyright (c) 2025-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+type: dict
+$defs:
+  subnets:
+    type: list
+    primary_key: subnet
+    items:
+      type: dict
+      keys:
+        subnet:
+          type: str
+        name:
+          type: str
+          convert_types:
+          - int
+        dns_servers:
+          type: list
+          items:
+            type: str
+        ranges:
+          type: list
+          items:
+            type: dict
+            keys:
+              start:
+                type: str
+                required: true
+              end:
+                type: str
+                required: true
+        lease_time:
+          type: dict
+          keys:
+            days:
+              type: int
+              required: true
+              min: 0
+              max: 2000
+              convert_types:
+              - str
+            hours:
+              type: int
+              required: true
+              min: 0
+              max: 23
+              convert_types:
+              - str
+            minutes:
+              type: int
+              required: true
+              min: 0
+              max: 59
+              convert_types:
+              - str
+        reservations:
+          description: DHCP client reservations.
+          type: list
+          primary_key: mac_address
+          items:
+            type: dict
+            keys:
+              mac_address:
+                type: str
+                description: Ethernet address in format - HHHH.HHHH.HHHH
+              hostname:
+                type: str

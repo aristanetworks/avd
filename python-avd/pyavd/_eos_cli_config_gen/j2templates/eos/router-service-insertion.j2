@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -7,7 +7,7 @@
 {% if router_service_insertion.enabled is arista.avd.defined(true) %}
 !
 router service-insertion
-{%     for connection in router_service_insertion.connections | arista.avd.natural_sort('name') %}
+{%     for connection in router_service_insertion.connections | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    connection {{ connection.name }}
 {%         if connection.ethernet_interface is arista.avd.defined %}
 {%             if connection.ethernet_interface.name is arista.avd.defined and connection.ethernet_interface.next_hop is arista.avd.defined %}

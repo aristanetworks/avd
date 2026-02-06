@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -34,8 +34,10 @@ keys:
               A rate of 16384 corresponds to an average sample of one per 16384 packets.
       destinations:
         type: list
-        required: true
         min_length: 1
+        description: |-
+          sFlow will be configured if at least one destination is set in `destinations` or if `export_to_cloudvision.enabled: true`.
+          One of them is required.
         items:
           type: dict
           keys:
@@ -53,15 +55,43 @@ keys:
             vrf:
               type: str
               description: |-
-                If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
+                VRF Name.
                 The value of `vrf` will be interpreted according to these rules:
                 - `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.
                   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
                 - `use_inband_mgmt_vrf` will configure the sFlow destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as sFlow source-interface.
                   An error will be raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name. Remember to set the `sflow_settings.vrfs[].source_interface` if needed.
               convert_types:
                 - int
+              default: use_default_mgmt_method_vrf
+      export_to_cloudvision:
+        type: dict
+        description: |-
+          Enables automatic sFlow export to CloudVision.
+          sFlow will be configured if at least one destination is set in `destinations` or if `export_to_cloudvision.enabled: true`.
+          One of them is required.
+        keys:
+          enabled:
+            type: bool
+            description: |-
+              Configures an sFlow destination for `127.0.0.1` port `6343` in the VRF defined in `export_to_cloudvision.vrf`.
+              Also configures the TerminAttr daemon to export sFlow to this destination.
+          vrf:
+            type: str
+            description: |-
+              VRF Name.
+              The value of `vrf` will be interpreted according to these rules:
+              - `use_mgmt_interface_vrf` will configure the sFlow destination and daemon terminattr sflow address under the VRF defined by `mgmt_interface_vrf`.
+                An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+              - `use_inband_mgmt_vrf` will configure the sFlow destination and daemon terminattr sflow address under the VRF defined by `inband_mgmt_vrf`.
+                An error will be raised if inband management is not configured for the device.
+              - `use_default_mgmt_method_vrf` will configure the VRF and daemon terminattr sflow address for one of the two options above depending on the value of `default_mgmt_method`.
+              - Any other string will be used directly as the VRF name.
+            convert_types:
+              - int
+            default: use_default_mgmt_method_vrf
       vrfs:
         type: list
         primary_key: name

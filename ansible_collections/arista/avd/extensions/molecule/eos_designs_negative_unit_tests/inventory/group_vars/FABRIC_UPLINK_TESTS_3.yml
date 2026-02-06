@@ -1,0 +1,42 @@
+---
+# Minimum config to only test the specific feature.
+fabric_name: FABRIC_UPLINK_TESTS_3
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - uplink-switches-interfaces-length-not-equal-to-uplink-switches-1
+      - uplink-switches-interfaces-length-not-equal-to-uplink-switches-2
+  - node_type: l3leaf
+    match_hostnames:
+      - uplink-switches-interfaces-length-not-equal-to-uplink-switches
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+    bgp_as: 65000
+  nodes:
+    - name: uplink-switches-interfaces-length-not-equal-to-uplink-switches-1
+      id: 1
+      downlink_pools:
+        - ipv4_pool: 10.0.0.0/24
+    - name: uplink-switches-interfaces-length-not-equal-to-uplink-switches-2
+      id: 2
+      downlink_pools:
+        - ipv4_pool: 11.0.0.0/24
+
+l3leaf:
+  nodes:
+    - name: uplink-switches-interfaces-length-not-equal-to-uplink-switches
+      id: 1
+      loopback_ipv4_pool: 192.168.0.0/24
+      bgp_as: 65001
+      vtep_loopback_ipv4_pool: 10.255.1.0/27
+      mgmt_ip: 172.16.1.15/24
+      uplink_interfaces: ['Ethernet1', 'Ethernet2']
+      uplink_switches: ['uplink-switches-interfaces-length-not-equal-to-uplink-switches-1',
+                        'uplink-switches-interfaces-length-not-equal-to-uplink-switches-2']
+      uplink_switch_interfaces:
+        - Ethernet8
+
+expected_error_message: >-
+  Lengths of 'uplink_switches' 2 and 'uplink_switch_interfaces' 1 do not match for host 'uplink-switches-interfaces-length-not-equal-to-uplink-switches'.

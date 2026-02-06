@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Arista Networks, Inc.
+# Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -83,13 +83,10 @@ keys:
   connected_endpoints_keys:
     type: list
     required: true
-    default: null
     description: |-
       List of connected_endpoints_keys in use on this device.
       Used for fabric docs.
-    documentation_options:
-      table: eos_designs_facts
-    $ref: eos_designs#/keys/connected_endpoints_keys
+    $ref: eos_designs#/$defs/connected_endpoints_keys
   port_profile_names:
     type: list
     description: |-

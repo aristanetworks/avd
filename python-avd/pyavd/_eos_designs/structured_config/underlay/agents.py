@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -22,7 +22,7 @@ class AgentsMixin(Protocol):
     @structured_config_contributor
     def agents(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """Set the structured config for agents."""
-        if not (self.shared_utils.is_wan_router and self.inputs.wan_use_agent_env_var_for_kernel_software_forwarding_ecmp):
+        if not self.shared_utils.is_wan_router or self.shared_utils.node_config.kernel_ecmp_cli:
             return
 
         agent = EosCliConfigGen.AgentsItem(name="KernelFib")

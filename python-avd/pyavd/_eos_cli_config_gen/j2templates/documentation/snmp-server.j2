@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -91,7 +91,7 @@
 #### SNMP Hosts Configuration
 
 | Host | VRF | Community | Username | Authentication level | SNMP Version |
-| ---- |---- | --------- | -------- | -------------------- | ------------ |
+| ---- | --- | --------- | -------- | -------------------- | ------------ |
 {%         for host in snmp_server.hosts %}
 {%             if host.host is arista.avd.defined %}
 {%                 set row_host = host.host %}

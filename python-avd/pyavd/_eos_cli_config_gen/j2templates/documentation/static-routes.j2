@@ -1,10 +1,12 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# doc - static routes #}
 {% if static_routes is arista.avd.defined %}
+{%     set default_routes = static_routes | rejectattr('vrf', 'arista.avd.defined') | list + static_routes | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') | list %}
+{%     set vrf_routes = static_routes | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | list %}
 
 ### Static Routes
 
@@ -12,7 +14,10 @@
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-{%     for static_route in static_routes %}
+{%     for static_route in (
+    (default_routes | arista.avd.natural_sort('next_hop', default_value='') | arista.avd.natural_sort('prefix')) +
+    (vrf_routes | arista.avd.natural_sort('next_hop', default_value='') | arista.avd.natural_sort('prefix') | arista.avd.natural_sort('vrf', ignore_case=false))
+) %}
 {%         set vrf = static_route.vrf | arista.avd.default('default') %}
 {%         if static_route.next_hop is arista.avd.defined %}
 {%             set next_hop = static_route.next_hop %}

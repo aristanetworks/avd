@@ -1,4 +1,5 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+---
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -19,8 +20,8 @@ keys:
       as_notation:
         display_name: ASN Notation
         type: str
-        description: 'BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>".
-          This flag indicates which mode is preferred - asplain is the default.'
+        description: 'BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>". This flag indicates which mode is preferred -
+          asplain is the default.'
         valid_values:
           - asdot
           - asplain
@@ -347,6 +348,14 @@ keys:
               type: bool
             password:
               type: str
+            password_type:
+              type: str
+              valid_values:
+                - "7"
+                - "8a"
+              convert_types:
+                - int
+              default: "7"
             passive:
               type: bool
             default_originate:
@@ -537,12 +546,24 @@ keys:
                 peer:
                   type: str
                   description: Key only used for documentation or validation purposes.
+                validate_state:
+                  type: bool
+                  default: true
+                  description: Used for validation by the `anta_runner` role.
             description:
               type: str
             route_reflector_client:
               type: bool
             password:
               type: str
+            password_type:
+              type: str
+              valid_values:
+                - "7"
+                - "8a"
+              convert_types:
+                - int
+              default: "7"
             passive:
               type: bool
             shutdown:
@@ -778,6 +799,10 @@ keys:
                 peer:
                   type: str
                   description: Key only used for documentation or validation purposes.
+                validate_state:
+                  type: bool
+                  default: true
+                  description: Used for validation by the `anta_runner` role.
             peer_group:
               type: str
               default: Peer-group name
@@ -807,6 +832,12 @@ keys:
             match_map:
               type: str
               description: Route-map name.
+            attribute:
+              type: dict
+              keys:
+                rcf:
+                  type: str
+                  description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
       redistribute:
         type: dict
         description: Redistribute routes in to BGP.
@@ -1041,9 +1072,11 @@ keys:
             metadata:
               type: dict
               keys:
-                tenant:
-                  type: str
-                  description: Key only used for documentation or validation purposes.
+                tenants:
+                  type: list
+                  description: List of tenants where this bundle is defined. Key only used for documentation or validation purposes.
+                  items:
+                    type: str
                 description:
                   type: str
                   description: Key only used for documentation or validation purposes.
@@ -1141,9 +1174,11 @@ keys:
             metadata:
               type: dict
               keys:
-                tenant:
-                  type: str
-                  description: Key only used for documentation or validation purposes.
+                tenants:
+                  type: list
+                  description: List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                  items:
+                    type: str
             rd:
               description: Route distinguisher.
               type: str
@@ -3800,6 +3835,14 @@ keys:
                       - int
                   password:
                     type: str
+                  password_type:
+                    type: str
+                    valid_values:
+                      - "7"
+                      - "8a"
+                    convert_types:
+                      - int
+                    default: "7"
                   passive:
                     type: bool
                   remove_private_as:
@@ -3952,6 +3995,13 @@ keys:
                   additional_paths:
                     type: dict
                     $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
+                  metadata:
+                    type: dict
+                    keys:
+                      validate_state:
+                        type: bool
+                        default: false
+                        description: Used for validation by the `anta_runner` role.
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -3976,6 +4026,13 @@ keys:
                     description: Peer-filter name.
                   description:
                     type: str
+                  metadata:
+                    type: dict
+                    keys:
+                      validate_state:
+                        type: bool
+                        default: false
+                        description: Used for validation by the `anta_runner` role.
             redistribute:
               type: dict
               description: Redistribute routes in to BGP.
@@ -4217,6 +4274,12 @@ keys:
                     type: str
                   match_map:
                     type: str
+                  attribute:
+                    type: dict
+                    keys:
+                      rcf:
+                        type: str
+                        description: RCF name with parenthesis. Example "AGG-ADD-RCF()".
             address_family_ipv4:
               type: dict
               keys:

@@ -28,10 +28,10 @@ flow_tracking:
   sampled:
     sample: 10000
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER
+      record_export:
         on_inactive_timeout: 70000
         on_interval: 300000
-      name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
         collectors:
@@ -54,6 +54,8 @@ metadata:
   is_deployed: true
   platform: vEOS-lab
   fabric_name: FLOW_TRACKING_TESTS
+  validate_hardware:
+    enabled: false
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_flow-tracking-tests-leaf-mlag_Port-Channel32
@@ -89,10 +91,14 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VLAN11
-  tenant: FLOW_TRACKING
+  metadata:
+    tenants:
+    - FLOW_TRACKING
 - id: 4092
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

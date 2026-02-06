@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -16,8 +16,6 @@ class AvdStructuredConfigCustomStructuredConfiguration(StructuredConfigGenerator
 
     The Class uses StructuredConfigGenerator, as the base class, to inherit _hostvars other attributes.
     """
-
-    ignore_avd_eos_designs_enforce_duplication_checks_across_all_models = True
 
     def render(self) -> None:
         """

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -70,8 +70,10 @@ class StaticRoutesMixin(Protocol):
 
     def set_zscaler_ie_connection_static_route(self: AvdStructuredConfigNetworkServicesProtocol, destination_ip: str, name: str, next_hop: str) -> None:
         """Set the static route for one Zscaler Internet Exit connection."""
-        self.structured_config.static_routes.append_new(
-            prefix=f"{destination_ip}/32",
-            name=name,
-            next_hop=next_hop,
+        self.structured_config.static_routes.append_unique(
+            EosCliConfigGen.StaticRoutesItem(
+                prefix=f"{destination_ip}/32",
+                name=name,
+                next_hop=next_hop,
+            )
         )

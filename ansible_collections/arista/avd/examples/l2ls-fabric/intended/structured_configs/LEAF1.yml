@@ -72,11 +72,12 @@ ip_domain_lookup:
     vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 8.8.4.4
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 8.8.4.4
+    - ip_address: 8.8.8.8
 local_users:
 - name: admin
   privilege: 15
@@ -102,6 +103,8 @@ metadata:
   is_deployed: true
   platform: cEOSLab
   fabric_name: DC1
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: RACK1
   local_interface: Vlan4094
@@ -166,13 +169,19 @@ vlans:
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 10
   name: BLUE-NET
-  tenant: MY_FABRIC
+  metadata:
+    tenants:
+    - MY_FABRIC
 - id: 20
   name: GREEN-NET
-  tenant: MY_FABRIC
+  metadata:
+    tenants:
+    - MY_FABRIC
 vrfs:
 - name: MGMT
   ip_routing: false

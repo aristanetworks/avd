@@ -73,6 +73,14 @@ ethernet_interfaces:
     peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet10
+  shutdown: false
+  vrf: VRFBGP
+  ip_address: 172.16.50.2/24
+  metadata:
+    peer_type: l3_interface
+  switchport:
+    enabled: false
 - name: Ethernet5
   description: SERVER_dc2-leaf2-server1_PCI1
   shutdown: false
@@ -137,6 +145,8 @@ metadata:
   platform: vEOS-lab
   dc_name: DC2
   fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
 mlag_configuration:
   domain_id: DC2_L3_LEAF2
   local_interface: Vlan4094
@@ -180,13 +190,6 @@ prefix_lists:
   - sequence: 10
     action: permit 10.255.129.120/31
 route_maps:
-- name: RM-MLAG-PEER-IN
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-    set:
-    - origin incomplete
 - name: RM-CONN-2-BGP-VRFS
   sequence_numbers:
   - sequence: 10
@@ -195,6 +198,13 @@ route_maps:
     - ip address prefix-list PL-MLAG-PEER-VRFS
   - sequence: 20
     type: permit
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+    set:
+    - origin incomplete
 router_bfd:
   multihop:
     interval: 300
@@ -234,7 +244,7 @@ router_bgp:
     next_hop_self: true
     password: 4b21pAdCvWeAqpcKDFMdWw==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbors:
   - ip_address: 10.255.128.11
@@ -258,7 +268,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.15:10011
     rd_evpn_domain:
       domain: remote
@@ -273,7 +284,8 @@ router_bgp:
     - learned
   - id: 12
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.15:10012
     rd_evpn_domain:
       domain: remote
@@ -288,7 +300,8 @@ router_bgp:
     - learned
   - id: 21
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.15:10021
     rd_evpn_domain:
       domain: remote
@@ -303,7 +316,8 @@ router_bgp:
     - learned
   - id: 22
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.15:10022
     rd_evpn_domain:
       domain: remote
@@ -318,7 +332,8 @@ router_bgp:
     - learned
   - id: 3401
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.15:13401
     rd_evpn_domain:
       domain: remote
@@ -333,7 +348,8 @@ router_bgp:
     - learned
   - id: 3402
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.15:13402
     rd_evpn_domain:
       domain: remote
@@ -352,11 +368,11 @@ router_bgp:
         enable: true
         inter_domain: true
     peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     - name: EVPN-OVERLAY-CORE
       activate: true
       domain_remote: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -406,6 +422,36 @@ router_bgp:
       connected:
         enabled: true
         route_map: RM-CONN-2-BGP-VRFS
+  - name: VRFBGP
+    rd: 10.255.128.15:50
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '50:50'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '50:50'
+    router_id: 10.255.128.15
+    neighbors:
+    - ip_address: 10.255.129.121
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: dc2-leaf2b_Vlan3049
+      metadata:
+        validate_state: true
+    - ip_address: 172.16.50.254
+      remote_as: '65500'
+      metadata:
+        validate_state: true
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 172.16.50.254
+        activate: true
 router_ospf:
   process_ids:
   - id: 100
@@ -457,14 +503,16 @@ vlan_interfaces:
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan3009
   description: MLAG_L3_VRF_VRF10
   shutdown: false
@@ -472,7 +520,8 @@ vlan_interfaces:
   ip_address: 10.255.129.120/31
   mtu: 1500
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
     type: underlay_peering
 - name: Vlan21
   description: VRF11_VLAN21
@@ -480,14 +529,16 @@ vlan_interfaces:
   vrf: VRF11
   ip_address_virtual: 10.10.21.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan3010
   description: MLAG_L3_VRF_VRF11
   shutdown: false
@@ -495,7 +546,18 @@ vlan_interfaces:
   ip_address: 10.255.129.120/31
   mtu: 1500
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
+    type: underlay_peering
+- name: Vlan3049
+  description: MLAG_L3_VRF_VRFBGP
+  shutdown: false
+  vrf: VRFBGP
+  ip_address: 10.255.129.120/31
+  mtu: 1500
+  metadata:
+    tenants:
+    - TENANT1
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -507,49 +569,85 @@ vlans:
   name: MLAG_L3
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
-  tenant: system
+  metadata:
+    tenants:
+    - system
 - id: 11
   name: VRF10_VLAN11
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 12
   name: VRF10_VLAN12
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3009
   name: MLAG_L3_VRF_VRF10
   trunk_groups:
   - MLAG
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 21
   name: VRF11_VLAN21
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 22
   name: VRF11_VLAN22
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3010
   name: MLAG_L3_VRF_VRF11
   trunk_groups:
   - MLAG
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
+- id: 3049
+  name: MLAG_L3_VRF_VRFBGP
+  trunk_groups:
+  - MLAG
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3401
   name: L2_VLAN3401
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - id: 3402
   name: L2_VLAN3402
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF10
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
 - name: VRF11
   ip_routing: true
-  tenant: TENANT1
+  metadata:
+    tenants:
+    - TENANT1
+- name: VRFBGP
+  ip_routing: true
+  metadata:
+    tenants:
+    - TENANT1
 vxlan_interface:
   vxlan1:
     description: dc2-leaf2a_VTEP
@@ -575,3 +673,5 @@ vxlan_interface:
         vni: 10
       - name: VRF11
         vni: 11
+      - name: VRFBGP
+        vni: 50

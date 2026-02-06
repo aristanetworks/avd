@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -57,8 +57,11 @@ router pim sparse-mode
       {{ other_anycast_rp_addresses_cli }}
 {%             endfor %}
 {%         endfor %}
+{%         if router_pim_sparse_mode.ipv4.register_local_interface is arista.avd.defined %}
+      register local-interface {{ router_pim_sparse_mode.ipv4.register_local_interface }}
+{%         endif %}
 {%     endif %}
-{%     for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
+{%     for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    vrf {{ vrf.name }}
 {%         if vrf.ipv4 is arista.avd.defined %}
@@ -102,6 +105,9 @@ router pim sparse-mode
          rp address {{ rp_address.address }}{{ rp_options_cli }}
 {%                 endif %}
 {%             endfor %}
+{%             if vrf.ipv4.register_local_interface is arista.avd.defined %}
+         register local-interface {{ vrf.ipv4.register_local_interface }}
+{%             endif %}
 {%         endif %}
 {%     endfor %}
 {% endif %}

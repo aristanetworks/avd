@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -21,12 +21,21 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             return
 
         if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
-            self.structured_config.vlans.append_new(
-                id=self.shared_utils.node_config.inband_mgmt_vlan, tenant="system", name=self.shared_utils.node_config.inband_mgmt_vlan_name
-            )
+            # TODO: Refactor this later to inject from filtered tenants
+            # Note that an attempt was made for this in #6073 but it has been postponed
+            # To keep current behavior we need to overwrite the existing values if the vlan was introduced via network_services
+            # otherwise it is created via obtain and updated accordingly.
+            inband_mgmt_vlan = self.structured_config.vlans.obtain(self.shared_utils.node_config.inband_mgmt_vlan)
+            inband_mgmt_vlan.name = self.shared_utils.node_config.inband_mgmt_vlan_name
+            inband_mgmt_vlan.metadata.tenants.append_unique("system")
             return
         for svi in self.shared_utils.inband_management_parent_vlans:
-            self.structured_config.vlans.append_new(id=svi, tenant="system", name=self.shared_utils.node_config.inband_mgmt_vlan_name)
+            # TODO: explore combine here
+            self.structured_config.vlans.append_new(
+                id=svi,
+                metadata=EosCliConfigGen.VlansItem.Metadata(tenants=EosCliConfigGen.VlansItem.Metadata.Tenants(["system"])),
+                name=self.shared_utils.node_config.inband_mgmt_vlan_name,
+            )
 
     @structured_config_contributor
     def vlan_interfaces(self) -> None:
@@ -93,7 +102,8 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
 
         if not self.shared_utils.inband_management_parent_vlans and not self.shared_utils.configure_inband_mgmt:
             return
-        self.structured_config.vrfs.append_new(name=self.shared_utils.inband_mgmt_vrf)
+        if self.shared_utils.inband_mgmt_vrf not in self.structured_config.vrfs:
+            self.structured_config.vrfs.append_new(name=self.shared_utils.inband_mgmt_vrf)
 
     @structured_config_contributor
     def ip_virtual_router_mac_address(self) -> None:
@@ -174,7 +184,8 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                 match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]),
             )
 
-        self.structured_config.route_maps.append_new(name="RM-CONN-2-BGP", sequence_numbers=sequence_numbers)
+        route_map = self.structured_config.route_maps.obtain("RM-CONN-2-BGP")
+        route_map.sequence_numbers.extend(sequence_numbers)
 
     def get_parent_svi_cfg(self, vlan: int, subnet: str | None, ipv6_subnet: str | None) -> EosCliConfigGen.VlanInterfacesItem:
         svi = EosCliConfigGen.VlanInterfacesItem(

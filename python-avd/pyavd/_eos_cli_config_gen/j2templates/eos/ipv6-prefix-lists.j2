@@ -1,15 +1,13 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {# eos - ipv6 prefix lists #}
-{% for ipv6_prefix_list in ipv6_prefix_lists | arista.avd.natural_sort('name') %}
+{% for ipv6_prefix_list in ipv6_prefix_lists | arista.avd.natural_sort('name', ignore_case=false) %}
 !
 ipv6 prefix-list {{ ipv6_prefix_list.name }}
 {%     for sequence in ipv6_prefix_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
-{%         if sequence.action is arista.avd.defined %}
    seq {{ sequence.sequence }} {{ sequence.action }}
-{%         endif %}
 {%     endfor %}
 {% endfor %}

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -312,9 +312,3 @@ class EthernetInterfacesMixin(Protocol):
             interface.metadata.peer_type = "l3_interface"
             interface.switchport.enabled = False
             self.structured_config.ethernet_interfaces.append(interface)
-
-    def set_direct_ie_connection_ethernet_interfaces(self: AvdStructuredConfigNetworkServicesProtocol, source_interface: str) -> None:
-        # TODO: This should be moved to the place where we configure the same interface in underlay as this will clash between modules..
-        interface = EosCliConfigGen.EthernetInterfacesItem(name=source_interface)
-        interface.ip_nat.service_profile = self.INTERNET_EXIT_DIRECT_NAT_PROFILE_NAME
-        self.structured_config.ethernet_interfaces.append(interface)

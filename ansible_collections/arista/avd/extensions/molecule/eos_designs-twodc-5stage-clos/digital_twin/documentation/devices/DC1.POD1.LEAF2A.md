@@ -41,6 +41,7 @@
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
   - [Route-maps](#route-maps)
+  - [AS Path Lists](#as-path-lists)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -186,7 +187,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -292,8 +293,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_DC1-POD1-SPINE1_Ethernet4 | - | 172.17.110.9/31 | default | - | False | - | - |
 | Ethernet2 | P2P_DC1-POD1-SPINE2_Ethernet4 | - | 172.17.110.11/31 | default | - | False | - | - |
 | Ethernet7 | P2P_DC2-POD1-LEAF1A_Ethernet6 | - | 100.100.100.101/24 | default | - | False | - | - |
@@ -485,7 +486,7 @@ interface Ethernet28
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | L2_RACK2_MLAG_Port-Channel1 | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 3 | - |
 | Port-Channel5 | MLAG_DC1-POD1-LEAF2B_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel16 | PortChannel | access | 110 | - | - | - | - | 16 | - |
@@ -635,8 +636,8 @@ interface Loopback102
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan110 | set from structured_config on svi for DC1.POD1.LEAF2A (was Tenant_A_OP_Zone_1) | Common_VRF | - | False |
 | Vlan111 | Tenant_A_OP_Zone_2 | Common_VRF | - | True |
 | Vlan112 | Tenant_A_OP_Zone_3 | Common_VRF | - | False |
@@ -651,15 +652,15 @@ interface Loopback102
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan110 |  Common_VRF  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |
-| Vlan111 |  Common_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |
-| Vlan112 |  Common_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |
-| Vlan113 |  Common_VRF  |  -  |  10.10.13.1/24  |  -  |  -  |  -  |
-| Vlan1100 |  vrf_with_loopbacks_from_overlapping_pool  |  -  |  10.100.100.1/24  |  -  |  -  |  -  |
-| Vlan1101 |  vrf_with_loopbacks_from_pod_pools  |  -  |  10.101.100.1/24  |  -  |  -  |  -  |
-| Vlan1102 |  vrf_with_loopbacks_dc1_pod1_only  |  -  |  10.102.100.1/24  |  -  |  -  |  -  |
-| Vlan4085 |  default  |  172.21.110.2/24  |  -  |  172.21.110.1  |  -  |  -  |
-| Vlan4094 |  default  |  172.20.110.2/31  |  -  |  -  |  -  |  -  |
+| Vlan110 | Common_VRF | - | 10.1.10.1/24 | - | - | - |
+| Vlan111 | Common_VRF | - | 10.1.11.1/24 | - | - | - |
+| Vlan112 | Common_VRF | - | 10.1.12.1/24 | - | - | - |
+| Vlan113 | Common_VRF | - | 10.10.13.1/24 | - | - | - |
+| Vlan1100 | vrf_with_loopbacks_from_overlapping_pool | - | 10.100.100.1/24 | - | - | - |
+| Vlan1101 | vrf_with_loopbacks_from_pod_pools | - | 10.101.100.1/24 | - | - | - |
+| Vlan1102 | vrf_with_loopbacks_dc1_pod1_only | - | 10.102.100.1/24 | - | - | - |
+| Vlan4085 | default | 172.21.110.2/24 | - | 172.21.110.1 | - | - |
+| Vlan4094 | default | 172.20.110.2/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -898,7 +899,7 @@ ASN Notation: asdot
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### MLAG-IPv4-UNDERLAY-PEER
 
@@ -908,7 +909,7 @@ ASN Notation: asdot
 | Remote AS | 65112.100 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -995,7 +996,7 @@ router bgp 65112.100
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65112.100
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
@@ -1003,7 +1004,7 @@ router bgp 65112.100
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER password 7 <removed>
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
-   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
+   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 256000
    neighbor 100.100.100.201 peer group IPv4-UNDERLAY-PEERS
    neighbor 100.100.100.201 remote-as 65211
    neighbor 100.100.100.201 description DC2-POD1-LEAF1A
@@ -1197,21 +1198,21 @@ router bfd
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65101 | - | - | - |
+| 10 | deny | as-path AS65101 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65110.100
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65110.100 | - | - | - |
+| 10 | deny | as-path AS65110.100 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-EVPN-FILTER-AS65111.100
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | deny | as 65111.100 | - | - | - |
+| 10 | deny | as-path AS65111.100 | - | - | - |
 | 20 | permit | - | - | - | - |
 
 ##### RM-MLAG-PEER-IN
@@ -1225,23 +1226,42 @@ router bfd
 ```eos
 !
 route-map RM-EVPN-FILTER-AS65101 deny 10
-   match as 65101
+   match as-path AS65101
 !
 route-map RM-EVPN-FILTER-AS65101 permit 20
 !
 route-map RM-EVPN-FILTER-AS65110.100 deny 10
-   match as 65110.100
+   match as-path AS65110.100
 !
 route-map RM-EVPN-FILTER-AS65110.100 permit 20
 !
 route-map RM-EVPN-FILTER-AS65111.100 deny 10
-   match as 65111.100
+   match as-path AS65111.100
 !
 route-map RM-EVPN-FILTER-AS65111.100 permit 20
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
    set origin incomplete
+```
+
+### AS Path Lists
+
+#### AS Path Lists Summary
+
+| List Name | Type | Match | Origin |
+| --------- | ---- | ----- | ------ |
+| AS65101 | permit | `_65101_` | any |
+| AS65110.100 | permit | `_65110\.100_` | any |
+| AS65111.100 | permit | `_65111\.100_` | any |
+
+#### AS Path Lists Device Configuration
+
+```eos
+!
+ip as-path access-list AS65101 permit _65101_ any
+ip as-path access-list AS65110.100 permit _65110\.100_ any
+ip as-path access-list AS65111.100 permit _65111\.100_ any
 ```
 
 ## VRF Instances

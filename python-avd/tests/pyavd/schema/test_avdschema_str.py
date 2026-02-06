@@ -1,6 +1,8 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import json
+from itertools import product
 from pathlib import Path
 from sys import path
 from typing import Any
@@ -12,6 +14,7 @@ path.insert(0, str(Path(__file__).parents[3]))
 
 from pyavd._errors import AvdValidationError
 from pyavd._schema.avdschema import AvdSchema
+from pyavd.validate_inputs import validate_inputs
 
 TEST_SCHEMA = {
     "type": "dict",
@@ -34,6 +37,9 @@ TEST_SCHEMA = {
     },
 }
 
+# f-string-based pattern is suggested to have a simple way of extending test coverage to new keys (like mlag_interfaces which is not patterned right now)
+NODE_CONFIG_SCHEMA_SECTION = "{{'fabric_name': 'pytest_fabric', 'l3leaf': {{'defaults': {{'{schema_key_name}': ['{schema_key_value}']}}}}}}"
+
 
 @pytest.fixture(scope="module")
 def avd_schema() -> AvdSchema:
@@ -51,29 +57,29 @@ def avd_schema() -> AvdSchema:
             None,
             (AvdValidationError,),
             (
-                "'Validation Error: test_value': 'false' is not one of ['a', 'foo', 'zoo', 'baaar', '1.0', '42', 'true']",
-                "'Validation Error: test_value': The value is longer (5) than the allowed maximum of 4.",
+                "Validation Error: [test_value] 'false' is not one of ['a', 'foo', 'zoo', 'baaar', '1.0', '42', 'true']",
+                "Validation Error: [test_value] The value is longer (5) than the allowed maximum of 4.",
             ),
             id="err-coerce-bool-to-str-to-lower-invalid-value-false",
         ),
         pytest.param(42, None, None, None, id="ok-coerce-int-to-str-42"),
         pytest.param(1.000, None, None, None, id="ok-coerce-float-to-str-1.0"),
         pytest.param(
-            None, None, (AvdValidationError,), ("'Validation Error: ': Required key 'test_value' is not set in dict.",), id="err-missing-required-value"
+            None, None, (AvdValidationError,), ("Validation Error: [] Required key 'test_value' is not set in dict.",), id="err-missing-required-value"
         ),
-        pytest.param([], None, (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'list'. Expected a 'str'.",), id="err-invalid-type-list"),
+        pytest.param([], None, (AvdValidationError,), ("Validation Error: [test_value] Invalid type 'list'. Expected a 'str'.",), id="err-invalid-type-list"),
         pytest.param(
             "a",
             None,
             (AvdValidationError,),
-            ("'Validation Error: test_value': The value is shorter (1) than the allowed minimum of 2.",),
+            ("Validation Error: [test_value] The value is shorter (1) than the allowed minimum of 2.",),
             id="err-below-min-length-1",
         ),
         pytest.param(
             "baaar",
             None,
             (AvdValidationError,),
-            ("'Validation Error: test_value': The value is longer (5) than the allowed maximum of 4.",),
+            ("Validation Error: [test_value] The value is longer (5) than the allowed maximum of 4.",),
             id="err-above-max-length-5",
         ),  # Valid but below min length.
         pytest.param(
@@ -81,8 +87,8 @@ def avd_schema() -> AvdSchema:
             None,
             (AvdValidationError,),
             (
-                "'Validation Error: test_value': '22' is not one of ['a', 'foo', 'zoo', 'baaar', '1.0', '42', 'true']",
-                "'Validation Error: test_value': The value '22' is not matching the pattern '[abf14t].*'.",
+                "Validation Error: [test_value] '22' is not one of ['a', 'foo', 'zoo', 'baaar', '1.0', '42', 'true']",
+                "Validation Error: [test_value] The value '22' is not matching the pattern '[abf14t].*'.",
             ),
             id="err-coerce-int-to-str-invalid-value-22",
         ),
@@ -90,7 +96,7 @@ def avd_schema() -> AvdSchema:
             "zoo",
             None,
             (AvdValidationError,),
-            ("'Validation Error: test_value': The value 'zoo' is not matching the pattern '[abf14t].*'.",),
+            ("Validation Error: [test_value] The value 'zoo' is not matching the pattern '[abf14t].*'.",),
             id="err-not-matching-pattern-zoo",
         ),
         pytest.param(
@@ -141,7 +147,7 @@ def test_generated_schema(
             (AvdValidationError,),
             (
                 (
-                    "'Validation Error: ': The value 'foo' is not a valid IP pool (Expecting one or more comma separated prefixes "
+                    "Validation Error: [] The value 'foo' is not a valid IP pool (Expecting one or more comma separated prefixes "
                     "(like 10.10.10.0/24 or 2001:db8::/64) or ranges (like 10.10.10.10-10.10.10.20 or 2001:db8::-2001:db8::ffff)."
                 ),
             ),
@@ -154,7 +160,7 @@ def test_generated_schema(
             (AvdValidationError,),
             (
                 (
-                    "'Validation Error: ': The value 'foo' is not a valid IPv4 pool (Expecting one or more comma separated prefixes "
+                    "Validation Error: [] The value 'foo' is not a valid IPv4 pool (Expecting one or more comma separated prefixes "
                     "(like 10.10.10.0/24) or ranges (like 10.10.10.10-10.10.10.20)."
                 ),
             ),
@@ -167,7 +173,7 @@ def test_generated_schema(
             (AvdValidationError,),
             (
                 (
-                    "'Validation Error: ': The value 'foo' is not a valid IPv6 pool (Expecting one or more comma separated prefixes "
+                    "Validation Error: [] The value 'foo' is not a valid IPv6 pool (Expecting one or more comma separated prefixes "
                     "(like 2001:db8::/64) or ranges (like 2001:db8::-2001:db8::ffff)."
                 ),
             ),
@@ -180,7 +186,7 @@ def test_generated_schema(
             "mac",
             "foo",
             (AvdValidationError,),
-            (("'Validation Error: ': The value 'foo' is not a valid MAC address (Expecting bytes separated by colons like 01:23:45:67:89:AB)."),),
+            (("Validation Error: [] The value 'foo' is not a valid MAC address (Expecting bytes separated by colons like 01:23:45:67:89:AB)."),),
             id="err-invalid-mac-foo",
         ),
         pytest.param("invalid_format", "foo", None, None, id="ok-invalid-format"),  # TODO: Consider catching and raising NotImplementedErr for invalid format.
@@ -203,3 +209,72 @@ def test_str_format(
     else:
         # No errors expected.
         assert not validation_errors
+
+
+# Helper function to generate possible valid Ethernet interface ranges
+def generate_ethernet_range_patterns(max_depth: int = 5) -> list[str]:
+    base_value = "Ethernet"
+    seeds = ["1", "2,3", "4-5", "6,17-18"]
+    pytest_params = []
+    for length in range(1, max_depth + 1):
+        pytest_params.extend(base_value + "/".join(combo) for combo in product(seeds, repeat=length))
+    pytest_params.sort(key=lambda s: (len(s.split("/")), s))
+    # Append static patterns testing sequence inside each item
+    pytest_params.append("Ethernet1,2-3,4-5/6-7/8-9, Ethernet7,8-9,10/1-3")
+    return pytest_params
+
+
+# Allows a simple coverage adjustment for other schema paths that should use the same patterns in the future (like default_interfaces[].uplink_interfaces)
+@pytest.mark.parametrize(
+    ("raw_schema_section"),
+    [
+        pytest.param(NODE_CONFIG_SCHEMA_SECTION, id="NODE_CONFIG_INTERFACES"),
+    ],
+)
+# Allows a simple coverage adjustment for other schema paths that should use the same patterns in the future (like l3leafs.defaults.mlag_interfaces)
+@pytest.mark.parametrize(
+    ("schema_key_name"),
+    [
+        pytest.param("uplink_interfaces", id="UPLINK_INTERFACES"),
+    ],
+)
+@pytest.mark.parametrize(("schema_key_value"), generate_ethernet_range_patterns())
+def test_node_config_valid_ethernet_ranges(raw_schema_section: str, schema_key_name: str, schema_key_value: str) -> None:
+    """Test matching of the valid Ethernet interface ranges by the patterns of the target schema paths."""
+    raw_inputs_under_test = raw_schema_section.format(schema_key_name=schema_key_name, schema_key_value=schema_key_value).replace("'", '"')
+    inputs_under_test = json.loads(raw_inputs_under_test)
+
+    validated_data_result = validate_inputs(inputs_under_test)
+
+    assert not validated_data_result.validation_result.violations
+
+
+@pytest.mark.parametrize(
+    ("raw_schema_section"),
+    [
+        pytest.param(NODE_CONFIG_SCHEMA_SECTION, id="NODE_CONFIG_INTERFACES"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("schema_key_name"),
+    [
+        pytest.param("uplink_interfaces", id="UPLINK_INTERFACES"),
+    ],
+)
+@pytest.mark.parametrize(
+    ("schema_key_value"),
+    [
+        pytest.param("Ethernet1/", id="TRAILING_SLASH"),
+        pytest.param("Ethernet1-", id="TRAILING_DASH"),
+        pytest.param("Ethernet1,", id="TRAILING_COMMA"),
+    ],
+)
+def test_node_config_invalid_ethernet_ranges(raw_schema_section: str, schema_key_name: str, schema_key_value: str) -> None:
+    """Test matching of the invalid Ethernet interface ranges by the patterns of the target schema paths."""
+    raw_inputs_under_test = raw_schema_section.format(schema_key_name=schema_key_name, schema_key_value=schema_key_value).replace("'", '"')
+    inputs_under_test = json.loads(raw_inputs_under_test)
+
+    validated_data_result = validate_inputs(inputs_under_test)
+
+    # TODO: Remove 'not' once strict pattern validation is enforced. Items being tested here should cause validation failure.
+    assert not validated_data_result.validation_result.violations

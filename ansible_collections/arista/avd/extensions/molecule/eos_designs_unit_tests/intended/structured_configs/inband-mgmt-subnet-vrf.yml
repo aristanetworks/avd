@@ -36,11 +36,12 @@ ethernet_interfaces:
 hostname: inband-mgmt-subnet-vrf
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 1.1.1.1
-  vrf: INBANDMGMT
-- ip_address: 8.8.8.8
-  vrf: INBANDMGMT
+ip_name_server:
+  vrfs:
+  - name: INBANDMGMT
+    servers:
+    - ip_address: 1.1.1.1
+    - ip_address: 8.8.8.8
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -85,7 +86,9 @@ vlan_internal_order:
 vlans:
 - id: 102
   name: INBAND_MGMT
-  tenant: system
+  metadata:
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

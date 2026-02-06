@@ -10,6 +10,8 @@ wan_router: # dynamic_key: node_type
     uplink_switches: [tenant-default-vrf-settings]
     uplink_interfaces: [Ethernet2]
     uplink_mtu: 9216
+    # test for kernel_ecmp_cli
+    kernel_ecmp_cli: false
     filter:
       tags: [wan_router]
   nodes:
@@ -75,3 +77,6 @@ cv_pathfinder_regions:
         id: 1
       - name: site2
         id: 2
+
+wan_route_servers:
+  - hostname: add-subnets-to-redistribution-in-default-vrf-with-sequence30

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """
@@ -194,6 +194,8 @@ class AvdSchemaBaseModel(BaseModel, ABC):
 
         Like "rootkey.subkey.[].mykey".
         """
+        if self._parent_schema is None:
+            return [self._key] if self._key else []
         # A list item has no key, so add "[]" to the parent schema for representing the list-item
         if not self._key:
             return [*self._parent_schema._path, "[]"]
@@ -591,6 +593,9 @@ class AristaAvdSchema(AvdSchemaDict):
 
     # Type of class source generator to use for this schema field.
     _class_src_generator = SrcGenRootDict
+
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
 
     # Internal attributes used by schema docs generators
     @cached_property

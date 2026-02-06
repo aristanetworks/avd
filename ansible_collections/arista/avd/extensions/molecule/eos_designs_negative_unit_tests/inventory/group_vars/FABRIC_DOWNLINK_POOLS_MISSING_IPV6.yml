@@ -1,0 +1,39 @@
+---
+fabric_name: FABRIC_DOWNLINK_POOLS_MISSING_IPV6
+
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - downlink-pools-missing-spine-ipv6
+  - node_type: l3leaf
+    match_hostnames:
+      - downlink-pools-missing-leaf-ipv6
+
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+
+spine:
+  defaults:
+    loopback_ipv6_pool: 2001:db8::-2001:db8::ffff
+    router_id_pool: 192.168.43.0/24
+    bgp_as: 65000
+  nodes:
+    - name: downlink-pools-missing-spine-ipv6
+      id: 10
+
+l3leaf:
+  defaults:
+    bgp_as: 65000
+    uplink_switches: [downlink-pools-missing-spine-ipv6]
+    uplink_interfaces: [Ethernet1]
+  nodes:
+    - name: downlink-pools-missing-leaf-ipv6
+      id: 1
+      loopback_ipv6_pool: 2001:db8:1:0::1/56
+      vtep_loopback_ipv6_pool: 2001:db8:2:0::1/56
+      router_id_pool: 192.168.43.0/24
+      uplink_switch_interfaces: [ Ethernet2 ]
+
+expected_error_message: >-
+  Unable to assign IPs for uplinks. Either 'uplink_ipv6_pool' on this switch or 'downlink_pools' on
+  all the uplink switches must be set for host 'downlink-pools-missing-leaf-ipv6'.

@@ -3,7 +3,7 @@
 title: WAN
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -50,7 +50,7 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 
 ### Known limitations
 
-- Zones are not configurable for CV Pathfinder. All sites are being configured in a default zone `<region_name>-ZONE` with ID `1`. Hence, in `eos_designs`, the `transit` node type is always configured as `transit region`.
+- Zones are not configurable for CV Pathfinder. All sites are being configured in a default zone `<region_name>-ZONE` with ID `1`. Hence, with Arista AVD the `transit` node type is always configured as `transit region`.
 - All Pathfinders must be able to create a full mesh
 - No IPv6 support
 - Path-group ID is currently required under `wan_path_groups` until an algorithm is implemented to auto generate IDs.
@@ -82,12 +82,6 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - Increase test coverage in `anta_runner` support for AutoVPN and CV-Pathfinder
 - WAN HA for AutoVPN
 
-!!! info
-
-    `eos_cli_config_gen` schema should support all of the required keys to configure a WAN network, whether AutoVPN or Pathfinder except for the most recent features.
-    This means that any missing `eos_designs` feature should be supported using `custom_structured_configuration` functionality.
-    If you find any missing functionality, please open an issue on Github.
-
 ## Getting started with WAN
 
 ### Global settings
@@ -103,17 +97,17 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 
 #### Summary
 
-The following table list the `eos_designs` top level keys used for WAN and how they should be set:
+The following table list the AVD Design top level keys used for WAN and how they should be set:
 
 | Key | Must be the same for all the WAN routers | Comment |
 | --- | ---------------------------------------- | ------- |
-| `wan_mode` | ✅ | Two possible modes, `autovpn` and `cv-pathfinder` (default). |
+| `wan_mode` | ✅ | Two possible modes, `legacy-autovpn` and `cv-pathfinder` (default). |
 | `wan_encapsulation` | ✅ | Two possible encapsulations, `vxlan` and `path-selection` (default). |
 | `wan_virtual_topologies` | ✅ | to define the Policies and the VRF to policy mappings. |
 | `wan_path_groups` | ✅ | to define the list of path-groups in the network. |
 | `wan_carriers` | ✅ | to define the list of carriers in the network, each carrier is assigned to a path-group. |
 | `wan_ipsec_profiles` | ✅ | to define the shared key for the Control Plane and Data Plane IPSec profiles. |
-| `cv_pathfinder_regions` | ✅ | to define the Region/Zone/Site hierarchy, not required for AutoVPN. |
+| `cv_pathfinder_regions` | ✅ | to define the Region/Zone/Site hierarchy, not required for Legacy AutoVPN. |
 | `tenants` | ✅ | the default tenant key from `network_services` or any other key for tenant that would hold some WAN VRF information. |
 | `wan_stun_dtls_disable` | ✅ | disable dTLS for STUN for instance for lab. (**NOT** recommended in production). |
 | `application_classification` | ✅ | to define the specific traffic classification required for the WAN if any. |
@@ -136,14 +130,14 @@ Additionally, following keys must be set for the WAN route servers for the conne
 
 AVD supports two design types for WAN:
 
-- AutoVPN
+- Legacy AutoVPN
 - CV Pathfinder
 
 By default the mode is set to `cv-pathfinder` and can be changed using:
 
 ```yaml
 ---
-wan_mode: autovpn | cv-pathfinder # default: cv-pathfinder
+wan_mode: legacy-autovpn | cv-pathfinder # default: cv-pathfinder
 ```
 
 #### WAN encapsulation

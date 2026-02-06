@@ -1,12 +1,12 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {% if management_interfaces is arista.avd.defined
        or dns_domain is arista.avd.defined
        or domain_list is arista.avd.defined
-       or ip_name_servers is arista.avd.defined
+       or ip_name_server is arista.avd.defined
        or ip_name_server_groups is arista.avd.defined
        or ip_domain_lookup is arista.avd.defined
        or clock is arista.avd.defined
@@ -15,17 +15,17 @@
        or system is arista.avd.defined
        or management_ssh is arista.avd.defined
        or management_tech_support is arista.avd.defined
-       or ip_ssh_client_source_interfaces is arista.avd.defined
+       or ip_ssh_client is arista.avd.defined
        or management_accounts is arista.avd.defined
        or management_api_gnmi is arista.avd.defined
        or management_cvx is arista.avd.defined
        or management_console is arista.avd.defined
        or management_api_http is arista.avd.defined
        or management_api_models is arista.avd.defined
-       or ip_http_client_source_interfaces is arista.avd.defined
-       or ip_ftp_client_source_interfaces is arista.avd.defined
-       or ip_tftp_client_source_interfaces is arista.avd.defined
-       or ip_telnet_client_source_interfaces is arista.avd.defined
+       or ip_http_client is arista.avd.defined
+       or ip_ftp_client is arista.avd.defined
+       or ip_telnet_client is arista.avd.defined
+       or ip_tftp_client is arista.avd.defined
        or agent is arista.avd.defined
        or banners.login is arista.avd.defined
        or banners.motd is arista.avd.defined %}
@@ -42,7 +42,7 @@
 {## Domain-list #}
 {%     include 'documentation/domain-list.j2' %}
 {## IP Name Servers #}
-{%     include 'documentation/ip-name-servers.j2' %}
+{%     include 'documentation/ip-name-server.j2' %}
 {## IP Name Server Group ##}
 {%     include 'documentation/ip-name-server-groups.j2' %}
 {## Domain Lookup #}

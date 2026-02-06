@@ -37,10 +37,14 @@ vlan_internal_order:
 vlans:
 - id: 2
   name: vlan2
-  tenant: test
+  metadata:
+    tenants:
+    - test
 - id: 1
   name: vlan1
-  tenant: test
+  metadata:
+    tenants:
+    - test
 vrfs:
 - name: MGMT
   ip_routing: false

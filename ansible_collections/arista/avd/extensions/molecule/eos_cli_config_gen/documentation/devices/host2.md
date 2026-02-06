@@ -83,6 +83,8 @@
   - [PBR Policy Maps](#pbr-policy-maps)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
+- [Monitor Loop Protection](#monitor-loop-protection)
+  - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS RSVP](#mpls-rsvp)
@@ -231,7 +233,7 @@ no ptp monitor sequence-id
 
 | Idle Timeout | Connection Limit | Max from a single Host | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
 | ------------ | ---------------- | ---------------------- | ------- | -------------------- | -------------- | ------------------------- |
-| 15 | 55 | - | aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521 |
+| 15 | 55 | - | aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521, dsa |
 
 #### Management SSH Device Configuration
 
@@ -244,7 +246,7 @@ management ssh
    cipher aes256-cbc aes256-ctr aes256-gcm@openssh.com
    key-exchange ecdh-sha2-nistp521
    mac hmac-sha2-512 hmac-sha2-512-etm@openssh.com
-   hostkey server ecdsa-nistp256 ecdsa-nistp521
+   hostkey server dsa ecdsa-nistp256 ecdsa-nistp521
    connection limit 55
    authentication empty-passwords permit
    shutdown
@@ -375,9 +377,12 @@ radius-server attribute 32 include-in-access-req format myformat
 | Type | Sub-type | User Stores |
 | ---- | -------- | ---------- |
 
+Policy lockout has been enabled. After **3** failed login attempts within **1440** minutes, you'll be locked out for **300** minutes.
+
 #### AAA Authentication Device Configuration
 
 ```eos
+aaa authentication policy lockout failure 3 duration 300
 !
 ```
 
@@ -390,9 +395,16 @@ radius-server attribute 32 include-in-access-req format myformat
 
 Authorization for configuration commands is disabled.
 
+#### AAA Authorization Privilege Levels Summary
+
+| Privilege Level | User Stores |
+| --------------- | ----------- |
+| all | group TACACS |
+
 #### AAA Authorization Device Configuration
 
 ```eos
+aaa authorization commands all default group TACACS
 no aaa authorization config-commands
 !
 ```
@@ -497,6 +509,7 @@ dhcp relay
 
 | CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 10.20.20.3:9910 | - | - | - | - | False |
 | gzip | 10.20.20.1:9910 | mgt | certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt | - | - | False |
 | gzip | 10.30.30.1:9910 | mgt | key,<removed> | - | - | False |
 | gzip | 10.40.40.1:9910 | mgt | token,/tmp/tokenDC3 | - | - | False |
@@ -510,7 +523,7 @@ dhcp relay
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt -cvopt DC1.vrf=mgt -cvopt DC1.sourceintf=Loopback10 -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=key,<removed> -cvopt DC2.vrf=mgt -cvopt DC2.sourceintf=Vlan500 -cvopt DC3.addr=10.40.40.1:9910 -cvopt DC3.auth=token,/tmp/tokenDC3 -cvopt DC3.vrf=mgt -cvopt DC3.sourceintf=Vlan500 -cvopt DC4.addr=10.40.40.1:9910 -cvopt DC4.auth=token-secure,/tmp/tokenDC4 -cvopt DC4.vrf=mgt -cvopt DC4.sourceip=10.10.10.10 -cvopt DC4.proxy=http://arista:arista@10.10.10.1:3128 -cvopt DC4.obscurekeyfile=True -cvopt DC4.sourceintf=Vlan500 -cvopt DC5.addr=10.20.20.2:9910 -cvopt DC5.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key -cvopt DC5.vrf=mgt -cvopt DC5.sourceintf=Loopback11 -cvopt DC6.addr=10.20.20.3:9910 -cvaddr=apiserver.arista.io:443 -cvauth=key,<removed> -taillogs -ipfix=false -sflow=false
+   exec /usr/bin/TerminAttr -cvopt ac7.addr=10.20.20.3:9910 -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key,/persist/secure/ssl/terminattr/DC1/certs/ca.crt -cvopt DC1.vrf=mgt -cvopt DC1.sourceintf=Loopback10 -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=key,<removed> -cvopt DC2.vrf=mgt -cvopt DC2.sourceintf=Vlan500 -cvopt DC3.addr=10.40.40.1:9910 -cvopt DC3.auth=token,/tmp/tokenDC3 -cvopt DC3.vrf=mgt -cvopt DC3.sourceintf=Vlan500 -cvopt DC4.addr=10.40.40.1:9910 -cvopt DC4.auth=token-secure,/tmp/tokenDC4 -cvopt DC4.vrf=mgt -cvopt DC4.sourceip=10.10.10.10 -cvopt DC4.proxy=http://arista:arista@10.10.10.1:3128 -cvopt DC4.obscurekeyfile=True -cvopt DC4.sourceintf=Vlan500 -cvopt DC5.addr=10.20.20.2:9910 -cvopt DC5.auth=certs,/persist/secure/ssl/terminattr/DC1/certs/client.crt,/persist/secure/ssl/terminattr/DC1/keys/client.key -cvopt DC5.vrf=mgt -cvopt DC5.sourceintf=Loopback11 -cvopt DC6.addr=10.20.20.3:9910 -cvaddr=apiserver.arista.io:443 -cvauth=key,<removed> -taillogs -ipfix=false -sflow=false
    no shutdown
 ```
 
@@ -519,7 +532,7 @@ daemon TerminAttr
 #### Logging Servers and Features Summary
 
 | Type | Level |
-| -----| ----- |
+| ---- | ----- |
 | Console | disabled |
 | Monitor | debugging |
 | Buffer | disabled |
@@ -531,6 +544,10 @@ daemon TerminAttr
 | Hostname | ipv4 |
 | Sequence-numbers | false |
 | RFC5424 | False |
+
+| VRF | Source Interface |
+| --- | ---------------- |
+| - | Ethernet1 |
 
 **Syslog facility value:** syslog
 
@@ -546,6 +563,7 @@ logging monitor debugging
 no logging synchronous
 logging format hostname ipv4
 logging facility syslog
+logging source-interface Ethernet1
 !
 logging event link-status global
 ```
@@ -636,7 +654,7 @@ sflow interface egress enable default
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On | Table Size |
 | ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- | ---------- |
-| T21 | 3666 | 5666 | True | 0 |  | - |
+| T21 | 3666 | 5666 | True | 0 | - | - |
 
 ##### Exporters Summary
 
@@ -659,6 +677,11 @@ sflow interface egress enable default
 
 ```eos
 !
+flow tracking mirror-on-drop
+   tracker T1
+      record export on inactive timeout 3666
+      record export on interval 5666
+!
 flow tracking sampled
    sample 666
    hardware offload ipv4 ipv6
@@ -666,11 +689,6 @@ flow tracking sampled
       record export on inactive timeout 3666
       record export on interval 5666
       record export mpls
-!
-flow tracking mirror-on-drop
-   tracker T1
-      record export on inactive timeout 3666
-      record export on interval 5666
 ```
 
 ### Monitor Telemetry Postcard Policy
@@ -714,6 +732,7 @@ Transceiver dom-threshold file: default
 
 | Name | Interfaces |
 | ---- | ---------- |
+| GLOBAL_SET2 | Ethernet1 |
 | HOST_SET2 | Loopback2-4, Loopback10-12 |
 
 #### Probing Configuration
@@ -729,6 +748,7 @@ Transceiver dom-threshold file: default
 monitor connectivity
    interval 5
    shutdown
+   interface set GLOBAL_SET2 Ethernet1
    interface set HOST_SET2 Loopback2-4, Loopback10-12
    local-interfaces HOST_SET2 default
 ```
@@ -895,7 +915,7 @@ interface defaults
 
 | Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
 | --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.42/24 | False | 666 | Sampled: FT-S |  |
+| Dps1 | 192.168.42.42/24 | False | 666 | Sampled: FT-S | - |
 
 #### DPS Interfaces Device Configuration
 
@@ -1265,6 +1285,24 @@ router bfd
    session stats snapshot interval dangerous 8
 ```
 
+## Monitor Loop Protection
+
+| Enabled | Disabled-time | Protect vlan | Rate-limit | Transmit-interval | Disabled Interfaces |
+| ------- | ------------- | ------------ | ---------- | ----------------- | ------------------- |
+| False | 100 | 1000-1100 | 100 | 10 | - |
+
+### Monitor Loop Protection Configuration
+
+```eos ####
+!
+monitor loop-protection
+   shutdown
+   protect vlan 1000-1100
+   rate-limit 100
+   transmit-interval 10
+   disabled-time 100
+```
+
 ## MPLS
 
 ### MPLS and LDP
@@ -1424,9 +1462,9 @@ Make-before-break: True
 
 ##### IP Sparse Mode VRFs
 
-| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break |
-| -------- | ------------- | ----------- | ----------------- |
-| MCAST_VRF1 | standard | False | True |
+| VRF Name | SSM Range ACL | BFD Enabled | Make-before-break | Register Local Interface |
+| -------- | ------------- | ----------- | ----------------- | ------------------------ |
+| MCAST_VRF1 | standard | False | True | - |
 
 ##### Router Multicast Device Configuration
 
@@ -1464,7 +1502,7 @@ router pim sparse-mode
 #### 802.1X Global
 
 | System Auth Control | Protocol LLDP Bypass | Dynamic Authorization | Dropped Packets Statistics |
-| ------------------- | -------------------- | ----------------------| -------------------------- |
+| ------------------- | -------------------- | --------------------- | -------------------------- |
 | True | True | True | - |
 
 #### 802.1X Radius AV pair
@@ -1608,11 +1646,16 @@ ipv6 dhcp relay option remote-id format %m:%p
 
 IP DHCP Snooping is enabled
 
+IP DHCP Snooping Circuit-ID Suboption: 10
+
+IP DHCP Snooping Circuit-ID Format: %h:%p
+
 ### IP DHCP Snooping Device Configuration
 
 ```eos
 !
 ip dhcp snooping
+ip dhcp snooping information option circuit-id type 10 format %h:%p
 ```
 
 ## IP NAT
@@ -1629,8 +1672,8 @@ ip nat synchronization
 
 ### Errdisable Summary
 
-|  Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
-| ------ | ----------------- | ---------------- | -------------------------- |
+| Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
+| ----- | ----------------- | ---------------- | --------------------------- |
 | arp-inspection | - | True | - |
 | bpduguard | - | True | - |
 | hitless-reload-down | - | True | - |
@@ -1727,7 +1770,6 @@ qos map cos 3 to traffic-class 3
 | errdisable | - | - | - | True |
 
 ```eos
-!
 priority-flow-control pause watchdog override action drop
 ```
 

@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -43,7 +43,7 @@
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Ciphers | CRLs | FIPS restrictions enabled |
 | ---------------- | --------------------- | -------------------- | ------------ | ------- | ---- | ------------------------- |
 {%         set ssl_profiles_certs = [] %}
-{%         for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort %}
+{%         for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort(sort_key="name") %}
 {%             set crls = "-" %}
 {%             if ssl_profile.certificate_revocation_lists is arista.avd.defined %}
 {%                 set crls = ssl_profile.certificate_revocation_lists | arista.avd.natural_sort | join("<br>") %}
@@ -72,7 +72,7 @@
 {%                 do ssl_profiles_certs.append(tmp_cert) %}
 {%             endif %}
 {%         endfor %}
-{%         for ssl_profile in ssl_profiles_certs | arista.avd.natural_sort('name') %}
+{%         for ssl_profile in ssl_profiles_certs | arista.avd.natural_sort(sort_key='name') %}
 
 ### SSL profile {{ ssl_profile.name }} Certificates Summary
 {%             if ssl_profile.trust_certificate is arista.avd.defined %}
@@ -131,8 +131,8 @@
 ### Password Policies
 
 | Policy Name | Digits | Length | Lowercase letters | Special characters | Uppercase letters | Repetitive characters | Sequential characters |
-|-------------|--------|--------|-------------------|--------------------|-------------------|-----------------------|----------------------|
-{%         for policy in management_security.password.policies | arista.avd.natural_sort('name') %}
+| ----------- | ------ | ------ | ----------------- | ------------------ | ----------------- | --------------------- | --------------------- |
+{%         for policy in management_security.password.policies | arista.avd.natural_sort(sort_key='name') %}
 {%             set min_digits = policy.minimum.digits if policy.minimum.digits is arista.avd.defined else 'N/A' %}
 {%             set min_length = policy.minimum.length if policy.minimum.length is arista.avd.defined else 'N/A' %}
 {%             set min_lower = policy.minimum.lower if policy.minimum.lower is arista.avd.defined else 'N/A' %}

@@ -1,3 +1,4 @@
+---
 ### VLAN Interfaces ###
 vlan_interfaces:
 # Standard SVI configuration
@@ -5,6 +6,9 @@ vlan_interfaces:
     description: SVI Description
     vrf: Tenant_B
     ip_address_virtual: 10.2.1.1/24
+    traffic_policy:
+      input: Policy-01
+      output: Policy-02
     logging:
       event:
         link_status: true
@@ -450,11 +454,17 @@ vlan_interfaces:
     ipv6_virtual_router_addresses:
       - 1b11:3a00:22b0:16::15
       - 1b11:3a00:22b0:16::14
+    # test for ospf_authentication_key_type: "8a"
+    ospf_authentication_key: $kUVyoj7FVQ//yw9D2lbqjA==$kxxohBiofI46IX3pw18KYQ==$DOOM0l9uU4TrQt2kyA7XCKtjUA==
+    ospf_authentication_key_type: "8a"
 
   - name: Vlan26
     ntp_serve: true
-    ipv6_ospf_network_point_to_point: true
-    ipv6_ospf_area: 0.0.0.29
+    ipv6_ospf:
+      process:
+        id: 100
+        area: 0.0.0.29
+      network_point_to_point: true
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.24
     ospf_cost: 99
@@ -463,6 +473,10 @@ vlan_interfaces:
       - id: 55
         hash_algorithm: md5
         key: "dRx9sULvl+hzkCMYJLEQCw=="
+      - id: 56
+        hash_algorithm: sha512
+        key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
+        key_type: "8a"
 
   - name: Vlan1002
     description: SVI Description
@@ -564,7 +578,8 @@ vlan_interfaces:
 
   - name: Vlan111
     metadata:
-      tenant: Tenant_A
+      tenants:
+        - Tenant_A
       tags: ['DC1']
     description: PR01-DEMO
     shutdown: false

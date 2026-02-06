@@ -149,15 +149,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
+    maximum_routes: 256000
   neighbors:
   - ip_address: 172.17.0.1
     peer_group: IPv4-UNDERLAY-PEERS
@@ -178,7 +170,8 @@ router_bgp:
   vlans:
   - id: 100
     metadata:
-      tenant: TenantA
+      tenants:
+      - TenantA
     rd: 192.168.45.4:1100
     route_targets:
       both:
@@ -187,7 +180,8 @@ router_bgp:
     - learned
   - id: 101
     metadata:
-      tenant: TenantA
+      tenants:
+      - TenantA
     rd: 192.168.45.4:1101
     route_targets:
       both:
@@ -196,23 +190,18 @@ router_bgp:
     - learned
   - id: 666
     metadata:
-      tenant: TenantC
+      tenants:
+      - TenantC
     rd: 192.168.45.4:1666
     route_targets:
       both:
       - 1666:1666
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: IT
     rd: 192.168.45.4:1000
@@ -306,7 +295,8 @@ vlan_interfaces:
   vrf: PROD
   ip_address_virtual: 10.0.100.1/24
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: Vlan666
   description: VLAN666
   shutdown: true
@@ -314,7 +304,8 @@ vlan_interfaces:
   ip_address: 10.66.66.1
   ip_address_virtual: 10.66.66.66/24
   metadata:
-    tenant: TenantC
+    tenants:
+    - TenantC
 vlan_internal_order:
   allocation: ascending
   range:
@@ -323,25 +314,37 @@ vlan_internal_order:
 vlans:
 - id: 100
   name: VLAN100
-  tenant: TenantA
+  metadata:
+    tenants:
+    - TenantA
 - id: 101
   name: VLAN101
-  tenant: TenantA
+  metadata:
+    tenants:
+    - TenantA
 - id: 666
   name: VLAN666
-  tenant: TenantC
+  metadata:
+    tenants:
+    - TenantC
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: IT
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenants:
+    - TenantA
 - name: PROD
   ip_routing: true
-  tenant: TenantA
+  metadata:
+    tenants:
+    - TenantA
 - name: ATTRACTED-VRF-FROM-UPLINK
   ip_routing: true
-  tenant: TenantC
+  metadata:
+    tenants:
+    - TenantC
 vxlan_interface:
   vxlan1:
     description: site-ha-disabled-leaf_VTEP

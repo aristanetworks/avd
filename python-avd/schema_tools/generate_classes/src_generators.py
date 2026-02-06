@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -373,7 +373,7 @@ class SrcData:
     field should be set on all instances except for the root model
     """
 
-    cls: ModelSrc | ListSrc | None = None
+    cls: ModelSrc | ListSrc | LiteralSrc | None = None
     """
     cls is a full model for a 'dict' field or the main class for a 'list' field.
     """
@@ -392,7 +392,7 @@ class FileSrc:
     Use str() on the instance to render the source code.
     """
 
-    classes: list[ModelSrc]
+    classes: list[ModelSrc | ListSrc | LiteralSrc | None]
 
     def __str__(self) -> str:
         """Returns Python source code for this file."""
@@ -404,12 +404,12 @@ class FileSrc:
 
     def _render_classes(self) -> str:
         """Render the python source code for classes."""
-        return "\n\n".join(str(cls) for cls in self.classes)
+        return "\n\n".join(str(cls) for cls in self.classes if cls is not None)
 
     def _render_imports(self) -> str:
         """Render the python source code for imports."""
         imports = set()
-        for cls in self.classes:
+        for cls in filter(None, self.classes):
             imports.update(cls.get_imports())
         return "\n".join(str(imp) for imp in imports)
 
