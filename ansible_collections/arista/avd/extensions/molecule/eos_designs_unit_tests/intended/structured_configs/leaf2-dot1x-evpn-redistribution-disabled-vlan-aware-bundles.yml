@@ -15,7 +15,7 @@ hostname: leaf2-dot1x-evpn-redistribution-disabled-vlan-aware-bundles
 ip_igmp_snooping:
   globally_enabled: true
 ip_radius_source_interfaces:
-- name: Management0
+- name: Management1
   vrf: MGMT
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
@@ -29,7 +29,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 10.1.1.14/32
 management_interfaces:
-- name: Management0
+- name: Management1
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
