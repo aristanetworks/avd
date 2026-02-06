@@ -2996,7 +2996,7 @@ sflow extension router
 no sflow extension switch
 no sflow extension tunnel ipv4 egress
 sflow interface disable default
-sflow interface egress unmodified enable default
+sflow interface egress enable default
 sflow run
 sflow hardware acceleration
 sflow hardware acceleration sample 1024
