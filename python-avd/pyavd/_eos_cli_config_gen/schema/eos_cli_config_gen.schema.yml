@@ -891,8 +891,8 @@ keys:
       This allows for inspecting templated inputs, validated inputs, and facts data
       used internally by AVD plugins.
 
-      If Ansible Vault is configured, the files in the temporary directory are encrypted
-      and decryption is required to inspect them.
+      If Ansible Vault is configured, some files in the temporary directory may be
+      encrypted and decryption is required to inspect them.
 
       '
   avd_structured_config_file_format:
@@ -919,7 +919,7 @@ keys:
       Defaults to ''intended/tmp''. The temporary directory is cleaned up at the end
       of each role.
 
-      If Ansible Vault is configured, the files in this directory are encrypted.
+      If Ansible Vault is configured, some files in this directory may be encrypted.
 
       '
   avd_vault_id:
