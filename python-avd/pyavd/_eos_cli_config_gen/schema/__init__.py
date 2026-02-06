@@ -62186,7 +62186,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"enable_default": {"type": bool}, "unmodified": {"type": bool}}
                 enable_default: bool
                 """Enable egress sFlow by default."""
-                unmodified: bool
+                unmodified: bool | None
                 """
                 Enable egress sFlow unmodified.
                 Platform dependent feature.
@@ -62194,7 +62194,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enable_default: bool | UndefinedType = Undefined, unmodified: bool | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enable_default: bool | UndefinedType = Undefined, unmodified: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Egress.
 
