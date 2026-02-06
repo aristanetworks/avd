@@ -454,7 +454,7 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
         hostname: Hostname to process.
         output_path: Directory path where the templated JSON file will be written.
         schema_name: Schema name used for filtering hostvars.
-        file_handler: AVDFileHandler, used to load and write files, handling encryption if needed.
+        file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
 
     Returns:
         TemplateWorkerSuccess on success, WorkerFailure on error.
@@ -509,7 +509,7 @@ def _validate_host_worker(
         output_path: Directory path where the validated JSON file will be written.
         schema_name: Schema to validate against.
         configuration: Configuration for validation or None.
-        file_handler: AVDFileHandler, used to load and write files, handling encryption if needed.
+        file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
 
     Returns:
         ValidateWorkerSuccess on success (with validation result), WorkerFailure on error.
