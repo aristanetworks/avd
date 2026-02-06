@@ -1,0 +1,54 @@
+---
+# Test: Multiple vault identities with avd_vault_id='prod' - should use 'prod' identity
+- name: Test multiple vault identities with avd_vault_id
+  hosts: testhost
+  gather_facts: false
+  vars:
+    hostname: testhost
+    router_bgp:
+      as: "65001"
+    static_routes:
+      - vrf: default
+        prefix: 0.0.0.0/0
+        next_hop: 192.168.0.1
+  tasks:
+    - name: Validate inputs with avd_vault_id='prod'
+      arista.avd.validate_inputs:
+        schema_name: eos_config
+        read_from_input_dir: false
+        vault_id: prod
+        tmp_dir: "{{ playbook_dir }}/intended"
+      check_mode: false
+      register: validate_result
+
+    - name: Verify validation succeeded
+      ansible.builtin.assert:
+        that:
+          - validate_result is success
+        fail_msg: "Validation should succeed with avd_vault_id specified"
+
+    - name: Verify files are encrypted with specified vault identity
+      ansible.builtin.include_tasks: tasks/verify_vault_encryption.yml
+      vars:
+        templated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/templated/testhost.json"
+        validated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/validated/testhost.json"
+        expected_encrypted: true
+        expected_vault_id: "prod"
+
+    - name: Verify can decrypt with prod password
+      ansible.builtin.include_tasks: tasks/verify_vault_encryption.yml
+      vars:
+        templated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/templated/testhost.json"
+        validated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/validated/testhost.json"
+        expected_encrypted: true
+        vault_password_file: "{{ playbook_dir }}/.vault_prod"
+        can_decrypt: true
+
+    - name: Verify cannot decrypt with dev password
+      ansible.builtin.include_tasks: tasks/verify_vault_encryption.yml
+      vars:
+        templated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/templated/testhost.json"
+        validated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/validated/testhost.json"
+        expected_encrypted: true
+        vault_password_file: "{{ playbook_dir }}/.vault_dev"
+        can_decrypt: false

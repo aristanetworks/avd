@@ -54,7 +54,6 @@ ethernet_interfaces:
 - name: Ethernet3.100
   description: P2P_site2-wan1_Ethernet1.100_VRF_BLUE
   shutdown: false
-  mtu: 9214
   vrf: BLUE
   flow_tracker:
     sampled: FLOW-TRACKER
@@ -68,7 +67,6 @@ ethernet_interfaces:
 - name: Ethernet3.101
   description: P2P_site2-wan1_Ethernet1.101_VRF_RED
   shutdown: false
-  mtu: 9214
   vrf: RED
   flow_tracker:
     sampled: FLOW-TRACKER

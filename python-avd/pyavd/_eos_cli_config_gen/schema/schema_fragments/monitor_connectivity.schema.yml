@@ -93,6 +93,7 @@ keys:
                 keys:
                   name:
                     type: str
+                  # TODO: Add min_length: 1 and required.
                   interfaces:
                     type: str
             local_interfaces:

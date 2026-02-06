@@ -8,7 +8,7 @@ monitor_telemetry_influx:
       url: https://influx_test.localhost
       username: test
       password: <password>
-    - name: test1
+    - name: Test1
       database: test1
       data_retention_policy: test1
       url: https://influx_test1.localhost

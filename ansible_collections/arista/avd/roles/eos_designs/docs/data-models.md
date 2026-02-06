@@ -1847,7 +1847,9 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/digital-twin-config
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-digital-twin-configuration.md
 --8<--
 
-### PREVIEW - New devices models
+## PREVIEW - New devices models
+
+See the [Node type settings](#node-type-settings) section for available keys.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/devices.md
