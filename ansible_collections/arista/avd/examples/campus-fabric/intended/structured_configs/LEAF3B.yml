@@ -3371,7 +3371,7 @@ ip_name_server:
     - ip_address: 8.8.4.4
     - ip_address: 8.8.8.8
 ip_radius_source_interfaces:
-- name: Management0
+- name: Management1
   vrf: MGMT
 local_users:
 - name: admin

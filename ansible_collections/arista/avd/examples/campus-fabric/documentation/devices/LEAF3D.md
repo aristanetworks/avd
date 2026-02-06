@@ -199,13 +199,13 @@ radius-server host agni.arista.com vrf MGMT key 7 <removed>
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-| MGMT | Management0 |
+| MGMT | Management1 |
 
 #### IP SOURCE Source Interfaces Device Configuration
 
 ```eos
 !
-ip radius vrf MGMT source-interface Management0
+ip radius vrf MGMT source-interface Management1
 ```
 
 ### AAA Authentication
