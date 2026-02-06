@@ -138,6 +138,23 @@ class TestCustomModuleLoader:
         assert CustomModuleLoader._template_name_to_module_name("file-name.j2") == "file_name"
         assert CustomModuleLoader._template_name_to_module_name("file.name.j2") == "file_name"
 
+    def test_template_name_normalization_handles_redundant_separators(self) -> None:
+        """Test that path normalization handles redundant separators."""
+        # Redundant forward slashes
+        assert CustomModuleLoader._template_name_to_module_name("foo//bar/baz.j2") == "foo__bar__baz"
+        # Redundant backslashes
+        assert CustomModuleLoader._template_name_to_module_name("foo\\\\bar\\baz.j2") == "foo__bar__baz"
+
+    def test_template_name_normalization_cross_platform(self) -> None:
+        """Test that path normalization produces consistent results across platforms."""
+        # Windows-style path
+        windows_result = CustomModuleLoader._template_name_to_module_name("templates\\config\\device.j2")
+        # Unix-style path
+        unix_result = CustomModuleLoader._template_name_to_module_name("templates/config/device.j2")
+
+        # Both should produce the same module name
+        assert windows_result == unix_result == "templates__config__device"
+
     def test_sys_path_updated(self, precompiled_dir: Path) -> None:
         """Test that sys.path is updated when creating CustomModuleLoader."""
         path_str = str(precompiled_dir.resolve())
@@ -308,3 +325,51 @@ class TestTemplar:
         assert callable(templar.environment.concat)
         # Test that concat works like "".join
         assert templar.environment.concat(["a", "b", "c"]) == "abc"
+
+    def test_compile_templates_collision_detection_dash_vs_underscore(self, precompiled_dir: Path, tmp_path: Path) -> None:
+        """Test that collision is detected between templates with dashes and underscores."""
+        template_dir = tmp_path / "collision_templates"
+        template_dir.mkdir()
+
+        # Create templates that would collide: aa-aa.j2 and aa_aa.j2
+        (template_dir / "aa-aa.j2").write_text("Template with dashes")
+        (template_dir / "aa_aa.j2").write_text("Template with underscores")
+
+        templar = Templar(precompiled_templates_path=precompiled_dir, searchpaths=[template_dir])
+
+        with pytest.raises(ValueError, match=r"Module name collision detected.*aa-aa\.j2.*aa_aa\.j2.*aa_aa"):
+            templar.compile_templates_in_paths(precompiled_templates_path=precompiled_dir, searchpaths=[template_dir])
+
+    def test_compile_templates_collision_detection_dot_vs_dash(self, precompiled_dir: Path, tmp_path: Path) -> None:
+        """Test that collision is detected between templates with dots and dashes."""
+        template_dir = tmp_path / "collision_templates"
+        template_dir.mkdir()
+
+        # Create templates that would collide: foo.bar.j2 and foo-bar.j2
+        (template_dir / "foo.bar.j2").write_text("Template with dots")
+        (template_dir / "foo-bar.j2").write_text("Template with dashes")
+
+        templar = Templar(precompiled_templates_path=precompiled_dir, searchpaths=[template_dir])
+
+        with pytest.raises(ValueError, match=r"Module name collision detected.*foo\.bar\.j2.*foo-bar\.j2.*foo_bar"):
+            templar.compile_templates_in_paths(precompiled_templates_path=precompiled_dir, searchpaths=[template_dir])
+
+    def test_compile_templates_no_collision_different_names(self, precompiled_dir: Path, tmp_path: Path) -> None:
+        """Test that no collision is raised for genuinely different template names."""
+        template_dir = tmp_path / "no_collision_templates"
+        template_dir.mkdir()
+
+        # Create templates with different names
+        (template_dir / "template_one.j2").write_text("Template one")
+        (template_dir / "template_two.j2").write_text("Template two")
+        (template_dir / "my-config.j2").write_text("Config template")
+
+        templar = Templar(precompiled_templates_path=precompiled_dir, searchpaths=[template_dir])
+
+        # Should compile without error
+        templar.compile_templates_in_paths(precompiled_templates_path=precompiled_dir, searchpaths=[template_dir])
+
+        # Verify all templates were compiled
+        assert (precompiled_dir / "template_one.py").exists()
+        assert (precompiled_dir / "template_two.py").exists()
+        assert (precompiled_dir / "my_config.py").exists()

@@ -85,7 +85,9 @@ class CustomModuleLoader(ModuleLoader):
     @staticmethod
     def _template_name_to_module_name(template_name: str) -> str:
         """Convert a template name to a module name."""
-        return template_name.replace("/", "__").replace("\\", "__").removesuffix(".j2").replace(".", "_").replace("-", "_")
+        # Normalize path to handle different platforms and path edge cases
+        normalized = Path(template_name).as_posix()
+        return normalized.replace("/", "__").removesuffix(".j2").replace(".", "_").replace("-", "_")
 
 
 class Templar:
@@ -178,6 +180,9 @@ class Templar:
         # Get all templates
         templates = self.environment.loader.list_templates()
 
+        # Track module names to detect collisions
+        module_name_map: dict[str, str] = {}
+
         # Compile each template with a readable name
         for template_name in templates:
             # Get the template source
@@ -197,6 +202,16 @@ class Templar:
 
             # Create a readable module name from template path
             module_name = CustomModuleLoader._template_name_to_module_name(template_name)
+
+            # Check for module name collision
+            if module_name in module_name_map:
+                msg = (
+                    f"Module name collision detected: templates '{module_name_map[module_name]}' and '{template_name}' "
+                    f"both resolve to module name '{module_name}'. "
+                    "Template names must be unique after normalization (replacing '/', '\\', '.', '-' with '_')."
+                )
+                raise ValueError(msg)
+            module_name_map[module_name] = template_name
 
             # Write to file with proper module structure for ModuleLoader
             output_file = precompiled_path / f"{module_name}.py"
