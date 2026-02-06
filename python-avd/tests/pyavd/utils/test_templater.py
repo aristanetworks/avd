@@ -351,7 +351,8 @@ class TestTemplar:
 
         templar = Templar(precompiled_templates_path=precompiled_dir, searchpaths=[template_dir])
 
-        with pytest.raises(ValueError, match=r"Module name collision detected.*foo\.bar\.j2.*foo-bar\.j2.*foo_bar"):
+        # The regex accepts either order of the template names since list_templates() order may vary
+        with pytest.raises(ValueError, match=r"Module name collision detected.*foo[.-]bar\.j2.*foo[.-]bar\.j2.*foo_bar"):
             templar.compile_templates_in_paths(precompiled_templates_path=precompiled_dir, searchpaths=[template_dir])
 
     def test_compile_templates_no_collision_different_names(self, precompiled_dir: Path, tmp_path: Path) -> None:

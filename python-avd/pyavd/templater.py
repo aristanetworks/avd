@@ -85,8 +85,8 @@ class CustomModuleLoader(ModuleLoader):
     @staticmethod
     def _template_name_to_module_name(template_name: str) -> str:
         """Convert a template name to a module name."""
-        # Normalize path to handle different platforms and path edge cases
-        normalized = Path(template_name).as_posix()
+        normalized = template_name.replace("\\", "/")
+        normalized = Path(normalized).as_posix()
         return normalized.replace("/", "__").removesuffix(".j2").replace(".", "_").replace("-", "_")
 
 
