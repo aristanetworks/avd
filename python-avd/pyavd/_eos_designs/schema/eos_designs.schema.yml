@@ -378,6 +378,19 @@ keys:
     description: 'The file format to use when dumping structured configuration files.
 
       '
+  avd_tmp_dir:
+    documentation_options:
+      table: role-settings
+    type: str
+    description: 'Path for the AVD temporary directory.
+
+      Contains templated inputs, validated inputs, and facts data used internally
+      by AVD plugins.
+
+      Defaults to ''intended/tmp''. The temporary directory is cleaned up at the end
+      of each role.
+
+      '
   eos_designs_validation_configuration:
     documentation_options:
       table: role-settings
@@ -389,6 +402,11 @@ keys:
         default: true
         description: Emit a warning when EOS Config keys are detected in the AVD Design
           inputs.
+  avd_vault_id:
+    documentation_options:
+      table: role-settings
+    type: str
+    $ref: eos_cli_config_gen#/keys/avd_vault_id
   bfd_multihop:
     documentation_options:
       table: bfd-settings

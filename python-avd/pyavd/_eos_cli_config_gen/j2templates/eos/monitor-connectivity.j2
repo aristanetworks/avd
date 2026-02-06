@@ -18,7 +18,7 @@ monitor connectivity
 {%     elif monitor_connectivity.shutdown is arista.avd.defined(true) %}
    shutdown
 {%     endif %}
-{%     for interface_set in monitor_connectivity.interface_sets | arista.avd.natural_sort('name') %}
+{%     for interface_set in monitor_connectivity.interface_sets | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    interface set {{ interface_set.name }} {{ interface_set.interfaces }}
 {%     endfor %}
 {%     if monitor_connectivity.local_interfaces is arista.avd.defined %}
@@ -28,7 +28,7 @@ monitor connectivity
 {%         endif %}
    {{ local_interfaces_cli }} default
 {%     endif %}
-{%     for host in monitor_connectivity.hosts | arista.avd.natural_sort('name') %}
+{%     for host in monitor_connectivity.hosts | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    host {{ host.name }}
 {%         if host.description is arista.avd.defined %}
@@ -52,52 +52,46 @@ monitor connectivity
       url {{ host.url }}
 {%         endif %}
 {%     endfor %}
-{%     for vrf in monitor_connectivity.vrfs | arista.avd.natural_sort('name') %}
-{%         if vrf.name is arista.avd.defined %}
+{%     for vrf in monitor_connectivity.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    vrf {{ vrf.name }}
-{%             for interface_set in vrf.interface_sets | arista.avd.natural_sort('name') %}
-{%                 if interface_set.name is arista.avd.defined and interface_set.interfaces is arista.avd.defined %}
+{%         for interface_set in vrf.interface_sets | arista.avd.natural_sort(sort_key='name', ignore_case=false) | selectattr("interfaces","arista.avd.defined") %}
       interface set {{ interface_set.name }} {{ interface_set.interfaces }}
-{%                 endif %}
-{%             endfor %}
-{%             if vrf.description is arista.avd.defined %}
+{%         endfor %}
+{%         if vrf.description is arista.avd.defined %}
       description
       {{ vrf.description }}
+{%         endif %}
+{%         if vrf.local_interfaces is arista.avd.defined %}
+{%             set local_interfaces_cli = "local-interfaces " ~ vrf.local_interfaces %}
+{%             if vrf.address_only | arista.avd.default(true) %}
+{%                 set local_interfaces_cli = local_interfaces_cli ~ " address-only" %}
 {%             endif %}
-{%             if vrf.local_interfaces is arista.avd.defined %}
-{%                 set local_interfaces_cli = "local-interfaces " ~ vrf.local_interfaces %}
-{%                 if vrf.address_only | arista.avd.default(true) %}
-{%                     set local_interfaces_cli = local_interfaces_cli ~ " address-only" %}
-{%                 endif %}
       {{ local_interfaces_cli }} default
-{%             endif %}
-{%             for host in vrf.hosts | arista.avd.natural_sort('name') %}
-{%                 if host.name is arista.avd.defined %}
+{%         endif %}
+{%         for host in vrf.hosts | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
       !
       host {{ host.name }}
-{%                     if host.description is arista.avd.defined %}
+{%             if host.description is arista.avd.defined %}
          description
          {{ host.description }}
-{%                     endif %}
-{%                     if host.local_interfaces is arista.avd.defined %}
-{%                         set local_interfaces_cli = "local-interfaces " ~ host.local_interfaces %}
-{%                         if host.address_only | arista.avd.default(true) %}
-{%                             set local_interfaces_cli = local_interfaces_cli ~ " address-only" %}
-{%                         endif %}
-         {{ local_interfaces_cli }}
-{%                     endif %}
-{%                     if host.ip is arista.avd.defined %}
-         ip {{ host.ip }}
-{%                     endif %}
-{%                     if host.icmp_echo_size is arista.avd.defined %}
-         icmp echo size {{ host.icmp_echo_size }}
-{%                     endif %}
-{%                     if host.url is arista.avd.defined %}
-         url {{ host.url }}
-{%                     endif %}
+{%             endif %}
+{%             if host.local_interfaces is arista.avd.defined %}
+{%                 set local_interfaces_cli = "local-interfaces " ~ host.local_interfaces %}
+{%                 if host.address_only | arista.avd.default(true) %}
+{%                     set local_interfaces_cli = local_interfaces_cli ~ " address-only" %}
 {%                 endif %}
-{%             endfor %}
-{%         endif %}
+         {{ local_interfaces_cli }}
+{%             endif %}
+{%             if host.ip is arista.avd.defined %}
+         ip {{ host.ip }}
+{%             endif %}
+{%             if host.icmp_echo_size is arista.avd.defined %}
+         icmp echo size {{ host.icmp_echo_size }}
+{%             endif %}
+{%             if host.url is arista.avd.defined %}
+         url {{ host.url }}
+{%             endif %}
+{%         endfor %}
 {%     endfor %}
 {% endif %}
