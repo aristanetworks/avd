@@ -88589,6 +88589,8 @@ class EosDesigns(EosDesignsRootModel):
     cleaned up at the end of each role.
     This allows for inspecting templated inputs, validated inputs,
     and facts data used internally by AVD plugins.
+    If Ansible Vault is configured, the files in the
+    temporary directory are encrypted and decryption is required to inspect them.
 
     Default value: `False`
     """
@@ -88626,6 +88628,7 @@ class EosDesigns(EosDesignsRootModel):
     used internally by AVD plugins.
     Defaults to 'intended/tmp'. The temporary directory is cleaned up at
     the end of each role.
+    If Ansible Vault is configured, the files in this directory are encrypted.
     """
     eos_designs_validation_configuration: EosDesignsValidationConfiguration
     """
@@ -90818,6 +90821,8 @@ class EosDesigns(EosDesignsRootModel):
                    cleaned up at the end of each role.
                    This allows for inspecting templated inputs, validated inputs,
                    and facts data used internally by AVD plugins.
+                   If Ansible Vault is configured, the files in the
+                   temporary directory are encrypted and decryption is required to inspect them.
                 avd_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
@@ -90837,6 +90842,7 @@ class EosDesigns(EosDesignsRootModel):
                    used internally by AVD plugins.
                    Defaults to 'intended/tmp'. The temporary directory is cleaned up at
                    the end of each role.
+                   If Ansible Vault is configured, the files in this directory are encrypted.
                 eos_designs_validation_configuration:
                    Validation configuration options when validating AVD Design inputs.
 
