@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
@@ -34,6 +34,7 @@
         schema_name: avd_design
         fail_on_validation_errors: true
         validation_configuration: "{{ eos_designs_validation_configuration }}"
+        vault_id: "{{ avd_vault_id }}"
       delegate_to: localhost
       check_mode: false
       run_once: true

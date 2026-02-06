@@ -1,0 +1,94 @@
+---
+# Tasks to verify vault encryption of temporary files
+# Args:
+#   - templated_file: Path to the templated file
+#   - validated_file: Path to the validated file
+#   - expected_encrypted: Whether files should be encrypted (true/false)
+#   - expected_vault_id: Expected vault ID in header (optional, only checked if expected_encrypted=true)
+#   - vault_password_file: Path to vault password file to test decryption (optional)
+
+- name: Check if templated file exists
+  ansible.builtin.stat:
+    path: "{{ templated_file }}"
+  register: templated_stat
+  delegate_to: localhost
+
+- name: Check if validated file exists
+  ansible.builtin.stat:
+    path: "{{ validated_file }}"
+  register: validated_stat
+  delegate_to: localhost
+
+- name: Verify files exist
+  ansible.builtin.assert:
+    that:
+      - templated_stat.stat.exists
+      - validated_stat.stat.exists
+    fail_msg: "Temporary files should exist"
+
+- name: Read first line of templated file
+  ansible.builtin.command:
+    cmd: head -1 "{{ templated_file }}"
+  register: templated_first_line
+  changed_when: false
+  delegate_to: localhost
+
+- name: Read first line of validated file
+  ansible.builtin.command:
+    cmd: head -1 "{{ validated_file }}"
+  register: validated_first_line
+  changed_when: false
+  delegate_to: localhost
+
+- name: Verify files are NOT encrypted (when expected_encrypted=false)
+  ansible.builtin.assert:
+    that:
+      - not templated_first_line.stdout.startswith('$ANSIBLE_VAULT;')
+      - not validated_first_line.stdout.startswith('$ANSIBLE_VAULT;')
+      - templated_first_line.stdout.startswith('{')
+      - validated_first_line.stdout.startswith('{')
+    fail_msg: "Files should be plain JSON when vault is not configured"
+  when: not expected_encrypted
+
+- name: Verify files ARE encrypted (when expected_encrypted=true)
+  ansible.builtin.assert:
+    that:
+      - templated_first_line.stdout.startswith('$ANSIBLE_VAULT;')
+      - validated_first_line.stdout.startswith('$ANSIBLE_VAULT;')
+    fail_msg: "Files should be encrypted when vault is configured"
+  when: expected_encrypted
+
+- name: Verify vault ID in header (when expected_vault_id is specified)
+  ansible.builtin.assert:
+    that:
+      - templated_first_line.stdout is search(';' + expected_vault_id + '$')
+      - validated_first_line.stdout is search(';' + expected_vault_id + '$')
+    fail_msg: "Files should be encrypted with vault ID '{{ expected_vault_id }}'"
+  when:
+    - expected_encrypted
+    - expected_vault_id is defined
+
+- name: Test decryption with specified vault password (when vault_password_file is specified)
+  when:
+    - expected_encrypted
+    - vault_password_file is defined
+    - can_decrypt is defined
+  block:
+    - name: Try to decrypt templated file
+      ansible.builtin.command:
+        cmd: ansible-vault view --vault-password-file "{{ vault_password_file }}" "{{ templated_file }}"
+      register: decrypt_result
+      changed_when: false
+      failed_when: false
+      delegate_to: localhost
+      environment:
+        ANSIBLE_CONFIG: ""
+
+    - name: Verify decryption result
+      ansible.builtin.assert:
+        that:
+          - (decrypt_result.rc == 0) == can_decrypt
+        fail_msg: >-
+          Decryption result unexpected:
+          expected can_decrypt={{ can_decrypt }},
+          got rc={{ decrypt_result.rc }}

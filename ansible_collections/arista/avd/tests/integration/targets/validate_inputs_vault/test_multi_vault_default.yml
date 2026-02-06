@@ -1,0 +1,53 @@
+---
+# Test: Multiple vault identities without avd_vault_id - should use first identity ('dev')
+- name: Test multiple vault identities (default behavior)
+  hosts: testhost
+  gather_facts: false
+  vars:
+    hostname: testhost
+    router_bgp:
+      as: "65001"
+    static_routes:
+      - vrf: default
+        prefix: 0.0.0.0/0
+        next_hop: 192.168.0.1
+  tasks:
+    - name: Validate inputs with multiple vault identities
+      arista.avd.validate_inputs:
+        schema_name: eos_config
+        read_from_input_dir: false
+        tmp_dir: "{{ playbook_dir }}/intended"
+      check_mode: false
+      register: validate_result
+
+    - name: Verify validation succeeded
+      ansible.builtin.assert:
+        that:
+          - validate_result is success
+        fail_msg: "Validation should succeed with multiple vault identities"
+
+    - name: Verify files are encrypted with first vault identity
+      ansible.builtin.include_tasks: tasks/verify_vault_encryption.yml
+      vars:
+        templated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/templated/testhost.json"
+        validated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/validated/testhost.json"
+        expected_encrypted: true
+        expected_vault_id: "dev"
+
+    - name: Verify can decrypt with dev password
+      ansible.builtin.include_tasks: tasks/verify_vault_encryption.yml
+      vars:
+        templated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/templated/testhost.json"
+        validated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/validated/testhost.json"
+        expected_encrypted: true
+        vault_password_file: "{{ playbook_dir }}/.vault_dev"
+        can_decrypt: true
+
+    - name: Verify cannot decrypt with prod password
+      ansible.builtin.include_tasks: tasks/verify_vault_encryption.yml
+      vars:
+        templated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/templated/testhost.json"
+        validated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/validated/testhost.json"
+        expected_encrypted: true
+        vault_password_file: "{{ playbook_dir }}/.vault_prod"
+        can_decrypt: false

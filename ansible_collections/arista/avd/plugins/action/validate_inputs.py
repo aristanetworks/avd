@@ -17,6 +17,8 @@ from ansible.plugins.action import display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     ActionPluginVars,
+    AVDFileHandler,
+    AVDVaultHandler,
     build_result_message,
     get_role_tmp_paths,
     get_workers,
@@ -104,6 +106,7 @@ ARGUMENT_SPEC = {
     "read_from_input_dir": {"type": "bool", "default": False},
     "fail_on_validation_errors": {"type": "bool", "default": False},
     "validation_configuration": {"type": "dict", "options": {"warn_eos_config_keys": {"type": "bool"}}},
+    "vault_id": {"type": "str"},
 }
 
 REQUIRED_IF = [
@@ -123,6 +126,7 @@ class ResolvedPluginArgs:
     read_from_input_dir: bool
     fail_on_validation_errors: bool
     validation_configuration: Configuration | None
+    vault_id: str | None
 
 
 _HOSTVARS_MANAGER: ActionPluginVars | None = None
@@ -170,6 +174,16 @@ class ActionModule(AvdActionPlugin):
         mp_workers, mt_workers = get_workers(len(hosts_to_process), task_vars["ansible_forks"])
         templated_path, validated_path = get_role_tmp_paths(role_name=SCHEMA_MAP[plugin_args.schema_name], tmp_dir=plugin_args.tmp_dir, clean=True)
 
+        # Create vault and file handlers.
+        vault_handler = AVDVaultHandler(self._loader, vault_id=plugin_args.vault_id)
+        file_handler = AVDFileHandler(vault_handler)
+
+        # Check if vault is configured for encrypting temporary files.
+        if vault_handler.has_vault:
+            self.logger.info("Ansible Vault is configured - temporary files will be encrypted")
+        else:
+            self.logger.info("Ansible Vault is not configured - temporary files will not be encrypted")
+
         # Track worker failures globally for the task.
         self.crashed_hosts = set()
 
@@ -191,6 +205,7 @@ class ActionModule(AvdActionPlugin):
                 batch_size=plugin_args.batch_size,
                 output_path=templated_path,
                 schema_name=plugin_args.schema_name,
+                file_handler=file_handler,
             )
             validation_input_path = templated_path
             validation_input_suffix = "json"
@@ -213,6 +228,7 @@ class ActionModule(AvdActionPlugin):
                 schema_name=plugin_args.schema_name,
                 fail_on_validation_errors=plugin_args.fail_on_validation_errors,
                 configuration=plugin_args.validation_configuration,
+                file_handler=file_handler,
             )
 
         if self.crashed_hosts:
@@ -306,6 +322,7 @@ class ActionModule(AvdActionPlugin):
         batch_size: int,
         output_path: Path,
         schema_name: SCHEMA_NAME,
+        file_handler: AVDFileHandler,
     ) -> list[str]:
         """
         Run Phase 1: Templating.
@@ -319,6 +336,7 @@ class ActionModule(AvdActionPlugin):
             batch_size: Number of hosts to process per child process.
             output_path: Directory path where templated JSON files will be written.
             schema_name: Schema name used for filtering hostvars.
+            file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
 
         Returns:
             List of hostnames that were templated successfully.
@@ -328,7 +346,7 @@ class ActionModule(AvdActionPlugin):
         successful_hosts = []
 
         # Partial to inject arguments into the worker.
-        worker_func = partial(_template_host_worker, output_path=output_path, schema_name=schema_name)
+        worker_func = partial(_template_host_worker, output_path=output_path, schema_name=schema_name, file_handler=file_handler)
         ctx = get_context("fork")
 
         with ProcessPoolExecutor(max_workers=workers, mp_context=ctx) as pool:
@@ -356,6 +374,7 @@ class ActionModule(AvdActionPlugin):
         schema_name: SCHEMA_NAME,
         fail_on_validation_errors: bool,
         configuration: Configuration | None,
+        file_handler: AVDFileHandler,
     ) -> None:
         """
         Run Phase 2: Validation.
@@ -374,6 +393,7 @@ class ActionModule(AvdActionPlugin):
             schema_name: Schema to validate against.
             fail_on_validation_errors: Whether to fail the task on validation errors.
             configuration: Configuration for validation or None.
+            file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
         """
         self.logger.info("Validating inputs...")
         start_time = perf_counter()
@@ -390,6 +410,7 @@ class ActionModule(AvdActionPlugin):
             output_path=output_path,
             schema_name=schema_name,
             configuration=configuration,
+            file_handler=file_handler,
         )
 
         with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -422,7 +443,7 @@ class ActionModule(AvdActionPlugin):
         self.logger.info("Validation of inputs completed in %.2fs", perf_counter() - start_time)
 
 
-def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_NAME) -> TemplateWorkerResult:
+def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_NAME, file_handler: AVDFileHandler) -> TemplateWorkerResult:
     """
     Phase 1 multiprocessing worker: Template hostvars for a host.
 
@@ -433,6 +454,7 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
         hostname: Hostname to process.
         output_path: Directory path where the templated JSON file will be written.
         schema_name: Schema name used for filtering hostvars.
+        file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
 
     Returns:
         TemplateWorkerSuccess on success, WorkerFailure on error.
@@ -455,9 +477,9 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
         # missing variables in inline templates in Ansible 2.19.
         templated_hostvars = dict(hostvars_wrapper)
 
+        data = json.dumps(templated_hostvars, skipkeys=True, default=lambda _: "<not serializable>", indent=4).encode("utf-8")
         output_file_path = output_path / f"{hostname}.json"
-        with output_file_path.open(mode="w", encoding="utf-8") as f:
-            json.dump(templated_hostvars, f, skipkeys=True, default=lambda _: "<not serializable>", indent=4)
+        file_handler.write_file(output_file_path, data)
 
         return TemplateWorkerSuccess(hostname=hostname, output_file=str(output_file_path))
 
@@ -466,7 +488,13 @@ def _template_host_worker(hostname: str, output_path: Path, schema_name: SCHEMA_
 
 
 def _validate_host_worker(
-    hostname: str, input_path: Path, input_suffix: str, output_path: Path, schema_name: SCHEMA_NAME, configuration: Configuration | None
+    hostname: str,
+    input_path: Path,
+    input_suffix: str,
+    output_path: Path,
+    schema_name: SCHEMA_NAME,
+    configuration: Configuration | None,
+    file_handler: AVDFileHandler,
 ) -> ValidateWorkerResult:
     """
     Phase 2 multithreading worker: Validate input data for a host.
@@ -481,6 +509,7 @@ def _validate_host_worker(
         output_path: Directory path where the validated JSON file will be written.
         schema_name: Schema to validate against.
         configuration: Configuration for validation or None.
+        file_handler: AVDFileHandler, used to read and write files, handling encryption if needed.
 
     Returns:
         ValidateWorkerSuccess on success (with validation result), WorkerFailure on error.
@@ -492,16 +521,16 @@ def _validate_host_worker(
         if not input_file_path.exists():
             return WorkerFailure(hostname=hostname, error=f"Missing input data file: {input_file_path}")
 
-        # Load data based on file suffix.
+        # Load file content (decrypted if vaulted).
+        file_content = file_handler.read_file(input_file_path)
+
         if input_suffix in {"yml", "yaml"}:
-            # YAML input: load and convert to JSON for validation.
-            with input_file_path.open(mode="r", encoding="utf-8") as f:
-                data = yaml.load(f, Loader=yaml.CSafeLoader)
+            # YAML input: parse and convert to JSON string for validation.
+            data = yaml.load(file_content, Loader=yaml.CSafeLoader)
             json_data = json.dumps(data)
         else:
-            # JSON input: read directly.
-            with input_file_path.open(mode="r", encoding="utf-8") as f:
-                json_data = f.read()
+            # JSON input: decode bytes to string.
+            json_data = file_content.decode("utf-8")
 
         # Validation in Rust, releasing the GIL.
         validated_data_result = get_validated_data(data_as_json=json_data, schema_name=SCHEMA_MAP[schema_name], configuration=configuration)
@@ -510,8 +539,7 @@ def _validate_host_worker(
         output_file = None
         if validated_data:
             output_file_path = output_path / f"{hostname}.json"
-            with output_file_path.open(mode="w", encoding="utf-8") as f:
-                f.write(validated_data)
+            file_handler.write_file(output_file_path, validated_data.encode("utf-8"))
             output_file = str(output_file_path)
 
         return ValidateWorkerSuccess(hostname=hostname, validation_result=validation_result, output_file=output_file)

@@ -402,6 +402,11 @@ keys:
         default: true
         description: Emit a warning when EOS Config keys are detected in the AVD Design
           inputs.
+  avd_vault_id:
+    documentation_options:
+      table: role-settings
+    type: str
+    $ref: eos_cli_config_gen#/keys/avd_vault_id
   bfd_multihop:
     documentation_options:
       table: bfd-settings
