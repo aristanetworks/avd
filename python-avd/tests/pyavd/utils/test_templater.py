@@ -305,4 +305,6 @@ class TestTemplar:
 
         # The concat attribute should be set
         assert hasattr(templar.environment, "concat")
-        assert templar.environment.concat == "".join
+        assert callable(templar.environment.concat)
+        # Test that concat works like "".join
+        assert templar.environment.concat(["a", "b", "c"]) == "abc"
