@@ -181,6 +181,7 @@ daemon TerminAttr
 
 | VRF | Source Interface |
 | --- | ---------------- |
+| - | Ethernet1 |
 | check_source_interface_table_created | Ethernet1 |
 
 | VRF | Hosts | Ports | Protocol | SSL-profile |
@@ -196,6 +197,7 @@ logging synchronous level critical
 logging vrf check_source_interface_table_created host 1.2.3.4
 logging vrf check_source_interface_table_created host 2001:db8::1:2:3:4
 logging format timestamp traditional year timezone
+logging local-interface Ethernet1
 logging vrf check_source_interface_table_created source-interface Ethernet1
 ```
 

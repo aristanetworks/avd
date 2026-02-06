@@ -1,5 +1,6 @@
 ---
 logging:
+  local_interface: Ethernet1
   format:
     timestamp: traditional year timezone
   synchronous:

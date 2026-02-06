@@ -46,11 +46,10 @@
 {%         endif %}
 | RFC5424 | {{ logging.format.rfc5424 | arista.avd.default(false) }} |
 {%     endif %}
-{%     if logging.vrfs is arista.avd.defined or logging.source_interface is arista.avd.defined %}
+{%     if logging.vrfs is arista.avd.defined or logging.source_interface is arista.avd.defined or logging.local_interface is arista.avd.defined %}
 
 | VRF | Source Interface |
 | --- | ---------------- |
-{#         logging.source_interface will not be shown in doc unless logging.vrfs is defined #}
 {%         if logging.source_interface is arista.avd.defined %}
 | - | {{ logging.source_interface }} |
 {%         elif logging.local_interface is arista.avd.defined %}
