@@ -159,14 +159,14 @@ AVD Fabric Input Variables
 
 To apply AVD input variables to the nodes in the fabric, we make use of Ansible group_vars. How and where you define the variables is your choice. The group_vars table below is one example of AVD fabric variables.
 
-| group_vars/               | Description                                   |
-| ------------------------- | --------------------------------------------- |
-| ACME.yml                  | Global settings for all devices               |
-| SITE1.yml                    | Fabric, Topology, and Device settings         |
-| SITE1_SPINES.yml             | Device type for Spines                        |
-| SITE1_LEAFS.yml              | Device type for Leafs                         |
-| NETWORK_SERVICES.yml      | VLANs/SVIs                                    |
-| CONNECTED_ENDPOINTS.yml   | Port Profiles and Network Port Ranges         |
+| group_vars/             | Description                           |
+| ----------------------- | ------------------------------------- |
+| ACME.yml                | Global settings for all devices       |
+| SITE1.yml               | Fabric, Topology, and Device settings |
+| SITE1_SPINES.yml        | Device type for Spines                |
+| SITE1_LEAFS.yml         | Device type for Leafs                 |
+| NETWORK_SERVICES.yml    | VLANs/SVIs                            |
+| CONNECTED_ENDPOINTS.yml | Port Profiles and Network Port Ranges |
 
 The tabs below show the Ansible **group_vars** used in this example.
 
