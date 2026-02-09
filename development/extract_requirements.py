@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 """
 Extract requirements from pyavd/pyproject.toml and write to requirements.txt.
 
@@ -60,7 +63,7 @@ def extract_requirements(pyproject_path: Path, output_path: Path) -> None:
             f.write(f"{req}\n")
 
     print(f"✅ Successfully extracted {len(unique_requirements)} requirements to {output_path}")
-    print(f"\nRequirements written:")
+    print("\nRequirements written:")
     for req in unique_requirements:
         print(f"  - {req}")
 
