@@ -74,8 +74,8 @@ keys:
         type: str
         description: |-
           Source Interface Name.
-          `logging source-interface xxxx` is deprecated in latest EOS versions(4.35.1).
-          This key sets new command `logging local-interface xxxx`.
+          `logging source-interface <interface>` is deprecated in latest EOS versions(4.35.1).
+          This key sets new command `logging local-interface <interface>`.
           `source_interface` takes precedence over `local_interface`.
       vrfs:
         type: list
