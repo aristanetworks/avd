@@ -32,6 +32,11 @@ aaa_settings:
   authorization:
     exec:
       default: local
+  radius:
+    servers:
+      - host: 172.16.100.250
+        key: 1304051B181805
+        vrf: MGMT
 
 # OOB Management network default gateway.
 mgmt_gateway: 172.16.100.1
@@ -48,3 +53,7 @@ ntp_settings:
   servers:
     - name: time.google.com
     - name: pool.ntp.org
+
+# Enable 802.1X globally
+dot1x_settings:
+  enabled: true

@@ -7,11 +7,13 @@
   - [IP Name Servers](#ip-name-servers)
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
-  - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
+  - [RADIUS Server](#radius-server)
+  - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
+  - [AAA Accounting](#aaa-accounting)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -38,6 +40,8 @@
   - [Router OSPF](#router-ospf)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
+- [802.1X Port Security](#8021x-port-security)
+  - [802.1X Summary](#8021x-summary)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -52,19 +56,19 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.101/24 | 172.16.100.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.101/24 | 172.16.100.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
-interface Management0
+interface Management1
    description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
@@ -93,12 +97,12 @@ ip name-server vrf MGMT 8.8.8.8
 
 | Source interface | vrf |
 | ---------------- | --- |
-| Management0 | MGMT |
+| Management1 | MGMT |
 
 #### DNS Domain Lookup Device Configuration
 
 ```eos
-ip domain lookup vrf MGMT source-interface Management0
+ip domain lookup vrf MGMT source-interface Management1
 ```
 
 ### NTP
@@ -109,48 +113,24 @@ ip domain lookup vrf MGMT source-interface Management0
 
 | Interface | VRF |
 | --------- | --- |
-| Management0 | MGMT |
+| Management1 | MGMT |
 
 ##### NTP Servers
 
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| pool.ntp.org | MGMT | - | - | - | - | - | - | - | - |
-| time.google.com | MGMT | True | - | - | - | - | - | - | - |
+NTP servers VRF: MGMT
+
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| pool.ntp.org | - | - | - | - | - | - | - | - |
+| time.google.com | True | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
 ```eos
 !
-ntp local-interface vrf MGMT Management0
+ntp local-interface vrf MGMT Management1
 ntp server vrf MGMT pool.ntp.org
 ntp server vrf MGMT time.google.com prefer
-```
-
-### Management API HTTP
-
-#### Management API HTTP Summary
-
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
-
-#### Management API VRF Access
-
-| VRF Name | IPv4 ACL | IPv6 ACL |
-| -------- | -------- | -------- |
-| MGMT | - | - |
-
-#### Management API HTTP Device Configuration
-
-```eos
-!
-management api http-commands
-   protocol https
-   no shutdown
-   !
-   vrf MGMT
-      no shutdown
 ```
 
 ## Authentication
@@ -174,6 +154,35 @@ username admin privilege 15 role network-admin secret sha512 <removed>
 
 Enable password has been disabled
 
+### RADIUS Server
+
+#### RADIUS Server Hosts
+
+| VRF | RADIUS Servers | TLS | TLS Port | SSL Profile | Timeout | Retransmit |
+| --- | -------------- | --- | ---- | ----------- | ------- | ---------- |
+| MGMT | 172.16.100.250 | - | - | - | - | - |
+
+#### RADIUS Server Device Configuration
+
+```eos
+!
+radius-server host 172.16.100.250 vrf MGMT key 7 <removed>
+```
+
+### AAA Authentication
+
+#### AAA Authentication Summary
+
+| Type | Sub-type | User Stores |
+| ---- | -------- | ---------- |
+
+#### AAA Authentication Device Configuration
+
+```eos
+aaa authentication dot1x default group radius
+!
+```
+
 ### AAA Authorization
 
 #### AAA Authorization Summary
@@ -189,6 +198,20 @@ Authorization for configuration commands is disabled.
 ```eos
 aaa authorization exec default local
 !
+```
+
+### AAA Accounting
+
+#### AAA Accounting Summary
+
+| Type | Commands | Record type | Groups | Logging |
+| ---- | -------- | ----------- | ------ | ------- |
+| Dot1x - Default | - | start-stop | radius(multicast) | False |
+
+#### AAA Accounting Device Configuration
+
+```eos
+aaa accounting dot1x default start-stop group radius
 ```
 
 ## MLAG
@@ -244,7 +267,7 @@ spanning-tree mst 0 priority 4096
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -337,8 +360,8 @@ vlan 4094
 
 ##### IPv4
 
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet52/1 | P2P_WAN_Ethernet1/1 | - | 10.0.0.3/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
@@ -392,7 +415,7 @@ interface Ethernet56/1
 ##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_IDF1_Port-Channel51 | trunk | 10,110,120,130 | - | - | - | - | 1 | - |
 | Port-Channel491 | L2_SITE1_LEAF2A_Port-Channel11 | trunk | 10,210,220,230 | - | - | - | - | 491 | - |
 | Port-Channel501 | L2_IDF3_AGG_Port-Channel971 | trunk | 10,310,320,330 | - | - | - | - | 501 | - |
@@ -465,8 +488,8 @@ interface Loopback0
 
 #### VLAN Interfaces Summary
 
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
+| Interface | Description | VRF | MTU | Shutdown |
+| --------- | ----------- | --- | --- | -------- |
 | Vlan10 | Inband Management | default | 1500 | False |
 | Vlan110 | IDF1-Data | default | - | False |
 | Vlan120 | IDF1-Voice | default | - | False |
@@ -484,18 +507,24 @@ interface Loopback0
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan10 |  default  |  10.10.10.2/24  |  -  |  10.10.10.1  |  -  |  -  |
-| Vlan110 |  default  |  10.1.10.2/23  |  -  |  10.1.10.1  |  -  |  -  |
-| Vlan120 |  default  |  10.1.20.2/23  |  -  |  10.1.20.1  |  -  |  -  |
-| Vlan130 |  default  |  10.1.30.2/23  |  -  |  10.1.30.1  |  -  |  -  |
-| Vlan210 |  default  |  10.2.10.2/23  |  -  |  10.2.10.1  |  -  |  -  |
-| Vlan220 |  default  |  10.2.20.2/23  |  -  |  10.2.20.1  |  -  |  -  |
-| Vlan230 |  default  |  10.2.30.2/23  |  -  |  10.2.30.1  |  -  |  -  |
-| Vlan310 |  default  |  10.3.10.2/23  |  -  |  10.3.10.1  |  -  |  -  |
-| Vlan320 |  default  |  10.3.20.2/23  |  -  |  10.3.20.1  |  -  |  -  |
-| Vlan330 |  default  |  10.3.30.2/23  |  -  |  10.3.30.1  |  -  |  -  |
-| Vlan4093 |  default  |  10.1.1.0/31  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  192.168.0.0/31  |  -  |  -  |  -  |  -  |
+| Vlan10 | default | 10.10.10.2/24 | - | 10.10.10.1 | - | - |
+| Vlan110 | default | 10.1.10.2/23 | - | 10.1.10.1 | - | - |
+| Vlan120 | default | 10.1.20.2/23 | - | 10.1.20.1 | - | - |
+| Vlan130 | default | 10.1.30.2/23 | - | 10.1.30.1 | - | - |
+| Vlan210 | default | 10.2.10.2/23 | - | 10.2.10.1 | - | - |
+| Vlan220 | default | 10.2.20.2/23 | - | 10.2.20.1 | - | - |
+| Vlan230 | default | 10.2.30.2/23 | - | 10.2.30.1 | - | - |
+| Vlan310 | default | 10.3.10.2/23 | - | 10.3.10.1 | - | - |
+| Vlan320 | default | 10.3.20.2/23 | - | 10.3.20.1 | - | - |
+| Vlan330 | default | 10.3.30.2/23 | - | 10.3.30.1 | - | - |
+| Vlan4093 | default | 10.1.1.0/31 | - | - | - | - |
+| Vlan4094 | default | 192.168.0.0/31 | - | - | - | - |
+
+##### OSPF
+
+| Interface | OSPF Network Point to Point | OSPF Area | OSPF Cost | OSPF Authentication | IPv6 OSPF Process ID | IPv6 OSPF Area | IPv6 OSPF Network Point to Point |
+| --------- | --------------------------- | --------- | --------- | ------------------- | -------------------- | -------------- | -------------------------------- |
+| Vlan4093 | True | 0.0.0.0 | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -506,7 +535,6 @@ interface Vlan10
    no shutdown
    mtu 1500
    ip address 10.10.10.2/24
-   ip attached-host route export 19
    ip virtual-router address 10.10.10.1
 !
 interface Vlan110
@@ -650,7 +678,7 @@ ip route vrf MGMT 0.0.0.0/0 172.16.100.1
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 100 | 172.16.1.1 | enabled | Vlan4093 <br> Ethernet52/1 <br> | disabled | 12000 | disabled | disabled | - | - | - | - |
+| 100 | 172.16.1.1 | enabled | Vlan4093<br>Ethernet52/1 | disabled | 12000 | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Router Redistribution
 
@@ -677,6 +705,7 @@ router ospf 100
    no passive-interface Vlan4093
    redistribute connected
    max-lsa 12000
+   graceful-restart
 ```
 
 ## Multicast
@@ -692,6 +721,26 @@ router ospf 100
 #### IP IGMP Snooping Device Configuration
 
 ```eos
+```
+
+## 802.1X Port Security
+
+### 802.1X Summary
+
+#### 802.1X Global
+
+| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization | Dropped Packets Statistics |
+| ------------------- | -------------------- | --------------------- | -------------------------- |
+| True | True | True | - |
+
+#### Dot1x Configuration
+
+```eos
+!
+dot1x system-auth-control
+dot1x protocol lldp bypass
+dot1x protocol bpdu bypass
+dot1x dynamic-authorization
 ```
 
 ## VRF Instances
