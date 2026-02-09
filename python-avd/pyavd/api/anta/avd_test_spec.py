@@ -9,11 +9,11 @@ from typing import TYPE_CHECKING
 from pyavd._anta.lib import AntaTest
 
 if TYPE_CHECKING:
-    from pyavd._anta.input_factories._base_classes import AntaTestInputFactory
+    from pyavd._anta.input_factories.base_classes import AntaTestInputFactory
 
 
 @dataclass(frozen=True)
-class AvdTestSpec:
+class AVDTestSpec:
     """
     Model used to define an ANTA test specification in PyAVD.
 
@@ -42,5 +42,5 @@ class AvdTestSpec:
         requires_input = any(f_info.is_required() for f_name, f_info in input_class.model_fields.items() if f_name not in excluded_fields)
 
         if requires_input and self.input_factory is None:
-            msg = f"AvdTestSpec for {self.test_class.name} must have `input_factory`."
+            msg = f"AVDTestSpec for {self.test_class.name} must have `input_factory`."
             raise ValueError(msg)
