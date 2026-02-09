@@ -7906,6 +7906,15 @@ keys:
       source_interface:
         type: str
         description: Source Interface Name.
+      local_interface:
+        type: str
+        description: 'Source Interface Name.
+
+          `logging source-interface <interface>` is deprecated in latest EOS versions(4.35.1).
+
+          This key sets the new command `logging local-interface <interface>`.
+
+          `source_interface` takes precedence over `local_interface`.'
       vrfs:
         type: list
         primary_key: name
@@ -7920,6 +7929,16 @@ keys:
             source_interface:
               type: str
               description: Source interface name.
+            local_interface:
+              type: str
+              description: 'Source Interface Name.
+
+                `logging vrf <vrf> source-interface <interface>` is deprecated in
+                latest EOS versions(4.35.1).
+
+                This key sets the new command `logging vrf <vrf> local-interface <interface>`.
+
+                `source_interface` takes precedence over `local_interface`.'
             hosts:
               type: list
               primary_key: name
@@ -22963,6 +22982,7 @@ keys:
                 description: 'Enable egress sFlow by default.
 
                   '
+                required: true
               unmodified:
                 type: bool
                 description: 'Enable egress sFlow unmodified.

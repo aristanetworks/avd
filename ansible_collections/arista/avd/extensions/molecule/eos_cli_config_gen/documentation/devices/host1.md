@@ -2318,6 +2318,7 @@ daemon random
 | VRF | Source Interface |
 | --- | ---------------- |
 | - | Ethernet2 |
+| VRFA | Ethernet4 |
 | default | Loopback0 |
 | mgt | Management0 |
 
@@ -2392,6 +2393,7 @@ logging format rfc5424
 logging format hostname fqdn
 logging format sequence-numbers
 logging source-interface Ethernet2
+logging vrf VRFA local-interface Ethernet4
 logging source-interface Loopback0
 logging vrf mgt source-interface Management0
 logging policy match match-list molecule discard
