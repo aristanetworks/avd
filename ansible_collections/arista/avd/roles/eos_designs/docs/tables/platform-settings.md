@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Platform settings.<br>The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.<br>If no matches are found, the first entry containing a platform `default` will be chosen. The default values will be overridden if `platform_settings` is defined.<br>If you need to replace all the default platforms, it is recommended to copy the defaults and modify them. If you need to add custom platforms, create them under<br>`custom_platform_settings`. Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`. |
+    | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Platform settings.<br>The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.<br>If no matches are found, the first entry containing a platform `default` will be chosen.<br>The default values will be overridden if `platform_settings` is defined.<br>If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.<br>If you need to add custom platforms, create them under `custom_platform_settings`.<br>Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`. |
     | [<samp>&nbsp;&nbsp;-&nbsp;platforms</samp>](## "platform_settings.[].platforms") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "platform_settings.[].platforms.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trident_forwarding_table_partition</samp>](## "platform_settings.[].trident_forwarding_table_partition") | String |  |  |  | Only applied when evpn_multicast is true. |
@@ -89,9 +89,11 @@
     ```yaml
     # Platform settings.
     # The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.
-    # If no matches are found, the first entry containing a platform `default` will be chosen. The default values will be overridden if `platform_settings` is defined.
-    # If you need to replace all the default platforms, it is recommended to copy the defaults and modify them. If you need to add custom platforms, create them under
-    # `custom_platform_settings`. Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
+    # If no matches are found, the first entry containing a platform `default` will be chosen.
+    # The default values will be overridden if `platform_settings` is defined.
+    # If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.
+    # If you need to add custom platforms, create them under `custom_platform_settings`.
+    # Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
     platform_settings: # (1)!
       - platforms:
           - <str>
