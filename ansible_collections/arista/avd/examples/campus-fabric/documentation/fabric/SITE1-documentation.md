@@ -19,7 +19,7 @@
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
 | SITE1 | l2leaf | SITE1_LEAF1A | 172.16.100.103/24 | cEOSLab | Provisioned | - |
 | SITE1 | l2leaf | SITE1_LEAF1B | 172.16.100.104/24 | cEOSLab | Provisioned | - |
-| SITE1 | l2leaf | SITE1_LEAF2A | 172.16.100.105/24 | 720XP | Provisioned | - |
+| SITE1 | l2leaf | SITE1_LEAF2A | 172.16.100.105/24 | cEOSLab | Provisioned | - |
 | SITE1 | l2leaf | SITE1_LEAF3A | 172.16.100.106/24 | cEOSLab | Provisioned | - |
 | SITE1 | l2leaf | SITE1_LEAF3B | 172.16.100.107/24 | cEOSLab | Provisioned | - |
 | SITE1 | l2leaf | SITE1_LEAF3C | 172.16.100.108/24 | cEOSLab | Provisioned | - |

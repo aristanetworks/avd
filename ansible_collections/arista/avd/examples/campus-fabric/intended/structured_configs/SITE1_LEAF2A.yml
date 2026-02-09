@@ -46,16 +46,6 @@ ethernet_interfaces:
 - name: Ethernet3/1
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -90,16 +80,6 @@ ethernet_interfaces:
 - name: Ethernet3/2
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -134,16 +114,6 @@ ethernet_interfaces:
 - name: Ethernet3/3
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -178,16 +148,6 @@ ethernet_interfaces:
 - name: Ethernet3/4
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -222,16 +182,6 @@ ethernet_interfaces:
 - name: Ethernet3/5
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -266,16 +216,6 @@ ethernet_interfaces:
 - name: Ethernet3/6
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -310,16 +250,6 @@ ethernet_interfaces:
 - name: Ethernet3/7
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -354,16 +284,6 @@ ethernet_interfaces:
 - name: Ethernet3/8
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -398,16 +318,6 @@ ethernet_interfaces:
 - name: Ethernet3/9
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -442,16 +352,6 @@ ethernet_interfaces:
 - name: Ethernet3/10
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -486,16 +386,6 @@ ethernet_interfaces:
 - name: Ethernet3/11
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -530,16 +420,6 @@ ethernet_interfaces:
 - name: Ethernet3/12
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -574,16 +454,6 @@ ethernet_interfaces:
 - name: Ethernet3/13
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -618,16 +488,6 @@ ethernet_interfaces:
 - name: Ethernet3/14
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -662,16 +522,6 @@ ethernet_interfaces:
 - name: Ethernet3/15
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -706,16 +556,6 @@ ethernet_interfaces:
 - name: Ethernet3/16
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -750,16 +590,6 @@ ethernet_interfaces:
 - name: Ethernet3/17
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -794,16 +624,6 @@ ethernet_interfaces:
 - name: Ethernet3/18
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -838,16 +658,6 @@ ethernet_interfaces:
 - name: Ethernet3/19
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -882,16 +692,6 @@ ethernet_interfaces:
 - name: Ethernet3/20
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -926,16 +726,6 @@ ethernet_interfaces:
 - name: Ethernet3/21
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -970,16 +760,6 @@ ethernet_interfaces:
 - name: Ethernet3/22
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1014,16 +794,6 @@ ethernet_interfaces:
 - name: Ethernet3/23
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1058,16 +828,6 @@ ethernet_interfaces:
 - name: Ethernet3/24
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1102,16 +862,6 @@ ethernet_interfaces:
 - name: Ethernet3/25
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1146,16 +896,6 @@ ethernet_interfaces:
 - name: Ethernet3/26
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1190,16 +930,6 @@ ethernet_interfaces:
 - name: Ethernet3/27
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1234,16 +964,6 @@ ethernet_interfaces:
 - name: Ethernet3/28
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1278,16 +998,6 @@ ethernet_interfaces:
 - name: Ethernet3/29
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1322,16 +1032,6 @@ ethernet_interfaces:
 - name: Ethernet3/30
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1366,16 +1066,6 @@ ethernet_interfaces:
 - name: Ethernet3/31
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1410,16 +1100,6 @@ ethernet_interfaces:
 - name: Ethernet3/32
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1454,16 +1134,6 @@ ethernet_interfaces:
 - name: Ethernet3/33
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1498,16 +1168,6 @@ ethernet_interfaces:
 - name: Ethernet3/34
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1542,16 +1202,6 @@ ethernet_interfaces:
 - name: Ethernet3/35
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1586,16 +1236,6 @@ ethernet_interfaces:
 - name: Ethernet3/36
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1630,16 +1270,6 @@ ethernet_interfaces:
 - name: Ethernet3/37
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1674,16 +1304,6 @@ ethernet_interfaces:
 - name: Ethernet3/38
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1718,16 +1338,6 @@ ethernet_interfaces:
 - name: Ethernet3/39
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1762,16 +1372,6 @@ ethernet_interfaces:
 - name: Ethernet3/40
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1806,16 +1406,6 @@ ethernet_interfaces:
 - name: Ethernet3/41
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1850,16 +1440,6 @@ ethernet_interfaces:
 - name: Ethernet3/42
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1894,16 +1474,6 @@ ethernet_interfaces:
 - name: Ethernet3/43
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1938,16 +1508,6 @@ ethernet_interfaces:
 - name: Ethernet3/44
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -1982,16 +1542,6 @@ ethernet_interfaces:
 - name: Ethernet3/45
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2026,16 +1576,6 @@ ethernet_interfaces:
 - name: Ethernet3/46
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2070,16 +1610,6 @@ ethernet_interfaces:
 - name: Ethernet3/47
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2114,16 +1644,6 @@ ethernet_interfaces:
 - name: Ethernet3/48
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2158,16 +1678,6 @@ ethernet_interfaces:
 - name: Ethernet4/1
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2202,16 +1712,6 @@ ethernet_interfaces:
 - name: Ethernet4/2
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2246,16 +1746,6 @@ ethernet_interfaces:
 - name: Ethernet4/3
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2290,16 +1780,6 @@ ethernet_interfaces:
 - name: Ethernet4/4
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2334,16 +1814,6 @@ ethernet_interfaces:
 - name: Ethernet4/5
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2378,16 +1848,6 @@ ethernet_interfaces:
 - name: Ethernet4/6
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2422,16 +1882,6 @@ ethernet_interfaces:
 - name: Ethernet4/7
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2466,16 +1916,6 @@ ethernet_interfaces:
 - name: Ethernet4/8
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2510,16 +1950,6 @@ ethernet_interfaces:
 - name: Ethernet4/9
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2554,16 +1984,6 @@ ethernet_interfaces:
 - name: Ethernet4/10
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2598,16 +2018,6 @@ ethernet_interfaces:
 - name: Ethernet4/11
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2642,16 +2052,6 @@ ethernet_interfaces:
 - name: Ethernet4/12
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2686,16 +2086,6 @@ ethernet_interfaces:
 - name: Ethernet4/13
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2730,16 +2120,6 @@ ethernet_interfaces:
 - name: Ethernet4/14
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2774,16 +2154,6 @@ ethernet_interfaces:
 - name: Ethernet4/15
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2818,16 +2188,6 @@ ethernet_interfaces:
 - name: Ethernet4/16
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2862,16 +2222,6 @@ ethernet_interfaces:
 - name: Ethernet4/17
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2906,16 +2256,6 @@ ethernet_interfaces:
 - name: Ethernet4/18
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2950,16 +2290,6 @@ ethernet_interfaces:
 - name: Ethernet4/19
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -2994,16 +2324,6 @@ ethernet_interfaces:
 - name: Ethernet4/20
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3038,16 +2358,6 @@ ethernet_interfaces:
 - name: Ethernet4/21
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3082,16 +2392,6 @@ ethernet_interfaces:
 - name: Ethernet4/22
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3126,16 +2426,6 @@ ethernet_interfaces:
 - name: Ethernet4/23
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3170,16 +2460,6 @@ ethernet_interfaces:
 - name: Ethernet4/24
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3214,16 +2494,6 @@ ethernet_interfaces:
 - name: Ethernet4/25
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3258,16 +2528,6 @@ ethernet_interfaces:
 - name: Ethernet4/26
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3302,16 +2562,6 @@ ethernet_interfaces:
 - name: Ethernet4/27
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3346,16 +2596,6 @@ ethernet_interfaces:
 - name: Ethernet4/28
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3390,16 +2630,6 @@ ethernet_interfaces:
 - name: Ethernet4/29
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3434,16 +2664,6 @@ ethernet_interfaces:
 - name: Ethernet4/30
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3478,16 +2698,6 @@ ethernet_interfaces:
 - name: Ethernet4/31
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3522,16 +2732,6 @@ ethernet_interfaces:
 - name: Ethernet4/32
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3566,16 +2766,6 @@ ethernet_interfaces:
 - name: Ethernet4/33
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3610,16 +2800,6 @@ ethernet_interfaces:
 - name: Ethernet4/34
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3654,16 +2834,6 @@ ethernet_interfaces:
 - name: Ethernet4/35
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3698,16 +2868,6 @@ ethernet_interfaces:
 - name: Ethernet4/36
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3742,16 +2902,6 @@ ethernet_interfaces:
 - name: Ethernet4/37
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3786,16 +2936,6 @@ ethernet_interfaces:
 - name: Ethernet4/38
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3830,16 +2970,6 @@ ethernet_interfaces:
 - name: Ethernet4/39
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3874,16 +3004,6 @@ ethernet_interfaces:
 - name: Ethernet4/40
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3918,16 +3038,6 @@ ethernet_interfaces:
 - name: Ethernet4/41
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -3962,16 +3072,6 @@ ethernet_interfaces:
 - name: Ethernet4/42
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4006,16 +3106,6 @@ ethernet_interfaces:
 - name: Ethernet4/43
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4050,16 +3140,6 @@ ethernet_interfaces:
 - name: Ethernet4/44
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4094,16 +3174,6 @@ ethernet_interfaces:
 - name: Ethernet4/45
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4138,16 +3208,6 @@ ethernet_interfaces:
 - name: Ethernet4/46
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4182,16 +3242,6 @@ ethernet_interfaces:
 - name: Ethernet4/47
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4226,16 +3276,6 @@ ethernet_interfaces:
 - name: Ethernet4/48
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4270,16 +3310,6 @@ ethernet_interfaces:
 - name: Ethernet5/1
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4314,16 +3344,6 @@ ethernet_interfaces:
 - name: Ethernet5/2
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4358,16 +3378,6 @@ ethernet_interfaces:
 - name: Ethernet5/3
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4402,16 +3412,6 @@ ethernet_interfaces:
 - name: Ethernet5/4
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4446,16 +3446,6 @@ ethernet_interfaces:
 - name: Ethernet5/5
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4490,16 +3480,6 @@ ethernet_interfaces:
 - name: Ethernet5/6
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4534,16 +3514,6 @@ ethernet_interfaces:
 - name: Ethernet5/7
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4578,16 +3548,6 @@ ethernet_interfaces:
 - name: Ethernet5/8
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4622,16 +3582,6 @@ ethernet_interfaces:
 - name: Ethernet5/9
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4666,16 +3616,6 @@ ethernet_interfaces:
 - name: Ethernet5/10
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4710,16 +3650,6 @@ ethernet_interfaces:
 - name: Ethernet5/11
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4754,16 +3684,6 @@ ethernet_interfaces:
 - name: Ethernet5/12
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4798,16 +3718,6 @@ ethernet_interfaces:
 - name: Ethernet5/13
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4842,16 +3752,6 @@ ethernet_interfaces:
 - name: Ethernet5/14
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4886,16 +3786,6 @@ ethernet_interfaces:
 - name: Ethernet5/15
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4930,16 +3820,6 @@ ethernet_interfaces:
 - name: Ethernet5/16
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -4974,16 +3854,6 @@ ethernet_interfaces:
 - name: Ethernet5/17
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5018,16 +3888,6 @@ ethernet_interfaces:
 - name: Ethernet5/18
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5062,16 +3922,6 @@ ethernet_interfaces:
 - name: Ethernet5/19
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5106,16 +3956,6 @@ ethernet_interfaces:
 - name: Ethernet5/20
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5150,16 +3990,6 @@ ethernet_interfaces:
 - name: Ethernet5/21
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5194,16 +4024,6 @@ ethernet_interfaces:
 - name: Ethernet5/22
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5238,16 +4058,6 @@ ethernet_interfaces:
 - name: Ethernet5/23
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5282,16 +4092,6 @@ ethernet_interfaces:
 - name: Ethernet5/24
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5326,16 +4126,6 @@ ethernet_interfaces:
 - name: Ethernet5/25
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5370,16 +4160,6 @@ ethernet_interfaces:
 - name: Ethernet5/26
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5414,16 +4194,6 @@ ethernet_interfaces:
 - name: Ethernet5/27
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5458,16 +4228,6 @@ ethernet_interfaces:
 - name: Ethernet5/28
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5502,16 +4262,6 @@ ethernet_interfaces:
 - name: Ethernet5/29
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5546,16 +4296,6 @@ ethernet_interfaces:
 - name: Ethernet5/30
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5590,16 +4330,6 @@ ethernet_interfaces:
 - name: Ethernet5/31
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5634,16 +4364,6 @@ ethernet_interfaces:
 - name: Ethernet5/32
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5678,16 +4398,6 @@ ethernet_interfaces:
 - name: Ethernet5/33
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5722,16 +4432,6 @@ ethernet_interfaces:
 - name: Ethernet5/34
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5766,16 +4466,6 @@ ethernet_interfaces:
 - name: Ethernet5/35
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5810,16 +4500,6 @@ ethernet_interfaces:
 - name: Ethernet5/36
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5854,16 +4534,6 @@ ethernet_interfaces:
 - name: Ethernet5/37
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5898,16 +4568,6 @@ ethernet_interfaces:
 - name: Ethernet5/38
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5942,16 +4602,6 @@ ethernet_interfaces:
 - name: Ethernet5/39
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -5986,16 +4636,6 @@ ethernet_interfaces:
 - name: Ethernet5/40
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6030,16 +4670,6 @@ ethernet_interfaces:
 - name: Ethernet5/41
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6074,16 +4704,6 @@ ethernet_interfaces:
 - name: Ethernet5/42
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6118,16 +4738,6 @@ ethernet_interfaces:
 - name: Ethernet5/43
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6162,16 +4772,6 @@ ethernet_interfaces:
 - name: Ethernet5/44
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6206,16 +4806,6 @@ ethernet_interfaces:
 - name: Ethernet5/45
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6250,16 +4840,6 @@ ethernet_interfaces:
 - name: Ethernet5/46
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6294,16 +4874,6 @@ ethernet_interfaces:
 - name: Ethernet5/47
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6338,16 +4908,6 @@ ethernet_interfaces:
 - name: Ethernet5/48
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6382,16 +4942,6 @@ ethernet_interfaces:
 - name: Ethernet6/1
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6426,16 +4976,6 @@ ethernet_interfaces:
 - name: Ethernet6/2
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6470,16 +5010,6 @@ ethernet_interfaces:
 - name: Ethernet6/3
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6514,16 +5044,6 @@ ethernet_interfaces:
 - name: Ethernet6/4
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6558,16 +5078,6 @@ ethernet_interfaces:
 - name: Ethernet6/5
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6602,16 +5112,6 @@ ethernet_interfaces:
 - name: Ethernet6/6
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6646,16 +5146,6 @@ ethernet_interfaces:
 - name: Ethernet6/7
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6690,16 +5180,6 @@ ethernet_interfaces:
 - name: Ethernet6/8
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6734,16 +5214,6 @@ ethernet_interfaces:
 - name: Ethernet6/9
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6778,16 +5248,6 @@ ethernet_interfaces:
 - name: Ethernet6/10
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6822,16 +5282,6 @@ ethernet_interfaces:
 - name: Ethernet6/11
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6866,16 +5316,6 @@ ethernet_interfaces:
 - name: Ethernet6/12
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6910,16 +5350,6 @@ ethernet_interfaces:
 - name: Ethernet6/13
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6954,16 +5384,6 @@ ethernet_interfaces:
 - name: Ethernet6/14
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -6998,16 +5418,6 @@ ethernet_interfaces:
 - name: Ethernet6/15
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7042,16 +5452,6 @@ ethernet_interfaces:
 - name: Ethernet6/16
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7086,16 +5486,6 @@ ethernet_interfaces:
 - name: Ethernet6/17
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7130,16 +5520,6 @@ ethernet_interfaces:
 - name: Ethernet6/18
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7174,16 +5554,6 @@ ethernet_interfaces:
 - name: Ethernet6/19
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7218,16 +5588,6 @@ ethernet_interfaces:
 - name: Ethernet6/20
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7262,16 +5622,6 @@ ethernet_interfaces:
 - name: Ethernet6/21
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7306,16 +5656,6 @@ ethernet_interfaces:
 - name: Ethernet6/22
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7350,16 +5690,6 @@ ethernet_interfaces:
 - name: Ethernet6/23
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7394,16 +5724,6 @@ ethernet_interfaces:
 - name: Ethernet6/24
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7438,16 +5758,6 @@ ethernet_interfaces:
 - name: Ethernet6/25
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7482,16 +5792,6 @@ ethernet_interfaces:
 - name: Ethernet6/26
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7526,16 +5826,6 @@ ethernet_interfaces:
 - name: Ethernet6/27
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7570,16 +5860,6 @@ ethernet_interfaces:
 - name: Ethernet6/28
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7614,16 +5894,6 @@ ethernet_interfaces:
 - name: Ethernet6/29
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7658,16 +5928,6 @@ ethernet_interfaces:
 - name: Ethernet6/30
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7702,16 +5962,6 @@ ethernet_interfaces:
 - name: Ethernet6/31
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7746,16 +5996,6 @@ ethernet_interfaces:
 - name: Ethernet6/32
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7790,16 +6030,6 @@ ethernet_interfaces:
 - name: Ethernet6/33
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7834,16 +6064,6 @@ ethernet_interfaces:
 - name: Ethernet6/34
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7878,16 +6098,6 @@ ethernet_interfaces:
 - name: Ethernet6/35
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7922,16 +6132,6 @@ ethernet_interfaces:
 - name: Ethernet6/36
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -7966,16 +6166,6 @@ ethernet_interfaces:
 - name: Ethernet6/37
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8010,16 +6200,6 @@ ethernet_interfaces:
 - name: Ethernet6/38
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8054,16 +6234,6 @@ ethernet_interfaces:
 - name: Ethernet6/39
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8098,16 +6268,6 @@ ethernet_interfaces:
 - name: Ethernet6/40
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8142,16 +6302,6 @@ ethernet_interfaces:
 - name: Ethernet6/41
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8186,16 +6336,6 @@ ethernet_interfaces:
 - name: Ethernet6/42
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8230,16 +6370,6 @@ ethernet_interfaces:
 - name: Ethernet6/43
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8274,16 +6404,6 @@ ethernet_interfaces:
 - name: Ethernet6/44
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8318,16 +6438,6 @@ ethernet_interfaces:
 - name: Ethernet6/45
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8362,16 +6472,6 @@ ethernet_interfaces:
 - name: Ethernet6/46
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8406,16 +6506,6 @@ ethernet_interfaces:
 - name: Ethernet6/47
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8450,16 +6540,6 @@ ethernet_interfaces:
 - name: Ethernet6/48
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8494,16 +6574,6 @@ ethernet_interfaces:
 - name: Ethernet7/1
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8538,16 +6608,6 @@ ethernet_interfaces:
 - name: Ethernet7/2
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8582,16 +6642,6 @@ ethernet_interfaces:
 - name: Ethernet7/3
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8626,16 +6676,6 @@ ethernet_interfaces:
 - name: Ethernet7/4
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8670,16 +6710,6 @@ ethernet_interfaces:
 - name: Ethernet7/5
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8714,16 +6744,6 @@ ethernet_interfaces:
 - name: Ethernet7/6
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8758,16 +6778,6 @@ ethernet_interfaces:
 - name: Ethernet7/7
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8802,16 +6812,6 @@ ethernet_interfaces:
 - name: Ethernet7/8
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8846,16 +6846,6 @@ ethernet_interfaces:
 - name: Ethernet7/9
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8890,16 +6880,6 @@ ethernet_interfaces:
 - name: Ethernet7/10
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8934,16 +6914,6 @@ ethernet_interfaces:
 - name: Ethernet7/11
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -8978,16 +6948,6 @@ ethernet_interfaces:
 - name: Ethernet7/12
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9022,16 +6982,6 @@ ethernet_interfaces:
 - name: Ethernet7/13
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9066,16 +7016,6 @@ ethernet_interfaces:
 - name: Ethernet7/14
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9110,16 +7050,6 @@ ethernet_interfaces:
 - name: Ethernet7/15
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9154,16 +7084,6 @@ ethernet_interfaces:
 - name: Ethernet7/16
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9198,16 +7118,6 @@ ethernet_interfaces:
 - name: Ethernet7/17
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9242,16 +7152,6 @@ ethernet_interfaces:
 - name: Ethernet7/18
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9286,16 +7186,6 @@ ethernet_interfaces:
 - name: Ethernet7/19
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9330,16 +7220,6 @@ ethernet_interfaces:
 - name: Ethernet7/20
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9374,16 +7254,6 @@ ethernet_interfaces:
 - name: Ethernet7/21
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9418,16 +7288,6 @@ ethernet_interfaces:
 - name: Ethernet7/22
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9462,16 +7322,6 @@ ethernet_interfaces:
 - name: Ethernet7/23
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9506,16 +7356,6 @@ ethernet_interfaces:
 - name: Ethernet7/24
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9550,16 +7390,6 @@ ethernet_interfaces:
 - name: Ethernet7/25
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9594,16 +7424,6 @@ ethernet_interfaces:
 - name: Ethernet7/26
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9638,16 +7458,6 @@ ethernet_interfaces:
 - name: Ethernet7/27
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9682,16 +7492,6 @@ ethernet_interfaces:
 - name: Ethernet7/28
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9726,16 +7526,6 @@ ethernet_interfaces:
 - name: Ethernet7/29
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9770,16 +7560,6 @@ ethernet_interfaces:
 - name: Ethernet7/30
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9814,16 +7594,6 @@ ethernet_interfaces:
 - name: Ethernet7/31
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9858,16 +7628,6 @@ ethernet_interfaces:
 - name: Ethernet7/32
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9902,16 +7662,6 @@ ethernet_interfaces:
 - name: Ethernet7/33
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9946,16 +7696,6 @@ ethernet_interfaces:
 - name: Ethernet7/34
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -9990,16 +7730,6 @@ ethernet_interfaces:
 - name: Ethernet7/35
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10034,16 +7764,6 @@ ethernet_interfaces:
 - name: Ethernet7/36
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10078,16 +7798,6 @@ ethernet_interfaces:
 - name: Ethernet7/37
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10122,16 +7832,6 @@ ethernet_interfaces:
 - name: Ethernet7/38
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10166,16 +7866,6 @@ ethernet_interfaces:
 - name: Ethernet7/39
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10210,16 +7900,6 @@ ethernet_interfaces:
 - name: Ethernet7/40
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10254,16 +7934,6 @@ ethernet_interfaces:
 - name: Ethernet7/41
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10298,16 +7968,6 @@ ethernet_interfaces:
 - name: Ethernet7/42
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10342,16 +8002,6 @@ ethernet_interfaces:
 - name: Ethernet7/43
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10386,16 +8036,6 @@ ethernet_interfaces:
 - name: Ethernet7/44
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10430,16 +8070,6 @@ ethernet_interfaces:
 - name: Ethernet7/45
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10474,16 +8104,6 @@ ethernet_interfaces:
 - name: Ethernet7/46
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10518,16 +8138,6 @@ ethernet_interfaces:
 - name: Ethernet7/47
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10562,16 +8172,6 @@ ethernet_interfaces:
 - name: Ethernet7/48
   description: IDF2 Standard Port
   shutdown: false
-  poe:
-    priority: critical
-    reboot:
-      action: maintain
-    link_down:
-      action: maintain
-    shutdown:
-      action: power-off
-    limit:
-      class: 4
   dot1x:
     port_control: auto
     reauthentication: true
@@ -10631,8 +8231,10 @@ management_interfaces:
   gateway: 172.16.100.1
 metadata:
   is_deployed: true
-  platform: 720XP
+  platform: cEOSLab
   fabric_name: SITE1
+  validate_hardware:
+    enabled: false
 ntp:
   local_interface:
     name: Management1
