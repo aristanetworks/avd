@@ -1,2 +1,2 @@
 # PyAVD must follow the exact same version as the Ansible collection.
-pyavd[ansible-collection]==6.0.0.dev7
+pyavd[ansible-collection]==6.0.0.dev8
