@@ -28,7 +28,7 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "logging.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "logging.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "logging.vrfs.[].source_interface") | String |  |  |  | Source interface name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "logging.vrfs.[].local_interface") | String |  |  |  | Source Interface Name.<br>`logging vrf xxxx source-interface xxxx` is deprecated in latest EOS versions(4.35.1).<br>This key sets new command `logging vrf xxxx local-interface xxxx`.<br>`source_interface` takes precedence over `local_interface`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "logging.vrfs.[].local_interface") | String |  |  |  | Source Interface Name.<br>`logging vrf <vrf> source-interface <interface>` is deprecated in latest EOS versions(4.35.1).<br>This key sets the new command `logging vrf <vrf> local-interface <interface>`.<br>`source_interface` takes precedence over `local_interface`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hosts</samp>](## "logging.vrfs.[].hosts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "logging.vrfs.[].hosts.[].name") | String | Required, Unique |  |  | Syslog server name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "logging.vrfs.[].hosts.[].protocol") | String |  | `udp` | Valid Values:<br>- <code>tcp</code><br>- <code>udp</code><br>- <code>tls</code> |  |
@@ -108,8 +108,8 @@
           source_interface: <str>
 
           # Source Interface Name.
-          # `logging vrf xxxx source-interface xxxx` is deprecated in latest EOS versions(4.35.1).
-          # This key sets new command `logging vrf xxxx local-interface xxxx`.
+          # `logging vrf <vrf> source-interface <interface>` is deprecated in latest EOS versions(4.35.1).
+          # This key sets the new command `logging vrf <vrf> local-interface <interface>`.
           # `source_interface` takes precedence over `local_interface`.
           local_interface: <str>
           hosts:
