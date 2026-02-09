@@ -885,13 +885,13 @@ keys:
     default: false
     description: 'Enable debug mode for AVD.
 
-      In this mode, the AVD temporary directory defined by `avd_tmp_dir` is not cleaned
+      In debug mode, the AVD temporary directory defined by `avd_tmp_dir` is not cleaned
       up at the end of each role.
 
       This allows for inspecting templated inputs, validated inputs, and facts data
       used internally by AVD plugins.
 
-      If Ansible Vault is configured, some files in the temporary directory may be
+      When Ansible Vault is configured, temporary files holding input variables are
       encrypted and decryption is required to inspect them.
 
       '
@@ -919,7 +919,8 @@ keys:
       Defaults to ''intended/tmp''. The temporary directory is cleaned up at the end
       of each role.
 
-      If Ansible Vault is configured, some files in this directory may be encrypted.
+      When Ansible Vault is configured, temporary files holding input variables are
+      encrypted.
 
       '
   avd_vault_id:

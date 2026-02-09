@@ -88585,12 +88585,12 @@ class EosDesigns(EosDesignsRootModel):
     avd_debug: bool
     """
     Enable debug mode for AVD.
-    In this mode, the AVD temporary directory defined by `avd_tmp_dir` is not
-    cleaned up at the end of each role.
-    This allows for inspecting templated inputs, validated inputs,
-    and facts data used internally by AVD plugins.
-    If Ansible Vault is configured, some files in the
-    temporary directory may be encrypted and decryption is required to inspect them.
+    In debug mode, the AVD temporary directory defined by `avd_tmp_dir` is
+    not cleaned up at the end of each role.
+    This allows for inspecting templated inputs, validated
+    inputs, and facts data used internally by AVD plugins.
+    When Ansible Vault is configured, temporary
+    files holding input variables are encrypted and decryption is required to inspect them.
 
     Default value: `False`
     """
@@ -88628,7 +88628,8 @@ class EosDesigns(EosDesignsRootModel):
     used internally by AVD plugins.
     Defaults to 'intended/tmp'. The temporary directory is cleaned up at
     the end of each role.
-    If Ansible Vault is configured, some files in this directory may be encrypted.
+    When Ansible Vault is configured, temporary files holding input variables are
+    encrypted.
     """
     eos_designs_validation_configuration: EosDesignsValidationConfiguration
     """
@@ -90817,12 +90818,12 @@ class EosDesigns(EosDesignsRootModel):
                 application_classification: Application traffic recognition configuration.
                 avd_debug:
                    Enable debug mode for AVD.
-                   In this mode, the AVD temporary directory defined by `avd_tmp_dir` is not
-                   cleaned up at the end of each role.
-                   This allows for inspecting templated inputs, validated inputs,
-                   and facts data used internally by AVD plugins.
-                   If Ansible Vault is configured, some files in the
-                   temporary directory may be encrypted and decryption is required to inspect them.
+                   In debug mode, the AVD temporary directory defined by `avd_tmp_dir` is
+                   not cleaned up at the end of each role.
+                   This allows for inspecting templated inputs, validated
+                   inputs, and facts data used internally by AVD plugins.
+                   When Ansible Vault is configured, temporary
+                   files holding input variables are encrypted and decryption is required to inspect them.
                 avd_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
@@ -90842,7 +90843,8 @@ class EosDesigns(EosDesignsRootModel):
                    used internally by AVD plugins.
                    Defaults to 'intended/tmp'. The temporary directory is cleaned up at
                    the end of each role.
-                   If Ansible Vault is configured, some files in this directory may be encrypted.
+                   When Ansible Vault is configured, temporary files holding input variables are
+                   encrypted.
                 eos_designs_validation_configuration:
                    Validation configuration options when validating AVD Design inputs.
 
