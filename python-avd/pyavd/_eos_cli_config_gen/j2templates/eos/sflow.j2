@@ -63,7 +63,7 @@ no sflow extension {{ extension.name }}
 sflow interface disable default
 {%     endif %}
 {%     if sflow.interface.egress.enable_default is arista.avd.defined(true) %}
-{%         if sflow_interface_egress_unmodified is arista.avd.defined(true) %}
+{%         if sflow.interface.egress.unmodified is arista.avd.defined(true) %}
 sflow interface egress unmodified enable default
 {%         else %}
 sflow interface egress enable default
