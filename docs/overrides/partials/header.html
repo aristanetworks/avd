@@ -81,8 +81,11 @@
         </label>
 
     <!-- OUR CUSTOM TOGGLE SWITCH -->
-    {# This 'if' block checks if the string is present in the page's main title #}
-    {% if "input variables" in page.title | lower %}
+    {# Show toggle on pages with tabbed Table/YAML content #}
+    {% if page and page.title %}
+    {% set page_title = (page.meta.title | default(page.title, true)) | lower %}
+    {% set show_toggle = "data models" in page_title or "input variables" in page_title %}
+    {% if show_toggle %}
     <div class="md-header__lang-switch-container">
       <div class="md-nav__lang-switch" title="Switch between Table and YAML examples">
         <span class="lang-label">Table</span>
@@ -93,6 +96,7 @@
         <span class="lang-label">YAML</span>
       </div>
     </div>
+    {% endif %}
     {% endif %}
     <!-- END CUSTOM TOGGLE SWITCH -->
 
