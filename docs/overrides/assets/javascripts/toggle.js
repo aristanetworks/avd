@@ -12,69 +12,91 @@ document$.subscribe(function() {
   const LANG_B = "YAML";
   const STORAGE_KEY = 'preferred-code-language';
 
-  const switchToTab = (tabName, preserveScroll) => {
+  // Create loading overlay if it doesn't exist
+  let loadingOverlay = document.getElementById("toggle-loading-overlay");
+  if (!loadingOverlay) {
+    loadingOverlay = document.createElement("div");
+    loadingOverlay.id = "toggle-loading-overlay";
+    loadingOverlay.className = "toggle-loading-overlay";
+    loadingOverlay.innerHTML = '<div class="toggle-spinner"></div>';
+    document.body.appendChild(loadingOverlay);
+  }
+
+  const showLoading = () => {
+    loadingOverlay.classList.add("active");
+  };
+
+  const hideLoading = () => {
+    loadingOverlay.classList.remove("active");
+  };
+
+  // Find the best anchor element and calculate offset from it
+  const findScrollAnchor = () => {
+    const headings = document.querySelectorAll('.md-content__inner h1, .md-content__inner h2, .md-content__inner h3, .md-content__inner h4, .md-content__inner h5, .md-content__inner h6');
+    const currentScrollY = window.scrollY;
+    const headerOffset = 80; // Account for sticky header
+
     let anchorElement = null;
-    let scrollOffset = 0;
 
-    // Step 1: If preserving scroll, find a stable anchor (the nearest heading
-    // above the viewport) and calculate the user's offset from it.
-    if (preserveScroll) {
-      const headings = document.querySelectorAll('.md-content__inner h1, .md-content__inner h2, .md-content__inner h3, .md-content__inner h4');
-      const currentScrollY = window.scrollY;
-
-      // Find the last heading that is located above the current top of the viewport.
-      for (const heading of headings) {
-        if (heading.offsetTop < currentScrollY) {
-          anchorElement = heading;
-        } else {
-          // We've gone past the current view, so the previous heading was our anchor.
-          break;
-        }
-      }
-
-      // If we found a stable anchor, calculate how far down from it the user has scrolled.
-      if (anchorElement) {
-        scrollOffset = currentScrollY - anchorElement.offsetTop;
+    // Find the last heading that is above or at the current scroll position
+    for (const heading of headings) {
+      const headingTop = heading.getBoundingClientRect().top + window.scrollY;
+      if (headingTop <= currentScrollY + headerOffset + 50) {
+        anchorElement = heading;
+      } else {
+        break;
       }
     }
 
-    // Step 2: Switch all the tabs by finding and clicking the first matching label.
-    // Material for MkDocs with content.tabs.link will sync all other tabs automatically.
-    const tabLabels = document.querySelectorAll(".md-typeset .tabbed-labels > label");
-    if (tabLabels.length === 0) {
-      console.log("No tab labels found");
-      return;
+    if (anchorElement) {
+      const anchorTop = anchorElement.getBoundingClientRect().top + window.scrollY;
+      return {
+        element: anchorElement,
+        offset: currentScrollY - anchorTop
+      };
     }
 
-    // Find and click the first matching tab label - Material will sync the rest
-    let clicked = false;
-    for (const label of tabLabels) {
-      if (label.textContent.trim().toLowerCase() === tabName.toLowerCase()) {
-        console.log("Clicking tab:", label.textContent.trim());
-        label.click();
-        clicked = true;
-        break; // Only need to click one - content.tabs.link syncs the rest
-      }
-    }
+    return null;
+  };
 
-    if (!clicked) {
-      console.log("No matching tab found for:", tabName);
-    }
+  // Restore scroll position relative to anchor
+  const restoreScrollPosition = (anchor) => {
+    if (!anchor || !anchor.element) return;
 
-    // Step 3: If we have an anchor, restore the scroll position relative to it.
-    if (preserveScroll && anchorElement) {
-      // The timeout gives the browser a moment to reflow the content.
+    // Wait for DOM to reflow after tab switch
+    requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        // Calculate the new required scroll position based on the anchor's
-        // (potentially new) position and the original offset.
-        const newScrollY = anchorElement.offsetTop + scrollOffset;
+        const newAnchorTop = anchor.element.getBoundingClientRect().top + window.scrollY;
+        const newScrollY = newAnchorTop + anchor.offset;
 
         window.scroll({
-          top: newScrollY,
+          top: Math.max(0, newScrollY),
           left: 0,
           behavior: "instant"
         });
       });
+    });
+  };
+
+  const switchToTab = (tabName, preserveScroll, scrollAnchor) => {
+    // Step 1: Switch all the tabs by finding and clicking the first matching label.
+    // Material for MkDocs with content.tabs.link will sync all other tabs automatically.
+    const tabLabels = document.querySelectorAll(".md-typeset .tabbed-labels > label");
+    if (tabLabels.length === 0) {
+      return;
+    }
+
+    // Find and click the first matching tab label - Material will sync the rest
+    for (const label of tabLabels) {
+      if (label.textContent.trim().toLowerCase() === tabName.toLowerCase()) {
+        label.click();
+        break; // Only need to click one - content.tabs.link syncs the rest
+      }
+    }
+
+    // Step 2: Restore scroll position if we have an anchor
+    if (preserveScroll && scrollAnchor) {
+      restoreScrollPosition(scrollAnchor);
     }
   };
 
@@ -83,17 +105,31 @@ document$.subscribe(function() {
   const initialLang = (savedLang === LANG_B) ? LANG_B : LANG_A;
   switchInput.checked = (initialLang === LANG_B);
 
-  // Delay initial tab switch to ensure DOM is fully ready
+  // Delay initial tab switch to ensure DOM is fully ready (no scroll preservation needed)
   requestAnimationFrame(() => {
-    switchToTab(initialLang, false);
+    switchToTab(initialLang, false, null);
   });
 
   if (!switchInput.hasAttribute('data-listener-attached')) {
     switchInput.addEventListener("change", (event) => {
       const targetLang = event.target.checked ? LANG_B : LANG_A;
-      console.log("Toggle changed to:", targetLang);
-      switchToTab(targetLang, true);
-      localStorage.setItem(STORAGE_KEY, targetLang);
+
+      // Capture scroll anchor BEFORE showing spinner or switching tabs
+      const scrollAnchor = findScrollAnchor();
+
+      // Show loading spinner
+      showLoading();
+
+      // Use setTimeout to allow the spinner to render before switching tabs
+      setTimeout(() => {
+        switchToTab(targetLang, true, scrollAnchor);
+        localStorage.setItem(STORAGE_KEY, targetLang);
+
+        // Hide loading spinner after scroll restoration completes
+        setTimeout(() => {
+          hideLoading();
+        }, 100);
+      }, 50);
     });
     switchInput.setAttribute('data-listener-attached', 'true');
   }
