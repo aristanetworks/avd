@@ -8,7 +8,7 @@ Prerequisites:
     pip install requests
 
 Usage:
-    python scripts/export_excalidraw.py [input_dir]
+    python docs/scripts/export_excalidraw.py [input_dir]
 
 If no input_dir is specified, defaults to docs/_media/excalidraw/
 """
