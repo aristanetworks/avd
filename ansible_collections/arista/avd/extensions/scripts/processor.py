@@ -139,7 +139,7 @@ def process_config(config_path: str, output_dir: str | None = None) -> None:
 
         # Use job-specific output_dir if provided, otherwise use the global one
         job_output_dir: str | None = job.get("output_dir")
-        final_output_dir: str | None = job_output_dir if job_output_dir else output_dir
+        final_output_dir: str | None = job_output_dir or output_dir
 
         if not final_output_dir:
             logger.error("ERROR: No output_dir specified for artifact '%s'", artifact_filename)

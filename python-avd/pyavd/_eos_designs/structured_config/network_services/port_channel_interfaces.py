@@ -131,7 +131,7 @@ class PortChannelInterfacesMixin(Protocol):
                     vrf=vrf.name if vrf.name != "default" else None,
                 )
                 port_channel_interface.metadata._update(
-                    peer_interface=l3_port_channel.peer_port_channel if l3_port_channel.peer_port_channel else None,
+                    peer_interface=l3_port_channel.peer_port_channel or None,
                     peer=l3_port_channel.peer,
                     peer_type="l3_port_channel",
                 )
