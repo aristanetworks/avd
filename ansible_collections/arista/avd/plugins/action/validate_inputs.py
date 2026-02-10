@@ -174,12 +174,12 @@ class ActionModule(AvdActionPlugin):
         mp_workers, mt_workers = get_workers(len(hosts_to_process), task_vars["ansible_forks"])
         templated_path, validated_path = get_role_tmp_paths(role_name=SCHEMA_MAP[plugin_args.schema_name], tmp_dir=plugin_args.tmp_dir, clean=True)
 
-        # Create vault and file handlers.
+        # Create Vault and file handlers.
         vault_handler = AVDVaultHandler(self._loader, vault_id=plugin_args.vault_id)
         file_handler = AVDFileHandler(vault_handler)
 
-        # Check if vault is configured for encrypting temporary files.
-        if vault_handler.has_vault:
+        # Check if Vault secrets are configured for encrypting temporary files.
+        if vault_handler.has_vault_secrets:
             self.logger.info("Ansible Vault is configured - temporary files will be encrypted")
         else:
             self.logger.info("Ansible Vault is not configured - temporary files will not be encrypted")
