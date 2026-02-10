@@ -65,12 +65,11 @@ def get_eos_designs_facts_path(tmp_dir: str, clean: bool = False) -> Path:
 
 def get_tmp_paths(tmp_dir: str, clean: bool = False) -> tuple[Path, Path]:
     """
-    Return the temporary paths for 'templated' and 'validated' directories to be used by a specific Ansible role.
+    Return the temporary paths for 'templated' and 'validated' directories to be used inside tmp_dir.
 
     This function ensures that the directories exist before returning.
 
     Args:
-        role_name: The role name. Either 'eos_designs' or 'eos_cli_config_gen'.
         tmp_dir: Path to use as the AVD temporary directory.
         clean: If True, remove all files in the role's temporary directory before returning.
 
@@ -82,7 +81,7 @@ def get_tmp_paths(tmp_dir: str, clean: bool = False) -> tuple[Path, Path]:
     templated_path = tmp_path / TEMPLATED_DIR_NAME
     validated_path = tmp_path / VALIDATED_DIR_NAME
 
-    # Ensure directories exist. parents=True handles the creation of the 'role_name' intermediate dir if needed.
+    # Ensure directories exist.
     # Clean if requested.
     for path in [templated_path, validated_path]:
         if path.exists() and clean:
