@@ -46,6 +46,7 @@ doc = [
     "mkdocs-exclude",
     "mkdocs-include-dir-to-nav",
     "mkdocstrings[python]",
+    "mkdocs-excalidraw",
 ]
 molecule = [
     "molecule>=25.11.0",
