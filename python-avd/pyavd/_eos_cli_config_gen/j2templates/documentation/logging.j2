@@ -46,16 +46,20 @@
 {%         endif %}
 | RFC5424 | {{ logging.format.rfc5424 | arista.avd.default(false) }} |
 {%     endif %}
-{%     if logging.vrfs is arista.avd.defined or logging.source_interface is arista.avd.defined %}
+{%     if logging.vrfs is arista.avd.defined or logging.source_interface is arista.avd.defined or logging.local_interface is arista.avd.defined %}
 
 | VRF | Source Interface |
 | --- | ---------------- |
 {%         if logging.source_interface is arista.avd.defined %}
 | - | {{ logging.source_interface }} |
+{%         elif logging.local_interface is arista.avd.defined %}
+| - | {{ logging.local_interface }} |
 {%         endif %}
 {%         for vrf in logging.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 {%             if vrf.source_interface is arista.avd.defined %}
 | {{ vrf.name }} | {{ vrf.source_interface }} |
+{%             elif vrf.local_interface is arista.avd.defined %}
+| {{ vrf.name }} | {{ vrf.local_interface }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

@@ -4488,24 +4488,37 @@ keys:
     type: list
     documentation_options:
       table: custom-platform-settings
-    description: Custom Platform settings to override the default `platform_settings`.
-      This list will be prepended to the list of `platform_settings`. The first entry
-      found where the `platform` node setting is fully matched by any regex in the
-      `platforms` list will be chosen. If no matches are found, the first entry containing
-      a platform `default` will be chosen.
+    description: 'Custom Platform settings to override the default `platform_settings`.
+
+      This list will be prepended to the list of `platform_settings`.
+
+      The first entry found where the `platform` node setting is fully matched by
+      any regex in the `platforms` list will be chosen.
+
+      If no matches are found, the first entry containing a platform `default` will
+      be chosen.'
   platform_settings:
     $ref: eos_designs#/$defs/platform_settings
     type: list
     documentation_options:
       table: platform-settings
-    description: Platform settings. The first entry found where the `platform` node
-      setting is fully matched by any regex in the `platforms` list will be chosen.
+    description: 'Platform settings.
+
+      The first entry found where the `platform` node setting is fully matched by
+      any regex in the `platforms` list will be chosen.
+
       If no matches are found, the first entry containing a platform `default` will
-      be chosen. The default values will be overridden if `platform_settings` is defined.
+      be chosen.
+
+      The default values will be overridden if `platform_settings` is defined.
+
       If you need to replace all the default platforms, it is recommended to copy
-      the defaults and modify them. If you need to add custom platforms, create them
-      under `custom_platform_settings`. Entries under `custom_platform_settings` will
-      be matched before the equivalent entries from `platform_settings`.
+      the defaults and modify them.
+
+      If you need to add custom platforms, create them under `custom_platform_settings`.
+
+      Entries under `custom_platform_settings` will be matched before the equivalent
+      entries from `platform_settings`.'
     default:
     - platforms:
       - default
@@ -4836,7 +4849,7 @@ keys:
         evpn_gateway_all_active_multihoming: true
         sflow_subinterfaces: false
         hardware_validation: false
-      management_interface: Management0
+      management_interface: Management1
       reload_delay:
         mlag: 300
         non_mlag: 330
