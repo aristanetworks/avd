@@ -5,7 +5,7 @@
     input_dir: "{{ input_dir }}/missing_dir"
     input_suffix: json
     read_from_input_dir: true
-    tmp_dir: "{{ actual_output_dir }}/tmp"
+    tmp_dir: "{{ actual_output_dir }}/tmp/eos_cli_config_gen"
   delegate_to: localhost
   check_mode: false
   run_once: true

@@ -46,13 +46,13 @@ The plugin performs two phases:
 ---
 - name: Validate eos_designs inputs for the fabric
   arista.avd.validate_inputs:
-    tmp_dir: "{{ output_dir }}/tmp"
+    tmp_dir: "intended/tmp/eos_designs"
     schema_name: avd_design
     fail_on_validation_errors: true
 
 - name: Validate eos_designs inputs with custom validation configuration
   arista.avd.validate_inputs:
-    tmp_dir: "{{ output_dir }}/tmp"
+    tmp_dir: "intended/tmp/eos_designs"
     schema_name: avd_design
     fail_on_validation_errors: true
     validation_configuration:
@@ -60,7 +60,7 @@ The plugin performs two phases:
 
 - name: Validate eos_cli_config_gen inputs from structured config files
   arista.avd.validate_inputs:
-    tmp_dir: "{{ output_dir }}/tmp"
+    tmp_dir: "intended/tmp/eos_cli_config_gen"
     schema_name: eos_config
     input_dir: "{{ inventory_dir }}/intended/structured_configs"
     input_suffix: "yml"
@@ -68,7 +68,7 @@ The plugin performs two phases:
 
 - name: Validate inputs with specific vault identity (when multiple vault identities are configured)
   arista.avd.validate_inputs:
-    tmp_dir: "{{ output_dir }}/tmp"
+    tmp_dir: "intended/tmp/eos_designs"
     schema_name: avd_design
     vault_id: prod
     fail_on_validation_errors: true

@@ -50,6 +50,7 @@ Note: Input validation is performed by the `arista.avd.validate_inputs` plugin, 
 ---
 - name: Generate device configuration in structured format
   arista.avd.eos_designs_structured_config:
+    tmp_dir: "intended/tmp/eos_designs"
     templates:
       - template: "custom_templates/custom_feature1.j2"
       - template: "custom_templates/custom_feature2.j2"
