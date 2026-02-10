@@ -5,7 +5,7 @@ spine:
   # Define variables for all nodes of this type
   defaults:
     # Set the relevant platform as each platform has different default values in Ansible AVD
-    platform: vEOS-lab
+    platform: cEOSLab
     # Logical Pool of Router ID's, formatted as IPv4 addresses, to configure BGP router ID. Does not configure any IPv4 address
     router_id_pool: 10.255.0.0/24
     # Pool of IPv6 addresses to configure interface Loopback0 used for BGP EVPN sessions
