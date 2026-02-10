@@ -55,19 +55,19 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.107/24 | 172.16.100.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.107/24 | 172.16.100.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
-interface Management0
+interface Management1
    description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
@@ -96,12 +96,12 @@ ip name-server vrf MGMT 8.8.8.8
 
 | Source interface | vrf |
 | ---------------- | --- |
-| Management0 | MGMT |
+| Management1 | MGMT |
 
 #### DNS Domain Lookup Device Configuration
 
 ```eos
-ip domain lookup vrf MGMT source-interface Management0
+ip domain lookup vrf MGMT source-interface Management1
 ```
 
 ### NTP
@@ -112,7 +112,7 @@ ip domain lookup vrf MGMT source-interface Management0
 
 | Interface | VRF |
 | --------- | --- |
-| Management0 | MGMT |
+| Management1 | MGMT |
 
 ##### NTP Servers
 
@@ -127,7 +127,7 @@ NTP servers VRF: MGMT
 
 ```eos
 !
-ntp local-interface vrf MGMT Management0
+ntp local-interface vrf MGMT Management1
 ntp server vrf MGMT pool.ntp.org
 ntp server vrf MGMT time.google.com prefer
 ```
@@ -202,13 +202,13 @@ radius-server host agni.arista.com vrf MGMT key 7 <removed>
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-| MGMT | Management0 |
+| MGMT | Management1 |
 
 #### IP SOURCE Source Interfaces Device Configuration
 
 ```eos
 !
-ip radius vrf MGMT source-interface Management0
+ip radius vrf MGMT source-interface Management1
 ```
 
 ### AAA Authentication
