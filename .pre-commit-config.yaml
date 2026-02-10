@@ -198,6 +198,16 @@ repos:
             docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
           )$
 
+  - repo: https://github.com/pdm-project/pdm
+    rev: "2.26.6"
+    hooks:
+      - id: pdm-export
+        name: Extract requirements from pyavd/pyproject.toml to requirements.txt
+        entry: pdm export -p python-avd -o development/requirements.txt --without-hashes --prod -G ansible --pyproject
+        language: python
+        files: python-avd/pyproject.toml
+        pass_filenames: false
+
   - repo: local
     hooks:
 
@@ -291,13 +301,6 @@ repos:
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
         additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=43.0.0', 'deepmerge>=1.1.0']
-
-      - id: extract-requirements
-        name: Extract requirements from pyproject.toml to requirements.txt
-        entry: sh -c 'development/extract_requirements.py'
-        language: python
-        files: python-avd/pyproject.toml
-        pass_filenames: true
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.20.0
