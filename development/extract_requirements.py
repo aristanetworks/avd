@@ -3,18 +3,19 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """
-Extract requirements from pyavd/pyproject.toml and write to requirements.txt.
+Extract requirements from pyproject.toml and write to requirements.txt.
 
 This script reads the pyproject.toml file, extracts all dependencies including
 optional dependencies, and writes them to a requirements.txt file.
 """
 
+import sys
 from pathlib import Path
 
 try:
     import tomllib
 except ModuleNotFoundError:
-    import tomli as tomllib
+    import tomli as tomllib  # type: ignore[import-not-found]
 
 
 def extract_requirements(pyproject_path: Path, output_path: Path) -> None:
@@ -41,9 +42,7 @@ def extract_requirements(pyproject_path: Path, output_path: Path) -> None:
 
         # Add ansible dependencies (excluding self-references like pyavd[ansible-collection])
         if "ansible" in optional_deps:
-            for dep in optional_deps["ansible"]:
-                if dep != "pyavd[ansible-collection]":
-                    requirements.append(dep)
+            requirements.extend(dep for dep in optional_deps["ansible"] if dep != "pyavd[ansible-collection]")
 
         # Add ansible-collection dependencies
         if "ansible-collection" in optional_deps:
@@ -62,22 +61,23 @@ def extract_requirements(pyproject_path: Path, output_path: Path) -> None:
         for req in unique_requirements:
             f.write(f"{req}\n")
 
-    print(f"✅ Successfully extracted {len(unique_requirements)} requirements to {output_path}")
-    print("\nRequirements written:")
-    for req in unique_requirements:
-        print(f"  - {req}")
-
-
 if __name__ == "__main__":
-    # Define paths
+    # Get pyproject.toml path from pre-commit (first argument)
+    if len(sys.argv) > 1:
+        pyproject_path = Path(sys.argv[1])
+    else:
+        # Fallback for manual execution
+        script_dir = Path(__file__).parent
+        pyproject_path = script_dir.parent / "python-avd" / "pyproject.toml"
+
+    # Output path is always relative to script location
     script_dir = Path(__file__).parent
-    pyproject_path = script_dir.parent / "python-avd" / "pyproject.toml"
     output_path = script_dir / "requirements.txt"
 
     # Check if pyproject.toml exists
     if not pyproject_path.exists():
-        print(f"❌ Error: {pyproject_path} not found")
-        exit(1)
+        msg = f"Error: {pyproject_path} not found"
+        raise FileNotFoundError(msg)
 
     # Extract requirements
     extract_requirements(pyproject_path, output_path)

@@ -294,10 +294,10 @@ repos:
 
       - id: extract-requirements
         name: Extract requirements from pyproject.toml to requirements.txt
-        entry: sh -c 'exec development/extract_requirements.py'
+        entry: sh -c 'development/extract_requirements.py'
         language: python
         files: python-avd/pyproject.toml
-        pass_filenames: false
+        pass_filenames: true
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.20.0
