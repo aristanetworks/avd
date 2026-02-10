@@ -3,11 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from asyncio import gather
+from asyncio import gather, to_thread
 from logging import getLogger
+from pathlib import Path
 from typing import TYPE_CHECKING, Literal, Protocol
-
-from anyio import Path
 
 from pyavd._cv.api.arista.configlet.v1 import (
     Configlet,
@@ -350,7 +349,7 @@ class ConfigletMixin(Protocol):
                 key=ConfigletKey(workspace_id=workspace_id, configlet_id=configlet_id),
                 display_name=display_name,
                 description=description,
-                body=await Path(file).read_text(encoding="UTF-8"),
+                body=await to_thread(Path.read_text, Path(file), encoding="UTF-8"),
             ),
         )
         client = ConfigletConfigServiceStub(self._channel)
@@ -385,7 +384,7 @@ class ConfigletMixin(Protocol):
                     key=ConfigletKey(workspace_id=workspace_id, configlet_id=configlet_id),
                     display_name=display_name,
                     description=description,
-                    body=await Path(file).read_text(encoding="UTF-8"),
+                    body=await to_thread(Path.read_text, Path(file), encoding="UTF-8"),
                 )
             )
         client = ConfigletConfigServiceStub(self._channel)
