@@ -298,30 +298,30 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
     profiles:
-    - id: 254
-      name: DEFAULT-AVT-POLICY-CONTROL-PLANE
-    - id: 3
-      name: DEFAULT-AVT-POLICY-VIDEO
-    - id: 1
-      name: DEFAULT-AVT-POLICY-DEFAULT
+    - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+      id: 254
+    - name: DEFAULT-AVT-POLICY-VIDEO
+      id: 3
+    - name: DEFAULT-AVT-POLICY-DEFAULT
+      id: 1
   - name: PROD
     policy: PROD-AVT-POLICY
     profiles:
-    - id: 2
-      name: PROD-AVT-POLICY-VOICE
-    - id: 4
-      name: PROD-AVT-POLICY-VIDEO
-    - id: 1
-      name: PROD-AVT-POLICY-DEFAULT
+    - name: PROD-AVT-POLICY-VOICE
+      id: 2
+    - name: PROD-AVT-POLICY-VIDEO
+      id: 4
+    - name: PROD-AVT-POLICY-DEFAULT
+      id: 1
   - name: WAN-VRF-NO-AF
     policy: PROD-AVT-POLICY
     profiles:
-    - id: 2
-      name: PROD-AVT-POLICY-VOICE
-    - id: 4
-      name: PROD-AVT-POLICY-VIDEO
-    - id: 1
-      name: PROD-AVT-POLICY-DEFAULT
+    - name: PROD-AVT-POLICY-VOICE
+      id: 2
+    - name: PROD-AVT-POLICY-VIDEO
+      id: 4
+    - name: PROD-AVT-POLICY-DEFAULT
+      id: 1
 router_bfd:
   multihop:
     interval: 300
@@ -342,7 +342,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: WAN-OVERLAY-PEERS
     metadata:
@@ -515,19 +515,23 @@ vrfs:
 - name: PROD
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: VRF-NO-WAN
   ip_routing: true
   metadata:
-    tenant: TenantD
+    tenants:
+    - TenantD
 - name: VRF-NO-WAN-NO-AF
   ip_routing: true
   metadata:
-    tenant: TenantD
+    tenants:
+    - TenantD
 - name: WAN-VRF-NO-AF
   ip_routing: true
   metadata:
-    tenant: TenantD
+    tenants:
+    - TenantD
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-edge-wan-use-evpn-on-lan-no-overlay-on-lan_VTEP

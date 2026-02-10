@@ -71,9 +71,19 @@ class InputFactoryDataSource:
         return self._device_data.loopback0_ip
 
     @property
+    def vtep_ip(self) -> IPv4Address | None:
+        """Get the VTEP IP of the device."""
+        return self._device_data.vtep_ip
+
+    @property
     def fabric_loopback0_mapping(self) -> dict[str, IPv4Address]:
         """Get a fabric mapping of device hostname to its Loopback0 IPv4 address."""
         return self._fabric_data.loopback0_mapping
+
+    @property
+    def fabric_dps_mapping(self) -> dict[str, IPv4Address]:
+        """Get a fabric mapping of device hostname to its DPS IPv4 address."""
+        return self._fabric_data.dps_mapping
 
     @cached_property
     def _device_data(self) -> AvdDeviceData:
@@ -84,9 +94,9 @@ class InputFactoryDataSource:
         return device_data
 
     @cached_property
-    def fabric_special_ips(self) -> list[IPv4Address]:
-        """Get a sorted list of all 'special' IPv4 addresses (Loopback0, VTEP, and MLAG VTEP) from deployed non-WAN devices in the fabric."""
-        return natural_sort(self._fabric_data.special_ips)
+    def fabric_underlay_reachability_targets(self) -> list[IPv4Address]:
+        """Get a sorted list of all underlay reachability target IPv4 addresses (Loopback0, VTEP, and MLAG VTEP) from deployed non-WAN devices in the fabric."""
+        return natural_sort(self._fabric_data.underlay_reachability_targets)
 
     @cached_property
     def bgp_neighbors(self) -> list[ResolvedBgpNeighbor]:

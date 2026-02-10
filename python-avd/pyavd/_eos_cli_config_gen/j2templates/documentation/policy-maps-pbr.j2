@@ -9,7 +9,7 @@
 ### PBR Policy Maps
 
 #### PBR Policy Maps Summary
-{%     for policy_map in policy_maps.pbr | arista.avd.natural_sort('name') %}
+{%     for policy_map in policy_maps.pbr | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 
 ##### {{ policy_map.name }}
 {%         if policy_map.classes is arista.avd.defined %}

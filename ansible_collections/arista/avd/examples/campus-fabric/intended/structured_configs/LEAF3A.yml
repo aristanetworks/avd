@@ -3507,23 +3507,28 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 310
   name: IDF3-Data
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 320
   name: IDF3-Voice
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 330
   name: IDF3-Guest
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 10
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

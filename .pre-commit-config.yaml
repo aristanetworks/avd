@@ -78,7 +78,13 @@ repos:
       - id: insert-license
         name: Check and insert license on Markdown files.
         files: .*\.md$
-        exclude: (ansible_collections/arista/avd/extensions/molecule|.github|ansible_collections/arista/avd/examples/.+/documentation/).*
+        exclude: >-
+          (?x)
+          (ansible_collections/arista/avd/extensions/molecule
+          |.github
+          |ansible_collections/arista/avd/examples/.+/documentation/
+          |python-avd/tests/pyavd/examples/simple/docs/
+          )
         args:
           - --license-filepath
           - development/license-short.txt
@@ -104,7 +110,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.14.13
+    rev: v0.14.14
     hooks:
       # Run the linter.
       - id: ruff
@@ -123,11 +129,11 @@ repos:
         # use --group dev or some othergroup to avoid maintaining this here
         # as well.
         additional_dependencies:
-          - 'ansible-core>=2.16.0,<2.20.0'
+          - 'ansible-core>=2.16.0,<2.21.0'
           - 'anta==1.7.0'
           - 'deepmerge>=1.1.0'
           - 'jsonschema-rs>=0.24'
-          - 'pyavd-utils==0.0.1'
+          - 'pyavd-utils==0.0.2.dev3'
           - 'pydantic>=2.3.0'
           - 'pytest>=8.2.0'
           - 'pyyaml>=6.0.0'

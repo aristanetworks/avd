@@ -278,7 +278,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -300,7 +300,7 @@ router bgp 65200
    distance bgp 20 200 200
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 11.1.2.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 11.1.2.2 remote-as 65100
    neighbor 11.1.2.2 description DC1-SUPER-SPINE2

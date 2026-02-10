@@ -23,7 +23,7 @@ monitor_connectivity:
       # This is default in AVD 4.x
       # address_only: true
       url: https://server2.local.com
-    - name: server3
+    - name: Server3
       description: server3_connectivity_monitor
       ip: 10.10.10.3
       icmp_echo_size: 1200
@@ -59,14 +59,14 @@ monitor_connectivity:
           address_only: false
           local_interfaces: VRF_GLOBAL_SET
           url: https://server2.local.com
-        - name: server5
+        - name: Server5
           description: server5_connectivity_monitor
           ip: 10.10.20.11
           address_only: true
           local_interfaces: VRF_GLOBAL_SET
           url: https://server5.local.com
         - name: server6
-    - name: yellow
+    - name: Yellow
       address_only: true
       interface_sets:
         - name: VRF_GLOBAL_SET

@@ -1,13 +1,34 @@
+---
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts
+  arista.avd.eos_designs_facts:
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+    tmp_dir: "{{ actual_output_dir }}/tmp"
+  check_mode: false
+  run_once: true
+
 - name: Test with dest (no change) - first run to ensure no change
   ignore_errors: false
   arista.avd.eos_designs_structured_config:
     dest: "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
+    return_structured_config: true
+    tmp_dir: "{{ actual_output_dir }}/tmp"
 
 - name: Test with dest (no change)
   ignore_errors: false
   register: result
   arista.avd.eos_designs_structured_config:
     dest: "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
+    return_structured_config: true
+    tmp_dir: "{{ actual_output_dir }}/tmp"
 
 - name: Compare actual output with expected output
   ansible.builtin.shell: >-

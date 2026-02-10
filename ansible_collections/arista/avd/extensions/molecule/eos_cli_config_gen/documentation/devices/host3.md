@@ -179,12 +179,24 @@ daemon TerminAttr
 | Sequence-numbers | false |
 | RFC5424 | False |
 
+| VRF | Source Interface |
+| --- | ---------------- |
+| check_source_interface_table_created | Ethernet1 |
+
+| VRF | Hosts | Ports | Protocol | SSL-profile |
+| --- | ----- | ----- | -------- | ----------- |
+| check_source_interface_table_created | 1.2.3.4 | Default | UDP | - |
+| check_source_interface_table_created | 2001:db8::1:2:3:4 | Default | UDP | - |
+
 #### Logging Servers and Features Device Configuration
 
 ```eos
 !
 logging synchronous level critical
+logging vrf check_source_interface_table_created host 1.2.3.4
+logging vrf check_source_interface_table_created host 2001:db8::1:2:3:4
 logging format timestamp traditional year timezone
+logging vrf check_source_interface_table_created source-interface Ethernet1
 ```
 
 ### MCS Client Summary
@@ -271,7 +283,6 @@ spanning-tree mst configuration
 ```eos
 !
 router isis EVPN_UNDERLAY
-   set-overload-bit
    set-overload-bit on-startup 55
    spf-interval 250 30
    authentication mode shared-secret profile test1 algorithm md5 rx-disabled
@@ -404,6 +415,28 @@ mpls rsvp
 router multicast
    ipv4
       multipath deterministic
+```
+
+## IPv6 DHCP Relay
+
+### IPv6 DHCP Relay Summary
+
+DhcpRelay Agent is in always-on mode.
+
+Forwarding requests with additional IPv6 addresses in the "giaddr" field is allowed.
+
+Add Option 79 - Link Layer Address Option.
+
+Add RemoteID option 37 in format MAC address, hostname and interface name.
+
+### IPv6 DHCP Relay Device Configuration
+
+```eos
+!
+ipv6 dhcp relay always-on
+ipv6 dhcp relay all-subnets default
+ipv6 dhcp relay option link-layer address
+ipv6 dhcp relay option remote-id format %m:%h:%p
 ```
 
 ## Errdisable

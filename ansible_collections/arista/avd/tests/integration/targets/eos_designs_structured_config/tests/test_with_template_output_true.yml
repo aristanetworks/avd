@@ -1,16 +1,33 @@
 ---
 - name: Test with template_output true
   when: ansible_version.major == 2 and ansible_version.minor < 19
+  vars:
+    custom_structured_configuration__inline_jinja_value: "test"
+    custom_structured_configuration__inline_jinja: "{{ _inline_jinja_value }}"
   block:
+    - name: Validate inputs with inline jinja vars
+      arista.avd.validate_inputs:
+        schema_name: avd_design
+        tmp_dir: "{{ actual_output_dir }}/tmp"
+      delegate_to: localhost
+      check_mode: false
+      run_once: true
+
+    - name: Set eos_designs facts
+      arista.avd.eos_designs_facts:
+        template_output: true
+        output_dir: "{{ actual_output_dir }}"
+        tmp_dir: "{{ actual_output_dir }}/tmp"
+      check_mode: false
+      run_once: true
+
     - name: Test with template_output true
       ignore_errors: false
       register: result
-      vars:
-        custom_structured_configuration__inline_jinja_value: "test"
-        custom_structured_configuration__inline_jinja: "{{ _inline_jinja_value }}"
-
       arista.avd.eos_designs_structured_config:
         template_output: true
+        return_structured_config: true
+        tmp_dir: "{{ actual_output_dir }}/tmp"
 
     - ansible.builtin.assert:
         that:

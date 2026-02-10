@@ -909,6 +909,33 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    AvdStructuredConfigFileFormat: TypeAlias = Literal["yml", "yaml", "json"]
+
+    class EosDesignsValidationConfiguration(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"warn_eos_config_keys": {"type": bool, "default": True}}
+        warn_eos_config_keys: bool
+        """
+        Emit a warning when EOS Config keys are detected in the AVD Design inputs.
+
+        Default value: `True`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, warn_eos_config_keys: bool | UndefinedType = Undefined) -> None:
+                """
+                EosDesignsValidationConfiguration.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    warn_eos_config_keys: Emit a warning when EOS Config keys are detected in the AVD Design inputs.
+
+                """
+
     class BfdMultihop(AvdModel):
         """Subclass of AvdModel."""
 
@@ -980,6 +1007,7 @@ class EosDesigns(EosDesignsRootModel):
                 "password": {"type": str},
                 "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": False},
+                "maximum_routes": {"type": int, "default": 256000},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
             name: str
@@ -1001,6 +1029,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             bfd: bool
             """Default value: `False`"""
+            maximum_routes: int
+            """
+            Maximum number of routes (0 means unlimited).
+
+            Default value: `256000`
+            """
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
             """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
 
@@ -1013,6 +1047,7 @@ class EosDesigns(EosDesignsRootModel):
                     password: str | None | UndefinedType = Undefined,
                     cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
+                    maximum_routes: int | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -1031,6 +1066,7 @@ class EosDesigns(EosDesignsRootModel):
                            To protect the password at rest it is strongly recommended to
                            make use of a vault or similar.
                         bfd: bfd
+                        maximum_routes: Maximum number of routes (0 means unlimited).
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
                     """
@@ -1043,6 +1079,7 @@ class EosDesigns(EosDesignsRootModel):
                 "password": {"type": str},
                 "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": False},
+                "maximum_routes": {"type": int, "default": 256000},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
             name: str
@@ -1060,6 +1097,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             bfd: bool
             """Default value: `False`"""
+            maximum_routes: int
+            """
+            Maximum number of routes (0 means unlimited).
+
+            Default value: `256000`
+            """
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
             """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
 
@@ -1072,6 +1115,7 @@ class EosDesigns(EosDesignsRootModel):
                     password: str | None | UndefinedType = Undefined,
                     cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
+                    maximum_routes: int | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -1090,6 +1134,7 @@ class EosDesigns(EosDesignsRootModel):
                            To protect the password at rest it is strongly recommended to
                            make use of a vault or similar.
                         bfd: bfd
+                        maximum_routes: Maximum number of routes (0 means unlimited).
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
                     """
@@ -1102,6 +1147,7 @@ class EosDesigns(EosDesignsRootModel):
                 "password": {"type": str},
                 "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": False},
+                "maximum_routes": {"type": int, "default": 256000},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
             name: str
@@ -1123,6 +1169,12 @@ class EosDesigns(EosDesignsRootModel):
             """
             bfd: bool
             """Default value: `False`"""
+            maximum_routes: int
+            """
+            Maximum number of routes (0 means unlimited).
+
+            Default value: `256000`
+            """
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
             """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
 
@@ -1135,6 +1187,7 @@ class EosDesigns(EosDesignsRootModel):
                     password: str | None | UndefinedType = Undefined,
                     cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
+                    maximum_routes: int | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -1153,6 +1206,7 @@ class EosDesigns(EosDesignsRootModel):
                            To protect the password at rest it is strongly recommended to
                            make use of a vault or similar.
                         bfd: bfd
+                        maximum_routes: Maximum number of routes (0 means unlimited).
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
                     """
@@ -87930,9 +87984,11 @@ class EosDesigns(EosDesignsRootModel):
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_digital_twin_mode": {"type": bool, "default": False},
-        "avd_eos_designs_debug": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
-        "avd_eos_designs_unset_facts": {"type": bool, "default": True},
+        "avd_structured_config_file_format": {"type": str, "default": "yml"},
+        "avd_tmp_dir": {"type": str},
+        "eos_designs_validation_configuration": {"type": EosDesignsValidationConfiguration},
+        "avd_vault_id": {"type": str},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
         "bgp_as_notation": {"type": str, "default": "auto"},
@@ -88007,6 +88063,8 @@ class EosDesigns(EosDesignsRootModel):
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
+        "eos_designs_return_structured_config": {"type": bool, "default": False},
+        "eos_designs_validate_inputs_batch_size": {"type": int, "default": 10},
         "event_handlers": {"type": EosCliConfigGen.EventHandlers},
         "event_monitor": {"type": EosCliConfigGen.EventMonitor},
         "evpn_ebgp_gateway_multihop": {"type": int, "default": 15},
@@ -88220,14 +88278,25 @@ class EosDesigns(EosDesignsRootModel):
                     },
                     {
                         "platforms": ["7050X3"],
-                        "feature_support": {"queue_monitor_length_notify": False},
+                        "feature_support": {
+                            "queue_monitor_length_notify": False,
+                            "sflow_subinterfaces": False,
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mru": False,
+                        },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["720XP"],
-                        "feature_support": {"poe": True, "queue_monitor_length_notify": False},
+                        "feature_support": {
+                            "poe": True,
+                            "queue_monitor_length_notify": False,
+                            "sflow_subinterfaces": False,
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mru": False,
+                        },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000",
                         "digital_twin": {"platform": "vEOS-lab"},
@@ -88235,31 +88304,62 @@ class EosDesigns(EosDesignsRootModel):
                     {
                         "platforms": ["750", "755", "758"],
                         "management_interface": "Management0",
-                        "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False},
+                        "feature_support": {
+                            "poe": True,
+                            "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "sflow_subinterfaces": False,
+                        },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["720DP", "722XP", "710P"],
-                        "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False},
+                        "feature_support": {
+                            "poe": True,
+                            "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "sflow_subinterfaces": False,
+                        },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["720DP-24ZS", "720DP-48ZS"],
-                        "feature_support": {"queue_monitor_length_notify": False, "poe": True},
+                        "feature_support": {
+                            "queue_monitor_length_notify": False,
+                            "poe": True,
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "sflow_subinterfaces": False,
+                        },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["720DF"],
-                        "feature_support": {"queue_monitor_length_notify": False},
+                        "feature_support": {
+                            "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "sflow_subinterfaces": False,
+                        },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["720DT", "7010TX"],
-                        "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False},
+                        "feature_support": {
+                            "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_mtu": False,
+                            "per_interface_l2_mru": False,
+                            "sflow_subinterfaces": False,
+                        },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
@@ -88303,14 +88403,14 @@ class EosDesigns(EosDesignsRootModel):
                         "lag_hardware_only": True,
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "feature_support": {"private_vlan": False},
+                        "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7280R3"],
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False},
+                        "feature_support": {"evpn_gateway_all_active_multihoming": True, "per_interface_l2_mtu": False, "private_vlan": False},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
@@ -88355,15 +88455,23 @@ class EosDesigns(EosDesignsRootModel):
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "feature_support": {"private_vlan": False},
+                        "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
-                        "platforms": ["7500R3", "7800R3"],
+                        "platforms": ["7500R3"],
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False},
+                        "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False},
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
+                    {
+                        "platforms": ["7800R3"],
+                        "management_interface": "Management0",
+                        "reload_delay": {"mlag": 900, "non_mlag": 1020},
+                        "tcam_profile": "vxlan-routing",
+                        "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
@@ -88373,8 +88481,11 @@ class EosDesigns(EosDesignsRootModel):
                         "feature_support": {
                             "queue_monitor_length_notify": False,
                             "interface_storm_control": True,
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mru": False,
                             "bgp_update_wait_for_convergence": True,
                             "bgp_update_wait_install": True,
+                            "sflow_subinterfaces": False,
                         },
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
@@ -88382,12 +88493,14 @@ class EosDesigns(EosDesignsRootModel):
                         "platforms": ["7368X4"],
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False},
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7300X3"],
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 1200, "non_mlag": 1320},
+                        "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False},
                         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
                         "digital_twin": {"platform": "vEOS-lab"},
                     },
@@ -88398,7 +88511,11 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp_update_wait_install": False,
                             "interface_storm_control": False,
                             "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mtu": False,
+                            "per_interface_l2_mru": False,
                             "evpn_gateway_all_active_multihoming": True,
+                            "sflow_subinterfaces": False,
                             "hardware_validation": False,
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
@@ -88411,7 +88528,11 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp_update_wait_install": False,
                             "interface_storm_control": False,
                             "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mtu": False,
+                            "per_interface_l2_mru": False,
                             "evpn_gateway_all_active_multihoming": True,
+                            "sflow_subinterfaces": False,
                             "hardware_validation": False,
                         },
                         "management_interface": "Management0",
@@ -88423,7 +88544,9 @@ class EosDesigns(EosDesignsRootModel):
                         "feature_support": {
                             "bgp_update_wait_install": False,
                             "interface_storm_control": False,
+                            "per_interface_l2_mru": False,
                             "queue_monitor_length_notify": False,
+                            "sflow": False,
                             "hardware_validation": False,
                         },
                         "p2p_uplinks_mtu": 9194,
@@ -88436,7 +88559,10 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp_update_wait_install": False,
                             "interface_storm_control": False,
                             "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mru": False,
                             "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6},
+                            "sflow": False,
                         },
                         "management_interface": "Management1/1",
                         "p2p_uplinks_mtu": 9194,
@@ -88449,7 +88575,10 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp_update_wait_install": False,
                             "interface_storm_control": False,
                             "queue_monitor_length_notify": False,
+                            "subinterface_mtu": False,
+                            "per_interface_l2_mru": False,
                             "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16},
+                            "sflow": False,
                         },
                         "management_interface": "Management1/1",
                         "p2p_uplinks_mtu": 9194,
@@ -88463,6 +88592,8 @@ class EosDesigns(EosDesignsRootModel):
                             "interface_storm_control": False,
                             "queue_monitor_length_notify": False,
                             "poe": True,
+                            "per_interface_l2_mru": False,
+                            "sflow": False,
                         },
                         "management_interface": "Management1",
                         "p2p_uplinks_mtu": 9194,
@@ -88582,24 +88713,45 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
-    avd_eos_designs_debug: bool
-    """
-    Dump all vars and facts per device after generating `avd_switch_facts`.
-
-    Default value: `False`
-    """
     avd_eos_designs_structured_config: bool
     """
     Generate structured configuration per device.
 
     Default value: `True`
     """
-    avd_eos_designs_unset_facts: bool
+    avd_structured_config_file_format: AvdStructuredConfigFileFormat
     """
-    Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer
-    variables.
+    The file format to use when dumping structured configuration files.
 
-    Default value: `True`
+    Default value: `"yml"`
+    """
+    avd_tmp_dir: str | None
+    """
+    Path for the AVD temporary directory.
+    Contains templated inputs, validated inputs, and facts data
+    used internally by AVD plugins.
+    Defaults to 'intended/tmp'. The temporary directory is cleaned up at
+    the end of each role.
+    """
+    eos_designs_validation_configuration: EosDesignsValidationConfiguration
+    """
+    Validation configuration options when validating AVD Design inputs.
+
+    Subclass of AvdModel.
+    """
+    avd_vault_id: str | None
+    """
+    Vault ID used for encrypting temporary files generated by the role.
+    When Ansible Vault is not
+    configured, this parameter has no effect and files are written as plain JSON.
+    When Ansible Vault is
+    configured, AVD encrypts files containing templated and validated data
+    to prevent sensitive
+    information from being exposed in the temporary directories.
+      * When `avd_vault_id` is not
+    specified, AVD uses the *first* Vault ID in the list for encryption.
+      * When `avd_vault_id` is
+    specified, AVD uses the specified Vault ID for encryption.
     """
     bfd_multihop: BfdMultihop
     """
@@ -89192,6 +89344,20 @@ class EosDesigns(EosDesignsRootModel):
 
 
     Subclass of AvdModel.
+    """
+    eos_designs_return_structured_config: bool
+    """
+    Return structured configuration as ansible_facts per device.
+
+    Default value: `False`
+    """
+    eos_designs_validate_inputs_batch_size: int
+    """
+    The number of hosts to process in each batch when validating inputs.
+    Depending on your inventory
+    size and the available resources, you may want to adjust this number.
+
+    Default value: `10`
     """
     event_handlers: EosCliConfigGen.EventHandlers
     """
@@ -90019,7 +90185,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True, "hardware_validation": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "sflow_subinterfaces": False, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "sflow_subinterfaces": False, "hardware_validation": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """
@@ -90541,9 +90707,11 @@ class EosDesigns(EosDesignsRootModel):
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
-            avd_eos_designs_debug: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
-            avd_eos_designs_unset_facts: bool | UndefinedType = Undefined,
+            avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
+            avd_tmp_dir: str | None | UndefinedType = Undefined,
+            eos_designs_validation_configuration: EosDesignsValidationConfiguration | UndefinedType = Undefined,
+            avd_vault_id: str | None | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
@@ -90596,6 +90764,8 @@ class EosDesigns(EosDesignsRootModel):
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
+            eos_designs_return_structured_config: bool | UndefinedType = Undefined,
+            eos_designs_validate_inputs_batch_size: int | UndefinedType = Undefined,
             event_handlers: EosCliConfigGen.EventHandlers | UndefinedType = Undefined,
             event_monitor: EosCliConfigGen.EventMonitor | UndefinedType = Undefined,
             evpn_ebgp_gateway_multihop: int | UndefinedType = Undefined,
@@ -90767,11 +90937,30 @@ class EosDesigns(EosDesignsRootModel):
                    To keep Digital Twin artifacts separate, adjust the `output_dir_name` and
                    `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
                    dedicated output location.
-                avd_eos_designs_debug: Dump all vars and facts per device after generating `avd_switch_facts`.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
-                avd_eos_designs_unset_facts:
-                   Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer
-                   variables.
+                avd_structured_config_file_format: The file format to use when dumping structured configuration files.
+                avd_tmp_dir:
+                   Path for the AVD temporary directory.
+                   Contains templated inputs, validated inputs, and facts data
+                   used internally by AVD plugins.
+                   Defaults to 'intended/tmp'. The temporary directory is cleaned up at
+                   the end of each role.
+                eos_designs_validation_configuration:
+                   Validation configuration options when validating AVD Design inputs.
+
+                   Subclass of AvdModel.
+                avd_vault_id:
+                   Vault ID used for encrypting temporary files generated by the role.
+                   When Ansible Vault is not
+                   configured, this parameter has no effect and files are written as plain JSON.
+                   When Ansible Vault is
+                   configured, AVD encrypts files containing templated and validated data
+                   to prevent sensitive
+                   information from being exposed in the temporary directories.
+                     * When `avd_vault_id` is not
+                   specified, AVD uses the *first* Vault ID in the list for encryption.
+                     * When `avd_vault_id` is
+                   specified, AVD uses the specified Vault ID for encryption.
                 bfd_multihop:
                    BFD Multihop tuning.
 
@@ -91226,6 +91415,11 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdModel.
+                eos_designs_return_structured_config: Return structured configuration as ansible_facts per device.
+                eos_designs_validate_inputs_batch_size:
+                   The number of hosts to process in each batch when validating inputs.
+                   Depending on your inventory
+                   size and the available resources, you may want to adjust this number.
                 event_handlers:
                    Gives the ability to monitor and react to Syslog messages.
                    Event Handlers provide a powerful and

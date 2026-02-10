@@ -10,27 +10,27 @@ from contextlib import suppress
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    AVDFileHandler,
+    AVDVaultHandler,
     PythonToAnsibleContextFilter,
     PythonToAnsibleHandler,
-    YamlLoader,
-    build_result_message,
     cprofile,
+    get_role_tmp_paths,
     get_templar,
-    parse_validation_result,
+    raise_action_fail,
 )
 
 if TYPE_CHECKING:
-    from pyavd import get_device_config, get_device_doc, validate_structured_config
+    from pyavd import get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
     from pyavd.j2filters import add_md_toc
 
 try:
-    from pyavd import get_device_config, get_device_doc, validate_structured_config
+    from pyavd import get_device_config, get_device_doc
     from pyavd._utils import strip_empties_from_dict, template
     from pyavd.j2filters import add_md_toc
 
@@ -49,10 +49,9 @@ with suppress(AttributeError):
     LOGGER.propagate = False
 
 ARGUMENT_SPEC = {
-    "structured_config_filename": {"type": "str"},
+    "tmp_dir": {"type": "str", "required": True},
     "config_filename": {"type": "str"},
     "documentation_filename": {"type": "str"},
-    "read_structured_config_from_file": {"type": "bool", "default": True},
     "generate_device_config": {"type": "bool", "default": True},
     "generate_device_doc": {"type": "bool", "default": True},
     "device_doc_toc": {"type": "bool", "default": True},
@@ -62,6 +61,8 @@ ARGUMENT_SPEC = {
 
 class ActionModule(ActionBase):
     """Action Module for eos_cli_config_gen."""
+
+    tmp_dir: str
 
     @cprofile()
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
@@ -80,46 +81,25 @@ class ActionModule(ActionBase):
         hostname = task_vars["inventory_hostname"]
         setup_module_logging(hostname, result)
 
-        return self.main(task_vars, result)
+        return self.main(hostname, task_vars, result)
 
-    def main(self, task_vars: dict, result: dict) -> dict:
-        """Main function in charge of validating the input variables and generating the device configuration and documentation."""
+    def main(self, hostname: str, task_vars: dict, result: dict) -> dict:
+        """Main function in charge of loading the structured config and generating the device configuration and documentation."""
         LOGGER.debug("Validating task arguments...")
         validated_args = self.validate_args()
+        self.tmp_dir = validated_args.get("tmp_dir")
         LOGGER.debug("Validating task arguments [done].")
 
-        try:
-            # Read structured config from file or task_vars and run templating to handle inline jinja.
-            LOGGER.debug("Preparing task vars...")
-            task_vars = self.prepare_task_vars(
-                task_vars,
-                validated_args.get("structured_config_filename"),
-                read_structured_config_from_file=validated_args["read_structured_config_from_file"],
-            )
-            LOGGER.debug("Preparing task vars [done].")
-
-            LOGGER.debug("Validating structured configuration...")
-            # result dict will be in-place updated.
-            validated_task_vars = self.validate_task_vars(
-                hostname=task_vars["inventory_hostname"],
-                task_vars=task_vars,
-                result=result,
-            )
-            LOGGER.debug("Validating structured configuration [done].")
-        except Exception as e:
-            LOGGER.exception(e)  # noqa: TRY401 TODO: Improve code
-            return result
-
-        if result.get("failed"):
-            # Something failed in schema validation.
-            return result
+        LOGGER.debug("Loading structured config...")
+        structured_config = self.load_structured_config(hostname)
+        LOGGER.debug("Loading structured config [done].")
 
         if has_custom_templates := bool(task_vars.get("custom_templates")):
-            template_vars = ChainMap(validated_task_vars, task_vars)
+            template_vars = ChainMap(structured_config, task_vars)
         try:
             if validated_args["generate_device_config"]:
                 LOGGER.debug("Rendering configuration...")
-                device_config = get_device_config(validated_task_vars)
+                device_config = get_device_config(structured_config)
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering config custom templates...")
@@ -136,7 +116,7 @@ class ActionModule(ActionBase):
 
             if validated_args["generate_device_doc"]:
                 LOGGER.debug("Rendering documentation...")
-                device_doc = get_device_doc(validated_task_vars, add_md_toc=False)
+                device_doc = get_device_doc(structured_config, add_md_toc=False)
 
                 if has_custom_templates:
                     LOGGER.debug("Rendering documentation custom templates...")
@@ -151,9 +131,7 @@ class ActionModule(ActionBase):
                 LOGGER.debug("Rendering documentation [done].")
 
         except Exception as error:
-            # Recast errors as AnsibleActionFail
-            msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from error
+            raise_action_fail(f"Error during plugin execution: {error}", error)
 
         return result
 
@@ -162,7 +140,6 @@ class ActionModule(ActionBase):
         _validation_result, validated_args = self.validate_argument_spec(
             ARGUMENT_SPEC,
             required_if=[
-                ("read_structured_config_from_file", True, ("structured_config_filename",)),
                 ("generate_device_config", True, ("config_filename",)),
                 ("generate_device_doc", True, ("documentation_filename",)),
             ],
@@ -171,67 +148,6 @@ class ActionModule(ActionBase):
 
         # Converting to json and back to remove any AnsibeUnsafe types
         return json.loads(json.dumps(validated_args))
-
-    def prepare_task_vars(self, task_vars: dict, structured_config_filename: str, *, read_structured_config_from_file: bool) -> dict:
-        """
-        Read the structured_config and render inline Jinja.
-
-        Parameters
-        ----------
-            task_vars: Dictionary of task variables
-            structured_config_filename: The filename where the structured_config for the device is stored.
-            read_structured_config_from_file: Flag to indicate whether or not the structured_config_filname should be read.
-
-        Returns:
-        -------
-            dict: Task vars updated with the structured_config content if read and all inline Jinja rendered.
-
-        Raises:
-        ------
-            AnsibleActionFail: If templating fails.
-
-        """
-        if read_structured_config_from_file:
-            task_vars.update(read_vars(structured_config_filename))
-
-        # Read ansible variables and perform templating to support inline jinja2
-        for var, value in task_vars.items():
-            # TODO: - reevaluate these variables
-            if str(var).startswith(("ansible", "molecule", "hostvars", "vars", "avd_switch_facts")):
-                continue
-            if self._templar.is_template(value):
-                # Var contains a jinja2 template.
-                try:
-                    task_vars[var] = self._templar.template(value, fail_on_undefined=False)
-                except Exception as e:
-                    msg = f"Exception during templating of task_var '{var}': '{e}'"
-                    raise AnsibleActionFail(msg) from e
-
-        if not isinstance(task_vars, dict):
-            # Corner case for ansible-test where the passed task_vars is a nested chain-map
-            task_vars = dict(task_vars)
-
-        return task_vars
-
-    def validate_task_vars(self, hostname: str, task_vars: dict, result: dict) -> dict:
-        """
-        Validate inputs and emit warnings and errors via Ansible display and in-place update the given result.
-
-        To simplify type checking this always return a dict even if validation fails.
-        The caller should check for result['failed'].
-        """
-        try:
-            validated_data_result = validate_structured_config(task_vars)
-        except (TypeError, ValueError, RecursionError) as e:
-            msg = f"Unable to load structured config from the given data: {e}"
-            raise ValueError(msg) from e
-
-        validation_errors = parse_validation_result(validated_data_result.validation_result, hostname, display)
-        if validation_errors:
-            result["failed"] = True
-            result["msg"] = build_result_message(validation_errors)
-
-        return validated_data_result.validated_data or {}
 
     def render_template_with_ansible_templar(self, template_vars: dict | ChainMap, templatefile: str) -> str:
         """Render a template with the Ansible Templar."""
@@ -268,6 +184,30 @@ class ActionModule(ActionBase):
         path.write_text(content, encoding="UTF-8")
         return True
 
+    def load_structured_config(self, hostname: str) -> dict[str, Any]:
+        """
+        Load the validated structured config from the temporary file for the host.
+
+        Args:
+            hostname: Inventory hostname.
+
+        Returns:
+            Dict containing the validated structured config for the host.
+        """
+        _templated_path, validated_path = get_role_tmp_paths("eos_cli_config_gen", self.tmp_dir)
+        file_path = validated_path / f"{hostname}.json"
+        if not file_path.exists():
+            msg = (
+                f"Missing the validated structured config for host '{hostname}'. "
+                "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
+            )
+            raise AnsibleActionFail(message=msg)
+
+        # Read, unvault, and parse the JSON file
+        vault_handler = AVDVaultHandler(self._loader)
+        file_handler = AVDFileHandler(vault_handler)
+        return file_handler.load_json(file_path)
+
 
 def setup_module_logging(hostname: str, result: dict) -> None:
     """
@@ -284,38 +224,3 @@ def setup_module_logging(hostname: str, result: dict) -> None:
     LOGGER.addHandler(python_to_ansible_handler)
     # TODO: mechanism to manipulate the logger globally for pyavd
     LOGGER.setLevel(logging.DEBUG)
-
-
-def read_vars(filename: Path | str) -> dict:
-    """
-    Read the file at filename and return the content as dict.
-
-    The function supports either `json` or `yaml` format.
-
-    Parameters
-    ----------
-        filename: The path to the file to read as a string or a Path.
-
-    Returns:
-    -------
-        dict: The content of the file as dict or an empty dict if the file does not exist.
-
-    Raises:
-    ------
-        NotImplementedError: If the file extension is not json, yml or yaml.
-    """
-    if not isinstance(filename, Path):
-        filename = Path(filename)
-
-    if not filename.exists():
-        LOGGER.debug("File %s does not exist, skipping reading variables...", filename)
-        return {}
-
-    with filename.open(mode="r", encoding="UTF-8") as stream:
-        if filename.suffix in [".yml", ".yaml"]:
-            return yaml.load(stream, Loader=YamlLoader)  # noqa: S506 TODO: Figure out if we can move to safeloader everywhere
-        if filename.suffix == ".json":
-            return json.load(stream)
-
-        msg = f"Unsupported file suffix for file '{filename}'"
-        raise NotImplementedError(msg)

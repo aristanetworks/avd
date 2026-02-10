@@ -52,71 +52,88 @@ vlans:
 - id: 1
   name: VLAN_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 2
   name: VLAN_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 3
   name: VLAN_3
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 101
   name: VLAN_101
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 102
   name: VLAN_102
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 103
   name: VLAN_103
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 11
   name: VLAN_11
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 12
   name: VLAN_12
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 111
   name: VLAN_111
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 112
   name: VLAN_112
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 113
   name: VLAN_113
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 21
   name: VLAN_21
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 22
   name: VLAN_22
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 23
   name: VLAN_23
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 121
   name: VLAN_121
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 122
   name: VLAN_122
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 123
   name: VLAN_123
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 vrfs:
 - name: MGMT
   ip_routing: false

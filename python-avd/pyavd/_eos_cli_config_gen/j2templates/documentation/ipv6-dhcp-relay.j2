@@ -29,6 +29,9 @@ Add RemoteID option 37 in format MAC address and interface ID.
 {%             elif ipv6_dhcp_relay.option.remote_id_format == "%m:%p" %}
 
 Add RemoteID option 37 in format MAC address and interface name.
+{%             elif ipv6_dhcp_relay.option.remote_id_format == "%m:%h:%p" %}
+
+Add RemoteID option 37 in format MAC address, hostname and interface name.
 {%             endif %}
 {%         endif %}
 {%     endif %}

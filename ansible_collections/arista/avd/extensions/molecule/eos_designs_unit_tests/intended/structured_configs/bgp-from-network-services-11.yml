@@ -89,7 +89,7 @@ router_bgp:
     description: bgp-from-network-services-12
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbors:
   - ip_address: 10.10.20.21
@@ -122,7 +122,8 @@ vlan_interfaces:
   ip_address: 10.10.20.20/31
   mtu: 9214
   metadata:
-    tenant: TEST2
+    tenants:
+    - TEST2
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -135,13 +136,15 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 3101
   name: MLAG_L3_VRF_default
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TEST2
+    tenants:
+    - TEST2
 vrfs:
 - name: MGMT
   ip_routing: false

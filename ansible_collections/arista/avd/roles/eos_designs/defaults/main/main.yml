@@ -1,3 +1,16 @@
+---
 # Roles Defaults - main
 
 avd_structured_config_file_format: "yml"
+
+# Vault ID to use for encrypting temporary files.
+# See role documentation for details.
+avd_vault_id: null
+
+# Validation configuration for AVD Design input data.
+# This dictionary is passed to the validate_inputs action plugin.
+eos_designs_validation_configuration:
+  # When enabled, warnings will be emitted during validation if any top-level keys
+  # from the EOS Config data model are found at the top level of the AVD Design input data.
+  # Note: These keys will be ignored during eos_cli_config_gen processing when used with eos_designs.
+  warn_eos_config_keys: true

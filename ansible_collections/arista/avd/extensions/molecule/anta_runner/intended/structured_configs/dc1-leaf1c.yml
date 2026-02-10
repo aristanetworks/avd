@@ -99,6 +99,33 @@ vlan_interfaces:
   mtu: 1500
   metadata:
     type: inband_mgmt
+- name: Vlan100
+  description: SVI100_INBAND_MGMT
+  shutdown: true
+  vrf: MGMT_BACKUP
+  ip_address: 10.100.100.1/24
+  metadata:
+    type: inband_mgmt
+- name: Vlan101
+  description: SVI101_INBAND_MGMT
+  shutdown: false
+  vrf: MGMT_BACKUP
+  metadata:
+    type: inband_mgmt
+- name: Vlan102
+  description: SVI102_INBAND_MGMT
+  shutdown: false
+  vrf: MGMT_BACKUP
+  ip_address: dhcp
+  metadata:
+    type: inband_mgmt
+- name: Vlan103
+  description: SVI103_INBAND_MGMT
+  shutdown: false
+  vrf: MGMT_BACKUP
+  ip_address: 10.103.103.1/24
+  metadata:
+    type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -108,31 +135,38 @@ vlans:
 - id: 11
   name: VRF10_VLAN11
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 12
   name: VRF10_VLAN12
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 21
   name: VRF11_VLAN21
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 22
   name: VRF11_VLAN22
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3401
   name: L2_VLAN3401
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3402
   name: L2_VLAN3402
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 4085
   name: L2LEAF_INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

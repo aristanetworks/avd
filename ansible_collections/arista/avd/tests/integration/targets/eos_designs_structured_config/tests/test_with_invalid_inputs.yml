@@ -1,9 +1,13 @@
+---
 - name: Test with invalid inputs
   ignore_errors: true
   register: result
   vars:
     underlay_routing_protocol: ABC
-  arista.avd.eos_designs_structured_config:
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    fail_on_validation_errors: true
+    tmp_dir: "{{ actual_output_dir }}/tmp"
 
 - vars:
     error_msg: >-
@@ -11,4 +15,22 @@
   assert:
     that:
       - result.failed == True
+      - result.msg == error_msg
+
+- name: Test with invalid inputs without failing
+  ignore_errors: false
+  register: result
+  vars:
+    underlay_routing_protocol: ABC
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp"
+    fail_on_validation_errors: false
+
+- vars:
+    error_msg: >-
+      1 error found during schema validation of input variables.
+  assert:
+    that:
+      - result.failed == False
       - result.msg == error_msg

@@ -49,20 +49,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -70,7 +56,8 @@ router_bgp:
   vlans:
   - id: 110
     metadata:
-      tenant: MY_FABRIC
+      tenants:
+      - MY_FABRIC
     rd: 192.168.255.109:10110
     route_targets:
       both:
@@ -78,17 +65,8 @@ router_bgp:
     redistribute_routes:
     - learned
   address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
     route:
       import_match_failure_action: discard
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
@@ -97,7 +75,8 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.10.1
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 vlan_internal_order:
   allocation: ascending
   range:
@@ -107,7 +86,8 @@ vlans:
 - id: 110
   name: SVI-110
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 vrfs:
 - name: MGMT
   ip_routing: false

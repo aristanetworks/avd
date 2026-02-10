@@ -19,18 +19,18 @@ Generate AVD EOS device configurations and documentations
 
 The `arista.avd.eos_cli_config_gen` module is an Ansible Action Plugin providing the following capabilities:
 
-- Validates input variables according to eos_cli_config_gen schema
 - Generates device configuration and saves it to file
-- Optionallu generates device documentation and saves it to file
+- Optionally generates device documentation and saves it to file
+
+Note: Input validation is performed by the `arista.avd.validate_inputs` plugin, which must be run before this plugin.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| <samp>structured_config_filename</samp> | str | optional | None | - | The path of the structured config to load. Required if read_structured_config_from_file is true. |
+| <samp>tmp_dir</samp> | str | True | None | - | Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.<br>Must be the same across all plugins. |
 | <samp>config_filename</samp> | str | optional | None | - | The path to save the generated config to. Required if generate_device_config is true. |
 | <samp>documentation_filename</samp> | str | optional | None | - | The path to save the generated documentation. Required if generate_device_doc is true. |
-| <samp>read_structured_config_from_file</samp> | bool | optional | True | - | Flag to indicate if the structured config should be read from a file or not. |
 | <samp>generate_device_config</samp> | bool | optional | True | - | Flag to generate the device configuration. |
 | <samp>generate_device_doc</samp> | bool | optional | True | - | Flag to generate the device documentation. |
 | <samp>device_doc_toc</samp> | bool | optional | True | - | Flag to generate the table of content for the device documentation. |
@@ -40,26 +40,19 @@ The `arista.avd.eos_cli_config_gen` module is an Ansible Action Plugin providing
 
 ```yaml
 ---
-- name: Generate eos intended configuration and device documentation
+- name: Generate EOS intended configuration and device documentation
   arista.avd.eos_cli_config_gen:
-    structured_config_filename: "{{ structured_config_filename }}"
     config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
     documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"
-    read_structured_config_from_file: true
   delegate_to: localhost
-  vars:
-    structured_config_filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+
 - name: Generate device documentation only
   arista.avd.eos_cli_config_gen:
-    structured_config_filename: "{{ structured_config_filename }}"
     config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
     documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"
-    read_structured_config_from_file: true
     generate_device_config: false
     device_doc_toc: true
   delegate_to: localhost
-  vars:
-    structured_config_filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
 ```
 
 ## Authors

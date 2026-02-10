@@ -291,7 +291,7 @@ keys:
     documentation_options:
       table: role-settings
     deprecation:
-      warning: false
+      warning: true
       removed: true
       remove_in_version: 6.0.0
   avd_data_validation_mode:
@@ -340,8 +340,10 @@ keys:
     documentation_options:
       table: role-settings
     type: bool
-    default: false
-    description: Dump all vars and facts per device after generating `avd_switch_facts`.
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
   avd_eos_designs_enforce_duplication_checks_across_all_models:
     documentation_options:
       table: role-settings
@@ -360,9 +362,51 @@ keys:
     documentation_options:
       table: role-settings
     type: bool
-    default: true
-    description: Unset `avd_switch_facts` to gain a small performance improvement
-      since Ansible needs to handle fewer variables.
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+  avd_structured_config_file_format:
+    documentation_options:
+      table: role-settings
+    type: str
+    default: yml
+    valid_values:
+    - yml
+    - yaml
+    - json
+    description: 'The file format to use when dumping structured configuration files.
+
+      '
+  avd_tmp_dir:
+    documentation_options:
+      table: role-settings
+    type: str
+    description: 'Path for the AVD temporary directory.
+
+      Contains templated inputs, validated inputs, and facts data used internally
+      by AVD plugins.
+
+      Defaults to ''intended/tmp''. The temporary directory is cleaned up at the end
+      of each role.
+
+      '
+  eos_designs_validation_configuration:
+    documentation_options:
+      table: role-settings
+    type: dict
+    description: Validation configuration options when validating AVD Design inputs.
+    keys:
+      warn_eos_config_keys:
+        type: bool
+        default: true
+        description: Emit a warning when EOS Config keys are detected in the AVD Design
+          inputs.
+  avd_vault_id:
+    documentation_options:
+      table: role-settings
+    type: str
+    $ref: eos_cli_config_gen#/keys/avd_vault_id
   bfd_multihop:
     documentation_options:
       table: bfd-settings
@@ -523,6 +567,14 @@ keys:
           bfd:
             type: bool
             default: false
+          maximum_routes:
+            type: int
+            convert_types:
+            - str
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
           structured_config:
             type: dict
             relaxed_validation: true
@@ -563,6 +615,14 @@ keys:
           bfd:
             type: bool
             default: false
+          maximum_routes:
+            type: int
+            convert_types:
+            - str
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
           structured_config:
             type: dict
             relaxed_validation: true
@@ -592,6 +652,14 @@ keys:
           bfd:
             type: bool
             default: false
+          maximum_routes:
+            type: int
+            convert_types:
+            - str
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
           structured_config:
             type: dict
             relaxed_validation: true
@@ -2253,6 +2321,21 @@ keys:
         type: bool
         default: true
         description: Generate the table of content(TOC) on fabric documentation.
+  eos_designs_return_structured_config:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: false
+    description: Return structured configuration as ansible_facts per device.
+  eos_designs_validate_inputs_batch_size:
+    documentation_options:
+      table: role-settings
+    type: int
+    default: 10
+    description: 'The number of hosts to process in each batch when validating inputs.
+
+      Depending on your inventory size and the available resources, you may want to
+      adjust this number.'
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
     type: list
@@ -4433,6 +4516,9 @@ keys:
       - 7050X3
       feature_support:
         queue_monitor_length_notify: false
+        sflow_subinterfaces: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4445,6 +4531,9 @@ keys:
       feature_support:
         poe: true
         queue_monitor_length_notify: false
+        sflow_subinterfaces: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4460,7 +4549,10 @@ keys:
       feature_support:
         poe: true
         queue_monitor_length_notify: false
+        subinterface_mtu: false
         per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4473,7 +4565,10 @@ keys:
       feature_support:
         poe: true
         queue_monitor_length_notify: false
+        subinterface_mtu: false
         per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4485,6 +4580,9 @@ keys:
       feature_support:
         queue_monitor_length_notify: false
         poe: true
+        subinterface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4494,6 +4592,9 @@ keys:
       - 720DF
       feature_support:
         queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4504,7 +4605,10 @@ keys:
       - 7010TX
       feature_support:
         queue_monitor_length_notify: false
+        subinterface_mtu: false
         per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4555,6 +4659,8 @@ keys:
         non_mlag: 1020
       tcam_profile: vxlan-routing
       feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
         private_vlan: false
       digital_twin:
         platform: vEOS-lab
@@ -4566,6 +4672,7 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         evpn_gateway_all_active_multihoming: true
+        per_interface_l2_mtu: false
         private_vlan: false
       digital_twin:
         platform: vEOS-lab
@@ -4615,11 +4722,25 @@ keys:
         non_mlag: 1020
       tcam_profile: vxlan-routing
       feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
         private_vlan: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
       - 7500R3
+      management_interface: Management0
+      reload_delay:
+        mlag: 900
+        non_mlag: 1020
+      tcam_profile: vxlan-routing
+      feature_support:
+        per_interface_l2_mtu: false
+        evpn_gateway_all_active_multihoming: true
+        private_vlan: false
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 7800R3
       management_interface: Management0
       reload_delay:
@@ -4627,6 +4748,7 @@ keys:
         non_mlag: 1020
       tcam_profile: vxlan-routing
       feature_support:
+        per_interface_l2_mtu: false
         evpn_gateway_all_active_multihoming: true
         private_vlan: false
       digital_twin:
@@ -4640,8 +4762,11 @@ keys:
       feature_support:
         queue_monitor_length_notify: false
         interface_storm_control: true
+        subinterface_mtu: false
+        per_interface_l2_mru: false
         bgp_update_wait_for_convergence: true
         bgp_update_wait_install: true
+        sflow_subinterfaces: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -4650,6 +4775,10 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -4658,6 +4787,10 @@ keys:
       reload_delay:
         mlag: 1200
         non_mlag: 1320
+      feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
         l3-shared 131072
       digital_twin:
@@ -4672,7 +4805,11 @@ keys:
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
+        per_interface_l2_mru: false
         evpn_gateway_all_active_multihoming: true
+        sflow_subinterfaces: false
         hardware_validation: false
       reload_delay:
         mlag: 300
@@ -4689,7 +4826,11 @@ keys:
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
+        per_interface_l2_mru: false
         evpn_gateway_all_active_multihoming: true
+        sflow_subinterfaces: false
         hardware_validation: false
       management_interface: Management0
       reload_delay:
@@ -4702,7 +4843,9 @@ keys:
       feature_support:
         bgp_update_wait_install: false
         interface_storm_control: false
+        per_interface_l2_mru: false
         queue_monitor_length_notify: false
+        sflow: false
         hardware_validation: false
       p2p_uplinks_mtu: 9194
       digital_twin:
@@ -4715,9 +4858,12 @@ keys:
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
         platform_sfe_interface_profile:
           supported: true
           max_rx_queues: 6
+        sflow: false
       management_interface: Management1/1
       p2p_uplinks_mtu: 9194
       digital_twin:
@@ -4730,9 +4876,12 @@ keys:
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
         platform_sfe_interface_profile:
           supported: true
           max_rx_queues: 16
+        sflow: false
       management_interface: Management1/1
       p2p_uplinks_mtu: 9194
       digital_twin:
@@ -4745,6 +4894,8 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
         poe: true
+        per_interface_l2_mru: false
+        sflow: false
       management_interface: Management1
       p2p_uplinks_mtu: 9194
       digital_twin:
@@ -5413,8 +5564,7 @@ keys:
           removed: true
           remove_in_version: 6.0.0
           new_key: 'snmp_settings.vrfs[].source_interface or snmp_settings.hosts[].vrf:
-            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf
-            or avd_6_behaviors.snmp_settings_vrfs'
+            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf'
       radius:
         type: dict
         deprecation:

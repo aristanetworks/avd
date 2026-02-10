@@ -203,23 +203,7 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: MPLS-OVERLAY-PEERS
-    metadata:
-      type: mpls
-    remote_as: '101'
-    update_source: Loopback0
-    bfd: true
-    send_community: all
-    maximum_routes: 0
-  address_family_ipv4:
-    peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: false
   address_family_vpn_ipv4:
-    peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: true
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
 router_isis:

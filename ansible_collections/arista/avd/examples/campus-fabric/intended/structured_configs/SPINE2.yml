@@ -227,7 +227,8 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.1.10.1
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
     tags:
     - '110'
 - name: Vlan120
@@ -237,7 +238,8 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.1.20.1
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
     tags:
     - '120'
 - name: Vlan130
@@ -247,7 +249,8 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.1.30.1
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
     tags:
     - '130'
 - name: Vlan210
@@ -257,7 +260,8 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.2.10.1
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
     tags:
     - '210'
 - name: Vlan220
@@ -267,7 +271,8 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.2.20.1
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
     tags:
     - '220'
 - name: Vlan230
@@ -277,7 +282,8 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.2.30.1
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
     tags:
     - '230'
 - name: Vlan310
@@ -287,7 +293,8 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.3.10.1
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
     tags:
     - '310'
 - name: Vlan320
@@ -297,7 +304,8 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.3.20.1
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
     tags:
     - '320'
 - name: Vlan330
@@ -307,7 +315,8 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.3.30.1
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
     tags:
     - '330'
 - name: Vlan10
@@ -328,53 +337,65 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 110
   name: IDF1-Data
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 120
   name: IDF1-Voice
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 130
   name: IDF1-Guest
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 210
   name: IDF2-Data
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 220
   name: IDF2-Voice
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 230
   name: IDF2-Guest
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 310
   name: IDF3-Data
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 320
   name: IDF3-Voice
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 330
   name: IDF3-Guest
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 10
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

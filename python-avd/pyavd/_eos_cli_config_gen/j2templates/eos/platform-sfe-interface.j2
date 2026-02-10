@@ -11,7 +11,7 @@ platform sfe interface
 {%     if platform.sfe.interface.interface_profile is arista.avd.defined %}
    interface profile {{ platform.sfe.interface.interface_profile }}
 {%     endif %}
-{%     for profile_data in platform.sfe.interface.profiles | arista.avd.natural_sort('name') %}
+{%     for profile_data in platform.sfe.interface.profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {# profiles available #}
    !
    profile {{ profile_data.name }}

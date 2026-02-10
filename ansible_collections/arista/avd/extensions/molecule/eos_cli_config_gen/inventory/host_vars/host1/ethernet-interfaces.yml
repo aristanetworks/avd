@@ -2000,6 +2000,9 @@ ethernet_interfaces:
         twamp_light_fallback:
           number: 2
           unit: milliseconds
+    monitor_link_flap_profiles:
+      - lfp2
+      - LFP1
 
   - name: Ethernet82
     description: Switchport_tap_tool

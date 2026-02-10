@@ -105,7 +105,7 @@ router_bgp:
     description: bgp-from-network-services-1
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbors:
   - ip_address: 10.10.20.0
@@ -178,7 +178,8 @@ vlan_interfaces:
   ip_address: 10.10.20.1/31
   mtu: 9214
   metadata:
-    tenant: TEST1
+    tenants:
+    - TEST1
     type: underlay_peering
 - name: Vlan3100
   description: MLAG_L3_VRF_validate_bgp_peers
@@ -187,7 +188,8 @@ vlan_interfaces:
   ip_address: 10.10.20.1/31
   mtu: 9214
   metadata:
-    tenant: TEST1
+    tenants:
+    - TEST1
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -200,23 +202,27 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 3099
   name: MLAG_L3_VRF_default
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TEST1
+    tenants:
+    - TEST1
 - id: 3100
   name: MLAG_L3_VRF_validate_bgp_peers
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TEST1
+    tenants:
+    - TEST1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: validate_bgp_peers
   ip_routing: true
   metadata:
-    tenant: TEST1
+    tenants:
+    - TEST1

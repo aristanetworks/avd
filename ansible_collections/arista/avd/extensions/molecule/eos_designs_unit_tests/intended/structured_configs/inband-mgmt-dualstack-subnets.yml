@@ -90,7 +90,8 @@ vlans:
 - id: 104
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

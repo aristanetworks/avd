@@ -426,13 +426,6 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
     - extcommunity soo 192.168.44.1:0 additive
-- name: RM-BGP-UNDERLAY-PEERS-IN
-  sequence_numbers:
-  - sequence: 40
-    type: permit
-    description: Mark prefixes originated from the LAN
-    set:
-    - extcommunity soo 192.168.44.1:0 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -467,26 +460,26 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-POLICY-WITH-CP
     profiles:
-    - id: 254
-      name: CUSTOM-CP-POLICY
-    - id: 3
-      name: DEFAULT-POLICY-VIDEO
-    - id: 1
-      name: DEFAULT-POLICY-DEFAULT
+    - name: CUSTOM-CP-POLICY
+      id: 254
+    - name: DEFAULT-POLICY-VIDEO
+      id: 3
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
   - name: PROD
     policy: DEFAULT-POLICY
     profiles:
-    - id: 3
-      name: DEFAULT-POLICY-VIDEO
-    - id: 1
-      name: DEFAULT-POLICY-DEFAULT
+    - name: DEFAULT-POLICY-VIDEO
+      id: 3
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
   - name: IT
     policy: DEFAULT-POLICY
     profiles:
-    - id: 3
-      name: DEFAULT-POLICY-VIDEO
-    - id: 1
-      name: DEFAULT-POLICY-DEFAULT
+    - name: DEFAULT-POLICY-VIDEO
+      id: 3
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
 router_bfd:
   multihop:
     interval: 300
@@ -511,12 +504,6 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     remote_as: '65000'
   peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-    route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: WAN-OVERLAY-PEERS
     metadata:
       type: wan
@@ -568,8 +555,6 @@ router_bgp:
       resolution_disabled: true
   address_family_ipv4:
     peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
     - name: WAN-OVERLAY-PEERS
       activate: false
     - name: WAN-RR-OVERLAY-PEERS

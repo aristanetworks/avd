@@ -259,8 +259,10 @@ vrfs:
 - name: C1_VRF1
   ip_routing: true
   metadata:
-    tenant: CUSTOMER1
+    tenants:
+    - CUSTOMER1
 - name: C2_VRF1
   ip_routing: true
   metadata:
-    tenant: CUSTOMER2
+    tenants:
+    - CUSTOMER2

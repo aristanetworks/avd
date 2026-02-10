@@ -344,7 +344,7 @@ router_bgp:
       type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -558,6 +558,12 @@ router_bgp:
       peer: DC1_UNDEPLOYED_LEAF1B
     description: DC1_UNDEPLOYED_LEAF1B
     shutdown: true
+  - ip_address: 10.10.0.1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '4266393700'
+    metadata:
+      peer: evpn-to-ipvpn-gateway
+    description: evpn-to-ipvpn-gateway
   - ip_address: 192.168.255.33
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65151'

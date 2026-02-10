@@ -1,0 +1,10 @@
+---
+avd_ignore_requirements: true
+testcase: '*'
+collection_path: "{{ lookup('env', 'ANSIBLE_COLLECTIONS_PATH') }}/ansible_collections/arista/avd/tests"
+inv_dir: "{{ collection_path }}/inventory/validate_inputs"
+input_dir: "{{ inv_dir }}/inputs"
+expected_output_dir: "{{ inv_dir }}/expected_output"
+actual_output_dir: "{{ collection_path }}/output"
+
+hostname: hostname_from_hostvars

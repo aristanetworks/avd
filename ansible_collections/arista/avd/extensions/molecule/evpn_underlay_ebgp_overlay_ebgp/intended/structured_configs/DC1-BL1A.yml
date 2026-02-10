@@ -95,7 +95,6 @@ ethernet_interfaces:
 - name: Ethernet10.100
   description: subinterface test
   shutdown: false
-  mtu: 9000
   vrf: Tenant_L3_VRF_Zone
   encapsulation_dot1q:
     vlan: 100
@@ -105,7 +104,6 @@ ethernet_interfaces:
 - name: Ethernet10.200
   description: subinterface test with vlan override
   shutdown: false
-  mtu: 9000
   vrf: Tenant_L3_VRF_Zone
   encapsulation_dot1q:
     vlan: 121
@@ -243,7 +241,7 @@ router_bgp:
       type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -512,7 +510,8 @@ vlan_interfaces:
   vrf: Tenant_A_WAN_Zone
   ip_address_virtual: 10.1.40.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - wan
 - name: Vlan250
@@ -521,7 +520,8 @@ vlan_interfaces:
   vrf: Tenant_B_WAN_Zone
   ip_address_virtual: 10.2.50.1/24
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
     tags:
     - wan
 - name: Vlan350
@@ -530,7 +530,8 @@ vlan_interfaces:
   vrf: Tenant_C_WAN_Zone
   ip_address_virtual: 10.3.50.1/24
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
     tags:
     - wan
 vlan_internal_order:
@@ -542,38 +543,46 @@ vlans:
 - id: 150
   name: Tenant_A_WAN_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 250
   name: Tenant_B_WAN_Zone_1
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 350
   name: Tenant_C_WAN_Zone_1
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_A_WAN_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: Tenant_L3_VRF_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: Tenant_B_OP_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - name: Tenant_B_WAN_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - name: Tenant_C_WAN_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 vxlan_interface:
   vxlan1:
     description: DC1-BL1A_VTEP

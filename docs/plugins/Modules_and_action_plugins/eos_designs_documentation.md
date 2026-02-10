@@ -26,6 +26,7 @@ The `arista.avd.eos_designs_documentation` module is an Ansible Action Plugin pr
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| <samp>tmp_dir</samp> | str | True | None | - | Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.<br>Must be the same across all plugins. |
 | <samp>structured_config_dir</samp> | str | True | None | - | Path to directory containing files with AVD structured configurations. |
 | <samp>structured_config_suffix</samp> | str | optional | yml | - | File suffix for AVD structured configuration files. |
 | <samp>fabric_documentation_file</samp> | str | True | None | - | Path to output Markdown file. |
