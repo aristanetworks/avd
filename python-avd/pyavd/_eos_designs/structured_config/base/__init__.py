@@ -728,6 +728,9 @@ class AvdStructuredConfigBaseProtocol(
             self._add_radius_server_config(server, server_vrf)
 
             for group in server.groups:
+                if group == "radius":
+                    error_message = "Server group 'radius' is reserved by EOS and cannot be used.Please specify a different server group name."
+                    raise AristaAvdInvalidInputsError(error_message)
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
                 radius_group.type = "radius"
                 radius_group.servers.append_new(server=server.host, vrf=server_vrf)
@@ -757,6 +760,9 @@ class AvdStructuredConfigBaseProtocol(
                 self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
 
                 for group in server.groups:
+                    if group == "tacacs+":
+                        error_message = "Server group 'tacacs+' is reserved by EOS and cannot be used.Please specify a different server group name."
+                        raise AristaAvdInvalidInputsError(error_message)
                     tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
                     tacacs_group.type = "tacacs+"
                     tacacs_group.servers.append_new(server=server.host, vrf=server_vrf)
