@@ -232,9 +232,11 @@ digital_twin:
 - Digital Twin platform: `vEOS-lab` with default uplink interfaces `Ethernet1, Ethernet2`
 
 With `use_default_interfaces_of_digital_twin_platform: false` (default):
+
 - Digital Twin config will use `Ethernet49/1, Ethernet50/1`
 
 With `use_default_interfaces_of_digital_twin_platform: true`:
+
 - Digital Twin config will use `Ethernet1, Ethernet2`
 
 ## Platform-Specific Settings
