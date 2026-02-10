@@ -115,7 +115,7 @@ class PlatformMixin(Protocol):
             name=l3_ethernet_interface.name,
             rx_queue=EosCliConfigGen.Platform.Sfe.Interface.ProfilesItem.InterfacesItem.RxQueue(
                 count=l3_ethernet_interface.rx_queue.count,
-                worker=rx_queue_workers_range if rx_queue_workers_range else None,
+                worker=rx_queue_workers_range or None,
                 mode=l3_ethernet_interface.rx_queue.mode,
             ),
         )
