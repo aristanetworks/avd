@@ -180,9 +180,9 @@ class ActionModule(AvdActionPlugin):
 
         # Check if Vault secrets are configured for encrypting temporary files.
         if vault_handler.has_vault_secrets:
-            self.logger.info("Vault secrets are configured - temporary files will be encrypted")
+            self.logger.info("Ansible Vault secrets are configured - temporary files will be encrypted")
         else:
-            self.logger.info("Vault secrets are not configured - temporary files will not be encrypted")
+            self.logger.info("Ansible Vault secrets are not configured - temporary files will not be encrypted")
 
         # Track worker failures globally for the task.
         self.crashed_hosts = set()
