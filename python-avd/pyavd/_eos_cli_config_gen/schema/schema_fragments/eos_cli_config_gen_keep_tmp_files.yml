@@ -6,13 +6,12 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  avd_debug:
+  eos_cli_config_gen_keep_tmp_files:
     documentation_options:
       table: role-settings
     type: bool
     default: false
     description: |
-      Enable debug mode for AVD.
-      In debug mode, the AVD temporary directory defined by `avd_tmp_dir` is not cleaned up at the end of each role.
-      This allows for inspecting templated inputs, validated inputs, and facts data used internally by AVD plugins.
-      When Ansible Vault is configured, temporary files holding input variables are encrypted and decryption is required to inspect them.
+      Avoid deleting temporary files.
+      This allows for inspecting templated inputs and validated inputs used internally by AVD plugins.
+      When an Ansible Vault secret is set, temporary files holding input variables are encrypted. Decryption is required to inspect them.

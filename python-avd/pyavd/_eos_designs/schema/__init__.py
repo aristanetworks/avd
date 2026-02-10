@@ -87867,7 +87867,7 @@ class EosDesigns(EosDesignsRootModel):
         "aaa_settings": {"type": AaaSettings},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
-        "avd_debug": {"type": bool, "default": False},
+        "eos_designs_keep_tmp_files": {"type": bool, "default": False},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
@@ -88582,15 +88582,13 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
-    avd_debug: bool
+    eos_designs_keep_tmp_files: bool
     """
-    Enable debug mode for AVD.
-    In debug mode, the AVD temporary directory defined by `avd_tmp_dir` is
-    not cleaned up at the end of each role.
-    This allows for inspecting templated inputs, validated
-    inputs, and facts data used internally by AVD plugins.
-    When Ansible Vault is configured, temporary
-    files holding input variables are encrypted and decryption is required to inspect them.
+    Avoid deleting temporary files.
+    This allows for inspecting templated inputs, validated inputs and
+    facts used internally by AVD plugins.
+    When an Ansible Vault secret is set, temporary files holding
+    input variables are encrypted. Decryption is required to inspect them.
 
     Default value: `False`
     """
@@ -90595,7 +90593,7 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
-            avd_debug: bool | UndefinedType = Undefined,
+            eos_designs_keep_tmp_files: bool | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
@@ -90815,14 +90813,12 @@ class EosDesigns(EosDesignsRootModel):
                 aaa_settings: Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
-                avd_debug:
-                   Enable debug mode for AVD.
-                   In debug mode, the AVD temporary directory defined by `avd_tmp_dir` is
-                   not cleaned up at the end of each role.
-                   This allows for inspecting templated inputs, validated
-                   inputs, and facts data used internally by AVD plugins.
-                   When Ansible Vault is configured, temporary
-                   files holding input variables are encrypted and decryption is required to inspect them.
+                eos_designs_keep_tmp_files:
+                   Avoid deleting temporary files.
+                   This allows for inspecting templated inputs, validated inputs and
+                   facts used internally by AVD plugins.
+                   When an Ansible Vault secret is set, temporary files holding
+                   input variables are encrypted. Decryption is required to inspect them.
                 avd_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.

@@ -878,23 +878,6 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  avd_debug:
-    documentation_options:
-      table: role-settings
-    type: bool
-    default: false
-    description: 'Enable debug mode for AVD.
-
-      In debug mode, the AVD temporary directory defined by `avd_tmp_dir` is not cleaned
-      up at the end of each role.
-
-      This allows for inspecting templated inputs, validated inputs, and facts data
-      used internally by AVD plugins.
-
-      When Ansible Vault is configured, temporary files holding input variables are
-      encrypted and decryption is required to inspect them.
-
-      '
   avd_structured_config_file_format:
     documentation_options:
       table: role-settings
@@ -2411,6 +2394,20 @@ keys:
         type: bool
         default: true
         description: Generate the table of content(TOC) on device documentation.
+  eos_cli_config_gen_keep_tmp_files:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: false
+    description: 'Avoid deleting temporary files.
+
+      This allows for inspecting templated inputs and validated inputs used internally
+      by AVD plugins.
+
+      When an Ansible Vault secret is set, temporary files holding input variables
+      are encrypted. Decryption is required to inspect them.
+
+      '
   eos_cli_config_gen_tmp_dir:
     documentation_options:
       table: role-settings

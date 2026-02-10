@@ -45,7 +45,7 @@
 
   always:
     - name: Clean up AVD temporary directory
-      when: not avd_debug
+      when: not eos_cli_config_gen_keep_tmp_files
       ansible.builtin.file:
         path: "{{ eos_cli_config_gen_tmp_dir }}"
         state: absent

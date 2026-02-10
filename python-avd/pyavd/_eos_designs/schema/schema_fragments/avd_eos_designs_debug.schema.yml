@@ -13,5 +13,5 @@ keys:
     deprecation:
       warning: true
       removed: true
-      new_key: avd_debug
+      new_key: eos_designs_keep_tmp_files
       remove_in_version: 6.0.0

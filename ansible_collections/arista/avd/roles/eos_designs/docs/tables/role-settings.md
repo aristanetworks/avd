@@ -8,9 +8,9 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>avd_6_behaviors</samp>](## "avd_6_behaviors") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
-    | [<samp>avd_debug</samp>](## "avd_debug") | Boolean |  | `False` |  | Enable debug mode for AVD.<br>In debug mode, the AVD temporary directory defined by `avd_tmp_dir` is not cleaned up at the end of each role.<br>This allows for inspecting templated inputs, validated inputs, and facts data used internally by AVD plugins.<br>When Ansible Vault is configured, temporary files holding input variables are encrypted and decryption is required to inspect them.<br> |
+    | [<samp>eos_designs_keep_tmp_files</samp>](## "eos_designs_keep_tmp_files") | Boolean |  | `False` |  | Avoid deleting temporary files.<br>This allows for inspecting templated inputs, validated inputs and facts used internally by AVD plugins.<br>When an Ansible Vault secret is set, temporary files holding input variables are encrypted. Decryption is required to inspect them.<br> |
     | [<samp>avd_digital_twin_mode</samp>](## "avd_digital_twin_mode") | Boolean |  | `False` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).<br>By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation) will replace original fabric artifacts.<br>To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated output location. |
-    | [<samp>avd_eos_designs_debug</samp>](## "avd_eos_designs_debug") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>avd_debug</samp> instead.</span> |
+    | [<samp>avd_eos_designs_debug</samp>](## "avd_eos_designs_debug") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>eos_designs_keep_tmp_files</samp> instead.</span> |
     | [<samp>avd_eos_designs_enforce_duplication_checks_across_all_models</samp>](## "avd_eos_designs_enforce_duplication_checks_across_all_models") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
     | [<samp>avd_eos_designs_structured_config</samp>](## "avd_eos_designs_structured_config") | Boolean |  | `True` |  | Generate structured configuration per device. |
     | [<samp>avd_eos_designs_unset_facts</samp>](## "avd_eos_designs_unset_facts") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
@@ -31,11 +31,10 @@
 === "YAML"
 
     ```yaml
-    # Enable debug mode for AVD.
-    # In debug mode, the AVD temporary directory defined by `avd_tmp_dir` is not cleaned up at the end of each role.
-    # This allows for inspecting templated inputs, validated inputs, and facts data used internally by AVD plugins.
-    # When Ansible Vault is configured, temporary files holding input variables are encrypted and decryption is required to inspect them.
-    avd_debug: <bool; default=False>
+    # Avoid deleting temporary files.
+    # This allows for inspecting templated inputs, validated inputs and facts used internally by AVD plugins.
+    # When an Ansible Vault secret is set, temporary files holding input variables are encrypted. Decryption is required to inspect them.
+    eos_designs_keep_tmp_files: <bool; default=False>
 
     # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
     # Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).

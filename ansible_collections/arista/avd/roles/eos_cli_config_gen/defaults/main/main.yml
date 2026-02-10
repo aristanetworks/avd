@@ -6,6 +6,5 @@ avd_structured_config_file_format: "yml"
 # See role documentation for details.
 avd_vault_id: null
 
-# Enable debug mode for AVD.
-# In debug mode, the AVD temporary directory defined by `avd_tmp_dir` is not cleaned up at the end of each role.
-avd_debug: false
+# Avoid deleting temporary files. Allows the use to inspect tmp files created by the role.
+eos_cli_config_gen_keep_tmp_files: false

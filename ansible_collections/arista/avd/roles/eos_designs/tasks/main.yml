@@ -92,7 +92,7 @@
 
   always:
     - name: Clean up AVD temporary directory
-      when: not avd_debug
+      when: not eos_designs_keep_tmp_files
       ansible.builtin.file:
         path: "{{ eos_designs_tmp_dir }}"
         state: absent
