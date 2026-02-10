@@ -318,20 +318,6 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  eos_designs_keep_tmp_files:
-    documentation_options:
-      table: role-settings
-    type: bool
-    default: false
-    description: 'Avoid deleting temporary files.
-
-      This allows for inspecting templated inputs, validated inputs and facts used
-      internally by AVD plugins.
-
-      When an Ansible Vault secret is set, temporary files holding input variables
-      are encrypted. Decryption is required to inspect them.
-
-      '
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -2323,6 +2309,20 @@ keys:
         type: bool
         default: true
         description: Generate the table of content(TOC) on fabric documentation.
+  eos_designs_keep_tmp_files:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: false
+    description: 'Avoid deleting temporary files.
+
+      This allows for inspecting templated inputs, validated inputs and facts used
+      internally by AVD plugins.
+
+      When an Ansible Vault secret is set, temporary files holding input variables
+      are encrypted. Decryption is required to inspect them.
+
+      '
   eos_designs_return_structured_config:
     documentation_options:
       table: role-settings

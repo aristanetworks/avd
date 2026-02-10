@@ -87867,7 +87867,6 @@ class EosDesigns(EosDesignsRootModel):
         "aaa_settings": {"type": AaaSettings},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
-        "eos_designs_keep_tmp_files": {"type": bool, "default": False},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
@@ -87947,6 +87946,7 @@ class EosDesigns(EosDesignsRootModel):
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
+        "eos_designs_keep_tmp_files": {"type": bool, "default": False},
         "eos_designs_return_structured_config": {"type": bool, "default": False},
         "eos_designs_tmp_dir": {"type": str},
         "eos_designs_validate_inputs_batch_size": {"type": int, "default": 10},
@@ -88582,16 +88582,6 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
-    eos_designs_keep_tmp_files: bool
-    """
-    Avoid deleting temporary files.
-    This allows for inspecting templated inputs, validated inputs and
-    facts used internally by AVD plugins.
-    When an Ansible Vault secret is set, temporary files holding
-    input variables are encrypted. Decryption is required to inspect them.
-
-    Default value: `False`
-    """
     avd_digital_twin_mode: bool
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -89230,6 +89220,16 @@ class EosDesigns(EosDesignsRootModel):
 
 
     Subclass of AvdModel.
+    """
+    eos_designs_keep_tmp_files: bool
+    """
+    Avoid deleting temporary files.
+    This allows for inspecting templated inputs, validated inputs and
+    facts used internally by AVD plugins.
+    When an Ansible Vault secret is set, temporary files holding
+    input variables are encrypted. Decryption is required to inspect them.
+
+    Default value: `False`
     """
     eos_designs_return_structured_config: bool
     """
@@ -90593,7 +90593,6 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
-            eos_designs_keep_tmp_files: bool | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
@@ -90651,6 +90650,7 @@ class EosDesigns(EosDesignsRootModel):
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
+            eos_designs_keep_tmp_files: bool | UndefinedType = Undefined,
             eos_designs_return_structured_config: bool | UndefinedType = Undefined,
             eos_designs_tmp_dir: str | None | UndefinedType = Undefined,
             eos_designs_validate_inputs_batch_size: int | UndefinedType = Undefined,
@@ -90813,12 +90813,6 @@ class EosDesigns(EosDesignsRootModel):
                 aaa_settings: Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
-                eos_designs_keep_tmp_files:
-                   Avoid deleting temporary files.
-                   This allows for inspecting templated inputs, validated inputs and
-                   facts used internally by AVD plugins.
-                   When an Ansible Vault secret is set, temporary files holding
-                   input variables are encrypted. Decryption is required to inspect them.
                 avd_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
@@ -91302,6 +91296,12 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdModel.
+                eos_designs_keep_tmp_files:
+                   Avoid deleting temporary files.
+                   This allows for inspecting templated inputs, validated inputs and
+                   facts used internally by AVD plugins.
+                   When an Ansible Vault secret is set, temporary files holding
+                   input variables are encrypted. Decryption is required to inspect them.
                 eos_designs_return_structured_config: Return structured configuration as ansible_facts per device.
                 eos_designs_tmp_dir:
                    Path for temporary files created by the 'eos_designs' role.
