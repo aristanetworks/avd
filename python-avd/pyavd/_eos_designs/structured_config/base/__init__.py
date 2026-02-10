@@ -737,7 +737,7 @@ class AvdStructuredConfigBaseProtocol(
             self._add_radius_server_config(server, server_vrf)
 
             for group in server.groups:
-                self._validate_server_group_name(group, context=f"aaa_settings.radius.servers[host={server.host}]")
+                self._validate_server_group_name(server_group=group, context=f"aaa_settings.radius.servers[host={server.host}]")
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
                 radius_group.type = "radius"
                 radius_group.servers.append_new(server=server.host, vrf=server_vrf)
@@ -767,7 +767,7 @@ class AvdStructuredConfigBaseProtocol(
                 self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
 
                 for group in server.groups:
-                    self._validate_server_group_name(group, context=f"aaa_settings.tacacs.servers[host={server.host}]")
+                    self._validate_server_group_name(server_group=group, context=f"aaa_settings.tacacs.servers[host={server.host}]")
                     tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
                     tacacs_group.type = "tacacs+"
                     tacacs_group.servers.append_new(server=server.host, vrf=server_vrf)
