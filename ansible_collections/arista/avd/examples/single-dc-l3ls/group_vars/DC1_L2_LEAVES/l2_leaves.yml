@@ -3,7 +3,7 @@ type: l2leaf
 
 l2leaf:
   defaults:
-    platform: cEOS
+    platform: cEOSLab
     spanning_tree_mode: mstp
 
   node_groups:

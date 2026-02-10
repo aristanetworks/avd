@@ -5,7 +5,7 @@ type: l3leaf
 l3leaf:
   defaults:
     # Set the relevant platform as each platform has different default values in Ansible AVD
-    platform: cEOS
+    platform: cEOSLab
     # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
     loopback_ipv4_pool: 10.255.0.0/27
     # Offset all assigned loopback IP addresses.
