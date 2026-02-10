@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-"""File handler with automatic Vault support for AVD plugins."""
+"""File handler with automatic Ansible Vault support for AVD plugins."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 
 class AVDFileHandler:
-    """Handles file operations with automatic Vault support."""
+    """Handles file operations with automatic Ansible Vault support."""
 
     _vault_handler: AVDVaultHandler
 
