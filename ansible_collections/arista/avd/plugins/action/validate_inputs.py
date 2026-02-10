@@ -180,9 +180,9 @@ class ActionModule(AvdActionPlugin):
 
         # Check if Vault secrets are configured for encrypting temporary files.
         if vault_handler.has_vault_secrets:
-            self.logger.info("Ansible Vault is configured - temporary files will be encrypted")
+            self.logger.info("Vault secrets are configured - temporary files will be encrypted")
         else:
-            self.logger.info("Ansible Vault is not configured - temporary files will not be encrypted")
+            self.logger.info("Vault secrets are not configured - temporary files will not be encrypted")
 
         # Track worker failures globally for the task.
         self.crashed_hosts = set()
@@ -521,7 +521,7 @@ def _validate_host_worker(
         if not input_file_path.exists():
             return WorkerFailure(hostname=hostname, error=f"Missing input data file: {input_file_path}")
 
-        # Load file content (decrypted if vaulted).
+        # Load file content (decrypted if Vault encrypted).
         file_content = file_handler.read_file(input_file_path)
 
         if input_suffix in {"yml", "yaml"}:

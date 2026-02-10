@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-"""File handler with automatic vault support for AVD plugins."""
+"""File handler with automatic Vault support for AVD plugins."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 
 class AVDFileHandler:
-    """Handles file operations with automatic vault support."""
+    """Handles file operations with automatic Vault support."""
 
     _vault_handler: AVDVaultHandler
 
@@ -23,30 +23,30 @@ class AVDFileHandler:
         Initialize the file handler.
 
         Args:
-            vault_handler: The AVDVaultHandler instance to use for vault operations.
+            vault_handler: The AVDVaultHandler instance to use for Vault operations.
         """
         self._vault_handler = vault_handler
 
     def read_file(self, file_path: Path | str) -> bytes:
         """
-        Read a file with automatic vault decryption, returning raw bytes.
+        Read a file with automatic Vault decryption, returning raw bytes.
 
-        This method reads a file and automatically decrypts it if it is vault encrypted.
+        This method reads a file and automatically decrypts it if it is Vault encrypted.
 
         Args:
             file_path: Path to the file to read.
 
         Returns:
-            Raw file content as bytes (decrypted if vaulted).
+            Raw file content as bytes (decrypted if Vault encrypted).
         """
         file_content = Path(file_path).read_bytes()
         return self._vault_handler.decrypt_if_needed(file_content)
 
     def write_file(self, file_path: Path | str, data: bytes) -> None:
         """
-        Write bytes to a file with automatic vault encryption.
+        Write bytes to a file with automatic Vault encryption.
 
-        This method encrypts the data if vault is configured, then writes to the file.
+        This method encrypts the data if Vault secrets are configured, then writes to the file.
 
         Args:
             file_path: Path to the file to write.
@@ -57,7 +57,7 @@ class AVDFileHandler:
 
     def load_json(self, file_path: Path | str) -> Any:
         """
-        Load and parse a JSON file with automatic vault decryption.
+        Load and parse a JSON file with automatic Vault decryption.
 
         Args:
             file_path: Path to the JSON file to load.
