@@ -61,6 +61,7 @@ def extract_requirements(pyproject_path: Path, output_path: Path) -> None:
         for req in unique_requirements:
             f.write(f"{req}\n")
 
+
 if __name__ == "__main__":
     # Get pyproject.toml path from pre-commit (first argument)
     if len(sys.argv) > 1:
