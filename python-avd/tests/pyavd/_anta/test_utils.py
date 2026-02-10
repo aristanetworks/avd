@@ -10,28 +10,28 @@ from anta.tests.interfaces import VerifyInterfacesVoqAndEgressQueueDrops
 
 from pyavd._anta.index import AVD_TEST_INDEX
 from pyavd._anta.input_factories import VerifyReachabilityInputFactory
-from pyavd._anta.input_factories._base_classes import AntaTestInputFactory
+from pyavd._anta.input_factories.base_classes import AntaTestInputFactory
 from pyavd._anta.utils import get_filtered_test_specs
-from pyavd.api._anta import AvdCatalogGenerationSettings, AvdTestSpec
+from pyavd.api.anta import AVDCatalogGenerationSettings, AVDTestSpec
 
 
 def test_get_filtered_test_specs_no_filters() -> None:
     """No run_tests or skip_tests provided. Should return all."""
-    settings = AvdCatalogGenerationSettings()
+    settings = AVDCatalogGenerationSettings()
     result = get_filtered_test_specs(settings)
     assert result == AVD_TEST_INDEX
 
 
 def test_get_filtered_test_specs_invalid_test_names_in_run() -> None:
     """Invalid name in run_tests should raise ValueError."""
-    settings = AvdCatalogGenerationSettings(run_tests=("VerifyReachability", "InvalidTest1", "InvalidTest2"))
+    settings = AVDCatalogGenerationSettings(run_tests=("VerifyReachability", "InvalidTest1", "InvalidTest2"))
     with pytest.raises(ValueError, match=re.escape("Invalid test name(s) in 'run_tests' or 'skip_tests' filters: InvalidTest1, InvalidTest2")):
         get_filtered_test_specs(settings)
 
 
 def test_get_filtered_test_specs_invalid_test_names_in_skip() -> None:
     """Invalid name in skip_tests should raise ValueError."""
-    settings = AvdCatalogGenerationSettings(skip_tests=("VerifyReachability", "InvalidTest2", "InvalidTest1"))
+    settings = AVDCatalogGenerationSettings(skip_tests=("VerifyReachability", "InvalidTest2", "InvalidTest1"))
     with pytest.raises(ValueError, match=re.escape("Invalid test name(s) in 'run_tests' or 'skip_tests' filters: InvalidTest1, InvalidTest2")):
         get_filtered_test_specs(settings)
 
@@ -39,7 +39,7 @@ def test_get_filtered_test_specs_invalid_test_names_in_skip() -> None:
 def test_get_filtered_test_specs_skip_tests_logic() -> None:
     """Specific tests should be removed."""
     skip_tests = ("VerifyNTP", "VerifyReachability")
-    settings = AvdCatalogGenerationSettings(skip_tests=skip_tests)
+    settings = AVDCatalogGenerationSettings(skip_tests=skip_tests)
     result = get_filtered_test_specs(settings)
     result_names = [s.test_class.name for s in result]
     assert all(test not in result_names for test in skip_tests)
@@ -49,7 +49,7 @@ def test_get_filtered_test_specs_skip_tests_logic() -> None:
 def test_get_filtered_test_specs_run_tests_logic() -> None:
     """Only specific tests should remain."""
     run_tests = ("VerifyNTP", "VerifyReachability")
-    settings = AvdCatalogGenerationSettings(run_tests=run_tests)
+    settings = AVDCatalogGenerationSettings(run_tests=run_tests)
     result = get_filtered_test_specs(settings)
     result_names = [s.test_class.name for s in result]
     assert result_names == list(run_tests)
@@ -60,7 +60,7 @@ def test_get_filtered_test_specs_both_filters_overlap_remaining_run_tests() -> N
     # User asks to run A and B, but explicitly skips B. Result should be A only.
     run_tests = ("VerifyNTP", "VerifyReachability")
     skip_tests = ("VerifyReachability",)
-    settings = AvdCatalogGenerationSettings(run_tests=run_tests, skip_tests=skip_tests)
+    settings = AVDCatalogGenerationSettings(run_tests=run_tests, skip_tests=skip_tests)
     result = get_filtered_test_specs(settings)
     result_names = [s.test_class.name for s in result]
     assert result_names == ["VerifyNTP"]
@@ -71,7 +71,7 @@ def test_get_filtered_test_specs_both_filters_overlap_no_remaining_run_tests() -
     # User asks to run A only, but explicitly skips A. Result should be nothing.
     run_tests = ("VerifyNTP",)
     skip_tests = ("VerifyNTP",)
-    settings = AvdCatalogGenerationSettings(run_tests=run_tests, skip_tests=skip_tests)
+    settings = AVDCatalogGenerationSettings(run_tests=run_tests, skip_tests=skip_tests)
     result = get_filtered_test_specs(settings)
     assert len(result) == 0
 
@@ -86,9 +86,9 @@ def test_get_filtered_test_specs_custom_test_specs_addition() -> None:
             """Generate the inputs for the `VerifyInterfacesVoqAndEgressQueueDrops` test."""
             return
 
-    test_spec = AvdTestSpec(test_class=VerifyInterfacesVoqAndEgressQueueDrops, input_factory=VerifyInterfacesVoqAndEgressQueueDropsInputFactory)
+    test_spec = AVDTestSpec(test_class=VerifyInterfacesVoqAndEgressQueueDrops, input_factory=VerifyInterfacesVoqAndEgressQueueDropsInputFactory)
     custom_test_specs = (test_spec,)
-    settings = AvdCatalogGenerationSettings(custom_test_specs=custom_test_specs)
+    settings = AVDCatalogGenerationSettings(custom_test_specs=custom_test_specs)
     result = get_filtered_test_specs(settings)
     assert test_spec in result
     assert len(result) == len(AVD_TEST_INDEX) + len(custom_test_specs)
@@ -96,9 +96,9 @@ def test_get_filtered_test_specs_custom_test_specs_addition() -> None:
 
 def test_get_filtered_test_specs_custom_test_specs_deduplication() -> None:
     """Custom test is added to the final list even if duplicated (honor user intent)."""
-    test_spec = AvdTestSpec(test_class=VerifyReachability, input_factory=VerifyReachabilityInputFactory)
+    test_spec = AVDTestSpec(test_class=VerifyReachability, input_factory=VerifyReachabilityInputFactory)
     custom_test_specs = (test_spec,)
-    settings = AvdCatalogGenerationSettings(custom_test_specs=custom_test_specs)
+    settings = AVDCatalogGenerationSettings(custom_test_specs=custom_test_specs)
     result = get_filtered_test_specs(settings)
     verify_reachability_count = sum(1 for s in result if s.test_class.name == test_spec.test_class.name)
     assert verify_reachability_count == 2
@@ -115,10 +115,10 @@ def test_get_filtered_test_specs_custom_test_specs_with_filters() -> None:
             """Generate the inputs for the `VerifyInterfacesVoqAndEgressQueueDrops` test."""
             return
 
-    test_spec = AvdTestSpec(test_class=VerifyInterfacesVoqAndEgressQueueDrops, input_factory=VerifyInterfacesVoqAndEgressQueueDropsInputFactory)
+    test_spec = AVDTestSpec(test_class=VerifyInterfacesVoqAndEgressQueueDrops, input_factory=VerifyInterfacesVoqAndEgressQueueDropsInputFactory)
     custom_test_specs = (test_spec,)
     run_tests = ("VerifyNTP",)
-    settings = AvdCatalogGenerationSettings(run_tests=run_tests, custom_test_specs=custom_test_specs)
+    settings = AVDCatalogGenerationSettings(run_tests=run_tests, custom_test_specs=custom_test_specs)
     result = get_filtered_test_specs(settings)
     result_names = [s.test_class.name for s in result]
     assert result_names == ["VerifyNTP", test_spec.test_class.name]
@@ -126,10 +126,10 @@ def test_get_filtered_test_specs_custom_test_specs_with_filters() -> None:
 
 def test_get_filtered_test_specs_replace_default_with_custom() -> None:
     """Test skipping a default test but adding it back via custom_test_specs."""
-    test_spec = AvdTestSpec(test_class=VerifyReachability, input_factory=VerifyReachabilityInputFactory)
+    test_spec = AVDTestSpec(test_class=VerifyReachability, input_factory=VerifyReachabilityInputFactory)
     custom_test_specs = (test_spec,)
     skip_tests = ("VerifyReachability",)
-    settings = AvdCatalogGenerationSettings(skip_tests=skip_tests, custom_test_specs=custom_test_specs)
+    settings = AVDCatalogGenerationSettings(skip_tests=skip_tests, custom_test_specs=custom_test_specs)
     result = get_filtered_test_specs(settings)
     matching_verify_reachability = [s for s in result if s.test_class.name == "VerifyReachability"]
     assert len(matching_verify_reachability) == 1

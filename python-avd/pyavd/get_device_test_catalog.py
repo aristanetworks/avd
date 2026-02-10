@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ._anta.lib import AntaCatalog
-    from .api._anta import AvdCatalogGenerationSettings, AvdFabricData
+    from .api.anta import AVDCatalogGenerationSettings, AVDFabricData
 
 LOGGER = getLogger(__name__)
 
@@ -17,19 +17,19 @@ LOGGER = getLogger(__name__)
 def get_device_test_catalog(
     hostname: str,
     structured_config: dict,
-    fabric_data: AvdFabricData,
-    settings: AvdCatalogGenerationSettings | None = None,
+    fabric_data: AVDFabricData,
+    settings: AVDCatalogGenerationSettings | None = None,
 ) -> AntaCatalog:
     """
     Generate an ANTA test catalog for a single device.
 
     By default, the ANTA catalog will be generated from all tests specified in the AVD test index.
 
-    An optional instance of `pyavd.api._anta.AvdCatalogGenerationSettings` can be provided
+    An optional instance of `pyavd.api.anta.AVDCatalogGenerationSettings` can be provided
     to customize the catalog generation process, such as running only specific tests, or skipping certain tests.
 
     AVD needs fabric-wide data of all devices to generate the catalog. Make sure to create a single
-    `pyavd.api._anta.AvdFabricData` instance for consistent data across catalog generations.
+    `pyavd.api.anta.AVDFabricData` instance for consistent data across catalog generations.
 
     Test definitions can be omitted from the catalog if the required data is not available for a specific device.
     You can configure logging and set the log level to DEBUG to see which test definitions are skipped and the reason why.
@@ -38,9 +38,9 @@ def get_device_test_catalog(
         hostname: The hostname of the device for which the catalog is being generated.
         structured_config: The structured configuration of the device.
             Variables should be converted and validated according to AVD `eos_cli_config_gen` schema first using `pyavd.validate_structured_config`.
-        fabric_data: The `AvdFabricData` instance containing fabric-wide data for the catalog generation.
-            Built from all device structured configurations using `AvdFabricData.from_structured_configs`.
-        settings: An optional `AvdCatalogGenerationSettings` instance to customize the catalog generation process.
+        fabric_data: The `AVDFabricData` instance containing fabric-wide data for the catalog generation.
+            Built from all device structured configurations using `AVDFabricData.from_structured_configs`.
+        settings: An optional `AVDCatalogGenerationSettings` instance to customize the catalog generation process.
 
     Returns:
         The generated ANTA catalog for the device.
@@ -49,9 +49,9 @@ def get_device_test_catalog(
     from ._anta.models import InputFactoryDataSource  # noqa: PLC0415
     from ._anta.utils import dump_anta_catalog, get_filtered_test_specs  # noqa: PLC0415
     from ._eos_cli_config_gen.schema import EosCliConfigGen  # noqa: PLC0415
-    from .api._anta import AvdCatalogGenerationSettings  # noqa: PLC0415
+    from .api.anta import AVDCatalogGenerationSettings  # noqa: PLC0415
 
-    settings = settings or AvdCatalogGenerationSettings()
+    settings = settings or AVDCatalogGenerationSettings()
 
     LOGGER.debug("<%s> Generating ANTA catalog with settings: %s", hostname, asdict(settings))
 
