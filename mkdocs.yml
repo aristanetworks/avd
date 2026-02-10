@@ -131,7 +131,9 @@ plugins:
           paths:
             - python-avd
   - same-dir
-  - excalidraw
+
+hooks:
+  - docs/hooks/excalidraw.py
 
 markdown_extensions:
   - admonition

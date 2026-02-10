@@ -149,6 +149,13 @@ convention = "google"
   "F403", # Allow wildcard imports to avoid cluttering the index
   "F405", # Allow names defined in via a wildcard import
 ]
+"scripts/*.py" = [
+  "INP001", # implicit namespace package. Add an `__init__.py` - Scripts are standalone files
+  "T201",   # `print` found - Scripts use print for output
+]
+"docs/hooks/*.py" = [
+  "INP001", # implicit namespace package. Add an `__init__.py` - MkDocs hooks are standalone files
+]
 
 [tool.ruff.lint.pylint]
 max-args = 15
