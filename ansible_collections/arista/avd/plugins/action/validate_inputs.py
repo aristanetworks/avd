@@ -20,7 +20,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AVDFileHandler,
     AVDVaultHandler,
     build_result_message,
-    get_role_tmp_paths,
+    get_tmp_paths,
     get_workers,
     parse_validation_result,
 )
@@ -172,7 +172,7 @@ class ActionModule(AvdActionPlugin):
         plugin_args = self._get_plugin_args()
         hosts_to_process = self._get_hosts_to_process(task_vars, plugin_args.schema_name)
         mp_workers, mt_workers = get_workers(len(hosts_to_process), task_vars["ansible_forks"])
-        templated_path, validated_path = get_role_tmp_paths(role_name=SCHEMA_MAP[plugin_args.schema_name], tmp_dir=plugin_args.tmp_dir, clean=True)
+        templated_path, validated_path = get_tmp_paths(tmp_dir=plugin_args.tmp_dir, clean=True)
 
         # Create vault and file handlers.
         vault_handler = AVDVaultHandler(self._loader, vault_id=plugin_args.vault_id)

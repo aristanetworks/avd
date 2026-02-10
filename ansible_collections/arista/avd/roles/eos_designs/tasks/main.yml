@@ -29,7 +29,7 @@
   block:
     - name: Validate eos_designs inputs
       arista.avd.validate_inputs:
-        tmp_dir: "{{ avd_tmp_dir }}"
+        tmp_dir: "{{ eos_designs_tmp_dir }}"
         batch_size: "{{ eos_designs_validate_inputs_batch_size | arista.avd.default(10) }}"
         schema_name: avd_design
         fail_on_validation_errors: true
@@ -41,7 +41,7 @@
 
     - name: Set eos_designs facts
       arista.avd.eos_designs_facts:
-        tmp_dir: "{{ avd_tmp_dir }}"
+        tmp_dir: "{{ eos_designs_tmp_dir }}"
         # cprofile_file: "eos_designs_facts.prof"
         template_output: true
         output_dir: "{{ output_dir }}"
@@ -53,7 +53,7 @@
     - name: Generate device configuration in structured format
       when: avd_eos_designs_structured_config | arista.avd.default(true)
       arista.avd.eos_designs_structured_config:
-        tmp_dir: "{{ avd_tmp_dir }}"
+        tmp_dir: "{{ eos_designs_tmp_dir }}"
         eos_designs_custom_templates: "{{ eos_designs_custom_templates | arista.avd.default([]) }}"
         dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
         # cprofile_file: "structured-{{inventory_hostname}}.prof"
@@ -72,7 +72,7 @@
         or eos_designs_documentation.p2p_links_csv | arista.avd.default(false)
         or avd_digital_twin_mode | arista.avd.default(false)
       arista.avd.eos_designs_documentation:
-        tmp_dir: "{{ avd_tmp_dir }}"
+        tmp_dir: "{{ eos_designs_tmp_dir }}"
         structured_config_dir: "{{ structured_dir }}"
         structured_config_suffix: "{{ avd_structured_config_file_format }}"
         fabric_documentation_file: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
@@ -94,7 +94,7 @@
     - name: Clean up AVD temporary directory
       when: not avd_debug
       ansible.builtin.file:
-        path: "{{ avd_tmp_dir }}"
+        path: "{{ eos_designs_tmp_dir }}"
         state: absent
       delegate_to: localhost
       run_once: true

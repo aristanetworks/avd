@@ -384,11 +384,6 @@ keys:
     description: 'The file format to use when dumping structured configuration files.
 
       '
-  avd_tmp_dir:
-    documentation_options:
-      table: role-settings
-    type: str
-    $ref: eos_cli_config_gen#/keys/avd_tmp_dir
   eos_designs_validation_configuration:
     documentation_options:
       table: role-settings
@@ -2325,6 +2320,20 @@ keys:
     type: bool
     default: false
     description: Return structured configuration as ansible_facts per device.
+  eos_designs_tmp_dir:
+    documentation_options:
+      table: role-settings
+    type: str
+    description: 'Path for temporary files created by the ''eos_designs'' role.
+
+      Contains templated inputs, validated inputs, and facts data used internally
+      by AVD plugins.
+
+      Defaults to ''intended/tmp/eos_designs''.
+
+      The temporary directory is cleaned up at the end of the ''eos_designs'' role.
+
+      '
   eos_designs_validate_inputs_batch_size:
     documentation_options:
       table: role-settings
