@@ -713,6 +713,8 @@ class AvdStructuredConfigBaseProtocol(
         if not self.inputs.aaa_settings.radius:
             return
 
+        use_new_ip_radius_model = self.inputs.avd_7_behaviors.ip_radius_source_interface_setting
+
         for server in self.inputs.aaa_settings.radius.servers:
             server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=server.vrf,
@@ -721,9 +723,17 @@ class AvdStructuredConfigBaseProtocol(
                 context=f"aaa_settings.radius.servers[host={server.host}].vrf",
             )
             if source_interface:
-                self.structured_config.ip_radius_source_interfaces.append_unique(
-                    EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
-                )
+                if use_new_ip_radius_model:
+                    # New behavior: separate keys for default VRF and others
+                    if server_vrf == "default":
+                        self.structured_config.ip_radius.source_interface = source_interface
+                    else:
+                        self.structured_config.ip_radius.vrfs.append_new(name=server_vrf, source_interface=source_interface)
+                else:
+                    # Old behavior: use deprecated ip_radius_source_interfaces list
+                    self.structured_config.ip_radius_source_interfaces.append_unique(
+                        EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
+                    )
 
             self._add_radius_server_config(server, server_vrf)
 
