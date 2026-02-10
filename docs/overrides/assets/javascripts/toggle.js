@@ -30,18 +30,49 @@ document$.subscribe(function() {
     loadingOverlay.classList.remove("active");
   };
 
-  // Find the best anchor element and calculate offset from it
+  // Find the tab container currently visible in the viewport
   const findScrollAnchor = () => {
-    const headings = document.querySelectorAll('.md-content__inner h1, .md-content__inner h2, .md-content__inner h3, .md-content__inner h4, .md-content__inner h5, .md-content__inner h6');
-    const currentScrollY = window.scrollY;
     const headerOffset = 80; // Account for sticky header
+    const viewportTop = window.scrollY + headerOffset;
+    const viewportCenter = viewportTop + (window.innerHeight / 3); // Upper third of visible area
 
+    // First, try to find a tabbed container that's currently in view
+    const tabbedContainers = document.querySelectorAll('.md-typeset .tabbed-set');
+    let bestContainer = null;
+    let bestDistance = Infinity;
+
+    for (const container of tabbedContainers) {
+      const rect = container.getBoundingClientRect();
+      const containerTop = rect.top + window.scrollY;
+      const containerBottom = containerTop + rect.height;
+
+      // Check if this container is visible in the viewport
+      if (containerBottom > viewportTop && containerTop < viewportTop + window.innerHeight) {
+        // Find the container closest to the top of the viewport
+        const distance = Math.abs(containerTop - viewportTop);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestContainer = container;
+        }
+      }
+    }
+
+    if (bestContainer) {
+      const containerTop = bestContainer.getBoundingClientRect().top + window.scrollY;
+      return {
+        element: bestContainer,
+        offset: window.scrollY - containerTop,
+        type: 'tabbed-set'
+      };
+    }
+
+    // Fallback: find the nearest heading
+    const headings = document.querySelectorAll('.md-content__inner h1, .md-content__inner h2, .md-content__inner h3, .md-content__inner h4, .md-content__inner h5, .md-content__inner h6');
     let anchorElement = null;
 
-    // Find the last heading that is above or at the current scroll position
     for (const heading of headings) {
       const headingTop = heading.getBoundingClientRect().top + window.scrollY;
-      if (headingTop <= currentScrollY + headerOffset + 50) {
+      if (headingTop <= viewportCenter) {
         anchorElement = heading;
       } else {
         break;
@@ -52,7 +83,8 @@ document$.subscribe(function() {
       const anchorTop = anchorElement.getBoundingClientRect().top + window.scrollY;
       return {
         element: anchorElement,
-        offset: currentScrollY - anchorTop
+        offset: window.scrollY - anchorTop,
+        type: 'heading'
       };
     }
 
@@ -63,17 +95,28 @@ document$.subscribe(function() {
   const restoreScrollPosition = (anchor) => {
     if (!anchor || !anchor.element) return;
 
-    // Wait for DOM to reflow after tab switch
+    // Wait for DOM to reflow after tab switch - use multiple frames for large content changes
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        const newAnchorTop = anchor.element.getBoundingClientRect().top + window.scrollY;
-        const newScrollY = newAnchorTop + anchor.offset;
+        setTimeout(() => {
+          const newAnchorTop = anchor.element.getBoundingClientRect().top + window.scrollY;
 
-        window.scroll({
-          top: Math.max(0, newScrollY),
-          left: 0,
-          behavior: "instant"
-        });
+          // For tabbed containers, scroll to show the container at the same relative position
+          // For headings, restore the exact offset
+          let newScrollY;
+          if (anchor.type === 'tabbed-set') {
+            // Keep the container at roughly the same position relative to viewport top
+            newScrollY = newAnchorTop + Math.min(anchor.offset, 0);
+          } else {
+            newScrollY = newAnchorTop + anchor.offset;
+          }
+
+          window.scroll({
+            top: Math.max(0, newScrollY),
+            left: 0,
+            behavior: "instant"
+          });
+        }, 50); // Additional delay for large DOM changes
       });
     });
   };
@@ -110,6 +153,33 @@ document$.subscribe(function() {
     switchToTab(initialLang, false, null);
   });
 
+  // Flag to prevent circular updates when we programmatically click tabs
+  let isToggleSwitching = false;
+
+  // Sync toggle button state based on which tab is active
+  const syncToggleState = (tabName) => {
+    if (isToggleSwitching) return; // Don't sync if we triggered the change
+
+    const isYaml = tabName.toLowerCase() === LANG_B.toLowerCase();
+    if (switchInput.checked !== isYaml) {
+      switchInput.checked = isYaml;
+      localStorage.setItem(STORAGE_KEY, isYaml ? LANG_B : LANG_A);
+    }
+  };
+
+  // Listen for clicks on tab labels to sync toggle state
+  const tabLabels = document.querySelectorAll(".md-typeset .tabbed-labels > label");
+  tabLabels.forEach(label => {
+    label.addEventListener("click", () => {
+      const tabName = label.textContent.trim();
+      // Only sync if it's a Table or YAML tab
+      if (tabName.toLowerCase() === LANG_A.toLowerCase() ||
+          tabName.toLowerCase() === LANG_B.toLowerCase()) {
+        syncToggleState(tabName);
+      }
+    });
+  });
+
   if (!switchInput.hasAttribute('data-listener-attached')) {
     switchInput.addEventListener("change", (event) => {
       const targetLang = event.target.checked ? LANG_B : LANG_A;
@@ -120,13 +190,17 @@ document$.subscribe(function() {
       // Show loading spinner
       showLoading();
 
+      // Set flag to prevent circular sync
+      isToggleSwitching = true;
+
       // Use setTimeout to allow the spinner to render before switching tabs
       setTimeout(() => {
         switchToTab(targetLang, true, scrollAnchor);
         localStorage.setItem(STORAGE_KEY, targetLang);
 
-        // Hide loading spinner after scroll restoration completes
+        // Reset flag after tabs have switched
         setTimeout(() => {
+          isToggleSwitching = false;
           hideLoading();
         }, 100);
       }, 50);
