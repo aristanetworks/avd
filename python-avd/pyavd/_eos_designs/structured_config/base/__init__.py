@@ -686,12 +686,8 @@ class AvdStructuredConfigBaseProtocol(
             self.structured_config.eos_cli = eos_cli
 
     def _validate_server_group_name(self, server_group: str, context: str) -> None:
-        if server_group == "radius":
-            error_message = f"Cannot use server group 'radius' for {context}. This group name is reserved by EOS. Please choose a different group name."
-            raise AristaAvdInvalidInputsError(error_message)
-
-        if server_group == "tacacs+":
-            error_message = f"Cannot use server group 'tacacs+' for {context}. This group name is reserved by EOS. Please choose a different group name."
+        if server_group in ["radius", "tacacs+"]:
+            error_message = f"Cannot use server group '{server_group}' for {context}. This group name is reserved by EOS. Please choose a different group name."
             raise AristaAvdInvalidInputsError(error_message)
 
     def _add_radius_server_config(self, server: EosDesigns.AaaSettings.Radius.ServersItem, server_vrf: str) -> None:
