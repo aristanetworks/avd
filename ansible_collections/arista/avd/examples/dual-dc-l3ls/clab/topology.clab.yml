@@ -111,14 +111,14 @@ topology:
     - endpoints: ["dc1-leaf2c:eth5", "dc1-leaf2-server1:eth3"]
     # dc2
     # spines to a/b leafs
-    - endpoints: ["dc1-spine1:eth1", "dc2-leaf1a:eth1"]
-    - endpoints: ["dc1-spine1:eth2", "dc2-leaf1b:eth1"]
-    - endpoints: ["dc1-spine1:eth3", "dc2-leaf2a:eth1"]
-    - endpoints: ["dc1-spine1:eth4", "dc2-leaf2b:eth1"]
-    - endpoints: ["dc1-spine2:eth1", "dc2-leaf1a:eth2"]
-    - endpoints: ["dc1-spine2:eth2", "dc2-leaf1b:eth2"]
-    - endpoints: ["dc1-spine2:eth3", "dc2-leaf2a:eth2"]
-    - endpoints: ["dc1-spine2:eth4", "dc2-leaf2b:eth2"]
+    - endpoints: ["dc2-spine1:eth1", "dc2-leaf1a:eth1"]
+    - endpoints: ["dc2-spine1:eth2", "dc2-leaf1b:eth1"]
+    - endpoints: ["dc2-spine1:eth3", "dc2-leaf2a:eth1"]
+    - endpoints: ["dc2-spine1:eth4", "dc2-leaf2b:eth1"]
+    - endpoints: ["dc2-spine2:eth1", "dc2-leaf1a:eth2"]
+    - endpoints: ["dc2-spine2:eth2", "dc2-leaf1b:eth2"]
+    - endpoints: ["dc2-spine2:eth3", "dc2-leaf2a:eth2"]
+    - endpoints: ["dc2-spine2:eth4", "dc2-leaf2b:eth2"]
     # leaf a/b peer-links
     - endpoints: ["dc2-leaf1a:eth3", "dc2-leaf1b:eth3"]
     - endpoints: ["dc2-leaf1a:eth4", "dc2-leaf1b:eth4"]
