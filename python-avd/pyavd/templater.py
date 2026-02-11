@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import importlib
 import importlib.util
 import logging
 from pathlib import Path
@@ -137,21 +138,27 @@ class Templar:
         self.import_filters_and_tests()
 
     def import_filters_and_tests(self) -> None:
-        import importlib  # noqa: PLC0415
-
         # Dynamically import and register filters from constants
         filters_module = importlib.import_module(".j2filters", package="pyavd")
         for filter_name in CUSTOM_FILTERS:
-            filter_func = getattr(filters_module, filter_name)
+            try:
+                filter_func = getattr(filters_module, filter_name)
+            except AttributeError as exc:
+                msg = f"Filter '{filter_name}' not found in j2filters module"
+                raise AttributeError(msg) from exc
             self.environment.filters[f"arista.avd.{filter_name}"] = filter_func
 
         # Dynamically import and register tests from constants
         for test_name in CUSTOM_TESTS:
-            test_module = importlib.import_module(f".j2tests.{test_name}", package="pyavd")
-            test_func = getattr(test_module, test_name)
+            try:
+                test_module = importlib.import_module(f".j2tests.{test_name}", package="pyavd")
+                test_func = getattr(test_module, test_name)
+            except (ImportError, AttributeError) as exc:
+                msg = f"Test '{test_name}' not found in j2tests.{test_name} module"
+                raise ImportError(msg) from exc
             self.environment.tests[f"arista.avd.{test_name}"] = test_func
 
-    def render_template_from_file(self, template_file: str, template_vars: dict) -> str:
+    def render_template_from_file(self, template_file: str, template_vars: dict[str, Any]) -> str:
         return self.environment.get_template(template_file).render(template_vars)
 
     def compile_templates_in_paths(self, precompiled_templates_path: str | Path, searchpaths: list[str | Path]) -> None:
