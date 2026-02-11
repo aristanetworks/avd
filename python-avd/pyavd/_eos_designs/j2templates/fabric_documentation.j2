@@ -81,6 +81,86 @@
 | {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.router_isis_net }} |
 {%     endfor %}
 {% endif %}
+{% if has_mpls %}
+
+### MPLS and LDP Configuration
+
+| POD | Node | Type | MPLS Router ID | LDP Enabled |
+| --- | ---- | ---- | -------------- | ----------- |
+{%     for fabric_switch in fabric_switches | selectattr("mpls_router_id", "arista.avd.defined") %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.type }} | {{ fabric_switch.mpls_router_id }} | {{ fabric_switch.mpls_ldp_enabled | arista.avd.default("-") }} |
+{%     endfor %}
+{% endif %}
+{% if has_isis_sr %}
+
+### ISIS Segment Routing Node-SID Allocation
+
+| POD | Node | Type | Node SID IPv4 Index |
+| --- | ---- | ---- | ------------------- |
+{%     for fabric_switch in fabric_switches | selectattr("isis_sr_enabled", "arista.avd.defined") %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.type }} | {{ fabric_switch.node_sid_ipv4_index | arista.avd.default("-") }} |
+{%     endfor %}
+{% endif %}
+{% if has_mpls_overlay %}
+
+### BGP MPLS Overlay
+
+| Node | Type | BGP AS | Router ID | Address Families |
+| ---- | ---- | ------ | --------- | ---------------- |
+{%     for overlay_node in mpls_overlay_nodes %}
+| {{ overlay_node.node }} | {{ overlay_node.type }} | {{ overlay_node.bgp_as }} | {{ overlay_node.router_id }} | {{ overlay_node.address_families }} |
+{%     endfor %}
+{% endif %}
+{% if has_mpls_route_reflectors %}
+
+### MPLS Route Reflectors
+
+| Node | Type | BGP AS | Router ID | Cluster ID |
+| ---- | ---- | ------ | --------- | ---------- |
+{%     for rr_node in mpls_route_reflectors %}
+| {{ rr_node.node }} | {{ rr_node.type }} | {{ rr_node.bgp_as }} | {{ rr_node.router_id }} | {{ rr_node.cluster_id }} |
+{%     endfor %}
+{% endif %}
+{% if has_vrfs %}
+
+### VRF Summary
+
+| VRF | RD Pattern | Import RT | Export RT | Nodes |
+| --- | ---------- | --------- | --------- | ----- |
+{%     for vrf in vrf_summary %}
+| {{ vrf.vrf }} | {{ vrf.rd_pattern }} | {{ vrf.import_rt }} | {{ vrf.export_rt }} | {{ vrf.nodes }} |
+{%     endfor %}
+{% endif %}
+{% if has_bgp_peer_groups %}
+
+### BGP Peer Groups
+
+| Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
+| ---------- | --------- | ------------- | --- | -------------- | ----- |
+{%     for pg in bgp_peer_groups %}
+| {{ pg.name }} | {{ pg.remote_as }} | {{ pg.update_source }} | {{ pg.bfd }} | {{ pg.send_community }} | {{ pg.nodes }} |
+{%     endfor %}
+{% endif %}
+{% if has_bgp_neighbors %}
+
+### BGP Neighbors
+
+| Node | Type | Neighbor IP | Peer Group | Remote AS | Description |
+| ---- | ---- | ----------- | ---------- | --------- | ----------- |
+{%     for neighbor in bgp_neighbors %}
+| {{ neighbor.node }} | {{ neighbor.type }} | {{ neighbor.neighbor_ip }} | {{ neighbor.peer_group }} | {{ neighbor.remote_as }} | {{ neighbor.description }} |
+{%     endfor %}
+{% endif %}
+{% if has_vrf_routing_protocols %}
+
+### VRF Routing Protocols
+
+| Node | Type | VRF | Router ID | Redistribute |
+| ---- | ---- | --- | --------- | ------------ |
+{%     for vrf in vrf_routing_protocols %}
+| {{ vrf.node }} | {{ vrf.type }} | {{ vrf.vrf }} | {{ vrf.router_id }} | {{ vrf.redistribute }} |
+{%     endfor %}
+{% endif %}
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
