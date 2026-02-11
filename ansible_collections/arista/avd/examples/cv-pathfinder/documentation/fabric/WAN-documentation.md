@@ -158,7 +158,7 @@
 | ---------- | --------- | ------------- | --- | -------------- | ----- |
 | EVPN-OVERLAY-PEERS | - | Loopback0 | Yes | all | site4-border1, site4-wan1 |
 | IPv4-UNDERLAY-PEERS | - | - | No | all | site1-border1, site1-border2, site1-wan1, site1-wan2, site2-leaf1, site2-leaf2, site2-wan1, site2-wan2, site4-border1, site4-border2, site4-wan1 |
-| MLAG-IPv4-UNDERLAY-PEER | 65101 | - | No | all | site1-border1, site1-border2, site2-leaf1, site2-leaf2, site4-border1, site4-border2 |
+| MLAG-IPv4-UNDERLAY-PEER | - | - | No | all | site1-border1, site1-border2, site2-leaf1, site2-leaf2, site4-border1, site4-border2 |
 | WAN-OVERLAY-PEERS | 65000 | Dps1 | Yes | all | pf1, pf2, site1-wan1, site1-wan2, site2-wan1, site2-wan2, site3-wan1, site4-wan1 |
 | WAN-RR-OVERLAY-PEERS | 65000 | Dps1 | Yes | all | pf1, pf2 |
 
