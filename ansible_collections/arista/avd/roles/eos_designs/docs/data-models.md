@@ -1749,6 +1749,8 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-topology.md
 
 ## PREVIEW - Digital Twin settings
 
+### PREVIEW - Digital Twin configuration
+
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/digital-twin-configuration.md
 --8<--
