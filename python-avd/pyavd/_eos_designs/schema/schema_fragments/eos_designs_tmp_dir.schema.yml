@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2026 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -6,12 +6,12 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  avd_eos_designs_debug:
+  eos_designs_tmp_dir:
     documentation_options:
       table: role-settings
-    type: bool
-    deprecation:
-      warning: true
-      removed: true
-      new_key: eos_designs_keep_tmp_files
-      remove_in_version: 6.0.0
+    type: str
+    description: |
+      Path for temporary files created by the 'eos_designs' role.
+      Contains templated inputs, validated inputs, and facts data used internally by AVD plugins.
+      Defaults to 'intended/tmp_eos_designs'.
+      The temporary directory is cleaned up at the end of the 'eos_designs' role.

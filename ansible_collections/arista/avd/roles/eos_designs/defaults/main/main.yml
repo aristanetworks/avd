@@ -7,6 +7,9 @@ avd_structured_config_file_format: "yml"
 # See role documentation for details.
 avd_vault_id: null
 
+# Avoid deleting temporary files. Allows the use to inspect tmp files created by the role.
+eos_designs_keep_tmp_files: false
+
 # Validation configuration for AVD Design input data.
 # This dictionary is passed to the validate_inputs action plugin.
 eos_designs_validation_configuration:

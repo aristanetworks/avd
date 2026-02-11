@@ -79,6 +79,7 @@ EXAMPLES = r"""
 
 - name: Generate fabric documentation
   arista.avd.eos_designs_documentation:
+    tmp_dir: "intended/tmp_eos_designs"
     structured_config_dir: "{{ structured_dir }}"
     structured_config_suffix: "{{ avd_structured_config_file_format }}"
     fabric_documentation_file: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
