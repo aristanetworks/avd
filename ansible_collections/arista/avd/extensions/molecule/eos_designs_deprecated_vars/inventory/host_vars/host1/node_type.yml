@@ -33,7 +33,7 @@ l3leaf:
 mgmt_interface_vrf: default
 
 avd_7_behaviors:
-  # Test for use new behaviour of IP RADIUS server commands
+  # Test for new behaviour of IP RADIUS server commands
   ip_radius_source_interface_setting: true
 aaa_settings:
   radius:
