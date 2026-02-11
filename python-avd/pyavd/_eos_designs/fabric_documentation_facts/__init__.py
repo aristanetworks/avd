@@ -229,7 +229,7 @@ class FabricDocumentationFacts(AvdFacts):
                 pg_name = get(peer_group, "name")
                 if not pg_name:
                     continue
-                remote_as = get(peer_group, "remote_as", default="-")
+                remote_as = get(peer_group, "remote_as")
                 update_source = get(peer_group, "update_source", default="-")
                 bfd = "Yes" if get(peer_group, "bfd") is True else "No"
                 send_community = get(peer_group, "send_community", default="-")
@@ -243,12 +243,17 @@ class FabricDocumentationFacts(AvdFacts):
                         "send_community": send_community,
                         "nodes": [hostname],
                     }
-                elif hostname not in peer_groups_data[pg_name]["nodes"]:
-                    peer_groups_data[pg_name]["nodes"].append(hostname)
+                else:
+                    if hostname not in peer_groups_data[pg_name]["nodes"]:
+                        peer_groups_data[pg_name]["nodes"].append(hostname)
+                    # If remote_as differs across nodes, show "-" to indicate it varies
+                    if peer_groups_data[pg_name]["remote_as"] != remote_as:
+                        peer_groups_data[pg_name]["remote_as"] = None
 
-        # Format nodes list
+        # Format nodes list and remote_as
         for pg in peer_groups_data.values():
             pg["nodes"] = ", ".join(natural_sort(pg["nodes"]))
+            pg["remote_as"] = pg["remote_as"] if pg["remote_as"] is not None else "-"
 
         return natural_sort(list(peer_groups_data.values()), sort_key="name")
 
