@@ -10,6 +10,10 @@
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
+  - [VRF Summary](#vrf-summary)
+  - [BGP Peer Groups](#bgp-peer-groups)
+  - [BGP Neighbors](#bgp-neighbors)
+  - [VRF Routing Protocols](#vrf-routing-protocols)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
@@ -152,6 +156,195 @@
 | DC1_FABRIC | DC1-SPINE4 | 192.168.255.4/32 |
 | DC1_FABRIC | DC1-SVC3A | 192.168.255.12/32 |
 | DC1_FABRIC | DC1-SVC3B | 192.168.255.13/32 |
+
+### VRF Summary
+
+| VRF | RD Pattern | Import RT | Export RT | Nodes |
+| --- | ---------- | --------- | --------- | ----- |
+| Tenant_A_APP_Zone | 12 | 12:12 | 12:12 | DC1-LEAF1A, DC1-LEAF2A, DC1-LEAF2B, DC1-SVC3A, DC1-SVC3B |
+| Tenant_A_DB_Zone | 13 | 13:13 | 13:13 | DC1-LEAF2A, DC1-LEAF2B, DC1-SVC3A, DC1-SVC3B |
+| Tenant_A_OP_Zone | 10 | 10:10 | 10:10 | DC1-LEAF2A, DC1-LEAF2B, DC1-SVC3A, DC1-SVC3B |
+| Tenant_A_WAN_Zone | 14 | 14:14, 65000:456 | 14:14, 65000:789 | DC1-BL1A, DC1-BL1B, DC1-SVC3A, DC1-SVC3B |
+| Tenant_A_WEB_Zone | 11 | 11:11 | 11:11 | DC1-LEAF1A, DC1-LEAF2A, DC1-LEAF2B, DC1-SVC3A, DC1-SVC3B |
+| Tenant_B_OP_Zone | 20 | 20:20 | 20:20 | DC1-BL1A, DC1-BL1B, DC1-LEAF2A, DC1-LEAF2B, DC1-SVC3A, DC1-SVC3B |
+| Tenant_B_WAN_Zone | 21 | 21:21 | 21:21 | DC1-BL1A, DC1-BL1B, DC1-SVC3A, DC1-SVC3B |
+| Tenant_C_OP_Zone | 30 | 30:30 | 30:30 | DC1-LEAF2A, DC1-LEAF2B, DC1-SVC3A, DC1-SVC3B |
+| Tenant_C_WAN_Zone | 31 | 31:31 | 31:31 | DC1-BL1A, DC1-BL1B, DC1-SVC3A, DC1-SVC3B |
+| Tenant_L3_VRF_Zone | 15 | 15:15 | 15:15 | DC1-BL1A, DC1-BL1B |
+
+### BGP Peer Groups
+
+| Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
+| ---------- | --------- | ------------- | --- | -------------- | ----- |
+| EVPN-OVERLAY-PEERS | - | Loopback0 | Yes | all | DC1-BL1A, DC1-BL1B, DC1-LEAF1A, DC1-LEAF2A, DC1-LEAF2B, DC1-SPINE1, DC1-SPINE2, DC1-SPINE3, DC1-SPINE4, DC1-SVC3A, DC1-SVC3B |
+| MLAG-PEERS | 65103 | - | No | all | DC1-SVC3A, DC1-SVC3B |
+| UNDERLAY-PEERS | - | - | No | all | DC1-BL1A, DC1-BL1B, DC1-LEAF1A, DC1-LEAF2A, DC1-LEAF2B, DC1-SPINE1, DC1-SPINE2, DC1-SPINE3, DC1-SPINE4, DC1-SVC3A, DC1-SVC3B |
+
+### BGP Neighbors
+
+| Node | Type | Neighbor IP | Peer Group | Remote AS | Description |
+| ---- | ---- | ----------- | ---------- | --------- | ----------- |
+| DC1-BL1A | l3leaf | 172.31.255.80 | UNDERLAY-PEERS | 65001 | DC1-SPINE1_Ethernet6 |
+| DC1-BL1A | l3leaf | 172.31.255.82 | UNDERLAY-PEERS | 65001 | DC1-SPINE2_Ethernet6 |
+| DC1-BL1A | l3leaf | 172.31.255.84 | UNDERLAY-PEERS | 65001 | DC1-SPINE3_Ethernet6 |
+| DC1-BL1A | l3leaf | 172.31.255.86 | UNDERLAY-PEERS | 65001 | DC1-SPINE4_Ethernet6 |
+| DC1-BL1A | l3leaf | 192.168.255.1 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE1_Loopback0 |
+| DC1-BL1A | l3leaf | 192.168.255.2 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE2_Loopback0 |
+| DC1-BL1A | l3leaf | 192.168.255.3 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE3_Loopback0 |
+| DC1-BL1A | l3leaf | 192.168.255.4 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE4_Loopback0 |
+| DC1-BL1B | l3leaf | 172.31.255.96 | UNDERLAY-PEERS | 65001 | DC1-SPINE1_Ethernet7 |
+| DC1-BL1B | l3leaf | 172.31.255.98 | UNDERLAY-PEERS | 65001 | DC1-SPINE2_Ethernet7 |
+| DC1-BL1B | l3leaf | 172.31.255.100 | UNDERLAY-PEERS | 65001 | DC1-SPINE3_Ethernet7 |
+| DC1-BL1B | l3leaf | 172.31.255.102 | UNDERLAY-PEERS | 65001 | DC1-SPINE4_Ethernet7 |
+| DC1-BL1B | l3leaf | 192.168.255.1 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE1_Loopback0 |
+| DC1-BL1B | l3leaf | 192.168.255.2 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE2_Loopback0 |
+| DC1-BL1B | l3leaf | 192.168.255.3 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE3_Loopback0 |
+| DC1-BL1B | l3leaf | 192.168.255.4 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE4_Loopback0 |
+| DC1-LEAF1A | l3leaf | 172.31.255.0 | UNDERLAY-PEERS | 65001 | DC1-SPINE1_Ethernet1 |
+| DC1-LEAF1A | l3leaf | 172.31.255.2 | UNDERLAY-PEERS | 65001 | DC1-SPINE2_Ethernet1 |
+| DC1-LEAF1A | l3leaf | 172.31.255.4 | UNDERLAY-PEERS | 65001 | DC1-SPINE3_Ethernet1 |
+| DC1-LEAF1A | l3leaf | 172.31.255.6 | UNDERLAY-PEERS | 65001 | DC1-SPINE4_Ethernet1 |
+| DC1-LEAF1A | l3leaf | 192.168.255.1 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE1_Loopback0 |
+| DC1-LEAF1A | l3leaf | 192.168.255.2 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE2_Loopback0 |
+| DC1-LEAF1A | l3leaf | 192.168.255.3 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE3_Loopback0 |
+| DC1-LEAF1A | l3leaf | 192.168.255.4 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE4_Loopback0 |
+| DC1-LEAF2A | l3leaf | 172.31.255.16 | UNDERLAY-PEERS | 65001 | DC1-SPINE1_Ethernet2 |
+| DC1-LEAF2A | l3leaf | 172.31.255.18 | UNDERLAY-PEERS | 65001 | DC1-SPINE2_Ethernet2 |
+| DC1-LEAF2A | l3leaf | 172.31.255.20 | UNDERLAY-PEERS | 65001 | DC1-SPINE3_Ethernet2 |
+| DC1-LEAF2A | l3leaf | 172.31.255.22 | UNDERLAY-PEERS | 65001 | DC1-SPINE4_Ethernet2 |
+| DC1-LEAF2A | l3leaf | 192.168.255.1 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE1_Loopback0 |
+| DC1-LEAF2A | l3leaf | 192.168.255.2 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE2_Loopback0 |
+| DC1-LEAF2A | l3leaf | 192.168.255.3 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE3_Loopback0 |
+| DC1-LEAF2A | l3leaf | 192.168.255.4 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE4_Loopback0 |
+| DC1-LEAF2B | l3leaf | 172.31.255.32 | UNDERLAY-PEERS | 65001 | DC1-SPINE1_Ethernet3 |
+| DC1-LEAF2B | l3leaf | 172.31.255.34 | UNDERLAY-PEERS | 65001 | DC1-SPINE2_Ethernet3 |
+| DC1-LEAF2B | l3leaf | 172.31.255.36 | UNDERLAY-PEERS | 65001 | DC1-SPINE3_Ethernet3 |
+| DC1-LEAF2B | l3leaf | 172.31.255.38 | UNDERLAY-PEERS | 65001 | DC1-SPINE4_Ethernet3 |
+| DC1-LEAF2B | l3leaf | 192.168.255.1 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE1_Loopback0 |
+| DC1-LEAF2B | l3leaf | 192.168.255.2 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE2_Loopback0 |
+| DC1-LEAF2B | l3leaf | 192.168.255.3 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE3_Loopback0 |
+| DC1-LEAF2B | l3leaf | 192.168.255.4 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE4_Loopback0 |
+| DC1-SPINE1 | spine | 172.31.255.1 | UNDERLAY-PEERS | 65101 | DC1-LEAF1A_Ethernet1 |
+| DC1-SPINE1 | spine | 172.31.255.17 | UNDERLAY-PEERS | 65102 | DC1-LEAF2A_Ethernet1 |
+| DC1-SPINE1 | spine | 172.31.255.33 | UNDERLAY-PEERS | 65102 | DC1-LEAF2B_Ethernet1 |
+| DC1-SPINE1 | spine | 172.31.255.49 | UNDERLAY-PEERS | 65103 | DC1-SVC3A_Ethernet41 |
+| DC1-SPINE1 | spine | 172.31.255.65 | UNDERLAY-PEERS | 65103 | DC1-SVC3B_Ethernet41 |
+| DC1-SPINE1 | spine | 172.31.255.81 | UNDERLAY-PEERS | 65104 | DC1-BL1A_Ethernet41 |
+| DC1-SPINE1 | spine | 172.31.255.97 | UNDERLAY-PEERS | 65105 | DC1-BL1B_Ethernet45 |
+| DC1-SPINE1 | spine | 192.168.255.14 | EVPN-OVERLAY-PEERS | 65104 | DC1-BL1A_Loopback0 |
+| DC1-SPINE1 | spine | 192.168.255.15 | EVPN-OVERLAY-PEERS | 65105 | DC1-BL1B_Loopback0 |
+| DC1-SPINE1 | spine | 192.168.255.9 | EVPN-OVERLAY-PEERS | 65101 | DC1-LEAF1A_Loopback0 |
+| DC1-SPINE1 | spine | 192.168.255.10 | EVPN-OVERLAY-PEERS | 65102 | DC1-LEAF2A_Loopback0 |
+| DC1-SPINE1 | spine | 192.168.255.11 | EVPN-OVERLAY-PEERS | 65102 | DC1-LEAF2B_Loopback0 |
+| DC1-SPINE1 | spine | 192.168.255.12 | EVPN-OVERLAY-PEERS | 65103 | DC1-SVC3A_Loopback0 |
+| DC1-SPINE1 | spine | 192.168.255.13 | EVPN-OVERLAY-PEERS | 65103 | DC1-SVC3B_Loopback0 |
+| DC1-SPINE2 | spine | 172.31.255.3 | UNDERLAY-PEERS | 65101 | DC1-LEAF1A_Ethernet2 |
+| DC1-SPINE2 | spine | 172.31.255.19 | UNDERLAY-PEERS | 65102 | DC1-LEAF2A_Ethernet2 |
+| DC1-SPINE2 | spine | 172.31.255.35 | UNDERLAY-PEERS | 65102 | DC1-LEAF2B_Ethernet2 |
+| DC1-SPINE2 | spine | 172.31.255.51 | UNDERLAY-PEERS | 65103 | DC1-SVC3A_Ethernet42 |
+| DC1-SPINE2 | spine | 172.31.255.67 | UNDERLAY-PEERS | 65103 | DC1-SVC3B_Ethernet42 |
+| DC1-SPINE2 | spine | 172.31.255.83 | UNDERLAY-PEERS | 65104 | DC1-BL1A_Ethernet42 |
+| DC1-SPINE2 | spine | 172.31.255.99 | UNDERLAY-PEERS | 65105 | DC1-BL1B_Ethernet46 |
+| DC1-SPINE2 | spine | 192.168.255.14 | EVPN-OVERLAY-PEERS | 65104 | DC1-BL1A_Loopback0 |
+| DC1-SPINE2 | spine | 192.168.255.15 | EVPN-OVERLAY-PEERS | 65105 | DC1-BL1B_Loopback0 |
+| DC1-SPINE2 | spine | 192.168.255.9 | EVPN-OVERLAY-PEERS | 65101 | DC1-LEAF1A_Loopback0 |
+| DC1-SPINE2 | spine | 192.168.255.10 | EVPN-OVERLAY-PEERS | 65102 | DC1-LEAF2A_Loopback0 |
+| DC1-SPINE2 | spine | 192.168.255.11 | EVPN-OVERLAY-PEERS | 65102 | DC1-LEAF2B_Loopback0 |
+| DC1-SPINE2 | spine | 192.168.255.12 | EVPN-OVERLAY-PEERS | 65103 | DC1-SVC3A_Loopback0 |
+| DC1-SPINE2 | spine | 192.168.255.13 | EVPN-OVERLAY-PEERS | 65103 | DC1-SVC3B_Loopback0 |
+| DC1-SPINE3 | spine | 172.31.255.5 | UNDERLAY-PEERS | 65101 | DC1-LEAF1A_Ethernet3 |
+| DC1-SPINE3 | spine | 172.31.255.21 | UNDERLAY-PEERS | 65102 | DC1-LEAF2A_Ethernet3 |
+| DC1-SPINE3 | spine | 172.31.255.37 | UNDERLAY-PEERS | 65102 | DC1-LEAF2B_Ethernet3 |
+| DC1-SPINE3 | spine | 172.31.255.53 | UNDERLAY-PEERS | 65103 | DC1-SVC3A_Ethernet43 |
+| DC1-SPINE3 | spine | 172.31.255.69 | UNDERLAY-PEERS | 65103 | DC1-SVC3B_Ethernet43 |
+| DC1-SPINE3 | spine | 172.31.255.85 | UNDERLAY-PEERS | 65104 | DC1-BL1A_Ethernet43 |
+| DC1-SPINE3 | spine | 172.31.255.101 | UNDERLAY-PEERS | 65105 | DC1-BL1B_Ethernet47 |
+| DC1-SPINE3 | spine | 192.168.255.14 | EVPN-OVERLAY-PEERS | 65104 | DC1-BL1A_Loopback0 |
+| DC1-SPINE3 | spine | 192.168.255.15 | EVPN-OVERLAY-PEERS | 65105 | DC1-BL1B_Loopback0 |
+| DC1-SPINE3 | spine | 192.168.255.9 | EVPN-OVERLAY-PEERS | 65101 | DC1-LEAF1A_Loopback0 |
+| DC1-SPINE3 | spine | 192.168.255.10 | EVPN-OVERLAY-PEERS | 65102 | DC1-LEAF2A_Loopback0 |
+| DC1-SPINE3 | spine | 192.168.255.11 | EVPN-OVERLAY-PEERS | 65102 | DC1-LEAF2B_Loopback0 |
+| DC1-SPINE3 | spine | 192.168.255.12 | EVPN-OVERLAY-PEERS | 65103 | DC1-SVC3A_Loopback0 |
+| DC1-SPINE3 | spine | 192.168.255.13 | EVPN-OVERLAY-PEERS | 65103 | DC1-SVC3B_Loopback0 |
+| DC1-SPINE4 | spine | 172.31.255.7 | UNDERLAY-PEERS | 65101 | DC1-LEAF1A_Ethernet4 |
+| DC1-SPINE4 | spine | 172.31.255.23 | UNDERLAY-PEERS | 65102 | DC1-LEAF2A_Ethernet4 |
+| DC1-SPINE4 | spine | 172.31.255.39 | UNDERLAY-PEERS | 65102 | DC1-LEAF2B_Ethernet4 |
+| DC1-SPINE4 | spine | 172.31.255.55 | UNDERLAY-PEERS | 65103 | DC1-SVC3A_Ethernet44 |
+| DC1-SPINE4 | spine | 172.31.255.71 | UNDERLAY-PEERS | 65103 | DC1-SVC3B_Ethernet44 |
+| DC1-SPINE4 | spine | 172.31.255.87 | UNDERLAY-PEERS | 65104 | DC1-BL1A_Ethernet44 |
+| DC1-SPINE4 | spine | 172.31.255.103 | UNDERLAY-PEERS | 65105 | DC1-BL1B_Ethernet48 |
+| DC1-SPINE4 | spine | 192.168.255.14 | EVPN-OVERLAY-PEERS | 65104 | DC1-BL1A_Loopback0 |
+| DC1-SPINE4 | spine | 192.168.255.15 | EVPN-OVERLAY-PEERS | 65105 | DC1-BL1B_Loopback0 |
+| DC1-SPINE4 | spine | 192.168.255.9 | EVPN-OVERLAY-PEERS | 65101 | DC1-LEAF1A_Loopback0 |
+| DC1-SPINE4 | spine | 192.168.255.10 | EVPN-OVERLAY-PEERS | 65102 | DC1-LEAF2A_Loopback0 |
+| DC1-SPINE4 | spine | 192.168.255.11 | EVPN-OVERLAY-PEERS | 65102 | DC1-LEAF2B_Loopback0 |
+| DC1-SPINE4 | spine | 192.168.255.12 | EVPN-OVERLAY-PEERS | 65103 | DC1-SVC3A_Loopback0 |
+| DC1-SPINE4 | spine | 192.168.255.13 | EVPN-OVERLAY-PEERS | 65103 | DC1-SVC3B_Loopback0 |
+| DC1-SVC3A | l3leaf | 10.255.252.7 | MLAG-PEERS | - | DC1-SVC3B_Vlan4092 |
+| DC1-SVC3A | l3leaf | 172.31.255.48 | UNDERLAY-PEERS | 65001 | DC1-SPINE1_Ethernet4 |
+| DC1-SVC3A | l3leaf | 172.31.255.50 | UNDERLAY-PEERS | 65001 | DC1-SPINE2_Ethernet4 |
+| DC1-SVC3A | l3leaf | 172.31.255.52 | UNDERLAY-PEERS | 65001 | DC1-SPINE3_Ethernet4 |
+| DC1-SVC3A | l3leaf | 172.31.255.54 | UNDERLAY-PEERS | 65001 | DC1-SPINE4_Ethernet4 |
+| DC1-SVC3A | l3leaf | 192.168.255.1 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE1_Loopback0 |
+| DC1-SVC3A | l3leaf | 192.168.255.2 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE2_Loopback0 |
+| DC1-SVC3A | l3leaf | 192.168.255.3 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE3_Loopback0 |
+| DC1-SVC3A | l3leaf | 192.168.255.4 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE4_Loopback0 |
+| DC1-SVC3B | l3leaf | 10.255.252.6 | MLAG-PEERS | - | DC1-SVC3A_Vlan4092 |
+| DC1-SVC3B | l3leaf | 172.31.255.64 | UNDERLAY-PEERS | 65001 | DC1-SPINE1_Ethernet5 |
+| DC1-SVC3B | l3leaf | 172.31.255.66 | UNDERLAY-PEERS | 65001 | DC1-SPINE2_Ethernet5 |
+| DC1-SVC3B | l3leaf | 172.31.255.68 | UNDERLAY-PEERS | 65001 | DC1-SPINE3_Ethernet5 |
+| DC1-SVC3B | l3leaf | 172.31.255.70 | UNDERLAY-PEERS | 65001 | DC1-SPINE4_Ethernet5 |
+| DC1-SVC3B | l3leaf | 192.168.255.1 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE1_Loopback0 |
+| DC1-SVC3B | l3leaf | 192.168.255.2 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE2_Loopback0 |
+| DC1-SVC3B | l3leaf | 192.168.255.3 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE3_Loopback0 |
+| DC1-SVC3B | l3leaf | 192.168.255.4 | EVPN-OVERLAY-PEERS | 65001 | DC1-SPINE4_Loopback0 |
+
+### VRF Routing Protocols
+
+| Node | Type | VRF | Router ID | Redistribute |
+| ---- | ---- | --- | --------- | ------------ |
+| DC1-BL1A | l3leaf | Tenant_A_WAN_Zone | 192.168.255.14 | connected, static |
+| DC1-BL1A | l3leaf | Tenant_L3_VRF_Zone | 192.168.255.14 | connected |
+| DC1-BL1A | l3leaf | Tenant_B_OP_Zone | 192.168.255.14 | connected |
+| DC1-BL1A | l3leaf | Tenant_B_WAN_Zone | 192.168.255.14 | connected |
+| DC1-BL1A | l3leaf | Tenant_C_WAN_Zone | 192.168.255.14 | connected |
+| DC1-BL1B | l3leaf | Tenant_A_WAN_Zone | 192.168.255.15 | connected, static |
+| DC1-BL1B | l3leaf | Tenant_L3_VRF_Zone | 192.168.255.15 | connected |
+| DC1-BL1B | l3leaf | Tenant_B_OP_Zone | 192.168.255.15 | connected |
+| DC1-BL1B | l3leaf | Tenant_B_WAN_Zone | 192.168.255.15 | connected |
+| DC1-BL1B | l3leaf | Tenant_C_WAN_Zone | 192.168.255.15 | connected |
+| DC1-LEAF1A | l3leaf | Tenant_A_APP_Zone | 192.168.255.9 | connected |
+| DC1-LEAF1A | l3leaf | Tenant_A_WEB_Zone | 192.168.255.9 | connected |
+| DC1-LEAF2A | l3leaf | Tenant_A_APP_Zone | 192.168.255.10 | connected |
+| DC1-LEAF2A | l3leaf | Tenant_A_DB_Zone | 192.168.255.10 | connected |
+| DC1-LEAF2A | l3leaf | Tenant_A_OP_Zone | 192.168.255.10 | connected |
+| DC1-LEAF2A | l3leaf | Tenant_A_WEB_Zone | 192.168.255.10 | connected |
+| DC1-LEAF2A | l3leaf | Tenant_B_OP_Zone | 192.168.255.10 | connected |
+| DC1-LEAF2A | l3leaf | Tenant_C_OP_Zone | 192.168.255.10 | connected |
+| DC1-LEAF2B | l3leaf | Tenant_A_APP_Zone | 192.168.255.11 | connected |
+| DC1-LEAF2B | l3leaf | Tenant_A_DB_Zone | 192.168.255.11 | connected |
+| DC1-LEAF2B | l3leaf | Tenant_A_OP_Zone | 192.168.255.11 | connected |
+| DC1-LEAF2B | l3leaf | Tenant_A_WEB_Zone | 192.168.255.11 | connected |
+| DC1-LEAF2B | l3leaf | Tenant_B_OP_Zone | 192.168.255.11 | connected |
+| DC1-LEAF2B | l3leaf | Tenant_C_OP_Zone | 192.168.255.11 | connected |
+| DC1-SVC3A | l3leaf | Tenant_A_APP_Zone | 192.168.255.12 | connected |
+| DC1-SVC3A | l3leaf | Tenant_A_DB_Zone | 192.168.255.12 | connected |
+| DC1-SVC3A | l3leaf | Tenant_A_OP_Zone | 192.168.255.12 | connected |
+| DC1-SVC3A | l3leaf | Tenant_A_WAN_Zone | 192.168.255.12 | connected, static |
+| DC1-SVC3A | l3leaf | Tenant_A_WEB_Zone | 192.168.255.12 | connected |
+| DC1-SVC3A | l3leaf | Tenant_B_OP_Zone | 192.168.255.12 | connected |
+| DC1-SVC3A | l3leaf | Tenant_B_WAN_Zone | 192.168.255.12 | connected |
+| DC1-SVC3A | l3leaf | Tenant_C_OP_Zone | 192.168.255.12 | connected |
+| DC1-SVC3A | l3leaf | Tenant_C_WAN_Zone | 192.168.255.12 | connected |
+| DC1-SVC3B | l3leaf | Tenant_A_APP_Zone | 192.168.255.13 | connected |
+| DC1-SVC3B | l3leaf | Tenant_A_DB_Zone | 192.168.255.13 | connected |
+| DC1-SVC3B | l3leaf | Tenant_A_OP_Zone | 192.168.255.13 | connected |
+| DC1-SVC3B | l3leaf | Tenant_A_WAN_Zone | 192.168.255.13 | connected, static |
+| DC1-SVC3B | l3leaf | Tenant_A_WEB_Zone | 192.168.255.13 | connected |
+| DC1-SVC3B | l3leaf | Tenant_B_OP_Zone | 192.168.255.13 | connected |
+| DC1-SVC3B | l3leaf | Tenant_B_WAN_Zone | 192.168.255.13 | connected |
+| DC1-SVC3B | l3leaf | Tenant_C_OP_Zone | 192.168.255.13 | connected |
+| DC1-SVC3B | l3leaf | Tenant_C_WAN_Zone | 192.168.255.13 | connected |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
