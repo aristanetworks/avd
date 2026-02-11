@@ -14,5 +14,5 @@ aaa_settings:
         cleartext_key: super-secret-key
 
 expected_error_message: >-
-  Cannot use server group 'tacacs+' for aaa_settings.tacacs.servers[host=10.10.10.11].
+  Cannot use server group 'tacacs+' for `aaa_settings.tacacs.servers[host=10.10.10.11]`.
   This group name is reserved by EOS. Please choose a different group name.
