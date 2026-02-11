@@ -436,6 +436,11 @@ keys:
     type: list
     primary_key: name
     display_name: IP Extended Access-Lists (legacy model)
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 7.0.0
+      new_key: ip_access_lists
     items:
       type: dict
       keys:

@@ -4,16 +4,18 @@
  that can be found in the LICENSE file.
 #}
 {# eos - access lists #}
-{% for access_list in access_lists | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{% if access_lists is arista.avd.defined and ip_access_lists is not arista.avd.defined %}
+{%     for access_list in access_lists | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
 ip access-list {{ access_list.name }}
-{%     if access_list.counters_per_entry is arista.avd.defined(true) %}
+{%         if access_list.counters_per_entry is arista.avd.defined(true) %}
    counters per-entry
-{%     endif %}
-{%     for sequence in access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%         endif %}
+{%         for sequence in access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
    {{ sequence.sequence }} {{ sequence.action }}
-{%     endfor %}
-{%     if access_list.permit_response_traffic is arista.avd.defined %}
+{%         endfor %}
+{%         if access_list.permit_response_traffic is arista.avd.defined %}
    permit response traffic {{ access_list.permit_response_traffic }}
-{%     endif %}
-{% endfor %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
