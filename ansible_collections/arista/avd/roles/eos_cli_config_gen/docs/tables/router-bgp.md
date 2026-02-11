@@ -31,6 +31,13 @@
     | [<samp>&nbsp;&nbsp;maximum_paths</samp>](## "router_bgp.maximum_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;paths</samp>](## "router_bgp.maximum_paths.paths") | Integer | Required |  | Min: 1<br>Max: 600 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.maximum_paths.ecmp") | Integer |  |  | Min: 1<br>Max: 600 |  |
+    | [<samp>&nbsp;&nbsp;route_distinguisher</samp>](## "router_bgp.route_distinguisher") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;assignment_auto</samp>](## "router_bgp.route_distinguisher.assignment_auto") | Dictionary |  |  |  | Route distinguisher auto assignment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;range</samp>](## "router_bgp.route_distinguisher.assignment_auto.range") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start</samp>](## "router_bgp.route_distinguisher.assignment_auto.range.start") | Integer | Required |  | Min: 1<br>Max: 65535 | Start of range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end</samp>](## "router_bgp.route_distinguisher.assignment_auto.range.end") | Integer | Required |  | Max: 65535 | End of range from `start` to 65535. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "router_bgp.route_distinguisher.assignment_auto.address_families") | List, items: String |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.route_distinguisher.assignment_auto.address_families.[]") | String |  |  | Valid Values:<br>- <code>l2-evpn</code><br>- <code>l3-vrf</code> | l2-evpn: Enable auto rd assignment for L2 EVPN.<br>l3-vrf: Enable auto rd assignment for L3 VRFs. |
     | [<samp>&nbsp;&nbsp;updates</samp>](## "router_bgp.updates") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wait_for_convergence</samp>](## "router_bgp.updates.wait_for_convergence") | Boolean |  |  |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wait_install</samp>](## "router_bgp.updates.wait_install") | Boolean |  |  |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br> |
@@ -1650,6 +1657,22 @@
       maximum_paths:
         paths: <int; 1-600; required>
         ecmp: <int; 1-600>
+      route_distinguisher:
+
+        # Route distinguisher auto assignment.
+        assignment_auto:
+          range:
+
+            # Start of range.
+            start: <int; 1-65535; required>
+
+            # End of range from `start` to 65535.
+            end: <int; <=65535; required>
+          address_families: # >=1 items
+
+              # l2-evpn: Enable auto rd assignment for L2 EVPN.
+              # l3-vrf: Enable auto rd assignment for L3 VRFs.
+            - <str; "l2-evpn" | "l3-vrf">
       updates:
 
         # Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.

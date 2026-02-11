@@ -312,6 +312,10 @@ ASN Notation: asplain
 | graceful-restart-helper long-lived |
 | bgp additional-paths send limit 5 |
 
+#### Route Distinguisher
+
+- Assignment Auto Address Family: ['l3-vrf']
+
 #### Router BGP EVPN Address Family
 
 #### Router BGP IPv4 Labeled Unicast
@@ -338,6 +342,9 @@ router bgp 65101.0001
    bgp additional-paths send limit 5
    redistribute ospf include leaked route-map RM-OSPF-TO-BGP
    redistribute static
+   !
+   route-distinguisher
+      assignment auto address-family l3-vrf
    !
    address-family evpn
       bgp additional-paths send ecmp limit 10

@@ -1132,6 +1132,14 @@ ASN Notation: asplain
 | no bgp default ipv4-unicast transport ipv6 |
 | bgp route-reflector preserve-attributes |
 
+#### Route Distinguisher
+
+##### Assignment Auto Range
+
+| Start | End |
+| ----- | --- |
+| 25 | 29 |
+
 #### Router BGP EVPN Address Family
 
 ##### EVPN Peer Groups
@@ -1191,6 +1199,9 @@ router bgp 65101
    redistribute ospfv3 match internal include leaked route-map RM-CONN-2-BGP
    redistribute static route-map RM-STATIC-2-BGP
    redistribute dynamic rcf RCF_CONN_2_BGP()
+   !
+   route-distinguisher
+      assignment auto range 25 29
    !
    address-family evpn
       no bgp additional-paths send

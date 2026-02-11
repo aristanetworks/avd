@@ -9154,6 +9154,16 @@ ASN Notation: asdot
 | 2.2.1.0/24 | False | False | - | - | - | False |
 | 3.3.3.0/24 | False | False | - | AGG-ADD-RCF() | - | False |
 
+#### Route Distinguisher
+
+##### Assignment Auto Range
+
+| Start | End |
+| ----- | --- |
+| 2 | 45 |
+
+- Assignment Auto Address Family: ['l3-vrf', 'l2-evpn']
+
 #### Router BGP EVPN Address Family
 
 - VPN import pruning is **enabled**
@@ -9783,6 +9793,11 @@ router bgp 65101
       route-target export evpn domain remote 2:12
       redistribute learned
       vlan 112
+   !
+   route-distinguisher
+      assignment auto range 2 45
+      assignment auto address-family l2-evpn
+      assignment auto address-family l3-vrf
    !
    address-family evpn
       route export ethernet-segment ip mass-withdraw

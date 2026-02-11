@@ -144,6 +144,36 @@ keys:
               - str
             min: 1
             max: 600
+      route_distinguisher:
+        type: dict
+        keys:
+          assignment_auto:
+            type: dict
+            description: Route distinguisher auto assignment.
+            keys:
+              range:
+                type: dict
+                keys:
+                  start:
+                    type: int
+                    min: 1
+                    max: 65535
+                    required: true
+                    description: Start of range.
+                  end:
+                    type: int
+                    max: 65535
+                    required: true
+                    description: End of range from `start` to 65535.
+              address_families:
+                type: list
+                min_length: 1
+                items:
+                  type: str
+                  valid_values: ["l2-evpn", "l3-vrf"]
+                  description: |-
+                    l2-evpn: Enable auto rd assignment for L2 EVPN.
+                    l3-vrf: Enable auto rd assignment for L3 VRFs.
       updates:
         type: dict
         keys:

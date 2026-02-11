@@ -790,6 +790,17 @@ router bgp {{ router_bgp.as }}
       {{ vlan_aware_bundle.eos_cli | indent(6, false) }}
 {%         endif %}
 {%     endfor %}
+{# route-distinguisher #}
+{%     if router_bgp.route_distinguisher.assignment_auto is arista.avd.defined %}
+   !
+   route-distinguisher
+{%         if router_bgp.route_distinguisher.assignment_auto.range is arista.avd.defined %}
+      assignment auto range {{ router_bgp.route_distinguisher.assignment_auto.range.start }} {{ router_bgp.route_distinguisher.assignment_auto.range.end }}
+{%         endif %}
+{%         for address_family in router_bgp.route_distinguisher.assignment_auto.address_families | arista.avd.natural_sort %}
+      assignment auto address-family {{ address_family }}
+{%         endfor %}
+{%     endif %}
 {# address families activation #}
 {# address family evpn activation #}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
