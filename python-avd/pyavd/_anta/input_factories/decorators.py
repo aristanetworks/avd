@@ -9,7 +9,7 @@ from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
 from pyavd._utils import get_v2
 
-from ._base_classes import AntaTestInputFactory
+from .base_classes import AntaTestInputFactory
 
 F = TypeVar("F", bound=AntaTestInputFactory[Any])
 R = TypeVar("R")

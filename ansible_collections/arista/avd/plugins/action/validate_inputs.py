@@ -174,15 +174,15 @@ class ActionModule(AvdActionPlugin):
         mp_workers, mt_workers = get_workers(len(hosts_to_process), task_vars["ansible_forks"])
         templated_path, validated_path = get_role_tmp_paths(role_name=SCHEMA_MAP[plugin_args.schema_name], tmp_dir=plugin_args.tmp_dir, clean=True)
 
-        # Create vault and file handlers.
+        # Create Vault and file handlers.
         vault_handler = AVDVaultHandler(self._loader, vault_id=plugin_args.vault_id)
         file_handler = AVDFileHandler(vault_handler)
 
-        # Check if vault is configured for encrypting temporary files.
-        if vault_handler.has_vault:
-            self.logger.info("Ansible Vault is configured - temporary files will be encrypted")
+        # Check if Vault secrets are configured for encrypting temporary files.
+        if vault_handler.has_vault_secrets:
+            self.logger.info("Ansible Vault secrets are configured - temporary files will be encrypted")
         else:
-            self.logger.info("Ansible Vault is not configured - temporary files will not be encrypted")
+            self.logger.info("Ansible Vault secrets are not configured - temporary files will not be encrypted")
 
         # Track worker failures globally for the task.
         self.crashed_hosts = set()
@@ -521,7 +521,7 @@ def _validate_host_worker(
         if not input_file_path.exists():
             return WorkerFailure(hostname=hostname, error=f"Missing input data file: {input_file_path}")
 
-        # Load file content (decrypted if vaulted).
+        # Load file content (decrypted if Vault encrypted).
         file_content = file_handler.read_file(input_file_path)
 
         if input_suffix in {"yml", "yaml"}:

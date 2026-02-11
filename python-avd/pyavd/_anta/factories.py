@@ -14,12 +14,12 @@ from anta.models import AntaTest
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from pyavd.api._anta import AvdTestSpec
+    from pyavd.api.anta import AVDTestSpec
 
     from .models import InputFactoryDataSource
 
 
-def create_catalog(data_source: InputFactoryDataSource, test_specs: list[AvdTestSpec]) -> AntaCatalog:
+def create_catalog(data_source: InputFactoryDataSource, test_specs: list[AVDTestSpec]) -> AntaCatalog:
     """Create an ANTA catalog for a device from the provided test specs."""
     all_test_defs_iterator = chain.from_iterable(create_test_definitions(test_spec, data_source) for test_spec in test_specs)
 
@@ -31,8 +31,8 @@ def create_catalog(data_source: InputFactoryDataSource, test_specs: list[AvdTest
     return AntaCatalog(tests=tests)
 
 
-def create_test_definitions(test_spec: AvdTestSpec, data_source: InputFactoryDataSource) -> Iterator[AntaTestDefinition]:
-    """Generate the AntaTestDefinition from this AvdTestSpec instance."""
+def create_test_definitions(test_spec: AVDTestSpec, data_source: InputFactoryDataSource) -> Iterator[AntaTestDefinition]:
+    """Generate the AntaTestDefinition from this AVDTestSpec instance."""
     # Generate the test definitions from the input factory if provided
     if test_spec.input_factory is not None:
         factory = test_spec.input_factory(data_source, test_spec.test_class.name)
