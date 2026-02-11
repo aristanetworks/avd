@@ -42,16 +42,16 @@ topology:
             mgmt-ipv4: 172.16.1.152
             startup-config: init-configs/rr2.cfg
         cu1cpe1:
-            mgmt-ipv4: 172.16.100.204
+            mgmt-ipv4: 172.16.100.211
             startup-config: init-configs/cu1cpe1.cfg
         cu1cpe2:
-            mgmt-ipv4: 172.16.100.200
+            mgmt-ipv4: 172.16.100.212
             startup-config: init-configs/cu1cpe2.cfg
         cu2cpe1:
-            mgmt-ipv4: 172.16.100.200
+            mgmt-ipv4: 172.16.100.221
             startup-config: init-configs/cu2cpe1.cfg
         cu2cpe2:
-            mgmt-ipv4: 172.16.100.200
+            mgmt-ipv4: 172.16.100.222
             startup-config: init-configs/cu2cpe2.cfg
         agg:
             mgmt-ipv4: 172.16.100.200
@@ -74,8 +74,8 @@ topology:
     - endpoints: ["p4:eth3", "pe3:eth3"]
     # CPEs
     - endpoints: ["cu1cpe1:eth1", "agg:eth1"]
-    - endpoints: ["cu1cpe2:eth1", "pe3:eth3"]
+    - endpoints: ["cu1cpe2:eth1", "pe3:eth2"]
     - endpoints: ["cu2cpe1:eth1", "agg:eth2"]
     - endpoints: ["cu2cpe2:eth1", "pe3:eth4"]
-    - endpoints: ["agg:eth1", "pe1:eth3"]
-    - endpoints: ["agg:eth2", "pe2:eth4"]
+    - endpoints: ["agg:eth3", "pe1:eth3"]
+    - endpoints: ["agg:eth4", "pe2:eth4"]
