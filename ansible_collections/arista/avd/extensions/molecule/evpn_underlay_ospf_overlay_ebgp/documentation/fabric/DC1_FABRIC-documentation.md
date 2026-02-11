@@ -164,7 +164,7 @@
 | Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
 | ---------- | --------- | ------------- | --- | -------------- | ----- |
 | EVPN-OVERLAY-PEERS | - | Loopback0 | Yes | all | DC1-BL1A, DC1-BL1B, DC1-LEAF1A, DC1-LEAF2A, DC1-LEAF2B, DC1-SPINE1, DC1-SPINE2, DC1-SPINE3, DC1-SPINE4, DC1-SVC3A, DC1-SVC3B |
-| MLAG-IPv4-UNDERLAY-PEER | 65102 | - | No | all | DC1-LEAF2A, DC1-LEAF2B, DC1-SVC3A, DC1-SVC3B |
+| MLAG-IPv4-UNDERLAY-PEER | - | - | No | all | DC1-LEAF2A, DC1-LEAF2B, DC1-SVC3A, DC1-SVC3B |
 
 ### BGP Neighbors
 
