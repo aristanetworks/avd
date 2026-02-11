@@ -292,9 +292,9 @@ replace = "version: {new_version}"
 ### Bumping version using PEP440 style like x.y.z.dev1
 
 [[tool.bumpversion.files]]
-filename = "ansible_collections/arista/avd/requirements.txt"
-search = "pyavd[ansible-collection]=={current_version}"
-replace = "pyavd[ansible-collection]=={new_version}"
+filename = "python-avd/pyproject.toml"
+search = 'pyavd=="{current_version}"'
+replace = 'pyavd=="{new_version}"'
 parse = """(?x)
     (?P<major>0|[1-9]\\d*)\\.
     (?P<minor>0|[1-9]\\d*)\\.

@@ -203,7 +203,7 @@ repos:
     hooks:
       - id: pdm-export
         name: Extract requirements from pyavd/pyproject.toml to requirements.txt
-        entry: pdm export -p python-avd -o development/requirements.txt --without-hashes --prod -G ansible --pyproject
+        entry: pdm export -p python-avd -o ansible_collections/arista/avd/requirements.txt --without-hashes -G ansible -G self --pyproject
         language: python
         files: python-avd/pyproject.toml
         pass_filenames: false
