@@ -97,6 +97,28 @@
 | --- | ---- | ------------ |
 | L2LS_ISIS | ISIS-SPINE1 | 49.0001.1921.6825.5001.00 |
 
+### BGP Peer Groups
+
+| Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
+| ---------- | --------- | ------------- | --- | -------------- | ----- |
+| IPv4-UNDERLAY-PEERS | - | - | No | all | BGP-SPINE1, BGP-SPINE2 |
+| MLAG-IPv4-UNDERLAY-PEER | 65001 | - | No | all | BGP-SPINE1, BGP-SPINE2 |
+
+### BGP Neighbors
+
+| Node | Type | Neighbor IP | Peer Group | Remote AS | Description |
+| ---- | ---- | ----------- | ---------- | --------- | ----------- |
+| BGP-SPINE1 | l3spine | 192.168.254.1 | MLAG-IPv4-UNDERLAY-PEER | - | BGP-SPINE2_Vlan4094 |
+| BGP-SPINE1 | l3spine | 192.168.253.5 | IPv4-UNDERLAY-PEERS | 65000 | DUMMY-CORE |
+| BGP-SPINE1 | l3spine | 192.168.253.9 | IPv4-UNDERLAY-PEERS | 65000 | DUMMY-CORE |
+| BGP-SPINE1 | l3spine | 192.168.253.13 | IPv4-UNDERLAY-PEERS | 65000 | DUMMY-CORE |
+| BGP-SPINE1 | l3spine | 192.168.253.17 | IPv4-UNDERLAY-PEERS | 65000 | DUMMY-CORE |
+| BGP-SPINE2 | l3spine | 192.168.254.0 | MLAG-IPv4-UNDERLAY-PEER | - | BGP-SPINE1_Vlan4094 |
+| BGP-SPINE2 | l3spine | 192.168.253.7 | IPv4-UNDERLAY-PEERS | 65000 | DUMMY-CORE |
+| BGP-SPINE2 | l3spine | 192.168.253.11 | IPv4-UNDERLAY-PEERS | 65000 | DUMMY-CORE |
+| BGP-SPINE2 | l3spine | 192.168.253.15 | IPv4-UNDERLAY-PEERS | 65000 | DUMMY-CORE |
+| BGP-SPINE2 | l3spine | 192.168.253.19 | IPv4-UNDERLAY-PEERS | 65000 | DUMMY-CORE |
+
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
