@@ -10,7 +10,7 @@ from importlib.metadata import Distribution, PackageNotFoundError, metadata, ver
 from logging import getLogger
 from pathlib import Path
 from subprocess import PIPE, Popen
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import yaml
 from ansible import constants as C  # noqa: N812
@@ -20,16 +20,21 @@ from ansible.utils.display import Display
 from ansible_collections.arista.avd.plugins import PYTHON_AVD_PATH, RUNNING_FROM_SOURCE
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
 
+if TYPE_CHECKING:
+    # Relying on packaging installed by ansible
+    from packaging.markers import default_environment
+    from packaging.requirements import InvalidRequirement, Requirement
+    from packaging.specifiers import SpecifierSet
+
 try:
     # Relying on packaging installed by ansible
+    from packaging.markers import default_environment
     from packaging.requirements import InvalidRequirement, Requirement
     from packaging.specifiers import SpecifierSet
 
     HAS_PACKAGING = True
 except ImportError:
     HAS_PACKAGING = False
-    # Making ansible-test sanity happy
-    Requirement = object
 
 LOGGER = getLogger("ansible_collections.arista.avd")
 DISPLAY = Display()
@@ -91,10 +96,27 @@ def _parse_requirements(req_str: str) -> tuple[Requirement, list[str]]:
 
     extras = []
     if req.extras:
-        for subreq_name in metadata(req.name).get_all("Requires-Dist"):
-            subreq = Requirement(subreq_name)
-            if subreq.marker:
-                extras.extend([subreq_name for marker in subreq.marker._markers if str(marker[0]) == "extra" and str(marker[2]) in req.extras])
+        # Get the current environment (python_version, platform_system, etc.)
+        env = default_environment()
+
+        # metadata(req.name) returns the distribution metadata for the package
+        dist_metadata = metadata(req.name)
+        if dist_metadata:
+            requires_dist = dist_metadata.get_all("Requires-Dist") or []
+
+            for subreq_name in requires_dist:
+                subreq = Requirement(subreq_name)
+
+                if subreq.marker:
+                    # Check each extra requested in req.extras
+                    for extra in req.extras:
+                        # Add the specific extra to the environment context for evaluation
+                        current_env = {**env, "extra": extra}
+
+                        # evaluate() returns True if markers (version, extra, etc.) match
+                        if subreq.marker.evaluate(current_env):
+                            extras.append(subreq_name)
+                            break
 
     return req, extras
 
@@ -195,11 +217,11 @@ def _validate_python_requirements(requirements: list[str], info: dict[str, Any])
     }
 
     # Remove the comments including inline comments
-    requirements = [req.split(" #", maxsplit=1)[0] for req in requirements if req[0] != "#"]
+    requirements = [req.split(" #", maxsplit=1)[0] for req in requirements if req != "" and req[0] != "#"]
     for raw_req in requirements:
         req, extras = _parse_requirements(raw_req)
         if RUNNING_FROM_SOURCE and req.name == "pyavd":
-            LOGGER.debug("AVD is running from source, *not* checking pyavd version nor any extra.")
+            LOGGER.debug("AVD is running from source, *not* checking pyavd version.")
             requirements_dict["valid"][req.name] = {
                 "installed": "running from source",
                 "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
