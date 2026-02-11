@@ -2318,6 +2318,7 @@ daemon random
 | VRF | Source Interface |
 | --- | ---------------- |
 | - | Ethernet2 |
+| VRFA | Ethernet4 |
 | default | Loopback0 |
 | mgt | Management0 |
 
@@ -2392,6 +2393,7 @@ logging format rfc5424
 logging format hostname fqdn
 logging format sequence-numbers
 logging source-interface Ethernet2
+logging vrf VRFA local-interface Ethernet4
 logging source-interface Loopback0
 logging vrf mgt source-interface Management0
 logging policy match match-list molecule discard
@@ -8782,6 +8784,10 @@ ASN Notation: asdot
 | ------ | --------- |
 | 65101 | 192.168.255.3 |
 
+| BGP AS | Cluster ID |
+| ------ | --------- |
+| 65101 | 1.1.1.1 |
+
 | BGP Tuning |
 | ---------- |
 | graceful-restart restart-time 555 |
@@ -8848,16 +8854,6 @@ ASN Notation: asdot
 | Address Family | ipv4 |
 | Send community | extended |
 
-##### IPv4-UNDERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | ipv4 |
-| Remote AS | 65001 |
-| RIB Pre-Policy Retain | False |
-| Send community | all |
-| Maximum routes | 12000 |
-
 ##### IPV6-UNDERLAY
 
 | Settings | Value |
@@ -8874,6 +8870,16 @@ ASN Notation: asdot
 | Remove Private AS Inbound | False |
 | Remote AS | 65100 |
 | Next-hop self | True |
+| Send community | all |
+| Maximum routes | 12000 |
+
+##### IPv4-UNDERLAY-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Remote AS | 65001 |
+| RIB Pre-Policy Retain | False |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -9031,6 +9037,21 @@ ASN Notation: asdot
 | -------- | ----- |
 | TTL Max Hops | 42 |
 
+##### TEST-PASSIVE
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Remote AS | 65003 |
+| Passive | True |
+
+##### WELCOME_ROUTERS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Remote AS | 65001 |
+
 ##### test-link-bandwidth1
 
 | Settings | Value |
@@ -9050,26 +9071,11 @@ ASN Notation: asdot
 | -------- | ----- |
 | Passive | True |
 
-##### TEST-PASSIVE
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | ipv4 |
-| Remote AS | 65003 |
-| Passive | True |
-
 ##### test-session-tracker
 
 | Settings | Value |
 | -------- | ----- |
 | Session tracker | ST2 |
-
-##### WELCOME_ROUTERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | ipv4 |
-| Remote AS | 65001 |
 
 #### BGP Neighbors
 
@@ -9400,11 +9406,11 @@ ASN Notation: asdot
 | NHP-PEER | - | - | - | IPv4: False<br>Transit: False |
 | NHP-PEER1 | - | - | - | IPv4: False<br>Transit: False |
 | RED-C1 | 1.0.1.1:102 | - | - | IPv4: False<br>Transit: False |
-| Tenant_A | 10.50.64.15:30001 | ospf<br>ospfv3<br>connected | - | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static | - | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static | True (120s) | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT03 | 192.168.255.3:13 | - | - | IPv4: True<br>Transit: True |
 | TENANT_A_PROJECT04 | 192.168.255.3:14 | - | - | IPv4: True<br>Transit: False |
+| Tenant_A | 10.50.64.15:30001 | ospf<br>ospfv3<br>connected | - | IPv4: False<br>Transit: False |
 | Tenant_B | 10.50.64.15:30002 | - | - | IPv4: False<br>Transit: False |
 | VRF01 | - | user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | - | IPv4: False<br>Transit: False |
 | VRF02 | - | dynamic<br>user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | - | IPv4: False<br>Transit: False |
@@ -9427,11 +9433,13 @@ router bgp 65101
    router-id 192.168.255.3
    update wait-for-convergence
    update wait-install
+   bgp default ipv4-unicast
    bgp default ipv4-unicast transport ipv6
    timers bgp 300 300 min-hold-time 300 send-failure hold-time 300
    distance bgp 20 200 200
    graceful-restart restart-time 555
    graceful-restart stalepath-time 666
+   bgp cluster-id 1.1.1.1
    graceful-restart
    graceful-restart-helper restart-time 888
    bgp route-reflector preserve-attributes always
@@ -10384,6 +10392,8 @@ router bgp 65101
       route-target export evpn 13:13
       router-id 192.168.255.3
       evpn multicast
+         gateway dr election algorithm preference 100
+         !
          address-family ipv4
             transit
    !
@@ -10394,6 +10404,8 @@ router bgp 65101
       route-target export evpn 14:14
       router-id 192.168.255.3
       evpn multicast
+         gateway dr election algorithm hrw
+         !
    !
    vrf Tenant_A
       rd 10.50.64.15:30001

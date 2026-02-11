@@ -14,7 +14,7 @@ LOGGER = getLogger(__name__)
 
 
 @dataclass(frozen=True)
-class AvdEthernetInterface:
+class AVDEthernetInterface:
     """A minimal version of an Ethernet interface containing only the required data to generate tests."""
 
     name: str
@@ -23,13 +23,13 @@ class AvdEthernetInterface:
 
 
 @dataclass(frozen=True)
-class AvdDeviceData:
+class AVDDeviceData:
     """A minimal version of a device structured configuration containing only the required data to generate tests."""
 
     hostname: str
     is_deployed: bool
     dns_domain: str | None
-    ethernet_interfaces: dict[str, AvdEthernetInterface]
+    ethernet_interfaces: dict[str, AVDEthernetInterface]
     loopback0_ip: IPv4Address | None
     vtep_ip: IPv4Address | None
     mlag_vtep_ip: IPv4Address | None
@@ -38,21 +38,21 @@ class AvdDeviceData:
     exclude_as_extra_fabric_validation_target: bool
 
     @classmethod
-    def from_structured_config(cls, structured_config: dict[str, Any]) -> AvdDeviceData:
+    def from_structured_config(cls, structured_config: dict[str, Any]) -> AVDDeviceData:
         """
-        Build and return an `AvdDeviceData` instance from a device AVD structured configuration.
+        Build and return an `AVDDeviceData` instance from a device AVD structured configuration.
 
         Args:
             structured_config: A dictionary with structured configuration.
                 Variables should be converted and validated according to AVD `eos_cli_config_gen` schema first using `pyavd.validate_structured_config`.
 
         Returns:
-            An `AvdDeviceData` instance populated with data.
+            An `AVDDeviceData` instance populated with data.
         """
         # Get the Ethernet interfaces
         default_shutdown = get(structured_config, "interface_defaults.ethernet.shutdown", False)
-        ethernet_interfaces: dict[str, AvdEthernetInterface] = {
-            intf["name"]: AvdEthernetInterface(
+        ethernet_interfaces: dict[str, AVDEthernetInterface] = {
+            intf["name"]: AVDEthernetInterface(
                 name=intf["name"],
                 ip_address=get(intf, "ip_address"),
                 shutdown=get(intf, "shutdown", default_shutdown),
@@ -70,7 +70,7 @@ class AvdDeviceData:
         # Get the VTEP roles
         is_vtep, is_wan_router = cls._get_vtep_roles(structured_config)
 
-        # Create and return the device AvdDeviceData
+        # Create and return the device AVDDeviceData
         return cls(
             hostname=structured_config["hostname"],
             is_deployed=get(structured_config, "metadata.is_deployed", default=False),
@@ -145,15 +145,15 @@ class AvdDeviceData:
 
 
 @dataclass(frozen=True)
-class AvdFabricData:
+class AVDFabricData:
     """
     Aggregates minimal data for all devices in the fabric, optimized to generate tests.
 
     It is recommended to instantiate this class using the `from_structured_configs` class method.
     """
 
-    devices: dict[str, AvdDeviceData]
-    """Mapping of device hostname to its `AvdDeviceData` for all devices."""
+    devices: dict[str, AVDDeviceData]
+    """Mapping of device hostname to its `AVDDeviceData` for all devices."""
     loopback0_mapping: dict[str, IPv4Address]
     """Mapping of device hostname to its Loopback0 IPv4 address.
 
@@ -179,24 +179,24 @@ class AvdFabricData:
     """
 
     @classmethod
-    def from_structured_configs(cls, structured_configs: dict[str, dict[str, Any]]) -> AvdFabricData:
+    def from_structured_configs(cls, structured_configs: dict[str, dict[str, Any]]) -> AVDFabricData:
         """
-        Build and return an `AvdFabricData` instance from a dictionary of AVD structured configurations.
+        Build and return an `AVDFabricData` instance from a dictionary of AVD structured configurations.
 
         Args:
             structured_configs: A dictionary of structured configurations for all devices, keyed by hostname.
                 Variables should be converted and validated according to AVD `eos_cli_config_gen` schema first using `pyavd.validate_structured_config`.
 
         Returns:
-            An `AvdFabricData` instance populated with data.
+            An `AVDFabricData` instance populated with data.
         """
-        devices: dict[str, AvdDeviceData] = {}
+        devices: dict[str, AVDDeviceData] = {}
         loopback0_mapping: dict[str, IPv4Address] = {}
         dps_mapping: dict[str, IPv4Address] = {}
         underlay_reachability_targets: set[IPv4Address] = set()
 
         for device, structured_config in structured_configs.items():
-            device_data = AvdDeviceData.from_structured_config(structured_config)
+            device_data = AVDDeviceData.from_structured_config(structured_config)
 
             # Update the devices mapping
             devices[device] = device_data
@@ -239,7 +239,7 @@ class AvdFabricData:
             else:
                 LOGGER.debug("<%s> Skipped MLAG VTEP IP from underlay reachability targets - IP address not configured or IPv6-only", device)
 
-        return AvdFabricData(
+        return AVDFabricData(
             devices=devices,
             loopback0_mapping=loopback0_mapping,
             dps_mapping=dps_mapping,

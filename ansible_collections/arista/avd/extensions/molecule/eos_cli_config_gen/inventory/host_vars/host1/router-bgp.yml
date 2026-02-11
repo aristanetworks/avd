@@ -3,6 +3,7 @@ router_bgp:
   as: 65101
   router_id: 192.168.255.3
   as_notation: asdot
+  bgp_cluster_id: 1.1.1.1
   updates:
     wait_for_convergence: true
     wait_install: true
@@ -2298,6 +2299,9 @@ router_bgp:
       evpn_multicast_address_family:
         ipv4:
           transit: true
+      evpn_multicast_gateway_dr_election:
+        algorithm: preference
+        preference_value: 100
       default_route_exports:
         - address_family: evpn
           always: true
@@ -2318,6 +2322,8 @@ router_bgp:
       evpn_multicast_address_family:
         ipv4:
           transit: false
+      evpn_multicast_gateway_dr_election:
+        algorithm: hrw
       default_route_exports:
         - address_family: evpn
           rcf: TENANT_A_PROJECT03_RCF_DEFAULT()

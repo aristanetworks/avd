@@ -204,12 +204,14 @@ keys:
             prefix:
               type: str
               description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+              required: true
             peer_id_include_router_id:
               type: bool
               description: Include router ID as part of peer filter.
             peer_group:
               type: str
               description: Peer group name.
+              required: true
             peer_filter:
               type: str
               description: |
@@ -3796,12 +3798,14 @@ keys:
                   prefix:
                     type: str
                     description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                    required: true
                   peer_id_include_router_id:
                     type: bool
                     description: Include router ID as part of peer filter.
                   peer_group:
                     type: str
                     description: Peer-group name.
+                    required: true
                   peer_filter:
                     type: str
                     description: |

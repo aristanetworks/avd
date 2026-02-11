@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>custom_platform_settings</samp>](## "custom_platform_settings") | List, items: Dictionary |  |  |  | Custom Platform settings to override the default `platform_settings`. This list will be prepended to the list of `platform_settings`. The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. |
+    | [<samp>custom_platform_settings</samp>](## "custom_platform_settings") | List, items: Dictionary |  |  |  | Custom Platform settings to override the default `platform_settings`.<br>This list will be prepended to the list of `platform_settings`.<br>The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.<br>If no matches are found, the first entry containing a platform `default` will be chosen. |
     | [<samp>&nbsp;&nbsp;-&nbsp;platforms</samp>](## "custom_platform_settings.[].platforms") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "custom_platform_settings.[].platforms.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trident_forwarding_table_partition</samp>](## "custom_platform_settings.[].trident_forwarding_table_partition") | String |  |  |  | Only applied when evpn_multicast is true. |
@@ -87,7 +87,10 @@
 === "YAML"
 
     ```yaml
-    # Custom Platform settings to override the default `platform_settings`. This list will be prepended to the list of `platform_settings`. The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen.
+    # Custom Platform settings to override the default `platform_settings`.
+    # This list will be prepended to the list of `platform_settings`.
+    # The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.
+    # If no matches are found, the first entry containing a platform `default` will be chosen.
     custom_platform_settings:
       - platforms:
           - <str>

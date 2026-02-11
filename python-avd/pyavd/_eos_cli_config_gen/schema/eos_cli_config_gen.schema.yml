@@ -7906,6 +7906,15 @@ keys:
       source_interface:
         type: str
         description: Source Interface Name.
+      local_interface:
+        type: str
+        description: 'Source Interface Name.
+
+          `logging source-interface <interface>` is deprecated in latest EOS versions(4.35.1).
+
+          This key sets the new command `logging local-interface <interface>`.
+
+          `source_interface` takes precedence over `local_interface`.'
       vrfs:
         type: list
         primary_key: name
@@ -7920,6 +7929,16 @@ keys:
             source_interface:
               type: str
               description: Source interface name.
+            local_interface:
+              type: str
+              description: 'Source Interface Name.
+
+                `logging vrf <vrf> source-interface <interface>` is deprecated in
+                latest EOS versions(4.35.1).
+
+                This key sets the new command `logging vrf <vrf> local-interface <interface>`.
+
+                `source_interface` takes precedence over `local_interface`.'
             hosts:
               type: list
               primary_key: name
@@ -15275,12 +15294,14 @@ keys:
             prefix:
               type: str
               description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+              required: true
             peer_id_include_router_id:
               type: bool
               description: Include router ID as part of peer filter.
             peer_group:
               type: str
               description: Peer group name.
+              required: true
             peer_filter:
               type: str
               description: 'Peer-filter name.
@@ -19024,12 +19045,14 @@ keys:
                   prefix:
                     type: str
                     description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                    required: true
                   peer_id_include_router_id:
                     type: bool
                     description: Include router ID as part of peer filter.
                   peer_group:
                     type: str
                     description: Peer-group name.
+                    required: true
                   peer_filter:
                     type: str
                     description: 'Peer-filter name.
@@ -22963,6 +22986,7 @@ keys:
                 description: 'Enable egress sFlow by default.
 
                   '
+                required: true
               unmodified:
                 type: bool
                 description: 'Enable egress sFlow unmodified.
