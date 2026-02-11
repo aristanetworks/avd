@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 
 from anta.tests.system import VerifyReloadCause
 
-from ._base_classes import AntaTestInputFactory
+from .base_classes import AntaTestInputFactory
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
