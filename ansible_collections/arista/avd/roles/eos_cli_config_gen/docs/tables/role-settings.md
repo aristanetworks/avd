@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;hide_passwords</samp>](## "eos_cli_config_gen_documentation.hide_passwords") | Boolean |  | `True` |  | Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the documentation if true.<br> |
     | [<samp>&nbsp;&nbsp;toc</samp>](## "eos_cli_config_gen_documentation.toc") | Boolean |  | `True` |  | Generate the table of content(TOC) on device documentation. |
     | [<samp>eos_cli_config_gen_keep_tmp_files</samp>](## "eos_cli_config_gen_keep_tmp_files") | Boolean |  | `False` |  | Avoid deleting temporary files.<br>This allows for inspecting templated inputs and validated inputs used internally by AVD plugins.<br>When an Ansible Vault secret is set, temporary files holding input variables are encrypted. Decryption is required to inspect them.<br> |
-    | [<samp>eos_cli_config_gen_tmp_dir</samp>](## "eos_cli_config_gen_tmp_dir") | String |  |  |  | Path for temporary files created by the 'eos_cli_config_gen' role.<br>Contains templated inputs and validated inputs used internally by AVD plugins.<br>Defaults to 'intended/tmp/eos_cli_config_gen'.<br>The temporary directory is cleaned up at the end of the 'eos_cli_config_gen' role.<br> |
+    | [<samp>eos_cli_config_gen_tmp_dir</samp>](## "eos_cli_config_gen_tmp_dir") | String |  |  |  | Path for temporary files created by the 'eos_cli_config_gen' role.<br>Contains templated inputs and validated inputs used internally by AVD plugins.<br>Defaults to 'intended/tmp_eos_cli_config_gen'.<br>The temporary directory is cleaned up at the end of the 'eos_cli_config_gen' role.<br> |
     | [<samp>eos_cli_config_gen_validate_inputs_batch_size</samp>](## "eos_cli_config_gen_validate_inputs_batch_size") | Integer |  | `10` |  | The number of hosts to process in each batch when validating inputs.<br>Depending on your inventory size and the available resources, you may want to adjust this number. |
     | [<samp>generate_default_config</samp>](## "generate_default_config") <span style="color:red">removed</span> | Boolean |  | `False` |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. See [here](https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#default-eos-configuration-is-no-longer-automatically-generated) for details.</span> |
     | [<samp>generate_device_documentation</samp>](## "generate_device_documentation") <span style="color:red">removed</span> | Boolean |  | `True` |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>eos_cli_config_gen_documentation.enable</samp> instead.</span> |
@@ -61,7 +61,7 @@
 
     # Path for temporary files created by the 'eos_cli_config_gen' role.
     # Contains templated inputs and validated inputs used internally by AVD plugins.
-    # Defaults to 'intended/tmp/eos_cli_config_gen'.
+    # Defaults to 'intended/tmp_eos_cli_config_gen'.
     # The temporary directory is cleaned up at the end of the 'eos_cli_config_gen' role.
     eos_cli_config_gen_tmp_dir: <str>
 

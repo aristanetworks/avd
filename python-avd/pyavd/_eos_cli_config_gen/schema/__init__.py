@@ -69856,7 +69856,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     Path for temporary files created by the 'eos_cli_config_gen' role.
     Contains templated inputs and
     validated inputs used internally by AVD plugins.
-    Defaults to 'intended/tmp/eos_cli_config_gen'.
+    Defaults to 'intended/tmp_eos_cli_config_gen'.
     The
     temporary directory is cleaned up at the end of the 'eos_cli_config_gen' role.
     """
@@ -70615,7 +70615,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Path for temporary files created by the 'eos_cli_config_gen' role.
                    Contains templated inputs and
                    validated inputs used internally by AVD plugins.
-                   Defaults to 'intended/tmp/eos_cli_config_gen'.
+                   Defaults to 'intended/tmp_eos_cli_config_gen'.
                    The
                    temporary directory is cleaned up at the end of the 'eos_cli_config_gen' role.
                 eos_cli_config_gen_validate_inputs_batch_size:

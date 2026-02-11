@@ -53,7 +53,7 @@ ansible_facts:
 
 The facts for each device follows the schema described [here](./eos_designs_facts_internal/tables/eos_designs_facts.md).
 
-The facts are stored in `intended/tmp/eos_designs/eos_designs_facts.json` and can be inspected by running the `arista.avd.eos_designs` role with `-e eos_designs_keep_tmp_files="{{ true }}"`.
+The facts are stored in `intended/tmp_eos_designs/eos_designs_facts.json` and can be inspected by running the `arista.avd.eos_designs` role with `-e eos_designs_keep_tmp_files="{{ true }}"`.
 
 #### Internal structure
 

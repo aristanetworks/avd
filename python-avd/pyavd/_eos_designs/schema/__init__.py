@@ -89242,7 +89242,7 @@ class EosDesigns(EosDesignsRootModel):
     Path for temporary files created by the 'eos_designs' role.
     Contains templated inputs, validated
     inputs, and facts data used internally by AVD plugins.
-    Defaults to 'intended/tmp/eos_designs'.
+    Defaults to 'intended/tmp_eos_designs'.
     The
     temporary directory is cleaned up at the end of the 'eos_designs' role.
     """
@@ -91315,7 +91315,7 @@ class EosDesigns(EosDesignsRootModel):
                    Path for temporary files created by the 'eos_designs' role.
                    Contains templated inputs, validated
                    inputs, and facts data used internally by AVD plugins.
-                   Defaults to 'intended/tmp/eos_designs'.
+                   Defaults to 'intended/tmp_eos_designs'.
                    The
                    temporary directory is cleaned up at the end of the 'eos_designs' role.
                 eos_designs_validate_inputs_batch_size:

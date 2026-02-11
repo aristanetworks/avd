@@ -22,4 +22,4 @@ structured_dir_name: 'structured_configs'
 structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
 
 # Output directory for temporary files.
-eos_designs_tmp_dir: "{{ output_dir }}/tmp/eos_designs"
+eos_designs_tmp_dir: "{{ output_dir }}/tmp_eos_designs"

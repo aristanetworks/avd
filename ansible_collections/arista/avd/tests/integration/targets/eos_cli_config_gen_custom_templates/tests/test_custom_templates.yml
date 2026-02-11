@@ -5,7 +5,7 @@
     input_dir: "{{ structured_config_dir }}"
     input_suffix: yml
     read_from_input_dir: true
-    tmp_dir: "{{ actual_output_dir }}/tmp/eos_cli_config_gen"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen"
   delegate_to: localhost
   check_mode: false
   run_once: true
@@ -15,7 +15,7 @@
   arista.avd.eos_cli_config_gen:
     config_filename: "{{ actual_output_dir }}/testhost.cfg"
     generate_device_doc: false
-    tmp_dir: "{{ actual_output_dir }}/tmp/eos_cli_config_gen"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen"
   delegate_to: localhost
 
 - name: Compare actual output with expected output

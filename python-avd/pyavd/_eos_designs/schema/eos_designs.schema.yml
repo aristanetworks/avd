@@ -2338,7 +2338,7 @@ keys:
       Contains templated inputs, validated inputs, and facts data used internally
       by AVD plugins.
 
-      Defaults to ''intended/tmp/eos_designs''.
+      Defaults to ''intended/tmp_eos_designs''.
 
       The temporary directory is cleaned up at the end of the ''eos_designs'' role.
 

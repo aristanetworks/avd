@@ -25,7 +25,7 @@
     | [<samp>&nbsp;&nbsp;toc</samp>](## "eos_designs_documentation.toc") | Boolean |  | `True` |  | Generate the table of content(TOC) on fabric documentation. |
     | [<samp>eos_designs_keep_tmp_files</samp>](## "eos_designs_keep_tmp_files") | Boolean |  | `False` |  | Avoid deleting temporary files.<br>This allows for inspecting templated inputs, validated inputs and facts used internally by AVD plugins.<br>When an Ansible Vault secret is set, temporary files holding input variables are encrypted. Decryption is required to inspect them.<br> |
     | [<samp>eos_designs_return_structured_config</samp>](## "eos_designs_return_structured_config") | Boolean |  | `False` |  | Return structured configuration as ansible_facts per device. |
-    | [<samp>eos_designs_tmp_dir</samp>](## "eos_designs_tmp_dir") | String |  |  |  | Path for temporary files created by the 'eos_designs' role.<br>Contains templated inputs, validated inputs, and facts data used internally by AVD plugins.<br>Defaults to 'intended/tmp/eos_designs'.<br>The temporary directory is cleaned up at the end of the 'eos_designs' role.<br> |
+    | [<samp>eos_designs_tmp_dir</samp>](## "eos_designs_tmp_dir") | String |  |  |  | Path for temporary files created by the 'eos_designs' role.<br>Contains templated inputs, validated inputs, and facts data used internally by AVD plugins.<br>Defaults to 'intended/tmp_eos_designs'.<br>The temporary directory is cleaned up at the end of the 'eos_designs' role.<br> |
     | [<samp>eos_designs_validate_inputs_batch_size</samp>](## "eos_designs_validate_inputs_batch_size") | Integer |  | `10` |  | The number of hosts to process in each batch when validating inputs.<br>Depending on your inventory size and the available resources, you may want to adjust this number. |
 
 === "YAML"
@@ -86,7 +86,7 @@
 
     # Path for temporary files created by the 'eos_designs' role.
     # Contains templated inputs, validated inputs, and facts data used internally by AVD plugins.
-    # Defaults to 'intended/tmp/eos_designs'.
+    # Defaults to 'intended/tmp_eos_designs'.
     # The temporary directory is cleaned up at the end of the 'eos_designs' role.
     eos_designs_tmp_dir: <str>
 
