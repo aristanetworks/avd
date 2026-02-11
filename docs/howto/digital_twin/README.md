@@ -28,9 +28,9 @@ Support for additional Digital Twin platforms will be added in future releases.
 - **Configuration Optimization**: Device configurations are adjusted to remove or modify features not supported by EOS in the Digital Twin environment
 - **Platform-Specific Optimizations**: Configurations are optimized for each Digital Twin platform (e.g., eAPI access in `default` VRF for ACT)
 - **Topology Generation**: Topology information is generated in the format required by the Digital Twin platform
-- **Platform Mapping**: Production hardware platforms are mapped to virtual platforms
+- **Platform Mapping**: Production hardware platforms are mapped to virtual platforms supported by target Digital Twin environment
 - **Separate Artifact Management**: Digital Twin artifacts can be generated alongside production artifacts in separate directories
-- **Management IP Configuration**: Management IP addresses can be configured separately for Digital Twin devices
+- **Management IP Configuration**: Management IP addresses can be configured separately for Digital Twin devices (if supported by Digital Twin environment)
 
 ## Getting Started
 
@@ -44,14 +44,14 @@ To generate Digital Twin artifacts, you need to:
 
 ### Enabling Digital Twin Mode
 
-Digital Twin mode is controlled by the `avd_digital_twin_mode` Ansible root-level variable. This is a boolean that tells AVD to generate Digital Twin artifacts instead of production artifacts.
+Digital Twin mode is controlled by the `avd_digital_twin_mode` variable. This is a boolean setting that tells AVD to generate Digital Twin artifacts instead of production artifacts.
 
 **Key Points:**
 
 - When set to `true`, AVD generates configurations optimized for the Digital Twin environment
 - When set to `false` or not set (default), AVD generates standard production configurations
 - The same fabric variables are used for both production and Digital Twin runs
-- Digital Twin-specific settings in fabric variables (under `digital_twin` Ansible root-level variable) are only applied when `avd_digital_twin_mode` is `True`
+- Digital Twin-specific settings in fabric variables (under `digital_twin`) are only applied when `avd_digital_twin_mode` is `true`
 
 **Example:**
 
@@ -140,30 +140,26 @@ The topology file format depends on the target Digital Twin platform (e.g., `<FA
 
 ### Global Digital Twin Settings
 
-The following table shows all available global Digital Twin configuration options:
+Global Digital Twin settings are configured under the `digital_twin` key in the fabric variables.
 
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/digital-twin-configuration.md
---8<--
+For a complete list of all available global Digital Twin configuration options, see the [Digital Twin Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#preview---digital-twin-settings) section in the eos_designs data models documentation.
 
 ### Per-Node Digital Twin Configuration
 
-In addition to global settings, you can configure Digital Twin settings per node type or per individual node:
+In addition to global settings, Digital Twin settings can be configured per node type, node group or per individual node.
 
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-digital-twin-configuration.md
---8<--
+For a complete list of all available per-node Digital Twin configuration options, see the [Node Type Digital Twin Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#node-type-digital-twin-configuration) section in the eos_designs data models documentation.
 
 ### Configuring the Digital Twin Environment
 
-The `digital_twin.environment` key in your Ansible variables specifies which Digital Twin platform to target. This key determines the format of generated topology files and platform-specific optimizations.
+The `digital_twin.environment` key in the Ansible variables specifies which Digital Twin platform to target. This key determines the format of generated topology files and platform-specific optimizations.
 
 **Example:**
 
 ```yaml
 # group_vars/FABRIC.yml
 digital_twin:
-  environment: act  # Specify the target Digital Twin platform
+  environment: act  # Specify the target Digital Twin platform (default: act)
 ```
 
 **Supported Values:**
@@ -173,6 +169,8 @@ digital_twin:
 ### Platform Mapping
 
 All production hardware platforms are pre-mapped to the appropriate virtual platforms for Digital Twin environments in defaults of the `platform_settings`.
+
+**Example:**
 
 ```yaml
 - platforms:
@@ -192,9 +190,9 @@ All production hardware platforms are pre-mapped to the appropriate virtual plat
 ```
 
 When a device uses platform `7050X3` in production, AVD uses `vEOS-lab` platform settings when generating Digital Twin artifacts.
-This means things like MLAG `reload-delay` timers, feature supportability, OOB MGMT interface, etc. will be taken from the `vEOS-lab` platform settings profile instead of the `7050X3` profile when running AVD in Digital Twin mode.
+This means things like MLAG `reload-delay` timers, feature supportability, OOB MGMT interface, etc.. will be taken from the `vEOS-lab` platform settings item instead of the `7050X3` item when running AVD in Digital Twin mode.
 
-You can override these default mappings by defining `custom_platform_settings` items that override the default `digital_twin.platform` setting:
+It is possible to override these default mappings by defining `custom_platform_settings` items that override the default `digital_twin.platform` setting:
 
 ```yaml
 # Example: Mapping 7050X3 platform to cEOSLab for ACT Digital Twin
@@ -253,10 +251,21 @@ When targeting ACT as a Digital Twin environment, AVD:
 - Automatically assigns appropriate ACT node types to devices
 - Optimizes configurations for ACT's virtual environment
 - Manages credentials and OS versions for ACT devices
+- Assigns OOB MGMT IP addresses to devices (required by ACT)
+
+#### ACT Default values
+
+If not specified otherwise, AVD uses the following default values when generating ACT Digital Twin artifacts:
+
+| Attribute | Description | Default value | Source of information |
+| --------- | ----------- | ------------- | --------------------- |
+| act_os_version | OS version of the replica device | `cloudeos`: `4.33.2F`<br>`cvp`: `2024.3.2`<br>`generic`: `ubuntu-2204-lts`<br>`third-party`: `byod`<br>`tools-server`: `ubuntu-2204-lts`<br>`veos`: `4.33.1.1F` | `node_config.digital_twin.act_os_version` or `digital_twin.fabric.act_os_version` |
+| act_username | username of the default account deployed on the replica device | `cvpadmin` | `digital_twin.fabric.act_username` |
+| act_password | password of the default account deployed on the replica device | `cvp123!` | `digital_twin.fabric.act_password` |
 
 #### ACT Node Types
 
-AVD assigns each device an ACT node type based on the device's platform. The following ACT node types are supported:
+AVD assigns each device an ACT node type based on the device's original platform. The following ACT node types are supported:
 
 - **`veos`** - Virtual EOS devices (vEOS-lab)
 - **`cloudeos`** - CloudEOS devices
@@ -280,14 +289,15 @@ platform_settings:
   - platforms:
       - vEOS-lab
     digital_twin:
+      # Virtual platform `vEOS-lab` is mapped to the ACT node type `veos`
       act_node_type: veos
 ```
 
-In the example below a `7050X3` production device will be assigned the `veos` ACT node type since the `vEOS-lab` platform settings (Digital Twin platform for `7050X3`) has `digital_twin.act_node_type: veos`.
+In the example below a `7050X3` production device will be assigned the `veos` ACT node type since the `vEOS-lab` platform settings (Digital Twin platform for `7050X3`) has `digital_twin.act_node_type` set to `veos`.
 
 #### Management IP Configuration
 
-Each ACT Digital Twin device requires a OOB management IP address to be assinged inside topology file. AVD assigns the management IP in the following priority order:
+Each ACT Digital Twin device requires an OOB management IP address to be assigned inside topology file. AVD assigns the ACT management IP in the following priority order:
 
 1. `<node_type_keys.key>.nodes[].digital_twin.mgmt_ip` - Per-node Digital Twin management IP
 2. `<node_type_keys.key>.nodes[].mgmt_ip` - Per-node production management IP
@@ -301,28 +311,19 @@ spine:
       mgmt_ip: 192.168.1.11/24  # Used for both production and Digital Twin
 
     - name: spine2
-      mgmt_ip: 192.168.1.12/24          # Used for production
+      mgmt_ip: 192.168.1.12/24          # Used for `spine2` in production
       digital_twin:
-        mgmt_ip: 10.255.0.12/24         # Used for ACT Digital Twin
+        mgmt_ip: 10.255.0.12/24         # Used for `spine2` in ACT Digital Twin topology file
 ```
 
 !!! note
-    If a device does not have a management IP configured (neither `mgmt_ip` nor `digital_twin.mgmt_ip`), AVD will raise an exception.
+    If a device does not have a management IP configured (neither `mgmt_ip` nor `digital_twin.mgmt_ip`), AVD will raise an exception when running in Digital Twin mode.
 
 #### ACT OS Version Configuration
 
-Each ACT node type has a default OS version that will be used if not explicitly configured:
+Each ACT node type has a default OS version that will be used if not explicitly configured (please see [AT Default Values](#act-default-values) for details).
 
-| ACT Node Type | Default OS Version |
-|---------------|-------------------|
-| `veos` | `4.33.1.1F` |
-| `cloudeos` | `4.33.2F` |
-| `cvp` | `2024.3.2` |
-| `generic` | `ubuntu-2204-lts` |
-| `third-party` | `byod` |
-| `tools-server` | `ubuntu-2204-lts` |
-
-You can override the OS version at different levels (from lowest to highest priority):
+You can override the OS version at different levels (shown below from lowest to highest priority):
 
 ```yaml
 # Global override for all fabric devices
@@ -346,7 +347,7 @@ spine:
 
 #### ACT eAPI Access Control
 
-ACT clients connect to device eAPI through ACT's infrastructure. This connectivity requires eAPI to be accessible in the EOS's **default VRF**.
+ACT users connect to device eAPI through ACT's infrastructure. This connectivity requires eAPI to be accessible in the EOS's **default VRF**.
 
 If production configuration uses a dedicated management VRF for eAPI, ACT will not be able to connect to devices. Use the `act_ensure_eapi_access` setting to resolve this:
 
@@ -356,7 +357,7 @@ digital_twin:
     act_ensure_eapi_access: true
 ```
 
-When enabled, AVD:
+When enabled, AVD makes the following adjustments to the generated Digital Twin configuration:
 
 1. Enables eAPI over HTTPS in the default VRF
 2. Removes any IPv4 ACLs from the default VRF eAPI configuration (IPv6 ACLs are preserved)
@@ -377,22 +378,22 @@ management api http-commands
 
 **Example - Digital Twin Configuration with `act_ensure_eapi_access: true`:**
 
-```eos
-management api http-commands # will always be added if not already configured
-   protocol https # will always be added if not already configured
-   no shutdown # will always be added if not already configured
-   !
-   vrf MGMT
-      no shutdown
-      ip access-group eapi_acl_in
-   !
-   vrf default # will always be added if not already configured
-      no shutdown # will always be added if not already configured
+```diff
+  management api http-commands
+     protocol https
+     no shutdown
+     !
+     vrf MGMT
+        no shutdown
+        ip access-group eapi_acl_in
+     !
++    vrf default
++       no shutdown
 ```
 
 #### ACT Internet Access Configuration
 
-By default, ACT does not provide direct Internet access to `cloudeos` or `veos` devices. To enable Internet access (for example, to download software or access external services):
+By default, ACT does not provide direct Internet access to `cloudeos` or `veos` devices. To enable Internet access (for example, to download software or access CVaaS or other external services):
 
 ```yaml
 digital_twin:
@@ -404,51 +405,90 @@ This setting only applies to ACT `cloudeos` and `veos` node types and will be ig
 
 #### ACT Examples
 
-##### Example 1: Separate Management IPs for ACT
+Each example below demonstrates a specific use case with two devices: one using default values and one using customized values.
+
+##### Example 1: Topology Management IP Configuration
+
+This example shows how to configure topology management IPs for Digital Twin devices. One device uses the production management IP, while the other uses a separate Digital Twin management IP.
 
 ```yaml
 spine:
   nodes:
-    - name: dc1-spine1
-      mgmt_ip: 10.10.1.11/24  # Production management IP
-      digital_twin:
-        mgmt_ip: 172.16.1.11/24  # Digital Twin management IP
-```
-
-##### Example 2: Per-Node OS Version Override
-
-```yaml
-spine:
-  nodes:
+    # Device using production management IP (default behavior)
     - name: spine1
-      mgmt_ip: 192.168.1.11/24
-      # Uses default 4.33.1.1F
+      mgmt_ip: 10.10.1.11/24  # Used for both production and ACT Digital Twin topology file
 
+    # Device using separate ACT Digital Twin management IP
     - name: spine2
-      mgmt_ip: 192.168.1.12/24
+      mgmt_ip: 10.10.1.12/24  # Production management IP
       digital_twin:
-        act_os_version: "4.34.0F"  # Override for this device
+        mgmt_ip: 172.16.1.12/24  # ACT Digital Twin management IP (overrides production IP) in topology file
 ```
 
-##### Example 3: eAPI Access and Internet Access
+**Result:**
+
+- `spine1`: Uses `10.10.1.11/24` for ACT Digital Twin topology file
+- `spine2`: Uses `172.16.1.12/24` for ACT Digital Twin topology file
+
+##### Example 2: OS Version Configuration
+
+This example demonstrates OS version configuration at different levels. One device uses the global default, while the other uses a custom version.
 
 ```yaml
 digital_twin:
   fabric:
-    act_ensure_eapi_access: true  # Ensure eAPI in default VRF
-    act_internet_access: true     # Enable Internet access for veos/cloudeos
+    act_os_version: "4.33.2"  # Global default for all fabric devices
 
 spine:
   nodes:
+    # Device using global default OS version
     - name: spine1
       mgmt_ip: 192.168.1.11/24
+      # Will use 4.33.2 from global setting
+
+    # Device using custom OS version
+    - name: spine2
+      mgmt_ip: 192.168.1.12/24
+      digital_twin:
+        act_os_version: "4.34.0F"  # Override for testing newer version
 ```
+
+**Result:**
+
+- `spine1`: Uses OS version `4.33.2` (global default)
+- `spine2`: Uses OS version `4.34.0F` (per-node override)
+
+##### Example 3: Internet Access Configuration
+
+This example demonstrates Internet access configuration for ACT devices. One device uses default (no Internet), while the other enables Internet access.
+
+```yaml
+spine:
+  nodes:
+    # Device without Internet access (default)
+    - name: spine1
+      mgmt_ip: 192.168.1.11/24
+      # No Internet access in ACT
+
+    # Device with Internet access enabled
+    - name: spine2
+      mgmt_ip: 192.168.1.12/24
+      digital_twin:
+        act_internet_access: true  # Enable direct Internet access
+```
+
+**Result:**
+
+- `spine1`: No Internet access in ACT (default)
+- `spine2`: Internet access enabled in ACT
+
+**Note:** `act_internet_access` only applies to `veos` and `cloudeos` node types.
 
 #### ACT Best Practices
 
 ##### 1. Enable eAPI Access for ACT Automation
 
-Enable `act_ensure_eapi_access` when running automation against ACT:
+Enable `act_ensure_eapi_access` when production configuration has eAPI disabled or restricted in `default` VRF:
 
 ```yaml
 digital_twin:
@@ -493,12 +533,12 @@ Define platform mappings (when changes to the default mappings are needed) in a 
 
 ### 4. Testing Workflow
 
-Establish a testing workflow:
+Establish general testing workflow for all complex fabric configuration changes:
 
 1. Generate production artifacts
 2. Generate Digital Twin artifacts
 3. Deploy Digital Twin topology to the target Digital Twin platform
-4. Run tests (ANAT, etc.) in the Digital Twin environment
+4. Run tests (ANTA, etc..) in the Digital Twin environment
 5. Apply validated changes to production
 
 ## General Troubleshooting
@@ -524,7 +564,7 @@ Establish a testing workflow:
 
 **Solution**:
 
-- Verify that the Digital Twin platform mapping in `platform_settings.[].digital_twin.platform` is correct
+- Verify that the Digital Twin platform mapping in `platform_settings` (or `custom_platform_settings` if set) is correct
 - Verify that the `feature_support` settings for the selected Digital Twin platform are correct
 
 ## Additional Resources
