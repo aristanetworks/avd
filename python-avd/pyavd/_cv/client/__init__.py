@@ -107,7 +107,7 @@ class CVClientProtocol(
 
                 # Create the gRPC protocol using the proxy socket
                 _, protocol = await loop.create_connection(
-                    lambda: channel._protocol_factory(),
+                    channel._protocol_factory,
                     sock=proxy_sock,
                     ssl=channel._ssl,
                     server_hostname=self._servers[0] if ssl_context else None,

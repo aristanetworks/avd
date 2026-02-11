@@ -8,11 +8,11 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .avd_test_spec import AvdTestSpec
+    from .avd_test_spec import AVDTestSpec
 
 
 @dataclass(frozen=True)
-class AvdCatalogGenerationSettings:
+class AVDCatalogGenerationSettings:
     """
     Model defining settings for the AVD-generated ANTA catalog.
 
@@ -23,8 +23,8 @@ class AvdCatalogGenerationSettings:
     """List of ANTA test names to run. If provided, only these tests (minus skipped ones) will run."""
     skip_tests: tuple[str, ...] = field(default_factory=tuple)
     """List of ANTA test names to skip. Takes precedence over `run_tests`."""
-    custom_test_specs: tuple[AvdTestSpec, ...] = field(default_factory=tuple)
-    """List of custom AvdTestSpec instances to generate additional tests in the catalog."""
+    custom_test_specs: tuple[AVDTestSpec, ...] = field(default_factory=tuple)
+    """List of custom AVDTestSpec instances to generate additional tests in the catalog."""
     output_dir: str | Path | None = field(default=None)
     """Directory to output the test catalog. Must exist if provided."""
     extra_fabric_validation: bool = field(default=False)
