@@ -11,6 +11,13 @@
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
   - [ISIS CLNS interfaces](#isis-clns-interfaces)
+  - [MPLS and LDP Configuration](#mpls-and-ldp-configuration)
+  - [BGP MPLS Overlay](#bgp-mpls-overlay)
+  - [MPLS Route Reflectors](#mpls-route-reflectors)
+  - [VRF Summary](#vrf-summary)
+  - [BGP Peer Groups](#bgp-peer-groups)
+  - [BGP Neighbors](#bgp-neighbors)
+  - [VRF Routing Protocols](#vrf-routing-protocols)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
@@ -113,6 +120,81 @@
 | FABRIC | pe3 | 49.0001.0102.5500.1003.00 |
 | FABRIC | rr1 | 49.0001.0102.5500.2001.00 |
 | FABRIC | rr2 | 49.0001.0102.5500.2002.00 |
+
+### MPLS and LDP Configuration
+
+| POD | Node | Type | MPLS Router ID | LDP Enabled |
+| --- | ---- | ---- | -------------- | ----------- |
+| FABRIC | p1 | p | 10.255.0.1 | True |
+| FABRIC | p2 | p | 10.255.0.2 | True |
+| FABRIC | p3 | p | 10.255.0.3 | True |
+| FABRIC | p4 | p | 10.255.0.4 | True |
+| FABRIC | pe1 | pe | 10.255.1.1 | True |
+| FABRIC | pe2 | pe | 10.255.1.2 | True |
+| FABRIC | pe3 | pe | 10.255.1.3 | True |
+| FABRIC | rr1 | rr | 10.255.2.1 | True |
+| FABRIC | rr2 | rr | 10.255.2.2 | True |
+
+### BGP MPLS Overlay
+
+| Node | Type | BGP AS | Router ID | Address Families |
+| ---- | ---- | ------ | --------- | ---------------- |
+| pe1 | pe | 65001 | 10.255.1.1 | vpn-ipv4 |
+| pe2 | pe | 65001 | 10.255.1.2 | vpn-ipv4 |
+| pe3 | pe | 65001 | 10.255.1.3 | vpn-ipv4 |
+| rr1 | rr | 65001 | 10.255.2.1 | vpn-ipv4 |
+| rr2 | rr | 65001 | 10.255.2.2 | vpn-ipv4 |
+
+### MPLS Route Reflectors
+
+| Node | Type | BGP AS | Router ID | Cluster ID |
+| ---- | ---- | ------ | --------- | ---------- |
+| rr1 | rr | 65001 | 10.255.2.1 | - |
+| rr2 | rr | 65001 | 10.255.2.2 | - |
+
+### VRF Summary
+
+| VRF | RD Pattern | Import RT | Export RT | Nodes |
+| --- | ---------- | --------- | --------- | ----- |
+| C1_VRF1 | 10 | 10:10 | 10:10 | pe1, pe2, pe3 |
+| C2_VRF1 | 20 | 20:20 | 20:20 | pe1, pe2, pe3 |
+
+### BGP Peer Groups
+
+| Peer Group | Remote AS | Update Source | BFD | Send Community | Nodes |
+| ---------- | --------- | ------------- | --- | -------------- | ----- |
+| MPLS-OVERLAY-PEERS | 65001 | Loopback0 | Yes | all | pe1, pe2, pe3, rr1, rr2 |
+| RR-OVERLAY-PEERS | 65001 | Loopback0 | Yes | all | rr1, rr2 |
+
+### BGP Neighbors
+
+| Node | Type | Neighbor IP | Peer Group | Remote AS | Description |
+| ---- | ---- | ----------- | ---------- | --------- | ----------- |
+| pe1 | pe | 10.255.2.1 | MPLS-OVERLAY-PEERS | - | rr1_Loopback0 |
+| pe1 | pe | 10.255.2.2 | MPLS-OVERLAY-PEERS | - | rr2_Loopback0 |
+| pe2 | pe | 10.255.2.1 | MPLS-OVERLAY-PEERS | - | rr1_Loopback0 |
+| pe2 | pe | 10.255.2.2 | MPLS-OVERLAY-PEERS | - | rr2_Loopback0 |
+| pe3 | pe | 10.255.2.1 | MPLS-OVERLAY-PEERS | - | rr1_Loopback0 |
+| pe3 | pe | 10.255.2.2 | MPLS-OVERLAY-PEERS | - | rr2_Loopback0 |
+| rr1 | rr | 10.255.1.1 | MPLS-OVERLAY-PEERS | - | pe1_Loopback0 |
+| rr1 | rr | 10.255.1.2 | MPLS-OVERLAY-PEERS | - | pe2_Loopback0 |
+| rr1 | rr | 10.255.1.3 | MPLS-OVERLAY-PEERS | - | pe3_Loopback0 |
+| rr1 | rr | 10.255.2.2 | RR-OVERLAY-PEERS | - | rr2_Loopback0 |
+| rr2 | rr | 10.255.1.1 | MPLS-OVERLAY-PEERS | - | pe1_Loopback0 |
+| rr2 | rr | 10.255.1.2 | MPLS-OVERLAY-PEERS | - | pe2_Loopback0 |
+| rr2 | rr | 10.255.1.3 | MPLS-OVERLAY-PEERS | - | pe3_Loopback0 |
+| rr2 | rr | 10.255.2.1 | RR-OVERLAY-PEERS | - | rr1_Loopback0 |
+
+### VRF Routing Protocols
+
+| Node | Type | VRF | Router ID | Redistribute |
+| ---- | ---- | --- | --------- | ------------ |
+| pe1 | pe | C1_VRF1 | 10.255.1.1 | connected, OSPF |
+| pe1 | pe | C2_VRF1 | 10.255.1.1 | connected |
+| pe2 | pe | C1_VRF1 | 10.255.1.2 | connected, OSPF |
+| pe2 | pe | C2_VRF1 | 10.255.1.2 | connected |
+| pe3 | pe | C1_VRF1 | 10.255.1.3 | connected, OSPF |
+| pe3 | pe | C2_VRF1 | 10.255.1.3 | connected |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
