@@ -4,13 +4,12 @@
 
 from __future__ import annotations
 
-import sys
 from typing import TYPE_CHECKING
 
 import pytest
 from jinja2 import TemplateNotFound
 
-from pyavd.templater import CustomModuleLoader, ExtensionFileSystemLoader, Templar, Undefined
+from pyavd.templater import CUSTOM_FILTERS, CUSTOM_TESTS, CustomModuleLoader, ExtensionFileSystemLoader, Templar, Undefined
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -155,24 +154,12 @@ class TestCustomModuleLoader:
         # Both should produce the same module name
         assert windows_result == unix_result == "templates__config__device"
 
-    def test_sys_path_updated(self, precompiled_dir: Path) -> None:
-        """Test that sys.path is updated when creating CustomModuleLoader."""
-        path_str = str(precompiled_dir.resolve())
-
-        # Remove from sys.path if it exists
-        if path_str in sys.path:
-            sys.path.remove(path_str)
-
-        CustomModuleLoader(precompiled_dir)
-
-        assert path_str in sys.path
-
     def test_load_nonexistent_template_raises(self, precompiled_dir: Path) -> None:
         """Test that loading a non-existent template raises TemplateNotFound."""
         from jinja2 import Environment
 
         loader = CustomModuleLoader(precompiled_dir)
-        env = Environment(loader=loader)  # noqa: S701
+        env = Environment(loader=loader, autoescape=True)
 
         with pytest.raises(TemplateNotFound):
             loader.load(env, "nonexistent.j2")
@@ -209,20 +196,7 @@ class TestTemplar:
         """Test that environment has all custom filters registered."""
         templar = Templar(precompiled_templates_path=precompiled_dir)
 
-        expected_filters = [
-            "arista.avd.add_md_toc",
-            "arista.avd.decrypt",
-            "arista.avd.default",
-            "arista.avd.encrypt",
-            "arista.avd.hide_passwords",
-            "arista.avd.is_in_filter",
-            "arista.avd.list_compress",
-            "arista.avd.natural_sort",
-            "arista.avd.range_expand",
-            "arista.avd.snmp_hash",
-            "arista.avd.status_render",
-            "arista.avd.secure_hash",
-        ]
+        expected_filters = [f"arista.avd.{name}" for name in CUSTOM_FILTERS]
 
         for filter_name in expected_filters:
             assert filter_name in templar.environment.filters
@@ -231,10 +205,7 @@ class TestTemplar:
         """Test that environment has all custom tests registered."""
         templar = Templar(precompiled_templates_path=precompiled_dir)
 
-        expected_tests = [
-            "arista.avd.defined",
-            "arista.avd.contains",
-        ]
+        expected_tests = [f"arista.avd.{name}" for name in CUSTOM_TESTS]
 
         for test_name in expected_tests:
             assert test_name in templar.environment.tests

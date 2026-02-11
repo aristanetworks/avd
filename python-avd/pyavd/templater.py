@@ -3,8 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import importlib.util
 import logging
-import sys
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -20,6 +20,27 @@ if TYPE_CHECKING:
     from jinja2 import Template
 
 LOGGER = logging.getLogger(__name__)
+
+# Constants for registered filters and tests - single source of truth
+CUSTOM_FILTERS = [
+    "add_md_toc",
+    "decrypt",
+    "default",
+    "encrypt",
+    "hide_passwords",
+    "is_in_filter",
+    "list_compress",
+    "natural_sort",
+    "range_expand",
+    "snmp_hash",
+    "status_render",
+    "secure_hash",
+]
+
+CUSTOM_TESTS = [
+    "defined",
+    "contains",
+]
 
 
 class Undefined(StrictUndefined):
@@ -52,11 +73,7 @@ class CustomModuleLoader(ModuleLoader):
     """Custom ModuleLoader that handles readable module names."""
 
     def __init__(self, path: str | Path) -> None:
-        # Ensure the path is in sys.path so modules can be imported
-        path_str = str(Path(path).resolve())
-        if path_str not in sys.path:
-            sys.path.insert(0, path_str)
-
+        self.path = Path(path).resolve()
         super().__init__(path)
 
     def load(self, environment: Environment, name: str, globals: MutableMapping[str, Any] | None = None) -> Template:  # noqa: A002
@@ -64,20 +81,23 @@ class CustomModuleLoader(ModuleLoader):
         # Convert template name to module name
         module_name = self._template_name_to_module_name(name)
 
-        # Build the full module path
-        module_path = f"{self.package_name}.{module_name}"
-
-        # Try to import the module
+        # Check if the module is already loaded/cached
         mod = getattr(self.module, module_name, None)
 
         if mod is None:
-            try:
-                mod = __import__(module_path, None, None, ["root"])
-            except ImportError as exc:
-                raise TemplateNotFound(name) from exc
+            # Build the file path directly
+            module_file = self.path / f"{module_name}.py"
 
-            # Remove from sys.modules to keep it only as an attribute on self.module
-            sys.modules.pop(module_path, None)
+            if not module_file.exists():
+                raise TemplateNotFound(name)
+
+            # Load module directly from file path (no sys.path needed!)
+            spec = importlib.util.spec_from_file_location(module_name, module_file)
+            if spec is None or spec.loader is None:
+                raise TemplateNotFound(name)
+
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
 
         # Create template from module dict
         return environment.template_class.from_module_dict(environment, mod.__dict__, globals if globals is not None else {})
@@ -85,8 +105,7 @@ class CustomModuleLoader(ModuleLoader):
     @staticmethod
     def _template_name_to_module_name(template_name: str) -> str:
         """Convert a template name to a module name."""
-        normalized = template_name.replace("\\", "/")
-        normalized = Path(normalized).as_posix()
+        normalized = Path(template_name.replace("\\", "/")).as_posix()
         return normalized.replace("/", "__").removesuffix(".j2").replace(".", "_").replace("-", "_")
 
 
@@ -118,45 +137,19 @@ class Templar:
         self.import_filters_and_tests()
 
     def import_filters_and_tests(self) -> None:
-        from .j2filters import (  # noqa: PLC0415
-            add_md_toc,
-            decrypt,
-            default,
-            encrypt,
-            hide_passwords,
-            is_in_filter,
-            list_compress,
-            natural_sort,
-            range_expand,
-            secure_hash,
-            snmp_hash,
-            status_render,
-        )
-        from .j2tests.contains import contains  # noqa: PLC0415
-        from .j2tests.defined import defined  # noqa: PLC0415
+        import importlib  # noqa: PLC0415
 
-        self.environment.filters.update(
-            {
-                "arista.avd.add_md_toc": add_md_toc,
-                "arista.avd.decrypt": decrypt,
-                "arista.avd.default": default,
-                "arista.avd.encrypt": encrypt,
-                "arista.avd.hide_passwords": hide_passwords,
-                "arista.avd.is_in_filter": is_in_filter,
-                "arista.avd.list_compress": list_compress,
-                "arista.avd.natural_sort": natural_sort,
-                "arista.avd.range_expand": range_expand,
-                "arista.avd.snmp_hash": snmp_hash,
-                "arista.avd.status_render": status_render,
-                "arista.avd.secure_hash": secure_hash,
-            },
-        )
-        self.environment.tests.update(
-            {
-                "arista.avd.defined": defined,
-                "arista.avd.contains": contains,
-            },
-        )
+        # Dynamically import and register filters from constants
+        filters_module = importlib.import_module(".j2filters", package="pyavd")
+        for filter_name in CUSTOM_FILTERS:
+            filter_func = getattr(filters_module, filter_name)
+            self.environment.filters[f"arista.avd.{filter_name}"] = filter_func
+
+        # Dynamically import and register tests from constants
+        for test_name in CUSTOM_TESTS:
+            test_module = importlib.import_module(f".j2tests.{test_name}", package="pyavd")
+            test_func = getattr(test_module, test_name)
+            self.environment.tests[f"arista.avd.{test_name}"] = test_func
 
     def render_template_from_file(self, template_file: str, template_vars: dict) -> str:
         return self.environment.get_template(template_file).render(template_vars)
