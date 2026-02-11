@@ -10,8 +10,8 @@ from anta.tests.routing.generic import VerifyRoutingProtocolModel, VerifyRouting
 from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
 
-from ._base_classes import AntaTestInputFactory
-from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_missing_config, skip_if_not_vtep, skip_if_wan_router
+from .base_classes import AntaTestInputFactory
+from .decorators import skip_if_extra_fabric_validation_disabled, skip_if_missing_config, skip_if_not_vtep, skip_if_wan_router
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
