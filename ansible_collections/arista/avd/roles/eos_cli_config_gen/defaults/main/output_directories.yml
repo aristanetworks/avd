@@ -25,5 +25,5 @@ structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
 eos_config_dir_name: 'configs'
 eos_config_dir: '{{ output_dir }}/{{ eos_config_dir_name }}'
 
-# Output directory for AVD temporary files. Defaults to 'intended/tmp'.
-avd_tmp_dir: "{{ output_dir }}/tmp"
+# Output directory for temporary files.
+eos_cli_config_gen_tmp_dir: "{{ output_dir }}/tmp_eos_cli_config_gen"

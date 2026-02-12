@@ -7,7 +7,7 @@
   arista.avd.validate_inputs:
     schema_name: avd_design
     fail_on_validation_errors: true
-    tmp_dir: "{{ actual_output_dir }}/tmp"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
 
 - vars:
     error_msg: >-
@@ -24,7 +24,7 @@
     underlay_routing_protocol: ABC
   arista.avd.validate_inputs:
     schema_name: avd_design
-    tmp_dir: "{{ actual_output_dir }}/tmp"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
     fail_on_validation_errors: false
 
 - vars:
