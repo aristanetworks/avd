@@ -145,7 +145,6 @@ keys:
             notify:
               type: str
               description: Notify view.
-      # TODO: AVD 6.0, consider separating local and remote users in model.
       local_users:
         type: list
         items:
