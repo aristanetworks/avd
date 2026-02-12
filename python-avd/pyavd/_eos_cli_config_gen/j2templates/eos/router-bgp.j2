@@ -2671,6 +2671,9 @@ router bgp {{ router_bgp.as }}
 {%         if vrf.rd is arista.avd.defined %}
       rd {{ vrf.rd }}
 {%         endif %}
+{%         if vrf.rd_evpn_domain_remote is arista.avd.defined %}
+      rd evpn domain remote {{ vrf.rd_evpn_domain_remote }}
+{%         endif %}
 {%         if vrf.default_route_exports is arista.avd.defined %}
 {%             for default_route_export in vrf.default_route_exports | arista.avd.natural_sort(sort_key='address_family') %}
 {%                 set vrf_default_route_export_cli = "default-route export " ~ default_route_export.address_family %}
@@ -2701,6 +2704,9 @@ router bgp {{ router_bgp.as }}
 {%                     if address_family.route_map is arista.avd.defined %}
       route-target import {{ address_family.address_family }} route-map {{ address_family.route_map }}
 {%                     endif %}
+{%                     if address_family.address_family in ['evpn'] and address_family.domain_remote is arista.avd.defined %}
+      route-target import {{ address_family.address_family }} domain remote {{ address_family.domain_remote.route_target_import }}
+{%                     endif %}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
@@ -2719,6 +2725,9 @@ router bgp {{ router_bgp.as }}
 {%                     endif %}
 {%                     if address_family.route_map is arista.avd.defined %}
       route-target export {{ address_family.address_family }} route-map {{ address_family.route_map }}
+{%                     endif %}
+{%                     if address_family.address_family in ['evpn'] and address_family.domain_remote is arista.avd.defined %}
+      route-target export {{ address_family.address_family }} domain remote {{ address_family.domain_remote.route_target_export }}
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}
