@@ -21,8 +21,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AvdSwitchFactsDefaultDict,
     AVDVaultHandler,
     get_eos_designs_facts_path,
-    get_role_tmp_paths,
     get_templar,
+    get_tmp_paths,
     raise_action_fail,
     write_file,
 )
@@ -191,7 +191,7 @@ class ActionModule(ActionBase):
         Returns:
             Tuple of an AVDDesign instance loaded from the host hostvars and a dict with the raw hostvars.
         """
-        _templated_path, validated_path = get_role_tmp_paths("eos_designs", self.tmp_dir)
+        _templated_path, validated_path = get_tmp_paths(self.tmp_dir)
         file_path = validated_path / f"{hostname}.json"
         if not file_path.exists():
             msg = (
