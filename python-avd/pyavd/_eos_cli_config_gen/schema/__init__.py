@@ -50350,14 +50350,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {
                         "address_family": {"type": str},
-                        "domain_remote": {"type": str},
+                        "domain_remote_route_target_import": {"type": str},
                         "route_targets": {"type": RouteTargets},
                         "route_map": {"type": str},
                         "rcf": {"type": str},
                         "vpn_route_filter_rcf": {"type": str},
                     }
                     address_family: str
-                    domain_remote: str | None
+                    domain_remote_route_target_import: str | None
                     """Only applicable if `address_family` is one of `evpn`."""
                     route_targets: RouteTargets
                     """Subclass of AvdList with `str` items."""
@@ -50384,7 +50384,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             address_family: str | UndefinedType = Undefined,
-                            domain_remote: str | None | UndefinedType = Undefined,
+                            domain_remote_route_target_import: str | None | UndefinedType = Undefined,
                             route_targets: RouteTargets | UndefinedType = Undefined,
                             route_map: str | None | UndefinedType = Undefined,
                             rcf: str | None | UndefinedType = Undefined,
@@ -50398,7 +50398,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 address_family: address_family
-                                domain_remote: Only applicable if `address_family` is one of `evpn`.
+                                domain_remote_route_target_import: Only applicable if `address_family` is one of `evpn`.
                                 route_targets: Subclass of AvdList with `str` items.
                                 route_map: Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.
                                 rcf:
@@ -50431,14 +50431,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {
                         "address_family": {"type": str},
-                        "domain_remote": {"type": str},
+                        "domain_remote_route_target_export": {"type": str},
                         "route_targets": {"type": RouteTargets},
                         "route_map": {"type": str},
                         "rcf": {"type": str},
                         "vrf_route_filter_rcf": {"type": str},
                     }
                     address_family: str
-                    domain_remote: str | None
+                    domain_remote_route_target_export: str | None
                     """Only applicable if `address_family` is `evpn`."""
                     route_targets: RouteTargets
                     """Subclass of AvdList with `str` items."""
@@ -50465,7 +50465,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             address_family: str | UndefinedType = Undefined,
-                            domain_remote: str | None | UndefinedType = Undefined,
+                            domain_remote_route_target_export: str | None | UndefinedType = Undefined,
                             route_targets: RouteTargets | UndefinedType = Undefined,
                             route_map: str | None | UndefinedType = Undefined,
                             rcf: str | None | UndefinedType = Undefined,
@@ -50479,7 +50479,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 address_family: address_family
-                                domain_remote: Only applicable if `address_family` is `evpn`.
+                                domain_remote_route_target_export: Only applicable if `address_family` is `evpn`.
                                 route_targets: Subclass of AvdList with `str` items.
                                 route_map: Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.
                                 rcf:

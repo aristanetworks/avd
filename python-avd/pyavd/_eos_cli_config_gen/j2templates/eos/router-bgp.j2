@@ -2704,8 +2704,8 @@ router bgp {{ router_bgp.as }}
 {%                     if address_family.route_map is arista.avd.defined %}
       route-target import {{ address_family.address_family }} route-map {{ address_family.route_map }}
 {%                     endif %}
-{%                     if address_family.address_family in ['evpn'] and address_family.domain_remote is arista.avd.defined %}
-      route-target import {{ address_family.address_family }} domain remote {{ address_family.domain_remote.route_target_import }}
+{%                     if address_family.address_family in ['evpn'] and address_family.domain_remote_route_target_import is arista.avd.defined %}
+      route-target import {{ address_family.address_family }} domain remote {{ address_family.domain_remote_route_target_import }}
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}
@@ -2726,8 +2726,8 @@ router bgp {{ router_bgp.as }}
 {%                     if address_family.route_map is arista.avd.defined %}
       route-target export {{ address_family.address_family }} route-map {{ address_family.route_map }}
 {%                     endif %}
-{%                     if address_family.address_family in ['evpn'] and address_family.domain_remote is arista.avd.defined %}
-      route-target export {{ address_family.address_family }} domain remote {{ address_family.domain_remote.route_target_export }}
+{%                     if address_family.address_family in ['evpn'] and address_family.domain_remote_route_target_export is arista.avd.defined %}
+      route-target export {{ address_family.address_family }} domain remote {{ address_family.domain_remote_route_target_export }}
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}

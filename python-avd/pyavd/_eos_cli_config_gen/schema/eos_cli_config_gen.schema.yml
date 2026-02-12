@@ -18903,7 +18903,7 @@ keys:
                     keys:
                       address_family:
                         type: str
-                      domain_remote:
+                      domain_remote_route_target_import:
                         type: str
                         description: Only applicable if `address_family` is one of
                           `evpn`.
@@ -18940,7 +18940,7 @@ keys:
                     keys:
                       address_family:
                         type: str
-                      domain_remote:
+                      domain_remote_route_target_export:
                         type: str
                         description: Only applicable if `address_family` is `evpn`.
                       route_targets:

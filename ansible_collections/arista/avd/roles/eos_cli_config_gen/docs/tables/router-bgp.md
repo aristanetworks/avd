@@ -1090,7 +1090,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_targets</samp>](## "router_bgp.vrfs.[].route_targets") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import</samp>](## "router_bgp.vrfs.[].route_targets.import") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address_family</samp>](## "router_bgp.vrfs.[].route_targets.import.[].address_family") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain_remote</samp>](## "router_bgp.vrfs.[].route_targets.import.[].domain_remote") | String |  |  |  | Only applicable if `address_family` is one of `evpn`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain_remote_route_target_import</samp>](## "router_bgp.vrfs.[].route_targets.import.[].domain_remote_route_target_import") | String |  |  |  | Only applicable if `address_family` is one of `evpn`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_targets</samp>](## "router_bgp.vrfs.[].route_targets.import.[].route_targets") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.vrfs.[].route_targets.import.[].route_targets.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].route_targets.import.[].route_map") | String |  |  |  | Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`. |
@@ -1098,7 +1098,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vpn_route_filter_rcf</samp>](## "router_bgp.vrfs.[].route_targets.import.[].vpn_route_filter_rcf") | String |  |  |  | RCF function name with parenthesis for filtering VPN routes. Also requires `rcf` to be set.<br>Example: MyFunction(myarg).<br>Only applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;export</samp>](## "router_bgp.vrfs.[].route_targets.export") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address_family</samp>](## "router_bgp.vrfs.[].route_targets.export.[].address_family") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain_remote</samp>](## "router_bgp.vrfs.[].route_targets.export.[].domain_remote") | String |  |  |  | Only applicable if `address_family` is `evpn`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain_remote_route_target_export</samp>](## "router_bgp.vrfs.[].route_targets.export.[].domain_remote_route_target_export") | String |  |  |  | Only applicable if `address_family` is `evpn`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_targets</samp>](## "router_bgp.vrfs.[].route_targets.export.[].route_targets") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.vrfs.[].route_targets.export.[].route_targets.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].route_targets.export.[].route_map") | String |  |  |  | Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`. |
@@ -3862,7 +3862,7 @@
               - address_family: <str; required; unique>
 
                 # Only applicable if `address_family` is one of `evpn`.
-                domain_remote: <str>
+                domain_remote_route_target_import: <str>
                 route_targets:
                   - <str>
 
@@ -3882,7 +3882,7 @@
               - address_family: <str; required; unique>
 
                 # Only applicable if `address_family` is `evpn`.
-                domain_remote: <str>
+                domain_remote_route_target_export: <str>
                 route_targets:
                   - <str>
 

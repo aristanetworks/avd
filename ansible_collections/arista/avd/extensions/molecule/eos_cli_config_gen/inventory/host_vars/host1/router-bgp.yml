@@ -2093,12 +2093,14 @@ router_bgp:
             enabled: false
     - name: Tenant_A
       rd: "10.50.64.15:30001"
+      rd_evpn_domain_remote: "10.50.64.15:30002"
       route_targets:
         import:
           - address_family: evpn
             route_targets:
               - "1:30001"
             route_map: RM-DENY-DEFAULT
+            domain_remote_route_target_import: "2:30005"
           - address_family: vpn-ipv4
             route_targets:
               - "1:30011"
@@ -2115,6 +2117,7 @@ router_bgp:
             route_targets:
               - "1:30001"
             rcf: RT_EXPORT_AF_RCF()
+            domain_remote_route_target_export: "2:30005"
           - address_family: vpn-ipv6
             route_targets:
               - "1:30011"
