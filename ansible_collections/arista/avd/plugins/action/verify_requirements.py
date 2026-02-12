@@ -7,7 +7,7 @@ import json
 import sys
 import warnings
 from importlib import import_module
-from importlib.metadata import Distribution, PackageNotFoundError, metadata, version
+from importlib.metadata import Distribution, PackageNotFoundError, version
 from logging import getLogger
 from pathlib import Path
 from subprocess import PIPE, Popen
@@ -23,14 +23,12 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin
 
 if TYPE_CHECKING:
     # Relying on packaging installed by ansible
-    from packaging.markers import default_environment
-    from packaging.requirements import InvalidRequirement, Requirement
+    from packaging.requirements import Requirement
     from packaging.specifiers import SpecifierSet
 
 try:
     # Relying on packaging installed by ansible
-    from packaging.markers import default_environment
-    from packaging.requirements import InvalidRequirement, Requirement
+    from packaging.requirements import Requirement
     from packaging.specifiers import SpecifierSet
 
     HAS_PACKAGING = True
@@ -85,41 +83,6 @@ def _validate_python_version(info: dict[str, Any]) -> bool:
         warnings.warn(msg, DeprecationWarning, stacklevel=2)
 
     return True
-
-
-def _parse_requirements(req_str: str) -> tuple[Requirement, list[str]]:
-    """Parse a requirement string and return the parsed object and a list of extras requirements to parse if any."""
-    try:
-        req = Requirement(req_str)
-    except InvalidRequirement as exc:
-        msg = f"Wrong format for requirement {req_str}"
-        raise ValueError(msg) from exc
-
-    extras = []
-    if req.extras:
-        # Get the current environment (python_version, platform_system, etc.)
-        env = default_environment()
-
-        # metadata(req.name) returns the distribution metadata for the package
-        dist_metadata = metadata(req.name)
-        if dist_metadata:
-            requires_dist = dist_metadata.get_all("Requires-Dist") or []
-
-            for subreq_name in requires_dist:
-                subreq = Requirement(subreq_name)
-
-                if subreq.marker:
-                    # Check each extra requested in req.extras
-                    for extra in req.extras:
-                        # Add the specific extra to the environment context for evaluation
-                        current_env = {**env, "extra": extra}
-
-                        # evaluate() returns True if markers (version, extra, etc.) match
-                        if subreq.marker.evaluate(current_env):
-                            extras.append(subreq_name)
-                            break
-
-    return req, extras
 
 
 def _check_requirement(req: Requirement, requirements_dict: dict[str, Any]) -> bool:
@@ -220,7 +183,7 @@ def _validate_python_requirements(requirements: list[str], info: dict[str, Any])
     # Remove the comments including inline comments
     requirements = [req.split(" #", maxsplit=1)[0] for req in requirements if req != "" and req[0] != "#"]
     for raw_req in requirements:
-        req, extras = _parse_requirements(raw_req)
+        req = Requirement(raw_req)
         if RUNNING_FROM_SOURCE and req.name == "pyavd":
             LOGGER.debug("AVD is running from source, *not* checking pyavd version.")
             requirements_dict["valid"][req.name] = {
@@ -228,8 +191,6 @@ def _validate_python_requirements(requirements: list[str], info: dict[str, Any])
                 "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
             }
             continue
-
-        requirements.extend(extras)
 
         valid = valid and _check_requirement(req, requirements_dict)
 
