@@ -829,7 +829,7 @@ class AvdStructuredConfigBaseProtocol(
             return
 
         if arp_settings.persistent:
-            self.structured_config.arp.persistent._update(enabled=arp_settings.persistent.enabled, refresh_delay=arp_settings.persistent.refresh_delay)
+            self.structured_config.arp.persistent = arp_settings.persistent
 
         if arp_settings.aging.timeout_default is not None:
             self.structured_config.arp.aging.timeout_default = arp_settings.aging.timeout_default
