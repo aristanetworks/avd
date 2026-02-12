@@ -1675,7 +1675,8 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.networks is arista.avd.defined %}
-{%             for network in router_bgp.address_family_ipv4_labeled_unicast.networks %}
+{# Need to check for better sorting mechanism for IP Addresses #}
+{%             for network in router_bgp.address_family_ipv4_labeled_unicast.networks | arista.avd.natural_sort(sort_key='prefix') %}
 {%                 set network_cli = "network " ~ network.prefix %}
 {%                 if network.route_map is arista.avd.defined %}
 {%                     set network_cli = network_cli ~ " route-map " ~ network.route_map %}
@@ -1684,7 +1685,8 @@ router bgp {{ router_bgp.as }}
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.next_hops is arista.avd.defined %}
-{%             for next_hop in router_bgp.address_family_ipv4_labeled_unicast.next_hops %}
+{# Need to check for better sorting mechanism for IP Addresses #}
+{%             for next_hop in router_bgp.address_family_ipv4_labeled_unicast.next_hops | arista.avd.natural_sort(sort_key='ip_address') %}
 {%                 set next_hop_cli = "next-hop " ~ next_hop.ip_address ~ " originate" %}
 {%                 if next_hop.lfib_backup_ip_forwarding is arista.avd.defined(true) %}
 {%                     set next_hop_cli = next_hop_cli ~ " lfib-backup ip-forwarding" %}
