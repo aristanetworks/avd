@@ -14,7 +14,7 @@ service_routing_protocols_model: multi-agent
 snmp_server:
   engine_ids:
     local: '8000757103424242424242'
-  users:
+  local_users:
   - name: usertest-auth-priv
     group: usergroup
     version: v3

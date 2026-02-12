@@ -170,7 +170,7 @@ class SnmpServerMixin(Protocol):
         compute_v3_user_localized_key = engine_ids and engine_ids.local and self.inputs.snmp_settings.compute_v3_user_localized_key
         for user in users:
             version = user.version
-            user_dict = EosCliConfigGen.SnmpServer.UsersItem(
+            user_dict = EosCliConfigGen.SnmpServer.LocalUsersItem(
                 name=user.name,
                 group=user.group,
                 version=version,
@@ -196,7 +196,7 @@ class SnmpServerMixin(Protocol):
                         else:
                             user_dict.priv_passphrase = user.priv_passphrase
 
-            self.structured_config.snmp_server.users.append(user_dict)
+            self.structured_config.snmp_server.local_users.append(user_dict)
 
     def set_snmp_hosts(self: AvdStructuredConfigBaseProtocol) -> None:
         """

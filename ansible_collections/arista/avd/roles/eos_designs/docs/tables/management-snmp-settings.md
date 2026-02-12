@@ -22,9 +22,9 @@
     | [<samp>&nbsp;&nbsp;local_engineid_ip</samp>](## "snmp_settings.local_engineid_ip") | String |  | `use_default_mgmt_method_interface` |  | The IP to use when computing the engine ID when `compute_local_engineid_source: rfc3411_type5`.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface` will use the Out-of-band interface IP or IPv6.<br>  The order of preference is first `mgmt_ip` and then `ipv6_mgmt_ip`.<br>  An error will be raised if neither are configured for the device.<br>- `use_inband_mgmt_interface` will use the inband management IP.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_interface` will use the IP for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the IP (it can be IP or IPv6).<br> |
     | [<samp>&nbsp;&nbsp;compute_v3_user_localized_key</samp>](## "snmp_settings.compute_v3_user_localized_key") | Boolean |  | `False` |  | Requires compute_local_engineid to be `true`.<br>If enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.<br>The algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.<br> |
     | [<samp>&nbsp;&nbsp;users</samp>](## "snmp_settings.users") | List, items: Dictionary |  |  |  | Configuration of local SNMP users.<br>Configuration of remote SNMP users are currently only possible using `structured_config`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.users.[].name") | String |  |  |  | Username. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "snmp_settings.users.[].group") | String |  |  |  | Group name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "snmp_settings.users.[].version") | String |  |  | Valid Values:<br>- <code>v1</code><br>- <code>v2c</code><br>- <code>v3</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.users.[].name") | String | Required |  |  | Username. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "snmp_settings.users.[].group") | String | Required |  |  | Group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "snmp_settings.users.[].version") | String | Required |  | Valid Values:<br>- <code>v1</code><br>- <code>v2c</code><br>- <code>v3</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth</samp>](## "snmp_settings.users.[].auth") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_settings.users.[].auth_passphrase") | String |  |  |  | Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv</samp>](## "snmp_settings.users.[].priv") | String |  |  | Valid Values:<br>- <code>des</code><br>- <code>aes</code><br>- <code>aes192</code><br>- <code>aes256</code> |  |
@@ -153,11 +153,11 @@
       users:
 
           # Username.
-        - name: <str>
+        - name: <str; required>
 
           # Group name.
-          group: <str>
-          version: <str; "v1" | "v2c" | "v3">
+          group: <str; required>
+          version: <str; "v1" | "v2c" | "v3"; required>
           auth: <str; "md5" | "sha" | "sha256" | "sha384" | "sha512">
 
           # Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.

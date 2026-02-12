@@ -30043,11 +30043,11 @@ class EosDesigns(EosDesignsRootModel):
                 "priv": {"type": str},
                 "priv_passphrase": {"type": str},
             }
-            name: str | None
+            name: str
             """Username."""
-            group: str | None
+            group: str
             """Group name."""
-            version: Version | None
+            version: Version
             auth: Auth | None
             auth_passphrase: str | None
             """Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set."""
@@ -30060,9 +30060,9 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    name: str | None | UndefinedType = Undefined,
-                    group: str | None | UndefinedType = Undefined,
-                    version: Version | None | UndefinedType = Undefined,
+                    name: str | UndefinedType = Undefined,
+                    group: str | UndefinedType = Undefined,
+                    version: Version | UndefinedType = Undefined,
                     auth: Auth | None | UndefinedType = Undefined,
                     auth_passphrase: str | None | UndefinedType = Undefined,
                     priv: Priv | None | UndefinedType = Undefined,

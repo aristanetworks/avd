@@ -5397,12 +5397,15 @@ keys:
           keys:
             name:
               type: str
+              required: true
               description: Username.
             group:
               type: str
+              required: true
               description: Group name.
             version:
               type: str
+              required: true
               valid_values:
               - v1
               - v2c

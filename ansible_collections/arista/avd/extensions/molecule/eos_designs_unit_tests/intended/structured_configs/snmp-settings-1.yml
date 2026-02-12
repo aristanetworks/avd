@@ -61,7 +61,7 @@ snmp_server:
     authentication: auth
     read: v3read
     write: v3write
-  users:
+  local_users:
   - name: usertest-auth-priv
     group: usergroup
     version: v3

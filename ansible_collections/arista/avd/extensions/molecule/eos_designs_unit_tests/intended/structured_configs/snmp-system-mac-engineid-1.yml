@@ -20,7 +20,7 @@ snmp_server:
     local: f5717f42424242424200
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS Test_dc_1 Test_pod_1 Test_rack snmp-system-mac-engineid-1
-  users:
+  local_users:
   - name: usertest-auth-priv
     group: usergroup
     version: v3

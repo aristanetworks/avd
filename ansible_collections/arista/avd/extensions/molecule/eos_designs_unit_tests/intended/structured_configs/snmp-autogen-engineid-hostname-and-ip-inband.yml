@@ -15,7 +15,7 @@ snmp_server:
     local: 07459749db8910d2ea1447c20595b70729534f97
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS snmp-autogen-engineid-hostname-and-ip-inband
-  users:
+  local_users:
   - name: usertest-auth-priv
     group: usergroup
     version: v3
