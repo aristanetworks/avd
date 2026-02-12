@@ -133,7 +133,7 @@ repos:
           - 'anta==1.7.0'
           - 'deepmerge>=1.1.0'
           - 'jsonschema-rs>=0.24'
-          - 'pyavd-utils==0.0.2.dev3'
+          - 'pyavd-utils==0.0.2'
           - 'pydantic>=2.3.0'
           - 'pytest>=8.2.0'
           - 'pyyaml>=6.0.0'
