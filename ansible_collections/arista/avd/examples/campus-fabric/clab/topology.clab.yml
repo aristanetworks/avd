@@ -1,0 +1,71 @@
+---
+name: AVD examples, Single DC L3LS
+prefix: ""
+
+mgmt:
+    network: custom_mgmt
+    ipv4-subnet: 172.16.100.0/24
+
+topology:
+    kinds:
+        arista_ceos:
+            enforce-startup-config: true
+            image: arista/ceos:latest
+    defaults:
+        kind: arista_ceos
+    nodes:
+        SPINE1:
+            mgmt-ipv4: 172.16.100.101
+            startup-config: init-configs/SPINE1.cfg
+        SPINE2:
+            mgmt-ipv4: 172.16.100.102
+            startup-config: init-configs/SPINE2.cfg
+        LEAF1A:
+            mgmt-ipv4: 172.16.100.103
+            startup-config: init-configs/LEAF1A.cfg
+        LEAF1B:
+            mgmt-ipv4: 172.16.100.104
+            startup-config: init-configs/LEAF1B.cfg
+        LEAF2A:
+            mgmt-ipv4: 172.16.100.105
+            startup-config: init-configs/LEAF2A.cfg
+        LEAF3A:
+            mgmt-ipv4: 172.16.100.106
+            startup-config: init-configs/LEAF3A.cfg
+        LEAF3B:
+            mgmt-ipv4: 172.16.100.107
+            startup-config: init-configs/LEAF3B.cfg
+        LEAF3C:
+            mgmt-ipv4: 172.16.100.108
+            startup-config: init-configs/LEAF3C.cfg
+        LEAF3D:
+            mgmt-ipv4: 172.16.100.109
+            startup-config: init-configs/LEAF3D.cfg
+        LEAF3E:
+            mgmt-ipv4: 172.16.100.110
+            startup-config: init-configs/LEAF3E.cfg
+
+    links:
+    # spine to leaf
+    - endpoints: ["SPINE1:eth1", "LEAF1A:eth51"]
+    - endpoints: ["SPINE1:eth49_1", "LEAF2A:eth1_1"]
+    - endpoints: ["SPINE1:eth50_1", "LEAF3A:eth97_1"]
+    - endpoints: ["SPINE1:eth51_1", "LEAF3B:eth97_1"]
+    - endpoints: ["SPINE2:eth1", "LEAF1B:eth51"]
+    - endpoints: ["SPINE2:eth49_1", "LEAF2A:eth1_3"]
+    - endpoints: ["SPINE2:eth50_1", "LEAF3A:eth97_2"]
+    - endpoints: ["SPINE2:eth51_1", "LEAF3B:eth97_2"]
+    # leaf to leaf
+    - endpoints: ["LEAF3A:eth97_3", "LEAF3C:eth97_1"]
+    - endpoints: ["LEAF3A:eth97_4", "LEAF3D:eth97_1"]
+    - endpoints: ["LEAF3A:eth98_1", "LEAF3E:eth97_1"]
+    - endpoints: ["LEAF3B:eth97_3", "LEAF3C:eth97_2"]
+    - endpoints: ["LEAF3B:eth97_4", "LEAF3D:eth97_2"]
+    - endpoints: ["LEAF3B:eth98_1", "LEAF3E:eth97_2"]
+    # peer link
+    - endpoints: ["SPINE1:eth55_1", "SPINE2:eth55_1"]
+    - endpoints: ["SPINE1:eth56_1", "SPINE2:eth56_1"]
+    - endpoints: ["LEAF1A:eth53", "LEAF1B:eth53"]
+    - endpoints: ["LEAF1A:eth54", "LEAF1B:eth54"]
+    - endpoints: ["LEAF3A:eth98_3", "LEAF3B:eth98_3"]
+    - endpoints: ["LEAF3A:eth98_4", "LEAF3B:eth98_4"]
