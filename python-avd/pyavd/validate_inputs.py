@@ -46,5 +46,5 @@ def validate_inputs(inputs: dict, *, configuration: Configuration | None = None)
         msg = f"Unable to serialize inputs: {e}"
         raise ValueError(msg) from e
 
-    pyavd_utils_validated_data_result = get_validated_data(data_as_json=data_as_json, schema_name="avd_config", configuration=configuration)
+    pyavd_utils_validated_data_result = get_validated_data(data_as_json=data_as_json, schema_name="avd_design", configuration=configuration)
     return ValidatedDataResult._from_pyavd_utils_validated_data_result(pyavd_utils_validated_data_result)
