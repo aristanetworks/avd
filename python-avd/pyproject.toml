@@ -28,7 +28,7 @@ dependencies = [
     # pinned grpclib since we patch the connection code to get proxy support
     "grpclib==0.4.9",
     "jinja2>=3.0",
-    "pyavd-utils==0.0.2.dev3",
+    "pyavd-utils==0.0.2",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     "requests>=2.27.0",

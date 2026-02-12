@@ -33,7 +33,7 @@ def validate_inputs(inputs: dict, *, configuration: Configuration | None = None)
     from pyavd_utils.validation import Configuration, get_validated_data  # noqa: PLC0415
 
     # Use default configuration if not provided
-    configuration = configuration or Configuration(warn_eos_cli_config_gen_keys=True)
+    configuration = configuration or Configuration(warn_eos_config_keys=True)
 
     from ._schema.store import init_store  # noqa: PLC0415
     from .api.validation import ValidatedDataResult  # noqa: PLC0415
