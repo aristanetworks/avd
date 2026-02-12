@@ -50,7 +50,9 @@ keys:
                   min_length: 1
                   items:
                     type: str
-                  description: The group name `tacacs+` is reserved by EOS and cannot be used.
+                  description: |-
+                    Tacacs Group name.
+                    The group name `tacacs+` is reserved by EOS and must not be used.
                 vrf:
                   type: str
                   description: |-
@@ -122,7 +124,9 @@ keys:
                   min_length: 1
                   items:
                     type: str
-                  description: The group name `radius` is reserved by EOS and cannot be used.
+                  description: |-
+                    Radius Group name.
+                    The group name `radius` is reserved by EOS and must not be used.
                 vrf:
                   type: str
                   description: |-
