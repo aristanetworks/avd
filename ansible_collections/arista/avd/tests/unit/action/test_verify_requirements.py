@@ -138,8 +138,8 @@ def test__validate_python_requirements(n_reqs: int, mocked_version: str | None, 
 @pytest.mark.parametrize(
     ("running_from_source", "expected_return"),
     [
-        pytest.param(False, False, True, id="pyavd - not running from source"),
-        pytest.param(False, True, True, id="pyavd - running from source"),
+        pytest.param(False, True, id="pyavd - not running from source"),
+        pytest.param(True, True, id="pyavd - running from source"),
     ],
 )
 def test__validate_python_requirements_pyavd(running_from_source: bool, expected_return: bool) -> None:
