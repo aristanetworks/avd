@@ -156,13 +156,29 @@
 | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_read }} | {{ row_write }} | {{ row_notify }} |
 {%         endfor %}
 {%     endif %}
-{%     if snmp_server.users is arista.avd.defined %}
+{%     if snmp_server.local_users is arista.avd.defined %}
 
-#### SNMP Users Configuration
+#### SNMP Local Users Configuration
+
+| User | Group | Version | Authentication | Privacy | Engine ID |
+| ---- | ----- | ------- | -------------- | ------- | --------- |
+{%         for user in snmp_server.local_users %}
+{%             set row_user = user.name | arista.avd.default('default') %}
+{%             set row_group = user.group | arista.avd.default('-') %}
+{%             set row_version = user.version | arista.avd.default('-') %}
+{%             set row_auth = user.auth | arista.avd.default('-') %}
+{%             set row_policy = user.priv | arista.avd.default('-') %}
+{%             set row_engine_id = user.localized | arista.avd.default('-') %}
+| {{ row_user }} | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_policy }} | {{ row_engine_id }} |
+{%         endfor %}
+{%     endif %}
+{%     if snmp_server.remote_users is arista.avd.defined %}
+
+#### SNMP Remote Users Configuration
 
 | User | Group | Version | Authentication | Privacy | Remote Address | Remote Port | Engine ID |
 | ---- | ----- | ------- | -------------- | ------- | -------------- | ----------- | --------- |
-{%         for user in snmp_server.users %}
+{%         for user in snmp_server.remote_users %}
 {%             set row_user = user.name | arista.avd.default('default') %}
 {%             set row_group = user.group | arista.avd.default('-') %}
 {%             set row_version = user.version | arista.avd.default('-') %}

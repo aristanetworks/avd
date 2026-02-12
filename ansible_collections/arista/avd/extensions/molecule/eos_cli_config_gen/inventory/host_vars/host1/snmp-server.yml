@@ -67,7 +67,7 @@ snmp_server:
       authentication: auth
       read: v3read
       write: v3write
-  users:
+  local_users:
     - name: USER-READ-NO-AUTH-NO-PRIV
       group: GRP-READ-ONLY
       version: v3
@@ -108,6 +108,7 @@ snmp_server:
       auth_passphrase: clearPassword
       priv: aes
       priv_passphrase: clearPassword
+  remote_users:
     - name: REMOTE-USER-IP-ONLY
       group: GRP-REMOTE
       version: v3

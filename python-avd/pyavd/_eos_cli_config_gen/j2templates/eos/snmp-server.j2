@@ -102,7 +102,7 @@ snmp-server vrf {{ local_interface.vrf }} local-interface {{ local_interface.nam
 {%         endfor %}
 {%     endif %}
 {# First render local users #}
-{%     for user in snmp_server.users | arista.avd.natural_sort('name') | rejectattr("remote_address", "arista.avd.defined") %}
+{%     for user in snmp_server.local_users | arista.avd.natural_sort('name') %}
 {%         set user_cli = "snmp-server user " ~ user.name ~ " " ~ user.group ~ " " ~ user.version %}
 {%         if user.auth is arista.avd.defined
               and user.version is arista.avd.defined('v3')
@@ -127,7 +127,7 @@ snmp-server vrf {{ local_interface.vrf }} local-interface {{ local_interface.nam
 {{ remote_engine_ids_cli }}
 {%     endfor %}
 {# Then render remote users #}
-{%     for user in snmp_server.users | arista.avd.natural_sort('name') | selectattr("remote_address", "arista.avd.defined") %}
+{%     for user in snmp_server.remote_users | arista.avd.natural_sort('name') %}
 {%         set user_cli = "snmp-server user " ~ user.name ~ " " ~ user.group ~ " remote " ~ user.remote_address %}
 {%         if user.version is arista.avd.defined('v3') %}
 {%             if user.udp_port is arista.avd.defined %}

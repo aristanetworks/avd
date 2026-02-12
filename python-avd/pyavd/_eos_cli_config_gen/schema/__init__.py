@@ -62748,15 +62748,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Groups._item_type = GroupsItem
 
-        class UsersItem(AvdModel):
+        class LocalUsersItem(AvdModel):
             """Subclass of AvdModel."""
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "group": {"type": str},
-                "remote_address": {"type": str},
-                "udp_port": {"type": int},
                 "version": {"type": str},
                 "localized": {"type": str},
                 "auth": {"type": str},
@@ -62768,17 +62766,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Username."""
             group: str
             """Group name."""
-            remote_address: str | None
-            """
-            Hostname or ip of remote engine.
-            The remote_address and udp_port are used for remote users.
-            A
-            `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
-            and
-            `localized` is not set.
-            """
-            udp_port: int | None
-            """udp_port will not be used if no remote_address is configured."""
             version: Version
             localized: str | None
             """Engine ID in hexadecimal for localizing auth and/or priv."""
@@ -62798,8 +62785,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     group: str | UndefinedType = Undefined,
-                    remote_address: str | None | UndefinedType = Undefined,
-                    udp_port: int | None | UndefinedType = Undefined,
                     version: Version | UndefinedType = Undefined,
                     localized: str | None | UndefinedType = Undefined,
                     auth: str | None | UndefinedType = Undefined,
@@ -62808,7 +62793,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     priv_passphrase: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
-                    UsersItem.
+                    LocalUsersItem.
 
 
                     Subclass of AvdModel.
@@ -62816,14 +62801,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: Username.
                         group: Group name.
-                        remote_address:
-                           Hostname or ip of remote engine.
-                           The remote_address and udp_port are used for remote users.
-                           A
-                           `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
-                           and
-                           `localized` is not set.
-                        udp_port: udp_port will not be used if no remote_address is configured.
                         version: version
                         localized: Engine ID in hexadecimal for localizing auth and/or priv.
                         auth: Hash algorithm.
@@ -62833,10 +62810,96 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class Users(AvdList[UsersItem]):
-            """Subclass of AvdList with `UsersItem` items."""
+        class LocalUsers(AvdList[LocalUsersItem]):
+            """Subclass of AvdList with `LocalUsersItem` items."""
 
-        Users._item_type = UsersItem
+        LocalUsers._item_type = LocalUsersItem
+
+        class RemoteUsersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            Version: TypeAlias = Literal["v1", "v2c", "v3"]
+            _fields: ClassVar[dict] = {
+                "remote_address": {"type": str},
+                "udp_port": {"type": int},
+                "name": {"type": str},
+                "group": {"type": str},
+                "version": {"type": str},
+                "localized": {"type": str},
+                "auth": {"type": str},
+                "auth_passphrase": {"type": str},
+                "priv": {"type": str},
+                "priv_passphrase": {"type": str},
+            }
+            remote_address: str
+            """
+            Hostname or ip of remote engine.
+            A `snmp_server.engine_ids.remotes` entry with a matching address is
+            required when this is set
+            and `localized` is not set.
+            """
+            udp_port: int | None
+            """UDP port used by the remote SNMP system."""
+            name: str
+            """Username."""
+            group: str
+            """Group name."""
+            version: Version
+            localized: str | None
+            """Engine ID in hexadecimal for localizing auth and/or priv."""
+            auth: str | None
+            """Hash algorithm."""
+            auth_passphrase: str | None
+            """Hashed authentication passphrase if localized is used else cleartext authentication passphrase."""
+            priv: str | None
+            """Encryption algorithm."""
+            priv_passphrase: str | None
+            """Hashed privacy passphrase if localized is used else cleartext privacy passphrase."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    remote_address: str | UndefinedType = Undefined,
+                    udp_port: int | None | UndefinedType = Undefined,
+                    name: str | UndefinedType = Undefined,
+                    group: str | UndefinedType = Undefined,
+                    version: Version | UndefinedType = Undefined,
+                    localized: str | None | UndefinedType = Undefined,
+                    auth: str | None | UndefinedType = Undefined,
+                    auth_passphrase: str | None | UndefinedType = Undefined,
+                    priv: str | None | UndefinedType = Undefined,
+                    priv_passphrase: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    RemoteUsersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        remote_address:
+                           Hostname or ip of remote engine.
+                           A `snmp_server.engine_ids.remotes` entry with a matching address is
+                           required when this is set
+                           and `localized` is not set.
+                        udp_port: UDP port used by the remote SNMP system.
+                        name: Username.
+                        group: Group name.
+                        version: version
+                        localized: Engine ID in hexadecimal for localizing auth and/or priv.
+                        auth: Hash algorithm.
+                        auth_passphrase: Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
+                        priv: Encryption algorithm.
+                        priv_passphrase: Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+
+                    """
+
+        class RemoteUsers(AvdList[RemoteUsersItem]):
+            """Subclass of AvdList with `RemoteUsersItem` items."""
+
+        RemoteUsers._item_type = RemoteUsersItem
 
         class HostsItem(AvdModel):
             """Subclass of AvdModel."""
@@ -63022,7 +63085,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "local_interfaces": {"type": LocalInterfaces},
             "views": {"type": Views},
             "groups": {"type": Groups},
-            "users": {"type": Users},
+            "local_users": {"type": LocalUsers},
+            "remote_users": {"type": RemoteUsers},
             "hosts": {"type": Hosts},
             "traps": {"type": Traps},
             "vrfs": {"type": Vrfs},
@@ -63046,8 +63110,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdList with `ViewsItem` items."""
         groups: Groups
         """Subclass of AvdList with `GroupsItem` items."""
-        users: Users
-        """Subclass of AvdList with `UsersItem` items."""
+        local_users: LocalUsers
+        """Subclass of AvdList with `LocalUsersItem` items."""
+        remote_users: RemoteUsers
+        """Subclass of AvdList with `RemoteUsersItem` items."""
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
         traps: Traps
@@ -63071,7 +63137,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 local_interfaces: LocalInterfaces | UndefinedType = Undefined,
                 views: Views | UndefinedType = Undefined,
                 groups: Groups | UndefinedType = Undefined,
-                users: Users | UndefinedType = Undefined,
+                local_users: LocalUsers | UndefinedType = Undefined,
+                remote_users: RemoteUsers | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
                 traps: Traps | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
@@ -63093,7 +63160,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     local_interfaces: Subclass of AvdIndexedList with `LocalInterfacesItem` items. Primary key is `name` (`str`).
                     views: Subclass of AvdList with `ViewsItem` items.
                     groups: Subclass of AvdList with `GroupsItem` items.
-                    users: Subclass of AvdList with `UsersItem` items.
+                    local_users: Subclass of AvdList with `LocalUsersItem` items.
+                    remote_users: Subclass of AvdList with `RemoteUsersItem` items.
                     hosts: Subclass of AvdList with `HostsItem` items.
                     traps: Subclass of AvdModel.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).

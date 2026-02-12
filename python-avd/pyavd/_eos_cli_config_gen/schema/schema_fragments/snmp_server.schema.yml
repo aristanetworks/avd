@@ -147,7 +147,7 @@ keys:
               type: str
               description: Notify view.
       # TODO: AVD 6.0, consider separating local and remote users in model.
-      users:
+      local_users:
         type: list
         items:
           type: dict
@@ -160,20 +160,6 @@ keys:
               type: str
               required: true
               description: Group name.
-            remote_address:
-              type: str
-              description: |
-                Hostname or ip of remote engine.
-                The remote_address and udp_port are used for remote users.
-                A `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
-                and `localized` is not set.
-            udp_port:
-              type: int
-              convert_types:
-                - str
-              description: |
-                udp_port will not be used if no remote_address is configured.
-
             version:
               type: str
               required: true
@@ -200,6 +186,24 @@ keys:
               type: str
               description: |
                 Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+      remote_users:
+        type: list
+        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/local_users"
+        items:
+          type: dict
+          keys:
+            remote_address:
+              type: str
+              required: true
+              description: |
+                Hostname or ip of remote engine.
+                A `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
+                and `localized` is not set.
+            udp_port:
+              type: int
+              convert_types:
+                - str
+              description: UDP port used by the remote SNMP system.
       hosts:
         type: list
         items:
