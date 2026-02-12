@@ -430,19 +430,17 @@ If you want to push to switches in the entire fabric using CloudVision, your pla
         name: arista.avd.eos_cli_config_gen
 
 - name: Push to CVP
-  hosts: CVP
+  hosts: FABRIC
   gather_facts: false
   connection: local
 
   tasks:
     - name: Run CVP provisioning
       ansible.builtin.import_role:
-        name: arista.avd.eos_config_deploy_cvp
+        name: arista.avd.cv_deploy
       vars:
-        container_root: 'DC1'
-        configlets_prefix: 'AVD'
-        execute_tasks: false
-        state: present
+        cv_server: 192.168.1.12
+        cv_token: <insert service_account token here - use Ansible Vault>
 ```
 
 You would execute it using the same command:
