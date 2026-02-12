@@ -103,15 +103,7 @@ snmp-server vrf {{ local_interface.vrf }} local-interface {{ local_interface.nam
 {%     endif %}
 {# First render local users #}
 {%     for user in snmp_server.users | arista.avd.natural_sort('name') | rejectattr("remote_address", "arista.avd.defined") %}
-{%         if user.name is arista.avd.defined %}
-{%             set user_cli = "snmp-server user " ~ user.name %}
-{%         endif %}
-{%         if user.group is arista.avd.defined %}
-{%             set user_cli = user_cli ~ " " ~ user.group %}
-{%         endif %}
-{%         if user.version is arista.avd.defined %}
-{%             set user_cli = user_cli ~ " " ~ user.version %}
-{%         endif %}
+{%         set user_cli = "snmp-server user " ~ user.name ~ " " ~ user.group ~ " " ~ user.version %}
 {%         if user.auth is arista.avd.defined
               and user.version is arista.avd.defined('v3')
               and user.auth_passphrase is arista.avd.defined %}
@@ -127,25 +119,17 @@ snmp-server vrf {{ local_interface.vrf }} local-interface {{ local_interface.nam
 {{ user_cli }}
 {%     endfor %}
 {%     for engine_id in snmp_server.engine_ids.remotes | arista.avd.natural_sort('address') %}
-{%         if engine_id.id is arista.avd.defined and engine_id.address is arista.avd.defined %}
-{%             set remote_engine_ids_cli =  "snmp-server engineID remote " ~ engine_id.address %}
-{%             if engine_id.udp_port is arista.avd.defined %}
-{%                 set remote_engine_ids_cli =  remote_engine_ids_cli ~ " udp-port " ~  engine_id.udp_port %}
-{%             endif %}
-{%             set remote_engine_ids_cli = remote_engine_ids_cli ~ " " ~ engine_id.id %}
-{{ remote_engine_ids_cli }}
+{%         set remote_engine_ids_cli =  "snmp-server engineID remote " ~ engine_id.address %}
+{%         if engine_id.udp_port is arista.avd.defined %}
+{%             set remote_engine_ids_cli =  remote_engine_ids_cli ~ " udp-port " ~  engine_id.udp_port %}
 {%         endif %}
+{%         set remote_engine_ids_cli = remote_engine_ids_cli ~ " " ~ engine_id.id %}
+{{ remote_engine_ids_cli }}
 {%     endfor %}
 {# Then render remote users #}
 {%     for user in snmp_server.users | arista.avd.natural_sort('name') | selectattr("remote_address", "arista.avd.defined") %}
-{%         if user.name is arista.avd.defined %}
-{%             set user_cli = "snmp-server user " ~ user.name %}
-{%         endif %}
-{%         if user.group is arista.avd.defined %}
-{%             set user_cli = user_cli ~ " " ~ user.group %}
-{%         endif %}
-{%         if user.remote_address is arista.avd.defined and user.version is arista.avd.defined('v3') %}
-{%             set user_cli = user_cli ~ " remote " ~ user.remote_address %}
+{%         set user_cli = "snmp-server user " ~ user.name ~ " " ~ user.group ~ " remote " ~ user.remote_address %}
+{%         if user.version is arista.avd.defined('v3') %}
 {%             if user.udp_port is arista.avd.defined %}
 {%                 set user_cli = user_cli ~ " udp-port " ~ user.udp_port %}
 {%             endif %}

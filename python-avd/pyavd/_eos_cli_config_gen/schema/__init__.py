@@ -62422,21 +62422,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class RemotesItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"id": {"type": str}, "address": {"type": str}, "udp_port": {"type": int}}
-                id: str | None
-                """Remote engine ID in hexadecimal."""
-                address: str | None
+                _fields: ClassVar[dict] = {"address": {"type": str}, "id": {"type": str}, "udp_port": {"type": int}}
+                address: str
                 """Hostname or IP of remote engine."""
+                id: str
+                """Remote engine ID in hexadecimal."""
                 udp_port: int | None
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        id: str | None | UndefinedType = Undefined,
-                        address: str | None | UndefinedType = Undefined,
-                        udp_port: int | None | UndefinedType = Undefined,
+                        self, *, address: str | UndefinedType = Undefined, id: str | UndefinedType = Undefined, udp_port: int | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         RemotesItem.
@@ -62445,8 +62441,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            id: Remote engine ID in hexadecimal.
                             address: Hostname or IP of remote engine.
+                            id: Remote engine ID in hexadecimal.
                             udp_port: udp_port
 
                         """
@@ -62768,9 +62764,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "priv": {"type": str},
                 "priv_passphrase": {"type": str},
             }
-            name: str | None
+            name: str
             """Username."""
-            group: str | None
+            group: str
             """Group name."""
             remote_address: str | None
             """
@@ -62783,7 +62779,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             udp_port: int | None
             """udp_port will not be used if no remote_address is configured."""
-            version: Version | None
+            version: Version
             localized: str | None
             """Engine ID in hexadecimal for localizing auth and/or priv."""
             auth: str | None
@@ -62800,11 +62796,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    name: str | None | UndefinedType = Undefined,
-                    group: str | None | UndefinedType = Undefined,
+                    name: str | UndefinedType = Undefined,
+                    group: str | UndefinedType = Undefined,
                     remote_address: str | None | UndefinedType = Undefined,
                     udp_port: int | None | UndefinedType = Undefined,
-                    version: Version | None | UndefinedType = Undefined,
+                    version: Version | UndefinedType = Undefined,
                     localized: str | None | UndefinedType = Undefined,
                     auth: str | None | UndefinedType = Undefined,
                     auth_passphrase: str | None | UndefinedType = Undefined,

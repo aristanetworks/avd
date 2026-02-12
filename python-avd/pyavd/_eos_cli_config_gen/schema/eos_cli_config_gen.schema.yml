@@ -23043,19 +23043,22 @@ keys:
               '
           remotes:
             type: list
+            primary_key: address
+            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
+                address:
+                  type: str
+                  description: 'Hostname or IP of remote engine.
+
+                    '
                 id:
                   type: str
                   convert_types:
                   - int
+                  required: true
                   description: 'Remote engine ID in hexadecimal.
-
-                    '
-                address:
-                  type: str
-                  description: 'Hostname or IP of remote engine.
 
                     '
                 udp_port:
@@ -23181,9 +23184,11 @@ keys:
           keys:
             name:
               type: str
+              required: true
               description: Username.
             group:
               type: str
+              required: true
               description: Group name.
             remote_address:
               type: str
@@ -23206,6 +23211,7 @@ keys:
                 '
             version:
               type: str
+              required: true
               valid_values:
               - v1
               - v2c

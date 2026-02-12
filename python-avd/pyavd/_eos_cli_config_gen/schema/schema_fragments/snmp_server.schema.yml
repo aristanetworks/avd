@@ -20,22 +20,24 @@ keys:
               - int
             description: |
               Engine ID in hexadecimal.
-          # TODO: AVD 6.0 - make the address required and maybe primary_key
           remotes:
             type: list
+            primary_key: address
+            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
-                id:
-                  type: str
-                  convert_types:
-                    - int
-                  description: |
-                    Remote engine ID in hexadecimal.
                 address:
                   type: str
                   description: |
                     Hostname or IP of remote engine.
+                id:
+                  type: str
+                  convert_types:
+                    - int
+                  required: true
+                  description: |
+                    Remote engine ID in hexadecimal.
                 udp_port:
                   type: int
                   convert_types:
@@ -150,14 +152,13 @@ keys:
         items:
           type: dict
           keys:
-            # TODO: AVD 6.0, make this required.
-            # Cannot make it primary key because same user group can be defined with different version
             name:
               type: str
+              required: true
               description: Username.
-            # TODO: AVD 6.0, make group required
             group:
               type: str
+              required: true
               description: Group name.
             remote_address:
               type: str
@@ -172,9 +173,10 @@ keys:
                 - str
               description: |
                 udp_port will not be used if no remote_address is configured.
-            # TODO: AVD 6.0, make version required
+
             version:
               type: str
+              required: true
               valid_values: ["v1", "v2c", "v3"]
             localized:
               type: str
