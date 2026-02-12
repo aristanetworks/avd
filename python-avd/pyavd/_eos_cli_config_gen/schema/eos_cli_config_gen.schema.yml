@@ -895,19 +895,6 @@ keys:
     description: 'The file format to use when loading structured configuration files.
 
       '
-  avd_tmp_dir:
-    documentation_options:
-      table: role-settings
-    type: str
-    description: 'Path for the AVD temporary directory.
-
-      Contains templated inputs, validated inputs, and facts data used internally
-      by AVD plugins.
-
-      Defaults to ''intended/tmp''. The temporary directory is cleaned up at the end
-      of each role.
-
-      '
   avd_vault_id:
     documentation_options:
       table: role-settings
@@ -2412,6 +2399,34 @@ keys:
         type: bool
         default: true
         description: Generate the table of content(TOC) on device documentation.
+  eos_cli_config_gen_keep_tmp_files:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: false
+    description: 'Avoid deleting temporary files.
+
+      This allows for inspecting templated inputs and validated inputs used internally
+      by AVD plugins.
+
+      When an Ansible Vault secret is set, temporary files holding input variables
+      are encrypted. Decryption is required to inspect them.
+
+      '
+  eos_cli_config_gen_tmp_dir:
+    documentation_options:
+      table: role-settings
+    type: str
+    description: 'Path for temporary files created by the ''eos_cli_config_gen'' role.
+
+      Contains templated inputs and validated inputs used internally by AVD plugins.
+
+      Defaults to ''intended/tmp_eos_cli_config_gen''.
+
+      The temporary directory is cleaned up at the end of the ''eos_cli_config_gen''
+      role.
+
+      '
   eos_cli_config_gen_validate_inputs_batch_size:
     documentation_options:
       table: role-settings

@@ -14,7 +14,7 @@ from .get_workers import get_workers
 from .parse_validation_result import build_result_message, parse_validation_result
 from .python_to_ansible_logging_handler import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 from .raise_action_fail import raise_action_fail
-from .tmp_path_handlers import get_eos_designs_facts_path, get_role_tmp_paths
+from .tmp_path_handlers import get_eos_designs_facts_path, get_tmp_paths
 from .write_file import write_file
 from .yaml_dumper import NoAliasDumper, YamlDumper
 from .yaml_loader import YamlLoader
@@ -36,8 +36,8 @@ __all__ = [
     "compile_searchpath",
     "cprofile",
     "get_eos_designs_facts_path",
-    "get_role_tmp_paths",
     "get_templar",
+    "get_tmp_paths",
     "get_workers",
     "parse_validation_result",
     "raise_action_fail",

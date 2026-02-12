@@ -8,7 +8,7 @@
     - name: Validate inputs with inline jinja vars
       arista.avd.validate_inputs:
         schema_name: avd_design
-        tmp_dir: "{{ actual_output_dir }}/tmp"
+        tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
       delegate_to: localhost
       check_mode: false
       run_once: true
@@ -17,7 +17,7 @@
       arista.avd.eos_designs_facts:
         template_output: true
         output_dir: "{{ actual_output_dir }}"
-        tmp_dir: "{{ actual_output_dir }}/tmp"
+        tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
       check_mode: false
       run_once: true
 
@@ -27,7 +27,7 @@
       arista.avd.eos_designs_structured_config:
         template_output: true
         return_structured_config: true
-        tmp_dir: "{{ actual_output_dir }}/tmp"
+        tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
 
     - ansible.builtin.assert:
         that:

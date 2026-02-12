@@ -87870,7 +87870,6 @@ class EosDesigns(EosDesignsRootModel):
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
-        "avd_tmp_dir": {"type": str},
         "eos_designs_validation_configuration": {"type": EosDesignsValidationConfiguration},
         "avd_vault_id": {"type": str},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
@@ -87947,7 +87946,9 @@ class EosDesigns(EosDesignsRootModel):
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
+        "eos_designs_keep_tmp_files": {"type": bool, "default": False},
         "eos_designs_return_structured_config": {"type": bool, "default": False},
+        "eos_designs_tmp_dir": {"type": str},
         "eos_designs_validate_inputs_batch_size": {"type": int, "default": 10},
         "event_handlers": {"type": EosCliConfigGen.EventHandlers},
         "event_monitor": {"type": EosCliConfigGen.EventMonitor},
@@ -88608,14 +88609,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"yml"`
     """
-    avd_tmp_dir: str | None
-    """
-    Path for the AVD temporary directory.
-    Contains templated inputs, validated inputs, and facts data
-    used internally by AVD plugins.
-    Defaults to 'intended/tmp'. The temporary directory is cleaned up at
-    the end of each role.
-    """
     eos_designs_validation_configuration: EosDesignsValidationConfiguration
     """
     Validation configuration options when validating AVD Design inputs.
@@ -89228,11 +89221,30 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    eos_designs_keep_tmp_files: bool
+    """
+    Avoid deleting temporary files.
+    This allows for inspecting templated inputs, validated inputs and
+    facts used internally by AVD plugins.
+    When an Ansible Vault secret is set, temporary files holding
+    input variables are encrypted. Decryption is required to inspect them.
+
+    Default value: `False`
+    """
     eos_designs_return_structured_config: bool
     """
     Return structured configuration as ansible_facts per device.
 
     Default value: `False`
+    """
+    eos_designs_tmp_dir: str | None
+    """
+    Path for temporary files created by the 'eos_designs' role.
+    Contains templated inputs, validated
+    inputs, and facts data used internally by AVD plugins.
+    Defaults to 'intended/tmp_eos_designs'.
+    The
+    temporary directory is cleaned up at the end of the 'eos_designs' role.
     """
     eos_designs_validate_inputs_batch_size: int
     """
@@ -90592,7 +90604,6 @@ class EosDesigns(EosDesignsRootModel):
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
-            avd_tmp_dir: str | None | UndefinedType = Undefined,
             eos_designs_validation_configuration: EosDesignsValidationConfiguration | UndefinedType = Undefined,
             avd_vault_id: str | None | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
@@ -90647,7 +90658,9 @@ class EosDesigns(EosDesignsRootModel):
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
+            eos_designs_keep_tmp_files: bool | UndefinedType = Undefined,
             eos_designs_return_structured_config: bool | UndefinedType = Undefined,
+            eos_designs_tmp_dir: str | None | UndefinedType = Undefined,
             eos_designs_validate_inputs_batch_size: int | UndefinedType = Undefined,
             event_handlers: EosCliConfigGen.EventHandlers | UndefinedType = Undefined,
             event_monitor: EosCliConfigGen.EventMonitor | UndefinedType = Undefined,
@@ -90821,12 +90834,6 @@ class EosDesigns(EosDesignsRootModel):
                    dedicated output location.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
                 avd_structured_config_file_format: The file format to use when dumping structured configuration files.
-                avd_tmp_dir:
-                   Path for the AVD temporary directory.
-                   Contains templated inputs, validated inputs, and facts data
-                   used internally by AVD plugins.
-                   Defaults to 'intended/tmp'. The temporary directory is cleaned up at
-                   the end of each role.
                 eos_designs_validation_configuration:
                    Validation configuration options when validating AVD Design inputs.
 
@@ -91297,7 +91304,20 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdModel.
+                eos_designs_keep_tmp_files:
+                   Avoid deleting temporary files.
+                   This allows for inspecting templated inputs, validated inputs and
+                   facts used internally by AVD plugins.
+                   When an Ansible Vault secret is set, temporary files holding
+                   input variables are encrypted. Decryption is required to inspect them.
                 eos_designs_return_structured_config: Return structured configuration as ansible_facts per device.
+                eos_designs_tmp_dir:
+                   Path for temporary files created by the 'eos_designs' role.
+                   Contains templated inputs, validated
+                   inputs, and facts data used internally by AVD plugins.
+                   Defaults to 'intended/tmp_eos_designs'.
+                   The
+                   temporary directory is cleaned up at the end of the 'eos_designs' role.
                 eos_designs_validate_inputs_batch_size:
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
