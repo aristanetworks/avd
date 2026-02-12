@@ -29,8 +29,7 @@ keys:
               keys:
                 address:
                   type: str
-                  description: |
-                    Hostname or IP of remote engine.
+                  description: Hostname or IP of remote engine.
                 id:
                   type: str
                   convert_types:
