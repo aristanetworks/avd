@@ -100,10 +100,9 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 groups: Groups
                 """
-                The group name `tacacs+` is reserved by EOS and cannot be used.
-
-                Subclass of AvdList with `str`
-                items.
+                List of Tacacs group names.
+                The group name `tacacs+` is reserved by EOS and must not be used.
+                Subclass of AvdList with `str` items.
                 """
                 vrf: str | None
                 """
@@ -162,10 +161,9 @@ class EosDesigns(EosDesignsRootModel):
                                Host IP address or name.
                                Combination of `host` and `vrf` should be unique.
                             groups:
-                               The group name `tacacs+` is reserved by EOS and cannot be used.
-
-                               Subclass of AvdList with `str`
-                               items.
+                               List of Tacacs group names.
+                               The group name `tacacs+` is reserved by EOS and must not be used.
+                               Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
                                The value will be interpreted according to these rules:
@@ -320,10 +318,9 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 groups: Groups
                 """
-                The group name `radius` is reserved by EOS and cannot be used.
-
-                Subclass of AvdList with `str`
-                items.
+                List of Radius group names.
+                The group name `radius` is reserved by EOS and must not be used.
+                Subclass of AvdList with `str` items.
                 """
                 vrf: str | None
                 """
@@ -381,10 +378,9 @@ class EosDesigns(EosDesignsRootModel):
                                Multiple servers with the same hostname/IP address can be configured for
                                TLS and no TLS.
                             groups:
-                               The group name `radius` is reserved by EOS and cannot be used.
-
-                               Subclass of AvdList with `str`
-                               items.
+                               List of Radius group names.
+                               The group name `radius` is reserved by EOS and must not be used.
+                               Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
                                The value will be interpreted according to these rules:

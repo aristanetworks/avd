@@ -13,8 +13,11 @@ keys:
       type: dict
       keys:
         name:
-          description: Group name.
+          description: |-
+            Group name.
+            The group names `radius` and `tacacs+` are reserved by EOS and must not be used.
           type: str
+          pattern: "^(?:r[^a].*|ra[^d].*|rad[^i].*|radi[^u].*|radiu[^s].*|radius.+|t[^a].*|ta[^c].*|tac[^a].*|taca[^c].*|tacac[^s].*|tacacs[^+].*|tacacs\\+.+|[^rt].*)$"
         type:
           type: str
           valid_values: ["tacacs+", "radius", "ldap"]

@@ -685,11 +685,6 @@ class AvdStructuredConfigBaseProtocol(
         if eos_cli:
             self.structured_config.eos_cli = eos_cli
 
-    def _validate_server_group_name(self, server_group_type: str, server_group: str, context: str) -> None:
-        if server_group_type == server_group:
-            msg = f"Cannot use server group '{server_group}' for '{context}'. This group name is reserved by EOS. Please choose a different group name."
-            raise AristaAvdInvalidInputsError(msg)
-
     def _add_radius_server_config(self, server: EosDesigns.AaaSettings.Radius.ServersItem, server_vrf: str) -> None:
         """
         Add radius server configuration to the appropriate VRF.
@@ -732,13 +727,9 @@ class AvdStructuredConfigBaseProtocol(
 
             self._add_radius_server_config(server, server_vrf)
 
-            server_group_type = "radius"
             for group in server.groups:
-                self._validate_server_group_name(
-                    server_group_type=server_group_type, server_group=group, context=f"aaa_settings.radius.servers[host={server.host}]"
-                )
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
-                radius_group.type = server_group_type
+                radius_group.type = "radius"
                 radius_group.servers.append_new(server=server.host, vrf=server_vrf)
 
     @structured_config_contributor
@@ -765,13 +756,9 @@ class AvdStructuredConfigBaseProtocol(
                 server_key = self._get_tacacs_or_radius_server_password(server)
                 self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
 
-                server_group_type = "tacacs+"
                 for group in server.groups:
-                    self._validate_server_group_name(
-                        server_group_type=server_group_type, server_group=group, context=f"aaa_settings.tacacs.servers[host={server.host}]"
-                    )
                     tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
-                    tacacs_group.type = server_group_type
+                    tacacs_group.type = "tacacs+"
                     tacacs_group.servers.append_new(server=server.host, vrf=server_vrf)
 
         self.structured_config.tacacs_servers.policy_unknown_mandatory_attribute_ignore = (

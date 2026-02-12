@@ -50,8 +50,9 @@ keys:
                   min_length: 1
                   items:
                     type: str
+                    pattern: "^(?:t[^a].*|ta[^c].*|tac[^a].*|taca[^c].*|tacac[^s].*|tacacs[^+].*|tacacs\\+.+|[^t].*)$"
                   description: |-
-                    Tacacs Group name.
+                    List of Tacacs group names.
                     The group name `tacacs+` is reserved by EOS and must not be used.
                 vrf:
                   type: str
@@ -124,8 +125,9 @@ keys:
                   min_length: 1
                   items:
                     type: str
+                    pattern: "^(?:r[^a].+|ra[^d].+|rad[^i].+|radi[^u].+|radiu[^s].+|radius.+|[^r].*)$"
                   description: |-
-                    Radius Group name.
+                    List of Radius group names.
                     The group name `radius` is reserved by EOS and must not be used.
                 vrf:
                   type: str
