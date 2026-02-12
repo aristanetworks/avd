@@ -44,7 +44,7 @@ class SnmpServerMixin(Protocol):
 
         self.set_snmp_local_engine_id()
         self.set_snmp_location()
-        self.set_snmp_users()
+        self.set_snmp_local_users()
         self.set_snmp_hosts()
         self.set_snmp_vrfs_and_acls()
 
@@ -156,13 +156,13 @@ class SnmpServerMixin(Protocol):
             ),
         )
 
-    def set_snmp_users(self: AvdStructuredConfigBaseProtocol) -> None:
+    def set_snmp_local_users(self: AvdStructuredConfigBaseProtocol) -> None:
         """
-        Set users if "snmp_settings.users" is set.
+        Set users if "snmp_settings.local_users" is set.
 
         Users will have computed localized keys if configured.
         """
-        if not (users := self.inputs.snmp_settings.users):
+        if not (users := self.inputs.snmp_settings.local_users):
             # Empty list or None
             return
 

@@ -30028,7 +30028,7 @@ class EosDesigns(EosDesignsRootModel):
 
         ComputeLocalEngineidSource: TypeAlias = Literal["rfc3411_type5", "rfc3411_type3", "system_mac", "hostname_and_ip"]
 
-        class UsersItem(AvdModel):
+        class LocalUsersItem(AvdModel):
             """Subclass of AvdModel."""
 
             Version: TypeAlias = Literal["v1", "v2c", "v3"]
@@ -30069,7 +30069,7 @@ class EosDesigns(EosDesignsRootModel):
                     priv_passphrase: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
-                    UsersItem.
+                    LocalUsersItem.
 
 
                     Subclass of AvdModel.
@@ -30085,10 +30085,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class Users(AvdList[UsersItem]):
-            """Subclass of AvdList with `UsersItem` items."""
+        class LocalUsers(AvdList[LocalUsersItem]):
+            """Subclass of AvdList with `LocalUsersItem` items."""
 
-        Users._item_type = UsersItem
+        LocalUsers._item_type = LocalUsersItem
 
         class HostsItem(AvdModel):
             """Subclass of AvdModel."""
@@ -30310,7 +30310,7 @@ class EosDesigns(EosDesignsRootModel):
             "compute_local_engineid_source": {"type": str, "default": "rfc3411_type5"},
             "local_engineid_ip": {"type": str, "default": "use_default_mgmt_method_interface"},
             "compute_v3_user_localized_key": {"type": bool, "default": False},
-            "users": {"type": Users},
+            "local_users": {"type": LocalUsers},
             "hosts": {"type": Hosts},
             "communities": {"type": EosCliConfigGen.SnmpServer.Communities},
             "views": {"type": Views},
@@ -30404,13 +30404,13 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        users: Users
+        local_users: LocalUsers
         """
         Configuration of local SNMP users.
         Configuration of remote SNMP users are currently only possible
         using `structured_config`.
 
-        Subclass of AvdList with `UsersItem` items.
+        Subclass of AvdList with `LocalUsersItem` items.
         """
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
@@ -30434,7 +30434,7 @@ class EosDesigns(EosDesignsRootModel):
                 compute_local_engineid_source: ComputeLocalEngineidSource | UndefinedType = Undefined,
                 local_engineid_ip: str | UndefinedType = Undefined,
                 compute_v3_user_localized_key: bool | UndefinedType = Undefined,
-                users: Users | UndefinedType = Undefined,
+                local_users: LocalUsers | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
                 communities: EosCliConfigGen.SnmpServer.Communities | UndefinedType = Undefined,
                 views: Views | UndefinedType = Undefined,
@@ -30507,12 +30507,12 @@ class EosDesigns(EosDesignsRootModel):
                        are transformed using RFC 2574, matching the value they would take in EOS CLI.
                        The algorithm
                        requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.
-                    users:
+                    local_users:
                        Configuration of local SNMP users.
                        Configuration of remote SNMP users are currently only possible
                        using `structured_config`.
 
-                       Subclass of AvdList with `UsersItem` items.
+                       Subclass of AvdList with `LocalUsersItem` items.
                     hosts: Subclass of AvdList with `HostsItem` items.
                     communities: communities
                     views: Subclass of AvdList with `ViewsItem` items.

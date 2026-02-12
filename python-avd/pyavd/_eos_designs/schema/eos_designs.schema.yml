@@ -5387,7 +5387,7 @@ keys:
           the necessity to generate one beforehand.
 
           '
-      users:
+      local_users:
         type: list
         description: 'Configuration of local SNMP users.
 

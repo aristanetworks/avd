@@ -17,7 +17,7 @@ snmp_settings:
   compute_local_engineid: true
   compute_local_engineid_source: hostname_and_ip
   compute_v3_user_localized_key: true
-  users:
+  local_users:
     - name: usertest-auth-priv
       group: usergroup
       version: v3

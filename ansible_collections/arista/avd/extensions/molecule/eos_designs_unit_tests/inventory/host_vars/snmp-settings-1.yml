@@ -29,7 +29,7 @@ snmp_settings:
       ipv4_acl: acl-for-vrf-MGMT
       ipv6_acl: acl-for-vrf-MGMT
     - name: vrf_without_enable
-  users:
+  local_users:
     - name: usertest-auth-priv
       group: usergroup
       version: v3

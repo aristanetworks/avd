@@ -118,7 +118,7 @@ keys:
           Requires compute_local_engineid to be `true`.
           If enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.
           The algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.
-      users:
+      local_users:
         type: list
         description: |-
           Configuration of local SNMP users.

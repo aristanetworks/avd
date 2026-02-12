@@ -23043,13 +23043,12 @@ keys:
               '
           remotes:
             type: list
-            primary_key: address
-            allow_duplicate_primary_key: true
             items:
               type: dict
               keys:
                 address:
                   type: str
+                  required: true
                   description: Hostname or IP of remote engine.
                 id:
                   type: str

@@ -30,7 +30,7 @@ snmp_settings:
   # compute_local_engineid_rfc3411: true
   compute_local_engineid_source: system_mac
   compute_v3_user_localized_key: true
-  users:
+  local_users:
     - name: usertest-auth-priv
       group: usergroup
       version: v3
