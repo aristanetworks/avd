@@ -32,6 +32,9 @@
         options:
           list_merge: prepend
           strip_empty_keys: false
+
+      # access to structured config
+      - template: custom_template3.yml.j2
     return_structured_config: true
 
 - name: Validate result
@@ -47,3 +50,4 @@
       - result.ansible_facts.custom_template2_none_var is none
       - result.ansible_facts.my_is_deployed is defined
       - result.ansible_facts.my_is_deployed == true
+      - result.ansible_facts._all_vlans_from_structured_config == "100,110"

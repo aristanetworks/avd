@@ -16,6 +16,17 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+vlans:
+- id: 100
+  name: vlan100
+  metadata:
+    tenants:
+    - testtenant
+- id: 110
+  name: vlan110
+  metadata:
+    tenants:
+    - testtenant
 vrfs:
 - name: MGMT
   ip_routing: false

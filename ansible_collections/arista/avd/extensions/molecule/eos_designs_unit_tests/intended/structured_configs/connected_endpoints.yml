@@ -501,6 +501,28 @@ ethernet_interfaces:
     peer: DOT1X_SUPPLICANT_PORT_CHANNEL
     peer_type: custom_server
     peer_key: servers
+- name: Ethernet34
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICIT_VLANS
+  shutdown: false
+  channel_group:
+    id: 33
+    mode: active
+  metadata:
+    peer: TEST_TRUNK_WITH_EXPLICIT_VLANS
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet35
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICIT_VLANS
+  shutdown: false
+  metadata:
+    peer: TEST_TRUNK_WITH_EXPLICIT_VLANS
+    peer_type: custom_server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1000,1100
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false
@@ -651,6 +673,14 @@ port_channel_interfaces:
   shutdown: false
   switchport:
     enabled: true
+- name: Port-Channel33
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICIT_VLANS
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1000,1100
 radius_server:
   vrfs:
   - name: MGMT
@@ -664,6 +694,17 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+vlans:
+- id: 1000
+  name: vlan1000
+  metadata:
+    tenants:
+    - testtenant
+- id: 1100
+  name: vlan1100
+  metadata:
+    tenants:
+    - testtenant
 vrfs:
 - name: MGMT
   ip_routing: false

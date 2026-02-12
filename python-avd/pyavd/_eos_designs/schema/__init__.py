@@ -3322,8 +3322,16 @@ class EosDesigns(EosDesignsRootModel):
             """
             vlans: str | None
             """
-            Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-            VLAN 1 will be used for access ports.
+            Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+            The value will be
+            interpreted according to these rules:
+            - `all_defined_endpoint_vlans` will configure all endpoint
+            VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+            - Any other string will be
+            interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+            If not set,
+            the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+            for access ports.
             """
             spanning_tree_portfast: SpanningTreePortfast | None
             spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
@@ -3564,8 +3572,16 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdList with `str` items.
                         vlans:
-                           Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                           VLAN 1 will be used for access ports.
+                           Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                           The value will be
+                           interpreted according to these rules:
+                           - `all_defined_endpoint_vlans` will configure all endpoint
+                           VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                           - Any other string will be
+                           interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                           If not set,
+                           the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                           for access ports.
                         spanning_tree_portfast: spanning_tree_portfast
                         spanning_tree_bpdufilter: spanning_tree_bpdufilter
                         spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -24106,8 +24122,16 @@ class EosDesigns(EosDesignsRootModel):
         """
         vlans: str | None
         """
-        Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-        VLAN 1 will be used for access ports.
+        Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+        The value will be
+        interpreted according to these rules:
+        - `all_defined_endpoint_vlans` will configure all endpoint
+        VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+        - Any other string will be
+        interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+        If not set,
+        the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+        for access ports.
         """
         spanning_tree_portfast: SpanningTreePortfast | None
         spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
@@ -24350,8 +24374,16 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     vlans:
-                       Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                       VLAN 1 will be used for access ports.
+                       Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                       The value will be
+                       interpreted according to these rules:
+                       - `all_defined_endpoint_vlans` will configure all endpoint
+                       VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                       - Any other string will be
+                       interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                       If not set,
+                       the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                       for access ports.
                     spanning_tree_portfast: spanning_tree_portfast
                     spanning_tree_bpdufilter: spanning_tree_bpdufilter
                     spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -28900,8 +28932,16 @@ class EosDesigns(EosDesignsRootModel):
         """
         vlans: str | None
         """
-        Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-        VLAN 1 will be used for access ports.
+        Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+        The value will be
+        interpreted according to these rules:
+        - `all_defined_endpoint_vlans` will configure all endpoint
+        VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+        - Any other string will be
+        interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+        If not set,
+        the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+        for access ports.
         """
         spanning_tree_portfast: SpanningTreePortfast | None
         spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
@@ -29103,8 +29143,16 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     vlans:
-                       Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                       VLAN 1 will be used for access ports.
+                       Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                       The value will be
+                       interpreted according to these rules:
+                       - `all_defined_endpoint_vlans` will configure all endpoint
+                       VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                       - Any other string will be
+                       interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                       If not set,
+                       the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                       for access ports.
                     spanning_tree_portfast: spanning_tree_portfast
                     spanning_tree_bpdufilter: spanning_tree_bpdufilter
                     spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -56675,8 +56723,16 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vlans: str | None
                     """
-                    Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                    VLAN 1 will be used for access ports.
+                    Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                    The value will be
+                    interpreted according to these rules:
+                    - `all_defined_endpoint_vlans` will configure all endpoint
+                    VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                    - Any other string will be
+                    interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                    If not set,
+                    the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                    for access ports.
                     """
                     spanning_tree_portfast: SpanningTreePortfast | None
                     spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
@@ -56917,8 +56973,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 vlans:
-                                   Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                                   VLAN 1 will be used for access ports.
+                                   Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                                   The value will be
+                                   interpreted according to these rules:
+                                   - `all_defined_endpoint_vlans` will configure all endpoint
+                                   VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                                   - Any other string will be
+                                   interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                                   If not set,
+                                   the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                                   for access ports.
                                 spanning_tree_portfast: spanning_tree_portfast
                                 spanning_tree_bpdufilter: spanning_tree_bpdufilter
                                 spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -58446,8 +58510,16 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vlans: str | None
                     """
-                    Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                    VLAN 1 will be used for access ports.
+                    Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                    The value will be
+                    interpreted according to these rules:
+                    - `all_defined_endpoint_vlans` will configure all endpoint
+                    VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                    - Any other string will be
+                    interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                    If not set,
+                    the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                    for access ports.
                     """
                     spanning_tree_portfast: SpanningTreePortfast | None
                     spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
@@ -58688,8 +58760,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 vlans:
-                                   Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                                   VLAN 1 will be used for access ports.
+                                   Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                                   The value will be
+                                   interpreted according to these rules:
+                                   - `all_defined_endpoint_vlans` will configure all endpoint
+                                   VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                                   - Any other string will be
+                                   interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                                   If not set,
+                                   the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                                   for access ports.
                                 spanning_tree_portfast: spanning_tree_portfast
                                 spanning_tree_bpdufilter: spanning_tree_bpdufilter
                                 spanning_tree_bpduguard: spanning_tree_bpduguard

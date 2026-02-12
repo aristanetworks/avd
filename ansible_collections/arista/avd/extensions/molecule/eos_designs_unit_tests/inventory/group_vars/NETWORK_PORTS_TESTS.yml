@@ -223,6 +223,25 @@ network_ports:
     vlans: 1-4094
 
   - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet26
+    description: Trunk with all endpoint VLANs explicitly allowed
+    mode: trunk
+    vlans: all_defined_endpoint_vlans
+
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet27
+    description: PO trunk with all endpoint VLANs explicitly allowed
+    mode: trunk
+    vlans: all_defined_endpoint_vlans
+    port_channel:
+      channel_id: 227
+      mode: "active"
+
+  - switches:
       - network-ports-tests.2
     switch_ports:
       - Ethernet22-23

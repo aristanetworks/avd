@@ -208,6 +208,19 @@ servers:
             supplicant_profile: test_profile_network_ports
         port_channel:
           mode: active
+  - name: TEST_TRUNK_WITH_EXPLICIT_VLANS
+    adapters:
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet34]
+        mode: trunk
+        vlans: all_defined_endpoint_vlans
+        port_channel:
+          mode: active
+          channel_id: 33
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet35]
+        mode: trunk
+        vlans: all_defined_endpoint_vlans
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
@@ -254,3 +267,15 @@ aaa_settings:
     servers:
       - host: agni.arista.com
         cleartext_key: super-secret-key
+
+tenants:
+  - name: testtenant
+    vrfs:
+      - name: default
+        vrf_id: 1000
+        svis:
+          - id: 1000
+            name: vlan1000
+    l2vlans:
+      - id: 1100
+        name: vlan1100
