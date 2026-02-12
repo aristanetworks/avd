@@ -50,7 +50,7 @@ EXAMPLES = r"""
 ---
 - name: Set eos_designs facts
   arista.avd.eos_designs_facts:
-    schema_id: eos_designs
+    tmp_dir: "intended/tmp_eos_designs"
   check_mode: false
   run_once: true
 """

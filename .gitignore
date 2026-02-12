@@ -35,6 +35,8 @@ dist/
 .pytest_cache/
 ## pyenv
 .python-version
+## direnv
+.envrc
 ## .vscode/*
 .vscode/
 

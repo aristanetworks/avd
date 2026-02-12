@@ -1,0 +1,8 @@
+---
+svi_profiles: # (1)!
+  - profile: STANDARD_SVI
+    enabled: true
+
+  - profile: HIGH_MTU
+    parent_profile: STANDARD_SVI # (2)!
+    mtu: 9000
