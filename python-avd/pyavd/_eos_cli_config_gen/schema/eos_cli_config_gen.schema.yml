@@ -18833,6 +18833,10 @@ keys:
             rd:
               type: str
               description: Route distinguisher.
+            rd_evpn_domain_remote:
+              type: str
+              description: Route distinguisher used to advertise routes to the remote
+                EVPN domain.
             evpn_multicast:
               type: bool
             evpn_multicast_address_family:
@@ -18899,6 +18903,10 @@ keys:
                     keys:
                       address_family:
                         type: str
+                      domain_remote:
+                        type: str
+                        description: Only applicable if `address_family` is one of
+                          `evpn`.
                       route_targets:
                         type: list
                         items:
@@ -18932,6 +18940,9 @@ keys:
                     keys:
                       address_family:
                         type: str
+                      domain_remote:
+                        type: str
+                        description: Only applicable if `address_family` is `evpn`.
                       route_targets:
                         type: list
                         items:
