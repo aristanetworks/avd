@@ -15,7 +15,7 @@
 {%     if ip_radius.source_interface is arista.avd.defined %}
 | default | {{ ip_radius.source_interface }} |
 {%     endif %}
-{%     for vrf in ip_radius.vrfs | arista.avd.natural_sort(sort_key="name") %}
+{%     for vrf in ip_radius.vrfs | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 | {{ vrf.name }} | {{ vrf.source_interface }} |
 {%     endfor %}
 {%     for ip_radius in ip_radius_source_interfaces | arista.avd.natural_sort(sort_key="name") %}

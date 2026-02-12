@@ -1599,9 +1599,9 @@ radius-server host 10.10.11.158 vrf mgt tls ssl-profile SSL_PROFILE
 | VRF | Source Interface Name |
 | --- | --------------- |
 | default | Loopback1 |
-| abc | Loopback10 |
 | BLAH | Loopback10 |
 | MGMT | Management1 |
+| abc | Loopback10 |
 
 #### IP SOURCE Source Interfaces Device Configuration
 
