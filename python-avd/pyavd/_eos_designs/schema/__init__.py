@@ -19037,6 +19037,56 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class GeneralSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Arp(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"persistent": {"type": EosCliConfigGen.Arp.Persistent}, "aging": {"type": EosCliConfigGen.Arp.Aging}}
+            persistent: EosCliConfigGen.Arp.Persistent
+            aging: EosCliConfigGen.Arp.Aging
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    persistent: EosCliConfigGen.Arp.Persistent | UndefinedType = Undefined,
+                    aging: EosCliConfigGen.Arp.Aging | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Arp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        persistent: persistent
+                        aging: aging
+
+                    """
+
+        _fields: ClassVar[dict] = {"arp": {"type": Arp}, "ip_icmp_redirect": {"type": bool}}
+        arp: Arp
+        """Subclass of AvdModel."""
+        ip_icmp_redirect: bool | None
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, arp: Arp | UndefinedType = Undefined, ip_icmp_redirect: bool | None | UndefinedType = Undefined) -> None:
+                """
+                GeneralSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    arp: Subclass of AvdModel.
+                    ip_icmp_redirect: ip_icmp_redirect
+
+                """
+
     class GenerateCvTags(AvdModel):
         """Subclass of AvdModel."""
 
@@ -87970,6 +88020,7 @@ class EosDesigns(EosDesignsRootModel):
         "fabric_numbering_node_id_pool": {"type": str, "default": "fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}"},
         "fabric_sflow": {"type": FabricSflow},
         "flow_tracking_settings": {"type": FlowTrackingSettings},
+        "general_settings": {"type": GeneralSettings},
         "generate_cv_tags": {"type": GenerateCvTags},
         "hardware_counters": {"type": EosCliConfigGen.HardwareCounters},
         "inband_ztp_bootstrap_file": {"type": str},
@@ -89431,6 +89482,12 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    general_settings: GeneralSettings
+    """
+    General platform-independent settings that do not match any other category.
+
+    Subclass of AvdModel.
+    """
     generate_cv_tags: GenerateCvTags
     """
     Generate CloudVision Tags based on AVD data.
@@ -90670,6 +90727,7 @@ class EosDesigns(EosDesignsRootModel):
             fabric_numbering_node_id_pool: str | UndefinedType = Undefined,
             fabric_sflow: FabricSflow | UndefinedType = Undefined,
             flow_tracking_settings: FlowTrackingSettings | UndefinedType = Undefined,
+            general_settings: GeneralSettings | UndefinedType = Undefined,
             generate_cv_tags: GenerateCvTags | UndefinedType = Undefined,
             hardware_counters: EosCliConfigGen.HardwareCounters | UndefinedType = Undefined,
             inband_ztp_bootstrap_file: str | None | UndefinedType = Undefined,
@@ -91431,6 +91489,10 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdModel.
                 flow_tracking_settings:
                    Define the flow tracking parameters for this topology.
+
+                   Subclass of AvdModel.
+                general_settings:
+                   General platform-independent settings that do not match any other category.
 
                    Subclass of AvdModel.
                 generate_cv_tags:

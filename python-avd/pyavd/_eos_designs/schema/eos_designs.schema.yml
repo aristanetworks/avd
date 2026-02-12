@@ -3008,6 +3008,25 @@ keys:
             - host: 127.0.0.1
             local_interface: Loopback0
             template_interval: 3600000
+  general_settings:
+    documentation_options:
+      table: system-settings
+    type: dict
+    description: General platform-independent settings that do not match any other
+      category.
+    keys:
+      arp:
+        type: dict
+        keys:
+          persistent:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/arp/keys/persistent
+          aging:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/arp/keys/aging
+      ip_icmp_redirect:
+        type: bool
+        $ref: eos_cli_config_gen#/keys/ip_icmp_redirect
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags
