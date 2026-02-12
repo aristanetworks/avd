@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;engine_ids</samp>](## "snmp_server.engine_ids") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local</samp>](## "snmp_server.engine_ids.local") | String |  |  |  | Engine ID in hexadecimal.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;remotes</samp>](## "snmp_server.engine_ids.remotes") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "snmp_server.engine_ids.remotes.[].address") | String | Required |  |  | Hostname or IP of remote engine.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "snmp_server.engine_ids.remotes.[].address") | String | Required |  |  | Hostname or IP of remote engine. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "snmp_server.engine_ids.remotes.[].id") | String | Required |  |  | Remote engine ID in hexadecimal.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_port</samp>](## "snmp_server.engine_ids.remotes.[].udp_port") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;contact</samp>](## "snmp_server.contact") | String |  |  |  | SNMP contact. |
