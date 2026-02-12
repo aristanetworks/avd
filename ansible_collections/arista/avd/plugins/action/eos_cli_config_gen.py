@@ -19,8 +19,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     PythonToAnsibleContextFilter,
     PythonToAnsibleHandler,
     cprofile,
-    get_role_tmp_paths,
     get_templar,
+    get_tmp_paths,
     raise_action_fail,
 )
 
@@ -194,7 +194,7 @@ class ActionModule(ActionBase):
         Returns:
             Dict containing the validated structured config for the host.
         """
-        _templated_path, validated_path = get_role_tmp_paths("eos_cli_config_gen", self.tmp_dir)
+        _templated_path, validated_path = get_tmp_paths(self.tmp_dir)
         file_path = validated_path / f"{hostname}.json"
         if not file_path.exists():
             msg = (
