@@ -34,13 +34,11 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.timers.keepalive_time is arista.avd.defined and router_bgp.timers.hold_time is arista.avd.defined %}
 {%             set timers_bgp_cli = timers_bgp_cli ~ " " ~ router_bgp.timers.keepalive_time ~ " " ~ router_bgp.timers.hold_time %}
 {%         endif %}
-{%         if router_bgp.timers.min_hold_time is arista.avd.defined or router_bgp.timers.send_failure_hold_time is arista.avd.defined %}
-{%             if router_bgp.timers.min_hold_time is arista.avd.defined %}
-{%                 set timers_bgp_cli = timers_bgp_cli ~ " min-hold-time " ~ router_bgp.timers.min_hold_time %}
-{%             endif %}
-{%             if router_bgp.timers.send_failure_hold_time is arista.avd.defined %}
-{%                 set timers_bgp_cli = timers_bgp_cli ~ " send-failure hold-time " ~ router_bgp.timers.send_failure_hold_time %}
-{%             endif %}
+{%         if router_bgp.timers.min_hold_time is arista.avd.defined %}
+{%             set timers_bgp_cli = timers_bgp_cli ~ " min-hold-time " ~ router_bgp.timers.min_hold_time %}
+{%         endif %}
+{%         if router_bgp.timers.send_failure_hold_time is arista.avd.defined %}
+{%             set timers_bgp_cli = timers_bgp_cli ~ " send-failure hold-time " ~ router_bgp.timers.send_failure_hold_time %}
 {%         endif %}
    {{ timers_bgp_cli }}
 {%     endif %}
@@ -3974,16 +3972,14 @@ router bgp {{ router_bgp.as }}
          gateway dr election algorithm {{ vrf.evpn_multicast_gateway_dr_election.algorithm }}
 {%                     set delimiter = true %}
 {%                 endif %}
-{%                 if delimiter is arista.avd.defined(true) %}
-         !
-{%                 endif %}
 {%             endif %}
 {%             if vrf.evpn_multicast_address_family.ipv4 is arista.avd.defined
                    and vrf.evpn_multicast_address_family.ipv4.transit is arista.avd.defined(true) %}
-         address-family ipv4
-{%                 if vrf.evpn_multicast_address_family.ipv4.transit is arista.avd.defined(true) %}
-            transit
+{%                 if delimiter is arista.avd.defined(true) %}
+         !
 {%                 endif %}
+         address-family ipv4
+            transit
 {%             endif %}
 {%         endif %}
 {%         if vrf.eos_cli is arista.avd.defined %}

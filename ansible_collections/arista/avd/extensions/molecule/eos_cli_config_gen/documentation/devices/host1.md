@@ -10405,7 +10405,6 @@ router bgp 65101
       router-id 192.168.255.3
       evpn multicast
          gateway dr election algorithm hrw
-         !
    !
    vrf Tenant_A
       rd 10.50.64.15:30001
