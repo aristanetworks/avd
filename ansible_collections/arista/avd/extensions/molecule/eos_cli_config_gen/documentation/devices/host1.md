@@ -2557,7 +2557,7 @@ snmp-server user USER-READ-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3 localized 424242424
 snmp-server user USER-READ-AUTH-PRIV GRP-READ-ONLY v3 auth sha <removed> priv aes <removed>
 snmp-server user USER-READ-AUTH-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242 auth sha <removed> priv aes <removed>
 snmp-server user USER-READ-NO-AUTH-NO-PRIV GRP-READ-ONLY v3
-snmp-server user USER-READ-NO-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242
+snmp-server user USER-READ-NO-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3
 snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha <removed> priv aes <removed>
 snmp-server engineID remote 1.1.1.1 6172697374615F6970
 snmp-server engineID remote 2.2.2.2 udp-port 1337 DEADBEEFCAFE123456

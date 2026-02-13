@@ -57,17 +57,17 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_server.local_users.[].v3.priv_passphrase") | String |  |  |  | Hashed privacy passphrase if localized is used else cleartext privacy passphrase.<br>Requires 'priv' to be set.<br> |
     | [<samp>&nbsp;&nbsp;remote_users</samp>](## "snmp_server.remote_users") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;remote_address</samp>](## "snmp_server.remote_users.[].remote_address") | String | Required |  |  | Hostname or ip of remote engine.<br>A `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set<br>and `localized` is not set.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_port</samp>](## "snmp_server.remote_users.[].udp_port") | Integer |  |  |  | UDP port used by the remote SNMP system. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "snmp_server.remote_users.[].name") | String | Required |  |  | Username. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v1_group</samp>](## "snmp_server.remote_users.[].v1_group") | String |  |  |  | SNMP version 1 group name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v2c_group</samp>](## "snmp_server.remote_users.[].v2c_group") | String |  |  |  | SNMP version 2c group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v3</samp>](## "snmp_server.remote_users.[].v3") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_port</samp>](## "snmp_server.remote_users.[].v3.udp_port") | Integer |  |  |  | UDP port used by the remote SNMP system. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "snmp_server.remote_users.[].v3.group") | String | Required |  |  | SNMP version 3 group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;localized</samp>](## "snmp_server.remote_users.[].v3.localized") | String |  |  |  | Engine ID in hexadecimal for localizing auth and/or priv.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth</samp>](## "snmp_server.remote_users.[].v3.auth") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> | Hash algorithm. Required if auth_passphrase is set and localized is not set.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_server.remote_users.[].v3.auth_passphrase") | String |  |  |  | Hashed authentication passphrase if localized is used else cleartext authentication passphrase.<br>Requires 'auth' to be set.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv</samp>](## "snmp_server.remote_users.[].v3.priv") | String |  |  | Valid Values:<br>- <code>des</code><br>- <code>aes</code><br>- <code>aes192</code><br>- <code>aes256</code> | Encryption algorithm.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_server.remote_users.[].v3.priv_passphrase") | String |  |  |  | Hashed privacy passphrase if localized is used else cleartext privacy passphrase.<br>Requires 'priv' to be set.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "snmp_server.remote_users.[].name") | String | Required |  |  | Username. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v1_group</samp>](## "snmp_server.remote_users.[].v1_group") | String |  |  |  | SNMP version 1 group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v2c_group</samp>](## "snmp_server.remote_users.[].v2c_group") | String |  |  |  | SNMP version 2c group name. |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "snmp_server.hosts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "snmp_server.hosts.[].host") | String |  |  |  | Host IP address or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_server.hosts.[].vrf") | String |  |  |  |  |
@@ -196,19 +196,10 @@
           # A `snmp_server.engine_ids.remotes` entry with a matching address is required when this is set
           # and `localized` is not set.
         - remote_address: <str; required>
-
-          # UDP port used by the remote SNMP system.
-          udp_port: <int>
-
-          # Username.
-          name: <str; required>
-
-          # SNMP version 1 group name.
-          v1_group: <str>
-
-          # SNMP version 2c group name.
-          v2c_group: <str>
           v3:
+
+            # UDP port used by the remote SNMP system.
+            udp_port: <int>
 
             # SNMP version 3 group name.
             group: <str; required>
@@ -229,6 +220,15 @@
             # Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
             # Requires 'priv' to be set.
             priv_passphrase: <str>
+
+          # Username.
+          name: <str; required>
+
+          # SNMP version 1 group name.
+          v1_group: <str>
+
+          # SNMP version 2c group name.
+          v2c_group: <str>
       hosts:
 
           # Host IP address or name.

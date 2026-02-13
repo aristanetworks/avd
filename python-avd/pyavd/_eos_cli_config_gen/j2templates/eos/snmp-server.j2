@@ -111,14 +111,14 @@ snmp-server user {{ user.name }} {{ user.v2c_group }} v2c
 {%         endif %}
 {%         if user.v3 is arista.avd.defined %}
 {%             set user_cli = "snmp-server user " ~ user.name ~ " " ~ user.v3.group ~ " v3" %}
-{%             if user.v3.localized is arista.avd.defined %}
-{%                 set user_cli = user_cli ~ " localized " ~ user.v3.localized %}
-{%             endif %}
 {%             if user.v3.auth is arista.avd.defined and user.v3.auth_passphrase is arista.avd.defined %}
+{%                 if user.v3.localized is arista.avd.defined %}
+{%                     set user_cli = user_cli ~ " localized " ~ user.v3.localized %}
+{%                 endif %}
 {%                 set user_cli = user_cli ~ " auth " ~ user.v3.auth ~ " " ~ user.v3.auth_passphrase | arista.avd.hide_passwords(hide_passwords) %}
-{%             endif %}
-{%             if user.v3.priv is arista.avd.defined and user.v3.priv_passphrase is arista.avd.defined %}
-{%                 set user_cli = user_cli ~ " priv " ~ user.v3.priv ~ " " ~ user.v3.priv_passphrase | arista.avd.hide_passwords(hide_passwords) %}
+{%                 if user.v3.priv is arista.avd.defined and user.v3.priv_passphrase is arista.avd.defined %}
+{%                     set user_cli = user_cli ~ " priv " ~ user.v3.priv ~ " " ~ user.v3.priv_passphrase | arista.avd.hide_passwords(hide_passwords) %}
+{%                 endif %}
 {%             endif %}
 {{ user_cli }}
 {%         endif %}
@@ -141,18 +141,18 @@ snmp-server user {{ user.name }} {{ user.v2c_group }} remote {{ user.remote_addr
 {%         endif %}
 {%         if user.v3 is arista.avd.defined %}
 {%             set user_cli = "snmp-server user " ~ user.name ~ " " ~ user.v3.group ~ " remote " ~ user.remote_address %}
-{%             if user.udp_port is arista.avd.defined %}
-{%                 set user_cli = user_cli ~ " udp-port " ~ user.udp_port %}
+{%             if user.v3.udp_port is arista.avd.defined %}
+{%                 set user_cli = user_cli ~ " udp-port " ~ user.v3.udp_port %}
 {%             endif %}
 {%             set user_cli = user_cli ~ " v3" %}
-{%             if user.v3.localized is arista.avd.defined %}
-{%                 set user_cli = user_cli ~ " localized " ~ user.v3.localized %}
-{%             endif %}
 {%             if user.v3.auth is arista.avd.defined and user.v3.auth_passphrase is arista.avd.defined %}
+{%                 if user.v3.localized is arista.avd.defined %}
+{%                     set user_cli = user_cli ~ " localized " ~ user.v3.localized %}
+{%                 endif %}
 {%                 set user_cli = user_cli ~ " auth " ~ user.v3.auth ~ " " ~ user.v3.auth_passphrase | arista.avd.hide_passwords(hide_passwords) %}
-{%             endif %}
-{%             if user.v3.priv is arista.avd.defined and user.v3.priv_passphrase is arista.avd.defined %}
-{%                 set user_cli = user_cli ~ " priv " ~ user.v3.priv ~ " " ~ user.v3.priv_passphrase | arista.avd.hide_passwords(hide_passwords) %}
+{%                 if user.v3.priv is arista.avd.defined and user.v3.priv_passphrase is arista.avd.defined %}
+{%                     set user_cli = user_cli ~ " priv " ~ user.v3.priv ~ " " ~ user.v3.priv_passphrase | arista.avd.hide_passwords(hide_passwords) %}
+{%                 endif %}
 {%             endif %}
 {{ user_cli }}
 {%         endif %}

@@ -185,7 +185,6 @@
 | User | Group | Version | Authentication | Privacy | Remote Address | Remote Port | Engine ID |
 | ---- | ----- | ------- | -------------- | ------- | -------------- | ----------- | --------- |
 {%         for user in snmp_server.remote_users %}
-{%             set row_udp_port = user.udp_port | arista.avd.default('-') %}
 {%             if user.v1_group is arista.avd.defined %}
 | {{ user.name }} | {{ user.v1_group }} | v1 | - | - | {{ user.remote_address }} | {{ row_udp_port }} | - |
 {%             endif %}
@@ -197,6 +196,7 @@
 {%                 set row_auth = user.v3.auth | arista.avd.default('-') %}
 {%                 set row_policy = user.v3.priv | arista.avd.default('-') %}
 {%                 set row_engine_id = user.v3.localized | arista.avd.default('-') %}
+{%                 set row_udp_port = user.v3.udp_port | arista.avd.default('-') %}
 | {{ user.name }} | {{ row_group }} | v3 | {{ row_auth }} | {{ row_policy }} | {{ user.remote_address }} | {{ row_udp_port }} | {{ row_engine_id }} |
 {%             endif %}
 {%         endfor %}

@@ -119,8 +119,8 @@ snmp_server:
     - name: REMOTE-USER-IP-PORT
       v3:
         group: GRP-REMOTE
+        udp_port: 666
       remote_address: 42.42.42.42
-      udp_port: 666
     - name: REMOTE-USER-IP-LOCALIZED
       v3:
         group: GRP-REMOTE

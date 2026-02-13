@@ -62865,6 +62865,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Auth: TypeAlias = Literal["md5", "sha", "sha256", "sha384", "sha512"]
                 Priv: TypeAlias = Literal["des", "aes", "aes192", "aes256"]
                 _fields: ClassVar[dict] = {
+                    "udp_port": {"type": int},
                     "group": {"type": str},
                     "localized": {"type": str},
                     "auth": {"type": str},
@@ -62872,6 +62873,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "priv": {"type": str},
                     "priv_passphrase": {"type": str},
                 }
+                udp_port: int | None
+                """UDP port used by the remote SNMP system."""
                 group: str
                 """SNMP version 3 group name."""
                 localized: str | None
@@ -62897,6 +62900,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
+                        udp_port: int | None | UndefinedType = Undefined,
                         group: str | UndefinedType = Undefined,
                         localized: str | None | UndefinedType = Undefined,
                         auth: Auth | None | UndefinedType = Undefined,
@@ -62911,6 +62915,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
+                            udp_port: UDP port used by the remote SNMP system.
                             group: SNMP version 3 group name.
                             localized: Engine ID in hexadecimal for localizing auth and/or priv.
                             auth: Hash algorithm. Required if auth_passphrase is set and localized is not set.
@@ -62927,11 +62932,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "remote_address": {"type": str},
-                "udp_port": {"type": int},
+                "v3": {"type": V3},
                 "name": {"type": str},
                 "v1_group": {"type": str},
                 "v2c_group": {"type": str},
-                "v3": {"type": V3},
             }
             remote_address: str
             """
@@ -62940,16 +62944,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             required when this is set
             and `localized` is not set.
             """
-            udp_port: int | None
-            """UDP port used by the remote SNMP system."""
+            v3: V3
+            """Subclass of AvdModel."""
             name: str
             """Username."""
             v1_group: str | None
             """SNMP version 1 group name."""
             v2c_group: str | None
             """SNMP version 2c group name."""
-            v3: V3
-            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -62957,11 +62959,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     remote_address: str | UndefinedType = Undefined,
-                    udp_port: int | None | UndefinedType = Undefined,
+                    v3: V3 | UndefinedType = Undefined,
                     name: str | UndefinedType = Undefined,
                     v1_group: str | None | UndefinedType = Undefined,
                     v2c_group: str | None | UndefinedType = Undefined,
-                    v3: V3 | UndefinedType = Undefined,
                 ) -> None:
                     """
                     RemoteUsersItem.
@@ -62975,11 +62976,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            A `snmp_server.engine_ids.remotes` entry with a matching address is
                            required when this is set
                            and `localized` is not set.
-                        udp_port: UDP port used by the remote SNMP system.
+                        v3: Subclass of AvdModel.
                         name: Username.
                         v1_group: SNMP version 1 group name.
                         v2c_group: SNMP version 2c group name.
-                        v3: Subclass of AvdModel.
 
                     """
 

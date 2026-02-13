@@ -23259,11 +23259,14 @@ keys:
                 and `localized` is not set.
 
                 '
-            udp_port:
-              type: int
-              convert_types:
-              - str
-              description: UDP port used by the remote SNMP system.
+            v3:
+              type: dict
+              keys:
+                udp_port:
+                  type: int
+                  convert_types:
+                  - str
+                  description: UDP port used by the remote SNMP system.
       hosts:
         type: list
         items:
