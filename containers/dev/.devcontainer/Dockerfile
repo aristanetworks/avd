@@ -32,3 +32,6 @@ USER ${USERNAME}
 ENV PATH=$PATH:/home/${USERNAME}/.local/bin
 # make sure that path required to mount Ansible collection exists
 RUN mkdir -p /home/${USERNAME}/.ansible/collections/ansible_collections/arista/avd
+
+# make sure that we use latest pip
+RUN pip install --upgrade pip
