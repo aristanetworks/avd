@@ -163,6 +163,57 @@ docs/howto/ip_addressing/artifacts/leaf1-to-spines.cfg
 --8<--
 ```
 
+## Downlink Pools
+
+While `uplink_ipv4_pool` is defined on the downstream device (leaf), `downlink_pools` provides an alternative approach where IP pools are defined on the **upstream device** (spine). This is useful when you want centralized IP management on parent switches.
+
+!!! warning "Mutually Exclusive"
+    `downlink_pools` on a parent switch cannot be combined with `uplink_ipv4_pool` on the child switch. Use one approach or the other.
+
+### Configuration
+
+Define `downlink_pools` on the parent switch (spine) with a list of pools mapped to specific downlink interfaces:
+
+```yaml title="Downlink Pools on Spine"
+spine:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+    bgp_as: 65000
+  nodes:
+    - name: spine1
+      id: 1
+      downlink_pools:
+        - ipv4_pool: 10.0.1.0/24
+          downlink_interfaces: [Ethernet3-6]  # (1)!
+        - ipv4_pool: 10.0.3.0/24
+          downlink_interfaces: [Ethernet7-14]  # (2)!
+```
+
+1. First pool for interfaces Ethernet3 through Ethernet6
+2. Second pool for interfaces Ethernet7 through Ethernet14
+
+### IP Allocation
+
+The IP address is derived based on the interface's **index position** in the `downlink_interfaces` list:
+
+| Interface | Index | Subnet from Pool |
+| --------- | ----- | ---------------- |
+| Ethernet3 | 0 | 10.0.1.0/31 |
+| Ethernet4 | 1 | 10.0.1.2/31 |
+| Ethernet5 | 2 | 10.0.1.4/31 |
+| Ethernet6 | 3 | 10.0.1.6/31 |
+
+The spine gets the even IP (.0, .2, .4) and the leaf gets the odd IP (.1, .3, .5) in each /31 subnet.
+
+### When to Use Downlink Pools
+
+| Use Case | Recommended Approach |
+| -------- | -------------------- |
+| Leaf-centric IP management | `uplink_ipv4_pool` on leafs |
+| Spine-centric IP management | `downlink_pools` on spines |
+| Different pools per spine port range | `downlink_pools` with multiple entries |
+| Simple uniform allocation | `uplink_ipv4_pool` on leafs |
+
 ## MLAG IP Allocation
 
 MLAG requires two pools for peer connectivity:
