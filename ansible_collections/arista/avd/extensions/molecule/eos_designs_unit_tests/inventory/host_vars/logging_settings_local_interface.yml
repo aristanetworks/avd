@@ -19,6 +19,10 @@ logging_settings:
       ports:
         - 100
         - 200
+    - name: 192.168.0.42
+      vrf: default
   vrfs:
     - name: MGMT
       source_interface: Management0
+    - name: default
+      source_interface: Ethernet42

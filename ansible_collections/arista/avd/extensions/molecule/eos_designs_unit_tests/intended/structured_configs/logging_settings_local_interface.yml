@@ -15,6 +15,11 @@ logging:
       ports:
       - 100
       - 200
+  - name: default
+    local_interface: Ethernet42
+    hosts:
+    - name: 192.168.0.42
+      protocol: udp
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
