@@ -32,20 +32,20 @@ snmp_settings:
   compute_v3_user_localized_key: true
   local_users:
     - name: usertest-auth-priv
-      group: usergroup
-      version: v3
-      auth: sha
-      auth_passphrase: clearauth # to get from vault in real life
-      priv: aes192
-      priv_passphrase: clearpriv # to get from vault in real life
+      v3:
+        group: usergroup
+        auth: sha
+        auth_passphrase: clearauth # to get from vault in real life
+        priv: aes192
+        priv_passphrase: clearpriv # to get from vault in real life
     - name: usertest-auth-no-priv
-      group: usergroup
-      version: v3
-      auth: sha512
-      auth_passphrase: clearauth # to get from vault in real life
+      v3:
+        group: usergroup
+        auth: sha512
+        auth_passphrase: clearauth # to get from vault in real life
     - name: usertest-no-auth-no-priv
-      group: usergroup
-      version: v3
+      v3:
+        group: usergroup
       # For now, not possible to run tests that raise
       # exceptions
       # - name: usertest-wrong-cipher
@@ -54,9 +54,4 @@ snmp_settings:
       #   auth: toto
       #   auth_passphrase: clearauth
     - name: usertest-v2c
-      group: usergroup
-      version: v2c # v2c so the passphrases are not needed
-      auth: md5
-      auth_passphrase: clearauth # to get from vault in real life
-      priv: des
-      priv_passphrase: clearpriv # to get from vault in real life
+      v2c_group: usergroup # v2c so the passphrases are not needed

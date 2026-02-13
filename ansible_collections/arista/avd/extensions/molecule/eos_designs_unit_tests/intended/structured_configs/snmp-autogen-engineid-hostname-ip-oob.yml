@@ -25,13 +25,13 @@ snmp_server:
   location: EOS_DESIGNS_UNIT_TESTS snmp-autogen-engineid-hostname-ip-oob
   local_users:
   - name: usertest-auth-priv
-    group: usergroup
-    version: v3
-    localized: 44f3e75f08a5bf52eef3165edb18207d4a5ef2f4
-    auth: sha
-    auth_passphrase: 879870a5f62773c95a2ae8017b0b293549f60ef3
-    priv: aes192
-    priv_passphrase: 7cbd81f3e04f953704e1959d06fb41c6b1eff88ea677fec2
+    v3:
+      group: usergroup
+      localized: 44f3e75f08a5bf52eef3165edb18207d4a5ef2f4
+      auth: sha
+      auth_passphrase: 879870a5f62773c95a2ae8017b0b293549f60ef3
+      priv: aes192
+      priv_passphrase: 7cbd81f3e04f953704e1959d06fb41c6b1eff88ea677fec2
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0

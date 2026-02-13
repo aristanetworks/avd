@@ -15,9 +15,9 @@ snmp_settings:
   compute_v3_user_localized_key: true
   local_users:
     - name: usertest-auth-priv
-      group: usergroup
-      version: v3
-      auth: sha
-      auth_passphrase: clearauth # to get from vault in real life
-      priv: aes192
-      priv_passphrase: clearpriv # to get from vault in real life
+      v3:
+        group: usergroup
+        auth: sha
+        auth_passphrase: clearauth # to get from vault in real life
+        priv: aes192
+        priv_passphrase: clearpriv # to get from vault in real life

@@ -168,35 +168,43 @@ class SnmpServerMixin(Protocol):
 
         engine_ids = self.structured_config.snmp_server.engine_ids
         compute_v3_user_localized_key = engine_ids and engine_ids.local and self.inputs.snmp_settings.compute_v3_user_localized_key
+
         for user in users:
-            version = user.version
-            user_dict = EosCliConfigGen.SnmpServer.LocalUsersItem(
-                name=user.name,
-                group=user.group,
-                version=version,
-            )
-            if version == "v3":
+            user_data = EosCliConfigGen.SnmpServer.LocalUsersItem(name=user.name)
+
+            if user.v1_group is not None:
+                user_data.v1_group = user.v1_group
+            if user.v2c_group is not None:
+                user_data.v2c_group = user.v2c_group
+            # Only process v3 if it exists AND has a group field
+            if user.v3 is not None and user.v3.group is not None:
+                # Create V3 object with required group field
+                v3_config = EosCliConfigGen.SnmpServer.LocalUsersItem.V3(group=user.v3.group)
+
                 if compute_v3_user_localized_key:
-                    user_dict.localized = engine_ids.local
+                    v3_config.localized = engine_ids.local
 
-                if user.auth is not None and user.auth_passphrase is not None:
-                    user_dict.auth = user.auth
-                    hash_filter = {}
+                if user.v3.auth is not None and user.v3.auth_passphrase is not None:
+                    v3_config.auth = user.v3.auth
                     if compute_v3_user_localized_key:
-                        hash_filter = {"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": engine_ids.local}
-                        user_dict.auth_passphrase = snmp_hash(hash_filter)
+                        hash_filter = {"passphrase": user.v3.auth_passphrase, "auth": user.v3.auth, "engine_id": engine_ids.local}
+                        v3_config.auth_passphrase = snmp_hash(hash_filter)
+
+                        if user.v3.priv is not None and user.v3.priv_passphrase is not None:
+                            v3_config.priv = user.v3.priv
+                            hash_filter.update({"passphrase": user.v3.priv_passphrase, "priv": user.v3.priv})
+                            v3_config.priv_passphrase = snmp_hash(hash_filter)
                     else:
-                        user_dict.auth_passphrase = user.auth_passphrase
+                        v3_config.auth_passphrase = user.v3.auth_passphrase
 
-                    if user.priv is not None and user.priv_passphrase is not None:
-                        user_dict.priv = user.priv
-                        if compute_v3_user_localized_key:
-                            hash_filter.update({"passphrase": user.priv_passphrase, "priv": user.priv})
-                            user_dict.priv_passphrase = snmp_hash(hash_filter)
-                        else:
-                            user_dict.priv_passphrase = user.priv_passphrase
+                        if user.v3.priv is not None and user.v3.priv_passphrase is not None:
+                            v3_config.priv = user.v3.priv
+                            v3_config.priv_passphrase = user.v3.priv_passphrase
 
-            self.structured_config.snmp_server.local_users.append(user_dict)
+                # Assign the fully configured V3 object to user_data
+                user_data.v3 = v3_config
+
+            self.structured_config.snmp_server.local_users.append(user_data)
 
     def set_snmp_hosts(self: AvdStructuredConfigBaseProtocol) -> None:
         """

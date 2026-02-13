@@ -153,36 +153,45 @@ keys:
               type: str
               required: true
               description: Username.
-            group:
+            v1_group:
               type: str
-              required: true
-              description: Group name.
-            version:
+              description: SNMP version 1 group name.
+            v2c_group:
               type: str
-              required: true
-              valid_values: ["v1", "v2c", "v3"]
-            localized:
-              type: str
-              convert_types:
-                - int
-              description: |
-                Engine ID in hexadecimal for localizing auth and/or priv.
-            auth:
-              type: str
-              description: |
-                Hash algorithm.
-            auth_passphrase:
-              type: str
-              description: |
-                Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
-            priv:
-              type: str
-              description: |
-                Encryption algorithm.
-            priv_passphrase:
-              type: str
-              description: |
-                Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+              description: SNMP version 2c group name.
+            v3:
+              type: dict
+              keys:
+                group:
+                  type: str
+                  required: true
+                  description: SNMP version 3 group name.
+                localized:
+                  type: str
+                  convert_types:
+                    - int
+                  description: |
+                    Engine ID in hexadecimal for localizing auth and/or priv.
+                auth:
+                  type: str
+                  description: |
+                    Hash algorithm. Required if auth_passphrase is set and localized is not set.
+                  valid_values: ["md5", "sha", "sha256", "sha384", "sha512"]
+                auth_passphrase:
+                  type: str
+                  description: |
+                    Hashed authentication passphrase if localized is used else cleartext authentication passphrase.
+                    Requires 'auth' to be set.
+                priv:
+                  type: str
+                  description: |
+                    Encryption algorithm.
+                  valid_values: ["des", "aes", "aes192", "aes256"]
+                priv_passphrase:
+                  type: str
+                  description: |
+                    Hashed privacy passphrase if localized is used else cleartext privacy passphrase.
+                    Requires 'priv' to be set.
       remote_users:
         type: list
         $ref: "eos_cli_config_gen#/keys/snmp_server/keys/local_users"

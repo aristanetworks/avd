@@ -30031,29 +30031,66 @@ class EosDesigns(EosDesignsRootModel):
         class LocalUsersItem(AvdModel):
             """Subclass of AvdModel."""
 
-            Version: TypeAlias = Literal["v1", "v2c", "v3"]
-            Auth: TypeAlias = Literal["md5", "sha", "sha256", "sha384", "sha512"]
-            Priv: TypeAlias = Literal["des", "aes", "aes192", "aes256"]
-            _fields: ClassVar[dict] = {
-                "name": {"type": str},
-                "group": {"type": str},
-                "version": {"type": str},
-                "auth": {"type": str},
-                "auth_passphrase": {"type": str},
-                "priv": {"type": str},
-                "priv_passphrase": {"type": str},
-            }
+            class V3(AvdModel):
+                """Subclass of AvdModel."""
+
+                Auth: TypeAlias = Literal["md5", "sha", "sha256", "sha384", "sha512"]
+                Priv: TypeAlias = Literal["des", "aes", "aes192", "aes256"]
+                _fields: ClassVar[dict] = {
+                    "group": {"type": str},
+                    "auth": {"type": str},
+                    "auth_passphrase": {"type": str},
+                    "priv": {"type": str},
+                    "priv_passphrase": {"type": str},
+                }
+                group: str
+                """SNMP version 3 group name."""
+                auth: Auth | None
+                auth_passphrase: str | None
+                """Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set."""
+                priv: Priv | None
+                priv_passphrase: str | None
+                """Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        group: str | UndefinedType = Undefined,
+                        auth: Auth | None | UndefinedType = Undefined,
+                        auth_passphrase: str | None | UndefinedType = Undefined,
+                        priv: Priv | None | UndefinedType = Undefined,
+                        priv_passphrase: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        V3.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            group: SNMP version 3 group name.
+                            auth: auth
+                            auth_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
+                            priv: priv
+                            priv_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
+
+                        """
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "v1_group": {"type": str}, "v2c_group": {"type": str}, "v3": {"type": V3}}
             name: str
             """Username."""
-            group: str
-            """Group name."""
-            version: Version
-            auth: Auth | None
-            auth_passphrase: str | None
-            """Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set."""
-            priv: Priv | None
-            priv_passphrase: str | None
-            """Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set."""
+            v1_group: str | None
+            """SNMP version 1 group name."""
+            v2c_group: str | None
+            """SNMP version 2c group name."""
+            v3: V3
+            """
+            SNMPv3 configuration.
+
+            Subclass of AvdModel.
+            """
 
             if TYPE_CHECKING:
 
@@ -30061,12 +30098,9 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    group: str | UndefinedType = Undefined,
-                    version: Version | UndefinedType = Undefined,
-                    auth: Auth | None | UndefinedType = Undefined,
-                    auth_passphrase: str | None | UndefinedType = Undefined,
-                    priv: Priv | None | UndefinedType = Undefined,
-                    priv_passphrase: str | None | UndefinedType = Undefined,
+                    v1_group: str | None | UndefinedType = Undefined,
+                    v2c_group: str | None | UndefinedType = Undefined,
+                    v3: V3 | UndefinedType = Undefined,
                 ) -> None:
                     """
                     LocalUsersItem.
@@ -30076,12 +30110,12 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: Username.
-                        group: Group name.
-                        version: version
-                        auth: auth
-                        auth_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
-                        priv: priv
-                        priv_passphrase: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
+                        v1_group: SNMP version 1 group name.
+                        v2c_group: SNMP version 2c group name.
+                        v3:
+                           SNMPv3 configuration.
+
+                           Subclass of AvdModel.
 
                     """
 

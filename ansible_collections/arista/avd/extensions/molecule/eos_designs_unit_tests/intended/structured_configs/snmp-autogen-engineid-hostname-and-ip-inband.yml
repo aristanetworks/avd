@@ -17,13 +17,13 @@ snmp_server:
   location: EOS_DESIGNS_UNIT_TESTS snmp-autogen-engineid-hostname-and-ip-inband
   local_users:
   - name: usertest-auth-priv
-    group: usergroup
-    version: v3
-    localized: 07459749db8910d2ea1447c20595b70729534f97
-    auth: sha
-    auth_passphrase: d035999725c2ae5776a5c5b685853ecc6503739d
-    priv: aes192
-    priv_passphrase: 7a3e71ab96695ec38d1f1019163797d44bd8f80aa53be88a
+    v3:
+      group: usergroup
+      localized: 07459749db8910d2ea1447c20595b70729534f97
+      auth: sha
+      auth_passphrase: d035999725c2ae5776a5c5b685853ecc6503739d
+      priv: aes192
+      priv_passphrase: 7a3e71ab96695ec38d1f1019163797d44bd8f80aa53be88a
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

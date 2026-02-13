@@ -23,12 +23,14 @@
     | [<samp>&nbsp;&nbsp;compute_v3_user_localized_key</samp>](## "snmp_settings.compute_v3_user_localized_key") | Boolean |  | `False` |  | Requires compute_local_engineid to be `true`.<br>If enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.<br>The algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.<br> |
     | [<samp>&nbsp;&nbsp;local_users</samp>](## "snmp_settings.local_users") | List, items: Dictionary |  |  |  | Configuration of local SNMP users.<br>Configuration of remote SNMP users are currently only possible using `structured_config`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.local_users.[].name") | String | Required |  |  | Username. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "snmp_settings.local_users.[].group") | String | Required |  |  | Group name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "snmp_settings.local_users.[].version") | String | Required |  | Valid Values:<br>- <code>v1</code><br>- <code>v2c</code><br>- <code>v3</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth</samp>](## "snmp_settings.local_users.[].auth") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_settings.local_users.[].auth_passphrase") | String |  |  |  | Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv</samp>](## "snmp_settings.local_users.[].priv") | String |  |  | Valid Values:<br>- <code>des</code><br>- <code>aes</code><br>- <code>aes192</code><br>- <code>aes256</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_settings.local_users.[].priv_passphrase") | String |  |  |  | Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v1_group</samp>](## "snmp_settings.local_users.[].v1_group") | String |  |  |  | SNMP version 1 group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v2c_group</samp>](## "snmp_settings.local_users.[].v2c_group") | String |  |  |  | SNMP version 2c group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v3</samp>](## "snmp_settings.local_users.[].v3") | Dictionary |  |  |  | SNMPv3 configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "snmp_settings.local_users.[].v3.group") | String | Required |  |  | SNMP version 3 group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth</samp>](## "snmp_settings.local_users.[].v3.auth") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_settings.local_users.[].v3.auth_passphrase") | String |  |  |  | Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv</samp>](## "snmp_settings.local_users.[].v3.priv") | String |  |  | Valid Values:<br>- <code>des</code><br>- <code>aes</code><br>- <code>aes192</code><br>- <code>aes256</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_settings.local_users.[].v3.priv_passphrase") | String |  |  |  | Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set. |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "snmp_settings.hosts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "snmp_settings.hosts.[].host") | String |  |  |  | Host IP address or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_settings.hosts.[].vrf") | String |  |  |  | VRF Name.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the SNMP host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the SNMP host under the VRF and set the source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed. |
@@ -155,17 +157,25 @@
           # Username.
         - name: <str; required>
 
-          # Group name.
-          group: <str; required>
-          version: <str; "v1" | "v2c" | "v3"; required>
-          auth: <str; "md5" | "sha" | "sha256" | "sha384" | "sha512">
+          # SNMP version 1 group name.
+          v1_group: <str>
 
-          # Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
-          auth_passphrase: <str>
-          priv: <str; "des" | "aes" | "aes192" | "aes256">
+          # SNMP version 2c group name.
+          v2c_group: <str>
 
-          # Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
-          priv_passphrase: <str>
+          # SNMPv3 configuration.
+          v3:
+
+            # SNMP version 3 group name.
+            group: <str; required>
+            auth: <str; "md5" | "sha" | "sha256" | "sha384" | "sha512">
+
+            # Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
+            auth_passphrase: <str>
+            priv: <str; "des" | "aes" | "aes192" | "aes256">
+
+            # Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
+            priv_passphrase: <str>
       hosts:
 
           # Host IP address or name.

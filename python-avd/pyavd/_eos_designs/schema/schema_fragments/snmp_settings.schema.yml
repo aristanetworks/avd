@@ -130,26 +130,32 @@ keys:
               type: str
               required: true
               description: Username.
-            group:
+            v1_group:
               type: str
-              required: true
-              description: Group name.
-            version:
+              description: SNMP version 1 group name.
+            v2c_group:
               type: str
-              required: true
-              valid_values: ["v1", "v2c", "v3"]
-            auth:
-              type: str
-              valid_values: ["md5", "sha", "sha256", "sha384", "sha512"]
-            auth_passphrase:
-              type: str
-              description: Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
-            priv:
-              type: str
-              valid_values: ["des", "aes", "aes192", "aes256"]
-            priv_passphrase:
-              type: str
-              description: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
+              description: SNMP version 2c group name.
+            v3:
+              type: dict
+              description: SNMPv3 configuration.
+              keys:
+                group:
+                  type: str
+                  required: true
+                  description: SNMP version 3 group name.
+                auth:
+                  type: str
+                  valid_values: ["md5", "sha", "sha256", "sha384", "sha512"]
+                auth_passphrase:
+                  type: str
+                  description: Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
+                priv:
+                  type: str
+                  valid_values: ["des", "aes", "aes192", "aes256"]
+                priv_passphrase:
+                  type: str
+                  description: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
       hosts:
         type: list
         $ref: "eos_cli_config_gen#/keys/snmp_server/keys/hosts"

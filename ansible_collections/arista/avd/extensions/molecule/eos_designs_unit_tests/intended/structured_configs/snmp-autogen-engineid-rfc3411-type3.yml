@@ -16,13 +16,13 @@ snmp_server:
     local: '8000757103424242424242'
   local_users:
   - name: usertest-auth-priv
-    group: usergroup
-    version: v3
-    localized: '8000757103424242424242'
-    auth: sha
-    auth_passphrase: c7d815463b2fd77c87201bc51ae77b93fcf4ac4f
-    priv: aes192
-    priv_passphrase: a1391df7a8ea377cbe6ccc7537ed6f1e1905bbe38f69eaac
+    v3:
+      group: usergroup
+      localized: '8000757103424242424242'
+      auth: sha
+      auth_passphrase: c7d815463b2fd77c87201bc51ae77b93fcf4ac4f
+      priv: aes192
+      priv_passphrase: a1391df7a8ea377cbe6ccc7537ed6f1e1905bbe38f69eaac
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

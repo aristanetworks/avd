@@ -163,13 +163,19 @@
 | User | Group | Version | Authentication | Privacy | Engine ID |
 | ---- | ----- | ------- | -------------- | ------- | --------- |
 {%         for user in snmp_server.local_users %}
-{%             set row_user = user.name | arista.avd.default('default') %}
-{%             set row_group = user.group | arista.avd.default('-') %}
-{%             set row_version = user.version | arista.avd.default('-') %}
-{%             set row_auth = user.auth | arista.avd.default('-') %}
-{%             set row_policy = user.priv | arista.avd.default('-') %}
-{%             set row_engine_id = user.localized | arista.avd.default('-') %}
-| {{ row_user }} | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_policy }} | {{ row_engine_id }} |
+{%             if user.v1_group is arista.avd.defined %}
+| {{ user.name }} | {{ user.v1_group }} | v1 | - | - | - |
+{%             endif %}
+{%             if user.v2c_group is arista.avd.defined %}
+| {{ user.name }} | {{ user.v2c_group }} | v2c | - | - | - |
+{%             endif %}
+{%             if user.v3 is arista.avd.defined %}
+{%                 set row_group = user.v3.group %}
+{%                 set row_auth = user.v3.auth | arista.avd.default('-') %}
+{%                 set row_policy = user.v3.priv | arista.avd.default('-') %}
+{%                 set row_engine_id = user.v3.localized | arista.avd.default('-') %}
+| {{ user.name }} | {{ row_group }} | v3 | {{ row_auth }} | {{ row_policy }} | {{ row_engine_id }} |
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     if snmp_server.remote_users is arista.avd.defined %}
@@ -179,15 +185,20 @@
 | User | Group | Version | Authentication | Privacy | Remote Address | Remote Port | Engine ID |
 | ---- | ----- | ------- | -------------- | ------- | -------------- | ----------- | --------- |
 {%         for user in snmp_server.remote_users %}
-{%             set row_user = user.name | arista.avd.default('default') %}
-{%             set row_group = user.group | arista.avd.default('-') %}
-{%             set row_version = user.version | arista.avd.default('-') %}
-{%             set row_auth = user.auth | arista.avd.default('-') %}
-{%             set row_policy = user.priv | arista.avd.default('-') %}
-{%             set row_remote_address = user.remote_address | arista.avd.default('-') %}
 {%             set row_udp_port = user.udp_port | arista.avd.default('-') %}
-{%             set row_engine_id = user.localized | arista.avd.default('-') %}
-| {{ row_user }} | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_policy }} | {{ row_remote_address }} | {{ row_udp_port }} | {{ row_engine_id }} |
+{%             if user.v1_group is arista.avd.defined %}
+| {{ user.name }} | {{ user.v1_group }} | v1 | - | - | {{ user.remote_address }} | {{ row_udp_port }} | - |
+{%             endif %}
+{%             if user.v2c_group is arista.avd.defined %}
+| {{ user.name }} | {{ user.v2c_group }} | v2c | - | - | {{ user.remote_address }} | {{ row_udp_port }} | - |
+{%             endif %}
+{%             if user.v3 is arista.avd.defined %}
+{%                 set row_group = user.v3.group %}
+{%                 set row_auth = user.v3.auth | arista.avd.default('-') %}
+{%                 set row_policy = user.v3.priv | arista.avd.default('-') %}
+{%                 set row_engine_id = user.v3.localized | arista.avd.default('-') %}
+| {{ user.name }} | {{ row_group }} | v3 | {{ row_auth }} | {{ row_policy }} | {{ user.remote_address }} | {{ row_udp_port }} | {{ row_engine_id }} |
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 

@@ -3,7 +3,6 @@ snmp_server:
   engine_ids:
     local: 424242424242424242
     remotes:
-      # TODO: make address as primary key
       # First one without IP should not be rendered
       # - id: 1234567890ABCDEF12
       - id: 6172697374615F6970
@@ -69,67 +68,64 @@ snmp_server:
       write: v3write
   local_users:
     - name: USER-READ-NO-AUTH-NO-PRIV
-      group: GRP-READ-ONLY
-      version: v3
+      v3:
+        group: GRP-READ-ONLY
     - name: USER-READ-AUTH-NO-PRIV
-      group: GRP-READ-ONLY
-      version: v3
-      auth: sha
-      auth_passphrase: clearPassword
+      v3:
+        group: GRP-READ-ONLY
+        auth: sha
+        auth_passphrase: clearPassword
     - name: USER-READ-AUTH-PRIV
-      group: GRP-READ-ONLY
-      version: v3
-      auth: sha
-      auth_passphrase: clearPassword
-      priv: aes
-      priv_passphrase: clearPassword
+      v3:
+        group: GRP-READ-ONLY
+        auth: sha
+        auth_passphrase: clearPassword
+        priv: aes
+        priv_passphrase: clearPassword
     - name: USER-READ-NO-AUTH-NO-PRIV-LOC
-      group: GRP-READ-ONLY
-      version: v3
-      localized: 424242424242424242
+      v3:
+        group: GRP-READ-ONLY
+        localized: 424242424242424242
     - name: USER-READ-AUTH-NO-PRIV-LOC
-      group: GRP-READ-ONLY
-      version: v3
-      auth: sha
-      auth_passphrase: 8da526cd35b9ea9b42d819036f7fad058576ea0a
-      localized: 424242424242424242
+      v3:
+        group: GRP-READ-ONLY
+        auth: sha
+        auth_passphrase: 8da526cd35b9ea9b42d819036f7fad058576ea0a
+        localized: 424242424242424242
     - name: USER-READ-AUTH-PRIV-LOC
-      group: GRP-READ-ONLY
-      version: v3
-      auth: sha
-      auth_passphrase: 8da526cd35b9ea9b42d819036f7fad058576ea0a
-      priv: aes
-      priv_passphrase: 8da526cd35b9ea9b42d819036f7fad05
-      localized: 424242424242424242
+      v3:
+        group: GRP-READ-ONLY
+        auth: sha
+        auth_passphrase: 8da526cd35b9ea9b42d819036f7fad058576ea0a
+        priv: aes
+        priv_passphrase: 8da526cd35b9ea9b42d819036f7fad05
+        localized: 424242424242424242
     - name: USER-WRITE
-      group: GRP-READ-WRITE
-      version: v3
-      auth: sha
-      auth_passphrase: clearPassword
-      priv: aes
-      priv_passphrase: clearPassword
+      v3:
+        group: GRP-READ-WRITE
+        auth: sha
+        auth_passphrase: clearPassword
+        priv: aes
+        priv_passphrase: clearPassword
   remote_users:
     - name: REMOTE-USER-IP-ONLY
-      group: GRP-REMOTE
-      version: v3
+      v3:
+        group: GRP-REMOTE
       remote_address: 42.42.42.42
     - name: REMOTE-USER-IP-PORT
-      group: GRP-REMOTE
-      version: v3
-      remote_address: 42.42.42.42
-      udp_port: 666
-    - name: REMOTE-USER-IP-PORT
-      group: GRP-REMOTE
-      version: v1
+      v1_group: GRP-REMOTE
+      v3:
+        group: GRP-REMOTE
       remote_address: 42.42.42.42
       udp_port: 666
     - name: REMOTE-USER-IP-LOCALIZED
-      group: GRP-REMOTE
-      version: v3
+      v3:
+        group: GRP-REMOTE
+        localized: DEADBEEFCAFE123456
+        auth: sha
+        auth_passphrase: DEADBEEFCAFE123456ABC1234321AB1233456778
       remote_address: 42.42.42.42
-      localized: DEADBEEFCAFE123456
-      auth: sha
-      auth_passphrase: DEADBEEFCAFE123456ABC1234321AB1233456778
+
   hosts:
     - host: 10.6.75.121
       vrf: MGMT

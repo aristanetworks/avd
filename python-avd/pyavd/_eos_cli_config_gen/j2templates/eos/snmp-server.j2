@@ -102,21 +102,26 @@ snmp-server vrf {{ local_interface.vrf }} local-interface {{ local_interface.nam
 {%         endfor %}
 {%     endif %}
 {# First render local users #}
-{%     for user in snmp_server.local_users | arista.avd.natural_sort('name') %}
-{%         set user_cli = "snmp-server user " ~ user.name ~ " " ~ user.group ~ " " ~ user.version %}
-{%         if user.auth is arista.avd.defined
-              and user.version is arista.avd.defined('v3')
-              and user.auth_passphrase is arista.avd.defined %}
-{%             if user.localized is arista.avd.defined %}
-{%                 set user_cli = user_cli ~ " localized " ~ user.localized %}
-{%             endif %}
-{%             set user_cli = user_cli ~ " auth " ~ user.auth ~ " " ~ user.auth_passphrase | arista.avd.hide_passwords(hide_passwords) %}
-{%             if user.priv is arista.avd.defined
-                  and user.priv_passphrase is arista.avd.defined %}
-{%                 set user_cli = user_cli ~ " priv " ~ user.priv ~ " " ~ user.priv_passphrase | arista.avd.hide_passwords(hide_passwords) %}
-{%             endif %}
+{%     for user in snmp_server.local_users | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%         if user.v1_group is arista.avd.defined %}
+snmp-server user {{ user.name }} {{ user.v1_group }} v1
 {%         endif %}
+{%         if user.v2c_group is arista.avd.defined %}
+snmp-server user {{ user.name }} {{ user.v2c_group }} v2c
+{%         endif %}
+{%         if user.v3 is arista.avd.defined %}
+{%             set user_cli = "snmp-server user " ~ user.name ~ " " ~ user.v3.group ~ " v3" %}
+{%             if user.v3.localized is arista.avd.defined %}
+{%                 set user_cli = user_cli ~ " localized " ~ user.v3.localized %}
+{%             endif %}
+{%             if user.v3.auth is arista.avd.defined and user.v3.auth_passphrase is arista.avd.defined %}
+{%                 set user_cli = user_cli ~ " auth " ~ user.v3.auth ~ " " ~ user.v3.auth_passphrase | arista.avd.hide_passwords(hide_passwords) %}
+{%             endif %}
+{%             if user.v3.priv is arista.avd.defined and user.v3.priv_passphrase is arista.avd.defined %}
+{%                 set user_cli = user_cli ~ " priv " ~ user.v3.priv ~ " " ~ user.v3.priv_passphrase | arista.avd.hide_passwords(hide_passwords) %}
+{%             endif %}
 {{ user_cli }}
+{%         endif %}
 {%     endfor %}
 {%     for engine_id in snmp_server.engine_ids.remotes | arista.avd.natural_sort('address') %}
 {%         set remote_engine_ids_cli =  "snmp-server engineID remote " ~ engine_id.address %}
@@ -127,29 +132,30 @@ snmp-server vrf {{ local_interface.vrf }} local-interface {{ local_interface.nam
 {{ remote_engine_ids_cli }}
 {%     endfor %}
 {# Then render remote users #}
-{%     for user in snmp_server.remote_users | arista.avd.natural_sort('name') %}
-{%         set user_cli = "snmp-server user " ~ user.name ~ " " ~ user.group ~ " remote " ~ user.remote_address %}
-{%         if user.version is arista.avd.defined('v3') %}
+{%     for user in snmp_server.remote_users | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%         if user.v1_group is arista.avd.defined %}
+snmp-server user {{ user.name }} {{ user.v1_group }} remote {{ user.remote_address }} v1
+{%         endif %}
+{%         if user.v2c_group is arista.avd.defined %}
+snmp-server user {{ user.name }} {{ user.v2c_group }} remote {{ user.remote_address }} v2c
+{%         endif %}
+{%         if user.v3 is arista.avd.defined %}
+{%             set user_cli = "snmp-server user " ~ user.name ~ " " ~ user.v3.group ~ " remote " ~ user.remote_address %}
 {%             if user.udp_port is arista.avd.defined %}
 {%                 set user_cli = user_cli ~ " udp-port " ~ user.udp_port %}
 {%             endif %}
-{%         endif %}
-{%         if user.version is arista.avd.defined %}
-{%             set user_cli = user_cli ~ " " ~ user.version %}
-{%         endif %}
-{%         if user.auth is arista.avd.defined
-              and user.version is arista.avd.defined('v3')
-              and user.auth_passphrase is arista.avd.defined %}
-{%             if user.localized is arista.avd.defined %}
-{%                 set user_cli = user_cli ~ " localized " ~ user.localized %}
+{%             set user_cli = user_cli ~ " v3" %}
+{%             if user.v3.localized is arista.avd.defined %}
+{%                 set user_cli = user_cli ~ " localized " ~ user.v3.localized %}
 {%             endif %}
-{%             set user_cli = user_cli ~ " auth " ~ user.auth ~ " " ~ user.auth_passphrase | arista.avd.hide_passwords(hide_passwords) %}
-{%             if user.priv is arista.avd.defined
-                  and user.priv_passphrase is arista.avd.defined %}
-{%                 set user_cli = user_cli ~ " priv " ~ user.priv ~ " " ~ user.priv_passphrase | arista.avd.hide_passwords(hide_passwords) %}
+{%             if user.v3.auth is arista.avd.defined and user.v3.auth_passphrase is arista.avd.defined %}
+{%                 set user_cli = user_cli ~ " auth " ~ user.v3.auth ~ " " ~ user.v3.auth_passphrase | arista.avd.hide_passwords(hide_passwords) %}
 {%             endif %}
-{%         endif %}
+{%             if user.v3.priv is arista.avd.defined and user.v3.priv_passphrase is arista.avd.defined %}
+{%                 set user_cli = user_cli ~ " priv " ~ user.v3.priv ~ " " ~ user.v3.priv_passphrase | arista.avd.hide_passwords(hide_passwords) %}
+{%             endif %}
 {{ user_cli }}
+{%         endif %}
 {%     endfor %}
 {%     for host in snmp_server.hosts | arista.avd.default([]) | sort(attribute='host') %}
 {%         if host.host is arista.avd.defined %}

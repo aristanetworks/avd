@@ -2524,8 +2524,8 @@ mcs client
 | User | Group | Version | Authentication | Privacy | Remote Address | Remote Port | Engine ID |
 | ---- | ----- | ------- | -------------- | ------- | -------------- | ----------- | --------- |
 | REMOTE-USER-IP-ONLY | GRP-REMOTE | v3 | - | - | 42.42.42.42 | - | - |
-| REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | 42.42.42.42 | 666 | - |
 | REMOTE-USER-IP-PORT | GRP-REMOTE | v1 | - | - | 42.42.42.42 | 666 | - |
+| REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | 42.42.42.42 | 666 | - |
 | REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | - | 42.42.42.42 | - | DEADBEEFCAFE123456 |
 
 #### SNMP Device Configuration
@@ -2556,7 +2556,7 @@ snmp-server user USER-READ-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3 localized 424242424
 snmp-server user USER-READ-AUTH-PRIV GRP-READ-ONLY v3 auth sha <removed> priv aes <removed>
 snmp-server user USER-READ-AUTH-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242 auth sha <removed> priv aes <removed>
 snmp-server user USER-READ-NO-AUTH-NO-PRIV GRP-READ-ONLY v3
-snmp-server user USER-READ-NO-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3
+snmp-server user USER-READ-NO-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242
 snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha <removed> priv aes <removed>
 snmp-server engineID remote 1.1.1.1 6172697374615F6970
 snmp-server engineID remote 2.2.2.2 udp-port 1337 DEADBEEFCAFE123456
@@ -2564,8 +2564,8 @@ snmp-server engineID remote 42.42.42.42 424242424242DEAD
 snmp-server engineID remote 42.42.42.42 udp-port 666 424242424242DEAD6666
 snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha <removed>
 snmp-server user REMOTE-USER-IP-ONLY GRP-REMOTE remote 42.42.42.42 v3
-snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 udp-port 666 v3
 snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 v1
+snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 udp-port 666 v3
 snmp-server host 10.6.75.100 vrf MGMT version 3 priv USER-READ-AUTH-PRIV
 snmp-server host 10.6.75.121 vrf MGMT version 1 <removed>
 snmp-server host 10.6.75.121 vrf MGMT version 2c <removed>

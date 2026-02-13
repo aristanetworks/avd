@@ -31,12 +31,12 @@ snmp_settings:
     - name: vrf_without_enable
   local_users:
     - name: usertest-auth-priv
-      group: usergroup
-      version: v3
-      auth: sha
-      auth_passphrase: clearauth # to get from vault in real life
-      priv: aes192
-      priv_passphrase: clearpriv # to get from vault in real life
+      v3:
+        group: usergroup
+        auth: sha
+        auth_passphrase: clearauth # to get from vault in real life
+        priv: aes192
+        priv_passphrase: clearpriv # to get from vault in real life
 
   hosts:
     - host: 10.6.75.121

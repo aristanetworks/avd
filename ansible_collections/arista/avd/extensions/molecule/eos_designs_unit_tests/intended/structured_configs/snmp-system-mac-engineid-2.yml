@@ -20,13 +20,13 @@ snmp_server:
   location: CUSTOM LOCATION STRING EOS_DESIGNS_UNIT_TESTS snmp-system-mac-engineid-2
   local_users:
   - name: usertest-auth-priv
-    group: usergroup
-    version: v3
-    localized: f5717f1234567890ab00
-    auth: sha
-    auth_passphrase: 70aa970bd9af7f0974d6dc42217b8dc1b92926e5
-    priv: aes192
-    priv_passphrase: 95943c2756fdbb26473d26269ce768c8bef9878ae11ecac6
+    v3:
+      group: usergroup
+      localized: f5717f1234567890ab00
+      auth: sha
+      auth_passphrase: 70aa970bd9af7f0974d6dc42217b8dc1b92926e5
+      priv: aes192
+      priv_passphrase: 95943c2756fdbb26473d26269ce768c8bef9878ae11ecac6
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

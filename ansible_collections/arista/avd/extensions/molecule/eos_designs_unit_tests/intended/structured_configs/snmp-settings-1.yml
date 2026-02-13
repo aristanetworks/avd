@@ -63,12 +63,12 @@ snmp_server:
     write: v3write
   local_users:
   - name: usertest-auth-priv
-    group: usergroup
-    version: v3
-    auth: sha
-    auth_passphrase: clearauth
-    priv: aes192
-    priv_passphrase: clearpriv
+    v3:
+      group: usergroup
+      auth: sha
+      auth_passphrase: clearauth
+      priv: aes192
+      priv_passphrase: clearpriv
   hosts:
   - host: 10.6.75.121
     vrf: SNMPVRF
