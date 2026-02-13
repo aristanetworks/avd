@@ -81,7 +81,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "custom_platform_settings.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Digital Twin settings applied when `avd_digital_twin_mode` is `true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "custom_platform_settings.[].digital_twin.platform") | String |  |  |  | Name of an alternate `platform_settings` platform used when running in Digital Twin mode.<br>The `platform_settings` for the regular `platform` is used if this is not set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_node_type</samp>](## "custom_platform_settings.[].digital_twin.act_node_type") | String |  |  | Valid Values:<br>- <code>cloudeos</code><br>- <code>cvp</code><br>- <code>generic</code><br>- <code>third-party</code><br>- <code>tools-server</code><br>- <code>veos</code> | ACT node type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "custom_platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "custom_platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "custom_platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
 
 === "YAML"
@@ -268,7 +268,7 @@
           # ACT node type.
           act_node_type: <str; "cloudeos" | "cvp" | "generic" | "third-party" | "tools-server" | "veos">
 
-        # Custom structured config for EOS Config schema.
+        # Custom structured config for the EOS Config schema.
         structured_config: <dict>
 
         # EOS CLI rendered directly on the root level of the final EOS configuration.

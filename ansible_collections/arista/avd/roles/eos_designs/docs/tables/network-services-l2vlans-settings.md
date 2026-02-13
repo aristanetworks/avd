@@ -28,7 +28,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].l2vlans.[].trunk_groups.[]") | String |  |  |  | Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.<br>Requires enable_trunk_groups: true.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "<network_services_keys.name>.[].l2vlans.[].evpn_l2_multi_domain") | Boolean |  |  |  | Explicitly extend this VLAN to remote EVPN domains.<br>Overrides `<network_services_key>[].evpn_l2_multi_domain`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "<network_services_keys.name>.[].l2vlans.[].bgp") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].l2vlans.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vlans.[id=<vlan>] for EOS Config schema.<br>This configuration will not be applied to vlan aware bundles.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].l2vlans.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vlans.[id=<vlan>] for the EOS Config schema.<br>This configuration will not be applied to vlan aware bundles.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].l2vlans.[].bgp.raw_eos_cli") | String |  |  |  | EOS cli commands rendered on router_bgp.vlans.<br>This configuration will not be applied to vlan aware bundles.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private_vlan</samp>](## "<network_services_keys.name>.[].l2vlans.[].private_vlan") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "<network_services_keys.name>.[].l2vlans.[].private_vlan.type") | String | Required |  | Valid Values:<br>- <code>community</code><br>- <code>isolated</code> |  |
@@ -49,7 +49,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l2vlan_profiles.[].trunk_groups.[]") | String |  |  |  | Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.<br>Requires enable_trunk_groups: true.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "l2vlan_profiles.[].evpn_l2_multi_domain") | Boolean |  |  |  | Explicitly extend this VLAN to remote EVPN domains.<br>Overrides `<network_services_key>[].evpn_l2_multi_domain`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "l2vlan_profiles.[].bgp") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l2vlan_profiles.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vlans.[id=<vlan>] for EOS Config schema.<br>This configuration will not be applied to vlan aware bundles.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l2vlan_profiles.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vlans.[id=<vlan>] for the EOS Config schema.<br>This configuration will not be applied to vlan aware bundles.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l2vlan_profiles.[].bgp.raw_eos_cli") | String |  |  |  | EOS cli commands rendered on router_bgp.vlans.<br>This configuration will not be applied to vlan aware bundles.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;private_vlan</samp>](## "l2vlan_profiles.[].private_vlan") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "l2vlan_profiles.[].private_vlan.type") | String | Required |  | Valid Values:<br>- <code>community</code><br>- <code>isolated</code> |  |
@@ -133,7 +133,7 @@
             evpn_l2_multi_domain: <bool>
             bgp:
 
-              # Custom structured config added under router_bgp.vlans.[id=<vlan>] for EOS Config schema.
+              # Custom structured config added under router_bgp.vlans.[id=<vlan>] for the EOS Config schema.
               # This configuration will not be applied to vlan aware bundles.
               structured_config: <dict>
 
@@ -205,7 +205,7 @@
         evpn_l2_multi_domain: <bool>
         bgp:
 
-          # Custom structured config added under router_bgp.vlans.[id=<vlan>] for EOS Config schema.
+          # Custom structured config added under router_bgp.vlans.[id=<vlan>] for the EOS Config schema.
           # This configuration will not be applied to vlan aware bundles.
           structured_config: <dict>
 

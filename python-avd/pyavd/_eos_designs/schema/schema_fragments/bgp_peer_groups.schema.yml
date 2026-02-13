@@ -45,7 +45,7 @@ keys:
           structured_config:
             type: dict
             relaxed_validation: true
-            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
@@ -86,7 +86,7 @@ keys:
           structured_config:
             type: dict
             relaxed_validation: true
-            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
@@ -121,7 +121,7 @@ keys:
           structured_config:
             type: dict
             relaxed_validation: true
-            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
@@ -148,7 +148,7 @@ keys:
           structured_config:
             type: dict
             relaxed_validation: true
-            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
@@ -175,7 +175,7 @@ keys:
           structured_config:
             type: dict
             relaxed_validation: true
-            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
@@ -202,7 +202,7 @@ keys:
           structured_config:
             type: dict
             relaxed_validation: true
-            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
@@ -229,7 +229,7 @@ keys:
           structured_config:
             type: dict
             relaxed_validation: true
-            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
@@ -256,7 +256,7 @@ keys:
           structured_config:
             type: dict
             relaxed_validation: true
-            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
@@ -323,7 +323,7 @@ keys:
           structured_config:
             type: dict
             relaxed_validation: true
-            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
@@ -383,7 +383,7 @@ keys:
           structured_config:
             type: dict
             relaxed_validation: true
-            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"

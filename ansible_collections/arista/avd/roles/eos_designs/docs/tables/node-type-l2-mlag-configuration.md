@@ -9,9 +9,9 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>&lt;node_type_keys.key&gt;</samp>](## "<node_type_keys.key>") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "<node_type_keys.key>.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.defaults.mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "<node_type_keys.key>.defaults.mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "<node_type_keys.key>.defaults.mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.defaults.mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "<node_type_keys.key>.defaults.mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "<node_type_keys.key>.defaults.mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.defaults.mlag") | Boolean |  | `True` |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "<node_type_keys.key>.defaults.mlag_dual_primary_detection") | Boolean |  | `False` |  | Enable / Disable MLAG dual primary detection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "<node_type_keys.key>.defaults.mlag_ibgp_origin_incomplete") | Boolean |  | `True` |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
@@ -40,9 +40,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag") | Boolean |  | `True` |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_dual_primary_detection") | Boolean |  | `False` |  | Enable / Disable MLAG dual primary detection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_ibgp_origin_incomplete") | Boolean |  | `True` |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
@@ -67,9 +67,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minimum</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_port_id_allocation_port_channel_range.minimum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify minimum value for reserved range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].spanning_tree_port_id_allocation_port_channel_range.maximum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify maximum value for reserved range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.node_groups.[].mlag") | Boolean |  | `True` |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "<node_type_keys.key>.node_groups.[].mlag_dual_primary_detection") | Boolean |  | `False` |  | Enable / Disable MLAG dual primary detection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "<node_type_keys.key>.node_groups.[].mlag_ibgp_origin_incomplete") | Boolean |  | `True` |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
@@ -96,9 +96,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.nodes.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "<node_type_keys.key>.nodes.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.nodes.[].mlag") | Boolean |  | `True` |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "<node_type_keys.key>.nodes.[].mlag_dual_primary_detection") | Boolean |  | `False` |  | Enable / Disable MLAG dual primary detection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "<node_type_keys.key>.nodes.[].mlag_ibgp_origin_incomplete") | Boolean |  | `True` |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
@@ -125,9 +125,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "<node_type_keys.key>.nodes.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
     | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "device_profiles.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "device_profiles.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "device_profiles.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "device_profiles.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "device_profiles.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "device_profiles.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "device_profiles.[].mlag") | Boolean |  | `True` |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "device_profiles.[].mlag_dual_primary_detection") | Boolean |  | `False` |  | Enable / Disable MLAG dual primary detection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "device_profiles.[].mlag_ibgp_origin_incomplete") | Boolean |  | `True` |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
@@ -154,9 +154,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_mac_address</samp>](## "device_profiles.[].virtual_router_mac_address") | String |  |  | Format: mac | Virtual router mac address for anycast gateway. |
     | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "devices.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "devices.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "devices.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_structured_config</samp>](## "devices.[].mlag_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG peer link port-channel id.<br>Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the port-channel interface level.<br>"mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan_structured_config</samp>](## "devices.[].mlag_peer_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG Peer Link (control link) SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan_structured_config</samp>](## "devices.[].mlag_peer_l3_vlan_structured_config") | Dictionary |  |  |  | Custom structured config applied to MLAG underlay L3 peering SVI interface id.<br>Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.<br>Overrides the settings on the vlan interface level.<br>"mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "devices.[].mlag") | Boolean |  | `True` |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "devices.[].mlag_dual_primary_detection") | Boolean |  | `False` |  | Enable / Disable MLAG dual primary detection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "devices.[].mlag_ibgp_origin_incomplete") | Boolean |  | `True` |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
@@ -191,19 +191,19 @@
       defaults:
 
         # Custom structured config applied to MLAG peer link port-channel id.
-        # Added under port_channel_interfaces.[name=<interface>] for EOS Config schema.
+        # Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
         # Overrides the settings on the port-channel interface level.
         # "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_port_channel_structured_config: <dict>
 
         # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
-        # Added under vlan_interfaces.[name=<interface>] for EOS Config schema.
+        # Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
         # Overrides the settings on the vlan interface level.
         # "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_peer_vlan_structured_config: <dict>
 
         # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
-        # Added under vlan_interfaces.[name=<interface>] for EOS Config schema.
+        # Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
         # Overrides the settings on the vlan interface level.
         # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_peer_l3_vlan_structured_config: <dict>
@@ -302,19 +302,19 @@
             - name: <str; required; unique>
 
               # Custom structured config applied to MLAG peer link port-channel id.
-              # Added under port_channel_interfaces.[name=<interface>] for EOS Config schema.
+              # Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
               # Overrides the settings on the port-channel interface level.
               # "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
               mlag_port_channel_structured_config: <dict>
 
               # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
-              # Added under vlan_interfaces.[name=<interface>] for EOS Config schema.
+              # Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
               # Overrides the settings on the vlan interface level.
               # "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
               mlag_peer_vlan_structured_config: <dict>
 
               # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
-              # Added under vlan_interfaces.[name=<interface>] for EOS Config schema.
+              # Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
               # Overrides the settings on the vlan interface level.
               # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
               mlag_peer_l3_vlan_structured_config: <dict>
@@ -400,19 +400,19 @@
               virtual_router_mac_address: <str>
 
           # Custom structured config applied to MLAG peer link port-channel id.
-          # Added under port_channel_interfaces.[name=<interface>] for EOS Config schema.
+          # Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
           # Overrides the settings on the port-channel interface level.
           # "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_port_channel_structured_config: <dict>
 
           # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
-          # Added under vlan_interfaces.[name=<interface>] for EOS Config schema.
+          # Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
           # Overrides the settings on the vlan interface level.
           # "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_vlan_structured_config: <dict>
 
           # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
-          # Added under vlan_interfaces.[name=<interface>] for EOS Config schema.
+          # Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
           # Overrides the settings on the vlan interface level.
           # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_l3_vlan_structured_config: <dict>
@@ -504,19 +504,19 @@
         - name: <str; required; unique>
 
           # Custom structured config applied to MLAG peer link port-channel id.
-          # Added under port_channel_interfaces.[name=<interface>] for EOS Config schema.
+          # Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
           # Overrides the settings on the port-channel interface level.
           # "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_port_channel_structured_config: <dict>
 
           # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
-          # Added under vlan_interfaces.[name=<interface>] for EOS Config schema.
+          # Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
           # Overrides the settings on the vlan interface level.
           # "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_vlan_structured_config: <dict>
 
           # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
-          # Added under vlan_interfaces.[name=<interface>] for EOS Config schema.
+          # Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
           # Overrides the settings on the vlan interface level.
           # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_l3_vlan_structured_config: <dict>
@@ -608,19 +608,19 @@
       - name: <str; required; unique>
 
         # Custom structured config applied to MLAG peer link port-channel id.
-        # Added under port_channel_interfaces.[name=<interface>] for EOS Config schema.
+        # Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
         # Overrides the settings on the port-channel interface level.
         # "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_port_channel_structured_config: <dict>
 
         # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
-        # Added under vlan_interfaces.[name=<interface>] for EOS Config schema.
+        # Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
         # Overrides the settings on the vlan interface level.
         # "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_peer_vlan_structured_config: <dict>
 
         # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
-        # Added under vlan_interfaces.[name=<interface>] for EOS Config schema.
+        # Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
         # Overrides the settings on the vlan interface level.
         # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_peer_l3_vlan_structured_config: <dict>
@@ -712,19 +712,19 @@
         name: <str; required; unique>
 
         # Custom structured config applied to MLAG peer link port-channel id.
-        # Added under port_channel_interfaces.[name=<interface>] for EOS Config schema.
+        # Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
         # Overrides the settings on the port-channel interface level.
         # "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_port_channel_structured_config: <dict>
 
         # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
-        # Added under vlan_interfaces.[name=<interface>] for EOS Config schema.
+        # Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
         # Overrides the settings on the vlan interface level.
         # "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_peer_vlan_structured_config: <dict>
 
         # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
-        # Added under vlan_interfaces.[name=<interface>] for EOS Config schema.
+        # Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
         # Overrides the settings on the vlan interface level.
         # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_peer_l3_vlan_structured_config: <dict>

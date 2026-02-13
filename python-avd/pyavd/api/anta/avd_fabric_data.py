@@ -44,7 +44,7 @@ class AVDDeviceData:
 
         Args:
             structured_config: A dictionary with structured configuration.
-                Variables should be converted and validated according to AVD EOS Config schema first using `pyavd.validate_structured_config`.
+                Variables should be converted and validated according to the EOS Config schema first using `pyavd.validate_structured_config`.
 
         Returns:
             An `AVDDeviceData` instance populated with data.
@@ -185,7 +185,7 @@ class AVDFabricData:
 
         Args:
             structured_configs: A dictionary of structured configurations for all devices, keyed by hostname.
-                Variables should be converted and validated according to AVD EOS Config schema first using `pyavd.validate_structured_config`.
+                Variables should be converted and validated according to the EOS Config schema first using `pyavd.validate_structured_config`.
 
         Returns:
             An `AVDFabricData` instance populated with data.

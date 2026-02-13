@@ -75,7 +75,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.enabled") | Boolean |  |  |  | Force (no) configuration of BGP for the VRF.<br>If not set, BGP will be configured when needed according to the following rules:<br>- If the VRF is part of an overlay (`evpn` or `mpls`), BGP will be configured for it.<br>- If any BGP peers are configured under the VRF, BGP will be configured for it. This is useful for L2LS designs with VRFs.<br>- If uplink type is `p2p-vrfs` *and* the vrf is included in the uplink VRFs, BGP will be configured for it. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.router_id") | String |  | `main_router_id` |  | Router ID to use for BGP in this VRF.<br>This can be an IPv4 address, "main_router_id", "none" or "diagnostic_loopback".<br>- "main_router_id" will use the IP address of Loopback0 or the common `router general` Router ID if `use_router_general_for_router_id` is set."<br>- "none" will not configure a BGP Router ID for this VRF. EOS will use the main BGP Router ID.<br>- "diagnostic_loopback" will use the IP address of the VRF Diagnostic Loopback interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vrfs.[name=<vrf>] for EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_route_targets</samp>](## "<network_services_keys.name>.[].vrfs.[].additional_route_targets") | List, items: Dictionary |  |  |  | Configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;type</samp>](## "<network_services_keys.name>.[].vrfs.[].additional_route_targets.[].type") | String | Required |  | Valid Values:<br>- <code>import</code><br>- <code>export</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family</samp>](## "<network_services_keys.name>.[].vrfs.[].additional_route_targets.[].address_family") | String | Required |  |  |  |
@@ -94,7 +94,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attribute</samp>](## "<network_services_keys.name>.[].vrfs.[].aggregate_addresses.[].attribute") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "<network_services_keys.name>.[].vrfs.[].aggregate_addresses.[].attribute.rcf") | String |  |  |  | RCF name with parenthesis. Example "AGG-ADD-RCF()". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].vrfs.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].structured_config") | Dictionary |  |  |  | Custom structured config for EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].structured_config") | Dictionary |  |  |  | Custom structured config for the EOS Config schema. |
     | [<samp>mlag_ibgp_peering_vrfs</samp>](## "mlag_ibgp_peering_vrfs") | Dictionary |  |  |  | On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology).<br>The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1.<br>Depending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.<br>The SVI ip address derived from mlag_l3_peer_ipv4_pool is reused across all iBGP peerings.<br> |
     | [<samp>&nbsp;&nbsp;base_vlan</samp>](## "mlag_ibgp_peering_vrfs.base_vlan") | Integer |  | `3000` | Min: 1<br>Max: 4093 |  |
 
@@ -327,7 +327,7 @@
               # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
               raw_eos_cli: <str>
 
-              # Custom structured config added under router_bgp.vrfs.[name=<vrf>] for EOS Config schema.
+              # Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
               structured_config: <dict>
 
             # Configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families.
@@ -367,7 +367,7 @@
             # EOS CLI rendered directly on the root level of the final EOS configuration.
             raw_eos_cli: <str>
 
-            # Custom structured config for EOS Config schema.
+            # Custom structured config for the EOS Config schema.
             structured_config: <dict>
 
     # On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology).

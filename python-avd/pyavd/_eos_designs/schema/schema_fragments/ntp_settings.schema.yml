@@ -67,7 +67,7 @@ keys:
                 Authentication provided using the `key_type` format.
                 Will be rendered as such.
                 Takes precedence over `cleartext_key`.
-              # Need to overwrite required: true from EOS Config schema to allow cleartext_key only
+              # Need to overwrite required: true from the EOS Config schema to allow cleartext_key only
               required: false
             cleartext_key:
               type: str

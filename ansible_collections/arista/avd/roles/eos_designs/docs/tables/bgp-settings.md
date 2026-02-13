@@ -26,51 +26,51 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.ipv4_underlay_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.ipv4_underlay_peers.bfd") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "bgp_peer_groups.ipv4_underlay_peers.maximum_routes") | Integer |  | `256000` | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipv4_underlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipv4_underlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;mlag_ipv4_vrfs_peer</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer") | Dictionary |  |  |  | Set this peer group name to use a different peer-group for MLAG peerings in VRFs.<br>By default AVD uses the `mlag_ipv4_underlay_peer` peer group for the Underlay and for all the VRFs.<br><br>If `mlag_ipv4_vrfs_peer.name` and `mlag_ipv4_underlay_peer.name` are the same,<br>then all the attributes set here are ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.name") | String | Required |  |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.bfd") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.maximum_routes") | Integer |  | `256000` | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;mlag_ipv4_underlay_peer</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.name") | String |  | `MLAG-IPv4-UNDERLAY-PEER` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.bfd") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.maximum_routes") | Integer |  | `256000` | Min: 0<br>Max: 4294967294 | Maximum number of routes (0 means unlimited). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;evpn_overlay_peers</samp>](## "bgp_peer_groups.evpn_overlay_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.evpn_overlay_peers.name") | String |  | `EVPN-OVERLAY-PEERS` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.evpn_overlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.evpn_overlay_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.evpn_overlay_peers.bfd") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.evpn_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.evpn_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;evpn_overlay_core</samp>](## "bgp_peer_groups.evpn_overlay_core") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.evpn_overlay_core.name") | String |  | `EVPN-OVERLAY-CORE` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.evpn_overlay_core.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.evpn_overlay_core.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.evpn_overlay_core.bfd") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.evpn_overlay_core.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.evpn_overlay_core.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;mpls_overlay_peers</samp>](## "bgp_peer_groups.mpls_overlay_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mpls_overlay_peers.name") | String |  | `MPLS-OVERLAY-PEERS` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mpls_overlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.mpls_overlay_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.mpls_overlay_peers.bfd") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mpls_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mpls_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;rr_overlay_peers</samp>](## "bgp_peer_groups.rr_overlay_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.rr_overlay_peers.name") | String |  | `RR-OVERLAY-PEERS` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.rr_overlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.rr_overlay_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.rr_overlay_peers.bfd") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.rr_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.rr_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;ipvpn_gateway_peers</samp>](## "bgp_peer_groups.ipvpn_gateway_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.name") | String |  | `IPVPN-GATEWAY-PEERS` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.bfd") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;wan_overlay_peers</samp>](## "bgp_peer_groups.wan_overlay_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.wan_overlay_peers.name") | String |  | `WAN-OVERLAY-PEERS` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.wan_overlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`.<br><br>When configuring a password on the `wan_overlay_peers` BGP peer group,<br>it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.<br>This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.<br>If the password is not set, the static BGP peerings between Pathfinders may not come up. |
@@ -83,7 +83,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;listen_range_prefixes</samp>](## "bgp_peer_groups.wan_overlay_peers.listen_range_prefixes") | List, items: String |  |  |  | Only used for nodes where `wan_role` is `server` like AutoVPN RRs and Pathfinders.<br>For clients, AVD will raise an error if the Loopback0 IP is not in any listen range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "bgp_peer_groups.wan_overlay_peers.listen_range_prefixes.[]") | String |  |  |  | The prefixes to use in listen_range. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "bgp_peer_groups.wan_overlay_peers.ttl_maximum_hops") | Integer |  | `1` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.wan_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.wan_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;wan_rr_overlay_peers</samp>](## "bgp_peer_groups.wan_rr_overlay_peers") | Dictionary |  |  |  | Configuration options for the peer-group created to peer between AutoVPN RRs or CV Pathfinders. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.name") | String |  | `WAN-RR-OVERLAY-PEERS` |  | Name of peer group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`.<br><br>When configuring a password on the `wan_overlay_peers` BGP peer group,<br>it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.<br>This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.<br>If the password is not set, the static BGP peerings between Pathfinders may not come up. |
@@ -94,7 +94,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.bfd_timers.min_rx") | Integer | Required | `1000` | Min: 50<br>Max: 60000 | Rate in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.bfd_timers.multiplier") | Integer | Required | `10` | Min: 3<br>Max: 50 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ttl_maximum_hops</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.ttl_maximum_hops") | Integer |  | `1` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema. |
     | [<samp>bgp_update_wait_install</samp>](## "bgp_update_wait_install") | Boolean |  | `True` |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br> |
     | [<samp>bgp_update_wait_for_convergence</samp>](## "bgp_update_wait_for_convergence") | Boolean |  | `False` |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br> |
 
@@ -157,7 +157,7 @@
         # Maximum number of routes (0 means unlimited).
         maximum_routes: <int; 0-4294967294; default=256000>
 
-        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
         structured_config: <dict>
 
       # Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
@@ -182,7 +182,7 @@
         # Maximum number of routes (0 means unlimited).
         maximum_routes: <int; 0-4294967294; default=256000>
 
-        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
         structured_config: <dict>
       mlag_ipv4_underlay_peer:
 
@@ -201,7 +201,7 @@
         # Maximum number of routes (0 means unlimited).
         maximum_routes: <int; 0-4294967294; default=256000>
 
-        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
         structured_config: <dict>
       evpn_overlay_peers:
 
@@ -217,7 +217,7 @@
         cleartext_password: <str>
         bfd: <bool; default=True>
 
-        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
         structured_config: <dict>
       evpn_overlay_core:
 
@@ -233,7 +233,7 @@
         cleartext_password: <str>
         bfd: <bool; default=True>
 
-        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
         structured_config: <dict>
       mpls_overlay_peers:
 
@@ -249,7 +249,7 @@
         cleartext_password: <str>
         bfd: <bool; default=True>
 
-        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
         structured_config: <dict>
       rr_overlay_peers:
 
@@ -265,7 +265,7 @@
         cleartext_password: <str>
         bfd: <bool; default=True>
 
-        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
         structured_config: <dict>
       ipvpn_gateway_peers:
 
@@ -281,7 +281,7 @@
         cleartext_password: <str>
         bfd: <bool; default=True>
 
-        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
         structured_config: <dict>
       wan_overlay_peers:
 
@@ -327,7 +327,7 @@
           - <str>
         ttl_maximum_hops: <int; default=1>
 
-        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
         structured_config: <dict>
 
       # Configuration options for the peer-group created to peer between AutoVPN RRs or CV Pathfinders.
@@ -368,7 +368,7 @@
           multiplier: <int; 3-50; default=10; required>
         ttl_maximum_hops: <int; default=1>
 
-        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for EOS Config schema.
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
         structured_config: <dict>
 
     # Do not advertise reachability to a prefix until that prefix has been installed in hardware.
