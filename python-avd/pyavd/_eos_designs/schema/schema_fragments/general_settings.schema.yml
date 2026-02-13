@@ -11,7 +11,7 @@ keys:
       table: system-settings
     type: dict
     description: |-
-      General platform-independent settings that do not match any other category.
+      General platform-independent settings.
     keys:
       arp:
         type: dict
