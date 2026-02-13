@@ -303,7 +303,7 @@ router bgp {{ router_bgp.as }}
    no neighbor {{ peer_group.name }} remove-private-as ingress
 {%         endif %}
 {%     endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%     for neighbor in router_bgp.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%         if neighbor.peer_group is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} peer group {{ neighbor.peer_group }}
@@ -483,7 +483,7 @@ router bgp {{ router_bgp.as }}
 {%     elif router_bgp.bgp.redistribute_internal is arista.avd.defined(false) %}
    no bgp redistribute-internal
 {%     endif %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%     for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort(sort_key='prefix') %}
 {%         set aggregate_address_cli = "aggregate-address " ~ aggregate_address.prefix %}
 {%         if aggregate_address.as_set is arista.avd.defined(true) %}
@@ -902,7 +902,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} domain remote
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_evpn.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -1034,7 +1034,7 @@ router bgp {{ router_bgp.as }}
       no neighbor {{ peer_group.name }} activate
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_flow_spec_ipv4.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -1058,7 +1058,7 @@ router bgp {{ router_bgp.as }}
       no neighbor {{ peer_group.name }} activate
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_flow_spec_ipv6.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -1162,7 +1162,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_ipv4.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -1239,7 +1239,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for network in router_bgp.address_family_ipv4.networks | arista.avd.natural_sort(sort_key='prefix') %}
 {%             if network.route_map is arista.avd.defined %}
       network {{ network.prefix }} route-map {{ network.route_map }}
@@ -1579,7 +1579,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer.name }} multi-path
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_ipv4_labeled_unicast.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -1675,7 +1675,7 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.networks is arista.avd.defined %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%             for network in router_bgp.address_family_ipv4_labeled_unicast.networks | arista.avd.natural_sort(sort_key='prefix') %}
 {%                 set network_cli = "network " ~ network.prefix %}
 {%                 if network.route_map is arista.avd.defined %}
@@ -1685,7 +1685,7 @@ router bgp {{ router_bgp.as }}
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.next_hops is arista.avd.defined %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%             for next_hop in router_bgp.address_family_ipv4_labeled_unicast.next_hops | arista.avd.natural_sort(sort_key='ip_address') %}
 {%                 set next_hop_cli = "next-hop " ~ next_hop.ip_address ~ " originate" %}
 {%                 if next_hop.lfib_backup_ip_forwarding is arista.avd.defined(true) %}
@@ -1749,7 +1749,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_ipv4_multicast.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -1895,7 +1895,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_ipv4_sr_te.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -1996,7 +1996,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_ipv6.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -2052,7 +2052,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for network in router_bgp.address_family_ipv6.networks | arista.avd.natural_sort(sort_key='prefix') %}
 {%             if network.route_map is arista.avd.defined %}
       network {{ network.prefix }} route-map {{ network.route_map }}
@@ -2210,7 +2210,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} additional-paths receive
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_ipv6_multicast.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -2231,7 +2231,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for network in router_bgp.address_family_ipv6_multicast.networks | arista.avd.natural_sort(sort_key='prefix') %}
 {%             set network_cli = "network " ~ network.prefix %}
 {%             if network.route_map is arista.avd.defined %}
@@ -2355,7 +2355,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_ipv6_sr_te.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -2399,7 +2399,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} missing-policy direction out action {{ peer_group.missing_policy.direction_out_action }}
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_link_state.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -2470,7 +2470,7 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_path_selection.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -2555,7 +2555,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_vpn_ipv4.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -2638,7 +2638,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in router_bgp.address_family_vpn_ipv6.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} activate
@@ -2732,7 +2732,7 @@ router bgp {{ router_bgp.as }}
 {%                 if address_family.address_family in ['evpn', 'vpn-ipv4', 'vpn-ipv6'] %}
 {%                     if address_family.rcf is arista.avd.defined %}
 {%                         if address_family.vrf_route_filter_rcf is arista.avd.defined and address_family.address_family in ['vpn-ipv4', 'vpn-ipv6'] %}
-{%                             do rcf_cli.append("route-target export " ~ address_family.address_family ~ " rcf " ~ address_family.rcf ~ " vpn-route filter-rcf " ~ "" ~ address_family.vrf_route_filter_rcf) %}
+{%                             do rcf_cli.append("route-target export " ~ address_family.address_family ~ " rcf " ~ address_family.rcf ~ " vrf-route filter-rcf " ~ "" ~ address_family.vrf_route_filter_rcf) %}
 {%                         else %}
 {%                             do rcf_cli.append("route-target export " ~ address_family.address_family ~ " rcf " ~ address_family.rcf) %}
 {%                         endif %}
@@ -2816,7 +2816,7 @@ router bgp {{ router_bgp.as }}
       {{ listen_range_cli }}
 {%             endfor %}
 {%         endif %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for neighbor in vrf.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%             if neighbor.peer_group is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} peer group {{ neighbor.peer_group }}
@@ -2974,7 +2974,7 @@ router bgp {{ router_bgp.as }}
       no neighbor {{ neighbor.ip_address }} remove-private-as ingress
 {%             endif %}
 {%         endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for network in vrf.networks | arista.avd.natural_sort(sort_key='prefix') %}
 {%             if network.route_map is arista.avd.defined %}
       network {{ network.prefix }} route-map {{ network.route_map }}
@@ -2987,7 +2987,7 @@ router bgp {{ router_bgp.as }}
 {%         elif vrf.bgp.redistribute_internal is arista.avd.defined(false) %}
       no bgp redistribute-internal
 {%         endif %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%         for aggregate_address in vrf.aggregate_addresses | arista.avd.natural_sort(sort_key='prefix') %}
 {%             set aggregate_address_cli = "aggregate-address " ~ aggregate_address.prefix %}
 {%             if aggregate_address.as_set is arista.avd.defined(true) %}
@@ -3189,7 +3189,7 @@ router bgp {{ router_bgp.as }}
 {%             if vrf.address_family_flow_spec_ipv4.bgp.missing_policy.direction_out_action is arista.avd.defined %}
          bgp missing-policy direction out action {{ vrf.address_family_flow_spec_ipv4.bgp.missing_policy.direction_out_action }}
 {%             endif %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%             for neighbor in vrf.address_family_flow_spec_ipv4.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%                 if neighbor.activate is arista.avd.defined(true) %}
          neighbor {{ neighbor.ip_address }} activate
@@ -3205,7 +3205,7 @@ router bgp {{ router_bgp.as }}
 {%             if vrf.address_family_flow_spec_ipv6.bgp.missing_policy.direction_out_action is arista.avd.defined %}
          bgp missing-policy direction out action {{ vrf.address_family_flow_spec_ipv6.bgp.missing_policy.direction_out_action }}
 {%             endif %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%             for neighbor in vrf.address_family_flow_spec_ipv6.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%                 if neighbor.activate is arista.avd.defined(true) %}
          neighbor {{ neighbor.ip_address }} activate
@@ -3242,7 +3242,7 @@ router bgp {{ router_bgp.as }}
          bgp additional-paths send {{ vrf.address_family_ipv4.bgp.additional_paths.send }}
 {%                 endif %}
 {%             endif %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%             for neighbor in vrf.address_family_ipv4.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%                 if neighbor.activate is arista.avd.defined(true) %}
          neighbor {{ neighbor.ip_address }} activate
@@ -3299,7 +3299,7 @@ router bgp {{ router_bgp.as }}
          neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%                 endif %}
 {%             endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%             for network in vrf.address_family_ipv4.networks | arista.avd.natural_sort(sort_key='prefix') %}
 {%                 set network_cli = "network " ~ network.prefix %}
 {%                 if network.route_map is arista.avd.defined %}
@@ -3488,7 +3488,7 @@ router bgp {{ router_bgp.as }}
 {%             if vrf.address_family_ipv4_multicast.bgp.additional_paths.receive is arista.avd.defined(true) %}
          bgp additional-paths receive
 {%             endif %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%             for neighbor in vrf.address_family_ipv4_multicast.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%                 if neighbor.activate is arista.avd.defined(true) %}
          neighbor {{ neighbor.ip_address }} activate
@@ -3509,7 +3509,7 @@ router bgp {{ router_bgp.as }}
          neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%                 endif %}
 {%             endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%             for network in vrf.address_family_ipv4_multicast.networks | arista.avd.natural_sort(sort_key='prefix') %}
 {%                 set network_cli = "network " ~ network.prefix %}
 {%                 if network.route_map is arista.avd.defined %}
@@ -3647,7 +3647,7 @@ router bgp {{ router_bgp.as }}
          bgp additional-paths send {{ vrf.address_family_ipv6.bgp.additional_paths.send }}
 {%                 endif %}
 {%             endif %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%             for neighbor in vrf.address_family_ipv6.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%                 if neighbor.activate is arista.avd.defined(true) %}
          neighbor {{ neighbor.ip_address }} activate
@@ -3693,7 +3693,7 @@ router bgp {{ router_bgp.as }}
          neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%                 endif %}
 {%             endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%             for network in vrf.address_family_ipv6.networks | arista.avd.natural_sort(sort_key='prefix') %}
 {%                 set network_cli = "network " ~ network.prefix %}
 {%                 if network.route_map is arista.avd.defined %}
@@ -3840,7 +3840,7 @@ router bgp {{ router_bgp.as }}
 {%             if vrf.address_family_ipv6_multicast.bgp.additional_paths.receive is arista.avd.defined(true) %}
          bgp additional-paths receive
 {%             endif %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%             for neighbor in vrf.address_family_ipv6_multicast.neighbors | arista.avd.natural_sort(sort_key='ip_address') %}
 {%                 if neighbor.activate is arista.avd.defined(true) %}
          neighbor {{ neighbor.ip_address }} activate
@@ -3861,7 +3861,7 @@ router bgp {{ router_bgp.as }}
          neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%                 endif %}
 {%             endfor %}
-{# Need to check for better sorting mechanism for IP Addresses #}
+{# Need to check for better sorting mechanism for IPv4/IPv6 Addresses #}
 {%             for network in vrf.address_family_ipv6_multicast.networks | arista.avd.natural_sort(sort_key='prefix') %}
 {%                 set network_cli = "network " ~ network.prefix %}
 {%                 if network.route_map is arista.avd.defined %}
