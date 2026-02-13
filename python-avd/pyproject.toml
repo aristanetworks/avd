@@ -81,6 +81,12 @@ include = ["pyavd*"]
 [tool.setuptools.dynamic]
 version = {attr = "pyavd.__version__"}
 
+[dependency-groups]
+# helping pdm generate the flat list of requirements in pre-commit
+self = [
+  "pyavd==6.0.0.dev8"
+]
+
 [tool.black]
 # Black has been replaced with Ruff.
 # This section should be removed later, but kept here to avoid IDE extensions from messing up the code.
