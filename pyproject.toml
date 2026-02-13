@@ -257,7 +257,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.0.0-dev8"
+current_version = "6.0.0-dev9"
 
 allow_dirty = true
 commit = false
@@ -293,8 +293,8 @@ replace = "version: {new_version}"
 
 [[tool.bumpversion.files]]
 filename = "python-avd/pyproject.toml"
-search = 'pyavd=="{current_version}"'
-replace = 'pyavd=="{new_version}"'
+search = 'pyavd=={current_version}'
+replace = 'pyavd=={new_version}'
 parse = """(?x)
     (?P<major>0|[1-9]\\d*)\\.
     (?P<minor>0|[1-9]\\d*)\\.
