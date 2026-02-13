@@ -34,10 +34,10 @@ All relevant `structured_config` sections will be merged.
   < endpoint_1 >:
     adapters:
       - <...>
-        # Custom structured config added under ethernet_interfaces.<interface> for EOS Config
+        # Custom structured config added under ethernet_interfaces.<interface> for the EOS Config schema.
         structured_config: < dictionary >
         port_channel:
-          # Custom structured config added under port_channel_interfaces.<interface> for EOS Config
+          # Custom structured config added under port_channel_interfaces.<interface> for the EOS Config schema.
           structured_config: < dictionary >
 ```
 
@@ -50,19 +50,19 @@ Only the most specific `structured_config` key will be used
 ```yaml
 < node_type_key >:
   defaults:
-    # Custom structured config for EOS Config
+    # Custom structured config for the EOS Config schema.
     structured_config: < dictionary >
   nodes:
     < node >:
-      # Custom structured config for EOS Config
+      # Custom structured config for the EOS Config schema.
       structured_config: < dictionary >
   node_groups:
     < node_group >:
-      # Custom structured config for EOS Config
+      # Custom structured config for the EOS Config schema.
       structured_config: < dictionary >
       nodes:
         < node >:
-          # Custom structured config for EOS Config
+          # Custom structured config for the EOS Config schema.
           # Overrides the setting on node_group level.
           structured_config: < dictionary >
 ```
@@ -77,18 +77,18 @@ All relevant `structured_config` sections will be merged. Note that setting `str
 tenants:
   vrfs:
     < vrf >:
-      # Custom structured config for EOS Config
+      # Custom structured config for the EOS Config schema.
       structured_config: < dictionary >
       bgp:
-        # Custom structured config added under router_bgp.vrfs.<vrf> for EOS Config
+        # Custom structured config added under router_bgp.vrfs.<vrf> for the EOS Config schema.
         structured_config: < dictionary >
       svis:
         < vlan >:
-          # Custom structured config added under vlan_interfaces.<interface> for EOS Config
+          # Custom structured config added under vlan_interfaces.<interface> for the EOS Config schema.
           structured_config: < dictionary >
           nodes:
             < node >:
-              # Custom structured config added under vlan_interfaces.<interface> for EOS Config
+              # Custom structured config added under vlan_interfaces.<interface> for the EOS Config schema.
               # Overrides the setting on SVI level.
               structured_config: < dictionary >
 ```
@@ -248,7 +248,7 @@ by `eos_designs` generated configuration. This behavior was confusing and could 
 The only way to override `eos_designs` output values is to use `custom_structured_configuration` as described below. This configuration will be merged on top of the `eos_designs` generated variables.
 
 To demonstrate the various behaviors, the following example focus on EOS Config `ip_name_server` key as it is quite straightforward.
-It is configured by `dns_settings` for AVD Design inputs and by `ip_name_server` for EOS Config inputs.
+It is configured by `dns_settings` for the AVD Design inputs and by `ip_name_server` for the EOS Config inputs.
 The assumption is that you are running `eos_designs` and `eos_cli_config_gen` roles one after the other.
 
 #### AVD Design variables only
