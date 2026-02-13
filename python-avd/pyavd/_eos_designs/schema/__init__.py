@@ -89496,7 +89496,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     general_settings: GeneralSettings
     """
-    General platform-independent settings that do not match any other category.
+    General platform-independent settings.
 
     Subclass of AvdModel.
     """
@@ -91512,7 +91512,7 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of AvdModel.
                 general_settings:
-                   General platform-independent settings that do not match any other category.
+                   General platform-independent settings.
 
                    Subclass of AvdModel.
                 generate_cv_tags:

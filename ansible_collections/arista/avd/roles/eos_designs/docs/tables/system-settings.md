@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>default_igmp_snooping_enabled</samp>](## "default_igmp_snooping_enabled") | Boolean |  | `True` |  | When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.<br> |
     | [<samp>default_interface_mtu</samp>](## "default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Can be overridden per platform under platform settings.<br> |
-    | [<samp>general_settings</samp>](## "general_settings") | Dictionary |  |  |  | General platform-independent settings that do not match any other category. |
+    | [<samp>general_settings</samp>](## "general_settings") | Dictionary |  |  |  | General platform-independent settings. |
     | [<samp>&nbsp;&nbsp;arp</samp>](## "general_settings.arp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;persistent</samp>](## "general_settings.arp.persistent") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "general_settings.arp.persistent.enabled") | Boolean | Required |  |  | Restore the ARP cache after reboot. |
@@ -85,7 +85,7 @@
     # Can be overridden per platform under platform settings.
     default_interface_mtu: <int; 68-65535>
 
-    # General platform-independent settings that do not match any other category.
+    # General platform-independent settings.
     general_settings:
       arp:
         persistent:

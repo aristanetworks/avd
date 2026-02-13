@@ -3028,8 +3028,7 @@ keys:
     documentation_options:
       table: system-settings
     type: dict
-    description: General platform-independent settings that do not match any other
-      category.
+    description: General platform-independent settings.
     keys:
       arp:
         type: dict
