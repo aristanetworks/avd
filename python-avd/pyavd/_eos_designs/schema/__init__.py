@@ -22536,6 +22536,7 @@ class EosDesigns(EosDesignsRootModel):
             "uucp",
         ]
         _fields: ClassVar[dict] = {
+            "use_local_interface_cli": {"type": bool},
             "hosts": {"type": Hosts},
             "vrfs": {"type": Vrfs},
             "console": {"type": str},
@@ -22550,6 +22551,12 @@ class EosDesigns(EosDesignsRootModel):
             "event": {"type": EosCliConfigGen.Logging.Event},
             "level": {"type": EosCliConfigGen.Logging.Level},
         }
+        use_local_interface_cli: bool | None
+        """
+        Use `logging local-interface <interface>` CLI instead of the deprecated `logging source-interface
+        <interface>` CLI.
+        The new CLI was introduced in EOS version 4.33.
+        """
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
         vrfs: Vrfs
@@ -22576,6 +22583,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
+                use_local_interface_cli: bool | None | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 console: Console | None | UndefinedType = Undefined,
@@ -22597,6 +22605,10 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    use_local_interface_cli:
+                       Use `logging local-interface <interface>` CLI instead of the deprecated `logging source-interface
+                       <interface>` CLI.
+                       The new CLI was introduced in EOS version 4.33.
                     hosts: Subclass of AvdList with `HostsItem` items.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     console: Console logging severity level.

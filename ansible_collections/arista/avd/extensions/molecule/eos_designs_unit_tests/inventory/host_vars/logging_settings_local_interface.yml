@@ -1,0 +1,67 @@
+---
+type: spine
+
+spine:
+  nodes:
+    - name: logging_settings_local_interface
+      mgmt_ip: 192.168.66.23/24
+      id: 2
+      loopback_ipv4_pool: 1.2.3.4/24
+      bgp_as: 65000
+      inband_mgmt_vrf: inband_mgmt_vrf
+      inband_mgmt_interface: Vlan123
+
+logging_settings:
+  # Test the new use_local_interface_cli feature
+  use_local_interface_cli: true
+  console: errors
+  monitor: disabled
+  buffered:
+    size: 1000000
+    level: warnings
+  repeat_messages: true
+  trap: disabled
+  synchronous:
+    level: warnings
+  format:
+    timestamp: traditional year timezone
+    rfc5424: true
+    hostname: fqdn
+  hosts:
+    # Test: No VRF specified; should use VRF from default_mgmt_method with local-interface CLI
+    - name: 30.30.30.7
+      protocol: tcp
+      ports:
+        - 100
+        - 200
+    # Test: Explicitly set a VRF with local-interface CLI
+    - name: 10.10.10.7
+      vrf: mgt0
+    # Test: Explicitly set VRF to "default" with local-interface CLI
+    - name: 2001:db8::40:7
+      vrf: default
+      ports:
+        - 300
+        - 400
+    # Test: Use VRF from management interface with local-interface CLI
+    - name: sslhost.local
+      vrf: use_mgmt_interface_vrf
+      protocol: tls
+      ssl_profile: logging-ssl
+      ports:
+        - 6515
+    # Test: Use VRF from inband management with local-interface CLI
+    - name: syslog.server.local
+      vrf: use_inband_mgmt_vrf
+  vrfs:
+    - name: mgt0
+      source_interface: Management0
+    - name: default
+      source_interface: Loopback0
+  event:
+    congestion_drops_interval: 10
+    global_link_status: false
+  level:
+    - facility: BGP
+      severity: 0
+
