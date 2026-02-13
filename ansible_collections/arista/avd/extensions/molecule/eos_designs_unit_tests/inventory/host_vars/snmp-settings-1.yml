@@ -37,6 +37,16 @@ snmp_settings:
         auth_passphrase: clearauth # to get from vault in real life
         priv: aes192
         priv_passphrase: clearpriv # to get from vault in real life
+    - name: usertest-auth-only
+      v3:
+        group: usergroup
+        auth: sha
+        auth_passphrase: clearauth # to get from vault in real life
+        # No priv configured - tests the case where priv is None
+    - name: usertest-v1
+      v1_group: v1group
+    - name: usertest-v2c
+      v2c_group: v2cgroup
 
   hosts:
     - host: 10.6.75.121
