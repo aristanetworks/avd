@@ -6,6 +6,7 @@ from typing import Protocol
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, StructuredConfigGeneratorProtocol
 
 from .application_traffic_recognition import ApplicationTrafficRecognitionMixin
+from .arp import ArpMixin
 from .dps_interfaces import DpsInterfacesMixin
 from .eos_cli import EosCliMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
@@ -80,6 +81,7 @@ class AvdStructuredConfigNetworkServicesProtocol(
     RouterMulticastMixin,
     RouterPimSparseModeMixin,
     StandardAccessListsMixin,
+    ArpMixin,
     TunnelInterfacesMixin,
     MonitorConnectivityMixin,
     MetadataMixin,
