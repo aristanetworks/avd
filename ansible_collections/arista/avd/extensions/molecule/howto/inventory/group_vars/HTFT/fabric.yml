@@ -1,0 +1,12 @@
+---
+# Fabric Topology How-To Guide
+# Fabric-wide settings that apply to all devices
+
+fabric_name: FABRIC # (1)!
+
+# Define underlay and overlay routing protocols
+underlay_routing_protocol: ebgp # (2)!
+overlay_routing_protocol: ebgp # (3)!
+
+# P2P uplinks MTU - use 1500 for vEOS-lab/cEOS, 9214 for production
+p2p_uplinks_mtu: 1500 # (4)!
