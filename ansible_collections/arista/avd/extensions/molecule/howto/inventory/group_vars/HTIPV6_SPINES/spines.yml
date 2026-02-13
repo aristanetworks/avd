@@ -1,0 +1,18 @@
+---
+# How-To IPv6 Spine Configuration
+
+spine:
+  defaults:
+    platform: ceos
+    # IPv4 pool for BGP Router ID (required for IPv6 numbered underlay)
+    router_id_pool: 10.255.0.0/27
+    # IPv6 pool for Loopback0 addresses
+    loopback_ipv6_pool: 2001:db8:1::/48
+    bgp_as: 65100
+  nodes:
+    - name: htipv6-spine1
+      id: 1
+      mgmt_ip: 172.16.3.11/24
+    - name: htipv6-spine2
+      id: 2
+      mgmt_ip: 172.16.3.12/24

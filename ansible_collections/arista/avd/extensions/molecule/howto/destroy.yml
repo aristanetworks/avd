@@ -26,3 +26,4 @@
         - connected_endpoints/artifacts
         - network_services/artifacts
         - node_types/artifacts
+        - ipv6/artifacts

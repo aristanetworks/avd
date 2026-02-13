@@ -92,3 +92,45 @@ artifacts:
       - header: "interface Loopback0"
     artifact: "spine2-loopback.cfg"
     output_dir: "ip_addressing/artifacts/"
+
+  # IPv6 artifacts
+  - file: inventory/intended/configs/htipv6-spine1.cfg
+    sections:
+      - header: "interface Loopback0"
+    artifact: "spine1-loopback.cfg"
+    output_dir: "ipv6/artifacts/"
+
+  - file: inventory/intended/configs/htipv6-spine2.cfg
+    sections:
+      - header: "interface Loopback0"
+    artifact: "spine2-loopback.cfg"
+    output_dir: "ipv6/artifacts/"
+
+  - file: inventory/intended/configs/htipv6-leaf1.cfg
+    sections:
+      - header: "interface Loopback0"
+      - header: "interface Loopback1"
+    artifact: "leaf1-loopback.cfg"
+    output_dir: "ipv6/artifacts/"
+
+  - file: inventory/intended/configs/htipv6-leaf1.cfg
+    sections:
+      - header: "interface Ethernet1"
+      - header: "interface Ethernet2"
+    artifact: "leaf1-uplinks.cfg"
+    output_dir: "ipv6/artifacts/"
+
+  - file: inventory/intended/configs/htipv6-leaf1.cfg
+    sections:
+      - header: "vlan 4093"
+      - header: "vlan 4094"
+      - header: "interface Vlan4093"
+      - header: "interface Vlan4094"
+    artifact: "leaf1-mlag.cfg"
+    output_dir: "ipv6/artifacts/"
+
+  - file: inventory/intended/configs/htipv6-spine1.cfg
+    sections:
+      - header: "router bgp 65100"
+    artifact: "spine1-bgp.cfg"
+    output_dir: "ipv6/artifacts/"
