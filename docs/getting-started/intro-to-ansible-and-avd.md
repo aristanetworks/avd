@@ -452,7 +452,6 @@ ansible-playbook playbook.yml
 This will:
 
 - Create a CloudVision Configlet for each device in the inventory, containing the device's entire configuration.
-- Build out containers within CloudVision that represent the hierarchy of groups in the inventory.
 - Create tasks to apply the new configuration to each device within the inventory.
 
 At this point, the changes can be reviewed, approved, and executed following existing company requirements through CloudVision.
