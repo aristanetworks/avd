@@ -358,7 +358,7 @@
         },
         "hide_keys": {
           "type": "boolean",
-          "description": "Prevent keys of the dict from being displayed in the generated documentation.\nThis is used for structured_config where we wish to avoid displaying the full the EOS Config schema everywhere."
+          "description": "Prevent keys of the dict from being displayed in the generated documentation.\nThis is used for structured_config where we wish to avoid displaying the full EOS Config schema everywhere."
         }
       },
       "additionalProperties": false
