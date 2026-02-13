@@ -16,6 +16,7 @@ keys:
         description: |-
           Use `logging local-interface <interface>` CLI instead of the deprecated `logging source-interface <interface>` CLI.
           The new CLI was introduced in EOS version 4.33.
+        default: false
       hosts:
         type: list
         required: true

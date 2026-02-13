@@ -358,9 +358,6 @@ class AvdStructuredConfigBaseProtocol(
         # Temporary structure to detect source interface conflicts
         vrf_logging_config = EosCliConfigGen.Logging.Vrfs()
 
-        # Determine which interface attribute to use based on use_local_interface_cli
-        use_local_interface = settings.use_local_interface_cli or False
-
         for host in settings.hosts:
             # Determine the correct VRF and source interface for the host
             host_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
@@ -375,7 +372,7 @@ class AvdStructuredConfigBaseProtocol(
                 # Add to local tmp object to detect conflicts.
                 vrf_logging_config.append_new(name=host_vrf, source_interface=source_interface)
                 # Set either local_interface or source_interface based on use_local_interface_cli
-                if use_local_interface:
+                if settings.use_local_interface_cli:
                     logging_vrf.local_interface = source_interface
                 else:
                     logging_vrf.source_interface = source_interface

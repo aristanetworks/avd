@@ -22536,7 +22536,7 @@ class EosDesigns(EosDesignsRootModel):
             "uucp",
         ]
         _fields: ClassVar[dict] = {
-            "use_local_interface_cli": {"type": bool},
+            "use_local_interface_cli": {"type": bool, "default": False},
             "hosts": {"type": Hosts},
             "vrfs": {"type": Vrfs},
             "console": {"type": str},
@@ -22551,11 +22551,13 @@ class EosDesigns(EosDesignsRootModel):
             "event": {"type": EosCliConfigGen.Logging.Event},
             "level": {"type": EosCliConfigGen.Logging.Level},
         }
-        use_local_interface_cli: bool | None
+        use_local_interface_cli: bool
         """
         Use `logging local-interface <interface>` CLI instead of the deprecated `logging source-interface
         <interface>` CLI.
         The new CLI was introduced in EOS version 4.33.
+
+        Default value: `False`
         """
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
@@ -22583,7 +22585,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                use_local_interface_cli: bool | None | UndefinedType = Undefined,
+                use_local_interface_cli: bool | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 console: Console | None | UndefinedType = Undefined,
