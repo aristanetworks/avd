@@ -417,6 +417,7 @@ For a list of available methods, refer to the pyavd [documentation](../../pyavd/
 | Unexpected VTEP IP | MLAG pair not in same node_group | Move MLAG peers to same node_group |
 | Pool exhausted | Too many nodes for pool size | Use larger pool or multiple subnets |
 | Loopback IP not updating | Static IP override in use or more specific pools | Remove override or check pool definitions |
+| Duplicate IP addresses on uplinks | Leafs have different numbers of uplinks | Set `max_uplink_switches` and/or `max_parallel_uplinks` to reserve IP space. |
 
 ## Reference
 
