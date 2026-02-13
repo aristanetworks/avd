@@ -360,7 +360,7 @@ $defs:
         type: dict
         relaxed_validation: true
         description: |
-          Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+          Custom structured config added under vlan_interfaces.[name=<interface>] for EOS Config schema.
         documentation_options:
           hide_keys: true
         $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items"

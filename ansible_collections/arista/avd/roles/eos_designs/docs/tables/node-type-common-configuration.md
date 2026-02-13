@@ -26,7 +26,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset</samp>](## "<node_type_keys.key>.defaults.lacp_port_id_range.offset") | Integer |  | `0` |  | Offset is used to avoid overlapping port-id ranges of different switches.<br>Useful when a "connected-endpoint" is connected to switches in different "node_groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;always_configure_ip_routing</samp>](## "<node_type_keys.key>.defaults.always_configure_ip_routing") | Boolean |  | `False` |  | Force configuration of "ip routing" even on L2 devices.<br>Use this to retain behavior of AVD versions below 4.0.0.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.defaults.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.defaults.structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.defaults.structured_config") | Dictionary |  |  |  | Custom structured config for EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;kernel_ecmp_cli</samp>](## "<node_type_keys.key>.defaults.kernel_ecmp_cli") | Boolean |  | `True` |  | Use EOS CLI to configure kernel forwarding ECMP programming.<br>For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.<br>- For newer EOS versions (starting 4.33.2) use the proper CLI.<br>- For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker_type</samp>](## "<node_type_keys.key>.defaults.flow_tracker_type") | String |  |  | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the flow tracker type.<br>Override the `default_flow_tracker_type` set at the `node_type_key` level.<br>`default_flow_tracker_type` default value is `sampled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "<node_type_keys.key>.defaults.campus") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
@@ -55,7 +55,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].lacp_port_id_range.offset") | Integer |  | `0` |  | Offset is used to avoid overlapping port-id ranges of different switches.<br>Useful when a "connected-endpoint" is connected to switches in different "node_groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always_configure_ip_routing</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].always_configure_ip_routing") | Boolean |  | `False` |  | Force configuration of "ip routing" even on L2 devices.<br>Use this to retain behavior of AVD versions below 4.0.0.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].structured_config") | Dictionary |  |  |  | Custom structured config for EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kernel_ecmp_cli</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].kernel_ecmp_cli") | Boolean |  | `True` |  | Use EOS CLI to configure kernel forwarding ECMP programming.<br>For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.<br>- For newer EOS versions (starting 4.33.2) use the proper CLI.<br>- For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker_type</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].flow_tracker_type") | String |  |  | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the flow tracker type.<br>Override the `default_flow_tracker_type` set at the `node_type_key` level.<br>`default_flow_tracker_type` default value is `sampled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].campus") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
@@ -80,7 +80,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset</samp>](## "<node_type_keys.key>.node_groups.[].lacp_port_id_range.offset") | Integer |  | `0` |  | Offset is used to avoid overlapping port-id ranges of different switches.<br>Useful when a "connected-endpoint" is connected to switches in different "node_groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always_configure_ip_routing</samp>](## "<node_type_keys.key>.node_groups.[].always_configure_ip_routing") | Boolean |  | `False` |  | Force configuration of "ip routing" even on L2 devices.<br>Use this to retain behavior of AVD versions below 4.0.0.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.node_groups.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.node_groups.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.node_groups.[].structured_config") | Dictionary |  |  |  | Custom structured config for EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kernel_ecmp_cli</samp>](## "<node_type_keys.key>.node_groups.[].kernel_ecmp_cli") | Boolean |  | `True` |  | Use EOS CLI to configure kernel forwarding ECMP programming.<br>For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.<br>- For newer EOS versions (starting 4.33.2) use the proper CLI.<br>- For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker_type</samp>](## "<node_type_keys.key>.node_groups.[].flow_tracker_type") | String |  |  | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the flow tracker type.<br>Override the `default_flow_tracker_type` set at the `node_type_key` level.<br>`default_flow_tracker_type` default value is `sampled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "<node_type_keys.key>.node_groups.[].campus") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
@@ -107,7 +107,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset</samp>](## "<node_type_keys.key>.nodes.[].lacp_port_id_range.offset") | Integer |  | `0` |  | Offset is used to avoid overlapping port-id ranges of different switches.<br>Useful when a "connected-endpoint" is connected to switches in different "node_groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always_configure_ip_routing</samp>](## "<node_type_keys.key>.nodes.[].always_configure_ip_routing") | Boolean |  | `False` |  | Force configuration of "ip routing" even on L2 devices.<br>Use this to retain behavior of AVD versions below 4.0.0.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<node_type_keys.key>.nodes.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.nodes.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.nodes.[].structured_config") | Dictionary |  |  |  | Custom structured config for EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kernel_ecmp_cli</samp>](## "<node_type_keys.key>.nodes.[].kernel_ecmp_cli") | Boolean |  | `True` |  | Use EOS CLI to configure kernel forwarding ECMP programming.<br>For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.<br>- For newer EOS versions (starting 4.33.2) use the proper CLI.<br>- For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker_type</samp>](## "<node_type_keys.key>.nodes.[].flow_tracker_type") | String |  |  | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the flow tracker type.<br>Override the `default_flow_tracker_type` set at the `node_type_key` level.<br>`default_flow_tracker_type` default value is `sampled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "<node_type_keys.key>.nodes.[].campus") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
@@ -134,7 +134,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset</samp>](## "device_profiles.[].lacp_port_id_range.offset") | Integer |  | `0` |  | Offset is used to avoid overlapping port-id ranges of different switches.<br>Useful when a "connected-endpoint" is connected to switches in different "node_groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;always_configure_ip_routing</samp>](## "device_profiles.[].always_configure_ip_routing") | Boolean |  | `False` |  | Force configuration of "ip routing" even on L2 devices.<br>Use this to retain behavior of AVD versions below 4.0.0.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "device_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "device_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "device_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config for EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;kernel_ecmp_cli</samp>](## "device_profiles.[].kernel_ecmp_cli") | Boolean |  | `True` |  | Use EOS CLI to configure kernel forwarding ECMP programming.<br>For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.<br>- For newer EOS versions (starting 4.33.2) use the proper CLI.<br>- For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker_type</samp>](## "device_profiles.[].flow_tracker_type") | String |  |  | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the flow tracker type.<br>Override the `default_flow_tracker_type` set at the `node_type_key` level.<br>`default_flow_tracker_type` default value is `sampled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "device_profiles.[].campus") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
@@ -161,7 +161,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset</samp>](## "devices.[].lacp_port_id_range.offset") | Integer |  | `0` |  | Offset is used to avoid overlapping port-id ranges of different switches.<br>Useful when a "connected-endpoint" is connected to switches in different "node_groups".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;always_configure_ip_routing</samp>](## "devices.[].always_configure_ip_routing") | Boolean |  | `False` |  | Force configuration of "ip routing" even on L2 devices.<br>Use this to retain behavior of AVD versions below 4.0.0.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "devices.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "devices.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "devices.[].structured_config") | Dictionary |  |  |  | Custom structured config for EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;kernel_ecmp_cli</samp>](## "devices.[].kernel_ecmp_cli") | Boolean |  | `True` |  | Use EOS CLI to configure kernel forwarding ECMP programming.<br>For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.<br>- For newer EOS versions (starting 4.33.2) use the proper CLI.<br>- For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker_type</samp>](## "devices.[].flow_tracker_type") | String |  |  | Valid Values:<br>- <code>sampled</code><br>- <code>hardware</code> | Set the flow tracker type.<br>Override the `default_flow_tracker_type` set at the `node_type_key` level.<br>`default_flow_tracker_type` default value is `sampled`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "devices.[].campus") | String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature. |
@@ -237,7 +237,7 @@
         # EOS CLI rendered directly on the root level of the final EOS configuration.
         raw_eos_cli: <str>
 
-        # Custom structured config for eos_cli_config_gen.
+        # Custom structured config for EOS Config schema.
         structured_config: <dict>
 
         # Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -343,7 +343,7 @@
               # EOS CLI rendered directly on the root level of the final EOS configuration.
               raw_eos_cli: <str>
 
-              # Custom structured config for eos_cli_config_gen.
+              # Custom structured config for EOS Config schema.
               structured_config: <dict>
 
               # Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -436,7 +436,7 @@
           # EOS CLI rendered directly on the root level of the final EOS configuration.
           raw_eos_cli: <str>
 
-          # Custom structured config for eos_cli_config_gen.
+          # Custom structured config for EOS Config schema.
           structured_config: <dict>
 
           # Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -535,7 +535,7 @@
           # EOS CLI rendered directly on the root level of the final EOS configuration.
           raw_eos_cli: <str>
 
-          # Custom structured config for eos_cli_config_gen.
+          # Custom structured config for EOS Config schema.
           structured_config: <dict>
 
           # Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -634,7 +634,7 @@
         # EOS CLI rendered directly on the root level of the final EOS configuration.
         raw_eos_cli: <str>
 
-        # Custom structured config for eos_cli_config_gen.
+        # Custom structured config for EOS Config schema.
         structured_config: <dict>
 
         # Use EOS CLI to configure kernel forwarding ECMP programming.
@@ -733,7 +733,7 @@
         # EOS CLI rendered directly on the root level of the final EOS configuration.
         raw_eos_cli: <str>
 
-        # Custom structured config for eos_cli_config_gen.
+        # Custom structured config for EOS Config schema.
         structured_config: <dict>
 
         # Use EOS CLI to configure kernel forwarding ECMP programming.

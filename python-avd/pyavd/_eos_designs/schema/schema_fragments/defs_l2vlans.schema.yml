@@ -139,7 +139,7 @@ $defs:
               type: dict
               relaxed_validation: true
               description: |
-                Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
+                Custom structured config added under router_bgp.vlans.[id=<vlan>] for EOS Config schema.
                 This configuration will not be applied to vlan aware bundles.
               documentation_options:
                 hide_keys: true
