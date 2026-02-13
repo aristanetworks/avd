@@ -35,6 +35,10 @@ dist/
 .pytest_cache/
 ## pyenv
 .python-version
+## direnv
+.envrc
+## pyenv
+uv.lock
 ## .vscode/*
 .vscode/
 

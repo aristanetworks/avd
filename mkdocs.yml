@@ -186,6 +186,7 @@ nav:
       - ISIS-LDP IPVPN: ansible_collections/arista/avd/examples/isis-ldp-ipvpn/README.md
       - CV Pathfinder: ansible_collections/arista/avd/examples/cv-pathfinder/README.md
   - How-to Guides:
+      - Fabric Topology: docs/howto/fabric_topology/README.md
       - Connected Endpoints: docs/howto/connected_endpoints/README.md
       - Node Types: docs/howto/node_types/README.md
       - Network Services: docs/howto/network_services/README.md
