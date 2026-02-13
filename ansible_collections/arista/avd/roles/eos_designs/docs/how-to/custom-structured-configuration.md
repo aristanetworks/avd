@@ -6,7 +6,7 @@
 
 # Custom Structured Configuration
 
-With Custom Structured Configuration the user can override built-in `eos_designs` functionality or add extra knobs in the structured configuration to be picked up by `eos_cli_config_gen` role.
+With Custom Structured Configuration the user can override built-in `eos_designs` functionality or add extra knobs in the structured configuration to be picked up by the `eos_cli_config_gen` role.
 
 There are multiple ways of supplying Custom Structured Configuration and they can all be combined:
 
