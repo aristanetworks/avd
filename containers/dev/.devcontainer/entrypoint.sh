@@ -16,7 +16,7 @@ if [ -z "$(command -v ansible)" ]; then
   # otherwise install requirements and collection from container workspace
   elif [ -f ${CONTAINER_WORKSPACE}/python-avd/pyavd/__init__.py ]; then
     # Install pyavd from source
-    pip install --editable "${CONTAINER_WORKSPACE}/python-avd[ansible]"
+    pip install --group "${CONTAINER_WORKSPACE}/pyproject.toml:dev" --editable "${CONTAINER_WORKSPACE}/python-avd[ansible]"
     # Install arista.avd collection from source
     ansible-galaxy collection install --force ${CONTAINER_WSF_AVD_PATH}
   fi
