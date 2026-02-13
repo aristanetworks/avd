@@ -2446,6 +2446,8 @@ mcs client
 | remote | DEADBEEFCAFE123456 | 2.2.2.2 | 1337 |
 | remote | 424242424242DEAD | 42.42.42.42 | - |
 | remote | 424242424242DEAD6666 | 42.42.42.42 | 666 |
+| remote | 5172697374615F6971 | aaa | - |
+| remote | 6172697374615F6971 | ZZZ | - |
 
 #### SNMP ACLs
 
@@ -2562,6 +2564,8 @@ snmp-server engineID remote 1.1.1.1 6172697374615F6970
 snmp-server engineID remote 2.2.2.2 udp-port 1337 DEADBEEFCAFE123456
 snmp-server engineID remote 42.42.42.42 424242424242DEAD
 snmp-server engineID remote 42.42.42.42 udp-port 666 424242424242DEAD6666
+snmp-server engineID remote ZZZ 6172697374615F6971
+snmp-server engineID remote aaa 5172697374615F6971
 snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha <removed>
 snmp-server user REMOTE-USER-IP-ONLY GRP-REMOTE remote 42.42.42.42 v3
 snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 v1

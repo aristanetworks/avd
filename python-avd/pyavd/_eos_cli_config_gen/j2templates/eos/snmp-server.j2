@@ -123,7 +123,7 @@ snmp-server user {{ user.name }} {{ user.v2c_group }} v2c
 {{ user_cli }}
 {%         endif %}
 {%     endfor %}
-{%     for engine_id in snmp_server.engine_ids.remotes | arista.avd.natural_sort('address') %}
+{%     for engine_id in snmp_server.engine_ids.remotes | arista.avd.natural_sort(sort_key='address', ignore_case=false) %}
 {%         set remote_engine_ids_cli =  "snmp-server engineID remote " ~ engine_id.address %}
 {%         if engine_id.udp_port is arista.avd.defined %}
 {%             set remote_engine_ids_cli =  remote_engine_ids_cli ~ " udp-port " ~  engine_id.udp_port %}
