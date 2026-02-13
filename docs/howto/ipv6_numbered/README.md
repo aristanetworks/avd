@@ -8,56 +8,25 @@
 
 ## Introduction
 
-AVD provides comprehensive IPv6 support for building modern dual-stack or IPv6-only network fabrics. This guide covers the different IPv6 deployment modes, configuration options, and best practices for implementing IPv6 in your Arista network using AVD.
+AVD provides comprehensive IPv6 support for building modern dual-stack or IPv6-only network fabrics. This guide covers IPv6 numbered underlay configuration, pool types, and best practices for implementing IPv6 in your Arista network using AVD.
 
 This guide covers:
 
-- IPv6 underlay with RFC 5549 (IPv6 link-local with IPv4 NLRI)
 - Pure IPv6 numbered underlay
 - IPv6 pool configuration for all fabric components
 - MLAG IPv6 peering
 - IPv6 prefix length customization
 
-## IPv6 Deployment Modes
+!!! note "RFC 5549 Not Covered"
+    This guide focuses on IPv6 numbered underlay. RFC 5549 (IPv6 link-local with IPv4 NLRI) is not covered here.
 
-AVD supports two primary IPv6 underlay modes:
-
-| Mode | Description | Use Case |
-| ---- | ----------- | -------- |
-| RFC 5549 | IPv6 link-local addresses with IPv4 route advertisements | Transition to IPv6, simplified addressing |
-| IPv6 Numbered | Full IPv6 addressing for underlay and overlay | Pure IPv6 deployments |
-
-### RFC 5549 Mode
-
-RFC 5549 allows advertising IPv4 prefixes over IPv6 next-hops. This simplifies IP address management by using IPv6 link-local addresses for P2P links while maintaining IPv4 VTEP addresses.
-
-```yaml title="RFC 5549 Configuration"
-underlay_ipv6: true
-underlay_rfc5549: true
-
-spine:
-  defaults:
-    loopback_ipv4_pool: 10.255.0.0/27
-    loopback_ipv6_pool: 2001:db8:1::/48
-
-l3leaf:
-  defaults:
-    loopback_ipv4_pool: 10.255.0.0/27
-    loopback_ipv4_offset: # offset >- uplink switches
-    vtep_loopback_ipv4_pool: 10.255.1.0/27
-    mlag_peer_ipv4_pool: 10.255.2.0/27
-    mlag_peer_l3_ipv4_pool: 10.255.3.0/27
-    loopback_ipv6_pool: 2001:db8:1::/48
-    loopback_ipv6_offset: # offset >- uplink switches
-```
-
-### IPv6 Numbered Mode
+## IPv6 Numbered Mode
 
 Pure IPv6 numbered underlay configures explicit IPv6 addresses on all fabric links, loopbacks, and MLAG peerings.
 
 ```yaml hl_lines="28 29 32 33" title="IPv6 Numbered Configuration"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIPV6/fabric.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIPV6_NUMBERED/fabric.yml
 --8<--
 ```
 
@@ -94,19 +63,19 @@ Spines require `router_id_pool` for BGP Router ID and `loopback_ipv6_pool` for L
 
 ```yaml hl_lines="8 10" title="Spine IPv6 Loopbacks"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIPV6_SPINES/spines.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIPV6_NUMBERED_SPINES/spines.yml
 --8<--
 ```
 
-```cli title="htipv6-spine1 Loopback0"
+```cli title="htipv6-numbered-spine1 Loopback0"
 --8<--
-docs/howto/ipv6/artifacts/spine1-loopback.cfg
+docs/howto/ipv6_numbered/artifacts/spine1-loopback.cfg
 --8<--
 ```
 
-```cli title="htipv6-spine2 Loopback0"
+```cli title="htipv6-numbered-spine2 Loopback0"
 --8<--
-docs/howto/ipv6/artifacts/spine2-loopback.cfg
+docs/howto/ipv6_numbered/artifacts/spine2-loopback.cfg
 --8<--
 ```
 
@@ -116,11 +85,11 @@ Leafs require additional pools for VTEP and MLAG:
 
 ```yaml hl_lines="8 10 11 13 15 20 22" title="Leaf IPv6 Pools"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIPV6_L3_LEAFS/leafs.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/HTIPV6_NUMBERED_L3_LEAFS/leafs.yml
 --8<--
 ```
 
-```cli title="htipv6-leaf1 Loopbacks"
+```cli title="htipv6-numbered-leaf1 Loopbacks"
 --8<--
 docs/howto/ipv6/artifacts/leaf1-loopback.cfg
 --8<--
@@ -134,9 +103,9 @@ P2P uplinks use `uplink_ipv6_pool` with the same allocation formula as IPv4:
 subnet_offset = ([node_id - 1] * max_uplink_switches * max_parallel_uplinks) + uplink_switch_index
 ```
 
-```cli title="htipv6-leaf1 P2P Uplinks"
+```cli title="htipv6-numbered-leaf1 P2P Uplinks"
 --8<--
-docs/howto/ipv6/artifacts/leaf1-uplinks.cfg
+docs/howto/ipv6_numbered/artifacts/leaf1-uplinks.cfg
 --8<--
 ```
 
@@ -152,9 +121,9 @@ l3leaf:
     mlag_peer_l3_ipv6_pool: 2001:db8:21::/48
 ```
 
-```cli title="htipv6-leaf1 MLAG VLANs"
+```cli title="htipv6-numbered-leaf1 MLAG VLANs"
 --8<--
-docs/howto/ipv6/artifacts/leaf1-mlag.cfg
+docs/howto/ipv6_numbered/artifacts/leaf1-mlag.cfg
 --8<--
 ```
 
@@ -162,9 +131,9 @@ docs/howto/ipv6/artifacts/leaf1-mlag.cfg
 
 With IPv6 numbered underlay, BGP peer groups are configured for IPv6:
 
-```cli title="htipv6-spine1 BGP Configuration"
+```cli title="htipv6-numbered-spine1 BGP Configuration"
 --8<--
-docs/howto/ipv6/artifacts/spine1-bgp.cfg
+docs/howto/ipv6_numbered/artifacts/spine1-bgp.cfg
 --8<--
 ```
 
@@ -230,7 +199,7 @@ Override pool-calculated addresses with static values:
 ```yaml
 l3leaf:
   nodes:
-    - name: htipv6-leaf1
+    - name: htipv6-numbered-leaf1
       id: 1
       loopback_ipv6_address: 2001:db8:100::1      # Override loopback pool
       vtep_loopback_ipv6_address: 2001:db8:101::1 # Override VTEP pool
@@ -270,7 +239,7 @@ Some AVD features are not yet supported with IPv6 numbered underlay:
 
 ## Reference
 
-- [Fabric Settings - IPv6 Underlay](../../../ansible_collections/arista/avd/roles/eos_designs/docs/tables/fabric-settings.md)
-- [Node Type Loopback and VTEP Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-loopback-vtep-configuration.md)
-- [Node Type L2 and MLAG Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l2-mlag-configuration.md)
-- [Fabric IP Addressing](../../../ansible_collections/arista/avd/roles/eos_designs/docs/tables/fabric-ip-addressing.md)
+- [Fabric Settings](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#fabric-settings)
+- [Node Type Loopback and VTEP Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#node-type-loopback-and-vtep-configuration)
+- [Node Type L2 and MLAG Configuration](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#node-type-l2-and-mlag-configuration)
+- [Fabric IP Addressing](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#fabric-ip-addressing)

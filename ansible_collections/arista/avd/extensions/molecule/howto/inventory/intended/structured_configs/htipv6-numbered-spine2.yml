@@ -15,28 +15,28 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_htipv6-leaf1_Ethernet2
+  description: P2P_htipv6-numbered-leaf1_Ethernet2
   shutdown: false
   mtu: 1500
   ipv6_address: 2001:db8:10:1::1/64
   metadata:
-    peer: htipv6-leaf1
+    peer: htipv6-numbered-leaf1
     peer_interface: Ethernet2
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
-  description: P2P_htipv6-leaf2_Ethernet2
+  description: P2P_htipv6-numbered-leaf2_Ethernet2
   shutdown: false
   mtu: 1500
   ipv6_address: 2001:db8:10:3::1/64
   metadata:
-    peer: htipv6-leaf2
+    peer: htipv6-numbered-leaf2
     peer_interface: Ethernet2
     peer_type: l3leaf
   switchport:
     enabled: false
-hostname: htipv6-spine2
+hostname: htipv6-numbered-spine2
 ip_domain_lookup:
   source_interfaces:
   - name: Management0
@@ -128,26 +128,26 @@ router_bgp:
     peer_group: IPv6-UNDERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: htipv6-leaf1
-    description: htipv6-leaf1_Ethernet2
+      peer: htipv6-numbered-leaf1
+    description: htipv6-numbered-leaf1_Ethernet2
   - ip_address: 2001:db8:10:3::2
     peer_group: IPv6-UNDERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: htipv6-leaf2
-    description: htipv6-leaf2_Ethernet2
+      peer: htipv6-numbered-leaf2
+    description: htipv6-numbered-leaf2_Ethernet2
   - ip_address: 2001:db8:1::3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: htipv6-leaf1
-    description: htipv6-leaf1_Loopback0
+      peer: htipv6-numbered-leaf1
+    description: htipv6-numbered-leaf1_Loopback0
   - ip_address: 2001:db8:1::4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: htipv6-leaf2
-    description: htipv6-leaf2_Loopback0
+      peer: htipv6-numbered-leaf2
+    description: htipv6-numbered-leaf2_Loopback0
   redistribute:
     connected:
       enabled: true

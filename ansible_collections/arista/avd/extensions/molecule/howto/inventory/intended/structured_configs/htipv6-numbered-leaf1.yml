@@ -15,48 +15,48 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet3
-  description: MLAG_htipv6-leaf1_Ethernet3
+  description: MLAG_htipv6-numbered-leaf2_Ethernet3
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: htipv6-leaf1
+    peer: htipv6-numbered-leaf2
     peer_interface: Ethernet3
     peer_type: mlag_peer
 - name: Ethernet4
-  description: MLAG_htipv6-leaf1_Ethernet4
+  description: MLAG_htipv6-numbered-leaf2_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: htipv6-leaf1
+    peer: htipv6-numbered-leaf2
     peer_interface: Ethernet4
     peer_type: mlag_peer
 - name: Ethernet1
-  description: P2P_htipv6-spine1_Ethernet2
+  description: P2P_htipv6-numbered-spine1_Ethernet1
   shutdown: false
   mtu: 1500
-  ipv6_address: 2001:db8:10:2::2/64
+  ipv6_address: 2001:db8:10::2/64
   metadata:
-    peer: htipv6-spine1
-    peer_interface: Ethernet2
+    peer: htipv6-numbered-spine1
+    peer_interface: Ethernet1
     peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
-  description: P2P_htipv6-spine2_Ethernet2
+  description: P2P_htipv6-numbered-spine2_Ethernet1
   shutdown: false
   mtu: 1500
-  ipv6_address: 2001:db8:10:3::2/64
+  ipv6_address: 2001:db8:10:1::2/64
   metadata:
-    peer: htipv6-spine2
-    peer_interface: Ethernet2
+    peer: htipv6-numbered-spine2
+    peer_interface: Ethernet1
     peer_type: spine
   switchport:
     enabled: false
-hostname: htipv6-leaf2
+hostname: htipv6-numbered-leaf1
 ip_domain_lookup:
   source_interfaces:
   - name: Management0
@@ -91,7 +91,7 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ipv6_address: 2001:db8:1::4/128
+  ipv6_address: 2001:db8:1::3/128
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
@@ -101,7 +101,7 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 172.16.3.102/24
+  ip_address: 172.16.3.101/24
   type: oob
 metadata:
   is_deployed: true
@@ -110,7 +110,7 @@ metadata:
 mlag_configuration:
   domain_id: HTIPV6_L3_LEAFS
   local_interface: Vlan4094
-  peer_address: 2001:db8:20::1
+  peer_address: 2001:db8:20::2
   peer_link: Port-Channel3
 ntp:
   local_interface:
@@ -122,7 +122,7 @@ ntp:
   vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_htipv6-leaf1_Port-Channel3
+  description: MLAG_htipv6-numbered-leaf2_Port-Channel3
   shutdown: false
   switchport:
     enabled: true
@@ -151,7 +151,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65101'
-  router_id: 10.255.1.2
+  router_id: 10.255.1.1
   maximum_paths:
     paths: 4
   updates:
@@ -164,7 +164,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65101'
-    description: htipv6-leaf1
+    description: htipv6-numbered-leaf2
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -183,35 +183,35 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   neighbors:
-  - ip_address: 2001:db8:21::1
+  - ip_address: 2001:db8:21::2
     peer_group: MLAG-IPv6-UNDERLAY-PEER
     metadata:
-      peer: htipv6-leaf1
-    description: htipv6-leaf1_Vlan4093
-  - ip_address: 2001:db8:10:2::1
+      peer: htipv6-numbered-leaf2
+    description: htipv6-numbered-leaf2_Vlan4093
+  - ip_address: 2001:db8:10::1
     peer_group: IPv6-UNDERLAY-PEERS
     remote_as: '65100'
     metadata:
-      peer: htipv6-spine1
-    description: htipv6-spine1_Ethernet2
-  - ip_address: 2001:db8:10:3::1
+      peer: htipv6-numbered-spine1
+    description: htipv6-numbered-spine1_Ethernet1
+  - ip_address: 2001:db8:10:1::1
     peer_group: IPv6-UNDERLAY-PEERS
     remote_as: '65100'
     metadata:
-      peer: htipv6-spine2
-    description: htipv6-spine2_Ethernet2
+      peer: htipv6-numbered-spine2
+    description: htipv6-numbered-spine2_Ethernet1
   - ip_address: 2001:db8:1::1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
     metadata:
-      peer: htipv6-spine1
-    description: htipv6-spine1_Loopback0
+      peer: htipv6-numbered-spine1
+    description: htipv6-numbered-spine1_Loopback0
   - ip_address: 2001:db8:1::2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
     metadata:
-      peer: htipv6-spine2
-    description: htipv6-spine2_Loopback0
+      peer: htipv6-numbered-spine2
+    description: htipv6-numbered-spine2_Loopback0
   redistribute:
     connected:
       enabled: true
@@ -242,12 +242,12 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_L3
   shutdown: false
-  ipv6_address: 2001:db8:21::2/64
+  ipv6_address: 2001:db8:21::1/64
   mtu: 1500
 - name: Vlan4094
   description: MLAG
   shutdown: false
-  ipv6_address: 2001:db8:20::2/64
+  ipv6_address: 2001:db8:20::1/64
   mtu: 1500
   no_autostate: true
 vlan_internal_order:
@@ -275,7 +275,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: htipv6-leaf2_VTEP
+    description: htipv6-numbered-leaf1_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

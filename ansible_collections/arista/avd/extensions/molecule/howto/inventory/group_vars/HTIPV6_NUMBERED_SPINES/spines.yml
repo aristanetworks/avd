@@ -10,9 +10,9 @@ spine:
     loopback_ipv6_pool: 2001:db8:1::/48
     bgp_as: 65100
   nodes:
-    - name: htipv6-spine1
+    - name: htipv6-numbered-spine1
       id: 1
       mgmt_ip: 172.16.3.11/24
-    - name: htipv6-spine2
+    - name: htipv6-numbered-spine2
       id: 2
       mgmt_ip: 172.16.3.12/24
