@@ -136,18 +136,16 @@ def test__validate_python_requirements(n_reqs: int, mocked_version: str | None, 
 
 
 @pytest.mark.parametrize(
-    ("extras", "running_from_source", "expected_return"),
+    ("running_from_source", "expected_return"),
     [
-        pytest.param(False, False, True, id="pyavd - no extra - not running from source"),
-        pytest.param(True, False, True, id="pyavd - extra - not running from source"),
-        pytest.param(False, True, True, id="pyavd - no extra - running from source"),
-        pytest.param(False, True, True, id="pyavd - extra - running from source"),
+        pytest.param(False, True, id="pyavd - not running from source"),
+        pytest.param(True, True, id="pyavd - running from source"),
     ],
 )
-def test__validate_python_requirements_pyavd(extras: bool, running_from_source: bool, expected_return: bool) -> None:
+def test__validate_python_requirements_pyavd(running_from_source: bool, expected_return: bool) -> None:
     """Testing behavior of the function for pyavd when running from source or not."""
     result = {}
-    req = f"pyavd{'[ansible-collection]' if extras else ''}==5.3.0"
+    req = "pyavd==5.3.0"
 
     requirements = [req]
 
@@ -159,24 +157,14 @@ def test__validate_python_requirements_pyavd(extras: bool, running_from_source: 
         ret = _validate_python_requirements(requirements, result)
         assert ret == expected_return
     python_req_result = result["python_requirements"]
+    assert (
+        len(python_req_result["valid"]) + len(python_req_result["mismatched"]) + len(python_req_result["not_found"]) + len(python_req_result["parsing_failed"])
+        == 1
+    )
     if running_from_source:
         assert python_req_result["valid"]["pyavd"]["installed"] == "running from source"
-        # only pyavd is expected for this test when running from source with or without extra
-        assert (
-            len(python_req_result["valid"])
-            + len(python_req_result["mismatched"])
-            + len(python_req_result["not_found"])
-            + len(python_req_result["parsing_failed"])
-            == 1
-        )
-    elif extras:
-        assert (
-            len(python_req_result["valid"])
-            + len(python_req_result["mismatched"])
-            + len(python_req_result["not_found"])
-            + len(python_req_result["parsing_failed"])
-            > 1
-        )
+    else:
+        assert python_req_result["valid"]["pyavd"]["installed"] == "5.3.0"
 
 
 @pytest.mark.parametrize(

@@ -33,7 +33,7 @@ def validate_inputs(inputs: dict, *, configuration: Configuration | None = None)
     from pyavd_utils.validation import Configuration, get_validated_data  # noqa: PLC0415
 
     # Use default configuration if not provided
-    configuration = configuration or Configuration(warn_eos_cli_config_gen_keys=True)
+    configuration = configuration or Configuration(warn_eos_config_keys=True)
 
     from ._schema.store import init_store  # noqa: PLC0415
     from .api.validation import ValidatedDataResult  # noqa: PLC0415
@@ -46,5 +46,5 @@ def validate_inputs(inputs: dict, *, configuration: Configuration | None = None)
         msg = f"Unable to serialize inputs: {e}"
         raise ValueError(msg) from e
 
-    pyavd_utils_validated_data_result = get_validated_data(data_as_json=data_as_json, schema_name="eos_designs", configuration=configuration)
+    pyavd_utils_validated_data_result = get_validated_data(data_as_json=data_as_json, schema_name="avd_design", configuration=configuration)
     return ValidatedDataResult._from_pyavd_utils_validated_data_result(pyavd_utils_validated_data_result)
