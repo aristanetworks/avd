@@ -8,6 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>logging_settings</samp>](## "logging_settings") | Dictionary |  |  |  | Logging settings |
+    | [<samp>&nbsp;&nbsp;use_local_interface_cli</samp>](## "logging_settings.use_local_interface_cli") | Boolean |  | `False` |  | Use `logging local-interface <interface>` CLI instead of the deprecated `logging source-interface <interface>` CLI.<br>The new CLI was introduced in EOS version 4.33.4. |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "logging_settings.hosts") | List, items: Dictionary | Required |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "logging_settings.hosts.[].name") | String | Required |  |  | Syslog server name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "logging_settings.hosts.[].vrf") | String |  | `use_default_mgmt_method_vrf` |  | The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as logging source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the logging destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as logging source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed. |
@@ -54,6 +55,10 @@
     ```yaml
     # Logging settings
     logging_settings:
+
+      # Use `logging local-interface <interface>` CLI instead of the deprecated `logging source-interface <interface>` CLI.
+      # The new CLI was introduced in EOS version 4.33.4.
+      use_local_interface_cli: <bool; default=False>
       hosts: # >=1 items; required
 
           # Syslog server name.
