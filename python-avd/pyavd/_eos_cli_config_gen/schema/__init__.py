@@ -50358,7 +50358,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     }
                     address_family: str
                     domain_remote_route_target_import: str | None
-                    """Only applicable if `address_family` is one of `evpn`."""
+                    """Only applicable if `address_family` is `evpn`."""
                     route_targets: RouteTargets
                     """Subclass of AvdList with `str` items."""
                     route_map: str | None
@@ -50398,7 +50398,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 address_family: address_family
-                                domain_remote_route_target_import: Only applicable if `address_family` is one of `evpn`.
+                                domain_remote_route_target_import: Only applicable if `address_family` is `evpn`.
                                 route_targets: Subclass of AvdList with `str` items.
                                 route_map: Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.
                                 rcf:

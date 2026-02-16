@@ -18920,8 +18920,7 @@ keys:
                         type: str
                       domain_remote_route_target_import:
                         type: str
-                        description: Only applicable if `address_family` is one of
-                          `evpn`.
+                        description: Only applicable if `address_family` is `evpn`.
                       route_targets:
                         type: list
                         items:
