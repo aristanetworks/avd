@@ -70,6 +70,7 @@ keys:
                 keys:
                   name:
                     type: str
+                    required: true
                   in:
                     type: bool
               ipv6_access_group:
@@ -77,6 +78,7 @@ keys:
                 keys:
                   name:
                     type: str
+                    required: true
                   in:
                     type: bool
               name_resolution:
@@ -112,7 +114,6 @@ keys:
                     name:
                       description: The name of the region. This must match what is in use in the ML2 driver configuration.
                       type: str
-                      required: true
                     username:
                       type: str
                       description: "'admin' or valid keystone user."
@@ -137,4 +138,3 @@ keys:
                           pattern: http(s?)://[a-zA-Z0-9.]+(:?\d+)?/v(2\.0|3)/
               shutdown:
                 type: bool
-                default: false

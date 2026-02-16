@@ -25,10 +25,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "cvx.services.openstack.authentication.role") | String |  |  |  | API authentication user role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "cvx.services.openstack.grace_period") | Integer |  |  | Min: 0<br>Max: 14400 | Set the grace period for which the OpenStack agent waits for OpenStack region data. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_access_group</samp>](## "cvx.services.openstack.ip_access_group") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "cvx.services.openstack.ip_access_group.name") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "cvx.services.openstack.ip_access_group.name") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in</samp>](## "cvx.services.openstack.ip_access_group.in") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_group</samp>](## "cvx.services.openstack.ipv6_access_group") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "cvx.services.openstack.ipv6_access_group.name") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "cvx.services.openstack.ipv6_access_group.name") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in</samp>](## "cvx.services.openstack.ipv6_access_group.in") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name_resolution</samp>](## "cvx.services.openstack.name_resolution") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;force</samp>](## "cvx.services.openstack.name_resolution.force") | Boolean |  |  |  | Get the tenant and VM names from OpenStack immediately. |
@@ -44,7 +44,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "cvx.services.openstack.region.[].tenant") | String |  |  |  | Tenant name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keystone</samp>](## "cvx.services.openstack.region.[].keystone") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_url</samp>](## "cvx.services.openstack.region.[].keystone.auth_url") | String |  |  | Pattern: `http(s?)://[a-zA-Z0-9.]+(:?\d+)?/v(2\.0|3)/` |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "cvx.services.openstack.shutdown") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "cvx.services.openstack.shutdown") | Boolean |  |  |  |  |
 
 === "YAML"
 
@@ -80,10 +80,10 @@
           # Set the grace period for which the OpenStack agent waits for OpenStack region data.
           grace_period: <int; 0-14400>
           ip_access_group:
-            name: <str>
+            name: <str; required>
             in: <bool>
           ipv6_access_group:
-            name: <str>
+            name: <str; required>
             in: <bool>
           name_resolution:
 
@@ -109,5 +109,5 @@
               tenant: <str>
               keystone:
                 auth_url: <str>
-          shutdown: <bool; default=False>
+          shutdown: <bool>
     ```

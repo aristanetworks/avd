@@ -3577,12 +3577,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"name": {"type": str}, "field_in": {"type": bool}}
                     _field_to_key_map: ClassVar[dict] = {"field_in": "in"}
                     _key_to_field_map: ClassVar[dict] = {"in": "field_in"}
-                    name: str | None
+                    name: str
                     field_in: bool | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, name: str | None | UndefinedType = Undefined, field_in: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, name: str | UndefinedType = Undefined, field_in: bool | None | UndefinedType = Undefined) -> None:
                             """
                             IpAccessGroup.
 
@@ -3601,12 +3601,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"name": {"type": str}, "field_in": {"type": bool}}
                     _field_to_key_map: ClassVar[dict] = {"field_in": "in"}
                     _key_to_field_map: ClassVar[dict] = {"in": "field_in"}
-                    name: str | None
+                    name: str
                     field_in: bool | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, name: str | None | UndefinedType = Undefined, field_in: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, name: str | UndefinedType = Undefined, field_in: bool | None | UndefinedType = Undefined) -> None:
                             """
                             Ipv6AccessGroup.
 
@@ -3773,7 +3773,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "name_resolution": {"type": NameResolution},
                     "network": {"type": Network},
                     "region": {"type": Region},
-                    "shutdown": {"type": bool, "default": False},
+                    "shutdown": {"type": bool},
                 }
                 authentication: Authentication
                 """Subclass of AvdModel."""
@@ -3789,8 +3789,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 region: Region
                 """Subclass of AvdIndexedList with `RegionItem` items. Primary key is `name` (`str`)."""
-                shutdown: bool
-                """Default value: `False`"""
+                shutdown: bool | None
 
                 if TYPE_CHECKING:
 
@@ -3804,7 +3803,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name_resolution: NameResolution | UndefinedType = Undefined,
                         network: Network | UndefinedType = Undefined,
                         region: Region | UndefinedType = Undefined,
-                        shutdown: bool | UndefinedType = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Openstack.
