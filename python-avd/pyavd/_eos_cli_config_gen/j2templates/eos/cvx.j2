@@ -70,14 +70,7 @@ cvx
          username {{ region.username }} tenant {{ region.tenant }} password {{ region.password_type }} {{ region.password }}
 {%                 endif %}
 {%                 if region.keystone.auth_url is arista.avd.defined %}
-{%                     set keystone_cli = region.keystone.auth_url %}
-{%                     if not keystone_cli.endswith('/') %}
-{%                         set keystone_cli = keystone_cli ~ '/' %}
-{%                     endif %}
-{%                     if not keystone_cli.endswith('v3/') %}
-{%                         set keystone_cli = keystone_cli ~ 'v3/' %}
-{%                     endif %}
-         keystone auth-url {{ keystone_cli }}
+         keystone auth-url {{ region.keystone.auth_url }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
