@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>aaa_server_groups</samp>](## "aaa_server_groups") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "aaa_server_groups.[].name") | String | Required, Unique |  | Pattern: `^(?:r[^a].*|ra[^d].*|rad[^i].*|radi[^u].*|radiu[^s].*|radius.+|t[^a].*|ta[^c].*|tac[^a].*|taca[^c].*|tacac[^s].*|tacacs[^+].*|tacacs\+.+|l[^d].*|ld[^a].*|lda[^p].*|ldap.+|[^rtl].*)$` | Group name.<br>The group names `radius`, `tacacs+` and `ldap` are reserved by EOS and must not be used. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "aaa_server_groups.[].name") | String | Required, Unique |  | Pattern: `^(?:radius.+|radiu[^s].*|radi[^u].*|rad[^i].*|ra[^d].*|r[^a].*|tacacs\+.+|tacacs[^+].*|tacac[^s].*|taca[^c].*|tac[^a].*|ta[^c].*|t[^a].*|ldap.+|lda[^p].*|ld[^a].*|l[^d].*|[^rtl].*|r|ra|rad|radi|radiu|t|ta|tac|taca|tacac|tacacs|l|ld|lda)$` | Group name.<br>The group names `radius`, `tacacs+` and `ldap` are reserved by EOS and must not be used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "aaa_server_groups.[].type") | String | Required |  | Valid Values:<br>- <code>tacacs+</code><br>- <code>radius</code><br>- <code>ldap</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "aaa_server_groups.[].servers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;server</samp>](## "aaa_server_groups.[].servers.[].server") | String | Required |  |  | Hostname or IP address. |
