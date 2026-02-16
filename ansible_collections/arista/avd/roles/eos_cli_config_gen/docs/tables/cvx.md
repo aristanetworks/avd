@@ -20,6 +20,31 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vxlan</samp>](## "cvx.services.vxlan") | Dictionary |  |  |  | VXLAN Controller service. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "cvx.services.vxlan.shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_mac_learning</samp>](## "cvx.services.vxlan.vtep_mac_learning") | String |  |  | Valid Values:<br>- <code>control-plane</code><br>- <code>data-plane</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;openstack</samp>](## "cvx.services.openstack") | Dictionary |  |  |  | OpenStack services. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication</samp>](## "cvx.services.openstack.authentication") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "cvx.services.openstack.authentication.role") | String |  |  |  | API authentication user role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;grace_period</samp>](## "cvx.services.openstack.grace_period") | Integer |  |  | Min: 0<br>Max: 14400 | Set the grace period for which the OpenStack agent waits for OpenStack region data. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_access_group</samp>](## "cvx.services.openstack.ip_access_group") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "cvx.services.openstack.ip_access_group.name") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in</samp>](## "cvx.services.openstack.ip_access_group.in") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_group</samp>](## "cvx.services.openstack.ipv6_access_group") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "cvx.services.openstack.ipv6_access_group.name") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;in</samp>](## "cvx.services.openstack.ipv6_access_group.in") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name_resolution</samp>](## "cvx.services.openstack.name_resolution") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;force</samp>](## "cvx.services.openstack.name_resolution.force") | Boolean |  |  |  | Get the tenant and VM names from OpenStack immediately. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "cvx.services.openstack.name_resolution.interval") | Integer |  |  | Min: 0<br>Max: 86400 | Set the time interval in seconds between name updates, 0 to disable. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network</samp>](## "cvx.services.openstack.network") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_driver</samp>](## "cvx.services.openstack.network.type_driver") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "cvx.services.openstack.network.type_driver.vlan") | String |  |  | Valid Values:<br>- <code>arista</code><br>- <code>default</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;region</samp>](## "cvx.services.openstack.region") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cvx.services.openstack.region.[].name") | String | Required, Unique |  |  | The name of the region. This must match what is in use in the ML2 driver configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "cvx.services.openstack.region.[].username") | String |  |  |  | 'admin' or valid keystone user. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "cvx.services.openstack.region.[].password") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "cvx.services.openstack.region.[].tenant") | String |  |  |  | Tenant name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keystone</samp>](## "cvx.services.openstack.region.[].keystone") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_url</samp>](## "cvx.services.openstack.region.[].keystone.auth_url") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "cvx.services.openstack.region.[].keystone.port") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "cvx.services.openstack.region.[].keystone.version") | String |  |  |  | Authentication API version. |
 
 === "YAML"
 
@@ -44,4 +69,47 @@
         vxlan:
           shutdown: <bool>
           vtep_mac_learning: <str; "control-plane" | "data-plane">
+
+        # OpenStack services.
+        openstack:
+          authentication:
+
+            # API authentication user role.
+            role: <str>
+
+          # Set the grace period for which the OpenStack agent waits for OpenStack region data.
+          grace_period: <int; 0-14400>
+          ip_access_group:
+            name: <str>
+            in: <bool>
+          ipv6_access_group:
+            name: <str>
+            in: <bool>
+          name_resolution:
+
+            # Get the tenant and VM names from OpenStack immediately.
+            force: <bool>
+
+            # Set the time interval in seconds between name updates, 0 to disable.
+            interval: <int; 0-86400>
+          network:
+            type_driver:
+              vlan: <str; "arista" | "default">
+          region:
+
+              # The name of the region. This must match what is in use in the ML2 driver configuration.
+            - name: <str; required; unique>
+
+              # 'admin' or valid keystone user.
+              username: <str>
+              password: <str>
+
+              # Tenant name.
+              tenant: <str>
+              keystone:
+                auth_url: <str>
+                port: <int>
+
+                # Authentication API version.
+                version: <str>
     ```

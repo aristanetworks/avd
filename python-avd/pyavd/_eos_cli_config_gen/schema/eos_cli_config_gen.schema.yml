@@ -1386,6 +1386,94 @@ keys:
                 valid_values:
                 - control-plane
                 - data-plane
+          openstack:
+            type: dict
+            description: OpenStack services.
+            keys:
+              authentication:
+                type: dict
+                keys:
+                  role:
+                    type: str
+                    description: API authentication user role.
+              grace_period:
+                type: int
+                description: Set the grace period for which the OpenStack agent waits
+                  for OpenStack region data.
+                min: 0
+                max: 14400
+                convert_types:
+                - str
+              ip_access_group:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  in:
+                    type: bool
+              ipv6_access_group:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  in:
+                    type: bool
+              name_resolution:
+                type: dict
+                keys:
+                  force:
+                    type: bool
+                    description: Get the tenant and VM names from OpenStack immediately.
+                  interval:
+                    type: int
+                    min: 0
+                    max: 86400
+                    convert_types:
+                    - str
+                    description: Set the time interval in seconds between name updates,
+                      0 to disable.
+              network:
+                type: dict
+                keys:
+                  type_driver:
+                    type: dict
+                    keys:
+                      vlan:
+                        type: str
+                        valid_values:
+                        - arista
+                        - default
+              region:
+                type: list
+                primary_key: name
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      description: The name of the region. This must match what is
+                        in use in the ML2 driver configuration.
+                      type: str
+                      required: true
+                    username:
+                      type: str
+                      description: '''admin'' or valid keystone user.'
+                    password:
+                      type: str
+                    tenant:
+                      type: str
+                      description: Tenant name.
+                    keystone:
+                      type: dict
+                      keys:
+                        auth_url:
+                          type: str
+                        port:
+                          type: int
+                          convert_types:
+                          - str
+                        version:
+                          type: str
+                          description: Authentication API version.
   daemon_terminattr:
     type: dict
     description: "You can either provide a list of IPs/FQDNs to target on-premise
