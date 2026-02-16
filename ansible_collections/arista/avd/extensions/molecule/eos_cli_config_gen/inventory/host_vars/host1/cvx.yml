@@ -16,7 +16,7 @@ cvx:
       vtep_mac_learning: "control-plane"
     openstack:
       shutdown: false
-      authentication: 
+      authentication:
         role: BOSS
       grace_period: 600
       ip_access_group:
