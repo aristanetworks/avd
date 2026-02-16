@@ -134,7 +134,7 @@ keys:
                       keys:
                         auth_url:
                           type: str
-                          pattern: http(s?)://[a-zA-Z0-9.]*(:?\d+)?/v[23].0/
+                          pattern: http(s?)://[a-zA-Z0-9.]*(:?\d+)?/v(2\.0|3)/
               shutdown:
                 type: bool
                 default: false
