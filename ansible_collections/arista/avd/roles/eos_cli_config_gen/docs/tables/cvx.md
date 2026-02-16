@@ -43,7 +43,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password_type</samp>](## "cvx.services.openstack.region.[].password_type") | String |  | `7` | Valid Values:<br>- <code>7</code><br>- <code>8a</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tenant</samp>](## "cvx.services.openstack.region.[].tenant") | String |  |  |  | Tenant name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keystone</samp>](## "cvx.services.openstack.region.[].keystone") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_url</samp>](## "cvx.services.openstack.region.[].keystone.auth_url") | String |  |  | Pattern: `http(s?)://[a-zA-Z0-9.]*(:?\d+)?/v(2\.0|3)/` |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_url</samp>](## "cvx.services.openstack.region.[].keystone.auth_url") | String |  |  | Pattern: `http(s?)://[a-zA-Z0-9.]+(:?\d+)?/v(2\.0|3)/` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "cvx.services.openstack.shutdown") | Boolean |  | `False` |  |  |
 
 === "YAML"
