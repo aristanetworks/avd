@@ -3688,24 +3688,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class RegionItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    PasswordType: TypeAlias = Literal["7", "8a"]
+
                     class Keystone(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"auth_url": {"type": str}, "port": {"type": int}, "version": {"type": str}}
+                        _fields: ClassVar[dict] = {"auth_url": {"type": str}}
                         auth_url: str | None
-                        port: int | None
-                        version: str | None
-                        """Authentication API version."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(
-                                self,
-                                *,
-                                auth_url: str | None | UndefinedType = Undefined,
-                                port: int | None | UndefinedType = Undefined,
-                                version: str | None | UndefinedType = Undefined,
-                            ) -> None:
+                            def __init__(self, *, auth_url: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Keystone.
 
@@ -3714,8 +3707,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     auth_url: auth_url
-                                    port: port
-                                    version: Authentication API version.
 
                                 """
 
@@ -3723,6 +3714,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "name": {"type": str},
                         "username": {"type": str},
                         "password": {"type": str},
+                        "password_type": {"type": str, "default": "7"},
                         "tenant": {"type": str},
                         "keystone": {"type": Keystone},
                     }
@@ -3731,6 +3723,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     username: str | None
                     """'admin' or valid keystone user."""
                     password: str | None
+                    password_type: PasswordType
+                    """Default value: `"7"`"""
                     tenant: str | None
                     """Tenant name."""
                     keystone: Keystone
@@ -3744,6 +3738,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             name: str | UndefinedType = Undefined,
                             username: str | None | UndefinedType = Undefined,
                             password: str | None | UndefinedType = Undefined,
+                            password_type: PasswordType | UndefinedType = Undefined,
                             tenant: str | None | UndefinedType = Undefined,
                             keystone: Keystone | UndefinedType = Undefined,
                         ) -> None:
@@ -3757,6 +3752,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 name: The name of the region. This must match what is in use in the ML2 driver configuration.
                                 username: 'admin' or valid keystone user.
                                 password: password
+                                password_type: password_type
                                 tenant: Tenant name.
                                 keystone: Subclass of AvdModel.
 
@@ -3777,6 +3773,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "name_resolution": {"type": NameResolution},
                     "network": {"type": Network},
                     "region": {"type": Region},
+                    "shutdown": {"type": bool, "default": False},
                 }
                 authentication: Authentication
                 """Subclass of AvdModel."""
@@ -3792,6 +3789,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 region: Region
                 """Subclass of AvdIndexedList with `RegionItem` items. Primary key is `name` (`str`)."""
+                shutdown: bool
+                """Default value: `False`"""
 
                 if TYPE_CHECKING:
 
@@ -3805,6 +3804,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name_resolution: NameResolution | UndefinedType = Undefined,
                         network: Network | UndefinedType = Undefined,
                         region: Region | UndefinedType = Undefined,
+                        shutdown: bool | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Openstack.
@@ -3820,6 +3820,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             name_resolution: Subclass of AvdModel.
                             network: Subclass of AvdModel.
                             region: Subclass of AvdIndexedList with `RegionItem` items. Primary key is `name` (`str`).
+                            shutdown: shutdown
 
                         """
 

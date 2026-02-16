@@ -1459,6 +1459,14 @@ keys:
                       description: '''admin'' or valid keystone user.'
                     password:
                       type: str
+                    password_type:
+                      type: str
+                      default: '7'
+                      valid_values:
+                      - '7'
+                      - 8a
+                      convert_types:
+                      - int
                     tenant:
                       type: str
                       description: Tenant name.
@@ -1467,13 +1475,9 @@ keys:
                       keys:
                         auth_url:
                           type: str
-                        port:
-                          type: int
-                          convert_types:
-                          - str
-                        version:
-                          type: str
-                          description: Authentication API version.
+              shutdown:
+                type: bool
+                default: false
   daemon_terminattr:
     type: dict
     description: "You can either provide a list of IPs/FQDNs to target on-premise
