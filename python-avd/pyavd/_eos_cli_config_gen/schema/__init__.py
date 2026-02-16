@@ -61799,7 +61799,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enable_default": {"type": bool}, "unmodified": {"type": bool}}
-                enable_default: bool
+                enable_default: bool | None
                 """Enable egress sFlow by default."""
                 unmodified: bool | None
                 """
@@ -61809,7 +61809,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enable_default: bool | UndefinedType = Undefined, unmodified: bool | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enable_default: bool | None | UndefinedType = Undefined, unmodified: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Egress.
 
