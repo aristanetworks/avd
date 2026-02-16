@@ -114,7 +114,6 @@ keys:
                 type: bool
                 description: |
                   Enable egress sFlow by default.
-                required: true
               unmodified:
                 type: bool
                 description: |
