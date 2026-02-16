@@ -7886,7 +7886,6 @@ keys:
                       description: Match list.
                     action:
                       type: str
-                      required: true
                       valid_values:
                       - discard
       event:
@@ -7927,7 +7926,6 @@ keys:
               type: str
             severity:
               type: str
-              required: true
               convert_types:
               - int
               description: 'Severity of facility. Below are the supported severities.

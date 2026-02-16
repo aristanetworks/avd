@@ -123,7 +123,6 @@ keys:
                       description: Match list.
                     action:
                       type: str
-                      required: true
                       valid_values: ["discard"]
       event:
         type: dict
@@ -163,7 +162,6 @@ keys:
               type: str
             severity:
               type: str
-              required: true
               convert_types:
                 - int
               description: |-

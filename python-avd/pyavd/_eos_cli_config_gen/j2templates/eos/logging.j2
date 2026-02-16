@@ -100,7 +100,9 @@ logging policy match match-list {{ match_list.name }} {{ match_list.action }}
 {%         if loop.first %}
 !
 {%         endif %}
+{%         if level.severity is arista.avd.defined %}
 logging level {{ level.facility }} {{ level.severity }}
+{%         endif %}
 {%     endfor %}
 {%     if logging.event.global_link_status is arista.avd.defined(false) %}
 !
