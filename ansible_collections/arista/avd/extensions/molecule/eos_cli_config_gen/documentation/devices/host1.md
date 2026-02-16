@@ -1255,6 +1255,7 @@ CVX is enabled
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
 | MCS | True | Redis Password Set |
+| OpenStack | True | Regions: REGION_1<br>REGION_2<br>REGION_5 |
 | VXLAN | True | VTEP MAC learning: control-plane |
 
 ### CVX Device Configuration
@@ -1269,6 +1270,23 @@ cvx
    service mcs
       redis password 7 <removed>
       no shutdown
+   !
+   service openstack
+      ip access-group ACL-OS-IN in
+      ipv6 access-group ACL-V6-OS
+      no shutdown
+      grace-period 600
+      authentication role BOSS
+      !
+      region REGION_1
+         keystone auth-url https://keystone.example.com/v3.0/
+      !
+      region REGION_2
+         username BOB tenant TEST_2 password 7 11243C44
+         keystone auth-url https://10.10.10.2/v3.0/
+      !
+      region REGION_5
+         keystone auth-url http://keystone.legacy.net:8123/v2.0/
    !
    service vxlan
       no shutdown

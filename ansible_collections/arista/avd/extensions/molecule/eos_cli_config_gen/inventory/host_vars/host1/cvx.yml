@@ -14,3 +14,30 @@ cvx:
     vxlan:
       shutdown: false
       vtep_mac_learning: "control-plane"
+    openstack:
+      shutdown: false
+      authentication: 
+        role: BOSS
+      grace_period: 600
+      ip_access_group:
+        name: ACL-OS-IN
+        in: true
+      ipv6_access_group:
+        name: ACL-V6-OS
+      network:
+        type_driver:
+          vlan: arista
+      region:
+        - name: REGION_2
+          username: BOB
+          password_type: 7
+          password: 11243C44
+          tenant: TEST_2
+          keystone:
+            auth_url: https://10.10.10.2/v3.0/
+        - name: REGION_1
+          keystone:
+            auth_url: https://keystone.example.com/v3.0/
+        - name: REGION_5
+          keystone:
+            auth_url: http://keystone.legacy.net:8123/v2.0/
