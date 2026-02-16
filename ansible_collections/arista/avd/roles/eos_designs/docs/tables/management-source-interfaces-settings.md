@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>source_interfaces</samp>](## "source_interfaces") | Dictionary |  |  |  | Configure source-interfaces based on the management interfaces set for other AVD Design data models.<br>By default, no source-interfaces will be configured. They can still be configured manually using `eos_cli_config_gen` and custom structured configuration.<br>EOS supports a single source-interface per VRF, so an error will be raised in case of conflicts.<br>Errors will also be raised if an interface is not found for a device. |
+    | [<samp>source_interfaces</samp>](## "source_interfaces") | Dictionary |  |  |  | Configure source-interfaces based on the management interfaces set for other AVD Design data models.<br>By default, no source-interfaces will be configured. They can still be configured manually using custom structured configuration.<br>EOS supports a single source-interface per VRF, so an error will be raised in case of conflicts.<br>Errors will also be raised if an interface is not found for a device. |
     | [<samp>&nbsp;&nbsp;http_client</samp>](## "source_interfaces.http_client") | Dictionary |  |  |  | IP HTTP Client source-interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "source_interfaces.http_client.mgmt_interface") | Boolean |  | `False` |  | Configure an IP HTTP Client source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.<br>`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_mgmt_interface</samp>](## "source_interfaces.http_client.inband_mgmt_interface") | Boolean |  | `False` |  | Configure an IP HTTP Client source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.<br>`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings. |
@@ -23,7 +23,7 @@
 
     ```yaml
     # Configure source-interfaces based on the management interfaces set for other AVD Design data models.
-    # By default, no source-interfaces will be configured. They can still be configured manually using `eos_cli_config_gen` and custom structured configuration.
+    # By default, no source-interfaces will be configured. They can still be configured manually using custom structured configuration.
     # EOS supports a single source-interface per VRF, so an error will be raised in case of conflicts.
     # Errors will also be raised if an interface is not found for a device.
     source_interfaces:
