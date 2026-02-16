@@ -93,6 +93,7 @@ ethernet_interfaces:
   description: IP Phone with no native VLAN
   shutdown: false
   peer_type: network_port
+  validate_state: false
   switchport:
     enabled: true
     mode: trunk phone
