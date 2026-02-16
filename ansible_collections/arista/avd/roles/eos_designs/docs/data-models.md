@@ -835,7 +835,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/bgp-settings.md
 
 ## Catalogs
 
-### IPv4 extended ACLS Catalog
+### IPv4 extended ACLs Catalog
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/ipv4-acls.md
