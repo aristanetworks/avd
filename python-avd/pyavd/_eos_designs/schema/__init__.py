@@ -22560,7 +22560,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Use `logging local-interface <interface>` CLI instead of the deprecated `logging source-interface
         <interface>` CLI.
-        The new CLI was introduced in EOS version 4.33.
+        The new CLI was introduced in EOS version 4.33.4.
 
         Default value: `False`
         """
@@ -22615,7 +22615,7 @@ class EosDesigns(EosDesignsRootModel):
                     use_local_interface_cli:
                        Use `logging local-interface <interface>` CLI instead of the deprecated `logging source-interface
                        <interface>` CLI.
-                       The new CLI was introduced in EOS version 4.33.
+                       The new CLI was introduced in EOS version 4.33.4.
                     hosts: Subclass of AvdList with `HostsItem` items.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     console: Console logging severity level.
