@@ -1110,7 +1110,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         name: str
         """
         Group name.
-        The group names `radius` and `tacacs+` are reserved by EOS and must not be used.
+        The group names `radius`, `tacacs+` and `ldap` are reserved by EOS and must not be used.
         """
         type: Type
         servers: Servers
@@ -1130,7 +1130,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     name:
                        Group name.
-                       The group names `radius` and `tacacs+` are reserved by EOS and must not be used.
+                       The group names `radius`, `tacacs+` and `ldap` are reserved by EOS and must not be used.
                     type: type
                     servers: Subclass of AvdList with `ServersItem` items.
 
