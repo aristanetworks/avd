@@ -95,7 +95,7 @@ l3leaf:
           mac_address: "0c:1d:c0:1d:62:01"
           uplink_switch_interfaces: [Ethernet3, Ethernet4]
 
-# Testing the eos_cli_config_gen warnings
+# Testing the warning for EOS Config keys present when running `eos_designs`
 router_isis:
   instance: TOTO
-dns_domain: i.am.from.eos_cli_config_gen
+dns_domain: i.am.from.eos_config

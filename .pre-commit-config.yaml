@@ -198,6 +198,16 @@ repos:
             docs/plugins/.* | # Excluded auto generated doc for Ansible plugins
           )$
 
+  - repo: https://github.com/pdm-project/pdm
+    rev: "2.26.6"
+    hooks:
+      - id: pdm-export
+        name: Extract requirements from pyavd/pyproject.toml to requirements.txt
+        entry: pdm export -p python-avd -o ansible_collections/arista/avd/requirements.txt --without-hashes -G ansible -G self --pyproject
+        language: python
+        files: python-avd/pyproject.toml
+        pass_filenames: false
+
   - repo: local
     hooks:
 

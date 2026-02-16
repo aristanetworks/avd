@@ -58,7 +58,7 @@ requires = [
     "pydantic>=2.3.0",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
-    "ruff==0.15.0",
+    "ruff==0.15.1",
     "setuptools>=77.0",
 ]
 build-backend = "custom_build_backend"
@@ -80,6 +80,12 @@ include = ["pyavd*"]
 
 [tool.setuptools.dynamic]
 version = {attr = "pyavd.__version__"}
+
+[dependency-groups]
+# helping pdm generate the flat list of requirements in pre-commit
+self = [
+  "pyavd==6.0.0.dev9"
+]
 
 [tool.black]
 # Black has been replaced with Ruff.
