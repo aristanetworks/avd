@@ -52,7 +52,7 @@ cvx
 {%         if cvx.services.openstack.grace_period is arista.avd.defined %}
       grace-period {{ cvx.services.openstack.grace_period }}
 {%         endif %}
-{%         if cvx.services.openstack.network.type_driver is arista.avd.defined("arista ") %}
+{%         if cvx.services.openstack.network.type_driver.vlan is arista.avd.defined("arista") %}
       network type-driver vlan arista
 {%         endif %}
 {%         if cvx.services.openstack.authentication.role is arista.avd.defined %}
