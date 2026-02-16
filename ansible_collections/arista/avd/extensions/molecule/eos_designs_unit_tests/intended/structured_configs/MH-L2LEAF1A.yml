@@ -126,23 +126,28 @@ vlans:
 - id: 310
   name: Tenant_X_OP_Zone_1
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - id: 315
   name: Tenant_network_vrf_1
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - id: 320
   name: Tenant_network_vrf_3
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - id: 324
   name: Tenant_network_vrf_4
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - id: 316
   name: Tenant_network_vrf_2
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 vrfs:
 - name: MGMT
   ip_routing: false

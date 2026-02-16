@@ -932,23 +932,28 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 100
   name: VLAN100_ON_L2LEAF_1_AND_2
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 200
   name: VLAN200_ON_L2LEAF_1_ONLY
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 300
   name: VLAN300_PHONE_ON_L2LEAF1_AND_2
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 400
   name: VLAN400_FALLBACK_INDIVIDUAL_VLAN
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -1053,10 +1053,6 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.switchport.tool.dot1q_remove_outer_vlan_tag is arista.avd.defined %}
    switchport tool dot1q remove outer {{ ethernet_interface.switchport.tool.dot1q_remove_outer_vlan_tag }}
 {%         endif %}
-{# TODO: his command was removed from EOS and will need to be removed from AVD #}
-{%         if ethernet_interface.switchport.tool.dzgre_preserve is arista.avd.defined(true) %}
-   switchport tool dzgre preserve
-{%         endif %}
 {%     endif %}
 {%     if ethernet_interface.traffic_engineering.enabled is arista.avd.defined(true) %}
    traffic-engineering
@@ -1321,6 +1317,9 @@ interface {{ ethernet_interface.name }}
 {%             endif %}
    {{ auth_failure_fallback_mba }}
 {%         endif %}
+{%     endif %}
+{%     if ethernet_interface.monitor_link_flap_profiles is arista.avd.defined %}
+   monitor link-flap profiles {{ ethernet_interface.monitor_link_flap_profiles | arista.avd.natural_sort(ignore_case=false) | join(' ') }}
 {%     endif %}
 {%     if ethernet_interface.eos_cli is arista.avd.defined %}
    {{ ethernet_interface.eos_cli | indent(3, false) }}

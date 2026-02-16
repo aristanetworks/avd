@@ -450,28 +450,28 @@ router_adaptive_virtual_topology:
   - name: BLUE
     policy: BLUE-POLICY
     profiles:
-    - id: 2
-      name: BLUE-POLICY-VIDEO
-    - id: 3
-      name: BLUE-POLICY-VOICE
-    - id: 1
-      name: BLUE-POLICY-DEFAULT
+    - name: BLUE-POLICY-VIDEO
+      id: 2
+    - name: BLUE-POLICY-VOICE
+      id: 3
+    - name: BLUE-POLICY-DEFAULT
+      id: 1
   - name: RED
     policy: RED-POLICY
     profiles:
-    - id: 2
-      name: RED-POLICY-CRITICAL-SECRET-DATA
-    - id: 3
-      name: RED-POLICY-NORMAL-DATA
-    - id: 4
-      name: RED-POLICY-NOT-SO-IMPORTANT-DATA
+    - name: RED-POLICY-CRITICAL-SECRET-DATA
+      id: 2
+    - name: RED-POLICY-NORMAL-DATA
+      id: 3
+    - name: RED-POLICY-NOT-SO-IMPORTANT-DATA
+      id: 4
   - name: default
     policy: DEFAULT-POLICY-WITH-CP
     profiles:
-    - id: 254
-      name: DEFAULT-POLICY-CONTROL-PLANE
-    - id: 1
-      name: DEFAULT-POLICY-DEFAULT
+    - name: DEFAULT-POLICY-CONTROL-PLANE
+      id: 254
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
 router_bfd:
   multihop:
     interval: 300
@@ -490,7 +490,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-BGP-UNDERLAY-PEERS-IN
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
@@ -730,11 +730,13 @@ vrfs:
 - name: BLUE
   ip_routing: true
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: RED
   ip_routing: true
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vxlan_interface:
   vxlan1:
     description: site2-wan1_VTEP

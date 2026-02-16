@@ -645,6 +645,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk_private_vlan_secondary</samp>](## "ethernet_interfaces.[].trunk_private_vlan_secondary") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>switchport.trunk.private_vlan_secondary</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;pvlan_mapping</samp>](## "ethernet_interfaces.[].pvlan_mapping") <span style="color:red">removed</span> | String |  |  |  | List of vlans as string.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>switchport.pvlan_mapping</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan_translations</samp>](## "ethernet_interfaces.[].vlan_translations") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>switchport.vlan_translations</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;monitor_link_flap_profiles</samp>](## "ethernet_interfaces.[].monitor_link_flap_profiles") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].monitor_link_flap_profiles.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "ethernet_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
 
 === "YAML"
@@ -1964,6 +1966,8 @@
               # This is regardless of whether the specified unit is milliseconds or microseconds.
               number: <int; required>
               unit: <str; "microseconds" | "milliseconds"; required>
+        monitor_link_flap_profiles:
+          - <str>
 
         # Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
         eos_cli: <str>

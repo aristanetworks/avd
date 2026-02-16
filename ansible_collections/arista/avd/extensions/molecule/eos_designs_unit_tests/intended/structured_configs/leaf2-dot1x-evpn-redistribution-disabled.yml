@@ -15,7 +15,7 @@ hostname: leaf2-dot1x-evpn-redistribution-disabled
 ip_igmp_snooping:
   globally_enabled: true
 ip_radius_source_interfaces:
-- name: Management0
+- name: Management1
   vrf: MGMT
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
@@ -29,7 +29,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 10.1.1.12/32
 management_interfaces:
-- name: Management0
+- name: Management1
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
@@ -74,20 +74,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -95,7 +81,8 @@ router_bgp:
   vlans:
   - id: 100
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 10.1.0.12:10100
     route_targets:
       both:
@@ -104,23 +91,14 @@ router_bgp:
     - learned
   - id: 200
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 10.1.0.12:10200
     route_targets:
       both:
       - 10200:10200
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: DEV
     rd: 10.1.0.12:500
@@ -146,14 +124,16 @@ vlan_interfaces:
   vrf: DEV
   ip_address_virtual: 192.168.100.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: Vlan200
   description: VRFDEV_VLAN200
   shutdown: false
   vrf: DEV
   ip_address_virtual: 192.168.200.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vlan_internal_order:
   allocation: ascending
   range:
@@ -163,18 +143,21 @@ vlans:
 - id: 100
   name: VRFDEV_VLAN100
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 200
   name: VRFDEV_VLAN200
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: DEV
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vxlan_interface:
   vxlan1:
     description: leaf2-dot1x-evpn-redistribution-disabled_VTEP

@@ -1,7 +1,25 @@
+---
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts
+  arista.avd.eos_designs_facts:
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
+  check_mode: false
+  run_once: true
+
 - name: Test with eos_designs_custom_templates
   ignore_errors: false
   register: result
   arista.avd.eos_designs_structured_config:
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
     eos_designs_custom_templates:
       # Base template to initialixe various lists to test the list merge features
       - template: base.yml.j2
@@ -14,6 +32,7 @@
         options:
           list_merge: prepend
           strip_empty_keys: false
+    return_structured_config: true
 
 - name: Validate result
   ansible.builtin.assert:
@@ -26,3 +45,5 @@
       - result.ansible_facts.custom_template2_list == ["custom_template2_item", "base_item"]
       - result.ansible_facts.custom_template2_none_var is defined
       - result.ansible_facts.custom_template2_none_var is none
+      - result.ansible_facts.my_is_deployed is defined
+      - result.ansible_facts.my_is_deployed == true

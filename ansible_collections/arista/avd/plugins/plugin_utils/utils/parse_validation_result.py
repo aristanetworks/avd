@@ -43,6 +43,17 @@ def parse_validation_result(validation_result: ValidationResult, hostname: str, 
             collection_name=collection_name,
         )
 
+    for ignored_key in validation_result.ignored_eos_config_keys:
+        path = json_path_to_string(ignored_key.path)
+
+        message = (
+            f"[{hostname}]: The EOS Config input key '{path}' is present in the input to 'eos_designs' and will be ignored. "
+            f"To address this, use the equivalent AVD Design input model if available or use custom_structured_configuration. "
+            f"See https://avd.arista.com/6.x/docs/porting-guides/6.x.x.html#using-eos-config-eos_cli_config_gen-data-models-when-running-eos_designs"
+            "for details."
+        )
+        ansible_display.warning(message, formatted=True)
+
     if (error_count := len(validation_result.violations)) > 0:
         for violation in validation_result.violations:
             path_message = f" for the input data model '{json_path_to_string(violation.path)}'" if violation.path else ""

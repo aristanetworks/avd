@@ -324,10 +324,10 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-POLICY-WITH-CP
     profiles:
-    - id: 254
-      name: DEFAULT-POLICY-CONTROL-PLANE
-    - id: 1
-      name: DEFAULT-POLICY-DEFAULT
+    - name: DEFAULT-POLICY-CONTROL-PLANE
+      id: 254
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
 router_bfd:
   multihop:
     interval: 300
@@ -349,7 +349,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     allowas_in:
       enabled: true
       times: 1

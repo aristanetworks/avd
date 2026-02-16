@@ -29,5 +29,5 @@
 
 ## 🧪 Test Results <a id="test-results"></a>
 
-| Device | Categories | Test | Description | Custom Field | Result | Messages |
-| :- | :- | :- | :- | :- | :- | :- |
+| Device | Categories | Test | Description | Result | Messages |
+| :- | :- | :- | :- | :- | :- |

@@ -29,53 +29,6 @@ class RouteMapsMixin(Protocol):
         self.structured_config.route_maps.append_new(name=route_map_name, sequence_numbers=sequence_numbers)
 
     @run_once_method
-    def set_once_route_map_bgp_underlay_peers_in(self: AvdStructuredConfigUnderlayProtocol) -> None:
-        """Set route-map RM-BGP-UNDERLAY-PEERS-IN."""
-        # RM-BGP-UNDERLAY-PEERS-IN
-        sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
-        sequence_numbers.append_new(
-            sequence=40,
-            type="permit",
-            set=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Set([f"extcommunity soo {self.shared_utils.evpn_soo} additive"]),
-            description="Mark prefixes originated from the LAN",
-        )
-        if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha:
-            sequence_numbers.append_new(
-                sequence=10,
-                type="permit",
-                match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-WAN-HA-PEER-PREFIXES"]),
-                description="Allow WAN HA peer interface prefixes",
-            )
-            # Create the prefix-list.
-            self.set_once_prefix_list_wan_ha_peer_prefixes()
-
-            sequence_numbers.append_new(
-                sequence=20,
-                type="deny",
-                match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["as-path ASPATH-WAN"]),
-                description="Deny other routes from the HA peer",
-            )
-            # Create AS Path ACL
-            self.set_once_as_path_acl_aspath_wan()
-
-        self.structured_config.route_maps.append_new(name="RM-BGP-UNDERLAY-PEERS-IN", sequence_numbers=sequence_numbers)
-
-    @run_once_method
-    def set_once_route_map_bgp_underlay_peers_out(self: AvdStructuredConfigUnderlayProtocol) -> None:
-        """Set route-map RM-BGP-UNDERLAY-PEERS-OUT."""
-        sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
-        sequence_numbers.append_new(
-            sequence=10,
-            type="permit",
-            match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["tag 50", "route-type internal"]),
-            description="Make routes learned from WAN HA peer less preferred on LAN routers",
-            set=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Set(["metric 50"]),
-        )
-        sequence_numbers.append_new(sequence=20, type="permit")
-
-        self.structured_config.route_maps.append_new(name="RM-BGP-UNDERLAY-PEERS-OUT", sequence_numbers=sequence_numbers)
-
-    @run_once_method
     def set_once_route_map_connected_to_bgp(self: AvdStructuredConfigUnderlayProtocol) -> None:
         """
         Set route-map RM-CONN-2-BGP.

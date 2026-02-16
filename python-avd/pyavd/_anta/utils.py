@@ -14,7 +14,7 @@ from .index import AVD_TEST_INDEX
 if TYPE_CHECKING:
     from anta.catalog import AntaCatalog
 
-    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdTestSpec
+    from pyavd.api.anta import AVDCatalogGenerationSettings, AVDTestSpec
 
 
 LOGGER = getLogger(__name__)
@@ -34,8 +34,8 @@ def dump_anta_catalog(hostname: str, catalog: AntaCatalog, catalog_dir: str | Pa
         stream.write(catalog_dump.to_json())
 
 
-def get_filtered_test_specs(avd_catalog_generation_settings: AvdCatalogGenerationSettings) -> list[AvdTestSpec]:
-    """Return a new list of AvdTestSpec based on the default AVD_TEST_INDEX list and the provided settings object."""
+def get_filtered_test_specs(avd_catalog_generation_settings: AVDCatalogGenerationSettings) -> list[AVDTestSpec]:
+    """Return a new list of AVDTestSpec based on the default AVD_TEST_INDEX list and the provided settings object."""
     run_tests_set = set(avd_catalog_generation_settings.run_tests)
     skip_tests_set = set(avd_catalog_generation_settings.skip_tests)
 
@@ -49,7 +49,7 @@ def get_filtered_test_specs(avd_catalog_generation_settings: AvdCatalogGeneratio
     # Remove any tests from run_tests that are in skip_tests
     remaining_run_tests = run_tests_set - skip_tests_set
 
-    final_test_specs: list[AvdTestSpec] = []
+    final_test_specs: list[AVDTestSpec] = []
 
     for test in AVD_TEST_INDEX:
         name = test.test_class.name

@@ -391,7 +391,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv6 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -433,7 +433,7 @@ router bgp 65100
    neighbor IPv6-UNDERLAY-PEERS peer group
    neighbor IPv6-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv6-UNDERLAY-PEERS send-community
-   neighbor IPv6-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv6-UNDERLAY-PEERS maximum-routes 256000
    neighbor 2001:db8:1:1::1 peer group EVPN-OVERLAY-PEERS
    neighbor 2001:db8:1:1::1 remote-as 65101
    neighbor 2001:db8:1:1::1 description dc1-leaf1a_Loopback0

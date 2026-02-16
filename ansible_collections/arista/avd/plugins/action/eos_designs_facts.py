@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import cProfile
+import json
 import pstats
 from collections import ChainMap
 from pathlib import Path
@@ -11,28 +12,28 @@ from typing import TYPE_CHECKING, Any, cast
 
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
-from ansible.plugins.action import ActionBase, display
+from ansible.plugins.action import ActionBase
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     ANSIBLE_ABOVE_2_19,
-    ActionPluginVars,
-    build_result_message,
+    AVDFileHandler,
+    AVDVaultHandler,
+    get_eos_designs_facts_path,
     get_templar,
-    parse_validation_result,
+    get_tmp_paths,
+    raise_action_fail,
 )
 
 if TYPE_CHECKING:
     from ansible.playbook.task import Task
     from ansible.template import Templar
 
-    from pyavd import validate_inputs
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
     from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
     from pyavd.api.schemas import AVDDesign
 
 try:
-    from pyavd import validate_inputs
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
     from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
@@ -46,14 +47,13 @@ except ImportError:
 class ActionModule(ActionBase):
     _task: Task
     _templar: Templar
+    tmp_dir: str
 
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
             task_vars = {}
-
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
-
         if not HAS_PYAVD:
             msg = "The arista.avd.eos_designs_facts' plugin requires the 'pyavd' Python library. Got import error"
             raise AnsibleActionFail(msg)
@@ -70,13 +70,16 @@ class ActionModule(ActionBase):
 
         self._digital_twin = self._task.args.get("digital_twin", False)
         output_dir = self._task.args.get("output_dir")
+        self.tmp_dir = self._task.args.get("tmp_dir")
+        # Get target path and clean any previously generated facts.
+        avd_switch_facts_path = get_eos_designs_facts_path(self.tmp_dir, clean=True)
 
         groups = task_vars.get("groups", {})
         fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
         fabric_hosts = groups.get(fabric_name, [])
         ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", [])
 
-        # Check if fabric_name is set and that all play hosts are part Ansible group set in "fabric_name"
+        # Check if fabric_name is set and that all play hosts are part of the Ansible group set in "fabric_name".
         if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
             msg = (
                 "Invalid/missing 'fabric_name' variable. "
@@ -86,31 +89,20 @@ class ActionModule(ActionBase):
             )
             raise AnsibleActionFail(msg)
 
-        # This is an "Ansible Hostvars Manager"-like object where we can retrieve hostvars for each host on-demand.
-        # This is special because it contains role, play and task vars as well.
-        hostvars = ActionPluginVars(self)
+        all_inputs, all_hostvars = self.load_validated_inputs(fabric_hosts)
 
         # Get updated templar instance to be passed along to our simplified "templater"
         templar = get_templar(self, task_vars)
 
         pool_manager = PoolManager(Path(output_dir))
 
-        all_inputs, all_hostvars = self.parse_inputs(fabric_hosts, hostvars, result)
-        if result.get("failed"):
-            # Stop here if any of the devices failed input data validation
-            if cprofile_file:
-                profiler.disable()
-                stats = pstats.Stats(profiler).sort_stats("cumtime")
-                stats.dump_stats(cprofile_file)
-
-            return result
-
         avd_switch_facts = self.render_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, templar=templar)
+
+        # Dump facts to file.
+        self.dump_facts(avd_switch_facts, avd_switch_facts_path)
 
         # Save any updated pools.
         result["changed"] = pool_manager.save_updated_pools(dumper_cls=AnsibleDumper)
-
-        result["ansible_facts"] = {"avd_switch_facts": avd_switch_facts}
 
         if cprofile_file:
             profiler.disable()
@@ -119,49 +111,44 @@ class ActionModule(ActionBase):
 
         return result
 
-    def parse_inputs(self, fabric_hosts: list, hostvars: ActionPluginVars, result: dict) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
+    def load_validated_inputs(self, fabric_hosts: list) -> tuple[dict[str, AVDDesign], dict[str, dict]]:
         """
-        Fetch hostvars for all hosts and perform data conversion & validation.
-
-        Load data into EosDesigns class
-        Returns
+        Load validated hostvars from temporary files for all hosts and load data into AVDDesign classes.
 
         Args:
-            fabric_hosts: List of hostnames
-            hostvars: Ansible "hostvars" object
-            result: Ansible Action result dict which is inplace updated.
+            fabric_hosts: List of inventory hostnames.
 
         Returns:
-            Tuple of
-                Dict with the loaded data keyed by hostnames.
-                Dict of the raw hostvars keyed by hostnames.
+            Tuple of one dict with the loaded AVDDesign instances keyed by hostnames
+            and one dict of the raw hostvars also keyed by hostnames.
+
+        TODO: Since hostvars are only used for custom templates, we should just give the raw hostvars object instead.
+              This will allow us to only serialize and deserialize what is relevant to the schema, and drop everything else.
+              As long as we support dynamic keys it would only be possible to drop the keys after validation, where we have
+              identified the relevant keys correctly.
         """
         all_inputs: dict[str, AVDDesign] = {}
         all_hostvars: dict[str, dict] = {}
-        data_validation_errors = 0
+
+        _templated_path, validated_path = get_tmp_paths(self.tmp_dir)
 
         for host in fabric_hosts:
-            # Fetch all templated Ansible vars for this host
-            # In Ansible versions <2.19 the vars will be templated best-effort. Ignoring failures.
-            # From Ansible version 2.19 the vars will be templated on access and errors will be raised for any undefined vars.
-            # NOTE: We need the dict() for conversion to work below, since it is inplace updating stuff. Otherwise it looses the updates.
-            host_hostvars = dict(hostvars[host])
+            file_path = validated_path / f"{host}.json"
+            if not file_path.exists():
+                msg = (
+                    f"Missing validated inputs for host '{host}'. "
+                    "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
+                )
+                raise AnsibleActionFail(message=msg)
 
-            # Load input vars into the EosDesigns data class.
-            validated_data_result = validate_inputs(host_hostvars)
+            # Read, unvault, and parse the JSON file
+            vault_handler = AVDVaultHandler(self._loader)
+            file_handler = AVDFileHandler(vault_handler)
+            host_hostvars = file_handler.load_json(file_path)
 
-            data_validation_errors += parse_validation_result(validation_result=validated_data_result.validation_result, hostname=host, ansible_display=display)
-
-            if data_validation_errors or validated_data_result.validated_data is None:
-                # Quickly continue if data validation failed
-                result["failed"] = True
-                continue
-
-            all_inputs[host] = AVDDesign._from_dict(validated_data_result.validated_data)
+            # Load host hostvars into the AVDDesign data class.
+            all_inputs[host] = AVDDesign._from_dict(host_hostvars)
             all_hostvars[host] = host_hostvars
-
-        # Build result message
-        result["msg"] = build_result_message(data_validation_errors)
 
         return all_inputs, all_hostvars
 
@@ -184,7 +171,7 @@ class ActionModule(ActionBase):
         try:
             all_facts = get_facts(all_inputs=all_inputs, pool_manager=pool_manager, all_hostvars=all_hostvars, templar=templar, digital_twin=self._digital_twin)
         except AristaAvdError as e:
-            raise AnsibleActionFail(message=str(e)) from e
+            raise_action_fail(str(e), e)
 
         all_facts_as_dicts: dict[str, dict] = {}
         for host, facts in all_facts.items():
@@ -201,3 +188,14 @@ class ActionModule(ActionBase):
             all_facts_as_dicts[host] = facts_dict
 
         return all_facts_as_dicts
+
+    def dump_facts(self, avd_switch_facts: dict[str, dict], file_path: Path) -> None:
+        """
+        Dump facts to the temporary folder.
+
+        Args:
+            avd_switch_facts: Facts to dump as dict keyed by hostname.
+            file_path: Path to dump facts to.
+        """
+        with file_path.open(mode="w", encoding="utf-8") as f:
+            json.dump(avd_switch_facts, f, indent=4)

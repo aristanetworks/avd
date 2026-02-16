@@ -1,0 +1,29 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.0.0/27
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 10.255.1.0/27
+    mlag_peer_ipv4_pool: 10.255.1.64/27
+    mlag_peer_l3_ipv4_pool: 10.255.1.96/27
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+  node_groups:
+    - group: HTNS_L3_LEAFS
+      bgp_as: 65101
+      nodes:
+        - name: htns-l3-leaf1
+          id: 1
+          mgmt_ip: 172.16.1.101/24
+        - name: htns-l3-leaf2
+          id: 2
+          mgmt_ip: 172.16.1.102/24
+          filter: # (1)!
+            tenants: [TENANT1] # (2)!
+            tags: [development] # (3)!
+            allow_vrfs: [all] # (4)!

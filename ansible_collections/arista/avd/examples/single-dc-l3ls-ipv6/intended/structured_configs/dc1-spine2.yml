@@ -141,7 +141,7 @@ router_bgp:
       type: ipv6
     password: F0bdF6JLcJtagc6PCN8W0Q==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn

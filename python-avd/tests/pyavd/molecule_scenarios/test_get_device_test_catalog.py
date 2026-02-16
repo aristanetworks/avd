@@ -10,13 +10,13 @@ import pytest
 from pyavd import get_device_test_catalog
 from pyavd._anta.lib import AntaCatalog
 from pyavd._utils import get
-from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData
+from pyavd.api.anta import AVDCatalogGenerationSettings, AVDFabricData
 from tests.models import MoleculeHost, MoleculeScenario
 
-SETTINGS_WITH_EXTRA_FABRIC_VALIDATION = AvdCatalogGenerationSettings(extra_fabric_validation=True)
-SETTINGS_FILTERED_DEFAULT = AvdCatalogGenerationSettings(skip_tests=["VerifyNTP"])
-SETTINGS_FILTERED_SVC_LEAF = AvdCatalogGenerationSettings(skip_tests=["VerifyNTP"], run_tests=["VerifyReachability"])
-SETTINGS_FILTERED_SPINE = AvdCatalogGenerationSettings(run_tests=["VerifyLLDPNeighbors"], skip_tests=["VerifyLLDPNeighbors"])
+SETTINGS_WITH_EXTRA_FABRIC_VALIDATION = AVDCatalogGenerationSettings(extra_fabric_validation=True)
+SETTINGS_FILTERED_DEFAULT = AVDCatalogGenerationSettings(skip_tests=["VerifyNTP"])
+SETTINGS_FILTERED_SVC_LEAF = AVDCatalogGenerationSettings(skip_tests=["VerifyNTP"], run_tests=["VerifyReachability"])
+SETTINGS_FILTERED_SPINE = AVDCatalogGenerationSettings(run_tests=["VerifyLLDPNeighbors"], skip_tests=["VerifyLLDPNeighbors"])
 TEST_SETTINGS_MAP: dict[str, Any] = {
     "default_run": {"default": None},
     "default_run_filtered_report": {"default": SETTINGS_WITH_EXTRA_FABRIC_VALIDATION},
@@ -43,7 +43,7 @@ RunName = Literal["default_run", "default_run_filtered_report", "filtered_run", 
 def test_get_device_test_catalog(molecule_host: MoleculeHost, molecule_scenario: MoleculeScenario, run_name: RunName) -> None:
     """Verify get_device_test_catalog generates the correct ANTA catalog."""
     all_configs = deepcopy(molecule_scenario.structured_configs)
-    fabric_data = AvdFabricData.from_structured_configs(all_configs)
+    fabric_data = AVDFabricData.from_structured_configs(all_configs)
     host_config = deepcopy(molecule_host.structured_config)
 
     run_settings = TEST_SETTINGS_MAP[run_name]

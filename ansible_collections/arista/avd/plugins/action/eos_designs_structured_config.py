@@ -13,31 +13,31 @@ from typing import TYPE_CHECKING, Any
 import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
-from ansible.plugins.action import ActionBase, display
+from ansible.plugins.action import ActionBase
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     ANSIBLE_ABOVE_2_19,
-    ActionPluginVars,
+    AVDFileHandler,
     AvdSwitchFactsDefaultDict,
-    build_result_message,
+    AVDVaultHandler,
+    get_eos_designs_facts_path,
     get_templar,
-    parse_validation_result,
+    get_tmp_paths,
+    raise_action_fail,
     write_file,
 )
 
 if TYPE_CHECKING:
-    from pyavd import validate_inputs
     from pyavd._eos_designs.structured_config import get_structured_config
     from pyavd._schema.avdschema import AvdSchema
-    from pyavd._utils import get, merge, strip_null_from_data
+    from pyavd._utils import merge, strip_null_from_data
     from pyavd._utils import template as templater
     from pyavd.api.schemas import AVDDesign
 
 try:
-    from pyavd import validate_inputs
     from pyavd._eos_designs.structured_config import get_structured_config
     from pyavd._schema.avdschema import AvdSchema
-    from pyavd._utils import get, merge, strip_null_from_data
+    from pyavd._utils import merge, strip_null_from_data
     from pyavd._utils import template as templater
     from pyavd.api.schemas import AVDDesign
 
@@ -49,10 +49,11 @@ LOGGER = logging.getLogger()
 
 
 class ActionModule(ActionBase):
+    tmp_dir: str
+
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
             task_vars = {}
-
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
 
@@ -67,10 +68,6 @@ class ActionModule(ActionBase):
 
         hostname = task_vars["inventory_hostname"]
 
-        if self._task.args.get("debug_vars") is True and (debug_vars_file := self._task.args.get("debug_vars_file")):
-            # Dump all hostvars to a file.
-            write_file(yaml.dump(task_vars["hostvars"][hostname], Dumper=AnsibleDumper, indent=2, sort_keys=False, width=2147483647), debug_vars_file)
-
         if self._task.args.get("structured_config") is False:
             # Not creating structured config
             return result
@@ -83,46 +80,28 @@ class ActionModule(ActionBase):
         template_output = bool(self._task.args.get("template_output", False)) and not ANSIBLE_ABOVE_2_19
 
         digital_twin = self._task.args.get("digital_twin", False)
+        return_structured_config = self._task.args.get("return_structured_config", False)
+        self.tmp_dir = self._task.args.get("tmp_dir")
 
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
 
-        # Create the "Ansible Hostvars Manager"-like object which includes task, role and play vars,
-        # and take the HostVarsVars for this host.
-        # All variables will be templated on access and cached by Ansible's tooling.
-        host_hostvars = ActionPluginVars(self)[hostname]
-        # The dict() here will force templating of all variables at once, potentially triggering issues for
-        # missing variables in inline templates in Ansible 2.19.
-        host_hostvars = dict(host_hostvars)
+        avd_design, host_hostvars = self.load_validated_inputs(hostname)
 
-        avd_switch_facts = get(host_hostvars, "avd_switch_facts", required=True)
-
-        # Initialise defaultdict that loads facts from json files on demand.
-        all_facts = AvdSwitchFactsDefaultDict(avd_switch_facts)
-
-        # Load input vars into the EosDesigns data class.
-        validated_data_result = validate_inputs(host_hostvars)
-
-        data_validation_errors = parse_validation_result(validation_result=validated_data_result.validation_result, hostname=hostname, ansible_display=display)
-
-        if data_validation_errors or validated_data_result.validated_data is None:
-            # Quickly continue if data validation failed
-            result["failed"] = True
-            result["msg"] = build_result_message(data_validation_errors)
-            return result
+        all_facts = self.load_facts(hostname)
 
         # Get Structured Config from modules in PyAVD using internal api so we can supply our own templar
         try:
             structured_config = get_structured_config(
                 hostname=hostname,
-                inputs=AVDDesign._from_dict(validated_data_result.validated_data),
+                inputs=avd_design,
                 all_facts=all_facts,
                 hostvars=host_hostvars,
                 templar=self.templar,
                 digital_twin=digital_twin,
             )
         except Exception as error:
-            raise AnsibleActionFail(message=str(error)) from error
+            raise_action_fail(str(error), error)
 
         output = structured_config._as_dict()
 
@@ -164,7 +143,7 @@ class ActionModule(ActionBase):
                 try:
                     merge(output, *template_result_data, list_merge=list_merge, schema=output_schema)
                 except Exception as error:
-                    raise AnsibleActionFail(message=str(error)) from error
+                    raise_action_fail(str(error), error)
 
         # If the argument 'template_output' is set, run the output data through another jinja2 rendering.
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
@@ -192,8 +171,8 @@ class ActionModule(ActionBase):
         else:
             result["changed"] = True
 
-        # TODO: AVD 6.0.0 consider not setting facts at all.
-        result["ansible_facts"] = output
+        if return_structured_config:
+            result["ansible_facts"] = output
 
         if cprofile_file:
             profiler.disable()
@@ -201,3 +180,53 @@ class ActionModule(ActionBase):
             stats.dump_stats(cprofile_file)
 
         return result
+
+    def load_validated_inputs(self, hostname: str) -> tuple[AVDDesign, dict[str, Any]]:
+        """
+        Load validated hostvars from the temporary file for the host and load them into AVDDesign class.
+
+        Args:
+            hostname: Inventory hostname.
+
+        Returns:
+            Tuple of an AVDDesign instance loaded from the host hostvars and a dict with the raw hostvars.
+        """
+        _templated_path, validated_path = get_tmp_paths(self.tmp_dir)
+        file_path = validated_path / f"{hostname}.json"
+        if not file_path.exists():
+            msg = (
+                f"Missing validated inputs for host '{hostname}'. "
+                "Ensure the 'arista.avd.validate_inputs' task ran successfully for this host and that no validation errors occurred."
+            )
+            raise AnsibleActionFail(message=msg)
+
+        # Read, unvault, and parse the JSON file
+        vault_handler = AVDVaultHandler(self._loader)
+        file_handler = AVDFileHandler(vault_handler)
+        host_hostvars = file_handler.load_json(file_path)
+
+        # Load host hostvars into the AVDDesign data class.
+        avd_design = AVDDesign._from_dict(host_hostvars)
+
+        return avd_design, host_hostvars
+
+    def load_facts(self, hostname: str) -> AvdSwitchFactsDefaultDict:
+        """
+        Load facts from the temporary file and load them into AvdSwitchFactsDefaultDict class.
+
+        Args:
+            hostname: Inventory hostname.
+
+        Returns:
+            AvdSwitchFactsDefaultDict instance loaded from facts.
+        """
+        file_path = get_eos_designs_facts_path(self.tmp_dir)
+
+        if not file_path.exists():
+            msg = f"Missing AVD eos_designs facts for host '{hostname}' ({file_path}). Ensure the 'arista.avd.eos_designs_facts' task ran successfully."
+            raise AnsibleActionFail(message=msg)
+
+        with file_path.open(mode="r", encoding="utf-8") as f:
+            avd_switch_facts = json.load(f)
+
+        return AvdSwitchFactsDefaultDict(avd_switch_facts)

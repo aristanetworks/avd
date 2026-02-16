@@ -215,7 +215,7 @@ router_bgp:
     next_hop_self: true
     password: 4b21pAdCvWeAqpcKDFMdWw==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbors:
   - ip_address: 10.255.128.11
@@ -233,7 +233,8 @@ router_bgp:
   vlans:
   - id: 11
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.13:10011
     route_targets:
       both:
@@ -242,7 +243,8 @@ router_bgp:
     - learned
   - id: 12
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.13:10012
     route_targets:
       both:
@@ -251,7 +253,8 @@ router_bgp:
     - learned
   - id: 21
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.13:10021
     route_targets:
       both:
@@ -260,7 +263,8 @@ router_bgp:
     - learned
   - id: 22
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.13:10022
     route_targets:
       both:
@@ -269,7 +273,8 @@ router_bgp:
     - learned
   - id: 3401
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.13:13401
     route_targets:
       both:
@@ -278,7 +283,8 @@ router_bgp:
     - learned
   - id: 3402
     metadata:
-      tenant: TENANT1
+      tenants:
+      - TENANT1
     rd: 10.255.128.13:13402
     route_targets:
       both:
@@ -386,14 +392,16 @@ vlan_interfaces:
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan3009
   description: MLAG_L3_VRF_VRF10
   shutdown: false
@@ -401,7 +409,8 @@ vlan_interfaces:
   ip_address: 10.255.129.116/31
   mtu: 1500
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
     type: underlay_peering
 - name: Vlan21
   description: VRF11_VLAN21
@@ -409,14 +418,16 @@ vlan_interfaces:
   vrf: VRF11
   ip_address_virtual: 10.10.21.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: Vlan3010
   description: MLAG_L3_VRF_VRF11
   shutdown: false
@@ -424,7 +435,8 @@ vlan_interfaces:
   ip_address: 10.255.129.116/31
   mtu: 1500
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -437,60 +449,72 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 11
   name: VRF10_VLAN11
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 12
   name: VRF10_VLAN12
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3009
   name: MLAG_L3_VRF_VRF10
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 21
   name: VRF11_VLAN21
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 22
   name: VRF11_VLAN22
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3010
   name: MLAG_L3_VRF_VRF11
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3401
   name: L2_VLAN3401
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3402
   name: L2_VLAN3402
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF10
   ip_routing: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - name: VRF11
   ip_routing: true
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vxlan_interface:
   vxlan1:
     description: dc2-leaf1a_VTEP

@@ -1148,7 +1148,7 @@ ASN Notation: asplain
 | Remote AS | 65103 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### MLAG_VRFS_PEER
 
@@ -1158,7 +1158,7 @@ ASN Notation: asplain
 | Remote AS | 65103 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### UNDERLAY_PEERS
 
@@ -1166,7 +1166,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -1264,18 +1264,18 @@ router bgp 65103
    neighbor MLAG_PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG_PEER password 7 <removed>
    neighbor MLAG_PEER send-community
-   neighbor MLAG_PEER maximum-routes 12000
+   neighbor MLAG_PEER maximum-routes 256000
    neighbor MLAG_VRFS_PEER peer group
    neighbor MLAG_VRFS_PEER remote-as 65103
    neighbor MLAG_VRFS_PEER next-hop-self
    neighbor MLAG_VRFS_PEER description DC1-SVC3B
    neighbor MLAG_VRFS_PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG_VRFS_PEER send-community
-   neighbor MLAG_VRFS_PEER maximum-routes 12000
+   neighbor MLAG_VRFS_PEER maximum-routes 256000
    neighbor UNDERLAY_PEERS peer group
    neighbor UNDERLAY_PEERS password 7 <removed>
    neighbor UNDERLAY_PEERS send-community
-   neighbor UNDERLAY_PEERS maximum-routes 12000
+   neighbor UNDERLAY_PEERS maximum-routes 256000
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1_Loopback0

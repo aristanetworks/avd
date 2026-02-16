@@ -15,7 +15,7 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 from yaml import load
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, raise_action_fail
 
 PLUGIN_NAME = "arista.avd.cv_workflow"
 
@@ -247,7 +247,7 @@ class ActionModule(ActionBase):
         except Exception as error:
             # Recast errors as AnsibleActionFail
             msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from error
+            raise_action_fail(msg, error)
 
         return result
 

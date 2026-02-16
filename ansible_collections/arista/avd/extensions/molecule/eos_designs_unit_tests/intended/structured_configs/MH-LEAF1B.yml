@@ -542,7 +542,7 @@ router_bgp:
       type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -730,7 +730,8 @@ vlan_interfaces:
   vrf: Tenant_X_OP_Zone
   ip_address_virtual: 10.1.10.1/24
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
     tags:
     - opzone
 - name: Vlan315
@@ -739,7 +740,8 @@ vlan_interfaces:
   vrf: VRF_with_loopback_ip_pools
   ip_address_virtual: 10.1.10.2/24
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
     tags:
     - opzone
 - name: Vlan320
@@ -748,7 +750,8 @@ vlan_interfaces:
   vrf: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools
   ip_address_virtual: 10.1.10.4/24
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
     tags:
     - opzone
 - name: Vlan324
@@ -757,7 +760,8 @@ vlan_interfaces:
   vrf: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools
   ip_address_virtual: 10.1.10.5/24
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
     tags:
     - opzone
 - name: Vlan316
@@ -766,7 +770,8 @@ vlan_interfaces:
   vrf: VRF_without_loopback_ip_pools
   ip_address_virtual: 10.1.10.3/24
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
     tags:
     - opzone
 vlan_internal_order:
@@ -778,46 +783,56 @@ vlans:
 - id: 310
   name: Tenant_X_OP_Zone_1
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - id: 315
   name: Tenant_network_vrf_1
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - id: 320
   name: Tenant_network_vrf_3
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - id: 324
   name: Tenant_network_vrf_4
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - id: 316
   name: Tenant_network_vrf_2
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_X_OP_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - name: VRF_with_loopback_ip_pools
   ip_routing: true
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - name: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools
   ip_routing: true
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - name: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools
   ip_routing: true
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - name: VRF_without_loopback_ip_pools
   ip_routing: true
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 vxlan_interface:
   vxlan1:
     description: MH-LEAF1B_VTEP

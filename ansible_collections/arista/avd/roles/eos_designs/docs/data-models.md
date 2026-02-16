@@ -154,6 +154,7 @@ When using `pool_manager` for node IDs the pools are dynamically built and match
 - `dc_name`
 - `pod_name`
 - `type`
+- `rack`
 
 Each pool will assign the first available ID starting from 1. Any statically set ID under node settings will be reserved in the pool if possible, otherwise an error will be raised.
 
@@ -1846,7 +1847,9 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/digital-twin-config
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-digital-twin-configuration.md
 --8<--
 
-### PREVIEW - New devices models
+## PREVIEW - New devices models
+
+See the [Node type settings](#node-type-settings) section for available keys.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/devices.md

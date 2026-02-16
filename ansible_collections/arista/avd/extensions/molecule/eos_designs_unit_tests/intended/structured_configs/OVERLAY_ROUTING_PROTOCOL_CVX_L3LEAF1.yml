@@ -3,6 +3,18 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet5
+  description: P2P_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF4_Ethernet5
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.31.255.8/31
+  metadata:
+    peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF4
+    peer_interface: Ethernet5
+    peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1
 ip_igmp_snooping:
   globally_enabled: true
@@ -56,7 +68,14 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
+  neighbors:
+  - ip_address: 172.31.255.9
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65002'
+    metadata:
+      peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF4
+    description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF4_Ethernet5
   redistribute:
     connected:
       enabled: true
@@ -73,7 +92,8 @@ vlan_interfaces:
   shutdown: true
   vrf: TEST
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vlan_internal_order:
   allocation: ascending
   range:
@@ -83,22 +103,26 @@ vlans:
 - id: 3910
   name: SVI_3910
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 2910
   name: L2VLAN_2910
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 2911
   name: L2VLAN_2911
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST
   ip_routing: true
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vxlan_interface:
   vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1_VTEP

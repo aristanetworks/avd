@@ -77,15 +77,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
+    maximum_routes: 256000
   neighbors:
   - ip_address: 172.17.0.1
     peer_group: IPv4-UNDERLAY-PEERS
@@ -103,16 +95,10 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:

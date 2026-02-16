@@ -223,13 +223,13 @@ router_bgp:
     description: CUSTOM-TEMPLATES-L3LEAF1A
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -263,7 +263,8 @@ router_bgp:
   vlans:
   - id: 110
     metadata:
-      tenant: CUSTOM_TEMPLATES_TENANT
+      tenants:
+      - CUSTOM_TEMPLATES_TENANT
     rd: 192.168.255.22:11110
     route_targets:
       both:
@@ -331,7 +332,8 @@ vlan_interfaces:
   vrf: TEST_VRF
   ip_address_virtual: 10.1.10.1/24
   metadata:
-    tenant: CUSTOM_TEMPLATES_TENANT
+    tenants:
+    - CUSTOM_TEMPLATES_TENANT
     tags:
     - opzone
 - name: Vlan3000
@@ -341,7 +343,8 @@ vlan_interfaces:
   ip_address: 10.255.240.11/31
   mtu: 9214
   metadata:
-    tenant: CUSTOM_TEMPLATES_TENANT
+    tenants:
+    - CUSTOM_TEMPLATES_TENANT
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -354,30 +357,35 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 110
   name: Tenant_A_OP_Zone_1
   metadata:
-    tenant: CUSTOM_TEMPLATES_TENANT
+    tenants:
+    - CUSTOM_TEMPLATES_TENANT
 - id: 3000
   name: MLAG_L3_VRF_TEST_VRF
   trunk_groups:
   - MLAG
   metadata:
-    tenant: CUSTOM_TEMPLATES_TENANT
+    tenants:
+    - CUSTOM_TEMPLATES_TENANT
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST_VRF
   ip_routing: true
   metadata:
-    tenant: CUSTOM_TEMPLATES_TENANT
+    tenants:
+    - CUSTOM_TEMPLATES_TENANT
 vxlan_interface:
   vxlan1:
     description: CUSTOM-TEMPLATES-L3LEAF1B_VTEP

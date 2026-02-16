@@ -67,8 +67,6 @@ ethernet_interfaces:
 - name: Ethernet6
   description: server02_SINGLE_NODE_TRUNK_Eth1
   shutdown: false
-  l2_mtu: 8000
-  l2_mru: 9000
   spanning_tree_bpdufilter: 'False'
   spanning_tree_bpduguard: 'False'
   spanning_tree_portfast: edge
@@ -129,6 +127,21 @@ ethernet_interfaces:
       vlan: 113
       trunk: tagged
 hostname: DC1-LEAF1A
+ip_access_lists:
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan132
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 10.1.32.1
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan132
+  entries:
+  - remark: Some remark will not require source and destination fields.
+  - action: permit
+    protocol: ip
+    source: 10.1.32.1
+    destination: any
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -249,7 +262,7 @@ router_bgp:
       type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -475,7 +488,8 @@ vlan_interfaces:
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.30.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - app
     - erp1
@@ -485,7 +499,8 @@ vlan_interfaces:
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.31.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - app
 - name: Vlan132
@@ -497,8 +512,11 @@ vlan_interfaces:
   - 10.1.32.254
   - 10.2.32.254/24
   - 10.3.32.254/24
+  access_group_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan132
+  access_group_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan132
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - erp2
 - name: Vlan113
@@ -516,7 +534,8 @@ vlan_interfaces:
     hash_algorithm: sha512
     key: AQQvKeimxJu+uGQ/yYvv9w==
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - DC1_LEAF1
 - name: Vlan120
@@ -532,7 +551,8 @@ vlan_interfaces:
     source_interface: lo100
     vrf: TEST
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - web
     - erp1
@@ -543,7 +563,8 @@ vlan_interfaces:
   ip_address_virtual: 10.1.10.254/24
   mtu: 1560
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - web
 - name: Vlan450
@@ -554,7 +575,8 @@ vlan_interfaces:
   ipv6_address_virtuals:
   - 2001:db8:355::1/64
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
     tags:
     - v6wan
 - name: Vlan451
@@ -566,7 +588,8 @@ vlan_interfaces:
   - 2001:db8:451::1/64
   mtu: 1560
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
     tags:
     - v6wan
 - name: Vlan452
@@ -579,7 +602,8 @@ vlan_interfaces:
   - 2001:db8:412::1/64
   mtu: 1560
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
     tags:
     - v6wan
 vlan_internal_order:
@@ -591,60 +615,73 @@ vlans:
 - id: 130
   name: Tenant_A_APP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 131
   name: Tenant_A_APP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 132
   name: Tenant_A_APP_Zone_3
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 113
   name: Tenant_A_OP_Zone_4
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 121
   name: Tenant_A_WEBZone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 450
   name: Tenant_D_v6_WAN_Zone_1
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 451
   name: Tenant_D_v6_WAN_Zone_2
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 452
   name: Tenant_D_v6_WAN_Zone_3
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_A_APP_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: Tenant_A_OP_Zone
   description: Tenant_A_OP_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: Tenant_A_WEB_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: '12345678'
   ip_routing: true
   ipv6_routing: true
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF1A_VTEP

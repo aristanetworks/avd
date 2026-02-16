@@ -1,0 +1,21 @@
+---
+# Fabric Topology How-To Guide
+# Default interfaces - automatically assign interfaces based on node type and platform
+# This eliminates the need to define uplink/downlink interfaces on each node
+
+default_interfaces: # (1)!
+  - types: [spine]
+    platforms: [default]
+    downlink_interfaces: [Ethernet1-8] # (2)!
+  - types: [l3leaf]
+    platforms: [7280R3] # (3)!
+    uplink_interfaces: [Ethernet49-52/1] # (4)!
+    mlag_interfaces: [Ethernet53-54/1] # (5)!
+  - types: [l3leaf]
+    platforms: [default] # Fallback for unmatched platforms
+    uplink_interfaces: [Ethernet1-2]
+    mlag_interfaces: [Ethernet3-4]
+    downlink_interfaces: [Ethernet8]
+  - types: [l2leaf]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]

@@ -116,11 +116,13 @@ vlans:
 - id: 666
   name: BLUE-TEST
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - id: 42
   name: RED-TEST
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vrfs:
 - name: MGMT
   ip_routing: false

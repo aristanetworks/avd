@@ -57,7 +57,7 @@ jobs:
         avd_scenario:
           - "cv_workflow"
         ansible_version:
-          - "ansible-core<2.20.0 --upgrade"
+          - "ansible-core<2.21.0 --upgrade"
     steps:
       - uses: actions/checkout@v6
       - name: Download pyavd Artifact
@@ -90,7 +90,7 @@ jobs:
         avd_scenario:
           - "cv_deploy"
         ansible_version:
-          - "ansible-core<2.20.0 --upgrade"
+          - "ansible-core<2.21.0 --upgrade"
     steps:
       - uses: actions/checkout@v6
       - name: Download pyavd Artifact

@@ -25,7 +25,7 @@ monitor twamp
 {%             endif %}
       !
 {%         endif %}
-{%         for sender_profile in monitor_twamp.twamp_light.sender_profiles | arista.avd.natural_sort('name') %}
+{%         for sender_profile in monitor_twamp.twamp_light.sender_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
       sender profile {{ sender_profile.name }}
 {%             if sender_profile.measurement_interval is arista.avd.defined %}
          measurement interval {{ sender_profile.measurement_interval }} seconds

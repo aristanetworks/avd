@@ -16,8 +16,8 @@ from pyavd._errors import AristaAvdError
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
-    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData
-    from pyavd.api._anta.avd_fabric_data import AvdDeviceData, AvdEthernetInterface
+    from pyavd.api.anta import AVDCatalogGenerationSettings, AVDFabricData
+    from pyavd.api.anta.avd_fabric_data import AVDDeviceData, AVDEthernetInterface
 
 LOGGER = getLogger(__name__)
 
@@ -47,8 +47,8 @@ class InputFactoryDataSource:
 
     hostname: str
     structured_config: EosCliConfigGen
-    _fabric_data: AvdFabricData
-    _settings: AvdCatalogGenerationSettings
+    _fabric_data: AVDFabricData
+    _settings: AVDCatalogGenerationSettings
 
     @property
     def is_vtep(self) -> bool:
@@ -71,22 +71,32 @@ class InputFactoryDataSource:
         return self._device_data.loopback0_ip
 
     @property
+    def vtep_ip(self) -> IPv4Address | None:
+        """Get the VTEP IP of the device."""
+        return self._device_data.vtep_ip
+
+    @property
     def fabric_loopback0_mapping(self) -> dict[str, IPv4Address]:
         """Get a fabric mapping of device hostname to its Loopback0 IPv4 address."""
         return self._fabric_data.loopback0_mapping
 
+    @property
+    def fabric_dps_mapping(self) -> dict[str, IPv4Address]:
+        """Get a fabric mapping of device hostname to its DPS IPv4 address."""
+        return self._fabric_data.dps_mapping
+
     @cached_property
-    def _device_data(self) -> AvdDeviceData:
-        """Get the AvdDeviceData object for this device."""
+    def _device_data(self) -> AVDDeviceData:
+        """Get the AVDDeviceData object for this device."""
         device_data = self._fabric_data.devices.get(self.hostname)
         if device_data is None:
-            raise AristaAvdError(message=f"Device '{self.hostname}' structured configuration is not loaded in AvdFabricData.")
+            raise AristaAvdError(message=f"Device '{self.hostname}' structured configuration is not loaded in AVDFabricData.")
         return device_data
 
     @cached_property
-    def fabric_special_ips(self) -> list[IPv4Address]:
-        """Get a sorted list of all 'special' IPv4 addresses (Loopback0, VTEP, and MLAG VTEP) from deployed non-WAN devices in the fabric."""
-        return natural_sort(self._fabric_data.special_ips)
+    def fabric_underlay_reachability_targets(self) -> list[IPv4Address]:
+        """Get a sorted list of all underlay reachability target IPv4 addresses (Loopback0, VTEP, and MLAG VTEP) from deployed non-WAN devices in the fabric."""
+        return natural_sort(self._fabric_data.underlay_reachability_targets)
 
     @cached_property
     def bgp_neighbors(self) -> list[ResolvedBgpNeighbor]:
@@ -120,14 +130,14 @@ class InputFactoryDataSource:
 
         return neighbor_interfaces
 
-    def get_peer_device(self, peer_hostname: str) -> AvdDeviceData | None:
+    def get_peer_device(self, peer_hostname: str) -> AVDDeviceData | None:
         """Return the peer device data if it exists and is deployed."""
         device = self._fabric_data.devices.get(peer_hostname)
         if device and device.is_deployed:
             return device
         return None
 
-    def get_peer_interface(self, peer_hostname: str, interface_name: str) -> AvdEthernetInterface | None:
+    def get_peer_interface(self, peer_hostname: str, interface_name: str) -> AVDEthernetInterface | None:
         """Return the Ethernet interface data for a peer, or None if peer/interface is missing."""
         peer = self.get_peer_device(peer_hostname)
         if peer:

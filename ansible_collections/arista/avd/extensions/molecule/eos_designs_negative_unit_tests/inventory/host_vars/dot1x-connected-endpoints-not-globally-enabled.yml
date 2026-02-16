@@ -1,0 +1,19 @@
+---
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: dot1x-connected-endpoints-not-globally-enabled
+      mgmt_ip: 192.168.0.2/24
+
+# Configure a connected endpoint with dot1x settings
+servers:
+  - name: test-server
+    adapters:
+      - switches: [dot1x-connected-endpoints-not-globally-enabled]
+        switch_ports: [Ethernet1]
+        dot1x:
+          port_control: auto
+
+expected_error_message: >-
+  802.1X settings are configured under 'servers[name=test-server].adapters[0]' but 802.1X is not enabled globally.
+  802.1X must be enabled globally by setting 'dot1x_settings.enabled: true' before configuring 802.1X on any interface.

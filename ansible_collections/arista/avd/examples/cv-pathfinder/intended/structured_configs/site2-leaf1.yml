@@ -54,7 +54,6 @@ ethernet_interfaces:
 - name: Ethernet3.100
   description: P2P_site2-wan1_Ethernet1.100_VRF_BLUE
   shutdown: false
-  mtu: 9214
   vrf: BLUE
   flow_tracker:
     sampled: FLOW-TRACKER
@@ -68,7 +67,6 @@ ethernet_interfaces:
 - name: Ethernet3.101
   description: P2P_site2-wan1_Ethernet1.101_VRF_RED
   shutdown: false
-  mtu: 9214
   vrf: RED
   flow_tracker:
     sampled: FLOW-TRACKER
@@ -228,21 +226,13 @@ router_bgp:
     description: site2-leaf2
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
+    maximum_routes: 256000
   neighbors:
   - ip_address: 10.255.251.17
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -262,7 +252,8 @@ router_bgp:
   vlans:
   - id: 666
     metadata:
-      tenant: WAN-EXAMPLE-TENANT
+      tenants:
+      - WAN-EXAMPLE-TENANT
     rd: 192.168.255.9:10666
     route_targets:
       both:
@@ -271,25 +262,20 @@ router_bgp:
     - learned
   - id: 42
     metadata:
-      tenant: WAN-EXAMPLE-TENANT
+      tenants:
+      - WAN-EXAMPLE-TENANT
     rd: 192.168.255.9:10042
     route_targets:
       both:
       - 10042:10042
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: BLUE
     rd: 192.168.255.9:100
@@ -365,7 +351,8 @@ vlan_interfaces:
   vrf: BLUE
   ip_address: 10.66.2.1/24
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: Vlan3099
   description: MLAG_L3_VRF_BLUE
   shutdown: false
@@ -373,7 +360,8 @@ vlan_interfaces:
   ip_address: 10.255.251.16/31
   mtu: 9214
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
     type: underlay_peering
 - name: Vlan42
   description: RED-TEST
@@ -381,7 +369,8 @@ vlan_interfaces:
   vrf: RED
   ip_address: 10.42.2.1/24
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: Vlan3100
   description: MLAG_L3_VRF_RED
   shutdown: false
@@ -389,7 +378,8 @@ vlan_interfaces:
   ip_address: 10.255.251.16/31
   mtu: 9214
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -402,44 +392,52 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 666
   name: BLUE-TEST
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - id: 3099
   name: MLAG_L3_VRF_BLUE
   trunk_groups:
   - MLAG
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - id: 42
   name: RED-TEST
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - id: 3100
   name: MLAG_L3_VRF_RED
   trunk_groups:
   - MLAG
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: BLUE
   ip_routing: true
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: RED
   ip_routing: true
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vxlan_interface:
   vxlan1:
     description: site2-leaf1_VTEP

@@ -20,7 +20,7 @@ keys:
         keys:
           action:
             type: str
-            valid_values: ["drop", "no-drop"]
+            valid_values: ["drop", "errdisable", "notify-only"]
             description: |
               Action on stuck queue.
           timeout:
