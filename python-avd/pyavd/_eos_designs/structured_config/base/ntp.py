@@ -27,7 +27,7 @@ class NtpMixin(Protocol):
         if not (ntp_settings := self.inputs.ntp_settings):
             return
 
-        # Since the eos_cli_config_gen data model almost matches, we can copy most data directly.
+        # Since the EOS Config data model almost matches, we can copy most data directly.
         self.structured_config.ntp._update(
             authenticate=ntp_settings.authenticate,
             authenticate_servers_only=ntp_settings.authenticate_servers_only,

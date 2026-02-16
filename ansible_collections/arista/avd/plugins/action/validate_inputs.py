@@ -269,7 +269,7 @@ class ActionModule(AvdActionPlugin):
 
         configuration = Configuration()
         if (warn_eos_config_keys := validation_configuration.get("warn_eos_config_keys")) is not None:
-            configuration.warn_eos_cli_config_gen_keys = warn_eos_config_keys
+            configuration.warn_eos_config_keys = warn_eos_config_keys
 
         return configuration
 
