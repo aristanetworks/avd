@@ -1276,6 +1276,7 @@ cvx
       ipv6 access-group ACL-V6-OS
       no shutdown
       grace-period 600
+      network type-driver vlan arista
       authentication role BOSS
       !
       region REGION_1
