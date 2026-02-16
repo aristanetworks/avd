@@ -1042,5 +1042,14 @@ interface {{ port_channel_interface.name }}
 {%         elif vrid.ipv6.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv6 {{ vrid.ipv6.address }}
 {%         endif %}
+{%         for tracked_obj in vrid.tracked_object | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%             set tracked_obj_cli = "vrrp " ~ vrid.id ~ " tracked-object " ~ tracked_obj.name %}
+{%             if tracked_obj.decrement is arista.avd.defined %}
+{%                 set tracked_obj_cli = tracked_obj_cli ~ " decrement " ~ tracked_obj.decrement %}
+{%             elif tracked_obj.shutdown is arista.avd.defined(true) %}
+{%                 set tracked_obj_cli = tracked_obj_cli ~ " shutdown" %}
+{%             endif %}
+   {{ tracked_obj_cli }}
+{%         endfor %}
 {%     endfor %}
 {% endfor %}
