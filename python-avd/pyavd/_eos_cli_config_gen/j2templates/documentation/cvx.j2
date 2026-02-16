@@ -50,7 +50,7 @@ CVX is enabled
 {%                         do regions.append(region.name) %}
 {%                     endfor %}
 {%                 endif %}
-| OpenStack | {{ enabled }} | Regions: {{ regions | join("<br>") }} |
+| OpenStack | {{ enabled }} | Regions: {{ regions | join(", ") }} |
 {%             endif %}
 {%             if cvx.services.vxlan is arista.avd.defined %}
 {%                 if cvx.services.vxlan.shutdown is arista.avd.defined %}
