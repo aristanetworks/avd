@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_radius.vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "ip_radius.vrfs.[].source_interface") | String | Required |  |  |  |
     | [<samp>ip_radius_source_interfaces</samp>](## "ip_radius_source_interfaces") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ip_radius</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_radius_source_interfaces.[].name") | String |  |  |  | Interface Name. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_radius_source_interfaces.[].name") | String | Required |  |  | Interface Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_radius_source_interfaces.[].vrf") | String |  |  |  | VRF Name. |
 
 === "YAML"
@@ -34,7 +34,7 @@
     ip_radius_source_interfaces:
 
         # Interface Name.
-      - name: <str>
+      - name: <str; required>
 
         # VRF Name.
         vrf: <str>

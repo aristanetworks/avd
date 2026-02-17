@@ -183,7 +183,7 @@ $defs:
             documentation_options:
               table: node-type-common-configuration
               hide_keys: true
-            description: Custom structured config for eos_cli_config_gen.
+            description: Custom structured config for the EOS Config schema.
             type: dict
             relaxed_validation: true
             $ref: "eos_cli_config_gen#"
@@ -414,7 +414,7 @@ $defs:
             relaxed_validation: true
             description: |
               Custom structured config applied to MLAG peer link port-channel id.
-              Added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+              Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
               Overrides the settings on the port-channel interface level.
               "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_vlan_structured_config:
@@ -426,7 +426,7 @@ $defs:
             relaxed_validation: true
             description: |
               Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
-              Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+              Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
               Overrides the settings on the vlan interface level.
               "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_l3_vlan_structured_config:
@@ -438,7 +438,7 @@ $defs:
             relaxed_validation: true
             description: |
               Custom structured config applied to MLAG underlay L3 peering SVI interface id.
-              Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+              Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
               Overrides the settings on the vlan interface level.
               "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           short_esi:

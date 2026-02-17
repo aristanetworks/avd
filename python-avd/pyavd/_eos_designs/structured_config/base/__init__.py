@@ -371,7 +371,11 @@ class AvdStructuredConfigBaseProtocol(
             if source_interface:
                 # Add to local tmp object to detect conflicts.
                 vrf_logging_config.append_new(name=host_vrf, source_interface=source_interface)
-                logging_vrf.source_interface = source_interface
+                # Set either local_interface or source_interface based on use_local_interface_cli
+                if settings.use_local_interface_cli:
+                    logging_vrf.local_interface = source_interface
+                else:
+                    logging_vrf.source_interface = source_interface
 
             # Add host entry under the correct VRF
             logging_vrf.hosts.append_new(

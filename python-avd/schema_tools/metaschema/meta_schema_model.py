@@ -499,7 +499,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
         hide_keys: bool | None = None
         # """
         # Prevent keys of the dict from being displayed in the generated documentation.
-        # This is used for structured_config where we wish to avoid displaying the full eos_cli_config_gen schema everywhere.
+        # This is used for structured_config where we wish to avoid displaying the full EOS Config schema everywhere.
         # """
 
     # AvdSchema field properties

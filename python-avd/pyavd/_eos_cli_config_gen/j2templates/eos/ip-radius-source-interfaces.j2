@@ -19,9 +19,7 @@ ip radius vrf {{ vrf.name }} source-interface {{ vrf.source_interface }}
 {%         if ip_radius.vrf is arista.avd.defined %}
 {%             set ip_radius_cli = ip_radius_cli ~ " vrf " ~ ip_radius.vrf %}
 {%         endif %}
-{%         if ip_radius.name is arista.avd.defined %}
-{%             set ip_radius_cli = ip_radius_cli ~ " source-interface " ~ ip_radius.name %}
-{%         endif %}
+{%         set ip_radius_cli = ip_radius_cli ~ " source-interface " ~ ip_radius.name %}
 {{ ip_radius_cli }}
 {%     endfor %}
 {% endif %}
