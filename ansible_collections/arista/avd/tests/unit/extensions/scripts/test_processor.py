@@ -237,3 +237,59 @@ def test_process_config_with_per_artifact_output_dir(tmp_path: Path) -> None:
 
     assert "vlan 10" in vlan_content
     assert "router bgp 65001" in bgp_content
+
+
+def test_process_config_with_base_path(tmp_path: Path) -> None:
+    """Test that base_path is prepended to relative output_dir paths."""
+    config_dir = tmp_path / "inputs"
+    config_dir.mkdir()
+
+    eos_file = config_dir / "device.cfg"
+    eos_file.write_text(
+        dedent("""
+        vlan 10
+           name Test
+        !
+        router bgp 65001
+           neighbor 1.1.1.1 remote-as 100
+        !
+    """).strip(),
+        encoding="utf-8",
+    )
+
+    # Create base path directory
+    base_dir = tmp_path / "docs" / "howto"
+
+    job_yaml = config_dir / "config.yml"
+    job_yaml_content = f"""
+    base_path: "{base_dir}"
+
+    artifacts:
+      - file: "{eos_file}"
+        sections:
+          - header: "vlan 10"
+        artifact: "vlan.cfg"
+        output_dir: "vlans/artifacts/"
+      - file: "{eos_file}"
+        sections:
+          - header: "router bgp 65001"
+        artifact: "bgp.cfg"
+        output_dir: "bgp/artifacts/"
+    """
+    job_yaml.write_text(dedent(job_yaml_content), encoding="utf-8")
+
+    # Process without global output_dir
+    processor.process_config(str(job_yaml))
+
+    # Check that artifacts went to base_path + output_dir
+    vlan_file = base_dir / "vlans" / "artifacts" / "vlan.cfg"
+    bgp_file = base_dir / "bgp" / "artifacts" / "bgp.cfg"
+
+    assert vlan_file.exists(), f"Expected {vlan_file} to exist"
+    assert bgp_file.exists(), f"Expected {bgp_file} to exist"
+
+    vlan_content = vlan_file.read_text(encoding="utf-8")
+    bgp_content = bgp_file.read_text(encoding="utf-8")
+
+    assert "vlan 10" in vlan_content
+    assert "router bgp 65001" in bgp_content

@@ -1036,7 +1036,7 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `256000`
             """
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
-            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
+            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema."""
 
             if TYPE_CHECKING:
 
@@ -1067,7 +1067,7 @@ class EosDesigns(EosDesignsRootModel):
                            make use of a vault or similar.
                         bfd: bfd
                         maximum_routes: Maximum number of routes (0 means unlimited).
-                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
 
                     """
 
@@ -1104,7 +1104,7 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `256000`
             """
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
-            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
+            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema."""
 
             if TYPE_CHECKING:
 
@@ -1135,7 +1135,7 @@ class EosDesigns(EosDesignsRootModel):
                            make use of a vault or similar.
                         bfd: bfd
                         maximum_routes: Maximum number of routes (0 means unlimited).
-                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
 
                     """
 
@@ -1176,7 +1176,7 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `256000`
             """
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
-            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
+            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema."""
 
             if TYPE_CHECKING:
 
@@ -1207,7 +1207,7 @@ class EosDesigns(EosDesignsRootModel):
                            make use of a vault or similar.
                         bfd: bfd
                         maximum_routes: Maximum number of routes (0 means unlimited).
-                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
 
                     """
 
@@ -1241,7 +1241,7 @@ class EosDesigns(EosDesignsRootModel):
             bfd: bool
             """Default value: `True`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
-            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
+            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema."""
 
             if TYPE_CHECKING:
 
@@ -1270,7 +1270,7 @@ class EosDesigns(EosDesignsRootModel):
                            To protect the password at rest it is strongly recommended to
                            make use of a vault or similar.
                         bfd: bfd
-                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
 
                     """
 
@@ -1304,7 +1304,7 @@ class EosDesigns(EosDesignsRootModel):
             bfd: bool
             """Default value: `True`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
-            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
+            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema."""
 
             if TYPE_CHECKING:
 
@@ -1333,7 +1333,7 @@ class EosDesigns(EosDesignsRootModel):
                            To protect the password at rest it is strongly recommended to
                            make use of a vault or similar.
                         bfd: bfd
-                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
 
                     """
 
@@ -1367,7 +1367,7 @@ class EosDesigns(EosDesignsRootModel):
             bfd: bool
             """Default value: `True`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
-            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
+            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema."""
 
             if TYPE_CHECKING:
 
@@ -1396,7 +1396,7 @@ class EosDesigns(EosDesignsRootModel):
                            To protect the password at rest it is strongly recommended to
                            make use of a vault or similar.
                         bfd: bfd
-                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
 
                     """
 
@@ -1430,7 +1430,7 @@ class EosDesigns(EosDesignsRootModel):
             bfd: bool
             """Default value: `True`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
-            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
+            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema."""
 
             if TYPE_CHECKING:
 
@@ -1459,7 +1459,7 @@ class EosDesigns(EosDesignsRootModel):
                            To protect the password at rest it is strongly recommended to
                            make use of a vault or similar.
                         bfd: bfd
-                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
 
                     """
 
@@ -1493,7 +1493,7 @@ class EosDesigns(EosDesignsRootModel):
             bfd: bool
             """Default value: `True`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
-            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
+            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema."""
 
             if TYPE_CHECKING:
 
@@ -1522,7 +1522,7 @@ class EosDesigns(EosDesignsRootModel):
                            To protect the password at rest it is strongly recommended to
                            make use of a vault or similar.
                         bfd: bfd
-                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
 
                     """
 
@@ -1643,7 +1643,7 @@ class EosDesigns(EosDesignsRootModel):
             ttl_maximum_hops: int
             """Default value: `1`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
-            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
+            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema."""
 
             if TYPE_CHECKING:
 
@@ -1708,7 +1708,7 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdList with `str`
                            items.
                         ttl_maximum_hops: ttl_maximum_hops
-                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
 
                     """
 
@@ -1814,7 +1814,7 @@ class EosDesigns(EosDesignsRootModel):
             ttl_maximum_hops: int
             """Default value: `1`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
-            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
+            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema."""
 
             if TYPE_CHECKING:
 
@@ -1871,7 +1871,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         ttl_maximum_hops: ttl_maximum_hops
-                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for the EOS Config schema.
 
                     """
 
@@ -2909,8 +2909,8 @@ class EosDesigns(EosDesignsRootModel):
                     """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                     structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
-                    Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                    eos_cli_config_gen.
+                    Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                    Config schema.
                     """
 
                     if TYPE_CHECKING:
@@ -2947,8 +2947,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdModel.
                                 raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                                 structured_config:
-                                   Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                                   eos_cli_config_gen.
+                                   Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                                   Config schema.
 
                             """
 
@@ -3059,8 +3059,8 @@ class EosDesigns(EosDesignsRootModel):
                 """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
                 structured_config: EosCliConfigGen.PortChannelInterfacesItem
                 """
-                Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                eos_cli_config_gen.
+                Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                schema.
                 """
 
                 if TYPE_CHECKING:
@@ -3153,8 +3153,8 @@ class EosDesigns(EosDesignsRootModel):
                                `SubinterfacesItem` items.
                             raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                             structured_config:
-                               Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                               eos_cli_config_gen.
+                               Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                               schema.
 
                         """
 
@@ -3428,7 +3428,10 @@ class EosDesigns(EosDesignsRootModel):
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
             structured_config: EosCliConfigGen.EthernetInterfacesItem
-            """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
+            """
+            Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config
+            schema.
+            """
 
             if TYPE_CHECKING:
 
@@ -3647,7 +3650,9 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdList with `str` items.
                         raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
-                        structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+                        structured_config:
+                           Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config
+                           schema.
 
                     """
 
@@ -10048,7 +10053,7 @@ class EosDesigns(EosDesignsRootModel):
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the root level of the final EOS configuration."""
         structured_config: EosCliConfigGen
-        """Custom structured config for eos_cli_config_gen."""
+        """Custom structured config for the EOS Config schema."""
         uplink_type: UplinkType | None
         """
         Override the default `uplink_type` set at the `node_type_key` level.
@@ -10197,7 +10202,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Custom structured config applied to MLAG peer link port-channel id.
         Added under
-        port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+        port_channel_interfaces.[name=<interface>] for the EOS Config schema.
         Overrides the settings on the
         port-channel interface level.
         "mlag_port_channel_structured_config" is applied after
@@ -10207,7 +10212,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
         Added under
-        vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+        vlan_interfaces.[name=<interface>] for the EOS Config schema.
         Overrides the settings on the vlan
         interface level.
         "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -10217,7 +10222,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Custom structured config applied to MLAG underlay L3 peering SVI interface id.
         Added under
-        vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+        vlan_interfaces.[name=<interface>] for the EOS Config schema.
         Overrides the settings on the vlan
         interface level.
         "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -11057,7 +11062,7 @@ class EosDesigns(EosDesignsRootModel):
                        Use this to retain behavior of AVD versions
                        below 4.0.0.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
-                    structured_config: Custom structured config for eos_cli_config_gen.
+                    structured_config: Custom structured config for the EOS Config schema.
                     uplink_type:
                        Override the default `uplink_type` set at the `node_type_key` level.
                        `uplink_type` must be "p2p" if
@@ -11164,7 +11169,7 @@ class EosDesigns(EosDesignsRootModel):
                     mlag_port_channel_structured_config:
                        Custom structured config applied to MLAG peer link port-channel id.
                        Added under
-                       port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                       port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                        Overrides the settings on the
                        port-channel interface level.
                        "mlag_port_channel_structured_config" is applied after
@@ -11172,7 +11177,7 @@ class EosDesigns(EosDesignsRootModel):
                     mlag_peer_vlan_structured_config:
                        Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                        Added under
-                       vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                       vlan_interfaces.[name=<interface>] for the EOS Config schema.
                        Overrides the settings on the vlan
                        interface level.
                        "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -11180,7 +11185,7 @@ class EosDesigns(EosDesignsRootModel):
                     mlag_peer_l3_vlan_structured_config:
                        Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                        Added under
-                       vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                       vlan_interfaces.[name=<interface>] for the EOS Config schema.
                        Overrides the settings on the vlan
                        interface level.
                        "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -15121,7 +15126,7 @@ class EosDesigns(EosDesignsRootModel):
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the root level of the final EOS configuration."""
         structured_config: EosCliConfigGen
-        """Custom structured config for eos_cli_config_gen."""
+        """Custom structured config for the EOS Config schema."""
         uplink_type: UplinkType | None
         """
         Override the default `uplink_type` set at the `node_type_key` level.
@@ -15270,7 +15275,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Custom structured config applied to MLAG peer link port-channel id.
         Added under
-        port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+        port_channel_interfaces.[name=<interface>] for the EOS Config schema.
         Overrides the settings on the
         port-channel interface level.
         "mlag_port_channel_structured_config" is applied after
@@ -15280,7 +15285,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
         Added under
-        vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+        vlan_interfaces.[name=<interface>] for the EOS Config schema.
         Overrides the settings on the vlan
         interface level.
         "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -15290,7 +15295,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Custom structured config applied to MLAG underlay L3 peering SVI interface id.
         Added under
-        vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+        vlan_interfaces.[name=<interface>] for the EOS Config schema.
         Overrides the settings on the vlan
         interface level.
         "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -16139,7 +16144,7 @@ class EosDesigns(EosDesignsRootModel):
                        Use this to retain behavior of AVD versions
                        below 4.0.0.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
-                    structured_config: Custom structured config for eos_cli_config_gen.
+                    structured_config: Custom structured config for the EOS Config schema.
                     uplink_type:
                        Override the default `uplink_type` set at the `node_type_key` level.
                        `uplink_type` must be "p2p" if
@@ -16246,7 +16251,7 @@ class EosDesigns(EosDesignsRootModel):
                     mlag_port_channel_structured_config:
                        Custom structured config applied to MLAG peer link port-channel id.
                        Added under
-                       port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                       port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                        Overrides the settings on the
                        port-channel interface level.
                        "mlag_port_channel_structured_config" is applied after
@@ -16254,7 +16259,7 @@ class EosDesigns(EosDesignsRootModel):
                     mlag_peer_vlan_structured_config:
                        Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                        Added under
-                       vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                       vlan_interfaces.[name=<interface>] for the EOS Config schema.
                        Overrides the settings on the vlan
                        interface level.
                        "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -16262,7 +16267,7 @@ class EosDesigns(EosDesignsRootModel):
                     mlag_peer_l3_vlan_structured_config:
                        Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                        Added under
-                       vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                       vlan_interfaces.[name=<interface>] for the EOS Config schema.
                        Overrides the settings on the vlan
                        interface level.
                        "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -19845,7 +19850,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {"structured_config": {"type": EosCliConfigGen.RouterBgp.VlansItem}, "raw_eos_cli": {"type": str}}
             structured_config: EosCliConfigGen.RouterBgp.VlansItem
             """
-            Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
+            Custom structured config added under router_bgp.vlans.[id=<vlan>] for the EOS Config schema.
             This
             configuration will not be applied to vlan aware bundles.
             """
@@ -19872,7 +19877,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         structured_config:
-                           Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
+                           Custom structured config added under router_bgp.vlans.[id=<vlan>] for the EOS Config schema.
                            This
                            configuration will not be applied to vlan aware bundles.
                         raw_eos_cli:
@@ -22546,6 +22551,7 @@ class EosDesigns(EosDesignsRootModel):
             "uucp",
         ]
         _fields: ClassVar[dict] = {
+            "use_local_interface_cli": {"type": bool, "default": False},
             "hosts": {"type": Hosts},
             "vrfs": {"type": Vrfs},
             "console": {"type": str},
@@ -22560,6 +22566,14 @@ class EosDesigns(EosDesignsRootModel):
             "event": {"type": EosCliConfigGen.Logging.Event},
             "level": {"type": EosCliConfigGen.Logging.Level},
         }
+        use_local_interface_cli: bool
+        """
+        Use `logging local-interface <interface>` CLI instead of the deprecated `logging source-interface
+        <interface>` CLI.
+        The new CLI was introduced in EOS version 4.33.4.
+
+        Default value: `False`
+        """
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
         vrfs: Vrfs
@@ -22586,6 +22600,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
+                use_local_interface_cli: bool | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 console: Console | None | UndefinedType = Undefined,
@@ -22607,6 +22622,10 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    use_local_interface_cli:
+                       Use `logging local-interface <interface>` CLI instead of the deprecated `logging source-interface
+                       <interface>` CLI.
+                       The new CLI was introduced in EOS version 4.33.4.
                     hosts: Subclass of AvdList with `HostsItem` items.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     console: Console logging severity level.
@@ -23768,8 +23787,8 @@ class EosDesigns(EosDesignsRootModel):
                 """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                 structured_config: EosCliConfigGen.PortChannelInterfacesItem
                 """
-                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                eos_cli_config_gen.
+                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                Config schema.
                 """
 
                 if TYPE_CHECKING:
@@ -23806,8 +23825,8 @@ class EosDesigns(EosDesignsRootModel):
                                Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                             structured_config:
-                               Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                               eos_cli_config_gen.
+                               Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                               Config schema.
 
                         """
 
@@ -23918,8 +23937,8 @@ class EosDesigns(EosDesignsRootModel):
             """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
             structured_config: EosCliConfigGen.PortChannelInterfacesItem
             """
-            Custom structured config added under port_channel_interfaces.[name=<interface>] for
-            eos_cli_config_gen.
+            Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+            schema.
             """
 
             if TYPE_CHECKING:
@@ -24012,8 +24031,8 @@ class EosDesigns(EosDesignsRootModel):
                            `SubinterfacesItem` items.
                         raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                         structured_config:
-                           Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                           eos_cli_config_gen.
+                           Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                           schema.
 
                     """
 
@@ -24288,7 +24307,10 @@ class EosDesigns(EosDesignsRootModel):
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
         structured_config: EosCliConfigGen.EthernetInterfacesItem
-        """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
+        """
+        Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config
+        schema.
+        """
 
         if TYPE_CHECKING:
 
@@ -24509,7 +24531,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
-                    structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    structured_config:
+                       Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config
+                       schema.
 
                 """
 
@@ -26815,7 +26839,7 @@ class EosDesigns(EosDesignsRootModel):
         of AvdModel.
         """
         structured_config: EosCliConfigGen
-        """Custom structured config for eos_cli_config_gen."""
+        """Custom structured config for the EOS Config schema."""
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the root level of the final EOS configuration."""
 
@@ -26870,7 +26894,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
-                    structured_config: Custom structured config for eos_cli_config_gen.
+                    structured_config: Custom structured config for the EOS Config schema.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
                 """
@@ -27572,7 +27596,7 @@ class EosDesigns(EosDesignsRootModel):
         of AvdModel.
         """
         structured_config: EosCliConfigGen
-        """Custom structured config for eos_cli_config_gen."""
+        """Custom structured config for the EOS Config schema."""
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the root level of the final EOS configuration."""
 
@@ -27627,7 +27651,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
-                    structured_config: Custom structured config for eos_cli_config_gen.
+                    structured_config: Custom structured config for the EOS Config schema.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
                 """
@@ -28618,8 +28642,8 @@ class EosDesigns(EosDesignsRootModel):
                 """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                 structured_config: EosCliConfigGen.PortChannelInterfacesItem
                 """
-                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                eos_cli_config_gen.
+                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                Config schema.
                 """
 
                 if TYPE_CHECKING:
@@ -28656,8 +28680,8 @@ class EosDesigns(EosDesignsRootModel):
                                Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                             structured_config:
-                               Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                               eos_cli_config_gen.
+                               Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                               Config schema.
 
                         """
 
@@ -28768,8 +28792,8 @@ class EosDesigns(EosDesignsRootModel):
             """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
             structured_config: EosCliConfigGen.PortChannelInterfacesItem
             """
-            Custom structured config added under port_channel_interfaces.[name=<interface>] for
-            eos_cli_config_gen.
+            Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+            schema.
             """
 
             if TYPE_CHECKING:
@@ -28862,8 +28886,8 @@ class EosDesigns(EosDesignsRootModel):
                            `SubinterfacesItem` items.
                         raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                         structured_config:
-                           Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                           eos_cli_config_gen.
+                           Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                           schema.
 
                     """
 
@@ -29092,7 +29116,10 @@ class EosDesigns(EosDesignsRootModel):
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
         structured_config: EosCliConfigGen.EthernetInterfacesItem
-        """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
+        """
+        Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config
+        schema.
+        """
 
         if TYPE_CHECKING:
 
@@ -29272,7 +29299,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
-                    structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    structured_config:
+                       Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config
+                       schema.
 
                 """
 
@@ -31653,7 +31682,7 @@ class EosDesigns(EosDesignsRootModel):
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the VLAN interface in the final EOS configuration."""
             structured_config: EosCliConfigGen.VlanInterfacesItem
-            """Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen."""
+            """Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema."""
             evpn_l2_multi_domain: bool | None
             """
             Explicitly extend SVI to remote EVPN domains.
@@ -31846,7 +31875,7 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdModel.
                         bgp: Subclass of AvdModel.
                         raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
-                        structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                        structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
                         evpn_l2_multi_domain:
                            Explicitly extend SVI to remote EVPN domains.
                            Overrides
@@ -32668,7 +32697,7 @@ class EosDesigns(EosDesignsRootModel):
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the VLAN interface in the final EOS configuration."""
         structured_config: EosCliConfigGen.VlanInterfacesItem
-        """Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen."""
+        """Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema."""
         evpn_l2_multi_domain: bool | None
         """
         Explicitly extend SVI to remote EVPN domains.
@@ -32875,7 +32904,7 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdModel.
                     bgp: Subclass of AvdModel.
                     raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
-                    structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     evpn_l2_multi_domain:
                        Explicitly extend SVI to remote EVPN domains.
                        Overrides
@@ -38655,7 +38684,7 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
-                    """Custom structured config for eos_cli_config_gen."""
+                    """Custom structured config for the EOS Config schema."""
                     uplink_type: UplinkType | None
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
@@ -38804,7 +38833,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG peer link port-channel id.
                     Added under
-                    port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the
                     port-channel interface level.
                     "mlag_port_channel_structured_config" is applied after
@@ -38814,7 +38843,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                     Added under
-                    vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the vlan
                     interface level.
                     "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -38824,7 +38853,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                     Added under
-                    vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the vlan
                     interface level.
                     "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -39647,7 +39676,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Use this to retain behavior of AVD versions
                                    below 4.0.0.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
-                                structured_config: Custom structured config for eos_cli_config_gen.
+                                structured_config: Custom structured config for the EOS Config schema.
                                 uplink_type:
                                    Override the default `uplink_type` set at the `node_type_key` level.
                                    `uplink_type` must be "p2p" if
@@ -39754,7 +39783,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
-                                   port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the
                                    port-channel interface level.
                                    "mlag_port_channel_structured_config" is applied after
@@ -39762,7 +39791,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_vlan_structured_config:
                                    Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                                    Added under
-                                   vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the vlan
                                    interface level.
                                    "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -39770,7 +39799,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_l3_vlan_structured_config:
                                    Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                                    Added under
-                                   vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the vlan
                                    interface level.
                                    "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -43719,7 +43748,7 @@ class EosDesigns(EosDesignsRootModel):
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the root level of the final EOS configuration."""
                         structured_config: EosCliConfigGen
-                        """Custom structured config for eos_cli_config_gen."""
+                        """Custom structured config for the EOS Config schema."""
                         uplink_type: UplinkType | None
                         """
                         Override the default `uplink_type` set at the `node_type_key` level.
@@ -43868,7 +43897,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Custom structured config applied to MLAG peer link port-channel id.
                         Added under
-                        port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                        port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                         Overrides the settings on the
                         port-channel interface level.
                         "mlag_port_channel_structured_config" is applied after
@@ -43878,7 +43907,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                         Added under
-                        vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                        vlan_interfaces.[name=<interface>] for the EOS Config schema.
                         Overrides the settings on the vlan
                         interface level.
                         "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -43888,7 +43917,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                         Added under
-                        vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                        vlan_interfaces.[name=<interface>] for the EOS Config schema.
                         Overrides the settings on the vlan
                         interface level.
                         "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -44720,7 +44749,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Use this to retain behavior of AVD versions
                                        below 4.0.0.
                                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
-                                    structured_config: Custom structured config for eos_cli_config_gen.
+                                    structured_config: Custom structured config for the EOS Config schema.
                                     uplink_type:
                                        Override the default `uplink_type` set at the `node_type_key` level.
                                        `uplink_type` must be "p2p" if
@@ -44827,7 +44856,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mlag_port_channel_structured_config:
                                        Custom structured config applied to MLAG peer link port-channel id.
                                        Added under
-                                       port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                       port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                                        Overrides the settings on the
                                        port-channel interface level.
                                        "mlag_port_channel_structured_config" is applied after
@@ -44835,7 +44864,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mlag_peer_vlan_structured_config:
                                        Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                                        Added under
-                                       vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                       vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                        Overrides the settings on the vlan
                                        interface level.
                                        "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -44843,7 +44872,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mlag_peer_l3_vlan_structured_config:
                                        Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                                        Added under
-                                       vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                       vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                        Overrides the settings on the vlan
                                        interface level.
                                        "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -48703,7 +48732,7 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
-                    """Custom structured config for eos_cli_config_gen."""
+                    """Custom structured config for the EOS Config schema."""
                     uplink_type: UplinkType | None
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
@@ -48852,7 +48881,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG peer link port-channel id.
                     Added under
-                    port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the
                     port-channel interface level.
                     "mlag_port_channel_structured_config" is applied after
@@ -48862,7 +48891,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                     Added under
-                    vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the vlan
                     interface level.
                     "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -48872,7 +48901,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                     Added under
-                    vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the vlan
                     interface level.
                     "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -49706,7 +49735,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Use this to retain behavior of AVD versions
                                    below 4.0.0.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
-                                structured_config: Custom structured config for eos_cli_config_gen.
+                                structured_config: Custom structured config for the EOS Config schema.
                                 uplink_type:
                                    Override the default `uplink_type` set at the `node_type_key` level.
                                    `uplink_type` must be "p2p" if
@@ -49813,7 +49842,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
-                                   port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the
                                    port-channel interface level.
                                    "mlag_port_channel_structured_config" is applied after
@@ -49821,7 +49850,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_vlan_structured_config:
                                    Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                                    Added under
-                                   vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the vlan
                                    interface level.
                                    "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -49829,7 +49858,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_l3_vlan_structured_config:
                                    Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                                    Added under
-                                   vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the vlan
                                    interface level.
                                    "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -53761,7 +53790,7 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
-                    """Custom structured config for eos_cli_config_gen."""
+                    """Custom structured config for the EOS Config schema."""
                     uplink_type: UplinkType | None
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
@@ -53910,7 +53939,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG peer link port-channel id.
                     Added under
-                    port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the
                     port-channel interface level.
                     "mlag_port_channel_structured_config" is applied after
@@ -53920,7 +53949,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                     Added under
-                    vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the vlan
                     interface level.
                     "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -53930,7 +53959,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                     Added under
-                    vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the vlan
                     interface level.
                     "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -54762,7 +54791,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Use this to retain behavior of AVD versions
                                    below 4.0.0.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
-                                structured_config: Custom structured config for eos_cli_config_gen.
+                                structured_config: Custom structured config for the EOS Config schema.
                                 uplink_type:
                                    Override the default `uplink_type` set at the `node_type_key` level.
                                    `uplink_type` must be "p2p" if
@@ -54869,7 +54898,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
-                                   port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the
                                    port-channel interface level.
                                    "mlag_port_channel_structured_config" is applied after
@@ -54877,7 +54906,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_vlan_structured_config:
                                    Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                                    Added under
-                                   vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the vlan
                                    interface level.
                                    "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -54885,7 +54914,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_l3_vlan_structured_config:
                                    Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                                    Added under
-                                   vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the vlan
                                    interface level.
                                    "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -56358,8 +56387,8 @@ class EosDesigns(EosDesignsRootModel):
                             """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                             structured_config: EosCliConfigGen.PortChannelInterfacesItem
                             """
-                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                            eos_cli_config_gen.
+                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                            Config schema.
                             """
 
                             if TYPE_CHECKING:
@@ -56396,8 +56425,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdModel.
                                         raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                                         structured_config:
-                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                                           eos_cli_config_gen.
+                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                                           Config schema.
 
                                     """
 
@@ -56508,8 +56537,8 @@ class EosDesigns(EosDesignsRootModel):
                         """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
                         structured_config: EosCliConfigGen.PortChannelInterfacesItem
                         """
-                        Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                        eos_cli_config_gen.
+                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                        schema.
                         """
 
                         if TYPE_CHECKING:
@@ -56602,8 +56631,8 @@ class EosDesigns(EosDesignsRootModel):
                                        `SubinterfacesItem` items.
                                     raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                                     structured_config:
-                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                       eos_cli_config_gen.
+                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                                       schema.
 
                                 """
 
@@ -56877,7 +56906,10 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
                     structured_config: EosCliConfigGen.EthernetInterfacesItem
-                    """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
+                    """
+                    Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config
+                    schema.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -57096,7 +57128,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
-                                structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                structured_config:
+                                   Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config
+                                   schema.
 
                             """
 
@@ -58139,8 +58173,8 @@ class EosDesigns(EosDesignsRootModel):
                             """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                             structured_config: EosCliConfigGen.PortChannelInterfacesItem
                             """
-                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                            eos_cli_config_gen.
+                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                            Config schema.
                             """
 
                             if TYPE_CHECKING:
@@ -58177,8 +58211,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdModel.
                                         raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                                         structured_config:
-                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
-                                           eos_cli_config_gen.
+                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS
+                                           Config schema.
 
                                     """
 
@@ -58289,8 +58323,8 @@ class EosDesigns(EosDesignsRootModel):
                         """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
                         structured_config: EosCliConfigGen.PortChannelInterfacesItem
                         """
-                        Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                        eos_cli_config_gen.
+                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                        schema.
                         """
 
                         if TYPE_CHECKING:
@@ -58383,8 +58417,8 @@ class EosDesigns(EosDesignsRootModel):
                                        `SubinterfacesItem` items.
                                     raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                                     structured_config:
-                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                       eos_cli_config_gen.
+                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                                       schema.
 
                                 """
 
@@ -58658,7 +58692,10 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
                     structured_config: EosCliConfigGen.EthernetInterfacesItem
-                    """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
+                    """
+                    Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config
+                    schema.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -58877,7 +58914,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
-                                structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                structured_config:
+                                   Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config
+                                   schema.
 
                             """
 
@@ -60568,8 +60607,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
                         structured_config: EosCliConfigGen.RouterOspf.ProcessIdsItem
                         """
-                        Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for
-                        eos_cli_config_gen.
+                        Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for the EOS
+                        Config schema.
                         """
 
                         if TYPE_CHECKING:
@@ -60626,8 +60665,8 @@ class EosDesigns(EosDesignsRootModel):
                                     message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
                                     nodes: Subclass of AvdList with `str` items.
                                     structured_config:
-                                       Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for
-                                       eos_cli_config_gen.
+                                       Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for the EOS
+                                       Config schema.
 
                                 """
 
@@ -61646,7 +61685,7 @@ class EosDesigns(EosDesignsRootModel):
                             raw_eos_cli: str | None
                             """EOS CLI rendered directly on the VLAN interface in the final EOS configuration."""
                             structured_config: EosCliConfigGen.VlanInterfacesItem
-                            """Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen."""
+                            """Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema."""
                             evpn_l2_multi_domain: bool | None
                             """
                             Explicitly extend SVI to remote EVPN domains.
@@ -61846,7 +61885,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdModel.
                                         bgp: Subclass of AvdModel.
                                         raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
-                                        structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                        structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                         evpn_l2_multi_domain:
                                            Explicitly extend SVI to remote EVPN domains.
                                            Overrides
@@ -62704,7 +62743,7 @@ class EosDesigns(EosDesignsRootModel):
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the VLAN interface in the final EOS configuration."""
                         structured_config: EosCliConfigGen.VlanInterfacesItem
-                        """Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen."""
+                        """Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema."""
                         evpn_l2_multi_domain: bool | None
                         """
                         Explicitly extend SVI to remote EVPN domains.
@@ -62930,7 +62969,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdModel.
                                     bgp: Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
-                                    structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                    structured_config: Custom structured config added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                     evpn_l2_multi_domain:
                                        Explicitly extend SVI to remote EVPN domains.
                                        Overrides
@@ -63664,7 +63703,10 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdList with `str` items.
                         """
                         structured_config: EosCliConfigGen.EthernetInterfacesItem
-                        """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
+                        """
+                        Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config
+                        schema.
+                        """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the Ethernet interface in the final EOS configuration."""
 
@@ -63764,7 +63806,9 @@ class EosDesigns(EosDesignsRootModel):
                                        associated with the member Ethernet interfaces instead.
 
                                        Subclass of AvdList with `str` items.
-                                    structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                    structured_config:
+                                       Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config
+                                       schema.
                                     raw_eos_cli: EOS CLI rendered directly on the Ethernet interface in the final EOS configuration.
 
                                 """
@@ -64350,8 +64394,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         structured_config: EosCliConfigGen.PortChannelInterfacesItem
                         """
-                        Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                        eos_cli_config_gen.
+                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                        schema.
                         """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the Port-Channel interface in the final EOS configuration."""
@@ -64436,8 +64480,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     structured_config:
-                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for
-                                       eos_cli_config_gen.
+                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
+                                       schema.
                                     raw_eos_cli: EOS CLI rendered directly on the Port-Channel interface in the final EOS configuration.
 
                                 """
@@ -64982,7 +65026,7 @@ class EosDesigns(EosDesignsRootModel):
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration."""
                         structured_config: EosCliConfigGen.RouterBgp.VrfsItem
-                        """Custom structured config added under router_bgp.vrfs.[name=<vrf>] for eos_cli_config_gen."""
+                        """Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema."""
 
                         if TYPE_CHECKING:
 
@@ -65022,7 +65066,7 @@ class EosDesigns(EosDesignsRootModel):
                                        - "diagnostic_loopback" will use the IP
                                        address of the VRF Diagnostic Loopback interface.
                                     raw_eos_cli: EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
-                                    structured_config: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for eos_cli_config_gen.
+                                    structured_config: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for the EOS Config schema.
 
                                 """
 
@@ -66319,10 +66363,7 @@ class EosDesigns(EosDesignsRootModel):
                     family based on the ip address.
                     Note, only ipv4 and ipv6 address families are currently supported in
                     eos_designs.
-                    For other address families, use custom_structured configuration with
-                    eos_cli_config_gen.
-
-
+                    For other address families, use custom_structured configuration with EOS Config schema.
                     Subclass of AvdList with `BgpPeersItem` items.
                     """
                     bgp: Bgp
@@ -66358,7 +66399,7 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
-                    """Custom structured config for eos_cli_config_gen."""
+                    """Custom structured config for the EOS Config schema."""
 
                     if TYPE_CHECKING:
 
@@ -66591,10 +66632,7 @@ class EosDesigns(EosDesignsRootModel):
                                    family based on the ip address.
                                    Note, only ipv4 and ipv6 address families are currently supported in
                                    eos_designs.
-                                   For other address families, use custom_structured configuration with
-                                   eos_cli_config_gen.
-
-
+                                   For other address families, use custom_structured configuration with EOS Config schema.
                                    Subclass of AvdList with `BgpPeersItem` items.
                                 bgp: Subclass of AvdModel.
                                 bgp_peer_groups:
@@ -66616,7 +66654,7 @@ class EosDesigns(EosDesignsRootModel):
                                 aggregate_addresses: Subclass of AvdList with `AggregateAddressesItem` items.
                                 validate_bgp_peers: Enable or disable BGP peer state validation by the `anta_runner` role on a per-VRF basis.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
-                                structured_config: Custom structured config for eos_cli_config_gen.
+                                structured_config: Custom structured config for the EOS Config schema.
 
                             """
 
@@ -66755,7 +66793,7 @@ class EosDesigns(EosDesignsRootModel):
                         _fields: ClassVar[dict] = {"structured_config": {"type": EosCliConfigGen.RouterBgp.VlansItem}, "raw_eos_cli": {"type": str}}
                         structured_config: EosCliConfigGen.RouterBgp.VlansItem
                         """
-                        Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
+                        Custom structured config added under router_bgp.vlans.[id=<vlan>] for the EOS Config schema.
                         This
                         configuration will not be applied to vlan aware bundles.
                         """
@@ -66782,7 +66820,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     structured_config:
-                                       Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
+                                       Custom structured config added under router_bgp.vlans.[id=<vlan>] for the EOS Config schema.
                                        This
                                        configuration will not be applied to vlan aware bundles.
                                     raw_eos_cli:
@@ -67081,7 +67119,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {"structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem}, "raw_eos_cli": {"type": str}}
                             structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                            """Custom structured config added on the Port-Channel subinterface for eos_cli_config_gen."""
+                            """Custom structured config added on the Port-Channel subinterface for the EOS Config schema."""
                             raw_eos_cli: str | None
                             """EOS cli commands rendered on the Port-Channel subinterface."""
 
@@ -67100,7 +67138,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        structured_config: Custom structured config added on the Port-Channel subinterface for eos_cli_config_gen.
+                                        structured_config: Custom structured config added on the Port-Channel subinterface for the EOS Config schema.
                                         raw_eos_cli: EOS cli commands rendered on the Port-Channel subinterface.
 
                                     """
@@ -67120,7 +67158,7 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
                         """
                         structured_config: EosCliConfigGen.EthernetInterfacesItem
-                        """Custom structured config added on the Ethernet subinterface for eos_cli_config_gen."""
+                        """Custom structured config added on the Ethernet subinterface for the EOS Config schema."""
                         raw_eos_cli: str | None
                         """EOS cli commands rendered on the Ethernet subinterface."""
 
@@ -67146,7 +67184,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Settings to be applied to the Port-Channel subinterface.
 
                                        Subclass of AvdModel.
-                                    structured_config: Custom structured config added on the Ethernet subinterface for eos_cli_config_gen.
+                                    structured_config: Custom structured config added on the Ethernet subinterface for the EOS Config schema.
                                     raw_eos_cli: EOS cli commands rendered on the Ethernet subinterface.
 
                                 """
@@ -71174,7 +71212,7 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
-                    """Custom structured config for eos_cli_config_gen."""
+                    """Custom structured config for the EOS Config schema."""
                     uplink_type: UplinkType | None
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
@@ -71323,7 +71361,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG peer link port-channel id.
                     Added under
-                    port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the
                     port-channel interface level.
                     "mlag_port_channel_structured_config" is applied after
@@ -71333,7 +71371,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                     Added under
-                    vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the vlan
                     interface level.
                     "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -71343,7 +71381,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                     Added under
-                    vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the vlan
                     interface level.
                     "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -72166,7 +72204,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Use this to retain behavior of AVD versions
                                    below 4.0.0.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
-                                structured_config: Custom structured config for eos_cli_config_gen.
+                                structured_config: Custom structured config for the EOS Config schema.
                                 uplink_type:
                                    Override the default `uplink_type` set at the `node_type_key` level.
                                    `uplink_type` must be "p2p" if
@@ -72273,7 +72311,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
-                                   port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the
                                    port-channel interface level.
                                    "mlag_port_channel_structured_config" is applied after
@@ -72281,7 +72319,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_vlan_structured_config:
                                    Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                                    Added under
-                                   vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the vlan
                                    interface level.
                                    "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -72289,7 +72327,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_l3_vlan_structured_config:
                                    Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                                    Added under
-                                   vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the vlan
                                    interface level.
                                    "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -76238,7 +76276,7 @@ class EosDesigns(EosDesignsRootModel):
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the root level of the final EOS configuration."""
                         structured_config: EosCliConfigGen
-                        """Custom structured config for eos_cli_config_gen."""
+                        """Custom structured config for the EOS Config schema."""
                         uplink_type: UplinkType | None
                         """
                         Override the default `uplink_type` set at the `node_type_key` level.
@@ -76387,7 +76425,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Custom structured config applied to MLAG peer link port-channel id.
                         Added under
-                        port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                        port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                         Overrides the settings on the
                         port-channel interface level.
                         "mlag_port_channel_structured_config" is applied after
@@ -76397,7 +76435,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                         Added under
-                        vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                        vlan_interfaces.[name=<interface>] for the EOS Config schema.
                         Overrides the settings on the vlan
                         interface level.
                         "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -76407,7 +76445,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                         Added under
-                        vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                        vlan_interfaces.[name=<interface>] for the EOS Config schema.
                         Overrides the settings on the vlan
                         interface level.
                         "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -77239,7 +77277,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Use this to retain behavior of AVD versions
                                        below 4.0.0.
                                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
-                                    structured_config: Custom structured config for eos_cli_config_gen.
+                                    structured_config: Custom structured config for the EOS Config schema.
                                     uplink_type:
                                        Override the default `uplink_type` set at the `node_type_key` level.
                                        `uplink_type` must be "p2p" if
@@ -77346,7 +77384,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mlag_port_channel_structured_config:
                                        Custom structured config applied to MLAG peer link port-channel id.
                                        Added under
-                                       port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                       port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                                        Overrides the settings on the
                                        port-channel interface level.
                                        "mlag_port_channel_structured_config" is applied after
@@ -77354,7 +77392,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mlag_peer_vlan_structured_config:
                                        Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                                        Added under
-                                       vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                       vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                        Overrides the settings on the vlan
                                        interface level.
                                        "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -77362,7 +77400,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mlag_peer_l3_vlan_structured_config:
                                        Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                                        Added under
-                                       vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                       vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                        Overrides the settings on the vlan
                                        interface level.
                                        "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -81222,7 +81260,7 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
-                    """Custom structured config for eos_cli_config_gen."""
+                    """Custom structured config for the EOS Config schema."""
                     uplink_type: UplinkType | None
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
@@ -81371,7 +81409,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG peer link port-channel id.
                     Added under
-                    port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the
                     port-channel interface level.
                     "mlag_port_channel_structured_config" is applied after
@@ -81381,7 +81419,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                     Added under
-                    vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the vlan
                     interface level.
                     "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -81391,7 +81429,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                     Added under
-                    vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the vlan
                     interface level.
                     "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -82225,7 +82263,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Use this to retain behavior of AVD versions
                                    below 4.0.0.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
-                                structured_config: Custom structured config for eos_cli_config_gen.
+                                structured_config: Custom structured config for the EOS Config schema.
                                 uplink_type:
                                    Override the default `uplink_type` set at the `node_type_key` level.
                                    `uplink_type` must be "p2p" if
@@ -82332,7 +82370,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
-                                   port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the
                                    port-channel interface level.
                                    "mlag_port_channel_structured_config" is applied after
@@ -82340,7 +82378,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_vlan_structured_config:
                                    Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                                    Added under
-                                   vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the vlan
                                    interface level.
                                    "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -82348,7 +82386,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_l3_vlan_structured_config:
                                    Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                                    Added under
-                                   vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the vlan
                                    interface level.
                                    "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -86280,7 +86318,7 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
-                    """Custom structured config for eos_cli_config_gen."""
+                    """Custom structured config for the EOS Config schema."""
                     uplink_type: UplinkType | None
                     """
                     Override the default `uplink_type` set at the `node_type_key` level.
@@ -86429,7 +86467,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG peer link port-channel id.
                     Added under
-                    port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the
                     port-channel interface level.
                     "mlag_port_channel_structured_config" is applied after
@@ -86439,7 +86477,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                     Added under
-                    vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the vlan
                     interface level.
                     "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -86449,7 +86487,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                     Added under
-                    vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                    vlan_interfaces.[name=<interface>] for the EOS Config schema.
                     Overrides the settings on the vlan
                     interface level.
                     "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -87281,7 +87319,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Use this to retain behavior of AVD versions
                                    below 4.0.0.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
-                                structured_config: Custom structured config for eos_cli_config_gen.
+                                structured_config: Custom structured config for the EOS Config schema.
                                 uplink_type:
                                    Override the default `uplink_type` set at the `node_type_key` level.
                                    `uplink_type` must be "p2p" if
@@ -87388,7 +87426,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
-                                   port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   port_channel_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the
                                    port-channel interface level.
                                    "mlag_port_channel_structured_config" is applied after
@@ -87396,7 +87434,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_vlan_structured_config:
                                    Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
                                    Added under
-                                   vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the vlan
                                    interface level.
                                    "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can
@@ -87404,7 +87442,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_peer_l3_vlan_structured_config:
                                    Custom structured config applied to MLAG underlay L3 peering SVI interface id.
                                    Added under
-                                   vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+                                   vlan_interfaces.[name=<interface>] for the EOS Config schema.
                                    Overrides the settings on the vlan
                                    interface level.
                                    "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it
@@ -87986,7 +88024,6 @@ class EosDesigns(EosDesignsRootModel):
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
-        "avd_tmp_dir": {"type": str},
         "eos_designs_validation_configuration": {"type": EosDesignsValidationConfiguration},
         "avd_vault_id": {"type": str},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
@@ -88063,7 +88100,9 @@ class EosDesigns(EosDesignsRootModel):
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
+        "eos_designs_keep_tmp_files": {"type": bool, "default": False},
         "eos_designs_return_structured_config": {"type": bool, "default": False},
+        "eos_designs_tmp_dir": {"type": str},
         "eos_designs_validate_inputs_batch_size": {"type": int, "default": 10},
         "event_handlers": {"type": EosCliConfigGen.EventHandlers},
         "event_monitor": {"type": EosCliConfigGen.EventMonitor},
@@ -88535,7 +88574,7 @@ class EosDesigns(EosDesignsRootModel):
                             "sflow_subinterfaces": False,
                             "hardware_validation": False,
                         },
-                        "management_interface": "Management0",
+                        "management_interface": "Management1",
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "digital_twin": {"act_node_type": "veos"},
                     },
@@ -88724,14 +88763,6 @@ class EosDesigns(EosDesignsRootModel):
     The file format to use when dumping structured configuration files.
 
     Default value: `"yml"`
-    """
-    avd_tmp_dir: str | None
-    """
-    Path for the AVD temporary directory.
-    Contains templated inputs, validated inputs, and facts data
-    used internally by AVD plugins.
-    Defaults to 'intended/tmp'. The temporary directory is cleaned up at
-    the end of each role.
     """
     eos_designs_validation_configuration: EosDesignsValidationConfiguration
     """
@@ -88952,30 +88983,29 @@ class EosDesigns(EosDesignsRootModel):
     """
     Custom EOS Structured Configuration keys can be set on any group or host_var level using the name
     of
-    the corresponding `eos_cli_config_gen` key prefixed with content of
-    `custom_structured_configuration_prefix`.
+    the corresponding EOS Config key prefixed with content of `custom_structured_configuration_prefix`.
+    The content of Custom Structured Configuration variables will be merged with the structured config
+    generated by the eos_designs role.
 
-    The content of Custom Structured Configuration variables
-    will be merged with the structured config generated by the eos_designs role.
+    The merge is done recursively, so it is possible to update a
+    sub-key of a variable set by Arista AVD already.
 
-    The merge is done
-    recursively, so it is possible to update a sub-key of a variable set by Arista AVD already.
-
-    The
-    merge follow these recursive merge strategies:
+    The merge follow these recursive merge strategies:
     - New keys will be added for all types.
-    - Existing
-    keys of type "List" with a "Primary key" set in the schema:
-      - Strategy can be changed with
-    `custom_structured_configuration_list_merge`. Default strategy:
-        - Existing list items with the
-    same "Primary key"-value will be updated.
-        - New unique items will be appended to the existing
-    list
-    - Other keys of type "List" will have new unique items appended the the existing list.
+    - Existing keys of type "List" with a "Primary key" set in
+    the schema:
+      - Strategy can be changed with `custom_structured_configuration_list_merge`. Default
+    strategy:
+        - Existing list items with the same "Primary key"-value will be updated.
+        - New
+    unique items will be appended to the existing list
+    - Other keys of type "List" will have new unique
+    items appended the the existing list.
+    - Existing keys of type "Dictionary" will recursively merge
     -
-    Existing keys of type "Dictionary" will recursively merge
-    - Other existing keys will be replaced.
+    Other existing keys will be replaced.
+
+
     Subclass of AvdList with `str` items.
 
     Default value: `lambda cls: coerce_type(["custom_structured_configuration_"], target_type=cls)`
@@ -89345,11 +89375,30 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    eos_designs_keep_tmp_files: bool
+    """
+    Avoid deleting temporary files.
+    This allows for inspecting templated inputs, validated inputs and
+    facts used internally by AVD plugins.
+    When an Ansible Vault secret is set, temporary files holding
+    input variables are encrypted. Decryption is required to inspect them.
+
+    Default value: `False`
+    """
     eos_designs_return_structured_config: bool
     """
     Return structured configuration as ansible_facts per device.
 
     Default value: `False`
+    """
+    eos_designs_tmp_dir: str | None
+    """
+    Path for temporary files created by the 'eos_designs' role.
+    Contains templated inputs, validated
+    inputs, and facts data used internally by AVD plugins.
+    Defaults to 'intended/tmp_eos_designs'.
+    The
+    temporary directory is cleaned up at the end of the 'eos_designs' role.
     """
     eos_designs_validate_inputs_batch_size: int
     """
@@ -90165,9 +90214,12 @@ class EosDesigns(EosDesignsRootModel):
     """QOS Profile assigned on all infrastructure links."""
     custom_platform_settings: CustomPlatformSettings
     """
-    Custom Platform settings to override the default `platform_settings`. This list will be prepended to
-    the list of `platform_settings`. The first entry found where the `platform` node setting is fully
-    matched by any regex in the `platforms` list will be chosen. If no matches are found, the first
+    Custom Platform settings to override the default `platform_settings`.
+    This list will be prepended to
+    the list of `platform_settings`.
+    The first entry found where the `platform` node setting is fully
+    matched by any regex in the `platforms` list will be chosen.
+    If no matches are found, the first
     entry containing a platform `default` will be chosen.
 
     Subclass of AvdList with
@@ -90175,17 +90227,22 @@ class EosDesigns(EosDesignsRootModel):
     """
     platform_settings: PlatformSettings
     """
-    Platform settings. The first entry found where the `platform` node setting is fully matched by any
-    regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a
-    platform `default` will be chosen. The default values will be overridden if `platform_settings` is
-    defined. If you need to replace all the default platforms, it is recommended to copy the defaults
-    and modify them. If you need to add custom platforms, create them under `custom_platform_settings`.
+    Platform settings.
+    The first entry found where the `platform` node setting is fully matched by any
+    regex in the `platforms` list will be chosen.
+    If no matches are found, the first entry containing a
+    platform `default` will be chosen.
+    The default values will be overridden if `platform_settings` is
+    defined.
+    If you need to replace all the default platforms, it is recommended to copy the defaults
+    and modify them.
+    If you need to add custom platforms, create them under `custom_platform_settings`.
     Entries under `custom_platform_settings` will be matched before the equivalent entries from
     `platform_settings`.
 
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "sflow_subinterfaces": False, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "sflow_subinterfaces": False, "hardware_validation": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "sflow_subinterfaces": False, "subinterface_mtu": False, "per_interface_l2_mru": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP-24ZS", "720DP-48ZS"], "feature_support": {"queue_monitor_length_notify": False, "poe": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DF"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DT", "7010TX"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7060X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7388X5"], "feature_support": {"queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "hardware_counter_features": {"acl": False, "decap_group": False, "directflow": False, "ecn": False, "flow_spec": False, "mpls_interface": False, "mpls_lfib": False, "mpls_tunnel": False, "multicast": False, "nexthop": False, "pbr": False, "pdp": False, "policing_interface": False, "qos": False, "qos_dual_rate_policer": False, "route": False, "routed_port": False, "segment_security": False, "tapagg": False, "traffic_class": False, "traffic_policy": False, "vlan": False}, "sflow_subinterfaces": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"subinterface_mtu": False, "per_interface_l2_mtu": False, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"per_interface_l2_mtu": False, "evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "subinterface_mtu": False, "per_interface_l2_mru": False, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": True, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "feature_support": {"subinterface_mtu": False, "per_interface_l2_mru": False, "sflow_subinterfaces": False}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "sflow_subinterfaces": False, "hardware_validation": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mtu": False, "per_interface_l2_mru": False, "evpn_gateway_all_active_multihoming": True, "sflow_subinterfaces": False, "hardware_validation": False}, "management_interface": "Management1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "per_interface_l2_mru": False, "queue_monitor_length_notify": False, "sflow": False, "hardware_validation": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "subinterface_mtu": False, "per_interface_l2_mru": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}, "sflow": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True, "per_interface_l2_mru": False, "sflow": False}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """
@@ -90281,12 +90338,10 @@ class EosDesigns(EosDesignsRootModel):
     """
     Configure source-interfaces based on the management interfaces set for other AVD Design data models.
     By default, no source-interfaces will be configured. They can still be configured manually using
-    `eos_cli_config_gen` and custom structured configuration.
-    EOS supports a single source-interface per
-    VRF, so an error will be raised in case of conflicts.
-    Errors will also be raised if an interface is
-    not found for a device.
-
+    custom structured configuration.
+    EOS supports a single source-interface per VRF, so an error will be
+    raised in case of conflicts.
+    Errors will also be raised if an interface is not found for a device.
     Subclass of AvdModel.
     """
     ssh_settings: SshSettings
@@ -90709,7 +90764,6 @@ class EosDesigns(EosDesignsRootModel):
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
-            avd_tmp_dir: str | None | UndefinedType = Undefined,
             eos_designs_validation_configuration: EosDesignsValidationConfiguration | UndefinedType = Undefined,
             avd_vault_id: str | None | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
@@ -90764,7 +90818,9 @@ class EosDesigns(EosDesignsRootModel):
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
+            eos_designs_keep_tmp_files: bool | UndefinedType = Undefined,
             eos_designs_return_structured_config: bool | UndefinedType = Undefined,
+            eos_designs_tmp_dir: str | None | UndefinedType = Undefined,
             eos_designs_validate_inputs_batch_size: int | UndefinedType = Undefined,
             event_handlers: EosCliConfigGen.EventHandlers | UndefinedType = Undefined,
             event_monitor: EosCliConfigGen.EventMonitor | UndefinedType = Undefined,
@@ -90939,12 +90995,6 @@ class EosDesigns(EosDesignsRootModel):
                    dedicated output location.
                 avd_eos_designs_structured_config: Generate structured configuration per device.
                 avd_structured_config_file_format: The file format to use when dumping structured configuration files.
-                avd_tmp_dir:
-                   Path for the AVD temporary directory.
-                   Contains templated inputs, validated inputs, and facts data
-                   used internally by AVD plugins.
-                   Defaults to 'intended/tmp'. The temporary directory is cleaned up at
-                   the end of each role.
                 eos_designs_validation_configuration:
                    Validation configuration options when validating AVD Design inputs.
 
@@ -91107,30 +91157,29 @@ class EosDesigns(EosDesignsRootModel):
                 custom_structured_configuration_prefix:
                    Custom EOS Structured Configuration keys can be set on any group or host_var level using the name
                    of
-                   the corresponding `eos_cli_config_gen` key prefixed with content of
-                   `custom_structured_configuration_prefix`.
+                   the corresponding EOS Config key prefixed with content of `custom_structured_configuration_prefix`.
+                   The content of Custom Structured Configuration variables will be merged with the structured config
+                   generated by the eos_designs role.
 
-                   The content of Custom Structured Configuration variables
-                   will be merged with the structured config generated by the eos_designs role.
+                   The merge is done recursively, so it is possible to update a
+                   sub-key of a variable set by Arista AVD already.
 
-                   The merge is done
-                   recursively, so it is possible to update a sub-key of a variable set by Arista AVD already.
-
-                   The
-                   merge follow these recursive merge strategies:
+                   The merge follow these recursive merge strategies:
                    - New keys will be added for all types.
-                   - Existing
-                   keys of type "List" with a "Primary key" set in the schema:
-                     - Strategy can be changed with
-                   `custom_structured_configuration_list_merge`. Default strategy:
-                       - Existing list items with the
-                   same "Primary key"-value will be updated.
-                       - New unique items will be appended to the existing
-                   list
-                   - Other keys of type "List" will have new unique items appended the the existing list.
+                   - Existing keys of type "List" with a "Primary key" set in
+                   the schema:
+                     - Strategy can be changed with `custom_structured_configuration_list_merge`. Default
+                   strategy:
+                       - Existing list items with the same "Primary key"-value will be updated.
+                       - New
+                   unique items will be appended to the existing list
+                   - Other keys of type "List" will have new unique
+                   items appended the the existing list.
+                   - Existing keys of type "Dictionary" will recursively merge
                    -
-                   Existing keys of type "Dictionary" will recursively merge
-                   - Other existing keys will be replaced.
+                   Other existing keys will be replaced.
+
+
                    Subclass of AvdList with `str` items.
                 cv_pathfinder_global_sites:
                    Define sites that are outside of the CV Pathfinder hierarchy.
@@ -91415,7 +91464,20 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdModel.
+                eos_designs_keep_tmp_files:
+                   Avoid deleting temporary files.
+                   This allows for inspecting templated inputs, validated inputs and
+                   facts used internally by AVD plugins.
+                   When an Ansible Vault secret is set, temporary files holding
+                   input variables are encrypted. Decryption is required to inspect them.
                 eos_designs_return_structured_config: Return structured configuration as ansible_facts per device.
+                eos_designs_tmp_dir:
+                   Path for temporary files created by the 'eos_designs' role.
+                   Contains templated inputs, validated
+                   inputs, and facts data used internally by AVD plugins.
+                   Defaults to 'intended/tmp_eos_designs'.
+                   The
+                   temporary directory is cleaned up at the end of the 'eos_designs' role.
                 eos_designs_validate_inputs_batch_size:
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
@@ -91993,19 +92055,27 @@ class EosDesigns(EosDesignsRootModel):
                    p2p_uplinks_mtu -> 9214
                 p2p_uplinks_qos_profile: QOS Profile assigned on all infrastructure links.
                 custom_platform_settings:
-                   Custom Platform settings to override the default `platform_settings`. This list will be prepended to
-                   the list of `platform_settings`. The first entry found where the `platform` node setting is fully
-                   matched by any regex in the `platforms` list will be chosen. If no matches are found, the first
+                   Custom Platform settings to override the default `platform_settings`.
+                   This list will be prepended to
+                   the list of `platform_settings`.
+                   The first entry found where the `platform` node setting is fully
+                   matched by any regex in the `platforms` list will be chosen.
+                   If no matches are found, the first
                    entry containing a platform `default` will be chosen.
 
                    Subclass of AvdList with
                    `CustomPlatformSettingsItem` items.
                 platform_settings:
-                   Platform settings. The first entry found where the `platform` node setting is fully matched by any
-                   regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a
-                   platform `default` will be chosen. The default values will be overridden if `platform_settings` is
-                   defined. If you need to replace all the default platforms, it is recommended to copy the defaults
-                   and modify them. If you need to add custom platforms, create them under `custom_platform_settings`.
+                   Platform settings.
+                   The first entry found where the `platform` node setting is fully matched by any
+                   regex in the `platforms` list will be chosen.
+                   If no matches are found, the first entry containing a
+                   platform `default` will be chosen.
+                   The default values will be overridden if `platform_settings` is
+                   defined.
+                   If you need to replace all the default platforms, it is recommended to copy the defaults
+                   and modify them.
+                   If you need to add custom platforms, create them under `custom_platform_settings`.
                    Entries under `custom_platform_settings` will be matched before the equivalent entries from
                    `platform_settings`.
 
@@ -92067,12 +92137,10 @@ class EosDesigns(EosDesignsRootModel):
                 source_interfaces:
                    Configure source-interfaces based on the management interfaces set for other AVD Design data models.
                    By default, no source-interfaces will be configured. They can still be configured manually using
-                   `eos_cli_config_gen` and custom structured configuration.
-                   EOS supports a single source-interface per
-                   VRF, so an error will be raised in case of conflicts.
-                   Errors will also be raised if an interface is
-                   not found for a device.
-
+                   custom structured configuration.
+                   EOS supports a single source-interface per VRF, so an error will be
+                   raised in case of conflicts.
+                   Errors will also be raised if an interface is not found for a device.
                    Subclass of AvdModel.
                 ssh_settings: Subclass of AvdModel.
                 svi_profiles:

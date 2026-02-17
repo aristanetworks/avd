@@ -343,6 +343,7 @@ keys:
     deprecation:
       warning: true
       removed: true
+      new_key: eos_designs_keep_tmp_files
       remove_in_version: 6.0.0
   avd_eos_designs_enforce_duplication_checks_across_all_models:
     documentation_options:
@@ -376,19 +377,6 @@ keys:
     - yaml
     - json
     description: 'The file format to use when dumping structured configuration files.
-
-      '
-  avd_tmp_dir:
-    documentation_options:
-      table: role-settings
-    type: str
-    description: 'Path for the AVD temporary directory.
-
-      Contains templated inputs, validated inputs, and facts data used internally
-      by AVD plugins.
-
-      Defaults to ''intended/tmp''. The temporary directory is cleaned up at the end
-      of each role.
 
       '
   eos_designs_validation_configuration:
@@ -579,7 +567,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -627,7 +615,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -664,7 +652,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -693,7 +681,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -722,7 +710,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -751,7 +739,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -780,7 +768,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -809,7 +797,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -896,7 +884,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -975,7 +963,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -1211,10 +1199,10 @@ keys:
     items:
       type: str
     description: "Custom EOS Structured Configuration keys can be set on any group
-      or host_var level using the name\nof the corresponding `eos_cli_config_gen`
-      key prefixed with content of `custom_structured_configuration_prefix`.\n\nThe
-      content of Custom Structured Configuration variables will be merged with the
-      structured config generated by the eos_designs role.\n\nThe merge is done recursively,
+      or host_var level using the name\nof the corresponding EOS Config key prefixed
+      with content of `custom_structured_configuration_prefix`.\n\nThe content of
+      Custom Structured Configuration variables will be merged with the structured
+      config generated by the eos_designs role.\n\nThe merge is done recursively,
       so it is possible to update a sub-key of a variable set by Arista AVD already.\n\nThe
       merge follow these recursive merge strategies:\n- New keys will be added for
       all types.\n- Existing keys of type \"List\" with a \"Primary key\" set in the
@@ -2321,12 +2309,40 @@ keys:
         type: bool
         default: true
         description: Generate the table of content(TOC) on fabric documentation.
+  eos_designs_keep_tmp_files:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: false
+    description: 'Avoid deleting temporary files.
+
+      This allows for inspecting templated inputs, validated inputs and facts used
+      internally by AVD plugins.
+
+      When an Ansible Vault secret is set, temporary files holding input variables
+      are encrypted. Decryption is required to inspect them.
+
+      '
   eos_designs_return_structured_config:
     documentation_options:
       table: role-settings
     type: bool
     default: false
     description: Return structured configuration as ansible_facts per device.
+  eos_designs_tmp_dir:
+    documentation_options:
+      table: role-settings
+    type: str
+    description: 'Path for temporary files created by the ''eos_designs'' role.
+
+      Contains templated inputs, validated inputs, and facts data used internally
+      by AVD plugins.
+
+      Defaults to ''intended/tmp_eos_designs''.
+
+      The temporary directory is cleaned up at the end of the ''eos_designs'' role.
+
+      '
   eos_designs_validate_inputs_batch_size:
     documentation_options:
       table: role-settings
@@ -3424,6 +3440,13 @@ keys:
     type: dict
     description: Logging settings
     keys:
+      use_local_interface_cli:
+        type: bool
+        description: 'Use `logging local-interface <interface>` CLI instead of the
+          deprecated `logging source-interface <interface>` CLI.
+
+          The new CLI was introduced in EOS version 4.33.4.'
+        default: false
       hosts:
         type: list
         required: true
@@ -4484,24 +4507,37 @@ keys:
     type: list
     documentation_options:
       table: custom-platform-settings
-    description: Custom Platform settings to override the default `platform_settings`.
-      This list will be prepended to the list of `platform_settings`. The first entry
-      found where the `platform` node setting is fully matched by any regex in the
-      `platforms` list will be chosen. If no matches are found, the first entry containing
-      a platform `default` will be chosen.
+    description: 'Custom Platform settings to override the default `platform_settings`.
+
+      This list will be prepended to the list of `platform_settings`.
+
+      The first entry found where the `platform` node setting is fully matched by
+      any regex in the `platforms` list will be chosen.
+
+      If no matches are found, the first entry containing a platform `default` will
+      be chosen.'
   platform_settings:
     $ref: eos_designs#/$defs/platform_settings
     type: list
     documentation_options:
       table: platform-settings
-    description: Platform settings. The first entry found where the `platform` node
-      setting is fully matched by any regex in the `platforms` list will be chosen.
+    description: 'Platform settings.
+
+      The first entry found where the `platform` node setting is fully matched by
+      any regex in the `platforms` list will be chosen.
+
       If no matches are found, the first entry containing a platform `default` will
-      be chosen. The default values will be overridden if `platform_settings` is defined.
+      be chosen.
+
+      The default values will be overridden if `platform_settings` is defined.
+
       If you need to replace all the default platforms, it is recommended to copy
-      the defaults and modify them. If you need to add custom platforms, create them
-      under `custom_platform_settings`. Entries under `custom_platform_settings` will
-      be matched before the equivalent entries from `platform_settings`.
+      the defaults and modify them.
+
+      If you need to add custom platforms, create them under `custom_platform_settings`.
+
+      Entries under `custom_platform_settings` will be matched before the equivalent
+      entries from `platform_settings`.'
     default:
     - platforms:
       - default
@@ -4832,7 +4868,7 @@ keys:
         evpn_gateway_all_active_multihoming: true
         sflow_subinterfaces: false
         hardware_validation: false
-      management_interface: Management0
+      management_interface: Management1
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -5500,7 +5536,7 @@ keys:
       for other AVD Design data models.
 
       By default, no source-interfaces will be configured. They can still be configured
-      manually using `eos_cli_config_gen` and custom structured configuration.
+      manually using custom structured configuration.
 
       EOS supports a single source-interface per VRF, so an error will be raised in
       case of conflicts.
@@ -7340,7 +7376,7 @@ $defs:
                   type: dict
                   relaxed_validation: true
                   description: Custom structured config added under port_channel_interfaces.[name=<subinterface>]
-                    for eos_cli_config_gen.
+                    for the EOS Config schema.
                   documentation_options:
                     hide_keys: true
                   $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
@@ -7352,7 +7388,7 @@ $defs:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under port_channel_interfaces.[name=<interface>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
@@ -7385,7 +7421,7 @@ $defs:
         type: dict
         relaxed_validation: true
         description: Custom structured config added under ethernet_interfaces.[name=<interface>]
-          for eos_cli_config_gen.
+          for the EOS Config schema.
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
@@ -7619,7 +7655,7 @@ $defs:
               type: dict
               relaxed_validation: true
               description: 'Custom structured config added under router_bgp.vlans.[id=<vlan>]
-                for eos_cli_config_gen.
+                for the EOS Config schema.
 
                 This configuration will not be applied to vlan aware bundles.
 
@@ -8653,7 +8689,7 @@ $defs:
                     type: dict
                     relaxed_validation: true
                     description: Custom structured config added under router_ospf.process_ids.[process_id=<process_id>]
-                      for eos_cli_config_gen.
+                      for the EOS Config schema.
                     documentation_options:
                       hide_keys: true
                     $ref: eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items
@@ -9049,7 +9085,7 @@ $defs:
                       type: dict
                       relaxed_validation: true
                       description: Custom structured config added under ethernet_interfaces.[name=<interface>]
-                        for eos_cli_config_gen.
+                        for the EOS Config schema.
                       documentation_options:
                         hide_keys: true
                       $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
@@ -9296,7 +9332,7 @@ $defs:
                       type: dict
                       relaxed_validation: true
                       description: Custom structured config added under port_channel_interfaces.[name=<interface>]
-                        for eos_cli_config_gen.
+                        for the EOS Config schema.
                       documentation_options:
                         hide_keys: true
                       $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
@@ -9451,7 +9487,7 @@ $defs:
                   in eos_designs.
 
                   For other address families, use custom_structured configuration
-                  with eos_cli_config_gen.
+                  with EOS Config schema.
 
                   '
                 items:
@@ -9638,7 +9674,7 @@ $defs:
                     type: dict
                     relaxed_validation: true
                     description: Custom structured config added under router_bgp.vrfs.[name=<vrf>]
-                      for eos_cli_config_gen.
+                      for the EOS Config schema.
                     documentation_options:
                       hide_keys: true
                     $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items
@@ -9807,7 +9843,7 @@ $defs:
               structured_config:
                 type: dict
                 relaxed_validation: true
-                description: Custom structured config for eos_cli_config_gen.
+                description: Custom structured config for the EOS Config schema.
                 documentation_options:
                   hide_keys: true
                 $ref: eos_cli_config_gen#
@@ -9900,7 +9936,7 @@ $defs:
                           type: dict
                           relaxed_validation: true
                           description: 'Custom structured config added on the Port-Channel
-                            subinterface for eos_cli_config_gen.
+                            subinterface for the EOS Config schema.
 
                             '
                           documentation_options:
@@ -9916,7 +9952,7 @@ $defs:
                       type: dict
                       relaxed_validation: true
                       description: 'Custom structured config added on the Ethernet
-                        subinterface for eos_cli_config_gen.
+                        subinterface for the EOS Config schema.
 
                         '
                       documentation_options:
@@ -10189,7 +10225,7 @@ $defs:
             documentation_options:
               table: node-type-common-configuration
               hide_keys: true
-            description: Custom structured config for eos_cli_config_gen.
+            description: Custom structured config for the EOS Config schema.
             type: dict
             relaxed_validation: true
             $ref: eos_cli_config_gen#
@@ -10457,7 +10493,8 @@ $defs:
             description: 'Custom structured config applied to MLAG peer link port-channel
               id.
 
-              Added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+              Added under port_channel_interfaces.[name=<interface>] for the EOS Config
+              schema.
 
               Overrides the settings on the port-channel interface level.
 
@@ -10475,7 +10512,7 @@ $defs:
             description: 'Custom structured config applied to MLAG Peer Link (control
               link) SVI interface id.
 
-              Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+              Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
 
               Overrides the settings on the vlan interface level.
 
@@ -10493,7 +10530,7 @@ $defs:
             description: 'Custom structured config applied to MLAG underlay L3 peering
               SVI interface id.
 
-              Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+              Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
 
               Overrides the settings on the vlan interface level.
 
@@ -13528,7 +13565,7 @@ $defs:
           relaxed_validation: true
           documentation_options:
             hide_keys: true
-          description: Custom structured config for eos_cli_config_gen.
+          description: Custom structured config for the EOS Config schema.
           $ref: eos_cli_config_gen#
         raw_eos_cli:
           type: str
@@ -14045,7 +14082,7 @@ $defs:
         type: dict
         relaxed_validation: true
         description: 'Custom structured config added under vlan_interfaces.[name=<interface>]
-          for eos_cli_config_gen.
+          for the EOS Config schema.
 
           '
         documentation_options:
