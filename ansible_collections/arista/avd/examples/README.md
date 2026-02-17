@@ -35,7 +35,12 @@ Once the environment is ready, you can extract all examples with:
 ansible-playbook arista.avd.install_examples
 ```
 
-Alternatively you can use `cp -r /home/${USER}/.ansible/collections/ansible_collections/arista/avd/examples/<example-name>/* .` to copy specific example to your current directory.
+Alternatively you can copy specific example to your current directory:
+
+```shell
+cp -r /home/${USER}/.ansible/collections/ansible_collections/arista/avd/examples/<example-name>/* .
+```
+
 `/home/${USER}/.ansible/collections/ansible_collections/arista/avd/examples` is the default Ansible path to AVD collection. It can be different if your environment is not using the default path.
 
 Once the example is copied to your working directory / container workspace - simply start playing with the inventory. For example, change a few variables, run `ansible-playbook build.yml` command and check the diff in configurations and documentation.
