@@ -19253,6 +19253,47 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class InterfaceDefaults(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Ethernet(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"shutdown": {"type": bool}}
+            shutdown: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, shutdown: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    Ethernet.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        shutdown: shutdown
+
+                    """
+
+        _fields: ClassVar[dict] = {"ethernet": {"type": Ethernet}}
+        ethernet: Ethernet
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, ethernet: Ethernet | UndefinedType = Undefined) -> None:
+                """
+                InterfaceDefaults.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    ethernet: Subclass of AvdModel.
+
+                """
+
     class InternalVlanOrder(AvdModel):
         """Subclass of AvdModel."""
 
@@ -88012,6 +88053,7 @@ class EosDesigns(EosDesignsRootModel):
         "generate_cv_tags": {"type": GenerateCvTags},
         "hardware_counters": {"type": EosCliConfigGen.HardwareCounters},
         "inband_ztp_bootstrap_file": {"type": str},
+        "interface_defaults": {"type": InterfaceDefaults},
         "internal_vlan_order": {
             "type": InternalVlanOrder,
             "default": lambda cls: coerce_type({"allocation": "ascending", "range": {"beginning": 1006, "ending": 1199}}, target_type=cls),
@@ -89494,6 +89536,8 @@ class EosDesigns(EosDesignsRootModel):
     cv server>/ztp/bootstrap` if `cv_settings` are used.
     Otherwise no value will be configured.
     """
+    interface_defaults: InterfaceDefaults
+    """Subclass of AvdModel."""
     internal_vlan_order: InternalVlanOrder
     """
     Internal vlan allocation order and range.
@@ -90721,6 +90765,7 @@ class EosDesigns(EosDesignsRootModel):
             generate_cv_tags: GenerateCvTags | UndefinedType = Undefined,
             hardware_counters: EosCliConfigGen.HardwareCounters | UndefinedType = Undefined,
             inband_ztp_bootstrap_file: str | None | UndefinedType = Undefined,
+            interface_defaults: InterfaceDefaults | UndefinedType = Undefined,
             internal_vlan_order: InternalVlanOrder | UndefinedType = Undefined,
             ipsec_settings: IpsecSettings | UndefinedType = Undefined,
             ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
@@ -91497,6 +91542,7 @@ class EosDesigns(EosDesignsRootModel):
                    By default the URL will be `https://<first
                    cv server>/ztp/bootstrap` if `cv_settings` are used.
                    Otherwise no value will be configured.
+                interface_defaults: Subclass of AvdModel.
                 internal_vlan_order:
                    Internal vlan allocation order and range.
 

@@ -19,6 +19,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "hardware_counters.features.[].vrf") | String |  |  |  | Supported only for the 'route' feature.<br>This validation IS NOT made by the schemas.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix</samp>](## "hardware_counters.features.[].prefix") | String |  |  |  | Supported only for the 'route' feature.<br>Mandatory for the 'route' feature.<br>This validation IS NOT made by the schemas.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units_packets</samp>](## "hardware_counters.features.[].units_packets") | Boolean |  |  |  |  |
+    | [<samp>interface_defaults</samp>](## "interface_defaults") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;ethernet</samp>](## "interface_defaults.ethernet") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "interface_defaults.ethernet.shutdown") | Boolean |  |  |  |  |
     | [<samp>internal_vlan_order</samp>](## "internal_vlan_order") | Dictionary |  | See (+) on YAML tab |  | Internal vlan allocation order and range. |
     | [<samp>&nbsp;&nbsp;allocation</samp>](## "internal_vlan_order.allocation") | String | Required |  | Valid Values:<br>- <code>ascending</code><br>- <code>descending</code> |  |
     | [<samp>&nbsp;&nbsp;range</samp>](## "internal_vlan_order.range") | Dictionary |  |  |  |  |
@@ -147,6 +150,9 @@
           # This validation IS NOT made by the schemas.
           prefix: <str>
           units_packets: <bool>
+    interface_defaults:
+      ethernet:
+        shutdown: <bool>
 
     # Internal vlan allocation order and range.
     internal_vlan_order: # (1)!
