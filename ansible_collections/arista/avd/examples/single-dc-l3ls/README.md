@@ -29,7 +29,7 @@ Ansible playbooks are included to show the following:
 ## AVD Playground
 
 --8<--
-ansible_collections/arista/avd/examples/common/example-installation.md
+ansible_collections/arista/avd/examples/common/start-avd-playground.md
 --8<--
 
 ## Installation
