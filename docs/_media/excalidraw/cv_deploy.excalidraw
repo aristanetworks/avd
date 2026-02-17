@@ -4831,8 +4831,8 @@
       "index": "b2L",
       "roundness": null,
       "seed": 1250965749,
-      "version": 189,
-      "versionNonce": 419963255,
+      "version": 190,
+      "versionNonce": 1922678103,
       "isDeleted": false,
       "boundElements": [
         {
@@ -4840,7 +4840,7 @@
           "id": "7pd_QjF0K2SYX5ffr0eQC"
         }
       ],
-      "updated": 1771349452183,
+      "updated": 1771353164673,
       "link": null,
       "locked": false,
       "points": [
@@ -4877,7 +4877,7 @@
           0.49876968100673175
         ]
       },
-      "startArrowhead": null,
+      "startArrowhead": "triangle",
       "endArrowhead": "triangle",
       "elbowed": true,
       "moveMidPointsWithElement": false,
