@@ -28,10 +28,6 @@ default_node_types:
 underlay_ipv6: true
 underlay_ipv6_numbered: true
 
-# Required for IPv6 numbered underlay
-underlay_routing_protocol: ebgp
-overlay_routing_protocol: ebgp
-
 # IPv6 prefix length settings
 fabric_ip_addressing:
   loopback:
