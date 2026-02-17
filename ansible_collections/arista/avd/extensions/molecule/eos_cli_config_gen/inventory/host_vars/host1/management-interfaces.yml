@@ -50,3 +50,10 @@ management_interfaces:
       monitor:
         neighbor:
           ipv6_address: "1:1:1:1:1:1:1:1"
+    ipv6_address: "auto-config"
+    ipv6_enable: true
+    ipv6_nd:
+      ra:
+        rx_accept:
+          default_route: true
+          route_preference: true

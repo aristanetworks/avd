@@ -392,7 +392,7 @@ agent KernelFib shutdown supervisor standby
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management0 | - | oob | default | - | - |
 | Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
-| Management42 | - | oob | default | - | - |
+| Management42 | - | oob | default | auto-config | - |
 | Vlan123 | inband_management | inband | default | - | - |
 
 ##### Interface Redundancy
@@ -448,6 +448,10 @@ interface Management1
 interface Management42
    shutdown
    speed forced 1000full
+   ipv6 enable
+   ipv6 address auto-config
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
    no lldp transmit
    no lldp receive
    lldp tlv transmit ztp vlan 666
