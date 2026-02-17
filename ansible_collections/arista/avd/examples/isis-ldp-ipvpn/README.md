@@ -22,6 +22,12 @@ The example includes and describes all the AVD files and their content used to b
 
 This example does not include Integration with CloudVision to keep everything as simple as possible. In this case, the Ansible host will communicate directly with the routers using eAPI.
 
+## AVD Playground
+
+--8<--
+ansible_collections/arista/avd/examples/common/start-avd-playground.md
+--8<--
+
 ## Installation
 
 --8<--
