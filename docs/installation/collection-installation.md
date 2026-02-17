@@ -8,12 +8,19 @@
 
 ## Installation workflow
 
-- Install [Python](https://www.python.org/downloads/) **3.10** or later.
+- Install supported [Python](https://www.python.org/downloads/) version **3.10-3.14.
+  - The Python version determines the supported `ansible-core` version. Consult the [ansible-core support matrix](https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix) for more information.
 - Install the [pyavd](https://pypi.org/project/pyavd/) Python package with `ansible` dependencies.
+  - note: This will install the supported ansible-core version and all required [Python dependencies](#python-dependencies).
 - Install [arista.avd](https://galaxy.ansible.com/ui/repo/published/arista/avd/) Ansible collection.
 
-!!! note
-    The supported Python version is determined by the [ansible-core support matrix](https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix).
+## Python dependencies
+
+``` shell
+--8<--
+ansible_collections/arista/avd/requirements.txt:4:
+--8<--
+```
 
 ## Install Collection from Ansible Galaxy
 
