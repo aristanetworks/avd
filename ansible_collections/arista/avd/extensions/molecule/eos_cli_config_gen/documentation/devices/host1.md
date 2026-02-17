@@ -388,12 +388,12 @@ agent KernelFib shutdown supervisor standby
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Address Auto-config | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------------------ | ------------ |
-| Management0 | - | oob | default | - | - | - |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - |
-| Management42 | - | oob | default | auto-config | auto-config | - |
-| Vlan123 | inband_management | inband | default | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Addresses | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management0 | - | oob | default | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management42 | - | oob | default | auto-config | - |
+| Vlan123 | inband_management | inband | default | 2001:db8:abcd:1234::1/64<br>2001:db8:abcd:1234::2/64 | - |
 
 ##### Interface Redundancy
 
@@ -462,6 +462,8 @@ interface Vlan123
    description inband_management
    mtu 1500
    ip address 10.73.0.123/24
+   ipv6 address 2001:db8:abcd:1234::1/64
+   ipv6 address 2001:db8:abcd:1234::2/64
    ip virtual-router address 10.73.0.1
 ```
 

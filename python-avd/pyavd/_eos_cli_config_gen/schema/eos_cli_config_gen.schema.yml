@@ -8797,9 +8797,24 @@ keys:
         ipv6_address:
           type: str
           description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: 'IPv6_address/Mask.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
         ipv6_address_auto_config:
           type: bool
-          description: Use SLAAC to automatically configure the IPv6 address.
+          description: 'Use SLAAC to automatically configure the IPv6 address.
+
+            This option is mutually exclusive with `ipv6_addresses`.'
         ipv6_nd:
           description: Neighbor Discovery / Router Advertisement.
           type: dict

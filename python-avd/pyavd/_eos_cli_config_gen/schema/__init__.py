@@ -22227,6 +22227,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "forced 50gfull",
         ]
 
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
         class Ipv6Nd(AvdModel):
             """Subclass of AvdModel."""
 
@@ -22573,6 +22578,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_address": {"type": str},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
             "ipv6_address_auto_config": {"type": bool},
             "ipv6_nd": {"type": Ipv6Nd},
             "type": {"type": str, "default": "oob"},
@@ -22597,8 +22603,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_enable: bool | None
         ipv6_address: str | None
         """IPv6_address/Mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
         ipv6_address_auto_config: bool | None
-        """Use SLAAC to automatically configure the IPv6 address."""
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         ipv6_nd: Ipv6Nd
         """
         Neighbor Discovery / Router Advertisement.
@@ -22638,6 +22650,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_address: str | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                 ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 type: Type | UndefinedType = Undefined,
@@ -22664,7 +22677,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_address: IPv4_address/Mask.
                     ipv6_enable: ipv6_enable
                     ipv6_address: IPv6_address/Mask.
-                    ipv6_address_auto_config: Use SLAAC to automatically configure the IPv6 address.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     ipv6_nd:
                        Neighbor Discovery / Router Advertisement.
 

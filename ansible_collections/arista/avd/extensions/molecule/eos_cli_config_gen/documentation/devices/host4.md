@@ -26,9 +26,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Address Auto-config | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Addresses | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
