@@ -8,8 +8,7 @@ intends to clarify why the words are ignored and if any action is pending
 - iif
     Used as test data
 - inout
-    Key name `route_map_inout` in `eos_cli_config_gen` schema
-- claus
+    Key name `route_map_inout` in the EOS Config schema
     Maintainer name in some places in the code
 - clos
     Used to design CLOS topology in documentation
@@ -22,7 +21,7 @@ intends to clarify why the words are ignored and if any action is pending
 - pathc
     Used as test data
 - ect
-    Valid value for class_maps.qos.[].ecn in eos_cli_config_gen
+    Valid value for class_maps.qos.[].ecn in the EOS Config schema
 - TE
     Traffic Engineering
 - crate
