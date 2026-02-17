@@ -19,7 +19,7 @@ PYAVD_PRERELEASE = ""  # Set this to aN or bN for alpha and beta releases of pya
 __author__ = "Arista Networks"
 __copyright__ = "Copyright 2023-2026 Arista Networks"
 __license__ = "Apache 2.0"
-__version__ = "5.7.2"
+__version__ = "5.7.3"
 
 __all__ = [
     "ValidationResult",
