@@ -832,9 +832,7 @@ class AvdStructuredConfigBaseProtocol(
         if not (arp_settings := self.inputs.general_settings.arp):
             return
 
-        if arp_settings.persistent:
-            self.structured_config.arp.persistent = arp_settings.persistent
-
+        self.structured_config.arp.persistent = arp_settings.persistent
         self.structured_config.arp.aging.timeout_default = arp_settings.aging.timeout_default
 
     @structured_config_contributor
@@ -844,9 +842,6 @@ class AvdStructuredConfigBaseProtocol(
 
         IP ICMP redirect set based on "general_settings.ip_icmp_redirect" data-model.
         """
-        if self.inputs.general_settings.ip_icmp_redirect is None:
-            return
-
         self.structured_config.ip_icmp_redirect = self.inputs.general_settings.ip_icmp_redirect
 
     @structured_config_contributor
