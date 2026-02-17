@@ -17160,14 +17160,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-        name: str | None
+        name: str
         """Interface Name."""
         vrf: str | None
         """VRF Name."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                 """
                 IpRadiusSourceInterfacesItem.
 
@@ -17680,13 +17680,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-        name: str | None
+        name: str
         """Interface name."""
         vrf: str | None
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                 """
                 IpTacacsSourceInterfacesItem.
 
