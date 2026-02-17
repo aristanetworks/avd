@@ -31,7 +31,21 @@ It's enough to authenticate on [labs.arista.com](https://labs.arista.com) and cl
 
 Once the playground will be ready to use, the interactive menu at the bottom of the [Code-server](https://github.com/coder/code-server) UI to pick the AVD release and the example you want to test. Some examples and older AVD releases may not have lab definitions, in that case the lab selector menu will ask your for a different choice. Please select post 6.0 releases only.
 
+!!! tip
+
+    If you don't see "Start AVD Playground" button present on the guide corresponding to a specific example - this example is not supported in AVD Playground. Pick another one.
+
 Once you select an example supported by a lab definition, it will be extracted to the [Code-server](https://github.com/coder/code-server) workspace. Open a new terminal ant type `make start` to start the lab.
+
+!!! note
+
+    AVD playgrounds are only available to registered Arista customers with support contract due to cost and security considerations. Please use AVD playground for good cause only and mind the EULA terms you signed during the registration. Do the right thing - be Arista customer! However if you don't have required level of access - talk to your Arista account team or [download the lab files](https://aristanetworks.github.io/aclabs/lab_archives/avd-playground.tar.gz) and run the playground locally on your own host. Unfortunately we will not be able to support this type of deployment officially due to number of issues that can exist on a random host machine, including missing Linux kernel configuration, misconfigured container engines, privilege issues, etc. The download option is for skilled users only that can manage the environment without extra support.
+
+For additional documentaion regarding AVD playgrounds and other community labs check [aclabs.arista.com](https://aclabs.arista.com/). The corresponding [GitHub repository](https://github.com/aristanetworks/aclabs) is used to build container images powering AVD playgrounds.
+
+!!! warning
+
+    [aclabs.arista.com](https://aclabs.arista.com/) is under construction. We are working hard to make it better.
 
 ## AVD as Reference Inventory
 
