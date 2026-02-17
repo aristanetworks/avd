@@ -24,9 +24,8 @@ cvx:
         in: true
       ipv6_access_group:
         name: ACL-V6-OS
-      network:
-        type_driver:
-          vlan: arista
+      network_type_driver:
+        vlan: arista
       region:
       - name: REGION_2
         username: BOB

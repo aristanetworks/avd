@@ -94,17 +94,14 @@ keys:
                     convert_types:
                       - str
                     description: Set the time interval in seconds between name updates, 0 to disable.
-              network:
+              network_type_driver:
                 type: dict
                 keys:
-                  type_driver:
-                    type: dict
-                    keys:
-                      vlan:
-                        type: str
-                        valid_values:
-                          - "arista"
-                          - "default"
+                  vlan:
+                    type: str
+                    valid_values:
+                      - "arista"
+                      - "default"
               region:
                 type: list
                 primary_key: name

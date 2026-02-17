@@ -3643,45 +3643,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class Network(AvdModel):
+                class NetworkTypeDriver(AvdModel):
                     """Subclass of AvdModel."""
 
-                    class TypeDriver(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        Vlan: TypeAlias = Literal["arista", "default"]
-                        _fields: ClassVar[dict] = {"vlan": {"type": str}}
-                        vlan: Vlan | None
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, vlan: Vlan | None | UndefinedType = Undefined) -> None:
-                                """
-                                TypeDriver.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    vlan: vlan
-
-                                """
-
-                    _fields: ClassVar[dict] = {"type_driver": {"type": TypeDriver}}
-                    type_driver: TypeDriver
-                    """Subclass of AvdModel."""
+                    Vlan: TypeAlias = Literal["arista", "default"]
+                    _fields: ClassVar[dict] = {"vlan": {"type": str}}
+                    vlan: Vlan | None
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, type_driver: TypeDriver | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, vlan: Vlan | None | UndefinedType = Undefined) -> None:
                             """
-                            Network.
+                            NetworkTypeDriver.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                type_driver: Subclass of AvdModel.
+                                vlan: vlan
 
                             """
 
@@ -3771,7 +3750,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "ip_access_group": {"type": IpAccessGroup},
                     "ipv6_access_group": {"type": Ipv6AccessGroup},
                     "name_resolution": {"type": NameResolution},
-                    "network": {"type": Network},
+                    "network_type_driver": {"type": NetworkTypeDriver},
                     "region": {"type": Region},
                     "shutdown": {"type": bool},
                 }
@@ -3785,7 +3764,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 name_resolution: NameResolution
                 """Subclass of AvdModel."""
-                network: Network
+                network_type_driver: NetworkTypeDriver
                 """Subclass of AvdModel."""
                 region: Region
                 """Subclass of AvdIndexedList with `RegionItem` items. Primary key is `name` (`str`)."""
@@ -3801,7 +3780,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         ip_access_group: IpAccessGroup | UndefinedType = Undefined,
                         ipv6_access_group: Ipv6AccessGroup | UndefinedType = Undefined,
                         name_resolution: NameResolution | UndefinedType = Undefined,
-                        network: Network | UndefinedType = Undefined,
+                        network_type_driver: NetworkTypeDriver | UndefinedType = Undefined,
                         region: Region | UndefinedType = Undefined,
                         shutdown: bool | None | UndefinedType = Undefined,
                     ) -> None:
@@ -3817,7 +3796,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             ip_access_group: Subclass of AvdModel.
                             ipv6_access_group: Subclass of AvdModel.
                             name_resolution: Subclass of AvdModel.
-                            network: Subclass of AvdModel.
+                            network_type_driver: Subclass of AvdModel.
                             region: Subclass of AvdIndexedList with `RegionItem` items. Primary key is `name` (`str`).
                             shutdown: shutdown
 

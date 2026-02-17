@@ -33,9 +33,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name_resolution</samp>](## "cvx.services.openstack.name_resolution") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;force</samp>](## "cvx.services.openstack.name_resolution.force") | Boolean |  |  |  | Get the tenant and VM names from OpenStack immediately. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "cvx.services.openstack.name_resolution.interval") | Integer |  |  | Min: 0<br>Max: 86400 | Set the time interval in seconds between name updates, 0 to disable. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network</samp>](## "cvx.services.openstack.network") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type_driver</samp>](## "cvx.services.openstack.network.type_driver") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "cvx.services.openstack.network.type_driver.vlan") | String |  |  | Valid Values:<br>- <code>arista</code><br>- <code>default</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_type_driver</samp>](## "cvx.services.openstack.network_type_driver") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "cvx.services.openstack.network_type_driver.vlan") | String |  |  | Valid Values:<br>- <code>arista</code><br>- <code>default</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;region</samp>](## "cvx.services.openstack.region") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cvx.services.openstack.region.[].name") | String | Required, Unique |  |  | The name of the region. This must match what is in use in the ML2 driver configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "cvx.services.openstack.region.[].username") | String |  |  |  | 'admin' or valid keystone user. |
@@ -92,9 +91,8 @@
 
             # Set the time interval in seconds between name updates, 0 to disable.
             interval: <int; 0-86400>
-          network:
-            type_driver:
-              vlan: <str; "arista" | "default">
+          network_type_driver:
+            vlan: <str; "arista" | "default">
           region:
 
               # The name of the region. This must match what is in use in the ML2 driver configuration.
