@@ -1,3 +1,7 @@
 ---
 overlay_rd_type:
   admin_subfield: bgp_as
+
+interface_defaults:
+  ethernet:
+    shutdown: false
