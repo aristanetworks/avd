@@ -8,10 +8,10 @@
 
 ## Installation workflow
 
-- Install supported [Python](https://www.python.org/downloads/) version **3.10-3.14.
+- Install supported [Python](https://www.python.org/downloads/) version **3.10-3.14**.
   - The Python version determines the supported `ansible-core` version. Consult the [ansible-core support matrix](https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix) for more information.
 - Install the [pyavd](https://pypi.org/project/pyavd/) Python package with `ansible` dependencies.
-  - note: This will install the supported ansible-core version and all required [Python dependencies](#python-dependencies).
+  - Note: This will install the supported ansible-core version and all required [Python dependencies](#python-dependencies).
 - Install [arista.avd](https://galaxy.ansible.com/ui/repo/published/arista/avd/) Ansible collection.
 
 ## Python dependencies
@@ -45,7 +45,7 @@ ansible-galaxy collection install arista.avd
     If you have an `ansible.cfg` file in the directory where you run `ansible-galaxy`, it may affect the directory under which the collection and dependencies will be installed.
 
 !!! warning
-    Depending of your operating system settings, `pip` might be replaced by `pip3`.
+    Depending on your operating system settings, `pip` might be replaced by `pip3`.
 
 ### Install a specific version
 
@@ -101,7 +101,7 @@ pip install "pyavd[ansible]==4.9.0"
 
 ### Python requirements installation
 
-Python requirements can be installed with the `pip install "pyavd[ansible]"`.
+Python requirements can be installed with `pip install "pyavd[ansible]"`.
 The installed version of PyAVD **must** match the version of the `arista.avd` collection.
 
 See the [collection installation](#install-collection-from-ansible-galaxy) section for details of each installation method.
