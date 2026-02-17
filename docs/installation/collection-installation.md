@@ -16,7 +16,7 @@
 
 ## Python dependencies
 
-``` shell
+```text
 --8<--
 ansible_collections/arista/avd/requirements.txt:4:
 --8<--
@@ -50,8 +50,8 @@ ansible-galaxy collection install arista.avd
 ### Install a specific version
 
 ```shell
-pip install "pyavd[ansible]==4.8.0"
-ansible-galaxy collection install arista.avd:==4.8.0
+pip install "pyavd[ansible]==5.7.3"
+ansible-galaxy collection install arista.avd:==5.7.3
 ```
 
 ### Install latest `devel` version from AVD GitHub
@@ -90,13 +90,13 @@ You can use `-U` to upgrade to a new version for any installed collection:
 $ ansible-galaxy collection install -U arista.avd
 Process install dependency map
 Starting collection install process
-Installing 'arista.avd:4.9.0' to '/home/arista/.ansible/collections/ansible_collections/arista/avd'
+Installing 'arista.avd:6.0.0' to '/home/arista/.ansible/collections/ansible_collections/arista/avd'
 ```
 
 After an upgrade, some python requirements may have changed. Make sure to also update the Python requirements for the same version (the version given below matches the installed collection above):
 
 ```shell
-pip install "pyavd[ansible]==4.9.0"
+pip install "pyavd[ansible]==6.0.0"
 ```
 
 ### Python requirements installation
