@@ -16,7 +16,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "management_interfaces.[].vrf") | String |  |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "management_interfaces.[].ip_address") | String |  |  |  | IPv4_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "management_interfaces.[].ipv6_enable") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "management_interfaces.[].ipv6_address") | String |  |  |  | IPv6_address/Mask or "auto-config".<br>If set to "auto-config", it uses SLAAC to automatically configure the IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "management_interfaces.[].ipv6_address") | String |  |  |  | IPv6_address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_auto_config</samp>](## "management_interfaces.[].ipv6_address_auto_config") | Boolean |  |  |  | Use SLAAC to automatically configure the IPv6 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd</samp>](## "management_interfaces.[].ipv6_nd") | Dictionary |  |  |  | Neighbor Discovery / Router Advertisement. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra</samp>](## "management_interfaces.[].ipv6_nd.ra") | Dictionary |  |  |  | Router Advertisement. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_accept</samp>](## "management_interfaces.[].ipv6_nd.ra.rx_accept") | Dictionary |  |  |  | Accept information on received RA. |
@@ -69,9 +70,11 @@
         ip_address: <str>
         ipv6_enable: <bool>
 
-        # IPv6_address/Mask or "auto-config".
-        # If set to "auto-config", it uses SLAAC to automatically configure the IPv6 address.
+        # IPv6_address/Mask.
         ipv6_address: <str>
+
+        # Use SLAAC to automatically configure the IPv6 address.
+        ipv6_address_auto_config: <bool>
 
         # Neighbor Discovery / Router Advertisement.
         ipv6_nd:

@@ -26,6 +26,7 @@ tunnel_interfaces:
     shutdown: true
     ipv6_enable: true
     ipv6_address: cafe::1/64
+    ipv6_address_auto_config: true
     ipv6_access_group_in: test-in
     ipv6_access_group_out: test-out
     tcp_mss_ceiling:

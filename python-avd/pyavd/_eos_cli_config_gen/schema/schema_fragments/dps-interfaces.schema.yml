@@ -34,6 +34,9 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask.
+        ipv6_address_auto_config:
+          type: bool
+          description: Use SLAAC to automatically configure the IPv6 address.
         flow_tracker:
           type: dict
           keys:

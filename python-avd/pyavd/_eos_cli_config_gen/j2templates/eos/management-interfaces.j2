@@ -33,6 +33,9 @@ interface {{ management_interface.name }}
 {%     if management_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
+{%     if management_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+   ipv6 address auto-config
+{%     endif %}
 {%     if management_interface.ipv6_address is arista.avd.defined %}
    ipv6 address {{ management_interface.ipv6_address }}
 {%     endif %}

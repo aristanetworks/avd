@@ -320,6 +320,7 @@ vlan_interfaces:
     description: SVI Description
     shutdown: false
     ipv6_address: a0::1/64
+    ipv6_address_auto_config: true
     ipv6_dhcp_relay_destinations:
       - address: a0::2
         vrf: TEST

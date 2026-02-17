@@ -177,6 +177,9 @@ keys:
           description: Enable IPv6 DHCP server.
         ipv6_enable:
           type: bool
+        ipv6_address_auto_config:
+          type: bool
+          description: Use SLAAC to automatically configure the IPv6 address.
         ipv6_address:
           type: str
           description: IPv6_address/Mask.

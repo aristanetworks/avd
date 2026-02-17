@@ -352,6 +352,7 @@ port_channel_interfaces:
     description: IFL for TENANT01
     mtu: 1500
     ipv6_address: "cafe::b4"
+    ipv6_address_auto_config: true
     ipv6_nd_managed_config_flag: true
     encapsulation_dot1q:
       vlan: 101

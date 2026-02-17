@@ -25,15 +25,16 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Address Auto-config | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------------------ | ------------ |
 {%     for management_interface in management_interfaces | arista.avd.natural_sort('name') %}
 {%         set description = management_interface.description | arista.avd.default('-') %}
 {%         set vrf = management_interface.vrf | arista.avd.default('default') %}
-{%         set ipv6 = management_interface.ipv6_address | arista.avd.default('-') %}
+{%         set ipv6_address = management_interface.ipv6_address | arista.avd.default('-') %}
+{%         set ipv6_address_auto_config = management_interface.ipv6_address | arista.avd.default('-') %}
 {%         set ipv6_gateway = management_interface.ipv6_gateway | arista.avd.default('-') %}
 {%         set int_type = management_interface.type | arista.avd.default('oob') %}
-| {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6 }} | {{ ipv6_gateway }} |
+| {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6_address }} | {{ ipv6_address_auto_config }} | {{ ipv6_gateway }} |
 {%     endfor %}
 {%     if management_interfaces | arista.avd.default([]) | selectattr('redundancy','arista.avd.defined') | list %}
 

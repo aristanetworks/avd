@@ -2277,6 +2277,9 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask.
+        ipv6_address_auto_config:
+          type: bool
+          description: Use SLAAC to automatically configure the IPv6 address.
         flow_tracker:
           type: dict
           keys:
@@ -3040,6 +3043,9 @@ keys:
           type: bool
         ipv6_address:
           type: str
+        ipv6_address_auto_config:
+          type: bool
+          description: Use SLAAC to automatically configure the IPv6 address.
         ipv6_address_link_local:
           type: str
           description: Link local IPv6 address/mask.
@@ -8790,10 +8796,10 @@ keys:
           type: bool
         ipv6_address:
           type: str
-          description: 'IPv6_address/Mask or "auto-config".
-
-            If set to "auto-config", it uses SLAAC to automatically configure the
-            IPv6 address.'
+          description: IPv6_address/Mask.
+        ipv6_address_auto_config:
+          type: bool
+          description: Use SLAAC to automatically configure the IPv6 address.
         ipv6_nd:
           description: Neighbor Discovery / Router Advertisement.
           type: dict
@@ -12757,6 +12763,9 @@ keys:
               description: NAT interface profile.
         ipv6_enable:
           type: bool
+        ipv6_address_auto_config:
+          type: bool
+          description: Use SLAAC to automatically configure the IPv6 address.
         ipv6_address:
           type: str
           description: IPv6 address/mask.
@@ -24334,6 +24343,9 @@ keys:
           description: IPv4_address/Mask.
         ipv6_enable:
           type: bool
+        ipv6_address_auto_config:
+          type: bool
+          description: Use SLAAC to automatically configure the IPv6 address.
         ipv6_address:
           type: str
           format: ipv6_cidr
@@ -24608,6 +24620,9 @@ keys:
           description: Enable IPv6 DHCP server.
         ipv6_enable:
           type: bool
+        ipv6_address_auto_config:
+          type: bool
+          description: Use SLAAC to automatically configure the IPv6 address.
         ipv6_address:
           type: str
           description: IPv6_address/Mask.
