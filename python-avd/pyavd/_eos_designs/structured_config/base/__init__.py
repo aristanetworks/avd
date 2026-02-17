@@ -835,8 +835,7 @@ class AvdStructuredConfigBaseProtocol(
         if arp_settings.persistent:
             self.structured_config.arp.persistent = arp_settings.persistent
 
-        if arp_settings.aging.timeout_default is not None:
-            self.structured_config.arp.aging.timeout_default = arp_settings.aging.timeout_default
+        self.structured_config.arp.aging.timeout_default = arp_settings.aging.timeout_default
 
     @structured_config_contributor
     def ip_icmp_redirect(self: AvdStructuredConfigBaseProtocol) -> None:
