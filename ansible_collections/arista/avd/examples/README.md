@@ -24,6 +24,15 @@ Some AVD examples are also augmented with guides explaining how they work. Howev
 
 ## AVD Playground
 
+AVD playground is an interactive Cloud-based lab environment sponsored by Arista.
+It's enough to authenticate on [labs.arista.com](https://labs.arista.com) and click the button below to start the lab.
+
+[Start AVD Playground :octicons-play-16:](https://labs.arista.com/launch?lab_type=avd-playground&origin=tech-lib){ .md-button .md-button--primary target=_blank}
+
+Once the playground will be ready to use, the interactive menu at the bottom of the [Code-server](https://github.com/coder/code-server) UI to pick the AVD release and the example you want to test. Some examples and older AVD releases may not have lab definitions, in that case the lab selector menu will ask your for a different choice. Please select post 6.0 releases only.
+
+Once you select an example supported by a lab definition, it will be extracted to the [Code-server](https://github.com/coder/code-server) workspace. Open a new terminal ant type `make start` to start the lab.
+
 ## AVD as Reference Inventory
 
 If you don't have access to AVD playgrounds, it's enough to build a working Ansible environment with AVD collection installed to start testing examples.
