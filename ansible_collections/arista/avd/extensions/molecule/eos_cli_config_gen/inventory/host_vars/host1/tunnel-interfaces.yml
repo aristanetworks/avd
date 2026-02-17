@@ -8,6 +8,7 @@ tunnel_interfaces:
     underlay_vrf: Underlay-VRF
     mtu: 1500
     ip_address: 42.42.42.42/24
+    ipv6_address_auto_config: true
     access_group_in: test-in
     access_group_out: test-out
     tcp_mss_ceiling:
@@ -25,8 +26,8 @@ tunnel_interfaces:
     description: test ipv6 only
     shutdown: true
     ipv6_enable: true
-    ipv6_address: cafe::1/64
-    ipv6_address_auto_config: true
+    ipv6_addresses:
+      - cafe::1/64
     ipv6_access_group_in: test-in
     ipv6_access_group_out: test-out
     tcp_mss_ceiling:
@@ -44,7 +45,8 @@ tunnel_interfaces:
     mtu: 1500
     ip_address: 64.64.64.64/24
     ipv6_enable: true
-    ipv6_address: beef::64/64
+    ipv6_addresses:
+      - beef::64/64
     # no direction this time
     tunnel_mode: ipsec
     tcp_mss_ceiling:
@@ -60,7 +62,8 @@ tunnel_interfaces:
     mtu: 1500
     ip_address: 64.64.64.64/24
     ipv6_enable: true
-    ipv6_address: beef::64/64
+    ipv6_addresses:
+      - beef::64/64
     # no tcp_mss_ceiling
     nat_profile: NAT-PROFILE-NO-VRF-1
     source: 10.10.10.10

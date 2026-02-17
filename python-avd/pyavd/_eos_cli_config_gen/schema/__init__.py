@@ -5865,6 +5865,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Name: TypeAlias = Literal["Dps1"]
 
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
         class FlowTracker(AvdModel):
             """Subclass of AvdModel."""
 
@@ -5929,6 +5934,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "shutdown": {"type": bool},
             "mtu": {"type": int},
             "ip_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
             "ipv6_address_auto_config": {"type": bool},
             "flow_tracker": {"type": FlowTracker},
             "tcp_mss_ceiling": {"type": TcpMssCeiling},
@@ -5942,8 +5948,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Maximum Transmission Unit in bytes."""
         ip_address: str | None
         """IPv4 address/mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
         ipv6_address_auto_config: bool | None
-        """Use SLAAC to automatically configure the IPv6 address."""
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         flow_tracker: FlowTracker
         """Subclass of AvdModel."""
         tcp_mss_ceiling: TcpMssCeiling
@@ -5961,6 +5973,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 shutdown: bool | None | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                 ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 flow_tracker: FlowTracker | UndefinedType = Undefined,
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
@@ -5978,7 +5991,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     shutdown: shutdown
                     mtu: Maximum Transmission Unit in bytes.
                     ip_address: IPv4 address/mask.
-                    ipv6_address_auto_config: Use SLAAC to automatically configure the IPv6 address.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     flow_tracker: Subclass of AvdModel.
                     tcp_mss_ceiling: Subclass of AvdModel.
                     eos_cli: Multiline String with EOS CLI rendered directly on the Dps interface in the final EOS configuration.
@@ -7354,6 +7371,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         source: Subclass of AvdModel.
 
                     """
+
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
 
         class Ipv6NdPrefixesItem(AvdModel):
             """Subclass of AvdModel."""
@@ -12634,6 +12656,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_nat": {"type": IpNat},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
             "ipv6_address_auto_config": {"type": bool},
             "ipv6_address_link_local": {"type": str},
             "ipv6_nd_ra_disabled": {"type": bool},
@@ -12776,8 +12799,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         ipv6_enable: bool | None
         ipv6_address: str | None
+        """IPv6_address/Mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
         ipv6_address_auto_config: bool | None
-        """Use SLAAC to automatically configure the IPv6 address."""
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         ipv6_address_link_local: str | None
         """Link local IPv6 address/mask."""
         ipv6_nd_ra_disabled: bool | None
@@ -12968,6 +12998,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_nat: IpNat | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                 ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_address_link_local: str | None | UndefinedType = Undefined,
                 ipv6_nd_ra_disabled: bool | None | UndefinedType = Undefined,
@@ -13087,8 +13118,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_helpers: Subclass of AvdIndexedList with `IpHelpersItem` items. Primary key is `ip_helper` (`str`).
                     ip_nat: Subclass of AvdModel.
                     ipv6_enable: ipv6_enable
-                    ipv6_address: ipv6_address
-                    ipv6_address_auto_config: Use SLAAC to automatically configure the IPv6 address.
+                    ipv6_address: IPv6_address/Mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     ipv6_address_link_local: Link local IPv6 address/mask.
                     ipv6_nd_ra_disabled: ipv6_nd_ra_disabled
                     ipv6_nd_managed_config_flag: ipv6_nd_managed_config_flag
@@ -32628,6 +32663,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
         class Ipv6NdPrefixesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -35108,8 +35148,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_verify_unicast_source_reachable_via": {"type": str},
             "ip_nat": {"type": IpNat},
             "ipv6_enable": {"type": bool},
-            "ipv6_address_auto_config": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
             "ipv6_address_link_local": {"type": str},
             "ipv6_nd_ra_disabled": {"type": bool},
             "ipv6_nd_managed_config_flag": {"type": bool},
@@ -35240,10 +35281,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ip_nat: IpNat
         """Subclass of AvdModel."""
         ipv6_enable: bool | None
-        ipv6_address_auto_config: bool | None
-        """Use SLAAC to automatically configure the IPv6 address."""
         ipv6_address: str | None
         """IPv6 address/mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         ipv6_address_link_local: str | None
         """Link local IPv6 address/mask."""
         ipv6_nd_ra_disabled: bool | None
@@ -35364,8 +35411,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_verify_unicast_source_reachable_via: IpVerifyUnicastSourceReachableVia | None | UndefinedType = Undefined,
                 ip_nat: IpNat | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
-                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_address_link_local: str | None | UndefinedType = Undefined,
                 ipv6_nd_ra_disabled: bool | None | UndefinedType = Undefined,
                 ipv6_nd_managed_config_flag: bool | None | UndefinedType = Undefined,
@@ -35464,8 +35512,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_verify_unicast_source_reachable_via: ip_verify_unicast_source_reachable_via
                     ip_nat: Subclass of AvdModel.
                     ipv6_enable: ipv6_enable
-                    ipv6_address_auto_config: Use SLAAC to automatically configure the IPv6 address.
                     ipv6_address: IPv6 address/mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     ipv6_address_link_local: Link local IPv6 address/mask.
                     ipv6_nd_ra_disabled: ipv6_nd_ra_disabled
                     ipv6_nd_managed_config_flag: ipv6_nd_managed_config_flag
@@ -65633,6 +65685,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class TunnelInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
@@ -65677,8 +65734,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "underlay_vrf": {"type": str},
             "ip_address": {"type": str},
             "ipv6_enable": {"type": bool},
-            "ipv6_address_auto_config": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
             "access_group_in": {"type": str},
             "access_group_out": {"type": str},
             "ipv6_access_group_in": {"type": str},
@@ -65705,10 +65763,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ip_address: str | None
         """IPv4_address/Mask."""
         ipv6_enable: bool | None
-        ipv6_address_auto_config: bool | None
-        """Use SLAAC to automatically configure the IPv6 address."""
         ipv6_address: str | None
         """IPv6_address/Mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         access_group_in: str | None
         """IPv4 ACL Name for ingress."""
         access_group_out: str | None
@@ -65768,8 +65832,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 underlay_vrf: str | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
-                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 access_group_in: str | None | UndefinedType = Undefined,
                 access_group_out: str | None | UndefinedType = Undefined,
                 ipv6_access_group_in: str | None | UndefinedType = Undefined,
@@ -65799,8 +65864,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     underlay_vrf: Underlay VRF Name.
                     ip_address: IPv4_address/Mask.
                     ipv6_enable: ipv6_enable
-                    ipv6_address_auto_config: Use SLAAC to automatically configure the IPv6 address.
                     ipv6_address: IPv6_address/Mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     access_group_in: IPv4 ACL Name for ingress.
                     access_group_out: IPv4 ACL Name for egress.
                     ipv6_access_group_in: IPv6 ACL Name for ingress.
@@ -66512,6 +66581,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         source: Subclass of AvdModel.
 
                     """
+
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
 
         class Ipv6AddressVirtuals(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -68214,8 +68288,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "dhcp_server_ipv4": {"type": bool},
             "dhcp_server_ipv6": {"type": bool},
             "ipv6_enable": {"type": bool},
-            "ipv6_address_auto_config": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
             "ipv6_address_link_local": {"type": str},
             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -68306,10 +68381,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         dhcp_server_ipv6: bool | None
         """Enable IPv6 DHCP server."""
         ipv6_enable: bool | None
-        ipv6_address_auto_config: bool | None
-        """Use SLAAC to automatically configure the IPv6 address."""
         ipv6_address: str | None
         """IPv6_address/Mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         ipv6_address_virtuals: Ipv6AddressVirtuals
         """
         The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
@@ -68451,8 +68532,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dhcp_server_ipv4: bool | None | UndefinedType = Undefined,
                 dhcp_server_ipv6: bool | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
-                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
                 ipv6_address_link_local: str | None | UndefinedType = Undefined,
                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -68534,8 +68616,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     dhcp_server_ipv4: Enable IPv4 DHCP server.
                     dhcp_server_ipv6: Enable IPv6 DHCP server.
                     ipv6_enable: ipv6_enable
-                    ipv6_address_auto_config: Use SLAAC to automatically configure the IPv6 address.
                     ipv6_address: IPv6_address/Mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     ipv6_address_virtuals:
                        The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
 

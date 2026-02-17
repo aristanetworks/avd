@@ -13,7 +13,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "dps_interfaces.[].shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "dps_interfaces.[].mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Maximum Transmission Unit in bytes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "dps_interfaces.[].ip_address") | String |  |  |  | IPv4 address/mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_auto_config</samp>](## "dps_interfaces.[].ipv6_address_auto_config") | Boolean |  |  |  | Use SLAAC to automatically configure the IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "dps_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dps_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6_address/Mask.<br>This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_auto_config</samp>](## "dps_interfaces.[].ipv6_address_auto_config") | Boolean |  |  |  | Use SLAAC to automatically configure the IPv6 address.<br>This option is mutually exclusive with `ipv6_addresses`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker</samp>](## "dps_interfaces.[].flow_tracker") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sampled</samp>](## "dps_interfaces.[].flow_tracker.sampled") | String |  |  |  | Sampled flow tracker name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "dps_interfaces.[].flow_tracker.hardware") | String |  |  |  | Hardware flow tracker name, |
@@ -38,8 +40,14 @@
 
         # IPv4 address/mask.
         ip_address: <str>
+        ipv6_addresses:
+
+            # IPv6_address/Mask.
+            # This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined.
+          - <str>
 
         # Use SLAAC to automatically configure the IPv6 address.
+        # This option is mutually exclusive with `ipv6_addresses`.
         ipv6_address_auto_config: <bool>
         flow_tracker:
 

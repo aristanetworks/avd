@@ -9,3 +9,5 @@ dps_interfaces:
     ip_address: 192.168.42.42/24
     flow_tracker:
       sampled: FT-S
+    ipv6_addresses:
+      - "cafe::b4"

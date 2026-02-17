@@ -351,8 +351,8 @@ port_channel_interfaces:
         link_status: true
     description: IFL for TENANT01
     mtu: 1500
-    ipv6_address: "cafe::b4"
-    ipv6_address_auto_config: true
+    ipv6_addresses:
+      - "cafe::b4"
     ipv6_nd_managed_config_flag: true
     encapsulation_dot1q:
       vlan: 101
@@ -375,6 +375,7 @@ port_channel_interfaces:
 
   - name: Port-Channel8
     description: to Dev02 Port-channel 8
+    ipv6_address_auto_config: true
     switchport:
       enabled: false
       port_security:
@@ -394,7 +395,8 @@ port_channel_interfaces:
 
   - name: Port-Channel8.101
     description: to Dev02 Port-Channel8.101 - VRF-C1
-    ipv6_address: "cafe::b4"
+    ipv6_addresses:
+      - "cafe::b4"
     encapsulation_dot1q:
       vlan: 101
 

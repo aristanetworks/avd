@@ -89,8 +89,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_server_ipv4</samp>](## "vlan_interfaces.[].dhcp_server_ipv4") | Boolean |  |  |  | Enable IPv4 DHCP server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_server_ipv6</samp>](## "vlan_interfaces.[].dhcp_server_ipv6") | Boolean |  |  |  | Enable IPv6 DHCP server. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "vlan_interfaces.[].ipv6_enable") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_auto_config</samp>](## "vlan_interfaces.[].ipv6_address_auto_config") | Boolean |  |  |  | Use SLAAC to automatically configure the IPv6 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "vlan_interfaces.[].ipv6_address") | String |  |  |  | IPv6_address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "vlan_interfaces.[].ipv6_address") <span style="color:red">deprecated</span> | String |  |  |  | IPv6_address/Mask.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>ipv6_addresses</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "vlan_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6_address/Mask.<br>This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_auto_config</samp>](## "vlan_interfaces.[].ipv6_address_auto_config") | Boolean |  |  |  | Use SLAAC to automatically configure the IPv6 address.<br>This option is mutually exclusive with `ipv6_addresses`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_virtuals</samp>](## "vlan_interfaces.[].ipv6_address_virtuals") | List, items: String |  |  |  | The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].ipv6_address_virtuals.[]") | String |  |  |  | IPv6_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_link_local</samp>](## "vlan_interfaces.[].ipv6_address_link_local") | String |  |  |  | IPv6_address/Mask. |
@@ -438,11 +440,20 @@
         dhcp_server_ipv6: <bool>
         ipv6_enable: <bool>
 
-        # Use SLAAC to automatically configure the IPv6 address.
-        ipv6_address_auto_config: <bool>
-
         # IPv6_address/Mask.
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `ipv6_addresses` instead.
         ipv6_address: <str>
+        ipv6_addresses:
+
+            # IPv6_address/Mask.
+            # This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined.
+          - <str>
+
+        # Use SLAAC to automatically configure the IPv6 address.
+        # This option is mutually exclusive with `ipv6_addresses`.
+        ipv6_address_auto_config: <bool>
 
         # The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
         ipv6_address_virtuals:

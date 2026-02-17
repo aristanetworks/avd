@@ -927,6 +927,7 @@ interface Dps1
    mtu 666
    flow tracker sampled FT-S
    ip address 192.168.42.42/24
+   ipv6 address cafe::b4
 ```
 
 ### VXLAN Interface
