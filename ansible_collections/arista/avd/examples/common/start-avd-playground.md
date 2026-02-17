@@ -4,7 +4,12 @@
   ~ that can be found in the LICENSE file.
   -->
 
+AVD playground is an interactive Cloud-based lab environment sponsored by Arista.
+It's enough to authenticate on [labs.arista.com](https://labs.arista.com) and click the button below to start the lab.
+
 [Start AVD Playground :octicons-play-16:](https://labs.arista.com/launch?lab_type=avd-playground&origin=tech-lib){ .md-button .md-button--primary target=_blank}
+
+Please check [How to use AVD examples](../../../../../examples/README.md) for details.
 
 !!! note
 
