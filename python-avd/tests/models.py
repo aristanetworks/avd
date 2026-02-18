@@ -18,6 +18,7 @@ from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._utils import get
 from pyavd.api.pool_manager import PoolManager
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from ansible.inventory.host import Host as AnsibleHost
@@ -144,7 +145,7 @@ class MoleculeScenario:
         self._inventory = InventoryManager(loader=DataLoader(), sources=[inventory_path.as_posix()])
         self._vars = VariableManager(loader=DataLoader(), inventory=self._inventory)
         self.hosts = []
-        for host in self._inventory.get_hosts():
+        for host in natural_sort(self._inventory.get_hosts(), sort_key="name"):
             if self.name.startswith("example-") and host.name in ["cvp", "cloudvision"]:
                 # Ignore CVP devices in examples without bloating the example without test groups.
                 continue
