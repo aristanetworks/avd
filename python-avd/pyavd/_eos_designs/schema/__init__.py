@@ -19047,7 +19047,7 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {"default_shutdown_ethernet_interface": {"type": bool}}
         default_shutdown_ethernet_interface: bool | None
-        """Shutdown ethernet interfaces when they are not explictly enabled."""
+        """Shutdown ethernet interfaces when they are not explicitly enabled."""
 
         if TYPE_CHECKING:
 
@@ -19059,7 +19059,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    default_shutdown_ethernet_interface: Shutdown ethernet interfaces when they are not explictly enabled.
+                    default_shutdown_ethernet_interface: Shutdown ethernet interfaces when they are not explicitly enabled.
 
                 """
 

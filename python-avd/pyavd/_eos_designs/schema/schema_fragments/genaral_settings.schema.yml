@@ -13,4 +13,4 @@ keys:
     keys:
       default_shutdown_ethernet_interface:
         type: bool
-        description: Shutdown ethernet interfaces when they are not explictly enabled.
+        description: Shutdown ethernet interfaces when they are not explicitly enabled.
