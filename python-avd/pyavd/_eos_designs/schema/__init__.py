@@ -19045,17 +19045,17 @@ class EosDesigns(EosDesignsRootModel):
     class GeneralSettings(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"default_shutdown_ethernet_interface": {"type": bool, "default": False}}
-        default_shutdown_ethernet_interface: bool
+        _fields: ClassVar[dict] = {"default_shutdown_ethernet_interfaces": {"type": bool, "default": False}}
+        default_shutdown_ethernet_interfaces: bool
         """
-        Default Ethernet interfaces to shutdown state unless explicitly configured otherwise.
+        Shutdown Ethernet interfaces by default unless they are explicitly enabled.
 
         Default value: `False`
         """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, default_shutdown_ethernet_interface: bool | UndefinedType = Undefined) -> None:
+            def __init__(self, *, default_shutdown_ethernet_interfaces: bool | UndefinedType = Undefined) -> None:
                 """
                 GeneralSettings.
 
@@ -19063,7 +19063,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    default_shutdown_ethernet_interface: Default Ethernet interfaces to shutdown state unless explicitly configured otherwise.
+                    default_shutdown_ethernet_interfaces: Shutdown Ethernet interfaces by default unless they are explicitly enabled.
 
                 """
 

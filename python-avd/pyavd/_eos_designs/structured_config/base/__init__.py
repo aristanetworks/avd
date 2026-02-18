@@ -396,7 +396,7 @@ class AvdStructuredConfigBaseProtocol(
         """interface_defaults set based on default_interface_mtu."""
         if self.shared_utils.default_interface_mtu is not None:
             self.structured_config.interface_defaults.mtu = self.shared_utils.default_interface_mtu
-        if self.inputs.general_settings.default_shutdown_ethernet_interface:
+        if self.inputs.general_settings.default_shutdown_ethernet_interfaces:
             self.structured_config.interface_defaults.ethernet.shutdown = True
 
     @structured_config_contributor

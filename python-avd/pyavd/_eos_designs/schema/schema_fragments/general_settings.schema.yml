@@ -11,7 +11,7 @@ keys:
     documentation_options:
       table: system-settings
     keys:
-      default_shutdown_ethernet_interface:
+      default_shutdown_ethernet_interfaces:
         type: bool
         default: false
-        description: Default Ethernet interfaces to shutdown state unless explicitly configured otherwise.
+        description: Shutdown Ethernet interfaces by default unless they are explicitly enabled.

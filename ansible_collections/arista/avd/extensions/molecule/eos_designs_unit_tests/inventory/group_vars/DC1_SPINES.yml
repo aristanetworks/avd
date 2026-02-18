@@ -1,4 +1,4 @@
 type: spine
 
 general_settings:
-  default_shutdown_ethernet_interface: true
+  default_shutdown_ethernet_interfaces: true
