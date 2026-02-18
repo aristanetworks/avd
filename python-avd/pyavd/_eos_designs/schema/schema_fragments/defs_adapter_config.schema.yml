@@ -412,7 +412,7 @@ $defs:
                 structured_config:
                   type: dict
                   relaxed_validation: true
-                  description: Custom structured config added under port_channel_interfaces.[name=<subinterface>] for eos_cli_config_gen.
+                  description: Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema.
                   documentation_options:
                     hide_keys: true
                   $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
@@ -422,7 +422,7 @@ $defs:
           structured_config:
             type: dict
             relaxed_validation: true
-            description: Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+            description: Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
@@ -431,7 +431,12 @@ $defs:
         description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
       validate_lldp:
         type: bool
-        description: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+        description: |-
+          Controls LLDP topology validation performed by the `anta_runner` role.
+          - Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)
+          and the peer interface is not administratively shutdown.
+          - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
+          - `false`: Disables validation for the interface.
       campus_link_type:
         type: list
         $ref: "eos_designs#/$defs/campus_link_type"
@@ -448,7 +453,7 @@ $defs:
       structured_config:
         type: dict
         relaxed_validation: true
-        description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+        description: Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config schema.
         documentation_options:
           hide_keys: true
         $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"

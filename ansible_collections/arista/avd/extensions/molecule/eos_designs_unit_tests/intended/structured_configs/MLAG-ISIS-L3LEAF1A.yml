@@ -134,6 +134,8 @@ router_isis:
   router_id: 192.168.255.36
   is_type: level-2
   log_adjacency_changes: true
+  advertise:
+    passive_only: true
   address_family_ipv4:
     enabled: true
     maximum_paths: 4
@@ -167,7 +169,8 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

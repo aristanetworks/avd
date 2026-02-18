@@ -9,6 +9,9 @@ anta_devices: "{{ ansible_play_hosts }}"
 # Enable AVD catalogs generation.
 avd_catalogs_enabled: true
 
+# Disable used-defined catalogs generation.
+user_catalogs_enabled: false
+
 # Generate extra fabric-wide validation tests (e.g., reachability and routing tests).
 # This can generate many additional test inputs in the catalogs, and validation may take longer on large fabrics.
 avd_catalogs_extra_fabric_validation: false
@@ -31,3 +34,10 @@ avd_structured_config_file_format: "yml"
 # Within each status group, tests are sub-sorted using the attributes defined in `anta_report_sort_fields`.
 anta_report_status_priority: ["error", "failure", "skipped", "success", "unset"]
 anta_report_sort_fields: ["device", "categories", "test", "description", "custom_field"]
+
+# Controls the granularity of the Markdown report. When enabled, test entries
+# are expanded to show the individual status of every check performed.
+anta_report_expand_results: false
+
+# Controls whether the `custom_field` column is generated in the Markdown report.
+anta_report_custom_field: false

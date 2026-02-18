@@ -17,7 +17,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1/1
-  description: P2P_LINK_TO_DC1-LEAF1A_Ethernet27
+  description: P2P_LINK_Ethernet1/1_TO_DC1-LEAF1A_Ethernet27
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -29,7 +29,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet3/1
-  description: P2P_LINK_TO_DC1-LEAF2A_Ethernet49/1
+  description: P2P_LINK_Ethernet3/1_TO_DC1-LEAF2A_Ethernet49/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -41,7 +41,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet4/1
-  description: P2P_LINK_TO_DC1-LEAF2A_Ethernet52/1
+  description: P2P_LINK_Ethernet4/1_TO_DC1-LEAF2A_Ethernet52/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -53,7 +53,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet5/1
-  description: P2P_LINK_TO_DC1-LEAF2B_Ethernet49/1
+  description: P2P_LINK_Ethernet5/1_TO_DC1-LEAF2B_Ethernet49/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -65,7 +65,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet6/1
-  description: P2P_LINK_TO_DC1-LEAF2B_Ethernet52/1
+  description: P2P_LINK_Ethernet6/1_TO_DC1-LEAF2B_Ethernet52/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -77,7 +77,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet7/1
-  description: P2P_LINK_TO_DC1-SVC3A_Ethernet49/1
+  description: P2P_LINK_Ethernet7/1_TO_DC1-SVC3A_Ethernet49/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -89,7 +89,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet9/1
-  description: P2P_LINK_TO_DC1-SVC3B_Ethernet49/1
+  description: P2P_LINK_Ethernet9/1_TO_DC1-SVC3B_Ethernet49/1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -101,7 +101,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet18
-  description: P2P_LINK_TO_MLAG-OSPF-L3LEAF1A_Ethernet1
+  description: P2P_LINK_Ethernet18_TO_MLAG-OSPF-L3LEAF1A_Ethernet1
   shutdown: false
   speed: forced 40gfull
   mtu: 1500
@@ -125,7 +125,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet20
-  description: P2P_LINK_TO_MH-LEAF1B_Ethernet1
+  description: P2P_LINK_Ethernet20_TO_MH-LEAF1B_Ethernet1
   shutdown: false
   speed: forced 40gfull
   mtu: 1500
@@ -137,7 +137,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet21
-  description: P2P_LINK_TO_MH-LEAF2A_Ethernet1
+  description: P2P_LINK_Ethernet21_TO_MH-LEAF2A_Ethernet1
   shutdown: false
   speed: forced 40gfull
   mtu: 1500
@@ -149,7 +149,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet22
-  description: P2P_LINK_TO_DC1-BL1A_Ethernet1
+  description: P2P_LINK_Ethernet22_TO_DC1-BL1A_Ethernet1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -161,7 +161,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet23
-  description: P2P_LINK_TO_DC1-BL1B_Ethernet1
+  description: P2P_LINK_Ethernet23_TO_DC1-BL1B_Ethernet1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -173,7 +173,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet24
-  description: P2P_LINK_TO_DC1-BL2A_Ethernet1
+  description: P2P_LINK_Ethernet24_TO_DC1-BL2A_Ethernet1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -185,7 +185,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet25
-  description: P2P_LINK_TO_DC1-BL2B_Ethernet1
+  description: P2P_LINK_Ethernet25_TO_DC1-BL2B_Ethernet1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -197,7 +197,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet26
-  description: P2P_LINK_TO_DC1-CL1A_Ethernet1
+  description: P2P_LINK_Ethernet26_TO_DC1-CL1A_Ethernet1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -209,7 +209,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet27
-  description: P2P_LINK_TO_DC1-CL1B_Ethernet1
+  description: P2P_LINK_Ethernet27_TO_DC1-CL1B_Ethernet1
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -221,7 +221,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet28
-  description: P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet49/1
+  description: P2P_LINK_Ethernet28_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet49/1
   shutdown: true
   speed: 100g-2
   mtu: 1500
@@ -233,7 +233,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet29
-  description: P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet49/1
+  description: P2P_LINK_Ethernet29_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet49/1
   shutdown: true
   speed: forced 100gfull
   mtu: 1500
@@ -245,7 +245,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet220
-  description: P2P_LINK_TO_MLAG-OSPF-L3LEAF1B_Ethernet1
+  description: P2P_LINK_Ethernet220_TO_MLAG-OSPF-L3LEAF1B_Ethernet1
   shutdown: false
   speed: forced 40gfull
   mtu: 1500
@@ -257,22 +257,18 @@ ethernet_interfaces:
   switchport:
     enabled: false
 hostname: DC1-SPINE1
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
-- ip_address: 2001:db8::1
-  vrf: MGMT
-- ip_address: 2001:db8::2
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
+    - ip_address: 2001:db8::1
+    - ip_address: 2001:db8::2
 ip_routing: true
 local_users:
 - name: admin
   disabled: true
-  privilege: 15
-  role: network-admin
-  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -348,7 +344,7 @@ router_bgp:
       type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -562,6 +558,12 @@ router_bgp:
       peer: DC1_UNDEPLOYED_LEAF1B
     description: DC1_UNDEPLOYED_LEAF1B
     shutdown: true
+  - ip_address: 10.10.0.1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '4266393700'
+    metadata:
+      peer: evpn-to-ipvpn-gateway
+    description: evpn-to-ipvpn-gateway
   - ip_address: 192.168.255.33
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65151'

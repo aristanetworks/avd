@@ -114,7 +114,7 @@ router_bgp:
     metadata:
       type: ipv6
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   neighbors:
   - ip_address: 2001:db8:3:8::1
     peer_group: IPv4-UNDERLAY-PEERS
@@ -179,7 +179,8 @@ vlan_interfaces:
   vrf: ONLY-ON-L2LEAF
   ip_address_virtual: 172.16.0.1/24
   metadata:
-    tenant: TenantC
+    tenants:
+    - TenantC
     tags:
     - not-on-spine-2
 vlan_internal_order:
@@ -191,19 +192,23 @@ vlans:
 - id: 66
   name: TEST-L2VLAN-ATTRACTION
   metadata:
-    tenant: TenantC
+    tenants:
+    - TenantC
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: IT
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: PROD
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: ONLY-ON-L2LEAF
   ip_routing: true
   metadata:
-    tenant: TenantC
+    tenants:
+    - TenantC

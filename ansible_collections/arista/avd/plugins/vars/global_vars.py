@@ -89,7 +89,7 @@ from typing import Any
 from ansible.errors import AnsibleParserError
 from ansible.inventory.group import Group
 from ansible.inventory.host import Host
-from ansible.module_utils._text import to_native
+from ansible.module_utils.basic import to_native
 from ansible.plugins.vars import BaseVarsPlugin
 from ansible.utils.vars import combine_vars
 

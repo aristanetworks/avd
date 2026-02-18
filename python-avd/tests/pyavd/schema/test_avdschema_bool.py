@@ -39,12 +39,10 @@ def avd_schema() -> AvdSchema:
     [
         # (test_value, expected_errors: tuple, expected_error_messages: tuple)
         pytest.param(True, None, None, id="ok"),  # Valid value. No errors.
-        pytest.param(
-            11.0123, (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'float'. Expected a 'bool'.",), id="err-invalid-type-float"
-        ),
-        pytest.param(None, (AvdValidationError,), ("'Validation Error: ': Required key 'test_value' is not set in dict.",), id="err-missing-required-value"),
-        pytest.param("", (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'str'. Expected a 'bool'.",), id="err-invalid-type-str"),
-        pytest.param(0, (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'int'. Expected a 'bool'.",), id="err-invalid-type-int"),
+        pytest.param(11.0123, (AvdValidationError,), ("Validation Error: [test_value] Invalid type 'float'. Expected a 'bool'.",), id="err-invalid-type-float"),
+        pytest.param(None, (AvdValidationError,), ("Validation Error: [] Required key 'test_value' is not set in dict.",), id="err-missing-required-value"),
+        pytest.param("", (AvdValidationError,), ("Validation Error: [test_value] Invalid type 'str'. Expected a 'bool'.",), id="err-invalid-type-str"),
+        pytest.param(0, (AvdValidationError,), ("Validation Error: [test_value] Invalid type 'int'. Expected a 'bool'.",), id="err-invalid-type-int"),
     ],
 )
 def test_generated_schema(

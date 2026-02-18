@@ -53,7 +53,7 @@ class VlansMixin(Protocol):
                     name=AvdStringFormatter().format(self.inputs.mlag_peer_l3_vrf_vlan_name, mlag_peer=self.shared_utils.mlag_peer, vlan=vlan_id, vrf=vrf.name),
                     trunk_groups=EosCliConfigGen.VlansItem.TrunkGroups([self.inputs.trunk_groups.mlag_l3.name]),
                 )
-                vlan.metadata.tenant = tenant.name
+                vlan.metadata.tenants.append(tenant.name)
                 self.structured_config.vlans.append(vlan, ignore_fields=("metadata",))
 
             # L2 Vlans per Tenant
@@ -97,7 +97,7 @@ class VlansMixin(Protocol):
             id=vlan.id,
             name=vlan.name,
         )
-        vlans_vlan.metadata.tenant = tenant.name
+        vlans_vlan.metadata.tenants.append(tenant.name)
         if vlan.address_locking.ipv4:
             if self.inputs.address_locking_settings.dhcp_servers_ipv4 or self.inputs.address_locking_settings.locked_address.ipv4_enforcement_disabled:
                 vlans_vlan.address_locking.address_family.ipv4 = vlan.address_locking.ipv4

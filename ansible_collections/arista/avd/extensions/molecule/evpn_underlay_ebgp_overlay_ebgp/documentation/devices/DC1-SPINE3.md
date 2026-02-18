@@ -424,7 +424,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -474,7 +474,7 @@ router bgp 65001
    neighbor UNDERLAY-PEERS peer group
    neighbor UNDERLAY-PEERS password 7 <removed>
    neighbor UNDERLAY-PEERS send-community
-   neighbor UNDERLAY-PEERS maximum-routes 12000
+   neighbor UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.31.255.5 peer group UNDERLAY-PEERS
    neighbor 172.31.255.5 remote-as 65101
    neighbor 172.31.255.5 description DC1-LEAF1A_Ethernet3

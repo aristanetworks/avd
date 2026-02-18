@@ -1,6 +1,9 @@
 # Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import gzip
+import io
+import json
 import logging
 import subprocess
 from pathlib import Path
@@ -11,7 +14,7 @@ from yaml import CSafeDumper, CSafeLoader
 from yaml import dump as yaml_dump
 from yaml import load as yaml_load
 
-from .constants import LICENSE_HEADER, SCHEMAS
+from .constants import LICENSE_HEADER, SCHEMA_STORE_GZ_FILE, SCHEMAS
 from .generate_classes.src_generators import FileSrc
 from .generate_classes.utils import generate_class_name
 from .generate_docs.mdtabsgen import get_md_tabs
@@ -32,8 +35,13 @@ LOGGER = logging.getLogger(__name__)
 
 
 def combine_schemas() -> None:
-    """Combine all schema fragments into a single YAML file."""
-    for schema_paths in SCHEMAS.values():
+    """
+    Combine all schema fragments into a single YAML file.
+
+    Also writes the schemas.json.gz file.
+    """
+    store: dict[str, dict] = {}
+    for schema_name, schema_paths in SCHEMAS.items():
         if not (fragments_path := schema_paths.fragments_dir):
             continue
 
@@ -52,6 +60,15 @@ def combine_schemas() -> None:
                 "# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.\n",
             )
             schema_stream.write(yaml_dump(schema, Dumper=CSafeDumper, sort_keys=False))
+
+        store[schema_name] = schema
+
+    with io.TextIOWrapper(
+        # Using mtime=0 to ensure a consistent Gzip file each time for the same content.
+        buffer=gzip.GzipFile(filename=SCHEMA_STORE_GZ_FILE, mode="wb", mtime=0),
+        encoding="UTF-8",
+    ) as gz_file:
+        json.dump(store, gz_file)
 
 
 def validate_schemas(schema_store: dict) -> None:

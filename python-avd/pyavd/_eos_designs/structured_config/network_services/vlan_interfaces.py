@@ -61,9 +61,9 @@ class VlanInterfacesMixin(Protocol):
         pim_source_interface_needed = False
 
         interface_name = f"Vlan{svi.id}"
-        interface_ip = svi.ip_address_virtual
-        if interface_ip is not None and "/" in interface_ip:
-            interface_ip = get_ip_from_ip_prefix(interface_ip)
+        ipv4_interface_ip = svi.ip_address or svi.ip_address_virtual
+        if ipv4_interface_ip is not None and "/" in ipv4_interface_ip:
+            ipv4_interface_ip = get_ip_from_ip_prefix(ipv4_interface_ip)
         vlan_interface_config = EosCliConfigGen.VlanInterfacesItem(
             name=interface_name,
             description=default(svi.description, svi.name),
@@ -76,15 +76,15 @@ class VlanInterfacesMixin(Protocol):
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
-        vlan_interface_config.metadata._update(
-            tenant=tenant.name, tags=EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
-        )  # Historic behavior is to not output the default ["all"])
+        vlan_interface_config.metadata.tenants.append(tenant.name)
+        # Historic behavior is to not output the default ["all"]
+        vlan_interface_config.metadata.tags = EosCliConfigGen.VlanInterfacesItem.Metadata.Tags(svi._get("tags", []))
 
         if svi.ipv4_acl_in:
             acl = self.shared_utils.get_ipv4_acl(
                 name=svi.ipv4_acl_in,
                 interface_name=interface_name,
-                interface_ip=interface_ip,
+                interface_ip=ipv4_interface_ip,
             )
             vlan_interface_config.access_group_in = acl.name
             self._set_ipv4_acl(acl)
@@ -93,7 +93,7 @@ class VlanInterfacesMixin(Protocol):
             acl = self.shared_utils.get_ipv4_acl(
                 name=svi.ipv4_acl_out,
                 interface_name=interface_name,
-                interface_ip=interface_ip,
+                interface_ip=ipv4_interface_ip,
             )
             vlan_interface_config.access_group_out = acl.name
             self._set_ipv4_acl(acl)
@@ -183,7 +183,8 @@ class VlanInterfacesMixin(Protocol):
             vrf=vrf.name,
             mtu=self.shared_utils.get_interface_mtu(f"Vlan{vlan_id}", self.shared_utils.p2p_uplinks_mtu),
         )
-        vlan_interface_config.metadata._update(tenant=tenant.name, type="underlay_peering")
+        vlan_interface_config.metadata.tenants.append(tenant.name)
+        vlan_interface_config.metadata.type = "underlay_peering"
         vlan_interface_config._update(**self._get_vlan_ip_config_for_mlag_peering(vrf))
         return vlan_interface_config
 

@@ -10,6 +10,7 @@ spine:
       bgp_as: 65000
       inband_mgmt_vrf: inband_mgmt_vrf
       inband_mgmt_interface: Vlan123
+      validation_profile: profile1
 
 logging_settings:
   console: errors
@@ -85,4 +86,8 @@ logging_settings:
       match_lists:
         - name: molecule
           action: discard
-  validate_no_errors_period: 2
+
+validation_profiles:
+  - name: profile1
+    logging:
+      validate_no_errors_period: 2

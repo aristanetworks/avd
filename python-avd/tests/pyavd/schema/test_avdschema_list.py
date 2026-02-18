@@ -52,24 +52,24 @@ def avd_schema() -> AvdSchema:
             [{"pri": 1, "foo": "123"}, {"pri": "1", "foo": 123}],
             (AvdValidationError,),
             (
-                "'Validation Error: test_value[0].pri': The value '1' is not unique between all list items as required.",
-                "'Validation Error: test_value[1].pri': The value '1' is not unique between all list items as required.",
-                "'Validation Error: test_value[0].foo': The value '123' is not unique between all list items as required.",
-                "'Validation Error: test_value[1].foo': The value '123' is not unique between all list items as required.",
+                "Validation Error: [test_value[0].pri] The value '1' is not unique between all list items as required.",
+                "Validation Error: [test_value[1].pri] The value '1' is not unique between all list items as required.",
+                "Validation Error: [test_value[0].foo] The value '123' is not unique between all list items as required.",
+                "Validation Error: [test_value[1].foo] The value '123' is not unique between all list items as required.",
             ),
             id="err-primary-key-collision-unique-keys-collision",
         ),
-        pytest.param(None, (AvdValidationError,), ("'Validation Error: ': Required key 'test_value' is not set in dict.",), id="err-missing-required-value"),
+        pytest.param(None, (AvdValidationError,), ("Validation Error: [] Required key 'test_value' is not set in dict.",), id="err-missing-required-value"),
         pytest.param(
-            [], (AvdValidationError,), ("'Validation Error: test_value': The value is shorter (0) than the allowed minimum of 1.",), id="err-below-min-length-0"
+            [], (AvdValidationError,), ("Validation Error: [test_value] The value is shorter (0) than the allowed minimum of 1.",), id="err-below-min-length-0"
         ),
         pytest.param(
             [{"pri": 1, "foo": "foo1"}, {"pri": 2, "foo": "foo2"}, {"pri": 3, "foo": "foo3"}, {"pri": 4, "foo": "foo4"}],
             (AvdValidationError,),
-            ("'Validation Error: test_value': The value is longer (4) than the allowed maximum of 3.",),
+            ("Validation Error: [test_value] The value is longer (4) than the allowed maximum of 3.",),
             id="err-above-max-length-4",
         ),
-        pytest.param("a", (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'str'. Expected a 'list'.",), id="err-invalid-type-str"),
+        pytest.param("a", (AvdValidationError,), ("Validation Error: [test_value] Invalid type 'str'. Expected a 'list'.",), id="err-invalid-type-str"),
     ],
 )
 def test_generated_schema(

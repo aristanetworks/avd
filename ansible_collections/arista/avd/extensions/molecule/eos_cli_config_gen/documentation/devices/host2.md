@@ -83,6 +83,8 @@
   - [PBR Policy Maps](#pbr-policy-maps)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
+- [Monitor Loop Protection](#monitor-loop-protection)
+  - [Monitor Loop Protection Configuration](#monitor-loop-protection-configuration)
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS RSVP](#mpls-rsvp)
@@ -231,7 +233,7 @@ no ptp monitor sequence-id
 
 | Idle Timeout | Connection Limit | Max from a single Host | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
 | ------------ | ---------------- | ---------------------- | ------- | -------------------- | -------------- | ------------------------- |
-| 15 | 55 | - | aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521 |
+| 15 | 55 | - | aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521, dsa |
 
 #### Management SSH Device Configuration
 
@@ -244,7 +246,7 @@ management ssh
    cipher aes256-cbc aes256-ctr aes256-gcm@openssh.com
    key-exchange ecdh-sha2-nistp521
    mac hmac-sha2-512 hmac-sha2-512-etm@openssh.com
-   hostkey server ecdsa-nistp256 ecdsa-nistp521
+   hostkey server dsa ecdsa-nistp256 ecdsa-nistp521
    connection limit 55
    authentication empty-passwords permit
    shutdown
@@ -543,6 +545,10 @@ daemon TerminAttr
 | Sequence-numbers | false |
 | RFC5424 | False |
 
+| VRF | Source Interface |
+| --- | ---------------- |
+| - | Ethernet1 |
+
 **Syslog facility value:** syslog
 
 #### Logging Servers and Features Device Configuration
@@ -557,6 +563,7 @@ logging monitor debugging
 no logging synchronous
 logging format hostname ipv4
 logging facility syslog
+logging source-interface Ethernet1
 !
 logging event link-status global
 ```
@@ -1278,6 +1285,24 @@ router bfd
    session stats snapshot interval dangerous 8
 ```
 
+## Monitor Loop Protection
+
+| Enabled | Disabled-time | Protect vlan | Rate-limit | Transmit-interval | Disabled Interfaces |
+| ------- | ------------- | ------------ | ---------- | ----------------- | ------------------- |
+| False | 100 | 1000-1100 | 100 | 10 | - |
+
+### Monitor Loop Protection Configuration
+
+```eos ####
+!
+monitor loop-protection
+   shutdown
+   protect vlan 1000-1100
+   rate-limit 100
+   transmit-interval 10
+   disabled-time 100
+```
+
 ## MPLS
 
 ### MPLS and LDP
@@ -1745,7 +1770,6 @@ qos map cos 3 to traffic-class 3
 | errdisable | - | - | - | True |
 
 ```eos
-!
 priority-flow-control pause watchdog override action drop
 ```
 

@@ -98,16 +98,16 @@ tenants:
             tags: ['sit']
       - name: SIT3
         vrf_vni: 654555
+        # Testing setting evpn_vlan_bundle on VRF
+        evpn_vlan_bundle: bundle4
         svis:
           - id: 1014
             name: SVI_7
             enabled: true
-            evpn_vlan_bundle: bundle4
             tags: ['sit']
           - id: 1015
             name: SVI_8
             enabled: true
-            evpn_vlan_bundle: bundle4
             tags: ['sit']
   # Test evpn_vlan_bundle setting on tenant level.
   - name: research

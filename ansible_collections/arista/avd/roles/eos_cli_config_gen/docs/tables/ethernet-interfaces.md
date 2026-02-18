@@ -17,6 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "ethernet_interfaces.[].mtu") | Integer |  |  | Min: 68<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_mtu</samp>](## "ethernet_interfaces.[].l2_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_mru</samp>](## "ethernet_interfaces.[].l2_mru") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;loop_protection</samp>](## "ethernet_interfaces.[].loop_protection") | Boolean |  |  |  | Enable/disable loop protection. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;arp_gratuitous_accept</samp>](## "ethernet_interfaces.[].arp_gratuitous_accept") | Boolean |  |  |  | Accept gratuitous ARP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_protocol</samp>](## "ethernet_interfaces.[].l2_protocol") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "ethernet_interfaces.[].l2_protocol.encapsulation_dot1q_vlan") | Integer |  |  |  | Vlan tag to configure on sub-interface. |
@@ -141,7 +142,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preferred_lifetime</samp>](## "ethernet_interfaces.[].ipv6_nd_prefixes.[].preferred_lifetime") | String |  |  |  | Infinite or lifetime in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_autoconfig_flag</samp>](## "ethernet_interfaces.[].ipv6_nd_prefixes.[].no_autoconfig_flag") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_dhcp_relay_destinations</samp>](## "ethernet_interfaces.[].ipv6_dhcp_relay_destinations") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "ethernet_interfaces.[].ipv6_dhcp_relay_destinations.[].address") | String | Required, Unique |  |  | DHCP server's IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "ethernet_interfaces.[].ipv6_dhcp_relay_destinations.[].address") | String | Required |  |  | DHCP server's IPv6 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ethernet_interfaces.[].ipv6_dhcp_relay_destinations.[].vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "ethernet_interfaces.[].ipv6_dhcp_relay_destinations.[].local_interface") | String |  |  |  | Local interface to communicate with DHCP server - mutually exclusive to source_address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "ethernet_interfaces.[].ipv6_dhcp_relay_destinations.[].source_address") | String |  |  |  | Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface. |
@@ -439,7 +440,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_key</samp>](## "ethernet_interfaces.[].metadata.peer_key") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_profile</samp>](## "ethernet_interfaces.[].metadata.port_profile") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "ethernet_interfaces.[].metadata.validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "ethernet_interfaces.[].metadata.validate_lldp") | Boolean |  |  |  | Set to false to disable the LLDP topology validation performed by the `anta_runner` role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "ethernet_interfaces.[].metadata.validate_lldp") | Boolean |  |  |  | Controls LLDP topology validation performed by the `anta_runner` role.<br>- Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)<br>and the peer interface is not administratively shutdown.<br>- `true`: Forces validation. Use this for connected endpoints not managed by AVD.<br>- `false`: Disables validation for the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "ethernet_interfaces.[].sflow") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "ethernet_interfaces.[].sflow.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;egress</samp>](## "ethernet_interfaces.[].sflow.egress") | Dictionary |  |  |  |  |
@@ -644,6 +645,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk_private_vlan_secondary</samp>](## "ethernet_interfaces.[].trunk_private_vlan_secondary") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>switchport.trunk.private_vlan_secondary</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;pvlan_mapping</samp>](## "ethernet_interfaces.[].pvlan_mapping") <span style="color:red">removed</span> | String |  |  |  | List of vlans as string.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>switchport.pvlan_mapping</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan_translations</samp>](## "ethernet_interfaces.[].vlan_translations") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>switchport.vlan_translations</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;monitor_link_flap_profiles</samp>](## "ethernet_interfaces.[].monitor_link_flap_profiles") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].monitor_link_flap_profiles.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "ethernet_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
 
 === "YAML"
@@ -669,6 +672,9 @@
 
         # "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
         l2_mru: <int; 68-65535>
+
+        # Enable/disable loop protection.
+        loop_protection: <bool>
 
         # Accept gratuitous ARP.
         arp_gratuitous_accept: <bool>
@@ -915,7 +921,7 @@
         ipv6_dhcp_relay_destinations:
 
             # DHCP server's IPv6 address.
-          - address: <str; required; unique>
+          - address: <str; required>
             vrf: <str>
 
             # Local interface to communicate with DHCP server - mutually exclusive to source_address.
@@ -1501,7 +1507,11 @@
           # Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
           validate_state: <bool>
 
-          # Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+          # Controls LLDP topology validation performed by the `anta_runner` role.
+          # - Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)
+          # and the peer interface is not administratively shutdown.
+          # - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
+          # - `false`: Disables validation for the interface.
           validate_lldp: <bool>
         sflow:
           enable: <bool>
@@ -1956,6 +1966,8 @@
               # This is regardless of whether the specified unit is milliseconds or microseconds.
               number: <int; required>
               unit: <str; "microseconds" | "milliseconds"; required>
+        monitor_link_flap_profiles:
+          - <str>
 
         # Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
         eos_cli: <str>

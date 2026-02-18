@@ -109,13 +109,8 @@ router_bgp:
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
   neighbors:
   - ip_address: 192.168.253.5
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -129,8 +124,6 @@ router_bgp:
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
-      activate: true
-    - name: IPv4-UNDERLAY-PEERS
       activate: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
@@ -153,7 +146,8 @@ vlan_interfaces:
   shutdown: true
   vrf: TEST
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
     tags:
     - leaf1
     - leaf2
@@ -163,7 +157,8 @@ vlan_interfaces:
   shutdown: true
   vrf: TEST
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
     tags:
     - leaf2
     - leaf3
@@ -174,7 +169,8 @@ vlan_interfaces:
   ip_address: 192.168.253.4/31
   mtu: 9214
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -187,42 +183,50 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 3900
   name: SVI_ON_ALL_LEAFS
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 3903
   name: SVI_ON_LEAF2-3
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 3000
   name: MLAG_L3_VRF_TEST
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 2900
   name: L2VLAN_ON_ALL_LEAFS
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 - id: 2903
   name: L2VLAN_ON_LEAF2-3
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST
   ip_routing: true
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vxlan_interface:
   vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_VTEP

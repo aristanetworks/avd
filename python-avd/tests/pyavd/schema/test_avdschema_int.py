@@ -46,27 +46,27 @@ def avd_schema() -> AvdSchema:
             False,
             None,
             (AvdValidationError,),
-            ("'Validation Error: test_value': '0' is lower than the allowed minimum of 2.",),
+            ("Validation Error: [test_value] '0' is lower than the allowed minimum of 2.",),
             id="err-coerce-bool-to-int-below-min-0",
         ),  # False is converted to 0 which is valid but below min.
         pytest.param(
             True,
             None,
             (AvdValidationError,),
-            ("'Validation Error: test_value': '1' is lower than the allowed minimum of 2.", "'Validation Error: test_value': '1' is not one of [0, 11, 22]"),
+            ("Validation Error: [test_value] '1' is lower than the allowed minimum of 2.", "Validation Error: [test_value] '1' is not one of [0, 11, 22]"),
             id="err-coerce-bool-to-int-invalid-value-1",
         ),
         pytest.param("11", None, None, None, id="ok-coerce-str-to-int"),
         pytest.param(11.0123, None, None, None, id="ok-coerce-float-to-int"),
         pytest.param(
-            None, None, (AvdValidationError,), ("'Validation Error: ': Required key 'test_value' is not set in dict.",), id="err-missing-required-value"
+            None, None, (AvdValidationError,), ("Validation Error: [] Required key 'test_value' is not set in dict.",), id="err-missing-required-value"
         ),
-        pytest.param(12, None, (AvdValidationError,), ("'Validation Error: test_value': '12' is not one of [0, 11, 22]",), id="err-invalid-value-12"),
+        pytest.param(12, None, (AvdValidationError,), ("Validation Error: [test_value] '12' is not one of [0, 11, 22]",), id="err-invalid-value-12"),
         pytest.param(12, [12], None, None, id="ok-dynamic-valid-value-12"),
-        pytest.param([], None, (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'list'. Expected a 'int'.",), id="err-invalid-type-list"),
-        pytest.param(0, None, (AvdValidationError,), ("'Validation Error: test_value': '0' is lower than the allowed minimum of 2.",), id="err-below-min-0"),
+        pytest.param([], None, (AvdValidationError,), ("Validation Error: [test_value] Invalid type 'list'. Expected a 'int'.",), id="err-invalid-type-list"),
+        pytest.param(0, None, (AvdValidationError,), ("Validation Error: [test_value] '0' is lower than the allowed minimum of 2.",), id="err-below-min-0"),
         pytest.param(
-            22, None, (AvdValidationError,), ("'Validation Error: test_value': '22' is higher than the allowed maximum of 20.",), id="err-above-max-22"
+            22, None, (AvdValidationError,), ("Validation Error: [test_value] '22' is higher than the allowed maximum of 20.",), id="err-above-max-22"
         ),
     ],
 )

@@ -65,6 +65,7 @@ daemon_terminattr:
   ingestexclude: this_is_ingest_excluded
   smashexcludes: this_is_smash_excluded
   sflowaddr: INBAND_MGMT_VRF/127.0.0.1:6343
+dns_domain: testfabric.local
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -91,8 +92,18 @@ ethernet_interfaces:
   switchport:
     enabled: false
 hostname: cv-settings
+ip_domain_lookup:
+  source_interfaces:
+  - name: Vlan4092
+    vrf: INBAND_MGMT_VRF
 ip_igmp_snooping:
   globally_enabled: true
+ip_name_server:
+  vrfs:
+  - name: INBAND_MGMT_VRF
+    servers:
+    - ip_address: 10.10.10.1
+      priority: 1
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -103,6 +114,11 @@ management_interfaces:
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+ntp:
+  servers:
+  - name: 10.10.10.1
+    preferred: true
+  vrf: default
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_dns-settings-1_Port-Channel5
@@ -139,7 +155,8 @@ vlans:
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -17,7 +17,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet20
+  description: P2P_LINK_Ethernet1_TO_DC1-SPINE1_Ethernet20
   shutdown: false
   speed: forced 40gfull
   mtu: 1500
@@ -245,15 +245,14 @@ ethernet_interfaces:
 hostname: MH-LEAF1B
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
-- ip_address: 2001:db8::1
-  vrf: MGMT
-- ip_address: 2001:db8::2
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
+    - ip_address: 2001:db8::1
+    - ip_address: 2001:db8::2
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 lacp:
@@ -267,9 +266,6 @@ link_tracking_groups:
 local_users:
 - name: admin
   disabled: true
-  privilege: 15
-  role: network-admin
-  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -299,6 +295,18 @@ loopback_interfaces:
   vrf: VRF_with_loopback_ip_pools
   ip_address: 10.101.102.34/32
   ipv6_address: 2001:db8:1::2/128
+- name: Loopback400
+  description: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools_VTEP_DIAGNOSTICS
+  shutdown: false
+  vrf: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools
+  ip_address: 10.101.10.34/32
+  ipv6_address: 2001:db8:2::2/128
+- name: Loopback500
+  description: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools_VTEP_DIAGNOSTICS
+  shutdown: false
+  vrf: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools
+  ip_address: 10.255.1.34/32
+  ipv6_address: 2001:db8:1:8000::2/128
 management_api_http:
   enable_https: true
   default_services: false
@@ -534,7 +542,7 @@ router_bgp:
       type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -578,6 +586,22 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '315'
+  - name: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools
+    rd: 192.168.255.34:24
+    route_targets:
+      both:
+      - '24:24'
+    redistribute_routes:
+    - learned
+    vlan: '320'
+  - name: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools
+    rd: 192.168.255.34:25
+    route_targets:
+      both:
+      - '25:25'
+    redistribute_routes:
+    - learned
+    vlan: '324'
   - name: VRF_without_loopback_ip_pools
     rd: 192.168.255.34:23
     route_targets:
@@ -632,6 +656,36 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+  - name: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools
+    rd: 192.168.255.34:24
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '24:24'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '24:24'
+    router_id: 192.168.255.34
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools
+    rd: 192.168.255.34:25
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '25:25'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '25:25'
+    router_id: 192.168.255.34
+    redistribute:
+      connected:
+        enabled: true
   - name: VRF_without_loopback_ip_pools
     rd: 192.168.255.34:23
     route_targets:
@@ -663,6 +717,12 @@ virtual_source_nat_vrfs:
 - name: VRF_with_loopback_ip_pools
   ip_address: 10.101.102.34
   ipv6_address: 2001:db8:1::2
+- name: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools
+  ip_address: 10.101.10.34
+  ipv6_address: 2001:db8:2::2
+- name: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools
+  ip_address: 10.255.1.34
+  ipv6_address: 2001:db8:1:8000::2
 vlan_interfaces:
 - name: Vlan310
   description: Tenant_X_OP_Zone_1
@@ -670,7 +730,8 @@ vlan_interfaces:
   vrf: Tenant_X_OP_Zone
   ip_address_virtual: 10.1.10.1/24
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
     tags:
     - opzone
 - name: Vlan315
@@ -679,7 +740,28 @@ vlan_interfaces:
   vrf: VRF_with_loopback_ip_pools
   ip_address_virtual: 10.1.10.2/24
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
+    tags:
+    - opzone
+- name: Vlan320
+  description: Tenant_network_vrf_3
+  shutdown: false
+  vrf: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools
+  ip_address_virtual: 10.1.10.4/24
+  metadata:
+    tenants:
+    - Tenant_X
+    tags:
+    - opzone
+- name: Vlan324
+  description: Tenant_network_vrf_4
+  shutdown: false
+  vrf: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools
+  ip_address_virtual: 10.1.10.5/24
+  metadata:
+    tenants:
+    - Tenant_X
     tags:
     - opzone
 - name: Vlan316
@@ -688,7 +770,8 @@ vlan_interfaces:
   vrf: VRF_without_loopback_ip_pools
   ip_address_virtual: 10.1.10.3/24
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
     tags:
     - opzone
 vlan_internal_order:
@@ -700,30 +783,56 @@ vlans:
 - id: 310
   name: Tenant_X_OP_Zone_1
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - id: 315
   name: Tenant_network_vrf_1
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
+- id: 320
+  name: Tenant_network_vrf_3
+  metadata:
+    tenants:
+    - Tenant_X
+- id: 324
+  name: Tenant_network_vrf_4
+  metadata:
+    tenants:
+    - Tenant_X
 - id: 316
   name: Tenant_network_vrf_2
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_X_OP_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - name: VRF_with_loopback_ip_pools
   ip_routing: true
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
+- name: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_X
+- name: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_X
 - name: VRF_without_loopback_ip_pools
   ip_routing: true
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 vxlan_interface:
   vxlan1:
     description: MH-LEAF1B_VTEP
@@ -735,6 +844,10 @@ vxlan_interface:
         vni: 11310
       - id: 315
         vni: 11315
+      - id: 320
+        vni: 11320
+      - id: 324
+        vni: 11324
       - id: 316
         vni: 11316
       vrfs:
@@ -742,5 +855,9 @@ vxlan_interface:
         vni: 20
       - name: VRF_with_loopback_ip_pools
         vni: 22
+      - name: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools
+        vni: 24
+      - name: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools
+        vni: 25
       - name: VRF_without_loopback_ip_pools
         vni: 23

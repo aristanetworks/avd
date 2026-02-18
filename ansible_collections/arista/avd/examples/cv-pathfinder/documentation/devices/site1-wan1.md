@@ -259,8 +259,8 @@ management security
    !
    ssl profile STUN-DTLS
       tls versions 1.2
-      trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
       certificate STUN-DTLS.crt key STUN-DTLS.key
+      trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
 ```
 
 ## Kernel Settings
@@ -808,16 +808,16 @@ router adaptive-virtual-topology
       avt profile BLUE-POLICY-VIDEO id 2
       avt profile BLUE-POLICY-VOICE id 3
    !
-   vrf default
-      avt policy DEFAULT-POLICY-WITH-CP
-      avt profile DEFAULT-POLICY-DEFAULT id 1
-      avt profile DEFAULT-POLICY-CONTROL-PLANE id 254
-   !
    vrf RED
       avt policy RED-POLICY
       avt profile RED-POLICY-CRITICAL-SECRET-DATA id 2
       avt profile RED-POLICY-NORMAL-DATA id 3
       avt profile RED-POLICY-NOT-SO-IMPORTANT-DATA id 4
+   !
+   vrf default
+      avt policy DEFAULT-POLICY-WITH-CP
+      avt profile DEFAULT-POLICY-CONTROL-PLANE id 254
+      avt profile DEFAULT-POLICY-DEFAULT id 1
 ```
 
 ### Router Traffic-Engineering
@@ -855,7 +855,7 @@ ASN Notation: asplain
 | Address Family | ipv4 |
 | Allowas-in | Allowed, allowed 1 times |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### WAN-OVERLAY-PEERS
 
@@ -955,7 +955,7 @@ router bgp 65000
    neighbor IPv4-UNDERLAY-PEERS route-map RM-BGP-UNDERLAY-PEERS-IN in
    neighbor IPv4-UNDERLAY-PEERS route-map RM-BGP-UNDERLAY-PEERS-OUT out
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor WAN-OVERLAY-PEERS peer group
    neighbor WAN-OVERLAY-PEERS remote-as 65000
    neighbor WAN-OVERLAY-PEERS update-source Dps1
@@ -1227,7 +1227,6 @@ route-map RM-WAN-HA-PEER-OUT permit 20
 #### IP Extended Community Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.3:101
 ```
 

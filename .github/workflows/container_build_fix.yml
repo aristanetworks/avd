@@ -8,7 +8,7 @@ name: Manual container build
         type: choice
         required: true
         description: "select image type to build"
-        options: [universal]
+        options: [universal, dev]
         default: "universal"
       container_tags:
         type: string

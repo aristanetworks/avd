@@ -4,6 +4,8 @@ application_traffic_recognition:
   field_sets:
     ipv4_prefixes:
     - name: PFX-PATHFINDERS
+      prefix_values:
+      - 6.6.6.6/32
   applications:
     ipv4_applications:
     - name: APP-CONTROL-PLANE
@@ -189,6 +191,8 @@ metadata:
     site: Site422
     vtep_ip: 192.168.142.1
     ssl_profile: STUN-DTLS
+    pathfinders:
+    - vtep_ip: 6.6.6.6
     interfaces:
     - name: Ethernet1.42
       carrier: Comcast
@@ -345,7 +349,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     allowas_in:
       enabled: true
       times: 1
@@ -372,6 +376,11 @@ router_bgp:
     metadata:
       peer: asdot-for-wan-ha-leaf11
     description: asdot-for-wan-ha-leaf11_Ethernet1
+  - ip_address: 6.6.6.6
+    peer_group: WAN-OVERLAY-PEERS
+    metadata:
+      peer: cv-pathfinder-pathfinder3
+    description: cv-pathfinder-pathfinder3_Dps1
   - ip_address: 192.168.142.2
     remote_as: '65000.100'
     metadata:
@@ -445,15 +454,31 @@ router_path_selection:
     ipsec_profile: CP-PROFILE
     local_interfaces:
     - name: Ethernet1.42
+      stun:
+        server_profiles:
+        - INET-cv-pathfinder-pathfinder3-Ethernet2_1
     dynamic_peers:
       enabled: true
+    static_peers:
+    - router_ip: 6.6.6.6
+      name: cv-pathfinder-pathfinder3
+      ipv4_addresses:
+      - 10.50.50.50
   - name: MPLS
     id: 100
     ipsec_profile: CP-PROFILE
     local_interfaces:
     - name: Ethernet2.42
+      stun:
+        server_profiles:
+        - MPLS-cv-pathfinder-pathfinder3-Ethernet1
     dynamic_peers:
       enabled: true
+    static_peers:
+    - router_ip: 6.6.6.6
+      name: cv-pathfinder-pathfinder3
+      ipv4_addresses:
+      - 172.17.17.17
   - name: LAN_HA
     id: 65535
     flow_assignment: lan
@@ -482,6 +507,15 @@ router_traffic_engineering:
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
+stun:
+  client:
+    server_profiles:
+    - name: MPLS-cv-pathfinder-pathfinder3-Ethernet1
+      ip_address: 172.17.17.17
+      ssl_profile: STUN-DTLS
+    - name: INET-cv-pathfinder-pathfinder3-Ethernet2_1
+      ip_address: 10.50.50.50
+      ssl_profile: STUN-DTLS
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
 - name: MGMT

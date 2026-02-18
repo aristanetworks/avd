@@ -121,7 +121,7 @@ leaf:
     inband_mgmt_vlan: 10
 ```
 
-Details on this feature can be found [here](../../roles/eos_designs/docs/input-variables.md#node-type-inband-management).
+Details on this feature can be found [here](../../roles/eos_designs/docs/data-models.md#node-type-inband-management).
 
 | Node | Management0 | Vlan10 |
 | ---- | ----------- | ------ |
@@ -243,7 +243,7 @@ AVD provides a way to standardize and reuse port profiles through a compact data
 
 ![Figure: 3](images/dot1x_ports.svg)
 
-The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in `port_profiles`, while `network_ports` defines which switches and port ranges are to be applied. The `network_ports` data model allows regex to match switches and an `expand_range` filter to cover a range of ports. For details, see the documentation for [`port_profiles`](../../roles/eos_designs/docs/input-variables.md#port-profiles-settings) and [`network_ports`](../../roles/eos_designs/docs/input-variables.md#network-ports-settings).
+The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in `port_profiles`, while `network_ports` defines which switches and port ranges are to be applied. The `network_ports` data model allows regex to match switches and an `expand_range` filter to cover a range of ports. For details, see the documentation for [`port_profiles`](../../roles/eos_designs/docs/data-models.md#port-profiles-settings) and [`network_ports`](../../roles/eos_designs/docs/data-models.md#network-ports-settings).
 
 ## WAN/Core Edge
 
@@ -270,7 +270,7 @@ core_interfaces:
 
 ### The Playbooks
 
-Now that we have defined all of our Ansible variables (AVD inputs), it is time to generate some configurations. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: `eos_designs` and `eos_cli_config_gen`, which do all the heavy lifting. Combining these two roles produces recommended configurations that follow Arista Design Guides.
+Now that we have defined all of our input variables according to AVD Design data models, it is time to generate some configurations. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: `eos_designs` and `eos_cli_config_gen`, which do all the heavy lifting. Combining these two roles produces recommended configurations that follow Arista Design Guides.
 
 === "build.yml"
 

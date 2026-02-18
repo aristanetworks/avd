@@ -9,10 +9,12 @@ from typing import TYPE_CHECKING
 from anta.input_models.avt import AVTPath
 from anta.tests.avt import VerifyAVTSpecificPath
 
+from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
-from ._base_classes import AntaTestInputFactory
+from .base_classes import AntaTestInputFactory
+from .decorators import skip_if_missing_config
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -26,6 +28,7 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory[VerifyAVTSpecificPa
     `router_path_selection.path_groups.static_peers`.
     """
 
+    @skip_if_missing_config(StructuredConfigKey.ROUTER_AVT, StructuredConfigKey.ROUTER_PATH_SELECTION)
     def create(self) -> Iterator[VerifyAVTSpecificPath.Input]:
         """Generate the inputs for the `VerifyAVTSpecificPath` test."""
         avt_vrfs = self.structured_config.router_adaptive_virtual_topology.vrfs

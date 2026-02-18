@@ -905,7 +905,12 @@ keys:
               description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
             validate_lldp:
               type: bool
-              description: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+              description: |-
+                Controls LLDP topology validation performed by the `anta_runner` role.
+                - Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)
+                and the peer interface is not administratively shutdown.
+                - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
+                - `false`: Disables validation for the interface.
         sflow:
           type: dict
           keys:
@@ -1227,6 +1232,9 @@ keys:
                         type: int
                         convert_types:
                           - str
+                        required: true
+                        min: 0
+                        max: 1000
             tap:
               type: dict
               $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/switchport/keys/tap"

@@ -302,7 +302,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_type</samp>](## "port_channel_interfaces.[].metadata.peer_type") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_key</samp>](## "port_channel_interfaces.[].metadata.peer_key") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "port_channel_interfaces.[].metadata.validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "port_channel_interfaces.[].metadata.validate_lldp") | Boolean |  |  |  | Set to false to disable the LLDP topology validation performed by the `anta_runner` role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "port_channel_interfaces.[].metadata.validate_lldp") | Boolean |  |  |  | Controls LLDP topology validation performed by the `anta_runner` role.<br>- Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)<br>and the peer interface is not administratively shutdown.<br>- `true`: Forces validation. Use this for connected endpoints not managed by AVD.<br>- `false`: Disables validation for the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "port_channel_interfaces.[].sflow") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "port_channel_interfaces.[].sflow.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;egress</samp>](## "port_channel_interfaces.[].sflow.egress") | Dictionary |  |  |  |  |
@@ -397,7 +397,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_default_mac_address_maximum</samp>](## "port_channel_interfaces.[].switchport.port_security.vlan_default_mac_address_maximum") | Integer |  |  | Min: 0<br>Max: 1000 | Default maximum MAC addresses for all VLANs on this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "port_channel_interfaces.[].switchport.port_security.vlans") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;range</samp>](## "port_channel_interfaces.[].switchport.port_security.vlans.[].range") | String | Required, Unique |  |  | VLAN ID or range(s) of VLAN IDs, <1-4094>.<br>Example:<br>  - 3<br>  - 1,3<br>  - 1-10<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address_maximum</samp>](## "port_channel_interfaces.[].switchport.port_security.vlans.[].mac_address_maximum") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address_maximum</samp>](## "port_channel_interfaces.[].switchport.port_security.vlans.[].mac_address_maximum") | Integer | Required |  | Min: 0<br>Max: 1000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tap</samp>](## "port_channel_interfaces.[].switchport.tap") | Dictionary |  |  |  | In tap mode, the interface operates as a tap port.<br>Tap ports receive traffic for replication on one or more tool ports.<br>This setting applies only to parent interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allowed_vlan</samp>](## "port_channel_interfaces.[].switchport.tap.allowed_vlan") | String |  |  |  | VLAN ID or range(s) of VLAN IDs within range 1-4094. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "port_channel_interfaces.[].switchport.tap.default") | Dictionary |  |  |  | Default tap destination config. |
@@ -1082,7 +1082,11 @@
           # Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
           validate_state: <bool>
 
-          # Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+          # Controls LLDP topology validation performed by the `anta_runner` role.
+          # - Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)
+          # and the peer interface is not administratively shutdown.
+          # - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
+          # - `false`: Disables validation for the interface.
           validate_lldp: <bool>
         sflow:
           enable: <bool>
@@ -1300,7 +1304,7 @@
                 #   - 1,3
                 #   - 1-10
               - range: <str; required; unique>
-                mac_address_maximum: <int>
+                mac_address_maximum: <int; 0-1000; required>
 
           # In tap mode, the interface operates as a tap port.
           # Tap ports receive traffic for replication on one or more tool ports.

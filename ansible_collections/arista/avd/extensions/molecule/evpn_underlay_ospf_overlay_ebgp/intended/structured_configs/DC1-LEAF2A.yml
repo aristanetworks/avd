@@ -119,11 +119,12 @@ ethernet_interfaces:
 hostname: DC1-LEAF2A
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 local_users:
@@ -202,13 +203,6 @@ prefix_lists:
   - sequence: 10
     action: permit 10.255.251.2/31
 route_maps:
-- name: RM-MLAG-PEER-IN
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-    set:
-    - origin incomplete
 - name: RM-CONN-2-BGP-VRFS
   sequence_numbers:
   - sequence: 10
@@ -217,6 +211,13 @@ route_maps:
     - ip address prefix-list PL-MLAG-PEER-VRFS
   - sequence: 20
     type: permit
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+    set:
+    - origin incomplete
 router_bfd:
   multihop:
     interval: 1200
@@ -253,7 +254,7 @@ router_bgp:
     next_hop_self: true
     password: vnEaG8gMeQf3d3cN6PktXQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbors:
   - ip_address: 192.168.255.1
@@ -376,7 +377,8 @@ vlan_interfaces:
   vrf: Tenant_B_OP_Zone
   ip_address_virtual: 10.2.10.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
 - name: Vlan3019
@@ -386,7 +388,8 @@ vlan_interfaces:
   ip_address: 10.255.251.2/31
   mtu: 1500
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -399,30 +402,35 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 210
   name: Tenant_B_OP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 3019
   name: MLAG_L3_VRF_Tenant_B_OP_Zone
   trunk_groups:
   - MLAG
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_B_OP_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF2A_VTEP

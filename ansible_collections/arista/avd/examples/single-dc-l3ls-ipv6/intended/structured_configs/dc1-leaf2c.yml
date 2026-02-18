@@ -54,9 +54,11 @@ ip_domain_lookup:
     vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 192.168.1.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.1.1
 local_users:
 - name: admin
   privilege: 15
@@ -121,35 +123,43 @@ vlans:
 - id: 11
   name: VRF10_VLAN11
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 12
   name: VRF10_VLAN12
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 21
   name: VRF11_VLAN21
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 22
   name: VRF11_VLAN22
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 31
   name: VRF12_VLAN31
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 32
   name: VRF12_VLAN32
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3401
   name: L2_VLAN3401
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 - id: 3402
   name: L2_VLAN3402
   metadata:
-    tenant: TENANT1
+    tenants:
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false

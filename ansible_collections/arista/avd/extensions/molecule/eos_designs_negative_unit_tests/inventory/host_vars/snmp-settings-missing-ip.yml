@@ -1,0 +1,12 @@
+---
+type: l2leaf
+
+l2leaf: {}
+
+default_mgmt_method: none
+
+snmp_settings:
+  compute_local_engineid: true
+  # missing an ip to compute properly the engine ID when default_mgmt_method is none
+expected_error_message: >-
+  The key 'snmp_settings.local_engineid_ip' must be set when 'default_mgmt_method' is set to 'none'.

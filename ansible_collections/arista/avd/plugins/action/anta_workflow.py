@@ -19,7 +19,7 @@ import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars, AntaWorkflowFilter, AntaWorkflowHandler
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars, AntaWorkflowFilter, AntaWorkflowHandler, raise_action_fail
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -29,7 +29,7 @@ PLUGIN_NAME = "arista.avd.anta_workflow"
 try:
     from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, TestResult, anta_runner
     from pyavd._utils import default, get, strip_empties_from_dict
-    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData
+    from pyavd.api.anta import AVDCatalogGenerationSettings, AVDFabricData
     from pyavd.get_device_test_catalog import get_device_test_catalog
 
     HAS_PYAVD = True
@@ -88,6 +88,7 @@ ARGUMENT_SPEC = {
     "user_catalogs": {
         "type": "dict",
         "options": {
+            "enabled": {"type": "bool", "default": False},
             "input_dir": {"type": "str"},
         },
     },
@@ -103,6 +104,8 @@ ARGUMENT_SPEC = {
     "report": {
         "type": "dict",
         "options": {
+            "expand_results": {"type": "bool", "default": False},
+            "generate_custom_field": {"type": "bool", "default": False},
             "csv_output": {"type": "str"},
             "md_output": {"type": "str"},
             "json_output": {"type": "str"},
@@ -134,7 +137,7 @@ ARGUMENT_SPEC = {
 # Global variables to share data between processes. Since the plugin is forked, these variables are inherited by child processes.
 # TODO: Consider aggregating some of them into a SHARED_VARS dict or use multiprocessing.Manager()
 STRUCTURED_CONFIGS: dict[str, dict[str, Any]] | None = None
-FABRIC_DATA: AvdFabricData | None = None
+FABRIC_DATA: AVDFabricData | None = None
 PLUGIN_ARGS: dict[str, Any] | None = None
 ANSIBLE_VARS: dict[str, dict[str, Any]] | None = None
 USER_CATALOG: AntaCatalog | None = None
@@ -183,13 +186,11 @@ class ActionModule(ActionBase):
 
         generate_avd_catalogs = get(PLUGIN_ARGS, "avd_catalogs.enabled")
         structured_config_dir = get(PLUGIN_ARGS, "avd_catalogs.structured_config_dir")
+        generate_user_catalogs = get(PLUGIN_ARGS, "user_catalogs.enabled")
         user_catalog_dir = get(PLUGIN_ARGS, "user_catalogs.input_dir")
 
-        if generate_avd_catalogs is False and user_catalog_dir is None:
-            msg = (
-                "When 'avd_catalogs.enabled' is False, a directory with user-defined ANTA catalogs "
-                "must be provided using the 'user_catalogs.input_dir' argument"
-            )
+        if generate_avd_catalogs is False and generate_user_catalogs is False:
+            msg = "At least one of 'avd_catalogs.enabled' or 'user_catalogs.enabled' must be set to True"
             raise AnsibleActionFail(msg)
         if generate_avd_catalogs is True and structured_config_dir is None:
             msg = (
@@ -197,10 +198,16 @@ class ActionModule(ActionBase):
                 "must be provided using the 'avd_catalogs.structured_config_dir' argument"
             )
             raise AnsibleActionFail(msg)
+        if generate_user_catalogs is True and user_catalog_dir is None:
+            msg = (
+                "When 'user_catalogs.enabled' is True, a directory with user-defined ANTA catalogs "
+                "must be provided using the 'user_catalogs.input_dir' argument"
+            )
+            raise AnsibleActionFail(msg)
 
         try:
             # Load the user-defined ANTA catalogs if provided
-            if user_catalog_dir is not None:
+            if generate_user_catalogs and user_catalog_dir is not None:
                 USER_CATALOG = load_user_catalogs(user_catalog_dir)
                 if not generate_avd_catalogs and not USER_CATALOG.tests:
                     LOGGER.warning("No tests found in the user-defined ANTA catalogs, exiting")
@@ -209,7 +216,7 @@ class ActionModule(ActionBase):
             # Load the structured configs and build the minimal structured configs if needed
             if generate_avd_catalogs:
                 STRUCTURED_CONFIGS = load_structured_configs(deployed_devices, structured_config_dir, get(PLUGIN_ARGS, "avd_catalogs.structured_config_suffix"))
-                FABRIC_DATA = AvdFabricData.from_structured_configs(STRUCTURED_CONFIGS)
+                FABRIC_DATA = AVDFabricData.from_structured_configs(STRUCTURED_CONFIGS)
 
             with ProcessPoolExecutor(max_workers=max((ansible_forks - 1), 1), mp_context=get_context("fork")) as executor:
                 batch_size = get(PLUGIN_ARGS, "runner.batch_size")
@@ -224,7 +231,7 @@ class ActionModule(ActionBase):
         except Exception as error:
             # Recast errors as AnsibleActionFail
             msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from error
+            raise_action_fail(msg, error)
         finally:
             # Stop the logging queue listener
             listener.stop()
@@ -263,6 +270,8 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
     csv_output_path = get(report_settings, "csv_output")
     md_output_path = get(report_settings, "md_output")
     json_output_path = get(report_settings, "json_output")
+    expand_results = get(report_settings, "expand_results")
+    generate_custom_field = get(report_settings, "generate_custom_field")
 
     # Merge all results
     result_manager = ResultManager()
@@ -293,7 +302,8 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
         LOGGER.info("Generating Markdown report at %s", md_output_path)
         path = Path(md_output_path)
         md_report = MDReportGenerator()
-        md_report.generate(filtered_result_manager, path)
+        extra_data = {"_report_options": {"expand_results": expand_results, "render_custom_field": generate_custom_field}}
+        md_report.generate(filtered_result_manager, path, extra_data=extra_data)
 
     if json_output_path:
         LOGGER.info("Generating JSON report at %s", json_output_path)
@@ -460,7 +470,7 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
         inventory.add_device(anta_device)
         # We generate the device's AVD catalog only if structured configs are loaded
         if STRUCTURED_CONFIGS is not None and FABRIC_DATA is not None:
-            settings = AvdCatalogGenerationSettings(
+            settings = AVDCatalogGenerationSettings(
                 extra_fabric_validation=extra_fabric_validation,
                 output_dir=output_dir,
                 **get_device_catalog_filters(device, avd_catalogs_filters),

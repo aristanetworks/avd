@@ -8,8 +8,8 @@ l3leaf:
     id: 101
     bgp_as: 101
     # Used for OSPF
-    uplink_switches: [host2]
-    uplink_switch_interfaces: [Ethernet42]
+    uplink_switches: [host1]
+    uplink_switch_interfaces: [Ethernet41]
     uplink_interfaces: [Ethernet42]
     uplink_ipv4_pool: 192.168.42.0/24
   nodes:

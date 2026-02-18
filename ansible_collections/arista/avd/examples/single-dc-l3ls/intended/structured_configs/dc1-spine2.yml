@@ -63,9 +63,11 @@ ip_domain_lookup:
   source_interfaces:
   - name: Management1
     vrf: MGMT
-ip_name_servers:
-- ip_address: 192.168.1.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.1.1
 ip_routing: true
 local_users:
 - name: admin
@@ -138,7 +140,7 @@ router_bgp:
       type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn

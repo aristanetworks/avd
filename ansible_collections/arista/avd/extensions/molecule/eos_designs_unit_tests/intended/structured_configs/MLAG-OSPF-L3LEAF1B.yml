@@ -37,7 +37,7 @@ ethernet_interfaces:
     peer_interface: Ethernet6
     peer_type: mlag_peer
 - name: Ethernet1
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet220
+  description: P2P_LINK_Ethernet1_TO_DC1-SPINE1_Ethernet220
   shutdown: false
   speed: forced 40gfull
   mtu: 1500
@@ -61,22 +61,18 @@ ethernet_interfaces:
 hostname: MLAG-OSPF-L3LEAF1B
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
-- ip_address: 2001:db8::1
-  vrf: MGMT
-- ip_address: 2001:db8::2
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
+    - ip_address: 2001:db8::1
+    - ip_address: 2001:db8::2
 ip_routing: true
 local_users:
 - name: admin
   disabled: true
-  privilege: 15
-  role: network-admin
-  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -238,7 +234,8 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

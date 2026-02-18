@@ -78,21 +78,17 @@ ip_igmp_snooping:
   vlans:
   - id: 120
     enabled: false
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
-- ip_address: 2001:db8::1
-  vrf: MGMT
-- ip_address: 2001:db8::2
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
+    - ip_address: 2001:db8::1
+    - ip_address: 2001:db8::2
 local_users:
 - name: admin
   disabled: true
-  privilege: 15
-  role: network-admin
-  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -196,43 +192,53 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 130
   name: Tenant_A_APP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 131
   name: Tenant_A_APP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 110
   name: Tenant_A_OP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 111
   name: Tenant_A_OP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 112
   name: Tenant_A_OP_Zone_3
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 121
   name: Tenant_A_WEBZone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 160
   name: Tenant_A_VMOTION
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 161
   name: Tenant_A_NFS
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false

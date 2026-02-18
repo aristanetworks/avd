@@ -4,6 +4,8 @@ application_traffic_recognition:
   field_sets:
     ipv4_prefixes:
     - name: PFX-PATHFINDERS
+      prefix_values:
+      - 10.10.10.10/32
   applications:
     ipv4_applications:
     - name: APP-CONTROL-PLANE
@@ -173,6 +175,8 @@ metadata:
     site: site2
     vtep_ip: 192.168.2.2
     ssl_profile: STUN-DTLS
+    pathfinders:
+    - vtep_ip: 10.10.10.10
     interfaces:
     - name: Ethernet1
       carrier: Comcast
@@ -281,6 +285,12 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ttl_maximum_hops: 1
+  neighbors:
+  - ip_address: 10.10.10.10
+    peer_group: WAN-OVERLAY-PEERS
+    metadata:
+      peer: non-existing-cv-pathfinder
+    description: non-existing-cv-pathfinder_Dps1
   redistribute:
     connected:
       enabled: true
@@ -349,8 +359,16 @@ router_path_selection:
     id: 100
     local_interfaces:
     - name: Ethernet1
+      stun:
+        server_profiles:
+        - INET-non-existing-cv-pathfinder-Ethernet1
     dynamic_peers:
       enabled: true
+    static_peers:
+    - router_ip: 10.10.10.10
+      name: non-existing-cv-pathfinder
+      ipv4_addresses:
+      - 192.168.55.55
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
@@ -365,6 +383,12 @@ router_traffic_engineering:
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
+stun:
+  client:
+    server_profiles:
+    - name: INET-non-existing-cv-pathfinder-Ethernet1
+      ip_address: 192.168.55.55
+      ssl_profile: STUN-DTLS
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
 - name: MGMT
@@ -373,7 +397,8 @@ vrfs:
   ip_routing: true
   ipv6_routing: true
   metadata:
-    tenant: TEST
+    tenants:
+    - TEST
 vxlan_interface:
   vxlan1:
     description: uplink_lan_wan_router2_VTEP

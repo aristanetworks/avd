@@ -1,0 +1,47 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: snmp-autogen-engineid-hostname-ip-oob
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.10/24
+  type: oob
+  gateway: 1.1.1.1
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+snmp_server:
+  engine_ids:
+    local: 44f3e75f08a5bf52eef3165edb18207d4a5ef2f4
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS snmp-autogen-engineid-hostname-ip-oob
+  users:
+  - name: usertest-auth-priv
+    group: usergroup
+    version: v3
+    localized: 44f3e75f08a5bf52eef3165edb18207d4a5ef2f4
+    auth: sha
+    auth_passphrase: 879870a5f62773c95a2ae8017b0b293549f60ef3
+    priv: aes192
+    priv_passphrase: 7cbd81f3e04f953704e1959d06fb41c6b1eff88ea677fec2
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 1.1.1.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

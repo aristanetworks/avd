@@ -25,7 +25,13 @@
 | {{ tlv.name | arista.avd.default('-') }} | {{ tlv.transmit | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
-{%     if ethernet_interfaces is arista.avd.defined %}
+{%     set lldp_settings = [] %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.lldp.transmit is arista.avd.defined or ethernet_interface.lldp.receive is arista.avd.defined %}
+{%             do lldp_settings.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if lldp_settings | length > 0 %}
 
 #### LLDP Interface Settings
 {%         if lldp.run is arista.avd.defined(false) %}
@@ -35,10 +41,8 @@ LLDP is **disabled** globally. Local interface configs will not apply.
 
 | Interface | Transmit | Receive |
 | --------- | -------- | ------- |
-{%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%             if ethernet_interface.lldp.transmit is arista.avd.defined or ethernet_interface.lldp.receive is arista.avd.defined %}
+{%         for ethernet_interface in lldp_settings %}
 | {{ ethernet_interface.name }} | {{ ethernet_interface.lldp.transmit | arista.avd.default('-') }} | {{ ethernet_interface.lldp.receive | arista.avd.default('-') }} |
-{%             endif %}
 {%         endfor %}
 {%     endif %}
 

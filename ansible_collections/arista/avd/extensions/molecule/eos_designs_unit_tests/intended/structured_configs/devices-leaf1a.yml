@@ -122,21 +122,8 @@ router_bgp:
     description: devices-leaf1b
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   neighbors:
   - ip_address: 10.255.1.97
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -147,18 +134,10 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: mstp
@@ -190,13 +169,15 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

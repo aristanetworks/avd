@@ -1,0 +1,163 @@
+aaa_authentication:
+  dot1x:
+    default: group radius
+aaa_root:
+  disabled: true
+config_end: true
+dot1x:
+  system_auth_control: true
+  protocol_lldp_bypass: true
+  protocol_bpdu_bypass: true
+  dynamic_authorization: true
+enable_password:
+  disabled: true
+hostname: leaf1-dot1x-evpn-redistribution-enabled-vlan-aware-bundles
+ip_igmp_snooping:
+  globally_enabled: true
+ip_radius_source_interfaces:
+- name: Management1
+  vrf: MGMT
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.1.0.13/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 10.1.1.13/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.20.20.113/24
+  type: oob
+metadata:
+  is_deployed: true
+  platform: cEOSLab
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.1.0.0/24 eq 32
+  - sequence: 20
+    action: permit 10.1.1.0/24 eq 32
+radius_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - host: agni.arista.com
+      key: 1404071B09166738212B2130365E0C131A
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65000'
+  router_id: 10.1.0.13
+  maximum_paths:
+    paths: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlan_aware_bundles:
+  - name: DEV
+    rd: 10.1.0.13:500
+    route_targets:
+      both:
+      - 500:500
+    redistribute_routes:
+    - learned
+    - dot1x
+    vlan: 100,200
+  vrfs:
+  - name: DEV
+    rd: 10.1.0.13:500
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 500:500
+      export:
+      - address_family: evpn
+        route_targets:
+        - 500:500
+    router_id: 10.1.0.13
+    redistribute:
+      connected:
+        enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan100
+  description: VRFDEV_VLAN100
+  shutdown: false
+  vrf: DEV
+  ip_address_virtual: 192.168.100.1/24
+  metadata:
+    tenants:
+    - Tenant_A
+- name: Vlan200
+  description: VRFDEV_VLAN200
+  shutdown: false
+  vrf: DEV
+  ip_address_virtual: 192.168.200.1/24
+  metadata:
+    tenants:
+    - Tenant_A
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 100
+  name: VRFDEV_VLAN100
+  metadata:
+    tenants:
+    - Tenant_A
+- id: 200
+  name: VRFDEV_VLAN200
+  metadata:
+    tenants:
+    - Tenant_A
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: DEV
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_A
+vxlan_interface:
+  vxlan1:
+    description: leaf1-dot1x-evpn-redistribution-enabled-vlan-aware-bundles_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 100
+        vni: 10100
+      - id: 200
+        vni: 10200
+      vrfs:
+      - name: DEV
+        vni: 500

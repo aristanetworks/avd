@@ -1,0 +1,31 @@
+---
+# Testing flow_tracking_settings.trackers[].export_to_cloudvision without cv_settings
+type: l3leaf
+
+default_mgmt_method: inband
+
+fabric_flow_tracking:
+  uplinks:
+    enabled: true
+    name: FLOW-TRACKER-11
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.254.1.0/27
+    bgp_as: 4
+    vtep_loopback_ipv4_pool: 10.254.11.0/27
+
+  nodes:
+    - name: missing-cv-settings-for-flow-tracking-cloudvision-vrf
+      id: 6
+      mgmt_ip: 192.168.0.104/24
+      flow_tracker_type: hardware
+
+flow_tracking_settings:
+  trackers:
+    - name: FLOW-TRACKER-11
+      export_to_cloudvision: true
+
+expected_error_message: >-
+  CloudVision export is enabled for flow_tracking_settings, but 'cv_settings' is not defined.
+  Please configure 'cv_settings' when enabling 'flow_tracking_settings.trackers[name=FLOW-TRACKER-11].export_to_cloudvision'.

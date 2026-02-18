@@ -241,9 +241,11 @@ ip_extcommunity_lists:
   entries:
   - type: permit
     extcommunities: soo 192.168.255.3:101
-ip_name_servers:
-- ip_address: 192.168.17.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.17.1
 ip_routing: true
 ip_security:
   ike_policies:
@@ -608,7 +610,7 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     allowas_in:
       enabled: true
       times: 1
@@ -901,11 +903,13 @@ vrfs:
 - name: BLUE
   ip_routing: true
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - name: RED
   ip_routing: true
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vxlan_interface:
   vxlan1:
     description: site1-wan2_VTEP

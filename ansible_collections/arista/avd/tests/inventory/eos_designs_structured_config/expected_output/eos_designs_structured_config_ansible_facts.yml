@@ -17,5 +17,5 @@ vrfs:
 ip_igmp_snooping:
   globally_enabled: true
 metadata:
-  fabric_name: integration_tests
+  fabric_name: testgroup
   is_deployed: true

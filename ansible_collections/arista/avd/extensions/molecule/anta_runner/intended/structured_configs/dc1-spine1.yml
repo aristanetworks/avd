@@ -82,13 +82,6 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
-logging:
-  vrfs:
-  - name: MGMT
-    source_interface: Management1
-    hosts:
-    - name: graylog-server
-      protocol: udp
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -146,7 +139,7 @@ router_bgp:
       type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn

@@ -2,7 +2,8 @@ aaa_root:
   disabled: true
 config_end: true
 enable_password:
-  disabled: true
+  hash_algorithm: sha512
+  key: $6$4a218ce02030f015$p3AHazuaM3hN.wrfgQDdMKQ1VKobWipodBc3xFZBctjEciC6RK2/ZDEmPHHiCJ7OQlwuYrlY.q4VXQ50HS4SW1
 ethernet_interfaces:
 - name: Ethernet1
   description: P2P_IPV6_NUMBERED_LEAF1a_Ethernet1
@@ -54,6 +55,10 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+- name: clear_password
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$75d2c43eaa837bc8$u557hMeivMHVmSCuP88u5F2rFSwgwGnhr90W/vfX1aKCHrkWCreSLJOea9QLa07z3wfrwNuEPQnqqHU/8dhy40
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -106,7 +111,7 @@ router_bgp:
       type: ipv6
     password: F0bdF6JLcJtagc6PCN8W0Q==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn

@@ -36,11 +36,12 @@ ethernet_interfaces:
 hostname: inband-mgmt-dualstack-ips
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 1.1.1.1
-  vrf: default
-- ip_address: 8.8.8.8
-  vrf: default
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 1.1.1.1
+    - ip_address: 8.8.8.8
 ipv6_static_routes:
 - prefix: ::/0
   next_hop: 2a00:105::1
@@ -89,7 +90,9 @@ vlans:
 - id: 105
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - INBAND_MGMT_TESTS
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

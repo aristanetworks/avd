@@ -9,6 +9,13 @@
 {%     if qos.rewrite_dscp is arista.avd.defined(true) %}
 qos rewrite dscp
 {%     endif %}
+{%     if qos.random_detect.ecn.allow_non_ect.enabled is arista.avd.defined %}
+{%         set ecn_command = "qos random-detect ecn allow non-ect" %}
+{%         if qos.random_detect.ecn.allow_non_ect.chip_based is arista.avd.defined(true) %}
+{%             set ecn_command = ecn_command ~ " chip-based" %}
+{%         endif %}
+{{ ecn_command }}
+{%     endif %}
 {%     if qos.tx_queue.shape_rate_percent_adaptive is arista.avd.defined(true) %}
 qos tx-queue shape rate percent adaptive
 {%     endif %}
@@ -23,18 +30,10 @@ qos map cos {{ cos_map }}
 {%     for dscp_map in qos.map.dscp | arista.avd.natural_sort %}
 qos map dscp {{ dscp_map }}
 {%     endfor %}
-{%     for tc_map in qos.map.traffic_class | arista.avd.natural_sort %}
-qos map traffic-class {{ tc_map }}
-{%     endfor %}
 {%     for exp_map in qos.map.exp | arista.avd.natural_sort %}
 qos map exp {{ exp_map }}
 {%     endfor %}
-{%     if qos.random_detect.ecn.allow_non_ect.enabled is arista.avd.defined %}
-!
-{%         set ecn_command = "qos random-detect ecn allow non-ect" %}
-{%         if qos.random_detect.ecn.allow_non_ect.chip_based is arista.avd.defined(true) %}
-{%             set ecn_command = ecn_command ~ " chip-based" %}
-{%         endif %}
-{{ ecn_command }}
-{%     endif %}
+{%     for tc_map in qos.map.traffic_class | arista.avd.natural_sort %}
+qos map traffic-class {{ tc_map }}
+{%     endfor %}
 {% endif %}

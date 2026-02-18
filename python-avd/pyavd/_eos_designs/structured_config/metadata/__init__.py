@@ -5,19 +5,20 @@ from __future__ import annotations
 
 from typing import Protocol
 
+from pyavd._eos_designs.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGenerator,
     StructuredConfigGeneratorProtocol,
     structured_config_contributor,
 )
-from pyavd._utils import default
 
 from .cv_pathfinder import CvPathfinderMixin
 from .cv_tags import CvTagsMixin
 from .digital_twin import DigitalTwinMixin
+from .utils import UtilsMixin
 
 
-class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, DigitalTwinMixin, StructuredConfigGeneratorProtocol, Protocol):
+class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, DigitalTwinMixin, UtilsMixin, StructuredConfigGeneratorProtocol, Protocol):
     """Protocol for the AvdStructuredConfigMetadata Class."""
 
     @structured_config_contributor
@@ -31,19 +32,25 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
             dc_name=self.inputs.dc_name,
             fabric_name=self.shared_utils.fabric_name,
             serial_number=self.shared_utils.serial_number,
-            validate_no_errors_period=self.inputs.logging_settings.validate_no_errors_period,
         )
-        exclude_as_extra_fabric_validation_target = default(
-            self.shared_utils.node_config.exclude_as_extra_fabric_validation_target,
-            self.shared_utils.node_type_key_data.exclude_as_extra_fabric_validation_target,
-        )
-        if exclude_as_extra_fabric_validation_target:
-            self.structured_config.metadata.exclude_as_extra_fabric_validation_target = exclude_as_extra_fabric_validation_target
         self._set_cv_tags()
         self._set_cv_pathfinder()
         if self.shared_utils.digital_twin:
             self._set_digital_twin()
-        self.structured_config.metadata.validate_hardware = self.shared_utils.platform_settings.validate_hardware
+
+        # Logic for validate hardware
+        if not self.shared_utils.platform_settings.feature_support.hardware_validation:
+            self.structured_config.metadata.validate_hardware.enabled = False
+        if not self.shared_utils.node_config.validation_profile:
+            return
+        resolved_profile = self.get_resolved_validation_profile(self.shared_utils.node_config.validation_profile)
+        if self.shared_utils.platform_settings.feature_support.hardware_validation:
+            self.structured_config.metadata.validate_hardware = resolved_profile.hardware._cast_as(
+                EosCliConfigGen.Metadata.ValidateHardware, ignore_extra_keys=True
+            )
+        self.structured_config.metadata.validate_no_errors_period = resolved_profile.logging.validate_no_errors_period
+        if resolved_profile.exclude_as_extra_fabric_validation_target:
+            self.structured_config.metadata.exclude_as_extra_fabric_validation_target = resolved_profile.exclude_as_extra_fabric_validation_target
 
 
 class AvdStructuredConfigMetadata(StructuredConfigGenerator, AvdStructuredConfigMetadataProtocol):

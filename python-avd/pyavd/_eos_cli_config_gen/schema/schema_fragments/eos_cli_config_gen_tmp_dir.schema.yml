@@ -1,0 +1,17 @@
+# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  eos_cli_config_gen_tmp_dir:
+    documentation_options:
+      table: role-settings
+    type: str
+    description: |
+      Path for temporary files created by the 'eos_cli_config_gen' role.
+      Contains templated inputs and validated inputs used internally by AVD plugins.
+      Defaults to 'intended/tmp_eos_cli_config_gen'.
+      The temporary directory is cleaned up at the end of the 'eos_cli_config_gen' role.

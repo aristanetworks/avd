@@ -4,48 +4,42 @@
  that can be found in the LICENSE file.
 #}
 {# doc - ip client source interfaces #}
-{% if ip_ftp_client is arista.avd.defined or ip_http_client_source_interfaces is arista.avd.defined or ip_ssh_client_source_interfaces is arista.avd.defined or ip_telnet_client is arista.avd.defined or ip_tftp_client is arista.avd.defined %}
+{% if ip_ftp_client is arista.avd.defined or ip_http_client is arista.avd.defined or ip_ssh_client is arista.avd.defined or ip_telnet_client is arista.avd.defined or ip_tftp_client is arista.avd.defined %}
 
 ### IP Client Source Interfaces
 
 | IP Client | VRF | Source Interface Name |
 | --------- | --- | --------------------- |
-{%     if ip_ftp_client is arista.avd.defined %}
-{%         if ip_ftp_client.source_interface is arista.avd.defined %}
+{%     if ip_ftp_client.source_interface is arista.avd.defined %}
 | FTP | default | {{ ip_ftp_client.source_interface }} |
-{%         endif %}
-{%         for vrf in ip_ftp_client.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
+{%     endif %}
+{%     for vrf in ip_ftp_client.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 | FTP | {{ vrf.name }} | {{ vrf.source_interface }} |
-{%         endfor %}
+{%     endfor %}
+{%     if ip_http_client.source_interface is arista.avd.defined %}
+| HTTP | default | {{ ip_http_client.source_interface }} |
 {%     endif %}
-{%     if ip_http_client_source_interfaces is arista.avd.defined %}
-{%         for ip_http_client_source_interface in ip_http_client_source_interfaces | arista.avd.natural_sort(sort_key="name") %}
-| HTTP | {{ ip_http_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_http_client_source_interface.name }} |
-{%         endfor %}
+{%     for vrf in ip_http_client.vrfs | arista.avd.natural_sort("name", ignore_case=false) %}
+| HTTP | {{ vrf.name }} | {{ vrf.source_interface }} |
+{%     endfor %}
+{%     if ip_ssh_client.source_interface is arista.avd.defined %}
+| SSH | default | {{ ip_ssh_client.source_interface | capitalize }} |
 {%     endif %}
-{%     if ip_ssh_client_source_interfaces is arista.avd.defined %}
-{%         for ip_ssh_client_source_interface in ip_ssh_client_source_interfaces | arista.avd.natural_sort(sort_key="name") %}
-{%             if ip_ssh_client_source_interface.name is arista.avd.defined %}
-| SSH | {{ ip_ssh_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_ssh_client_source_interface.name | capitalize }} |
-{%             endif %}
-{%         endfor %}
-{%     endif %}
-{%     if ip_telnet_client is arista.avd.defined %}
-{%         if ip_telnet_client.source_interface is arista.avd.defined %}
+{%     for vrf in ip_ssh_client.vrfs | arista.avd.natural_sort("name", ignore_case=false) %}
+| SSH | {{ vrf.name }} | {{ vrf.source_interface | capitalize }} |
+{%     endfor %}
+{%     if ip_telnet_client.source_interface is arista.avd.defined %}
 | Telnet | default | {{ ip_telnet_client.source_interface }} |
-{%         endif %}
-{%         for vrf in ip_telnet_client.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
+{%     endif %}
+{%     for vrf in ip_telnet_client.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 | Telnet | {{ vrf.name }} | {{ vrf.source_interface }} |
-{%         endfor %}
-{%     endif %}
-{%     if ip_tftp_client is arista.avd.defined %}
-{%         if ip_tftp_client.source_interface is arista.avd.defined %}
+{%     endfor %}
+{%     if ip_tftp_client.source_interface is arista.avd.defined %}
 | TFTP | default | {{ ip_tftp_client.source_interface }} |
-{%         endif %}
-{%         for vrf in ip_tftp_client.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
-| TFTP | {{ vrf.name }} | {{ vrf.source_interface }} |
-{%         endfor %}
 {%     endif %}
+{%     for vrf in ip_tftp_client.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
+| TFTP | {{ vrf.name }} | {{ vrf.source_interface }} |
+{%     endfor %}
 
 #### IP Client Source Interfaces Device Configuration
 

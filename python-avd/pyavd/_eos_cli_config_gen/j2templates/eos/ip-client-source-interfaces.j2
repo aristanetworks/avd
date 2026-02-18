@@ -5,54 +5,39 @@
 #}
 {# eos - ip client source-interfaces #}
 {% if ip_ftp_client is arista.avd.defined
-      or ip_http_client_source_interfaces is arista.avd.defined
-      or ip_ssh_client_source_interfaces is arista.avd.defined
+      or ip_http_client is arista.avd.defined
+      or ip_ssh_client is arista.avd.defined
       or ip_telnet_client is arista.avd.defined
       or ip_tftp_client is arista.avd.defined %}
 !
-{%     if ip_ftp_client is arista.avd.defined %}
-{%         if ip_ftp_client.source_interface is arista.avd.defined %}
+{%     if ip_ftp_client.source_interface is arista.avd.defined %}
 ip ftp client source-interface {{ ip_ftp_client.source_interface }}
-{%         endif %}
-{%         for vrf in ip_ftp_client.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%     endif %}
+{%     for vrf in ip_ftp_client.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 ip ftp client source-interface {{ vrf.source_interface }} vrf {{ vrf.name }}
-{%         endfor %}
-{%     endif %}
-{%     for ip_http_client_source_interface in ip_http_client_source_interfaces | arista.avd.natural_sort(sort_key="name") %}
-{%         set ip_http_client_cli = "ip http client" %}
-{%         if ip_http_client_source_interface.name is arista.avd.defined %}
-{%             set ip_http_client_cli = ip_http_client_cli ~ " local-interface " ~ ip_http_client_source_interface.name %}
-{%             if ip_http_client_source_interface.vrf is arista.avd.defined %}
-{%                 set ip_http_client_cli = ip_http_client_cli ~ " vrf " ~ ip_http_client_source_interface.vrf %}
-{%             endif %}
-{{ ip_http_client_cli }}
-{%         endif %}
 {%     endfor %}
-{%     if ip_ssh_client_source_interfaces is arista.avd.defined %}
-{%         for ip_ssh_client_source_interface in ip_ssh_client_source_interfaces | arista.avd.natural_sort(sort_key="name") %}
-{%             if ip_ssh_client_source_interface.name is arista.avd.defined %}
-{%                 set ip_ssh_client_cli = "ip ssh client source-interface " ~ ip_ssh_client_source_interface.name | capitalize %}
-{%                 if ip_ssh_client_source_interface.vrf is arista.avd.defined %}
-{%                     set ip_ssh_client_cli = ip_ssh_client_cli ~ " vrf " ~ ip_ssh_client_source_interface.vrf %}
-{%                 endif %}
-{{ ip_ssh_client_cli }}
-{%             endif %}
-{%         endfor %}
+{%     if ip_http_client.source_interface is arista.avd.defined %}
+ip http client local-interface {{ ip_http_client.source_interface }}
 {%     endif %}
-{%     if ip_telnet_client is arista.avd.defined %}
-{%         if ip_telnet_client.source_interface is arista.avd.defined %}
+{%     for vrf in ip_http_client.vrfs | arista.avd.natural_sort("name", ignore_case=false) %}
+ip http client local-interface {{ vrf.source_interface }} vrf {{ vrf.name }}
+{%     endfor %}
+{%     if ip_ssh_client.source_interface is arista.avd.defined %}
+ip ssh client source-interface {{ ip_ssh_client.source_interface }}
+{%     endif %}
+{%     for vrf in ip_ssh_client.vrfs | arista.avd.natural_sort("name", ignore_case=false) %}
+ip ssh client source-interface {{ vrf.source_interface }} vrf {{ vrf.name }}
+{%     endfor %}
+{%     if ip_telnet_client.source_interface is arista.avd.defined %}
 ip telnet client source-interface {{ ip_telnet_client.source_interface }}
-{%         endif %}
-{%         for vrf in ip_telnet_client.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+{%     endif %}
+{%     for vrf in ip_telnet_client.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 ip telnet client source-interface {{ vrf.source_interface }} vrf {{ vrf.name }}
-{%         endfor %}
-{%     endif %}
-{%     if ip_tftp_client is arista.avd.defined %}
-{%         if ip_tftp_client.source_interface is arista.avd.defined %}
+{%     endfor %}
+{%     if ip_tftp_client.source_interface is arista.avd.defined %}
 ip tftp client source-interface {{ ip_tftp_client.source_interface }}
-{%         endif %}
-{%         for vrf in ip_tftp_client.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
-ip tftp client source-interface {{ vrf.source_interface }} vrf {{ vrf.name }}
-{%         endfor %}
 {%     endif %}
+{%     for vrf in ip_tftp_client.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
+ip tftp client source-interface {{ vrf.source_interface }} vrf {{ vrf.name }}
+{%     endfor %}
 {% endif %}

@@ -1,7 +1,25 @@
+---
+- name: Validate eos_designs inputs
+  arista.avd.validate_inputs:
+    schema_name: avd_design
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
+  delegate_to: localhost
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts
+  arista.avd.eos_designs_facts:
+    template_output: true
+    output_dir: "{{ actual_output_dir }}"
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
+  check_mode: false
+  run_once: true
+
 - name: Test with list_merge invalid option
   ignore_errors: true
   register: result
   arista.avd.eos_designs_structured_config:
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
     eos_designs_custom_templates:
       - template: base.yml.j2
         options:

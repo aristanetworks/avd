@@ -7,7 +7,7 @@ dev = [
     "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
     "netaddr>=0.7.19",
-    "pyavd-utils==0.0.1",
+    "pyavd-utils==0.0.2",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     # dev requirements"
@@ -24,14 +24,14 @@ dev = [
     "pre-commit-hooks>=3.3.0",
     "pre-commit>=3.2.0",
     "pylint>=3.2.6",
-    "ruff==0.14.10",
+    "ruff==0.15.1",
     "setuptools>=77.0", # for pyright check in CI
     "tox>4",
     "twine>=6.2.0",
     "yamllint>=1.37.1",
 ]
 coverage = [
-    "coverage[toml]==7.13.1",
+    "coverage[toml]==7.13.4",
 ]
 doc = [
     "mkdocs",
@@ -52,7 +52,7 @@ molecule = [
     "molecule-plugins[docker]>=25.8.12",
 ]
 pytest = [
-    "ansible-core>=2.16.0,<2.20.0",
+    "ansible-core>=2.16.0,<2.21.0",
     "anta>=1.7.0",
     "pytest>=8.2.0",
     "pytest-asyncio>=1.2.0",
@@ -171,7 +171,6 @@ exclude = [
   "ansible_collections/arista/avd",                                      # TODO
   "python-avd/pyavd/_cv",                                                # TODO
   "python-avd/pyavd/_schema/models",                                     # TODO
-  "python-avd/schema_tools/generate_classes",                            # TODO
   "python-avd/schema_tools/generate_docs",                               # TODO
   "python-avd/schema_tools/metaschema",                                  # TODO
   "python-avd/tests",                                                    # TODO
@@ -204,6 +203,10 @@ markers = [
     "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode.",
 ]
 asyncio_default_fixture_loop_scope = "function"
+# log_file = "pytest.log"
+# log_file_level = "DEBUG"
+log_file_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_file_date_format = "%Y-%m-%d %H:%M:%S.%f"
 
 [tool.coverage.run]
 branch = true
@@ -211,6 +214,11 @@ parallel = true
 source_pkgs = [
   "pyavd",
   "schema_tools",
+]
+source_dirs = [
+  # Adding compiled templates as source dir since they are not part of the pyavd package
+  "python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates",
+  "python-avd/pyavd/_eos_designs/j2templates/compiled_templates",
 ]
 omit = [
   "python-avd/pyavd/_cv/api/*"
@@ -249,7 +257,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.0.0-dev6"
+current_version = "6.0.0-dev9"
 
 allow_dirty = true
 commit = false
@@ -284,9 +292,9 @@ replace = "version: {new_version}"
 ### Bumping version using PEP440 style like x.y.z.dev1
 
 [[tool.bumpversion.files]]
-filename = "ansible_collections/arista/avd/requirements.txt"
-search = "pyavd[ansible-collection]=={current_version}"
-replace = "pyavd[ansible-collection]=={new_version}"
+filename = "python-avd/pyproject.toml"
+search = 'pyavd=={current_version}'
+replace = 'pyavd=={new_version}'
 parse = """(?x)
     (?P<major>0|[1-9]\\d*)\\.
     (?P<minor>0|[1-9]\\d*)\\.

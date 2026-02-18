@@ -88,20 +88,20 @@ flow_tracking:
   sampled:
     sample: 10000
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER
+      record_export:
         on_inactive_timeout: 70000
         on_interval: 300000
-      name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
         collectors:
         - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 3600000
-    - record_export:
+    - name: FT_Test
+      record_export:
         on_inactive_timeout: 70000
         on_interval: 300000
-      name: FT_Test
       exporters:
       - name: CV-TELEMETRY
         collectors:
@@ -332,34 +332,10 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: TESTING
     rd: 192.168.255.109:2
@@ -421,11 +397,13 @@ vrfs:
 - name: TESTING
   ip_routing: true
   metadata:
-    tenant: L3PO
+    tenants:
+    - L3PO
 - name: subIntVRF
   ip_routing: true
   metadata:
-    tenant: Subinterface
+    tenants:
+    - Subinterface
 vxlan_interface:
   vxlan1:
     description: network-services-l3-port-channels_VTEP

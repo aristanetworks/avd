@@ -39,6 +39,7 @@
       extra_fabric_validation: "{{ avd_catalogs_extra_fabric_validation }}"
       filters: "{{ avd_catalogs_filters | arista.avd.default([]) }}"
     user_catalogs:
+      enabled: "{{ user_catalogs_enabled }}"
       input_dir: "{{ user_catalogs_dir }}"
     runner:
       timeout: "{{ anta_runner_timeout }}"
@@ -46,6 +47,8 @@
       tags: "{{ anta_runner_tags | arista.avd.default([]) }}"
       dry_run: "{{ anta_runner_dry_run }}"
     report:
+      expand_results: "{{ anta_report_expand_results }}"
+      generate_custom_field: "{{ anta_report_custom_field }}"
       csv_output: "{{ anta_report_csv_path }}"
       md_output: "{{ anta_report_md_path }}"
       json_output: "{{ anta_report_json_path }}"

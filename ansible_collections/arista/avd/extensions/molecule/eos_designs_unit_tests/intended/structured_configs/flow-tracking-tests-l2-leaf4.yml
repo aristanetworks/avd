@@ -1,6 +1,17 @@
 aaa_root:
   disabled: true
 config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - apiserver.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /tmp/cv-onboarding-token
+  cvsourceintf: Vlan4092
+  cvvrf: default
+  disable_aaa: false
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ipfixaddr: default/127.0.0.1:4739
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -25,23 +36,34 @@ ethernet_interfaces:
     peer_interface: Ethernet34
     peer_type: l3leaf
 flow_tracking:
-  sampled:
-    sample: 10000
+  hardware:
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER-11
+      record_export:
         on_inactive_timeout: 50020
         on_interval: 300321
-      name: FLOW-TRACKER-11
       exporters:
       - name: ayush_exporter
         collectors:
         - host: 127.0.2.1
         local_interface: Management1
         template_interval: 40020
+      - name: CLOUDVISION
+        collectors:
+        - host: 127.0.0.1
+        local_interface: Vlan4092
     shutdown: false
 hostname: flow-tracking-tests-l2-leaf4
+ip_domain_lookup:
+  source_interfaces:
+  - name: Vlan4092
 ip_igmp_snooping:
   globally_enabled: true
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 192.168.200.5
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -56,12 +78,20 @@ metadata:
   fabric_name: FLOW_TRACKING_TESTS
   validate_hardware:
     enabled: false
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_flow-tracking-tests-leaf-mlag_Port-Channel34
   shutdown: false
   flow_tracker:
-    sampled: FLOW-TRACKER-11
+    hardware: FLOW-TRACKER-11
   switchport:
     enabled: true
     mode: trunk
@@ -92,11 +122,13 @@ vlans:
 - id: 11
   name: VLAN11
   metadata:
-    tenant: FLOW_TRACKING
+    tenants:
+    - FLOW_TRACKING
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

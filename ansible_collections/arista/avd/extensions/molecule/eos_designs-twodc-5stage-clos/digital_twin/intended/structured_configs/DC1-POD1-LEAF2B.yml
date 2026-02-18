@@ -2,18 +2,18 @@ aaa_root:
   disabled: true
 as_path:
   access_lists:
-  - name: AS65101
-    entries:
-    - type: permit
-      match: _65101_
-  - name: AS65110.100
-    entries:
-    - type: permit
-      match: _65110\.100_
   - name: AS65111.100
     entries:
     - type: permit
       match: _65111\.100_
+  - name: AS65110.100
+    entries:
+    - type: permit
+      match: _65110\.100_
+  - name: AS65101
+    entries:
+    - type: permit
+      match: _65101_
 config_end: true
 domain_list:
 - structured-config.set.under.vrf.common-vrf
@@ -340,7 +340,6 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-  no_password: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -493,12 +492,12 @@ route_maps:
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
     set:
     - origin incomplete
-- name: RM-EVPN-FILTER-AS65101
+- name: RM-EVPN-FILTER-AS65111.100
   sequence_numbers:
   - sequence: 10
     type: deny
     match:
-    - as-path AS65101
+    - as-path AS65111.100
   - sequence: 20
     type: permit
 - name: RM-EVPN-FILTER-AS65110.100
@@ -509,12 +508,12 @@ route_maps:
     - as-path AS65110.100
   - sequence: 20
     type: permit
-- name: RM-EVPN-FILTER-AS65111.100
+- name: RM-EVPN-FILTER-AS65101
   sequence_numbers:
   - sequence: 10
     type: deny
     match:
-    - as-path AS65111.100
+    - as-path AS65101
   - sequence: 20
     type: permit
 router_bfd:
@@ -544,14 +543,14 @@ router_bgp:
     next_hop_self: true
     password: vnEaG8gMeQf3d3cN6PktXQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     metadata:
       type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -648,7 +647,8 @@ router_bgp:
   vlans:
   - id: 110
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 172.16.110.5:99110
     rd_evpn_domain:
       domain: remote
@@ -671,7 +671,8 @@ router_bgp:
       '
   - id: 111
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 172.16.110.5:50111
     rd_evpn_domain:
       domain: remote
@@ -694,7 +695,8 @@ router_bgp:
       '
   - id: 112
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 172.16.110.5:20112
     rd_evpn_domain:
       domain: remote
@@ -717,7 +719,8 @@ router_bgp:
       '
   - id: 2500
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 172.16.110.5:2500
     rd_evpn_domain:
       domain: remote
@@ -732,7 +735,8 @@ router_bgp:
     - learned
   - id: 2600
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 172.16.110.5:32600
     rd_evpn_domain:
       domain: remote
@@ -759,18 +763,18 @@ router_bgp:
         enable: true
         inter_domain: false
     peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     - name: EVPN-OVERLAY-CORE
       activate: true
       domain_remote: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
     route:
       import_match_failure_action: discard
   address_family_rtc:
     peer_groups:
-    - name: EVPN-OVERLAY-CORE
-      activate: true
     - name: EVPN-OVERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-CORE
       activate: true
   address_family_ipv4:
     peer_groups:
@@ -904,7 +908,8 @@ vlan_interfaces:
   vrf: Common_VRF
   ip_address_virtual: 10.1.10.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
 - name: Vlan111
@@ -913,7 +918,8 @@ vlan_interfaces:
   vrf: Common_VRF
   ip_address_virtual: 10.1.11.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
 - name: Vlan112
@@ -922,7 +928,8 @@ vlan_interfaces:
   vrf: Common_VRF
   ip_address_virtual: 10.1.12.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
   eos_cli: 'comment
@@ -938,7 +945,8 @@ vlan_interfaces:
   vrf: Common_VRF
   ip_address_virtual: 10.10.13.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
 - name: Vlan1102
@@ -947,7 +955,8 @@ vlan_interfaces:
   vrf: vrf_with_loopbacks_dc1_pod1_only
   ip_address_virtual: 10.102.100.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
     - web
@@ -957,7 +966,8 @@ vlan_interfaces:
   vrf: vrf_with_loopbacks_from_overlapping_pool
   ip_address_virtual: 10.100.100.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
     - web
@@ -967,7 +977,8 @@ vlan_interfaces:
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address_virtual: 10.101.100.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
     - web
@@ -991,70 +1002,86 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 110
   name: Tenant_A_OP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 111
   name: Tenant_A_OP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 112
   name: Tenant_A_OP_Zone_3
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 113
   name: SVI_with_no_vxlan
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 1102
   name: test_svi
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 1100
   name: test_svi
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 1101
   name: test_svi
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 2500
   name: web-l2-vlan
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 2600
   name: web-l2-vlan-2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 2601
   name: l2vlan_with_no_vxlan
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 4085
   name: L2LEAF_INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Common_VRF
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: vrf_with_loopbacks_dc1_pod1_only
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: vrf_with_loopbacks_from_overlapping_pool
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: vrf_with_loopbacks_from_pod_pools
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vxlan_interface:
   vxlan1:
     description: DC1-POD1-LEAF2B_VTEP

@@ -70,25 +70,26 @@ metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 radius_server:
-  hosts:
+  servers:
   - host: 11.10.10.11
-    vrf: default
     key: 071B245F5A
-  - host: 11.10.10.1
-    vrf: INBAND_MGMT
-    key: 071B245F5A
-  - host: 11.10.10.2
-    vrf: INBAND_MGMT
-    key: 071B245F5A
-  - host: 11.10.10.3
-    vrf: MGMT
-    key: 071B245F5A
-  - host: 11.10.10.4
-    vrf: other_vrf
-    key: 071B245F5A
-  - host: 11.10.10.5
-    vrf: MGMT
-    key: 071B245F5A
+  vrfs:
+  - name: INBAND_MGMT
+    servers:
+    - host: 11.10.10.1
+      key: 071B245F5A
+    - host: 11.10.10.2
+      key: 071B245F5A
+  - name: MGMT
+    servers:
+    - host: 11.10.10.3
+      key: 071B245F5A
+    - host: 11.10.10.5
+      key: 071B245F5A
+  - name: other_vrf
+    servers:
+    - host: 11.10.10.4
+      key: 071B245F5A
 service_routing_protocols_model: multi-agent
 tacacs_servers:
   hosts:
@@ -130,7 +131,8 @@ vlans:
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

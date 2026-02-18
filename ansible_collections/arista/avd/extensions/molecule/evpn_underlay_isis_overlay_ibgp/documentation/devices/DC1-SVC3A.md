@@ -771,7 +771,6 @@ route-map RM-EVPN-SOO-OUT permit 10
 #### IP Extended Community Lists Device Configuration
 
 ```eos
-!
 ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.254.8:1
 ```
 

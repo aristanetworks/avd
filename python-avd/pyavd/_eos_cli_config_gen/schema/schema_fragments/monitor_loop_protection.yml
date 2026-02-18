@@ -1,0 +1,41 @@
+# Copyright (c) 2025-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+type: dict
+keys:
+  monitor_loop_protection:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      disabled_time:
+        type: int
+        convert_types:
+          - str
+        description: |-
+          Port disable time. EOS default is 604800 seconds (7 days).
+          0 indicates that the disabled device should not automatically come back up.
+        min: 0
+        max: 604800
+      protect_vlan:
+        type: str
+        convert_types:
+          - int
+        description: |-
+          VLAN range as string.
+          "< vlan_id >, < vlan_id >-< vlan_id >"
+          Example: 15,16,17,18
+      rate_limit:
+        type: int
+        convert_types:
+          - str
+        description: Rate limits the loop detection frames. EOS default is 1000/second.
+        min: 0
+        max: 1000
+      transmit_interval:
+        type: int
+        convert_types:
+          - str
+        description: Loop protection packet transmit interval. EOS default is 5 seconds.
+        min: 1
+        max: 10

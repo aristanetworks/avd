@@ -619,7 +619,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -682,7 +682,7 @@ router bgp 65101
    neighbor UNDERLAY-PEERS peer group
    neighbor UNDERLAY-PEERS password 7 <removed>
    neighbor UNDERLAY-PEERS send-community
-   neighbor UNDERLAY-PEERS maximum-routes 12000
+   neighbor UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.31.255.0 peer group UNDERLAY-PEERS
    neighbor 172.31.255.0 remote-as 65001
    neighbor 172.31.255.0 description DC1-SPINE1_Ethernet1

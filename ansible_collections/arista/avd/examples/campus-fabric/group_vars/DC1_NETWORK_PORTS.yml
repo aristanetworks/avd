@@ -42,11 +42,9 @@ network_ports:
     description: IDF1 Standard Port
     profile: PP-DOT1X
     native_vlan: 110
-    structured_config:
-      switchport:
-        phone:
-          trunk: untagged
-          vlan: 120
+    mode: "trunk phone"
+    phone_vlan: 120
+    phone_trunk_mode: untagged
     dot1x:
       authentication_failure:
         action: allow
@@ -61,11 +59,9 @@ network_ports:
     description: IDF2 Standard Port
     profile: PP-DOT1X
     native_vlan: 210
-    structured_config:
-      switchport:
-        phone:
-          trunk: untagged
-          vlan: 220
+    mode: "trunk phone"
+    phone_vlan: 220
+    phone_trunk_mode: untagged
     dot1x:
       authentication_failure:
         action: allow
@@ -80,11 +76,9 @@ network_ports:
     description: IDF3 Standard Port
     profile: PP-DOT1X
     native_vlan: 310
-    structured_config:
-      switchport:
-        phone:
-          trunk: untagged
-          vlan: 320
+    mode: "trunk phone"
+    phone_vlan: 320
+    phone_trunk_mode: untagged
     dot1x:
       authentication_failure:
         action: allow

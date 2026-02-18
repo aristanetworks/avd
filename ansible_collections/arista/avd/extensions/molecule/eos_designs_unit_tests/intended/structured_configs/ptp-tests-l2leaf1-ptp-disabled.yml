@@ -62,7 +62,8 @@ vlans:
 - id: 11
   name: VLAN11
   metadata:
-    tenant: PTP
+    tenants:
+    - PTP
 vrfs:
 - name: MGMT
   ip_routing: false

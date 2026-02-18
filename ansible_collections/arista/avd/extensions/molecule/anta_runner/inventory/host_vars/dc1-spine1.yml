@@ -1,5 +1,0 @@
----
-logging_settings:
-  hosts:
-    - name: graylog-server
-  validate_no_errors_period: 1
