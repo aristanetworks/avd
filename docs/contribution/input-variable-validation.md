@@ -77,8 +77,8 @@ This fragment will be merged with other fragments during development, to form th
 
 For reference, the full Role Schemas can be found here:
 
-- [`eos_designs` AVD Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/schema/eos_designs.schema.yml)
-- [`eos_cli_config_gen` AVD Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml)
+- `eos_designs` uses the [AVD Design Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_designs/schema/eos_designs.schema.yml)
+- `eos_cli_config_gen` uses the [EOS Config Schema](https://github.com/aristanetworks/avd/tree/devel/python-avd/pyavd/_eos_cli_config_gen/schema/eos_cli_config_gen.schema.yml)
 
 The supported schema options depend on the type of variable that is described. The supported types are `int`, `bool`, `str`,
 `dict` and `list`. The schema does not support mixed types for the same variable, but the automatic type conversion mentioned

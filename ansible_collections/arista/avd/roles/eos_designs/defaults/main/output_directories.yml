@@ -21,5 +21,5 @@ output_dir: '{{ root_dir }}/{{ output_dir_name }}'
 structured_dir_name: 'structured_configs'
 structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
 
-# Output directory for AVD temporary files. Defaults to 'intended/tmp'.
-avd_tmp_dir: "{{ output_dir }}/tmp"
+# Output directory for temporary files.
+eos_designs_tmp_dir: "{{ output_dir }}/tmp_eos_designs"

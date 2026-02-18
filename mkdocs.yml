@@ -186,8 +186,11 @@ nav:
       - ISIS-LDP IPVPN: ansible_collections/arista/avd/examples/isis-ldp-ipvpn/README.md
       - CV Pathfinder: ansible_collections/arista/avd/examples/cv-pathfinder/README.md
   - How-to Guides:
+      - Fabric Topology: docs/howto/fabric_topology/README.md
       - Connected Endpoints: docs/howto/connected_endpoints/README.md
+      - IP Addressing: docs/howto/ip_addressing/README.md
       - Node Types: docs/howto/node_types/README.md
+      - Network Services: docs/howto/network_services/README.md
       - Configuring PTP: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/ptp.md
       - Configuring WAN: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/wan.md
       - Custom Descriptions and Names: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.md
