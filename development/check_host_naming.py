@@ -31,23 +31,24 @@ def _suggest_fix(name: str) -> str:
     return name.replace("_", "-")
 
 
-def _find_line_number(file_content: str, host_name: str) -> int:
+def _find_all_line_numbers(file_content: str, host_name: str) -> list[int]:
     """
-    Find the line number where a host name appears in the file.
+    Find all line numbers where a host name appears in the file.
 
     Args:
         file_content: The file content as a string
         host_name: The host name to search for
 
     Returns:
-        Line number (1-indexed) where the host name appears, or 0 if not found
+        List of line numbers (1-indexed) where the host name appears
     """
+    line_numbers = []
     for line_num, line in enumerate(file_content.splitlines(), start=1):
         # Look for the host name as a YAML key (with colon) or standalone
         stripped = line.strip()
         if stripped == f"{host_name}:" or stripped.startswith(f"{host_name}:") or stripped == host_name:
-            return line_num
-    return 0
+            line_numbers.append(line_num)
+    return line_numbers
 
 
 def _validate_hosts_section(value: Any) -> Generator[str, None, None]:
@@ -130,11 +131,14 @@ def process_file(file_path: Path) -> list[Violation]:
     # Find all invalid host names
     invalid_hosts = list(check_hosts_for_underscores(data))
 
-    # Map each invalid host to its line number
-    violations: list[Violation] = []
+    # Map each invalid host to its line numbers (deduplicate by using a dict)
+    host_line_map: dict[str, list[int]] = {}
     for host_name in invalid_hosts:
-        line_num = _find_line_number(file_content, host_name)
-        violations.append((host_name, line_num))
+        if host_name not in host_line_map:
+            host_line_map[host_name] = _find_all_line_numbers(file_content, host_name)
+
+    # Create violations list with all unique (host, line) combinations
+    violations: list[Violation] = [(host_name, line_num) for host_name, line_numbers in host_line_map.items() for line_num in line_numbers]
 
     return violations
 
@@ -172,29 +176,15 @@ def main() -> int:
 Examples:
   %(prog)s hosts.yml
   %(prog)s inventory/*.yml
-  %(prog)s --include "**/*hosts*.yml" --exclude "**/test_*.yml"
   pre-commit run check-host-naming --files inventory/hosts.yml
         """,
     )
     parser.add_argument(
         "files",
-        nargs="*",
+        nargs="+",
         type=Path,
         metavar="FILE",
-        help="YAML file(s) to check (optional if --include is used)",
-    )
-    parser.add_argument(
-        "--include",
-        nargs="+",
-        metavar="PATTERN",
-        help="Glob pattern(s) for files to include (e.g., '**/*hosts*.yml')",
-    )
-    parser.add_argument(
-        "--exclude",
-        nargs="+",
-        default=[],
-        metavar="PATTERN",
-        help="Glob pattern(s) for files to exclude",
+        help="YAML file(s) to check",
     )
     parser.add_argument(
         "-q",
@@ -206,29 +196,7 @@ Examples:
     args = parser.parse_args()
 
     # Collect files to process
-    files_to_check: set[Path] = set()
-
-    # Add files from positional arguments
-    if args.files:
-        files_to_check.update(args.files)
-
-    # Add files from --include patterns
-    if args.include:
-        for pattern in args.include:
-            files_to_check.update(Path().glob(pattern))
-
-    # Remove files matching --exclude patterns
-    if args.exclude:
-        excluded_files: set[Path] = set()
-        for pattern in args.exclude:
-            excluded_files.update(Path().glob(pattern))
-        files_to_check -= excluded_files
-
-    # Validate that we have files to check
-    if not files_to_check:
-        if not args.quiet:
-            print("No files to check. Use positional arguments or --include to specify files.", file=sys.stderr)  # noqa: T201
-        return 0
+    files_to_check: set[Path] = set(args.files)
 
     all_violations: list[tuple[str, list[Violation]]] = []
 

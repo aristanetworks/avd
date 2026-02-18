@@ -298,10 +298,12 @@ repos:
         name: Check that all hosts use hyphens instead of underscores
         entry: development/check_host_naming.py
         language: python
-        args:
-          - --include
-          - ansible_collections/arista/avd/extensions/molecule/ansible_only/inventory/hosts.yml
-        pass_filenames: false
+        files: >-
+          (?x)
+          ^ansible_collections/arista/avd/extensions/molecule/
+          (ansible_only|
+          eos_cli_config_gen)
+          /inventory/hosts.yml$
         additional_dependencies: ['PyYAML>=6.0.0']
 
       - id: templates
