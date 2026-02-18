@@ -409,8 +409,8 @@ interface Port-Channel8.333
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::6/128 |
 
 ##### ISIS

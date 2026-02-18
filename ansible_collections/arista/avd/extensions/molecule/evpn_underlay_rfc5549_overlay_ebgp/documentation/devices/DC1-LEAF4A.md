@@ -458,8 +458,8 @@ interface Port-Channel5
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | 2001:1::e/128 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback100 | DIAG_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | - |

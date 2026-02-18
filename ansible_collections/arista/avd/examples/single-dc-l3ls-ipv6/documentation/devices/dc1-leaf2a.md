@@ -456,8 +456,8 @@ interface Port-Channel8
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | 2001:db8:1:3::1/64 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | 2001:db8:5:3::1/64 |
 | Loopback10 | DIAG_VRF_VRF10 | VRF10 | - |

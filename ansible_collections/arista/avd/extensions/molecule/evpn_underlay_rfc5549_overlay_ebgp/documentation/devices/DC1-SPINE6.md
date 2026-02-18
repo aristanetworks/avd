@@ -255,8 +255,8 @@ interface Ethernet2
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | 2001:1::6/128 |
 
 #### Loopback Interfaces Device Configuration
