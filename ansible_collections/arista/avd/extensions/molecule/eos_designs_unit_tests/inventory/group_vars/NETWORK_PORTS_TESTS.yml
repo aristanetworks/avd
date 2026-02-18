@@ -39,6 +39,8 @@ port_profiles:
     phone_vlan: 300
     native_vlan: 100
     phone_trunk_mode: untagged
+    mac_acl_in: acl1
+    mac_acl_out: acl2
 
 network_ports:
   - switches:
@@ -71,8 +73,6 @@ network_ports:
       - Ethernet11-12
     profile: phone_with_pc
     description: Phones with attached PCs
-    mac_acl_in: acl1
-    mac_acl_out: acl2
 
   # Test for issue #2223 regarding colon in description
   - switches:
@@ -81,6 +81,8 @@ network_ports:
       - Ethernet5-6
     description: "N: {endpoint}"
     endpoint: blah
+    mac_acl_in: acl1
+    mac_acl_out: acl2
 
   - switches:
       - network-ports-tests.2
