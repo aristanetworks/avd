@@ -20,11 +20,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "management_interfaces.[].ipv6_addresses") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_interfaces.[].ipv6_addresses.[]") | String |  |  |  | IPv6_address/Mask.<br>This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_auto_config</samp>](## "management_interfaces.[].ipv6_address_auto_config") | Boolean |  |  |  | Use SLAAC to automatically configure the IPv6 address.<br>This option is mutually exclusive with `ipv6_addresses`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd</samp>](## "management_interfaces.[].ipv6_nd") | Dictionary |  |  |  | Neighbor Discovery / Router Advertisement. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra</samp>](## "management_interfaces.[].ipv6_nd.ra") | Dictionary |  |  |  | Router Advertisement. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_accept</samp>](## "management_interfaces.[].ipv6_nd.ra.rx_accept") | Dictionary |  |  |  | Accept information on received RA. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route</samp>](## "management_interfaces.[].ipv6_nd.ra.rx_accept.default_route") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_preference</samp>](## "management_interfaces.[].ipv6_nd.ra.rx_accept.route_preference") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "management_interfaces.[].type") | String |  | `oob` | Valid Values:<br>- <code>oob</code><br>- <code>inband</code> | For documentation purposes only. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;gateway</samp>](## "management_interfaces.[].gateway") | String |  |  |  | IPv4 address of default gateway in management VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_gateway</samp>](## "management_interfaces.[].ipv6_gateway") | String |  |  |  | IPv6 address of default gateway in management VRF. |
@@ -86,17 +81,6 @@
         # Use SLAAC to automatically configure the IPv6 address.
         # This option is mutually exclusive with `ipv6_addresses`.
         ipv6_address_auto_config: <bool>
-
-        # Neighbor Discovery / Router Advertisement.
-        ipv6_nd:
-
-          # Router Advertisement.
-          ra:
-
-            # Accept information on received RA.
-            rx_accept:
-              default_route: <bool>
-              route_preference: <bool>
 
         # For documentation purposes only.
         type: <str; "oob" | "inband"; default="oob">

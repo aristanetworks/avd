@@ -450,8 +450,6 @@ interface Management42
    speed forced 1000full
    ipv6 enable
    ipv6 address auto-config
-   ipv6 nd ra rx accept default-route
-   ipv6 nd ra rx accept route-preference
    no lldp transmit
    no lldp receive
    lldp tlv transmit ztp vlan 666
