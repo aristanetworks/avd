@@ -4,4 +4,3 @@ known_issues:
   critical CPython bugs (gh-142218, gh-143189) affecting split table dictionaries. Users should avoid
   these Python versions and use 3.13.9 or earlier, or 3.13.12+ instead.
   See https://github.com/python/cpython/issues/143189 for details.
-
