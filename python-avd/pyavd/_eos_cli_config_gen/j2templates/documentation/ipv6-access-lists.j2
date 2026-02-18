@@ -6,16 +6,16 @@
 {# doc - ipv6 access lists #}
 {% if ipv6_access_lists is arista.avd.defined %}
 
-### IPv6 Extended Access-lists
+### IPv6 Access-lists
 {%     if ipv6_access_lists_max_entries is arista.avd.defined %}
 
-#### IP Access-lists Summary
+#### IPv6 Access-lists Summary
 
 - The maximum number of ACL entries allowed to be provisioned per switch: {{ ipv6_access_lists_max_entries }}
 {# TODO: : AVD 7.0.0 Remove this if block once "sequence_numbers" key is removed #}
 {%     else %}
 
-#### IPv6 Extended Access-lists Summary
+#### IPv6 Access-lists Summary
 
 {%         for ipv6_access_list in ipv6_access_lists | arista.avd.natural_sort('name') %}
 ##### {{ ipv6_access_list.name }}
@@ -29,10 +29,9 @@ ACL has counting mode `counters per-entry` enabled!
 {%             for sequence in ipv6_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
 | {{ sequence.sequence }} | {{ sequence.action }} |
 {%             endfor %}
-
 {%         endfor %}
 {%     endif %}
-#### IPv6 Extended Access-lists Device Configuration
+#### IPv6 Access-lists Device Configuration
 
 ```eos
 {%     include 'eos/ipv6-access-lists.j2' %}

@@ -229,7 +229,7 @@ Serial Number: DEADBEEFC0FFEW
   - [Extended Access-lists](#extended-access-lists)
   - [IP Access-lists](#ip-access-lists)
   - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)
-  - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
+  - [IPv6 Access-lists](#ipv6-access-lists)
   - [MAC Access-lists](#mac-access-lists)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
@@ -12091,55 +12091,12 @@ ipv6 access-list standard ipv6_test1
    10 permit 2001:db8::/32
 ```
 
-### IPv6 Extended Access-lists
+### IPv6 Access-lists
 
-#### IPv6 Extended Access-lists Summary
+#### IPv6 Access-lists Summary
 
-##### ACL_NO_SEQUENCE
-
-| Sequence | Action |
-| -------- | ------ |
-
-##### acl_qos_tc0_v6
-
-| Sequence | Action |
-| -------- | ------ |
-
-##### acl_qos_tc5_v6
-
-| Sequence | Action |
-| -------- | ------ |
-
-##### ACL_SEQUENCE_AND_COUNTERS
-
-ACL has counting mode `counters per-entry` enabled!
-
-| Sequence | Action |
-| -------- | ------ |
-
-##### ACL_WITHOUT_ENTRIES
-
-| Sequence | Action |
-| -------- | ------ |
-
-##### TEST1
-
-| Sequence | Action |
-| -------- | ------ |
-
-##### TEST2
-
-ACL has counting mode `counters per-entry` enabled!
-
-| Sequence | Action |
-| -------- | ------ |
-
-##### TEST3
-
-| Sequence | Action |
-| -------- | ------ |
-
-#### IPv6 Extended Access-lists Device Configuration
+- The maximum number of ACL entries allowed to be provisioned per switch: 10000
+#### IPv6 Access-lists Device Configuration
 
 ```eos
 !

@@ -7182,6 +7182,11 @@ keys:
                   Example: "deny ipv6 any any"
 
                   '
+  ipv6_access_lists_max_entries:
+    type: int
+    convert_types:
+    - str
+    description: Limit ACL entries defined under the `ipv6_access_lists`.
   ipv6_dhcp_relay:
     type: dict
     keys:
