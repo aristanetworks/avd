@@ -187,17 +187,26 @@ def process_files(files: set[Path]) -> list[Path]:
 def main() -> int:
     """Main entry point."""
     parser = argparse.ArgumentParser(description="Auto-sort host names in Ansible inventory hosts.yml files.")
-    parser.add_argument("--include-files", nargs="+", required=True, help="Glob pattern for hosts.yml files to sort.")
+    parser.add_argument("files", nargs="*", type=Path, help="Files to sort (passed by pre-commit)")
+    parser.add_argument("--include-files", nargs="+", help="Glob pattern for hosts.yml files to sort.")
     parser.add_argument("--ignore-files", nargs="+", default=[], help="Glob pattern for hosts.yml files to ignore.")
     args = parser.parse_args()
 
     # Collect files to process
-    include_files = {p.resolve() for glob in args.include_files for p in Path().glob(glob)}
+    if args.files:
+        # Files passed directly (e.g., by pre-commit)
+        include_files = {f.resolve() for f in args.files}
+    elif args.include_files:
+        # Files specified via glob patterns
+        include_files = {p.resolve() for glob in args.include_files for p in Path().glob(glob)}
+    else:
+        # No files to process
+        return 0
+
     ignore_files = {p.resolve() for glob in args.ignore_files for p in Path().glob(glob)}
     files_to_process = include_files - ignore_files
 
     if not files_to_process:
-        print("No files to process after applying ignore patterns. Skipping.", file=sys.stderr)  # noqa: T201
         return 0
 
     modified_files = process_files(files_to_process)
@@ -210,7 +219,7 @@ def main() -> int:
         print("\nPlease review the changes and stage them.", file=sys.stderr)  # noqa: T201
         return 1
 
-    print("Success: All hosts are properly sorted.")  # noqa: T201
+    # Silent success - no output when files are already sorted
     return 0
 
 

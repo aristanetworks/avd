@@ -298,15 +298,8 @@ repos:
         name: Auto-sort host names in Ansible inventory hosts.yml files.
         entry: development/sort_hosts_yml.py
         language: python
-        args:
-          - --include-files
-          - "ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen/inventory/hosts.yml"
-          - "ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen_deprecated_vars/inventory/hosts.yml"
-          - "ansible_collections/arista/avd/extensions/molecule/eos_cli_config_gen_negative_unit_tests/inventory/hosts.yml"
-          - "ansible_collections/arista/avd/extensions/molecule/eos_designs_deprecated_vars/inventory/hosts.yml"
-          - "ansible_collections/arista/avd/extensions/molecule/eos_designs_negative_unit_tests/inventory/hosts.yml"
-          - "ansible_collections/arista/avd/extensions/molecule/eos_designs_unit_tests/inventory/hosts.yml"
-        pass_filenames: false
+        # Matches hosts.yml in: eos_cli_config_gen*, eos_designs*
+        files: ^ansible_collections/arista/avd/extensions/molecule/(eos_cli_config_gen.*|eos_designs_unit_tests|eos_designs_negative_unit_tests|eos_designs_deprecated_vars)/inventory/hosts.yml$
 
       - id: templates
         name: Precompile Jinja2 templates
