@@ -36,8 +36,7 @@ keys:
           type: bool
         ipv6_address:
           type: str
-          description: |-
-            IPv6_address/Mask.
+          description: IPv6_address/Mask.
           deprecation:
             warning: true
             removed: false
