@@ -3024,6 +3024,14 @@ keys:
             - host: 127.0.0.1
             local_interface: Loopback0
             template_interval: 3600000
+  general_settings:
+    type: dict
+    documentation_options:
+      table: system-settings
+    keys:
+      default_shutdown_ethernet_interface:
+        type: bool
+        description: Shutdown ethernet interfaces when they are not explictly enabled.
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags
@@ -3116,16 +3124,6 @@ keys:
       are used.
 
       Otherwise no value will be configured.'
-  interface_defaults:
-    type: dict
-    documentation_options:
-      table: system-settings
-    keys:
-      ethernet:
-        type: dict
-        keys:
-          shutdown:
-            type: bool
   internal_vlan_order:
     documentation_options:
       table: system-settings

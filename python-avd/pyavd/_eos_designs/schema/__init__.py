@@ -19042,6 +19042,27 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class GeneralSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"default_shutdown_ethernet_interface": {"type": bool}}
+        default_shutdown_ethernet_interface: bool | None
+        """Shutdown ethernet interfaces when they are not explictly enabled."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, default_shutdown_ethernet_interface: bool | None | UndefinedType = Undefined) -> None:
+                """
+                GeneralSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    default_shutdown_ethernet_interface: Shutdown ethernet interfaces when they are not explictly enabled.
+
+                """
+
     class GenerateCvTags(AvdModel):
         """Subclass of AvdModel."""
 
@@ -19250,47 +19271,6 @@ class EosDesigns(EosDesignsRootModel):
                        List of device tags that should be generated.
 
                        Subclass of AvdList with `DeviceTagsItem` items.
-
-                """
-
-    class InterfaceDefaults(AvdModel):
-        """Subclass of AvdModel."""
-
-        class Ethernet(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"shutdown": {"type": bool}}
-            shutdown: bool | None
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, shutdown: bool | None | UndefinedType = Undefined) -> None:
-                    """
-                    Ethernet.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        shutdown: shutdown
-
-                    """
-
-        _fields: ClassVar[dict] = {"ethernet": {"type": Ethernet}}
-        ethernet: Ethernet
-        """Subclass of AvdModel."""
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, ethernet: Ethernet | UndefinedType = Undefined) -> None:
-                """
-                InterfaceDefaults.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    ethernet: Subclass of AvdModel.
 
                 """
 
@@ -88050,10 +88030,10 @@ class EosDesigns(EosDesignsRootModel):
         "fabric_numbering_node_id_pool": {"type": str, "default": "fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}"},
         "fabric_sflow": {"type": FabricSflow},
         "flow_tracking_settings": {"type": FlowTrackingSettings},
+        "general_settings": {"type": GeneralSettings},
         "generate_cv_tags": {"type": GenerateCvTags},
         "hardware_counters": {"type": EosCliConfigGen.HardwareCounters},
         "inband_ztp_bootstrap_file": {"type": str},
-        "interface_defaults": {"type": InterfaceDefaults},
         "internal_vlan_order": {
             "type": InternalVlanOrder,
             "default": lambda cls: coerce_type({"allocation": "ascending", "range": {"beginning": 1006, "ending": 1199}}, target_type=cls),
@@ -89522,6 +89502,8 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    general_settings: GeneralSettings
+    """Subclass of AvdModel."""
     generate_cv_tags: GenerateCvTags
     """
     Generate CloudVision Tags based on AVD data.
@@ -89536,8 +89518,6 @@ class EosDesigns(EosDesignsRootModel):
     cv server>/ztp/bootstrap` if `cv_settings` are used.
     Otherwise no value will be configured.
     """
-    interface_defaults: InterfaceDefaults
-    """Subclass of AvdModel."""
     internal_vlan_order: InternalVlanOrder
     """
     Internal vlan allocation order and range.
@@ -90762,10 +90742,10 @@ class EosDesigns(EosDesignsRootModel):
             fabric_numbering_node_id_pool: str | UndefinedType = Undefined,
             fabric_sflow: FabricSflow | UndefinedType = Undefined,
             flow_tracking_settings: FlowTrackingSettings | UndefinedType = Undefined,
+            general_settings: GeneralSettings | UndefinedType = Undefined,
             generate_cv_tags: GenerateCvTags | UndefinedType = Undefined,
             hardware_counters: EosCliConfigGen.HardwareCounters | UndefinedType = Undefined,
             inband_ztp_bootstrap_file: str | None | UndefinedType = Undefined,
-            interface_defaults: InterfaceDefaults | UndefinedType = Undefined,
             internal_vlan_order: InternalVlanOrder | UndefinedType = Undefined,
             ipsec_settings: IpsecSettings | UndefinedType = Undefined,
             ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
@@ -91532,6 +91512,7 @@ class EosDesigns(EosDesignsRootModel):
                    Define the flow tracking parameters for this topology.
 
                    Subclass of AvdModel.
+                general_settings: Subclass of AvdModel.
                 generate_cv_tags:
                    Generate CloudVision Tags based on AVD data.
 
@@ -91542,7 +91523,6 @@ class EosDesigns(EosDesignsRootModel):
                    By default the URL will be `https://<first
                    cv server>/ztp/bootstrap` if `cv_settings` are used.
                    Otherwise no value will be configured.
-                interface_defaults: Subclass of AvdModel.
                 internal_vlan_order:
                    Internal vlan allocation order and range.
 

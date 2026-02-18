@@ -6,13 +6,11 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  interface_defaults:
+  general_settings:
     type: dict
     documentation_options:
       table: system-settings
     keys:
-      ethernet:
-        type: dict
-        keys:
-          shutdown:
-            type: bool
+      default_shutdown_ethernet_interface:
+        type: bool
+        description: Shutdown ethernet interfaces when they are not explictly enabled.
