@@ -1,0 +1,6 @@
+# Test for deprecated key ipv6_address
+port_channel_interfaces:
+  - name: Port-Channel1
+    description: Test_ipv6_address
+    ip_address: 10.2.255.3/32
+    ipv6_address: 2002::CAFE/128

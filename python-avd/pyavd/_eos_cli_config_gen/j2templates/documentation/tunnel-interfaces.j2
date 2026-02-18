@@ -28,7 +28,7 @@
 {%         set shutdown = tunnel_interface.shutdown | arista.avd.default('-') %}
 {%         set nat_profile = tunnel_interface.nat_profile | arista.avd.default('-') %}
 {%         set tunnel_mode = tunnel_interface.tunnel_mode | arista.avd.default("-") %}
-{%         set row_source = tunnel_interface.source_interface | default(tunnel_interface.source, "-") %}
+{%         set row_source = tunnel_interface.source_interface | arista.avd.default(tunnel_interface.source, "-") %}
 {%         set row_destination = tunnel_interface.destination | arista.avd.default("-") %}
 {%         set row_pmtu = tunnel_interface.path_mtu_discovery | arista.avd.default("-") %}
 {%         set ipsec_profile = tunnel_interface.ipsec_profile | arista.avd.default("-") %}

@@ -20364,6 +20364,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         IpAddressSecondaries._item_type = str
 
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
         class Mpls(AvdModel):
             """Subclass of AvdModel."""
 
@@ -20436,6 +20441,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_address_secondaries": {"type": IpAddressSecondaries},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
             "ip_proxy_arp": {"type": bool},
             "ospf_area": {"type": str},
             "mpls": {"type": Mpls},
@@ -20461,6 +20468,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_enable: bool | None
         ipv6_address: str | None
         """IPv6_address/Mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         ip_proxy_arp: bool | None
         ospf_area: str | None
         mpls: Mpls
@@ -20492,6 +20507,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ip_proxy_arp: bool | None | UndefinedType = Undefined,
                 ospf_area: str | None | UndefinedType = Undefined,
                 mpls: Mpls | UndefinedType = Undefined,
@@ -20519,6 +20536,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_address_secondaries: Subclass of AvdList with `str` items.
                     ipv6_enable: ipv6_enable
                     ipv6_address: IPv6_address/Mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     ip_proxy_arp: ip_proxy_arp
                     ospf_area: ospf_area
                     mpls: Subclass of AvdModel.

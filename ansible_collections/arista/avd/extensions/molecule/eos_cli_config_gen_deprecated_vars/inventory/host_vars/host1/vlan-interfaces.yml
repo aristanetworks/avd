@@ -1,0 +1,6 @@
+# Test for deprecated key ipv6_address
+vlan_interfaces:
+  - name: VLAN10
+    description: Test_ipv6_address
+    ip_address: 10.2.255.3/32
+    ipv6_address: 2002::CAFE/128
