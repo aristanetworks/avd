@@ -41,7 +41,7 @@ Once you select an example supported by a lab definition, it will be extracted t
 
     AVD playgrounds are only available to registered Arista customers with support contract due to cost and security considerations. Please use AVD playground for good cause only and mind the EULA terms you signed during the registration. Do the right thing - be Arista customer! However if you don't have required level of access - talk to your Arista account team or [download the lab files](https://aristanetworks.github.io/aclabs/lab_archives/avd-playground.tar.gz) and run the playground locally on your own host. Unfortunately we will not be able to support this type of deployment officially due to number of issues that can exist on a random host machine, including missing Linux kernel configuration, misconfigured container engines, privilege issues, etc. The download option is for skilled users only that can manage the environment without extra support.
 
-For additional documentaion regarding AVD playgrounds and other community labs check [aclabs.arista.com](https://aclabs.arista.com/). The corresponding [GitHub repository](https://github.com/aristanetworks/aclabs) is used to build container images powering AVD playgrounds.
+For additional documentation regarding AVD playgrounds and other community labs check [aclabs.arista.com](https://aclabs.arista.com/). The corresponding [GitHub repository](https://github.com/aristanetworks/aclabs) is used to build container images powering AVD playgrounds.
 
 !!! warning
 
@@ -51,7 +51,7 @@ For additional documentaion regarding AVD playgrounds and other community labs c
 
 If you don't have access to AVD playgrounds, it's enough to build a working Ansible environment with AVD collection installed to start testing examples.
 You can build an AVD environment by installing all requirements on a dedicated VM or inside a virtual environment / uv. Please refer to the installation section for the details.
-Alternatively you can use AVD universal container images to spin a working AVD environmet quickly.
+Alternatively you can use AVD universal container images to spin a working AVD environment quickly.
 Once the environment is ready, you can extract all examples with:
 
 ```shell
