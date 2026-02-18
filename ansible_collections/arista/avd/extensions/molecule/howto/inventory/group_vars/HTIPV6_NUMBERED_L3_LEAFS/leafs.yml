@@ -13,7 +13,7 @@ l3leaf:
     vtep_loopback_ipv6_pool: 2001:db8:3::/48
     # IPv6 pool for P2P uplinks
     uplink_ipv6_pool: 2001:db8:10::/48
-    uplink_switches: ['htipv6-numbered-spine1', 'htipv6-numbered-spine2']
+    uplink_switches: [htipv6-numbered-spine1, htipv6-numbered-spine2]
     # MLAG peer address family set to IPv6
     mlag_peer_address_family: ipv6
     # IPv6 pool for MLAG peer-link SVI

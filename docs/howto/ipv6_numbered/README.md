@@ -77,11 +77,11 @@ Pools can be defined at multiple levels with the following precedence (highest t
 For Loopback0 (Router ID interface):
 
 ```text
-IPv6 = pool_base + node_id + loopback_ipv6_offset
+IPv6 = loopback_ipv6_pool + nodes[].id + loopback_ipv6_offset
 ```
 
 !!! note
-    When spines and leafs share the same pool, use `loopback_ipv6_offset` to prevent address conflicts
+    When spines and leafs share the same pool, use `loopback_ipv6_offset` to prevent address conflicts. The offset is 0 by default.
 
 ### Spine Example
 
@@ -143,12 +143,12 @@ Uplink IPv6 addresses are calculated using a formula to ensure unique /64 subnet
 ### Formula
 
 ```text
-subnet_offset = ([node_id - 1] * max_uplink_switches * max_parallel_uplinks) + uplink_switch_index
+subnet_offset = ([nodes[].id - 1] * max_uplink_switches * max_parallel_uplinks) + uplink_switch_index
 ```
 
 Where:
 
-- `node_id`: The leaf's ID
+- `nodes[].id`: The leaf's ID
 - `max_uplink_switches`: Maximum number of uplink switches (default: length of `uplink_switches`)
 - `max_parallel_uplinks`: Maximum parallel uplinks per switch (default: 1)
 - `uplink_switch_index`: Index of the uplink switch (0-based)
