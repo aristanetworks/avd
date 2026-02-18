@@ -551,9 +551,6 @@ ethernet_interfaces:
     peer_key: servers
     port_profile: TENANT_A
 hostname: DC1-SVC3A
-interface_defaults:
-  ethernet:
-    shutdown: false
 ip_access_lists:
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
   entries:

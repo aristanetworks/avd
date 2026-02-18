@@ -10,7 +10,7 @@
     | [<samp>default_igmp_snooping_enabled</samp>](## "default_igmp_snooping_enabled") | Boolean |  | `True` |  | When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.<br> |
     | [<samp>default_interface_mtu</samp>](## "default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Can be overridden per platform under platform settings.<br> |
     | [<samp>general_settings</samp>](## "general_settings") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;default_shutdown_ethernet_interface</samp>](## "general_settings.default_shutdown_ethernet_interface") | Boolean |  |  |  | Shutdown ethernet interfaces when they are not explicitly enabled. |
+    | [<samp>&nbsp;&nbsp;default_shutdown_ethernet_interface</samp>](## "general_settings.default_shutdown_ethernet_interface") | Boolean |  | `False` |  | Default Ethernet interfaces to shutdown state unless explicitly configured otherwise. |
     | [<samp>hardware_counters</samp>](## "hardware_counters") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;features</samp>](## "hardware_counters.features") | List, items: Dictionary |  |  |  | This data model allows to configure the list of hardware counters feature<br>available on Arista platforms.<br><br>The `name` key accepts a list of valid_values which MUST be updated to support<br>new feature as they are released in EOS.<br><br>The available values of the different keys like 'direction' or 'address_type'<br>are feature and hardware dependent and this model DOES NOT validate that the<br>combinations are valid. It is the responsibility of the user of this data model<br>to make sure that the rendered CLI is accepted by the targeted device.<br><br>Examples:<br><br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: ip<br>          direction: out<br>          layer3: true<br>          units_packets: true<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature ip out layer3 units packets<br>    ```<br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: route<br>          address_type: ipv4<br>          vrf: test<br>          prefix: 192.168.0.0/24<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature route ipv4 vrf test 192.168.0.0/24<br>    ```<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "hardware_counters.features.[].name") | String | Required |  | Valid Values:<br>- <code>acl</code><br>- <code>decap-group</code><br>- <code>directflow</code><br>- <code>ecn</code><br>- <code>flow-spec</code><br>- <code>gre tunnel interface</code><br>- <code>ip</code><br>- <code>mpls interface</code><br>- <code>mpls lfib</code><br>- <code>mpls tunnel</code><br>- <code>multicast</code><br>- <code>nexthop</code><br>- <code>pbr</code><br>- <code>pdp</code><br>- <code>policing interface</code><br>- <code>qos</code><br>- <code>qos dual-rate-policer</code><br>- <code>route</code><br>- <code>routed-port</code><br>- <code>segment-security</code><br>- <code>subinterface</code><br>- <code>tapagg</code><br>- <code>traffic-class</code><br>- <code>traffic-policy</code><br>- <code>traffic-policy vlan-interface</code><br>- <code>vlan</code><br>- <code>vlan-interface</code><br>- <code>vni decap</code><br>- <code>vni encap</code><br>- <code>vtep decap</code><br>- <code>vtep encap</code> |  |
@@ -80,8 +80,8 @@
     default_interface_mtu: <int; 68-65535>
     general_settings:
 
-      # Shutdown ethernet interfaces when they are not explicitly enabled.
-      default_shutdown_ethernet_interface: <bool>
+      # Default Ethernet interfaces to shutdown state unless explicitly configured otherwise.
+      default_shutdown_ethernet_interface: <bool; default=False>
     hardware_counters:
 
       # This data model allows to configure the list of hardware counters feature

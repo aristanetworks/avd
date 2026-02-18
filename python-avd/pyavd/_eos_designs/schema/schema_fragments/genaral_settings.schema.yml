@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -13,4 +13,5 @@ keys:
     keys:
       default_shutdown_ethernet_interface:
         type: bool
-        description: Shutdown ethernet interfaces when they are not explicitly enabled.
+        default: false
+        description: Default Ethernet interfaces to shutdown state unless explicitly configured otherwise.
