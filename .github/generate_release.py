@@ -85,7 +85,7 @@ if __name__ == "__main__":
     # First add Breaking Changes EXCEPT `pyavd`
     # TODO: should we consider changing this and adding back pyavd?
     breaking_label_categories = ["Feat", "Fix", "Cut", "Revert", "Refactor", "Bump"]
-    breaking_labels = [f"rn: {cc_type}({scope})!" for cc_type in breaking_label_categories for scope in SCOPES if scope not in ["pyavd"]]
+    breaking_labels = [f"rn: {cc_type}({scope})!" for cc_type in breaking_label_categories for scope in SCOPES if scope != "pyavd"]
     breaking_labels.extend([f"rn: {cc_type}!" for cc_type in breaking_label_categories])
 
     categories_list.append(

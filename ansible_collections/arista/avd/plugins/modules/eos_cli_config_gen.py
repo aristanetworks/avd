@@ -16,6 +16,12 @@ description: |-
 
   Note: Input validation is performed by the `arista.avd.validate_inputs` plugin, which must be run before this plugin.
 options:
+  tmp_dir:
+    description:
+      - Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.
+      - Must be the same across all plugins.
+    required: true
+    type: str
   config_filename:
     description: The path to save the generated config to. Required if generate_device_config is true.
     type: str

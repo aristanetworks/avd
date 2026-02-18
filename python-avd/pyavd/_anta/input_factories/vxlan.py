@@ -9,8 +9,8 @@ from anta.tests.vxlan import VerifyVxlanConfigSanity
 
 from pyavd._anta.constants import StructuredConfigKey
 
-from ._base_classes import AntaTestInputFactory
-from ._decorators import skip_if_missing_config
+from .base_classes import AntaTestInputFactory
+from .decorators import skip_if_missing_config
 
 if TYPE_CHECKING:
     from collections.abc import Iterator

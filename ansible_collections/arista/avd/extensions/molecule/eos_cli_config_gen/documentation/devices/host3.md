@@ -179,12 +179,26 @@ daemon TerminAttr
 | Sequence-numbers | false |
 | RFC5424 | False |
 
+| VRF | Source Interface |
+| --- | ---------------- |
+| - | Ethernet1 |
+| check_source_interface_table_created | Ethernet1 |
+
+| VRF | Hosts | Ports | Protocol | SSL-profile |
+| --- | ----- | ----- | -------- | ----------- |
+| check_source_interface_table_created | 1.2.3.4 | Default | UDP | - |
+| check_source_interface_table_created | 2001:db8::1:2:3:4 | Default | UDP | - |
+
 #### Logging Servers and Features Device Configuration
 
 ```eos
 !
 logging synchronous level critical
+logging vrf check_source_interface_table_created host 1.2.3.4
+logging vrf check_source_interface_table_created host 2001:db8::1:2:3:4
 logging format timestamp traditional year timezone
+logging local-interface Ethernet1
+logging vrf check_source_interface_table_created source-interface Ethernet1
 ```
 
 ### MCS Client Summary

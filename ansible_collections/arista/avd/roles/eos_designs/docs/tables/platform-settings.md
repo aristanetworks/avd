@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Platform settings. The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. The default values will be overridden if `platform_settings` is defined. If you need to replace all the default platforms, it is recommended to copy the defaults and modify them. If you need to add custom platforms, create them under `custom_platform_settings`. Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`. |
+    | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Platform settings.<br>The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.<br>If no matches are found, the first entry containing a platform `default` will be chosen.<br>The default values will be overridden if `platform_settings` is defined.<br>If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.<br>If you need to add custom platforms, create them under `custom_platform_settings`.<br>Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`. |
     | [<samp>&nbsp;&nbsp;-&nbsp;platforms</samp>](## "platform_settings.[].platforms") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "platform_settings.[].platforms.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trident_forwarding_table_partition</samp>](## "platform_settings.[].trident_forwarding_table_partition") | String |  |  |  | Only applied when evpn_multicast is true. |
@@ -81,13 +81,19 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "platform_settings.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Digital Twin settings applied when `avd_digital_twin_mode` is `true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "platform_settings.[].digital_twin.platform") | String |  |  |  | Name of an alternate `platform_settings` platform used when running in Digital Twin mode.<br>The `platform_settings` for the regular `platform` is used if this is not set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_node_type</samp>](## "platform_settings.[].digital_twin.act_node_type") | String |  |  | Valid Values:<br>- <code>cloudeos</code><br>- <code>cvp</code><br>- <code>generic</code><br>- <code>third-party</code><br>- <code>tools-server</code><br>- <code>veos</code> | ACT node type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
 
 === "YAML"
 
     ```yaml
-    # Platform settings. The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. The default values will be overridden if `platform_settings` is defined. If you need to replace all the default platforms, it is recommended to copy the defaults and modify them. If you need to add custom platforms, create them under `custom_platform_settings`. Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
+    # Platform settings.
+    # The first entry found where the `platform` node setting is fully matched by any regex in the `platforms` list will be chosen.
+    # If no matches are found, the first entry containing a platform `default` will be chosen.
+    # The default values will be overridden if `platform_settings` is defined.
+    # If you need to replace all the default platforms, it is recommended to copy the defaults and modify them.
+    # If you need to add custom platforms, create them under `custom_platform_settings`.
+    # Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
     platform_settings: # (1)!
       - platforms:
           - <str>
@@ -265,7 +271,7 @@
           # ACT node type.
           act_node_type: <str; "cloudeos" | "cvp" | "generic" | "third-party" | "tools-server" | "veos">
 
-        # Custom structured config for eos_cli_config_gen.
+        # Custom structured config for the EOS Config schema.
         structured_config: <dict>
 
         # EOS CLI rendered directly on the root level of the final EOS configuration.
@@ -605,7 +611,7 @@
             evpn_gateway_all_active_multihoming: true
             sflow_subinterfaces: false
             hardware_validation: false
-          management_interface: Management0
+          management_interface: Management1
           reload_delay:
             mlag: 300
             non_mlag: 330

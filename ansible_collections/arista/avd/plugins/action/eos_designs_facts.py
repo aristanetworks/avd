@@ -16,9 +16,11 @@ from ansible.plugins.action import ActionBase
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     ANSIBLE_ABOVE_2_19,
+    AVDFileHandler,
+    AVDVaultHandler,
     get_eos_designs_facts_path,
-    get_role_tmp_paths,
     get_templar,
+    get_tmp_paths,
     raise_action_fail,
 )
 
@@ -45,6 +47,7 @@ except ImportError:
 class ActionModule(ActionBase):
     _task: Task
     _templar: Templar
+    tmp_dir: str
 
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
         if task_vars is None:
@@ -67,6 +70,9 @@ class ActionModule(ActionBase):
 
         self._digital_twin = self._task.args.get("digital_twin", False)
         output_dir = self._task.args.get("output_dir")
+        self.tmp_dir = self._task.args.get("tmp_dir")
+        # Get target path and clean any previously generated facts.
+        avd_switch_facts_path = get_eos_designs_facts_path(self.tmp_dir, clean=True)
 
         groups = task_vars.get("groups", {})
         fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
@@ -93,7 +99,7 @@ class ActionModule(ActionBase):
         avd_switch_facts = self.render_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, templar=templar)
 
         # Dump facts to file.
-        self.dump_facts(avd_switch_facts)
+        self.dump_facts(avd_switch_facts, avd_switch_facts_path)
 
         # Save any updated pools.
         result["changed"] = pool_manager.save_updated_pools(dumper_cls=AnsibleDumper)
@@ -124,7 +130,7 @@ class ActionModule(ActionBase):
         all_inputs: dict[str, AVDDesign] = {}
         all_hostvars: dict[str, dict] = {}
 
-        _templated_path, validated_path = get_role_tmp_paths("eos_designs")
+        _templated_path, validated_path = get_tmp_paths(self.tmp_dir)
 
         for host in fabric_hosts:
             file_path = validated_path / f"{host}.json"
@@ -135,8 +141,10 @@ class ActionModule(ActionBase):
                 )
                 raise AnsibleActionFail(message=msg)
 
-            with file_path.open(mode="r", encoding="utf-8") as f:
-                host_hostvars = json.load(f)
+            # Read, unvault, and parse the JSON file
+            vault_handler = AVDVaultHandler(self._loader)
+            file_handler = AVDFileHandler(vault_handler)
+            host_hostvars = file_handler.load_json(file_path)
 
             # Load host hostvars into the AVDDesign data class.
             all_inputs[host] = AVDDesign._from_dict(host_hostvars)
@@ -181,14 +189,13 @@ class ActionModule(ActionBase):
 
         return all_facts_as_dicts
 
-    def dump_facts(self, avd_switch_facts: dict[str, dict]) -> None:
+    def dump_facts(self, avd_switch_facts: dict[str, dict], file_path: Path) -> None:
         """
         Dump facts to the temporary folder.
 
         Args:
             avd_switch_facts: Facts to dump as dict keyed by hostname.
+            file_path: Path to dump facts to.
         """
-        file_path = get_eos_designs_facts_path()
-
         with file_path.open(mode="w", encoding="utf-8") as f:
             json.dump(avd_switch_facts, f, indent=4)

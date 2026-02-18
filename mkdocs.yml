@@ -186,14 +186,17 @@ nav:
       - ISIS-LDP IPVPN: ansible_collections/arista/avd/examples/isis-ldp-ipvpn/README.md
       - CV Pathfinder: ansible_collections/arista/avd/examples/cv-pathfinder/README.md
   - How-to Guides:
+      - Fabric Topology: docs/howto/fabric_topology/README.md
       - Connected Endpoints: docs/howto/connected_endpoints/README.md
       - Node Types: docs/howto/node_types/README.md
+      - Network Services: docs/howto/network_services/README.md
       - Configuring PTP: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/ptp.md
       - Configuring WAN: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/wan.md
       - Custom Descriptions and Names: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.md
       - Custom Structured Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md
       - Generate CloudVision Tags: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/cloudvision-tags.md
-      - Migrating to cv_deploy: docs/getting-started/cv-deploy-porting.md
+      - Migrate to cv_deploy: docs/howto/migrate-to-cv-deploy.md
+      - Migrate to anta_runner: docs/howto/migrate-to-anta-runner.md
   - User Manual:
       - Data Models:
           - Overview: docs/data-models/README.md
@@ -201,7 +204,7 @@ nav:
           - EOS Config: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md
       - Ansible Collection:
           - Introduction to Ansible and AVD: docs/getting-started/intro-to-ansible-and-avd.md
-          - AVD and Ansible Automation Platform: docs/getting-started/avd-aap.md
+          - Ansible Usage Patterns: docs/getting-started/ansible-usage-patterns.md
           - Roles:
               - eos_designs:
                   - Overview: ansible_collections/arista/avd/roles/eos_designs/README.md
@@ -217,6 +220,7 @@ nav:
               - cv_deploy: ansible_collections/arista/avd/roles/cv_deploy/README.md
               - anta_runner: ansible_collections/arista/avd/roles/anta_runner/README.md
           - Plugins: docs/plugins/
+          - AVD and Ansible Automation Platform: docs/getting-started/avd-aap.md
       - PyAVD: docs/pyavd/pyavd.md
   - Release Notes:
       - 6.x.x: docs/release-notes/6.x.x.md

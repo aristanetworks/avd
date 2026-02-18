@@ -1,7 +1,9 @@
+---
 - name: Validate inputs reading from hostvars
   arista.avd.validate_inputs:
     schema_name: eos_config
     read_from_input_dir: false
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen"
   delegate_to: localhost
   check_mode: false
   run_once: true
@@ -13,6 +15,7 @@
   arista.avd.eos_cli_config_gen:
     config_filename: "{{ actual_output_dir }}/testhost.cfg"
     generate_device_doc: false
+    tmp_dir: "{{ actual_output_dir }}/tmp_eos_cli_config_gen"
   delegate_to: localhost
 
 - name: Validate result

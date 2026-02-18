@@ -17160,14 +17160,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-        name: str | None
+        name: str
         """Interface Name."""
         vrf: str | None
         """VRF Name."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                 """
                 IpRadiusSourceInterfacesItem.
 
@@ -17680,13 +17680,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-        name: str | None
+        name: str
         """Interface name."""
         vrf: str | None
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                 """
                 IpTacacsSourceInterfacesItem.
 
@@ -19934,11 +19934,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Hosts._item_type = HostsItem
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}, "hosts": {"type": Hosts}}
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}, "local_interface": {"type": str}, "hosts": {"type": Hosts}}
             name: str
             """VRF name."""
             source_interface: str | None
             """Source interface name."""
+            local_interface: str | None
+            """
+            Source Interface Name.
+            `logging vrf <vrf> source-interface <interface>` is deprecated in latest EOS
+            versions(4.35.1).
+            This key sets the new command `logging vrf <vrf> local-interface <interface>`.
+            `source_interface` takes precedence over `local_interface`.
+            """
             hosts: Hosts
             """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`)."""
 
@@ -19949,6 +19957,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     source_interface: str | None | UndefinedType = Undefined,
+                    local_interface: str | None | UndefinedType = Undefined,
                     hosts: Hosts | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -19960,6 +19969,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: VRF name.
                         source_interface: Source interface name.
+                        local_interface:
+                           Source Interface Name.
+                           `logging vrf <vrf> source-interface <interface>` is deprecated in latest EOS
+                           versions(4.35.1).
+                           This key sets the new command `logging vrf <vrf> local-interface <interface>`.
+                           `source_interface` takes precedence over `local_interface`.
                         hosts: Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`).
 
                     """
@@ -19984,11 +19999,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"name": {"type": str}, "action": {"type": str}}
                     name: str
                     """Match list."""
-                    action: Action | None
+                    action: Action
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, name: str | UndefinedType = Undefined, action: Action | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, name: str | UndefinedType = Undefined, action: Action | UndefinedType = Undefined) -> None:
                             """
                             MatchListsItem.
 
@@ -20134,7 +20149,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ]
             _fields: ClassVar[dict] = {"facility": {"type": str}, "severity": {"type": str}}
             facility: str
-            severity: Severity | None
+            severity: Severity
             """
             Severity of facility. Below are the supported severities.
             emergencies    System is unusable
@@ -20154,7 +20169,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, facility: str | UndefinedType = Undefined, severity: Severity | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, facility: str | UndefinedType = Undefined, severity: Severity | UndefinedType = Undefined) -> None:
                     """
                     LevelItem.
 
@@ -20198,6 +20213,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "format": {"type": Format},
             "facility": {"type": str},
             "source_interface": {"type": str},
+            "local_interface": {"type": str},
             "vrfs": {"type": Vrfs},
             "policy": {"type": Policy},
             "event": {"type": Event},
@@ -20220,6 +20236,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         facility: Facility | None
         source_interface: str | None
         """Source Interface Name."""
+        local_interface: str | None
+        """
+        Source Interface Name.
+        `logging source-interface <interface>` is deprecated in latest EOS
+        versions(4.35.1).
+        This key sets the new command `logging local-interface <interface>`.
+        `source_interface` takes precedence over `local_interface`.
+        """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         policy: Policy
@@ -20248,6 +20272,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 format: Format | UndefinedType = Undefined,
                 facility: Facility | None | UndefinedType = Undefined,
                 source_interface: str | None | UndefinedType = Undefined,
+                local_interface: str | None | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 policy: Policy | UndefinedType = Undefined,
                 event: Event | UndefinedType = Undefined,
@@ -20269,6 +20294,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     format: Subclass of AvdModel.
                     facility: facility
                     source_interface: Source Interface Name.
+                    local_interface:
+                       Source Interface Name.
+                       `logging source-interface <interface>` is deprecated in latest EOS
+                       versions(4.35.1).
+                       This key sets the new command `logging local-interface <interface>`.
+                       `source_interface` takes precedence over `local_interface`.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     policy: Subclass of AvdModel.
                     event: Subclass of AvdModel.
@@ -62184,7 +62215,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enable_default": {"type": bool}, "unmodified": {"type": bool}}
-                enable_default: bool | None
+                enable_default: bool
                 """Enable egress sFlow by default."""
                 unmodified: bool | None
                 """
@@ -62194,7 +62225,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enable_default: bool | None | UndefinedType = Undefined, unmodified: bool | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enable_default: bool | UndefinedType = Undefined, unmodified: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Egress.
 
@@ -69450,6 +69481,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "arp": {"type": Arp},
         "as_path": {"type": AsPath},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
+        "avd_vault_id": {"type": str},
         "banners": {"type": Banners},
         "bgp_groups": {"type": BgpGroups},
         "boot": {"type": Boot},
@@ -69473,6 +69505,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "eos_cli": {"type": str},
         "eos_cli_config_gen_configuration": {"type": EosCliConfigGenConfiguration},
         "eos_cli_config_gen_documentation": {"type": EosCliConfigGenDocumentation},
+        "eos_cli_config_gen_keep_tmp_files": {"type": bool, "default": False},
+        "eos_cli_config_gen_tmp_dir": {"type": str},
         "eos_cli_config_gen_validate_inputs_batch_size": {"type": int, "default": 10},
         "errdisable": {"type": Errdisable},
         "ethernet_interfaces": {"type": EthernetInterfaces},
@@ -69679,6 +69713,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     Default value: `"yml"`
     """
+    avd_vault_id: str | None
+    """
+    Vault ID used for encrypting temporary files generated by the role.
+    When Ansible Vault is not
+    configured, this parameter has no effect and files are written as plain JSON.
+    When Ansible Vault is
+    configured, AVD encrypts files containing templated and validated data
+    to prevent sensitive
+    information from being exposed in the temporary directories.
+      * When `avd_vault_id` is not
+    specified, AVD uses the *first* Vault ID in the list for encryption.
+      * When `avd_vault_id` is
+    specified, AVD uses the specified Vault ID for encryption.
+    """
     banners: Banners
     """Subclass of AvdModel."""
     bgp_groups: BgpGroups
@@ -69793,6 +69841,25 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     eos_cli_config_gen_documentation: EosCliConfigGenDocumentation
     """Subclass of AvdModel."""
+    eos_cli_config_gen_keep_tmp_files: bool
+    """
+    Avoid deleting temporary files.
+    This allows for inspecting templated inputs and validated inputs
+    used internally by AVD plugins.
+    When an Ansible Vault secret is set, temporary files holding input
+    variables are encrypted. Decryption is required to inspect them.
+
+    Default value: `False`
+    """
+    eos_cli_config_gen_tmp_dir: str | None
+    """
+    Path for temporary files created by the 'eos_cli_config_gen' role.
+    Contains templated inputs and
+    validated inputs used internally by AVD plugins.
+    Defaults to 'intended/tmp_eos_cli_config_gen'.
+    The
+    temporary directory is cleaned up at the end of the 'eos_cli_config_gen' role.
+    """
     eos_cli_config_gen_validate_inputs_batch_size: int
     """
     The number of hosts to process in each batch when validating inputs.
@@ -70228,6 +70295,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
+            avd_vault_id: str | None | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
@@ -70251,6 +70319,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             eos_cli: str | None | UndefinedType = Undefined,
             eos_cli_config_gen_configuration: EosCliConfigGenConfiguration | UndefinedType = Undefined,
             eos_cli_config_gen_documentation: EosCliConfigGenDocumentation | UndefinedType = Undefined,
+            eos_cli_config_gen_keep_tmp_files: bool | UndefinedType = Undefined,
+            eos_cli_config_gen_tmp_dir: str | None | UndefinedType = Undefined,
             eos_cli_config_gen_validate_inputs_batch_size: int | UndefinedType = Undefined,
             errdisable: Errdisable | UndefinedType = Undefined,
             ethernet_interfaces: EthernetInterfaces | UndefinedType = Undefined,
@@ -70444,6 +70514,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 arp: Subclass of AvdModel.
                 as_path: Subclass of AvdModel.
                 avd_structured_config_file_format: The file format to use when loading structured configuration files.
+                avd_vault_id:
+                   Vault ID used for encrypting temporary files generated by the role.
+                   When Ansible Vault is not
+                   configured, this parameter has no effect and files are written as plain JSON.
+                   When Ansible Vault is
+                   configured, AVD encrypts files containing templated and validated data
+                   to prevent sensitive
+                   information from being exposed in the temporary directories.
+                     * When `avd_vault_id` is not
+                   specified, AVD uses the *first* Vault ID in the list for encryption.
+                     * When `avd_vault_id` is
+                   specified, AVD uses the specified Vault ID for encryption.
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
                 boot:
@@ -70523,6 +70605,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 eos_cli: Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration.
                 eos_cli_config_gen_configuration: Subclass of AvdModel.
                 eos_cli_config_gen_documentation: Subclass of AvdModel.
+                eos_cli_config_gen_keep_tmp_files:
+                   Avoid deleting temporary files.
+                   This allows for inspecting templated inputs and validated inputs
+                   used internally by AVD plugins.
+                   When an Ansible Vault secret is set, temporary files holding input
+                   variables are encrypted. Decryption is required to inspect them.
+                eos_cli_config_gen_tmp_dir:
+                   Path for temporary files created by the 'eos_cli_config_gen' role.
+                   Contains templated inputs and
+                   validated inputs used internally by AVD plugins.
+                   Defaults to 'intended/tmp_eos_cli_config_gen'.
+                   The
+                   temporary directory is cleaned up at the end of the 'eos_cli_config_gen' role.
                 eos_cli_config_gen_validate_inputs_batch_size:
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
