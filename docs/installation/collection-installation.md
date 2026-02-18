@@ -12,6 +12,25 @@
 - Install [arista.avd](#install-collection-from-ansible-galaxy) collection including Python requirements.
 - Modify `ansible.cfg` file to support additional [jinja2 extensions](#ansible-configuration-file)
 
+!!! danger "Python Version Compatibility Warning"
+    **Avoid Python 3.13.10 and 3.13.11** - These specific Python versions contain a critical bug
+    ([CPython gh-143189](https://github.com/python/cpython/issues/143189)) in the split table dictionary
+    implementation that causes crashes when running AVD.
+
+    **Affected versions:**
+
+    - Python 3.13.10 ❌
+    - Python 3.13.11 ❌
+
+    **Recommended versions:**
+
+    - Python 3.12.x ✅ (Recommended)
+    - Python 3.13.1 - 3.13.9 ✅
+    - Python 3.13.12+ ✅
+    - Python 3.14.x ✅
+
+    See also: [CPython gh-142218](https://github.com/python/cpython/issues/142218)
+
 ## Install Collection from Ansible Galaxy
 
 These instructions are for regular users to install via Ansible Galaxy.
