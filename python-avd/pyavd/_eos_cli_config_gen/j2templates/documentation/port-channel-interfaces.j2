@@ -288,14 +288,21 @@
 
 ##### IPv6
 
-| Interface | Description | MLAG ID | IPv6 Address | IPv6 Address Auto-config | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | ------------ | ------------------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
+| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%             if port_channel_interface.ipv6_address is arista.avd.defined or port_channel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
 {%                 set description = port_channel_interface.description | arista.avd.default("-") %}
 {%                 set mlag = port_channel_interface.mlag | arista.avd.default("-") %}
-{%                 set ipv6_address = port_channel_interface.ipv6_address | arista.avd.default("-") %}
-{%                 set ipv6_address_auto_config = port_channel_interface.ipv6_address_auto_config | arista.avd.default("-") %}
+{%                 if port_channel_interface.ipv6_addresses is arista.avd.defined %}
+{%                     set ipv6_address = port_channel_interface.ipv6_addresses | arista.avd.natural_sort | join(', ') %}
+{%                 elif port_channel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+{%                     set ipv6_address = "auto-config" %}
+{%                 elif port_channel_interface.ipv6_address is arista.avd.defined %}
+{%                     set ipv6_address = port_channel_interface.ipv6_address %}
+{%                 else %}
+{%                     set ipv6_address = "-" %}
+{%                 endif %}
 {%                 set vrf = port_channel_interface.vrf | arista.avd.default("default") %}
 {%                 set mtu = port_channel_interface.mtu | arista.avd.default("-") %}
 {%                 set shutdown = port_channel_interface.shutdown | arista.avd.default("-") %}
@@ -307,7 +314,7 @@
 {%                 endif %}
 {%                 set ipv6_acl_in = port_channel_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%                 set ipv6_acl_out = port_channel_interface.ipv6_access_group_out | arista.avd.default("-") %}
-| {{ port_channel_interface.name }} | {{ description }} | {{ mlag }} | {{ ipv6_address }} | {{ ipv6_address_auto_config }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ ipv6_nd_managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
+| {{ port_channel_interface.name }} | {{ description }} | {{ mlag }} | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ ipv6_nd_managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

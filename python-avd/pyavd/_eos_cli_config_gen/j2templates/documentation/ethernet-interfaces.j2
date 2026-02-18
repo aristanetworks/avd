@@ -432,8 +432,8 @@
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | IPv6 Address Auto-config | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | ------------ | ------------------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
@@ -444,8 +444,15 @@
                     or port_channel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
 {%                     set description = ethernet_interface.description | arista.avd.default("-") %}
 {%                     set channel_group = ethernet_interface.channel_group.id | arista.avd.default("-") %}
-{%                     set ipv6_address = port_channel_interface.ipv6_address | arista.avd.default("-") %}
-{%                     set ipv6_address_auto_config = port_channel_interface.ipv6_address_auto_config | arista.avd.default("-") %}
+{%                     if port_channel_interface.ipv6_addresses is arista.avd.defined %}
+{%                         set ipv6_address = port_channel_interface.ipv6_addresses | arista.avd.natural_sort | join(', ') %}
+{%                     elif port_channel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+{%                         set ipv6_address = "auto-config" %}
+{%                     elif port_channel_interface.ipv6_address is arista.avd.defined %}
+{%                         set ipv6_address = port_channel_interface.ipv6_address %}
+{%                     else %}
+{%                         set ipv6_address = "-" %}
+{%                     endif %}
 {%                     set vrf = port_channel_interface.vrf | arista.avd.default("default") %}
 {%                     set mtu = port_channel_interface.mtu | arista.avd.default("-") %}
 {%                     set shutdown = port_channel_interface.shutdown | arista.avd.default("-") %}
@@ -453,14 +460,21 @@
 {%                     set managed_config_flag = port_channel_interface.ipv6_nd_managed_config_flag | arista.avd.default("-") %}
 {%                     set ipv6_acl_in = port_channel_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%                     set ipv6_acl_out = port_channel_interface.ipv6_access_group_out | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} | {{ description }} | {{ channel_group }} | *{{ ipv6_address }} | {{ ipv6_address_auto_config }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown }} | *{{ nd_ra_disabled }} | *{{ managed_config_flag }} | *{{ ipv6_acl_in }} | *{{ ipv6_acl_out }} |
+| {{ ethernet_interface.name }} | {{ description }} | {{ channel_group }} | *{{ ipv6_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown }} | *{{ nd_ra_disabled }} | *{{ managed_config_flag }} | *{{ ipv6_acl_in }} | *{{ ipv6_acl_out }} |
 {%                 endif %}
 {%             else %}
 {%                 if ethernet_interface.ipv6_address is arista.avd.defined or ethernet_interface.ipv6_enable is arista.avd.defined(true)
                     or ethernet_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
 {%                     set description = ethernet_interface.description | arista.avd.default("-") %}
-{%                     set ipv6_address = ethernet_interface.ipv6_address | arista.avd.default("-") %}
-{%                     set ipv6_address_auto_config = ethernet_interface.ipv6_address_auto_config | arista.avd.default("-") %}
+{%                     if ethernet_interface.ipv6_addresses is arista.avd.defined %}
+{%                         set ipv6_address = ethernet_interface.ipv6_addresses | arista.avd.natural_sort | join(', ') %}
+{%                     elif ethernet_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+{%                         set ipv6_address = "auto-config" %}
+{%                     elif ethernet_interface.ipv6_address is arista.avd.defined %}
+{%                         set ipv6_address = ethernet_interface.ipv6_address %}
+{%                     else %}
+{%                         set ipv6_address = "-" %}
+{%                     endif %}
 {%                     set vrf = ethernet_interface.vrf | arista.avd.default("default") %}
 {%                     set mtu = ethernet_interface.mtu | arista.avd.default("-") %}
 {%                     set shutdown = ethernet_interface.shutdown | arista.avd.default("-") %}
@@ -468,7 +482,7 @@
 {%                     set managed_config_flag = ethernet_interface.ipv6_nd_managed_config_flag | arista.avd.default("-") %}
 {%                     set ipv6_acl_in = ethernet_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%                     set ipv6_acl_out = ethernet_interface.ipv6_access_group_out | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} | {{ description }} | - | {{ ipv6_address }} | {{ ipv6_address_auto_config }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ nd_ra_disabled }} | {{ managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
+| {{ ethernet_interface.name }} | {{ description }} | - | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ nd_ra_disabled }} | {{ managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}

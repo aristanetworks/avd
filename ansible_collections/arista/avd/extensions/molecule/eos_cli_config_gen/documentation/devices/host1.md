@@ -389,11 +389,11 @@ agent KernelFib shutdown supervisor standby
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Addresses | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| -------------------- | ----------- | ---- | --- | -------------- | ------------ |
 | Management0 | - | oob | default | - | - |
 | Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 | Management42 | - | oob | default | auto-config | - |
-| Vlan123 | inband_management | inband | default | 2001:db8:abcd:1234::1/64<br>2001:db8:abcd:1234::2/64 | - |
+| Vlan123 | inband_management | inband | default | 2001:db8:abcd:1234::1/64, 2001:db8:abcd:1234::2/64 | - |
 
 ##### Interface Redundancy
 
@@ -4505,9 +4505,9 @@ interface profile aa-profile-3
 
 #### DPS Interfaces Summary
 
-| Interface | IP address | IPv6 address auto-config | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
-| --------- | ---------- | ------------------------ | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.42/24 | True | True | 666 | Hardware: T3<br>Sampled: T2 | IPv4: 666<br>IPv6: 666<br>Direction: ingress |
+| Interface | IP address | IPv6 addresses | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | -------------- | -------- | --- | --------------- | --------------- |
+| Dps1 | 192.168.42.42/24 | auto-config | True | 666 | Hardware: T3<br>Sampled: T2 | IPv4: 666<br>IPv6: 666<br>Direction: ingress |
 
 #### DPS Interfaces Device Configuration
 
@@ -4522,7 +4522,7 @@ interface Dps1
    ip address 192.168.42.42/24
    ipv6 address auto-config
    tcp mss ceiling ipv4 666 ipv6 666 ingress
-   load-interval 42 
+   load-interval 42
 ```
 
 ### Ethernet Interfaces
@@ -4794,14 +4794,14 @@ interface Dps1
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | IPv6 Address Auto-config | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | ------------ | ------------------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | - | - | default | 1500 | - | - | - | - | - |
-| Ethernet4 | Molecule IPv6 | - | - | True | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | - | - | default | - | - | - | - | - | - |
-| Ethernet65 | Multiple VRIDs | - | - | - | default | - | False | - | - | - | - |
-| Ethernet66 | Multiple VRIDs and tracking | - | - | - | default | - | False | - | - | - | - |
-| Ethernet77 | MLAG_PEER_DC1-LEAF1B_Ethernet8 | 8 | *- | True | *default | *- | *- | *- | *- | *- | *- |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
+| Ethernet4 | Molecule IPv6 | - | auto-config | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
+| Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
+| Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
+| Ethernet77 | MLAG_PEER_DC1-LEAF1B_Ethernet8 | 8 | *auto-config | *default | *- | *- | *- | *- | *- | *- |
 
 *Inherited from Port-Channel Interface
 
@@ -6203,9 +6203,9 @@ interface Ethernet89
 
 ##### IPv6
 
-| Interface | Description | MLAG ID | IPv6 Address | IPv6 Address Auto-config | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | ------------ | ------------------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Port-Channel8 | to Dev02 Port-channel 8 | - | - | True | default | - | - | - | - | - | - |
+| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
+| Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - |
 
 ##### VRRP Details
 
@@ -7027,9 +7027,9 @@ interface Loopback100
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Address Auto-config | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ------------------------ | ------- | ----------------- | ----------- | ------------ |
-| Tunnel1 | Tunnel-VRF | - | True | - | ingress | - | - |
+| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ------- | ----------------- | ----------- | ------------ |
+| Tunnel1 | Tunnel-VRF | auto-config | - | ingress | - | - |
 
 #### Tunnel Interfaces Device Configuration
 
@@ -7212,10 +7212,10 @@ interface Tunnel4
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Address  Auto-config | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ------------------------- | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
-| Vlan43 | default | - | True | - | - | - | - | - | - | - |
-| Vlan81 | Tenant_C | - | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
+| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - |
+| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - |
 
 ##### VRRP Details
 
