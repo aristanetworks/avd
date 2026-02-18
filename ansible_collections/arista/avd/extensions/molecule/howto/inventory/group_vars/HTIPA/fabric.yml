@@ -1,0 +1,18 @@
+---
+default_interfaces:
+  - types: [spine]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]
+    downlink_interfaces: [Ethernet1-8]
+  - types: [l3leaf]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]
+    mlag_interfaces: [Ethernet3-4]
+
+default_node_types:
+  - match_hostnames:
+      - ".*-spine.*"
+    node_type: spine
+  - match_hostnames:
+      - ".*-leaf.*"
+    node_type: l3leaf
