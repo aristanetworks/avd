@@ -12095,24 +12095,37 @@ ipv6 access-list standard ipv6_test1
 
 #### IPv6 Extended Access-lists Summary
 
+##### ACL_NO_SEQUENCE
+
+| Sequence | Action |
+| -------- | ------ |
+
 ##### acl_qos_tc0_v6
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit ipv6 any any dscp cs1 |
 
 ##### acl_qos_tc5_v6
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit ipv6 any 2001:db8::/48 |
+
+##### ACL_SEQUENCE_AND_COUNTERS
+
+ACL has counting mode `counters per-entry` enabled!
+
+| Sequence | Action |
+| -------- | ------ |
+
+##### ACL_WITHOUT_ENTRIES
+
+| Sequence | Action |
+| -------- | ------ |
 
 ##### TEST1
 
 | Sequence | Action |
 | -------- | ------ |
-| 5 | deny ipv6 fe80::/64 any |
-| 10 | permit ipv6 fe90::/64 any |
 
 ##### TEST2
 
@@ -12120,19 +12133,39 @@ ACL has counting mode `counters per-entry` enabled!
 
 | Sequence | Action |
 | -------- | ------ |
-| 5 | permit ipv6 2001:db8::/64 any |
-| 10 | deny ipv6 2001:db8::/32 any |
 
 ##### TEST3
 
 | Sequence | Action |
 | -------- | ------ |
-| 5 | deny ipv6 2001:db8:1000::/64 any |
-| 10 | permit ipv6 2001:db8::/32 any |
 
 #### IPv6 Extended Access-lists Device Configuration
 
 ```eos
+!
+ipv6 access-list ACL_NO_SEQUENCE
+   remark test acl without sequence numbers
+   deny udp any any log
+   permit icmp any any 3 4 ttl eq 40
+   permit icmp any any unreachable ttl gt 3
+   permit ip any any fragments dscp 46
+   permit ip any any tracked dscp ef
+   permit ip any any nexthop-group NH_TEST
+   permit vlan inner 123 0x000 ip any any
+   permit vlan 234 0xFFF ip any any
+   permit icmp any any
+!
+ipv6 access-list ACL_SEQUENCE_AND_COUNTERS
+   counters per-entry
+   10 remark test acl with sequence numbers
+   20 permit ip fe81::/64 any
+   30 permit tcp fe82::/64 any established
+   40 permit tcp any gt 1023 fe83::/64 eq 22
+   50 permit tcp any range 1000 1100 any range 10 20
+   4294967295 deny ip any any
+   permit response traffic nat
+!
+ipv6 access-list ACL_WITHOUT_ENTRIES
 !
 ipv6 access-list TEST1
    5 deny ipv6 fe80::/64 any
