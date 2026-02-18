@@ -23,4 +23,4 @@ servers:
         description: "PHYSICAL_PORT_DESCRIPTION"
         port_channel:
           mode: "active"
-          description: "{{ string-set-as-play-var }}"
+          description: "{{ string_set_as_play_var }}"

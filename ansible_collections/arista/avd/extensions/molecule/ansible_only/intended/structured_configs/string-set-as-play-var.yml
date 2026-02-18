@@ -33,7 +33,7 @@ metadata:
   fabric_name: ANSIBLE_ONLY
 port_channel_interfaces:
 - name: Port-Channel7
-  description: '{ string-set-as-play-var }'
+  description: test of var set under play vars
   shutdown: false
   switchport:
     enabled: true
