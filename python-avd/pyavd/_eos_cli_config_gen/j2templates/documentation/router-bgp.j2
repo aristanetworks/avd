@@ -540,6 +540,10 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%     if router_bgp.route_distinguisher.assignment_auto is arista.avd.defined %}
 
 #### Route Distinguisher
+{%         if router_bgp.route_distinguisher.assignment_auto.address_families is arista.avd.defined %}
+
+- Assignment Auto Address Family: {{ router_bgp.route_distinguisher.assignment_auto.address_families }}
+{%         endif %}
 {%         if router_bgp.route_distinguisher.assignment_auto.range is arista.avd.defined %}
 
 ##### Assignment Auto Range
@@ -547,10 +551,6 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | Start | End |
 | ----- | --- |
 | {{ router_bgp.route_distinguisher.assignment_auto.range.start }} | {{ router_bgp.route_distinguisher.assignment_auto.range.end }} |
-{%         endif %}
-{%         if router_bgp.route_distinguisher.assignment_auto.address_families is arista.avd.defined %}
-
-- Assignment Auto Address Family: {{ router_bgp.route_distinguisher.assignment_auto.address_families }}
 {%         endif %}
 {%     endif %}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
