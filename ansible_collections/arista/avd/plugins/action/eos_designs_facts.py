@@ -78,7 +78,7 @@ class ActionModule(ActionBase):
 
         groups = task_vars.get("groups", {})
         fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
-        # Sort for deterministic host ordering as it can break pool manager assignments.
+        # Sort for deterministic host ordering as it can change initial pool-manager assignments.
         fabric_hosts = natural_sort(groups.get(fabric_name))
         ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", [])
 
