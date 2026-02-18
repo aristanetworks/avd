@@ -8,7 +8,7 @@ type: l2leaf
 l2leaf:
   defaults:
   nodes:
-    - name: string_set_as_play_var
+    - name: string-set-as-play-var
       mgmt_ip: 192.168.1.1/24
       platform: 720XP
       link_tracking:
@@ -18,9 +18,9 @@ servers:
   # Making sure our variables can read playbook variables
   - name: OLD_SW-1/6
     adapters:
-      - switches: [string_set_as_play_var, dummy]
+      - switches: [string-set-as-play-var, dummy]
         switch_ports: [Ethernet7, Ethernet8]
         description: "PHYSICAL_PORT_DESCRIPTION"
         port_channel:
           mode: "active"
-          description: "{{ string_set_as_play_var }}"
+          description: "{{ string_set_as_play_var | default('string-set-as-play-var') }}"

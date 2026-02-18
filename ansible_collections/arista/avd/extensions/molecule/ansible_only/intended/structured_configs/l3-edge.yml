@@ -5,7 +5,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: ethernet4
-  description: Custom description on l3_edge eth4
+  description: Custom description on l3-edge eth4
   shutdown: false
   mtu: 9214
   ip_address: 192.168.4.1/31
@@ -46,7 +46,7 @@ ethernet_interfaces:
     peer: peer7
     peer_interface: Ethernet7
     peer_type: other
-hostname: l3_edge
+hostname: l3-edge
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0

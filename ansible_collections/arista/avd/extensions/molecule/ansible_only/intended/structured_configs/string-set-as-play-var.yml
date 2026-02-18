@@ -14,7 +14,7 @@ ethernet_interfaces:
     peer: OLD_SW-1/6
     peer_type: server
     peer_key: servers
-hostname: string_set_as_play_var
+hostname: string-set-as-play-var
 ip_igmp_snooping:
   globally_enabled: true
 link_tracking_groups:
