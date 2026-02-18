@@ -64620,7 +64620,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
-                    class ArpStaticEntriesItem(AvdModel):
+                    class StaticArpEntriesItem(AvdModel):
                         """Subclass of AvdModel."""
 
                         class Nodes(AvdList[str]):
@@ -64653,7 +64653,7 @@ class EosDesigns(EosDesignsRootModel):
                                 nodes: Nodes | UndefinedType = Undefined,
                             ) -> None:
                                 """
-                                ArpStaticEntriesItem.
+                                StaticArpEntriesItem.
 
 
                                 Subclass of AvdModel.
@@ -64671,10 +64671,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
-                    class ArpStaticEntries(AvdList[ArpStaticEntriesItem]):
-                        """Subclass of AvdList with `ArpStaticEntriesItem` items."""
+                    class StaticArpEntries(AvdList[StaticArpEntriesItem]):
+                        """Subclass of AvdList with `StaticArpEntriesItem` items."""
 
-                    ArpStaticEntries._item_type = ArpStaticEntriesItem
+                    StaticArpEntries._item_type = StaticArpEntriesItem
 
                     class BgpPeersItem(AvdModel):
                         """Subclass of AvdModel."""
@@ -66046,7 +66046,7 @@ class EosDesigns(EosDesignsRootModel):
                         "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                         "redistribute_static": {"type": bool},
                         "redistribute_connected": {"type": bool, "default": True},
-                        "arp_static_entries": {"type": ArpStaticEntries},
+                        "static_arp_entries": {"type": StaticArpEntries},
                         "bgp_peers": {"type": BgpPeers},
                         "bgp": {"type": Bgp},
                         "bgp_peer_groups": {"type": BgpPeerGroups},
@@ -66295,13 +66295,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     Default value: `True`
                     """
-                    arp_static_entries: ArpStaticEntries
+                    static_arp_entries: StaticArpEntries
                     """
                     List of static ARP entries.
                     This will create static ARP entries inside the tenant VRF.
                     If nodes are
                     not specified, all devices that carry the VRF will also be applied the static ARP entries.
-                    Subclass of AvdList with `ArpStaticEntriesItem` items.
+                    Subclass of AvdList with `StaticArpEntriesItem` items.
                     """
                     bgp_peers: BgpPeers
                     """
@@ -66385,7 +66385,7 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                             redistribute_static: bool | None | UndefinedType = Undefined,
                             redistribute_connected: bool | UndefinedType = Undefined,
-                            arp_static_entries: ArpStaticEntries | UndefinedType = Undefined,
+                            static_arp_entries: StaticArpEntries | UndefinedType = Undefined,
                             bgp_peers: BgpPeers | UndefinedType = Undefined,
                             bgp: Bgp | UndefinedType = Undefined,
                             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
@@ -66574,12 +66574,12 @@ class EosDesigns(EosDesignsRootModel):
                                 redistribute_connected:
                                    Enable or disable the redistribution of all connected routes to BGP in the VRF. Note this is not
                                    applicable to VRF `default`.
-                                arp_static_entries:
+                                static_arp_entries:
                                    List of static ARP entries.
                                    This will create static ARP entries inside the tenant VRF.
                                    If nodes are
                                    not specified, all devices that carry the VRF will also be applied the static ARP entries.
-                                   Subclass of AvdList with `ArpStaticEntriesItem` items.
+                                   Subclass of AvdList with `StaticArpEntriesItem` items.
                                 bgp_peers:
                                    List of BGP peer definitions.
                                    This will configure BGP neighbors inside the tenant VRF for peering

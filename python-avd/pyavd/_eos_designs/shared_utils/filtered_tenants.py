@@ -264,7 +264,7 @@ class FilteredTenantsMixin(Protocol):
             vrf.bgp_peers = vrf.bgp_peers._filtered(lambda bgp_peer: self.match_regexes(bgp_peer.nodes, self.hostname))._natural_sorted(sort_key="ip_address")
             vrf.static_routes = vrf.static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
             vrf.ipv6_static_routes = vrf.ipv6_static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
-            vrf.arp_static_entries = vrf.arp_static_entries._filtered(lambda entry: not entry.nodes or self.hostname in entry.nodes)
+            vrf.static_arp_entries = vrf.static_arp_entries._filtered(lambda entry: not entry.nodes or self.hostname in entry.nodes)
             vrf.svis = self.filtered_svis(vrf, tenant)
             vrf.l3_interfaces = self.filtered_l3_interfaces(vrf)
             vrf.l3_port_channels = self.filtered_l3_port_channels(vrf)

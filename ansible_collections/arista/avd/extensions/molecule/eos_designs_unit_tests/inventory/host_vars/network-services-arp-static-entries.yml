@@ -18,7 +18,7 @@ tenants:
       - name: VRF1
         vrf_id: 1
         # ARP static entries without nodes - should apply to all devices with this VRF
-        arp_static_entries:
+        static_arp_entries:
           - ipv4_address: 10.1.1.1
             mac_address: 0000.0000.0001
           - ipv4_address: 10.1.1.2
@@ -32,7 +32,7 @@ tenants:
       - name: VRF2
         vrf_id: 2
         # ARP static entries with specific nodes - should only apply to network-services-arp-static-entries node
-        arp_static_entries:
+        static_arp_entries:
           - ipv4_address: 10.2.1.1
             mac_address: 0000.0000.0011
             nodes: [network-services-arp-static-entries]
@@ -52,7 +52,7 @@ tenants:
       - name: VRF3
         vrf_id: 3
         # Mix of entries with and without nodes
-        arp_static_entries:
+        static_arp_entries:
           - ipv4_address: 10.3.1.1
             mac_address: 0000.0000.0021
             # No nodes - applies to all
@@ -68,7 +68,7 @@ tenants:
       - name: VRF4
         vrf_id: 4
         # Test with different MAC address formats
-        arp_static_entries:
+        static_arp_entries:
           - ipv4_address: 192.168.100.1
             mac_address: AAAA.BBBB.CCCC
           - ipv4_address: 192.168.100.2

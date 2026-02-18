@@ -32,7 +32,7 @@ class ArpMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 # ARP static entries are already filtered inside filtered_tenants
-                for arp_entry in vrf.arp_static_entries:
+                for arp_entry in vrf.static_arp_entries:
                     arp_static_entry_item = EosCliConfigGen.Arp.StaticEntriesItem(
                         ipv4_address=arp_entry.ipv4_address,
                         vrf=vrf.name,

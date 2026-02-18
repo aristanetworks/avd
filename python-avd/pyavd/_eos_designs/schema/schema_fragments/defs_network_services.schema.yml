@@ -1331,7 +1331,7 @@ $defs:
                 type: bool
                 default: true
                 description: Enable or disable the redistribution of all connected routes to BGP in the VRF. Note this is not applicable to VRF `default`.
-              arp_static_entries:
+              static_arp_entries:
                 type: list
                 description: |
                   List of static ARP entries.
