@@ -257,6 +257,8 @@ port_profiles:
       pae:
         mode: supplicant
         supplicant_profile: test_profile_port_profile
+    mac_acl_in: acl1
+    mac_acl_out: acl2
 
 monitor:
   - name: custom_connected_endpoint

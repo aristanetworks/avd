@@ -272,6 +272,8 @@ ethernet_interfaces:
   link_tracking_groups:
   - name: LT_GROUP1
     direction: downstream
+  mac_access_group_in: acl1
+  mac_access_group_out: acl2
   channel_group:
     id: 15
     mode: active
@@ -292,6 +294,8 @@ ethernet_interfaces:
   link_tracking_groups:
   - name: LT_GROUP1
     direction: downstream
+  mac_access_group_in: acl1
+  mac_access_group_out: acl2
   channel_group:
     id: 15
     mode: active
