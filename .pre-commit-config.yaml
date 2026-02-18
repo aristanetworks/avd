@@ -299,7 +299,14 @@ repos:
         entry: development/sort_hosts_yml.py
         language: python
         # Matches hosts.yml in: eos_cli_config_gen*, eos_designs*
-        files: ^ansible_collections/arista/avd/extensions/molecule/(eos_cli_config_gen.*|eos_designs_unit_tests|eos_designs_negative_unit_tests|eos_designs_deprecated_vars)/inventory/hosts.yml$
+        files: >-
+          (?x)
+          ^ansible_collections/arista/avd/extensions/molecule/
+          (eos_cli_config_gen.*|
+          eos_designs_unit_tests|
+          eos_designs_negative_unit_tests|
+          eos_designs_deprecated_vars)
+          /inventory/hosts.yml$
 
       - id: templates
         name: Precompile Jinja2 templates
