@@ -12096,6 +12096,7 @@ ipv6 access-list standard ipv6_test1
 #### IPv6 Access-lists Summary
 
 - The maximum number of ACL entries allowed to be provisioned per switch: 10000
+
 #### IPv6 Access-lists Device Configuration
 
 ```eos
