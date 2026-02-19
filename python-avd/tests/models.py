@@ -145,14 +145,16 @@ class MoleculeScenario:
         self._inventory = InventoryManager(loader=DataLoader(), sources=[inventory_path.as_posix()])
         self._vars = VariableManager(loader=DataLoader(), inventory=self._inventory)
         self.hosts = []
-        for host in natural_sort(self._inventory.get_hosts(), ignore_case=False):
-            if self.name.startswith("example-") and host.name in ["cvp", "cloudvision"]:
+        inventory_hosts: dict[str, AnsibleHost] = self._inventory.hosts
+        for hostname in natural_sort(inventory_hosts, ignore_case=False):
+            if hostname.startswith("example-") and hostname in ["cvp", "cloudvision"]:
                 # Ignore CVP devices in examples without bloating the example without test groups.
                 continue
+            host: AnsibleHost = inventory_hosts[hostname]
             if "IGNORE_IN_PYTEST" in [group.name for group in host.groups]:
                 # Ignore members of the group IGNORE_IN_PYTEST from Molecule scenarios.
                 continue
-            self.hosts.append(MoleculeHost(name=host.name, ansible_host=host, scenario=self))
+            self.hosts.append(MoleculeHost(name=hostname, ansible_host=host, scenario=self))
         self.pool_manager = PoolManager(self.path / "intended")
 
         self.extra_python_paths = []
