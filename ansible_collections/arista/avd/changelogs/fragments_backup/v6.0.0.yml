@@ -185,7 +185,7 @@ breaking_changes:
 - |-
  Fix(eos_designs)!: Set RTC 'default-route-target only' on EVPN gateway also being route-server by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6443
 - |-
- Refactor(eos_designs)!: Remove ununsed overlay peer groups by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6429
+ Refactor(eos_designs)!: Remove unused overlay peer groups by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6429
 - |-
  Refactor(eos_designs)!: Change default management interface for cEOS to Management1 by @gmuloc in https://github.com/aristanetworks/avd/pull/6491
 
@@ -287,7 +287,7 @@ minor_changes:
 - |-
  Doc: Fix `flow_tracker_type` description by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/6328
 - |-
- Doc(eos_designs): seperate management settings tables by @joelbreton2 in https://github.com/aristanetworks/avd/pull/6305
+ Doc(eos_designs): separate management settings tables by @joelbreton2 in https://github.com/aristanetworks/avd/pull/6305
 - |-
  Doc(eos_designs): How-to Guide - Connected Endpoint and Node Types by @joelbreton2 in https://github.com/aristanetworks/avd/pull/5882
 - |-
@@ -295,7 +295,7 @@ minor_changes:
 - |-
  Doc(eos_designs): Remove duplicate mgmt interface-table by @joelbreton2 in https://github.com/aristanetworks/avd/pull/6366
 - |-
- Doc(eos_designs): seperate platform settings tables by @joelbreton2 in https://github.com/aristanetworks/avd/pull/6357
+ Doc(eos_designs): separate platform settings tables by @joelbreton2 in https://github.com/aristanetworks/avd/pull/6357
 - |-
  Doc: Removing documentation generation from how-tos by @JulioPDX in https://github.com/aristanetworks/avd/pull/6368
 - |-

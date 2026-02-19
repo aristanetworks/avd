@@ -43,8 +43,8 @@ Minor Changes
 - Doc(eos_designs): Remove duplicate mgmt interface-table by @joelbreton2 in https://github.com/aristanetworks/avd/pull/6366
 - Doc(eos_designs): Update diagram for eos_designs role by @JulioPDX in https://github.com/aristanetworks/avd/pull/6470
 - Doc(eos_designs): Update the section about `is_deployed : false` devices by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5863
-- Doc(eos_designs): seperate management settings tables by @joelbreton2 in https://github.com/aristanetworks/avd/pull/6305
-- Doc(eos_designs): seperate platform settings tables by @joelbreton2 in https://github.com/aristanetworks/avd/pull/6357
+- Doc(eos_designs): separate management settings tables by @joelbreton2 in https://github.com/aristanetworks/avd/pull/6305
+- Doc(eos_designs): separate platform settings tables by @joelbreton2 in https://github.com/aristanetworks/avd/pull/6357
 - Doc(eos_designs,eos_cli_config_gen): Update roles documentation by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/6464
 - Doc(eos_snapshot): Updating diagrams by @JulioPDX in https://github.com/aristanetworks/avd/pull/6478
 - Doc(pyavd): Add porting guide for breaking pyavd changes by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6442
@@ -302,7 +302,7 @@ Breaking Changes / Porting Guide
 - Refactor(eos_designs)!: Raise error on cv-pathfinder wan router if no wan_route_servers are set by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/6351
 - Refactor(eos_designs)!: Redesign the cv_topology feature based on feedback by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6001
 - Refactor(eos_designs)!: Remove bgp_ecmp default value 4 for non WAN routers by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5935
-- Refactor(eos_designs)!: Remove ununsed overlay peer groups by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6429
+- Refactor(eos_designs)!: Remove unused overlay peer groups by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6429
 - Refactor(eos_designs)!: Remove wan_use_evpn_node_settings_for_lan and make it the default behavior by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5985
 - Refactor(eos_designs)!: Rename wan_mode autovpn to legacy-autovpn by @gmuloc in https://github.com/aristanetworks/avd/pull/6264
 - Refactor(eos_designs)!: Set underlay bgp peer groups only when neighbors are using the peer group by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5786
