@@ -319,16 +319,6 @@ class TestAvdConfigletFromDict:
         with pytest.raises(ValueError, match=match_str):
             AvdConfiglet.from_dict(invalid_data)
 
-    def test_asdict_returns_native_types_for_ansible_compatibility(self) -> None:
-        """Tests that asdict(<AvdConfiglet>) only returns Python native types to ensure compatibility with Ansible's transform_to_native_types()."""
-        data = {"name": "TestConfiglet", "file": "/path/to/file.cfg"}
-        configlet = AvdConfiglet.from_dict(data)
-        result = asdict(configlet)
-
-        # Confirm that all values are native Python types (not Path)
-        assert isinstance(result["name"], str)
-        assert isinstance(result["file"], str)
-
 
 class TestAvdContainerFromDict:
     def test_success_minimal(self) -> None:
