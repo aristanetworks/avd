@@ -79,7 +79,7 @@ $ ansible-galaxy collection install arista.avd -p collections/
 
 # Update ansible.cfg file
 $ vim ansible.cfg
-collections_paths = ${PWD}/collections:~/.ansible/collections:/usr/share/ansible/collections
+collections_path = ${PWD}/collections:~/.ansible/collections:/usr/share/ansible/collections
 ```
 
 ### Upgrade installed AVD collection
