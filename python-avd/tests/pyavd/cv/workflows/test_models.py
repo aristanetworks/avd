@@ -2,6 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
@@ -317,6 +318,16 @@ class TestAvdConfigletFromDict:
         """Tests that ValueError is raised for various invalid data structures in AvdConfiglet."""
         with pytest.raises(ValueError, match=match_str):
             AvdConfiglet.from_dict(invalid_data)
+
+    def test_asdict_returns_native_types_for_ansible_compatibility(self) -> None:
+        """Tests that asdict(<AvdConfiglet>) only returns Python native types to ensure compatibility with Ansible's transform_to_native_types()."""
+        data = {"name": "TestConfiglet", "file": "/path/to/file.cfg"}
+        configlet = AvdConfiglet.from_dict(data)
+        result = asdict(configlet)
+
+        # Confirm that all values are native Python types (not Path)
+        assert isinstance(result["name"], str)
+        assert isinstance(result["file"], str)
 
 
 class TestAvdContainerFromDict:
