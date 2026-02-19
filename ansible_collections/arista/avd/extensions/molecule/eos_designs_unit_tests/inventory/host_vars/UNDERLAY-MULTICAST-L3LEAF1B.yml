@@ -15,7 +15,7 @@ l3leaf:
     loopback_ipv4_offset: 2
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     uplink_interfaces: [Ethernet1, Ethernet2]
-    uplink_switches: ["UNDERLAY-MULTICAST-SPINE1", "UNDERLAY-MULTICAST-SPINE2"]
+    uplink_switches: ["underlay-multicast-spine1", "underlay-multicast-spine2"]
     uplink_ipv4_pool: 172.31.255.0/24
     mlag_interfaces: [Ethernet3, Ethernet4]
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
@@ -24,9 +24,9 @@ l3leaf:
     - group: DC1_LEAF1
       bgp_as: 65101
       nodes:
-        - name: UNDERLAY-MULTICAST-L3LEAF1A
+        - name: underlay-multicast-l3leaf1a
           # [...] from group_vars
-        - name: UNDERLAY-MULTICAST-L3LEAF1B
+        - name: underlay-multicast-l3leaf1b
           # Testing that node variables override global variables
           id: 2
           mgmt_ip: 192.168.200.106/24

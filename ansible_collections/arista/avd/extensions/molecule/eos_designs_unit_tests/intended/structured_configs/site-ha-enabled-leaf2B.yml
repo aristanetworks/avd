@@ -5,18 +5,18 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_cv-pathfinder-edge2A_Ethernet53
+  description: P2P_cv-pathfinder-edge2a_Ethernet53
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.6/31
   metadata:
-    peer: cv-pathfinder-edge2A
+    peer: cv-pathfinder-edge2a
     peer_interface: Ethernet53
     peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet1.1000
-  description: P2P_cv-pathfinder-edge2A_Ethernet53.1000_VRF_IT
+  description: P2P_cv-pathfinder-edge2a_Ethernet53.1000_VRF_IT
   shutdown: false
   mtu: 9214
   vrf: IT
@@ -24,11 +24,11 @@ ethernet_interfaces:
     vlan: 1000
   ip_address: 172.17.0.6/31
   metadata:
-    peer: cv-pathfinder-edge2A
+    peer: cv-pathfinder-edge2a
     peer_interface: Ethernet53.1000
     peer_type: wan_router
 - name: Ethernet1.142
-  description: P2P_cv-pathfinder-edge2A_Ethernet53.142_VRF_PROD
+  description: P2P_cv-pathfinder-edge2a_Ethernet53.142_VRF_PROD
   shutdown: false
   mtu: 9214
   vrf: PROD
@@ -36,11 +36,11 @@ ethernet_interfaces:
     vlan: 142
   ip_address: 172.17.0.6/31
   metadata:
-    peer: cv-pathfinder-edge2A
+    peer: cv-pathfinder-edge2a
     peer_interface: Ethernet53.142
     peer_type: wan_router
 - name: Ethernet1.666
-  description: P2P_cv-pathfinder-edge2A_Ethernet53.666_VRF_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_cv-pathfinder-edge2a_Ethernet53.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   mtu: 9214
   vrf: ATTRACTED-VRF-FROM-UPLINK
@@ -48,22 +48,22 @@ ethernet_interfaces:
     vlan: 666
   ip_address: 172.17.0.6/31
   metadata:
-    peer: cv-pathfinder-edge2A
+    peer: cv-pathfinder-edge2a
     peer_interface: Ethernet53.666
     peer_type: wan_router
 - name: Ethernet2
-  description: P2P_cv-pathfinder-edge2B_Ethernet53
+  description: P2P_cv-pathfinder-edge2b_Ethernet53
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.10/31
   metadata:
-    peer: cv-pathfinder-edge2B
+    peer: cv-pathfinder-edge2b
     peer_interface: Ethernet53
     peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet2.1000
-  description: P2P_cv-pathfinder-edge2B_Ethernet53.1000_VRF_IT
+  description: P2P_cv-pathfinder-edge2b_Ethernet53.1000_VRF_IT
   shutdown: false
   mtu: 9214
   vrf: IT
@@ -71,11 +71,11 @@ ethernet_interfaces:
     vlan: 1000
   ip_address: 172.17.0.10/31
   metadata:
-    peer: cv-pathfinder-edge2B
+    peer: cv-pathfinder-edge2b
     peer_interface: Ethernet53.1000
     peer_type: wan_router
 - name: Ethernet2.142
-  description: P2P_cv-pathfinder-edge2B_Ethernet53.142_VRF_PROD
+  description: P2P_cv-pathfinder-edge2b_Ethernet53.142_VRF_PROD
   shutdown: false
   mtu: 9214
   vrf: PROD
@@ -83,11 +83,11 @@ ethernet_interfaces:
     vlan: 142
   ip_address: 172.17.0.10/31
   metadata:
-    peer: cv-pathfinder-edge2B
+    peer: cv-pathfinder-edge2b
     peer_interface: Ethernet53.142
     peer_type: wan_router
 - name: Ethernet2.666
-  description: P2P_cv-pathfinder-edge2B_Ethernet53.666_VRF_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_cv-pathfinder-edge2b_Ethernet53.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   mtu: 9214
   vrf: ATTRACTED-VRF-FROM-UPLINK
@@ -95,10 +95,10 @@ ethernet_interfaces:
     vlan: 666
   ip_address: 172.17.0.10/31
   metadata:
-    peer: cv-pathfinder-edge2B
+    peer: cv-pathfinder-edge2b
     peer_interface: Ethernet53.666
     peer_type: wan_router
-hostname: site-ha-enabled-leaf2B
+hostname: site-ha-enabled-leaf2b
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -155,14 +155,14 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     metadata:
-      peer: cv-pathfinder-edge2A
-    description: cv-pathfinder-edge2A_Ethernet53
+      peer: cv-pathfinder-edge2a
+    description: cv-pathfinder-edge2a_Ethernet53
   - ip_address: 172.17.0.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     metadata:
-      peer: cv-pathfinder-edge2B
-    description: cv-pathfinder-edge2B_Ethernet53
+      peer: cv-pathfinder-edge2b
+    description: cv-pathfinder-edge2b_Ethernet53
   redistribute:
     connected:
       enabled: true
@@ -219,11 +219,11 @@ router_bgp:
     - ip_address: 172.17.0.7
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-edge2A_Ethernet53.1000_vrf_IT
+      description: cv-pathfinder-edge2a_Ethernet53.1000_vrf_IT
     - ip_address: 172.17.0.11
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-edge2B_Ethernet53.1000_vrf_IT
+      description: cv-pathfinder-edge2b_Ethernet53.1000_vrf_IT
     redistribute:
       connected:
         enabled: true
@@ -243,11 +243,11 @@ router_bgp:
     - ip_address: 172.17.0.7
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-edge2A_Ethernet53.142_vrf_PROD
+      description: cv-pathfinder-edge2a_Ethernet53.142_vrf_PROD
     - ip_address: 172.17.0.11
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-edge2B_Ethernet53.142_vrf_PROD
+      description: cv-pathfinder-edge2b_Ethernet53.142_vrf_PROD
     redistribute:
       connected:
         enabled: true
@@ -267,11 +267,11 @@ router_bgp:
     - ip_address: 172.17.0.7
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-edge2A_Ethernet53.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+      description: cv-pathfinder-edge2a_Ethernet53.666_vrf_ATTRACTED-VRF-FROM-UPLINK
     - ip_address: 172.17.0.11
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-edge2B_Ethernet53.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+      description: cv-pathfinder-edge2b_Ethernet53.666_vrf_ATTRACTED-VRF-FROM-UPLINK
     redistribute:
       connected:
         enabled: true
@@ -346,7 +346,7 @@ vrfs:
     - TenantC
 vxlan_interface:
   vxlan1:
-    description: site-ha-enabled-leaf2B_VTEP
+    description: site-ha-enabled-leaf2b_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: platform-7358X4
+hostname: platform-7358x4
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -64,7 +64,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: platform-7358X4_VTEP
+    description: platform-7358x4_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

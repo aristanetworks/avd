@@ -17,23 +17,23 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet5
-  description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Ethernet5
+  description: MLAG_PEER_mlag-ospf-l3leaf1a_Ethernet5
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: MLAG-OSPF-L3LEAF1A
+    peer: mlag-ospf-l3leaf1a
     peer_interface: Ethernet5
     peer_type: mlag_peer
 - name: Ethernet6
-  description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Ethernet6
+  description: MLAG_PEER_mlag-ospf-l3leaf1a_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: MLAG-OSPF-L3LEAF1A
+    peer: mlag-ospf-l3leaf1a
     peer_interface: Ethernet6
     peer_type: mlag_peer
 - name: Ethernet1
@@ -53,12 +53,12 @@ ethernet_interfaces:
     hash_algorithm: sha512
     key: pWGuZ4QaDATcfTOKCkm1p2Rq2A4O9j5j
   metadata:
-    peer: DC1-SPINE1
+    peer: dc1-spine1
     peer_interface: Ethernet220
     peer_type: spine
   switchport:
     enabled: false
-hostname: MLAG-OSPF-L3LEAF1B
+hostname: mlag-ospf-l3leaf1b
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_server:
@@ -127,7 +127,7 @@ ntp:
   vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Po5
+  description: MLAG_PEER_mlag-ospf-l3leaf1a_Po5
   shutdown: false
   switchport:
     enabled: true
@@ -167,8 +167,8 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1
+      peer: dc1-spine1
+    description: dc1-spine1
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -196,7 +196,7 @@ router_ospf:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS MLAG-OSPF-L3LEAF1B
+  location: EOS_DESIGNS_UNIT_TESTS mlag-ospf-l3leaf1b
 spanning_tree:
   mst:
     pvst_border: true
@@ -241,7 +241,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: MLAG-OSPF-L3LEAF1B_VTEP
+    description: mlag-ospf-l3leaf1b_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

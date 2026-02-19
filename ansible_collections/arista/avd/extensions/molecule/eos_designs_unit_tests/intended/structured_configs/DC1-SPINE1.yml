@@ -23,7 +23,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.0/31
   metadata:
-    peer: DC1-LEAF1A
+    peer: dc1-leaf1a
     peer_interface: Ethernet27
     peer_type: l3leaf
   switchport:
@@ -35,7 +35,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.32/31
   metadata:
-    peer: DC1-LEAF2A
+    peer: dc1-leaf2a
     peer_interface: Ethernet49/1
     peer_type: l3leaf
   switchport:
@@ -47,7 +47,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.38/31
   metadata:
-    peer: DC1-LEAF2A
+    peer: dc1-leaf2a
     peer_interface: Ethernet52/1
     peer_type: l3leaf
   switchport:
@@ -59,7 +59,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.64/31
   metadata:
-    peer: DC1-LEAF2B
+    peer: dc1-leaf2b
     peer_interface: Ethernet49/1
     peer_type: l3leaf
   switchport:
@@ -71,7 +71,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.70/31
   metadata:
-    peer: DC1-LEAF2B
+    peer: dc1-leaf2b
     peer_interface: Ethernet52/1
     peer_type: l3leaf
   switchport:
@@ -83,7 +83,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.96/31
   metadata:
-    peer: DC1-SVC3A
+    peer: dc1-svc3a
     peer_interface: Ethernet49/1
     peer_type: l3leaf
   switchport:
@@ -95,7 +95,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.128/31
   metadata:
-    peer: DC1-SVC3B
+    peer: dc1-svc3b
     peer_interface: Ethernet49/1
     peer_type: l3leaf
   switchport:
@@ -107,19 +107,19 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 10.10.101.6/31
   metadata:
-    peer: MLAG-OSPF-L3LEAF1A
+    peer: mlag-ospf-l3leaf1a
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet19
-  description: description through uplink_switch_ethernet_structured_config(MH-LEAF1A)
+  description: description through uplink_switch_ethernet_structured_config(mh-leaf1a)
   shutdown: false
   speed: forced 40gfull
   mtu: 1500
   ip_address: 10.10.101.0/31
   metadata:
-    peer: MH-LEAF1A
+    peer: mh-leaf1a
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
@@ -131,7 +131,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 10.10.101.2/31
   metadata:
-    peer: MH-LEAF1B
+    peer: mh-leaf1b
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
@@ -143,7 +143,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 10.10.101.4/31
   metadata:
-    peer: MH-LEAF2A
+    peer: mh-leaf2a
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
@@ -155,7 +155,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.160/31
   metadata:
-    peer: DC1-BL1A
+    peer: dc1-bl1a
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
@@ -167,7 +167,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.192/31
   metadata:
-    peer: DC1-BL1B
+    peer: dc1-bl1b
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
@@ -179,7 +179,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.224/31
   metadata:
-    peer: DC1-BL2A
+    peer: dc1-bl2a
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
@@ -191,7 +191,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.255.0/31
   metadata:
-    peer: DC1-BL2B
+    peer: dc1-bl2b
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
@@ -203,7 +203,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.255.32/31
   metadata:
-    peer: DC1-CL1A
+    peer: dc1-cl1a
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
@@ -215,31 +215,31 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.255.64/31
   metadata:
-    peer: DC1-CL1B
+    peer: dc1-cl1b
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet28
-  description: P2P_LINK_Ethernet28_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet49/1
+  description: P2P_LINK_Ethernet28_TO_DC1-UNDEPLOYED-LEAF1A_Ethernet49/1
   shutdown: true
   speed: 100g-2
   mtu: 1500
   ip_address: 172.31.255.128/31
   metadata:
-    peer: DC1_UNDEPLOYED_LEAF1A
+    peer: dc1-undeployed-leaf1a
     peer_interface: Ethernet49/1
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet29
-  description: P2P_LINK_Ethernet29_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet49/1
+  description: P2P_LINK_Ethernet29_TO_DC1-UNDEPLOYED-LEAF1B_Ethernet49/1
   shutdown: true
   speed: forced 100gfull
   mtu: 1500
   ip_address: 172.31.255.160/31
   metadata:
-    peer: DC1_UNDEPLOYED_LEAF1B
+    peer: dc1-undeployed-leaf1b
     peer_interface: Ethernet49/1
     peer_type: l3leaf
   switchport:
@@ -251,12 +251,12 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 10.10.101.8/31
   metadata:
-    peer: MLAG-OSPF-L3LEAF1B
+    peer: mlag-ospf-l3leaf1b
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
     enabled: false
-hostname: DC1-SPINE1
+hostname: dc1-spine1
 ip_name_server:
   vrfs:
   - name: MGMT
@@ -360,203 +360,203 @@ router_bgp:
     peer_group: UNDERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: DC1-LEAF1A
-    description: DC1-LEAF1A_Ethernet27
+      peer: dc1-leaf1a
+    description: dc1-leaf1a_Ethernet27
   - ip_address: 172.31.254.33
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
     metadata:
-      peer: DC1-LEAF2A
-    description: DC1-LEAF2A_Ethernet49/1
+      peer: dc1-leaf2a
+    description: dc1-leaf2a_Ethernet49/1
   - ip_address: 172.31.254.39
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
     metadata:
-      peer: DC1-LEAF2A
-    description: DC1-LEAF2A_Ethernet52/1
+      peer: dc1-leaf2a
+    description: dc1-leaf2a_Ethernet52/1
   - ip_address: 172.31.254.65
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
     metadata:
-      peer: DC1-LEAF2B
-    description: DC1-LEAF2B_Ethernet49/1
+      peer: dc1-leaf2b
+    description: dc1-leaf2b_Ethernet49/1
   - ip_address: 172.31.254.71
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
     metadata:
-      peer: DC1-LEAF2B
-    description: DC1-LEAF2B_Ethernet52/1
+      peer: dc1-leaf2b
+    description: dc1-leaf2b_Ethernet52/1
   - ip_address: 172.31.254.97
     peer_group: UNDERLAY-PEERS
     remote_as: '65103'
     metadata:
-      peer: DC1-SVC3A
-    description: DC1-SVC3A_Ethernet49/1
+      peer: dc1-svc3a
+    description: dc1-svc3a_Ethernet49/1
   - ip_address: 172.31.254.129
     peer_group: UNDERLAY-PEERS
     remote_as: '65103'
     metadata:
-      peer: DC1-SVC3B
-    description: DC1-SVC3B_Ethernet49/1
+      peer: dc1-svc3b
+    description: dc1-svc3b_Ethernet49/1
   - ip_address: 10.10.101.7
     peer_group: UNDERLAY-PEERS
     remote_as: '65161'
     metadata:
-      peer: MLAG-OSPF-L3LEAF1A
-    description: MLAG-OSPF-L3LEAF1A_Ethernet1
+      peer: mlag-ospf-l3leaf1a
+    description: mlag-ospf-l3leaf1a_Ethernet1
   - ip_address: 10.10.101.1
     peer_group: UNDERLAY-PEERS
     remote_as: '65151'
     metadata:
-      peer: MH-LEAF1A
-    description: MH-LEAF1A_Ethernet1
+      peer: mh-leaf1a
+    description: mh-leaf1a_Ethernet1
   - ip_address: 10.10.101.3
     peer_group: UNDERLAY-PEERS
     remote_as: '65152'
     metadata:
-      peer: MH-LEAF1B
-    description: MH-LEAF1B_Ethernet1
+      peer: mh-leaf1b
+    description: mh-leaf1b_Ethernet1
   - ip_address: 10.10.101.5
     peer_group: UNDERLAY-PEERS
     remote_as: '65153'
     metadata:
-      peer: MH-LEAF2A
-    description: MH-LEAF2A_Ethernet1
+      peer: mh-leaf2a
+    description: mh-leaf2a_Ethernet1
   - ip_address: 172.31.254.161
     peer_group: UNDERLAY-PEERS
     remote_as: '65104'
     metadata:
-      peer: DC1-BL1A
-    description: DC1-BL1A_Ethernet1
+      peer: dc1-bl1a
+    description: dc1-bl1a_Ethernet1
   - ip_address: 172.31.254.193
     peer_group: UNDERLAY-PEERS
     remote_as: '65105'
     metadata:
-      peer: DC1-BL1B
-    description: DC1-BL1B_Ethernet1
+      peer: dc1-bl1b
+    description: dc1-bl1b_Ethernet1
   - ip_address: 172.31.254.225
     peer_group: UNDERLAY-PEERS
     remote_as: '65106'
     metadata:
-      peer: DC1-BL2A
-    description: DC1-BL2A_Ethernet1
+      peer: dc1-bl2a
+    description: dc1-bl2a_Ethernet1
   - ip_address: 172.31.255.1
     peer_group: UNDERLAY-PEERS
     remote_as: '65107'
     metadata:
-      peer: DC1-BL2B
-    description: DC1-BL2B_Ethernet1
+      peer: dc1-bl2b
+    description: dc1-bl2b_Ethernet1
   - ip_address: 172.31.255.33
     peer_group: UNDERLAY-PEERS
     remote_as: '65108'
     metadata:
-      peer: DC1-CL1A
-    description: DC1-CL1A_Ethernet1
+      peer: dc1-cl1a
+    description: dc1-cl1a_Ethernet1
   - ip_address: 172.31.255.65
     peer_group: UNDERLAY-PEERS
     remote_as: '65109'
     metadata:
-      peer: DC1-CL1B
-    description: DC1-CL1B_Ethernet1
+      peer: dc1-cl1b
+    description: dc1-cl1b_Ethernet1
   - ip_address: 172.31.255.129
     peer_group: UNDERLAY-PEERS
     remote_as: '65110'
     metadata:
-      peer: DC1_UNDEPLOYED_LEAF1A
-    description: DC1_UNDEPLOYED_LEAF1A_Ethernet49/1
+      peer: dc1-undeployed-leaf1a
+    description: dc1-undeployed-leaf1a_Ethernet49/1
     shutdown: true
   - ip_address: 172.31.255.161
     peer_group: UNDERLAY-PEERS
     remote_as: '65111'
     metadata:
-      peer: DC1_UNDEPLOYED_LEAF1B
-    description: DC1_UNDEPLOYED_LEAF1B_Ethernet49/1
+      peer: dc1-undeployed-leaf1b
+    description: dc1-undeployed-leaf1b_Ethernet49/1
     shutdown: true
   - ip_address: 10.10.101.9
     peer_group: UNDERLAY-PEERS
     remote_as: '65161'
     metadata:
-      peer: MLAG-OSPF-L3LEAF1B
-    description: MLAG-OSPF-L3LEAF1B_Ethernet1
+      peer: mlag-ospf-l3leaf1b
+    description: mlag-ospf-l3leaf1b_Ethernet1
   - ip_address: 192.168.255.14
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65104'
     metadata:
-      peer: DC1-BL1A
-    description: DC1-BL1A
+      peer: dc1-bl1a
+    description: dc1-bl1a
   - ip_address: 192.168.255.15
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65105'
     metadata:
-      peer: DC1-BL1B
-    description: DC1-BL1B
+      peer: dc1-bl1b
+    description: dc1-bl1b
   - ip_address: 192.168.255.16
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65106'
     metadata:
-      peer: DC1-BL2A
-    description: DC1-BL2A
+      peer: dc1-bl2a
+    description: dc1-bl2a
   - ip_address: 192.168.255.17
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65107'
     metadata:
-      peer: DC1-BL2B
-    description: DC1-BL2B
+      peer: dc1-bl2b
+    description: dc1-bl2b
   - ip_address: 192.168.255.18
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65108'
     metadata:
-      peer: DC1-CL1A
-    description: DC1-CL1A
+      peer: dc1-cl1a
+    description: dc1-cl1a
   - ip_address: 192.168.255.19
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65109'
     metadata:
-      peer: DC1-CL1B
-    description: DC1-CL1B
+      peer: dc1-cl1b
+    description: dc1-cl1b
   - ip_address: 192.168.42.42
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: DC1-LEAF1A
-    description: DC1-LEAF1A
+      peer: dc1-leaf1a
+    description: dc1-leaf1a
   - ip_address: 192.168.255.10
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65102'
     metadata:
-      peer: DC1-LEAF2A
-    description: DC1-LEAF2A
+      peer: dc1-leaf2a
+    description: dc1-leaf2a
   - ip_address: 192.168.255.11
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65102'
     metadata:
-      peer: DC1-LEAF2B
-    description: DC1-LEAF2B
+      peer: dc1-leaf2b
+    description: dc1-leaf2b
   - ip_address: 192.168.255.12
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65103'
     metadata:
-      peer: DC1-SVC3A
-    description: DC1-SVC3A
+      peer: dc1-svc3a
+    description: dc1-svc3a
   - ip_address: 192.168.255.13
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65103'
     metadata:
-      peer: DC1-SVC3B
-    description: DC1-SVC3B
+      peer: dc1-svc3b
+    description: dc1-svc3b
   - ip_address: 192.168.255.21
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65110'
     metadata:
-      peer: DC1_UNDEPLOYED_LEAF1A
-    description: DC1_UNDEPLOYED_LEAF1A
+      peer: dc1-undeployed-leaf1a
+    description: dc1-undeployed-leaf1a
     shutdown: true
   - ip_address: 192.168.255.22
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65111'
     metadata:
-      peer: DC1_UNDEPLOYED_LEAF1B
-    description: DC1_UNDEPLOYED_LEAF1B
+      peer: dc1-undeployed-leaf1b
+    description: dc1-undeployed-leaf1b
     shutdown: true
   - ip_address: 10.10.0.1
     peer_group: EVPN-OVERLAY-PEERS
@@ -568,32 +568,32 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65151'
     metadata:
-      peer: MH-LEAF1A
-    description: MH-LEAF1A
+      peer: mh-leaf1a
+    description: mh-leaf1a
   - ip_address: 192.168.255.34
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65152'
     metadata:
-      peer: MH-LEAF1B
-    description: MH-LEAF1B
+      peer: mh-leaf1b
+    description: mh-leaf1b
   - ip_address: 192.168.255.35
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65153'
     metadata:
-      peer: MH-LEAF2A
-    description: MH-LEAF2A
+      peer: mh-leaf2a
+    description: mh-leaf2a
   - ip_address: 192.168.255.36
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65161'
     metadata:
-      peer: MLAG-OSPF-L3LEAF1A
-    description: MLAG-OSPF-L3LEAF1A
+      peer: mlag-ospf-l3leaf1a
+    description: mlag-ospf-l3leaf1a
   - ip_address: 192.168.255.37
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65161'
     metadata:
-      peer: MLAG-OSPF-L3LEAF1B
-    description: MLAG-OSPF-L3LEAF1B
+      peer: mlag-ospf-l3leaf1b
+    description: mlag-ospf-l3leaf1b
   redistribute:
     connected:
       enabled: true
@@ -611,7 +611,7 @@ router_bgp:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS DC1-SPINE1
+  location: EOS_DESIGNS_UNIT_TESTS dc1-spine1
 spanning_tree:
   mode: none
 static_routes:

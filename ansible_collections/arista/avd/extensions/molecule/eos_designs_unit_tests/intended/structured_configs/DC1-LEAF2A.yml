@@ -40,7 +40,7 @@ ethernet_interfaces:
     id: 7
     mode: active
   metadata:
-    peer: DC1-L2LEAF1A
+    peer: dc1-l2leaf1a
     peer_interface: Ethernet1
     peer_type: l2leaf
 - name: Ethernet8
@@ -51,7 +51,7 @@ ethernet_interfaces:
     id: 7
     mode: active
   metadata:
-    peer: DC1-L2LEAF1B
+    peer: dc1-l2leaf1b
     peer_interface: Ethernet1
     peer_type: l2leaf
 - name: Ethernet9
@@ -61,7 +61,7 @@ ethernet_interfaces:
     id: 9
     mode: active
   metadata:
-    peer: DC1-L2LEAF3A
+    peer: dc1-l2leaf3a
     peer_interface: Ethernet1
     peer_type: l2leaf
 - name: Ethernet13
@@ -71,7 +71,7 @@ ethernet_interfaces:
     id: 1013
     mode: active
   metadata:
-    peer: DC1-L2LEAF4A
+    peer: dc1-l2leaf4a
     peer_interface: Ethernet1
     peer_type: l2leaf
 - name: Ethernet14/1
@@ -81,7 +81,7 @@ ethernet_interfaces:
     id: 141
     mode: active
   metadata:
-    peer: DC1.L2LEAF5A
+    peer: dc1.l2leaf5a
     peer_interface: Ethernet1
     peer_type: l2leaf
 - name: Ethernet15/1
@@ -91,7 +91,7 @@ ethernet_interfaces:
     id: 141
     mode: active
   metadata:
-    peer: DC1.L2LEAF5B
+    peer: dc1.l2leaf5b
     peer_interface: Ethernet1
     peer_type: l2leaf
 - name: Ethernet30
@@ -101,17 +101,17 @@ ethernet_interfaces:
     id: 30
     mode: active
   metadata:
-    peer: DC1.L2LEAF6A
+    peer: dc1.l2leaf6a
     peer_interface: Ethernet1
     peer_type: l2leaf
 - name: Ethernet32
-  description: description through uplink_switch_ethernet_structured_config(DC1.L2LEAF7A)
+  description: description through uplink_switch_ethernet_structured_config(dc1.l2leaf7a)
   shutdown: false
   channel_group:
     id: 32
     mode: active
   metadata:
-    peer: DC1.L2LEAF7A
+    peer: dc1.l2leaf7a
     peer_interface: Ethernet1
     peer_type: l2leaf
 - name: Ethernet49/1
@@ -126,7 +126,7 @@ ethernet_interfaces:
     direction: upstream
   ip_address: 172.31.254.33/31
   metadata:
-    peer: DC1-SPINE1
+    peer: dc1-spine1
     peer_interface: Ethernet3/1
     peer_type: spine
   switchport:
@@ -143,7 +143,7 @@ ethernet_interfaces:
     direction: upstream
   ip_address: 172.31.254.35/31
   metadata:
-    peer: DC1-SPINE2
+    peer: dc1-spine2
     peer_interface: Ethernet1/3/1
     peer_type: spine
   switchport:
@@ -160,7 +160,7 @@ ethernet_interfaces:
     direction: upstream
   ip_address: 172.31.254.37/31
   metadata:
-    peer: DC1-SPINE2
+    peer: dc1-spine2
     peer_interface: Ethernet1/4/1
     peer_type: spine
   switchport:
@@ -177,7 +177,7 @@ ethernet_interfaces:
     direction: upstream
   ip_address: 172.31.254.39/31
   metadata:
-    peer: DC1-SPINE1
+    peer: dc1-spine1
     peer_interface: Ethernet4/1
     peer_type: spine
   switchport:
@@ -194,7 +194,7 @@ ethernet_interfaces:
     direction: upstream
   ip_address: 172.31.254.41/31
   metadata:
-    peer: DC1-SPINE3
+    peer: dc1-spine3
     peer_interface: Ethernet1/3/1
     peer_type: spine
   switchport:
@@ -211,7 +211,7 @@ ethernet_interfaces:
     direction: upstream
   ip_address: 172.31.254.43/31
   metadata:
-    peer: DC1-SPINE4
+    peer: dc1-spine4
     peer_interface: Ethernet3/1
     peer_type: spine
   switchport:
@@ -228,7 +228,7 @@ ethernet_interfaces:
     direction: upstream
   ip_address: 172.31.254.45/31
   metadata:
-    peer: DC1-SPINE4
+    peer: dc1-spine4
     peer_interface: Ethernet4/1
     peer_type: spine
   switchport:
@@ -245,7 +245,7 @@ ethernet_interfaces:
     direction: upstream
   ip_address: 172.31.254.47/31
   metadata:
-    peer: DC1-SPINE3
+    peer: dc1-spine3
     peer_interface: Ethernet1/4/1
     peer_type: spine
   switchport:
@@ -406,7 +406,7 @@ hardware:
     serdes: 10G
   - speed_group: 5/1
     serdes: 25G
-hostname: DC1-LEAF2A
+hostname: dc1-leaf2a
 ip_access_lists:
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
   entries:
@@ -593,9 +593,9 @@ port_channel_interfaces:
   - name: l2leaf-server01
     direction: downstream
   evpn_ethernet_segment:
-    identifier: 0000:0000:a36b:7013:457b
-    route_target: a3:6b:70:13:45:7b
-  lacp_id: a36b.7013.457b
+    identifier: 0000:0000:09bb:ea97:b9e7
+    route_target: 09:bb:ea:97:b9:e7
+  lacp_id: 09bb.ea97.b9e7
   switchport:
     enabled: true
     mode: trunk
@@ -608,9 +608,9 @@ port_channel_interfaces:
   - name: l2leaf-server01
     direction: downstream
   evpn_ethernet_segment:
-    identifier: 0000:0000:fa91:ce62:ce95
-    route_target: fa:91:ce:62:ce:95
-  lacp_id: fa91.ce62.ce95
+    identifier: 0000:0000:3af4:007e:e334
+    route_target: 3a:f4:00:7e:e3:34
+  lacp_id: 3af4.007e.e334
   switchport:
     enabled: true
     mode: trunk
@@ -623,16 +623,16 @@ port_channel_interfaces:
   - name: l2leaf-server01
     direction: downstream
   evpn_ethernet_segment:
-    identifier: 0000:0000:de57:eb43:ffb8
-    route_target: de:57:eb:43:ff:b8
-  lacp_id: de57.eb43.ffb8
+    identifier: 0000:0000:9aa9:7d3c:d952
+    route_target: 9a:a9:7d:3c:d9:52
+  lacp_id: 9aa9.7d3c.d952
   switchport:
     enabled: true
     mode: trunk
     trunk:
       allowed_vlan: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452
 - name: Port-Channel32
-  description: description through uplink_switch_port_channel_structured_config(DC1.L2LEAF7A)
+  description: description through uplink_switch_port_channel_structured_config(dc1.l2leaf7a)
   shutdown: false
   link_tracking_groups:
   - name: l2leaf-server01
@@ -761,74 +761,74 @@ router_bgp:
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1_Ethernet3/1
+      peer: dc1-spine1
+    description: dc1-spine1_Ethernet3/1
   - ip_address: 172.31.254.34
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE2
-    description: DC1-SPINE2_Ethernet1/3/1
+      peer: dc1-spine2
+    description: dc1-spine2_Ethernet1/3/1
   - ip_address: 172.31.254.36
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE2
-    description: DC1-SPINE2_Ethernet1/4/1
+      peer: dc1-spine2
+    description: dc1-spine2_Ethernet1/4/1
   - ip_address: 172.31.254.38
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1_Ethernet4/1
+      peer: dc1-spine1
+    description: dc1-spine1_Ethernet4/1
   - ip_address: 172.31.254.40
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE3
-    description: DC1-SPINE3_Ethernet1/3/1
+      peer: dc1-spine3
+    description: dc1-spine3_Ethernet1/3/1
   - ip_address: 172.31.254.42
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE4
-    description: DC1-SPINE4_Ethernet3/1
+      peer: dc1-spine4
+    description: dc1-spine4_Ethernet3/1
   - ip_address: 172.31.254.44
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE4
-    description: DC1-SPINE4_Ethernet4/1
+      peer: dc1-spine4
+    description: dc1-spine4_Ethernet4/1
   - ip_address: 172.31.254.46
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE3
-    description: DC1-SPINE3_Ethernet1/4/1
+      peer: dc1-spine3
+    description: dc1-spine3_Ethernet1/4/1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1
+      peer: dc1-spine1
+    description: dc1-spine1
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE2
-    description: DC1-SPINE2
+      peer: dc1-spine2
+    description: dc1-spine2
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE3
-    description: DC1-SPINE3
+      peer: dc1-spine3
+    description: dc1-spine3
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE4
-    description: DC1-SPINE4
+      peer: dc1-spine4
+    description: dc1-spine4
   redistribute:
     connected:
       enabled: true
@@ -1106,7 +1106,7 @@ router_ospf:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS rackC DC1-LEAF2A
+  location: EOS_DESIGNS_UNIT_TESTS rackC dc1-leaf2a
 spanning_tree:
   root_super: true
   mode: mstp
@@ -1571,7 +1571,7 @@ vrfs:
     - Tenant_D
 vxlan_interface:
   vxlan1:
-    description: DC1-LEAF2A_VTEP
+    description: dc1-leaf2a_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

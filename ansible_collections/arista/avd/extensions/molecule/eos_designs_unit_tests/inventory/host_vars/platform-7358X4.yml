@@ -7,6 +7,6 @@ l3leaf:
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.254.0/24
   nodes:
-    - name: platform-7358X4
+    - name: platform-7358x4
       bgp_as: 925
       id: 1

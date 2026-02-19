@@ -23,7 +23,7 @@ ethernet_interfaces:
     id: 1
     mode: active
   metadata:
-    peer: MH-LEAF2A
+    peer: mh-leaf2a
     peer_interface: Ethernet2
     peer_type: l3leaf
 - name: Ethernet10
@@ -39,7 +39,7 @@ ethernet_interfaces:
     peer_key: servers
   switchport:
     enabled: true
-hostname: MH-L2LEAF1A
+hostname: mh-l2leaf1a
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_server:
@@ -106,7 +106,7 @@ port_channel_interfaces:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS TENANT_NETWORKS_POD MH-L2LEAF1A
+  location: EOS_DESIGNS_UNIT_TESTS TENANT_NETWORKS_POD mh-l2leaf1a
 spanning_tree:
   mode: mstp
   mst_instances:

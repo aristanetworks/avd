@@ -26,7 +26,7 @@ ethernet_interfaces:
     direction: upstream
   ip_address: 10.10.101.5/31
   metadata:
-    peer: DC1-SPINE1
+    peer: dc1-spine1
     peer_interface: Ethernet21
     peer_type: spine
   switchport:
@@ -38,7 +38,7 @@ ethernet_interfaces:
     id: 2
     mode: active
   metadata:
-    peer: MH-L2LEAF1A
+    peer: mh-l2leaf1a
     peer_interface: Ethernet1
     peer_type: l2leaf
 - name: Ethernet10
@@ -57,7 +57,7 @@ ethernet_interfaces:
     enabled: true
     mode: access
     access_vlan: 310
-hostname: MH-LEAF2A
+hostname: mh-leaf2a
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_server:
@@ -244,14 +244,14 @@ router_bgp:
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1_Ethernet21
+      peer: dc1-spine1
+    description: dc1-spine1_Ethernet21
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1
+      peer: dc1-spine1
+    description: dc1-spine1
   redistribute:
     connected:
       enabled: true
@@ -413,7 +413,7 @@ router_bgp:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS TENANT_NETWORKS_POD MH-LEAF2A
+  location: EOS_DESIGNS_UNIT_TESTS TENANT_NETWORKS_POD mh-leaf2a
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
@@ -561,7 +561,7 @@ vrfs:
     - Tenant_X
 vxlan_interface:
   vxlan1:
-    description: MH-LEAF2A_VTEP
+    description: mh-leaf2a_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
