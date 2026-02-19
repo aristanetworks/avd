@@ -1,7 +1,7 @@
 type: spine
 spine:
   nodes:
-    - name: p2p_links_missing_ip_subnet_ip_pool
+    - name: p2p-links-missing-ip-subnet-ip-pool
       id: 1
       evpn_role: "none"
       loopback_ipv4_pool: 1.2.3.4/24
@@ -12,7 +12,7 @@ l3_edge:
     - name: profile1
 
   p2p_links:
-    - nodes: [p2p_links_missing_ip_subnet_ip_pool, peer2]
+    - nodes: [p2p-links-missing-ip-subnet-ip-pool, peer2]
       interfaces: [ethernet2, ethernet2]
       as: [65000, 65002]
 

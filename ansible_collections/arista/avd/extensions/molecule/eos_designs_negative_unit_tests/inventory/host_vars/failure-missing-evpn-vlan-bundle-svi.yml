@@ -12,7 +12,7 @@ l3leaf:
     # Possibility to prevent configuration of Tenant VRFs and SVIs. This allows support for centralized routing.
     evpn_services_l2_only: false
   nodes:
-    - name: failure-missing-evpn-vlan-bundle_svi
+    - name: failure-missing-evpn-vlan-bundle-svi
       id: 3
       bgp_as: 65101
       filter:

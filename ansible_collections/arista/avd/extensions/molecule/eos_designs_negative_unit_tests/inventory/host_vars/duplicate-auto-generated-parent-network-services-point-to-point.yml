@@ -7,7 +7,7 @@ pe:
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     virtual_router_mac_address: 00:dc:00:00:00:0a
   nodes:
-    - name: duplicate_auto_generated_parent_network_services_point_to_point
+    - name: duplicate-auto-generated-parent-network-services-point-to-point
       id: 101
       bgp_as: 101
       filter:
@@ -29,7 +29,7 @@ tenants:
           - id: 42001
             nodes:
               [
-                duplicate_auto_generated_parent_network_services_point_to_point,
+                duplicate-auto-generated-parent-network-services-point-to-point,
                 fake_peer,
               ]
             interfaces: [Ethernet1/1, Ethernet1/1]
@@ -51,7 +51,7 @@ tenants:
           - id: 666001
             nodes:
               [
-                duplicate_auto_generated_parent_network_services_point_to_point,
+                duplicate-auto-generated-parent-network-services-point-to-point,
                 fake_peer,
               ]
             # Ethernet 11 and Ethernet 1/1 will generate the same port-channel ID Port-Channel11

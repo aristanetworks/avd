@@ -3,7 +3,7 @@ type: l2leaf
 
 l2leaf:
   nodes:
-    - name: snmp-settings-missing-system-mac-address-rfc3411_type3
+    - name: snmp-settings-missing-system-mac-address-rfc3411-type3
       id: 42
 
 snmp_settings:
