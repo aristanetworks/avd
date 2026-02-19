@@ -13,23 +13,8 @@
 - Modify `ansible.cfg` file to support additional [jinja2 extensions](#ansible-configuration-file)
 
 !!! danger "Python Version Compatibility Warning"
-    **Avoid Python 3.13.10 and 3.13.11** - These specific Python versions contain a critical bug
-    ([CPython gh-143189](https://github.com/python/cpython/issues/143189)) in the split table dictionary
-    implementation that causes crashes when running AVD.
-
-    **Affected versions:**
-
-    - Python 3.13.10 ❌
-    - Python 3.13.11 ❌
-
-    **Recommended versions:**
-
-    - Python 3.12.x ✅ (Recommended)
-    - Python 3.13.1 - 3.13.9 ✅
-    - Python 3.13.12+ ✅
-    - Python 3.14.x ✅
-
-    See also: [CPython gh-142218](https://github.com/python/cpython/issues/142218)
+    **Avoid Python 3.13.10 and 3.13.11** - These specific Python versions contain a bug that causes crashes when running AVD.
+    More information in the [release notes](../release-notes/5.x.x.md#python-31310-and-31311-incompatibility).
 
 ## Install Collection from Ansible Galaxy
 

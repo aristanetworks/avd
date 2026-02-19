@@ -1,6 +1,0 @@
-known_issues:
-- |-
-  PyAVD and the arista.avd collection are incompatible with Python 3.13.10 and 3.13.11 due to
-  critical CPython bugs (gh-142218, gh-143189) affecting split table dictionaries. Users should avoid
-  these Python versions and use 3.13.9 or earlier, or 3.13.12+ instead.
-  See https://github.com/python/cpython/issues/143189 for details.
