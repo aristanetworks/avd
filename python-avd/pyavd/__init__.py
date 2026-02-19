@@ -16,7 +16,7 @@ from .validate_structured_config import validate_structured_config
 PYAVD_PRERELEASE = ""  # Set this to aN or bN for alpha and beta releases of pyavd itself. Empty string when pyavd is released.
 
 __author__ = "Arista Networks"
-__copyright__ = "Copyright 2023-2024 Arista Networks"
+__copyright__ = "Copyright 2023-2026 Arista Networks"
 __license__ = "Apache 2.0"
 __version__ = "6.0.0"
 
