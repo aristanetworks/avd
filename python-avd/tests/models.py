@@ -145,7 +145,7 @@ class MoleculeScenario:
         self._inventory = InventoryManager(loader=DataLoader(), sources=[inventory_path.as_posix()])
         self._vars = VariableManager(loader=DataLoader(), inventory=self._inventory)
         self.hosts = []
-        for host in natural_sort(self._inventory.get_hosts(), sort_key="name"):
+        for host in natural_sort(self._inventory.get_hosts()):
             if self.name.startswith("example-") and host.name in ["cvp", "cloudvision"]:
                 # Ignore CVP devices in examples without bloating the example without test groups.
                 continue
