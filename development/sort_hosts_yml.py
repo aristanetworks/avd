@@ -188,27 +188,13 @@ def main() -> int:
     """Main entry point."""
     parser = argparse.ArgumentParser(description="Auto-sort host names in Ansible inventory hosts.yml files.")
     parser.add_argument("files", nargs="*", type=Path, help="Files to sort (passed by pre-commit)")
-    parser.add_argument("--include-files", nargs="+", help="Glob pattern for hosts.yml files to sort.")
-    parser.add_argument("--ignore-files", nargs="+", default=[], help="Glob pattern for hosts.yml files to ignore.")
     args = parser.parse_args()
 
     # Collect files to process
-    if args.files:
-        # Files passed directly (e.g., by pre-commit)
-        include_files = {f.resolve() for f in args.files}
-    elif args.include_files:
-        # Files specified via glob patterns
-        include_files = {p.resolve() for glob in args.include_files for p in Path().glob(glob)}
-    else:
-        # No files to process
+    if not args.files:
         return 0
 
-    ignore_files = {p.resolve() for glob in args.ignore_files for p in Path().glob(glob)}
-    files_to_process = include_files - ignore_files
-
-    if not files_to_process:
-        return 0
-
+    files_to_process = {f.resolve() for f in args.files}
     modified_files = process_files(files_to_process)
 
     if modified_files:
