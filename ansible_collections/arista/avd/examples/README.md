@@ -27,13 +27,13 @@ AVD playground is an interactive, Cloud-based lab environment sponsored by Arist
 
 [Start AVD Playground :octicons-play-16:](https://labs.arista.com/launch?lab_type=avd-playground&origin=tech-lib){ .md-button .md-button--primary target=_blank}
 
-Once the playground is ready to use, use the interactive menu at the bottom of the [Code-server](https://github.com/coder/code-server) UI to pick the AVD release and the example you want to test. Some examples and older AVD releases may not include lab definitions; in that case, the lab selector menu will prompt you to choose a different option. Please select post 6.0 releases only.
+Once the playground is ready to use, use the interactive menu at the bottom of the [code-server](https://github.com/coder/code-server) UI to pick the AVD release and the example you want to test. Some examples and older AVD releases may not include lab definitions; in that case, the lab selector menu will prompt you to choose a different option. Please select post 6.0 releases only.
 
 !!! tip
 
-    If you don't see "Start AVD Playground" button present on the guide corresponding to a specific example, this example is not supported in AVD Playground. If this is the case, select a different one.
+    If you don't see the "Start AVD Playground" button present on the guide corresponding to a specific example, this example is not supported in AVD Playground. If this is the case, select a different one.
 
-Once you select an example supported by a lab definition, it will be extracted to the [Code-server](https://github.com/coder/code-server) workspace. Open a new terminal and type `make start` to start the lab.
+Once you select an example supported by a lab definition, it will be extracted to the code-server workspace. Open a new terminal and type `make start` to start the lab.
 
 !!! note
 
@@ -48,7 +48,7 @@ For additional documentation regarding AVD playgrounds and other community labs 
 ## AVD as Reference Inventory
 
 If you don't have access to AVD playgrounds, it's enough to build a working Ansible environment with the AVD collection installed to start testing examples.
-You can build an AVD environment by installing all requirements on a dedicated VM or inside a virtual environment / [uv](https://docs.astral.sh/uv/). Please refer to the installation section for the details.
+You can build an AVD environment by installing all requirements on a dedicated VM or inside a virtual environment / [uv](https://docs.astral.sh/uv/). Please refer to the [installation](../../../../docs/installation/collection-installation.md) section for the details.
 Alternatively, you can use the AVD universal container images to quickly spin up a working AVD environment.
 Once the environment is ready, you can extract all examples with:
 
