@@ -6,11 +6,12 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  avd_tmp_dir:
+  eos_cli_config_gen_keep_tmp_files:
     documentation_options:
       table: role-settings
-    type: str
+    type: bool
+    default: false
     description: |
-      Path for the AVD temporary directory.
-      Contains templated inputs, validated inputs, and facts data used internally by AVD plugins.
-      Defaults to 'intended/tmp'. The temporary directory is cleaned up at the end of each role.
+      Avoid deleting temporary files.
+      This allows for inspecting templated inputs and validated inputs used internally by AVD plugins.
+      When an Ansible Vault secret is set, temporary files holding input variables are encrypted. Decryption is required to inspect them.

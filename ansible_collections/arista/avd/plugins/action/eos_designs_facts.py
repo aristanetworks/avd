@@ -19,8 +19,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     AVDFileHandler,
     AVDVaultHandler,
     get_eos_designs_facts_path,
-    get_role_tmp_paths,
     get_templar,
+    get_tmp_paths,
     raise_action_fail,
 )
 
@@ -130,7 +130,7 @@ class ActionModule(ActionBase):
         all_inputs: dict[str, AVDDesign] = {}
         all_hostvars: dict[str, dict] = {}
 
-        _templated_path, validated_path = get_role_tmp_paths("eos_designs", self.tmp_dir)
+        _templated_path, validated_path = get_tmp_paths(self.tmp_dir)
 
         for host in fabric_hosts:
             file_path = validated_path / f"{host}.json"
