@@ -102,7 +102,7 @@ keys:
                     valid_values:
                       - "arista"
                       - "default"
-              region:
+              regions:
                 type: list
                 primary_key: name
                 items:

@@ -3664,7 +3664,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class RegionItem(AvdModel):
+                class RegionsItem(AvdModel):
                     """Subclass of AvdModel."""
 
                     PasswordType: TypeAlias = Literal["7", "8a"]
@@ -3722,7 +3722,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             keystone: Keystone | UndefinedType = Undefined,
                         ) -> None:
                             """
-                            RegionItem.
+                            RegionsItem.
 
 
                             Subclass of AvdModel.
@@ -3737,12 +3737,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class Region(AvdIndexedList[str, RegionItem]):
-                    """Subclass of AvdIndexedList with `RegionItem` items. Primary key is `name` (`str`)."""
+                class Regions(AvdIndexedList[str, RegionsItem]):
+                    """Subclass of AvdIndexedList with `RegionsItem` items. Primary key is `name` (`str`)."""
 
                     _primary_key: ClassVar[str] = "name"
 
-                Region._item_type = RegionItem
+                Regions._item_type = RegionsItem
 
                 _fields: ClassVar[dict] = {
                     "authentication": {"type": Authentication},
@@ -3751,7 +3751,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "ipv6_access_group": {"type": Ipv6AccessGroup},
                     "name_resolution": {"type": NameResolution},
                     "network_type_driver": {"type": NetworkTypeDriver},
-                    "region": {"type": Region},
+                    "regions": {"type": Regions},
                     "shutdown": {"type": bool},
                 }
                 authentication: Authentication
@@ -3766,8 +3766,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 network_type_driver: NetworkTypeDriver
                 """Subclass of AvdModel."""
-                region: Region
-                """Subclass of AvdIndexedList with `RegionItem` items. Primary key is `name` (`str`)."""
+                regions: Regions
+                """Subclass of AvdIndexedList with `RegionsItem` items. Primary key is `name` (`str`)."""
                 shutdown: bool | None
 
                 if TYPE_CHECKING:
@@ -3781,7 +3781,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         ipv6_access_group: Ipv6AccessGroup | UndefinedType = Undefined,
                         name_resolution: NameResolution | UndefinedType = Undefined,
                         network_type_driver: NetworkTypeDriver | UndefinedType = Undefined,
-                        region: Region | UndefinedType = Undefined,
+                        regions: Regions | UndefinedType = Undefined,
                         shutdown: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -3797,7 +3797,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             ipv6_access_group: Subclass of AvdModel.
                             name_resolution: Subclass of AvdModel.
                             network_type_driver: Subclass of AvdModel.
-                            region: Subclass of AvdIndexedList with `RegionItem` items. Primary key is `name` (`str`).
+                            regions: Subclass of AvdIndexedList with `RegionsItem` items. Primary key is `name` (`str`).
                             shutdown: shutdown
 
                         """

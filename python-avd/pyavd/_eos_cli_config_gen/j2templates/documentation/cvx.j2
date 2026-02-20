@@ -45,11 +45,9 @@ CVX is enabled
 {%                     set enabled = '-' %}
 {%                 endif %}
 {%                 set regions = [] %}
-{%                 if cvx.services.openstack.region is arista.avd.defined %}
-{%                     for region in cvx.services.openstack.region | arista.avd.natural_sort(sort_key='name') %}
-{%                         do regions.append(region.name) %}
-{%                     endfor %}
-{%                 endif %}
+{%                 for region in cvx.services.openstack.regions | arista.avd.natural_sort(sort_key='name') %}
+{%                     do regions.append(region.name) %}
+{%                 endfor %}
 | OpenStack | {{ enabled }} | Regions: {{ regions | join(", ") }} |
 {%             endif %}
 {%             if cvx.services.vxlan is arista.avd.defined %}

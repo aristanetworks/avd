@@ -26,7 +26,7 @@ cvx:
         name: ACL-V6-OS
       network_type_driver:
         vlan: arista
-      region:
+      regions:
       - name: REGION_2
         username: BOB
         password_type: 7

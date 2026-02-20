@@ -52,8 +52,8 @@ cvx
 {%         if cvx.services.openstack.grace_period is arista.avd.defined %}
       grace-period {{ cvx.services.openstack.grace_period }}
 {%         endif %}
-{%         if cvx.services.openstack.network_type_driver.vlan is arista.avd.defined("arista") %}
-      network type-driver vlan arista
+{%         if cvx.services.openstack.network_type_driver.vlan is arista.avd.defined %}
+      network type-driver vlan {{ cvx.services.openstack.network_type_driver.vlan }}
 {%         endif %}
 {%         if cvx.services.openstack.authentication.role is arista.avd.defined %}
       authentication role {{ cvx.services.openstack.authentication.role }}
@@ -61,18 +61,16 @@ cvx
 {%         if cvx.services.openstack.name_resolution.interval is arista.avd.defined %}
       name-resolution interval {{ cvx.services.openstack.name_resolution.interval }}
 {%         endif %}
-{%         if cvx.services.openstack.region is arista.avd.defined %}
-{%             for region in cvx.services.openstack.region | arista.avd.natural_sort(sort_key='name') %}
+{%         for region in cvx.services.openstack.regions | arista.avd.natural_sort(sort_key='name') %}
       !
       region {{ region.name }}
-{%                 if region.username is arista.avd.defined and region.password is arista.avd.defined and region.password_type is arista.avd.defined and region.tenant is arista.avd.defined %}
+{%             if region.username is arista.avd.defined and region.password is arista.avd.defined and region.password_type is arista.avd.defined and region.tenant is arista.avd.defined %}
          username {{ region.username }} tenant {{ region.tenant }} password {{ region.password_type }} {{ region.password }}
-{%                 endif %}
-{%                 if region.keystone.auth_url is arista.avd.defined %}
+{%             endif %}
+{%             if region.keystone.auth_url is arista.avd.defined %}
          keystone auth-url {{ region.keystone.auth_url }}
-{%                 endif %}
-{%             endfor %}
-{%         endif %}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {%     if cvx.services.vxlan is arista.avd.defined %}
    !
