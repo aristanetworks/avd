@@ -44,20 +44,17 @@ ip name-server group mynameserver1
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit ipv6 any any dscp cs1 |
-
 ##### acl_qos_tc5_v6
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit ipv6 any 2001:db8::/48 |
-
 ##### TEST1
 
 | Sequence | Action |
 | -------- | ------ |
 | 5 | deny ipv6 fe80::/64 any |
 | 10 | permit ipv6 fe90::/64 any |
-
 ##### TEST2
 
 ACL has counting mode `counters per-entry` enabled!
@@ -66,7 +63,6 @@ ACL has counting mode `counters per-entry` enabled!
 | -------- | ------ |
 | 5 | permit ipv6 2001:db8::/64 any |
 | 10 | deny ipv6 2001:db8::/32 any |
-
 ##### TEST3
 
 | Sequence | Action |
