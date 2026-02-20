@@ -26,7 +26,7 @@ ethernet_interfaces:
     direction: upstream
   ip_address: 10.10.101.1/31
   metadata:
-    peer: DC1-SPINE1
+    peer: dc1-spine1
     peer_interface: Ethernet19
     peer_type: spine
   switchport:
@@ -107,12 +107,12 @@ ethernet_interfaces:
   description: server08_Single_Active_Ethernet_Eth1
   shutdown: false
   evpn_ethernet_segment:
-    identifier: 0000:0000:213f:36b8:ff71
+    identifier: 0000:0000:50bc:ec09:d8de
     redundancy: single-active
     designated_forwarder_election:
       algorithm: preference
       preference_value: 100
-    route_target: 21:3f:36:b8:ff:71
+    route_target: 50:bc:ec:09:d8:de
   metadata:
     peer: server08_Single_Active_Ethernet
     peer_interface: Eth1
@@ -148,12 +148,12 @@ ethernet_interfaces:
   description: server10_Single_Active_Ethernet_Manual_DF_Eth1
   shutdown: false
   evpn_ethernet_segment:
-    identifier: 0000:0000:885b:86cc:8bac
+    identifier: 0000:0000:38c2:e5c5:1c37
     redundancy: single-active
     designated_forwarder_election:
       algorithm: preference
       preference_value: 500
-    route_target: 88:5b:86:cc:8b:ac
+    route_target: 38:c2:e5:c5:1c:37
   metadata:
     peer: server10_Single_Active_Ethernet_Manual_DF
     peer_interface: Eth1
@@ -181,13 +181,13 @@ ethernet_interfaces:
   description: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt_Eth1
   shutdown: false
   evpn_ethernet_segment:
-    identifier: 0000:0000:5d0b:68d3:6ff9
+    identifier: 0000:0000:28a4:6235:c02e
     redundancy: single-active
     designated_forwarder_election:
       algorithm: preference
       preference_value: 500
       dont_preempt: true
-    route_target: 5d:0b:68:d3:6f:f9
+    route_target: 28:a4:62:35:c0:2e
   metadata:
     peer: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt
     peer_interface: Eth1
@@ -215,11 +215,11 @@ ethernet_interfaces:
   description: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus_Eth1
   shutdown: false
   evpn_ethernet_segment:
-    identifier: 0000:0000:262b:7df9:c98b
+    identifier: 0000:0000:1795:3e52:0521
     redundancy: single-active
     designated_forwarder_election:
       algorithm: modulus
-    route_target: 26:2b:7d:f9:c9:8b
+    route_target: 17:95:3e:52:05:21
   metadata:
     peer: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus
     peer_interface: Eth1
@@ -242,7 +242,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: router
     peer_key: routers
-hostname: MH-LEAF1A
+hostname: mh-leaf1a
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_server:
@@ -356,9 +356,9 @@ port_channel_interfaces:
   - name: LT_GROUP1
     direction: downstream
   evpn_ethernet_segment:
-    identifier: 0000:0000:fc87:ae24:2cb3
-    route_target: fc:87:ae:24:2c:b3
-  lacp_id: fc87.ae24.2cb3
+    identifier: 0000:0000:a420:4a8c:4f22
+    route_target: a4:20:4a:8c:4f:22
+  lacp_id: a420.4a8c.4f22
   switchport:
     enabled: true
     mode: access
@@ -370,9 +370,9 @@ port_channel_interfaces:
   - name: LT_GROUP1
     direction: downstream
   evpn_ethernet_segment:
-    identifier: 0000:0000:29cc:4043:0a29
-    route_target: 29:cc:40:43:0a:29
-  lacp_id: 29cc.4043.0a29
+    identifier: 0000:0000:9794:35c5:a441
+    route_target: 97:94:35:c5:a4:41
+  lacp_id: 9794.35c5.a441
   switchport:
     enabled: true
     mode: access
@@ -395,13 +395,13 @@ port_channel_interfaces:
   description: server06_Single_Active_Port_Channel_Single-Active ESI
   shutdown: false
   evpn_ethernet_segment:
-    identifier: 0000:0000:2873:c14b:64ec
+    identifier: 0000:0000:2da0:c7df:eab7
     redundancy: single-active
     designated_forwarder_election:
       algorithm: preference
       preference_value: 100
-    route_target: 28:73:c1:4b:64:ec
-  lacp_id: 2873.c14b.64ec
+    route_target: 2d:a0:c7:df:ea:b7
+  lacp_id: 2da0.c7df.eab7
   switchport:
     enabled: true
     mode: trunk
@@ -411,13 +411,13 @@ port_channel_interfaces:
   description: server07_Single_Active_Port_Channel_Manual_DF_Single-Active ESI with Manual DF
   shutdown: false
   evpn_ethernet_segment:
-    identifier: 0000:0000:ec11:73f8:7361
+    identifier: 0000:0000:a084:906c:03d2
     redundancy: single-active
     designated_forwarder_election:
       algorithm: preference
       preference_value: 250
-    route_target: ec:11:73:f8:73:61
-  lacp_id: ec11.73f8.7361
+    route_target: a0:84:90:6c:03:d2
+  lacp_id: a084.906c.03d2
   switchport:
     enabled: true
     mode: trunk
@@ -427,14 +427,14 @@ port_channel_interfaces:
   description: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Single-Active ESI with Manual DF
   shutdown: false
   evpn_ethernet_segment:
-    identifier: 0000:0000:47cb:834e:c0c7
+    identifier: 0000:0000:e56c:536f:4d77
     redundancy: single-active
     designated_forwarder_election:
       algorithm: preference
       preference_value: 100
       dont_preempt: true
-    route_target: 47:cb:83:4e:c0:c7
-  lacp_id: 47cb.834e.c0c7
+    route_target: e5:6c:53:6f:4d:77
+  lacp_id: e56c.536f.4d77
   switchport:
     enabled: true
     mode: trunk
@@ -444,12 +444,12 @@ port_channel_interfaces:
   description: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Single-Active ESI with Manual DF
   shutdown: false
   evpn_ethernet_segment:
-    identifier: 0000:0000:d716:1795:361e
+    identifier: 0000:0000:fa39:d19a:0134
     redundancy: single-active
     designated_forwarder_election:
       algorithm: modulus
-    route_target: d7:16:17:95:36:1e
-  lacp_id: d716.1795.361e
+    route_target: fa:39:d1:9a:01:34
+  lacp_id: fa39.d19a.0134
   switchport:
     enabled: true
     mode: trunk
@@ -493,8 +493,8 @@ port_channel_interfaces:
       encapsulation: client
   vlan_id: 1103
   evpn_ethernet_segment:
-    identifier: 0000:0000:c2c9:c85a:ed92
-    route_target: c2:c9:c8:5a:ed:92
+    identifier: 0000:0000:ad8f:c004:ccec
+    route_target: ad:8f:c0:04:cc:ec
 - name: Port-Channel11.104
   encapsulation_vlan:
     client:
@@ -504,8 +504,8 @@ port_channel_interfaces:
       encapsulation: client
   vlan_id: 1104
   evpn_ethernet_segment:
-    identifier: 0000:0000:5c8e:1f50:9fc4
-    route_target: 5c:8e:1f:50:9f:c4
+    identifier: 0000:0000:a183:f5f4:37e9
+    route_target: a1:83:f5:f4:37:e9
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -557,14 +557,14 @@ router_bgp:
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1_Ethernet19
+      peer: dc1-spine1
+    description: dc1-spine1_Ethernet19
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1
+      peer: dc1-spine1
+    description: dc1-spine1
   redistribute:
     connected:
       enabled: true
@@ -704,7 +704,7 @@ router_bgp:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS TENANT_NETWORKS_POD MH-LEAF1A
+  location: EOS_DESIGNS_UNIT_TESTS TENANT_NETWORKS_POD mh-leaf1a
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
@@ -835,7 +835,7 @@ vrfs:
     - Tenant_X
 vxlan_interface:
   vxlan1:
-    description: MH-LEAF1A_VTEP
+    description: mh-leaf1a_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

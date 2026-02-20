@@ -5,16 +5,16 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet16
-  description: L2_SL-LEAF1A_Ethernet28
+  description: L2_sl-leaf1a_Ethernet28
   shutdown: false
   channel_group:
     id: 16
     mode: active
   metadata:
-    peer: SL-LEAF1A
+    peer: sl-leaf1a
     peer_interface: Ethernet28
     peer_type: l2leaf
-hostname: SL-MLEAF1
+hostname: sl-mleaf1
 ip_igmp_snooping:
   globally_enabled: true
 metadata:

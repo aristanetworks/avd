@@ -5,27 +5,27 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet3
-  description: MLAG_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet3
+  description: MLAG_uplink-mlag-structured-config-l3leaf1b_Ethernet3
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
+    peer: uplink-mlag-structured-config-l3leaf1b
     peer_interface: Ethernet3
     peer_type: mlag_peer
 - name: Ethernet4
-  description: MLAG_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet4
+  description: MLAG_uplink-mlag-structured-config-l3leaf1b_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
+    peer: uplink-mlag-structured-config-l3leaf1b
     peer_interface: Ethernet4
     peer_type: mlag_peer
 - name: Ethernet1
-  description: P2P_UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet1
+  description: P2P_uplink-mlag-structured-config-spine1_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.1/31
@@ -33,32 +33,32 @@ ethernet_interfaces:
     ipv4:
       sparse_mode: true
   metadata:
-    peer: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
+    peer: uplink-mlag-structured-config-spine1
     peer_interface: Ethernet1
     peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet5
-  description: L2_UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A_Ethernet1
+  description: L2_uplink-mlag-structured-config-l2leaf1a_Ethernet1
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A
+    peer: uplink-mlag-structured-config-l2leaf1a
     peer_interface: Ethernet1
     peer_type: l2leaf
 - name: Ethernet6
-  description: L2_UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B_Ethernet1
+  description: L2_uplink-mlag-structured-config-l2leaf1b_Ethernet1
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B
+    peer: uplink-mlag-structured-config-l2leaf1b
     peer_interface: Ethernet1
     peer_type: l2leaf
-hostname: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A
+hostname: uplink-mlag-structured-config-l3leaf1a
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -92,7 +92,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Port-Channel3
+  description: MLAG_uplink-mlag-structured-config-l3leaf1b_Port-Channel3
   shutdown: false
   switchport:
     enabled: true
@@ -156,7 +156,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65101'
-    description: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
+    description: uplink-mlag-structured-config-l3leaf1b
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -178,21 +178,21 @@ router_bgp:
   - ip_address: 10.255.251.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
-    description: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Vlan4093
+      peer: uplink-mlag-structured-config-l3leaf1b
+    description: uplink-mlag-structured-config-l3leaf1b_Vlan4093
   - ip_address: 172.31.255.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
-    description: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet1
+      peer: uplink-mlag-structured-config-spine1
+    description: uplink-mlag-structured-config-spine1_Ethernet1
     bfd: true
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
-    description: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Loopback0
+      peer: uplink-mlag-structured-config-spine1
+    description: uplink-mlag-structured-config-spine1_Loopback0
   redistribute:
     connected:
       enabled: true
@@ -261,7 +261,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_VTEP
+    description: uplink-mlag-structured-config-l3leaf1a_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

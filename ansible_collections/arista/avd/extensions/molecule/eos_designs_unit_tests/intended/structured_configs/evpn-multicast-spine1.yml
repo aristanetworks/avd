@@ -5,7 +5,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_EVPN-MULTICAST-L3LEAF1A_Ethernet1
+  description: P2P_evpn-multicast-l3leaf1a_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.0/31
@@ -13,13 +13,13 @@ ethernet_interfaces:
     ipv4:
       sparse_mode: true
   metadata:
-    peer: EVPN-MULTICAST-L3LEAF1A
+    peer: evpn-multicast-l3leaf1a
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
-  description: P2P_EVPN-MULTICAST-L3LEAF1B_Ethernet1
+  description: P2P_evpn-multicast-l3leaf1b_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.2/31
@@ -27,13 +27,13 @@ ethernet_interfaces:
     ipv4:
       sparse_mode: true
   metadata:
-    peer: EVPN-MULTICAST-L3LEAF1B
+    peer: evpn-multicast-l3leaf1b
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
-  description: P2P_EVPN-MULTICAST-L3LEAF2A_Ethernet1
+  description: P2P_evpn-multicast-l3leaf2a_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.4/31
@@ -41,13 +41,13 @@ ethernet_interfaces:
     ipv4:
       sparse_mode: true
   metadata:
-    peer: EVPN-MULTICAST-L3LEAF2A
+    peer: evpn-multicast-l3leaf2a
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet4
-  description: P2P_EVPN-MULTICAST-L3LEAF3A_Ethernet1
+  description: P2P_evpn-multicast-l3leaf3a_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.6/31
@@ -55,13 +55,13 @@ ethernet_interfaces:
     ipv4:
       sparse_mode: true
   metadata:
-    peer: EVPN-MULTICAST-L3LEAF3A
+    peer: evpn-multicast-l3leaf3a
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5
-  description: P2P_EVPN-MULTICAST-L3LEAF3B_Ethernet1
+  description: P2P_evpn-multicast-l3leaf3b_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.8/31
@@ -69,13 +69,13 @@ ethernet_interfaces:
     ipv4:
       sparse_mode: true
   metadata:
-    peer: EVPN-MULTICAST-L3LEAF3B
+    peer: evpn-multicast-l3leaf3b
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet6
-  description: P2P_EVPN-MULTICAST-DISABLED_Ethernet1
+  description: P2P_evpn-multicast-disabled_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.10/31
@@ -83,12 +83,12 @@ ethernet_interfaces:
     ipv4:
       sparse_mode: true
   metadata:
-    peer: EVPN-MULTICAST-DISABLED
+    peer: evpn-multicast-disabled
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
     enabled: false
-hostname: EVPN-MULTICAST-SPINE1
+hostname: evpn-multicast-spine1
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
@@ -154,74 +154,74 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: EVPN-MULTICAST-L3LEAF1A
-    description: EVPN-MULTICAST-L3LEAF1A_Ethernet1
+      peer: evpn-multicast-l3leaf1a
+    description: evpn-multicast-l3leaf1a_Ethernet1
   - ip_address: 172.31.255.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: EVPN-MULTICAST-L3LEAF1B
-    description: EVPN-MULTICAST-L3LEAF1B_Ethernet1
+      peer: evpn-multicast-l3leaf1b
+    description: evpn-multicast-l3leaf1b_Ethernet1
   - ip_address: 172.31.255.5
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65103'
     metadata:
-      peer: EVPN-MULTICAST-L3LEAF2A
-    description: EVPN-MULTICAST-L3LEAF2A_Ethernet1
+      peer: evpn-multicast-l3leaf2a
+    description: evpn-multicast-l3leaf2a_Ethernet1
   - ip_address: 172.31.255.7
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65104'
     metadata:
-      peer: EVPN-MULTICAST-L3LEAF3A
-    description: EVPN-MULTICAST-L3LEAF3A_Ethernet1
+      peer: evpn-multicast-l3leaf3a
+    description: evpn-multicast-l3leaf3a_Ethernet1
   - ip_address: 172.31.255.9
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65105'
     metadata:
-      peer: EVPN-MULTICAST-L3LEAF3B
-    description: EVPN-MULTICAST-L3LEAF3B_Ethernet1
+      peer: evpn-multicast-l3leaf3b
+    description: evpn-multicast-l3leaf3b_Ethernet1
   - ip_address: 172.31.255.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65106'
     metadata:
-      peer: EVPN-MULTICAST-DISABLED
-    description: EVPN-MULTICAST-DISABLED_Ethernet1
+      peer: evpn-multicast-disabled
+    description: evpn-multicast-disabled_Ethernet1
   - ip_address: 192.168.255.8
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65106'
     metadata:
-      peer: EVPN-MULTICAST-DISABLED
-    description: EVPN-MULTICAST-DISABLED_Loopback0
+      peer: evpn-multicast-disabled
+    description: evpn-multicast-disabled_Loopback0
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: EVPN-MULTICAST-L3LEAF1A
-    description: EVPN-MULTICAST-L3LEAF1A_Loopback0
+      peer: evpn-multicast-l3leaf1a
+    description: evpn-multicast-l3leaf1a_Loopback0
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: EVPN-MULTICAST-L3LEAF1B
-    description: EVPN-MULTICAST-L3LEAF1B_Loopback0
+      peer: evpn-multicast-l3leaf1b
+    description: evpn-multicast-l3leaf1b_Loopback0
   - ip_address: 192.168.255.5
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65103'
     metadata:
-      peer: EVPN-MULTICAST-L3LEAF2A
-    description: EVPN-MULTICAST-L3LEAF2A_Loopback0
+      peer: evpn-multicast-l3leaf2a
+    description: evpn-multicast-l3leaf2a_Loopback0
   - ip_address: 192.168.255.6
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65104'
     metadata:
-      peer: EVPN-MULTICAST-L3LEAF3A
-    description: EVPN-MULTICAST-L3LEAF3A_Loopback0
+      peer: evpn-multicast-l3leaf3a
+    description: evpn-multicast-l3leaf3a_Loopback0
   - ip_address: 192.168.255.7
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65105'
     metadata:
-      peer: EVPN-MULTICAST-L3LEAF3B
-    description: EVPN-MULTICAST-L3LEAF3B_Loopback0
+      peer: evpn-multicast-l3leaf3b
+    description: evpn-multicast-l3leaf3b_Loopback0
   redistribute:
     connected:
       enabled: true
