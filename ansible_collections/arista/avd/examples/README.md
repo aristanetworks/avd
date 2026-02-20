@@ -43,6 +43,7 @@ For additional documentation regarding AVD playgrounds and other community labs 
 
 !!! warning
 
+    AVD Playground is in preview phase. If you find any bugs associated with AVD examples - please report via [GitHub issues](https://github.com/aristanetworks/avd/issues).
     [aclabs.arista.com](https://aclabs.arista.com/) is under construction. We are working hard to make it better.
 
 ## AVD as Reference Inventory
