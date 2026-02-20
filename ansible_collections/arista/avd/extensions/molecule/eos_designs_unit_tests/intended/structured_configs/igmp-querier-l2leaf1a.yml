@@ -5,16 +5,16 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: L2_igmp-querier-l3leaf1a_Ethernet1
+  description: L2_IGMP-QUERIER-L3LEAF1A_Ethernet1
   shutdown: false
   channel_group:
     id: 1
     mode: active
   metadata:
-    peer: igmp-querier-l3leaf1a
+    peer: IGMP-QUERIER-L3LEAF1A
     peer_interface: Ethernet1
     peer_type: l3leaf
-hostname: igmp-querier-l2leaf1a
+hostname: IGMP-QUERIER-L2LEAF1A
 ip_igmp_snooping:
   globally_enabled: true
 management_interfaces:
@@ -30,7 +30,7 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 port_channel_interfaces:
 - name: Port-Channel1
-  description: L2_igmp-querier-l3leaf1a_Port-Channel1
+  description: L2_IGMP-QUERIER-L3LEAF1A_Port-Channel1
   shutdown: false
   switchport:
     enabled: true

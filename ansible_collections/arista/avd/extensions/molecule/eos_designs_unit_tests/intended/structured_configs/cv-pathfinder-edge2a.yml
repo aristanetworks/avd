@@ -87,18 +87,18 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet52
-  description: P2P_site-ha-enabled-leaf2a_Ethernet1
+  description: P2P_site-ha-enabled-leaf2A_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.5/31
   metadata:
-    peer: site-ha-enabled-leaf2a
+    peer: site-ha-enabled-leaf2A
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet52.1000
-  description: P2P_site-ha-enabled-leaf2a_Ethernet1.1000_VRF_IT
+  description: P2P_site-ha-enabled-leaf2A_Ethernet1.1000_VRF_IT
   shutdown: false
   mtu: 9214
   vrf: IT
@@ -106,11 +106,11 @@ ethernet_interfaces:
     vlan: 1000
   ip_address: 172.17.0.5/31
   metadata:
-    peer: site-ha-enabled-leaf2a
+    peer: site-ha-enabled-leaf2A
     peer_interface: Ethernet1.1000
     peer_type: l3leaf
 - name: Ethernet52.142
-  description: P2P_site-ha-enabled-leaf2a_Ethernet1.142_VRF_PROD
+  description: P2P_site-ha-enabled-leaf2A_Ethernet1.142_VRF_PROD
   shutdown: false
   mtu: 9214
   vrf: PROD
@@ -118,11 +118,11 @@ ethernet_interfaces:
     vlan: 142
   ip_address: 172.17.0.5/31
   metadata:
-    peer: site-ha-enabled-leaf2a
+    peer: site-ha-enabled-leaf2A
     peer_interface: Ethernet1.142
     peer_type: l3leaf
 - name: Ethernet52.666
-  description: P2P_site-ha-enabled-leaf2a_Ethernet1.666_VRF_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_site-ha-enabled-leaf2A_Ethernet1.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   mtu: 9214
   vrf: ATTRACTED-VRF-FROM-UPLINK
@@ -130,22 +130,22 @@ ethernet_interfaces:
     vlan: 666
   ip_address: 172.17.0.5/31
   metadata:
-    peer: site-ha-enabled-leaf2a
+    peer: site-ha-enabled-leaf2A
     peer_interface: Ethernet1.666
     peer_type: l3leaf
 - name: Ethernet53
-  description: P2P_site-ha-enabled-leaf2b_Ethernet1
+  description: P2P_site-ha-enabled-leaf2B_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.7/31
   metadata:
-    peer: site-ha-enabled-leaf2b
+    peer: site-ha-enabled-leaf2B
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet53.1000
-  description: P2P_site-ha-enabled-leaf2b_Ethernet1.1000_VRF_IT
+  description: P2P_site-ha-enabled-leaf2B_Ethernet1.1000_VRF_IT
   shutdown: false
   mtu: 9214
   vrf: IT
@@ -153,11 +153,11 @@ ethernet_interfaces:
     vlan: 1000
   ip_address: 172.17.0.7/31
   metadata:
-    peer: site-ha-enabled-leaf2b
+    peer: site-ha-enabled-leaf2B
     peer_interface: Ethernet1.1000
     peer_type: l3leaf
 - name: Ethernet53.142
-  description: P2P_site-ha-enabled-leaf2b_Ethernet1.142_VRF_PROD
+  description: P2P_site-ha-enabled-leaf2B_Ethernet1.142_VRF_PROD
   shutdown: false
   mtu: 9214
   vrf: PROD
@@ -165,11 +165,11 @@ ethernet_interfaces:
     vlan: 142
   ip_address: 172.17.0.7/31
   metadata:
-    peer: site-ha-enabled-leaf2b
+    peer: site-ha-enabled-leaf2B
     peer_interface: Ethernet1.142
     peer_type: l3leaf
 - name: Ethernet53.666
-  description: P2P_site-ha-enabled-leaf2b_Ethernet1.666_VRF_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_site-ha-enabled-leaf2B_Ethernet1.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   mtu: 9214
   vrf: ATTRACTED-VRF-FROM-UPLINK
@@ -177,7 +177,7 @@ ethernet_interfaces:
     vlan: 666
   ip_address: 172.17.0.7/31
   metadata:
-    peer: site-ha-enabled-leaf2b
+    peer: site-ha-enabled-leaf2B
     peer_interface: Ethernet1.666
     peer_type: l3leaf
 - name: Ethernet1
@@ -203,7 +203,7 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: cv-pathfinder-edge2a
+hostname: cv-pathfinder-edge2A
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -568,14 +568,14 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65199'
     metadata:
-      peer: site-ha-enabled-leaf2a
-    description: site-ha-enabled-leaf2a_Ethernet1
+      peer: site-ha-enabled-leaf2A
+    description: site-ha-enabled-leaf2A_Ethernet1
   - ip_address: 172.17.0.6
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65199'
     metadata:
-      peer: site-ha-enabled-leaf2b
-    description: site-ha-enabled-leaf2b_Ethernet1
+      peer: site-ha-enabled-leaf2B
+    description: site-ha-enabled-leaf2B_Ethernet1
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
     metadata:
@@ -584,8 +584,8 @@ router_bgp:
   - ip_address: 192.168.142.3
     remote_as: '65000'
     metadata:
-      peer: cv-pathfinder-edge2b
-    description: cv-pathfinder-edge2b
+      peer: cv-pathfinder-edge2B
+    description: cv-pathfinder-edge2B
     route_reflector_client: true
     update_source: Dps1
     route_map_in: RM-WAN-HA-PEER-IN
@@ -651,11 +651,11 @@ router_bgp:
     - ip_address: 172.17.0.4
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-enabled-leaf2a_Ethernet1.1000_vrf_IT
+      description: site-ha-enabled-leaf2A_Ethernet1.1000_vrf_IT
     - ip_address: 172.17.0.6
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-enabled-leaf2b_Ethernet1.1000_vrf_IT
+      description: site-ha-enabled-leaf2B_Ethernet1.1000_vrf_IT
     redistribute:
       connected:
         enabled: true
@@ -675,11 +675,11 @@ router_bgp:
     - ip_address: 172.17.0.4
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-enabled-leaf2a_Ethernet1.142_vrf_PROD
+      description: site-ha-enabled-leaf2A_Ethernet1.142_vrf_PROD
     - ip_address: 172.17.0.6
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-enabled-leaf2b_Ethernet1.142_vrf_PROD
+      description: site-ha-enabled-leaf2B_Ethernet1.142_vrf_PROD
     redistribute:
       connected:
         enabled: true
@@ -699,11 +699,11 @@ router_bgp:
     - ip_address: 172.17.0.4
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-enabled-leaf2a_Ethernet1.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+      description: site-ha-enabled-leaf2A_Ethernet1.666_vrf_ATTRACTED-VRF-FROM-UPLINK
     - ip_address: 172.17.0.6
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65199'
-      description: site-ha-enabled-leaf2b_Ethernet1.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+      description: site-ha-enabled-leaf2B_Ethernet1.666_vrf_ATTRACTED-VRF-FROM-UPLINK
     redistribute:
       connected:
         enabled: true
@@ -747,7 +747,7 @@ router_path_selection:
     - name: Ethernet53
     static_peers:
     - router_ip: 192.168.142.3
-      name: cv-pathfinder-edge2b
+      name: cv-pathfinder-edge2B
       ipv4_addresses:
       - 172.17.0.9
       - 172.17.0.11
@@ -825,7 +825,7 @@ vrfs:
     - TenantC
 vxlan_interface:
   vxlan1:
-    description: cv-pathfinder-edge2a_VTEP
+    description: cv-pathfinder-edge2A_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789

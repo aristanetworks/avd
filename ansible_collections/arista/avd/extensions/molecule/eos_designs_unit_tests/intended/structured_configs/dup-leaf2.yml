@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: dup-leaf2
+hostname: DUP-LEAF2
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -109,7 +109,7 @@ vlan_interfaces:
     tenants:
     - Tenant_A
     tags:
-    - dup-leaf2
+    - DUP-LEAF2
 vlan_internal_order:
   allocation: ascending
   range:
@@ -137,7 +137,7 @@ vrfs:
     - Tenant_A
 vxlan_interface:
   vxlan1:
-    description: dup-leaf2_VTEP
+    description: DUP-LEAF2_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

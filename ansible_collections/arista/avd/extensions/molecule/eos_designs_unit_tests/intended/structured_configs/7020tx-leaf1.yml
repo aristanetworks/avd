@@ -8,7 +8,7 @@ ethernet_interfaces:
   description: Structured config for platform matching the regex
   switchport:
     enabled: true
-hostname: 7020tx-leaf1
+hostname: 7020TX-LEAF1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -79,7 +79,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: 7020tx-leaf1_VTEP
+    description: 7020TX-LEAF1_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

@@ -5,46 +5,46 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet25
-  description: MLAG_sl-leaf1b_Ethernet25
+  description: MLAG_SL-LEAF1B_Ethernet25
   shutdown: false
   channel_group:
     id: 25
     mode: active
   metadata:
-    peer: sl-leaf1b
+    peer: SL-LEAF1B
     peer_interface: Ethernet25
     peer_type: mlag_peer
 - name: Ethernet26
-  description: MLAG_sl-leaf1b_Ethernet26
+  description: MLAG_SL-LEAF1B_Ethernet26
   shutdown: false
   channel_group:
     id: 25
     mode: active
   metadata:
-    peer: sl-leaf1b
+    peer: SL-LEAF1B
     peer_interface: Ethernet26
     peer_type: mlag_peer
 - name: Ethernet27
-  description: L2_sl-leaf0b_Ethernet27
+  description: L2_SL-LEAF0B_Ethernet27
   shutdown: false
   channel_group:
     id: 27
     mode: active
   metadata:
-    peer: sl-leaf0b
+    peer: SL-LEAF0B
     peer_interface: Ethernet27
     peer_type: l2leaf
 - name: Ethernet28
-  description: L2_sl-mleaf1_Ethernet16
+  description: L2_SL-MLEAF1_Ethernet16
   shutdown: false
   channel_group:
     id: 28
     mode: active
   metadata:
-    peer: sl-mleaf1
+    peer: SL-MLEAF1
     peer_interface: Ethernet16
     peer_type: l2leaf
-hostname: sl-leaf1a
+hostname: SL-LEAF1A
 ip_igmp_snooping:
   globally_enabled: true
 metadata:
@@ -60,7 +60,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel25
-  description: MLAG_sl-leaf1b_Port-Channel25
+  description: MLAG_SL-LEAF1B_Port-Channel25
   shutdown: false
   switchport:
     enabled: true
@@ -78,7 +78,7 @@ port_channel_interfaces:
     trunk:
       allowed_vlan: none
 - name: Port-Channel28
-  description: L2_sl-mleaf1_Port-Channel16
+  description: L2_SL-MLEAF1_Port-Channel16
   shutdown: false
   mlag: 28
   switchport:

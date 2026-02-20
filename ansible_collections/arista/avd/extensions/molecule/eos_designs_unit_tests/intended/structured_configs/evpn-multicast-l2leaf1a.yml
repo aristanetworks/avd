@@ -5,26 +5,26 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: L2_evpn-multicast-l3leaf1a_Ethernet6
+  description: L2_EVPN-MULTICAST-L3LEAF1A_Ethernet6
   shutdown: false
   channel_group:
     id: 1
     mode: active
   metadata:
-    peer: evpn-multicast-l3leaf1a
+    peer: EVPN-MULTICAST-L3LEAF1A
     peer_interface: Ethernet6
     peer_type: l3leaf
 - name: Ethernet2
-  description: L2_evpn-multicast-l3leaf1b_Ethernet6
+  description: L2_EVPN-MULTICAST-L3LEAF1B_Ethernet6
   shutdown: false
   channel_group:
     id: 1
     mode: active
   metadata:
-    peer: evpn-multicast-l3leaf1b
+    peer: EVPN-MULTICAST-L3LEAF1B
     peer_interface: Ethernet6
     peer_type: l3leaf
-hostname: evpn-multicast-l2leaf1a
+hostname: EVPN-MULTICAST-L2LEAF1A
 ip_igmp_snooping:
   globally_enabled: true
 management_interfaces:

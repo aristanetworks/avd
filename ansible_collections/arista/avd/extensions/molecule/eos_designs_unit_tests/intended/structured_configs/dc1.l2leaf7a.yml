@@ -23,10 +23,10 @@ ethernet_interfaces:
     id: 1
     mode: active
   metadata:
-    peer: dc1-leaf2a
+    peer: DC1-LEAF2A
     peer_interface: Ethernet32
     peer_type: l3leaf
-hostname: dc1.l2leaf7a
+hostname: DC1.L2LEAF7A
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -90,7 +90,7 @@ port_channel_interfaces:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS rackE dc1.l2leaf7a
+  location: EOS_DESIGNS_UNIT_TESTS rackE DC1.L2LEAF7A
 spanning_tree:
   mode: mstp
   mst_instances:

@@ -2,4 +2,4 @@
 # When there is a merge conflict for this file, rebase the branch, accept all current changes for this file, and re-run AVD.
 node_id_pools:
   fabric_name=EOS_DESIGNS_UNIT_TESTS/dc_name=dc1/pod_name=pod101/type=spine/rack=rack123:
-    hostname=fabric-numbering-node-id: 1
+    hostname=fabric_numbering_node_id: 1

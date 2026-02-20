@@ -23,7 +23,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.255.1/31
   metadata:
-    peer: dc1-spine1
+    peer: DC1-SPINE1
     peer_interface: Ethernet25
     peer_type: spine
   switchport:
@@ -35,7 +35,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.255.3/31
   metadata:
-    peer: dc1-spine2
+    peer: DC1-SPINE2
     peer_interface: Ethernet25
     peer_type: spine
   switchport:
@@ -47,7 +47,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.255.5/31
   metadata:
-    peer: dc1-spine3
+    peer: DC1-SPINE3
     peer_interface: Ethernet25
     peer_type: spine
   switchport:
@@ -59,12 +59,12 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.255.7/31
   metadata:
-    peer: dc1-spine4
+    peer: DC1-SPINE4
     peer_interface: Ethernet25
     peer_type: spine
   switchport:
     enabled: false
-hostname: dc1-bl2b
+hostname: DC1-BL2B
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_server:
@@ -220,50 +220,50 @@ router_bgp:
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine1
-    description: dc1-spine1_Ethernet25
+      peer: DC1-SPINE1
+    description: DC1-SPINE1_Ethernet25
   - ip_address: 172.31.255.2
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine2
-    description: dc1-spine2_Ethernet25
+      peer: DC1-SPINE2
+    description: DC1-SPINE2_Ethernet25
   - ip_address: 172.31.255.4
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine3
-    description: dc1-spine3_Ethernet25
+      peer: DC1-SPINE3
+    description: DC1-SPINE3_Ethernet25
   - ip_address: 172.31.255.6
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine4
-    description: dc1-spine4_Ethernet25
+      peer: DC1-SPINE4
+    description: DC1-SPINE4_Ethernet25
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine1
-    description: dc1-spine1
+      peer: DC1-SPINE1
+    description: DC1-SPINE1
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine2
-    description: dc1-spine2
+      peer: DC1-SPINE2
+    description: DC1-SPINE2
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine3
-    description: dc1-spine3
+      peer: DC1-SPINE3
+    description: DC1-SPINE3
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine4
-    description: dc1-spine4
+      peer: DC1-SPINE4
+    description: DC1-SPINE4
   - ip_address: 100.70.0.1
     peer_group: IPVPN-INTERWORKING-PEERS
     remote_as: '64512'
@@ -382,11 +382,20 @@ router_bgp:
         route_targets:
         - 65000:123
     router_id: 192.168.255.17
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: fd5a:fe45:8831:06c5::b
+      remote_as: '12345'
     redistribute:
       connected:
         enabled: true
       static:
         enabled: true
+    address_family_ipv6:
+      neighbors:
+      - ip_address: fd5a:fe45:8831:06c5::b
+        activate: true
   - name: Tenant_B_OP_Zone
     rd: 192.168.255.17:20
     route_targets:
@@ -475,7 +484,7 @@ router_bgp:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS dc1-bl2b
+  location: EOS_DESIGNS_UNIT_TESTS DC1-BL2B
 spanning_tree:
   root_super: true
   mode: mstp
@@ -598,7 +607,7 @@ vrfs:
     - Tenant_D
 vxlan_interface:
   vxlan1:
-    description: dc1-bl2b_VTEP
+    description: DC1-BL2B_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

@@ -5,27 +5,27 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet3
-  description: MLAG_underlay-multicast-l3leaf1b_Ethernet3
+  description: MLAG_UNDERLAY-MULTICAST-L3LEAF1B_Ethernet3
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: underlay-multicast-l3leaf1b
+    peer: UNDERLAY-MULTICAST-L3LEAF1B
     peer_interface: Ethernet3
     peer_type: mlag_peer
 - name: Ethernet4
-  description: MLAG_underlay-multicast-l3leaf1b_Ethernet4
+  description: MLAG_UNDERLAY-MULTICAST-L3LEAF1B_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: underlay-multicast-l3leaf1b
+    peer: UNDERLAY-MULTICAST-L3LEAF1B
     peer_interface: Ethernet4
     peer_type: mlag_peer
 - name: Ethernet1
-  description: P2P_underlay-multicast-spine1_Ethernet1
+  description: P2P_UNDERLAY-MULTICAST-SPINE1_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.1/31
@@ -36,33 +36,33 @@ ethernet_interfaces:
     ipv4:
       sparse_mode: true
   metadata:
-    peer: underlay-multicast-spine1
+    peer: UNDERLAY-MULTICAST-SPINE1
     peer_interface: Ethernet1
     peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
-  description: P2P_underlay-multicast-spine2_Ethernet1
+  description: P2P_UNDERLAY-MULTICAST-SPINE2_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.3/31
   metadata:
-    peer: underlay-multicast-spine2
+    peer: UNDERLAY-MULTICAST-SPINE2
     peer_interface: Ethernet1
     peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet6
-  description: L2_underlay-multicast-l2leaf1a_Ethernet1
+  description: L2_UNDERLAY-MULTICAST-L2LEAF1A_Ethernet1
   shutdown: false
   channel_group:
     id: 6
     mode: active
   metadata:
-    peer: underlay-multicast-l2leaf1a
+    peer: UNDERLAY-MULTICAST-L2LEAF1A
     peer_interface: Ethernet1
     peer_type: l2leaf
-hostname: underlay-multicast-l3leaf1a
+hostname: UNDERLAY-MULTICAST-L3LEAF1A
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -102,7 +102,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_underlay-multicast-l3leaf1b_Port-Channel3
+  description: MLAG_UNDERLAY-MULTICAST-L3LEAF1B_Port-Channel3
   shutdown: false
   switchport:
     enabled: true
@@ -111,7 +111,7 @@ port_channel_interfaces:
       groups:
       - MLAG
 - name: Port-Channel6
-  description: L2_underlay-multicast-l2leaf1a_Port-Channel1
+  description: L2_UNDERLAY-MULTICAST-L2LEAF1A_Port-Channel1
   shutdown: false
   switchport:
     enabled: true
@@ -169,7 +169,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65101'
-    description: underlay-multicast-l3leaf1b
+    description: UNDERLAY-MULTICAST-L3LEAF1B
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -191,32 +191,32 @@ router_bgp:
   - ip_address: 10.255.251.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: underlay-multicast-l3leaf1b
-    description: underlay-multicast-l3leaf1b_Vlan4093
+      peer: UNDERLAY-MULTICAST-L3LEAF1B
+    description: UNDERLAY-MULTICAST-L3LEAF1B_Vlan4093
   - ip_address: 172.31.255.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: underlay-multicast-spine1
-    description: underlay-multicast-spine1_Ethernet1
+      peer: UNDERLAY-MULTICAST-SPINE1
+    description: UNDERLAY-MULTICAST-SPINE1_Ethernet1
   - ip_address: 172.31.255.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: underlay-multicast-spine2
-    description: underlay-multicast-spine2_Ethernet1
+      peer: UNDERLAY-MULTICAST-SPINE2
+    description: UNDERLAY-MULTICAST-SPINE2_Ethernet1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: underlay-multicast-spine1
-    description: underlay-multicast-spine1_Loopback0
+      peer: UNDERLAY-MULTICAST-SPINE1
+    description: UNDERLAY-MULTICAST-SPINE1_Loopback0
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: underlay-multicast-spine2
-    description: underlay-multicast-spine2_Loopback0
+      peer: UNDERLAY-MULTICAST-SPINE2
+    description: UNDERLAY-MULTICAST-SPINE2_Loopback0
   redistribute:
     connected:
       enabled: true
@@ -318,7 +318,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: underlay-multicast-l3leaf1a_VTEP
+    description: UNDERLAY-MULTICAST-L3LEAF1A_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

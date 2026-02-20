@@ -1,0 +1,318 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: evpn_gateway_l2_l3_disabled
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.4/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.254.4/32
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.207/24
+  type: oob
+metadata:
+  is_deployed: true
+  platform: vEOS
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  validate_hardware:
+    enabled: false
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65233'
+  router_id: 192.168.255.4
+  maximum_paths:
+    paths: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: EVPN-OVERLAY-PEERS
+    metadata:
+      type: evpn
+    next_hop_unchanged: true
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.255.5
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: evpn_l2_multi_domain
+    description: evpn_l2_multi_domain_Loopback0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 11
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.4:10011
+    route_targets:
+      both:
+      - 10011:10011
+    redistribute_routes:
+    - learned
+  - id: 12
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.4:10012
+    route_targets:
+      both:
+      - 10012:10012
+    redistribute_routes:
+    - learned
+  - id: 21
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.4:10021
+    route_targets:
+      both:
+      - 10021:10021
+    redistribute_routes:
+    - learned
+  - id: 22
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.4:10022
+    route_targets:
+      both:
+      - 10022:10022
+    redistribute_routes:
+    - learned
+  - id: 300
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.4:10300
+    route_targets:
+      both:
+      - 10300:10300
+    redistribute_routes:
+    - learned
+  - id: 3401
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.4:13401
+    route_targets:
+      both:
+      - 13401:13401
+    redistribute_routes:
+    - learned
+  - id: 3402
+    metadata:
+      tenants:
+      - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.4:13402
+    route_targets:
+      both:
+      - 13402:13402
+    redistribute_routes:
+    - learned
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_rtc:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+      default_route_target:
+        only: true
+  address_family_ipv4:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  vrfs:
+  - name: VRF10
+    rd: 192.168.255.4:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    router_id: 192.168.255.4
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF11
+    rd: 192.168.255.4:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    router_id: 192.168.255.4
+    redistribute:
+      connected:
+        enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan11
+  description: VRF10_VLAN11
+  shutdown: false
+  vrf: VRF10
+  ip_address_virtual: 10.10.11.1/24
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- name: Vlan12
+  description: VRF10_VLAN12
+  shutdown: false
+  vrf: VRF10
+  ip_address_virtual: 10.10.12.1/24
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- name: Vlan21
+  description: VRF11_VLAN21
+  shutdown: false
+  vrf: VRF11
+  ip_address_virtual: 10.10.21.1/24
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- name: Vlan22
+  description: VRF11_VLAN22
+  shutdown: false
+  vrf: VRF11
+  ip_address_virtual: 10.10.22.1/24
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- name: Vlan300
+  description: VRF11_VLAN300
+  shutdown: false
+  vrf: VRF11
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 11
+  name: VRF10_VLAN11
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- id: 12
+  name: VRF10_VLAN12
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- id: 21
+  name: VRF11_VLAN21
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- id: 22
+  name: VRF11_VLAN22
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- id: 300
+  name: VRF11_VLAN300
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- id: 3401
+  name: L2_VLAN3401
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- id: 3402
+  name: L2_VLAN3402
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF10
+  ip_routing: true
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+- name: VRF11
+  ip_routing: true
+  metadata:
+    tenants:
+    - EVPN_GATEWAY_TESTS
+vxlan_interface:
+  vxlan1:
+    description: evpn_gateway_l2_l3_disabled_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 11
+        vni: 10011
+      - id: 12
+        vni: 10012
+      - id: 21
+        vni: 10021
+      - id: 22
+        vni: 10022
+      - id: 300
+        vni: 10300
+      - id: 3401
+        vni: 13401
+      - id: 3402
+        vni: 13402
+      vrfs:
+      - name: VRF10
+        vni: 10
+      - name: VRF11
+        vni: 11

@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: rd-rt-admin-subfield-l3leaf9
+hostname: RD-RT-ADMIN-SUBFIELD-L3LEAF9
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -250,7 +250,7 @@ vrfs:
     - TENANT_WITH_VRFS_WITHOUT_SVIS
 vxlan_interface:
   vxlan1:
-    description: rd-rt-admin-subfield-l3leaf9_VTEP
+    description: RD-RT-ADMIN-SUBFIELD-L3LEAF9_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

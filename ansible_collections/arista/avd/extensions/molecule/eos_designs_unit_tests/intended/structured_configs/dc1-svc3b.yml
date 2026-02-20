@@ -17,25 +17,25 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet53/1
-  description: MLAG_PEER_dc1-svc3a_Ethernet53/1
+  description: MLAG_PEER_DC1-SVC3A_Ethernet53/1
   shutdown: false
   speed: 100g
   channel_group:
     id: 2000
     mode: active
   metadata:
-    peer: dc1-svc3a
+    peer: DC1-SVC3A
     peer_interface: Ethernet53/1
     peer_type: mlag_peer
 - name: Ethernet54/1
-  description: MLAG_PEER_dc1-svc3a_Ethernet54/1
+  description: MLAG_PEER_DC1-SVC3A_Ethernet54/1
   shutdown: false
   speed: 100g
   channel_group:
     id: 2000
     mode: active
   metadata:
-    peer: dc1-svc3a
+    peer: DC1-SVC3A
     peer_interface: Ethernet54/1
     peer_type: mlag_peer
 - name: Ethernet7
@@ -46,7 +46,7 @@ ethernet_interfaces:
     id: 1007
     mode: active
   metadata:
-    peer: dc1-l2leaf2a
+    peer: DC1-L2LEAF2A
     peer_interface: Ethernet2
     peer_type: l2leaf
 - name: Ethernet8
@@ -57,7 +57,7 @@ ethernet_interfaces:
     id: 1007
     mode: active
   metadata:
-    peer: dc1-l2leaf2b
+    peer: DC1-L2LEAF2B
     peer_interface: Ethernet2
     peer_type: l2leaf
 - name: Ethernet49/1
@@ -67,7 +67,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.129/31
   metadata:
-    peer: dc1-spine1
+    peer: DC1-SPINE1
     peer_interface: Ethernet9/1
     peer_type: spine
   switchport:
@@ -79,7 +79,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.131/31
   metadata:
-    peer: dc1-spine2
+    peer: DC1-SPINE2
     peer_interface: Ethernet1/9/1
     peer_type: spine
   switchport:
@@ -91,7 +91,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.133/31
   metadata:
-    peer: dc1-spine3
+    peer: DC1-SPINE3
     peer_interface: Ethernet1/9/1
     peer_type: spine
   switchport:
@@ -103,7 +103,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.135/31
   metadata:
-    peer: dc1-spine4
+    peer: DC1-SPINE4
     peer_interface: Ethernet9/1
     peer_type: spine
   switchport:
@@ -483,7 +483,7 @@ ethernet_interfaces:
     peer_type: server
     peer_key: servers
     port_profile: TENANT_A
-hostname: dc1-svc3b
+hostname: DC1-SVC3B
 ip_access_lists:
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
   entries:
@@ -609,7 +609,7 @@ ntp:
   vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel2000
-  description: MLAG_PEER_dc1-svc3a_Po2000
+  description: MLAG_PEER_DC1-SVC3A_Po2000
   shutdown: false
   switchport:
     enabled: true
@@ -917,7 +917,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65103'
-    description: MLAG_PEER_dc1-svc3a
+    description: MLAG_PEER_DC1-SVC3A
     next_hop_self: true
     password: 15AwQNBEJ1nyF/kBEtoAGw==
     send_community: all
@@ -942,56 +942,56 @@ router_bgp:
   - ip_address: 10.255.251.6
     peer_group: MLAG-PEERS
     metadata:
-      peer: dc1-svc3a
-    description: dc1-svc3a
+      peer: DC1-SVC3A
+    description: DC1-SVC3A
   - ip_address: 172.31.254.128
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine1
-    description: dc1-spine1_Ethernet9/1
+      peer: DC1-SPINE1
+    description: DC1-SPINE1_Ethernet9/1
   - ip_address: 172.31.254.130
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine2
-    description: dc1-spine2_Ethernet1/9/1
+      peer: DC1-SPINE2
+    description: DC1-SPINE2_Ethernet1/9/1
   - ip_address: 172.31.254.132
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine3
-    description: dc1-spine3_Ethernet1/9/1
+      peer: DC1-SPINE3
+    description: DC1-SPINE3_Ethernet1/9/1
   - ip_address: 172.31.254.134
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine4
-    description: dc1-spine4_Ethernet9/1
+      peer: DC1-SPINE4
+    description: DC1-SPINE4_Ethernet9/1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine1
-    description: dc1-spine1
+      peer: DC1-SPINE1
+    description: DC1-SPINE1
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine2
-    description: dc1-spine2
+      peer: DC1-SPINE2
+    description: DC1-SPINE2
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine3
-    description: dc1-spine3
+      peer: DC1-SPINE3
+    description: DC1-SPINE3
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine4
-    description: dc1-spine4
+      peer: DC1-SPINE4
+    description: DC1-SPINE4
   redistribute:
     connected:
       enabled: true
@@ -1133,7 +1133,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
-      description: dc1-svc3a
+      description: DC1-SVC3A
     redistribute:
       connected:
         enabled: true
@@ -1154,7 +1154,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
-      description: dc1-svc3a
+      description: DC1-SVC3A
     redistribute:
       connected:
         enabled: true
@@ -1175,7 +1175,7 @@ router_bgp:
     neighbors:
     - ip_address: 172.31.12.6
       peer_group: MLAG-PEERS
-      description: dc1-svc3a
+      description: DC1-SVC3A
   - name: Tenant_A_OP_Zone
     rd: '65103:9'
     route_targets:
@@ -1193,7 +1193,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
-      description: dc1-svc3a
+      description: DC1-SVC3A
     redistribute:
       connected:
         enabled: true
@@ -1217,7 +1217,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
-      description: dc1-svc3a
+      description: DC1-SVC3A
     redistribute:
       connected:
         enabled: true
@@ -1240,7 +1240,7 @@ router_bgp:
     neighbors:
     - ip_address: 172.31.11.6
       peer_group: MLAG-PEERS
-      description: dc1-svc3a
+      description: DC1-SVC3A
     redistribute:
       connected:
         enabled: true
@@ -1261,7 +1261,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
-      description: dc1-svc3a
+      description: DC1-SVC3A
     redistribute:
       connected:
         enabled: true
@@ -1283,7 +1283,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
-      description: dc1-svc3a
+      description: DC1-SVC3A
     redistribute:
       connected:
         enabled: true
@@ -1305,7 +1305,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
-      description: dc1-svc3a
+      description: DC1-SVC3A
     redistribute:
       connected:
         enabled: true
@@ -1327,7 +1327,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
-      description: dc1-svc3a
+      description: DC1-SVC3A
     redistribute:
       connected:
         enabled: true
@@ -1335,7 +1335,7 @@ router_bgp:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS dc1-svc3b
+  location: EOS_DESIGNS_UNIT_TESTS DC1-SVC3B
 spanning_tree:
   root_super: true
   mode: mstp
@@ -1911,7 +1911,7 @@ vrfs:
     - Tenant_C
 vxlan_interface:
   vxlan1:
-    description: dc1-svc3b_VTEP
+    description: DC1-SVC3B_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

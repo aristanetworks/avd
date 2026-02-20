@@ -17,25 +17,25 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1/31/1
-  description: MLAG_PEER_dc1-cl1a_Ethernet1/31/1
+  description: MLAG_PEER_DC1-CL1A_Ethernet1/31/1
   shutdown: false
   speed: 100g
   channel_group:
     id: 1311
     mode: active
   metadata:
-    peer: dc1-cl1a
+    peer: DC1-CL1A
     peer_interface: Ethernet1/31/1
     peer_type: mlag_peer
 - name: Ethernet1/32/1
-  description: MLAG_PEER_dc1-cl1a_Ethernet1/32/1
+  description: MLAG_PEER_DC1-CL1A_Ethernet1/32/1
   shutdown: false
   speed: 100g
   channel_group:
     id: 1311
     mode: active
   metadata:
-    peer: dc1-cl1a
+    peer: DC1-CL1A
     peer_interface: Ethernet1/32/1
     peer_type: mlag_peer
 - name: Ethernet1
@@ -45,7 +45,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.255.65/31
   metadata:
-    peer: dc1-spine1
+    peer: DC1-SPINE1
     peer_interface: Ethernet27
     peer_type: spine
   switchport:
@@ -57,7 +57,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.255.67/31
   metadata:
-    peer: dc1-spine2
+    peer: DC1-SPINE2
     peer_interface: Ethernet27
     peer_type: spine
   switchport:
@@ -69,7 +69,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.255.69/31
   metadata:
-    peer: dc1-spine3
+    peer: DC1-SPINE3
     peer_interface: Ethernet27
     peer_type: spine
   switchport:
@@ -81,12 +81,12 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.255.71/31
   metadata:
-    peer: dc1-spine4
+    peer: DC1-SPINE4
     peer_interface: Ethernet27
     peer_type: spine
   switchport:
     enabled: false
-hostname: dc1-cl1b
+hostname: DC1-CL1B
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -156,7 +156,7 @@ ntp:
   vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel1311
-  description: MLAG_PEER_dc1-cl1a_Po1311
+  description: MLAG_PEER_DC1-CL1A_Po1311
   shutdown: false
   switchport:
     enabled: true
@@ -222,7 +222,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65109'
-    description: MLAG_PEER_dc1-cl1a
+    description: MLAG_PEER_DC1-CL1A
     next_hop_self: true
     password: 15AwQNBEJ1nyF/kBEtoAGw==
     send_community: all
@@ -247,56 +247,56 @@ router_bgp:
   - ip_address: 10.255.251.18
     peer_group: MLAG-PEERS
     metadata:
-      peer: dc1-cl1a
-    description: dc1-cl1a
+      peer: DC1-CL1A
+    description: DC1-CL1A
   - ip_address: 172.31.255.64
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine1
-    description: dc1-spine1_Ethernet27
+      peer: DC1-SPINE1
+    description: DC1-SPINE1_Ethernet27
   - ip_address: 172.31.255.66
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine2
-    description: dc1-spine2_Ethernet27
+      peer: DC1-SPINE2
+    description: DC1-SPINE2_Ethernet27
   - ip_address: 172.31.255.68
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine3
-    description: dc1-spine3_Ethernet27
+      peer: DC1-SPINE3
+    description: DC1-SPINE3_Ethernet27
   - ip_address: 172.31.255.70
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine4
-    description: dc1-spine4_Ethernet27
+      peer: DC1-SPINE4
+    description: DC1-SPINE4_Ethernet27
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine1
-    description: dc1-spine1
+      peer: DC1-SPINE1
+    description: DC1-SPINE1
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine2
-    description: dc1-spine2
+      peer: DC1-SPINE2
+    description: DC1-SPINE2
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine3
-    description: dc1-spine3
+      peer: DC1-SPINE3
+    description: DC1-SPINE3
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: dc1-spine4
-    description: dc1-spine4
+      peer: DC1-SPINE4
+    description: DC1-SPINE4
   redistribute:
     connected:
       enabled: true
@@ -416,7 +416,7 @@ router_bgp:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS dc1-cl1b
+  location: EOS_DESIGNS_UNIT_TESTS DC1-CL1B
 spanning_tree:
   root_super: true
   mode: mstp
@@ -556,7 +556,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: dc1-cl1b_VTEP
+    description: DC1-CL1B_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

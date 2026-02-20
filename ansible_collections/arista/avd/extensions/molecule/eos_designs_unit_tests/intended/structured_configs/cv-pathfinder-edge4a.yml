@@ -96,25 +96,25 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet42
-  description: WAN_HA_cv-pathfinder-edge4b_Ethernet42
+  description: WAN_HA_cv-pathfinder-edge4B_Ethernet42
   shutdown: false
   mtu: 9194
   channel_group:
     id: 666
     mode: active
   metadata:
-    peer: cv-pathfinder-edge4b
+    peer: cv-pathfinder-edge4B
     peer_interface: Ethernet42
     peer_type: wan_ha_peer
 - name: Ethernet43
-  description: WAN_HA_cv-pathfinder-edge4b_Ethernet43
+  description: WAN_HA_cv-pathfinder-edge4B_Ethernet43
   shutdown: false
   mtu: 9194
   channel_group:
     id: 666
     mode: active
   metadata:
-    peer: cv-pathfinder-edge4b
+    peer: cv-pathfinder-edge4B
     peer_interface: Ethernet43
     peer_type: wan_ha_peer
 flow_tracking:
@@ -131,7 +131,7 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: cv-pathfinder-edge4a
+hostname: cv-pathfinder-edge4A
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -233,14 +233,14 @@ metadata:
       pathgroup: INET
 port_channel_interfaces:
 - name: Port-Channel666
-  description: WAN_HA_cv-pathfinder-edge4b_Port-Channel666
+  description: WAN_HA_cv-pathfinder-edge4B_Port-Channel666
   shutdown: false
   mtu: 9194
   ip_address: 10.10.10.1/24
   flow_tracker:
     hardware: FLOW-TRACKER
   metadata:
-    peer: cv-pathfinder-edge4b
+    peer: cv-pathfinder-edge4B
     peer_interface: Port-Channel666
     peer_type: l3_interface
   switchport:
@@ -418,8 +418,8 @@ router_bgp:
   - ip_address: 192.168.142.9
     remote_as: '65000'
     metadata:
-      peer: cv-pathfinder-edge4b
-    description: cv-pathfinder-edge4b
+      peer: cv-pathfinder-edge4B
+    description: cv-pathfinder-edge4B
     route_reflector_client: true
     update_source: Dps1
     route_map_in: RM-WAN-HA-PEER-IN
@@ -535,7 +535,7 @@ router_path_selection:
     - name: Port-Channel666
     static_peers:
     - router_ip: 192.168.142.9
-      name: cv-pathfinder-edge4b
+      name: cv-pathfinder-edge4B
       ipv4_addresses:
       - 10.10.10.2
   load_balance_policies:
@@ -603,7 +603,7 @@ vrfs:
     - TenantA
 vxlan_interface:
   vxlan1:
-    description: cv-pathfinder-edge4a_VTEP
+    description: cv-pathfinder-edge4A_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789

@@ -178,7 +178,7 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: cv-pathfinder-transit1a
+hostname: cv-pathfinder-transit1A
 ip_access_lists:
 - name: ACL-NAT-IE-DIRECT
   entries:
@@ -596,8 +596,8 @@ router_bgp:
   - ip_address: 192.168.143.2
     remote_as: '65000'
     metadata:
-      peer: cv-pathfinder-transit1b
-    description: cv-pathfinder-transit1b
+      peer: cv-pathfinder-transit1B
+    description: cv-pathfinder-transit1B
     route_reflector_client: true
     update_source: Dps1
     route_map_in: RM-WAN-HA-PEER-IN
@@ -793,7 +793,7 @@ router_path_selection:
     - name: Ethernet52
     static_peers:
     - router_ip: 192.168.143.2
-      name: cv-pathfinder-transit1b
+      name: cv-pathfinder-transit1B
       ipv4_addresses:
       - 172.17.0.3
   load_balance_policies:
@@ -913,7 +913,7 @@ vrfs:
     - TenantC
 vxlan_interface:
   vxlan1:
-    description: cv-pathfinder-transit1a_VTEP
+    description: cv-pathfinder-transit1A_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789
