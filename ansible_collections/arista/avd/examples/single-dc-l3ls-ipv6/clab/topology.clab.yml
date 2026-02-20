@@ -1,5 +1,5 @@
 ---
-name: AVD examples, Single DC L3LS
+name: Single Data Center - L3LS - IPv6
 prefix: ""
 
 mgmt:

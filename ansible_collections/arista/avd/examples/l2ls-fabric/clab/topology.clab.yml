@@ -1,5 +1,5 @@
 ---
-name: AVD examples, Single DC L3LS
+name: L2LS Fabric
 prefix: ""
 
 mgmt:
