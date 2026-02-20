@@ -8,7 +8,8 @@ ethernet_interfaces:
   description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet2
   shutdown: false
   mtu: 9214
-  ipv6_address: 2001:db8:3:8::2/64
+  ipv6_addresses:
+  - 2001:db8:3:8::2/64
   pim:
     ipv4:
       sparse_mode: true
@@ -27,7 +28,8 @@ ethernet_interfaces:
   vrf: PROD
   encapsulation_dot1q:
     vlan: 42
-  ipv6_address: 2001:db8:3:8::2/64
+  ipv6_addresses:
+  - 2001:db8:3:8::2/64
   metadata:
     peer: UPLINK_P2P_VRFS_TESTS_SPINE1
     peer_interface: Ethernet2.42
@@ -39,7 +41,8 @@ ethernet_interfaces:
   vrf: ONLY-ON-L2LEAF
   encapsulation_dot1q:
     vlan: 66
-  ipv6_address: 2001:db8:3:8::2/64
+  ipv6_addresses:
+  - 2001:db8:3:8::2/64
   metadata:
     peer: UPLINK_P2P_VRFS_TESTS_SPINE1
     peer_interface: Ethernet2.66
@@ -48,7 +51,8 @@ ethernet_interfaces:
   description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet1
   shutdown: false
   mtu: 9214
-  ipv6_address: 2001:db8:3:9::2/64
+  ipv6_addresses:
+  - 2001:db8:3:9::2/64
   pim:
     ipv4:
       sparse_mode: true
@@ -67,7 +71,8 @@ ethernet_interfaces:
   vrf: IT
   encapsulation_dot1q:
     vlan: 100
-  ipv6_address: 2001:db8:3:9::2/64
+  ipv6_addresses:
+  - 2001:db8:3:9::2/64
   metadata:
     peer: UPLINK_P2P_VRFS_TESTS_SPINE2
     peer_interface: Ethernet1.100
@@ -79,7 +84,8 @@ ethernet_interfaces:
   vrf: PROD
   encapsulation_dot1q:
     vlan: 42
-  ipv6_address: 2001:db8:3:9::2/64
+  ipv6_addresses:
+  - 2001:db8:3:9::2/64
   metadata:
     peer: UPLINK_P2P_VRFS_TESTS_SPINE2
     peer_interface: Ethernet1.42

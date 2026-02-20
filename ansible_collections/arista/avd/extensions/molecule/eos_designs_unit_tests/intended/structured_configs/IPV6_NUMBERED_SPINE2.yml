@@ -9,7 +9,8 @@ ethernet_interfaces:
   description: P2P_IPV6_NUMBERED_LEAF1a_Ethernet2
   shutdown: false
   mtu: 1500
-  ipv6_address: 2001:db8:2:1::1/64
+  ipv6_addresses:
+  - 2001:db8:2:1::1/64
   metadata:
     peer: IPV6_NUMBERED_LEAF1a
     peer_interface: Ethernet2
@@ -20,7 +21,8 @@ ethernet_interfaces:
   description: P2P_IPV6_NUMBERED_LEAF1b_Ethernet2
   shutdown: false
   mtu: 1500
-  ipv6_address: 2001:db8:2:3::1/64
+  ipv6_addresses:
+  - 2001:db8:2:3::1/64
   metadata:
     peer: IPV6_NUMBERED_LEAF1b
     peer_interface: Ethernet2
@@ -31,7 +33,8 @@ ethernet_interfaces:
   description: P2P_IPV6_NUMBERED_LEAF2a_Ethernet2
   shutdown: false
   mtu: 1500
-  ipv6_address: 2001:db8:2:5::1/64
+  ipv6_addresses:
+  - 2001:db8:2:5::1/64
   metadata:
     peer: IPV6_NUMBERED_LEAF2a
     peer_interface: Ethernet2

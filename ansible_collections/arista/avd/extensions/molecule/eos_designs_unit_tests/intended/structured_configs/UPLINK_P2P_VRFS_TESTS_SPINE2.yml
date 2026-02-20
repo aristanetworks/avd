@@ -27,7 +27,8 @@ ethernet_interfaces:
   vrf: IT
   encapsulation_dot1q:
     vlan: 100
-  ipv6_address: 2001:db8:3:9::2/64
+  ipv6_addresses:
+  - 2001:db8:3:9::2/64
   metadata:
     peer: UPLINK_P2P_VRFS_TESTS_LEAF2
     peer_interface: Ethernet2.100
@@ -39,7 +40,8 @@ ethernet_interfaces:
   vrf: PROD
   encapsulation_dot1q:
     vlan: 42
-  ipv6_address: 2001:db8:3:9::2/64
+  ipv6_addresses:
+  - 2001:db8:3:9::2/64
   metadata:
     peer: UPLINK_P2P_VRFS_TESTS_LEAF2
     peer_interface: Ethernet2.42

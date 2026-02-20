@@ -49,7 +49,8 @@ ethernet_interfaces:
     vlan: 100
   ip_address: 10.0.100.1/24
   ipv6_enable: true
-  ipv6_address: cafe::cafe/64
+  ipv6_addresses:
+  - cafe::cafe/64
   metadata:
     peer: uplink_lan_l2leaf
     peer_interface: Ethernet2 VLAN 100

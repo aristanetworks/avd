@@ -17,7 +17,8 @@ management_interfaces:
   vrf: MGMT
   ip_address: 192.168.201.202/24
   ipv6_enable: true
-  ipv6_address: 2001:db8::105/64
+  ipv6_addresses:
+  - 2001:db8::105/64
   type: oob
   gateway: 192.168.201.254
   ipv6_gateway: 2001:db8::2

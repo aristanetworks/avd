@@ -8,7 +8,8 @@ ethernet_interfaces:
   description: P2P_IPV6_DOWNLINK_POOLS_LEAF1a_Ethernet1
   shutdown: false
   mtu: 9214
-  ipv6_address: 2001:db8:12::1/64
+  ipv6_addresses:
+  - 2001:db8:12::1/64
   metadata:
     peer: IPV6_DOWNLINK_POOLS_LEAF1a
     peer_interface: Ethernet1
