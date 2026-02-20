@@ -16,8 +16,8 @@
 {%     else %}
 
 #### IPv6 Access-lists Summary
-
 {%         for ipv6_access_list in ipv6_access_lists | arista.avd.natural_sort('name') %}
+
 ##### {{ ipv6_access_list.name }}
 {%             if ipv6_access_list.counters_per_entry is arista.avd.defined(true) %}
 
