@@ -11,9 +11,9 @@ cvx:
       vtep_mac_learning: control-plane
     openstack:
       shutdown: false
-      ip_access_group: 
+      ip_access_group:
         name: ACL-OS
-      ipv6_access_group: 
+      ipv6_access_group:
         name: ACL-V6-IN
         in: true
       network_type_driver:
