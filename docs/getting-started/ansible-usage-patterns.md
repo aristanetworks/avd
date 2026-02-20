@@ -8,23 +8,11 @@
 
 This guide demonstrates the different ways to use Arista AVD Ansible roles, starting from basic usage and progressively introducing more advanced patterns. Each section builds upon the previous one, showing how AVD's flexibility allows you to customize configurations to meet your specific needs.
 
-- [Ansible Usage Patterns](#ansible-usage-patterns)
-  - [eos\_cli\_config\_gen](#eos_cli_config_gen)
-    - [Workflow](#workflow)
-    - [Example](#example)
-  - [eos\_designs with eos\_cli\_config\_gen](#eos_designs-with-eos_cli_config_gen)
-    - [AVD Design Data Model with eos\_designs](#avd-design-data-model-with-eos_designs)
-      - [Workflow](#workflow-1)
-      - [Example](#example-1)
-    - [structured\_config with eos\_designs](#structured_config-with-eos_designs)
-      - [Workflow](#workflow-2)
-      - [Example](#example-2)
-    - [custom\_structured\_configuration Prefix](#custom_structured_configuration-prefix)
-      - [Workflow](#workflow-3)
-      - [Example](#example-3)
-  - [Summary and Comparison](#summary-and-comparison)
-    - [Key Takeaways](#key-takeaways)
-    - [Next Steps](#next-steps)
+- [eos_cli_config_gen](#eos_cli_config_gen)
+- [eos_designs with eos_cli_config_gen (recommended)](#eos_designs-with-eos_cli_config_gen)
+  - [AVD Design Data Model with eos_designs](#avd-design-data-model-with-eos_designs)
+  - [structured_config with eos_designs](#structured_config-with-eos_designs)
+  - [custom_structured_configuration Prefix](#custom_structured_configuration-prefix)
 
 ## eos_cli_config_gen
 
