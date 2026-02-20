@@ -8,11 +8,23 @@
 
 This guide demonstrates the different ways to use Arista AVD Ansible roles, starting from basic usage and progressively introducing more advanced patterns. Each section builds upon the previous one, showing how AVD's flexibility allows you to customize configurations to meet your specific needs.
 
-- [eos_cli_config_gen](#eos_cli_config_gen)
-- [eos_designs with eos_cli_config_gen (recommended)](#eos_designs-with-eos_cli_config_gen)
-  - [AVD Design Data Model with eos_designs](#avd-design-data-model-with-eos_designs)
-  - [structured_config with eos_designs](#structured_config-with-eos_designs)
-  - [custom_structured_configuration Prefix](#custom_structured_configuration-prefix)
+- [Ansible Usage Patterns](#ansible-usage-patterns)
+  - [eos\_cli\_config\_gen](#eos_cli_config_gen)
+    - [Workflow](#workflow)
+    - [Example](#example)
+  - [eos\_designs with eos\_cli\_config\_gen](#eos_designs-with-eos_cli_config_gen)
+    - [AVD Design Data Model with eos\_designs](#avd-design-data-model-with-eos_designs)
+      - [Workflow](#workflow-1)
+      - [Example](#example-1)
+    - [structured\_config with eos\_designs](#structured_config-with-eos_designs)
+      - [Workflow](#workflow-2)
+      - [Example](#example-2)
+    - [custom\_structured\_configuration Prefix](#custom_structured_configuration-prefix)
+      - [Workflow](#workflow-3)
+      - [Example](#example-3)
+  - [Summary and Comparison](#summary-and-comparison)
+    - [Key Takeaways](#key-takeaways)
+    - [Next Steps](#next-steps)
 
 ## eos_cli_config_gen
 
@@ -54,6 +66,7 @@ ip_name_server:
 ```
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 9999}}}%%
 graph LR
     A["ip_name_server:<br/>&nbsp;&nbsp;vrfs:<br/>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name:&nbsp;MGMT<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address:&nbsp;10.10.128.10<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address:&nbsp;10.10.128.11"] --> B{eos_cli_config_gen}
     B --> C["ip&nbsp;name-server&nbsp;vrf&nbsp;MGMT&nbsp;10.10.128.10<br/>ip&nbsp;name-server&nbsp;vrf&nbsp;MGMT&nbsp;10.10.128.11"]
@@ -103,6 +116,7 @@ dns_settings:
 ```
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 9999}}}%%
 graph LR
     A["dns_settings:<br/>&nbsp;&nbsp;servers:<br/>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;10.10.128.10<br/>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;10.10.128.11"] --> B{eos_designs}
     B --> C["ip_name_server:<br/>&nbsp;&nbsp;vrfs:<br/>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name:&nbsp;MGMT<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address:&nbsp;10.10.128.10<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address:&nbsp;10.10.128.11"]
@@ -202,6 +216,7 @@ l3leaf:
 ```
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 9999}}}%%
 graph LR
     A1 --> B1
     A2 --> B4
@@ -301,6 +316,7 @@ custom_structured_configuration_ip_name_server:
 ```
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 9999}}}%%
 graph LR
     A1 --> B1
     A2 --> B4
