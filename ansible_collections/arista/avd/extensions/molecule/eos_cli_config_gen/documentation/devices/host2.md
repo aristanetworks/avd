@@ -1438,7 +1438,7 @@ no ip igmp snooping querier
 #### IP Router Multicast Summary
 
 - Multipathing deterministically by selecting the same-colored upstream routers.
-- Software forwarding by the Linux kernel
+- IPv4 software forwarding is by the Linux kernel
 
 #### Router Multicast Device Configuration
 
