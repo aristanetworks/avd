@@ -23,7 +23,7 @@ Some AVD examples are also augmented with guides explaining how they work. Howev
 
 ## AVD Playground
 
-AVD playground is an interactive, Cloud-based lab environment sponsored by Arista. It’s enough to authenticate on [labs.arista.com](https://labs.arista.com) and click the button below to start the lab.
+AVD playground is an interactive, Cloud-based lab environment sponsored by Arista. It is enough to authenticate on [labs.arista.com](https://labs.arista.com) and click the button below to start the lab.
 
 [Start AVD Playground :octicons-play-16:](https://labs.arista.com/launch?lab_type=avd-playground&origin=tech-lib){ .md-button .md-button--primary target=_blank}
 
