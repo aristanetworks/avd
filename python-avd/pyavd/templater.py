@@ -22,9 +22,6 @@ if TYPE_CHECKING:
 
 LOGGER = logging.getLogger(__name__)
 
-# Flag to track if templates have been checked for recompilation (only check once per process)
-_templates_checked = False
-
 # Constants for registered filters and tests - single source of truth
 CUSTOM_FILTERS = [
     "add_md_toc",
@@ -122,8 +119,6 @@ class Templar:
             self.loader = CustomModuleLoader(precompiled_templates_path)
 
         else:
-            # Check and recompile templates if needed (only when running from source)
-            self._check_and_recompile_templates()
             searchpaths = searchpaths or []
             self.loader = ChoiceLoader(
                 [
@@ -144,26 +139,6 @@ class Templar:
             self.environment.concat = "".join
 
         self.import_filters_and_tests()
-
-    @staticmethod
-    def _check_and_recompile_templates() -> None:
-        """
-        Check if templates need recompilation and recompile if necessary.
-
-        Only runs when RUNNING_FROM_SRC is True and only checks once per process.
-        """
-        global _templates_checked  # noqa: PLW0603
-
-        if _templates_checked:
-            return
-
-        _templates_checked = True
-
-        # pylint: disable=cyclic-import  # Lazy import inside function breaks the cycle at runtime
-        from schema_tools.compile_templates import check_templates, recompile_templates  # noqa: PLC0415
-
-        if check_templates():
-            recompile_templates()
 
     def import_filters_and_tests(self) -> None:
         # Dynamically import and register filters from constants
