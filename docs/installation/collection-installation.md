@@ -76,9 +76,11 @@ and update your `ansible.cfg`:
 ```shell
 # Install collection under ${PWD}/collections/
 $ ansible-galaxy collection install arista.avd -p collections/
+```
 
+```ini title="ansible.cfg"
 # Update ansible.cfg file
-$ vim ansible.cfg
+[defaults]
 collections_path = ${PWD}/collections:~/.ansible/collections:/usr/share/ansible/collections
 ```
 
@@ -110,7 +112,8 @@ See the [collection installation](#install-collection-from-ansible-galaxy) secti
 
 - By default, Ansible will issue a warning when a duplicate dict key is encountered in YAML. We recommend to change to error instead and stop playbook execution when a duplicate key is detected.
 
-```ini
+```ini title="ansible.cfg"
+[defaults]
 duplicate_dict_key=error
 ```
 
