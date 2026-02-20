@@ -107,7 +107,7 @@ CVX is enabled
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
 | MCS | - | Redis Password Set |
-| OpenStack | True | Regions:  |
+| OpenStack | True | Regions: |
 | VXLAN | - | VTEP MAC learning: control-plane |
 
 ### CVX Device Configuration
