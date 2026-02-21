@@ -3325,8 +3325,8 @@ class EosDesigns(EosDesignsRootModel):
             Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
             The value will be
             interpreted according to these rules:
-            - `all_defined_endpoint_vlans` will configure all endpoint
-            VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+            - `defined_vlans` will configure all VLANs defined under
+            network services as explicitly allowed VLANs on the trunk port.
             - Any other string will be
             interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
             If not set,
@@ -3575,8 +3575,8 @@ class EosDesigns(EosDesignsRootModel):
                            Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
                            The value will be
                            interpreted according to these rules:
-                           - `all_defined_endpoint_vlans` will configure all endpoint
-                           VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                           - `defined_vlans` will configure all VLANs defined under
+                           network services as explicitly allowed VLANs on the trunk port.
                            - Any other string will be
                            interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
                            If not set,
@@ -24125,8 +24125,8 @@ class EosDesigns(EosDesignsRootModel):
         Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
         The value will be
         interpreted according to these rules:
-        - `all_defined_endpoint_vlans` will configure all endpoint
-        VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+        - `defined_vlans` will configure all VLANs defined under
+        network services as explicitly allowed VLANs on the trunk port.
         - Any other string will be
         interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
         If not set,
@@ -24377,8 +24377,8 @@ class EosDesigns(EosDesignsRootModel):
                        Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
                        The value will be
                        interpreted according to these rules:
-                       - `all_defined_endpoint_vlans` will configure all endpoint
-                       VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                       - `defined_vlans` will configure all VLANs defined under
+                       network services as explicitly allowed VLANs on the trunk port.
                        - Any other string will be
                        interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
                        If not set,
@@ -28935,8 +28935,8 @@ class EosDesigns(EosDesignsRootModel):
         Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
         The value will be
         interpreted according to these rules:
-        - `all_defined_endpoint_vlans` will configure all endpoint
-        VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+        - `defined_vlans` will configure all VLANs defined under
+        network services as explicitly allowed VLANs on the trunk port.
         - Any other string will be
         interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
         If not set,
@@ -29146,8 +29146,8 @@ class EosDesigns(EosDesignsRootModel):
                        Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
                        The value will be
                        interpreted according to these rules:
-                       - `all_defined_endpoint_vlans` will configure all endpoint
-                       VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                       - `defined_vlans` will configure all VLANs defined under
+                       network services as explicitly allowed VLANs on the trunk port.
                        - Any other string will be
                        interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
                        If not set,
@@ -56726,8 +56726,8 @@ class EosDesigns(EosDesignsRootModel):
                     Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
                     The value will be
                     interpreted according to these rules:
-                    - `all_defined_endpoint_vlans` will configure all endpoint
-                    VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                    - `defined_vlans` will configure all VLANs defined under
+                    network services as explicitly allowed VLANs on the trunk port.
                     - Any other string will be
                     interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
                     If not set,
@@ -56976,8 +56976,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
                                    The value will be
                                    interpreted according to these rules:
-                                   - `all_defined_endpoint_vlans` will configure all endpoint
-                                   VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                                   - `defined_vlans` will configure all VLANs defined under
+                                   network services as explicitly allowed VLANs on the trunk port.
                                    - Any other string will be
                                    interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
                                    If not set,
@@ -58513,8 +58513,8 @@ class EosDesigns(EosDesignsRootModel):
                     Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
                     The value will be
                     interpreted according to these rules:
-                    - `all_defined_endpoint_vlans` will configure all endpoint
-                    VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                    - `defined_vlans` will configure all VLANs defined under
+                    network services as explicitly allowed VLANs on the trunk port.
                     - Any other string will be
                     interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
                     If not set,
@@ -58763,8 +58763,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
                                    The value will be
                                    interpreted according to these rules:
-                                   - `all_defined_endpoint_vlans` will configure all endpoint
-                                   VLANs defined on a switch as explicitly allowed VLANs on the trunk port.
+                                   - `defined_vlans` will configure all VLANs defined under
+                                   network services as explicitly allowed VLANs on the trunk port.
                                    - Any other string will be
                                    interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
                                    If not set,

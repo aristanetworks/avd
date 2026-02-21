@@ -226,20 +226,71 @@ network_ports:
       - network-ports-tests.1
     switch_ports:
       - Ethernet26
-    description: Trunk with all endpoint VLANs explicitly allowed
+    description: PO trunk with all VLANs explicitly allowed
     mode: trunk
-    vlans: all_defined_endpoint_vlans
-
+    vlans: all
+    port_channel:
+      channel_id: 226
+      mode: "active"
   - switches:
       - network-ports-tests.1
     switch_ports:
       - Ethernet27
-    description: PO trunk with all endpoint VLANs explicitly allowed
+    description: PO trunk with all defined VLANs explicitly allowed
     mode: trunk
-    vlans: all_defined_endpoint_vlans
+    vlans: defined_vlans
     port_channel:
       channel_id: 227
       mode: "active"
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet28
+    description: PO trunk with some defined VLANs explicitly allowed
+    mode: trunk
+    vlans: 100,300
+    port_channel:
+      channel_id: 228
+      mode: "active"
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet29
+    description: PO trunk with all VLANs explicitly disallowed
+    mode: trunk
+    vlans: none
+    port_channel:
+      channel_id: 229
+      mode: "active"
+
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet30
+    description: Trunk with all VLANs explicitly allowed
+    mode: trunk
+    vlans: all
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet31
+    description: Trunk with all defined VLANs explicitly allowed
+    mode: trunk
+    vlans: defined_vlans
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet32
+    description: Trunk with some defined VLANs explicitly allowed
+    mode: trunk
+    vlans: 100,300
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet33
+    description: Trunk with all VLANs explicitly disallowed
+    mode: trunk
+    vlans: none
 
   - switches:
       - network-ports-tests.2

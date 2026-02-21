@@ -208,19 +208,56 @@ servers:
             supplicant_profile: test_profile_network_ports
         port_channel:
           mode: active
-  - name: TEST_TRUNK_WITH_EXPLICIT_VLANS
+  - name: TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
     adapters:
+      # POs
+      # "all" is an alias of EOS's default/implicit "1-4094".
       - switches: [connected_endpoints]
         switch_ports: [Ethernet34]
         mode: trunk
-        vlans: all_defined_endpoint_vlans
+        vlans: all
         port_channel:
           mode: active
-          channel_id: 33
+          channel_id: 34
       - switches: [connected_endpoints]
         switch_ports: [Ethernet35]
         mode: trunk
-        vlans: all_defined_endpoint_vlans
+        vlans: defined_vlans
+        port_channel:
+          mode: active
+          channel_id: 35
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet36]
+        mode: trunk
+        vlans: 102,112
+        port_channel:
+          mode: active
+          channel_id: 36
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet37]
+        mode: trunk
+        vlans: none
+        port_channel:
+          mode: active
+          channel_id: 37
+      # Standalone interfaces
+      # "all" is an alias of EOS's default/implicit "1-4094".
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet38]
+        mode: trunk
+        vlans: all
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet39]
+        mode: trunk
+        vlans: defined_vlans
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet40]
+        mode: trunk
+        vlans: 201,112
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet41]
+        mode: trunk
+        vlans: none
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
@@ -272,10 +309,14 @@ tenants:
   - name: testtenant
     vrfs:
       - name: default
-        vrf_id: 1000
+        vrf_id: 100
         svis:
-          - id: 1000
-            name: vlan1000
+          - id: 101
+            name: vlan101
+          - id: 102
+            name: vlan102
     l2vlans:
-      - id: 1100
-        name: vlan1100
+      - id: 111
+        name: vlan111
+      - id: 112
+        name: vlan112

@@ -47,7 +47,9 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         """Parse the given adapter_settings and return relevant vlans and trunk_groups."""
         vlans = set()
         trunk_groups = set(adapter_settings.trunk_groups)
-        if adapter_settings.vlans and adapter_settings.vlans != "all":
+        if adapter_settings.vlans == "none":
+            return vlans, trunk_groups
+        if adapter_settings.vlans and adapter_settings.vlans not in ["all", "defined_vlans"]:
             vlans.update(map(int, range_expand(adapter_settings.vlans)))
         elif adapter_settings.mode == "trunk" and not trunk_groups:
             # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed

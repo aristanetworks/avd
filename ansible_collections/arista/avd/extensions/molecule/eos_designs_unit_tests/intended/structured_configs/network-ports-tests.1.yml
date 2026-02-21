@@ -876,7 +876,52 @@ ethernet_interfaces:
   switchport:
     enabled: true
 - name: Ethernet26
-  description: Trunk with all endpoint VLANs explicitly allowed
+  description: PO trunk with all VLANs explicitly allowed
+  shutdown: false
+  channel_group:
+    id: 226
+    mode: active
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+- name: Ethernet27
+  description: PO trunk with all defined VLANs explicitly allowed
+  shutdown: false
+  channel_group:
+    id: 227
+    mode: active
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+- name: Ethernet28
+  description: PO trunk with some defined VLANs explicitly allowed
+  shutdown: false
+  channel_group:
+    id: 228
+    mode: active
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+- name: Ethernet29
+  description: PO trunk with all VLANs explicitly disallowed
+  shutdown: false
+  channel_group:
+    id: 229
+    mode: active
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+- name: Ethernet30
+  description: Trunk with all VLANs explicitly allowed
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+    mode: trunk
+- name: Ethernet31
+  description: Trunk with all defined VLANs explicitly allowed
   shutdown: false
   metadata:
     peer_type: network_port
@@ -886,15 +931,28 @@ ethernet_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 100,200,300,400
-- name: Ethernet27
-  description: PO trunk with all endpoint VLANs explicitly allowed
+- name: Ethernet32
+  description: Trunk with some defined VLANs explicitly allowed
   shutdown: false
-  channel_group:
-    id: 227
-    mode: active
   metadata:
     peer_type: network_port
     peer_key: network_ports
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100,300
+- name: Ethernet33
+  description: Trunk with all VLANs explicitly disallowed
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
 hostname: network-ports-tests.1
 ip_igmp_snooping:
   globally_enabled: true
@@ -926,6 +984,12 @@ port_channel_interfaces:
   switchport:
     enabled: true
     access_vlan: 666
+- name: Port-Channel226
+  shutdown: false
+  mlag: 226
+  switchport:
+    enabled: true
+    mode: trunk
 - name: Port-Channel227
   shutdown: false
   mlag: 227
@@ -934,6 +998,22 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 100,200,300,400
+- name: Port-Channel228
+  shutdown: false
+  mlag: 228
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100,300
+- name: Port-Channel229
+  shutdown: false
+  mlag: 229
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
 service_routing_protocols_model: multi-agent
 spanning_tree:
   no_spanning_tree_vlan: '4094'

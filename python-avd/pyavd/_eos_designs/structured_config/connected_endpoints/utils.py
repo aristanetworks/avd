@@ -261,3 +261,21 @@ class UtilsMixin(Protocol):
             return adapter.l2_mru
 
         return None
+
+    def _get_adapter_vlans(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> str | UndefinedType:
+        """Return a list of allowed VLANs for Trunk port for one adapter."""
+        if adapter.mode == "trunk":
+            if adapter.vlans == "defined_vlans":
+                return self.facts.vlans or "none"
+            if adapter.vlans == "none":
+                return adapter.vlans
+            # EOS default is implicit "switchport trunk allowed vlan 1-4094" ("all" is its alias)
+            if adapter.vlans == "all":
+                return Undefined
+            if adapter.vlans:
+                return adapter.vlans
+
+        return Undefined
