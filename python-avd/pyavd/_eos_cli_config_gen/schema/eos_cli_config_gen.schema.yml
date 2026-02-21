@@ -6699,6 +6699,7 @@ keys:
       keys:
         name:
           type: str
+          required: true
           description: Interface Name.
         vrf:
           type: str
@@ -6958,6 +6959,7 @@ keys:
       keys:
         name:
           type: str
+          required: true
           description: Interface name.
         vrf:
           type: str

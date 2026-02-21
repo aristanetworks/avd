@@ -32,12 +32,14 @@ if TYPE_CHECKING:
     from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
     from pyavd.api.schemas import AVDDesign
+    from pyavd.j2filters import natural_sort
 
 try:
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
     from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
     from pyavd.api.schemas import AVDDesign
+    from pyavd.j2filters import natural_sort
 
     HAS_PYAVD = True
 except ImportError:
@@ -76,7 +78,8 @@ class ActionModule(ActionBase):
 
         groups = task_vars.get("groups", {})
         fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
-        fabric_hosts = groups.get(fabric_name, [])
+        # Sort for deterministic host ordering as it can change initial pool-manager assignments.
+        fabric_hosts = natural_sort(groups.get(fabric_name), ignore_case=False)
         ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", [])
 
         # Check if fabric_name is set and that all play hosts are part of the Ansible group set in "fabric_name".
