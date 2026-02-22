@@ -54,6 +54,7 @@ ip_name_server:
 ```
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 9999}}}%%
 graph LR
     A["ip_name_server:<br/>&nbsp;&nbsp;vrfs:<br/>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name:&nbsp;MGMT<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address:&nbsp;10.10.128.10<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address:&nbsp;10.10.128.11"] --> B{eos_cli_config_gen}
     B --> C["ip&nbsp;name-server&nbsp;vrf&nbsp;MGMT&nbsp;10.10.128.10<br/>ip&nbsp;name-server&nbsp;vrf&nbsp;MGMT&nbsp;10.10.128.11"]
@@ -103,6 +104,7 @@ dns_settings:
 ```
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 9999}}}%%
 graph LR
     A["dns_settings:<br/>&nbsp;&nbsp;servers:<br/>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;10.10.128.10<br/>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;10.10.128.11"] --> B{eos_designs}
     B --> C["ip_name_server:<br/>&nbsp;&nbsp;vrfs:<br/>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name:&nbsp;MGMT<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;servers:<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address:&nbsp;10.10.128.10<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address:&nbsp;10.10.128.11"]
@@ -202,6 +204,7 @@ l3leaf:
 ```
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 9999}}}%%
 graph LR
     A1 --> B1
     A2 --> B4
@@ -301,6 +304,7 @@ custom_structured_configuration_ip_name_server:
 ```
 
 ```mermaid
+%%{init: {'flowchart': {'wrappingWidth': 9999}}}%%
 graph LR
     A1 --> B1
     A2 --> B4
