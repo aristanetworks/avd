@@ -909,6 +909,58 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class Avd7Behaviors(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"ip_radius_source_interface_setting": {"type": bool, "default": False}}
+        ip_radius_source_interface_setting: bool
+        """
+        Enable improved RADIUS source interface configuration with separate keys for VRF default and other
+        VRFs.
+
+        When enabled:
+        - VRF default: Uses `ip_radius.source_interface`
+        - Other VRFs: Uses
+        `ip_radius.vrfs` list
+        - Enforces VRF name uniqueness
+        - Aligns with EOS CLI behavior (where "vrf
+        default" is implicit)
+
+        When disabled (current):
+        - Uses `ip_radius_source_interfaces` list for all
+        VRF combinations
+
+        Default value: `False`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, ip_radius_source_interface_setting: bool | UndefinedType = Undefined) -> None:
+                """
+                Avd7Behaviors.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    ip_radius_source_interface_setting:
+                       Enable improved RADIUS source interface configuration with separate keys for VRF default and other
+                       VRFs.
+
+                       When enabled:
+                       - VRF default: Uses `ip_radius.source_interface`
+                       - Other VRFs: Uses
+                       `ip_radius.vrfs` list
+                       - Enforces VRF name uniqueness
+                       - Aligns with EOS CLI behavior (where "vrf
+                       default" is implicit)
+
+                       When disabled (current):
+                       - Uses `ip_radius_source_interfaces` list for all
+                       VRF combinations
+
+                """
+
     AvdStructuredConfigFileFormat: TypeAlias = Literal["yml", "yaml", "json"]
 
     class EosDesignsValidationConfiguration(AvdModel):
@@ -87930,6 +87982,7 @@ class EosDesigns(EosDesignsRootModel):
         "aaa_settings": {"type": AaaSettings},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
+        "avd_7_behaviors": {"type": Avd7Behaviors},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
@@ -88646,6 +88699,13 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
+    avd_7_behaviors: Avd7Behaviors
+    """
+    Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
+
+    Subclass of
+    AvdModel.
+    """
     avd_digital_twin_mode: bool
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -90664,6 +90724,7 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
+            avd_7_behaviors: Avd7Behaviors | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
@@ -90885,6 +90946,11 @@ class EosDesigns(EosDesignsRootModel):
                 aaa_settings: Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
+                avd_7_behaviors:
+                   Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
+
+                   Subclass of
+                   AvdModel.
                 avd_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
