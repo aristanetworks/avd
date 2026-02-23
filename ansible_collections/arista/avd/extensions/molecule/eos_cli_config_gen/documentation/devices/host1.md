@@ -39,7 +39,6 @@ Serial Number: DEADBEEFC0FFEW
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [Radius Proxy](#radius-proxy)
   - [RADIUS Server](#radius-server)
-  - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
   - [AAA Server Groups](#aaa-server-groups)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
@@ -1594,27 +1593,6 @@ radius-server host 10.10.11.160 vrf mgt timeout 1 key 7 <removed>
 radius-server host 10.10.11.248 vrf mgt key 7 <removed>
 radius-server host 10.10.11.155 vrf mgt tls ssl-profile HOST_SSL_PROFILE port 2083 timeout 1 retransmit 1
 radius-server host 10.10.11.158 vrf mgt tls ssl-profile SSL_PROFILE
-```
-
-### IP RADIUS Source Interfaces
-
-#### IP RADIUS Source Interfaces
-
-| VRF | Source Interface Name |
-| --- | --------------- |
-| default | Loopback1 |
-| default | Loopback10 |
-| MGMT | Management1 |
-
-#### IP SOURCE Source Interfaces Device Configuration
-
-```eos
-!
-ip radius vrf default source-interface Loopback1
-!
-ip radius source-interface Loopback10
-!
-ip radius vrf MGMT source-interface Management1
 ```
 
 ### AAA Server Groups
