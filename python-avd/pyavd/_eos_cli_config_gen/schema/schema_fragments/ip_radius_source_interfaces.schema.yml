@@ -7,6 +7,11 @@
 type: dict
 keys:
   ip_radius_source_interfaces:
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 7.0.0
+      new_key: ip_radius
     type: list
     items:
       type: dict

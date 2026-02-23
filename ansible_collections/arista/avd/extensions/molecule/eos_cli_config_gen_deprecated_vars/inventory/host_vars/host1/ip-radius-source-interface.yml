@@ -1,0 +1,10 @@
+---
+# TODO: remove in AVD 7.0
+
+ip_radius_source_interfaces:
+  - vrf: default
+    name: Loopback1
+  - vrf: MGMT
+    name: Management1
+  - vrf:
+    name: Loopback10
