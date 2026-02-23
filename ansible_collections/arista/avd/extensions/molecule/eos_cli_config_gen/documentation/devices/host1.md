@@ -1598,18 +1598,18 @@ radius-server host 10.10.11.158 vrf mgt tls ssl-profile SSL_PROFILE
 | VRF | Source Interface Name |
 | --- | --------------- |
 | default | Loopback1 |
-| default | Loopback10 |
+| BLAH | Loopback10 |
 | MGMT | Management1 |
+| abc | Loopback10 |
 
 #### IP SOURCE Source Interfaces Device Configuration
 
 ```eos
 !
-ip radius vrf default source-interface Loopback1
-!
-ip radius source-interface Loopback10
-!
+ip radius source-interface Loopback1
+ip radius vrf BLAH source-interface Loopback10
 ip radius vrf MGMT source-interface Management1
+ip radius vrf abc source-interface Loopback10
 ```
 
 ### AAA Server Groups

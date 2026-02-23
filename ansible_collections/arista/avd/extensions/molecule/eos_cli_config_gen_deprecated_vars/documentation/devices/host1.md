@@ -6,6 +6,8 @@
   - [IP Name Server Groups](#ip-name-server-groups)
 - [ACL](#acl)
   - [Extended Access-lists](#extended-access-lists)
+- [Authentication](#authentication)
+  - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
 
 ## Management
 
@@ -133,4 +135,23 @@ ip access-list acl_qos_tc0_v4
 !
 ip access-list acl_qos_tc5_v4
    10 permit ip any any dscp ef
+## Authentication
+
+### IP RADIUS Source Interfaces
+
+#### IP RADIUS Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+| default | Loopback1 |
+| default | Loopback10 |
+| MGMT | Management1 |
+
+#### IP SOURCE Source Interfaces Device Configuration
+
+```eos
+!
+ip radius vrf default source-interface Loopback1
+ip radius source-interface Loopback10
+ip radius vrf MGMT source-interface Management1
 ```

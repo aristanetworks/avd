@@ -257,13 +257,13 @@ class AvdConfiglet:
     """
 
     name: str
-    file: Path
+    file: str
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> AvdConfiglet:
         """Build an AvdConfiglet instance from an input dictionary."""
         try:
-            return cls(name=data["name"], file=Path(data["file"]).resolve())
+            return cls(name=data["name"], file=str(Path(data["file"]).resolve()))
         except (KeyError, TypeError) as e:
             msg = f"Invalid configlet definition: {data}. Error: {e}"
             raise ValueError(msg) from e
@@ -416,13 +416,13 @@ class CVConfiglet:
         return self.avd_configlet.name
 
     @property
-    def file(self) -> Path:
+    def file(self) -> str:
         return self.avd_configlet.file
 
     @property
     def api_tuple(self) -> tuple[str, str, str, str]:
         """Return a tuple representation of the configlet compatible with the CVClient APIs."""
-        return (self.id, self.name, self.description, str(self.file))
+        return (self.id, self.name, self.description, self.file)
 
 
 @dataclass(frozen=True)
