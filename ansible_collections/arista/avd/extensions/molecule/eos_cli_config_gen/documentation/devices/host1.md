@@ -280,7 +280,6 @@ Serial Number: DEADBEEFC0FFEW
 - [MACsec](#macsec)
   - [MACsec Summary](#macsec-summary)
   - [MACsec Device Configuration](#macsec-device-configuration)
-  - [Traffic Policies VRF Interfaces](#traffic-policies-vrf-interfaces)
   - [Traffic Policies information](#traffic-policies-information)
 - [Quality Of Service](#quality-of-service)
   - [QOS](#qos)
@@ -13552,7 +13551,9 @@ mac security
       replay protection window 20000
 ```
 
-### Traffic Policies VRF Interfaces
+### Traffic Policies information
+
+#### Traffic Policies VRF Interfaces
 
 | VRF | CPU Fallback None | Excluded Prefixes | Input Physical |
 | --- | ----------------- | ----------------- | -------------- |
@@ -13561,8 +13562,6 @@ mac security
 | VRF3 | TP3 | - | - |
 | VRF4 | - | - | TP4 |
 | VRF5 | - | - | - |
-
-### Traffic Policies information
 
 #### IPv4 Field Sets
 

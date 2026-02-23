@@ -5,8 +5,11 @@
 #}
 {# doc - traffic policies #}
 {% if traffic_policies is arista.avd.defined %}
+
+### Traffic Policies information
 {%     if traffic_policies.vrfs is arista.avd.defined %}
-### Traffic Policies VRF Interfaces
+
+#### Traffic Policies VRF Interfaces
 
 | VRF | CPU Fallback None | Excluded Prefixes | Input Physical |
 | --- | ----------------- | ----------------- | -------------- |
@@ -14,8 +17,6 @@
 | {{ vrf.name }} | {{ vrf.cpu.fallback_none_name | arista.avd.default("-") }} | {{ vrf.cpu.enforcement_management | arista.avd.default("-") }} | {{ vrf.traffic_policy_input_physical | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
-
-### Traffic Policies information
 {%     if traffic_policies.field_sets is arista.avd.defined %}
 {%         if traffic_policies.field_sets.ipv4 is arista.avd.defined %}
 
