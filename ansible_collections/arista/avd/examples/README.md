@@ -41,11 +41,6 @@ Once you select an example supported by a lab definition, it will be extracted t
 
 For additional documentation regarding AVD playgrounds and other community labs check [aclabs.arista.com](https://aclabs.arista.com/). The corresponding [GitHub repository](https://github.com/aristanetworks/aclabs) is used to build container images powering AVD playgrounds.
 
-!!! warning
-
-    AVD Playground is in preview phase. If you find any bugs associated with AVD examples - please report via [GitHub issues](https://github.com/aristanetworks/avd/issues).
-    [aclabs.arista.com](https://aclabs.arista.com/) is under construction. We are working hard to make it better.
-
 ## AVD as Reference Inventory
 
 If you don't have access to AVD playgrounds, it's enough to build a working Ansible environment with the AVD collection installed to start testing examples.
