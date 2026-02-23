@@ -280,6 +280,7 @@ Serial Number: DEADBEEFC0FFEW
 - [MACsec](#macsec)
   - [MACsec Summary](#macsec-summary)
   - [MACsec Device Configuration](#macsec-device-configuration)
+  - [Traffic Policies VRF Interfaces](#traffic-policies-vrf-interfaces)
   - [Traffic Policies information](#traffic-policies-information)
 - [Quality Of Service](#quality-of-service)
   - [QOS](#qos)
@@ -13551,6 +13552,16 @@ mac security
       replay protection window 20000
 ```
 
+### Traffic Policies VRF Interfaces
+
+| VRF | CPU Fallback None | Excluded Prefixes | Input Physical |
+| --- | ----------------- | ----------------- | -------------- |
+| VRF1 | TP1 | True | TP1 |
+| VRF2 | TP2 | - | TP2 |
+| VRF3 | TP3 | - | - |
+| VRF4 | - | - | TP4 |
+| VRF5 | - | - | - |
+
 ### Traffic Policies information
 
 #### IPv4 Field Sets
@@ -13634,6 +13645,25 @@ Counters: test
 ```eos
 !
 traffic-policies
+   vrf VRF1
+      cpu traffic-policy TP1 fallback traffic-policy none
+         enforcement management
+   !
+   vrf VRF1
+      traffic-policy input TP1 physical
+   !
+   vrf VRF2
+      cpu traffic-policy TP2 fallback traffic-policy none
+   !
+   vrf VRF2
+      traffic-policy input TP2 physical
+   !
+   vrf VRF3
+      cpu traffic-policy TP3 fallback traffic-policy none
+   !
+   vrf VRF4
+      traffic-policy input TP4 physical
+   !
    field-set l4-port SERVICE-DEMO
       10,20,80,440-450
    !

@@ -1,5 +1,21 @@
 ---
 traffic_policies:
+  vrfs:
+    - name: VRF1
+      cpu:
+        fallback_none_name: TP1
+        enforcement_management: true
+      traffic_policy_input_physical: TP1
+    - name: VRF4
+      traffic_policy_input_physical: TP4
+    - name: VRF5
+    - name: VRF2
+      cpu:
+        fallback_none_name: TP2
+      traffic_policy_input_physical: TP2
+    - name: VRF3
+      cpu:
+        fallback_none_name: TP3
   options:
     counter_per_interface: true
     counter_interface_poll_interval: 10
