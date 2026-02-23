@@ -46,7 +46,7 @@ jobs:
             - [Start the playground](https://labs.arista.com/launch?lab_type=avd-playground&origin=tech-lib)
             - In the lab selector UI pick "I want to use a specific AVD fork"
             - Enter following parameters:
-            
+
             \`\`\`text
             GitHub org: ${{ github.event.pull_request.head.repo.owner.login }}
             Repository name: ${{ github.event.pull_request.head.repo.name }}
