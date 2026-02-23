@@ -37,7 +37,13 @@ Once you select an example supported by a lab definition, it will be extracted t
 
 !!! note
 
-    AVD playgrounds are available only to registered Arista customers with a support contract due to cost and security considerations. Please use the AVD playground for a good cause only and abide by the EULA terms you agreed to during registration. Do the right thing - be an Arista customer! However, if you don't have the required level of access, talk to your Arista account team or [download the lab files](https://aristanetworks.github.io/aclabs/lab_archives/avd-playground.tar.gz) and run the playground locally on your own host. Unfortunately, we will not be able to officially support this type of deployment due to the number of issues that can occur on a random host machine, including missing Linux kernel configuration, misconfigured container engines, privilege issues, etc. The download option is for skilled users only that can manage the environment without extra support.
+    AVD playgrounds are only available to registered Arista customers with a support contract due to cost and security considerations.
+    Please use AVD playground for good causes only and mind the EULA terms you signed during the registration.
+    Do the right thing - be an Arista customer!
+    However if you don't have the required level of access, talk to your Arista account team or
+    [download the lab files](https://aristanetworks.github.io/aclabs/lab_archives/avd-playground.tar.gz)
+    and run the playground locally on your own host.
+    The download option is for skilled users only that can manage the environment without extra support.
 
 For additional documentation regarding AVD playgrounds and other community labs check [aclabs.arista.com](https://aclabs.arista.com/). The corresponding [GitHub repository](https://github.com/aristanetworks/aclabs) is used to build container images powering AVD playgrounds.
 
