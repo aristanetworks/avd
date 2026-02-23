@@ -10,7 +10,8 @@ name: "Daily Molecule Tests (Ansible devel)"
   workflow_dispatch:
 
 concurrency:
-  group: molecule-ansible-devel
+  # Allow parallel runs for manual triggers, but serialize scheduled runs
+  group: ${{ github.event_name == 'schedule' && 'molecule-ansible-devel-scheduled' || format('molecule-ansible-devel-{0}', github.run_id) }}
   cancel-in-progress: true
 
 env:
