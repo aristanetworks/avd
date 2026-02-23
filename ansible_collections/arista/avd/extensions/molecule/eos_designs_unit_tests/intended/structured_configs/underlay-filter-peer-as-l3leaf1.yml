@@ -5,28 +5,28 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_UNDERLAY_FILTER_PEER_AS_SPINE1_Ethernet1
+  description: P2P_underlay-filter-peer-as-spine1_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.1/31
   metadata:
-    peer: UNDERLAY_FILTER_PEER_AS_SPINE1
+    peer: underlay-filter-peer-as-spine1
     peer_interface: Ethernet1
     peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
-  description: P2P_UNDERLAY_FILTER_PEER_AS_SPINE2_Ethernet1
+  description: P2P_underlay-filter-peer-as-spine2_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.3/31
   metadata:
-    peer: UNDERLAY_FILTER_PEER_AS_SPINE2
+    peer: underlay-filter-peer-as-spine2
     peer_interface: Ethernet1
     peer_type: spine
   switchport:
     enabled: false
-hostname: UNDERLAY_FILTER_PEER_AS_L3LEAF1
+hostname: underlay-filter-peer-as-l3leaf1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -73,15 +73,15 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     metadata:
-      peer: UNDERLAY_FILTER_PEER_AS_SPINE1
-    description: UNDERLAY_FILTER_PEER_AS_SPINE1_Ethernet1
+      peer: underlay-filter-peer-as-spine1
+    description: underlay-filter-peer-as-spine1_Ethernet1
     route_map_out: RM-BGP-AS65000-OUT
   - ip_address: 192.168.0.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     metadata:
-      peer: UNDERLAY_FILTER_PEER_AS_SPINE2
-    description: UNDERLAY_FILTER_PEER_AS_SPINE2_Ethernet1
+      peer: underlay-filter-peer-as-spine2
+    description: underlay-filter-peer-as-spine2_Ethernet1
     route_map_out: RM-BGP-AS65000-OUT
   redistribute:
     connected:
@@ -102,7 +102,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: UNDERLAY_FILTER_PEER_AS_L3LEAF1_VTEP
+    description: underlay-filter-peer-as-l3leaf1_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

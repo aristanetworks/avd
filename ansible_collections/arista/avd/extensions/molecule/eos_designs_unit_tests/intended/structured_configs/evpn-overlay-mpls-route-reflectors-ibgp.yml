@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: evpn_overlay_mpls_route_reflectors_ibgp
+hostname: evpn-overlay-mpls-route-reflectors-ibgp
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -91,8 +91,8 @@ router_bgp:
   - ip_address: 192.168.255.2
     peer_group: MPLS-OVERLAY-PEERS
     metadata:
-      peer: evpn_overlay_mpls_route_reflectors2_ibgp
-    description: evpn_overlay_mpls_route_reflectors2_ibgp_Loopback0
+      peer: evpn-overlay-mpls-route-reflectors2-ibgp
+    description: evpn-overlay-mpls-route-reflectors2-ibgp_Loopback0
   redistribute:
     connected:
       enabled: true
@@ -127,7 +127,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: evpn_overlay_mpls_route_reflectors_ibgp_VTEP
+    description: evpn-overlay-mpls-route-reflectors-ibgp_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

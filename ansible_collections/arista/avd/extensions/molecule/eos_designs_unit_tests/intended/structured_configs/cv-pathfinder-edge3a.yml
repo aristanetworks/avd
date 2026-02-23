@@ -90,14 +90,14 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet52
-  description: WAN_HA_cv-pathfinder-edge3B_Ethernet52
+  description: WAN_HA_cv-pathfinder-edge3b_Ethernet52
   shutdown: false
   mtu: 9100
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.10.10.1/24
   metadata:
-    peer: cv-pathfinder-edge3B
+    peer: cv-pathfinder-edge3b
     peer_type: l3_interface
   switchport:
     enabled: false
@@ -115,7 +115,7 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: cv-pathfinder-edge3A
+hostname: cv-pathfinder-edge3a
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -390,8 +390,8 @@ router_bgp:
   - ip_address: 192.168.142.7
     remote_as: '65000'
     metadata:
-      peer: cv-pathfinder-edge3B
-    description: cv-pathfinder-edge3B
+      peer: cv-pathfinder-edge3b
+    description: cv-pathfinder-edge3b
     route_reflector_client: true
     update_source: Dps1
     route_map_in: RM-WAN-HA-PEER-IN
@@ -508,7 +508,7 @@ router_path_selection:
     - name: Ethernet52
     static_peers:
     - router_ip: 192.168.142.7
-      name: cv-pathfinder-edge3B
+      name: cv-pathfinder-edge3b
       ipv4_addresses:
       - 10.10.10.2
   load_balance_policies:
@@ -576,7 +576,7 @@ vrfs:
     - TenantA
 vxlan_interface:
   vxlan1:
-    description: cv-pathfinder-edge3A_VTEP
+    description: cv-pathfinder-edge3a_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789

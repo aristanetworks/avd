@@ -5,26 +5,26 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet5
-  description: MLAG_MLAG_IPV6_L3LEAF1A_Ethernet5
+  description: MLAG_mlag-ipv6-l3leaf1a_Ethernet5
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: MLAG_IPV6_L3LEAF1A
+    peer: mlag-ipv6-l3leaf1a
     peer_interface: Ethernet5
     peer_type: mlag_peer
 - name: Ethernet6
-  description: MLAG_MLAG_IPV6_L3LEAF1A_Ethernet6
+  description: MLAG_mlag-ipv6-l3leaf1a_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: MLAG_IPV6_L3LEAF1A
+    peer: mlag-ipv6-l3leaf1a
     peer_interface: Ethernet6
     peer_type: mlag_peer
-hostname: MLAG_IPV6_L3LEAF1B
+hostname: mlag-ipv6-l3leaf1b
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -57,7 +57,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_MLAG_IPV6_L3LEAF1A_Port-Channel5
+  description: MLAG_mlag-ipv6-l3leaf1a_Port-Channel5
   shutdown: false
   switchport:
     enabled: true
@@ -106,7 +106,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65001'
-    description: MLAG_IPV6_L3LEAF1A
+    description: mlag-ipv6-l3leaf1a
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -115,8 +115,8 @@ router_bgp:
   - ip_address: 10.10.224.4
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: MLAG_IPV6_L3LEAF1A
-    description: MLAG_IPV6_L3LEAF1A_Vlan4093
+      peer: mlag-ipv6-l3leaf1a
+    description: mlag-ipv6-l3leaf1a_Vlan4093
   redistribute:
     connected:
       enabled: true
@@ -166,7 +166,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: MLAG_IPV6_L3LEAF1B_VTEP
+    description: mlag-ipv6-l3leaf1b_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

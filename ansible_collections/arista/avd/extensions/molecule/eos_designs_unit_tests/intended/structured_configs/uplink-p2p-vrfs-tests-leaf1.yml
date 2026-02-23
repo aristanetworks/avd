@@ -5,7 +5,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1
+  description: P2P_uplink-p2p-vrfs-tests-spine1_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 10.42.42.9/31
@@ -15,35 +15,35 @@ ethernet_interfaces:
   mac_security:
     profile: TEST
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+    peer: uplink-p2p-vrfs-tests-spine1
     peer_interface: Ethernet1
     peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet1.42
-  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.42_VRF_PROD
+  description: P2P_uplink-p2p-vrfs-tests-spine1_Ethernet1.42_VRF_PROD
   shutdown: false
   vrf: PROD
   encapsulation_dot1q:
     vlan: 42
   ip_address: 10.42.42.9/31
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+    peer: uplink-p2p-vrfs-tests-spine1
     peer_interface: Ethernet1.42
     peer_type: spine
 - name: Ethernet1.66
-  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66_VRF_ONLY-ON-L2LEAF
+  description: P2P_uplink-p2p-vrfs-tests-spine1_Ethernet1.66_VRF_ONLY-ON-L2LEAF
   shutdown: false
   vrf: ONLY-ON-L2LEAF
   encapsulation_dot1q:
     vlan: 66
   ip_address: 10.42.42.9/31
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+    peer: uplink-p2p-vrfs-tests-spine1
     peer_interface: Ethernet1.66
     peer_type: spine
 - name: Ethernet2
-  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2
+  description: P2P_uplink-p2p-vrfs-tests-spine2_Ethernet2
   shutdown: false
   mtu: 9214
   ip_address: 10.42.42.11/31
@@ -53,54 +53,54 @@ ethernet_interfaces:
   mac_security:
     profile: TEST
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+    peer: uplink-p2p-vrfs-tests-spine2
     peer_interface: Ethernet2
     peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2.100
-  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100_VRF_IT
+  description: P2P_uplink-p2p-vrfs-tests-spine2_Ethernet2.100_VRF_IT
   shutdown: false
   vrf: IT
   encapsulation_dot1q:
     vlan: 100
   ip_address: 10.42.42.11/31
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+    peer: uplink-p2p-vrfs-tests-spine2
     peer_interface: Ethernet2.100
     peer_type: spine
 - name: Ethernet2.42
-  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42_VRF_PROD
+  description: P2P_uplink-p2p-vrfs-tests-spine2_Ethernet2.42_VRF_PROD
   shutdown: false
   vrf: PROD
   encapsulation_dot1q:
     vlan: 42
   ip_address: 10.42.42.11/31
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+    peer: uplink-p2p-vrfs-tests-spine2
     peer_interface: Ethernet2.42
     peer_type: spine
 - name: Ethernet51
-  description: L2_UPLINK_P2P_VRFS_TESTS_L2LEAF1_Ethernet1
+  description: L2_uplink-p2p-vrfs-tests-l2leaf1_Ethernet1
   shutdown: false
   channel_group:
     id: 51
     mode: active
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_L2LEAF1
+    peer: uplink-p2p-vrfs-tests-l2leaf1
     peer_interface: Ethernet1
     peer_type: l2leaf
 - name: Ethernet52
-  description: L2_UPLINK_P2P_VRFS_TESTS_L2LEAF1_Ethernet2
+  description: L2_uplink-p2p-vrfs-tests-l2leaf1_Ethernet2
   shutdown: false
   channel_group:
     id: 51
     mode: active
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_L2LEAF1
+    peer: uplink-p2p-vrfs-tests-l2leaf1
     peer_interface: Ethernet2
     peer_type: l2leaf
-hostname: UPLINK_P2P_VRFS_TESTS_LEAF1
+hostname: uplink-p2p-vrfs-tests-leaf1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -116,7 +116,7 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 port_channel_interfaces:
 - name: Port-Channel51
-  description: L2_UPLINK_P2P_VRFS_TESTS_L2LEAF1_Port-Channel1
+  description: L2_uplink-p2p-vrfs-tests-l2leaf1_Port-Channel1
   shutdown: false
   switchport:
     enabled: true
@@ -144,14 +144,14 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     metadata:
-      peer: UPLINK_P2P_VRFS_TESTS_SPINE1
-    description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1
+      peer: uplink-p2p-vrfs-tests-spine1
+    description: uplink-p2p-vrfs-tests-spine1_Ethernet1
   - ip_address: 10.42.42.10
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     metadata:
-      peer: UPLINK_P2P_VRFS_TESTS_SPINE2
-    description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2
+      peer: uplink-p2p-vrfs-tests-spine2
+    description: uplink-p2p-vrfs-tests-spine2_Ethernet2
   redistribute:
     connected:
       enabled: true
@@ -166,11 +166,11 @@ router_bgp:
     - ip_address: 10.42.42.8
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.42_vrf_PROD
+      description: uplink-p2p-vrfs-tests-spine1_Ethernet1.42_vrf_PROD
     - ip_address: 10.42.42.10
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42_vrf_PROD
+      description: uplink-p2p-vrfs-tests-spine2_Ethernet2.42_vrf_PROD
     redistribute:
       connected:
         enabled: true
@@ -180,7 +180,7 @@ router_bgp:
     - ip_address: 10.42.42.8
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66_vrf_ONLY-ON-L2LEAF
+      description: uplink-p2p-vrfs-tests-spine1_Ethernet1.66_vrf_ONLY-ON-L2LEAF
     redistribute:
       connected:
         enabled: true
@@ -190,7 +190,7 @@ router_bgp:
     - ip_address: 10.42.42.10
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100_vrf_IT
+      description: uplink-p2p-vrfs-tests-spine2_Ethernet2.100_vrf_IT
     redistribute:
       connected:
         enabled: true

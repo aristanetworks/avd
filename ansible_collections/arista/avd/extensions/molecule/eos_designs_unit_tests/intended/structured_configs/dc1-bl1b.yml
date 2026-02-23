@@ -23,7 +23,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.193/31
   metadata:
-    peer: DC1-SPINE1
+    peer: dc1-spine1
     peer_interface: Ethernet23
     peer_type: spine
   switchport:
@@ -35,7 +35,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.195/31
   metadata:
-    peer: DC1-SPINE2
+    peer: dc1-spine2
     peer_interface: Ethernet23
     peer_type: spine
   switchport:
@@ -47,7 +47,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.197/31
   metadata:
-    peer: DC1-SPINE3
+    peer: dc1-spine3
     peer_interface: Ethernet23
     peer_type: spine
   switchport:
@@ -59,7 +59,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.199/31
   metadata:
-    peer: DC1-SPINE4
+    peer: dc1-spine4
     peer_interface: Ethernet23
     peer_type: spine
   switchport:
@@ -85,7 +85,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet10
-  description: test-DC1-BL1B
+  description: test-dc1-bl1b
   shutdown: false
   mtu: 9000
   vrf: Tenant_A_L3_VRF_Zone
@@ -95,7 +95,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet11
-  description: DC1-BL1B descriptions preferred over single description
+  description: dc1-bl1b descriptions preferred over single description
   shutdown: false
   mtu: 9000
   vrf: Tenant_A_L3_VRF_Zone
@@ -167,7 +167,7 @@ hardware:
     serdes: 10G
   - speed_group: 5/1
     serdes: 25G
-hostname: DC1-BL1B
+hostname: dc1-bl1b
 ip_access_lists:
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet12
   entries:
@@ -341,70 +341,55 @@ router_bgp:
     ebgp_multihop: 15
     send_community: all
     maximum_routes: 0
-  - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
-    remote_as: '666'
-    local_as: '777'
-    description: Tenant C VRF WAN Zone peer group
-    update_source: lo0
-    bfd: false
-    ebgp_multihop: 3
-    next_hop_self: true
-    default_originate:
-      enabled: true
-      always: true
-    send_community: all
-    maximum_routes: 1000
-    route_map_in: TEST_IN
-    route_map_out: TEST_OUT
   neighbors:
   - ip_address: 172.31.254.192
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1_Ethernet23
+      peer: dc1-spine1
+    description: dc1-spine1_Ethernet23
   - ip_address: 172.31.254.194
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE2
-    description: DC1-SPINE2_Ethernet23
+      peer: dc1-spine2
+    description: dc1-spine2_Ethernet23
   - ip_address: 172.31.254.196
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE3
-    description: DC1-SPINE3_Ethernet23
+      peer: dc1-spine3
+    description: dc1-spine3_Ethernet23
   - ip_address: 172.31.254.198
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE4
-    description: DC1-SPINE4_Ethernet23
+      peer: dc1-spine4
+    description: dc1-spine4_Ethernet23
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1
+      peer: dc1-spine1
+    description: dc1-spine1
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE2
-    description: DC1-SPINE2
+      peer: dc1-spine2
+    description: dc1-spine2
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE3
-    description: DC1-SPINE3
+      peer: dc1-spine3
+    description: dc1-spine3
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE4
-    description: DC1-SPINE4
+      peer: dc1-spine4
+    description: dc1-spine4
   - ip_address: 1.1.1.1
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65555'
@@ -496,20 +481,6 @@ router_bgp:
       activate: false
     - name: EVPN-OVERLAY-CORE
       activate: false
-    - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
-      activate: true
-      route_map_in: TEST_IN
-      route_map_out: TEST_OUT
-      rcf_in: TEST_RCF_IN()
-      rcf_out: TEST_RCF_OUT()
-  address_family_ipv6:
-    peer_groups:
-    - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
-      activate: true
-      route_map_in: TEST_IN
-      route_map_out: TEST_OUT
-      rcf_in: TEST_RCF_IN()
-      rcf_out: TEST_RCF_OUT()
   vrfs:
   - name: Tenant_A_L3_VRF_Zone
     rd: 192.168.254.15:15
@@ -583,8 +554,6 @@ router_bgp:
       remote_as: '12345'
       send_community: all
       route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
-    - ip_address: fd5a:fe45:8831:06c5::b
-      remote_as: '12345'
     redistribute:
       connected:
         enabled: true
@@ -606,8 +575,6 @@ router_bgp:
         activate: true
         prefix_list_in: PL-TEST-IN-AF6
         prefix_list_out: PL-TEST-OUT-AF6
-      - ip_address: fd5a:fe45:8831:06c5::b
-        activate: true
   - name: Tenant_B_OP_Zone
     rd: 192.168.254.15:20
     route_targets:
@@ -690,7 +657,7 @@ sflow:
     source_interface: Management99
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS DC1-BL1B
+  location: EOS_DESIGNS_UNIT_TESTS dc1-bl1b
 spanning_tree:
   root_super: true
   mode: mstp
@@ -821,7 +788,7 @@ vrfs:
     - Tenant_D
 vxlan_interface:
   vxlan1:
-    description: DC1-BL1B_VTEP
+    description: dc1-bl1b_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

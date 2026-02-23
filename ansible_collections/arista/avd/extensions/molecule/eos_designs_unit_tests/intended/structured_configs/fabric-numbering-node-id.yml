@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: fabric_numbering_node_id
+hostname: fabric-numbering-node-id
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0

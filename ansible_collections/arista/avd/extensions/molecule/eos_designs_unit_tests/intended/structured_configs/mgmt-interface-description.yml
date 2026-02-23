@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: mgmt_interface_description
+hostname: mgmt-interface-description
 ip_igmp_snooping:
   globally_enabled: true
 management_interfaces:

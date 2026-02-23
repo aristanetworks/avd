@@ -5,26 +5,26 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet5
-  description: MLAG_MLAG_BGP_DIFFERENT_AS_NOTATION_1_Ethernet5
+  description: MLAG_mlag-bgp-different-as-notation-1_Ethernet5
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: MLAG_BGP_DIFFERENT_AS_NOTATION_1
+    peer: mlag-bgp-different-as-notation-1
     peer_interface: Ethernet5
     peer_type: mlag_peer
 - name: Ethernet6
-  description: MLAG_MLAG_BGP_DIFFERENT_AS_NOTATION_1_Ethernet6
+  description: MLAG_mlag-bgp-different-as-notation-1_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: MLAG_BGP_DIFFERENT_AS_NOTATION_1
+    peer: mlag-bgp-different-as-notation-1
     peer_interface: Ethernet6
     peer_type: mlag_peer
-hostname: MLAG_BGP_DIFFERENT_AS_NOTATION_2
+hostname: mlag-bgp-different-as-notation-2
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -58,7 +58,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_MLAG_BGP_DIFFERENT_AS_NOTATION_1_Port-Channel5
+  description: MLAG_mlag-bgp-different-as-notation-1_Port-Channel5
   shutdown: false
   switchport:
     enabled: true
@@ -108,7 +108,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '923.923'
-    description: MLAG_BGP_DIFFERENT_AS_NOTATION_1
+    description: mlag-bgp-different-as-notation-1
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -117,8 +117,8 @@ router_bgp:
   - ip_address: 10.10.223.254
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: MLAG_BGP_DIFFERENT_AS_NOTATION_1
-    description: MLAG_BGP_DIFFERENT_AS_NOTATION_1_Vlan4093
+      peer: mlag-bgp-different-as-notation-1
+    description: mlag-bgp-different-as-notation-1_Vlan4093
   redistribute:
     connected:
       enabled: true
@@ -168,7 +168,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: MLAG_BGP_DIFFERENT_AS_NOTATION_2_VTEP
+    description: mlag-bgp-different-as-notation-2_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

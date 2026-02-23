@@ -58,7 +58,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: ethernet4
-  description: Custom description on l3_edge_bgp eth4
+  description: Custom description on l3-edge-bgp eth4
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.6/31
@@ -148,7 +148,7 @@ ethernet_interfaces:
     peer: peer7
     peer_interface: Ethernet12
     peer_type: other
-hostname: l3_edge_bgp
+hostname: l3-edge-bgp
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0

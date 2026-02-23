@@ -5,32 +5,32 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet3
-  description: MLAG_HARDWARE_FEATURES_7280R_Ethernet3
+  description: MLAG_hardware-features-7280r_Ethernet3
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: HARDWARE_FEATURES_7280R
+    peer: hardware-features-7280r
     peer_interface: Ethernet3
     peer_type: mlag_peer
 - name: Ethernet1
-  description: L2_HARDWARE_FEATURES_CLOUDEOS_2_Ethernet2
+  description: L2_hardware-features-cloudeos-2_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
   metadata:
-    peer: HARDWARE_FEATURES_CLOUDEOS_2
+    peer: hardware-features-cloudeos-2
     peer_interface: Ethernet2
     peer_type: l3leaf
 - name: Ethernet9
-  description: P2P_HARDWARE_FEATURES_7280R_Ethernet9
+  description: P2P_hardware-features-7280r_Ethernet9
   shutdown: false
   mtu: 9214
   ip_address: 10.10.60.1/31
   metadata:
-    peer: HARDWARE_FEATURES_7280R
+    peer: hardware-features-7280r
     peer_interface: Ethernet9
     peer_type: l3leaf
   sflow:
@@ -38,19 +38,19 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet9.9
-  description: P2P_HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_Ethernet9.9
+  description: P2P_hardware-feature-sflow-subinterface-1_Ethernet9.9
   shutdown: false
   mtu: 9214
   ip_address: 10.10.60.5/31
   metadata:
-    peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+    peer: hardware-feature-sflow-subinterface-1
     peer_interface: Ethernet9.9
     peer_type: l3leaf
   switchport:
     enabled: false
 hardware_counters:
   features: null
-hostname: HARDWARE_FEATURES_CUSTOM_PLATFORM
+hostname: hardware-features-custom-platform
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -70,7 +70,7 @@ mlag_configuration:
   peer_link: Port-Channel3
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_HARDWARE_FEATURES_7280R_Port-Channel3
+  description: MLAG_hardware-features-7280r_Port-Channel3
   shutdown: false
   sflow:
     enable: true
@@ -81,7 +81,7 @@ port_channel_interfaces:
       groups:
       - MLAG
 - name: Port-Channel1
-  description: L2_HARDWARE_FEATURES_CLOUDEOS_2_Port-Channel2
+  description: L2_hardware-features-cloudeos-2_Port-Channel2
   shutdown: false
   mlag: 1
   ptp:

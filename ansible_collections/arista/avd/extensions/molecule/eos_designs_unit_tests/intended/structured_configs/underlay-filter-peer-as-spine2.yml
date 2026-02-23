@@ -5,17 +5,17 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_UNDERLAY_FILTER_PEER_AS_L3LEAF1_Ethernet2
+  description: P2P_underlay-filter-peer-as-l3leaf1_Ethernet2
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.2/31
   metadata:
-    peer: UNDERLAY_FILTER_PEER_AS_L3LEAF1
+    peer: underlay-filter-peer-as-l3leaf1
     peer_interface: Ethernet2
     peer_type: l3leaf
   switchport:
     enabled: false
-hostname: UNDERLAY_FILTER_PEER_AS_SPINE2
+hostname: underlay-filter-peer-as-spine2
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
@@ -66,8 +66,8 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: UNDERLAY_FILTER_PEER_AS_L3LEAF1
-    description: UNDERLAY_FILTER_PEER_AS_L3LEAF1_Ethernet2
+      peer: underlay-filter-peer-as-l3leaf1
+    description: underlay-filter-peer-as-l3leaf1_Ethernet2
     route_map_out: RM-BGP-AS65001-OUT
   redistribute:
     connected:

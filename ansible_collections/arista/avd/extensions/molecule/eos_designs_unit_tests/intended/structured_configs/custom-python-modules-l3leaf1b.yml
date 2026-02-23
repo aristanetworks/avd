@@ -5,37 +5,37 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet3
-  description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet3
+  description: TEST_CUSTOM_PREFIX_MLAG_PEER_custom-python-modules-l3leaf1a_Ethernet3
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
+    peer: custom-python-modules-l3leaf1a
     peer_interface: Ethernet3
     peer_type: mlag_peer
 - name: Ethernet4
-  description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet4
+  description: TEST_CUSTOM_PREFIX_MLAG_PEER_custom-python-modules-l3leaf1a_Ethernet4
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
+    peer: custom-python-modules-l3leaf1a
     peer_interface: Ethernet4
     peer_type: mlag_peer
 - name: Ethernet1
-  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-SPINE1_Ethernet2
+  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON-MODULES-SPINE1_Ethernet2
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.23/31
   metadata:
-    peer: CUSTOM-PYTHON_MODULES-SPINE1
+    peer: custom-python-modules-spine1
     peer_interface: Ethernet2
     peer_type: custom_spine
   switchport:
     enabled: false
-hostname: CUSTOM-PYTHON_MODULES-L3LEAF1B
+hostname: custom-python-modules-l3leaf1b
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -70,7 +70,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel3
-  description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1A_Po3
+  description: TEST_CUSTOM_PREFIX_MLAG_PEER_custom-python-modules-l3leaf1a_Po3
   shutdown: false
   switchport:
     enabled: true
@@ -131,7 +131,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65101'
-    description: CUSTOM-PYTHON_MODULES-L3LEAF1A
+    description: custom-python-modules-l3leaf1a
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -153,20 +153,20 @@ router_bgp:
   - ip_address: 10.255.251.10
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
-    description: CUSTOM-PYTHON_MODULES-L3LEAF1A_Vlan4093
+      peer: custom-python-modules-l3leaf1a
+    description: custom-python-modules-l3leaf1a_Vlan4093
   - ip_address: 172.31.255.22
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: CUSTOM-PYTHON_MODULES-SPINE1
-    description: CUSTOM-PYTHON_MODULES-SPINE1_Ethernet2
+      peer: custom-python-modules-spine1
+    description: custom-python-modules-spine1_Ethernet2
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: CUSTOM-PYTHON_MODULES-SPINE1
-    description: CUSTOM-PYTHON_MODULES-SPINE1_Loopback0
+      peer: custom-python-modules-spine1
+    description: custom-python-modules-spine1_Loopback0
   redistribute:
     connected:
       enabled: true
@@ -212,7 +212,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.240.10
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: CUSTOM-PYTHON_MODULES-L3LEAF1A_Vlan3000
+      description: custom-python-modules-l3leaf1a_Vlan3000
     redistribute:
       connected:
         enabled: true
@@ -299,7 +299,7 @@ vrfs:
     - CUSTOM_PYTHON_MODULES_TENANT
 vxlan_interface:
   vxlan1:
-    description: CUSTOM-PYTHON_MODULES-L3LEAF1B_VTEP
+    description: custom-python-modules-l3leaf1b_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

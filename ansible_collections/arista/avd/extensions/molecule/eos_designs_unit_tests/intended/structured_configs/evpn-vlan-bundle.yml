@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: evpn_vlan_bundle
+hostname: evpn-vlan-bundle
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -416,7 +416,7 @@ vrfs:
     - SIT
 vxlan_interface:
   vxlan1:
-    description: evpn_vlan_bundle_VTEP
+    description: evpn-vlan-bundle_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

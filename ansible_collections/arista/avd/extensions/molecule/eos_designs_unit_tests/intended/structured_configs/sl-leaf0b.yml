@@ -5,86 +5,86 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet25
-  description: MLAG_SL-LEAF0A_Ethernet25
+  description: MLAG_sl-leaf0a_Ethernet25
   shutdown: false
   channel_group:
     id: 25
     mode: active
   metadata:
-    peer: SL-LEAF0A
+    peer: sl-leaf0a
     peer_interface: Ethernet25
     peer_type: mlag_peer
 - name: Ethernet26
-  description: MLAG_SL-LEAF0A_Ethernet26
+  description: MLAG_sl-leaf0a_Ethernet26
   shutdown: false
   channel_group:
     id: 25
     mode: active
   metadata:
-    peer: SL-LEAF0A
+    peer: sl-leaf0a
     peer_interface: Ethernet26
     peer_type: mlag_peer
 - name: Ethernet27
-  description: L2_SL-LEAF1A_Ethernet27
+  description: L2_sl-leaf1a_Ethernet27
   shutdown: false
   channel_group:
     id: 27
     mode: active
   metadata:
-    peer: SL-LEAF1A
+    peer: sl-leaf1a
     peer_interface: Ethernet27
     peer_type: l2leaf
 - name: Ethernet28
-  description: L2_SL-LEAF1B_Ethernet27
+  description: L2_sl-leaf1b_Ethernet27
   shutdown: false
   channel_group:
     id: 27
     mode: active
   metadata:
-    peer: SL-LEAF1B
+    peer: sl-leaf1b
     peer_interface: Ethernet27
     peer_type: l2leaf
 - name: Ethernet41
-  description: L2_SL-LEAF2A_Ethernet41
+  description: L2_sl-leaf2a_Ethernet41
   shutdown: false
   channel_group:
     id: 41
     mode: active
   metadata:
-    peer: SL-LEAF2A
+    peer: sl-leaf2a
     peer_interface: Ethernet41
     peer_type: l2leaf
 - name: Ethernet42
-  description: L2_SL-LEAF2A_Ethernet42
+  description: L2_sl-leaf2a_Ethernet42
   shutdown: false
   channel_group:
     id: 41
     mode: active
   metadata:
-    peer: SL-LEAF2A
+    peer: sl-leaf2a
     peer_interface: Ethernet42
     peer_type: l2leaf
 - name: Ethernet43
-  description: L2_SL-LEAF2B_Ethernet41
+  description: L2_sl-leaf2b_Ethernet41
   shutdown: false
   channel_group:
     id: 41
     mode: active
   metadata:
-    peer: SL-LEAF2B
+    peer: sl-leaf2b
     peer_interface: Ethernet41
     peer_type: l2leaf
 - name: Ethernet44
-  description: L2_SL-LEAF2B_Ethernet42
+  description: L2_sl-leaf2b_Ethernet42
   shutdown: false
   channel_group:
     id: 41
     mode: active
   metadata:
-    peer: SL-LEAF2B
+    peer: sl-leaf2b
     peer_interface: Ethernet42
     peer_type: l2leaf
-hostname: SL-LEAF0B
+hostname: sl-leaf0b
 ip_igmp_snooping:
   globally_enabled: true
 metadata:
@@ -100,7 +100,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel25
-  description: MLAG_SL-LEAF0A_Port-Channel25
+  description: MLAG_sl-leaf0a_Port-Channel25
   shutdown: false
   switchport:
     enabled: true

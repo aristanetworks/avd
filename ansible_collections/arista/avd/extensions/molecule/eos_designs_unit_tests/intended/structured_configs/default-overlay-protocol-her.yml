@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: default_overlay_protocol_her
+hostname: default-overlay-protocol-her
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0

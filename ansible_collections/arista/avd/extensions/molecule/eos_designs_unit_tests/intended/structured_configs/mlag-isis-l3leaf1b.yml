@@ -5,27 +5,27 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet5
-  description: MLAG_MLAG-ISIS-L3LEAF1A_Ethernet5
+  description: MLAG_mlag-isis-l3leaf1a_Ethernet5
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: MLAG-ISIS-L3LEAF1A
+    peer: mlag-isis-l3leaf1a
     peer_interface: Ethernet5
     peer_type: mlag_peer
 - name: Ethernet6
-  description: MLAG_MLAG-ISIS-L3LEAF1A_Ethernet6
+  description: MLAG_mlag-isis-l3leaf1a_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: MLAG-ISIS-L3LEAF1A
+    peer: mlag-isis-l3leaf1a
     peer_interface: Ethernet6
     peer_type: mlag_peer
 - name: Ethernet1
-  description: P2P_MLAG-ISIS-SPINE_Ethernet31
+  description: P2P_mlag-isis-spine_Ethernet31
   shutdown: false
   mtu: 9214
   ip_address: 10.10.101.9/31
@@ -39,12 +39,12 @@ ethernet_interfaces:
       key: $1c$sTNAlR6rKSw=
       mode: md5
   metadata:
-    peer: MLAG-ISIS-SPINE
+    peer: mlag-isis-spine
     peer_interface: Ethernet31
     peer_type: spine
   switchport:
     enabled: false
-hostname: MLAG-ISIS-L3LEAF1B
+hostname: mlag-isis-l3leaf1b
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -81,7 +81,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_MLAG-ISIS-L3LEAF1A_Port-Channel5
+  description: MLAG_mlag-isis-l3leaf1a_Port-Channel5
   shutdown: false
   switchport:
     enabled: true
@@ -118,8 +118,8 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65000'
     metadata:
-      peer: MLAG-ISIS-SPINE
-    description: MLAG-ISIS-SPINE_Loopback0
+      peer: mlag-isis-spine
+    description: mlag-isis-spine_Loopback0
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -176,7 +176,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: MLAG-ISIS-L3LEAF1B_VTEP
+    description: mlag-isis-l3leaf1b_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

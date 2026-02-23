@@ -33,7 +33,7 @@ hardware_counters:
   - name: route
     address_type: ipv6
     prefix: 2001:db8:cafe::/64
-hostname: hardware_counters
+hostname: hardware-counters
 ip_igmp_snooping:
   globally_enabled: true
 metadata:

@@ -5,17 +5,17 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet3
-  description: MLAG_HARDWARE_FEATURES_CUSTOM_PLATFORM_Ethernet3
+  description: MLAG_hardware-features-custom-platform_Ethernet3
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+    peer: hardware-features-custom-platform
     peer_interface: Ethernet3
     peer_type: mlag_peer
 - name: Ethernet1
-  description: P2P_HARDWARE_FEATURES_CLOUDEOS_Ethernet2
+  description: P2P_hardware-features-cloudeos_Ethernet2
   shutdown: false
   mtu: 9214
   ip_address: 10.10.50.9/31
@@ -29,7 +29,7 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
   metadata:
-    peer: HARDWARE_FEATURES_CLOUDEOS
+    peer: hardware-features-cloudeos
     peer_interface: Ethernet2
     peer_type: l3leaf
   sflow:
@@ -37,22 +37,22 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet2
-  description: L2_HARDWARE_FEATURES_CLOUDEOS_2_Ethernet1
+  description: L2_hardware-features-cloudeos-2_Ethernet1
   shutdown: false
   channel_group:
     id: 2
     mode: active
   metadata:
-    peer: HARDWARE_FEATURES_CLOUDEOS_2
+    peer: hardware-features-cloudeos-2
     peer_interface: Ethernet1
     peer_type: l3leaf
 - name: Ethernet9
-  description: P2P_HARDWARE_FEATURES_CUSTOM_PLATFORM_Ethernet9
+  description: P2P_hardware-features-custom-platform_Ethernet9
   shutdown: false
   mtu: 9214
   ip_address: 10.10.60.0/31
   metadata:
-    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+    peer: hardware-features-custom-platform
     peer_interface: Ethernet9
     peer_type: l3leaf
   sflow:
@@ -162,7 +162,7 @@ hardware_counters:
     direction: in
   - name: vtep decap
   - name: vtep encap
-hostname: HARDWARE_FEATURES_7280R
+hostname: hardware-features-7280r
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -192,7 +192,7 @@ platform:
       hardware_only: true
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_HARDWARE_FEATURES_CUSTOM_PLATFORM_Port-Channel3
+  description: MLAG_hardware-features-custom-platform_Port-Channel3
   shutdown: false
   sflow:
     enable: true
@@ -203,7 +203,7 @@ port_channel_interfaces:
       groups:
       - MLAG
 - name: Port-Channel2
-  description: L2_HARDWARE_FEATURES_CLOUDEOS_2_Port-Channel1
+  description: L2_hardware-features-cloudeos-2_Port-Channel1
   shutdown: false
   sflow:
     enable: true
@@ -296,7 +296,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65001'
-    description: HARDWARE_FEATURES_CUSTOM_PLATFORM
+    description: hardware-features-custom-platform
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -310,21 +310,21 @@ router_bgp:
   - ip_address: 10.10.40.9
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
-    description: HARDWARE_FEATURES_CUSTOM_PLATFORM_Vlan4093
+      peer: hardware-features-custom-platform
+    description: hardware-features-custom-platform_Vlan4093
   - ip_address: 10.10.50.8
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: HARDWARE_FEATURES_CLOUDEOS
-    description: HARDWARE_FEATURES_CLOUDEOS_Ethernet2
+      peer: hardware-features-cloudeos
+    description: hardware-features-cloudeos_Ethernet2
   - ip_address: 10.10.60.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     local_as: '65100'
     metadata:
-      peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
-    description: HARDWARE_FEATURES_CUSTOM_PLATFORM
+      peer: hardware-features-custom-platform
+    description: hardware-features-custom-platform
   redistribute:
     connected:
       enabled: true
@@ -353,7 +353,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.10.40.9
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: HARDWARE_FEATURES_CUSTOM_PLATFORM_Vlan3009
+      description: hardware-features-custom-platform_Vlan3009
     - ip_address: 10.10.40.100
       remote_as: '65002'
     redistribute:
@@ -436,7 +436,7 @@ vrfs:
     - TENANT1
 vxlan_interface:
   vxlan1:
-    description: HARDWARE_FEATURES_7280R_VTEP
+    description: hardware-features-7280r_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

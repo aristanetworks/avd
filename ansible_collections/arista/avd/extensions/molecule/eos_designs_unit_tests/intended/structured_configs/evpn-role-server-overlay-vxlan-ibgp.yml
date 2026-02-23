@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: evpn_role_server_overlay_vxlan_ibgp
+hostname: evpn-role-server-overlay-vxlan-ibgp
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -72,8 +72,8 @@ router_bgp:
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     metadata:
-      peer: evpn_overlay_mpls_route_reflectors2_ibgp
-    description: evpn_overlay_mpls_route_reflectors2_ibgp_Loopback0
+      peer: evpn-overlay-mpls-route-reflectors2-ibgp
+    description: evpn-overlay-mpls-route-reflectors2-ibgp_Loopback0
   redistribute:
     connected:
       enabled: true
@@ -104,7 +104,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: evpn_role_server_overlay_vxlan_ibgp_VTEP
+    description: evpn-role-server-overlay-vxlan-ibgp_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

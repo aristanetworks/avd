@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: SVI_PROFILE_NODE_2
+hostname: svi-profile-node-2
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -412,7 +412,7 @@ vrfs:
     - svi_profile_tests
 vxlan_interface:
   vxlan1:
-    description: SVI_PROFILE_NODE_2_VTEP
+    description: svi-profile-node-2_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

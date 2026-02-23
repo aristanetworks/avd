@@ -22,7 +22,7 @@ ethernet_interfaces:
   description: Interface Created from platform_settings.structured_config
   switchport:
     enabled: true
-hostname: platform_settings
+hostname: platform-settings
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -101,7 +101,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: platform_settings_VTEP
+    description: platform-settings_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

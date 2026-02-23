@@ -11,7 +11,7 @@ cvx:
       shutdown: false
 enable_password:
   disabled: true
-hostname: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER3
+hostname: overlay-routing-protocol-cvx-server3
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

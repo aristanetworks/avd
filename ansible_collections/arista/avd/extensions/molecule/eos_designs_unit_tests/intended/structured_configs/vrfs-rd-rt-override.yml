@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: vrfs_rd_rt_override
+hostname: vrfs-rd-rt-override
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -155,7 +155,7 @@ vrfs:
     - TENANT1
 vxlan_interface:
   vxlan1:
-    description: vrfs_rd_rt_override_VTEP
+    description: vrfs-rd-rt-override_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

@@ -37,13 +37,13 @@ ethernet_interfaces:
   ipv6_enable: true
   ipv6_address: cafe::cafe/64
   metadata:
-    peer: uplink_lan_l2leaf
+    peer: uplink-lan-l2leaf
     peer_interface: Ethernet1 VLAN 100
     peer_type: l2leaf
   eos_cli: comment yo
   _custom_key: custom_value
 - name: Ethernet2
-  description: L2_uplink_lan_l2leaf_Ethernet1
+  description: L2_uplink-lan-l2leaf_Ethernet1
   shutdown: false
   mtu: 9218
   vrf: VRF1
@@ -51,7 +51,7 @@ ethernet_interfaces:
     hardware: FLOW-TRACKER
   ip_address: 10.0.10.1/24
   metadata:
-    peer: uplink_lan_l2leaf
+    peer: uplink-lan-l2leaf
     peer_interface: Ethernet1 VLAN 10
     peer_type: l2leaf
   switchport:
@@ -78,7 +78,7 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: uplink_lan_wan_router1
+hostname: uplink-lan-wan-router1
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -387,7 +387,7 @@ vrfs:
     - TEST
 vxlan_interface:
   vxlan1:
-    description: uplink_lan_wan_router1_VTEP
+    description: uplink-lan-wan-router1_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789

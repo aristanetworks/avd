@@ -15,7 +15,7 @@ daemon_terminattr:
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
-hostname: mgmt_interface_default
+hostname: mgmt-interface-default
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -70,7 +70,7 @@ ntp:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS mgmt_interface_default
+  location: EOS_DESIGNS_UNIT_TESTS mgmt-interface-default
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0

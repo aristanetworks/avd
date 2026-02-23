@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: UNDERLAY_MULTICAST_LEAF1
+hostname: underlay-multicast-leaf1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -81,7 +81,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: UNDERLAY_MULTICAST_LEAF1_VTEP
+    description: underlay-multicast-leaf1_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

@@ -138,7 +138,7 @@ ethernet_interfaces:
     peer_type: other
   switchport:
     enabled: false
-hostname: l3_edge_isis
+hostname: l3-edge-isis
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0

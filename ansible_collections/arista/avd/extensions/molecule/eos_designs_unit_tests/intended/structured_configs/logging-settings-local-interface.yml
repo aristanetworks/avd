@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: logging_settings_local_interface
+hostname: logging-settings-local-interface
 ip_routing: true
 logging:
   vrfs:

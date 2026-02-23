@@ -5,48 +5,48 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet11
-  description: MLAG_IPV6_NUMBERED_LEAF1b_Ethernet11
+  description: MLAG_ipv6-numbered-leaf1b_Ethernet11
   shutdown: false
   channel_group:
     id: 11
     mode: active
   metadata:
-    peer: IPV6_NUMBERED_LEAF1b
+    peer: ipv6-numbered-leaf1b
     peer_interface: Ethernet11
     peer_type: mlag_peer
 - name: Ethernet12
-  description: MLAG_IPV6_NUMBERED_LEAF1b_Ethernet12
+  description: MLAG_ipv6-numbered-leaf1b_Ethernet12
   shutdown: false
   channel_group:
     id: 11
     mode: active
   metadata:
-    peer: IPV6_NUMBERED_LEAF1b
+    peer: ipv6-numbered-leaf1b
     peer_interface: Ethernet12
     peer_type: mlag_peer
 - name: Ethernet1
-  description: P2P_IPV6_NUMBERED_SPINE1_Ethernet1
+  description: P2P_ipv6-numbered-spine1_Ethernet1
   shutdown: false
   mtu: 1500
   ipv6_address: 2001:db8:2::2/64
   metadata:
-    peer: IPV6_NUMBERED_SPINE1
+    peer: ipv6-numbered-spine1
     peer_interface: Ethernet1
     peer_type: spine
   switchport:
     enabled: false
 - name: Ethernet2
-  description: P2P_IPV6_NUMBERED_SPINE2_Ethernet1
+  description: P2P_ipv6-numbered-spine2_Ethernet1
   shutdown: false
   mtu: 1500
   ipv6_address: 2001:db8:2:1::2/64
   metadata:
-    peer: IPV6_NUMBERED_SPINE2
+    peer: ipv6-numbered-spine2
     peer_interface: Ethernet1
     peer_type: spine
   switchport:
     enabled: false
-hostname: IPV6_NUMBERED_LEAF1a
+hostname: ipv6-numbered-leaf1a
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -128,7 +128,7 @@ ntp:
   vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel11
-  description: MLAG_IPV6_NUMBERED_LEAF1b_Port-Channel11
+  description: MLAG_ipv6-numbered-leaf1b_Port-Channel11
   shutdown: false
   switchport:
     enabled: true
@@ -176,7 +176,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65101'
-    description: IPV6_NUMBERED_LEAF1b
+    description: ipv6-numbered-leaf1b
     next_hop_self: true
     password: GNtuK+/vTwZwSZiwj1FK/Q==
     send_community: all
@@ -201,32 +201,32 @@ router_bgp:
   - ip_address: 2001:db8:4::2
     peer_group: MLAG-IPv6-UNDERLAY-PEER
     metadata:
-      peer: IPV6_NUMBERED_LEAF1b
-    description: IPV6_NUMBERED_LEAF1b_Vlan4093
+      peer: ipv6-numbered-leaf1b
+    description: ipv6-numbered-leaf1b_Vlan4093
   - ip_address: 2001:db8:2::1
     peer_group: IPv6-UNDERLAY-PEERS
     remote_as: '65100'
     metadata:
-      peer: IPV6_NUMBERED_SPINE1
-    description: IPV6_NUMBERED_SPINE1_Ethernet1
+      peer: ipv6-numbered-spine1
+    description: ipv6-numbered-spine1_Ethernet1
   - ip_address: 2001:db8:2:1::1
     peer_group: IPv6-UNDERLAY-PEERS
     remote_as: '65100'
     metadata:
-      peer: IPV6_NUMBERED_SPINE2
-    description: IPV6_NUMBERED_SPINE2_Ethernet1
+      peer: ipv6-numbered-spine2
+    description: ipv6-numbered-spine2_Ethernet1
   - ip_address: 2001:db8:0:1::1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
     metadata:
-      peer: IPV6_NUMBERED_SPINE1
-    description: IPV6_NUMBERED_SPINE1_Loopback0
+      peer: ipv6-numbered-spine1
+    description: ipv6-numbered-spine1_Loopback0
   - ip_address: 2001:db8:0:2::1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
     metadata:
-      peer: IPV6_NUMBERED_SPINE2
-    description: IPV6_NUMBERED_SPINE2_Loopback0
+      peer: ipv6-numbered-spine2
+    description: ipv6-numbered-spine2_Loopback0
   redistribute:
     connected:
       enabled: true
@@ -322,7 +322,7 @@ router_bgp:
     neighbors:
     - ip_address: 2001:db8:4::2
       peer_group: MLAG-IPv6-UNDERLAY-PEER
-      description: IPV6_NUMBERED_LEAF1b_Vlan3009
+      description: ipv6-numbered-leaf1b_Vlan3009
     redistribute:
       connected:
         enabled: true
@@ -342,7 +342,7 @@ router_bgp:
     neighbors:
     - ip_address: 2001:db8:4::2
       peer_group: MLAG-IPv6-UNDERLAY-PEER
-      description: IPV6_NUMBERED_LEAF1b_Vlan3010
+      description: ipv6-numbered-leaf1b_Vlan3010
     redistribute:
       connected:
         enabled: true
@@ -362,7 +362,7 @@ router_bgp:
     neighbors:
     - ip_address: 2001:db8:4::2
       peer_group: MLAG-IPv6-UNDERLAY-PEER
-      description: IPV6_NUMBERED_LEAF1b_Vlan3011
+      description: ipv6-numbered-leaf1b_Vlan3011
     redistribute:
       connected:
         enabled: true
@@ -571,7 +571,7 @@ vrfs:
     - TENANT1
 vxlan_interface:
   vxlan1:
-    description: IPV6_NUMBERED_LEAF1a_VTEP
+    description: ipv6-numbered-leaf1a_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

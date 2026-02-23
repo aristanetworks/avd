@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: default_overlay_protocol_cvx
+hostname: default-overlay-protocol-cvx
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0

@@ -48,7 +48,7 @@ ethernet_interfaces:
     mode: 'on'
   metadata:
     peer_type: point_to_point_service
-hostname: network_services_point_to_point
+hostname: network-services-point-to-point
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true

@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: l2vlan_profiles
+hostname: l2vlan-profiles
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -120,7 +120,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: l2vlan_profiles_VTEP
+    description: l2vlan-profiles_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

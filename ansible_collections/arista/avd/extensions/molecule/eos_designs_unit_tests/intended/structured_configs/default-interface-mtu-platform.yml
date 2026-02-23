@@ -19,7 +19,7 @@ ethernet_interfaces:
     peer_type: l3_interface
   switchport:
     enabled: false
-hostname: default_interface_mtu_platform
+hostname: default-interface-mtu-platform
 interface_defaults:
   mtu: 1234
 ip_igmp_snooping:
@@ -94,7 +94,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: default_interface_mtu_platform_VTEP
+    description: default-interface-mtu-platform_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

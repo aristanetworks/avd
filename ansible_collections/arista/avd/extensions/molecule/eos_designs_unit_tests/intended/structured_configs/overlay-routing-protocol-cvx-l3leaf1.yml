@@ -5,17 +5,17 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet5
-  description: P2P_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF4_Ethernet5
+  description: P2P_overlay-routing-protocol-her-l3leaf4_Ethernet5
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.8/31
   metadata:
-    peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF4
+    peer: overlay-routing-protocol-her-l3leaf4
     peer_interface: Ethernet5
     peer_type: l3leaf
   switchport:
     enabled: false
-hostname: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1
+hostname: overlay-routing-protocol-cvx-l3leaf1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -74,8 +74,8 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65002'
     metadata:
-      peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF4
-    description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF4_Ethernet5
+      peer: overlay-routing-protocol-her-l3leaf4
+    description: overlay-routing-protocol-her-l3leaf4_Ethernet5
   redistribute:
     connected:
       enabled: true
@@ -125,7 +125,7 @@ vrfs:
     - TEST
 vxlan_interface:
   vxlan1:
-    description: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1_VTEP
+    description: overlay-routing-protocol-cvx-l3leaf1_VTEP
     vxlan:
       source_interface: Loopback1
       controller_client:

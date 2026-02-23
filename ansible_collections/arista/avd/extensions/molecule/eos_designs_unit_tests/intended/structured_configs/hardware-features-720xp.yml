@@ -5,17 +5,17 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet3
-  description: MLAG_HARDWARE_FEATURES_CLOUDEOS_Ethernet3
+  description: MLAG_hardware-features-cloudeos_Ethernet3
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: HARDWARE_FEATURES_CLOUDEOS
+    peer: hardware-features-cloudeos
     peer_interface: Ethernet3
     peer_type: mlag_peer
 - name: Ethernet1
-  description: P2P_HARDWARE_FEATURES_CEOS_LAB_Ethernet2
+  description: P2P_hardware-features-ceos-lab_Ethernet2
   shutdown: false
   mtu: 9214
   ip_address: 10.10.50.7/31
@@ -29,7 +29,7 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
   metadata:
-    peer: HARDWARE_FEATURES_CEOS_LAB
+    peer: hardware-features-ceos-lab
     peer_interface: Ethernet2
     peer_type: l3leaf
   sflow:
@@ -37,12 +37,12 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet9
-  description: P2P_HARDWARE_FEATURES_CLOUDEOS_Ethernet9
+  description: P2P_hardware-features-cloudeos_Ethernet9
   shutdown: false
   mtu: 9214
   ip_address: 10.10.60.1/31
   metadata:
-    peer: HARDWARE_FEATURES_CLOUDEOS
+    peer: hardware-features-cloudeos
     peer_interface: Ethernet9
     peer_type: l3leaf
   sflow:
@@ -133,7 +133,7 @@ hardware_counters:
   - name: vni encap
   - name: vtep decap
   - name: vtep encap
-hostname: HARDWARE_FEATURES_720XP
+hostname: hardware-features-720xp
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -159,7 +159,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_HARDWARE_FEATURES_CLOUDEOS_Port-Channel3
+  description: MLAG_hardware-features-cloudeos_Port-Channel3
   shutdown: false
   sflow:
     enable: true
@@ -252,7 +252,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65001'
-    description: HARDWARE_FEATURES_CLOUDEOS
+    description: hardware-features-cloudeos
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -266,21 +266,21 @@ router_bgp:
   - ip_address: 10.10.40.4
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: HARDWARE_FEATURES_CLOUDEOS
-    description: HARDWARE_FEATURES_CLOUDEOS_Vlan4093
+      peer: hardware-features-cloudeos
+    description: hardware-features-cloudeos_Vlan4093
   - ip_address: 10.10.50.6
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: HARDWARE_FEATURES_CEOS_LAB
-    description: HARDWARE_FEATURES_CEOS_LAB_Ethernet2
+      peer: hardware-features-ceos-lab
+    description: hardware-features-ceos-lab_Ethernet2
   - ip_address: 10.10.60.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     local_as: '65100'
     metadata:
-      peer: HARDWARE_FEATURES_CLOUDEOS
-    description: HARDWARE_FEATURES_CLOUDEOS
+      peer: hardware-features-cloudeos
+    description: hardware-features-cloudeos
   redistribute:
     connected:
       enabled: true
@@ -309,7 +309,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.10.40.4
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: HARDWARE_FEATURES_CLOUDEOS_Vlan3009
+      description: hardware-features-cloudeos_Vlan3009
     - ip_address: 10.10.40.100
       remote_as: '65002'
     redistribute:
@@ -390,7 +390,7 @@ vrfs:
     - TENANT1
 vxlan_interface:
   vxlan1:
-    description: HARDWARE_FEATURES_720XP_VTEP
+    description: hardware-features-720xp_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

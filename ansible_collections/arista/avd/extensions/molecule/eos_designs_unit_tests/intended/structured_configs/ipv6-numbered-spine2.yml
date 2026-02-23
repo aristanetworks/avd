@@ -3,42 +3,42 @@ aaa_root:
 config_end: true
 enable_password:
   hash_algorithm: sha512
-  key: $6$08aa4e14e4210106$f2Mo9GxzYMQ6FYAOHrWWmRHrDJOzK70s0NE7z9Sz3eSDujMOkhc2LHvdDjPoAucr9Psls5MAuPWVpbc.OX3Ar/
+  key: $6$27a22fb985173206$lsiQ6yl4ThtfMQjB6uMvBR3BuXA/QQZojfS8W.m6SB7T.mXJOPAHnAyhn6EQQr7HKpaNiwsiUl.5GcZqu3wEp0
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_IPV6_NUMBERED_LEAF1a_Ethernet2
+  description: P2P_ipv6-numbered-leaf1a_Ethernet2
   shutdown: false
   mtu: 1500
   ipv6_address: 2001:db8:2:1::1/64
   metadata:
-    peer: IPV6_NUMBERED_LEAF1a
+    peer: ipv6-numbered-leaf1a
     peer_interface: Ethernet2
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2
-  description: P2P_IPV6_NUMBERED_LEAF1b_Ethernet2
+  description: P2P_ipv6-numbered-leaf1b_Ethernet2
   shutdown: false
   mtu: 1500
   ipv6_address: 2001:db8:2:3::1/64
   metadata:
-    peer: IPV6_NUMBERED_LEAF1b
+    peer: ipv6-numbered-leaf1b
     peer_interface: Ethernet2
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet3
-  description: P2P_IPV6_NUMBERED_LEAF2a_Ethernet2
+  description: P2P_ipv6-numbered-leaf2a_Ethernet2
   shutdown: false
   mtu: 1500
   ipv6_address: 2001:db8:2:5::1/64
   metadata:
-    peer: IPV6_NUMBERED_LEAF2a
+    peer: ipv6-numbered-leaf2a
     peer_interface: Ethernet2
     peer_type: l3leaf
   switchport:
     enabled: false
-hostname: IPV6_NUMBERED_SPINE2
+hostname: ipv6-numbered-spine2
 ip_routing: true
 ipv6_prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY-V6
@@ -58,7 +58,7 @@ local_users:
 - name: clear_password
   privilege: 15
   role: network-admin
-  sha512_password: $6$472be3f31919bca8$kPWWbmvA9Edu684QCWEdu5N8osdQ2sZZbD6cpllLzMazWEADPS4FVnqnY/nEMXRU2zyXS5tDYyzolsFXPUUHO/
+  sha512_password: $6$f9cf3baba379733a$hT3rvhwQfSVJuN280VkNEIP3HYEb0awf7Rqa2x8JcSWBEzj5hH2PAxnFxWGVkYRlCbPd0ROwZ4JHsHwI0PfyZ0
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -127,38 +127,38 @@ router_bgp:
     peer_group: IPv6-UNDERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: IPV6_NUMBERED_LEAF1a
-    description: IPV6_NUMBERED_LEAF1a_Ethernet2
+      peer: ipv6-numbered-leaf1a
+    description: ipv6-numbered-leaf1a_Ethernet2
   - ip_address: 2001:db8:2:3::2
     peer_group: IPv6-UNDERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: IPV6_NUMBERED_LEAF1b
-    description: IPV6_NUMBERED_LEAF1b_Ethernet2
+      peer: ipv6-numbered-leaf1b
+    description: ipv6-numbered-leaf1b_Ethernet2
   - ip_address: 2001:db8:2:5::2
     peer_group: IPv6-UNDERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: IPV6_NUMBERED_LEAF2a
-    description: IPV6_NUMBERED_LEAF2a_Ethernet2
+      peer: ipv6-numbered-leaf2a
+    description: ipv6-numbered-leaf2a_Ethernet2
   - ip_address: 2001:db8:1:1::1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: IPV6_NUMBERED_LEAF1a
-    description: IPV6_NUMBERED_LEAF1a_Loopback0
+      peer: ipv6-numbered-leaf1a
+    description: ipv6-numbered-leaf1a_Loopback0
   - ip_address: 2001:db8:1:2::1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: IPV6_NUMBERED_LEAF1b
-    description: IPV6_NUMBERED_LEAF1b_Loopback0
+      peer: ipv6-numbered-leaf1b
+    description: ipv6-numbered-leaf1b_Loopback0
   - ip_address: 2001:db8:1:3::1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: IPV6_NUMBERED_LEAF2a
-    description: IPV6_NUMBERED_LEAF2a_Loopback0
+      peer: ipv6-numbered-leaf2a
+    description: ipv6-numbered-leaf2a_Loopback0
   redistribute:
     connected:
       enabled: true

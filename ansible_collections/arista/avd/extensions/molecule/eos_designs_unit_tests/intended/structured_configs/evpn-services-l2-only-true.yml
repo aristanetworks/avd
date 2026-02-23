@@ -15,7 +15,7 @@ daemon_terminattr:
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
-hostname: evpn_services_l2_only_true
+hostname: evpn-services-l2-only-true
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -288,7 +288,7 @@ router_bgp:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS evpn_services_l2_only_true
+  location: EOS_DESIGNS_UNIT_TESTS evpn-services-l2-only-true
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
@@ -485,7 +485,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: evpn_services_l2_only_true_VTEP
+    description: evpn-services-l2-only-true_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

@@ -5,7 +5,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet10
-  description: P2P_HARDWARE_FEATURES_VEOS_LAB_Ethernet10
+  description: P2P_hardware-features-veos-lab_Ethernet10
   shutdown: false
   mtu: 9214
   ip_address: 10.10.50.15/31
@@ -19,7 +19,7 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
   metadata:
-    peer: HARDWARE_FEATURES_VEOS_LAB
+    peer: hardware-features-veos-lab
     peer_interface: Ethernet10
     peer_type: l3leaf
   sflow:
@@ -27,23 +27,23 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet4.4
-  description: P2P_HARDWARE_FEATURES_CLOUDEOS_Ethernet4.4
+  description: P2P_hardware-features-cloudeos_Ethernet4.4
   shutdown: false
   mtu: 9214
   ip_address: 10.10.30.40/31
   metadata:
-    peer: HARDWARE_FEATURES_CLOUDEOS
+    peer: hardware-features-cloudeos
     peer_interface: Ethernet4.4
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet9.9
-  description: P2P_HARDWARE_FEATURES_CUSTOM_PLATFORM_Ethernet9.9
+  description: P2P_hardware-features-custom-platform_Ethernet9.9
   shutdown: false
   mtu: 9214
   ip_address: 10.10.60.4/31
   metadata:
-    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+    peer: hardware-features-custom-platform
     peer_interface: Ethernet9.9
     peer_type: l3leaf
   switchport:
@@ -86,7 +86,7 @@ ethernet_interfaces:
     enabled: true
 hardware_counters:
   features: null
-hostname: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+hostname: hardware-feature-sflow-subinterface-1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -166,22 +166,22 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: HARDWARE_FEATURES_VEOS_LAB
-    description: HARDWARE_FEATURES_VEOS_LAB_Ethernet10
+      peer: hardware-features-veos-lab
+    description: hardware-features-veos-lab_Ethernet10
   - ip_address: 10.10.30.41
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     local_as: '65000'
     metadata:
-      peer: HARDWARE_FEATURES_CLOUDEOS
-    description: HARDWARE_FEATURES_CLOUDEOS
+      peer: hardware-features-cloudeos
+    description: hardware-features-cloudeos
   - ip_address: 10.10.60.5
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     local_as: '65100'
     metadata:
-      peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
-    description: HARDWARE_FEATURES_CUSTOM_PLATFORM
+      peer: hardware-features-custom-platform
+    description: hardware-features-custom-platform
   redistribute:
     connected:
       enabled: true
@@ -239,7 +239,7 @@ vrfs:
     - TENANT1
 vxlan_interface:
   vxlan1:
-    description: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_VTEP
+    description: hardware-feature-sflow-subinterface-1_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

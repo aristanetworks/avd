@@ -5,16 +5,16 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: L2_UNDERLAY-MULTICAST-L3LEAF1A_Ethernet6
+  description: L2_underlay-multicast-l3leaf1a_Ethernet6
   shutdown: false
   channel_group:
     id: 1
     mode: active
   metadata:
-    peer: UNDERLAY-MULTICAST-L3LEAF1A
+    peer: underlay-multicast-l3leaf1a
     peer_interface: Ethernet6
     peer_type: l3leaf
-hostname: UNDERLAY-MULTICAST-L2LEAF1A
+hostname: underlay-multicast-l2leaf1a
 ip_igmp_snooping:
   globally_enabled: true
 management_interfaces:

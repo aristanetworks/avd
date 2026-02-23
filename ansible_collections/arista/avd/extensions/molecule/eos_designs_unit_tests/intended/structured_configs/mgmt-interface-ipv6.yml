@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: mgmt_interface_ipv6
+hostname: mgmt-interface-ipv6
 ip_igmp_snooping:
   globally_enabled: true
 ipv6_static_routes:

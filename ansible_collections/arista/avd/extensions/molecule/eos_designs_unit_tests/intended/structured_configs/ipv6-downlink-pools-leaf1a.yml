@@ -5,17 +5,17 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_IPV6_DOWNLINK_POOLS_SPINE_Ethernet1
+  description: P2P_ipv6-downlink-pools-spine_Ethernet1
   shutdown: false
   mtu: 9214
   ipv6_address: 2001:db8:12::2/64
   metadata:
-    peer: IPV6_DOWNLINK_POOLS_SPINE
+    peer: ipv6-downlink-pools-spine
     peer_interface: Ethernet1
     peer_type: spine
   switchport:
     enabled: false
-hostname: IPV6_DOWNLINK_POOLS_LEAF1a
+hostname: ipv6-downlink-pools-leaf1a
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -83,14 +83,14 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     metadata:
-      peer: IPV6_DOWNLINK_POOLS_SPINE
-    description: IPV6_DOWNLINK_POOLS_SPINE_Ethernet1
+      peer: ipv6-downlink-pools-spine
+    description: ipv6-downlink-pools-spine_Ethernet1
   - ip_address: 2001:db8::1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65100'
     metadata:
-      peer: IPV6_DOWNLINK_POOLS_SPINE
-    description: IPV6_DOWNLINK_POOLS_SPINE_Loopback0
+      peer: ipv6-downlink-pools-spine
+    description: ipv6-downlink-pools-spine_Loopback0
   redistribute:
     connected:
       enabled: true
@@ -119,7 +119,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: IPV6_DOWNLINK_POOLS_LEAF1a_VTEP
+    description: ipv6-downlink-pools-leaf1a_VTEP
     vxlan:
       source_interface: Loopback0
       udp_port: 4789

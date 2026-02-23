@@ -15,7 +15,7 @@ ethernet_interfaces:
   switchport:
     enabled: true
     mode: trunk
-hostname: connected_endpoints_no_network_services
+hostname: connected-endpoints-no-network-services
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

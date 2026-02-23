@@ -17,25 +17,25 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet57/1
-  description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1B_Ethernet57/1
+  description: MLAG_PEER_dc1-undeployed-leaf1b_Ethernet57/1
   shutdown: false
   speed: 100g
   channel_group:
     id: 571
     mode: active
   metadata:
-    peer: DC1_UNDEPLOYED_LEAF1B
+    peer: dc1-undeployed-leaf1b
     peer_interface: Ethernet57/1
     peer_type: mlag_peer
 - name: Ethernet58/1
-  description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1B_Ethernet58/1
+  description: MLAG_PEER_dc1-undeployed-leaf1b_Ethernet58/1
   shutdown: false
   speed: 100g
   channel_group:
     id: 571
     mode: active
   metadata:
-    peer: DC1_UNDEPLOYED_LEAF1B
+    peer: dc1-undeployed-leaf1b
     peer_interface: Ethernet58/1
     peer_type: mlag_peer
 - name: Ethernet49/1
@@ -44,7 +44,7 @@ ethernet_interfaces:
   speed: forced 100gfull
   ip_address: 172.31.255.129/31
   metadata:
-    peer: DC1-SPINE1
+    peer: dc1-spine1
     peer_interface: Ethernet28
     peer_type: spine
   switchport:
@@ -55,7 +55,7 @@ ethernet_interfaces:
   speed: forced 100gfull
   ip_address: 172.31.255.131/31
   metadata:
-    peer: DC1-SPINE2
+    peer: dc1-spine2
     peer_interface: Ethernet28
     peer_type: spine
   switchport:
@@ -66,7 +66,7 @@ ethernet_interfaces:
   speed: forced 100gfull
   ip_address: 172.31.255.133/31
   metadata:
-    peer: DC1-SPINE3
+    peer: dc1-spine3
     peer_interface: Ethernet28
     peer_type: spine
   switchport:
@@ -77,7 +77,7 @@ ethernet_interfaces:
   speed: forced 100gfull
   ip_address: 172.31.255.135/31
   metadata:
-    peer: DC1-SPINE4
+    peer: dc1-spine4
     peer_interface: Ethernet28
     peer_type: spine
   switchport:
@@ -94,7 +94,7 @@ hardware:
     serdes: 25G
   - speed_group: 5/1
     serdes: 10G
-hostname: DC1_UNDEPLOYED_LEAF1A
+hostname: dc1-undeployed-leaf1a
 ip_access_lists:
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
   entries:
@@ -189,7 +189,7 @@ platform:
       hardware_only: true
 port_channel_interfaces:
 - name: Port-Channel571
-  description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1B_Po571
+  description: MLAG_PEER_dc1-undeployed-leaf1b_Po571
   shutdown: false
   switchport:
     enabled: true
@@ -267,7 +267,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65110'
-    description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1B
+    description: MLAG_PEER_dc1-undeployed-leaf1b
     next_hop_self: true
     password: 15AwQNBEJ1nyF/kBEtoAGw==
     send_community: all
@@ -292,56 +292,56 @@ router_bgp:
   - ip_address: 10.255.251.25
     peer_group: MLAG-PEERS
     metadata:
-      peer: DC1_UNDEPLOYED_LEAF1B
-    description: DC1_UNDEPLOYED_LEAF1B
+      peer: dc1-undeployed-leaf1b
+    description: dc1-undeployed-leaf1b
   - ip_address: 172.31.255.128
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1_Ethernet28
+      peer: dc1-spine1
+    description: dc1-spine1_Ethernet28
   - ip_address: 172.31.255.130
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE2
-    description: DC1-SPINE2_Ethernet28
+      peer: dc1-spine2
+    description: dc1-spine2_Ethernet28
   - ip_address: 172.31.255.132
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE3
-    description: DC1-SPINE3_Ethernet28
+      peer: dc1-spine3
+    description: dc1-spine3_Ethernet28
   - ip_address: 172.31.255.134
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE4
-    description: DC1-SPINE4_Ethernet28
+      peer: dc1-spine4
+    description: dc1-spine4_Ethernet28
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1
+      peer: dc1-spine1
+    description: dc1-spine1
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE2
-    description: DC1-SPINE2
+      peer: dc1-spine2
+    description: dc1-spine2
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE3
-    description: DC1-SPINE3
+      peer: dc1-spine3
+    description: dc1-spine3
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE4
-    description: DC1-SPINE4
+      peer: dc1-spine4
+    description: dc1-spine4
   redistribute:
     connected:
       enabled: true
@@ -475,7 +475,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
-      description: DC1_UNDEPLOYED_LEAF1B
+      description: dc1-undeployed-leaf1b
     redistribute:
       connected:
         enabled: true
@@ -496,7 +496,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
-      description: DC1_UNDEPLOYED_LEAF1B
+      description: dc1-undeployed-leaf1b
     redistribute:
       connected:
         enabled: true
@@ -517,7 +517,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
-      description: DC1_UNDEPLOYED_LEAF1B
+      description: dc1-undeployed-leaf1b
     redistribute:
       connected:
         enabled: true
@@ -541,7 +541,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
-      description: DC1_UNDEPLOYED_LEAF1B
+      description: dc1-undeployed-leaf1b
     redistribute:
       connected:
         enabled: true
@@ -564,7 +564,7 @@ router_bgp:
     neighbors:
     - ip_address: 172.31.11.25
       peer_group: MLAG-PEERS
-      description: DC1_UNDEPLOYED_LEAF1B
+      description: dc1-undeployed-leaf1b
     redistribute:
       connected:
         enabled: true
@@ -585,7 +585,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
-      description: DC1_UNDEPLOYED_LEAF1B
+      description: dc1-undeployed-leaf1b
     redistribute:
       connected:
         enabled: true
@@ -607,7 +607,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
-      description: DC1_UNDEPLOYED_LEAF1B
+      description: dc1-undeployed-leaf1b
     redistribute:
       connected:
         enabled: true
@@ -629,7 +629,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
-      description: DC1_UNDEPLOYED_LEAF1B
+      description: dc1-undeployed-leaf1b
     redistribute:
       connected:
         enabled: true
@@ -651,7 +651,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
-      description: DC1_UNDEPLOYED_LEAF1B
+      description: dc1-undeployed-leaf1b
     redistribute:
       connected:
         enabled: true
@@ -659,7 +659,7 @@ router_bgp:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS DC1_UNDEPLOYED_LEAF1A
+  location: EOS_DESIGNS_UNIT_TESTS dc1-undeployed-leaf1a
 spanning_tree:
   root_super: true
   mode: mstp
@@ -1180,7 +1180,7 @@ vrfs:
     - Tenant_C
 vxlan_interface:
   vxlan1:
-    description: DC1_UNDEPLOYED_LEAF1A_VTEP
+    description: dc1-undeployed-leaf1a_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

@@ -5,13 +5,13 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: L2_uplink_lan_wan_router1_Ethernet2
+  description: L2_uplink-lan-wan-router1_Ethernet2
   shutdown: false
   flow_tracker:
     sampled: FLOW-TRACKER
   spanning_tree_portfast: edge
   metadata:
-    peer: uplink_lan_wan_router1
+    peer: uplink-lan-wan-router1
     peer_interface: Ethernet2
     peer_type: wan_router
   switchport:
@@ -21,13 +21,13 @@ ethernet_interfaces:
       allowed_vlan: 10,100
       native_vlan: 10
 - name: Ethernet2
-  description: L2_uplink_lan_wan_router2_Ethernet2
+  description: L2_uplink-lan-wan-router2_Ethernet2
   shutdown: false
   flow_tracker:
     sampled: FLOW-TRACKER
   spanning_tree_portfast: edge
   metadata:
-    peer: uplink_lan_wan_router2
+    peer: uplink-lan-wan-router2
     peer_interface: Ethernet2
     peer_type: wan_router
   switchport:
@@ -50,7 +50,7 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: uplink_lan_l2leaf
+hostname: uplink-lan-l2leaf
 ip_igmp_snooping:
   globally_enabled: true
 metadata:

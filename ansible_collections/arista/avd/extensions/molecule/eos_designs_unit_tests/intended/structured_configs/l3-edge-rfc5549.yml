@@ -49,7 +49,7 @@ ethernet_interfaces:
     peer_type: other
   switchport:
     enabled: false
-hostname: l3_edge_rfc5549
+hostname: l3-edge-rfc5549
 ip_routing_ipv6_interfaces: true
 ipv6_unicast_routing: true
 loopback_interfaces:

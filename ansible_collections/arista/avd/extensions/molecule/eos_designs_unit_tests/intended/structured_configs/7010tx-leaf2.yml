@@ -5,26 +5,26 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet5
-  description: MLAG_7010TX-LEAF1_Ethernet5
+  description: MLAG_7010tx-leaf1_Ethernet5
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: 7010TX-LEAF1
+    peer: 7010tx-leaf1
     peer_interface: Ethernet5
     peer_type: mlag_peer
 - name: Ethernet6
-  description: MLAG_7010TX-LEAF1_Ethernet6
+  description: MLAG_7010tx-leaf1_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: 7010TX-LEAF1
+    peer: 7010tx-leaf1
     peer_interface: Ethernet6
     peer_type: mlag_peer
-hostname: 7010TX-LEAF2
+hostname: 7010tx-leaf2
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -61,7 +61,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_7010TX-LEAF1_Port-Channel5
+  description: MLAG_7010tx-leaf1_Port-Channel5
   shutdown: false
   switchport:
     enabled: true
@@ -108,7 +108,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '923'
-    description: 7010TX-LEAF1
+    description: 7010tx-leaf1
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -117,8 +117,8 @@ router_bgp:
   - ip_address: 10.10.224.4
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: 7010TX-LEAF1
-    description: 7010TX-LEAF1_Vlan4093
+      peer: 7010tx-leaf1
+    description: 7010tx-leaf1_Vlan4093
   redistribute:
     connected:
       enabled: true

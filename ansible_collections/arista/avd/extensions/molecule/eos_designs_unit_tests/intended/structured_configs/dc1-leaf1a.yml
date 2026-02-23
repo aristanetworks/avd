@@ -23,7 +23,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.1/31
   metadata:
-    peer: DC1-SPINE1
+    peer: dc1-spine1
     peer_interface: Ethernet1/1
     peer_type: spine
   switchport:
@@ -35,7 +35,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.3/31
   metadata:
-    peer: DC1-SPINE2
+    peer: dc1-spine2
     peer_interface: Ethernet1/1/1
     peer_type: spine
   switchport:
@@ -47,7 +47,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.5/31
   metadata:
-    peer: DC1-SPINE3
+    peer: dc1-spine3
     peer_interface: Ethernet1/1/1
     peer_type: spine
   switchport:
@@ -59,7 +59,7 @@ ethernet_interfaces:
   mtu: 1500
   ip_address: 172.31.254.7/31
   metadata:
-    peer: DC1-SPINE4
+    peer: dc1-spine4
     peer_interface: Ethernet1/1
     peer_type: spine
   switchport:
@@ -126,7 +126,7 @@ ethernet_interfaces:
     phone:
       vlan: 113
       trunk: tagged
-hostname: DC1-LEAF1A
+hostname: dc1-leaf1a
 ip_access_lists:
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan132
   entries:
@@ -277,50 +277,50 @@ router_bgp:
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1_Ethernet1/1
+      peer: dc1-spine1
+    description: dc1-spine1_Ethernet1/1
   - ip_address: 172.31.254.2
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE2
-    description: DC1-SPINE2_Ethernet1/1/1
+      peer: dc1-spine2
+    description: dc1-spine2_Ethernet1/1/1
   - ip_address: 172.31.254.4
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE3
-    description: DC1-SPINE3_Ethernet1/1/1
+      peer: dc1-spine3
+    description: dc1-spine3_Ethernet1/1/1
   - ip_address: 172.31.254.6
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE4
-    description: DC1-SPINE4_Ethernet1/1
+      peer: dc1-spine4
+    description: dc1-spine4_Ethernet1/1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE1
-    description: DC1-SPINE1
+      peer: dc1-spine1
+    description: dc1-spine1
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE2
-    description: DC1-SPINE2
+      peer: dc1-spine2
+    description: dc1-spine2
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE3
-    description: DC1-SPINE3
+      peer: dc1-spine3
+    description: dc1-spine3
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: DC1-SPINE4
-    description: DC1-SPINE4
+      peer: dc1-spine4
+    description: dc1-spine4
   redistribute:
     connected:
       enabled: true
@@ -408,8 +408,6 @@ router_bgp:
       ospf:
         enabled: true
     aggregate_addresses:
-    - prefix: 10.1.1.0/8
-      advertise_only: true
     - prefix: 10.2.1.0/8
   - name: Tenant_A_WEB_Zone
     rd: 1.1.1.1:11
@@ -455,7 +453,7 @@ router_ospf:
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS rackA DC1-LEAF1A
+  location: EOS_DESIGNS_UNIT_TESTS rackA dc1-leaf1a
 spanning_tree:
   root_super: true
   mode: mstp
@@ -684,7 +682,7 @@ vrfs:
     - Tenant_D
 vxlan_interface:
   vxlan1:
-    description: DC1-LEAF1A_VTEP
+    description: dc1-leaf1a_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

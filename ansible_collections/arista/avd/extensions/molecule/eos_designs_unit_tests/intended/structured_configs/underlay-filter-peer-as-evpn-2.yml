@@ -5,17 +5,17 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_underlay_filter_peer_as_evpn_1_Ethernet1
+  description: P2P_underlay-filter-peer-as-evpn-1_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 192.168.153.0/31
   metadata:
-    peer: underlay_filter_peer_as_evpn_1
+    peer: underlay-filter-peer-as-evpn-1
     peer_interface: Ethernet1
     peer_type: l3leaf
   switchport:
     enabled: false
-hostname: underlay_filter_peer_as_evpn_2
+hostname: underlay-filter-peer-as-evpn-2
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -89,15 +89,15 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '64512'
     metadata:
-      peer: underlay_filter_peer_as_evpn_1
-    description: underlay_filter_peer_as_evpn_1_Ethernet1
+      peer: underlay-filter-peer-as-evpn-1
+    description: underlay-filter-peer-as-evpn-1_Ethernet1
     route_map_out: RM-BGP-AS64512-OUT
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '64512'
     metadata:
-      peer: underlay_filter_peer_as_evpn_1
-    description: underlay_filter_peer_as_evpn_1_Loopback0
+      peer: underlay-filter-peer-as-evpn-1
+    description: underlay-filter-peer-as-evpn-1_Loopback0
   redistribute:
     connected:
       enabled: true
@@ -124,7 +124,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: underlay_filter_peer_as_evpn_2_VTEP
+    description: underlay-filter-peer-as-evpn-2_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

@@ -5,26 +5,26 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Eth1
-  description: MLAG_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Eth1
+  description: MLAG_overlay-routing-protocol-her-l3leaf3a_Eth1
   shutdown: false
   channel_group:
     id: 1
     mode: active
   metadata:
-    peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
+    peer: overlay-routing-protocol-her-l3leaf3a
     peer_interface: Eth1
     peer_type: mlag_peer
 - name: Eth2
-  description: MLAG_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Eth2
+  description: MLAG_overlay-routing-protocol-her-l3leaf3a_Eth2
   shutdown: false
   channel_group:
     id: 1
     mode: active
   metadata:
-    peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
+    peer: overlay-routing-protocol-her-l3leaf3a
     peer_interface: Eth2
     peer_type: mlag_peer
-hostname: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
+hostname: overlay-routing-protocol-her-l3leaf3b
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -50,7 +50,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel1
-  description: MLAG_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Port-Channel1
+  description: MLAG_overlay-routing-protocol-her-l3leaf3a_Port-Channel1
   shutdown: false
   switchport:
     enabled: true
@@ -106,7 +106,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65003'
-    description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
+    description: overlay-routing-protocol-her-l3leaf3a
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -115,8 +115,8 @@ router_bgp:
   - ip_address: 192.168.253.4
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
-    description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Vlan4093
+      peer: overlay-routing-protocol-her-l3leaf3a
+    description: overlay-routing-protocol-her-l3leaf3a_Vlan4093
   redistribute:
     connected:
       enabled: true
@@ -229,7 +229,7 @@ vrfs:
     - TEST
 vxlan_interface:
   vxlan1:
-    description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_VTEP
+    description: overlay-routing-protocol-her-l3leaf3b_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

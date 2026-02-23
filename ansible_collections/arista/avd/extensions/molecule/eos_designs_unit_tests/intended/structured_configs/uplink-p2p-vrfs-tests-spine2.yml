@@ -5,7 +5,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet2
+  description: P2P_uplink-p2p-vrfs-tests-leaf2_Ethernet2
   shutdown: false
   mtu: 9214
   ip_address: 2001:db8:3:9::1/64
@@ -15,13 +15,13 @@ ethernet_interfaces:
   mac_security:
     profile: TEST
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+    peer: uplink-p2p-vrfs-tests-leaf2
     peer_interface: Ethernet2
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet1.100
-  description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet2.100_VRF_IT
+  description: P2P_uplink-p2p-vrfs-tests-leaf2_Ethernet2.100_VRF_IT
   shutdown: false
   mtu: 9214
   vrf: IT
@@ -29,11 +29,11 @@ ethernet_interfaces:
     vlan: 100
   ipv6_address: 2001:db8:3:9::2/64
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+    peer: uplink-p2p-vrfs-tests-leaf2
     peer_interface: Ethernet2.100
     peer_type: l3leaf
 - name: Ethernet1.42
-  description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet2.42_VRF_PROD
+  description: P2P_uplink-p2p-vrfs-tests-leaf2_Ethernet2.42_VRF_PROD
   shutdown: false
   mtu: 9214
   vrf: PROD
@@ -41,11 +41,11 @@ ethernet_interfaces:
     vlan: 42
   ipv6_address: 2001:db8:3:9::2/64
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+    peer: uplink-p2p-vrfs-tests-leaf2
     peer_interface: Ethernet2.42
     peer_type: l3leaf
 - name: Ethernet2
-  description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2
+  description: P2P_uplink-p2p-vrfs-tests-leaf1_Ethernet2
   shutdown: false
   mtu: 9214
   ip_address: 10.42.42.10/31
@@ -55,13 +55,13 @@ ethernet_interfaces:
   mac_security:
     profile: TEST
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+    peer: uplink-p2p-vrfs-tests-leaf1
     peer_interface: Ethernet2
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet2.100
-  description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.100_VRF_IT
+  description: P2P_uplink-p2p-vrfs-tests-leaf1_Ethernet2.100_VRF_IT
   shutdown: false
   mtu: 9214
   vrf: IT
@@ -69,11 +69,11 @@ ethernet_interfaces:
     vlan: 100
   ip_address: 10.42.42.10/31
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+    peer: uplink-p2p-vrfs-tests-leaf1
     peer_interface: Ethernet2.100
     peer_type: l3leaf
 - name: Ethernet2.42
-  description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.42_VRF_PROD
+  description: P2P_uplink-p2p-vrfs-tests-leaf1_Ethernet2.42_VRF_PROD
   shutdown: false
   mtu: 9214
   vrf: PROD
@@ -81,10 +81,10 @@ ethernet_interfaces:
     vlan: 42
   ip_address: 10.42.42.10/31
   metadata:
-    peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+    peer: uplink-p2p-vrfs-tests-leaf1
     peer_interface: Ethernet2.42
     peer_type: l3leaf
-hostname: UPLINK_P2P_VRFS_TESTS_SPINE2
+hostname: uplink-p2p-vrfs-tests-spine2
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
@@ -116,14 +116,14 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     metadata:
-      peer: UPLINK_P2P_VRFS_TESTS_LEAF2
-    description: UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet2
+      peer: uplink-p2p-vrfs-tests-leaf2
+    description: uplink-p2p-vrfs-tests-leaf2_Ethernet2
   - ip_address: 10.42.42.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     metadata:
-      peer: UPLINK_P2P_VRFS_TESTS_LEAF1
-    description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2
+      peer: uplink-p2p-vrfs-tests-leaf1
+    description: uplink-p2p-vrfs-tests-leaf1_Ethernet2
   redistribute:
     connected:
       enabled: true
@@ -138,22 +138,22 @@ router_bgp:
     - ip_address: 2001:db8:3:9::1
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet2.100_vrf_IT
+      description: uplink-p2p-vrfs-tests-leaf2_Ethernet2.100_vrf_IT
     - ip_address: 10.42.42.11
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.100_vrf_IT
+      description: uplink-p2p-vrfs-tests-leaf1_Ethernet2.100_vrf_IT
   - name: PROD
     router_id: 192.168.42.2
     neighbors:
     - ip_address: 2001:db8:3:9::1
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet2.42_vrf_PROD
+      description: uplink-p2p-vrfs-tests-leaf2_Ethernet2.42_vrf_PROD
     - ip_address: 10.42.42.11
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2.42_vrf_PROD
+      description: uplink-p2p-vrfs-tests-leaf1_Ethernet2.42_vrf_PROD
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none

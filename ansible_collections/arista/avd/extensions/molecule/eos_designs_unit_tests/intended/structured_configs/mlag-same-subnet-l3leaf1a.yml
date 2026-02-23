@@ -5,26 +5,26 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet5
-  description: MLAG_MLAG_SAME_SUBNET_L3LEAF1B_Ethernet5
+  description: MLAG_mlag-same-subnet-l3leaf1b_Ethernet5
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: MLAG_SAME_SUBNET_L3LEAF1B
+    peer: mlag-same-subnet-l3leaf1b
     peer_interface: Ethernet5
     peer_type: mlag_peer
 - name: Ethernet6
-  description: MLAG_MLAG_SAME_SUBNET_L3LEAF1B_Ethernet6
+  description: MLAG_mlag-same-subnet-l3leaf1b_Ethernet6
   shutdown: false
   channel_group:
     id: 5
     mode: active
   metadata:
-    peer: MLAG_SAME_SUBNET_L3LEAF1B
+    peer: mlag-same-subnet-l3leaf1b
     peer_interface: Ethernet6
     peer_type: mlag_peer
-hostname: MLAG_SAME_SUBNET_L3LEAF1A
+hostname: mlag-same-subnet-l3leaf1a
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -58,7 +58,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_MLAG_SAME_SUBNET_L3LEAF1B_Port-Channel5
+  description: MLAG_mlag-same-subnet-l3leaf1b_Port-Channel5
   shutdown: false
   switchport:
     enabled: true
@@ -121,7 +121,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '923'
-    description: MLAG_SAME_SUBNET_L3LEAF1B
+    description: mlag-same-subnet-l3leaf1b
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -130,8 +130,8 @@ router_bgp:
   - ip_address: 10.10.224.2
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: MLAG_SAME_SUBNET_L3LEAF1B
-    description: MLAG_SAME_SUBNET_L3LEAF1B_Vlan4093
+      peer: mlag-same-subnet-l3leaf1b
+    description: mlag-same-subnet-l3leaf1b_Vlan4093
   redistribute:
     connected:
       enabled: true
@@ -179,7 +179,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.10.224.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: MLAG_SAME_SUBNET_L3LEAF1B_Vlan3000
+      description: mlag-same-subnet-l3leaf1b_Vlan3000
     redistribute:
       connected:
         enabled: true
@@ -201,7 +201,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.240.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: MLAG_SAME_SUBNET_L3LEAF1B_Vlan3001
+      description: mlag-same-subnet-l3leaf1b_Vlan3001
     redistribute:
       connected:
         enabled: true
@@ -317,7 +317,7 @@ vrfs:
     - TEST_MLAG_SAME_SUBNET_ON_VRF
 vxlan_interface:
   vxlan1:
-    description: MLAG_SAME_SUBNET_L3LEAF1A_VTEP
+    description: mlag-same-subnet-l3leaf1a_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

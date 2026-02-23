@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: logging_settings
+hostname: logging-settings
 ip_routing: true
 logging:
   console: errors

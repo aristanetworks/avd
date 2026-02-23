@@ -85,7 +85,7 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: asdot-for-wan-ha-transit1A1
+hostname: asdot-for-wan-ha-transit1a1
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -384,8 +384,8 @@ router_bgp:
   - ip_address: 192.168.142.2
     remote_as: '65000.100'
     metadata:
-      peer: asdot-for-wan-ha-transit1B1
-    description: asdot-for-wan-ha-transit1B1
+      peer: asdot-for-wan-ha-transit1b1
+    description: asdot-for-wan-ha-transit1b1
     route_reflector_client: true
     update_source: Dps1
     route_map_in: RM-WAN-HA-PEER-IN
@@ -486,7 +486,7 @@ router_path_selection:
     - name: Ethernet52
     static_peers:
     - router_ip: 192.168.142.2
-      name: asdot-for-wan-ha-transit1B1
+      name: asdot-for-wan-ha-transit1b1
       ipv4_addresses:
       - 172.17.0.3
   load_balance_policies:
@@ -522,7 +522,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: asdot-for-wan-ha-transit1A1_VTEP
+    description: asdot-for-wan-ha-transit1a1_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789

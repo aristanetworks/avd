@@ -5,17 +5,17 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet3
-  description: MLAG_HARDWARE_FEATURES_VEOS_LAB_Ethernet3
+  description: MLAG_hardware-features-veos-lab_Ethernet3
   shutdown: false
   channel_group:
     id: 3
     mode: active
   metadata:
-    peer: HARDWARE_FEATURES_VEOS_LAB
+    peer: hardware-features-veos-lab
     peer_interface: Ethernet3
     peer_type: mlag_peer
 - name: Ethernet2
-  description: P2P_HARDWARE_FEATURES_720XP_Ethernet1
+  description: P2P_hardware-features-720xp_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 10.10.50.6/31
@@ -29,7 +29,7 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
   metadata:
-    peer: HARDWARE_FEATURES_720XP
+    peer: hardware-features-720xp
     peer_interface: Ethernet1
     peer_type: l3leaf
   sflow:
@@ -37,12 +37,12 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet9
-  description: P2P_HARDWARE_FEATURES_VEOS_LAB_Ethernet9
+  description: P2P_hardware-features-veos-lab_Ethernet9
   shutdown: false
   mtu: 9214
   ip_address: 10.10.60.1/31
   metadata:
-    peer: HARDWARE_FEATURES_VEOS_LAB
+    peer: hardware-features-veos-lab
     peer_interface: Ethernet9
     peer_type: l3leaf
   sflow:
@@ -117,7 +117,7 @@ hardware_counters:
   - name: vni encap
   - name: vtep decap
   - name: vtep encap
-hostname: HARDWARE_FEATURES_CEOS_LAB
+hostname: hardware-features-ceos-lab
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -143,7 +143,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_HARDWARE_FEATURES_VEOS_LAB_Port-Channel3
+  description: MLAG_hardware-features-veos-lab_Port-Channel3
   shutdown: false
   sflow:
     enable: true
@@ -231,7 +231,7 @@ router_bgp:
     metadata:
       type: ipv4
     remote_as: '65001'
-    description: HARDWARE_FEATURES_VEOS_LAB
+    description: hardware-features-veos-lab
     next_hop_self: true
     send_community: all
     maximum_routes: 256000
@@ -245,21 +245,21 @@ router_bgp:
   - ip_address: 10.10.40.0
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
-      peer: HARDWARE_FEATURES_VEOS_LAB
-    description: HARDWARE_FEATURES_VEOS_LAB_Vlan4093
+      peer: hardware-features-veos-lab
+    description: hardware-features-veos-lab_Vlan4093
   - ip_address: 10.10.50.7
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     metadata:
-      peer: HARDWARE_FEATURES_720XP
-    description: HARDWARE_FEATURES_720XP_Ethernet1
+      peer: hardware-features-720xp
+    description: hardware-features-720xp_Ethernet1
   - ip_address: 10.10.60.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     local_as: '65100'
     metadata:
-      peer: HARDWARE_FEATURES_VEOS_LAB
-    description: HARDWARE_FEATURES_VEOS_LAB
+      peer: hardware-features-veos-lab
+    description: hardware-features-veos-lab
   redistribute:
     connected:
       enabled: true
@@ -286,7 +286,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.10.40.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: HARDWARE_FEATURES_VEOS_LAB_Vlan3009
+      description: hardware-features-veos-lab_Vlan3009
     - ip_address: 10.10.40.100
       remote_as: '65002'
     redistribute:
@@ -367,7 +367,7 @@ vrfs:
     - TENANT1
 vxlan_interface:
   vxlan1:
-    description: HARDWARE_FEATURES_CEOS_LAB_VTEP
+    description: hardware-features-ceos-lab_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

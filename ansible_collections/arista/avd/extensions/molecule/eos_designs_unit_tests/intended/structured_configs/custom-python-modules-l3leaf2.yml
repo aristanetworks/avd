@@ -5,18 +5,18 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet5
+  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON-MODULES-L3LEAF1A_Ethernet5
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.25/31
   metadata:
-    peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
+    peer: custom-python-modules-l3leaf1a
     peer_interface: Ethernet5
     peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet1.1
-  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet5.1 VRF TEST_VRF
+  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON-MODULES-L3LEAF1A_Ethernet5.1 VRF TEST_VRF
   shutdown: false
   mtu: 9214
   vrf: TEST_VRF
@@ -24,10 +24,10 @@ ethernet_interfaces:
     vlan: 1
   ip_address: 172.16.0.25/31
   metadata:
-    peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
+    peer: custom-python-modules-l3leaf1a
     peer_interface: Ethernet5.1
     peer_type: l3leaf
-hostname: CUSTOM-PYTHON_MODULES-L3LEAF2
+hostname: custom-python-modules-l3leaf2
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -85,8 +85,8 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
     metadata:
-      peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
-    description: CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet5
+      peer: custom-python-modules-l3leaf1a
+    description: custom-python-modules-l3leaf1a_Ethernet5
   redistribute:
     connected:
       enabled: true
@@ -123,7 +123,7 @@ router_bgp:
     - ip_address: 172.16.0.24
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65101'
-      description: CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet5.1_vrf_TEST_VRF
+      description: custom-python-modules-l3leaf1a_Ethernet5.1_vrf_TEST_VRF
     redistribute:
       connected:
         enabled: true
@@ -165,7 +165,7 @@ vrfs:
     - CUSTOM_PYTHON_MODULES_TENANT
 vxlan_interface:
   vxlan1:
-    description: CUSTOM-PYTHON_MODULES-L3LEAF2_VTEP
+    description: custom-python-modules-l3leaf2_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

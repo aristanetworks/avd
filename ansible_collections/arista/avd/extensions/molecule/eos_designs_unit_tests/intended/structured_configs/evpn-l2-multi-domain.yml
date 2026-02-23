@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: evpn_l2_multi_domain
+hostname: evpn-l2-multi-domain
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -79,8 +79,8 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65233'
     metadata:
-      peer: evpn_gateway_l2_l3_disabled
-    description: evpn_gateway_l2_l3_disabled_Loopback0
+      peer: evpn-gateway-l2-l3-disabled
+    description: evpn-gateway-l2-l3-disabled_Loopback0
   - ip_address: 192.168.100.10
     peer_group: EVPN-OVERLAY-CORE
     remote_as: '65002'
@@ -538,7 +538,7 @@ vrfs:
     - L2_MULTI_DOMAIN_ENABLED
 vxlan_interface:
   vxlan1:
-    description: evpn_l2_multi_domain_VTEP
+    description: evpn-l2-multi-domain_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: default_interface_mtu_hostvars
+hostname: default-interface-mtu-hostvars
 interface_defaults:
   mtu: 1234
 ip_igmp_snooping:

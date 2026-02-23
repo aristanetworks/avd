@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: AUTO_BGP_ASN_LEAF1B
+hostname: auto-bgp-asn-leaf1b
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -84,7 +84,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: AUTO_BGP_ASN_LEAF1B_VTEP
+    description: auto-bgp-asn-leaf1b_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

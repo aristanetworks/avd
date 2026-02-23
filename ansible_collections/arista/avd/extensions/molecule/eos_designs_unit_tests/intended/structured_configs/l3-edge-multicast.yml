@@ -90,7 +90,7 @@ ethernet_interfaces:
     peer_type: other
   switchport:
     enabled: false
-hostname: l3_edge_multicast
+hostname: l3-edge-multicast
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
