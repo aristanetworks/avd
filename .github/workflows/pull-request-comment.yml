@@ -39,6 +39,23 @@ jobs:
             cd test-avd-pr-${{ github.event.pull_request.number }}
             # Run your playbook using \`python -m ansible.cli.playbook path/to/playbook.yml ...\`
             \`\`\`
+
+            You can also test this PR using AVD playground:
+            - Rebase your branch to makes sure it is up-to-date and has latest lab topologies for example inventories
+            - Authenticate on [labs.arista.com](https://labs.arista.com/). Use your email! Not login.
+            - [Start the playground](https://labs.arista.com/launch?lab_type=avd-playground&origin=tech-lib)
+            - In the lab selector UI pick "I want to use a specific AVD fork"
+            - Enter following parameters:
+            
+            \`\`\`text
+            GitHub org: ${{ github.event.pull_request.head.repo.owner.login }}
+            Repository name: ${{ github.event.pull_request.head.repo.name }}
+            Branch: ${{ github.event.pull_request.head.ref }}
+            \`\`\`
+
+            - Select an example inventory to test the PR
+            - Once the AVD Playground setup will be finished, type `make start` and test anything once the lab is up
+
         with:
           script: |-
             github.rest.issues.createComment({
