@@ -507,7 +507,8 @@ vlan_interfaces:
   description: MLAG_L3_VRF_VRF10
   shutdown: false
   vrf: VRF10
-  ipv6_address: 2001:db8:4::2/64
+  ipv6_addresses:
+  - 2001:db8:4::2/64
   mtu: 1500
   metadata:
     tenants:
@@ -535,7 +536,8 @@ vlan_interfaces:
   description: MLAG_L3_VRF_VRF11
   shutdown: false
   vrf: VRF11
-  ipv6_address: 2001:db8:4::2/64
+  ipv6_addresses:
+  - 2001:db8:4::2/64
   mtu: 1500
   metadata:
     tenants:
@@ -565,7 +567,8 @@ vlan_interfaces:
   description: MLAG_L3_VRF_VRF12
   shutdown: false
   vrf: VRF12
-  ipv6_address: 2001:db8:4::2/64
+  ipv6_addresses:
+  - 2001:db8:4::2/64
   mtu: 1500
   metadata:
     tenants:
