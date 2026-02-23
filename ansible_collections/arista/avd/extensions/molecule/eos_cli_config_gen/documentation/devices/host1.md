@@ -4797,6 +4797,7 @@ interface Dps1
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
 | Ethernet4 | Molecule IPv6 | - | auto-config | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
+| Ethernet55 | DHCPv6 Relay Testing | - | a0::1/64 | default | - | False | - | - | - | - |
 | Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
 | Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
 | Ethernet77 | MLAG_PEER_DC1-LEAF1B_Ethernet8 | 8 | *auto-config | *default | *- | *- | *- | *- | *- | *- |
@@ -7213,8 +7214,23 @@ interface Tunnel4
 
 | Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
+| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | True | - | - | - |
+| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - |
 | Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - |
+| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - |
+| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | True | - | - | - |
 | Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - |
+| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | True | - | - | - |
+| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - |
+| Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - |
+| Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - |
+| Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - |
+| Vlan338 | default | 2001:db8:338::1/64 | - | - | - | - | - | - | - |
+| Vlan339 | default | 2001:db8:339::1/64 | - | - | - | - | True | - | - |
+| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | True | - | - | - | - |
+| Vlan667 | default | 2001:db8:667::2/64 | - | - | - | - | - | - | - |
+| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | True | - | - | - |
+| Vlan1002 | Tenant_A | a2::1/64 | - | - | True | True | - | - | - |
 
 ##### VRRP Details
 
