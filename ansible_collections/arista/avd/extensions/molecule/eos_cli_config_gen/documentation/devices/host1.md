@@ -13551,6 +13551,7 @@ mac security
       traffic unprotected drop
       replay protection window 20000
 ```
+
 ### Traffic Policies VRF Interfaces
 
 | VRF | CPU Fallback None | Excluded Prefixes | Input Physical |
