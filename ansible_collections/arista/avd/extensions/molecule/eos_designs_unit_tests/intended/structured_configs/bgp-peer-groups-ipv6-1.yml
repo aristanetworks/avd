@@ -30,7 +30,8 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ipv6_address: 2001:db8:dead:beef::69/128
+  ipv6_addresses:
+  - 2001:db8:dead:beef::69/128
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS

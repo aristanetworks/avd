@@ -80,11 +80,13 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ipv6_address: 2001:db8:1:1::1/64
+  ipv6_addresses:
+  - 2001:db8:1:1::1/64
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ipv6_address: 2001:db8:5:1::1/64
+  ipv6_addresses:
+  - 2001:db8:5:1::1/64
 - name: Loopback10
   description: DIAG_VRF_VRF10
   shutdown: false
@@ -388,12 +390,14 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_L3
   shutdown: false
-  ipv6_address: 2001:db8:4::1/64
+  ipv6_addresses:
+  - 2001:db8:4::1/64
   mtu: 1500
 - name: Vlan4094
   description: MLAG
   shutdown: false
-  ipv6_address: 2001:db8:3::1/64
+  ipv6_addresses:
+  - 2001:db8:3::1/64
   mtu: 1500
   no_autostate: true
 - name: Vlan11

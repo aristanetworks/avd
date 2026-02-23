@@ -288,25 +288,29 @@ loopback_interfaces:
   shutdown: false
   vrf: Tenant_X_OP_Zone
   ip_address: 10.255.1.33/32
-  ipv6_address: 2001:db8:1::1/128
+  ipv6_addresses:
+  - 2001:db8:1::1/128
 - name: Loopback200
   description: VRF_with_loopback_ip_pools_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: VRF_with_loopback_ip_pools
   ip_address: 10.101.102.33/32
-  ipv6_address: 2001:db8:1::1/128
+  ipv6_addresses:
+  - 2001:db8:1::1/128
 - name: Loopback400
   description: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: VRF_with_loopback_ipv4_pools_but_no_ipv6_pools
   ip_address: 10.101.10.33/32
-  ipv6_address: 2001:db8:2::1/128
+  ipv6_addresses:
+  - 2001:db8:2::1/128
 - name: Loopback500
   description: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: VRF_with_loopback_ipv6_pools_but_no_ipv4_pools
   ip_address: 10.255.1.33/32
-  ipv6_address: 2001:db8:1:8000::1/128
+  ipv6_addresses:
+  - 2001:db8:1:8000::1/128
 management_api_http:
   enable_https: true
   default_services: false

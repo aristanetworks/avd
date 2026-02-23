@@ -28,7 +28,8 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ipv6_address: 2001:db8::1/128
+  ipv6_addresses:
+  - 2001:db8::1/128
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

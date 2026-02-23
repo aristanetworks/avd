@@ -285,7 +285,7 @@ class UtilsMixin(Protocol):
             pass
 
         # Only set VRRPv6 if ipv6_address is set
-        if subinterface.ipv6_address:
+        if subinterface.ipv6_addresses:
             # TODO: in separate PR adding VRRP support for SVIs
             pass
 

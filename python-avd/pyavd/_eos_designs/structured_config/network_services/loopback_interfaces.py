@@ -84,12 +84,15 @@ class LoopbackInterfacesMixin(Protocol):
 
         interface_name = f"Loopback{loopback}"
         description_template = default(vrf.vtep_diagnostic.loopback_description, self.inputs.default_vrf_diag_loopback_description)
-        return EosCliConfigGen.LoopbackInterfacesItem(
+        loopback_interface = EosCliConfigGen.LoopbackInterfacesItem(
             name=interface_name,
             description=AvdStringFormatter().format(description_template, interface=interface_name, vrf=vrf.name, tenant=tenant.name) or None,
             shutdown=False,
             vrf=vrf.name,
             ip_address=f"{self.shared_utils.ip_addressing.vrf_loopback_ip(loopback_ipv4_pool)}/32" if loopback_ipv4_pool else None,
-            ipv6_address=f"{self.shared_utils.ip_addressing.vrf_loopback_ipv6(loopback_ipv6_pool)}/128" if loopback_ipv6_pool else None,
             hardware_forwarding_id=vrf.vtep_diagnostic.hardware_forwarding or None,
         )
+        if loopback_ipv6_pool:
+            loopback_interface.ipv6_addresses.append(f"{self.shared_utils.ip_addressing.vrf_loopback_ipv6(loopback_ipv6_pool)}/128")
+
+        return loopback_interface
