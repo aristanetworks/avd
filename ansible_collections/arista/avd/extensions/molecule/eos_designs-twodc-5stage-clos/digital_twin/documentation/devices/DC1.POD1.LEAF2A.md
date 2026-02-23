@@ -138,7 +138,7 @@ snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1.POD1.LEAF2A
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| RACK2_MLAG | Vlan4094 | 172.20.110.3 | Port-Channel5 |
+| RACK2_MLAG | Vlan4094 | 172.20.110.7 | Port-Channel5 |
 
 Dual primary detection is enabled. The detection delay is 5 seconds.
 
@@ -149,7 +149,7 @@ Dual primary detection is enabled. The detection delay is 5 seconds.
 mlag configuration
    domain-id RACK2_MLAG
    local-interface Vlan4094
-   peer-address 172.20.110.3
+   peer-address 172.20.110.7
    peer-address heartbeat 192.168.1.9 vrf MGMT
    peer-link Port-Channel5
    dual-primary detection delay 5 action errdisable all-interfaces
@@ -295,16 +295,16 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Ethernet1 | P2P_DC1-POD1-SPINE1_Ethernet4 | - | 172.17.110.9/31 | default | - | False | - | - |
-| Ethernet2 | P2P_DC1-POD1-SPINE2_Ethernet4 | - | 172.17.110.11/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC1-POD1-SPINE1_Ethernet4 | - | 172.17.110.25/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC1-POD1-SPINE2_Ethernet4 | - | 172.17.110.27/31 | default | - | False | - | - |
 | Ethernet7 | P2P_DC2-POD1-LEAF1A_Ethernet6 | - | 100.100.100.101/24 | default | - | False | - | - |
-| Ethernet11 | P2P_DC1-POD1-SPINE1_Ethernet7 | - | 172.17.110.13/31 | default | - | False | - | - |
-| Ethernet12 | P2P_DC1-POD1-SPINE2_Ethernet7 | - | 172.17.110.15/31 | default | - | False | - | - |
-| Ethernet13 | P2P_DC1-POD1-LEAF1B_Ethernet1 | - | 172.17.110.12/31 | default | - | False | - | - |
-| Ethernet13.1025 | P2P_DC1-POD1-LEAF1B_Ethernet1.1025_VRF_Common_VRF | - | 172.17.110.12/31 | Common_VRF | - | False | - | - |
-| Ethernet13.1100 | P2P_DC1-POD1-LEAF1B_Ethernet1.1100_VRF_vrf_with_loopbacks_from_overlapping_pool | - | 172.17.110.12/31 | vrf_with_loopbacks_from_overlapping_pool | - | False | - | - |
-| Ethernet13.1101 | P2P_DC1-POD1-LEAF1B_Ethernet1.1101_VRF_vrf_with_loopbacks_from_pod_pools | - | 172.17.110.12/31 | vrf_with_loopbacks_from_pod_pools | - | False | - | - |
-| Ethernet13.1102 | P2P_DC1-POD1-LEAF1B_Ethernet1.1102_VRF_vrf_with_loopbacks_dc1_pod1_only | - | 172.17.110.12/31 | vrf_with_loopbacks_dc1_pod1_only | - | False | - | - |
+| Ethernet11 | P2P_DC1-POD1-SPINE1_Ethernet7 | - | 172.17.110.29/31 | default | - | False | - | - |
+| Ethernet12 | P2P_DC1-POD1-SPINE2_Ethernet7 | - | 172.17.110.31/31 | default | - | False | - | - |
+| Ethernet13 | P2P_DC1-POD1-LEAF1B_Ethernet1 | - | 172.17.110.4/31 | default | - | False | - | - |
+| Ethernet13.1025 | P2P_DC1-POD1-LEAF1B_Ethernet1.1025_VRF_Common_VRF | - | 172.17.110.4/31 | Common_VRF | - | False | - | - |
+| Ethernet13.1100 | P2P_DC1-POD1-LEAF1B_Ethernet1.1100_VRF_vrf_with_loopbacks_from_overlapping_pool | - | 172.17.110.4/31 | vrf_with_loopbacks_from_overlapping_pool | - | False | - | - |
+| Ethernet13.1101 | P2P_DC1-POD1-LEAF1B_Ethernet1.1101_VRF_vrf_with_loopbacks_from_pod_pools | - | 172.17.110.4/31 | vrf_with_loopbacks_from_pod_pools | - | False | - | - |
+| Ethernet13.1102 | P2P_DC1-POD1-LEAF1B_Ethernet1.1102_VRF_vrf_with_loopbacks_dc1_pod1_only | - | 172.17.110.4/31 | vrf_with_loopbacks_dc1_pod1_only | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -314,7 +314,7 @@ interface Ethernet1
    description P2P_DC1-POD1-SPINE1_Ethernet4
    no shutdown
    no switchport
-   ip address 172.17.110.9/31
+   ip address 172.17.110.25/31
    mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
@@ -323,7 +323,7 @@ interface Ethernet2
    description P2P_DC1-POD1-SPINE2_Ethernet4
    no shutdown
    no switchport
-   ip address 172.17.110.11/31
+   ip address 172.17.110.27/31
    mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
@@ -358,7 +358,7 @@ interface Ethernet11
    description P2P_DC1-POD1-SPINE1_Ethernet7
    no shutdown
    no switchport
-   ip address 172.17.110.13/31
+   ip address 172.17.110.29/31
    mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
@@ -367,7 +367,7 @@ interface Ethernet12
    description P2P_DC1-POD1-SPINE2_Ethernet7
    no shutdown
    no switchport
-   ip address 172.17.110.15/31
+   ip address 172.17.110.31/31
    mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
@@ -376,7 +376,7 @@ interface Ethernet13
    description P2P_DC1-POD1-LEAF1B_Ethernet1
    no shutdown
    no switchport
-   ip address 172.17.110.12/31
+   ip address 172.17.110.4/31
    mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
@@ -386,28 +386,28 @@ interface Ethernet13.1025
    no shutdown
    encapsulation dot1q vlan 1025
    vrf Common_VRF
-   ip address 172.17.110.12/31
+   ip address 172.17.110.4/31
 !
 interface Ethernet13.1100
    description P2P_DC1-POD1-LEAF1B_Ethernet1.1100_VRF_vrf_with_loopbacks_from_overlapping_pool
    no shutdown
    encapsulation dot1q vlan 1100
    vrf vrf_with_loopbacks_from_overlapping_pool
-   ip address 172.17.110.12/31
+   ip address 172.17.110.4/31
 !
 interface Ethernet13.1101
    description P2P_DC1-POD1-LEAF1B_Ethernet1.1101_VRF_vrf_with_loopbacks_from_pod_pools
    no shutdown
    encapsulation dot1q vlan 1101
    vrf vrf_with_loopbacks_from_pod_pools
-   ip address 172.17.110.12/31
+   ip address 172.17.110.4/31
 !
 interface Ethernet13.1102
    description P2P_DC1-POD1-LEAF1B_Ethernet1.1102_VRF_vrf_with_loopbacks_dc1_pod1_only
    no shutdown
    encapsulation dot1q vlan 1102
    vrf vrf_with_loopbacks_dc1_pod1_only
-   ip address 172.17.110.12/31
+   ip address 172.17.110.4/31
 !
 interface Ethernet16
    description SERVER_server-1_Eth1
@@ -582,11 +582,11 @@ interface Port-Channel28
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | ROUTER_ID | default | 172.16.110.4/32 |
-| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 172.18.110.4/32 |
-| Loopback100 | DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.4/32 |
-| Loopback101 | DIAG_VRF_vrf_with_loopbacks_from_pod_pools | vrf_with_loopbacks_from_pod_pools | 10.101.101.4/32 |
-| Loopback102 | DIAG_VRF_vrf_with_loopbacks_dc1_pod1_only | vrf_with_loopbacks_dc1_pod1_only | 10.102.101.4/32 |
+| Loopback0 | ROUTER_ID | default | 172.16.110.6/32 |
+| Loopback1 | VXLAN_TUNNEL_SOURCE | default | 172.18.110.6/32 |
+| Loopback100 | DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.6/32 |
+| Loopback101 | DIAG_VRF_vrf_with_loopbacks_from_pod_pools | vrf_with_loopbacks_from_pod_pools | 10.101.101.6/32 |
+| Loopback102 | DIAG_VRF_vrf_with_loopbacks_dc1_pod1_only | vrf_with_loopbacks_dc1_pod1_only | 10.102.101.6/32 |
 
 ##### IPv6
 
@@ -595,7 +595,7 @@ interface Port-Channel28
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 | Loopback100 | DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool | vrf_with_loopbacks_from_overlapping_pool | - |
-| Loopback101 | DIAG_VRF_vrf_with_loopbacks_from_pod_pools | vrf_with_loopbacks_from_pod_pools | 2001:db8:1::2/128 |
+| Loopback101 | DIAG_VRF_vrf_with_loopbacks_from_pod_pools | vrf_with_loopbacks_from_pod_pools | 2001:db8:1::4/128 |
 | Loopback102 | DIAG_VRF_vrf_with_loopbacks_dc1_pod1_only | vrf_with_loopbacks_dc1_pod1_only | - |
 
 #### Loopback Interfaces Device Configuration
@@ -605,31 +605,31 @@ interface Port-Channel28
 interface Loopback0
    description ROUTER_ID
    no shutdown
-   ip address 172.16.110.4/32
+   ip address 172.16.110.6/32
 !
 interface Loopback1
    description VXLAN_TUNNEL_SOURCE
    no shutdown
-   ip address 172.18.110.4/32
+   ip address 172.18.110.6/32
 !
 interface Loopback100
    description DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool
    no shutdown
    vrf vrf_with_loopbacks_from_overlapping_pool
-   ip address 10.100.0.4/32
+   ip address 10.100.0.6/32
 !
 interface Loopback101
    description DIAG_VRF_vrf_with_loopbacks_from_pod_pools
    no shutdown
    vrf vrf_with_loopbacks_from_pod_pools
-   ip address 10.101.101.4/32
-   ipv6 address 2001:db8:1::2/128
+   ip address 10.101.101.6/32
+   ipv6 address 2001:db8:1::4/128
 !
 interface Loopback102
    description DIAG_VRF_vrf_with_loopbacks_dc1_pod1_only
    no shutdown
    vrf vrf_with_loopbacks_dc1_pod1_only
-   ip address 10.102.101.4/32
+   ip address 10.102.101.6/32
 ```
 
 ### VLAN Interfaces
@@ -660,7 +660,7 @@ interface Loopback102
 | Vlan1101 | vrf_with_loopbacks_from_pod_pools | - | 10.101.100.1/24 | - | - | - |
 | Vlan1102 | vrf_with_loopbacks_dc1_pod1_only | - | 10.102.100.1/24 | - | - | - |
 | Vlan4085 | default | 172.21.110.2/24 | - | 172.21.110.1 | - | - |
-| Vlan4094 | default | 172.20.110.2/31 | - | - | - | - |
+| Vlan4094 | default | 172.20.110.6/31 | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -723,7 +723,7 @@ interface Vlan4094
    description MLAG
    no shutdown
    no autostate
-   ip address 172.20.110.2/31
+   ip address 172.20.110.6/31
 ```
 
 ### VXLAN Interface
@@ -860,7 +860,7 @@ ASN Notation: asdot
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65112.100 | 172.16.110.4 |
+| 65112.100 | 172.16.110.6 |
 
 | BGP Tuning |
 | ---------- |
@@ -920,16 +920,16 @@ ASN Notation: asdot
 | 172.16.110.1 | 65110.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.110.3 | 65111.100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 172.16.120.3 | 65121 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - | - |
-| 172.17.110.8 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.17.110.10 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.17.110.12 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.17.110.13 | 65111.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.17.110.14 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.20.110.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
-| 172.17.110.13 | 65111.100 | Common_VRF | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.17.110.13 | 65111.100 | vrf_with_loopbacks_dc1_pod1_only | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.17.110.13 | 65111.100 | vrf_with_loopbacks_from_overlapping_pool | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.17.110.13 | 65111.100 | vrf_with_loopbacks_from_pod_pools | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.17.110.5 | 65111.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.17.110.24 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.17.110.26 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.17.110.28 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.17.110.30 | 65110.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.20.110.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
+| 172.17.110.5 | 65111.100 | Common_VRF | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.17.110.5 | 65111.100 | vrf_with_loopbacks_dc1_pod1_only | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.17.110.5 | 65111.100 | vrf_with_loopbacks_from_overlapping_pool | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.17.110.5 | 65111.100 | vrf_with_loopbacks_from_pod_pools | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -954,20 +954,20 @@ ASN Notation: asdot
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 172.16.110.4:99110 | 99110:99110 | - | - | learned<br>router-mac system |
-| 111 | 172.16.110.4:50111 | 50111:50111 | - | - | learned<br>router-mac system |
-| 112 | 172.16.110.4:20112 | 20112:20112 | - | - | learned<br>router-mac system |
-| 2500 | 172.16.110.4:2500 | 2500:2500 | - | - | learned |
-| 2600 | 172.16.110.4:32600 | 32600:32600 | - | - | learned<br>router-mac system |
+| 110 | 172.16.110.6:99110 | 99110:99110 | - | - | learned<br>router-mac system |
+| 111 | 172.16.110.6:50111 | 50111:50111 | - | - | learned<br>router-mac system |
+| 112 | 172.16.110.6:20112 | 20112:20112 | - | - | learned<br>router-mac system |
+| 2500 | 172.16.110.6:2500 | 2500:2500 | - | - | learned |
+| 2600 | 172.16.110.6:32600 | 32600:32600 | - | - | learned<br>router-mac system |
 
 #### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute | Graceful Restart |
 | --- | ------------------- | ------------ | ---------------- |
-| Common_VRF | 172.16.110.4:1025 | connected | - |
-| vrf_with_loopbacks_dc1_pod1_only | 172.16.110.4:1102 | connected | - |
-| vrf_with_loopbacks_from_overlapping_pool | 172.16.110.4:1100 | connected | - |
-| vrf_with_loopbacks_from_pod_pools | 172.16.110.4:1101 | connected | - |
+| Common_VRF | 172.16.110.6:1025 | connected | - |
+| vrf_with_loopbacks_dc1_pod1_only | 172.16.110.6:1102 | connected | - |
+| vrf_with_loopbacks_from_overlapping_pool | 172.16.110.6:1100 | connected | - |
+| vrf_with_loopbacks_from_pod_pools | 172.16.110.6:1101 | connected | - |
 
 #### Router BGP Device Configuration
 
@@ -975,7 +975,7 @@ ASN Notation: asdot
 !
 router bgp 65112.100
    bgp asn notation asdot
-   router-id 172.16.110.4
+   router-id 172.16.110.6
    update wait-install
    no bgp default ipv4-unicast
    maximum-paths 4
@@ -1023,28 +1023,28 @@ router bgp 65112.100
    neighbor 172.16.120.3 peer group EVPN-OVERLAY-CORE
    neighbor 172.16.120.3 remote-as 65121
    neighbor 172.16.120.3 description DC1-POD2-LEAF1A_Loopback0
-   neighbor 172.17.110.8 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.8 remote-as 65110.100
-   neighbor 172.17.110.8 description DC1-POD1-SPINE1_Ethernet4
-   neighbor 172.17.110.10 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.10 remote-as 65110.100
-   neighbor 172.17.110.10 description DC1-POD1-SPINE2_Ethernet4
-   neighbor 172.17.110.12 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.12 remote-as 65110.100
-   neighbor 172.17.110.12 description DC1-POD1-SPINE1_Ethernet7
-   neighbor 172.17.110.13 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.13 remote-as 65111.100
-   neighbor 172.17.110.13 description DC1-POD1-LEAF1B_Ethernet1
-   neighbor 172.17.110.14 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.14 remote-as 65110.100
-   neighbor 172.17.110.14 description DC1-POD1-SPINE2_Ethernet7
-   neighbor 172.20.110.3 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 172.20.110.3 description DC1-POD1-LEAF2B_Vlan4094
+   neighbor 172.17.110.5 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.5 remote-as 65111.100
+   neighbor 172.17.110.5 description DC1-POD1-LEAF1B_Ethernet1
+   neighbor 172.17.110.24 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.24 remote-as 65110.100
+   neighbor 172.17.110.24 description DC1-POD1-SPINE1_Ethernet4
+   neighbor 172.17.110.26 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.26 remote-as 65110.100
+   neighbor 172.17.110.26 description DC1-POD1-SPINE2_Ethernet4
+   neighbor 172.17.110.28 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.28 remote-as 65110.100
+   neighbor 172.17.110.28 description DC1-POD1-SPINE1_Ethernet7
+   neighbor 172.17.110.30 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.30 remote-as 65110.100
+   neighbor 172.17.110.30 description DC1-POD1-SPINE2_Ethernet7
+   neighbor 172.20.110.7 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 172.20.110.7 description DC1-POD1-LEAF2B_Vlan4094
    redistribute connected
    redistribute attached-host
    !
    vlan 110
-      rd 172.16.110.4:99110
+      rd 172.16.110.6:99110
       route-target both 99110:99110
       redistribute learned
       redistribute router-mac system
@@ -1055,7 +1055,7 @@ router bgp 65112.100
 
    !
    vlan 111
-      rd 172.16.110.4:50111
+      rd 172.16.110.6:50111
       route-target both 50111:50111
       redistribute learned
       redistribute router-mac system
@@ -1066,7 +1066,7 @@ router bgp 65112.100
 
    !
    vlan 112
-      rd 172.16.110.4:20112
+      rd 172.16.110.6:20112
       route-target both 20112:20112
       redistribute learned
       redistribute router-mac system
@@ -1077,12 +1077,12 @@ router bgp 65112.100
 
    !
    vlan 2500
-      rd 172.16.110.4:2500
+      rd 172.16.110.6:2500
       route-target both 2500:2500
       redistribute learned
    !
    vlan 2600
-      rd 172.16.110.4:32600
+      rd 172.16.110.6:32600
       route-target both 32600:32600
       redistribute learned
       redistribute router-mac system
@@ -1110,13 +1110,13 @@ router bgp 65112.100
       neighbor EVPN-OVERLAY-PEERS activate
    !
    vrf Common_VRF
-      rd 172.16.110.4:1025
+      rd 172.16.110.6:1025
       route-target import evpn 1025:1025
       route-target export evpn 1025:1025
-      router-id 172.16.110.4
-      neighbor 172.17.110.13 peer group IPv4-UNDERLAY-PEERS
-      neighbor 172.17.110.13 remote-as 65111.100
-      neighbor 172.17.110.13 description DC1-POD1-LEAF1B_Ethernet1.1025_vrf_Common_VRF
+      router-id 172.16.110.6
+      neighbor 172.17.110.5 peer group IPv4-UNDERLAY-PEERS
+      neighbor 172.17.110.5 remote-as 65111.100
+      neighbor 172.17.110.5 description DC1-POD1-LEAF1B_Ethernet1.1025_vrf_Common_VRF
       redistribute connected
       !
       comment
@@ -1125,33 +1125,33 @@ router bgp 65112.100
 
    !
    vrf vrf_with_loopbacks_dc1_pod1_only
-      rd 172.16.110.4:1102
+      rd 172.16.110.6:1102
       route-target import evpn 1102:1102
       route-target export evpn 1102:1102
-      router-id 172.16.110.4
-      neighbor 172.17.110.13 peer group IPv4-UNDERLAY-PEERS
-      neighbor 172.17.110.13 remote-as 65111.100
-      neighbor 172.17.110.13 description DC1-POD1-LEAF1B_Ethernet1.1102_vrf_vrf_with_loopbacks_dc1_pod1_only
+      router-id 172.16.110.6
+      neighbor 172.17.110.5 peer group IPv4-UNDERLAY-PEERS
+      neighbor 172.17.110.5 remote-as 65111.100
+      neighbor 172.17.110.5 description DC1-POD1-LEAF1B_Ethernet1.1102_vrf_vrf_with_loopbacks_dc1_pod1_only
       redistribute connected
    !
    vrf vrf_with_loopbacks_from_overlapping_pool
-      rd 172.16.110.4:1100
+      rd 172.16.110.6:1100
       route-target import evpn 1100:1100
       route-target export evpn 1100:1100
-      router-id 172.16.110.4
-      neighbor 172.17.110.13 peer group IPv4-UNDERLAY-PEERS
-      neighbor 172.17.110.13 remote-as 65111.100
-      neighbor 172.17.110.13 description DC1-POD1-LEAF1B_Ethernet1.1100_vrf_vrf_with_loopbacks_from_overlapping_pool
+      router-id 172.16.110.6
+      neighbor 172.17.110.5 peer group IPv4-UNDERLAY-PEERS
+      neighbor 172.17.110.5 remote-as 65111.100
+      neighbor 172.17.110.5 description DC1-POD1-LEAF1B_Ethernet1.1100_vrf_vrf_with_loopbacks_from_overlapping_pool
       redistribute connected
    !
    vrf vrf_with_loopbacks_from_pod_pools
-      rd 172.16.110.4:1101
+      rd 172.16.110.6:1101
       route-target import evpn 1101:1101
       route-target export evpn 1101:1101
-      router-id 172.16.110.4
-      neighbor 172.17.110.13 peer group IPv4-UNDERLAY-PEERS
-      neighbor 172.17.110.13 remote-as 65111.100
-      neighbor 172.17.110.13 description DC1-POD1-LEAF1B_Ethernet1.1101_vrf_vrf_with_loopbacks_from_pod_pools
+      router-id 172.16.110.6
+      neighbor 172.17.110.5 peer group IPv4-UNDERLAY-PEERS
+      neighbor 172.17.110.5 remote-as 65111.100
+      neighbor 172.17.110.5 description DC1-POD1-LEAF1B_Ethernet1.1101_vrf_vrf_with_loopbacks_from_pod_pools
       redistribute connected
 ```
 
@@ -1297,18 +1297,18 @@ vrf instance vrf_with_loopbacks_from_pod_pools
 
 | Source NAT VRF | Source NAT IPv4 Address | Source NAT IPv6 Address |
 | -------------- | ----------------------- | ----------------------- |
-| vrf_with_loopbacks_dc1_pod1_only | 10.102.101.4 | - |
-| vrf_with_loopbacks_from_overlapping_pool | 10.100.0.4 | - |
-| vrf_with_loopbacks_from_pod_pools | 10.101.101.4 | 2001:db8:1::2 |
+| vrf_with_loopbacks_dc1_pod1_only | 10.102.101.6 | - |
+| vrf_with_loopbacks_from_overlapping_pool | 10.100.0.6 | - |
+| vrf_with_loopbacks_from_pod_pools | 10.101.101.6 | 2001:db8:1::4 |
 
 ### Virtual Source NAT Configuration
 
 ```eos
 !
-ip address virtual source-nat vrf vrf_with_loopbacks_dc1_pod1_only address 10.102.101.4
-ip address virtual source-nat vrf vrf_with_loopbacks_from_overlapping_pool address 10.100.0.4
-ip address virtual source-nat vrf vrf_with_loopbacks_from_pod_pools address 10.101.101.4
-ipv6 address virtual source-nat vrf vrf_with_loopbacks_from_pod_pools address 2001:db8:1::2
+ip address virtual source-nat vrf vrf_with_loopbacks_dc1_pod1_only address 10.102.101.6
+ip address virtual source-nat vrf vrf_with_loopbacks_from_overlapping_pool address 10.100.0.6
+ip address virtual source-nat vrf vrf_with_loopbacks_from_pod_pools address 10.101.101.6
+ipv6 address virtual source-nat vrf vrf_with_loopbacks_from_pod_pools address 2001:db8:1::4
 ```
 
 ## EOS CLI Device Configuration
