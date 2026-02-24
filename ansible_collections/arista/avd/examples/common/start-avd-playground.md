@@ -10,6 +10,7 @@ To get started, simply sign in at [labs.arista.com](https://labs.arista.com/) an
 [Start AVD Playground :octicons-play-16:](https://labs.arista.com/launch?lab_type=avd-playground&origin=tech-lib){ .md-button .md-button--primary target=_blank}
 
 For detailed guidance, please refer to the "[How to use AVD examples](../../../../../ansible_collections/arista/avd/examples/README.md)" guide.
+
 !!! note
 
     Due to infrastructure costs and security protocols, AVD Playgrounds are exclusively available to registered Arista customers with an active support contract.
