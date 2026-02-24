@@ -201,3 +201,72 @@ def test_deprecation_with_new_key_no_conflict() -> None:
     warnings = list(avdschema.convert(data))
     assert len(warnings) == 1
     assert str(warnings[0]) == "The input data model 'a' is deprecated. Use 'b' instead."
+
+
+
+
+def test_deprecation_with_allow_with_new_key() -> None:
+    """Test that allow_with_new_key=True allows both old and new keys without conflict."""
+    schema = {
+        "type": "dict",
+        "keys": {
+            "a": {
+                "type": "bool",
+                "deprecation": {
+                    "warning": True,
+                    "new_key": "b",
+                    "allow_with_new_key": True,
+                    "remove_in_version": "1.2.3",
+                },
+            },
+            "b": {
+                "type": "bool",
+            },
+        },
+    }
+
+    avdschema = AvdSchema(schema=schema)
+    # Both old and new keys are set
+    data = {"a": True, "b": True}
+    warnings = list(avdschema.convert(data))
+    # Should get a deprecation warning but NOT a conflict warning
+    assert len(warnings) == 1
+    warning = warnings[0]
+    assert str(warning) == "The input data model 'a' is deprecated. Use 'b' instead."
+    assert isinstance(warning, AvdDeprecationWarning)
+    assert warning.version == "1.2.3"
+    # Verify no conflict was detected
+    assert not warning.conflict
+
+
+def test_deprecation_without_allow_with_new_key_has_conflict() -> None:
+    """Test that without allow_with_new_key (or False), both old and new keys raise conflict."""
+    schema = {
+        "type": "dict",
+        "keys": {
+            "a": {
+                "type": "bool",
+                "deprecation": {
+                    "warning": True,
+                    "new_key": "b",
+                    "allow_with_new_key": False,
+                    "remove_in_version": "1.2.3",
+                },
+            },
+            "b": {
+                "type": "bool",
+            },
+        },
+    }
+
+    avdschema = AvdSchema(schema=schema)
+    # Both old and new keys are set
+    data = {"a": True, "b": True}
+    warnings = list(avdschema.convert(data))
+    # Should get a conflict warning
+    assert len(warnings) == 1
+    warning = warnings[0]
+    assert isinstance(warning, AvdDeprecationWarning)
+    # Verify conflict was detected
+    assert warning.conflict
+    assert "cannot be used in conjunction with" in str(warning)

@@ -200,6 +200,7 @@ class AvdDataConverter:
           remove_in_version: str
           remove_after_date: str
           url: str
+          allowed_with_new_key: bool, default = False
 
             Yields AvdDeprecationWarning
 
@@ -209,12 +210,14 @@ class AvdDataConverter:
 
         new_key = deprecation.get("new_key")
         removed = deprecation.get("removed", False)
+        allow_with_new_key = deprecation.get("allow_with_new_key", False)
 
         # If new_key set, we can check for collision where both new and old key are set.
         # If we have a space in the new_key, we will skip the check and just produce the deprecation warning with new_key.
         # New key is assumed to be relative to the parent dict.
+        # If allow_with_new_key is True, we skip the conflict check.
         conflict = False
-        if not removed and new_key and parent_dict is not None:
+        if not removed and new_key and parent_dict is not None and not allow_with_new_key:
             for one_new_key in new_key.split(" or "):
                 if " " in one_new_key:
                     continue
