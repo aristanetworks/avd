@@ -11,26 +11,13 @@ import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+# Override global path to load pyavd from pwd instead of any installed version.
+sys.path.insert(0, str(Path(__file__).parent.parent / "python-avd"))
+
+from pyavd.j2filters.natural_sort import natural_sort
+
 if TYPE_CHECKING:
     from collections.abc import Iterator
-
-SPLIT_PATTERN = re.compile(r"(\d+)")
-
-
-def _convert(text: str) -> int | str:
-    """Convert text for sorting: digits to int, strings to lowercase."""
-    return int(text) if text.isdigit() else text.lower()
-
-
-def _alphanum_key(item: dict[str, str], sort_key: str) -> list[int | str]:
-    """Generate natural sort key for a dictionary item."""
-    val = item.get(sort_key, "")
-    return [_convert(part) for part in SPLIT_PATTERN.split(str(val))]
-
-
-def natural_sort(iterable: list[dict[str, str]], sort_key: str) -> list[dict[str, str]]:
-    """Sort an iterable using natural (alphanumeric) ordering with case-insensitive comparison."""
-    return sorted(iterable, key=lambda item: _alphanum_key(item, sort_key))
 
 
 class HostsParser:
