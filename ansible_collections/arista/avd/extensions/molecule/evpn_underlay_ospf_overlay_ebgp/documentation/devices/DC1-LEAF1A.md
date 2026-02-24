@@ -52,9 +52,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | IPv6 ND RA RX Accept |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - |
 
 #### Management Interfaces Device Configuration
 

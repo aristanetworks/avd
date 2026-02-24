@@ -388,12 +388,12 @@ agent KernelFib shutdown supervisor standby
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | - | oob | default | - | - |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
-| Management42 | - | oob | default | - | - |
-| Vlan123 | inband_management | inband | default | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | IPv6 ND RA RX Accept |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------------- |
+| Management0 | - | oob | default | - | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | default-route, route-preference |
+| Management42 | - | oob | default | - | - | - |
+| Vlan123 | inband_management | inband | default | - | - | - |
 
 ##### Interface Redundancy
 
