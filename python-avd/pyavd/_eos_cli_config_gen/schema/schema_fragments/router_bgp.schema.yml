@@ -162,7 +162,7 @@ keys:
                     min: 1
                     max: 65535
                     required: true
-                    description: Start of range (Default:4096).
+                    description: Start of range EOS default is 4096.
                   end:
                     type: int
                     convert_types:
