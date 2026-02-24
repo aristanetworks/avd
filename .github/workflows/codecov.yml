@@ -1,7 +1,7 @@
 ---
 name: Publish coverage to CodeCov
 "on":
-  workflow_run:
+  workflow_call:
 
 jobs:
   codecov:
@@ -16,11 +16,23 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v6
 
-      - name: Download coverage from unit tests
+      - name: Download coverage from pytest
         continue-on-error: true
         uses: actions/download-artifact@v7
         with:
           name: pytest-coverage
+
+      - name: Download coverage from ansible-test units
+        continue-on-error: true
+        uses: actions/download-artifact@v7
+        with:
+          name: ansible-test-units-coverage
+
+      - name: Download coverage from ansible-test integration
+        continue-on-error: true
+        uses: actions/download-artifact@v7
+        with:
+          name: ansible-test-integration-coverage
 
       - name: Upload results to Codecov
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
