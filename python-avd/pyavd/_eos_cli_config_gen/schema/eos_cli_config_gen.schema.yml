@@ -7148,6 +7148,9 @@ keys:
                 convert_types:
                 - int
                 description: DSCP value or name.
+              dscp_mask:
+                type: str
+                description: DSCP mask ranges from 0x00 to 0x3F.
               vlan_number:
                 type: int
                 convert_types:

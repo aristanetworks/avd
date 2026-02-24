@@ -10,6 +10,7 @@ ipv6_access_lists:
         source: any
         destination: any
         dscp: cs1
+        dscp_mask: 0x0F
   - name: acl_qos_tc5_v6
     entries:
       - sequence: 10
@@ -123,6 +124,7 @@ ipv6_access_lists:
         source: any
         destination: any
         dscp: 46
+        dscp_mask: 3
       - action: permit
         protocol: ipv6
         source: any

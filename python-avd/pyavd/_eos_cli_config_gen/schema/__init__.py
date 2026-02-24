@@ -17937,6 +17937,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "nexthop_group": {"type": str},
                 "tracked": {"type": bool},
                 "dscp": {"type": str},
+                "dscp_mask": {"type": str},
                 "vlan_number": {"type": int},
                 "vlan_inner": {"type": bool, "default": False},
                 "vlan_mask": {"type": str},
@@ -17996,6 +17997,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Match packets in existing ICMP/UDP/TCP connections."""
             dscp: str | None
             """DSCP value or name."""
+            dscp_mask: str | None
+            """DSCP mask ranges from 0x00 to 0x3F."""
             vlan_number: int | None
             vlan_inner: bool
             """Default value: `False`"""
@@ -18026,6 +18029,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     nexthop_group: str | None | UndefinedType = Undefined,
                     tracked: bool | None | UndefinedType = Undefined,
                     dscp: str | None | UndefinedType = Undefined,
+                    dscp_mask: str | None | UndefinedType = Undefined,
                     vlan_number: int | None | UndefinedType = Undefined,
                     vlan_inner: bool | UndefinedType = Undefined,
                     vlan_mask: str | None | UndefinedType = Undefined,
@@ -18068,6 +18072,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         nexthop_group: nexthop-group name.
                         tracked: Match packets in existing ICMP/UDP/TCP connections.
                         dscp: DSCP value or name.
+                        dscp_mask: DSCP mask ranges from 0x00 to 0x3F.
                         vlan_number: vlan_number
                         vlan_inner: vlan_inner
                         vlan_mask: 0x000-0xFFF VLAN mask.
