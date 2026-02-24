@@ -49,7 +49,7 @@ AVD playground lab files are available for [download on aclabs.arista.com](https
 ## AVD as Reference Inventory
 
 If you don't have access to AVD playgrounds, it's enough to build a working Ansible environment with the AVD collection installed to start testing examples.
-You can build an AVD environment by installing all requirements on a dedicated VM or inside a virtual environment / [uv](https://docs.astral.sh/uv/). Please refer to the [installation](../../../../docs/installation/collection-installation.md) section for the details.
+You can build an AVD environment by installing all requirements on a dedicated VM or inside a virtual environment. Please refer to the [installation](../../../../docs/installation/collection-installation.md) section for the details.
 Alternatively, you can use the AVD universal container images to quickly spin up a working AVD environment.
 Once the environment is ready, you can extract all examples with:
 
