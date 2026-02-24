@@ -34,14 +34,26 @@ jobs:
         with:
           name: ansible-test-integration-coverage
 
-      - name: Upload results to Codecov
+      - name: Upload pytest coverage to Codecov
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           use_oidc: true
-          fail_ci_if_error: true
-          flags: >-
-            pyavd,ansible-plugins,ansible-test-units,ansible-test-integration
-          files: >-
-            ./coverage.xml,
-            ./ansible_collections/arista/avd/units-coverage.xml,
-            ./ansible_collections/arista/avd/integration-coverage.xml
+          fail_ci_if_error: false
+          flags: pyavd
+          files: ./coverage.xml
+
+      - name: Upload ansible-test units coverage to Codecov
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
+        with:
+          use_oidc: true
+          fail_ci_if_error: false
+          flags: ansible-test-units
+          files: ./ansible_collections/arista/avd/units-coverage.xml
+
+      - name: Upload ansible-test integration coverage to Codecov
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
+        with:
+          use_oidc: true
+          fail_ci_if_error: false
+          flags: ansible-test-integration
+          files: ./ansible_collections/arista/avd/integration-coverage.xml

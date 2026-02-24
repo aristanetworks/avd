@@ -25,9 +25,6 @@ flags:
   pyavd:
     paths:
       - python-avd/pyavd/
-  ansible-plugins:
-    paths:
-      - ansible_collections/arista/avd/plugins/
   ansible-test-units:
     paths:
       - ansible_collections/arista/avd/plugins/
