@@ -22,7 +22,7 @@
 {%     if router_multicast.ipv4.multipath is arista.avd.defined('deterministic color') %}
 - Multipathing operates deterministically by selecting the same-colored upstream routers.
 {%     elif router_multicast.ipv4.multipath is arista.avd.defined('deterministic router-id') %}
-- Multipathing deterministically by selecting the same upstream router.
+- Multipathing operates deterministically by selecting the same upstream router.
 {%     elif router_multicast.ipv4.multipath is arista.avd.defined('none') %}
 - Multipathing disabled.
 {%     elif router_multicast.ipv4.multipath is arista.avd.defined('deterministic') %}
