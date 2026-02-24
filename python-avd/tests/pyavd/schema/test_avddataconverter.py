@@ -203,8 +203,6 @@ def test_deprecation_with_new_key_no_conflict() -> None:
     assert str(warnings[0]) == "The input data model 'a' is deprecated. Use 'b' instead."
 
 
-
-
 def test_deprecation_with_allow_with_new_key() -> None:
     """Test that allow_with_new_key=True allows both old and new keys without conflict."""
     schema = {
