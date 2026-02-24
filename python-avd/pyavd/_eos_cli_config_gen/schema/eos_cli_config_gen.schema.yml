@@ -6782,7 +6782,17 @@ keys:
   ip_ospf_router_id_output_format_hostnames:
     type: bool
     description: Display DNS-resolved router names for OSPF router IDs.
+  ip_radius:
+    type: dict
+    documentation_options:
+      table: ip-radius-source-interfaces
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_radius_source_interfaces:
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 7.0.0
+      new_key: ip_radius
     type: list
     items:
       type: dict
