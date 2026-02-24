@@ -169,7 +169,10 @@ keys:
                       - str
                     max: 65535
                     required: true
-                    description: End of range, from `start` to 65535 (Default:65535).
+                    description: |-
+                        End of range.
+                        `end` must be greater than or equal to `start`.
+                        EOS default is 65535.
               address_families:
                 type: list
                 min_length: 1
