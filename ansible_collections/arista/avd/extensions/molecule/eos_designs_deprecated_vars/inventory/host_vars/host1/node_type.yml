@@ -1,5 +1,6 @@
 ---
 # Not testing anything, but just a placeholder for future tests.
+evpn_overlay_bgp_rtc: true
 type: l3leaf
 l3leaf:
   defaults:
@@ -12,6 +13,7 @@ l3leaf:
     uplink_switch_interfaces: [Ethernet41]
     uplink_interfaces: [Ethernet42]
     uplink_ipv4_pool: 192.168.42.0/24
+    platform: vEOS
   nodes:
     - name: host1
       id: 101
@@ -22,12 +24,25 @@ l3leaf:
       nodes:
         - name: host1
           id: 5
+          mlag: false
           mgmt_ip: 192.168.0.103/24
           # Used by source-interfaces test:
           inband_mgmt_interface: Vlan10
           inband_mgmt_ip: 10.20.30.40/24
           inband_mgmt_gateway: 10.20.30.1
           inband_mgmt_vrf: INBANDMGMT
+          evpn_gateway:
+            evpn_l3:
+              enabled: true
+              inter_domain: true
+            all_active_multihoming:
+              enabled: true
+              enable_d_path: true
+              evpn_domain_id_local: "65200:2"
+              evpn_domain_id_remote: "65100:1"
+              evpn_ethernet_segment:
+                identifier: 0000:0001:0001:0000:0509
+                rt_import: 00:00:00:00:07:09
 
 # Used by source-interfaces test: Testing that the generated source interfaces do not contain the VRF if VRF "default"
 mgmt_interface_vrf: default

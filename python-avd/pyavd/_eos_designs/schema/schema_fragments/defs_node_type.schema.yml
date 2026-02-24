@@ -737,6 +737,21 @@ $defs:
                   inter_domain:
                     type: bool
                     default: true
+              d_path:
+                type: dict
+                keys:
+                  enabled:
+                    description: Enable D-path for use with BGP bestpath selection algorithm.
+                    type: bool
+                    default: true
+                  local_domain_id_local:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                    type: str
+                    required: true
+                  remote_domain_id:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                    type: str
+                    required: true
               all_active_multihoming:
                 description: |-
                   Enable Active Active Multihoming architecture for EVPN Gateways.
@@ -751,14 +766,27 @@ $defs:
                     description: Enable D-path for use with BGP bestpath selection algorithm.
                     type: bool
                     default: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: v7.0.0
+                      new_key: <node_type_key>.defaults.evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].evpn_gateway.d_path.enabled or <node_type_key>.nodes[].evpn_gateway.d_path.enabled
                   evpn_domain_id_local:
                     description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                     type: str
-                    required: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: v7.0.0
+                      new_key: <node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local
                   evpn_domain_id_remote:
                     description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                     type: str
-                    required: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: v7.0.0
+                      new_key: <node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id
                   evpn_ethernet_segment:
                     type: dict
                     required: true
