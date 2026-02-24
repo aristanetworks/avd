@@ -13,6 +13,12 @@ management_interfaces:
           ipv6_address: "1:1:1:1:1:1:1:1"
           interval: 101
           multiplier: 3
+    ipv6_nd:
+      ra:
+        rx_accept:
+          default_route: true
+          route_preference: true
+
   - name: Management0
     ip_address: 10.1.1.1
     mac_address: 00:1c:73:00:00:aa

@@ -22278,6 +22278,87 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "forced 40gfull",
             "forced 50gfull",
         ]
+
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ra(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RxAccept(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                    default_route: bool | None
+                    route_preference: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RxAccept.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                default_route: default_route
+                                route_preference: route_preference
+
+                            """
+
+                _fields: ClassVar[dict] = {"rx_accept": {"type": RxAccept}}
+                rx_accept: RxAccept
+                """
+                Accept information on received RA.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                        """
+                        Ra.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            rx_accept:
+                               Accept information on received RA.
+
+                               Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"ra": {"type": Ra}}
+            ra: Ra
+            """
+            Router Advertisement.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ra: Ra | UndefinedType = Undefined) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ra:
+                           Router Advertisement.
+
+                           Subclass of AvdModel.
+
+                    """
+
         Type: TypeAlias = Literal["oob", "inband"]
 
         class Lldp(AvdModel):
@@ -22544,6 +22625,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_address": {"type": str},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_nd": {"type": Ipv6Nd},
             "type": {"type": str, "default": "oob"},
             "gateway": {"type": str},
             "ipv6_gateway": {"type": str},
@@ -22566,6 +22648,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_enable: bool | None
         ipv6_address: str | None
         """IPv6_address/Mask."""
+        ipv6_nd: Ipv6Nd
+        """
+        Neighbor Discovery / Router Advertisement.
+
+        Subclass of AvdModel.
+        """
         type: Type
         """
         For documentation purposes only.
@@ -22599,6 +22687,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_address: str | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 type: Type | UndefinedType = Undefined,
                 gateway: str | None | UndefinedType = Undefined,
                 ipv6_gateway: str | None | UndefinedType = Undefined,
@@ -22623,6 +22712,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_address: IPv4_address/Mask.
                     ipv6_enable: ipv6_enable
                     ipv6_address: IPv6_address/Mask.
+                    ipv6_nd:
+                       Neighbor Discovery / Router Advertisement.
+
+                       Subclass of AvdModel.
                     type: For documentation purposes only.
                     gateway: IPv4 address of default gateway in management VRF.
                     ipv6_gateway: IPv6 address of default gateway in management VRF.

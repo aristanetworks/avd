@@ -37,6 +37,22 @@ keys:
         ipv6_address:
           type: str
           description: IPv6_address/Mask.
+        ipv6_nd:
+          description: Neighbor Discovery / Router Advertisement.
+          type: dict
+          keys:
+            ra:
+              description: Router Advertisement.
+              type: dict
+              keys:
+                rx_accept:
+                  description: Accept information on received RA.
+                  type: dict
+                  keys:
+                    default_route:
+                      type: bool
+                    route_preference:
+                      type: bool
         type:
           type: str
           valid_values: ["oob", "inband"]
