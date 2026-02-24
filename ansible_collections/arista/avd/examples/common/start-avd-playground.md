@@ -5,15 +5,13 @@
   -->
 
 AVD playground is an interactive Cloud-based lab environment sponsored by Arista.
-To get started, simply sign in at [labs.arista.com](https://labs.arista.com/) and click the button below to spin up the lab.
+To get started, simply sign in at [labs.arista.com](https://labs.arista.com/) and click the button below to launch the lab.
 
 [Start AVD Playground :octicons-play-16:](https://labs.arista.com/launch?lab_type=avd-playground&origin=tech-lib){ .md-button .md-button--primary target=_blank}
 
-Please check [How to use AVD examples](../../../../../ansible_collections/arista/avd/examples/README.md) for details.
-
+For detailed guidance, please refer to the "[How to use AVD examples](../../../../../ansible_collections/arista/avd/examples/README.md)" guide.
 !!! note
 
-    AVD playgrounds are only available to registered Arista customers with a support contract due to cost and security considerations.
-    Please use AVD playground for good causes only and mind the EULA terms you signed during the registration.
-    Do the right thing - be an Arista customer!
-    If you don't have the required level of access, talk to your Arista account team.
+    Due to infrastructure costs and security protocols, AVD Playgrounds are exclusively available to registered Arista customers with an active support contract.
+    Users are expected to adhere to the EULA terms accepted during registration and use the environment for its intended professional purposes.
+    If you do not currently have the required access level, please contact your Arista account team.
