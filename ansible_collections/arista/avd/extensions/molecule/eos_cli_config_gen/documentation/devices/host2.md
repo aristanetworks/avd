@@ -1134,11 +1134,9 @@ ASN Notation: asplain
 
 #### Route Distinguisher
 
-##### Assignment Auto Range
-
-| Start | End |
-| ----- | --- |
-| 25 | 29 |
+| Address Family | Range |
+| -------------- | ----- |
+| - | 25-29 |
 
 #### Router BGP EVPN Address Family
 

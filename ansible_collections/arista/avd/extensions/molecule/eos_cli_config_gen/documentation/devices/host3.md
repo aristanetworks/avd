@@ -314,7 +314,9 @@ ASN Notation: asplain
 
 #### Route Distinguisher
 
-- Assignment Auto Address Family: ['l3-vrf']
+| Address Family | Range |
+| -------------- | ----- |
+| l3-vrf | - |
 
 #### Router BGP EVPN Address Family
 

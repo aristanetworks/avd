@@ -39245,9 +39245,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"start": {"type": int}, "end": {"type": int}}
                     start: int
-                    """Start of range."""
+                    """Start of range (Default:4096)."""
                     end: int
-                    """End of range from `start` to 65535."""
+                    """End of range, from `start` to 65535 (Default:65535)."""
 
                     if TYPE_CHECKING:
 
@@ -39259,8 +39259,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                start: Start of range.
-                                end: End of range from `start` to 65535.
+                                start: Start of range (Default:4096).
+                                end: End of range, from `start` to 65535 (Default:65535).
 
                             """
 
@@ -39271,7 +39271,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"range": {"type": Range}, "address_families": {"type": AddressFamilies}}
                 range: Range
-                """Subclass of AvdModel."""
+                """
+                Range for assigned value field of rd.
+
+                Subclass of AvdModel.
+                """
                 address_families: AddressFamilies
                 """Subclass of AvdList with `str` items."""
 
@@ -39285,7 +39289,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            range: Subclass of AvdModel.
+                            range:
+                               Range for assigned value field of rd.
+
+                               Subclass of AvdModel.
                             address_families: Subclass of AvdList with `str` items.
 
                         """

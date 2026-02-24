@@ -541,17 +541,15 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 #### Route Distinguisher
 {%         if router_bgp.route_distinguisher.assignment_auto.address_families is arista.avd.defined %}
-
-- Assignment Auto Address Family: {{ router_bgp.route_distinguisher.assignment_auto.address_families }}
+{%             set address_family = router_bgp.route_distinguisher.assignment_auto.address_families | join(", ") %}
 {%         endif %}
 {%         if router_bgp.route_distinguisher.assignment_auto.range is arista.avd.defined %}
-
-##### Assignment Auto Range
-
-| Start | End |
-| ----- | --- |
-| {{ router_bgp.route_distinguisher.assignment_auto.range.start }} | {{ router_bgp.route_distinguisher.assignment_auto.range.end }} |
+{%             set rd_range = router_bgp.route_distinguisher.assignment_auto.range.start~"-"~router_bgp.route_distinguisher.assignment_auto.range.end %}
 {%         endif %}
+
+| Address Family | Range |
+| -------------- | ----- |
+| {{ address_family | arista.avd.default("-") }} | {{ rd_range | arista.avd.default("-") }} |
 {%     endif %}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
 

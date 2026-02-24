@@ -15248,18 +15248,23 @@ keys:
             keys:
               range:
                 type: dict
+                description: Range for assigned value field of rd.
                 keys:
                   start:
                     type: int
+                    convert_types:
+                    - str
                     min: 1
                     max: 65535
                     required: true
-                    description: Start of range.
+                    description: Start of range (Default:4096).
                   end:
                     type: int
+                    convert_types:
+                    - str
                     max: 65535
                     required: true
-                    description: End of range from `start` to 65535.
+                    description: End of range, from `start` to 65535 (Default:65535).
               address_families:
                 type: list
                 min_length: 1

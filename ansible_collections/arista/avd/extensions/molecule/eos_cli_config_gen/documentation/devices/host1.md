@@ -9156,13 +9156,9 @@ ASN Notation: asdot
 
 #### Route Distinguisher
 
-- Assignment Auto Address Family: ['l3-vrf', 'l2-evpn']
-
-##### Assignment Auto Range
-
-| Start | End |
-| ----- | --- |
-| 2 | 45 |
+| Address Family | Range |
+| -------------- | ----- |
+| l3-vrf, l2-evpn | 2-45 |
 
 #### Router BGP EVPN Address Family
 
