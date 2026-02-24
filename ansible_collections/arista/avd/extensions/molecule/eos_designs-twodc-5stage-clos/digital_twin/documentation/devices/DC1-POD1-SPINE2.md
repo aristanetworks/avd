@@ -147,9 +147,9 @@ vlan internal order ascending range 1006 1199
 | Ethernet1 | P2P_DC1-SUPER-SPINE1_Ethernet2 | - | 172.16.11.3/31 | default | - | False | - | - |
 | Ethernet2 | P2P_DC1-SUPER-SPINE2_Ethernet2 | - | 172.16.11.67/31 | default | - | False | - | - |
 | Ethernet3 | P2P_DC1-POD1-LEAF1A_Ethernet2 | - | 172.17.110.2/31 | default | - | False | - | - |
-| Ethernet4 | P2P_DC1.POD1.LEAF2A_Ethernet2 | - | 172.17.110.10/31 | default | - | False | - | - |
+| Ethernet4 | P2P_DC1.POD1.LEAF2A_Ethernet2 | - | 172.17.110.26/31 | default | - | False | - | - |
 | Ethernet5 | P2P_DC1-POD1-LEAF2B_Ethernet2 | - | 172.17.110.18/31 | default | - | False | - | - |
-| Ethernet7 | P2P_DC1.POD1.LEAF2A_Ethernet12 | - | 172.17.110.14/31 | default | - | False | - | - |
+| Ethernet7 | P2P_DC1.POD1.LEAF2A_Ethernet12 | - | 172.17.110.30/31 | default | - | False | - | - |
 | Ethernet8 | P2P_DC1-POD1-LEAF2B_Ethernet12 | - | 172.17.110.22/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
@@ -187,7 +187,7 @@ interface Ethernet4
    description P2P_DC1.POD1.LEAF2A_Ethernet2
    no shutdown
    no switchport
-   ip address 172.17.110.10/31
+   ip address 172.17.110.26/31
    mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
@@ -205,7 +205,7 @@ interface Ethernet7
    description P2P_DC1.POD1.LEAF2A_Ethernet12
    no shutdown
    no switchport
-   ip address 172.17.110.14/31
+   ip address 172.17.110.30/31
    mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
@@ -323,7 +323,7 @@ ASN Notation: asdot
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -332,10 +332,10 @@ ASN Notation: asdot
 | 172.16.11.2 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.16.11.66 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.17.110.3 | 65111.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.17.110.11 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 172.17.110.15 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.17.110.19 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 172.17.110.23 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.17.110.27 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 172.17.110.31 | 65112.100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 
 #### Router BGP Device Configuration
 
@@ -351,7 +351,7 @@ router bgp 65110.100
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 172.16.11.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.11.2 remote-as 65100
    neighbor 172.16.11.2 description DC1-SUPER-SPINE1_Ethernet2
@@ -361,18 +361,18 @@ router bgp 65110.100
    neighbor 172.17.110.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.3 remote-as 65111.100
    neighbor 172.17.110.3 description DC1-POD1-LEAF1A_Ethernet2
-   neighbor 172.17.110.11 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.11 remote-as 65112.100
-   neighbor 172.17.110.11 description DC1.POD1.LEAF2A_Ethernet2
-   neighbor 172.17.110.15 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.15 remote-as 65112.100
-   neighbor 172.17.110.15 description DC1.POD1.LEAF2A_Ethernet12
    neighbor 172.17.110.19 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.19 remote-as 65112.100
    neighbor 172.17.110.19 description DC1-POD1-LEAF2B_Ethernet2
    neighbor 172.17.110.23 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.23 remote-as 65112.100
    neighbor 172.17.110.23 description DC1-POD1-LEAF2B_Ethernet12
+   neighbor 172.17.110.27 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.27 remote-as 65112.100
+   neighbor 172.17.110.27 description DC1.POD1.LEAF2A_Ethernet2
+   neighbor 172.17.110.31 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.31 remote-as 65112.100
+   neighbor 172.17.110.31 description DC1.POD1.LEAF2A_Ethernet12
    redistribute connected
    !
    address-family ipv4

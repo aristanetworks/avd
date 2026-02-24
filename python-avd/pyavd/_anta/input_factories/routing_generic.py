@@ -7,11 +7,11 @@ from typing import TYPE_CHECKING
 
 from anta.tests.routing.generic import VerifyRoutingProtocolModel, VerifyRoutingTableEntry
 
+from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
-from pyavd.j2filters import natural_sort
 
-from ._base_classes import AntaTestInputFactory
-from ._decorators import skip_if_extra_fabric_validation_disabled, skip_if_wan_router
+from .base_classes import AntaTestInputFactory
+from .decorators import skip_if_extra_fabric_validation_disabled, skip_if_missing_config, skip_if_not_vtep, skip_if_wan_router
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -25,6 +25,7 @@ class VerifyRoutingProtocolModelInputFactory(AntaTestInputFactory[VerifyRoutingP
     of the device structured config.
     """
 
+    @skip_if_missing_config(StructuredConfigKey.SERVICE_ROUTING_PROTOCOLS_MODEL)
     def create(self) -> Iterator[VerifyRoutingProtocolModel.Input]:
         """Generate the inputs for the `VerifyRoutingProtocolModel` test."""
         if not (model := self.structured_config.service_routing_protocols_model):
@@ -45,11 +46,12 @@ class VerifyRoutingTableEntryInputFactory(AntaTestInputFactory[VerifyRoutingTabl
     """
 
     @skip_if_extra_fabric_validation_disabled
+    @skip_if_not_vtep
     @skip_if_wan_router
     def create(self) -> Iterator[VerifyRoutingTableEntry.Input]:
         """Generate the inputs for the `VerifyRoutingTableEntry` test."""
-        if not self.fabric_data.special_ips:
+        if not self.data_source.fabric_underlay_reachability_targets:
             self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
-        yield VerifyRoutingTableEntry.Input(routes=natural_sort(list(self.fabric_data.special_ips)), collect="all")
+        yield VerifyRoutingTableEntry.Input(routes=self.data_source.fabric_underlay_reachability_targets, collect="all")

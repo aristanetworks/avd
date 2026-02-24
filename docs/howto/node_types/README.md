@@ -100,9 +100,9 @@ With this configuration:
 
 Now you can define devices without explicitly setting `type`:
 
-```yaml title="Service Leaves Settings"
+```yaml title="Service Leaf Settings"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC1_SERVICE_LEAVES/service_leaves.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC1_SERVICE_LEAFS/service_leafs.yml
 --8<--
 ```
 
@@ -132,9 +132,9 @@ This creates a new `service_leaf` node type with:
 
 Once defined, use your custom node type like any default type. Combined with `default_node_types`, devices are automatically assigned the custom type:
 
-```yaml title="Service Leaves Settings"
+```yaml title="Service Leaf Settings"
 --8<--
-ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC1_SERVICE_LEAVES/service_leaves.yml
+ansible_collections/arista/avd/extensions/molecule/howto/inventory/group_vars/DC1_SERVICE_LEAFS/service_leafs.yml
 --8<--
 ```
 
@@ -205,7 +205,7 @@ uplink_type: p2p  # p2p, port-channel, p2p-vrfs, lan
 - **p2p-vrfs**: Layer 3 uplinks with subinterfaces per VRF
 - **lan**: LAN uplinks for campus designs
 
-For a complete list of properties, see the [Node Type Customization](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#node-type-customization) documentation.
+For a complete list of properties, see the [Node Type Customization](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#node-type-customization) documentation.
 
 ## Advanced Example: MPLS PE Router
 
@@ -262,5 +262,5 @@ custom_node_type_keys:
 
 For complete details on all available node type properties, see:
 
-- [Default Node Types Variables](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#node-type-variables)
-- [Node Type Customization](../../../ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md#node-type-customization)
+- [Default Node Types Variables](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#node-type-variables)
+- [Node Type Customization](../../../ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md#node-type-customization)

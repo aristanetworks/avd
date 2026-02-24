@@ -68,6 +68,14 @@ policy_maps:
             rate_burst_size: 260
             rate_burst_size_unit: kbytes
   pbr:
+    - name: pm_pbr
+      classes:
+        - name: CM_PBR_EXCLUDE
+          set:
+            nexthop:
+              ip_address: 192.168.4.2
+              recursive: true
+
     - name: PM_PBR_BREAKOUT
       classes:
         - name: CM_PBR_EXCLUDE

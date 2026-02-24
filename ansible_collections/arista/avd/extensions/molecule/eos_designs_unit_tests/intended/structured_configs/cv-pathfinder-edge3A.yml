@@ -231,25 +231,6 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
     - extcommunity soo 192.168.42.6:404 additive
-- name: RM-BGP-UNDERLAY-PEERS-IN
-  sequence_numbers:
-  - sequence: 40
-    type: permit
-    description: Mark prefixes originated from the LAN
-    set:
-    - extcommunity soo 192.168.42.6:404 additive
-- name: RM-BGP-UNDERLAY-PEERS-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    description: Make routes learned from WAN HA peer less preferred on LAN routers
-    match:
-    - tag 50
-    - route-type internal
-    set:
-    - metric 50
-  - sequence: 20
-    type: permit
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -346,30 +327,30 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
     profiles:
-    - id: 254
-      name: DEFAULT-AVT-POLICY-CONTROL-PLANE
-    - id: 3
-      name: DEFAULT-AVT-POLICY-VIDEO
-    - id: 1
-      name: DEFAULT-AVT-POLICY-DEFAULT
+    - name: DEFAULT-AVT-POLICY-CONTROL-PLANE
+      id: 254
+    - name: DEFAULT-AVT-POLICY-VIDEO
+      id: 3
+    - name: DEFAULT-AVT-POLICY-DEFAULT
+      id: 1
   - name: PROD
     policy: PROD-AVT-POLICY
     profiles:
-    - id: 2
-      name: PROD-AVT-POLICY-VOICE
-    - id: 4
-      name: PROD-AVT-POLICY-VIDEO
-    - id: 5
-      name: PROD-AVT-POLICY-MPLS-ONLY
-    - id: 1
-      name: PROD-AVT-POLICY-DEFAULT
+    - name: PROD-AVT-POLICY-VOICE
+      id: 2
+    - name: PROD-AVT-POLICY-VIDEO
+      id: 4
+    - name: PROD-AVT-POLICY-MPLS-ONLY
+      id: 5
+    - name: PROD-AVT-POLICY-DEFAULT
+      id: 1
   - name: IT
     policy: DEFAULT-AVT-POLICY
     profiles:
-    - id: 3
-      name: DEFAULT-AVT-POLICY-VIDEO
-    - id: 1
-      name: DEFAULT-AVT-POLICY-DEFAULT
+    - name: DEFAULT-AVT-POLICY-VIDEO
+      id: 3
+    - name: DEFAULT-AVT-POLICY-DEFAULT
+      id: 1
 router_bfd:
   multihop:
     interval: 300
@@ -386,13 +367,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-    route_map_in: RM-BGP-UNDERLAY-PEERS-IN
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: WAN-OVERLAY-PEERS
     metadata:
       type: wan
@@ -443,8 +417,6 @@ router_bgp:
       encapsulation: path-selection
   address_family_ipv4:
     peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
     - name: WAN-OVERLAY-PEERS
       activate: false
   address_family_ipv4_sr_te:
@@ -595,11 +567,13 @@ vrfs:
 - name: IT
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: PROD
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-edge3A_VTEP

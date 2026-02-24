@@ -1,0 +1,17 @@
+---
+# Test for global 802.1X enabled with default values
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: dot1x-settings-1
+      mgmt_ip: 192.168.0.2/24
+
+dot1x_settings:
+  enabled: true
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        cleartext_key: super-secret-key

@@ -199,7 +199,7 @@ router_bgp:
       type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -349,7 +349,8 @@ vlan_interfaces:
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.30.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - app
     - erp1
@@ -359,7 +360,8 @@ vlan_interfaces:
   vrf: Tenant_A_APP_Zone
   ip_address_virtual: 10.1.31.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - app
 - name: Vlan120
@@ -372,7 +374,8 @@ vlan_interfaces:
     source_interface: lo100
     vrf: TEST
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - web
     - erp1
@@ -383,7 +386,8 @@ vlan_interfaces:
   ip_address_virtual: 10.1.10.254/24
   mtu: 1560
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - web
 vlan_internal_order:
@@ -395,30 +399,36 @@ vlans:
 - id: 130
   name: Tenant_A_APP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 131
   name: Tenant_A_APP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 121
   name: Tenant_A_WEBZone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_A_APP_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: Tenant_A_WEB_Zone
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vxlan_interface:
   vxlan1:
     description: DC1-LEAF1A_VTEP

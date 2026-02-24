@@ -9,7 +9,7 @@
 ### QOS Policy Maps
 
 #### QOS Policy Maps Summary
-{%     for policy_map in policy_maps.qos | arista.avd.natural_sort('name') %}
+{%     for policy_map in policy_maps.qos | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 
 ##### {{ policy_map.name }}
 

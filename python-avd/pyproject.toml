@@ -28,7 +28,7 @@ dependencies = [
     # pinned grpclib since we patch the connection code to get proxy support
     "grpclib==0.4.9",
     "jinja2>=3.0",
-    "pyavd-utils==0.0.1",
+    "pyavd-utils==0.0.2",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     "requests>=2.27.0",
@@ -40,7 +40,7 @@ repository = "https://github.com/aristanetworks/avd"
 
 [project.optional-dependencies]
 ansible = [
-    "ansible-core>=2.16.0,<2.20.0",
+    "ansible-core>=2.16.0,<2.21.0",
     "pyavd[ansible-collection]",
 ]
 ansible-collection = [
@@ -58,7 +58,7 @@ requires = [
     "pydantic>=2.3.0",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
-    "ruff==0.14.11",
+    "ruff==0.15.2",
     "setuptools>=77.0",
 ]
 build-backend = "custom_build_backend"
@@ -72,6 +72,7 @@ include-package-data = true
     "avd_meta_schema.pickle",
     "eos_cli_config_gen.schema.pickle",
     "eos_designs.schema.pickle",
+    "schemas.json.gz",
 ]
 
 [tool.setuptools.packages.find]
@@ -79,6 +80,12 @@ include = ["pyavd*"]
 
 [tool.setuptools.dynamic]
 version = {attr = "pyavd.__version__"}
+
+[dependency-groups]
+# helping pdm generate the flat list of requirements in pre-commit
+self = [
+  "pyavd==6.0.0"
+]
 
 [tool.black]
 # Black has been replaced with Ruff.

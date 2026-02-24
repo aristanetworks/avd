@@ -37,7 +37,7 @@ ethernet_interfaces:
     peer_interface: Ethernet6
     peer_type: mlag_peer
 - name: Ethernet1
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet220
+  description: P2P_LINK_Ethernet1_TO_DC1-SPINE1_Ethernet220
   shutdown: false
   speed: forced 40gfull
   mtu: 1500
@@ -234,7 +234,8 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

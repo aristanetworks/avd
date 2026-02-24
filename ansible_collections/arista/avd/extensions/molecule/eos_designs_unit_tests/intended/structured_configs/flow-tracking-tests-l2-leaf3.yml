@@ -55,8 +55,16 @@ flow_tracking:
         local_interface: Ethernet101
     shutdown: false
 hostname: flow-tracking-tests-l2-leaf3
+ip_domain_lookup:
+  source_interfaces:
+  - name: Vlan4092
 ip_igmp_snooping:
   globally_enabled: true
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 192.168.200.5
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -71,6 +79,14 @@ metadata:
   fabric_name: FLOW_TRACKING_TESTS
   validate_hardware:
     enabled: false
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_flow-tracking-tests-leaf-mlag_Port-Channel33
@@ -107,11 +123,13 @@ vlans:
 - id: 11
   name: VLAN11
   metadata:
-    tenant: FLOW_TRACKING
+    tenants:
+    - FLOW_TRACKING
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

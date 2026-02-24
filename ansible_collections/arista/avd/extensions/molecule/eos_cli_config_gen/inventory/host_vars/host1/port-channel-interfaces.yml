@@ -244,6 +244,7 @@ port_channel_interfaces:
           - range: 1-3
             mac_address_maximum: 3
           - range: 4-5
+            mac_address_maximum: 4
     ipv6_nd_prefixes:
       - ipv6_prefix: a1::/64
         valid_lifetime: infinite

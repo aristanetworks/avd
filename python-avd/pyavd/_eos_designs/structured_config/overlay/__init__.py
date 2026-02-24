@@ -7,7 +7,6 @@ from pyavd._eos_designs.structured_config.structured_config_generator import Str
 
 from .as_path import AsPathMixin
 from .cvx import CvxMixin
-from .ip_extcommunity_lists import IpExtCommunityListsMixin
 from .ip_security import IpSecurityMixin
 from .management_cvx import ManagementCvxMixin
 from .management_security import ManagementSecurityMixin
@@ -24,7 +23,6 @@ from .utils import UtilsMixin
 
 class AvdStructuredConfigOverlayProtocol(
     CvxMixin,
-    IpExtCommunityListsMixin,
     IpSecurityMixin,
     ManagementCvxMixin,
     ManagementSecurityMixin,

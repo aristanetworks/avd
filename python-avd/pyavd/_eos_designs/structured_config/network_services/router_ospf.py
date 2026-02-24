@@ -51,7 +51,7 @@ underlay OSPF process id '{self.inputs.underlay_ospf_process_id}'."
                     raise AristaAvdInvalidInputsError(msg)
 
                 process = EosCliConfigGen.RouterOspf.ProcessIdsItem(
-                    id=process_id, passive_interface_default=True, router_id=self.get_vrf_router_id(vrf, tenant, vrf.ospf.router_id)
+                    id=process_id, passive_interface_default=True, router_id=self.get_protocol_vrf_router_id(vrf, tenant, vrf.ospf.router_id)
                 )
                 if vrf.ospf.max_lsa is not None:
                     process.max_lsa = vrf.ospf.max_lsa

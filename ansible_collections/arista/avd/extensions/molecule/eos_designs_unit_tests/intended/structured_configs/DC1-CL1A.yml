@@ -39,7 +39,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1/16/1
     peer_type: mlag_peer
 - name: Ethernet1
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet26
+  description: P2P_LINK_Ethernet1_TO_DC1-SPINE1_Ethernet26
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -51,7 +51,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet2
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet26
+  description: P2P_LINK_Ethernet2_TO_DC1-SPINE2_Ethernet26
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -63,7 +63,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet3
-  description: P2P_LINK_TO_DC1-SPINE3_Ethernet26
+  description: P2P_LINK_Ethernet3_TO_DC1-SPINE3_Ethernet26
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -75,7 +75,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet4
-  description: P2P_LINK_TO_DC1-SPINE4_Ethernet26
+  description: P2P_LINK_Ethernet4_TO_DC1-SPINE4_Ethernet26
   shutdown: false
   speed: forced 100gfull
   mtu: 1500
@@ -219,13 +219,13 @@ router_bgp:
     next_hop_self: true
     password: 15AwQNBEJ1nyF/kBEtoAGw==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: UNDERLAY-PEERS
     metadata:
       type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -336,7 +336,8 @@ router_bgp:
     vlan: 120-121
   - name: Tenant_A_NFS
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.18:20161
     route_targets:
       both:
@@ -346,7 +347,8 @@ router_bgp:
     vlan: '161'
   - name: Tenant_A_VMOTION
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.18:20160
     route_targets:
       both:
@@ -442,85 +444,105 @@ vlans:
   trunk_groups:
   - LEAF_PEER_L3
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4092
   name: MLAG_PEER
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 130
   name: Tenant_A_APP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 131
   name: Tenant_A_APP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 140
   name: Tenant_A_DB_BZone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 141
   name: Tenant_A_DB_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 110
   name: Tenant_A_OP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 111
   name: Tenant_A_OP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 112
   name: Tenant_A_OP_Zone_3
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 150
   name: Tenant_A_WAN_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 121
   name: Tenant_A_WEBZone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 160
   name: Tenant_A_VMOTION
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 161
   name: Tenant_A_NFS
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 210
   name: Tenant_B_OP_Zone_1
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 211
   name: Tenant_B_OP_Zone_2
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 250
   name: Tenant_B_WAN_Zone_1
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 310
   name: Tenant_C_OP_Zone_1
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 311
   name: Tenant_C_OP_Zone_2
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 - id: 350
   name: Tenant_C_WAN_Zone_1
   metadata:
-    tenant: Tenant_C
+    tenants:
+    - Tenant_C
 vrfs:
 - name: MGMT
   ip_routing: false

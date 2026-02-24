@@ -42,5 +42,8 @@ wan_carriers:
     path_group: INET
     trusted: true
 
+wan_route_servers:
+  - hostname: missing_cv_pathfinder_regions
+
 expected_error_message: >-
   'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'.

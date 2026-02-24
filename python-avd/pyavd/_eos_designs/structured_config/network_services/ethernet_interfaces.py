@@ -74,7 +74,7 @@ class EthernetInterfacesMixin(Protocol):
                 interface_description = member_intf.description
                 # derive values for peer from parent L3 port-channel
                 # if not defined explicitly for member interface
-                peer = member_intf.peer if member_intf.peer else l3_port_channel.peer
+                peer = member_intf.peer or l3_port_channel.peer
                 if not interface_description:
                     elems = [peer, member_intf.peer_interface]
                     if elems:
@@ -84,7 +84,7 @@ class EthernetInterfacesMixin(Protocol):
                     name=member_intf.name,
                     description=interface_description or None,
                     shutdown=not l3_port_channel.enabled,
-                    speed=member_intf.speed if member_intf.speed else None,
+                    speed=member_intf.speed or None,
                 )
                 ethernet_interface.metadata._update(peer_interface=member_intf.peer_interface or None, peer_type="l3_port_channel_member", peer=peer or None)
                 ethernet_interface.channel_group.id = int(channel_group_id)

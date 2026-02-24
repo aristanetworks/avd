@@ -91,6 +91,8 @@
 {% include 'eos/monitor-layer1.j2' %}
 {# load balance #}
 {% include 'eos/load-balance.j2' %}
+{# monitor link flap profiles #}
+{% include 'eos/monitor-link-flap-policy.j2' %}
 {# Link Tracking #}
 {% include 'eos/link-tracking-groups.j2' %}
 {# lldp #}
@@ -336,14 +338,14 @@
 {% include 'eos/monitor-telemetry-postcard-policy.j2' %}
 {# qos #}
 {% include 'eos/qos.j2' %}
+{# eos - priority flow control #}
+{% include 'eos/priority-flow-control.j2' %}
 {# QOS class-map #}
 {% include 'eos/class-maps.j2' %}
 {# COPP policy-map #}
 {% include 'eos/policy-maps-copp.j2' %}
 {# QOS policy-map #}
 {% include 'eos/policy-maps-qos.j2' %}
-{# eos - priority flow control #}
-{% include 'eos/priority-flow-control.j2' %}
 {# ip radius source interfaces #}
 {% include 'eos/ip-radius-source-interfaces.j2' %}
 {# roles #}
@@ -376,6 +378,8 @@
 {% include 'eos/router-msdp.j2' %}
 {# router rip configuration #}
 {% include 'eos/router-rip.j2' %}
+{# mpls rsvp #}
+{% include 'eos/mpls-rsvp.j2' %}
 {# stun #}
 {% include 'eos/stun.j2' %}
 {# ip tacacs+ source interfaces #}

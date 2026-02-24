@@ -794,7 +794,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv6 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 ##### MLAG-IPv6-UNDERLAY-PEER
 
@@ -804,7 +804,7 @@ ASN Notation: asplain
 | Remote AS | 65102 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -866,7 +866,7 @@ router bgp 65102
    neighbor IPv6-UNDERLAY-PEERS peer group
    neighbor IPv6-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv6-UNDERLAY-PEERS send-community
-   neighbor IPv6-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv6-UNDERLAY-PEERS maximum-routes 256000
    neighbor MLAG-IPv6-UNDERLAY-PEER peer group
    neighbor MLAG-IPv6-UNDERLAY-PEER remote-as 65102
    neighbor MLAG-IPv6-UNDERLAY-PEER next-hop-self
@@ -874,7 +874,7 @@ router bgp 65102
    neighbor MLAG-IPv6-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv6-UNDERLAY-PEER password 7 <removed>
    neighbor MLAG-IPv6-UNDERLAY-PEER send-community
-   neighbor MLAG-IPv6-UNDERLAY-PEER maximum-routes 12000
+   neighbor MLAG-IPv6-UNDERLAY-PEER maximum-routes 256000
    neighbor 2001:db8:0:1::1 peer group EVPN-OVERLAY-PEERS
    neighbor 2001:db8:0:1::1 remote-as 65100
    neighbor 2001:db8:0:1::1 description dc1-spine1_Loopback0

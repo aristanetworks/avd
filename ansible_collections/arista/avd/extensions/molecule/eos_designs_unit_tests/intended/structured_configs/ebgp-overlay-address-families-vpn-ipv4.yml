@@ -4,6 +4,8 @@ application_traffic_recognition:
   field_sets:
     ipv4_prefixes:
     - name: PFX-PATHFINDERS
+      prefix_values:
+      - 192.168.144.1/32
   applications:
     ipv4_applications:
     - name: APP-CONTROL-PLANE
@@ -132,6 +134,8 @@ metadata:
     site: Site422
     vtep_ip: 192.168.255.1
     ssl_profile: STUN-DTLS
+    pathfinders:
+    - vtep_ip: 192.168.144.1
     interfaces:
     - name: Ethernet1
       carrier: ATT
@@ -206,10 +210,10 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-POLICY-WITH-CP
     profiles:
-    - id: 254
-      name: DEFAULT-POLICY-CONTROL-PLANE
-    - id: 1
-      name: DEFAULT-POLICY-DEFAULT
+    - name: DEFAULT-POLICY-CONTROL-PLANE
+      id: 254
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
 router_bfd:
   multihop:
     interval: 300
@@ -226,14 +230,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   - name: WAN-OVERLAY-PEERS
     metadata:
       type: wan
@@ -248,6 +244,12 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ttl_maximum_hops: 1
+  neighbors:
+  - ip_address: 192.168.144.1
+    peer_group: WAN-OVERLAY-PEERS
+    metadata:
+      peer: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder_Dps1
   redistribute:
     connected:
       enabled: true
@@ -307,8 +309,18 @@ router_path_selection:
     ipsec_profile: CP-PROFILE
     local_interfaces:
     - name: Ethernet1
+      stun:
+        server_profiles:
+        - INET-cv-pathfinder-pathfinder-Ethernet1
+        - INET-cv-pathfinder-pathfinder-Ethernet3
     dynamic_peers:
       enabled: true
+    static_peers:
+    - router_ip: 192.168.144.1
+      name: cv-pathfinder-pathfinder
+      ipv4_addresses:
+      - 172.17.7.7
+      - 10.9.9.9
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
@@ -323,6 +335,15 @@ router_traffic_engineering:
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
+stun:
+  client:
+    server_profiles:
+    - name: INET-cv-pathfinder-pathfinder-Ethernet1
+      ip_address: 172.17.7.7
+      ssl_profile: STUN-DTLS
+    - name: INET-cv-pathfinder-pathfinder-Ethernet3
+      ip_address: 10.9.9.9
+      ssl_profile: STUN-DTLS
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
 - name: MGMT

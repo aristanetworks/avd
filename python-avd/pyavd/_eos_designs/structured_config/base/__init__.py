@@ -4,7 +4,8 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import Protocol
+from ipaddress import AddressValueError, IPv4Address
+from typing import TYPE_CHECKING, Any, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import (
@@ -18,6 +19,7 @@ from pyavd.j2filters import natural_sort, secure_hash
 
 from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
+from .dot1x import Dot1xMixin
 from .management_ssh import ManagementSshMixin
 from .monitor_sessions import MonitorSessionsMixin
 from .ntp import NtpMixin
@@ -26,10 +28,14 @@ from .router_general import RouterGeneralMixin
 from .snmp_server import SnmpServerMixin
 from .utils import UtilsMixin
 
+if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
 
 class AvdStructuredConfigBaseProtocol(
     AddressLockingMixin,
     DaemonTerminattrMixin,
+    Dot1xMixin,
     ManagementSshMixin,
     NtpMixin,
     SnmpServerMixin,
@@ -88,12 +94,6 @@ class AvdStructuredConfigBaseProtocol(
 
         self.structured_config.router_bgp.bgp.default.ipv4_unicast = self.inputs.bgp_default_ipv4_unicast
         self.structured_config.router_bgp.maximum_paths._update(paths=self.inputs.bgp_maximum_paths or default_maximum_paths, ecmp=self.inputs.bgp_ecmp)
-
-        if self.shared_utils.underlay_bgp or self.shared_utils.is_wan_router or self.shared_utils.l3_bgp_neighbors:
-            self.structured_config.router_bgp.redistribute.connected.enabled = True
-            if (self.shared_utils.overlay_routing_protocol != "none" or self.shared_utils.is_wan_router) and self.inputs.underlay_filter_redistribute_connected:
-                # Use route-map for redistribution
-                self.structured_config.router_bgp.redistribute.connected.route_map = "RM-CONN-2-BGP"
 
         if self.inputs.bgp_update_wait_for_convergence and platform_bgp_update_wait_for_convergence:
             self.structured_config.router_bgp.updates.wait_for_convergence = True
@@ -371,7 +371,11 @@ class AvdStructuredConfigBaseProtocol(
             if source_interface:
                 # Add to local tmp object to detect conflicts.
                 vrf_logging_config.append_new(name=host_vrf, source_interface=source_interface)
-                logging_vrf.source_interface = source_interface
+                # Set either local_interface or source_interface based on use_local_interface_cli
+                if settings.use_local_interface_cli:
+                    logging_vrf.local_interface = source_interface
+                else:
+                    logging_vrf.source_interface = source_interface
 
             # Add host entry under the correct VRF
             logging_vrf.hosts.append_new(
@@ -625,7 +629,21 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.ptp.free_running.source_clock_hardware = default(
             self.shared_utils.node_config.ptp.free_running.source_clock_hardware, self.inputs.ptp_settings.free_running.source_clock_hardware
         )
-        self.structured_config.ptp.source.ip = self.shared_utils.node_config.ptp.source_ip
+        source_ip = self.shared_utils.node_config.ptp.source_ip
+
+        if source_ip == "router_id":
+            if self.shared_utils.router_id is None:
+                msg = "PTP source IP is set to 'ptp.source_ip: router_id' but no router ID is configured for this device."
+                raise AristaAvdInvalidInputsError(msg)
+            self.structured_config.ptp.source.ip = self.shared_utils.router_id
+        elif source_ip is not None:
+            try:
+                IPv4Address(source_ip)
+                self.structured_config.ptp.source.ip = source_ip
+            except AddressValueError:
+                msg = f"Invalid PTP source IP 'ptp.source_ip: {source_ip}'. The value must be either 'router_id' or a valid IPv4 address."
+                raise AristaAvdInvalidInputsError(msg) from None
+
         self.structured_config.ptp.message_type.general.dscp = self.shared_utils.node_config.ptp.dscp.general_messages
         self.structured_config.ptp.message_type.event.dscp = self.shared_utils.node_config.ptp.dscp.event_messages
 
@@ -671,11 +689,35 @@ class AvdStructuredConfigBaseProtocol(
         if eos_cli:
             self.structured_config.eos_cli = eos_cli
 
+    def _add_radius_server_config(self, server: EosDesigns.AaaSettings.Radius.ServersItem, server_vrf: str) -> None:
+        """
+        Add radius server configuration to the appropriate VRF.
+
+        Args:
+            server: The RADIUS server configuration from EOS Designs inputs.
+            server_vrf: The VRF name where the server should be configured.
+        """
+        server_kwargs: dict[str, Any] = {"host": server.host}
+        if server.tls.enabled:
+            server_kwargs["tls"] = server.tls
+        else:
+            server_kwargs["key"] = self._get_tacacs_or_radius_server_password(server)
+
+        if server_vrf == "default":
+            self.structured_config.radius_server.servers.append_new(**server_kwargs)
+        else:
+            radius_server_vrf = self.structured_config.radius_server.vrfs.obtain(server_vrf)
+            if server.tls.enabled:
+                server_kwargs["tls"] = server.tls._cast_as(EosCliConfigGen.RadiusServer.VrfsItem.ServersItem.Tls)
+            radius_server_vrf.servers.append_new(**server_kwargs)
+
     @structured_config_contributor
     def radius_servers(self) -> None:
         """Parse AAA radius server configurations and update structured config with server and source interface details."""
         if not self.inputs.aaa_settings.radius:
             return
+
+        use_new_ip_radius_model = self.inputs.avd_7_behaviors.ip_radius_source_interface_setting
 
         for server in self.inputs.aaa_settings.radius.servers:
             server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
@@ -685,15 +727,19 @@ class AvdStructuredConfigBaseProtocol(
                 context=f"aaa_settings.radius.servers[host={server.host}].vrf",
             )
             if source_interface:
-                self.structured_config.ip_radius_source_interfaces.append_unique(
-                    EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
-                )
+                if use_new_ip_radius_model:
+                    # New behavior: separate keys for default VRF and others
+                    if server_vrf == "default":
+                        self.structured_config.ip_radius.source_interface = source_interface
+                    else:
+                        self.structured_config.ip_radius.vrfs.append_new(name=server_vrf, source_interface=source_interface)
+                else:
+                    # Old behavior: use deprecated ip_radius_source_interfaces list
+                    self.structured_config.ip_radius_source_interfaces.append_unique(
+                        EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
+                    )
 
-            if server.tls.enabled:
-                self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, tls=server.tls)
-            else:
-                server_key = self._get_tacacs_or_radius_server_password(server)
-                self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
+            self._add_radius_server_config(server, server_vrf)
 
             for group in server.groups:
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
@@ -736,23 +782,26 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def aaa_authentication(self) -> None:
         """Assign AAA authentication configuration from inputs to structured config."""
-        if not (aaa_authentication := self.inputs.aaa_settings.authentication):
+        if not self.inputs.aaa_settings.authentication:
             return
-        self.structured_config.aaa_authentication = aaa_authentication
+
+        self.structured_config.aaa_authentication = self.inputs.aaa_settings.authentication._cast_as(new_type=EosCliConfigGen.AaaAuthentication)
 
     @structured_config_contributor
     def aaa_authorization(self) -> None:
         """Assign AAA authorization configuration from inputs to structured config."""
-        if not (aaa_authorization := self.inputs.aaa_settings.authorization):
+        if not self.inputs.aaa_settings.authorization:
             return
-        self.structured_config.aaa_authorization = aaa_authorization
+
+        self.structured_config.aaa_authorization = self.inputs.aaa_settings.authorization._cast_as(new_type=EosCliConfigGen.AaaAuthorization)
 
     @structured_config_contributor
     def aaa_accounting(self) -> None:
         """Assign AAA accounting configuration from inputs to structured config."""
-        if not (aaa_accounting := self.inputs.aaa_settings.accounting):
+        if not self.inputs.aaa_settings.accounting:
             return
-        self.structured_config.aaa_accounting = aaa_accounting
+
+        self.structured_config.aaa_accounting = self.inputs.aaa_settings.accounting._cast_as(new_type=EosCliConfigGen.AaaAccounting)
 
     @structured_config_contributor
     def aaa_root_login(self) -> None:

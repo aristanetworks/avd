@@ -429,11 +429,13 @@ l2leaf:
         - name: DC1.L2LEAF6A
           id: 16
           mgmt_ip: 192.168.200.122/24
+          uplink_interfaces: [ Ethernet1 ]
           uplink_switches: [ DC1-LEAF2A ]
           uplink_switch_interfaces: [ Ethernet30 ]
         - name: DC1.L2LEAF6B
           id: 17
           mgmt_ip: 192.168.200.123/24
+          uplink_interfaces: [ Ethernet1 ]
           uplink_switches: [ DC1-LEAF2B ]
           uplink_switch_interfaces: [ Ethernet31 ]
       # Node to test structured configs for underlay_l2 uplinks.
@@ -442,6 +444,7 @@ l2leaf:
         - name: DC1.L2LEAF7A
           id: 18
           mgmt_ip: 192.168.200.124/24
+          uplink_interfaces: [ Ethernet1 ]
           uplink_switches: [ DC1-LEAF2A ]
           uplink_switch_interfaces: [ Ethernet32 ]
           # Structured config applied to uplink port-channel.

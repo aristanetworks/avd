@@ -10,6 +10,10 @@ tenant_a:
         vrf_id: 9 # Check that RD and RT will use this number for this VRF. VNI should still respect vrf_vni
         vtep_diagnostic:
           loopback: 100
+          # Defining loopback_ip_pools should not change the configuration since defined pod is not matching pod_name.
+          loopback_ip_pools:
+            - pod: TENANT_NETWORKS_POD
+              ipv4_pool: 10.101.102.0/24
           loopback_ip_range: 10.255.1.0/24
         redistribute_mlag_ibgp_peering_vrfs: false
         svis:
@@ -123,6 +127,8 @@ tenant_a:
             nodes:
               - node: DC1-LEAF1A
                 ip_address: 10.1.32.1/24
+                ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
+                ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
                 static_routes:
                   - prefix: 10.10.10.0/24
                     next_hop: 10.10.10.1

@@ -102,7 +102,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 310,315-316
+      allowed_vlan: 310,315-316,320,324
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
@@ -126,15 +126,28 @@ vlans:
 - id: 310
   name: Tenant_X_OP_Zone_1
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 - id: 315
   name: Tenant_network_vrf_1
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
+- id: 320
+  name: Tenant_network_vrf_3
+  metadata:
+    tenants:
+    - Tenant_X
+- id: 324
+  name: Tenant_network_vrf_4
+  metadata:
+    tenants:
+    - Tenant_X
 - id: 316
   name: Tenant_network_vrf_2
   metadata:
-    tenant: Tenant_X
+    tenants:
+    - Tenant_X
 vrfs:
 - name: MGMT
   ip_routing: false

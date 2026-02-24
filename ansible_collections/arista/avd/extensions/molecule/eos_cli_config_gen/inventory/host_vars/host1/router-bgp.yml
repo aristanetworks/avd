@@ -1,3 +1,4 @@
+---
 router_bgp:
   as: 65101
   router_id: 192.168.255.3
@@ -90,7 +91,7 @@ router_bgp:
     - name: NO-COMMUNITY
       metadata:
         type: ipv4
-      send_community: null
+      send_community:
     - name: LOCAL-AS
       metadata:
         type: ipv4
@@ -1509,7 +1510,8 @@ router_bgp:
       vlan: 112
     - name: B-ELAN-201
       metadata:
-        tenant: Tenant_B
+        tenants:
+          - Tenant_B
       rd: "192.168.255.3:20201"
       route_targets:
         export:

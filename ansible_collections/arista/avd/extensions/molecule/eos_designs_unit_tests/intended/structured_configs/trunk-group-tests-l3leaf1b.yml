@@ -188,21 +188,8 @@ router_bgp:
     description: trunk-group-tests-l3leaf1a
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   neighbors:
   - ip_address: 10.255.247.0
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -216,7 +203,8 @@ router_bgp:
   vlans:
   - id: 100
     metadata:
-      tenant: TRUNK_GROUP_TESTS
+      tenants:
+      - TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10100
     route_targets:
       both:
@@ -225,7 +213,8 @@ router_bgp:
     - learned
   - id: 200
     metadata:
-      tenant: TRUNK_GROUP_TESTS
+      tenants:
+      - TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10200
     route_targets:
       both:
@@ -234,7 +223,8 @@ router_bgp:
     - learned
   - id: 300
     metadata:
-      tenant: TRUNK_GROUP_TESTS
+      tenants:
+      - TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10300
     route_targets:
       both:
@@ -243,7 +233,8 @@ router_bgp:
     - learned
   - id: 301
     metadata:
-      tenant: TRUNK_GROUP_TESTS
+      tenants:
+      - TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10301
     route_targets:
       both:
@@ -252,7 +243,8 @@ router_bgp:
     - learned
   - id: 398
     metadata:
-      tenant: TRUNK_GROUP_TESTS
+      tenants:
+      - TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10398
     route_targets:
       both:
@@ -261,7 +253,8 @@ router_bgp:
     - learned
   - id: 110
     metadata:
-      tenant: TRUNK_GROUP_TESTS
+      tenants:
+      - TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10110
     route_targets:
       both:
@@ -270,7 +263,8 @@ router_bgp:
     - learned
   - id: 210
     metadata:
-      tenant: TRUNK_GROUP_TESTS
+      tenants:
+      - TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10210
     route_targets:
       both:
@@ -279,7 +273,8 @@ router_bgp:
     - learned
   - id: 310
     metadata:
-      tenant: TRUNK_GROUP_TESTS
+      tenants:
+      - TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10310
     route_targets:
       both:
@@ -288,7 +283,8 @@ router_bgp:
     - learned
   - id: 311
     metadata:
-      tenant: TRUNK_GROUP_TESTS
+      tenants:
+      - TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10311
     route_targets:
       both:
@@ -297,25 +293,18 @@ router_bgp:
     - learned
   - id: 399
     metadata:
-      tenant: TRUNK_GROUP_TESTS
+      tenants:
+      - TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10399
     route_targets:
       both:
       - 10399:10399
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: TG_100
     rd: 192.168.250.10:100
@@ -409,7 +398,8 @@ vlan_interfaces:
   vrf: TG_100
   ip_address_virtual: 10.1.0.1/24
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
     tags:
     - TRUNK_GROUP_TESTS_L3LEAF1
     - TRUNK_GROUP_TESTS_L2LEAF1
@@ -420,7 +410,8 @@ vlan_interfaces:
   ip_address: 10.255.247.1/31
   mtu: 9214
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
     type: underlay_peering
 - name: Vlan200
   description: svi200_with_trunk_groups
@@ -428,7 +419,8 @@ vlan_interfaces:
   vrf: TG_200
   ip_address_virtual: 10.2.0.1/24
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
     tags:
     - TRUNK_GROUP_TESTS_L3LEAF1
     - TRUNK_GROUP_TESTS_L2LEAF1
@@ -439,7 +431,8 @@ vlan_interfaces:
   ip_address: 10.255.247.1/31
   mtu: 9214
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
     type: underlay_peering
 - name: Vlan300
   description: svi300_with_trunk_groups
@@ -447,7 +440,8 @@ vlan_interfaces:
   vrf: TG_300
   ip_address_virtual: 10.3.0.1/24
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
     tags:
     - TRUNK_GROUP_TESTS_L3LEAF1
     - TRUNK_GROUP_TESTS_L2LEAF1
@@ -457,7 +451,8 @@ vlan_interfaces:
   vrf: TG_300
   ip_address_virtual: 10.3.1.1/24
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
     tags:
     - TRUNK_GROUP_TESTS_L3LEAF1
 - name: Vlan398
@@ -466,7 +461,8 @@ vlan_interfaces:
   vrf: TG_300
   ip_address_virtual: 10.3.1.1/24
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
     tags:
     - TRUNK_GROUP_TESTS_L3LEAF1
     - TRUNK_GROUP_TESTS_L2LEAF1
@@ -477,7 +473,8 @@ vlan_interfaces:
   ip_address: 10.255.247.1/31
   mtu: 9214
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -490,26 +487,30 @@ vlans:
   trunk_groups:
   - CUSTOM_LEAF_PEER_L3_TG_NAME
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 4094
   name: MLAG
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 100
   name: svi100_with_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - TRUNK_GROUP_TESTS_L2LEAF1
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 3099
   name: MLAG_L3_VRF_TG_100
   trunk_groups:
   - CUSTOM_LEAF_PEER_L3_TG_NAME
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 200
   name: svi200_with_trunk_groups
   trunk_groups:
@@ -517,13 +518,15 @@ vlans:
   - trunk-group-tests-l2leaf3
   - TRUNK_GROUP_TESTS_L2LEAF1
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 3199
   name: MLAG_L3_VRF_TG_200
   trunk_groups:
   - CUSTOM_LEAF_PEER_L3_TG_NAME
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 300
   name: svi300_with_trunk_groups
   trunk_groups:
@@ -531,34 +534,39 @@ vlans:
   - TG_300
   - TRUNK_GROUP_TESTS_L2LEAF1
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 301
   name: svi301_with_trunk_groups_only_l3leaf
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - TG_300
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 398
   name: svi398_without_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - TRUNK_GROUP_TESTS_L2LEAF1
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 3299
   name: MLAG_L3_VRF_TG_300
   trunk_groups:
   - CUSTOM_LEAF_PEER_L3_TG_NAME
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 110
   name: l2vlan110_with_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - TRUNK_GROUP_TESTS_L2LEAF1
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 210
   name: l2vlan210_with_trunk_groups
   trunk_groups:
@@ -566,7 +574,8 @@ vlans:
   - trunk-group-tests-l2leaf3
   - TRUNK_GROUP_TESTS_L2LEAF1
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 310
   name: l2vlan310_with_trunk_groups
   trunk_groups:
@@ -574,36 +583,42 @@ vlans:
   - TG_300
   - TRUNK_GROUP_TESTS_L2LEAF1
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 311
   name: l2vlan310_with_trunk_groups_only_l3leaf
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - TG_300
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 399
   name: l2vlan399_without_trunk_groups
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
   - TRUNK_GROUP_TESTS_L2LEAF1
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TG_100
   ip_routing: true
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - name: TG_200
   ip_routing: true
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - name: TG_300
   ip_routing: true
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 vxlan_interface:
   vxlan1:
     description: trunk-group-tests-l3leaf1b_VTEP

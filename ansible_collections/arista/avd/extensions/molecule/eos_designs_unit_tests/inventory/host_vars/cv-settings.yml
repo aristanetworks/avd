@@ -12,6 +12,17 @@ l2leaf:
 
 default_mgmt_method: inband
 
+dns_settings:
+  domain: testfabric.local
+  servers:
+    - ip_address: 10.10.10.1
+      priority: 1
+
+ntp_settings:
+  server_vrf: default
+  servers:
+    - name: 10.10.10.1
+
 cv_settings:
   cvaas:
     enabled: true

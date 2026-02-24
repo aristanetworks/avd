@@ -322,19 +322,19 @@ router_adaptive_virtual_topology:
   - name: PROD
     policy: DEFAULT-POLICY
     profiles:
-    - id: 42
-      name: DEFAULT-POLICY-TEST
-    - id: 1
-      name: DEFAULT-POLICY-DEFAULT
+    - name: DEFAULT-POLICY-TEST
+      id: 42
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
   - name: default
     policy: DEFAULT-POLICY-WITH-CP
     profiles:
-    - id: 254
-      name: DEFAULT-POLICY-CONTROL-PLANE
-    - id: 42
-      name: DEFAULT-POLICY-TEST
-    - id: 1
-      name: DEFAULT-POLICY-DEFAULT
+    - name: DEFAULT-POLICY-CONTROL-PLANE
+      id: 254
+    - name: DEFAULT-POLICY-TEST
+      id: 42
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
 router_bfd:
   multihop:
     interval: 300
@@ -515,7 +515,8 @@ vrfs:
 - name: PROD
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 vxlan_interface:
   vxlan1:
     description: cv-pathfinder-edge-no-ipsec-for-wan-path-group_VTEP

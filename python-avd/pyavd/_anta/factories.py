@@ -6,43 +6,24 @@
 from __future__ import annotations
 
 from itertools import chain
-from logging import getLogger
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from anta.catalog import AntaCatalog, AntaTestDefinition
 from anta.models import AntaTest
 
-from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._utils import get_v2
-
-from .constants import StructuredConfigKey
-from .logs import LogMessage, TestLoggerAdapter
-from .models import DeviceTestContext
-
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
-    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData, TestSpec
+    from pyavd.api.anta import AVDTestSpec
+
+    from .models import InputFactoryDataSource
 
 
-def create_catalog(
-    hostname: str,
-    structured_config: dict[str, Any],
-    fabric_data: AvdFabricData,
-    settings: AvdCatalogGenerationSettings,
-    test_specs: list[TestSpec],
-) -> AntaCatalog:
+def create_catalog(data_source: InputFactoryDataSource, test_specs: list[AVDTestSpec]) -> AntaCatalog:
     """Create an ANTA catalog for a device from the provided test specs."""
-    device_context = DeviceTestContext(
-        hostname=hostname,
-        structured_config=EosCliConfigGen._load(structured_config),
-        fabric_data=fabric_data,
-        settings=settings,
-    )
+    all_test_defs_iterator = chain.from_iterable(create_test_definitions(test_spec, data_source) for test_spec in test_specs)
 
-    all_test_defs_iterator = chain.from_iterable(create_test_definitions(test_spec, device_context) for test_spec in test_specs)
-
-    tests = [update_test_definition_metadata(test_def, hostname) for test_def in all_test_defs_iterator]
+    tests = [update_test_definition_metadata(test_def, data_source.hostname) for test_def in all_test_defs_iterator]
 
     # Sort by module and test name for consistent output
     tests.sort(key=lambda x: (x.test.__module__, x.test.name))
@@ -50,19 +31,11 @@ def create_catalog(
     return AntaCatalog(tests=tests)
 
 
-def create_test_definitions(test_spec: TestSpec, device_context: DeviceTestContext) -> Iterator[AntaTestDefinition]:
-    """Generate the AntaTestDefinition from this TestSpec instance."""
-    logger_adapter = TestLoggerAdapter(logger=getLogger(__name__), extra={"device": device_context.hostname, "test": test_spec.test_class.name})
-
-    # Skip the test if the conditional keys are not present in the structured config
-    if test_spec.conditional_keys and not all(get_v2(device_context.structured_config, key.value) for key in test_spec.conditional_keys):
-        keys = StructuredConfigKey.to_string_list(test_spec.conditional_keys)
-        logger_adapter.debug(LogMessage.INPUT_NO_DATA_MODELS, data_models=", ".join(keys))
-        return
-
+def create_test_definitions(test_spec: AVDTestSpec, data_source: InputFactoryDataSource) -> Iterator[AntaTestDefinition]:
+    """Generate the AntaTestDefinition from this AVDTestSpec instance."""
     # Generate the test definitions from the input factory if provided
     if test_spec.input_factory is not None:
-        factory = test_spec.input_factory(device_context, test_spec.test_class.name)
+        factory = test_spec.input_factory(data_source, test_spec.test_class.name)
         for inputs in factory.create():
             yield AntaTestDefinition(test=test_spec.test_class, inputs=inputs)
         return

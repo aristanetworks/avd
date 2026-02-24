@@ -180,20 +180,6 @@ route_maps:
     - ip address prefix-list PL-SVI-VRF-DEFAULT
     set:
     - extcommunity soo 192.168.1.1:1 additive
-- name: RM-EVPN-SOO-IN
-  sequence_numbers:
-  - sequence: 10
-    type: deny
-    match:
-    - extcommunity ECL-EVPN-SOO
-  - sequence: 20
-    type: permit
-- name: RM-EVPN-SOO-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    set:
-    - extcommunity soo 192.168.1.1:1 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -227,10 +213,10 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-POLICY-WITH-CP
     profiles:
-    - id: 254
-      name: DEFAULT-POLICY-CONTROL-PLANE
-    - id: 1
-      name: DEFAULT-POLICY-DEFAULT
+    - name: DEFAULT-POLICY-CONTROL-PLANE
+      id: 254
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
 router_bfd:
   multihop:
     interval: 300
@@ -246,47 +232,11 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: WAN-OVERLAY-PEERS
-    metadata:
-      type: wan
-    remote_as: '65100'
-    update_source: Dps1
-    bfd: true
-    bfd_timers:
-      interval: 1000
-      min_rx: 1000
-      multiplier: 10
-    send_community: all
-    maximum_routes: 0
-    ttl_maximum_hops: 1
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
-      route_map_in: RM-EVPN-SOO-IN
-      route_map_out: RM-EVPN-SOO-OUT
-      encapsulation: path-selection
-  address_family_ipv4:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: false
-  address_family_ipv4_sr_te:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
   address_family_link_state:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
     path_selection:
       roles:
         producer: true
@@ -295,9 +245,6 @@ router_bgp:
       additional_paths:
         receive: true
         send: any
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
   vrfs:
   - name: default
     rd: 192.168.1.1:111

@@ -1,5 +1,21 @@
+aaa_accounting:
+  dot1x:
+    default:
+      type: start-stop
+      methods:
+      - multicast: false
+        method: group
+        group: radius
+aaa_authentication:
+  dot1x:
+    default: group radius
 aaa_root: null
 config_end: null
+dot1x:
+  system_auth_control: true
+  protocol_lldp_bypass: true
+  protocol_bpdu_bypass: true
+  dynamic_authorization: true
 enable_password: null
 ethernet_interfaces:
 - name: Ethernet12
@@ -222,7 +238,17 @@ ethernet_interfaces:
       allowed_vlan: 1-100
       native_vlan: 1000
 hostname: only-connected-endpoints
+ip_radius_source_interfaces:
+- name: Management1
+  vrf: MGMT
 management_api_http: null
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.1.2
+  type: oob
 metadata:
   is_deployed: null
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -236,6 +262,12 @@ port_channel_interfaces:
     trunk:
       allowed_vlan: 1-100
       native_vlan: 1000
+radius_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - host: agni.arista.com
+      key: 1404071B09166738212B2130365E0C131A
 service_routing_protocols_model: null
 spanning_tree: null
 transceiver_qsfp_default_mode_4x10: null

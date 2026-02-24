@@ -448,13 +448,13 @@ keys:
                 type: bool
         ipv6_dhcp_relay_destinations:
           type: list
-          primary_key: address
           items:
             type: dict
             keys:
               address:
                 type: str
                 description: DHCP server's IPv6 address.
+                required: true
               vrf:
                 type: str
                 convert_types:
@@ -2448,6 +2448,10 @@ keys:
             remove_in_version: 6.0.0
             new_key: switchport.vlan_translations
           type: list
+        monitor_link_flap_profiles:
+          type: list
+          items:
+            type: str
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration.

@@ -48,20 +48,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -69,7 +55,8 @@ router_bgp:
   vlans:
   - id: 110
     metadata:
-      tenant: research
+      tenants:
+      - research
     rd: 10.10.0.3:10110
     route_targets:
       both:
@@ -78,7 +65,8 @@ router_bgp:
     - learned
   - id: 120
     metadata:
-      tenant: research
+      tenants:
+      - research
     rd: 10.10.0.3:10120
     route_targets:
       both:
@@ -87,23 +75,14 @@ router_bgp:
     - learned
   - id: 130
     metadata:
-      tenant: research
+      tenants:
+      - research
     rd: 10.10.0.3:10130
     route_targets:
       both:
       - 10130:10130
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
@@ -118,21 +97,24 @@ vlans:
     type: isolated
     primary_vlan: 120
   metadata:
-    tenant: research
+    tenants:
+    - research
 - id: 120
   name: research2
   private_vlan:
     type: community
     primary_vlan: 110
   metadata:
-    tenant: research
+    tenants:
+    - research
 - id: 130
   name: research3
   private_vlan:
     type: community
     primary_vlan: 120
   metadata:
-    tenant: research
+    tenants:
+    - research
 vrfs:
 - name: MGMT
   ip_routing: false

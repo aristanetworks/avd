@@ -129,7 +129,8 @@ keys:
                   type: str
                   description: 'Host IP address or name.
 
-                    Combination of `host` and `vrf` should be unique.'
+                    Multiple servers with the same hostname/IP address can be configured
+                    for TLS and no TLS.'
                   required: true
                 groups:
                   type: list
@@ -169,7 +170,7 @@ keys:
                   type: dict
                   description: When TLS is configured, `key` and `cleartext_key` are
                     ignored.
-                  $ref: eos_cli_config_gen#/keys/radius_server/keys/hosts/items/keys/tls
+                  $ref: eos_cli_config_gen#/keys/radius_server/keys/servers/items/keys/tls
           vrfs:
             type: list
             primary_key: name
@@ -193,13 +194,46 @@ keys:
                     this setting will take precedence.'
       authentication:
         type: dict
-        $ref: eos_cli_config_gen#/keys/aaa_authentication
+        keys:
+          login:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authentication/keys/login
+          enable:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authentication/keys/enable
+          policies:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authentication/keys/policies
       authorization:
         type: dict
-        $ref: eos_cli_config_gen#/keys/aaa_authorization
+        keys:
+          policy:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/policy
+          exec:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/exec
+          config_commands:
+            type: bool
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/config_commands
+          serial_console:
+            type: bool
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/serial_console
+          commands:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_authorization/keys/commands
       accounting:
         type: dict
-        $ref: eos_cli_config_gen#/keys/aaa_accounting
+        keys:
+          exec:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_accounting/keys/exec
+          system:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_accounting/keys/system
+          commands:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/aaa_accounting/keys/commands
       root_login:
         type: dict
         keys:
@@ -257,9 +291,40 @@ keys:
     documentation_options:
       table: role-settings
     deprecation:
-      warning: false
+      warning: true
       removed: true
       remove_in_version: 6.0.0
+  avd_7_behaviors:
+    type: dict
+    description: Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors
+      in AVD 7.0.
+    documentation_options:
+      table: role-settings
+    deprecation:
+      warning: false
+      remove_in_version: 7.0.0
+    keys:
+      ip_radius_source_interface_setting:
+        type: bool
+        default: false
+        description: 'Enable improved RADIUS source interface configuration with separate
+          keys for VRF default and other VRFs.
+
+
+          When enabled:
+
+          - VRF default: Uses `ip_radius.source_interface`
+
+          - Other VRFs: Uses `ip_radius.vrfs` list
+
+          - Enforces VRF name uniqueness
+
+          - Aligns with EOS CLI behavior (where "vrf default" is implicit)
+
+
+          When disabled (current):
+
+          - Uses `ip_radius_source_interfaces` list for all VRF combinations'
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
@@ -306,8 +371,11 @@ keys:
     documentation_options:
       table: role-settings
     type: bool
-    default: false
-    description: Dump all vars and facts per device after generating `avd_switch_facts`.
+    deprecation:
+      warning: true
+      removed: true
+      new_key: eos_designs_keep_tmp_files
+      remove_in_version: 6.0.0
   avd_eos_designs_enforce_duplication_checks_across_all_models:
     documentation_options:
       table: role-settings
@@ -326,9 +394,38 @@ keys:
     documentation_options:
       table: role-settings
     type: bool
-    default: true
-    description: Unset `avd_switch_facts` to gain a small performance improvement
-      since Ansible needs to handle fewer variables.
+    deprecation:
+      warning: true
+      removed: true
+      remove_in_version: 6.0.0
+  avd_structured_config_file_format:
+    documentation_options:
+      table: role-settings
+    type: str
+    default: yml
+    valid_values:
+    - yml
+    - yaml
+    - json
+    description: 'The file format to use when dumping structured configuration files.
+
+      '
+  eos_designs_validation_configuration:
+    documentation_options:
+      table: role-settings
+    type: dict
+    description: Validation configuration options when validating AVD Design inputs.
+    keys:
+      warn_eos_config_keys:
+        type: bool
+        default: true
+        description: Emit a warning when EOS Config keys are detected in the AVD Design
+          inputs.
+  avd_vault_id:
+    documentation_options:
+      table: role-settings
+    type: str
+    $ref: eos_cli_config_gen#/keys/avd_vault_id
   bfd_multihop:
     documentation_options:
       table: bfd-settings
@@ -489,11 +586,19 @@ keys:
           bfd:
             type: bool
             default: false
+          maximum_routes:
+            type: int
+            convert_types:
+            - str
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
           structured_config:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -529,11 +634,19 @@ keys:
           bfd:
             type: bool
             default: false
+          maximum_routes:
+            type: int
+            convert_types:
+            - str
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
           structured_config:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -558,11 +671,19 @@ keys:
           bfd:
             type: bool
             default: false
+          maximum_routes:
+            type: int
+            convert_types:
+            - str
+            description: Maximum number of routes (0 means unlimited).
+            default: 256000
+            min: 0
+            max: 4294967294
           structured_config:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -591,7 +712,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -620,7 +741,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -649,7 +770,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -678,7 +799,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -707,7 +828,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -794,7 +915,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -873,7 +994,7 @@ keys:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
@@ -1109,14 +1230,14 @@ keys:
     items:
       type: str
     description: "Custom EOS Structured Configuration keys can be set on any group
-      or host_var level using the name\nof the corresponding `eos_cli_config_gen`
-      key prefixed with content of `custom_structured_configuration_prefix`.\n\nThe
-      content of Custom Structured Configuration variables will be merged with the
-      structured config generated by the eos_designs role.\n\nThe merge is done recursively,
-      so it is possible to update a sub-key of a variable set by `eos_designs` role
-      already.\n\nThe merge follow these recursive merge strategies:\n- New keys will
-      be added for all types.\n- Existing keys of type \"List\" with a \"Primary key\"
-      set in the schema:\n  - Strategy can be changed with `custom_structured_configuration_list_merge`.
+      or host_var level using the name\nof the corresponding EOS Config key prefixed
+      with content of `custom_structured_configuration_prefix`.\n\nThe content of
+      Custom Structured Configuration variables will be merged with the structured
+      config generated by the eos_designs role.\n\nThe merge is done recursively,
+      so it is possible to update a sub-key of a variable set by Arista AVD already.\n\nThe
+      merge follow these recursive merge strategies:\n- New keys will be added for
+      all types.\n- Existing keys of type \"List\" with a \"Primary key\" set in the
+      schema:\n  - Strategy can be changed with `custom_structured_configuration_list_merge`.
       Default strategy:\n    - Existing list items with the same \"Primary key\"-value
       will be updated.\n    - New unique items will be appended to the existing list\n-
       Other keys of type \"List\" will have new unique items appended the the existing
@@ -1283,8 +1404,8 @@ keys:
 
       Hostname or IP address of CloudVision host. Ex. "www.arista.io" for CVaaS.
 
-      For `eos_designs` this variable is only used for the WAN Internet-exit integration
-      with Zscaler.
+      For AVD Design data models this variable is only used for the WAN Internet-exit
+      integration with Zscaler.
 
       The same variable name is also used by the `cv_deploy` role, and will override
       the value of `ansible_host` on inventory ''cloudvision'' host.
@@ -1478,8 +1599,8 @@ keys:
       Service account token as defined on CloudVision. This value should be using
       Ansible Vault.
 
-      For `eos_designs` this variable is only used for the WAN Internet-exit integration
-      with Zscaler.
+      For AVD Design data models this variable is only used for the WAN Internet-exit
+      integration with Zscaler.
 
       The same variable name is also used by the `cv_deploy` role, and will override
       the value of `ansible_password` on inventory ''cloudvision'' host.
@@ -1704,14 +1825,15 @@ keys:
       table: management-interface-settings
     type: str
     description: "`default_mgmt_method` controls the default VRF and source interface
-      used for the following management and monitoring protocols configured with `eos_designs`:\n
-      \ - `aaa_settings`\n  - `cv_settings`\n  - `logging_settings`\n  - `management_eapi`\n
-      \ - `ntp_settings`\n  - `sflow_settings`\n  - `snmp_settings`\n  - `ssh_settings`\n\n`oob`
-      means the protocols will be configured with the VRF set by `mgmt_interface_vrf`
-      and `mgmt_interface` as the source interface.\n`inband` means the protocols
-      will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface`
-      as the source interface.\n`none` means the VRF and or interface must be manually
-      set for each protocol.\nThis can be overridden under the settings for each protocol.\n"
+      used for the following management and monitoring protocols configured with AVD
+      Design:\n  - `aaa_settings`\n  - `cv_settings`\n  - `logging_settings`\n  -
+      `management_eapi`\n  - `ntp_settings`\n  - `sflow_settings`\n  - `snmp_settings`\n
+      \ - `ssh_settings`\n\n`oob` means the protocols will be configured with the
+      VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.\n`inband`
+      means the protocols will be configured with the VRF set by `inband_mgmt_vrf`
+      and `inband_mgmt_interface` as the source interface.\n`none` means the VRF and
+      or interface must be manually set for each protocol.\nThis can be overridden
+      under the settings for each protocol.\n"
     valid_values:
     - oob
     - inband
@@ -2014,6 +2136,136 @@ keys:
 
           Can be set to `false` to avoid changes when migrating from the old `name_servers`
           model.'
+  dot1x_settings:
+    documentation_options:
+      table: dot1x-settings
+    type: dict
+    description: Settings for 802.1X deployments.
+    keys:
+      enabled:
+        type: bool
+        default: false
+        description: 'Globally enable 802.1X port authentication on the switch.
+
+          Must be true for 802.1X to be active on any interface.'
+      authentication:
+        type: dict
+        keys:
+          radius_groups:
+            type: list
+            min_length: 1
+            description: 'List of RADIUS server groups to be used for 802.1X authentication
+              when globally enabled. If not provided, all defined RADIUS hosts are
+              used.
+
+              The order of the list defines the server group priority.
+
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.'
+            items:
+              type: str
+              description: RADIUS server group name.
+      accounting:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: true
+            description: Enable 802.1X accounting.
+          mode:
+            type: str
+            valid_values:
+            - start-stop
+            - stop-only
+            default: start-stop
+            description: 'Determines whether to send accounting records when a session
+              is established and
+
+              when it ends (`start-stop`), or only when the session ends (`stop-only`).'
+          radius_groups:
+            type: list
+            min_length: 1
+            description: 'List of RADIUS server groups to be used for 802.1X accounting
+              when enabled. If not provided, all defined RADIUS hosts are used.
+
+              The order of the list defines the server group priority.
+
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.'
+            items:
+              type: str
+              description: RADIUS server group name.
+          multicast:
+            type: bool
+            default: false
+            description: Send Accounting-Request messages to all servers in a RADIUS
+              group at the same time.
+          syslog:
+            type: bool
+            default: false
+            description: Log all accounting messages to syslog if all RADIUS servers
+              are unavailable or unresponsive.
+      bypass_bpdu:
+        type: bool
+        default: true
+        $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_bpdu_bypass
+      bypass_lldp:
+        type: bool
+        default: true
+        $ref: eos_cli_config_gen#/keys/dot1x/keys/protocol_lldp_bypass
+      dynamic_authorization:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: true
+            $ref: eos_cli_config_gen#/keys/dot1x/keys/dynamic_authorization
+          additional_groups:
+            type: list
+            description: 'List of additional RADIUS server groups for dynamic authorization
+              purposes only.
+
+              The order of the list defines the server group priority.
+
+              Each group name must also be defined on any server under `aaa_settings.radius.servers`.'
+            items:
+              type: str
+              description: RADIUS server group name.
+      mac_based_authentication:
+        type: dict
+        keys:
+          username_format:
+            type: dict
+            keys:
+              delimiter:
+                type: str
+                description: RADIUS User-Name attribute delimiter to use on the MAC
+                  address.
+                required: true
+                valid_values:
+                - colon
+                - hyphen
+                - none
+                - period
+              letter_case:
+                type: str
+                description: RADIUS User-Name attribute letter case to use on the
+                  MAC address.
+                required: true
+                valid_values:
+                - lowercase
+                - uppercase
+      radius_av_pairs:
+        type: dict
+        keys:
+          service_type:
+            type: bool
+            default: false
+            description: Send RADIUS Service-Type attribute in Access-Request and
+              Accounting messages.
+      redistribute_in_evpn:
+        type: bool
+        default: true
+        description: Globally enable the redistribution of static 802.1X-learned MAC
+          addresses into EVPN under all configured MAC-VRFs.
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings
@@ -2088,6 +2340,49 @@ keys:
         type: bool
         default: true
         description: Generate the table of content(TOC) on fabric documentation.
+  eos_designs_keep_tmp_files:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: false
+    description: 'Avoid deleting temporary files.
+
+      This allows for inspecting templated inputs, validated inputs and facts used
+      internally by AVD plugins.
+
+      When an Ansible Vault secret is set, temporary files holding input variables
+      are encrypted. Decryption is required to inspect them.
+
+      '
+  eos_designs_return_structured_config:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: false
+    description: Return structured configuration as ansible_facts per device.
+  eos_designs_tmp_dir:
+    documentation_options:
+      table: role-settings
+    type: str
+    description: 'Path for temporary files created by the ''eos_designs'' role.
+
+      Contains templated inputs, validated inputs, and facts data used internally
+      by AVD plugins.
+
+      Defaults to ''intended/tmp_eos_designs''.
+
+      The temporary directory is cleaned up at the end of the ''eos_designs'' role.
+
+      '
+  eos_designs_validate_inputs_batch_size:
+    documentation_options:
+      table: role-settings
+    type: int
+    default: 10
+    description: 'The number of hosts to process in each batch when validating inputs.
+
+      Depending on your inventory size and the available resources, you may want to
+      adjust this number.'
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
     type: list
@@ -3188,6 +3483,13 @@ keys:
     type: dict
     description: Logging settings
     keys:
+      use_local_interface_cli:
+        type: bool
+        description: 'Use `logging local-interface <interface>` CLI instead of the
+          deprecated `logging source-interface <interface>` CLI.
+
+          The new CLI was introduced in EOS version 4.33.4.'
+        default: false
       hosts:
         type: list
         required: true
@@ -3886,7 +4188,7 @@ keys:
       This behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni:
       true`.
 
-      This will make `eos_designs` consider configured VLANs per VTEP, and only include
+      This will make Arista AVD consider configured VLANs per VTEP, and only include
       the relevant VTEPs to each VNI''s flood-list.
 
       '
@@ -4235,25 +4537,38 @@ keys:
     $ref: eos_designs#/$defs/platform_settings
     type: list
     documentation_options:
-      table: platform-settings
-    description: Custom Platform settings to override the default `platform_settings`.
-      This list will be prepended to the list of `platform_settings`. The first entry
-      found where the `platform` node setting is fully matched by any regex in the
-      `platforms` list will be chosen. If no matches are found, the first entry containing
-      a platform `default` will be chosen.
+      table: custom-platform-settings
+    description: 'Custom Platform settings to override the default `platform_settings`.
+
+      This list will be prepended to the list of `platform_settings`.
+
+      The first entry found where the `platform` node setting is fully matched by
+      any regex in the `platforms` list will be chosen.
+
+      If no matches are found, the first entry containing a platform `default` will
+      be chosen.'
   platform_settings:
     $ref: eos_designs#/$defs/platform_settings
     type: list
     documentation_options:
       table: platform-settings
-    description: Platform settings. The first entry found where the `platform` node
-      setting is fully matched by any regex in the `platforms` list will be chosen.
+    description: 'Platform settings.
+
+      The first entry found where the `platform` node setting is fully matched by
+      any regex in the `platforms` list will be chosen.
+
       If no matches are found, the first entry containing a platform `default` will
-      be chosen. The default values will be overridden if `platform_settings` is defined.
+      be chosen.
+
+      The default values will be overridden if `platform_settings` is defined.
+
       If you need to replace all the default platforms, it is recommended to copy
-      the defaults and modify them. If you need to add custom platforms, create them
-      under `custom_platform_settings`. Entries under `custom_platform_settings` will
-      be matched before the equivalent entries from `platform_settings`.
+      the defaults and modify them.
+
+      If you need to add custom platforms, create them under `custom_platform_settings`.
+
+      Entries under `custom_platform_settings` will be matched before the equivalent
+      entries from `platform_settings`.'
     default:
     - platforms:
       - default
@@ -4268,6 +4583,9 @@ keys:
       - 7050X3
       feature_support:
         queue_monitor_length_notify: false
+        sflow_subinterfaces: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4280,6 +4598,9 @@ keys:
       feature_support:
         poe: true
         queue_monitor_length_notify: false
+        sflow_subinterfaces: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4295,7 +4616,10 @@ keys:
       feature_support:
         poe: true
         queue_monitor_length_notify: false
+        subinterface_mtu: false
         per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4308,7 +4632,10 @@ keys:
       feature_support:
         poe: true
         queue_monitor_length_notify: false
+        subinterface_mtu: false
         per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4320,6 +4647,9 @@ keys:
       feature_support:
         queue_monitor_length_notify: false
         poe: true
+        subinterface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4329,6 +4659,9 @@ keys:
       - 720DF
       feature_support:
         queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4339,7 +4672,10 @@ keys:
       - 7010TX
       feature_support:
         queue_monitor_length_notify: false
+        subinterface_mtu: false
         per_interface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4390,6 +4726,8 @@ keys:
         non_mlag: 1020
       tcam_profile: vxlan-routing
       feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
         private_vlan: false
       digital_twin:
         platform: vEOS-lab
@@ -4401,6 +4739,7 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         evpn_gateway_all_active_multihoming: true
+        per_interface_l2_mtu: false
         private_vlan: false
       digital_twin:
         platform: vEOS-lab
@@ -4450,11 +4789,25 @@ keys:
         non_mlag: 1020
       tcam_profile: vxlan-routing
       feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
         private_vlan: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
       - 7500R3
+      management_interface: Management0
+      reload_delay:
+        mlag: 900
+        non_mlag: 1020
+      tcam_profile: vxlan-routing
+      feature_support:
+        per_interface_l2_mtu: false
+        evpn_gateway_all_active_multihoming: true
+        private_vlan: false
+      digital_twin:
+        platform: vEOS-lab
+    - platforms:
       - 7800R3
       management_interface: Management0
       reload_delay:
@@ -4462,6 +4815,7 @@ keys:
         non_mlag: 1020
       tcam_profile: vxlan-routing
       feature_support:
+        per_interface_l2_mtu: false
         evpn_gateway_all_active_multihoming: true
         private_vlan: false
       digital_twin:
@@ -4475,8 +4829,11 @@ keys:
       feature_support:
         queue_monitor_length_notify: false
         interface_storm_control: true
+        subinterface_mtu: false
+        per_interface_l2_mru: false
         bgp_update_wait_for_convergence: true
         bgp_update_wait_install: true
+        sflow_subinterfaces: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -4485,6 +4842,10 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       digital_twin:
         platform: vEOS-lab
     - platforms:
@@ -4493,6 +4854,10 @@ keys:
       reload_delay:
         mlag: 1200
         non_mlag: 1320
+      feature_support:
+        subinterface_mtu: false
+        per_interface_l2_mru: false
+        sflow_subinterfaces: false
       trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
         l3-shared 131072
       digital_twin:
@@ -4507,7 +4872,11 @@ keys:
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
+        per_interface_l2_mru: false
         evpn_gateway_all_active_multihoming: true
+        sflow_subinterfaces: false
         hardware_validation: false
       reload_delay:
         mlag: 300
@@ -4524,9 +4893,13 @@ keys:
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mtu: false
+        per_interface_l2_mru: false
         evpn_gateway_all_active_multihoming: true
+        sflow_subinterfaces: false
         hardware_validation: false
-      management_interface: Management0
+      management_interface: Management1
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -4537,7 +4910,9 @@ keys:
       feature_support:
         bgp_update_wait_install: false
         interface_storm_control: false
+        per_interface_l2_mru: false
         queue_monitor_length_notify: false
+        sflow: false
         hardware_validation: false
       p2p_uplinks_mtu: 9194
       digital_twin:
@@ -4550,9 +4925,12 @@ keys:
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
         platform_sfe_interface_profile:
           supported: true
           max_rx_queues: 6
+        sflow: false
       management_interface: Management1/1
       p2p_uplinks_mtu: 9194
       digital_twin:
@@ -4565,9 +4943,12 @@ keys:
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        subinterface_mtu: false
+        per_interface_l2_mru: false
         platform_sfe_interface_profile:
           supported: true
           max_rx_queues: 16
+        sflow: false
       management_interface: Management1/1
       p2p_uplinks_mtu: 9194
       digital_twin:
@@ -4580,13 +4961,15 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
         poe: true
+        per_interface_l2_mru: false
+        sflow: false
       management_interface: Management1
       p2p_uplinks_mtu: 9194
       digital_twin:
         platform: CloudEOS
   platform_speed_groups:
     documentation_options:
-      table: platform-settings
+      table: platform-speed-groups
     type: list
     primary_key: platform
     description: Set Hardware Speed Groups per Platform.
@@ -4761,8 +5144,8 @@ keys:
         type: bool
       notifying:
         type: bool
-        description: 'If True, `eos_designs` will configure `queue-monitor length
-          notifying` according to the
+        description: 'If True, Arista AVD will configure `queue-monitor length notifying`
+          according to the
 
           `platform_settings.[].feature_support.queue_monitor_length_notify` setting.
 
@@ -5181,10 +5564,10 @@ keys:
       table: management-source-interfaces-settings
     type: dict
     description: 'Configure source-interfaces based on the management interfaces set
-      for other `eos_designs` data models.
+      for other AVD Design data models.
 
       By default, no source-interfaces will be configured. They can still be configured
-      manually using `eos_cli_config_gen` and custom structured configuration.
+      manually using custom structured configuration.
 
       EOS supports a single source-interface per VRF, so an error will be raised in
       case of conflicts.
@@ -5248,8 +5631,7 @@ keys:
           removed: true
           remove_in_version: 6.0.0
           new_key: 'snmp_settings.vrfs[].source_interface or snmp_settings.hosts[].vrf:
-            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf
-            or avd_6_behaviors.snmp_settings_vrfs'
+            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf'
       radius:
         type: dict
         deprecation:
@@ -6399,9 +6781,9 @@ keys:
 
       Special data model used for testing the WAN internet-exit integration with Zscaler.
 
-      The model is supposed to be autofilled per-device by `eos_designs`.
+      The model is supposed to be autofilled per-device by Arista AVD.
 
-      Manually setting this model will take precedence and prevent `eos_designs` from
+      Manually setting this model will take precedence and prevent Arista AVD from
       trying to contact CloudVision.
 
       This can be useful for offline testing or if CloudVision is not available or
@@ -7017,7 +7399,7 @@ $defs:
                   type: dict
                   relaxed_validation: true
                   description: Custom structured config added under port_channel_interfaces.[name=<subinterface>]
-                    for eos_cli_config_gen.
+                    for the EOS Config schema.
                   documentation_options:
                     hide_keys: true
                   $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
@@ -7029,7 +7411,7 @@ $defs:
             type: dict
             relaxed_validation: true
             description: Custom structured config added under port_channel_interfaces.[name=<interface>]
-              for eos_cli_config_gen.
+              for the EOS Config schema.
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
@@ -7062,7 +7444,7 @@ $defs:
         type: dict
         relaxed_validation: true
         description: Custom structured config added under ethernet_interfaces.[name=<interface>]
-          for eos_cli_config_gen.
+          for the EOS Config schema.
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
@@ -7267,11 +7649,15 @@ $defs:
               description: Will be enabled automatically if evpn_l2_multicast is enabled.
             source_address:
               type: str
-              description: 'IPv4_address
+              description: 'The value of `source_address` will be interpreted according
+                to these rules:
 
-                If not set, IP address of "Loopback0" will be used.
+                - `vrf_router_id`, `diagnostic_loopback` and `main_router_id` will
+                configure the Loopback0 IP since there is no VRF tied to an L2VLAN.
 
-                '
+                - An IPv4 address will be used directly as the source address.
+
+                Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.'
             version:
               type: int
               description: IGMP Version (By default EOS uses IGMP version 2 for IGMP
@@ -7292,7 +7678,7 @@ $defs:
               type: dict
               relaxed_validation: true
               description: 'Custom structured config added under router_bgp.vlans.[id=<vlan>]
-                for eos_cli_config_gen.
+                for the EOS Config schema.
 
                 This configuration will not be applied to vlan aware bundles.
 
@@ -7863,8 +8249,18 @@ $defs:
                 enabled.
             source_address:
               type: str
-              format: ipv4
-              description: Default IP address of Loopback0.
+              description: 'The value of `source_address` will be interpreted according
+                to these rules:
+
+                - `vrf_router_id` will configure the VRF router ID address according
+                to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+
+                - `diagnostic_loopback` will configure the VRF Diagnostic Loopback.
+
+                - `main_router_id` will configure the Loopback0 IP address.
+
+                - An IPv4 address will be used directly as the source address.'
+              default: main_router_id
             version:
               type: int
               description: IGMP Version (By default EOS uses IGMP version 2 for IGMP
@@ -8126,7 +8522,11 @@ $defs:
                     description: 'IPv4_address/Mask.
 
                       Loopback IPv4 range, a unique ip is derived from this range
-                      and assigned to each l3 leaf based on it''s unique id.
+                      and assigned to each l3 leaf based on its unique id.
+
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name`
+                      of the device, and is configured with an `ipv4_pool`, it takes
+                      precedence over `loopback_ipv4_range`.
 
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range`
                       or `loopback_ip_pools` are set.
@@ -8137,7 +8537,11 @@ $defs:
                     description: 'IPv6_address/Mask.
 
                       Loopback IPv6 range, a unique IPv6 address is derived from this
-                      range and assigned to each L3 leaf based on it''s unique ID.
+                      range and assigned to each L3 leaf based on its unique ID.
+
+                      If any `pod` under `loopback_ip_pools` matches the `pod_name`
+                      of the device, and is configured with an `ipv6_pool`, it takes
+                      precedence over `loopback_ipv6_range`.
 
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range`
                       or `loopback_ip_pools` are set.
@@ -8148,8 +8552,8 @@ $defs:
                     description: 'For inventories with multiple PODs a loopback range
                       can be set per POD to avoid overlaps.
 
-                      `loopback_ip_range` takes precedence for IPv4 and `loopback_ipv6_range`
-                      takes precedence for IPV6.
+                      POD level pools take precedence over `loopback_ip_range` and
+                      `loopback_ipv6_range`.
 
                       Loopback is not created unless `loopback_ip_range`, `loopback_ipv6_range`
                       or `loopback_ip_pools` are set.
@@ -8308,7 +8712,7 @@ $defs:
                     type: dict
                     relaxed_validation: true
                     description: Custom structured config added under router_ospf.process_ids.[process_id=<process_id>]
-                      for eos_cli_config_gen.
+                      for the EOS Config schema.
                     documentation_options:
                       hide_keys: true
                     $ref: eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items
@@ -8704,7 +9108,7 @@ $defs:
                       type: dict
                       relaxed_validation: true
                       description: Custom structured config added under ethernet_interfaces.[name=<interface>]
-                        for eos_cli_config_gen.
+                        for the EOS Config schema.
                       documentation_options:
                         hide_keys: true
                       $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
@@ -8951,7 +9355,7 @@ $defs:
                       type: dict
                       relaxed_validation: true
                       description: Custom structured config added under port_channel_interfaces.[name=<interface>]
-                        for eos_cli_config_gen.
+                        for the EOS Config schema.
                       documentation_options:
                         hide_keys: true
                       $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
@@ -9106,7 +9510,7 @@ $defs:
                   in eos_designs.
 
                   For other address families, use custom_structured configuration
-                  with eos_cli_config_gen.
+                  with EOS Config schema.
 
                   '
                 items:
@@ -9293,7 +9697,7 @@ $defs:
                     type: dict
                     relaxed_validation: true
                     description: Custom structured config added under router_bgp.vrfs.[name=<vrf>]
-                      for eos_cli_config_gen.
+                      for the EOS Config schema.
                     documentation_options:
                       hide_keys: true
                     $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items
@@ -9462,7 +9866,7 @@ $defs:
               structured_config:
                 type: dict
                 relaxed_validation: true
-                description: Custom structured config for eos_cli_config_gen.
+                description: Custom structured config for the EOS Config schema.
                 documentation_options:
                   hide_keys: true
                 $ref: eos_cli_config_gen#
@@ -9555,7 +9959,7 @@ $defs:
                           type: dict
                           relaxed_validation: true
                           description: 'Custom structured config added on the Port-Channel
-                            subinterface for eos_cli_config_gen.
+                            subinterface for the EOS Config schema.
 
                             '
                           documentation_options:
@@ -9571,7 +9975,7 @@ $defs:
                       type: dict
                       relaxed_validation: true
                       description: 'Custom structured config added on the Ethernet
-                        subinterface for eos_cli_config_gen.
+                        subinterface for the EOS Config schema.
 
                         '
                       documentation_options:
@@ -9844,7 +10248,7 @@ $defs:
             documentation_options:
               table: node-type-common-configuration
               hide_keys: true
-            description: Custom structured config for eos_cli_config_gen.
+            description: Custom structured config for the EOS Config schema.
             type: dict
             relaxed_validation: true
             $ref: eos_cli_config_gen#
@@ -10112,7 +10516,8 @@ $defs:
             description: 'Custom structured config applied to MLAG peer link port-channel
               id.
 
-              Added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+              Added under port_channel_interfaces.[name=<interface>] for the EOS Config
+              schema.
 
               Overrides the settings on the port-channel interface level.
 
@@ -10130,7 +10535,7 @@ $defs:
             description: 'Custom structured config applied to MLAG Peer Link (control
               link) SVI interface id.
 
-              Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+              Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
 
               Overrides the settings on the vlan interface level.
 
@@ -10148,7 +10553,7 @@ $defs:
             description: 'Custom structured config applied to MLAG underlay L3 peering
               SVI interface id.
 
-              Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+              Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
 
               Overrides the settings on the vlan interface level.
 
@@ -11240,8 +11645,12 @@ $defs:
                   address from the routed port or from the relevant SVI, which is
                   the recommended behaviour.
 
-                  This can be set manually if required, for example, to a value of
-                  "10.1.2.3".
+                  This value can be set manually if required:
+
+                  - Set to ''router_id'' in order to use the device router ID as the
+                  source IP.
+
+                  - Set to a valid IPv4 address which will be used directly.
 
                   '
               mode:
@@ -13179,7 +13588,7 @@ $defs:
           relaxed_validation: true
           documentation_options:
             hide_keys: true
-          description: Custom structured config for eos_cli_config_gen.
+          description: Custom structured config for the EOS Config schema.
           $ref: eos_cli_config_gen#
         raw_eos_cli:
           type: str
@@ -13548,11 +13957,20 @@ $defs:
             description: Will be enabled automatically if evpn_l2_multicast is enabled.
           source_address:
             type: str
-            description: 'IPv4_address
+            description: 'The value of `source_address` will be interpreted according
+              to these rules:
 
-              If not set, IP address of "Loopback0" will be used.
+              - `vrf_router_id` will configure the VRF router ID address according
+              to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
 
-              '
+              - ''diagnostic_loopback'' will configure the VRF Diagnostic Loopback
+              address.
+
+              - `main_router_id` will configure the Loopback0 IP address.
+
+              - An IPv4 address will be used directly as the source address.
+
+              Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.'
           version:
             type: int
             description: IGMP Version (By default EOS uses IGMP version 2 for IGMP
@@ -13687,7 +14105,7 @@ $defs:
         type: dict
         relaxed_validation: true
         description: 'Custom structured config added under vlan_interfaces.[name=<interface>]
-          for eos_cli_config_gen.
+          for the EOS Config schema.
 
           '
         documentation_options:
@@ -13700,9 +14118,7 @@ $defs:
           Overrides `<network_services_key>[].evpn_l2_multi_domain` and `<network_services_key>[].vrfs[].evpn_l2_multi_domain`.
 
           Not supported in conjunction with EVPN vlan aware bundles. i.e. `evpn_vlan_aware_bundles:
-          true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant.
-
-          '
+          true` or `evpn_vlan_bundle` set under SVI, VRF or Tenant.'
   virtual_topology:
     type: dict
     keys:

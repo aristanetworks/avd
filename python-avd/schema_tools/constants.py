@@ -53,3 +53,5 @@ SCHEMAS = {
         docs_path=REPO_ROOT.joinpath("docs/contribution/eos_designs_facts_internal"),
     ),
 }
+
+SCHEMA_STORE_GZ_FILE = PYAVD_DIR.joinpath("_schema/schemas.json.gz")

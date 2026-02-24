@@ -189,10 +189,16 @@ class EthernetInterfacesMixin(Protocol):
             or None,
             speed=adapter.speed,
             shutdown=not (adapter.enabled if adapter.enabled is not None else True),
-            dot1x=adapter.dot1x,
             poe=adapter.poe if self.shared_utils.platform_settings.feature_support.poe else Undefined,
             eos_cli=adapter.raw_eos_cli,
         )
+
+        # 802.1x settings
+        if adapter.dot1x:
+            ethernet_interface._update(
+                dot1x=self._get_adapter_dot1x(adapter),
+            )
+
         ethernet_interface.metadata._update(
             peer=peer,
             peer_interface=peer_interface,

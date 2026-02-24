@@ -145,6 +145,22 @@
             "status": "up"
           },
           {
+            "name": "Vlan100",
+            "status": "adminDown"
+          },
+          {
+            "name": "Vlan101",
+            "status": "up"
+          },
+          {
+            "name": "Vlan102",
+            "status": "up"
+          },
+          {
+            "name": "Vlan103",
+            "status": "up"
+          },
+          {
             "name": "Vlan4085",
             "status": "up"
           }

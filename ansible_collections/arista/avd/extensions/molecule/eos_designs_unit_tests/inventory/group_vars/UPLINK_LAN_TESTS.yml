@@ -101,7 +101,15 @@ wan_ipsec_profiles:
 
 wan_mode: cv-pathfinder
 
-wan_route_servers: []
+wan_route_servers:
+  - hostname: non-existing-cv-pathfinder
+    vtep_ip: 10.10.10.10
+    path_groups:
+      - name: INET
+        interfaces:
+          - name: Ethernet1
+            public_ip: 192.168.55.55
+
 wan_path_groups:
   - name: INET
     ipsec:

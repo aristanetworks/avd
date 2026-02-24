@@ -1,9 +1,25 @@
+aaa_accounting:
+  dot1x:
+    default:
+      type: start-stop
+      methods:
+      - multicast: false
+        method: group
+        group: radius
+aaa_authentication:
+  dot1x:
+    default: group radius
 aaa_authorization:
   exec:
     default: local
 aaa_root:
   disabled: true
 config_end: true
+dot1x:
+  system_auth_control: true
+  protocol_lldp_bypass: true
+  protocol_bpdu_bypass: true
+  dynamic_authorization: true
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -1672,7 +1688,7 @@ ethernet_interfaces:
 hostname: LEAF1B
 ip_domain_lookup:
   source_interfaces:
-  - name: Management0
+  - name: Management1
     vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
@@ -1682,6 +1698,9 @@ ip_name_server:
     servers:
     - ip_address: 8.8.4.4
     - ip_address: 8.8.8.8
+ip_radius_source_interfaces:
+- name: Management1
+  vrf: MGMT
 local_users:
 - name: admin
   privilege: 15
@@ -1696,7 +1715,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 management_interfaces:
-- name: Management0
+- name: Management1
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
@@ -1718,7 +1737,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 ntp:
   local_interface:
-    name: Management0
+    name: Management1
     vrf: MGMT
   servers:
   - name: time.google.com
@@ -1744,6 +1763,12 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 10,110,120,130
+radius_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - host: agni.arista.com
+      key: 1404071B09166738212B2130365E0C131A
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: mstp
@@ -1783,23 +1808,28 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 110
   name: IDF1-Data
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 120
   name: IDF1-Voice
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 130
   name: IDF1-Guest
   metadata:
-    tenant: MY_FABRIC
+    tenants:
+    - MY_FABRIC
 - id: 10
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

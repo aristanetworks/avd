@@ -25,7 +25,7 @@ ip_igmp_snooping:
   - id: 2
     querier:
       enabled: true
-      address: 192.168.255.1
+      address: 10.1.1.1
       version: 3
   - id: 3
     querier:
@@ -37,7 +37,7 @@ ip_igmp_snooping:
   - id: 102
     querier:
       enabled: true
-      address: 192.168.255.1
+      address: 2.2.2.2
       version: 3
   - id: 103
     querier:
@@ -50,7 +50,7 @@ ip_igmp_snooping:
   - id: 12
     querier:
       enabled: true
-      address: 1.1.1.1
+      address: 10.1.2.1
       version: 2
   - id: 111
     querier:
@@ -72,7 +72,7 @@ ip_igmp_snooping:
   - id: 22
     querier:
       enabled: true
-      address: 1.1.1.1
+      address: 192.168.255.1
       version: 3
   - id: 23
     querier:
@@ -102,6 +102,16 @@ loopback_interfaces:
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.1/32
+- name: Loopback111
+  description: DIAG_VRF_IGMP_QUERIER_TEST_1
+  shutdown: false
+  vrf: IGMP_QUERIER_TEST_1
+  ip_address: 10.1.1.1/32
+- name: Loopback121
+  description: DIAG_VRF_IGMP_QUERIER_TEST_2
+  shutdown: false
+  vrf: IGMP_QUERIER_TEST_2
+  ip_address: 10.1.2.1/32
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -152,20 +162,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    metadata:
-      type: ipv4
-    send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -173,7 +169,8 @@ router_bgp:
   vlans:
   - id: 1
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.1:10001
     route_targets:
       both:
@@ -182,7 +179,8 @@ router_bgp:
     - learned
   - id: 2
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.1:10002
     route_targets:
       both:
@@ -191,7 +189,8 @@ router_bgp:
     - learned
   - id: 3
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.1:10003
     route_targets:
       both:
@@ -200,7 +199,8 @@ router_bgp:
     - learned
   - id: 101
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.1:10101
     route_targets:
       both:
@@ -209,7 +209,8 @@ router_bgp:
     - learned
   - id: 102
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.1:10102
     route_targets:
       both:
@@ -218,7 +219,8 @@ router_bgp:
     - learned
   - id: 103
     metadata:
-      tenant: Tenant_A
+      tenants:
+      - Tenant_A
     rd: 192.168.255.1:10103
     route_targets:
       both:
@@ -227,7 +229,8 @@ router_bgp:
     - learned
   - id: 11
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.1:20011
     route_targets:
       both:
@@ -236,7 +239,8 @@ router_bgp:
     - learned
   - id: 12
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.1:20012
     route_targets:
       both:
@@ -245,7 +249,8 @@ router_bgp:
     - learned
   - id: 111
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.1:20111
     route_targets:
       both:
@@ -254,7 +259,8 @@ router_bgp:
     - learned
   - id: 112
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.1:20112
     route_targets:
       both:
@@ -263,7 +269,8 @@ router_bgp:
     - learned
   - id: 113
     metadata:
-      tenant: Tenant_B
+      tenants:
+      - Tenant_B
     rd: 192.168.255.1:20113
     route_targets:
       both:
@@ -272,7 +279,8 @@ router_bgp:
     - learned
   - id: 21
     metadata:
-      tenant: Tenant_D
+      tenants:
+      - Tenant_D
     rd: 192.168.255.1:40021
     route_targets:
       both:
@@ -281,7 +289,8 @@ router_bgp:
     - learned
   - id: 22
     metadata:
-      tenant: Tenant_D
+      tenants:
+      - Tenant_D
     rd: 192.168.255.1:40022
     route_targets:
       both:
@@ -290,7 +299,8 @@ router_bgp:
     - learned
   - id: 23
     metadata:
-      tenant: Tenant_D
+      tenants:
+      - Tenant_D
     rd: 192.168.255.1:40023
     route_targets:
       both:
@@ -299,7 +309,8 @@ router_bgp:
     - learned
   - id: 121
     metadata:
-      tenant: Tenant_D
+      tenants:
+      - Tenant_D
     rd: 192.168.255.1:40121
     route_targets:
       both:
@@ -308,7 +319,8 @@ router_bgp:
     - learned
   - id: 122
     metadata:
-      tenant: Tenant_D
+      tenants:
+      - Tenant_D
     rd: 192.168.255.1:40122
     route_targets:
       both:
@@ -317,23 +329,14 @@ router_bgp:
     - learned
   - id: 123
     metadata:
-      tenant: Tenant_D
+      tenants:
+      - Tenant_D
     rd: 192.168.255.1:40123
     route_targets:
       both:
       - 40123:40123
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: IGMP_QUERIER_TEST_1
     rd: 192.168.255.1:11
@@ -346,7 +349,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '11:11'
-    router_id: 192.168.255.1
+    router_id: 10.1.1.1
     redistribute:
       connected:
         enabled: true
@@ -386,6 +389,11 @@ static_routes:
   prefix: 0.0.0.0/0
   next_hop: 192.168.200.5
 transceiver_qsfp_default_mode_4x10: true
+virtual_source_nat_vrfs:
+- name: IGMP_QUERIER_TEST_1
+  ip_address: 10.1.1.1
+- name: IGMP_QUERIER_TEST_2
+  ip_address: 10.1.2.1
 vlan_interfaces:
 - name: Vlan1
   description: VLAN_1
@@ -393,7 +401,8 @@ vlan_interfaces:
   vrf: IGMP_QUERIER_TEST_1
   ip_address_virtual: 10.0.1.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 - name: Vlan2
@@ -402,7 +411,8 @@ vlan_interfaces:
   vrf: IGMP_QUERIER_TEST_1
   ip_address_virtual: 10.0.2.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 - name: Vlan3
@@ -411,7 +421,8 @@ vlan_interfaces:
   vrf: IGMP_QUERIER_TEST_1
   ip_address_virtual: 10.0.3.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - test_l3
 - name: Vlan11
@@ -420,7 +431,8 @@ vlan_interfaces:
   vrf: IGMP_QUERIER_TEST_2
   ip_address_virtual: 10.0.11.1/24
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
     tags:
     - test_l3
 - name: Vlan12
@@ -429,7 +441,8 @@ vlan_interfaces:
   vrf: IGMP_QUERIER_TEST_2
   ip_address_virtual: 10.0.12.1/24
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
     tags:
     - test_l3
 - name: Vlan21
@@ -438,7 +451,8 @@ vlan_interfaces:
   vrf: IGMP_QUERIER_TEST_3
   ip_address_virtual: 10.0.21.1/24
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
     tags:
     - test_l3
 - name: Vlan22
@@ -447,7 +461,8 @@ vlan_interfaces:
   vrf: IGMP_QUERIER_TEST_3
   ip_address_virtual: 10.0.22.1/24
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
     tags:
     - test_l3
 - name: Vlan23
@@ -456,7 +471,8 @@ vlan_interfaces:
   vrf: IGMP_QUERIER_TEST_3
   ip_address_virtual: 10.0.23.1/24
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
     tags:
     - test_l3
 vlan_internal_order:
@@ -468,71 +484,88 @@ vlans:
 - id: 1
   name: VLAN_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 2
   name: VLAN_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 3
   name: VLAN_3
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 101
   name: VLAN_101
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 102
   name: VLAN_102
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 103
   name: VLAN_103
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 11
   name: VLAN_11
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 12
   name: VLAN_12
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 111
   name: VLAN_111
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 112
   name: VLAN_112
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 113
   name: VLAN_113
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - id: 21
   name: VLAN_21
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 22
   name: VLAN_22
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 23
   name: VLAN_23
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 121
   name: VLAN_121
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 122
   name: VLAN_122
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 - id: 123
   name: VLAN_123
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -540,17 +573,20 @@ vrfs:
   description: IGMP_QUERIER_TEST_1
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: IGMP_QUERIER_TEST_2
   description: IGMP_QUERIER_TEST_2
   ip_routing: true
   metadata:
-    tenant: Tenant_B
+    tenants:
+    - Tenant_B
 - name: IGMP_QUERIER_TEST_3
   description: IGMP_QUERIER_TEST_3
   ip_routing: true
   metadata:
-    tenant: Tenant_D
+    tenants:
+    - Tenant_D
 vxlan_interface:
   vxlan1:
     description: IGMP-QUERIER-L3LEAF1A_VTEP

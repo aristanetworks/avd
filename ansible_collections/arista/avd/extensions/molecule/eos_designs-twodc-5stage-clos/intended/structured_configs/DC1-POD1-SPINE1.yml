@@ -2,22 +2,22 @@ aaa_root:
   disabled: true
 as_path:
   access_lists:
-  - name: AS65200
-    entries:
-    - type: permit
-      match: _65200_
-  - name: AS65201
-    entries:
-    - type: permit
-      match: _65201_
-  - name: AS65210
-    entries:
-    - type: permit
-      match: _65210_
   - name: AS65211
     entries:
     - type: permit
       match: _65211_
+  - name: AS65210
+    entries:
+    - type: permit
+      match: _65210_
+  - name: AS65201
+    entries:
+    - type: permit
+      match: _65201_
+  - name: AS65200
+    entries:
+    - type: permit
+      match: _65200_
 config_end: true
 enable_password:
   disabled: true
@@ -71,7 +71,7 @@ ethernet_interfaces:
 - name: Ethernet4
   description: P2P_DC1.POD1.LEAF2A_Ethernet1
   shutdown: false
-  ip_address: 172.17.110.8/31
+  ip_address: 172.17.110.24/31
   mac_security:
     profile: MACSEC_PROFILE
   ptp:
@@ -112,7 +112,7 @@ ethernet_interfaces:
 - name: Ethernet7
   description: P2P_DC1.POD1.LEAF2A_Ethernet11
   shutdown: false
-  ip_address: 172.17.110.12/31
+  ip_address: 172.17.110.28/31
   mac_security:
     profile: MACSEC_PROFILE
   ptp:
@@ -158,20 +158,12 @@ metadata:
   dc_name: DC1
   fabric_name: TWODC_5STAGE_CLOS
 route_maps:
-- name: RM-EVPN-FILTER-AS65200
+- name: RM-EVPN-FILTER-AS65211
   sequence_numbers:
   - sequence: 10
     type: deny
     match:
-    - as-path AS65200
-  - sequence: 20
-    type: permit
-- name: RM-EVPN-FILTER-AS65201
-  sequence_numbers:
-  - sequence: 10
-    type: deny
-    match:
-    - as-path AS65201
+    - as-path AS65211
   - sequence: 20
     type: permit
 - name: RM-EVPN-FILTER-AS65210
@@ -182,12 +174,20 @@ route_maps:
     - as-path AS65210
   - sequence: 20
     type: permit
-- name: RM-EVPN-FILTER-AS65211
+- name: RM-EVPN-FILTER-AS65201
   sequence_numbers:
   - sequence: 10
     type: deny
     match:
-    - as-path AS65211
+    - as-path AS65201
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-FILTER-AS65200
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - as-path AS65200
   - sequence: 20
     type: permit
 router_bfd:
@@ -214,7 +214,7 @@ router_bgp:
       type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn
@@ -244,7 +244,7 @@ router_bgp:
     metadata:
       peer: DC1-POD1-LEAF1A
     description: DC1-POD1-LEAF1A_Ethernet1
-  - ip_address: 172.17.110.9
+  - ip_address: 172.17.110.25
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
     metadata:
@@ -263,7 +263,7 @@ router_bgp:
       peer: DC1-RS1
     description: DC1-RS1_Ethernet2
     bfd: true
-  - ip_address: 172.17.110.13
+  - ip_address: 172.17.110.29
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
     metadata:
@@ -309,7 +309,7 @@ router_bgp:
     metadata:
       peer: DC1-POD1-LEAF2B
     description: DC1-POD1-LEAF2B_Loopback0
-  - ip_address: 172.16.110.4
+  - ip_address: 172.16.110.6
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65112.100'
     metadata:
