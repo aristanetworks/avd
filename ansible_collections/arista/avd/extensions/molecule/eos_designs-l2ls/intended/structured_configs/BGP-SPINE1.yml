@@ -108,12 +108,6 @@ ethernet_interfaces:
   ip_address: 10.0.1.8/31
   metadata:
     peer_type: l3_interface
-- name: Ethernet18
-  shutdown: false
-  metadata:
-    peer_type: l3_interface
-  switchport:
-    enabled: false
 - name: Ethernet14
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth0
   shutdown: false
@@ -190,6 +184,12 @@ ethernet_interfaces:
     peer_type: network_port
     peer_key: network_ports
     port_profile: campus_eggress
+- name: Ethernet18
+  shutdown: false
+  metadata:
+    peer_type: subinterface_parent
+  switchport:
+    enabled: false
 hostname: BGP-SPINE1
 ip_igmp_snooping:
   globally_enabled: true

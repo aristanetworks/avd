@@ -116,6 +116,8 @@ class PortChannelInterfacesMixin(Protocol):
                     link.port_channel_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                 )
 
+            self.parent_interfaces_tracker.register_port_channel_parent(port_channel_name)
+
             self.structured_config.port_channel_interfaces.append(port_channel_interface)
 
         # Support l3_port_channels including sub-interfaces
@@ -215,6 +217,11 @@ class PortChannelInterfacesMixin(Protocol):
             )
             raise AristaAvdError(msg)
 
+        if "." in l3_port_channel.name:
+            self.parent_interfaces_tracker.register_port_channel_subinterface(l3_port_channel.name)
+        else:
+            self.parent_interfaces_tracker.register_port_channel_parent(l3_port_channel.name)
+
         self.structured_config.port_channel_interfaces.append(interface)
 
     def _set_direct_ha_port_channel_interface(self: AvdStructuredConfigUnderlayProtocol) -> None:
@@ -234,6 +241,8 @@ class PortChannelInterfacesMixin(Protocol):
                 peer_interface=port_channel_name,
             ),
         )
+
+        self.parent_interfaces_tracker.register_port_channel_parent(port_channel_name)
 
         self.structured_config.port_channel_interfaces.append_new(
             name=port_channel_name,

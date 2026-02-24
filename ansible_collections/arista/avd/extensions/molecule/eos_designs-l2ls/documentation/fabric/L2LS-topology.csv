@@ -37,7 +37,7 @@ l3spine,BGP-SPINE1,,Ethernet14,firewall,CAMPUS_EGRESS_FW_1,,Eth0,True
 l3spine,BGP-SPINE1,,Ethernet15,firewall,CAMPUS_EGRESS_FW_1,,Eth2,True
 l3spine,BGP-SPINE1,,Ethernet16,firewall,CAMPUS_EGRESS_FW_1,,Eth4,True
 l3spine,BGP-SPINE1,,Ethernet17,firewall,CAMPUS_EGRESS_FW_1,,Eth6,True
-l3spine,BGP-SPINE1,,Ethernet18,l3_interface,,,,True
+l3spine,BGP-SPINE1,,Ethernet18,subinterface_parent,,,,True
 l3spine,BGP-SPINE1,,Ethernet18.100,l3_interface,,,,True
 l3spine,BGP-SPINE1,,Ethernet18.101,l3_interface,,,,True
 l3spine,BGP-SPINE2,,Ethernet1,l2leaf,BGP-LEAF1,,Ethernet2,True
@@ -57,7 +57,7 @@ l3spine,BGP-SPINE2,,Ethernet14,firewall,CAMPUS_EGRESS_FW_1,,Eth1,True
 l3spine,BGP-SPINE2,,Ethernet15,firewall,CAMPUS_EGRESS_FW_1,,Eth3,True
 l3spine,BGP-SPINE2,,Ethernet16,firewall,CAMPUS_EGRESS_FW_1,,Eth5,True
 l3spine,BGP-SPINE2,,Ethernet17,firewall,CAMPUS_EGRESS_FW_1,,Eth7,True
-l3spine,BGP-SPINE2,,Ethernet18,l3_interface,,,,True
+l3spine,BGP-SPINE2,,Ethernet18,subinterface_parent,,,,True
 l3spine,BGP-SPINE2,,Ethernet18.100,l3_interface,,,,True
 l3spine,BGP-SPINE2,,Ethernet18.101,l3_interface,,,,True
 l2leaf,ISIS-LEAF1,,Ethernet1,l3spine,ISIS-SPINE1,,Ethernet1,True

@@ -2,7 +2,7 @@ Node Type,Node,Serial Number,Node Interface,Peer Type,Peer Node,Peer Serial Numb
 l3leaf,DC1-BL1A,,Ethernet7,l3_interface,,,,True
 l3leaf,DC1-BL1A,,Ethernet8,l3_interface,,,,True
 l3leaf,DC1-BL1A,,Ethernet9,l3_interface,,,,True
-l3leaf,DC1-BL1A,,Ethernet10,l3_interface,,,,True
+l3leaf,DC1-BL1A,,Ethernet10,subinterface_parent,,,,True
 l3leaf,DC1-BL1A,,Ethernet10.100,l3_interface,,,,True
 l3leaf,DC1-BL1A,,Ethernet10.200,l3_interface,,,,True
 l3leaf,DC1-BL1A,,Ethernet41,spine,DC1-SPINE1,,Ethernet6,True
@@ -13,7 +13,7 @@ l3leaf,DC1-BL1A,,Ethernet4000,my_precious,MY-own-peer,,Ethernet123,True
 l3leaf,DC1-BL1B,,Ethernet7,l3_interface,,,,True
 l3leaf,DC1-BL1B,,Ethernet8,l3_interface,,,,True
 l3leaf,DC1-BL1B,,Ethernet9,l3_interface,,,,True
-l3leaf,DC1-BL1B,,Ethernet10,l3_interface,,,,True
+l3leaf,DC1-BL1B,,Ethernet10,subinterface_parent,,,,True
 l3leaf,DC1-BL1B,,Ethernet10.100,l3_interface,,,,True
 l3leaf,DC1-BL1B,,Ethernet10.200,l3_interface,,,,True
 l3leaf,DC1-BL1B,,Ethernet45,spine,DC1-SPINE1,,Ethernet7,True

@@ -303,6 +303,21 @@ port_channel_interfaces:
     peer: inet-cloud-sub100
     peer_interface: Po22.100
     peer_type: l3_port_channel
+- name: Port-Channel99.500
+  description: inet-cloud-sub500_Po99.500
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 500
+  vrf: subIntVRF
+  ip_address: 10.10.99.2/29
+  metadata:
+    peer: inet-cloud-sub500
+    peer_interface: Po99.500
+    peer_type: l3_port_channel
+- name: Port-Channel99
+  shutdown: false
+  metadata:
+    peer_type: subinterface_parent
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

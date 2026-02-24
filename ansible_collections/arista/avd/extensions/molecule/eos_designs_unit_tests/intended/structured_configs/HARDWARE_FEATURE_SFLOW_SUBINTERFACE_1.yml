@@ -56,12 +56,6 @@ ethernet_interfaces:
   ip_address: 10.10.40.6/24
   metadata:
     peer_type: l3_interface
-- name: Ethernet5
-  shutdown: false
-  metadata:
-    peer_type: l3_interface
-  switchport:
-    enabled: false
 - name: Ethernet7.7
   description: SERVER_TEST_POE_ETH7_NO_POE
   shutdown: false
@@ -84,6 +78,12 @@ ethernet_interfaces:
     peer_key: servers
   switchport:
     enabled: true
+- name: Ethernet5
+  shutdown: false
+  metadata:
+    peer_type: subinterface_parent
+  switchport:
+    enabled: false
 hardware_counters:
   features: null
 hostname: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1

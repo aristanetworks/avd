@@ -164,12 +164,6 @@ ethernet_interfaces:
     mode: active
   metadata:
     peer_type: point_to_point_service
-- name: Ethernet9
-  shutdown: false
-  metadata:
-    peer_type: l3_interface
-  switchport:
-    enabled: false
 - name: Ethernet8
   description: CPE_CPE_TENANT_A_SITE2_eth0
   shutdown: false
@@ -185,6 +179,12 @@ ethernet_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: '10'
+- name: Ethernet9
+  shutdown: false
+  metadata:
+    peer_type: subinterface_parent
+  switchport:
+    enabled: false
 hostname: SITE2-LER1
 ip_igmp_snooping:
   globally_enabled: true
@@ -363,6 +363,12 @@ port_channel_interfaces:
   eos_cli: 'link-debounce time 1600
 
     '
+- name: Port-Channel4
+  shutdown: false
+  metadata:
+    peer_type: system
+  switchport:
+    enabled: false
 - name: Port-Channel4.1000
   shutdown: false
   encapsulation_vlan:
@@ -415,12 +421,6 @@ port_channel_interfaces:
       encapsulation: client
   metadata:
     peer_type: point_to_point_service
-- name: Port-Channel4
-  shutdown: false
-  metadata:
-    peer_type: system
-  switchport:
-    enabled: false
 router_bfd:
   multihop:
     interval: 300

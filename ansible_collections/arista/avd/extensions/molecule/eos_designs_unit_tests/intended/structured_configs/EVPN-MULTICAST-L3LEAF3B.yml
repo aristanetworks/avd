@@ -57,7 +57,7 @@ ethernet_interfaces:
 - name: Ethernet7
   shutdown: false
   metadata:
-    peer_type: l3_interface
+    peer_type: subinterface_parent
   switchport:
     enabled: false
 hostname: EVPN-MULTICAST-L3LEAF3B

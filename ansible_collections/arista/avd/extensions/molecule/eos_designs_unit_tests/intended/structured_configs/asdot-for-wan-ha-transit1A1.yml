@@ -62,13 +62,13 @@ ethernet_interfaces:
 - name: Ethernet1
   shutdown: false
   metadata:
-    peer_type: l3_interface
+    peer_type: subinterface_parent
   switchport:
     enabled: false
 - name: Ethernet2
   shutdown: false
   metadata:
-    peer_type: l3_interface
+    peer_type: subinterface_parent
   switchport:
     enabled: false
 flow_tracking:

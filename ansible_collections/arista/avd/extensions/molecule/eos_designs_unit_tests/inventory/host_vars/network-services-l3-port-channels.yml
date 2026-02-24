@@ -216,3 +216,12 @@ tenants:
             enabled: true
             ip_address: 10.10.10.2/29
             node: network-services-l3-port-channels
+          # Test case for subinterface without explicit parent Port-Channel.
+          # This used to raise an error but now the parent interface is automatically created
+          # by the centralized parent_interfaces module.
+          - name: Port-Channel99.500
+            peer: inet-cloud-sub500
+            peer_port_channel: Po99.500
+            enabled: true
+            ip_address: 10.10.99.2/29
+            node: network-services-l3-port-channels

@@ -41,6 +41,8 @@ class EthernetInterfacesMixin(Protocol):
                         list_merge=self.custom_structured_configs.list_merge_strategy,
                     )
 
+                self.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
+
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
             # Port-Channel members
@@ -63,6 +65,8 @@ class EthernetInterfacesMixin(Protocol):
                         p2p_link.ethernet_structured_config,
                         list_merge=self.custom_structured_configs.list_merge_strategy,
                     )
+
+                self.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
 
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 

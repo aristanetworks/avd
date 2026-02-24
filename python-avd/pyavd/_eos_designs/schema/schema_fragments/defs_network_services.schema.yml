@@ -842,7 +842,9 @@ $defs:
                       type: list
                       items:
                         type: str
-                        description: Interface name.
+                        description: |-
+                          Interface name.
+                          For subinterfaces, the parent physical interface is automatically created if not defined elsewhere.
                     encapsulation_dot1q_vlan:
                       type: list
                       description: For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
@@ -1015,7 +1017,7 @@ $defs:
                       required: true
                       description: |-
                         Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
-                        For a Port-Channel subinterface, the parent Port-Channel interface must be defined as well.
+                        For a Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined elsewhere.
                       pattern: "Port-Channel[\\d/]+(\\.[\\d]+)?"
                     node:
                       type: str
@@ -1763,6 +1765,7 @@ $defs:
                       description: |
                         Interfaces patched to the pseudowire on this endpoints.
                         The list of interfaces is mapped to the list of nodes, so they must have the same length.
+                        For subinterfaces, the parent physical interface is automatically created if not defined elsewhere.
                       required: true
                       min_length: 1
                       items:

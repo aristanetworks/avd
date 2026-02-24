@@ -113,7 +113,7 @@ ethernet_interfaces:
 - name: Ethernet10
   shutdown: false
   metadata:
-    peer_type: l3_interface
+    peer_type: subinterface_parent
   switchport:
     enabled: false
 - name: Ethernet4000
