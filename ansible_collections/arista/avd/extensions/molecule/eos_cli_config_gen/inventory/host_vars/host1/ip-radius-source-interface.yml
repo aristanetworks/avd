@@ -1,10 +1,12 @@
 ---
 ### IP RADIUSsource interface ###
 
-ip_radius_source_interfaces:
-  - vrf: default
-    name: Loopback1
-  - vrf: MGMT
-    name: Management1
-  - vrf:
-    name: Loopback10
+ip_radius:
+  source_interface: Loopback1
+  vrfs:
+    - name: MGMT
+      source_interface: Management1
+    - name: abc
+      source_interface: Loopback10
+    - name: BLAH
+      source_interface: Loopback10
