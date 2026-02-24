@@ -11026,11 +11026,11 @@ no ip igmp snooping vlan 25 proxy
 #### IP Router Multicast Summary
 
 - Counters rate period decay is set for 300 seconds
-- Routing for IPv4 multicast is enabled.
-- Routing for IPv6 multicast is enabled.
-- Multipathing deterministically by selecting the same upstream router.
-- IPv4 software forwarding is by the Software Forwarding Engine (SFE)
-- IPv6 software forwarding is by the Software Forwarding Engine (SFE)
+- IPv4 Multicast Routing is enabled.
+- IPv6 Multicast Routing is enabled.
+- Multipathing operates deterministically by selecting the same upstream router.
+- IPv4 software forwarding is handled by the Software Forwarding Engine (SFE).
+- IPv6 software forwarding is handled by the Software Forwarding Engine (SFE).
 
 #### IP Router Multicast RPF Routes
 
