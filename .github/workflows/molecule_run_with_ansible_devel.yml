@@ -119,6 +119,7 @@ jobs:
           - "example-single-dc-l3ls-ipv6"
           - "example-cv-pathfinder"
           - "howto"
+          - "eos_designs_negative_unit_tests"
         ansible_version:
           - "git+https://github.com/ansible/ansible.git@devel"
 
