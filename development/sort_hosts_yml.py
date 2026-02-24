@@ -9,19 +9,19 @@ import argparse
 import re
 import sys
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 # Override global path to load pyavd from pwd instead of any installed version.
 sys.path.insert(0, str(Path(__file__).parent.parent / "python-avd"))
 
 from pyavd.j2filters.natural_sort import natural_sort
 
-if TYPE_CHECKING:
-    from collections.abc import Iterator
+# Pre-compile regex patterns for better performance
+HOSTS_PATTERN = re.compile(r"^(\s*)hosts:\s*(?:#.*)?$")
+CHILDREN_PATTERN = re.compile(r"^(\s*)children:\s*(?:#.*)?$")
 
 
-class HostsParser:
-    """Parser for extracting and sorting hosts from YAML content."""
+class EntriesParser:
+    """Parser for extracting and sorting entries (hosts or groups) from YAML content."""
 
     def __init__(self, lines: list[str], start_index: int, indent: str) -> None:
         """
@@ -29,22 +29,22 @@ class HostsParser:
 
         Args:
             lines: All lines in the YAML file
-            start_index: Index to start parsing from (line after "hosts:")
-            indent: Base indentation level for the hosts section
+            start_index: Index to start parsing from (line after "hosts:" or "children:")
+            indent: Base indentation level for the section
         """
         self.lines = lines
         self.index = start_index
-        self.host_indent = indent + "  "
-        self.property_indent = self.host_indent + "  "
+        self.entry_indent = indent + "  "
+        self.property_indent = self.entry_indent + "  "
 
     def parse(self) -> tuple[list[dict[str, str | list[str]]], int]:
         """
-        Parse hosts and return sorted host blocks with final index.
+        Parse entries and return sorted entry blocks with final index.
 
         Returns:
-            Tuple of (list of host dictionaries, final index position)
+            Tuple of (list of entry dictionaries, final index position)
         """
-        hosts_block: list[dict[str, str | list[str]]] = []
+        entries_block: list[dict[str, str | list[str]]] = []
         pending_lines: list[str] = []
 
         while self.index < len(self.lines):
@@ -56,87 +56,130 @@ class HostsParser:
                 self.index += 1
                 continue
 
-            # Check for host entry
-            if host_name := self._extract_host_name(line):
-                host_lines = [*pending_lines, line]
+            # Check for entry
+            if entry_name := self._extract_entry_name(line):
+                entry_lines = [*pending_lines, line]
                 pending_lines = []
                 self.index += 1
 
-                # Collect host properties
-                host_lines.extend(self._collect_properties())
-                hosts_block.append({"name": host_name, "lines": host_lines})
+                # Collect entry properties
+                entry_lines.extend(self._collect_properties())
+                entries_block.append({"name": entry_name, "lines": entry_lines})
             else:
-                # End of hosts section
+                # End of section
                 break
 
-        return hosts_block, self.index
+        return entries_block, self.index
 
     def _is_comment_or_blank(self, line: str) -> bool:
-        """Check if line is a comment or blank at host indent level."""
-        return line.strip() == "" or (line.strip().startswith("#") and line.startswith(self.host_indent))
+        """Check if line is a comment or blank at entry indent level."""
+        stripped_line = line.strip()
+        return not stripped_line or stripped_line.startswith("#")
 
-    def _extract_host_name(self, line: str) -> str | None:
+    def _extract_entry_name(self, line: str) -> str | None:
         """
-        Extract host name from a line if it's a valid host entry.
+        Extract entry name from a line if it's a valid entry.
 
         Returns:
-            Host name if valid host entry, None otherwise
+            Entry name if valid entry, None otherwise
         """
-        if not line.startswith(self.host_indent) or line.strip().startswith("#"):
+        if not line.startswith(self.entry_indent) or line.strip().startswith("#"):
             return None
 
-        stripped = line[len(self.host_indent) :]
-        # Check if it's a host entry (not a child key like "children:")
+        stripped = line[len(self.entry_indent) :]
+        # Check if it's an entry (not a child key like "children:" or "hosts:")
         if stripped and not stripped[0].isspace():
-            return stripped.split(":")[0].strip()
+            return stripped.split(":", 1)[0]
         return None
 
-    def _collect_properties(self) -> Iterator[str]:
-        """Collect all property lines for the current host."""
+    def _collect_properties(self) -> list[str]:
+        """Collect all property lines for the current entry."""
+        properties = []
         while self.index < len(self.lines):
             line = self.lines[self.index]
             if line.startswith(self.property_indent):
-                yield line
+                properties.append(line)
                 self.index += 1
             else:
                 break
+        return properties
+
+
+def _sort_yaml_lines(lines: list[str], start_idx: int = 0, end_idx: int | None = None) -> list[str]:
+    """
+    Sort hosts and children in YAML lines while preserving formatting.
+
+    This internal function works directly with line arrays to avoid join/split overhead.
+
+    Args:
+        lines: List of YAML lines (with line endings)
+        start_idx: Starting index to process
+        end_idx: Ending index (exclusive), None for end of list
+
+    Returns:
+        List of sorted lines
+    """
+    if end_idx is None:
+        end_idx = len(lines)
+
+    result: list[str] = []
+    i = start_idx
+
+    while i < end_idx:
+        line = lines[i]
+        result.append(line)
+
+        # Check for "hosts:" line
+        if hosts_match := HOSTS_PATTERN.match(line):
+            indent = hosts_match.group(1)
+            parser = EntriesParser(lines, i + 1, indent)
+            hosts_block, i = parser.parse()
+
+            # Sort and append hosts
+            sorted_hosts = natural_sort(hosts_block, sort_key="name")
+            for host in sorted_hosts:
+                # Process nested blocks within host properties
+                host_lines = host["lines"]
+                sorted_lines = _sort_yaml_lines(host_lines, 0, len(host_lines))
+                result.extend(sorted_lines)
+            continue
+
+        # Check for "children:" line
+        if children_match := CHILDREN_PATTERN.match(line):
+            indent = children_match.group(1)
+            parser = EntriesParser(lines, i + 1, indent)
+            children_block, i = parser.parse()
+
+            # Sort and append children
+            sorted_children = natural_sort(children_block, sort_key="name")
+            for child in sorted_children:
+                # Process nested blocks within child properties
+                child_lines = child["lines"]
+                sorted_lines = _sort_yaml_lines(child_lines, 0, len(child_lines))
+                result.extend(sorted_lines)
+            continue
+
+        i += 1
+
+    return result
 
 
 def sort_hosts_in_yaml(content: str) -> str:
     """
-    Sort hosts in YAML content while preserving formatting, comments, and blank lines.
+    Sort hosts and children in YAML content while preserving formatting, comments, and blank lines.
 
-    Hosts are sorted using case-insensitive natural (alphanumeric) ordering.
+    Both hosts and group names under children are sorted using case-insensitive natural (alphanumeric) ordering.
+    Sorting is applied recursively to all nested children and hosts blocks.
 
     Args:
         content: YAML file content as a string
 
     Returns:
-        Content with sorted hosts sections
+        Content with sorted hosts and children sections
     """
     lines = content.splitlines(keepends=True)
-    result: list[str] = []
-    i = 0
-
-    while i < len(lines):
-        line = lines[i]
-        result.append(line)
-
-        # Check for "hosts:" line
-        if hosts_match := re.match(r"^(\s*)hosts:\s*(?:#.*)?$", line):
-            indent = hosts_match.group(1)
-            parser = HostsParser(lines, i + 1, indent)
-            hosts_block, i = parser.parse()
-
-            # Sort and append hosts (case-insensitive)
-            sorted_hosts = natural_sort(hosts_block, sort_key="name")
-            for host in sorted_hosts:
-                result.extend(host["lines"])
-            continue
-
-        i += 1
-
-    return "".join(result)
+    sorted_lines = _sort_yaml_lines(lines)
+    return "".join(sorted_lines)
 
 
 def process_files(files: set[Path]) -> list[Path]:
@@ -173,7 +216,7 @@ def process_files(files: set[Path]) -> list[Path]:
 
 def main() -> int:
     """Main entry point."""
-    parser = argparse.ArgumentParser(description="Auto-sort host names in Ansible inventory hosts.yml files.")
+    parser = argparse.ArgumentParser(description="Auto-sort host names and group names in Ansible inventory hosts.yml files.")
     parser.add_argument("files", nargs="*", type=Path, help="Files to sort (passed by pre-commit)")
     args = parser.parse_args()
 
@@ -185,8 +228,8 @@ def main() -> int:
     modified_files = process_files(files_to_process)
 
     if modified_files:
-        print("\n--- Host Sorting: Files Modified ---", file=sys.stderr)  # noqa: T201
-        print("The following files had unsorted hosts and have been automatically sorted:", file=sys.stderr)  # noqa: T201
+        print("\n--- Host and Group Sorting: Files Modified ---", file=sys.stderr)  # noqa: T201
+        print("The following files had unsorted hosts/groups and have been automatically sorted:", file=sys.stderr)  # noqa: T201
         for file in modified_files:
             print(f"- {file}", file=sys.stderr)  # noqa: T201
         print("\nPlease review the changes and stage them.", file=sys.stderr)  # noqa: T201
