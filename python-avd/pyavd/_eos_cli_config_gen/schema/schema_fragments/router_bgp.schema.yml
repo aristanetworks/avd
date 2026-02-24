@@ -167,6 +167,7 @@ keys:
                     type: int
                     convert_types:
                       - str
+                    min: 1
                     max: 65535
                     required: true
                     description: |-
