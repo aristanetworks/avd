@@ -63,6 +63,7 @@ Alternatively, you can copy a specific example to your current directory:
 cp -r /home/${USER}/.ansible/collections/ansible_collections/arista/avd/examples/<example-name>/* .
 ```
 
-`/home/${USER}/.ansible/collections/ansible_collections/arista/avd/examples` is the default Ansible path to the AVD collection. It may differ if your environment is not using the default path.
+!!! info
+    `/home/${USER}/.ansible/collections/ansible_collections/arista/avd/examples` is the default Ansible path to the AVD collection. It may differ if your environment is not using the default path.
 
 Once the example is copied to your working directory / container workspace, simply start playing with the inventory. For example, change a few variables, run the `ansible-playbook build.yml` command and check the diff in configurations and documentation.
