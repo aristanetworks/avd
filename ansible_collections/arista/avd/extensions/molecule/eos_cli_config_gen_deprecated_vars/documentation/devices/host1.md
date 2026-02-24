@@ -4,12 +4,10 @@
 
 - [Management](#management)
   - [IP Name Server Groups](#ip-name-server-groups)
-
-- [ACL](#acl)
-  - [IPv6 Access-lists](#ipv6-access-lists)
-
 - [Authentication](#authentication)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
+- [ACL](#acl)
+  - [IPv6 Access-lists](#ipv6-access-lists)
 
 ## Management
 
@@ -35,6 +33,27 @@ ip name-server group mynameserver1
    name-server vrf vrf1 8.8.8.8
    name-server vrf default 1.1.1.1 priority 1
    name-server vrf vrf1 2.2.2.4 priority 4
+```
+
+## Authentication
+
+### IP RADIUS Source Interfaces
+
+#### IP RADIUS Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+| default | Loopback1 |
+| default | Loopback10 |
+| MGMT | Management1 |
+
+#### IP SOURCE Source Interfaces Device Configuration
+
+```eos
+!
+ip radius vrf default source-interface Loopback1
+ip radius source-interface Loopback10
+ip radius vrf MGMT source-interface Management1
 ```
 
 ## ACL
@@ -92,24 +111,4 @@ ipv6 access-list TEST3
 ipv6 access-list acl_qos_tc0_v6
 !
 ipv6 access-list acl_qos_tc5_v6
-
-## Authentication
-
-### IP RADIUS Source Interfaces
-
-#### IP RADIUS Source Interfaces
-
-| VRF | Source Interface Name |
-| --- | --------------- |
-| default | Loopback1 |
-| default | Loopback10 |
-| MGMT | Management1 |
-
-#### IP SOURCE Source Interfaces Device Configuration
-
-```eos
-!
-ip radius vrf default source-interface Loopback1
-ip radius source-interface Loopback10
-ip radius vrf MGMT source-interface Management1
 ```
