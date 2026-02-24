@@ -43,7 +43,8 @@ Once you select an example supported by a lab definition, it will be extracted t
     However if you don't have the required level of access, talk to your Arista account team.
 
 For additional documentation regarding AVD playgrounds and other community labs check [aclabs.arista.com](https://aclabs.arista.com/). The corresponding [GitHub repository](https://github.com/aristanetworks/aclabs) is used to build container images powering AVD playgrounds.
-AVD playground lab files are also available for [download on aclabs.arista.com](https://aristanetworks.github.io/aclabs/lab_archives/avd-playground.tar.gz). The download option is for skilled users only that can manage the environment without extra support.
+
+AVD playground lab files are available for [download on aclabs.arista.com](https://aristanetworks.github.io/aclabs/lab_archives/avd-playground.tar.gz). The download option is for skilled users only that can manage the environment without extra support.
 
 ## AVD as Reference Inventory
 
