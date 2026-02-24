@@ -16,7 +16,4 @@ Please check [How to use AVD examples](../../../../../ansible_collections/arista
     AVD playgrounds are only available to registered Arista customers with a support contract due to cost and security considerations.
     Please use AVD playground for good causes only and mind the EULA terms you signed during the registration.
     Do the right thing - be an Arista customer!
-    However if you don't have the required level of access, talk to your Arista account team or
-    [download the lab files](https://aristanetworks.github.io/aclabs/lab_archives/avd-playground.tar.gz)
-    and run the playground locally on your own host.
-    The download option is for skilled users only that can manage the environment without extra support.
+    However if you don't have the required level of access, talk to your Arista account team.
