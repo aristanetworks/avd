@@ -40,7 +40,7 @@ Once you select an example supported by a lab definition, it will be extracted t
     AVD playgrounds are only available to registered Arista customers with a support contract due to cost and security considerations.
     Please use AVD playground for good causes only and mind the EULA terms you signed during the registration.
     Do the right thing - be an Arista customer!
-    However if you don't have the required level of access, talk to your Arista account team.
+    If you don't have the required level of access, talk to your Arista account team.
 
 For additional documentation regarding AVD playgrounds and other community labs check [aclabs.arista.com](https://aclabs.arista.com/). The corresponding [GitHub repository](https://github.com/aristanetworks/aclabs) is used to build container images powering AVD playgrounds.
 
