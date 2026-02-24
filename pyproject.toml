@@ -7,8 +7,8 @@ dev = [
     "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
     "netaddr>=0.7.19",
-    # TODO: Update to released pyavd-utils version that includes https://github.com/aristanetworks/pyavd-utils/pull/61 before merging
-    "pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils.git@refs/pull/61/head",
+    # TODO: Update to released pyavd-utils version once available
+    "pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils.git@main",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     # dev requirements"

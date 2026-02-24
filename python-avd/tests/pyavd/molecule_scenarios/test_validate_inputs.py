@@ -82,3 +82,61 @@ def test_validate_inputs_with_eos_cli_config_gen_keys_disabled() -> None:
 
     # Should NOT have ignored_eos_config_keys
     assert len(validated_data_result.validation_result.ignored_eos_config_keys) == 0
+
+
+def test_validate_with_allow_with_new_key_deprecation() -> None:
+    """
+    Test that validation handles allow_with_new_key deprecation correctly through the Rust path.
+
+    This test creates a custom schema with a deprecated key that has allow_with_new_key=True
+    and validates that both old and new keys can coexist without a conflict error.
+    """
+    import json
+
+    from pyavd_utils.validation import validate_json_with_adhoc_schema
+
+    from pyavd._schema.store import init_store
+
+    # Initialize the store (required before validation)
+    init_store()
+
+    # Define a custom test schema with deprecation
+    test_schema = {
+        "type": "dict",
+        "keys": {
+            "old_key": {
+                "type": "str",
+                "deprecation": {
+                    "warning": True,
+                    "new_key": "new_key",
+                    "allow_with_new_key": True,
+                    "remove_in_version": "1.0.0",
+                },
+            },
+            "new_key": {
+                "type": "str",
+            },
+        },
+    }
+
+    # Test data with both old and new keys
+    test_data = {
+        "old_key": "old_value",
+        "new_key": "new_value",
+    }
+
+    # Validate through the Rust path using adhoc schema
+    validation_result = validate_json_with_adhoc_schema(
+        data_as_json=json.dumps(test_data),
+        schema_as_json=json.dumps(test_schema),
+    )
+
+    # Should have no violations (no conflict error)
+    assert validation_result.violations == []
+
+    # Should have exactly one deprecation warning
+    assert len(validation_result.deprecations) == 1
+    deprecation = validation_result.deprecations[0]
+    assert deprecation.path == ["old_key"]
+    assert "deprecated" in deprecation.message.lower()
+    assert "new_key" in deprecation.message.lower()
