@@ -21855,6 +21855,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "enable_unix": {"type": bool},
             "https_ssl_profile": {"type": str},
             "default_services": {"type": bool},
+            "session_timeout": {"type": int},
             "enable_vrfs": {"type": EnableVrfs},
             "protocol_https_certificate": {"type": ProtocolHttpsCertificate},
         }
@@ -21865,6 +21866,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """SSL Profile Name."""
         default_services: bool | None
         """Enable default services: capi-doc and tapagg."""
+        session_timeout: int | None
+        """User session timeout value in minutes <1-1440>. Default 1440."""
         enable_vrfs: EnableVrfs
         """Subclass of AvdIndexedList with `EnableVrfsItem` items. Primary key is `name` (`str`)."""
         protocol_https_certificate: ProtocolHttpsCertificate
@@ -21880,6 +21883,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 enable_unix: bool | None | UndefinedType = Undefined,
                 https_ssl_profile: str | None | UndefinedType = Undefined,
                 default_services: bool | None | UndefinedType = Undefined,
+                session_timeout: int | None | UndefinedType = Undefined,
                 enable_vrfs: EnableVrfs | UndefinedType = Undefined,
                 protocol_https_certificate: ProtocolHttpsCertificate | UndefinedType = Undefined,
             ) -> None:
@@ -21895,6 +21899,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enable_unix: enable_unix
                     https_ssl_profile: SSL Profile Name.
                     default_services: Enable default services: capi-doc and tapagg.
+                    session_timeout: User session timeout value in minutes <1-1440>.
                     enable_vrfs: Subclass of AvdIndexedList with `EnableVrfsItem` items. Primary key is `name` (`str`).
                     protocol_https_certificate: Subclass of AvdModel.
 
