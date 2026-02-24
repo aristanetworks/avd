@@ -3060,11 +3060,14 @@ keys:
     documentation_options:
       table: system-settings
     keys:
-      default_shutdown_ethernet_interfaces:
-        type: bool
-        default: false
-        description: Shutdown Ethernet interfaces by default unless they are explicitly
-          enabled.
+      interface_defaults:
+        type: dict
+        keys:
+          ethernet_shutdown:
+            type: bool
+            default: false
+            description: Shutdown Ethernet interfaces by default unless they are explicitly
+              enabled.
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags

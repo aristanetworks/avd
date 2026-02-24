@@ -19097,17 +19097,38 @@ class EosDesigns(EosDesignsRootModel):
     class GeneralSettings(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"default_shutdown_ethernet_interfaces": {"type": bool, "default": False}}
-        default_shutdown_ethernet_interfaces: bool
-        """
-        Shutdown Ethernet interfaces by default unless they are explicitly enabled.
+        class InterfaceDefaults(AvdModel):
+            """Subclass of AvdModel."""
 
-        Default value: `False`
-        """
+            _fields: ClassVar[dict] = {"ethernet_shutdown": {"type": bool, "default": False}}
+            ethernet_shutdown: bool
+            """
+            Shutdown Ethernet interfaces by default unless they are explicitly enabled.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ethernet_shutdown: bool | UndefinedType = Undefined) -> None:
+                    """
+                    InterfaceDefaults.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ethernet_shutdown: Shutdown Ethernet interfaces by default unless they are explicitly enabled.
+
+                    """
+
+        _fields: ClassVar[dict] = {"interface_defaults": {"type": InterfaceDefaults}}
+        interface_defaults: InterfaceDefaults
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, default_shutdown_ethernet_interfaces: bool | UndefinedType = Undefined) -> None:
+            def __init__(self, *, interface_defaults: InterfaceDefaults | UndefinedType = Undefined) -> None:
                 """
                 GeneralSettings.
 
@@ -19115,7 +19136,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    default_shutdown_ethernet_interfaces: Shutdown Ethernet interfaces by default unless they are explicitly enabled.
+                    interface_defaults: Subclass of AvdModel.
 
                 """
 
