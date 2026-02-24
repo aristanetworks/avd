@@ -19,8 +19,6 @@ You can use AVD examples in 2 different ways:
 - As an interactive lab (AVD playground).
 - As a reference inventory only, without supporting lab.
 
-Some AVD examples are also augmented with guides explaining how they work. However, the most important part of every example is the inventory (group/host variables). Labs and guides are optional.
-
 ## AVD Playground
 
 AVD playground is an interactive, Cloud-based lab environment sponsored by Arista. To get started, simply sign in at [labs.arista.com](https://labs.arista.com/) and click the button below to launch the lab.
