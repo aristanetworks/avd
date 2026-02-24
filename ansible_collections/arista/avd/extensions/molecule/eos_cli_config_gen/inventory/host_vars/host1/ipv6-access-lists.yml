@@ -62,7 +62,7 @@ ipv6_access_lists:
         remark: test acl with sequence numbers
       - sequence: 20
         action: permit
-        protocol: ip
+        protocol: ipv6
         source: fe81::/64
         destination: any
       - sequence: 30
@@ -96,10 +96,9 @@ ipv6_access_lists:
         destination: any
       - sequence: 4294967295
         action: deny
-        protocol: ip
+        protocol: ipv6
         source: any
         destination: any
-    permit_response_traffic: nat
   - name: ACL_NO_SEQUENCE
     entries:
       - remark: test acl without sequence numbers
@@ -109,51 +108,50 @@ ipv6_access_lists:
         destination: any
         log: true
       - action: permit
-        protocol: icmp
+        protocol: icmpv6
         source: any
         destination: any
         icmp_type: 3
         icmp_code: 4
-        ttl: 40
       - action: permit
-        protocol: icmp
+        protocol: icmpv6
         source: any
         destination: any
         icmp_type: unreachable
-        ttl: 3
-        ttl_match: gt
       - action: permit
-        protocol: ip
+        protocol: ipv6
         source: any
         destination: any
-        fragments: true
         dscp: 46
       - action: permit
-        protocol: ip
+        protocol: ipv6
         source: any
         destination: any
         tracked: true
         dscp: ef
+        hop_limit: 3
+        hop_limit_match: gt
       - action: permit
-        protocol: ip
+        protocol: ipv6
         source: any
         destination: any
         nexthop_group: NH_TEST
+        hop_limit: 254
       - action: permit
         vlan_number: 123
         vlan_inner: true
         vlan_mask: "0x000"
-        protocol: ip
+        protocol: ipv6
         source: any
         destination: any
       - action: permit
         vlan_number: 234
         vlan_mask: "0xFFF"
-        protocol: ip
+        protocol: ipv6
         source: any
         destination: any
       - action: permit
-        protocol: icmp
+        protocol: icmpv6
         source: any
         destination: any
   - name: ACL_WITHOUT_ENTRIES

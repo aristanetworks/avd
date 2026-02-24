@@ -17854,7 +17854,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             TcpFlags._item_type = str
 
-            TtlMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
+            HopLimitMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
             _fields: ClassVar[dict] = {
                 "sequence": {"type": int},
                 "remark": {"type": str},
@@ -17867,12 +17867,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
-                "fragments": {"type": bool},
                 "log": {"type": bool},
-                "ttl": {"type": int},
-                "ttl_match": {"type": str, "default": "eq"},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
+                "hop_limit": {"type": int},
+                "hop_limit_match": {"type": str, "default": "eq"},
                 "nexthop_group": {"type": str},
                 "tracked": {"type": bool},
                 "dscp": {"type": str},
@@ -17894,13 +17893,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             protocol: str | None
             """
-            "ip", "tcp", "udp", "icmp" or other protocol name or number.
+            "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
             Required except for remarks.
             """
             source: str | None
             """
-            "any", "<ip>/<mask>" or "<ip>".
-            "<ip>" without a mask means host.
+            "any", "<ipv6>/<mask>" or "<ipv6>".
+            "<ipv6>" without a mask means host.
             Required except for remarks.
             """
             source_ports_match: SourcePortsMatch
@@ -17909,8 +17908,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `str` items."""
             destination: str | None
             """
-            "any", "<ip>/<mask>" or "<ip>".
-            "<ip>" without a mask means host.
+            "any", "<ipv6>/<mask>" or "<ipv6>".
+            "<ipv6>" without a mask means host.
             Required except for remarks.
             """
             destination_ports_match: DestinationPortsMatch
@@ -17919,18 +17918,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
-            fragments: bool | None
-            """Match non-head fragment packets."""
             log: bool | None
             """Log matches against this rule."""
-            ttl: int | None
-            """TTL value."""
-            ttl_match: TtlMatch
-            """Default value: `"eq"`"""
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
             """Message code for ICMP packets."""
+            hop_limit: int | None
+            """Match Hop Limit value."""
+            hop_limit_match: HopLimitMatch
+            """Default value: `"eq"`"""
             nexthop_group: str | None
             """nexthop-group name."""
             tracked: bool | None
@@ -17959,12 +17956,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
-                    fragments: bool | None | UndefinedType = Undefined,
                     log: bool | None | UndefinedType = Undefined,
-                    ttl: int | None | UndefinedType = Undefined,
-                    ttl_match: TtlMatch | UndefinedType = Undefined,
                     icmp_type: str | None | UndefinedType = Undefined,
                     icmp_code: str | None | UndefinedType = Undefined,
+                    hop_limit: int | None | UndefinedType = Undefined,
+                    hop_limit_match: HopLimitMatch | UndefinedType = Undefined,
                     nexthop_group: str | None | UndefinedType = Undefined,
                     tracked: bool | None | UndefinedType = Undefined,
                     dscp: str | None | UndefinedType = Undefined,
@@ -17987,27 +17983,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            ACL action.
                            Required except for remarks.
                         protocol:
-                           "ip", "tcp", "udp", "icmp" or other protocol name or number.
+                           "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
                            Required except for remarks.
                         source:
-                           "any", "<ip>/<mask>" or "<ip>".
-                           "<ip>" without a mask means host.
+                           "any", "<ipv6>/<mask>" or "<ipv6>".
+                           "<ipv6>" without a mask means host.
                            Required except for remarks.
                         source_ports_match: source_ports_match
                         source_ports: Subclass of AvdList with `str` items.
                         destination:
-                           "any", "<ip>/<mask>" or "<ip>".
-                           "<ip>" without a mask means host.
+                           "any", "<ipv6>/<mask>" or "<ipv6>".
+                           "<ipv6>" without a mask means host.
                            Required except for remarks.
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        fragments: Match non-head fragment packets.
                         log: Log matches against this rule.
-                        ttl: TTL value.
-                        ttl_match: ttl_match
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
+                        hop_limit: Match Hop Limit value.
+                        hop_limit_match: hop_limit_match
                         nexthop_group: nexthop-group name.
                         tracked: Match packets in existing ICMP/UDP/TCP connections.
                         dscp: DSCP value or name.
@@ -18021,8 +18016,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdList with `EntriesItem` items."""
 
         Entries._item_type = EntriesItem
-
-        PermitResponseTraffic: TypeAlias = Literal["nat"]
 
         class SequenceNumbersItem(AvdModel):
             """Subclass of AvdModel."""
@@ -18064,7 +18057,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "name": {"type": str},
             "counters_per_entry": {"type": bool},
             "entries": {"type": Entries},
-            "permit_response_traffic": {"type": str},
             "sequence_numbers": {"type": SequenceNumbers},
         }
         name: str
@@ -18075,12 +18067,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ACL Entries.
 
         Subclass of AvdList with `EntriesItem` items.
-        """
-        permit_response_traffic: PermitResponseTraffic | None
-        """
-        Permit response traffic automatically based on NAT translations.
-        Minimum EOS version requirement
-        4.32.2F.
         """
         sequence_numbers: SequenceNumbers
         """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
@@ -18093,7 +18079,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name: str | UndefinedType = Undefined,
                 counters_per_entry: bool | None | UndefinedType = Undefined,
                 entries: Entries | UndefinedType = Undefined,
-                permit_response_traffic: PermitResponseTraffic | None | UndefinedType = Undefined,
                 sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -18109,10 +18094,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        ACL Entries.
 
                        Subclass of AvdList with `EntriesItem` items.
-                    permit_response_traffic:
-                       Permit response traffic automatically based on NAT translations.
-                       Minimum EOS version requirement
-                       4.32.2F.
                     sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
 
                 """

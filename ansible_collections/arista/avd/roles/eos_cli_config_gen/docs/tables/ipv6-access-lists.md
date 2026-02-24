@@ -14,30 +14,28 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "ipv6_access_lists.[].entries.[].sequence") | Integer |  |  |  | ACL entry sequence number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remark</samp>](## "ipv6_access_lists.[].entries.[].remark") | String |  |  |  | Comment up to 100 characters.<br>If remark is defined, other keys in the ACL entry will be ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "ipv6_access_lists.[].entries.[].action") | String |  |  | Valid Values:<br>- <code>permit</code><br>- <code>deny</code> | ACL action.<br>Required except for remarks. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "ipv6_access_lists.[].entries.[].protocol") | String |  |  |  | "ip", "tcp", "udp", "icmp" or other protocol name or number.<br>Required except for remarks. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "ipv6_access_lists.[].entries.[].source") | String |  |  |  | "any", "<ip>/<mask>" or "<ip>".<br>"<ip>" without a mask means host.<br>Required except for remarks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "ipv6_access_lists.[].entries.[].protocol") | String |  |  |  | "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.<br>Required except for remarks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "ipv6_access_lists.[].entries.[].source") | String |  |  |  | "any", "<ipv6>/<mask>" or "<ipv6>".<br>"<ipv6>" without a mask means host.<br>Required except for remarks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ports_match</samp>](## "ipv6_access_lists.[].entries.[].source_ports_match") | String |  | `eq` | Valid Values:<br>- <code>eq</code><br>- <code>gt</code><br>- <code>lt</code><br>- <code>neq</code><br>- <code>range</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_ports</samp>](## "ipv6_access_lists.[].entries.[].source_ports") | List, items: String |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv6_access_lists.[].entries.[].source_ports.[]") | String |  |  |  | TCP/UDP source port name or number. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "ipv6_access_lists.[].entries.[].destination") | String |  |  |  | "any", "<ip>/<mask>" or "<ip>".<br>"<ip>" without a mask means host.<br>Required except for remarks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "ipv6_access_lists.[].entries.[].destination") | String |  |  |  | "any", "<ipv6>/<mask>" or "<ipv6>".<br>"<ipv6>" without a mask means host.<br>Required except for remarks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_ports_match</samp>](## "ipv6_access_lists.[].entries.[].destination_ports_match") | String |  | `eq` | Valid Values:<br>- <code>eq</code><br>- <code>gt</code><br>- <code>lt</code><br>- <code>neq</code><br>- <code>range</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_ports</samp>](## "ipv6_access_lists.[].entries.[].destination_ports") | List, items: String |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv6_access_lists.[].entries.[].destination_ports.[]") | String |  |  |  | TCP/UDP destination port name or number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_flags</samp>](## "ipv6_access_lists.[].entries.[].tcp_flags") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv6_access_lists.[].entries.[].tcp_flags.[]") | String |  |  |  | TCP Flag Name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fragments</samp>](## "ipv6_access_lists.[].entries.[].fragments") | Boolean |  |  |  | Match non-head fragment packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "ipv6_access_lists.[].entries.[].log") | Boolean |  |  |  | Log matches against this rule. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "ipv6_access_lists.[].entries.[].ttl") | Integer |  |  | Min: 0<br>Max: 255 | TTL value. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_match</samp>](## "ipv6_access_lists.[].entries.[].ttl_match") | String |  | `eq` | Valid Values:<br>- <code>eq</code><br>- <code>gt</code><br>- <code>lt</code><br>- <code>neq</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icmp_type</samp>](## "ipv6_access_lists.[].entries.[].icmp_type") | String |  |  |  | Message type name/number for ICMP packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icmp_code</samp>](## "ipv6_access_lists.[].entries.[].icmp_code") | String |  |  |  | Message code for ICMP packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hop_limit</samp>](## "ipv6_access_lists.[].entries.[].hop_limit") | Integer |  |  | Min: 0 | Match Hop Limit value. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hop_limit_match</samp>](## "ipv6_access_lists.[].entries.[].hop_limit_match") | String |  | `eq` | Valid Values:<br>- <code>eq</code><br>- <code>gt</code><br>- <code>lt</code><br>- <code>neq</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nexthop_group</samp>](## "ipv6_access_lists.[].entries.[].nexthop_group") | String |  |  |  | nexthop-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tracked</samp>](## "ipv6_access_lists.[].entries.[].tracked") | Boolean |  |  |  | Match packets in existing ICMP/UDP/TCP connections. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "ipv6_access_lists.[].entries.[].dscp") | String |  |  |  | DSCP value or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_number</samp>](## "ipv6_access_lists.[].entries.[].vlan_number") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_inner</samp>](## "ipv6_access_lists.[].entries.[].vlan_inner") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_mask</samp>](## "ipv6_access_lists.[].entries.[].vlan_mask") | String |  |  |  | 0x000-0xFFF VLAN mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;permit_response_traffic</samp>](## "ipv6_access_lists.[].permit_response_traffic") | String |  |  | Valid Values:<br>- <code>nat</code> | Permit response traffic automatically based on NAT translations.<br>Minimum EOS version requirement 4.32.2F. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "ipv6_access_lists.[].sequence_numbers") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "ipv6_access_lists.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "ipv6_access_lists.[].sequence_numbers.[].action") | String | Required |  |  | Action as string.<br>Example: "deny ipv6 any any"<br> |
@@ -65,12 +63,12 @@
             # Required except for remarks.
             action: <str; "permit" | "deny">
 
-            # "ip", "tcp", "udp", "icmp" or other protocol name or number.
+            # "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
             # Required except for remarks.
             protocol: <str>
 
-            # "any", "<ip>/<mask>" or "<ip>".
-            # "<ip>" without a mask means host.
+            # "any", "<ipv6>/<mask>" or "<ipv6>".
+            # "<ipv6>" without a mask means host.
             # Required except for remarks.
             source: <str>
             source_ports_match: <str; "eq" | "gt" | "lt" | "neq" | "range"; default="eq">
@@ -79,8 +77,8 @@
                 # TCP/UDP source port name or number.
               - <str>
 
-            # "any", "<ip>/<mask>" or "<ip>".
-            # "<ip>" without a mask means host.
+            # "any", "<ipv6>/<mask>" or "<ipv6>".
+            # "<ipv6>" without a mask means host.
             # Required except for remarks.
             destination: <str>
             destination_ports_match: <str; "eq" | "gt" | "lt" | "neq" | "range"; default="eq">
@@ -93,21 +91,18 @@
                 # TCP Flag Name.
               - <str>
 
-            # Match non-head fragment packets.
-            fragments: <bool>
-
             # Log matches against this rule.
             log: <bool>
-
-            # TTL value.
-            ttl: <int; 0-255>
-            ttl_match: <str; "eq" | "gt" | "lt" | "neq"; default="eq">
 
             # Message type name/number for ICMP packets.
             icmp_type: <str>
 
             # Message code for ICMP packets.
             icmp_code: <str>
+
+            # Match Hop Limit value.
+            hop_limit: <int; >=0>
+            hop_limit_match: <str; "eq" | "gt" | "lt" | "neq"; default="eq">
 
             # nexthop-group name.
             nexthop_group: <str>
@@ -122,10 +117,6 @@
 
             # 0x000-0xFFF VLAN mask.
             vlan_mask: <str>
-
-        # Permit response traffic automatically based on NAT translations.
-        # Minimum EOS version requirement 4.32.2F.
-        permit_response_traffic: <str; "nat">
         # This key is deprecated.
         # Support will be removed in AVD version 7.0.0.
         sequence_numbers:

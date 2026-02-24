@@ -12104,24 +12104,23 @@ ipv6 access-list standard ipv6_test1
 ipv6 access-list ACL_NO_SEQUENCE
    remark test acl without sequence numbers
    deny udp any any log
-   permit icmp any any 3 4 ttl eq 40
-   permit icmp any any unreachable ttl gt 3
-   permit ip any any fragments dscp 46
-   permit ip any any tracked dscp ef
-   permit ip any any nexthop-group NH_TEST
-   permit vlan inner 123 0x000 ip any any
-   permit vlan 234 0xFFF ip any any
-   permit icmp any any
+   permit icmpv6 any any
+   permit icmpv6 any any
+   permit ipv6 any any dscp 46
+   permit ipv6 any any tracked dscp ef hop-limit gt 3
+   permit ipv6 any any nexthop-group NH_TEST hop-limit eq 254
+   permit vlan inner 123 0x000 ipv6 any any
+   permit vlan 234 0xFFF ipv6 any any
+   permit icmpv6 any any
 !
 ipv6 access-list ACL_SEQUENCE_AND_COUNTERS
    counters per-entry
    10 remark test acl with sequence numbers
-   20 permit ip fe81::/64 any
+   20 permit ipv6 fe81::/64 any
    30 permit tcp fe82::/64 any established
    40 permit tcp any gt 1023 fe83::/64 eq 22
    50 permit tcp any range 1000 1100 any range 10 20
-   4294967295 deny ip any any
-   permit response traffic nat
+   4294967295 deny ipv6 any any
 !
 ipv6 access-list ACL_WITHOUT_ENTRIES
 !

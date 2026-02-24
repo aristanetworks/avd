@@ -7043,15 +7043,15 @@ keys:
                   Required except for remarks.'
               protocol:
                 type: str
-                description: '"ip", "tcp", "udp", "icmp" or other protocol name or
-                  number.
+                description: '"ipv6", "tcp", "udp", "icmpv6" or other protocol name
+                  or number.
 
                   Required except for remarks.'
               source:
                 type: str
-                description: '"any", "<ip>/<mask>" or "<ip>".
+                description: '"any", "<ipv6>/<mask>" or "<ipv6>".
 
-                  "<ip>" without a mask means host.
+                  "<ipv6>" without a mask means host.
 
                   Required except for remarks.'
               source_ports_match:
@@ -7073,9 +7073,9 @@ keys:
                   description: TCP/UDP source port name or number.
               destination:
                 type: str
-                description: '"any", "<ip>/<mask>" or "<ip>".
+                description: '"any", "<ipv6>/<mask>" or "<ipv6>".
 
-                  "<ip>" without a mask means host.
+                  "<ipv6>" without a mask means host.
 
                   Required except for remarks.'
               destination_ports_match:
@@ -7100,27 +7100,9 @@ keys:
                 items:
                   type: str
                   description: TCP Flag Name.
-              fragments:
-                type: bool
-                description: Match non-head fragment packets.
               log:
                 type: bool
                 description: Log matches against this rule.
-              ttl:
-                type: int
-                description: TTL value.
-                convert_types:
-                - str
-                min: 0
-                max: 255
-              ttl_match:
-                type: str
-                valid_values:
-                - eq
-                - gt
-                - lt
-                - neq
-                default: eq
               icmp_type:
                 type: str
                 convert_types:
@@ -7131,6 +7113,20 @@ keys:
                 convert_types:
                 - int
                 description: Message code for ICMP packets.
+              hop_limit:
+                type: int
+                convert_types:
+                - str
+                min: 0
+                description: Match Hop Limit value.
+              hop_limit_match:
+                type: str
+                valid_values:
+                - eq
+                - gt
+                - lt
+                - neq
+                default: eq
               nexthop_group:
                 type: str
                 description: nexthop-group name.
@@ -7152,13 +7148,6 @@ keys:
               vlan_mask:
                 type: str
                 description: 0x000-0xFFF VLAN mask.
-        permit_response_traffic:
-          type: str
-          valid_values:
-          - nat
-          description: 'Permit response traffic automatically based on NAT translations.
-
-            Minimum EOS version requirement 4.32.2F.'
         sequence_numbers:
           deprecation:
             warning: true
