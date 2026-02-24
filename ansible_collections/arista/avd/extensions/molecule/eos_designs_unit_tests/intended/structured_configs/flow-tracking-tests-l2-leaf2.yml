@@ -42,6 +42,7 @@ flow_tracking:
 hostname: flow-tracking-tests-l2-leaf2
 ip_igmp_snooping:
   globally_enabled: true
+ip_routing: false
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

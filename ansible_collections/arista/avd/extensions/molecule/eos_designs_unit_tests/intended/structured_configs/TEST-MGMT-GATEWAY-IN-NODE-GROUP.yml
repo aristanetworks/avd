@@ -6,6 +6,7 @@ enable_password:
 hostname: TEST-MGMT-GATEWAY-IN-NODE-GROUP
 ip_igmp_snooping:
   globally_enabled: true
+ip_routing: false
 ipv6_static_routes:
 - vrf: MGMT
   prefix: ::/0

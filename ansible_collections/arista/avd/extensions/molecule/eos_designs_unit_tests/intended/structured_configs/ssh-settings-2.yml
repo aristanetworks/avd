@@ -6,6 +6,7 @@ enable_password:
 hostname: ssh-settings-2
 ip_igmp_snooping:
   globally_enabled: true
+ip_routing: false
 management_ssh:
   ip_access_group_in: ACL-SSH-INBAND-MGMT
   idle_timeout: 0

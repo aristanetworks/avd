@@ -12,6 +12,7 @@ cvx:
 enable_password:
   disabled: true
 hostname: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1
+ip_routing: false
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

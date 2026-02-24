@@ -147,6 +147,7 @@ class AvdStructuredConfigBaseProtocol(
     def ip_routing(self) -> None:
         """Set ip_routing, ip_routing_ipv6_interfaces and ipv6_unicast_routing based on underlay_rfc5549 variable."""
         if not self.shared_utils.underlay_router and not self.shared_utils.node_config.always_configure_ip_routing:
+            self.structured_config.ip_routing = False
             return
 
         if self.inputs.underlay_rfc5549 or self.shared_utils.underlay_ipv6:

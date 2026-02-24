@@ -34,6 +34,7 @@ ethernet_interfaces:
 hostname: UPLINK_P2P_VRFS_TESTS_L2LEAF1
 ip_igmp_snooping:
   globally_enabled: true
+ip_routing: false
 metadata:
   is_deployed: true
   platform: vEOS-LAB

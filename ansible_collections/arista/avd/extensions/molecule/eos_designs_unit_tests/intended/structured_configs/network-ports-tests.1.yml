@@ -878,6 +878,7 @@ ethernet_interfaces:
 hostname: network-ports-tests.1
 ip_igmp_snooping:
   globally_enabled: true
+ip_routing: false
 metadata:
   is_deployed: true
   platform: 720XPM-48Y6

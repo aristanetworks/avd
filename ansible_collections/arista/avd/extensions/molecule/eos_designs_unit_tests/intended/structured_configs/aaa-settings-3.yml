@@ -52,6 +52,7 @@ ip_radius_source_interfaces:
   vrf: INBAND_MGMT
 - name: Ma1/1
   vrf: MGMT
+ip_routing: false
 ip_tacacs_source_interfaces:
 - name: Vlan123
   vrf: default

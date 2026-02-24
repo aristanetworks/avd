@@ -527,6 +527,7 @@ ip_igmp_snooping:
 ip_radius_source_interfaces:
 - name: Management1
   vrf: MGMT
+ip_routing: false
 link_tracking_groups:
 - name: LT_GROUP1
   recovery_delay: 300

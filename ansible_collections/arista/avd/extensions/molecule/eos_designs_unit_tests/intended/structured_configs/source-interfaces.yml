@@ -11,6 +11,7 @@ ip_http_client:
     source_interface: Vlan4092
 ip_igmp_snooping:
   globally_enabled: true
+ip_routing: false
 ip_ssh_client:
   source_interface: Management1
   vrfs:

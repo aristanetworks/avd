@@ -42,6 +42,7 @@ ip_name_server:
     servers:
     - ip_address: 1.1.1.1
     - ip_address: 8.8.8.8
+ip_routing: false
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS

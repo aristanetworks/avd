@@ -6,6 +6,7 @@ enable_password:
 hostname: snmp-settings-2
 ip_igmp_snooping:
   globally_enabled: true
+ip_routing: false
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS

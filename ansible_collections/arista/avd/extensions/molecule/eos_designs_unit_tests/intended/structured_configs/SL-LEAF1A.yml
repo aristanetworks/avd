@@ -47,6 +47,7 @@ ethernet_interfaces:
 hostname: SL-LEAF1A
 ip_igmp_snooping:
   globally_enabled: true
+ip_routing: false
 metadata:
   is_deployed: true
   platform: vEOS-LAB

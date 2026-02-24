@@ -58,6 +58,7 @@ ethernet_interfaces:
 hostname: trunk-group-tests-l2leaf1a
 ip_igmp_snooping:
   globally_enabled: true
+ip_routing: false
 metadata:
   is_deployed: true
   pod_name: TRUNK_GROUP_TESTS

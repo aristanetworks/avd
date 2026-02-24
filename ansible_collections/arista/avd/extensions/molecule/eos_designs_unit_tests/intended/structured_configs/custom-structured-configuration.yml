@@ -22,6 +22,7 @@ enable_password:
   disabled: true
 hostname: custom-structured-configuration
 ip_igmp_snooping: {}
+ip_routing: false
 local_users:
 - name: eos-designs-admin
   disabled: false

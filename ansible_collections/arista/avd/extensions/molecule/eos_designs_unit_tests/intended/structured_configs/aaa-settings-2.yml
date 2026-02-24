@@ -46,6 +46,7 @@ ip_igmp_snooping:
 ip_radius_source_interfaces:
 - name: Vlan4092
   vrf: INBAND_MGMT
+ip_routing: false
 ip_tacacs_source_interfaces:
 - name: Vlan123
   vrf: default

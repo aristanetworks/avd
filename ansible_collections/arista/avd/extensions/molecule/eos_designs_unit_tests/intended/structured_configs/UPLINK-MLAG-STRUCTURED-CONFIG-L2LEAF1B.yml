@@ -47,6 +47,7 @@ ethernet_interfaces:
 hostname: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B
 ip_igmp_snooping:
   globally_enabled: true
+ip_routing: false
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

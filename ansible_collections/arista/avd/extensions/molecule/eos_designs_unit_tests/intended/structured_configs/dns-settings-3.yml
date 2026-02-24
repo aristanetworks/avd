@@ -31,6 +31,7 @@ ip_name_server:
   - name: other_vrf
     servers:
     - ip_address: 10.10.10.2
+ip_routing: false
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

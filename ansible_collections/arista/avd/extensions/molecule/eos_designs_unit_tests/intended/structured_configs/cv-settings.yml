@@ -104,6 +104,7 @@ ip_name_server:
     servers:
     - ip_address: 10.10.10.1
       priority: 1
+ip_routing: false
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

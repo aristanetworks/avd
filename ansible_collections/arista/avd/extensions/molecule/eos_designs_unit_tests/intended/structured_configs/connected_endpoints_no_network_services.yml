@@ -16,6 +16,7 @@ ethernet_interfaces:
     enabled: true
     mode: trunk
 hostname: connected_endpoints_no_network_services
+ip_routing: false
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

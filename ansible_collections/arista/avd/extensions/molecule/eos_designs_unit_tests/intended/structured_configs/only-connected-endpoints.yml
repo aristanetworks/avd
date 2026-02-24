@@ -241,6 +241,7 @@ hostname: only-connected-endpoints
 ip_radius_source_interfaces:
 - name: Management1
   vrf: MGMT
+ip_routing: false
 management_api_http: null
 management_interfaces:
 - name: Management1

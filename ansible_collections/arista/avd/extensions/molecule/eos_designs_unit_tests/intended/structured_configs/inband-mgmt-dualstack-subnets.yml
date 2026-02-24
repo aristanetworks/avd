@@ -42,6 +42,7 @@ ip_name_server:
     servers:
     - ip_address: 1.1.1.1
     - ip_address: 8.8.8.8
+ip_routing: false
 ipv6_static_routes:
 - prefix: ::/0
   next_hop: 2a00:104::1

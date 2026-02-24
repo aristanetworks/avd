@@ -25,6 +25,7 @@ ip_igmp_snooping:
 ip_radius_source_interfaces:
 - name: Management1
   vrf: MGMT
+ip_routing: false
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

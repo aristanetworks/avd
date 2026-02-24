@@ -64,6 +64,7 @@ ip_name_server:
   - name: default
     servers:
     - ip_address: 192.168.200.5
+ip_routing: false
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

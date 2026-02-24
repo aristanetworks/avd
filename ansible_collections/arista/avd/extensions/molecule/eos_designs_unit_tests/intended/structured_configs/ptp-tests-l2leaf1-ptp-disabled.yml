@@ -27,6 +27,7 @@ ethernet_interfaces:
 hostname: ptp-tests-l2leaf1-ptp-disabled
 ip_igmp_snooping:
   globally_enabled: true
+ip_routing: false
 metadata:
   is_deployed: true
   platform: vEOS-lab

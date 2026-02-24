@@ -6,6 +6,7 @@ enable_password:
 hostname: snmp-system-mac-engineid-2
 ip_igmp_snooping:
   globally_enabled: true
+ip_routing: false
 metadata:
   is_deployed: true
   system_mac_address: 12:34:56:78:90:AB
