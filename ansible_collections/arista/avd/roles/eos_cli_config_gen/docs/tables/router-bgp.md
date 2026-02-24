@@ -34,8 +34,8 @@
     | [<samp>&nbsp;&nbsp;route_distinguisher</samp>](## "router_bgp.route_distinguisher") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;assignment_auto</samp>](## "router_bgp.route_distinguisher.assignment_auto") | Dictionary |  |  |  | Route distinguisher auto assignment. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;range</samp>](## "router_bgp.route_distinguisher.assignment_auto.range") | Dictionary |  |  |  | Range for assigned value field of rd. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start</samp>](## "router_bgp.route_distinguisher.assignment_auto.range.start") | Integer | Required |  | Min: 1<br>Max: 65535 | Start of range (Default:4096). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end</samp>](## "router_bgp.route_distinguisher.assignment_auto.range.end") | Integer | Required |  | Max: 65535 | End of range, from `start` to 65535 (Default:65535). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start</samp>](## "router_bgp.route_distinguisher.assignment_auto.range.start") | Integer | Required |  | Min: 1<br>Max: 65535 | Start of range EOS default is 4096. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end</samp>](## "router_bgp.route_distinguisher.assignment_auto.range.end") | Integer | Required |  | Max: 65535 | End of range.<br>`end` must be greater than or equal to `start`.<br>EOS default is 65535. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "router_bgp.route_distinguisher.assignment_auto.address_families") | List, items: String |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.route_distinguisher.assignment_auto.address_families.[]") | String |  |  | Valid Values:<br>- <code>l2-evpn</code><br>- <code>l3-vrf</code> | l2-evpn: Enable auto rd assignment for L2 EVPN.<br>l3-vrf: Enable auto rd assignment for L3 VRFs. |
     | [<samp>&nbsp;&nbsp;updates</samp>](## "router_bgp.updates") | Dictionary |  |  |  |  |
@@ -1665,10 +1665,12 @@
           # Range for assigned value field of rd.
           range:
 
-            # Start of range (Default:4096).
+            # Start of range EOS default is 4096.
             start: <int; 1-65535; required>
 
-            # End of range, from `start` to 65535 (Default:65535).
+            # End of range.
+            # `end` must be greater than or equal to `start`.
+            # EOS default is 65535.
             end: <int; <=65535; required>
           address_families: # >=1 items
 

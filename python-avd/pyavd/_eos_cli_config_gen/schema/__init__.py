@@ -39307,9 +39307,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"start": {"type": int}, "end": {"type": int}}
                     start: int
-                    """Start of range (Default:4096)."""
+                    """Start of range EOS default is 4096."""
                     end: int
-                    """End of range, from `start` to 65535 (Default:65535)."""
+                    """
+                    End of range.
+                    `end` must be greater than or equal to `start`.
+                    EOS default is 65535.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -39321,8 +39325,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                start: Start of range (Default:4096).
-                                end: End of range, from `start` to 65535 (Default:65535).
+                                start: Start of range EOS default is 4096.
+                                end:
+                                   End of range.
+                                   `end` must be greater than or equal to `start`.
+                                   EOS default is 65535.
 
                             """
 
