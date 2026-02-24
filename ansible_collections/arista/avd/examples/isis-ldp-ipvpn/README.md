@@ -12,7 +12,7 @@ title: MPLS-VPN based WAN Network
 
 ## Introduction
 
-This example is the logical second step in introducing AVD to new users, following the [Introduction to Ansible and AVD](../../../../../docs/getting-started/intro-to-ansible-and-avd.md) section. New users with access to virtual routers (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical routers will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical routers is not accessible, this example can also be used to only generate the output from AVD if desired.
+This example is the logical second step in introducing AVD to new users, following the [Introduction to Ansible and AVD](../../../../../docs/user-manual/intro-to-ansible-and-avd.md) section. New users with access to virtual routers (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical routers will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical routers is not accessible, this example can also be used to only generate the output from AVD if desired.
 
 The example includes and describes all the AVD files and their content used to build a MPLS-VPN WAN network covering two sites using the following:
 
