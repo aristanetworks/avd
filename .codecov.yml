@@ -1,0 +1,57 @@
+---
+# CodeCov Configuration for AVD
+# Reference: https://docs.codecov.com/docs/codecov-yaml
+
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 0.5%
+        paths:
+          - "python-avd/pyavd/"
+          - "ansible_collections/arista/avd/plugins/"
+    patch:
+      default:
+        target: 80%
+        threshold: 0%
+
+comment:
+  layout: "reach,diff,flags,files"
+  behavior: default
+  require_changes: true
+
+flags:
+  pyavd:
+    paths:
+      - python-avd/pyavd/
+  ansible-plugins:
+    paths:
+      - ansible_collections/arista/avd/plugins/
+  ansible-test-units:
+    paths:
+      - ansible_collections/arista/avd/plugins/
+  ansible-test-integration:
+    paths:
+      - ansible_collections/arista/avd/plugins/
+
+ignore:
+  # Test directories
+  - "python-avd/tests/**/*"
+  - "ansible_collections/arista/avd/tests/**/*"
+  - "ansible_collections/arista/avd/extensions/molecule/**/*"
+
+  # Documentation
+  - "docs/**/*"
+  - "ansible_collections/arista/avd/docs/**/*"
+
+  # Schema tools (build-time only)
+  - "python-avd/schema_tools/**/*"
+  - "python-avd/scripts/**/*"
+
+  # Examples
+  - "ansible_collections/arista/avd/examples/**/*"
+
+  # Compiled templates (generated code)
+  - "python-avd/pyavd/_eos_designs/j2templates/compiled_templates/**/*"
+  - "python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/**/*"
