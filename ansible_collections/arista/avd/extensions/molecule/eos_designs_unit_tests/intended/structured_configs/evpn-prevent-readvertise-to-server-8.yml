@@ -83,11 +83,11 @@ router_bgp:
   address_family_evpn:
     neighbors:
     - ip_address: 192.168.255.112
-      rcf_out: EVPN-FILTER-AS65002()
+      rcf_out: RCF_EVPN_FILTER_AS( 65002 )
     - ip_address: 192.168.255.113
-      rcf_out: EVPN-FILTER-AS65003()
+      rcf_out: RCF_EVPN_FILTER_AS( 65003 )
     - ip_address: 192.168.255.115
-      rcf_out: EVPN-FILTER-AS65003()
+      rcf_out: RCF_EVPN_FILTER_AS( 65003 )
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
@@ -98,10 +98,8 @@ router_bgp:
 router_general:
   control_functions:
     code_units:
-    - name: CU-EVPN-FILTER-AS65002
-      content: "function EVPN-FILTER-AS65002() {\n    if as_path has_any { 65002 } {\n        return false;\n    }\n    return true;\n}\nEOF"
-    - name: CU-EVPN-FILTER-AS65003
-      content: "function EVPN-FILTER-AS65003() {\n    if as_path has_any { 65003 } {\n        return false;\n    }\n    return true;\n}\nEOF"
+    - name: CU_EVPN_FILTER_AS
+      content: "function RCF_EVPN_FILTER_AS( as_number_type $PEER_ASN ) {\n    return as_path has_none { $PEER_ASN };\n}\nEOF"
 service_routing_protocols_model: multi-agent
 static_routes:
 - vrf: MGMT

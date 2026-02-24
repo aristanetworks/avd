@@ -5,8 +5,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd.j2filters import natural_sort
+from pyavd._utils.run_once import run_once_method
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigOverlayProtocol
@@ -19,22 +18,10 @@ class RouterGeneralMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    @structured_config_contributor
-    def router_general(self: AvdStructuredConfigOverlayProtocol) -> None:
-        """Set the structured config for router_general."""
-        if self.shared_utils.overlay_routing_protocol != "ebgp":
-            return
-
-        if self.inputs.evpn_prevent_readvertise_to_server and self.inputs.evpn_prevent_readvertise_to_server_mode == "rcf":
-            remote_asns = natural_sort({bgp_as for rs_dict in self._evpn_route_servers.values() if (bgp_as := rs_dict.get("bgp_as")) is not None})
-            for remote_asn in remote_asns:
-                self.structured_config.router_general.control_functions.code_units.append_new(
-                    name=f"CU-EVPN-FILTER-AS{remote_asn}",
-                    content=f"""function EVPN-FILTER-AS{remote_asn}() {{
-    if as_path has_any {{ {remote_asn} }} {{
-        return false;
-    }}
-    return true;
-}}
-EOF""",
-                )
+    @run_once_method
+    def set_once_rcf_evpn_filter_as(self: AvdStructuredConfigOverlayProtocol) -> None:
+        """Set argument-based RCF RCF_EVPN_FILTER_AS to filter out EVPN routes containing BGP AS of the remote peer in the AS path."""
+        self.structured_config.router_general.control_functions.code_units.append_new(
+            name="CU_EVPN_FILTER_AS",
+            content="""function RCF_EVPN_FILTER_AS( as_number_type $PEER_ASN ) {\n    return as_path has_none { $PEER_ASN };\n}\nEOF""",
+        )

@@ -468,11 +468,12 @@ class RouterBgpMixin(Protocol):
         if self.shared_utils.overlay_routing_protocol == "ebgp":
             for route_server, data in natural_sort(self._evpn_route_servers.items()):
                 remote_as = data["bgp_as"]
+                remote_ip_address = data["ip_address"]
                 if remote_as is None:
                     # Never happens but here to help the type checker.
                     continue
                 neighbor = self._create_neighbor(
-                    data["ip_address"],
+                    remote_ip_address,
                     route_server,
                     self.inputs.bgp_peer_groups.evpn_overlay_peers.name,
                     remote_as=data["bgp_as"],
@@ -485,11 +486,13 @@ class RouterBgpMixin(Protocol):
                             # Create the route-map
                             self.set_route_map_evpn_filter_as(remote_as)
                         case "peer_tag":
-                            evpn_rs_neighbor = self.structured_config.router_bgp.address_family_evpn.neighbors.obtain(data["ip_address"])
-                            evpn_rs_neighbor._update(peer_tag_in=f"EVPN-PEER-TAG-AS{data['bgp_as']}", peer_tag_out_discard=f"EVPN-PEER-TAG-AS{data['bgp_as']}")
+                            neighbor._update(peer_tag_in=f"PT-EVPN-FILTER-AS{remote_as}", peer_tag_out_discard=f"PT-EVPN-FILTER-AS{remote_as}")
                         case "rcf":
-                            evpn_rs_neighbor = self.structured_config.router_bgp.address_family_evpn.neighbors.obtain(data["ip_address"])
-                            evpn_rs_neighbor._update(rcf_out=f"EVPN-FILTER-AS{data['bgp_as']}()")
+                            # RCF-based in/out filtering is applied at the AF level only
+                            evpn_rs_neighbor = self.structured_config.router_bgp.address_family_evpn.neighbors.obtain(remote_ip_address)
+                            evpn_rs_neighbor._update(rcf_out=f"RCF_EVPN_FILTER_AS( {remote_as} )")
+                            # Create RCF
+                            self.set_once_rcf_evpn_filter_as()
                 neighbors.append(neighbor)
 
                 # Create peer-group
