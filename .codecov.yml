@@ -10,6 +10,7 @@ coverage:
         threshold: 0.5%
         paths:
           - "python-avd/pyavd/"
+          - "python-avd/schema_tools/"
           - "ansible_collections/arista/avd/plugins/"
     patch:
       default:
@@ -25,6 +26,7 @@ flags:
   pyavd:
     paths:
       - python-avd/pyavd/
+      - python-avd/schema_tools/
   ansible-test-units:
     paths:
       - ansible_collections/arista/avd/plugins/
@@ -42,8 +44,7 @@ ignore:
   - "docs/**/*"
   - "ansible_collections/arista/avd/docs/**/*"
 
-  # Schema tools (build-time only)
-  - "python-avd/schema_tools/**/*"
+  # Scripts (build-time only)
   - "python-avd/scripts/**/*"
 
   # Examples
