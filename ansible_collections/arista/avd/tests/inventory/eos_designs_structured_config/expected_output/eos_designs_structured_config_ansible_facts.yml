@@ -11,17 +11,6 @@ config_end: true
 enable_password:
   disabled: true
 transceiver_qsfp_default_mode_4x10: true
-vlans:
-- id: 100
-  name: vlan100
-  metadata:
-    tenants:
-    - testtenant
-- id: 110
-  name: vlan110
-  metadata:
-    tenants:
-    - testtenant
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -15,14 +15,3 @@ avd_switch_facts:
     id: 1
     vlans: ""
     uplinks: []
-tenants:
-  - name: testtenant
-    vrfs:
-      - name: default
-        vrf_id: 100
-        svis:
-          - id: 100
-            name: vlan100
-    l2vlans:
-      - id: 110
-        name: vlan110

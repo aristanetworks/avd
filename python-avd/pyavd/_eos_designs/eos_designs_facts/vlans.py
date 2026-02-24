@@ -47,12 +47,15 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         """Parse the given adapter_settings and return relevant vlans and trunk_groups."""
         vlans = set()
         trunk_groups = set(adapter_settings.trunk_groups)
+        # Return an empty VLAN set and defined trunk groups if VLANs are explicitly set to "none"
         if adapter_settings.vlans == "none":
             return vlans, trunk_groups
+        # Update vlans set if adapter_settings.vlans is an actual range of vlan(s)
         if adapter_settings.vlans and adapter_settings.vlans not in ["all", "defined_vlans"]:
             vlans.update(map(int, range_expand(adapter_settings.vlans)))
         elif adapter_settings.mode == "trunk" and not trunk_groups:
             # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
+            # Both "all" and "defined_vlans" effectively make all network services VLANs scoped for the switch to be presented towards the endpoint
             # No need to check further, since the list is now containing all vlans.
             return set(range(1, 4094)), trunk_groups
         elif adapter_settings.mode == "trunk phone":

@@ -1,0 +1,76 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: SERVER_server_1_eth0
+  shutdown: false
+  metadata:
+    peer: server_1
+    peer_interface: eth0
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 101-102,111-112
+- name: Ethernet2
+  description: SERVER_server_2_eth0
+  shutdown: false
+  metadata:
+    peer: server_2
+    peer_interface: eth0
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 101-102,111-112
+hostname: connected_endpoints_only_defined_vlans
+ip_igmp_snooping:
+  globally_enabled: true
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.1.2
+  type: oob
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 101
+  name: vlan101
+  metadata:
+    tenants:
+    - testtenant
+- id: 102
+  name: vlan102
+  metadata:
+    tenants:
+    - testtenant
+- id: 111
+  name: vlan111
+  metadata:
+    tenants:
+    - testtenant
+- id: 112
+  name: vlan112
+  metadata:
+    tenants:
+    - testtenant
+vrfs:
+- name: MGMT
+  ip_routing: false
