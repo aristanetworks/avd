@@ -140,9 +140,16 @@ ipv6_access_lists:
         nexthop_group: NH_TEST
         hop_limit: 254
       - action: permit
-        vlan_number: 123
-        vlan_inner: true
-        vlan_mask: "0x000"
+        inner_vlan_number: 124
+        inner_vlan_mask: "0x001"
+        vlan_number: 235
+        vlan_mask: "0x1FF"
+        protocol: ipv6
+        source: any
+        destination: any
+      - action: permit
+        inner_vlan_number: 123
+        inner_vlan_mask: "0x000"
         protocol: ipv6
         source: any
         destination: any

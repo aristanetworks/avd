@@ -12108,11 +12108,12 @@ ipv6 access-list standard ipv6_test1
 ipv6 access-list ACL_NO_SEQUENCE
    remark test acl without sequence numbers
    deny udp any any log
-   permit icmpv6 any any
-   permit icmpv6 any any
+   permit icmpv6 any any 3 4
+   permit icmpv6 any any unreachable
    permit ipv6 any any dscp 46 3
    permit ipv6 any any tracked dscp ef hop-limit gt 3
    permit ipv6 any any nexthop-group NH_TEST hop-limit eq 254
+   permit vlan 235 0x1FF inner 124 0x001 ipv6 any any
    permit vlan inner 123 0x000 ipv6 any any
    permit vlan 234 0xFFF ipv6 any any
    permit icmpv6 any any

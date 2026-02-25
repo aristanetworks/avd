@@ -17939,8 +17939,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "dscp": {"type": str},
                 "dscp_mask": {"type": str},
                 "vlan_number": {"type": int},
-                "vlan_inner": {"type": bool, "default": False},
                 "vlan_mask": {"type": str},
+                "inner_vlan_number": {"type": int},
+                "inner_vlan_mask": {"type": str},
             }
             sequence: int | None
             """ACL entry sequence number."""
@@ -18000,10 +18001,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             dscp_mask: str | None
             """DSCP mask ranges from 0x00 to 0x3F."""
             vlan_number: int | None
-            vlan_inner: bool
-            """Default value: `False`"""
             vlan_mask: str | None
             """0x000-0xFFF VLAN mask."""
+            inner_vlan_number: int | None
+            inner_vlan_mask: str | None
+            """0x000-0xFFF inner VLAN mask."""
 
             if TYPE_CHECKING:
 
@@ -18031,8 +18033,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     dscp: str | None | UndefinedType = Undefined,
                     dscp_mask: str | None | UndefinedType = Undefined,
                     vlan_number: int | None | UndefinedType = Undefined,
-                    vlan_inner: bool | UndefinedType = Undefined,
                     vlan_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan_number: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntriesItem.
@@ -18074,8 +18077,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         dscp: DSCP value or name.
                         dscp_mask: DSCP mask ranges from 0x00 to 0x3F.
                         vlan_number: vlan_number
-                        vlan_inner: vlan_inner
                         vlan_mask: 0x000-0xFFF VLAN mask.
+                        inner_vlan_number: inner_vlan_number
+                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask.
 
                     """
 

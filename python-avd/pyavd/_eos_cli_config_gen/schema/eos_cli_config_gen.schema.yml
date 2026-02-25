@@ -7157,12 +7157,16 @@ keys:
                 type: int
                 convert_types:
                 - str
-              vlan_inner:
-                type: bool
-                default: false
               vlan_mask:
                 type: str
                 description: 0x000-0xFFF VLAN mask.
+              inner_vlan_number:
+                type: int
+                convert_types:
+                - str
+              inner_vlan_mask:
+                type: str
+                description: 0x000-0xFFF inner VLAN mask.
         sequence_numbers:
           deprecation:
             warning: true

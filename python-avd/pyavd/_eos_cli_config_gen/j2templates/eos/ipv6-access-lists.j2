@@ -40,11 +40,12 @@ ipv6 access-list {{ acl.name }}
 {%                     set acl_entry.string = acl_entry.string ~ acle.action %}
 {#                     * add vlan #}
 {%                     if (acle.vlan_number is arista.avd.defined) and (acle.vlan_mask is arista.avd.defined) %}
-{%                         set acl_entry.string = acl_entry.string ~ ' vlan' %}
-{%                         if acle.vlan_inner is arista.avd.defined(true) %}
-{%                             set acl_entry.string = acl_entry.string ~ ' inner' %}
+{%                         set acl_entry.string = acl_entry.string ~ ' vlan' ~ ' ' ~ acle.vlan_number ~ ' ' ~ acle.vlan_mask %}
+{%                         if (acle.inner_vlan_number is arista.avd.defined) and (acle.inner_vlan_mask is arista.avd.defined) %}
+{%                             set acl_entry.string = acl_entry.string ~ ' inner' ~ ' ' ~ acle.inner_vlan_number ~ ' ' ~ acle.inner_vlan_mask %}
 {%                         endif %}
-{%                         set acl_entry.string = acl_entry.string ~ ' ' ~ acle.vlan_number ~ ' ' ~ acle.vlan_mask %}
+{%                     elif (acle.inner_vlan_number is arista.avd.defined) and (acle.inner_vlan_mask is arista.avd.defined) %}
+{%                         set acl_entry.string = acl_entry.string ~ ' vlan inner ' ~ acle.inner_vlan_number ~ ' ' ~ acle.inner_vlan_mask %}
 {%                     endif %}
 {#                     * add protocol #}
 {%                     set acl_entry.string = acl_entry.string ~ ' ' ~ acle.protocol %}
@@ -85,7 +86,7 @@ ipv6 access-list {{ acl.name }}
 {%                         endif %}
 {%                     endif %}
 {#                     * add icmp message type and code #}
-{%                     if acle.protocol | lower == 'icmp' %}
+{%                     if acle.protocol | lower == 'icmpv6' %}
 {%                         if acle.icmp_type is arista.avd.defined %}
 {%                             set acl_entry.string = acl_entry.string ~ ' ' ~ acle.icmp_type %}
 {%                             if acle.icmp_code is arista.avd.defined %}
