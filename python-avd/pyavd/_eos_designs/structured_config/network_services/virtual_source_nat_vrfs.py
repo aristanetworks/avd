@@ -6,7 +6,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import get_ip_from_ip_prefix
 
 if TYPE_CHECKING:
@@ -21,7 +20,7 @@ class VirtualSourceNatVrfsMixin(Protocol):
     """
 
     def _set_virtual_source_nat_for_vrf_loopback(
-        self: AvdStructuredConfigNetworkServicesProtocol, loopback_interface: EosCliConfigGen.LoopbackInterfacesItem
+        self: AvdStructuredConfigNetworkServicesProtocol, vrf: str | None, ipv4_address: str | None = None, ipv6_address: str | None = None
     ) -> None:
         """
         Set the structured config for virtual_source_nat_vrfs.
@@ -32,20 +31,17 @@ class VirtualSourceNatVrfsMixin(Protocol):
         if not (self.shared_utils.overlay_vtep and self.shared_utils.network_services_l2 and self.shared_utils.network_services_l3):
             return
 
-        if (vrf := loopback_interface.vrf) is None:
+        if vrf is None:
             return
 
         # Using append with ignore_fields.
         # It will append the VirtualSourceNatVrfsItem unless the same "name" is already in the list.
         # It will never raise since we only have these two keys.
-        virtual_source_nat_vrf = EosCliConfigGen.VirtualSourceNatVrfsItem(
-            name=vrf, ip_address=get_ip_from_ip_prefix(loopback_interface.ip_address) if loopback_interface.ip_address else None
+        self.structured_config.virtual_source_nat_vrfs.append(
+            EosCliConfigGen.VirtualSourceNatVrfsItem(
+                name=vrf,
+                ip_address=get_ip_from_ip_prefix(ipv4_address) if ipv4_address else None,
+                ipv6_address=get_ip_from_ip_prefix(ipv6_address) if ipv6_address else None,
+            ),
+            ignore_fields=("ip_address", "ipv6_address"),
         )
-
-        if len(loopback_interface.ipv6_addresses) > 1:
-            msg = f"Only one IPv6 address is supported for SVI L3 interfaces in VRF {vrf} for virtual source NAT."
-            raise AristaAvdInvalidInputsError(msg)
-        if len(loopback_interface.ipv6_addresses) == 1:
-            virtual_source_nat_vrf.ipv6_address = get_ip_from_ip_prefix(loopback_interface.ipv6_addresses[0])
-
-        self.structured_config.virtual_source_nat_vrfs.append(virtual_source_nat_vrf, ignore_fields=("ip_address", "ipv6_address"))
