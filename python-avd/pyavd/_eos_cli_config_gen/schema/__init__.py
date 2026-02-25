@@ -63555,11 +63555,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             vlan: int | None
             """Match packets by VLAN value."""
             vlan_mask: str | None
-            """VLAN mask. Range 0x000-0xFFF. Required when vlan is defined."""
+            """VLAN mask. Range 0x000-0xFFF. Required when `vlan` is defined."""
             inner_vlan: int | None
             """Match packets by inner VLAN value."""
             inner_vlan_mask: str | None
-            """Inner VLAN mask. Range 0x000-0xFFF. Required when inner_vlan is defined."""
+            """Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined."""
             log: bool | None
             """Log matches against this rule."""
             mirror_session: str | None
@@ -63602,9 +63602,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         host: A single source host.
                         fragment_rules: Add fragment rules.
                         vlan: Match packets by VLAN value.
-                        vlan_mask: VLAN mask. Range 0x000-0xFFF. Required when vlan is defined.
+                        vlan_mask: VLAN mask. Range 0x000-0xFFF. Required when `vlan` is defined.
                         inner_vlan: Match packets by inner VLAN value.
-                        inner_vlan_mask: Inner VLAN mask. Range 0x000-0xFFF. Required when inner_vlan is defined.
+                        inner_vlan_mask: Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
                         log: Log matches against this rule.
                         mirror_session: Mirror session to mirror matches against this rule.
 

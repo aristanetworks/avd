@@ -77,9 +77,11 @@ keys:
               vlan:
                 type: int
                 description: Match packets by VLAN value.
+                convert_types:
+                  - str
               vlan_mask:
                 type: str
-                description: VLAN mask. Range 0x000-0xFFF. Required when vlan is defined.
+                description: VLAN mask. Range 0x000-0xFFF. Required when `vlan` is defined.
               inner_vlan:
                 type: int
                 description: Match packets by inner VLAN value.
@@ -87,7 +89,7 @@ keys:
                   - str
               inner_vlan_mask:
                 type: str
-                description: Inner VLAN mask. Range 0x000-0xFFF. Required when inner_vlan is defined.
+                description: Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
               log:
                 type: bool
                 description: Log matches against this rule.

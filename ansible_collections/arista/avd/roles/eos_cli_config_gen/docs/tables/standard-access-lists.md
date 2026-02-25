@@ -21,9 +21,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host</samp>](## "standard_access_lists.[].entries.[].host") | String |  |  |  | A single source host. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fragment_rules</samp>](## "standard_access_lists.[].entries.[].fragment_rules") | Boolean |  |  |  | Add fragment rules. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "standard_access_lists.[].entries.[].vlan") | Integer |  |  |  | Match packets by VLAN value. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_mask</samp>](## "standard_access_lists.[].entries.[].vlan_mask") | String |  |  |  | VLAN mask. Range 0x000-0xFFF. Required when vlan is defined. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_mask</samp>](## "standard_access_lists.[].entries.[].vlan_mask") | String |  |  |  | VLAN mask. Range 0x000-0xFFF. Required when `vlan` is defined. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan</samp>](## "standard_access_lists.[].entries.[].inner_vlan") | Integer |  |  |  | Match packets by inner VLAN value. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_mask</samp>](## "standard_access_lists.[].entries.[].inner_vlan_mask") | String |  |  |  | Inner VLAN mask. Range 0x000-0xFFF. Required when inner_vlan is defined. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_mask</samp>](## "standard_access_lists.[].entries.[].inner_vlan_mask") | String |  |  |  | Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "standard_access_lists.[].entries.[].log") | Boolean |  |  |  | Log matches against this rule. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mirror_session</samp>](## "standard_access_lists.[].entries.[].mirror_session") | String |  |  |  | Mirror session to mirror matches against this rule. |
 
@@ -72,13 +72,13 @@
             # Match packets by VLAN value.
             vlan: <int>
 
-            # VLAN mask. Range 0x000-0xFFF. Required when vlan is defined.
+            # VLAN mask. Range 0x000-0xFFF. Required when `vlan` is defined.
             vlan_mask: <str>
 
             # Match packets by inner VLAN value.
             inner_vlan: <int>
 
-            # Inner VLAN mask. Range 0x000-0xFFF. Required when inner_vlan is defined.
+            # Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
             inner_vlan_mask: <str>
 
             # Log matches against this rule.
