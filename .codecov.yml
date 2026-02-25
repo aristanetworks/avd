@@ -55,9 +55,5 @@ ignore:
   - "python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py"
   - "python-avd/pyavd/_cv/api/**/*"
 
-  # Compiled templates (generated code)
-  - "python-avd/pyavd/_eos_designs/j2templates/compiled_templates/**/*"
-  - "python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/**/*"
-
   # Coverage report files
   - "python-avd/**/coverage.xml"
