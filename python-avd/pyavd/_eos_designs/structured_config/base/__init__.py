@@ -502,9 +502,9 @@ class AvdStructuredConfigBaseProtocol(
             if self.shared_utils.node_config.ipv6_mgmt_ip:
                 interface_settings._update(
                     ipv6_enable=True,
-                    ipv6_addresses=EosCliConfigGen.ManagementInterfacesItem.Ipv6Addresses([self.shared_utils.node_config.ipv6_mgmt_ip]),
                     ipv6_gateway=self.shared_utils.ipv6_mgmt_gateway,
                 )
+                interface_settings.ipv6_addresses.append(self.shared_utils.node_config.ipv6_mgmt_ip)
             self.structured_config.management_interfaces.append(interface_settings)
 
     @structured_config_contributor
