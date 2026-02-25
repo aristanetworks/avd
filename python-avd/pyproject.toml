@@ -25,8 +25,8 @@ dependencies = [
     "aristaproto>=0.1.1",
     "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
-    # pinned grpclib since we patch the connection code to get proxy support
-    "grpclib==0.4.9",
+    # we patch the connection code in grpclib to get proxy support, so we need to carefully monitor and test new versions
+    "grpclib>=0.4.8",
     "jinja2>=3.0",
     "pyavd-utils==0.0.2",
     "python-socks[asyncio]>=2.7.2",
