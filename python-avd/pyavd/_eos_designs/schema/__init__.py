@@ -89445,14 +89445,10 @@ class EosDesigns(EosDesignsRootModel):
     path.
     `as_path_acl` mode configures an outbound route-map and as-path access-list which filter out
     BGP updates with the route-server ASN anywhere in the AS-path.
-    `peer_tag` method uses BGP Peer
-    Tagging feature to filter out EVPN BGP routes labeled with the tag matching the tag of the route-
-    server. Note that Arista EOS BGP Peer Tag is not a formal BGP Path attribute and is therefore not
-    advertised to other BGP neighbors. This method requires EOS 4.34.2F and newer.
-    `rcf` method uses RCF
-    `as_path has_none` condition to filter out EVPN BGP routes containing the route-server's ASN in the
-    `AS PATH` attribute. Filtering is applied to EVPN BGP Address Family only. This method requires EOS
-    4.35.2F and newer.
+    `rcf` method uses RCF `as_path
+    has_none` condition to filter out EVPN BGP routes containing the route-server's ASN in the `AS PATH`
+    attribute. Filtering is applied to EVPN BGP Address Family only. This method requires EOS 4.35.2F
+    and newer.
 
     Default value: `"as_path_acl"`
     """
@@ -91497,14 +91493,10 @@ class EosDesigns(EosDesignsRootModel):
                    path.
                    `as_path_acl` mode configures an outbound route-map and as-path access-list which filter out
                    BGP updates with the route-server ASN anywhere in the AS-path.
-                   `peer_tag` method uses BGP Peer
-                   Tagging feature to filter out EVPN BGP routes labeled with the tag matching the tag of the route-
-                   server. Note that Arista EOS BGP Peer Tag is not a formal BGP Path attribute and is therefore not
-                   advertised to other BGP neighbors. This method requires EOS 4.34.2F and newer.
-                   `rcf` method uses RCF
-                   `as_path has_none` condition to filter out EVPN BGP routes containing the route-server's ASN in the
-                   `AS PATH` attribute. Filtering is applied to EVPN BGP Address Family only. This method requires EOS
-                   4.35.2F and newer.
+                   `rcf` method uses RCF `as_path
+                   has_none` condition to filter out EVPN BGP routes containing the route-server's ASN in the `AS PATH`
+                   attribute. Filtering is applied to EVPN BGP Address Family only. This method requires EOS 4.35.2F
+                   and newer.
                 evpn_short_esi_prefix: Configure prefix for "short_esi" values.
                 evpn_vlan_aware_bundles:
                    Enable VLAN aware bundles for every EVPN MAC-VRF.

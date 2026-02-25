@@ -485,8 +485,6 @@ class RouterBgpMixin(Protocol):
                             neighbor.route_map_out = f"RM-EVPN-FILTER-AS{remote_as}"
                             # Create the route-map
                             self.set_route_map_evpn_filter_as(remote_as)
-                        case "peer_tag":
-                            neighbor._update(peer_tag_in=f"PT-EVPN-FILTER-AS{remote_as}", peer_tag_out_discard=f"PT-EVPN-FILTER-AS{remote_as}")
                         case "rcf":
                             # RCF-based in/out filtering is applied at the AF level only
                             evpn_rs_neighbor = self.structured_config.router_bgp.address_family_evpn.neighbors.obtain(remote_ip_address)
