@@ -23,7 +23,7 @@ ip access-list standard {{ standard_access_list.name }}
 {%         for entry in standard_access_list.entries | arista.avd.natural_sort("sequence") %}
 {%             if entry.remark is arista.avd.defined %}
    {{ entry.sequence }} remark {{ entry.remark }}
-{%             continue %}
+{%                 continue %}
 {%             endif %}
 {%             if entry.action is arista.avd.defined %}
 {%                 set entry_cli = entry.sequence ~ " " ~ entry.action %}
