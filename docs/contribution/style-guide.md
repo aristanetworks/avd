@@ -236,6 +236,36 @@ Configurations for the above tools can be found in:
   {% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['isis', 'ospf'] %}
   ```
 
+### VAR-9 - Hostname and device naming conventions
+
+- *Description*
+
+  Hostnames and device names used in AVD inventory should follow these naming conventions:
+
+  - Use only lowercase letters (a-z)
+  - Use hyphens (-) as word separators instead of underscores (_)
+  - Avoid using uppercase letters or underscores in hostnames
+
+  These conventions are enforced by pytest validation checks to ensure consistency across AVD deployments and prevent potential issues with device configurations.
+
+- *Good Examples*
+
+  ```yaml
+  spine-1
+  leaf-2a
+  border-leaf-1
+  dc1-spine1
+  ```
+
+- *Bad Examples*
+
+  ```yaml
+  Spine_1         # Uses uppercase and underscore
+  LEAF_2A         # Uses uppercase and underscore
+  Border_Leaf_1   # Uses uppercase and underscore
+  DC1_SPINE1      # Uses underscore
+  ```
+
 ---
 
 ## AVD Plugins usage
