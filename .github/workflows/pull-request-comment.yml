@@ -54,7 +54,7 @@ jobs:
             \`\`\`
 
             - Select an example inventory to test the PR
-            - Once the AVD Playground setup will be finished, type `make start` and test anything once the lab is up
+            - Once the AVD Playground setup will be finished, type \`make start\` and test anything once the lab is up
 
         with:
           script: |-
