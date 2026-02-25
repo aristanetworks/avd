@@ -8,7 +8,7 @@ spine:
   # Definition of default values that will be configured to all nodes defined in this group
   defaults:
     # Set the relevant platform as each platform has different default values in Ansible AVD
-    platform: vEOS-lab
+    platform: cEOSLab
     # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
     loopback_ipv4_pool: 10.255.0.0/27
     # ASN to be used by BGP
