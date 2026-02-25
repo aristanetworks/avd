@@ -8654,6 +8654,13 @@ keys:
       default_services:
         type: bool
         description: 'Enable default services: capi-doc and tapagg.'
+      session_timeout:
+        type: int
+        min: 0
+        max: 1440
+        description: User session timeout value in minutes <1-1440>
+        convert_types:
+        - str
       enable_vrfs:
         type: list
         primary_key: name

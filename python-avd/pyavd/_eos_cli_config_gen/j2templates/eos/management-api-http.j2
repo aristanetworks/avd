@@ -38,7 +38,7 @@ management api http-commands
    EOF
 {%     endif %}
    no shutdown
-{%     if management_api_http.session_timeout is arista.avd.defined(true) %}
+{%     if management_api_http.session_timeout is arista.avd.defined %}
    session timeout {{ management_api_http.session_timeout }}
 {%     endif %}
 {%     for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
