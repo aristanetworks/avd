@@ -12,7 +12,7 @@ link: https://avd.arista.com/stable/ansible_collections/arista/avd/examples/sing
 
 ## Introduction
 
-This example is meant to be used as the logical second step in introducing AVD to new users, directly following the [Introduction to Ansible and AVD](../../../../../docs/getting-started/intro-to-ansible-and-avd.md) section. New users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical switches is not accessible, this example can be used only to generate the output from AVD if required.
+This example is meant to be used as the logical second step in introducing AVD to new users, directly following the [Introduction to Ansible and AVD](../../../../../docs/user-manual/intro-to-ansible-and-avd.md) section. New users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical switches is not accessible, this example can be used only to generate the output from AVD if required.
 
 The example includes and describes all the AVD files and their content used to build an L3LS EVPN/VXLAN Symmetric IRB network covering a single DC using the following:
 
@@ -25,6 +25,12 @@ Ansible playbooks are included to show the following:
 - Building the intended configuration and documentation
 - Deploying the configuration directly to the switches using eAPI
 - Deploying the configuration via CloudVision to the switches, including a full change-based workflow with rollback capability etc.
+
+## AVD Playground
+
+--8<--
+ansible_collections/arista/avd/examples/common/start-avd-playground.md
+--8<--
 
 ## Installation
 
