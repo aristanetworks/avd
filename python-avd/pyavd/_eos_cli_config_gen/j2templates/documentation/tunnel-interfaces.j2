@@ -15,7 +15,7 @@
 | Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source | Destination | PMTU-Discovery | IPsec Profile |
 | --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ------ | ----------- | -------------- | ------------- |
 {%     for tunnel_interface in tunnel_interfaces | arista.avd.natural_sort('name') %}
-{%         if tunnel_interface.ipv6_address is arista.avd.defined or tunnel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+{%         if tunnel_interface.ipv6_addresses is arista.avd.defined or tunnel_interface.ipv6_address is arista.avd.defined or tunnel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
 {%             do tunnel_interfaces_ipv6.append(tunnel_interface) %}
 {%         endif %}
 {%         if tunnel_interface.ip_address is arista.avd.defined %}

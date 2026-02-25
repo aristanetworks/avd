@@ -6205,6 +6205,8 @@ interface Ethernet89
 | Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 | Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - |
+| Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | - | True | - | - |
 
 ##### VRRP Details
 
@@ -7030,6 +7032,9 @@ interface Loopback100
 | Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | -------------- | ------- | ----------------- | ----------- | ------------ |
 | Tunnel1 | Tunnel-VRF | auto-config | - | ingress | - | - |
+| Tunnel2 | default | cafe::1/64 | 666 | egress | test-in | test-out |
+| Tunnel3 | default | beef::64/64 | 666 | - | - | - |
+| Tunnel4 | default | beef::64/64 | - | - | - | - |
 
 #### Tunnel Interfaces Device Configuration
 

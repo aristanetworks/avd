@@ -915,7 +915,7 @@ interface defaults
 
 | Interface | IP address | IPv6 addresses | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
 | --------- | ---------- | -------------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.42/24 | cafe::b4 | False | 666 | Sampled: FT-S | - |
+| Dps1 | 192.168.42.42/24 | - | False | 666 | Sampled: FT-S | - |
 
 #### DPS Interfaces Device Configuration
 
@@ -927,7 +927,6 @@ interface Dps1
    mtu 666
    flow tracker sampled FT-S
    ip address 192.168.42.42/24
-   ipv6 address cafe::b4
 ```
 
 ### VXLAN Interface

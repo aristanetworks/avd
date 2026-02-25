@@ -5865,11 +5865,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Name: TypeAlias = Literal["Dps1"]
 
-        class Ipv6Addresses(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
-
-        Ipv6Addresses._item_type = str
-
         class FlowTracker(AvdModel):
             """Subclass of AvdModel."""
 
@@ -5934,7 +5929,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "shutdown": {"type": bool},
             "mtu": {"type": int},
             "ip_address": {"type": str},
-            "ipv6_addresses": {"type": Ipv6Addresses},
             "ipv6_address_auto_config": {"type": bool},
             "flow_tracker": {"type": FlowTracker},
             "tcp_mss_ceiling": {"type": TcpMssCeiling},
@@ -5948,8 +5942,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Maximum Transmission Unit in bytes."""
         ip_address: str | None
         """IPv4 address/mask."""
-        ipv6_addresses: Ipv6Addresses
-        """Subclass of AvdList with `str` items."""
         ipv6_address_auto_config: bool | None
         """
         Use SLAAC to automatically configure the IPv6 address.
@@ -5973,7 +5965,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 shutdown: bool | None | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
-                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
                 ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 flow_tracker: FlowTracker | UndefinedType = Undefined,
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
@@ -5991,7 +5982,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     shutdown: shutdown
                     mtu: Maximum Transmission Unit in bytes.
                     ip_address: IPv4 address/mask.
-                    ipv6_addresses: Subclass of AvdList with `str` items.
                     ipv6_address_auto_config:
                        Use SLAAC to automatically configure the IPv6 address.
                        This option is mutually exclusive with
