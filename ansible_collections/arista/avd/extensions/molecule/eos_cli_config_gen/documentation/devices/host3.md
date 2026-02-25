@@ -408,7 +408,7 @@ mpls rsvp
 
 #### IP Router Multicast Summary
 
-- Multipathing via ECMP.
+- Multipathing operates via ECMP.
 
 #### Router Multicast Device Configuration
 
