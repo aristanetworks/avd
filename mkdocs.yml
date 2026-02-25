@@ -186,8 +186,11 @@ nav:
       - ISIS-LDP IPVPN: ansible_collections/arista/avd/examples/isis-ldp-ipvpn/README.md
       - CV Pathfinder: ansible_collections/arista/avd/examples/cv-pathfinder/README.md
   - How-to Guides:
+      - Fabric Topology: docs/howto/fabric_topology/README.md
       - Connected Endpoints: docs/howto/connected_endpoints/README.md
+      - IP Addressing: docs/howto/ip_addressing/README.md
       - Node Types: docs/howto/node_types/README.md
+      - Network Services: docs/howto/network_services/README.md
       - Configuring PTP: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/ptp.md
       - Configuring WAN: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/wan.md
       - Custom Descriptions and Names: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.md
@@ -201,9 +204,9 @@ nav:
           - Overview: docs/data-models/README.md
           - AVD Design: ansible_collections/arista/avd/roles/eos_designs/docs/data-models.md
           - EOS Config: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md
+      - Ansible and AVD: docs/user-manual/intro-to-ansible-and-avd.md
+      - Ansible Usage Patterns: docs/user-manual/ansible-usage-patterns.md
       - Ansible Collection:
-          - Introduction to Ansible and AVD: docs/getting-started/intro-to-ansible-and-avd.md
-          - Ansible Usage Patterns: docs/getting-started/ansible-usage-patterns.md
           - Roles:
               - eos_designs:
                   - Overview: ansible_collections/arista/avd/roles/eos_designs/README.md
@@ -219,7 +222,7 @@ nav:
               - cv_deploy: ansible_collections/arista/avd/roles/cv_deploy/README.md
               - anta_runner: ansible_collections/arista/avd/roles/anta_runner/README.md
           - Plugins: docs/plugins/
-          - AVD and Ansible Automation Platform: docs/getting-started/avd-aap.md
+      - Ansible Automation Platform: docs/user-manual/avd-aap.md
       - PyAVD: docs/pyavd/pyavd.md
   - Release Notes:
       - 6.x.x: docs/release-notes/6.x.x.md
@@ -238,3 +241,7 @@ nav:
 not_in_nav: |-
   /ansible_collections/arista/avd/examples/single-dc-l3ls/documentation/*
   /docs/contribution/eos_designs_facts_internal/tables/eos_designs_facts.md
+  /ansible_collections/arista/avd/roles/cvp_configlet_upload/README.md
+  /ansible_collections/arista/avd/roles/dhcp_provisioner/README.md
+  /ansible_collections/arista/avd/roles/eos_config_deploy_cvp/README.md
+  /ansible_collections/arista/avd/roles/eos_validate_state/README.md

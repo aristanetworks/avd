@@ -23,6 +23,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distance</samp>](## "router_multicast.ipv4.rpf.routes.[].destinations.[].distance") | Integer |  |  | Min: 1<br>Max: 255 | Administrative distance for this route. |
     | [<samp>&nbsp;&nbsp;ipv6</samp>](## "router_multicast.ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;activity_polling_interval</samp>](## "router_multicast.ipv6.activity_polling_interval") | Integer |  |  | Min: 1<br>Max: 60 | MFIB entry activity polling interval. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;routing</samp>](## "router_multicast.ipv6.routing") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;software_forwarding</samp>](## "router_multicast.ipv6.software_forwarding") | String |  |  | Valid Values:<br>- <code>kernel</code><br>- <code>sfe</code> |  |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_multicast.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_multicast.vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "router_multicast.vrfs.[].ipv4") | Dictionary |  |  |  |  |
@@ -59,6 +61,8 @@
 
         # MFIB entry activity polling interval.
         activity_polling_interval: <int; 1-60>
+        routing: <bool>
+        software_forwarding: <str; "kernel" | "sfe">
       vrfs:
         - name: <str; required; unique>
           ipv4:

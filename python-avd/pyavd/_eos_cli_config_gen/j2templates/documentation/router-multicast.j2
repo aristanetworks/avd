@@ -14,21 +14,29 @@
 - Counters rate period decay is set for {{ router_multicast.ipv4.counters.rate_period_decay }} seconds
 {%     endif %}
 {%     if router_multicast.ipv4.routing is arista.avd.defined(true) %}
-- Routing for IPv4 multicast is enabled.
+- IPv4 Multicast Routing is enabled.
+{%     endif %}
+{%     if router_multicast.ipv6.routing is arista.avd.defined(true) %}
+- IPv6 Multicast Routing is enabled.
 {%     endif %}
 {%     if router_multicast.ipv4.multipath is arista.avd.defined('deterministic color') %}
-- Multipathing deterministically by selecting the same-colored upstream routers.
+- Multipathing operates deterministically by selecting the same-colored upstream routers.
 {%     elif router_multicast.ipv4.multipath is arista.avd.defined('deterministic router-id') %}
-- Multipathing deterministically by selecting the same upstream router.
+- Multipathing operates deterministically by selecting the same upstream router.
 {%     elif router_multicast.ipv4.multipath is arista.avd.defined('none') %}
 - Multipathing disabled.
 {%     elif router_multicast.ipv4.multipath is arista.avd.defined('deterministic') %}
-- Multipathing via ECMP.
+- Multipathing operates via ECMP.
 {%     endif %}
 {%     if router_multicast.ipv4.software_forwarding is arista.avd.defined('kernel') %}
-- Software forwarding by the Linux kernel
+- IPv4 software forwarding is handled by the Linux kernel.
 {%     elif router_multicast.ipv4.software_forwarding is arista.avd.defined('sfe') %}
-- Software forwarding by the Software Forwarding Engine (SFE)
+- IPv4 software forwarding is handled by the Software Forwarding Engine (SFE).
+{%     endif %}
+{%     if router_multicast.ipv6.software_forwarding is arista.avd.defined('kernel') %}
+- IPv6 software forwarding is handled by the Linux kernel.
+{%     elif router_multicast.ipv6.software_forwarding is arista.avd.defined('sfe') %}
+- IPv6 software forwarding is handled by the Software Forwarding Engine (SFE).
 {%     endif %}
 {%     if router_multicast.ipv4.rpf.routes is arista.avd.defined %}
 

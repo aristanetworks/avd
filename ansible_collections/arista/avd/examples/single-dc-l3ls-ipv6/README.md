@@ -12,7 +12,7 @@ link: https://avd.arista.com/stable/ansible_collections/arista/avd/examples/sing
 
 ## Introduction
 
-This example is meant to be used as the logical second step in introducing AVD to new users, directly following the [Introduction to Ansible and AVD](../../../../../docs/getting-started/intro-to-ansible-and-avd.md) section. New users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical switches is not accessible, this example can be used only to generate the output from AVD if required.
+This example is meant to be used as the logical second step in introducing AVD to new users, directly following the [Introduction to Ansible and AVD](../../../../../docs/user-manual/intro-to-ansible-and-avd.md) section. New users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical switches is not accessible, this example can be used only to generate the output from AVD if required.
 
 The example includes and describes all the AVD files and their content used to build an L3LS EVPN/VXLAN Symmetric IRB network covering a single DC using the following:
 
@@ -341,7 +341,7 @@ ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/deploy-cvp.yml
 ```
 
 1. This sets the scope of the playbook, which in this example is the entire fabric. For instance, `FABRIC` is a group name defined in the inventory. If the playbook should only apply to a subset of devices, it can be changed here.
-2. This task uses the `arista.avd.eos_config_deploy_cvp` role to deploy and manage the Fabric with CloudVision.
+2. This task uses the `arista.avd.cv_deploy` role to deploy and manage the Fabric with CloudVision.
 3. Sets `cv_server` with an ip address, you can also specify a FQDN.
 4. `cv_token` is a service account token as defined on CloudVision.
 
