@@ -25,7 +25,7 @@ keys:
         type: int
         description: <1-1440>  User session timeout value in minutes
         convert_types:
-          - str
+        - str
         min: 1
         max: 1440
       enable_vrfs:

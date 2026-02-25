@@ -28,7 +28,7 @@ management api http-commands
    no default-services
 {%     endif %}
 {%     if management_api_http.session_timeout is arista.avd.defined(true) %}
-   session timeout {{ management_api_http.session_timeout }}
+   session timeout {{ management_api_http.session_timeout }} minutes
 {%     elif management_api_http.session_timeout is arista.avd.defined(false) %}
    no session timeout
 {%     endif %}

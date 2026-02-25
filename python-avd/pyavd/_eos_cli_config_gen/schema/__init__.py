@@ -21867,7 +21867,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         default_services: bool | None
         """Enable default services: capi-doc and tapagg."""
         session_timeout: int | None
-        """User session timeout value in minutes <1-1440>. Default 1440."""
+        """User session timeout value in minutes <1-1440>."""
         enable_vrfs: EnableVrfs
         """Subclass of AvdIndexedList with `EnableVrfsItem` items. Primary key is `name` (`str`)."""
         protocol_https_certificate: ProtocolHttpsCertificate
