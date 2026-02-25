@@ -26,29 +26,9 @@ jobs:
   # Build PyAVD wheel and upload artifact
   # -------------------------------------- #
   build_pyavd:
-    name: Build pyavd
-    runs-on: ubuntu-latest
-    outputs:
-      wheel_file: ${{ steps.build_step.outputs.wheel_file }}
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
-        with:
-          python-version: |
-            3.13
-      - name: Create pyavd wheel and output wheel path
-        id: build_step
-        working-directory: ./python-avd
-        run: |
-          pip install build
-          python -m build --wheel
-          WHEEL_FILE=$(find ./dist/*.whl -print0 -type f | xargs -0 -n 1 basename)
-          echo "wheel_file=/tmp/pyavd/$WHEEL_FILE" >> "$GITHUB_OUTPUT"
-      - name: Upload pyavd artifact
-        uses: actions/upload-artifact@v6
-        with:
-          name: pyavd
-          path: ./python-avd/dist/*.whl
+    uses: ./.github/workflows/build_pyavd_template.yml
+    with:
+      python_version: "3.13"
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
@@ -102,24 +82,24 @@ jobs:
         avd_scenario:
           - "ansible_only"
           - "digital_twin"
-          - "eos_designs_deprecated_vars"
           - "eos_designs-l2ls"
           - "eos_designs-mpls-isis-sr-ldp"
           - "eos_designs-twodc-5stage-clos"
+          - "eos_designs_deprecated_vars"
+          - "eos_designs_negative_unit_tests"
           - "eos_designs_unit_tests"
           - "evpn_underlay_ebgp_overlay_ebgp"
           - "evpn_underlay_isis_overlay_ibgp"
           - "evpn_underlay_ospf_overlay_ebgp"
           - "evpn_underlay_rfc5549_overlay_ebgp"
           - "example-campus-fabric"
+          - "example-cv-pathfinder"
           - "example-dual-dc-l3ls"
           - "example-isis-ldp-ipvpn"
           - "example-l2ls-fabric"
           - "example-single-dc-l3ls"
           - "example-single-dc-l3ls-ipv6"
-          - "example-cv-pathfinder"
           - "howto"
-          - "eos_designs_negative_unit_tests"
         ansible_version:
           - "git+https://github.com/ansible/ansible.git@devel"
 
