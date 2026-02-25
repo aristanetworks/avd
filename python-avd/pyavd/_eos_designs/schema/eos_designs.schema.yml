@@ -10951,11 +10951,12 @@ $defs:
                     deprecation:
                       warning: true
                       removed: false
-                      remove_in_version: v7.0.0
+                      remove_in_version: 7.0.0
                       new_key: <node_type_key>.defaults.evpn_gateway.d_path.enabled
                         or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled
                         or <node_type_key>.node_groups[].evpn_gateway.d_path.enabled
-                        or <node_type_key>.nodes[].evpn_gateway.d_path.enabled
+                        or <node_type_key>.nodes[].evpn_gateway.d_path.enabled or
+                        device_profiles[].evpn_gateway.d_path.enabled or devices[].evpn_gateway.d_path.enabled
                   evpn_domain_id_local:
                     description: ASN(asplain):local_admin or ASN(asdot):local_admin
                       notation
@@ -10963,11 +10964,13 @@ $defs:
                     deprecation:
                       warning: true
                       removed: false
-                      remove_in_version: v7.0.0
+                      remove_in_version: 7.0.0
                       new_key: <node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local
                         or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local
                         or <node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local
                         or <node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local
+                        or device_profiles[].evpn_gateway.d_path.local_domain_id_local
+                        or devices[].evpn_gateway.d_path.local_domain_id_local
                   evpn_domain_id_remote:
                     description: ASN(asplain):local_admin or ASN(asdot):local_admin
                       notation
@@ -10975,11 +10978,13 @@ $defs:
                     deprecation:
                       warning: true
                       removed: false
-                      remove_in_version: v7.0.0
+                      remove_in_version: 7.0.0
                       new_key: <node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id
                         or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id
                         or <node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id
                         or <node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id
+                        or device_profiles[].evpn_gateway.d_path.remote_domain_id
+                        or devices[].evpn_gateway.d_path.remote_domain_id
                   evpn_ethernet_segment:
                     type: dict
                     required: true
