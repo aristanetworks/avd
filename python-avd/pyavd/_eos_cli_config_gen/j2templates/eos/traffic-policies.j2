@@ -10,7 +10,7 @@ traffic-policies
 {%     for vrf in traffic_policies.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 {%         if vrf.cpu is arista.avd.defined %}
    vrf {{ vrf.name }}
-      cpu traffic-policy {{ vrf.cpu.fallback_none_name }} fallback traffic-policy none
+      cpu traffic-policy {{ vrf.cpu.traffic_policy_fallback_none }} fallback traffic-policy none
 {%             if vrf.cpu.enforcement_management is arista.avd.defined(true) %}
          enforcement management
 {%             endif %}

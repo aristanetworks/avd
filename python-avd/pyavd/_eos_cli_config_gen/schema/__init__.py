@@ -64583,16 +64583,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Cpu(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"fallback_none_name": {"type": str}, "enforcement_management": {"type": bool}}
-                fallback_none_name: str
-                """No fallback to any traffic-policy."""
+                _fields: ClassVar[dict] = {"traffic_policy_fallback_none": {"type": str}, "enforcement_management": {"type": bool}}
+                traffic_policy_fallback_none: str
+                """Traffic-policy name."""
                 enforcement_management: bool | None
                 """Enforce CPU traffic-policy on management ports."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, fallback_none_name: str | UndefinedType = Undefined, enforcement_management: bool | None | UndefinedType = Undefined
+                        self, *, traffic_policy_fallback_none: str | UndefinedType = Undefined, enforcement_management: bool | None | UndefinedType = Undefined
                     ) -> None:
                         """
                         Cpu.
@@ -64601,7 +64601,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            fallback_none_name: No fallback to any traffic-policy.
+                            traffic_policy_fallback_none: Traffic-policy name.
                             enforcement_management: Enforce CPU traffic-policy on management ports.
 
                         """

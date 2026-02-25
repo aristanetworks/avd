@@ -23947,12 +23947,12 @@ keys:
             cpu:
               type: dict
               keys:
-                fallback_none_name:
+                traffic_policy_fallback_none:
                   type: str
                   convert_types:
                   - int
                   required: true
-                  description: No fallback to any traffic-policy.
+                  description: Traffic-policy name.
                 enforcement_management:
                   type: bool
                   description: Enforce CPU traffic-policy on management ports.
