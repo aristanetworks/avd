@@ -1599,18 +1599,18 @@ radius-server host 10.10.11.158 vrf mgt tls ssl-profile SSL_PROFILE
 | VRF | Source Interface Name |
 | --- | --------------- |
 | default | Loopback1 |
-| default | Loopback10 |
+| BLAH | Loopback10 |
 | MGMT | Management1 |
+| abc | Loopback10 |
 
 #### IP SOURCE Source Interfaces Device Configuration
 
 ```eos
 !
-ip radius vrf default source-interface Loopback1
-!
-ip radius source-interface Loopback10
-!
+ip radius source-interface Loopback1
+ip radius vrf BLAH source-interface Loopback10
 ip radius vrf MGMT source-interface Management1
+ip radius vrf abc source-interface Loopback10
 ```
 
 ### AAA Server Groups
@@ -11029,9 +11029,11 @@ no ip igmp snooping vlan 25 proxy
 #### IP Router Multicast Summary
 
 - Counters rate period decay is set for 300 seconds
-- Routing for IPv4 multicast is enabled.
-- Multipathing deterministically by selecting the same upstream router.
-- Software forwarding by the Software Forwarding Engine (SFE)
+- IPv4 Multicast Routing is enabled.
+- IPv6 Multicast Routing is enabled.
+- Multipathing operates deterministically by selecting the same upstream router.
+- IPv4 software forwarding is handled by the Software Forwarding Engine (SFE).
+- IPv6 software forwarding is handled by the Software Forwarding Engine (SFE).
 
 #### IP Router Multicast RPF Routes
 
@@ -11066,6 +11068,8 @@ router multicast
    !
    ipv6
       activity polling-interval 20
+      routing
+      software-forwarding sfe
    !
    vrf MCAST_VRF1
       ipv4
