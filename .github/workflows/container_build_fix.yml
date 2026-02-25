@@ -19,7 +19,7 @@ name: Manual container build
         type: choice
         required: true
         description: "select Python version"
-        options: ["3.10", "3.11", "3.12", "3.13"]
+        options: ["3.10", "3.11", "3.12", "3.13", "3.14"]
         default: "3.11"
       github_tag:
         type: string

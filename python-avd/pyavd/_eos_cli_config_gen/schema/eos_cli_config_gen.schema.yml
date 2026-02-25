@@ -21710,6 +21710,13 @@ keys:
             min: 1
             max: 60
             description: MFIB entry activity polling interval.
+          routing:
+            type: bool
+          software_forwarding:
+            type: str
+            valid_values:
+            - kernel
+            - sfe
       vrfs:
         type: list
         primary_key: name
