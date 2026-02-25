@@ -32,7 +32,7 @@ class NodeTypeMixin(Protocol):
         if self.default_node_type:
             return self.default_node_type
 
-        msg = "No device type found. Either set 'type' or 'default_node_types'."
+        msg = f"No device type found for host '{self.hostname}'. Either set 'type' or 'default_node_types'."
         raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
     @cached_property
