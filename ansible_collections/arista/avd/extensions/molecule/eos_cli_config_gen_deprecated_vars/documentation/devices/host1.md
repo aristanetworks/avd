@@ -66,8 +66,8 @@ ip radius vrf MGMT source-interface Management1
 
 | Sequence | Action | Source | Remark | Log | Mirror Session |
 | -------- | ------ | ------ | ------ | --- | ------------- |
-| 10 | remark ACL to restrict access to switch API to CVP and Ansible |
-| 20 | permit host 10.10.10.10 |
+| 10 | remark ACL to restrict access to switch API to CVP and Ansible | - | - | - | - |
+| 20 | permit host 10.10.10.10 | - | - | - | - |
 
 #### Standard Access-lists Device Configuration
 

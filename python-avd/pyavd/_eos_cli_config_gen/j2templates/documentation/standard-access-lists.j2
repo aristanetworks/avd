@@ -22,7 +22,7 @@ ACL has counting mode `counters per-entry` enabled!
 | -------- | ------ | ------ | ------ | --- | ------------- |
 {%             if standard_access_list.sequence_numbers is arista.avd.defined %}
 {%                 for sequence in standard_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
-| {{ sequence.sequence }} | {{ sequence.action }} |
+| {{ sequence.sequence }} | {{ sequence.action }} | - | - | - | - |
 {%                 endfor %}
 {%             elif standard_access_list.entries is arista.avd.defined %}
 {%                 for entry in standard_access_list.entries | arista.avd.natural_sort("sequence") %}
