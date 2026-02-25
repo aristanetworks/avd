@@ -32,6 +32,12 @@ Management HTTPS is using the SSL profile {{ management_api_http.https_ssl_profi
 HTTPS certificate and private key are configured.
 {%     endif %}
 
+#### Management API HTTP Session timeout
+
+{%     if management_api_http.session_timeout is arista.avd.defined(true) %}
+User session timeout is set to {{ management_api_http.session_timeout }} minutes.
+{%     endif %}
+
 #### Management API HTTP Device Configuration
 
 ```eos
