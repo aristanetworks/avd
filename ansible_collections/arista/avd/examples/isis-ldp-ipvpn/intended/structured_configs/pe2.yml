@@ -79,7 +79,7 @@ ethernet_interfaces:
 - name: Ethernet4
   shutdown: false
   metadata:
-    peer_type: subinterface_parent
+    peer_type: l3_interface
   switchport:
     enabled: false
 hostname: pe2

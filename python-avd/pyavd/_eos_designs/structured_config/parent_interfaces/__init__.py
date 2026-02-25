@@ -23,7 +23,7 @@ The parent interfaces functionality uses a global tracking pattern:
    with minimal configuration:
    - `shutdown: false`
    - `switchport.enabled: false` (for Ethernet interfaces)
-   - `metadata.peer_type: subinterface_parent`
+   - `metadata.peer_type: l3_interface`
 """
 
 from __future__ import annotations
@@ -125,7 +125,7 @@ class AvdStructuredConfigParentInterfacesProtocol(
                 name=interface_name,
                 shutdown=False,
             )
-            interface.metadata.peer_type = "subinterface_parent"
+            interface.metadata.peer_type = "l3_interface"
             interface.switchport.enabled = False
             self.structured_config.ethernet_interfaces.append(interface)
 
