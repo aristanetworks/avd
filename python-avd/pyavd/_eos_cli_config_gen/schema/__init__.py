@@ -21899,7 +21899,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enable_unix: enable_unix
                     https_ssl_profile: SSL Profile Name.
                     default_services: Enable default services: capi-doc and tapagg.
-                    session_timeout: User session timeout value in minutes <1-1440>.
+                    session_timeout: User session timeout value in minutes.
                     enable_vrfs: Subclass of AvdIndexedList with `EnableVrfsItem` items. Primary key is `name` (`str`).
                     protocol_https_certificate: Subclass of AvdModel.
 
