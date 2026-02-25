@@ -9,6 +9,47 @@
 ### VLAN Interfaces
 
 #### VLAN Interfaces Summary
+{# Single-pass preprocessing to categorize all vlan interfaces #}
+{%     set pvlan_interfaces = [] %}
+{%     set vlan_interfaces_ipv6 = [] %}
+{%     set vlan_interfaces_vrrp_details = [] %}
+{%     set ospf_vlan_interfaces = [] %}
+{%     set vlan_interfaces_isis = [] %}
+{%     set multicast_interfaces = [] %}
+{%     set vlan_interface_pvlan = namespace(configured=false) %}
+{%     set vlan_interface_isis = namespace(configured=false) %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
+{#         PVLAN flag and list #}
+{%         if vlan_interface.pvlan_mapping is arista.avd.defined %}
+{%             set vlan_interface_pvlan.configured = true %}
+{%             do pvlan_interfaces.append(vlan_interface) %}
+{%         endif %}
+{#         IPv6 #}
+{%         if vlan_interface.ipv6_address is arista.avd.defined or vlan_interface.ipv6_address_virtuals is arista.avd.defined %}
+{%             do vlan_interfaces_ipv6.append(vlan_interface) %}
+{%         endif %}
+{#         VRRP #}
+{%         if vlan_interface.vrrp_ids is arista.avd.defined %}
+{%             do vlan_interfaces_vrrp_details.append(vlan_interface) %}
+{%         endif %}
+{#         OSPF #}
+{%         if vlan_interface.ospf_network_point_to_point is arista.avd.defined or
+              vlan_interface.ospf_area is arista.avd.defined or
+              vlan_interface.ospf_cost is arista.avd.defined or
+              vlan_interface.ospf_authentication is arista.avd.defined or
+              vlan_interface.ipv6_ospf is arista.avd.defined %}
+{%             do ospf_vlan_interfaces.append(vlan_interface) %}
+{%         endif %}
+{#         ISIS flag and list #}
+{%         if vlan_interface.isis_enable is defined %}
+{%             set vlan_interface_isis.configured = true %}
+{%             do vlan_interfaces_isis.append(vlan_interface) %}
+{%         endif %}
+{#         Multicast #}
+{%         if vlan_interface.multicast is arista.avd.defined %}
+{%             do multicast_interfaces.append(vlan_interface) %}
+{%         endif %}
+{%     endfor %}
 
 | Interface | Description | VRF | MTU | Shutdown |
 | --------- | ----------- | --- | --- | -------- |
@@ -20,24 +61,14 @@
 | {{ vlan_interface.name }} | {{ description }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} |
 {%     endfor %}
 {# PVLAN #}
-{%     set vlan_interface_pvlan = namespace() %}
-{%     set vlan_interface_pvlan.configured = false %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
-{%         if vlan_interface.pvlan_mapping is arista.avd.defined %}
-{%             set vlan_interface_pvlan.configured = true %}
-{%             break %}
-{%         endif %}
-{%     endfor %}
 {%     if vlan_interface_pvlan.configured == true %}
 
 ##### Private VLAN
 
 | Interface | PVLAN Mapping |
 | --------- | ------------- |
-{%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
-{%             if vlan_interface.pvlan_mapping is arista.avd.defined %}
+{%         for vlan_interface in pvlan_interfaces %}
 | {{ vlan_interface.name }} | {{ vlan_interface.pvlan_mapping }} |
-{%             endif %}
 {%         endfor %}
 {%     endif %}
 
@@ -58,12 +89,6 @@
 {%     set ip_nat_interfaces = vlan_interfaces %}
 {%     include 'documentation/interfaces-ip-nat.j2' %}
 {# IPv6 #}
-{%     set vlan_interfaces_ipv6 = [] %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.default([]) %}
-{%         if vlan_interface.ipv6_address is arista.avd.defined or vlan_interface.ipv6_address_virtuals is arista.avd.defined %}
-{%             do vlan_interfaces_ipv6.append(vlan_interface) %}
-{%         endif %}
-{%     endfor %}
 {%     if vlan_interfaces_ipv6 | length > 0 %}
 
 ##### IPv6
@@ -84,12 +109,6 @@
 {%         endfor %}
 {%     endif %}
 {# VRRP #}
-{%     set vlan_interfaces_vrrp_details = [] %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.default([]) %}
-{%         if vlan_interface.vrrp_ids is arista.avd.defined %}
-{%             do vlan_interfaces_vrrp_details.append(vlan_interface) %}
-{%         endif %}
-{%     endfor %}
 {%     if vlan_interfaces_vrrp_details | length > 0 %}
 
 ##### VRRP Details
@@ -137,16 +156,6 @@
 {%         endfor %}
 {%     endif %}
 {# OSPF #}
-{%     set ospf_vlan_interfaces = [] %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
-{%         if vlan_interface.ospf_network_point_to_point is arista.avd.defined or
-              vlan_interface.ospf_area is arista.avd.defined or
-              vlan_interface.ospf_cost is arista.avd.defined or
-              vlan_interface.ospf_authentication is arista.avd.defined or
-              vlan_interface.ipv6_ospf is arista.avd.defined %}
-{%             do ospf_vlan_interfaces.append(vlan_interface) %}
-{%         endif %}
-{%     endfor %}
 {%     if ospf_vlan_interfaces %}
 
 ##### OSPF
@@ -158,21 +167,13 @@
 {%         endfor %}
 {%     endif %}
 {# ISIS #}
-{%     set vlan_interface_isis = namespace() %}
-{%     set vlan_interface_isis.configured = false %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
-{%         if vlan_interface.isis_enable is defined %}
-{%             set vlan_interface_isis.configured = true %}
-{%             break %}
-{%         endif %}
-{%     endfor %}
 {%     if vlan_interface_isis.configured == true %}
 
 ##### ISIS
 
 | Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Authentication Mode |
 | --------- | ------------- | -------- | ----------- | ---- | ------------------------ |
-{%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
+{%         for vlan_interface in vlan_interfaces_isis %}
 {%             if vlan_interface.isis_authentication.both.mode is arista.avd.defined %}
 {%                 set isis_authentication_mode = vlan_interface.isis_authentication.both.mode %}
 {%             elif vlan_interface.isis_authentication.level_1.mode is arista.avd.defined and vlan_interface.isis_authentication.level_2.mode is arista.avd.defined %}
@@ -182,26 +183,18 @@
 {%             elif vlan_interface.isis_authentication.level_2.mode is arista.avd.defined %}
 {%                 set isis_authentication_mode = "Level-2: " ~ vlan_interface.isis_authentication.level_2.mode %}
 {%             endif %}
-{%             if vlan_interface.isis_enable is arista.avd.defined %}
-{%                 set isis_metric = vlan_interface.isis_metric | arista.avd.default('-') %}
-{%                 if vlan_interface.isis_network_point_to_point is arista.avd.defined %}
-{%                     set mode = "point-to-point" %}
-{%                 elif vlan_interface.isis_passive is arista.avd.defined %}
-{%                     set mode = "passive" %}
-{%                 else %}
-{%                     set mode = "-" %}
-{%                 endif %}
-| {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ vlan_interface.isis_bfd | arista.avd.default("-") }} | {{ isis_metric }} | {{ mode }} | {{ isis_authentication_mode | arista.avd.default("-") }} |
+{%             set isis_metric = vlan_interface.isis_metric | arista.avd.default('-') %}
+{%             if vlan_interface.isis_network_point_to_point is arista.avd.defined %}
+{%                 set mode = "point-to-point" %}
+{%             elif vlan_interface.isis_passive is arista.avd.defined %}
+{%                 set mode = "passive" %}
+{%             else %}
+{%                 set mode = "-" %}
 {%             endif %}
+| {{ vlan_interface.name }} | {{ vlan_interface.isis_enable }} | {{ vlan_interface.isis_bfd | arista.avd.default("-") }} | {{ isis_metric }} | {{ mode }} | {{ isis_authentication_mode | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
 {# Multicast Routing #}
-{%     set multicast_interfaces = [] %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
-{%         if vlan_interface.multicast is arista.avd.defined %}
-{%             do multicast_interfaces.append(vlan_interface) %}
-{%         endif %}
-{%     endfor %}
 {%     if multicast_interfaces | length > 0 %}
 
 ##### Multicast Routing

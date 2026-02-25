@@ -6220,7 +6220,6 @@ interface Ethernet89
 | Port-Channel9 | - | - | - | - | - | - | Level-2: text |
 | Port-Channel10 | EVPN_UNDERLAY | - | - | - | - | - | sha |
 | Port-Channel12 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: sha |
-| Port-Channel13 | - | - | - | - | - | - | - |
 | Port-Channel15 | - | - | - | - | - | - | md5 |
 | Port-Channel16 | EVPN_UNDERLAY | - | - | - | - | - | md5 |
 | Port-Channel20 | EVPN_UNDERLAY | - | - | - | - | - | Level-1: shared-secret<br>Level-2: shared-secret |
