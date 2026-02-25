@@ -5,7 +5,7 @@ type: spine
 
 spine:
   defaults:
-    platform: vEOS-lab # (1)!
+    platform: cEOSLab # (1)!
     loopback_ipv4_pool: 10.255.128.0/27 # (2)!
     bgp_as: 65200 # (3)!
 
