@@ -48,26 +48,8 @@ jobs:
           name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
 
-      - name: Upload pytest coverage to Codecov
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
           use_oidc: true
           fail_ci_if_error: false
-          flags: pyavd
-          files: ./coverage.xml
-
-      - name: Upload ansible-test units coverage to Codecov
-        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
-        with:
-          use_oidc: true
-          fail_ci_if_error: false
-          flags: ansible-test-units
-          files: ./ansible_collections/arista/avd/units-coverage.xml
-
-      - name: Upload ansible-test integration coverage to Codecov
-        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
-        with:
-          use_oidc: true
-          fail_ci_if_error: false
-          flags: ansible-test-integration
-          files: ./ansible_collections/arista/avd/integration-coverage.xml
