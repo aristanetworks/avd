@@ -11868,7 +11868,6 @@ ACL has counting mode `counters per-entry` enabled!
 | 30 | permit | 172.16.0.0/12 | - | - | - |
 | 40 | permit | 192.168.0.0/16 | - | - | - |
 
-
 #### Standard Access-lists Device Configuration
 
 ```eos
