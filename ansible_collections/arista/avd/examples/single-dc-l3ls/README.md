@@ -26,6 +26,12 @@ Ansible playbooks are included to show the following:
 - Deploying the configuration directly to the switches using eAPI
 - Deploying the configuration via CloudVision to the switches, including a full change-based workflow with rollback capability etc.
 
+## AVD Playground
+
+--8<--
+ansible_collections/arista/avd/examples/common/start-avd-playground.md
+--8<--
+
 ## Installation
 
 --8<--

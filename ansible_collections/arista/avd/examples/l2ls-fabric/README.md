@@ -25,6 +25,12 @@ The example is meant as a starting foundation. You may build more advanced fabri
 
     The configurations may also be applied with CloudVision with a few updates to your playbook and Ansible variables.
 
+## AVD Playground
+
+--8<--
+ansible_collections/arista/avd/examples/common/start-avd-playground.md
+--8<--
+
 ## Installation & Requirements
 
 --8<--
