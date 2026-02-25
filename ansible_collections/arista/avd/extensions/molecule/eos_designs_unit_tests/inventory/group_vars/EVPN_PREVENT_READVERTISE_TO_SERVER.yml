@@ -44,8 +44,3 @@ l3leaf:
       id: 109
       bgp_as: 65006
       evpn_route_servers: [evpn-prevent-readvertise-to-server-2, evpn-prevent-readvertise-to-server-3, evpn-prevent-readvertise-to-server-5]
-    # Test filtering out EVPN routes using RCF feature
-    - name: evpn-prevent-readvertise-to-server-8
-      id: 110
-      bgp_as: 65007
-      evpn_route_servers: [evpn-prevent-readvertise-to-server-2, evpn-prevent-readvertise-to-server-3, evpn-prevent-readvertise-to-server-5]

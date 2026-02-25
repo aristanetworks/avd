@@ -13,14 +13,12 @@ keys:
     description: |
       `evpn_prevent_readvertise_to_server_mode` controls the method of identifying EVPN routes that should not be advertised to the EVPN route-servers.
       Only used when `evpn_prevent_readvertise_to_server` is set to `true`.
-      `source_peer_asn` mode configures an outbound route-map towards EVPN route-servers which filters out BGP updates learned directly from the ASN of the route-server. This mode will still allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
-      `as_path_acl` mode configures an outbound route-map and as-path access-list which filter out BGP updates with the route-server ASN anywhere in the AS-path.
-      `peer_tag` method uses BGP Peer Tagging feature to filter out EVPN BGP routes labeled with the tag matching the tag of the route-server. Note that Arista EOS BGP Peer Tag is not a formal BGP Path attribute and is therefore not advertised to other BGP neighbors. This method requires EOS 4.34.2F and newer.
-      `rcf` method uses RCF `as_path has_none` condition to filter out EVPN BGP routes containing the route-server's ASN in the `AS PATH` attribute. Filtering is applied to EVPN BGP Address Family only. This method requires EOS 4.35.2F and newer.
+      `source_peer_asn` mode configures an outbound route-maps towards EVPN route-servers which filter out BGP updates learned directly from the ASN of the route-servers. This mode will still allow routes learned via any other peer, even if they have the route-server's ASN in the AS-path.
+      `as_path_acl` mode configures an outbound route-maps and as-path access-lists which filter out BGP updates with the route-servers' ASN anywhere in the AS-path.
+      `peer_tag` method uses BGP Peer Tagging feature to filter out EVPN BGP routes labeled with the tag matching the tag of the route-server. Note that Arista EOS BGP Peer Tag is not a formal BGP Path attribute and is therefore not advertised to other BGP neighbors. This mode will still allow routes learned via any other peer (like an EVPN route learned over the per-VRF iBGP from the MLAG peer), even if they have the route-server's ASN in the AS-path. This method requires EOS 4.34.2F and newer.
     type: str
     valid_values:
       - source_peer_asn
       - as_path_acl
       - peer_tag
-      - rcf
     default: as_path_acl
