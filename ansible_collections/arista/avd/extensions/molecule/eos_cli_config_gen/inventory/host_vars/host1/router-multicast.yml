@@ -22,6 +22,8 @@ router_multicast:
     software_forwarding: sfe
   ipv6:
     activity_polling_interval: 20
+    routing: true
+    software_forwarding: sfe
   vrfs:
     - name: MCAST_VRF1
       ipv4:
