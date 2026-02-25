@@ -37,6 +37,8 @@ management_interfaces:
     ipv6_addresses:
       - 2001:db8:abcd:1234::2/64
       - 2001:db8:abcd:1234::1/64
+    # This is to test that the default route is only rendered when ip_address is dhcp and dhcp_client_accept_default_route is true
+    dhcp_client_accept_default_route: true
     gateway: 10.73.0.1
     type: inband
     mtu: 1500
@@ -55,3 +57,5 @@ management_interfaces:
           ipv6_address: "1:1:1:1:1:1:1:1"
     ipv6_address_auto_config: true
     ipv6_enable: true
+    ip_address: dhcp
+    dhcp_client_accept_default_route: true
