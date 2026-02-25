@@ -23474,6 +23474,9 @@ keys:
           - int
         counters_per_entry:
           type: bool
+        fragment_rules:
+          type: bool
+          description: Add fragment rules.
         sequence_numbers:
           type: list
           deprecation:
@@ -23533,9 +23536,6 @@ keys:
               host:
                 type: str
                 description: A single source host.
-              fragment_rules:
-                type: bool
-                description: Add fragment rules.
               vlan:
                 type: int
                 description: Match packets by VLAN value.

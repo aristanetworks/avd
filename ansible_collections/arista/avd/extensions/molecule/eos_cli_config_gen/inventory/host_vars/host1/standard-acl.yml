@@ -2,6 +2,7 @@
 ### Standard Access-Lists ###
 standard_access_lists:
   - name: ACL-API
+    fragment_rules: true
     entries:
       - sequence: 10
         remark: "ACL to restrict access to switch API to CVP and Ansible"

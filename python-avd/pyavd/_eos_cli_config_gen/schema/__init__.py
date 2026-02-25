@@ -63526,7 +63526,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "remark": {"type": str},
                 "source": {"type": str},
                 "host": {"type": str},
-                "fragment_rules": {"type": bool},
                 "vlan": {"type": int},
                 "vlan_mask": {"type": str},
                 "inner_vlan": {"type": int},
@@ -63550,8 +63549,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             host: str | None
             """A single source host."""
-            fragment_rules: bool | None
-            """Add fragment rules."""
             vlan: int | None
             """Match packets by VLAN value."""
             vlan_mask: str | None
@@ -63575,7 +63572,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     remark: str | None | UndefinedType = Undefined,
                     source: str | None | UndefinedType = Undefined,
                     host: str | None | UndefinedType = Undefined,
-                    fragment_rules: bool | None | UndefinedType = Undefined,
                     vlan: int | None | UndefinedType = Undefined,
                     vlan_mask: str | None | UndefinedType = Undefined,
                     inner_vlan: int | None | UndefinedType = Undefined,
@@ -63600,7 +63596,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            with mask. e.g. '10.0.0.1/8'.
                            3. 'any' source address.
                         host: A single source host.
-                        fragment_rules: Add fragment rules.
                         vlan: Match packets by VLAN value.
                         vlan_mask: VLAN mask. Range 0x000-0xFFF. Required when `vlan` is defined.
                         inner_vlan: Match packets by inner VLAN value.
@@ -63620,12 +63615,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "counters_per_entry": {"type": bool},
+            "fragment_rules": {"type": bool},
             "sequence_numbers": {"type": SequenceNumbers},
             "entries": {"type": Entries},
         }
         name: str
         """Access-list Name."""
         counters_per_entry: bool | None
+        fragment_rules: bool | None
+        """Add fragment rules."""
         sequence_numbers: SequenceNumbers
         """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
         entries: Entries
@@ -63638,6 +63636,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 name: str | UndefinedType = Undefined,
                 counters_per_entry: bool | None | UndefinedType = Undefined,
+                fragment_rules: bool | None | UndefinedType = Undefined,
                 sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
                 entries: Entries | UndefinedType = Undefined,
             ) -> None:
@@ -63650,6 +63649,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     name: Access-list Name.
                     counters_per_entry: counters_per_entry
+                    fragment_rules: Add fragment rules.
                     sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
                     entries: Subclass of AvdIndexedList with `EntriesItem` items. Primary key is `sequence` (`int`).
 

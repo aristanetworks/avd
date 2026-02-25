@@ -10,6 +10,7 @@
     | [<samp>standard_access_lists</samp>](## "standard_access_lists") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "standard_access_lists.[].name") | String | Required, Unique |  |  | Access-list Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "standard_access_lists.[].counters_per_entry") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fragment_rules</samp>](## "standard_access_lists.[].fragment_rules") | Boolean |  |  |  | Add fragment rules. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "standard_access_lists.[].sequence_numbers") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>entries</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "standard_access_lists.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "standard_access_lists.[].sequence_numbers.[].action") | String | Required |  |  | Action as string.<br>Example: "deny ip any any"<br> |
@@ -19,7 +20,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remark</samp>](## "standard_access_lists.[].entries.[].remark") | String |  |  |  | Specify a comment. If remark is specified other keys of the entry are ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "standard_access_lists.[].entries.[].source") | String |  |  |  | The value can be:<br>1. Source address with wildcard bits. e.g. '10.0.0.1 0.0.0.255'.<br>2. Source address with mask. e.g. '10.0.0.1/8'.<br>3. 'any' source address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host</samp>](## "standard_access_lists.[].entries.[].host") | String |  |  |  | A single source host. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fragment_rules</samp>](## "standard_access_lists.[].entries.[].fragment_rules") | Boolean |  |  |  | Add fragment rules. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "standard_access_lists.[].entries.[].vlan") | Integer |  |  |  | Match packets by VLAN value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_mask</samp>](## "standard_access_lists.[].entries.[].vlan_mask") | String |  |  |  | VLAN mask. Range 0x000-0xFFF. Required when `vlan` is defined. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan</samp>](## "standard_access_lists.[].entries.[].inner_vlan") | Integer |  |  |  | Match packets by inner VLAN value. |
@@ -35,6 +35,9 @@
         # Access-list Name.
       - name: <str; required; unique>
         counters_per_entry: <bool>
+
+        # Add fragment rules.
+        fragment_rules: <bool>
         # This key is deprecated.
         # Support will be removed in AVD version 7.0.0.
         # Use `entries` instead.
@@ -65,9 +68,6 @@
 
             # A single source host.
             host: <str>
-
-            # Add fragment rules.
-            fragment_rules: <bool>
 
             # Match packets by VLAN value.
             vlan: <int>
