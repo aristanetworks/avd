@@ -46,6 +46,15 @@ jobs:
           name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
 
+      - name: Debug - List compiled templates
+        run: |
+          echo "=== EOS Designs Compiled Templates ==="
+          ls -la python-avd/pyavd/_eos_designs/j2templates/compiled_templates/ || echo "Directory not found"
+          echo "=== EOS CLI Config Gen Compiled Templates ==="
+          ls -la python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/ || echo "Directory not found"
+          echo "=== Coverage files ==="
+          find . -name "*.xml" -type f
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
         with:
