@@ -43,9 +43,6 @@ ignore:
   - "docs/**/*"
   - "ansible_collections/arista/avd/docs/**/*"
 
-  # Scripts (build-time only)
-  - "python-avd/scripts/**/*"
-
   # Examples
   - "ansible_collections/arista/avd/examples/**/*"
 
