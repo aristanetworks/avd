@@ -27,10 +27,8 @@ management api http-commands
 {%     elif management_api_http.default_services is arista.avd.defined(false) %}
    no default-services
 {%     endif %}
-{%     if management_api_http.session_timeout is arista.avd.defined(true) %}
+{%     if management_api_http.session_timeout is arista.avd.defined %}
    session timeout {{ management_api_http.session_timeout }} minutes
-{%     elif management_api_http.session_timeout is arista.avd.defined(false) %}
-   no session timeout
 {%     endif %}
 {%     if management_api_http.https_ssl_profile is arista.avd.defined %}
    protocol https ssl profile {{ management_api_http.https_ssl_profile }}
