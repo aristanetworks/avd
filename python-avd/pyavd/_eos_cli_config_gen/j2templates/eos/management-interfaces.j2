@@ -30,6 +30,9 @@ interface {{ management_interface.name }}
 {%     if management_interface.ip_address is arista.avd.defined %}
    ip address {{ management_interface.ip_address }}
 {%     endif %}
+{%     if management_interface.ip_address is arista.avd.defined("dhcp") and management_interface.dhcp_client_accept_default_route is arista.avd.defined(true) %}
+   dhcp client accept default-route
+{%     endif %}
 {%     if management_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
