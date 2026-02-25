@@ -11832,57 +11832,53 @@ poe
 
 ##### 99
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access RFC1918 addresses |
-| 20 | permit 10.0.0.0/8 |
-| 30 | permit 172.16.0.0/12 |
-| 40 | permit 192.168.0.0/16 |
-
+| Sequence | Action | Source | Remark | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | --- | ------------- |
+| 10 | - | - | ACL to restrict access RFC1918 addresses | - | - |
+| 20 | permit | 10.0.0.0/8 | - | - | mirror |
+| 30 | permit | 172.16.0.0/12 | - | True | - |
+| 40 | permit | 192.168.0.0/16 | - | True | mirror |
 ##### ACL-API
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access to switch API to CVP and Ansible |
-| 20 | permit host 10.10.10.10 |
-| 30 | permit host 10.10.10.11 |
-| 40 | permit host 10.10.10.12 |
-
+| Sequence | Action | Source | Remark | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | --- | ------------- |
+| 10 | - | - | ACL to restrict access to switch API to CVP and Ansible | - | - |
+| 20 | permit | - | - | - | - |
+| 30 | permit | - | - | - | - |
+| 40 | permit | - | - | - | - |
 ##### ACL-SSH
 
 ACL has counting mode `counters per-entry` enabled!
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access RFC1918 addresses |
-| 20 | permit 10.0.0.0/8 |
-| 30 | permit 172.16.0.0/12 |
-| 40 | permit 192.168.0.0/16 |
-
+| Sequence | Action | Source | Remark | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | --- | ------------- |
+| 10 | - | - | ACL to restrict access RFC1918 addresses | - | - |
+| 20 | permit | 10.0.0.0/8 | - | - | - |
+| 30 | permit | 172.16.0.0/12 | - | - | - |
+| 40 | permit | 192.168.0.0/16 | - | - | - |
 ##### ACL-SSH-VRF
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | remark ACL to restrict access RFC1918 addresses |
-| 20 | permit 10.0.0.0/8 |
-| 30 | permit 172.16.0.0/12 |
-| 40 | permit 192.168.0.0/16 |
-
+| Sequence | Action | Source | Remark | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | --- | ------------- |
+| 10 | - | - | ACL to restrict access RFC1918 addresses | - | - |
+| 20 | permit | 10.0.0.0/8 | - | - | - |
+| 30 | permit | 172.16.0.0/12 | - | - | - |
+| 40 | permit | 192.168.0.0/16 | - | - | - |
 #### Standard Access-lists Device Configuration
 
 ```eos
 !
 ip access-list standard 99
    10 remark ACL to restrict access RFC1918 addresses
-   20 permit 10.0.0.0/8
-   30 permit 172.16.0.0/12
-   40 permit 192.168.0.0/16
+   20 permit 10.0.0.0/8 mirror
+   30 permit 172.16.0.0/12 log
+   40 permit 192.168.0.0/16 mirror log
 !
 ip access-list standard ACL-API
    10 remark ACL to restrict access to switch API to CVP and Ansible
-   20 permit host 10.10.10.10
-   30 permit host 10.10.10.11
-   40 permit host 10.10.10.12
+   20 permit host 10.10.10.10 vlan 10 0x000
+   30 permit host 10.10.10.11 vlan 10 0x000 inner 11 0x00A
+   40 permit host 10.10.10.12 vlan inner 11 0x00A
 !
 ip access-list standard ACL-SSH
    counters per-entry

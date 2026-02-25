@@ -2,45 +2,69 @@
 ### Standard Access-Lists ###
 standard_access_lists:
   - name: ACL-API
-    sequence_numbers:
+    entries:
       - sequence: 10
-        action: "remark ACL to restrict access to switch API to CVP and Ansible"
+        remark: "ACL to restrict access to switch API to CVP and Ansible"
       - sequence: 20
-        action: "permit host 10.10.10.10"
+        action: permit
+        host: 10.10.10.10
+        vlan: 10
+        vlan_mask: "0x000"
       - sequence: 30
-        action: "permit host 10.10.10.11"
+        action: permit
+        host: 10.10.10.11
+        vlan: 10
+        vlan_mask: "0x000"
+        inner_vlan: 11
+        inner_vlan_mask: "0x00A"
       - sequence: 40
-        action: "permit host 10.10.10.12"
+        action: permit
+        host: 10.10.10.12
+        inner_vlan: 11
+        inner_vlan_mask: "0x00A"
   - name: ACL-SSH
     counters_per_entry: true
-    sequence_numbers:
+    entries:
       - sequence: 10
-        action: "remark ACL to restrict access RFC1918 addresses"
+        remark: "ACL to restrict access RFC1918 addresses"
       - sequence: 20
-        action: "permit 10.0.0.0/8"
+        action: permit
+        source: 10.0.0.0/8
       - sequence: 30
-        action: "permit 172.16.0.0/12"
+        action: permit
+        source: 172.16.0.0/12
       - sequence: 40
-        action: "permit 192.168.0.0/16"
+        action: permit
+        source: 192.168.0.0/16
   - name: ACL-SSH-VRF
     counters_per_entry: false
-    sequence_numbers:
+    entries:
       - sequence: 10
-        action: "remark ACL to restrict access RFC1918 addresses"
+        remark: "ACL to restrict access RFC1918 addresses"
       - sequence: 20
-        action: "permit 10.0.0.0/8"
+        action: permit
+        source: 10.0.0.0/8
       - sequence: 30
-        action: "permit 172.16.0.0/12"
+        action: permit
+        source: 172.16.0.0/12
       - sequence: 40
-        action: "permit 192.168.0.0/16"
+        action: permit
+        source: 192.168.0.0/16
   - name: 99  # numeric ACL name
     counters_per_entry: false
-    sequence_numbers:
+    entries:
       - sequence: 10
-        action: "remark ACL to restrict access RFC1918 addresses"
+        remark: "ACL to restrict access RFC1918 addresses"
       - sequence: 20
-        action: "permit 10.0.0.0/8"
+        action: permit
+        source: 10.0.0.0/8
+        mirror_session: mirror
       - sequence: 30
-        action: "permit 172.16.0.0/12"
+        action: permit
+        source: 172.16.0.0/12
+        log: true
       - sequence: 40
-        action: "permit 192.168.0.0/16"
+        action: permit
+        source: 192.168.0.0/16
+        mirror_session: mirror
+        log: true

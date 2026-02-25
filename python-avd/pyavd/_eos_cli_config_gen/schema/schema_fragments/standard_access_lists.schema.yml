@@ -21,7 +21,11 @@ keys:
           type: bool
         sequence_numbers:
           type: list
-          required: true
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: entries
           primary_key: sequence
           items:
             type: dict
@@ -37,3 +41,56 @@ keys:
                 description: |
                   Action as string.
                   Example: "deny ip any any"
+        entries:
+          type: list
+          primary_key: sequence
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                description: Sequence ID.
+                convert_types:
+                  - str
+              action:
+                type: str
+                description: |
+                  Action as string.
+                valid_values: [ permit, deny ]
+              remark:
+                type: str
+                description: |-
+                  Specify a comment. If remark is specified other keys of the entry are ignored.
+              source:
+                type: str
+                description: |-
+                  The value can be:
+                  1. Source address with wildcard bits. e.g. '10.0.0.1 0.0.0.255'.
+                  2. Source address with mask. e.g. '10.0.0.1/8'.
+                  3. 'any' source address.
+              host:
+                type: str
+                description: A single source host.
+              fragment_rules:
+                type: bool
+                description: Add fragment rules.
+              vlan:
+                type: int
+                description: Match packets by VLAN value.
+              vlan_mask:
+                type: str
+                description: VLAN mask. Range 0x000-0xFFF. Required when vlan is defined.
+              inner_vlan:
+                type: int
+                description: Match packets by inner VLAN value.
+                convert_types:
+                  - str
+              inner_vlan_mask:
+                type: str
+                description: Inner VLAN mask. Range 0x000-0xFFF. Required when inner_vlan is defined.
+              log:
+                type: bool
+                description: Log matches against this rule.
+              mirror_session:
+                type: str
+                description: Mirror session to mirror matches against this rule.

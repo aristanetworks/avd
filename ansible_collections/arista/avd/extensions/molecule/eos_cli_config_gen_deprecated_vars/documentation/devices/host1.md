@@ -6,6 +6,8 @@
   - [IP Name Server Groups](#ip-name-server-groups)
 - [Authentication](#authentication)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
+- [ACL](#acl)
+  - [Standard Access-lists](#standard-access-lists)
 
 ## Management
 
@@ -52,4 +54,25 @@ ip name-server group mynameserver1
 ip radius vrf default source-interface Loopback1
 ip radius source-interface Loopback10
 ip radius vrf MGMT source-interface Management1
+```
+
+## ACL
+
+### Standard Access-lists
+
+#### Standard Access-lists Summary
+
+##### ACL-API
+
+| Sequence | Action | Source | Remark | Log | Mirror Session |
+| -------- | ------ | ------ | ------ | --- | ------------- |
+| 10 | remark ACL to restrict access to switch API to CVP and Ansible |
+| 20 | permit host 10.10.10.10 |
+#### Standard Access-lists Device Configuration
+
+```eos
+!
+ip access-list standard ACL-API
+   10 remark ACL to restrict access to switch API to CVP and Ansible
+   20 permit host 10.10.10.10
 ```
