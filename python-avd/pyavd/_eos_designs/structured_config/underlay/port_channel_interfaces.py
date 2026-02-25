@@ -11,7 +11,6 @@ from pyavd._eos_designs.structured_config.structured_config_generator import str
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import default, short_esi_to_route_target
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
-from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -121,49 +120,26 @@ class PortChannelInterfacesMixin(Protocol):
             self.structured_config.port_channel_interfaces.append(port_channel_interface)
 
         # Support l3_port_channels including sub-interfaces
-        self._validate_l3_port_channels()
-
-        # Now that validation is complete, we can make another pass at all l3_port_channels
-        # (subinterfaces or otherwise) and generate their structured config.
         for l3_port_channel in self.shared_utils.node_config.l3_port_channels:
             self._set_l3_port_channel(l3_port_channel)
 
         # WAN HA interface for direct connection
         self._set_direct_ha_port_channel_interface()
 
-    def _validate_l3_port_channels(self: AvdStructuredConfigUnderlayProtocol) -> None:
-        """
-        Perform validation on l3_port_channels.
-
-        Raises AristaAvdInvalidInputsError if the data model is invalid.
-        """
-        parent_names = self._l3_port_channels_with_subinterfaces
-        regular_names = set()
-
-        for l3_port_channel in self.shared_utils.node_config.l3_port_channels:
-            if "." in l3_port_channel.name:
-                # Sub-interface specific validations.
-                if l3_port_channel.member_interfaces:
-                    msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'member_interfaces' set. This is not a valid setting."
-                    raise AristaAvdInvalidInputsError(msg)
-                if l3_port_channel._get("mode"):
-                    # Implies 'mode' is set when not applicable for a sub-interface.
-                    msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mode' set. This is not a valid setting."
-                    raise AristaAvdInvalidInputsError(msg)
-            else:
-                regular_names.add(l3_port_channel.name)
-
-        # We need to ensure that parent port-channel interfaces are also included explicitly within list of port-channel interfaces.
-        if missing_parents := parent_names.difference(regular_names):
-            msg = (
-                f"One or more L3 Port-Channels '{', '.join(natural_sort(missing_parents))}' need to be specified as they have sub-interfaces referencing them."
-            )
-            raise AristaAvdInvalidInputsError(msg)
-
     def _set_l3_port_channel(
         self: AvdStructuredConfigUnderlayProtocol, l3_port_channel: EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
     ) -> None:
         """Set structured_configuration for one L3 Port-Channel."""
+        # Validation for l3_port_channel subinterface
+        if "." in l3_port_channel.name:
+            if l3_port_channel.member_interfaces:
+                msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'member_interfaces' set. This is not a valid setting."
+                raise AristaAvdInvalidInputsError(msg)
+            if l3_port_channel._get("mode"):
+                # Implies 'mode' is set when not applicable for a sub-interface.
+                msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mode' set. This is not a valid setting."
+                raise AristaAvdInvalidInputsError(msg)
+
         # build common portion of the interface cfg
         interface = self._get_l3_common_interface_cfg(l3_port_channel)
 

@@ -36,7 +36,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGeneratorProtocol,
     structured_config_contributor,
 )
-from pyavd._errors import AristaAvdError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -137,14 +137,22 @@ class AvdStructuredConfigParentInterfacesProtocol(
         This method uses the global ParentInterfacesTracker to determine which
         parent interfaces need to be created based on tracking done throughout
         the structured config generation pipeline.
+
+        Raises:
+            AristaAvdInvalidInputsError: If there are missing parent Port-Channel interfaces
+                that cannot be auto-created (i.e., those without member_interfaces defined).
         """
-        for interface_name in natural_sort(self.parent_interfaces_tracker.get_missing_port_channel_parents()):
-            interface = EosCliConfigGen.PortChannelInterfacesItem(
-                name=interface_name,
-                shutdown=False,
+        missing_port_channel_parents = self.parent_interfaces_tracker.get_missing_port_channel_parents()
+
+        if missing_port_channel_parents:
+            # Port-Channel parents cannot be auto-created because we don't know the member interfaces
+            # (ethernet interfaces that should be part of the port-channel).
+            # The user must explicitly define the parent Port-Channel interface.
+            msg = (
+                f"One or more L3 Port-Channels '{', '.join(natural_sort(missing_port_channel_parents))}' "
+                "need to be specified as they have sub-interfaces referencing them."
             )
-            interface.metadata.peer_type = "subinterface_parent"
-            self.structured_config.port_channel_interfaces.append(interface)
+            raise AristaAvdInvalidInputsError(msg)
 
 
 class AvdStructuredConfigParentInterfaces(StructuredConfigGenerator, AvdStructuredConfigParentInterfacesProtocol):
