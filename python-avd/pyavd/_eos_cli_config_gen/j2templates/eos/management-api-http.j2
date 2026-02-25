@@ -27,9 +27,6 @@ management api http-commands
 {%     elif management_api_http.default_services is arista.avd.defined(false) %}
    no default-services
 {%     endif %}
-{%     if management_api_http.session_timeout is arista.avd.defined %}
-   session timeout {{ management_api_http.session_timeout }} minutes
-{%     endif %}
 {%     if management_api_http.https_ssl_profile is arista.avd.defined %}
    protocol https ssl profile {{ management_api_http.https_ssl_profile }}
 {%     endif %}
@@ -41,6 +38,9 @@ management api http-commands
    EOF
 {%     endif %}
    no shutdown
+{%     if management_api_http.session_timeout is arista.avd.defined %}
+   session timeout {{ management_api_http.session_timeout }} minutes
+{%     endif %}
 {%     for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    vrf {{ vrf.name }}

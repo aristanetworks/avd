@@ -1078,6 +1078,10 @@ management console
 
 Management HTTPS is using the SSL profile SSL_PROFILE
 
+#### Management API HTTP Session Timeout
+
+User session timeout is set to **60** minutes.
+
 #### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
