@@ -51,6 +51,10 @@ keys:
         mac_address:
           type: str
           description: MAC address.
+        dhcp_client_accept_default_route:
+          type: bool
+          description: |-
+            Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as `dhcp`.
         lldp:
           type: dict
           keys:
