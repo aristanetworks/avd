@@ -43,6 +43,12 @@ ignore:
   - "docs/**/*"
   - "ansible_collections/arista/avd/docs/**/*"
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> b39eaae4d (CI: Remove scripts and compiled templates from Codecov ignore list)
   # Examples
   - "ansible_collections/arista/avd/examples/**/*"
 
