@@ -38,8 +38,11 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
             return
 
         sflow_settings = self.inputs.sflow_settings
-        destinations = sflow_settings.destinations
-        if not destinations and not sflow_settings.export_to_cloudvision.enabled:
+        destinations = sflow_settings.destinations._natural_sorted(sort_key="destination")
+        if sflow_settings.export_to_cloudvision.enabled:
+            destinations.append(EosDesigns.SflowSettings.DestinationsItem(destination="127.0.0.1", port=6343, vrf=sflow_settings.export_to_cloudvision.vrf))
+
+        if not destinations:
             msg = "Either `sflow_settings.destinations` or `sflow_settings.export_to_cloudvision.enabled: true` is required to configure `sflow`."
             raise AristaAvdInvalidInputsError(msg)
 
@@ -47,7 +50,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
         # and at least one destination.
         self.structured_config.sflow._update(run=True, polling_interval=sflow_settings.polling_interval, sample=sflow_settings.sample.rate)
 
-        for destination in natural_sort(destinations, "destination"):
+        for destination in destinations:
             destination: EosDesigns.SflowSettings.DestinationsItem
             sflow_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=destination.vrf,
@@ -65,11 +68,6 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
                 vrf_item.destinations.append_new(destination=destination.destination, port=destination.port)
                 vrf_item.source_interface = source_interface
                 self.structured_config.sflow.vrfs.append(vrf_item)
-
-        if sflow_settings.export_to_cloudvision.enabled:
-            sflow_vrf = self.shared_utils.get_vrf(sflow_settings.export_to_cloudvision.vrf, context="sflow_settings.export_to_cloudvision.vrf")
-            vrf_item = self.structured_config.sflow.vrfs.obtain(sflow_vrf)
-            vrf_item.destinations.append_new(destination="127.0.0.1", port=6343)
 
     @cached_property
     def _enable_sflow(self) -> bool:

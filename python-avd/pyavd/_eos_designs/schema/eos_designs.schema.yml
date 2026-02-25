@@ -3055,6 +3055,19 @@ keys:
             - host: 127.0.0.1
             local_interface: Loopback0
             template_interval: 3600000
+  general_settings:
+    type: dict
+    documentation_options:
+      table: system-settings
+    keys:
+      interface_defaults:
+        type: dict
+        keys:
+          ethernet_shutdown:
+            type: bool
+            default: false
+            description: Shutdown Ethernet interfaces by default unless they are explicitly
+              enabled.
   generate_cv_tags:
     documentation_options:
       table: cloudvision-tags

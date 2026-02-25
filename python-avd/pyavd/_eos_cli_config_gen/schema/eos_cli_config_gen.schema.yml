@@ -8817,6 +8817,10 @@ keys:
         mac_address:
           type: str
           description: MAC address.
+        dhcp_client_accept_default_route:
+          type: bool
+          description: Install default-route obtained via DHCP. This is only applicable
+            when `ip_address` is configured as `dhcp`.
         lldp:
           type: dict
           keys:
@@ -21710,6 +21714,13 @@ keys:
             min: 1
             max: 60
             description: MFIB entry activity polling interval.
+          routing:
+            type: bool
+          software_forwarding:
+            type: str
+            valid_values:
+            - kernel
+            - sfe
       vrfs:
         type: list
         primary_key: name

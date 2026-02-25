@@ -19102,6 +19102,52 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class GeneralSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class InterfaceDefaults(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"ethernet_shutdown": {"type": bool, "default": False}}
+            ethernet_shutdown: bool
+            """
+            Shutdown Ethernet interfaces by default unless they are explicitly enabled.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ethernet_shutdown: bool | UndefinedType = Undefined) -> None:
+                    """
+                    InterfaceDefaults.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ethernet_shutdown: Shutdown Ethernet interfaces by default unless they are explicitly enabled.
+
+                    """
+
+        _fields: ClassVar[dict] = {"interface_defaults": {"type": InterfaceDefaults}}
+        interface_defaults: InterfaceDefaults
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, interface_defaults: InterfaceDefaults | UndefinedType = Undefined) -> None:
+                """
+                GeneralSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    interface_defaults: Subclass of AvdModel.
+
+                """
+
     class GenerateCvTags(AvdModel):
         """Subclass of AvdModel."""
 
@@ -88108,6 +88154,7 @@ class EosDesigns(EosDesignsRootModel):
         "fabric_numbering_node_id_pool": {"type": str, "default": "fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}"},
         "fabric_sflow": {"type": FabricSflow},
         "flow_tracking_settings": {"type": FlowTrackingSettings},
+        "general_settings": {"type": GeneralSettings},
         "generate_cv_tags": {"type": GenerateCvTags},
         "hardware_counters": {"type": EosCliConfigGen.HardwareCounters},
         "inband_ztp_bootstrap_file": {"type": str},
@@ -89586,6 +89633,8 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    general_settings: GeneralSettings
+    """Subclass of AvdModel."""
     generate_cv_tags: GenerateCvTags
     """
     Generate CloudVision Tags based on AVD data.
@@ -90825,6 +90874,7 @@ class EosDesigns(EosDesignsRootModel):
             fabric_numbering_node_id_pool: str | UndefinedType = Undefined,
             fabric_sflow: FabricSflow | UndefinedType = Undefined,
             flow_tracking_settings: FlowTrackingSettings | UndefinedType = Undefined,
+            general_settings: GeneralSettings | UndefinedType = Undefined,
             generate_cv_tags: GenerateCvTags | UndefinedType = Undefined,
             hardware_counters: EosCliConfigGen.HardwareCounters | UndefinedType = Undefined,
             inband_ztp_bootstrap_file: str | None | UndefinedType = Undefined,
@@ -91599,6 +91649,7 @@ class EosDesigns(EosDesignsRootModel):
                    Define the flow tracking parameters for this topology.
 
                    Subclass of AvdModel.
+                general_settings: Subclass of AvdModel.
                 generate_cv_tags:
                    Generate CloudVision Tags based on AVD data.
 

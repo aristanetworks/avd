@@ -22548,6 +22548,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "gateway": {"type": str},
             "ipv6_gateway": {"type": str},
             "mac_address": {"type": str},
+            "dhcp_client_accept_default_route": {"type": bool},
             "lldp": {"type": Lldp},
             "redundancy": {"type": Redundancy},
             "eos_cli": {"type": str},
@@ -22578,6 +22579,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """IPv6 address of default gateway in management VRF."""
         mac_address: str | None
         """MAC address."""
+        dhcp_client_accept_default_route: bool | None
+        """
+        Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+        `dhcp`.
+        """
         lldp: Lldp
         """Subclass of AvdModel."""
         redundancy: Redundancy
@@ -22603,6 +22609,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 gateway: str | None | UndefinedType = Undefined,
                 ipv6_gateway: str | None | UndefinedType = Undefined,
                 mac_address: str | None | UndefinedType = Undefined,
+                dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
                 redundancy: Redundancy | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
@@ -22627,6 +22634,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     gateway: IPv4 address of default gateway in management VRF.
                     ipv6_gateway: IPv6 address of default gateway in management VRF.
                     mac_address: MAC address.
+                    dhcp_client_accept_default_route:
+                       Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+                       `dhcp`.
                     lldp: Subclass of AvdModel.
                     redundancy: Subclass of AvdModel.
                     eos_cli: Multiline EOS CLI rendered directly on the management interface in the final EOS configuration.
@@ -59044,13 +59054,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Ipv6(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"activity_polling_interval": {"type": int}}
+            SoftwareForwarding: TypeAlias = Literal["kernel", "sfe"]
+            _fields: ClassVar[dict] = {"activity_polling_interval": {"type": int}, "routing": {"type": bool}, "software_forwarding": {"type": str}}
             activity_polling_interval: int | None
             """MFIB entry activity polling interval."""
+            routing: bool | None
+            software_forwarding: SoftwareForwarding | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, activity_polling_interval: int | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    activity_polling_interval: int | None | UndefinedType = Undefined,
+                    routing: bool | None | UndefinedType = Undefined,
+                    software_forwarding: SoftwareForwarding | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     Ipv6.
 
@@ -59059,6 +59078,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         activity_polling_interval: MFIB entry activity polling interval.
+                        routing: routing
+                        software_forwarding: software_forwarding
 
                     """
 

@@ -41,6 +41,12 @@ router multicast
 {%         if router_multicast.ipv6.activity_polling_interval is arista.avd.defined %}
       activity polling-interval {{ router_multicast.ipv6.activity_polling_interval }}
 {%         endif %}
+{%         if router_multicast.ipv6.routing is arista.avd.defined(true) %}
+      routing
+{%         endif %}
+{%         if router_multicast.ipv6.software_forwarding is arista.avd.defined %}
+      software-forwarding {{ router_multicast.ipv4.software_forwarding }}
+{%         endif %}
 {%     endif %}
 {%     for vrf in router_multicast.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
    !
