@@ -11838,6 +11838,7 @@ poe
 | 20 | permit | 10.0.0.0/8 | - | - | mirror |
 | 30 | permit | 172.16.0.0/12 | - | True | - |
 | 40 | permit | 192.168.0.0/16 | - | True | mirror |
+
 ##### ACL-API
 
 | Sequence | Action | Source | Remark | Log | Mirror Session |
@@ -11846,6 +11847,7 @@ poe
 | 20 | permit | - | - | - | - |
 | 30 | permit | - | - | - | - |
 | 40 | permit | - | - | - | - |
+
 ##### ACL-SSH
 
 ACL has counting mode `counters per-entry` enabled!
@@ -11856,6 +11858,7 @@ ACL has counting mode `counters per-entry` enabled!
 | 20 | permit | 10.0.0.0/8 | - | - | - |
 | 30 | permit | 172.16.0.0/12 | - | - | - |
 | 40 | permit | 192.168.0.0/16 | - | - | - |
+
 ##### ACL-SSH-VRF
 
 | Sequence | Action | Source | Remark | Log | Mirror Session |
@@ -11864,6 +11867,7 @@ ACL has counting mode `counters per-entry` enabled!
 | 20 | permit | 10.0.0.0/8 | - | - | - |
 | 30 | permit | 172.16.0.0/12 | - | - | - |
 | 40 | permit | 192.168.0.0/16 | - | - | - |
+
 #### Standard Access-lists Device Configuration
 
 ```eos
