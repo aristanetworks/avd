@@ -59044,13 +59044,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Ipv6(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"activity_polling_interval": {"type": int}}
+            SoftwareForwarding: TypeAlias = Literal["kernel", "sfe"]
+            _fields: ClassVar[dict] = {"activity_polling_interval": {"type": int}, "routing": {"type": bool}, "software_forwarding": {"type": str}}
             activity_polling_interval: int | None
             """MFIB entry activity polling interval."""
+            routing: bool | None
+            software_forwarding: SoftwareForwarding | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, activity_polling_interval: int | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    activity_polling_interval: int | None | UndefinedType = Undefined,
+                    routing: bool | None | UndefinedType = Undefined,
+                    software_forwarding: SoftwareForwarding | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     Ipv6.
 
@@ -59059,6 +59068,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         activity_polling_interval: MFIB entry activity polling interval.
+                        routing: routing
+                        software_forwarding: software_forwarding
 
                     """
 
