@@ -12,3 +12,10 @@ not_overwritten: GLOBAL_VALUE
 base_value: "BASE"
 jinja_template_simple: "{{ base_value }}_RENDERED"
 jinja_template_filter: "{{ base_value | lower }}_filtered"
+cleartext_password: "{{ vault.users.cvpadmin.password | default(lookup('ansible.builtin.env', 'CVP_PASSWORD'), true) }}"
+cleartext_password_2: "{{ lookup('ansible.builtin.env', 'CVP_PASSWORD') }}"
+
+vault:
+  users:
+    cvpadmin:
+      password: "vaulted_password"
