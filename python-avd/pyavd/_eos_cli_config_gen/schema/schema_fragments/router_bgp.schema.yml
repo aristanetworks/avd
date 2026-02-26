@@ -1590,6 +1590,11 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+                rcf:
+                  description: |-
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                  type: str
           bgp:
             type: dict
             keys:
@@ -2291,6 +2296,11 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+                rcf:
+                  description: |-
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                  type: str
           next_hops:
             type: list
             primary_key: ip_address
@@ -2615,6 +2625,11 @@ keys:
                   type: str
                 route_map:
                   description: Route-map name.
+                  type: str
+                rcf:
+                  description: |-
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                   type: str
           bgp:
             type: dict
@@ -4377,6 +4392,11 @@ keys:
                         description: IPv4 prefix "A.B.C.D/E".
                       route_map:
                         type: str
+                      rcf:
+                        description: |-
+                          RCF name with parenthesis. Example "NETWORK-RCF()".
+                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                        type: str
                 redistribute:
                   type: dict
                   description: Redistribute routes in to BGP.
@@ -4691,6 +4711,11 @@ keys:
                         type: str
                         description: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                       route_map:
+                        type: str
+                      rcf:
+                        description: |-
+                          RCF name with parenthesis. Example "NETWORK-RCF()".
+                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                         type: str
                 redistribute:
                   type: dict
