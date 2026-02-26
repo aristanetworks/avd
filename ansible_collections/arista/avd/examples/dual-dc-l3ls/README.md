@@ -40,6 +40,12 @@ There are two playbooks included in this example to show the following:
 - Building the intended configuration and documentation
 - Deploying the configuration directly to the switches using eAPI
 
+## AVD Playground
+
+--8<--
+ansible_collections/arista/avd/examples/common/start-avd-playground.md
+--8<--
+
 ## Installation
 
 --8<--
