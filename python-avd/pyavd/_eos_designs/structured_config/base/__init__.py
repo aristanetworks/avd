@@ -396,6 +396,8 @@ class AvdStructuredConfigBaseProtocol(
         """interface_defaults set based on default_interface_mtu."""
         if self.shared_utils.default_interface_mtu is not None:
             self.structured_config.interface_defaults.mtu = self.shared_utils.default_interface_mtu
+        if self.inputs.general_settings.interface_defaults.ethernet_shutdown:
+            self.structured_config.interface_defaults.ethernet.shutdown = True
 
     @structured_config_contributor
     def spanning_tree(self) -> None:
