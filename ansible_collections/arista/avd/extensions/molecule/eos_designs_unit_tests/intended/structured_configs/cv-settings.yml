@@ -135,6 +135,7 @@ sflow:
     destinations:
     - destination: 127.0.0.1
       port: 6343
+    source_interface: Vlan4092
   run: true
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:

@@ -197,6 +197,9 @@ ethernet_interfaces:
   switchport:
     enabled: false
 hostname: dc1-spine2
+interface_defaults:
+  ethernet:
+    shutdown: true
 ip_name_server:
   vrfs:
   - name: MGMT
