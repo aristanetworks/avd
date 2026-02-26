@@ -120,7 +120,7 @@ class AvdStructuredConfigParentInterfacesProtocol(
         parent interfaces need to be created based on tracking done throughout
         the structured config generation pipeline.
         """
-        for interface_name in natural_sort(self.parent_interfaces_tracker.get_missing_ethernet_parents()):
+        for interface_name in natural_sort(self.structured_config_utils.parent_interfaces_tracker.get_missing_ethernet_parents()):
             interface = EosCliConfigGen.EthernetInterfacesItem(
                 name=interface_name,
                 shutdown=False,
@@ -142,7 +142,7 @@ class AvdStructuredConfigParentInterfacesProtocol(
             AristaAvdInvalidInputsError: If there are missing parent Port-Channel interfaces
                 that cannot be auto-created (i.e., those without member_interfaces defined).
         """
-        missing_port_channel_parents = self.parent_interfaces_tracker.get_missing_port_channel_parents()
+        missing_port_channel_parents = self.structured_config_utils.parent_interfaces_tracker.get_missing_port_channel_parents()
 
         if missing_port_channel_parents:
             # Port-Channel parents cannot be auto-created because we don't know the member interfaces

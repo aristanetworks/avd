@@ -136,7 +136,7 @@ class EthernetInterfacesMixin(Protocol):
                 if link.ip_address and "unnumbered" not in link.ip_address.lower() and link.dhcp_server:
                     ethernet_interface.dhcp_server_ipv4 = True
 
-                self.parent_interfaces_tracker.register_ethernet_parent(link.interface)
+                self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(link.interface)
 
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
@@ -172,7 +172,7 @@ class EthernetInterfacesMixin(Protocol):
                             direction=link_tracking_group.direction,
                         )
 
-                self.parent_interfaces_tracker.register_ethernet_parent(link.interface)
+                self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(link.interface)
 
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
@@ -211,7 +211,7 @@ class EthernetInterfacesMixin(Protocol):
                     if subinterface.ipv6_address:
                         ethernet_subinterface.ipv6_address = f"{subinterface.ipv6_address}/{subinterface.ipv6_prefix_length}"
 
-                    self.parent_interfaces_tracker.register_ethernet_subinterface(subinterface.interface)
+                    self.structured_config_utils.parent_interfaces_tracker.register_ethernet_subinterface(subinterface.interface)
 
                     self.structured_config.ethernet_interfaces.append(ethernet_subinterface)
 
@@ -301,9 +301,9 @@ class EthernetInterfacesMixin(Protocol):
                     break
 
         if "." in l3_interface.name:
-            self.parent_interfaces_tracker.register_ethernet_subinterface(l3_interface.name)
+            self.structured_config_utils.parent_interfaces_tracker.register_ethernet_subinterface(l3_interface.name)
         else:
-            self.parent_interfaces_tracker.register_ethernet_parent(l3_interface.name)
+            self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(l3_interface.name)
 
         self.structured_config.ethernet_interfaces.append(interface)
 
@@ -338,7 +338,7 @@ class EthernetInterfacesMixin(Protocol):
             )
             ethernet_interface.metadata._update(peer_interface=member_intf.peer_interface, peer_type="l3_port_channel_member", peer=peer)
 
-            self.parent_interfaces_tracker.register_ethernet_parent(member_intf.name)
+            self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(member_intf.name)
 
             self.structured_config.ethernet_interfaces.append(ethernet_interface)
             if member_intf.structured_config:
@@ -372,7 +372,7 @@ class EthernetInterfacesMixin(Protocol):
                     peer_interface=interface,
                 ),
             )
-            self.parent_interfaces_tracker.register_ethernet_parent(interface)
+            self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(interface)
 
             if self.shared_utils.use_port_channel_for_direct_ha:
                 self.structured_config.ethernet_interfaces.append_new(

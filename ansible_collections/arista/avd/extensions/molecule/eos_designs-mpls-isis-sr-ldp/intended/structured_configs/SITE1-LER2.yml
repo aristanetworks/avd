@@ -105,7 +105,7 @@ ethernet_interfaces:
 - name: Ethernet5
   shutdown: false
   metadata:
-    peer_type: subinterface_parent
+    peer_type: l3_interface
   switchport:
     enabled: false
 hostname: SITE1-LER2

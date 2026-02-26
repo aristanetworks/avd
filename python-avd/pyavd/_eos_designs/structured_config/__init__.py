@@ -18,8 +18,9 @@ from .metadata import AvdStructuredConfigMetadata
 from .mlag import AvdStructuredConfigMlag
 from .network_services import AvdStructuredConfigNetworkServices
 from .overlay import AvdStructuredConfigOverlay
-from .parent_interfaces import AvdStructuredConfigParentInterfaces, ParentInterfacesTracker
+from .parent_interfaces import AvdStructuredConfigParentInterfaces
 from .structured_config_generator import StructCfgs
+from .structured_config_utils import StructuredConfigUtils
 from .underlay import AvdStructuredConfigUnderlay
 
 if TYPE_CHECKING:
@@ -109,8 +110,8 @@ def get_structured_config(
     #
     custom_structured_configs = StructCfgs.new_from_ansible_list_merge_strategy(inputs.custom_structured_configuration_list_merge)
 
-    # Create a single shared parent interfaces tracker for all structured config classes.
-    parent_interfaces_tracker = ParentInterfacesTracker()
+    # Create a single shared structured config utils instance for all structured config classes.
+    structured_config_utils = StructuredConfigUtils()
 
     for cls in AVD_STRUCTURED_CONFIG_CLASSES:
         eos_designs_module = cls(
@@ -120,7 +121,7 @@ def get_structured_config(
             shared_utils=shared_utils,
             structured_config=structured_config,
             custom_structured_configs=custom_structured_configs,
-            parent_interfaces_tracker=parent_interfaces_tracker,
+            structured_config_utils=structured_config_utils,
         )
         eos_designs_module.render()
 

@@ -129,7 +129,7 @@ class PortChannelInterfacesMixin(Protocol):
                     self.shared_utils.update_ospf_authentication(port_channel_interface, l3_port_channel, vrf, tenant)
 
                 if is_subinterface:
-                    self.parent_interfaces_tracker.register_port_channel_subinterface(l3_port_channel.name)
+                    self.structured_config_utils.parent_interfaces_tracker.register_port_channel_subinterface(l3_port_channel.name)
 
                     port_channel_interface.encapsulation_dot1q.vlan = default(
                         l3_port_channel.encapsulation_dot1q_vlan, int(l3_port_channel.name.split(".", maxsplit=1)[-1])
@@ -139,7 +139,7 @@ class PortChannelInterfacesMixin(Protocol):
                         msg += f"[name={l3_port_channel.name}].ip_address"
                         raise AristaAvdMissingVariableError(msg)
                 else:
-                    self.parent_interfaces_tracker.register_port_channel_parent(l3_port_channel.name)
+                    self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(l3_port_channel.name)
 
                 if l3_port_channel.structured_config:
                     self.custom_structured_configs.nested.port_channel_interfaces.obtain(l3_port_channel.name)._deepmerge(
@@ -182,7 +182,7 @@ class PortChannelInterfacesMixin(Protocol):
                         if port_channel_mode == "active":
                             parent_interface.lacp_id = short_esi.replace(":", ".")
 
-                    self.parent_interfaces_tracker.register_port_channel_parent(interface_name)
+                    self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(interface_name)
 
                     self.structured_config.port_channel_interfaces.append(parent_interface)
 
@@ -190,7 +190,7 @@ class PortChannelInterfacesMixin(Protocol):
                     for subif in point_to_point_service.subinterfaces:
                         subif_name = f"{interface_name}.{subif.number}"
 
-                        self.parent_interfaces_tracker.register_port_channel_subinterface(subif_name)
+                        self.structured_config_utils.parent_interfaces_tracker.register_port_channel_subinterface(subif_name)
 
                         interface = EosCliConfigGen.PortChannelInterfacesItem(
                             name=subif_name,
@@ -227,6 +227,6 @@ class PortChannelInterfacesMixin(Protocol):
                         if port_channel_mode == "active":
                             port_channel_interface.lacp_id = short_esi.replace(":", ".")
 
-                    self.parent_interfaces_tracker.register_port_channel_parent(interface_name)
+                    self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(interface_name)
 
                     self.structured_config.port_channel_interfaces.append(port_channel_interface)

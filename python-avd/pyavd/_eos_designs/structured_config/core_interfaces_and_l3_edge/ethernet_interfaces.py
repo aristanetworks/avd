@@ -41,7 +41,7 @@ class EthernetInterfacesMixin(Protocol):
                         list_merge=self.custom_structured_configs.list_merge_strategy,
                     )
 
-                self.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
+                self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
 
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
@@ -66,7 +66,7 @@ class EthernetInterfacesMixin(Protocol):
                         list_merge=self.custom_structured_configs.list_merge_strategy,
                     )
 
-                self.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
+                self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
 
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 

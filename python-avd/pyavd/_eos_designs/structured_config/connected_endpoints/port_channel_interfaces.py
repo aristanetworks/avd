@@ -46,7 +46,7 @@ class PortChannelInterfacesMixin(Protocol):
 
                 port_channel_interface = self._get_port_channel_interface_cfg(adapter, port_channel_interface_name, channel_group_id, connected_endpoint)
 
-                self.parent_interfaces_tracker.register_port_channel_parent(port_channel_interface_name)
+                self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(port_channel_interface_name)
 
                 self.structured_config.port_channel_interfaces.append(port_channel_interface)
                 if adapter.port_channel.structured_config:
@@ -60,7 +60,7 @@ class PortChannelInterfacesMixin(Protocol):
 
                     port_channel_subinterface_name = f"Port-Channel{channel_group_id}.{subinterface.number}"
 
-                    self.parent_interfaces_tracker.register_port_channel_subinterface(port_channel_subinterface_name)
+                    self.structured_config_utils.parent_interfaces_tracker.register_port_channel_subinterface(port_channel_subinterface_name)
 
                     self.structured_config.port_channel_interfaces.append(
                         self._get_port_channel_subinterface_cfg(
@@ -109,7 +109,7 @@ class PortChannelInterfacesMixin(Protocol):
 
         # Now insert into the actual structured config and custom structured config
         for port_channel_interface, structured_config in network_ports_port_channel_interfaces.values():
-            self.parent_interfaces_tracker.register_port_channel_parent(port_channel_interface.name)
+            self.structured_config_utils.parent_interfaces_tracker.register_port_channel_parent(port_channel_interface.name)
 
             self.structured_config.port_channel_interfaces.append(port_channel_interface)
             if structured_config:

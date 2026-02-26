@@ -87,7 +87,7 @@ class EthernetInterfacesMixin(Protocol):
                         member_intf.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                     )
 
-                self.parent_interfaces_tracker.register_ethernet_parent(member_intf.name)
+                self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(member_intf.name)
 
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
@@ -161,7 +161,7 @@ class EthernetInterfacesMixin(Protocol):
                     # This is a subinterface
                     subif_id = interface_name.split(".", maxsplit=1)[1]
 
-                    self.parent_interfaces_tracker.register_ethernet_subinterface(interface_name)
+                    self.structured_config_utils.parent_interfaces_tracker.register_ethernet_subinterface(interface_name)
 
                     encapsulation_dot1q_vlans = l3_interface.encapsulation_dot1q_vlan
                     if len(encapsulation_dot1q_vlans) > node_index:
@@ -170,7 +170,7 @@ class EthernetInterfacesMixin(Protocol):
                         interface.encapsulation_dot1q.vlan = int(subif_id)
                 else:
                     interface.switchport.enabled = False
-                    self.parent_interfaces_tracker.register_ethernet_parent(interface_name)
+                    self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(interface_name)
 
                 if vrf.name != "default":
                     interface.vrf = vrf.name
@@ -266,7 +266,7 @@ class EthernetInterfacesMixin(Protocol):
                                 )
                                 raise AristaAvdInvalidInputsError(msg)
 
-                            self.parent_interfaces_tracker.register_ethernet_subinterface(subif_name)
+                            self.structured_config_utils.parent_interfaces_tracker.register_ethernet_subinterface(subif_name)
 
                             interface = EosCliConfigGen.EthernetInterfacesItem(
                                 name=subif_name,
@@ -295,6 +295,6 @@ class EthernetInterfacesMixin(Protocol):
                         if point_to_point_service.lldp_disable:
                             interface.lldp._update(transmit=False, receive=False)
 
-                        self.parent_interfaces_tracker.register_ethernet_parent(interface_name)
+                        self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(interface_name)
 
                         self.structured_config.ethernet_interfaces.append(interface)

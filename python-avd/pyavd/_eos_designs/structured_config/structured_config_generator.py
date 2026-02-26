@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
-    from pyavd._eos_designs.structured_config.parent_interfaces import ParentInterfacesTracker
+    from pyavd._eos_designs.structured_config.structured_config_utils import StructuredConfigUtils
 
     T_StructuredConfigGeneratorSubclass = TypeVar("T_StructuredConfigGeneratorSubclass", bound="StructuredConfigGeneratorProtocol")
 
@@ -130,16 +130,9 @@ class StructuredConfigGeneratorProtocol(AvdFactsProtocol, Protocol):
     facts: EosDesignsFacts
     structured_config: EosCliConfigGen
     custom_structured_configs: StructCfgs
-    parent_interfaces_tracker: ParentInterfacesTracker
+    structured_config_utils: StructuredConfigUtils
     """
-    Global tracker for parent interfaces.
-
-    Tracks which parent interfaces are required by subinterfaces and which already exist,
-    allowing the centralized parent_interfaces module to create only the missing ones.
-
-    Modules creating interfaces should register them using:
-    - register_ethernet_subinterface(name) / register_port_channel_subinterface(name) for subinterfaces
-    - register_ethernet_parent(name) / register_port_channel_parent(name) for parent interfaces
+    Shared utilities for structured config generation.
     """
     _complete_structured_config: EosCliConfigGen
     """
@@ -178,10 +171,10 @@ class StructuredConfigGenerator(AvdFacts, RunOnceMethodStateHelper, StructuredCo
         shared_utils: SharedUtilsProtocol,
         structured_config: EosCliConfigGen,
         custom_structured_configs: StructCfgs,
-        parent_interfaces_tracker: ParentInterfacesTracker,
+        structured_config_utils: StructuredConfigUtils,
     ) -> None:
         self.facts = facts
         self.structured_config = structured_config
         self.custom_structured_configs = custom_structured_configs
-        self.parent_interfaces_tracker = parent_interfaces_tracker
+        self.structured_config_utils = structured_config_utils
         super().__init__(hostvars=hostvars, inputs=inputs, shared_utils=shared_utils)
