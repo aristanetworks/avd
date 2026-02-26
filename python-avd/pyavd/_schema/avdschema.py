@@ -3,16 +3,11 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from pyavd._errors import AristaAvdError, AvdSchemaError
 
-from .avddataconverter import AvdDataConverter
-from .avdvalidator import AvdValidator
 from .store import create_store
-
-if TYPE_CHECKING:
-    from collections.abc import Generator
 
 DEFAULT_SCHEMA = {
     "type": "dict",
@@ -65,14 +60,6 @@ class AvdSchema:
             schema = DEFAULT_SCHEMA
 
         self._schema = schema
-        self._validator = AvdValidator(schema)
-        self._dataconverter = AvdDataConverter(schema)
-
-    def validate(self, data: Any) -> Generator:
-        yield from self._validator.validate(data)
-
-    def convert(self, data: Any) -> Generator:
-        yield from self._dataconverter.convert_data(data)
 
     def subschema(self, datapath: list[str]) -> dict[str, Any]:
         """
