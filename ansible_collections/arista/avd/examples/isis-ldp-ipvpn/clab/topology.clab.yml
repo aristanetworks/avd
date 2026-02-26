@@ -1,0 +1,83 @@
+---
+name: MPLS-VPN based WAN Network
+prefix: ""
+
+mgmt:
+    network: custom_mgmt
+    ipv4-subnet: 172.16.1.0/24
+
+topology:
+    kinds:
+        arista_ceos:
+            enforce-startup-config: true
+            image: arista/ceos:latest
+            binds:
+                - interface_mapping.json:/mnt/flash/EosIntfMapping.json:ro
+    defaults:
+        kind: arista_ceos
+    nodes:
+        p1:
+            mgmt-ipv4: 172.16.1.11
+            startup-config: init-configs/p1.cfg
+        p2:
+            mgmt-ipv4: 172.16.1.12
+            startup-config: init-configs/p2.cfg
+        p3:
+            mgmt-ipv4: 172.16.1.13
+            startup-config: init-configs/p3.cfg
+        p4:
+            mgmt-ipv4: 172.16.1.14
+            startup-config: init-configs/p4.cfg
+        pe1:
+            mgmt-ipv4: 172.16.1.101
+            startup-config: init-configs/pe1.cfg
+        pe2:
+            mgmt-ipv4: 172.16.1.102
+            startup-config: init-configs/pe2.cfg
+        pe3:
+            mgmt-ipv4: 172.16.1.103
+            startup-config: init-configs/pe3.cfg
+        rr1:
+            mgmt-ipv4: 172.16.1.151
+            startup-config: init-configs/rr1.cfg
+        rr2:
+            mgmt-ipv4: 172.16.1.152
+            startup-config: init-configs/rr2.cfg
+        cu1cpe1:
+            mgmt-ipv4: 172.16.1.211
+            startup-config: init-configs/cu1cpe1.cfg
+        cu1cpe2:
+            mgmt-ipv4: 172.16.1.212
+            startup-config: init-configs/cu1cpe2.cfg
+        cu2cpe1:
+            mgmt-ipv4: 172.16.1.221
+            startup-config: init-configs/cu2cpe1.cfg
+        cu2cpe2:
+            mgmt-ipv4: 172.16.1.222
+            startup-config: init-configs/cu2cpe2.cfg
+        agg:
+            mgmt-ipv4: 172.16.1.200
+            startup-config: init-configs/agg.cfg
+
+    links:
+
+        - endpoints: ["pe1:eth1", "p1:eth1"]
+        - endpoints: ["pe1:eth2", "p2:eth2"]
+        - endpoints: ["pe2:eth1", "p2:eth1"]
+        - endpoints: ["pe2:eth2", "p1:eth2"]
+        - endpoints: ["p1:eth4", "p2:eth4"]
+        - endpoints: ["p1:eth3", "rr1:eth3"]
+        - endpoints: ["p2:eth3", "rr2:eth3"]
+        - endpoints: ["rr1:eth4", "rr2:eth4"]
+        - endpoints: ["rr1:eth2", "p3:eth2"]
+        - endpoints: ["rr2:eth2", "p4:eth2"]
+        - endpoints: ["p3:eth4", "p4:eth4"]
+        - endpoints: ["p3:eth1", "pe3:eth1"]
+        - endpoints: ["p4:eth3", "pe3:eth3"]
+        # CPEs
+        - endpoints: ["cu1cpe1:eth1", "agg:eth1"]
+        - endpoints: ["cu1cpe2:eth1", "pe3:eth2"]
+        - endpoints: ["cu2cpe1:eth1", "agg:eth2"]
+        - endpoints: ["cu2cpe2:eth1", "pe3:eth4"]
+        - endpoints: ["agg:eth3", "pe1:eth3"]
+        - endpoints: ["agg:eth4", "pe2:eth4"]
