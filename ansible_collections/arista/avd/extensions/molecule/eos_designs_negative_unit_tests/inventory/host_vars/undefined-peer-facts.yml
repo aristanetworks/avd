@@ -14,4 +14,4 @@ overlay_controller:
 
 expected_error_message: >-
   Facts not found for node 'L3LEAF1A'. Something in the input vars is pointing to this node.
-  Check that 'L3LEAF1A' is in the inventory and is part of the group set by 'fabric_name'. Node is required.
+  Check that 'L3LEAF1A' is in the inventory and is part of the group set by 'fabric_name'. Node is required (Problematic host: 'L3LEAF1A').

@@ -7,5 +7,5 @@ devices:
     type: l2leaf
 
 expected_error_message: >-
-  When trying to establish the MLAG pair, we found 1 members ['failure-devices-mlag-group'] of the 'mlag_group: "mlag-group-with-only-one-member"'.
-  There should be exactly two members of the group to form an MLAG pair for host 'failure-devices-mlag-group'.
+  When trying to establish the MLAG pair, we found 1 member(s) ['failure-devices-mlag-group'] of the 'mlag_group: "mlag-group-with-only-one-member"'.
+  There should be exactly two members of the group to form an MLAG pair.

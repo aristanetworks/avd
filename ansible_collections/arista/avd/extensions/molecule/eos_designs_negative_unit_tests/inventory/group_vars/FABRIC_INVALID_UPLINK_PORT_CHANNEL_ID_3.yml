@@ -43,4 +43,4 @@ l2leaf:
 
 expected_error_message: >-
   'uplink_port_channel_id' is set to 1234 and is not matching 1 set on MLAG peer.
-  The 'uplink_port_channel_id' must be matching on MLAG peers for host 'invalid-uplink-port-channel-id-3-l2leaf-2'.
+  The 'uplink_port_channel_id' must be matching on MLAG peers (Problematic host: 'invalid-uplink-port-channel-id-3-l2leaf-2').

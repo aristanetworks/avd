@@ -72,7 +72,7 @@ class UtilsMixin(Protocol):
                 f"Facts not found for node '{peer_name}'. Something in the input vars is pointing to this node. "
                 f"Check that '{peer_name}' is in the inventory and is part of the group set by 'fabric_name'. Node is required."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=peer_name)
         return self.peer_facts[peer_name]
 
     def template_var(self: SharedUtilsProtocol, template_file: str, template_vars: MutableMapping) -> str:

@@ -89,6 +89,7 @@ class NodeConfigMixin(Protocol):
                 raise AristaAvdInvalidInputsError(
                     msg,
                     host=self.hostname,
+                    host_context_set=True,
                 )
 
             # Casting as NodesItem so all the code relying on this does not have to care which model the input came from.

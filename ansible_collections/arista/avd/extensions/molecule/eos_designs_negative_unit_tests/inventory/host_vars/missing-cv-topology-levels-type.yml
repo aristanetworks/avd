@@ -54,4 +54,5 @@ core_interfaces:
       multicast_pim_sm: true
 
 expected_error_message: >-
-  'cv_topology_levels' must include all node types when 'use_cv_topology' is set to 'true'. Missing type 'core_router'.
+  'cv_topology_levels' must include all node types when 'use_cv_topology' is set to 'true'. Missing type 'core_router'
+  (Problematic host: 'missing-cv-topology-levels-type').

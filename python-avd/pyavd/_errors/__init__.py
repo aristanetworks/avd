@@ -16,18 +16,24 @@ if TYPE_CHECKING:
 
 class AristaAvdError(Exception):
     host: str | None
+    host_context_set: bool
 
-    def __init__(self, message: str = "An Error has occurred in an arista.avd plugin", host: str | None = None) -> None:
+    def __init__(self, message: str = "An Error has occurred in an arista.avd plugin", host: str | None = None, host_context_set: bool = False) -> None:
         self.host = host
-        self.message = message
+        if host is not None and not host_context_set:
+            self.message = f"{message.removesuffix('.')} (Problematic host: '{host}')."
+            self.host_context_set = True
+        else:
+            self.host_context_set = host_context_set
+            self.message = message
         super().__init__(self.message)
 
 
 class AristaAvdInvalidInputsError(AristaAvdError):
     host: str | None
 
-    def __init__(self, message: str, host: str | None = None) -> None:
-        super().__init__(message, host=host)
+    def __init__(self, message: str, host: str | None = None, host_context_set: bool = False) -> None:
+        super().__init__(message, host=host, host_context_set=host_context_set)
 
 
 class AristaAvdMissingVariableError(AristaAvdError):
@@ -40,7 +46,7 @@ class AristaAvdMissingVariableError(AristaAvdError):
         self.host = host
         host_msg = f" for host '{host}'" if host else ""
         message = f"'{variable}' is required but was not found{host_msg}."
-        super().__init__(message, host=host)
+        super().__init__(message, host=host, host_context_set=True)
 
 
 class AvdSchemaError(AristaAvdError):

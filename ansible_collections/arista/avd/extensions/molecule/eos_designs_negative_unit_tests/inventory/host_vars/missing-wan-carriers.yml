@@ -53,4 +53,4 @@ wan_carriers:
     trusted: true
 
 expected_error_message: >-
-  WAN carrier Test1 is not in the available carriers defined in `wan_carriers` for host 'missing-wan-carriers'.
+  WAN carrier Test1 is not in the available carriers defined in `wan_carriers` (Problematic host: 'missing-wan-carriers').

@@ -18,4 +18,4 @@ spine:
 
 expected_error_message: >-
   Invalid combination of inputs. ospf is not supported with numbered IPv6 underlay.
-  underlay_routing_protocol must be set to 'ebgp' for host 'unsupported-non-ebgp-underlay-routing-protocol-ip-underlay-ipv6-numbered'.
+  underlay_routing_protocol must be set to 'ebgp' (Problematic host: 'unsupported-non-ebgp-underlay-routing-protocol-ip-underlay-ipv6-numbered').

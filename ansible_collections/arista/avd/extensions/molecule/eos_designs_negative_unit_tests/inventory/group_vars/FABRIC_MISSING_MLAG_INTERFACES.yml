@@ -30,4 +30,4 @@ l3leaf:
           mlag_interfaces: [Ethernet5, Ethernet6]
 
 expected_error_message: >-
-  'mlag_interfaces' not set for host 'missing-mlag-interfaces1'.
+  'mlag_interfaces' not set (Problematic host: 'missing-mlag-interfaces1').

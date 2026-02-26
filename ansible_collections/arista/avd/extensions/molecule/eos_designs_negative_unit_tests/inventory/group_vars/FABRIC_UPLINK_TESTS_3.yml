@@ -39,4 +39,5 @@ l3leaf:
         - Ethernet8
 
 expected_error_message: >-
-  Lengths of 'uplink_switches' 2 and 'uplink_switch_interfaces' 1 do not match for host 'uplink-switches-interfaces-length-not-equal-to-uplink-switches'.
+  Lengths of 'uplink_switches' 2 and 'uplink_switch_interfaces' 1 do not match
+  (Problematic host: 'uplink-switches-interfaces-length-not-equal-to-uplink-switches').

@@ -15,4 +15,4 @@ l2leaf:
 expected_error_message: >-
   When 'fabric_numbering.node_id.algorithm' is set to 'pool_manager', any 'id' set for the node will be reserved in the pool if possible.
   The given 'id: 1' is already assigned to 'hostname=id-static-and-pool-manager-collision-a'. The 'id' setting must either be removed or changed.
-  If you prefer to keep the 'id' setting, the next available value is 2 for host 'id-static-and-pool-manager-collision-b'.
+  If you prefer to keep the 'id' setting, the next available value is 2 (Problematic host: 'id-static-and-pool-manager-collision-b').

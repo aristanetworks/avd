@@ -81,8 +81,7 @@ def get_facts(
             raise AristaAvdMissingVariableError(variable=e.variable, host=e.host or hostname) from e
         except AristaAvdError as e:
             host = e.host if hasattr(e, "host") and e.host else hostname
-            msg = f"{str(e).removesuffix('.')} for host '{host}'."
-            raise type(e)(msg, host=host) from e
+            raise type(e)(str(e), host=host, host_context_set=e.host_context_set) from e
 
     return all_facts
 
