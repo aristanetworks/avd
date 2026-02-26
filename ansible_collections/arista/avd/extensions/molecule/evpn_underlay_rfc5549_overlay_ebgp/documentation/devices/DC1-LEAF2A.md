@@ -399,12 +399,12 @@ vlan 4094
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_DC1-SPINE1_Ethernet2 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_DC1-SPINE2_Ethernet2 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet3 | P2P_DC1-SPINE3_Ethernet2 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet4 | P2P_DC1-SPINE4_Ethernet2 | - | - | default | 1500 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out | IPv6 ND RA RX Accept |
+| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ | -------------------- |
+| Ethernet1 | P2P_DC1-SPINE1_Ethernet2 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet2 | P2P_DC1-SPINE2_Ethernet2 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet3 | P2P_DC1-SPINE3_Ethernet2 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet4 | P2P_DC1-SPINE4_Ethernet2 | - | - | default | 1500 | False | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 

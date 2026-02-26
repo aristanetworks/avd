@@ -282,14 +282,14 @@ vlan 350
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_DC1-SPINE1_Ethernet6 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_DC1-SPINE2_Ethernet6 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet3 | P2P_DC1-SPINE3_Ethernet6 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet4 | P2P_DC1-SPINE4_Ethernet6 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet9 | P2P_DC1-BL1B_Ethernet9 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet10 | P2P_DC1-BL1B_Ethernet10 | - | - | default | 1500 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out | IPv6 ND RA RX Accept |
+| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ | -------------------- |
+| Ethernet1 | P2P_DC1-SPINE1_Ethernet6 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet2 | P2P_DC1-SPINE2_Ethernet6 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet3 | P2P_DC1-SPINE3_Ethernet6 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet4 | P2P_DC1-SPINE4_Ethernet6 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet9 | P2P_DC1-BL1B_Ethernet9 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet10 | P2P_DC1-BL1B_Ethernet10 | - | - | default | 1500 | False | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
