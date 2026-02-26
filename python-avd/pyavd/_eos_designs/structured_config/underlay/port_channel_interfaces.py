@@ -145,7 +145,8 @@ class PortChannelInterfacesMixin(Protocol):
 
         if "." in l3_port_channel.name:
             parent_port_channel_name = l3_port_channel.name.split(".", maxsplit=1)[0]
-            main_interface_wan_carrier = self.shared_utils.node_config.l3_port_channels[parent_port_channel_name].wan_carrier
+            parent_port_channel = self.shared_utils.node_config.l3_port_channels.get(parent_port_channel_name)
+            main_interface_wan_carrier = parent_port_channel.wan_carrier if parent_port_channel else None
         else:
             main_interface_wan_carrier = None
 
