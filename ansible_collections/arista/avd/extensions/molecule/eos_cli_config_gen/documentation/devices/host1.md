@@ -1074,7 +1074,7 @@ management console
 
 | HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
 | ---- | ----- | ----------- | ---------------- | --------------- |
-| False | True | True | True | 60 |
+| False | True | True | True | 60 minutes |
 
 Management HTTPS is using the SSL profile SSL_PROFILE
 

@@ -299,7 +299,7 @@ management cvx
 
 | HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
 | ---- | ----- | ----------- | ---------------- | --------------- |
-| True | False | - | False | 1440 |
+| True | False | - | False | 1440 minutes |
 
 #### Management API HTTP Device Configuration
 
