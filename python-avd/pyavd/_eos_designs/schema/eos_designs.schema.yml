@@ -294,6 +294,37 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
+  avd_7_behaviors:
+    type: dict
+    description: Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors
+      in AVD 7.0.
+    documentation_options:
+      table: role-settings
+    deprecation:
+      warning: false
+      remove_in_version: 7.0.0
+    keys:
+      ip_radius_source_interface_setting:
+        type: bool
+        default: false
+        description: 'Enable improved RADIUS source interface configuration with separate
+          keys for VRF default and other VRFs.
+
+
+          When enabled:
+
+          - VRF default: Uses `ip_radius.source_interface`
+
+          - Other VRFs: Uses `ip_radius.vrfs` list
+
+          - Enforces VRF name uniqueness
+
+          - Aligns with EOS CLI behavior (where "vrf default" is implicit)
+
+
+          When disabled (current):
+
+          - Uses `ip_radius_source_interfaces` list for all VRF combinations'
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
@@ -3025,11 +3056,18 @@ keys:
             local_interface: Loopback0
             template_interval: 3600000
   general_settings:
+    type: dict
     documentation_options:
       table: system-settings
-    type: dict
-    description: General platform-independent settings.
     keys:
+      interface_defaults:
+        type: dict
+        keys:
+          ethernet_shutdown:
+            type: bool
+            default: false
+            description: Shutdown Ethernet interfaces by default unless they are explicitly
+              enabled.
       arp:
         type: dict
         keys:

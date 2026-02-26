@@ -17156,6 +17156,68 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class IpRadius(AvdModel):
+        """Subclass of AvdModel."""
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            source_interface: str
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        source_interface: source_interface
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"source_interface": {"type": str}, "vrfs": {"type": Vrfs}}
+        source_interface: str | None
+        """Define `source_interface` for VRF default."""
+        vrfs: Vrfs
+        """
+        Define `source interfaces` for any VRF other than default.
+
+        Subclass of AvdIndexedList with
+        `VrfsItem` items. Primary key is `name` (`str`).
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+                """
+                IpRadius.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    source_interface: Define `source_interface` for VRF default.
+                    vrfs:
+                       Define `source interfaces` for any VRF other than default.
+
+                       Subclass of AvdIndexedList with
+                       `VrfsItem` items. Primary key is `name` (`str`).
+
+                """
+
     class IpRadiusSourceInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -22486,6 +22548,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "gateway": {"type": str},
             "ipv6_gateway": {"type": str},
             "mac_address": {"type": str},
+            "dhcp_client_accept_default_route": {"type": bool},
             "lldp": {"type": Lldp},
             "redundancy": {"type": Redundancy},
             "eos_cli": {"type": str},
@@ -22516,6 +22579,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """IPv6 address of default gateway in management VRF."""
         mac_address: str | None
         """MAC address."""
+        dhcp_client_accept_default_route: bool | None
+        """
+        Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+        `dhcp`.
+        """
         lldp: Lldp
         """Subclass of AvdModel."""
         redundancy: Redundancy
@@ -22541,6 +22609,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 gateway: str | None | UndefinedType = Undefined,
                 ipv6_gateway: str | None | UndefinedType = Undefined,
                 mac_address: str | None | UndefinedType = Undefined,
+                dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
                 redundancy: Redundancy | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
@@ -22565,6 +22634,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     gateway: IPv4 address of default gateway in management VRF.
                     ipv6_gateway: IPv6 address of default gateway in management VRF.
                     mac_address: MAC address.
+                    dhcp_client_accept_default_route:
+                       Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+                       `dhcp`.
                     lldp: Subclass of AvdModel.
                     redundancy: Subclass of AvdModel.
                     eos_cli: Multiline EOS CLI rendered directly on the management interface in the final EOS configuration.
@@ -58982,13 +59054,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Ipv6(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"activity_polling_interval": {"type": int}}
+            SoftwareForwarding: TypeAlias = Literal["kernel", "sfe"]
+            _fields: ClassVar[dict] = {"activity_polling_interval": {"type": int}, "routing": {"type": bool}, "software_forwarding": {"type": str}}
             activity_polling_interval: int | None
             """MFIB entry activity polling interval."""
+            routing: bool | None
+            software_forwarding: SoftwareForwarding | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, activity_polling_interval: int | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    activity_polling_interval: int | None | UndefinedType = Undefined,
+                    routing: bool | None | UndefinedType = Undefined,
+                    software_forwarding: SoftwareForwarding | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     Ipv6.
 
@@ -58997,6 +59078,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         activity_polling_interval: MFIB entry activity polling interval.
+                        routing: routing
+                        software_forwarding: software_forwarding
 
                     """
 
@@ -69537,6 +69620,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_name_server_groups": {"type": IpNameServerGroups},
         "ip_nat": {"type": IpNat},
         "ip_ospf_router_id_output_format_hostnames": {"type": bool},
+        "ip_radius": {"type": IpRadius},
         "ip_radius_source_interfaces": {"type": IpRadiusSourceInterfaces},
         "ip_routing": {"type": bool},
         "ip_routing_ipv6_interfaces": {"type": bool},
@@ -69944,6 +70028,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     ip_ospf_router_id_output_format_hostnames: bool | None
     """Display DNS-resolved router names for OSPF router IDs."""
+    ip_radius: IpRadius
+    """Subclass of AvdModel."""
     ip_radius_source_interfaces: IpRadiusSourceInterfaces
     """Subclass of AvdList with `IpRadiusSourceInterfacesItem` items."""
     ip_routing: bool | None
@@ -70351,6 +70437,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_name_server_groups: IpNameServerGroups | UndefinedType = Undefined,
             ip_nat: IpNat | UndefinedType = Undefined,
             ip_ospf_router_id_output_format_hostnames: bool | None | UndefinedType = Undefined,
+            ip_radius: IpRadius | UndefinedType = Undefined,
             ip_radius_source_interfaces: IpRadiusSourceInterfaces | UndefinedType = Undefined,
             ip_routing: bool | None | UndefinedType = Undefined,
             ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
@@ -70668,6 +70755,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_name_server_groups: Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`).
                 ip_nat: Subclass of AvdModel.
                 ip_ospf_router_id_output_format_hostnames: Display DNS-resolved router names for OSPF router IDs.
+                ip_radius: Subclass of AvdModel.
                 ip_radius_source_interfaces: Subclass of AvdList with `IpRadiusSourceInterfacesItem` items.
                 ip_routing: ip_routing
                 ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces

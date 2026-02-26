@@ -7,12 +7,17 @@
 type: dict
 keys:
   general_settings:
+    type: dict
     documentation_options:
       table: system-settings
-    type: dict
-    description: |-
-      General platform-independent settings.
     keys:
+      interface_defaults:
+        type: dict
+        keys:
+          ethernet_shutdown:
+            type: bool
+            default: false
+            description: Shutdown Ethernet interfaces by default unless they are explicitly enabled.
       arp:
         type: dict
         keys:
