@@ -12,6 +12,7 @@ from uuid import NAMESPACE_DNS, uuid4, uuid5
 from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.client.models import CVTag, CVTagAssignment
+from pyavd._errors import AristaAvdInvalidInputsError
 
 AVD_NAMESPACE = uuid5(NAMESPACE_DNS, "avd.arista.com")
 AVD_ENTITY_PREFIX = "avd_"
@@ -200,9 +201,12 @@ class CVDevice:
     Device hostname or intended hostname.
     `serial_number` or `system_mac_address` must be set if the hostname is not already configured on the device or
     if the hostname is not unique.
+    An attempt to assign an empty string will result in raising AristaAvdInvalidInputsError.
     """
     serial_number: str | None = None
+    """ An attempt to assign an empty string will result in raising AristaAvdInvalidInputsError. """
     system_mac_address: str | None = None
+    """ An attempt to assign an empty string will result in raising AristaAvdInvalidInputsError. """
     _exists_on_cv: bool | None = None
     """ Do not set this manually. """
     _streaming: bool | None = None
@@ -210,6 +214,26 @@ class CVDevice:
     Device's streaming status.
     Do not set this manually.
     """
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        """Validate value before setting an attribute."""
+        if name == "hostname" or (name in ("serial_number", "system_mac_address") and value is not None):
+            self._validate_non_empty_str(name, value)
+        # Use object.__setattr__ to avoid recursive calling of __setattr__.
+        object.__setattr__(self, name, value)
+
+    def _validate_non_empty_str(self, name: str, value: str) -> None:
+        """Validate that a string field is not empty."""
+        # Fetch original hostname in case this is a post-initialization update of a hostname field
+        original_hostname = getattr(self, "hostname", None)
+        hostname_context = f" of the device '{original_hostname}'" if original_hostname is not None else " of the CVDevice"
+
+        if not isinstance(value, str):
+            msg = f"Field '{name}'{hostname_context} cannot be set to a value '{value}' of type '{type(value)}'. Please verify your inputs."
+            raise AristaAvdInvalidInputsError(message=msg)
+        if not value.strip():
+            msg = f"Field '{name}'{hostname_context} cannot be an empty string. Please verify your inputs."
+            raise AristaAvdInvalidInputsError(message=msg)
 
 
 @dataclass

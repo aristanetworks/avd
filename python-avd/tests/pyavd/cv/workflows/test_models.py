@@ -10,7 +10,8 @@ import pytest
 from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment, ConfigletAssignmentKey, MatchPolicy
 from pyavd._cv.api.fmp import RepeatedString
 from pyavd._cv.client.exceptions import CVManifestError
-from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVManifest
+from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVDevice, CVManifest
+from pyavd._errors import AristaAvdInvalidInputsError
 
 from .helpers import generate_id
 
@@ -448,3 +449,157 @@ class TestAvdManifestFromDict:
         """Tests that ValueError is raised for invalid AvdManifest data."""
         with pytest.raises(ValueError, match=match_str):
             AvdManifest.from_dict(invalid_data)
+
+
+class TestCVDevice:
+    @pytest.mark.parametrize(
+        ("optional_arguments"),
+        [
+            pytest.param({}, id="hostname_only"),
+            pytest.param({"serial_number": None}, id="hostname_and_serial_number_none"),
+            pytest.param({"system_mac_address": None}, id="hostname_and_system_mac_address_none"),
+            pytest.param({"serial_number": None, "system_mac_address": None}, id="hostname_and_serial_number_none_and_system_mac_address_none"),
+            pytest.param({"serial_number": "serial_1"}, id="hostname_and_serial_number"),
+            pytest.param({"serial_number": "serial_1", "system_mac_address": None}, id="hostname_and_serial_number_and_system_mac_address_none"),
+            pytest.param({"serial_number": "serial_1", "system_mac_address": "mac_1"}, id="hostname_and_serial_number_and_system_mac_address"),
+            pytest.param({"system_mac_address": "mac_1"}, id="hostname_and_system_mac_address"),
+            pytest.param({"serial_number": None, "system_mac_address": "mac_1"}, id="hostname_and_serial_number_none_and_system_mac_address"),
+        ],
+    )
+    def test_success(self, optional_arguments: dict[str, Any]) -> None:
+        """Tests creation of CVDevice and ability to successfully override parameters later."""
+        # Test initialization
+        hostname = "device_1"
+        device = CVDevice(hostname=hostname, **optional_arguments)
+        assert device.hostname == hostname
+        assert device.serial_number == optional_arguments.get("serial_number")
+        assert device.system_mac_address == optional_arguments.get("system_mac_address")
+
+        # Test overriding
+        device = CVDevice(hostname="device_2")
+        for key, value in optional_arguments.items():
+            setattr(device, key, value)
+            assert getattr(device, key) == value
+
+    @pytest.mark.parametrize(
+        ("arguments", "expected_exception"),
+        [
+            pytest.param({}, TypeError("missing 1 required positional argument: 'hostname'"), id="no_hostname_1"),
+            pytest.param({"serial_number": None}, TypeError("missing 1 required positional argument: 'hostname'"), id="no_hostname_2"),
+            pytest.param({"serial_number": "serial_1"}, TypeError("missing 1 required positional argument: 'hostname'"), id="no_hostname_3"),
+            pytest.param({"system_mac_address": None}, TypeError("missing 1 required positional argument: 'hostname'"), id="no_hostname_4"),
+            pytest.param({"system_mac_address": "mac_1"}, TypeError("missing 1 required positional argument: 'hostname'"), id="no_hostname_5"),
+            pytest.param(
+                {"hostname": 123},
+                AristaAvdInvalidInputsError(
+                    "Field 'hostname' of the CVDevice cannot be set to a value '123' of type '<class 'int'>'. Please verify your inputs."
+                ),
+                id="hostname_int",
+            ),
+            pytest.param(
+                {"hostname": None},
+                AristaAvdInvalidInputsError(
+                    "Field 'hostname' of the CVDevice cannot be set to a value 'None' of type '<class 'NoneType'>'. Please verify your inputs."
+                ),
+                id="hostname_none",
+            ),
+            pytest.param(
+                {"hostname": "device_1", "serial_number": 123},
+                AristaAvdInvalidInputsError(
+                    "Field 'serial_number' of the device 'device_1' cannot be set to a value '123' of type '<class 'int'>'. Please verify your inputs."
+                ),
+                id="serial_number_int",
+            ),
+            pytest.param(
+                {"hostname": "device_1", "serial_number": ""},
+                AristaAvdInvalidInputsError("Field 'serial_number' of the device 'device_1' cannot be an empty string. Please verify your inputs."),
+                id="serial_number_empty_str_1",
+            ),
+            pytest.param(
+                {"hostname": "device_1", "serial_number": " "},
+                AristaAvdInvalidInputsError("Field 'serial_number' of the device 'device_1' cannot be an empty string. Please verify your inputs."),
+                id="serial_number_empty_str_2",
+            ),
+            pytest.param(
+                {"hostname": "device_1", "system_mac_address": 123},
+                AristaAvdInvalidInputsError(
+                    "Field 'system_mac_address' of the device 'device_1' cannot be set to a value '123' of type '<class 'int'>'. Please verify your inputs."
+                ),
+                id="system_mac_address_int",
+            ),
+            pytest.param(
+                {"hostname": "device_1", "system_mac_address": ""},
+                AristaAvdInvalidInputsError("Field 'system_mac_address' of the device 'device_1' cannot be an empty string. Please verify your inputs."),
+                id="system_mac_address_empty_str_1",
+            ),
+            pytest.param(
+                {"hostname": "device_1", "system_mac_address": " "},
+                AristaAvdInvalidInputsError("Field 'system_mac_address' of the device 'device_1' cannot be an empty string. Please verify your inputs."),
+                id="system_mac_address_empty_str_2",
+            ),
+        ],
+    )
+    def test_initialization_failure(self, arguments: dict[str, Any], expected_exception: Exception) -> None:
+        """Tests inability to create CVDevice with incorrect argument values."""
+        with pytest.raises(type(expected_exception), match=expected_exception.args[0]):
+            _ = CVDevice(**arguments)
+
+    @pytest.mark.parametrize(
+        ("arguments", "expected_exception"),
+        [
+            pytest.param(
+                {"hostname": 123},
+                AristaAvdInvalidInputsError(
+                    "Field 'hostname' of the device 'device_1' cannot be set to a value '123' of type '<class 'int'>'. Please verify your inputs."
+                ),
+                id="hostname_int",
+            ),
+            pytest.param(
+                {"hostname": None},
+                AristaAvdInvalidInputsError(
+                    "Field 'hostname' of the device 'device_1' cannot be set to a value 'None' of type '<class 'NoneType'>'. Please verify your inputs."
+                ),
+                id="hostname_none",
+            ),
+            pytest.param(
+                {"serial_number": 123},
+                AristaAvdInvalidInputsError(
+                    "Field 'serial_number' of the device 'device_1' cannot be set to a value '123' of type '<class 'int'>'. Please verify your inputs."
+                ),
+                id="serial_number_int",
+            ),
+            pytest.param(
+                {"serial_number": ""},
+                AristaAvdInvalidInputsError("Field 'serial_number' of the device 'device_1' cannot be an empty string. Please verify your inputs."),
+                id="serial_number_empty_str_1",
+            ),
+            pytest.param(
+                {"serial_number": " "},
+                AristaAvdInvalidInputsError("Field 'serial_number' of the device 'device_1' cannot be an empty string. Please verify your inputs."),
+                id="serial_number_empty_str_2",
+            ),
+            pytest.param(
+                {"system_mac_address": 123},
+                AristaAvdInvalidInputsError(
+                    "Field 'system_mac_address' of the device 'device_1' cannot be set to a value '123' of type '<class 'int'>'. Please verify your inputs."
+                ),
+                id="system_mac_address_int",
+            ),
+            pytest.param(
+                {"system_mac_address": ""},
+                AristaAvdInvalidInputsError("Field 'system_mac_address' of the device 'device_1' cannot be an empty string. Please verify your inputs."),
+                id="system_mac_address_empty_str_1",
+            ),
+            pytest.param(
+                {"system_mac_address": " "},
+                AristaAvdInvalidInputsError("Field 'system_mac_address' of the device 'device_1' cannot be an empty string. Please verify your inputs."),
+                id="system_mac_address_empty_str_2",
+            ),
+        ],
+    )
+    def test_overriding_failure(self, arguments: dict[str, Any], expected_exception: Exception) -> None:
+        """Test inability to override CVDevice string attributes with incorrect values."""
+        device = CVDevice(hostname="device_1")
+        for key, value in arguments.items():
+            with pytest.raises(type(expected_exception), match=expected_exception.args[0]):
+                setattr(device, key, value)
