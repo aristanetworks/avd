@@ -22,7 +22,7 @@ l3leaf:
       evpn_gateway:
         d_path:
           enabled: true
-          local_domain_id_local: "65200:2"
+          local_domain_id: "65200:2"
           remote_domain_id: "65100:1"
         all_active_multihoming:
           enabled: true
@@ -47,7 +47,7 @@ l3leaf:
       evpn_gateway:
         d_path:
           enabled: false
-          local_domain_id_local: "65200:1"
+          local_domain_id: "65200:1"
           remote_domain_id: "65100:2"
         all_active_multihoming:
           enabled: true
