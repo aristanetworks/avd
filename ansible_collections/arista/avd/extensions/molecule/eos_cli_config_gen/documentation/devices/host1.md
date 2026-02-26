@@ -4501,9 +4501,9 @@ interface profile aa-profile-3
 
 #### DPS Interfaces Summary
 
-| Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
-| --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.42/24 | True | 666 | Hardware: T3<br>Sampled: T2 | IPv4: 666<br>IPv6: 666<br>Direction: ingress |
+| Interface | IP address | IPv6 ND RA RX Accept | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | -------------------- | -------- | --- | --------------- | --------------- |
+| Dps1 | 192.168.42.42/24 | default-route<br>route-preference | True | 666 | Hardware: T3<br>Sampled: T2 | IPv4: 666<br>IPv6: 666<br>Direction: ingress |
 
 #### DPS Interfaces Device Configuration
 
@@ -4516,6 +4516,8 @@ interface Dps1
    flow tracker hardware T3
    flow tracker sampled T2
    ip address 192.168.42.42/24
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
    tcp mss ceiling ipv4 666 ipv6 666 ingress
    load-interval 42
 ```

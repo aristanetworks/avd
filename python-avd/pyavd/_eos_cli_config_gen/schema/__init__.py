@@ -5865,6 +5865,86 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Name: TypeAlias = Literal["Dps1"]
 
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ra(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RxAccept(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                    default_route: bool | None
+                    route_preference: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RxAccept.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                default_route: default_route
+                                route_preference: route_preference
+
+                            """
+
+                _fields: ClassVar[dict] = {"rx_accept": {"type": RxAccept}}
+                rx_accept: RxAccept
+                """
+                Accept information on received RA.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                        """
+                        Ra.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            rx_accept:
+                               Accept information on received RA.
+
+                               Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"ra": {"type": Ra}}
+            ra: Ra
+            """
+            Router Advertisement.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ra: Ra | UndefinedType = Undefined) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ra:
+                           Router Advertisement.
+
+                           Subclass of AvdModel.
+
+                    """
+
         class FlowTracker(AvdModel):
             """Subclass of AvdModel."""
 
@@ -5929,6 +6009,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "shutdown": {"type": bool},
             "mtu": {"type": int},
             "ip_address": {"type": str},
+            "ipv6_nd": {"type": Ipv6Nd},
             "flow_tracker": {"type": FlowTracker},
             "tcp_mss_ceiling": {"type": TcpMssCeiling},
             "eos_cli": {"type": str},
@@ -5941,6 +6022,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Maximum Transmission Unit in bytes."""
         ip_address: str | None
         """IPv4 address/mask."""
+        ipv6_nd: Ipv6Nd
+        """
+        Neighbor Discovery / Router Advertisement.
+
+        Subclass of AvdModel.
+        """
         flow_tracker: FlowTracker
         """Subclass of AvdModel."""
         tcp_mss_ceiling: TcpMssCeiling
@@ -5958,6 +6045,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 shutdown: bool | None | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 flow_tracker: FlowTracker | UndefinedType = Undefined,
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
@@ -5974,6 +6062,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     shutdown: shutdown
                     mtu: Maximum Transmission Unit in bytes.
                     ip_address: IPv4 address/mask.
+                    ipv6_nd:
+                       Neighbor Discovery / Router Advertisement.
+
+                       Subclass of AvdModel.
                     flow_tracker: Subclass of AvdModel.
                     tcp_mss_ceiling: Subclass of AvdModel.
                     eos_cli: Multiline String with EOS CLI rendered directly on the Dps interface in the final EOS configuration.

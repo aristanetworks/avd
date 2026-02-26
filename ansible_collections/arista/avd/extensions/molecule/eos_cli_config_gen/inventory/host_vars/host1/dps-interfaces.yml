@@ -7,6 +7,11 @@ dps_interfaces:
     shutdown: true
     mtu: 666
     ip_address: 192.168.42.42/24
+    ipv6_nd:
+      ra:
+        rx_accept:
+          default_route: true
+          route_preference: true
     flow_tracker:
       hardware: T3
       sampled: T2

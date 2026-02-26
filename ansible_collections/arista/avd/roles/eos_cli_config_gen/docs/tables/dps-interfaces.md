@@ -13,6 +13,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "dps_interfaces.[].shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "dps_interfaces.[].mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Maximum Transmission Unit in bytes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "dps_interfaces.[].ip_address") | String |  |  |  | IPv4 address/mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd</samp>](## "dps_interfaces.[].ipv6_nd") | Dictionary |  |  |  | Neighbor Discovery / Router Advertisement. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra</samp>](## "dps_interfaces.[].ipv6_nd.ra") | Dictionary |  |  |  | Router Advertisement. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_accept</samp>](## "dps_interfaces.[].ipv6_nd.ra.rx_accept") | Dictionary |  |  |  | Accept information on received RA. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route</samp>](## "dps_interfaces.[].ipv6_nd.ra.rx_accept.default_route") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_preference</samp>](## "dps_interfaces.[].ipv6_nd.ra.rx_accept.route_preference") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker</samp>](## "dps_interfaces.[].flow_tracker") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sampled</samp>](## "dps_interfaces.[].flow_tracker.sampled") | String |  |  |  | Sampled flow tracker name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "dps_interfaces.[].flow_tracker.hardware") | String |  |  |  | Hardware flow tracker name, |
@@ -37,6 +42,17 @@
 
         # IPv4 address/mask.
         ip_address: <str>
+
+        # Neighbor Discovery / Router Advertisement.
+        ipv6_nd:
+
+          # Router Advertisement.
+          ra:
+
+            # Accept information on received RA.
+            rx_accept:
+              default_route: <bool>
+              route_preference: <bool>
         flow_tracker:
 
           # Sampled flow tracker name.
