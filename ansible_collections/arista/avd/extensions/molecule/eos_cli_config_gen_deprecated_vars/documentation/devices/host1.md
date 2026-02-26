@@ -6,6 +6,8 @@
   - [IP Name Server Groups](#ip-name-server-groups)
 - [Authentication](#authentication)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
+- [Interfaces](#interfaces)
+  - [Ethernet Interfaces](#ethernet-interfaces)
 
 ## Management
 
@@ -52,4 +54,29 @@ ip name-server group mynameserver1
 ip radius vrf default source-interface Loopback1
 ip radius source-interface Loopback10
 ip radius vrf MGMT source-interface Management1
+```
+
+## Interfaces
+
+### Ethernet Interfaces
+
+#### Ethernet Interfaces Summary
+
+##### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+
+*Inherited from Port-Channel Interface
+
+#### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet1
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
+   ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
+   ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
 ```

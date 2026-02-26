@@ -430,8 +430,8 @@
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |  IPv6 ND RA RX Accept |
+| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ | --------------------- |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
@@ -445,11 +445,11 @@
 {%                     set vrf = port_channel_interface.vrf | arista.avd.default("default") %}
 {%                     set mtu = port_channel_interface.mtu | arista.avd.default("-") %}
 {%                     set shutdown = port_channel_interface.shutdown | arista.avd.default("-") %}
-{%                     set nd_ra_disabled = port_channel_interface.ipv6_nd_ra_disabled | arista.avd.default("-") %}
-{%                     set managed_config_flag = port_channel_interface.ipv6_nd_managed_config_flag | arista.avd.default("-") %}
+{%                     set nd_ra_disabled = port_channel_interface.ipv6_nd.ra_disabled | arista.avd.default(port_channel_interface.ipv6_nd_ra_disabled) | arista.avd.default("-") %}
+{%                     set managed_config_flag = port_channel_interface.ipv6_nd.managed_config_flag | arista.avd.default(port_channel_interface.ipv6_nd_managed_config_flag) | arista.avd.default("-") %}
 {%                     set ipv6_acl_in = port_channel_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%                     set ipv6_acl_out = port_channel_interface.ipv6_access_group_out | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} | {{ description }} | {{ channel_group }} | *{{ ipv6_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown }} | *{{ nd_ra_disabled }} | *{{ managed_config_flag }} | *{{ ipv6_acl_in }} | *{{ ipv6_acl_out }} |
+| {{ ethernet_interface.name }} | {{ description }} | {{ channel_group }} | *{{ ipv6_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown }} | *{{ nd_ra_disabled }} | *{{ managed_config_flag }} | *{{ ipv6_acl_in }} | *{{ ipv6_acl_out }} | - |
 {%                 endif %}
 {%             else %}
 {%                 if ethernet_interface.ipv6_address is arista.avd.defined or ethernet_interface.ipv6_enable is arista.avd.defined(true) %}
@@ -458,11 +458,21 @@
 {%                     set vrf = ethernet_interface.vrf | arista.avd.default("default") %}
 {%                     set mtu = ethernet_interface.mtu | arista.avd.default("-") %}
 {%                     set shutdown = ethernet_interface.shutdown | arista.avd.default("-") %}
-{%                     set nd_ra_disabled = ethernet_interface.ipv6_nd_ra_disabled | arista.avd.default("-") %}
-{%                     set managed_config_flag = ethernet_interface.ipv6_nd_managed_config_flag | arista.avd.default("-") %}
+{%                     set ipv6_nd_ra_disabled = ethernet_interface.ipv6_nd.ra.disabled | arista.avd.default(ethernet_interface.ipv6_nd_ra_disabled) | arista.avd.default("-") %}
+{%                     set nd_ra_rx_accept = [] %}
+{%                     if ethernet_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
+{%                         do nd_ra_rx_accept.append("default-route") %}
+{%                     endif %}
+{%                     if ethernet_interface.ipv6_nd.ra.rx_accept.route_preference is arista.avd.defined(true) %}
+{%                         do nd_ra_rx_accept.append("route-preference") %}
+{%                     endif %}
+{%                     if nd_ra_rx_accept == [] %}
+{%                         do nd_ra_rx_accept.append("-") %}
+{%                     endif %}
+{%                     set managed_config_flag = ethernet_interface.ipv6_nd.managed_config_flag | arista.avd.default(ethernet_interface.ipv6_nd_managed_config_flag) | arista.avd.default("-") %}
 {%                     set ipv6_acl_in = ethernet_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%                     set ipv6_acl_out = ethernet_interface.ipv6_access_group_out | arista.avd.default("-") %}
-| {{ ethernet_interface.name }} | {{ description }} | - | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ nd_ra_disabled }} | {{ managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
+| {{ ethernet_interface.name }} | {{ description }} | - | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} | {{ nd_ra_rx_accept | join(", ") }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}

@@ -241,18 +241,19 @@ ethernet_interfaces:
         direction: downstream
     ipv6_enable: true
     ipv6_address: 2002:ABDC::1/64
-    ipv6_nd_prefixes:
-      - ipv6_prefix: 2345:ABCD:3FE0::1/96
-        valid_lifetime: infinite
-        preferred_lifetime: 50
-        no_autoconfig_flag: true
-      - ipv6_prefix: 2345:ABCD:3FE0::2/96
-        valid_lifetime: 50
-        preferred_lifetime: infinite
-        no_autoconfig_flag: false
-      - ipv6_prefix: 2345:ABCD:3FE0::3/96
-        valid_lifetime: 100000
-        no_autoconfig_flag: true
+    ipv6_nd:
+      prefixes:
+        - ipv6_prefix: 2345:ABCD:3FE0::1/96
+          valid_lifetime: infinite
+          preferred_lifetime: 50
+          no_autoconfig_flag: true
+        - ipv6_prefix: 2345:ABCD:3FE0::2/96
+          valid_lifetime: 50
+          preferred_lifetime: infinite
+          no_autoconfig_flag: false
+        - ipv6_prefix: 2345:ABCD:3FE0::3/96
+          valid_lifetime: 100000
+          no_autoconfig_flag: true
     priority_flow_control:
       enabled: false
     spanning_tree_guard: root
@@ -309,8 +310,13 @@ ethernet_interfaces:
     ipv6_enable: true
     ipv6_address: 2020::2020/64
     ipv6_address_link_local: FE80:FEA::AB65/64
-    ipv6_nd_ra_disabled: true
-    ipv6_nd_managed_config_flag: true
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
     ipv6_access_group_in: IPv6_ACL_IN
     ipv6_access_group_out: IPv6_ACL_OUT
     snmp_trap_link_change: true
