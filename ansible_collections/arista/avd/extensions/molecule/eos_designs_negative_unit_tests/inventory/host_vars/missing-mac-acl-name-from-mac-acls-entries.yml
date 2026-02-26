@@ -5,10 +5,17 @@ l2leaf:
   nodes:
     - name: mac-acls
 
+mac_acls:
+  - name: ACL2
+    entries:
+      - sequence: 10
+        action: "deny any 01:80:c2:00:00:00 00:00:00:00:00:00"
+      - sequence: 5
+
 servers:
   - name: Server1
     adapters:
-      - switches: [mac-acls]
+      - switches: [missing-mac-acl-name-from-mac-acls-entries]
         switch_ports: [Ethernet1]
         endpoint_ports: [ENDPOINT_PORT]
         mac_acl_in: ACL1

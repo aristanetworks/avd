@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2026 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -10,10 +10,3 @@ keys:
     type: list
     $ref: "eos_cli_config_gen#/keys/mac_access_lists"
     description: These MAC access-lists can be referenced under `network_ports/connected_endpoints` and only configured when it is in use.
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          convert_types:
-            - int
