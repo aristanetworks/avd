@@ -21,7 +21,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.d_path") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id_local</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.d_path.local_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_domain_id</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.d_path.remote_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
@@ -47,7 +47,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id_local</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.d_path.local_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.d_path.remote_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
@@ -69,7 +69,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id_local</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.d_path.local_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.d_path.remote_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
@@ -93,7 +93,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id_local</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.d_path.local_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_domain_id</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.d_path.remote_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
@@ -117,7 +117,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "device_profiles.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "device_profiles.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id_local</samp>](## "device_profiles.[].evpn_gateway.d_path.local_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "device_profiles.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_domain_id</samp>](## "device_profiles.[].evpn_gateway.d_path.remote_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
@@ -141,7 +141,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "devices.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "devices.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id_local</samp>](## "devices.[].evpn_gateway.d_path.local_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "devices.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_domain_id</samp>](## "devices.[].evpn_gateway.d_path.remote_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "devices.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
@@ -195,7 +195,7 @@
             enabled: <bool; default=True>
 
             # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-            local_domain_id_local: <str; required>
+            local_domain_id: <str; required>
 
             # ASN(asplain):local_admin or ASN(asdot):local_admin notation
             remote_domain_id: <str; required>
@@ -280,7 +280,7 @@
                   enabled: <bool; default=True>
 
                   # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-                  local_domain_id_local: <str; required>
+                  local_domain_id: <str; required>
 
                   # ASN(asplain):local_admin or ASN(asdot):local_admin notation
                   remote_domain_id: <str; required>
@@ -352,7 +352,7 @@
               enabled: <bool; default=True>
 
               # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-              local_domain_id_local: <str; required>
+              local_domain_id: <str; required>
 
               # ASN(asplain):local_admin or ASN(asdot):local_admin notation
               remote_domain_id: <str; required>
@@ -430,7 +430,7 @@
               enabled: <bool; default=True>
 
               # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-              local_domain_id_local: <str; required>
+              local_domain_id: <str; required>
 
               # ASN(asplain):local_admin or ASN(asdot):local_admin notation
               remote_domain_id: <str; required>
@@ -508,7 +508,7 @@
             enabled: <bool; default=True>
 
             # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-            local_domain_id_local: <str; required>
+            local_domain_id: <str; required>
 
             # ASN(asplain):local_admin or ASN(asdot):local_admin notation
             remote_domain_id: <str; required>
@@ -586,7 +586,7 @@
             enabled: <bool; default=True>
 
             # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-            local_domain_id_local: <str; required>
+            local_domain_id: <str; required>
 
             # ASN(asplain):local_admin or ASN(asdot):local_admin notation
             remote_domain_id: <str; required>

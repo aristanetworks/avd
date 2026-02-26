@@ -7360,18 +7360,14 @@ class EosDesigns(EosDesignsRootModel):
             class DPath(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {
-                    "enabled": {"type": bool, "default": True},
-                    "local_domain_id_local": {"type": str},
-                    "remote_domain_id": {"type": str},
-                }
+                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "local_domain_id": {"type": str}, "remote_domain_id": {"type": str}}
                 enabled: bool
                 """
                 Enable D-path for use with BGP bestpath selection algorithm.
 
                 Default value: `True`
                 """
-                local_domain_id_local: str
+                local_domain_id: str
                 """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
                 remote_domain_id: str
                 """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
@@ -7382,7 +7378,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType = Undefined,
-                        local_domain_id_local: str | UndefinedType = Undefined,
+                        local_domain_id: str | UndefinedType = Undefined,
                         remote_domain_id: str | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -7393,7 +7389,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             enabled: Enable D-path for use with BGP bestpath selection algorithm.
-                            local_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                            local_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                             remote_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
 
                         """
@@ -12468,18 +12464,14 @@ class EosDesigns(EosDesignsRootModel):
             class DPath(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {
-                    "enabled": {"type": bool, "default": True},
-                    "local_domain_id_local": {"type": str},
-                    "remote_domain_id": {"type": str},
-                }
+                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "local_domain_id": {"type": str}, "remote_domain_id": {"type": str}}
                 enabled: bool
                 """
                 Enable D-path for use with BGP bestpath selection algorithm.
 
                 Default value: `True`
                 """
-                local_domain_id_local: str
+                local_domain_id: str
                 """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
                 remote_domain_id: str
                 """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
@@ -12490,7 +12482,7 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         enabled: bool | UndefinedType = Undefined,
-                        local_domain_id_local: str | UndefinedType = Undefined,
+                        local_domain_id: str | UndefinedType = Undefined,
                         remote_domain_id: str | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -12501,7 +12493,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             enabled: Enable D-path for use with BGP bestpath selection algorithm.
-                            local_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                            local_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                             remote_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
 
                         """
@@ -36013,7 +36005,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool, "default": True},
-                                "local_domain_id_local": {"type": str},
+                                "local_domain_id": {"type": str},
                                 "remote_domain_id": {"type": str},
                             }
                             enabled: bool
@@ -36022,7 +36014,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `True`
                             """
-                            local_domain_id_local: str
+                            local_domain_id: str
                             """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
                             remote_domain_id: str
                             """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
@@ -36033,7 +36025,7 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    local_domain_id_local: str | UndefinedType = Undefined,
+                                    local_domain_id: str | UndefinedType = Undefined,
                                     remote_domain_id: str | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -36044,7 +36036,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: Enable D-path for use with BGP bestpath selection algorithm.
-                                        local_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        local_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                                         remote_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
 
                                     """
@@ -41094,7 +41086,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 _fields: ClassVar[dict] = {
                                     "enabled": {"type": bool, "default": True},
-                                    "local_domain_id_local": {"type": str},
+                                    "local_domain_id": {"type": str},
                                     "remote_domain_id": {"type": str},
                                 }
                                 enabled: bool
@@ -41103,7 +41095,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Default value: `True`
                                 """
-                                local_domain_id_local: str
+                                local_domain_id: str
                                 """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
                                 remote_domain_id: str
                                 """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
@@ -41114,7 +41106,7 @@ class EosDesigns(EosDesignsRootModel):
                                         self,
                                         *,
                                         enabled: bool | UndefinedType = Undefined,
-                                        local_domain_id_local: str | UndefinedType = Undefined,
+                                        local_domain_id: str | UndefinedType = Undefined,
                                         remote_domain_id: str | UndefinedType = Undefined,
                                     ) -> None:
                                         """
@@ -41125,7 +41117,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             enabled: Enable D-path for use with BGP bestpath selection algorithm.
-                                            local_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                            local_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                                             remote_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
 
                                         """
@@ -46138,7 +46130,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool, "default": True},
-                                "local_domain_id_local": {"type": str},
+                                "local_domain_id": {"type": str},
                                 "remote_domain_id": {"type": str},
                             }
                             enabled: bool
@@ -46147,7 +46139,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `True`
                             """
-                            local_domain_id_local: str
+                            local_domain_id: str
                             """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
                             remote_domain_id: str
                             """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
@@ -46158,7 +46150,7 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    local_domain_id_local: str | UndefinedType = Undefined,
+                                    local_domain_id: str | UndefinedType = Undefined,
                                     remote_domain_id: str | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -46169,7 +46161,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: Enable D-path for use with BGP bestpath selection algorithm.
-                                        local_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        local_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                                         remote_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
 
                                     """
@@ -51245,7 +51237,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool, "default": True},
-                                "local_domain_id_local": {"type": str},
+                                "local_domain_id": {"type": str},
                                 "remote_domain_id": {"type": str},
                             }
                             enabled: bool
@@ -51254,7 +51246,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `True`
                             """
-                            local_domain_id_local: str
+                            local_domain_id: str
                             """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
                             remote_domain_id: str
                             """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
@@ -51265,7 +51257,7 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    local_domain_id_local: str | UndefinedType = Undefined,
+                                    local_domain_id: str | UndefinedType = Undefined,
                                     remote_domain_id: str | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -51276,7 +51268,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: Enable D-path for use with BGP bestpath selection algorithm.
-                                        local_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        local_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                                         remote_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
 
                                     """
@@ -68705,7 +68697,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool, "default": True},
-                                "local_domain_id_local": {"type": str},
+                                "local_domain_id": {"type": str},
                                 "remote_domain_id": {"type": str},
                             }
                             enabled: bool
@@ -68714,7 +68706,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `True`
                             """
-                            local_domain_id_local: str
+                            local_domain_id: str
                             """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
                             remote_domain_id: str
                             """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
@@ -68725,7 +68717,7 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    local_domain_id_local: str | UndefinedType = Undefined,
+                                    local_domain_id: str | UndefinedType = Undefined,
                                     remote_domain_id: str | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -68736,7 +68728,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: Enable D-path for use with BGP bestpath selection algorithm.
-                                        local_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        local_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                                         remote_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
 
                                     """
@@ -73786,7 +73778,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 _fields: ClassVar[dict] = {
                                     "enabled": {"type": bool, "default": True},
-                                    "local_domain_id_local": {"type": str},
+                                    "local_domain_id": {"type": str},
                                     "remote_domain_id": {"type": str},
                                 }
                                 enabled: bool
@@ -73795,7 +73787,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Default value: `True`
                                 """
-                                local_domain_id_local: str
+                                local_domain_id: str
                                 """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
                                 remote_domain_id: str
                                 """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
@@ -73806,7 +73798,7 @@ class EosDesigns(EosDesignsRootModel):
                                         self,
                                         *,
                                         enabled: bool | UndefinedType = Undefined,
-                                        local_domain_id_local: str | UndefinedType = Undefined,
+                                        local_domain_id: str | UndefinedType = Undefined,
                                         remote_domain_id: str | UndefinedType = Undefined,
                                     ) -> None:
                                         """
@@ -73817,7 +73809,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             enabled: Enable D-path for use with BGP bestpath selection algorithm.
-                                            local_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                            local_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                                             remote_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
 
                                         """
@@ -78830,7 +78822,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool, "default": True},
-                                "local_domain_id_local": {"type": str},
+                                "local_domain_id": {"type": str},
                                 "remote_domain_id": {"type": str},
                             }
                             enabled: bool
@@ -78839,7 +78831,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `True`
                             """
-                            local_domain_id_local: str
+                            local_domain_id: str
                             """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
                             remote_domain_id: str
                             """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
@@ -78850,7 +78842,7 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    local_domain_id_local: str | UndefinedType = Undefined,
+                                    local_domain_id: str | UndefinedType = Undefined,
                                     remote_domain_id: str | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -78861,7 +78853,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: Enable D-path for use with BGP bestpath selection algorithm.
-                                        local_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        local_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                                         remote_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
 
                                     """
@@ -83937,7 +83929,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool, "default": True},
-                                "local_domain_id_local": {"type": str},
+                                "local_domain_id": {"type": str},
                                 "remote_domain_id": {"type": str},
                             }
                             enabled: bool
@@ -83946,7 +83938,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `True`
                             """
-                            local_domain_id_local: str
+                            local_domain_id: str
                             """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
                             remote_domain_id: str
                             """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
@@ -83957,7 +83949,7 @@ class EosDesigns(EosDesignsRootModel):
                                     self,
                                     *,
                                     enabled: bool | UndefinedType = Undefined,
-                                    local_domain_id_local: str | UndefinedType = Undefined,
+                                    local_domain_id: str | UndefinedType = Undefined,
                                     remote_domain_id: str | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -83968,7 +83960,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: Enable D-path for use with BGP bestpath selection algorithm.
-                                        local_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        local_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                                         remote_domain_id: ASN(asplain):local_admin or ASN(asdot):local_admin notation
 
                                     """

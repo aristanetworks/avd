@@ -1,5 +1,4 @@
 ---
-# Not testing anything, but just a placeholder for future tests.
 evpn_overlay_bgp_rtc: true
 type: l3leaf
 l3leaf:
@@ -35,6 +34,7 @@ l3leaf:
             evpn_l3:
               enabled: true
               inter_domain: true
+            # Testing the deprecated enable_d_path, evpn_domain_id_local and evpn_domain_id_remote keys
             all_active_multihoming:
               enabled: true
               enable_d_path: true

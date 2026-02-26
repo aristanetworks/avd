@@ -744,7 +744,7 @@ $defs:
                     description: Enable D-path for use with BGP bestpath selection algorithm.
                     type: bool
                     default: true
-                  local_domain_id_local:
+                  local_domain_id:
                     description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                     type: str
                     required: true
