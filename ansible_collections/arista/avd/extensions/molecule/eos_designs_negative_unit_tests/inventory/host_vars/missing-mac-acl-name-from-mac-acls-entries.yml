@@ -3,7 +3,7 @@ type: l2leaf
 l2leaf:
   defaults:
   nodes:
-    - name: mac-acls
+    - name: missing-mac-acl-name-from-mac-acls-entries
 
 mac_acls:
   - name: ACL2
@@ -22,4 +22,4 @@ servers:
         mac_acl_in: ACL1
 
 expected_error_message: >-
-  'mac_acls[name=ACL1]' is required but was not found.
+  mac_acls[name=ACL1] is required but was not found for the host 'missing-mac-acl-name-from-mac-acls-entries'.
