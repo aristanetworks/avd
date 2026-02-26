@@ -5183,6 +5183,7 @@ interface Ethernet7
    storm-control unknown-unicast level 10
    storm-control all level 75
    spanning-tree portfast
+   spanning-tree link-type shared
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
    vmtracer vmware-esx
@@ -6401,6 +6402,7 @@ interface Port-Channel15
    qos cos 2
    isis authentication mode md5 rx-disabled
    isis authentication key 0 <removed>
+   spanning-tree link-type point-to-point
    spanning-tree guard loop
    link tracking group EVPN_MH_ES2 upstream
 !
