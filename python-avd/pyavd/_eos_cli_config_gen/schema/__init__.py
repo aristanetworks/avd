@@ -22630,6 +22630,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "gateway": {"type": str},
             "ipv6_gateway": {"type": str},
             "mac_address": {"type": str},
+            "dhcp_client_accept_default_route": {"type": bool},
             "lldp": {"type": Lldp},
             "redundancy": {"type": Redundancy},
             "eos_cli": {"type": str},
@@ -22666,6 +22667,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """IPv6 address of default gateway in management VRF."""
         mac_address: str | None
         """MAC address."""
+        dhcp_client_accept_default_route: bool | None
+        """
+        Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+        `dhcp`.
+        """
         lldp: Lldp
         """Subclass of AvdModel."""
         redundancy: Redundancy
@@ -22692,6 +22698,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 gateway: str | None | UndefinedType = Undefined,
                 ipv6_gateway: str | None | UndefinedType = Undefined,
                 mac_address: str | None | UndefinedType = Undefined,
+                dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
                 redundancy: Redundancy | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
@@ -22720,6 +22727,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     gateway: IPv4 address of default gateway in management VRF.
                     ipv6_gateway: IPv6 address of default gateway in management VRF.
                     mac_address: MAC address.
+                    dhcp_client_accept_default_route:
+                       Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+                       `dhcp`.
                     lldp: Subclass of AvdModel.
                     redundancy: Subclass of AvdModel.
                     eos_cli: Multiline EOS CLI rendered directly on the management interface in the final EOS configuration.

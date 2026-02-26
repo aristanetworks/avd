@@ -383,7 +383,7 @@ agent KernelFib shutdown supervisor standby
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management0 | - | oob | default | 10.1.1.1 | - |
 | Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
-| Management42 | - | oob | default | - | - |
+| Management42 | - | oob | default | dhcp | - |
 | Vlan123 | inband_management | inband | default | 10.73.0.123/24 | 10.73.0.1 |
 
 ##### IPv6
@@ -450,6 +450,8 @@ interface Management1
 interface Management42
    shutdown
    speed forced 1000full
+   ip address dhcp
+   dhcp client accept default-route
    no lldp transmit
    no lldp receive
    lldp tlv transmit ztp vlan 666
