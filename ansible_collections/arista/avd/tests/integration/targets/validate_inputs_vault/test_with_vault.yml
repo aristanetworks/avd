@@ -1,0 +1,34 @@
+---
+# Test: With vault password - files should be encrypted
+- name: Test with vault password
+  hosts: testhost
+  gather_facts: false
+  vars:
+    hostname: testhost
+    router_bgp:
+      as: "65001"
+    static_routes:
+      - vrf: default
+        prefix: 0.0.0.0/0
+        next_hop: 192.168.0.1
+  tasks:
+    - name: Validate inputs with vault configured
+      arista.avd.validate_inputs:
+        schema_name: eos_config
+        read_from_input_dir: false
+        tmp_dir: "{{ playbook_dir }}/intended/eos_cli_config_gen"
+      check_mode: false
+      register: validate_result
+
+    - name: Verify validation succeeded
+      ansible.builtin.assert:
+        that:
+          - validate_result is success
+        fail_msg: "Validation should succeed with vault configured"
+
+    - name: Verify files are encrypted
+      ansible.builtin.include_tasks: tasks/verify_vault_encryption.yml
+      vars:
+        templated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/templated/testhost.json"
+        validated_file: "{{ playbook_dir }}/intended/eos_cli_config_gen/validated/testhost.json"
+        expected_encrypted: true

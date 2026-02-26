@@ -130,7 +130,18 @@ def process_config(config_path: str, output_dir: str | None = None) -> None:
 
     cfg_path = Path(config_path)
     with cfg_path.open("r", encoding="utf-8") as f:
-        jobs = yaml.safe_load(f)
+        config = yaml.safe_load(f)
+
+    # Support both list format (legacy) and dict format with base_path
+    if isinstance(config, list):
+        jobs = config
+        base_path = ""
+    elif isinstance(config, dict):
+        jobs = config.get("artifacts", [])
+        base_path = config.get("base_path", "")
+    else:
+        logger.error("ERROR: Invalid config format. Expected list or dict.")
+        return
 
     for job in jobs:
         target_file: str = job.get("file")
@@ -139,13 +150,14 @@ def process_config(config_path: str, output_dir: str | None = None) -> None:
 
         # Use job-specific output_dir if provided, otherwise use the global one
         job_output_dir: str | None = job.get("output_dir")
-        final_output_dir: str | None = job_output_dir if job_output_dir else output_dir
+        final_output_dir: str | None = job_output_dir or output_dir
 
         if not final_output_dir:
             logger.error("ERROR: No output_dir specified for artifact '%s'", artifact_filename)
             continue
 
-        out_path = Path(final_output_dir)
+        # Prepend base_path if defined and output_dir is not absolute
+        out_path = Path(base_path) / final_output_dir if base_path and not Path(final_output_dir).is_absolute() else Path(final_output_dir)
         if not out_path.exists():
             out_path.mkdir(parents=True, exist_ok=True)
 

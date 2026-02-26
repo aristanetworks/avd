@@ -31,6 +31,7 @@ Note: Input validation is performed by the `arista.avd.validate_inputs` plugin, 
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| <samp>tmp_dir</samp> | str | True | None | - | Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.<br>Must be the same across all plugins. |
 | <samp>eos_designs_custom_templates</samp> | list | False | None | - | List of dicts for Jinja2 templates to be run after generating the structured configuration |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;template</samp> | str | True | None | - | Template file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;options</samp> | dict | False | None | - | Template options |
@@ -49,6 +50,7 @@ Note: Input validation is performed by the `arista.avd.validate_inputs` plugin, 
 ---
 - name: Generate device configuration in structured format
   arista.avd.eos_designs_structured_config:
+    tmp_dir: "intended/tmp_eos_designs"
     templates:
       - template: "custom_templates/custom_feature1.j2"
       - template: "custom_templates/custom_feature2.j2"

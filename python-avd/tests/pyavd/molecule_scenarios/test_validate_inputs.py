@@ -49,7 +49,7 @@ def test_validate_inputs_with_eos_cli_config_gen_keys() -> None:
     }
 
     # Test with warnings enabled
-    configuration = Configuration(warn_eos_cli_config_gen_keys=True)
+    configuration = Configuration(warn_eos_config_keys=True)
     validated_data_result = validate_inputs(inputs, configuration=configuration)
 
     # Should have no violations
@@ -58,7 +58,7 @@ def test_validate_inputs_with_eos_cli_config_gen_keys() -> None:
     # Should have ignored_eos_config_keys
     assert len(validated_data_result.validation_result.ignored_eos_config_keys) == 1
     assert validated_data_result.validation_result.ignored_eos_config_keys[0].path == ["dns_domain"]
-    assert "eos_cli_config_gen" in validated_data_result.validation_result.ignored_eos_config_keys[0].message
+    assert "EOS Config" in validated_data_result.validation_result.ignored_eos_config_keys[0].message
 
 
 def test_validate_inputs_with_eos_cli_config_gen_keys_disabled() -> None:
@@ -74,7 +74,7 @@ def test_validate_inputs_with_eos_cli_config_gen_keys_disabled() -> None:
     }
 
     # Test with warnings disabled using Configuration object
-    configuration = Configuration(warn_eos_cli_config_gen_keys=False)
+    configuration = Configuration(warn_eos_config_keys=False)
     validated_data_result = validate_inputs(inputs, configuration=configuration)
 
     # Should have no violations

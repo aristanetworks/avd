@@ -14,11 +14,13 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    AVDFileHandler,
+    AVDVaultHandler,
     PythonToAnsibleContextFilter,
     PythonToAnsibleHandler,
     cprofile,
-    get_role_tmp_paths,
     get_templar,
+    get_tmp_paths,
     raise_action_fail,
 )
 
@@ -47,6 +49,7 @@ with suppress(AttributeError):
     LOGGER.propagate = False
 
 ARGUMENT_SPEC = {
+    "tmp_dir": {"type": "str", "required": True},
     "config_filename": {"type": "str"},
     "documentation_filename": {"type": "str"},
     "generate_device_config": {"type": "bool", "default": True},
@@ -58,6 +61,8 @@ ARGUMENT_SPEC = {
 
 class ActionModule(ActionBase):
     """Action Module for eos_cli_config_gen."""
+
+    tmp_dir: str
 
     @cprofile()
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
@@ -82,6 +87,7 @@ class ActionModule(ActionBase):
         """Main function in charge of loading the structured config and generating the device configuration and documentation."""
         LOGGER.debug("Validating task arguments...")
         validated_args = self.validate_args()
+        self.tmp_dir = validated_args.get("tmp_dir")
         LOGGER.debug("Validating task arguments [done].")
 
         LOGGER.debug("Loading structured config...")
@@ -188,7 +194,7 @@ class ActionModule(ActionBase):
         Returns:
             Dict containing the validated structured config for the host.
         """
-        _templated_path, validated_path = get_role_tmp_paths("eos_cli_config_gen")
+        _templated_path, validated_path = get_tmp_paths(self.tmp_dir)
         file_path = validated_path / f"{hostname}.json"
         if not file_path.exists():
             msg = (
@@ -197,8 +203,10 @@ class ActionModule(ActionBase):
             )
             raise AnsibleActionFail(message=msg)
 
-        with file_path.open(mode="r", encoding="utf-8") as f:
-            return json.load(f)
+        # Read, unvault, and parse the JSON file
+        vault_handler = AVDVaultHandler(self._loader)
+        file_handler = AVDFileHandler(vault_handler)
+        return file_handler.load_json(file_path)
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:

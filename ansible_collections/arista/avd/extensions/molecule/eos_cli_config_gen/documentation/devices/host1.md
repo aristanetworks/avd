@@ -383,7 +383,7 @@ agent KernelFib shutdown supervisor standby
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management0 | - | oob | default | 10.1.1.1 | - |
 | Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
-| Management42 | - | oob | default | - | - |
+| Management42 | - | oob | default | dhcp | - |
 | Vlan123 | inband_management | inband | default | 10.73.0.123/24 | 10.73.0.1 |
 
 ##### IPv6
@@ -448,6 +448,8 @@ interface Management1
 interface Management42
    shutdown
    speed forced 1000full
+   ip address dhcp
+   dhcp client accept default-route
    no lldp transmit
    no lldp receive
    lldp tlv transmit ztp vlan 666
@@ -1599,18 +1601,18 @@ radius-server host 10.10.11.158 vrf mgt tls ssl-profile SSL_PROFILE
 | VRF | Source Interface Name |
 | --- | --------------- |
 | default | Loopback1 |
-| default | Loopback10 |
+| BLAH | Loopback10 |
 | MGMT | Management1 |
+| abc | Loopback10 |
 
 #### IP SOURCE Source Interfaces Device Configuration
 
 ```eos
 !
-ip radius vrf default source-interface Loopback1
-!
-ip radius source-interface Loopback10
-!
+ip radius source-interface Loopback1
+ip radius vrf BLAH source-interface Loopback10
 ip radius vrf MGMT source-interface Management1
+ip radius vrf abc source-interface Loopback10
 ```
 
 ### AAA Server Groups
@@ -2318,6 +2320,7 @@ daemon random
 | VRF | Source Interface |
 | --- | ---------------- |
 | - | Ethernet2 |
+| VRFA | Ethernet4 |
 | default | Loopback0 |
 | mgt | Management0 |
 
@@ -2392,6 +2395,7 @@ logging format rfc5424
 logging format hostname fqdn
 logging format sequence-numbers
 logging source-interface Ethernet2
+logging vrf VRFA local-interface Ethernet4
 logging source-interface Loopback0
 logging vrf mgt source-interface Management0
 logging policy match match-list molecule discard
@@ -3589,18 +3593,25 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 
 | Host Name | Description | IPv4 Address | ICMP Echo Size | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | -------------- | --------------------- | ------------ | --- |
+| Server3 | server3_connectivity_monitor | 10.10.10.3 | 1200 | HOST_SET | False | - |
 | server1 | server1_connectivity_monitor | 10.10.10.1 | - | HOST_SET | True | https://server1.local.com |
 | server2 | server2_connectivity_monitor | 10.10.10.2 | - | HOST_SET | True | https://server2.local.com |
-| server3 | server3_connectivity_monitor | 10.10.10.3 | 1200 | HOST_SET | False | - |
 | server4 | - | - | - | - | True | - |
 
 ### VRF Configuration
 
 | Name | Description | Default Interface Set | Address Only |
 | ---- | ----------- | --------------------- | ------------ |
+| Yellow | - | - | True |
 | blue | - | VRF_GLOBAL_SET | False |
 | red | vrf_connectivity_monitor | VRF_GLOBAL_SET | True |
-| yellow | - | - | True |
+
+#### Vrf Yellow Configuration
+
+##### Interface Sets
+
+| Name | Interfaces |
+| ---- | ---------- |
 
 #### Vrf blue Configuration
 
@@ -3614,8 +3625,8 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 
 | Host Name | Description | IPv4 Address | ICMP Echo Size | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | -------------- | --------------------- | ------------ | --- |
+| Server5 | server5_connectivity_monitor | 10.10.20.11 | - | VRF_GLOBAL_SET | True | https://server5.local.com |
 | server4 | server4_connectivity_monitor | 10.10.20.1 | - | VRF_GLOBAL_SET | False | https://server2.local.com |
-| server5 | server5_connectivity_monitor | 10.10.20.11 | - | VRF_GLOBAL_SET | True | https://server5.local.com |
 | server6 | - | - | - | - | True | - |
 
 #### Vrf red Configuration
@@ -3633,13 +3644,6 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 | --------- | ----------- | ------------ | -------------- | --------------------- | ------------ | --- |
 | server2 | server2_connectivity_monitor | 10.10.20.1 | 1300 | VRF_HOST_SET | True | https://server2.local.com |
 
-#### Vrf yellow Configuration
-
-##### Interface Sets
-
-| Name | Interfaces |
-| ---- | ---------- |
-
 ##### Name-server
 
 Name-server Group: mynameserver1
@@ -3656,6 +3660,13 @@ monitor connectivity
    interface set HOST_SET Loopback2-4, Loopback10-12
    local-interfaces GLOBAL_SET address-only default
    !
+   host Server3
+      description
+      server3_connectivity_monitor
+      local-interfaces HOST_SET
+      ip 10.10.10.3
+      icmp echo size 1200
+   !
    host server1
       description
       server1_connectivity_monitor
@@ -3670,18 +3681,20 @@ monitor connectivity
       ip 10.10.10.2
       url https://server2.local.com
    !
-   host server3
-      description
-      server3_connectivity_monitor
-      local-interfaces HOST_SET
-      ip 10.10.10.3
-      icmp echo size 1200
-   !
    host server4
+   !
+   vrf Yellow
    !
    vrf blue
       interface set VRF_GLOBAL_SET Vlan21-24, Vlan29-32
       local-interfaces VRF_GLOBAL_SET default
+      !
+      host Server5
+         description
+         server5_connectivity_monitor
+         local-interfaces VRF_GLOBAL_SET address-only
+         ip 10.10.20.11
+         url https://server5.local.com
       !
       host server4
          description
@@ -3689,13 +3702,6 @@ monitor connectivity
          local-interfaces VRF_GLOBAL_SET
          ip 10.10.20.1
          url https://server2.local.com
-      !
-      host server5
-         description
-         server5_connectivity_monitor
-         local-interfaces VRF_GLOBAL_SET address-only
-         ip 10.10.20.11
-         url https://server5.local.com
       !
       host server6
    !
@@ -3713,8 +3719,6 @@ monitor connectivity
          ip 10.10.20.1
          icmp echo size 1300
          url https://server2.local.com
-   !
-   vrf yellow
 ```
 
 ## Monitor Layer 1 Logging
@@ -9928,6 +9932,7 @@ router bgp 65101
       neighbor 192.0.2.1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4
       no neighbor 192.168.66.21 activate
       neighbor 192.168.66.21 additional-paths send any
+      network 1.1.1.0/24 rcf RCF-TEST()
       network 10.0.0.0/8
       network 172.16.0.0/12
       network 192.168.0.0/16 route-map RM-FOO-MATCH
@@ -10008,6 +10013,7 @@ router bgp 65101
       neighbor 198.51.100.2 multi-path
       network 203.0.113.0/25 route-map RM-TEST
       network 203.0.113.128/25
+      network 205.0.0.0/24 rcf RCF-TEST()
       next-hop 192.51.100.1 originate lfib-backup ip-forwarding
       lfib entry installation skipped
       label local-termination implicit-null
@@ -10095,6 +10101,7 @@ router bgp 65101
       neighbor 2001:db8::22 additional-paths send limit 5
       network 2001:db8:100::/40
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
+      network 2001:db8:300::/40 rcf RCF-IPV6-TEST()
       bgp redistribute-internal
       redistribute attached-host
       redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
@@ -10461,6 +10468,7 @@ router bgp 65101
          neighbor 1.2.3.4 additional-paths send any
          neighbor 1.2.3.4 peer-tag in PEER_TAG_IN_IPV4_VRF
          neighbor 1.2.3.4 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_VRF
+         network 1.2.3.0/24 rcf RCF-TEST()
          network 2.3.4.0/24 route-map BARFOO
          redistribute attached-host route-map VRF_AFIPV4_RM_HOST
          redistribute bgp leaked route-map VRF_AFIPV4_RM_BGP
@@ -10514,6 +10522,8 @@ router bgp 65101
          neighbor aa::2 activate
          neighbor aa::2 rcf in VRF_AFIPV6_RCF_IN()
          neighbor aa::2 rcf out VRF_AFIPV6_RCF_OUT()
+         network 2001:db9:200::/40 route-map RM-IPV6-TEST
+         network 2001:db9:300::/40 rcf RCF-IPV6-TEST()
          network aa::/64
          redistribute connected rcf VRF_AFIPV6_RCF_CONNECTED()
          redistribute isis include leaked
@@ -11024,9 +11034,11 @@ no ip igmp snooping vlan 25 proxy
 #### IP Router Multicast Summary
 
 - Counters rate period decay is set for 300 seconds
-- Routing for IPv4 multicast is enabled.
-- Multipathing deterministically by selecting the same upstream router.
-- Software forwarding by the Software Forwarding Engine (SFE)
+- IPv4 Multicast Routing is enabled.
+- IPv6 Multicast Routing is enabled.
+- Multipathing operates deterministically by selecting the same upstream router.
+- IPv4 software forwarding is handled by the Software Forwarding Engine (SFE).
+- IPv6 software forwarding is handled by the Software Forwarding Engine (SFE).
 
 #### IP Router Multicast RPF Routes
 
@@ -11061,6 +11073,8 @@ router multicast
    !
    ipv6
       activity polling-interval 20
+      routing
+      software-forwarding sfe
    !
    vrf MCAST_VRF1
       ipv4
@@ -14499,8 +14513,8 @@ Source Group Standard Disabled : True
 
 | Destination | Database | URL | VRF | Username |
 | ----------- | -------- | --- | --- | -------- |
+| Test1 | test1 | https://influx_test1.localhost | test | test1 |
 | test | test | https://influx_test.localhost | test | test |
-| test1 | test1 | https://influx_test1.localhost | test | test1 |
 
 #### InfluxDB Telemetry Sources
 
@@ -14521,19 +14535,19 @@ Source Group Standard Disabled : True
 ```eos
 !
 monitor telemetry influx
+   destination influxdb Test1
+      url https://influx_test1.localhost
+      database name test1
+      retention policy test1
+      vrf test
+      username test1 password 7 <removed>
+   !
    destination influxdb test
       url https://influx_test.localhost
       database name test
       retention policy test
       vrf test
       username test password 7 <removed>
-   !
-   destination influxdb test1
-      url https://influx_test1.localhost
-      database name test1
-      retention policy test1
-      vrf test
-      username test1 password 7 <removed>
    !
    source socket socket1
       url unix:///var/run/example2.sock

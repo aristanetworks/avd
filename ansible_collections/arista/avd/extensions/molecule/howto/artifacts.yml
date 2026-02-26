@@ -1,14 +1,94 @@
 ---
-# Connected Endpoints artifacts
-- file: inventory/intended/configs/dc1-leaf1a.cfg
-  sections:
-    - header: "interface Ethernet10"
-  artifact: "WEB-SERVER-01.cfg"
-  output_dir: "../../../../../../docs/howto/connected_endpoints/artifacts/"
+base_path: "../../../../../../docs/howto"
 
-- file: inventory/intended/configs/dc1-leaf1a.cfg
-  sections:
-    - header: "interface Port-Channel11"
-    - header: "interface Ethernet11"
-  artifact: "ESXI-HOST-03.cfg"
-  output_dir: "../../../../../../docs/howto/connected_endpoints/artifacts/"
+artifacts:
+  # Connected Endpoints artifacts
+  - file: inventory/intended/configs/dc1-leaf1a.cfg
+    sections:
+      - header: "interface Ethernet10"
+    artifact: "WEB-SERVER-01.cfg"
+    output_dir: "connected_endpoints/artifacts/"
+
+  - file: inventory/intended/configs/dc1-leaf1a.cfg
+    sections:
+      - header: "interface Port-Channel11"
+      - header: "interface Ethernet11"
+    artifact: "ESXI-HOST-03.cfg"
+    output_dir: "connected_endpoints/artifacts/"
+
+  # Network Services artifacts
+  - file: inventory/intended/configs/htns-l3-leaf1.cfg
+    sections:
+      - header: "vlan 100"
+      - header: "vlan 101"
+      - header: "vlan 200"
+      - header: "vlan 3401"
+      - header: "vlan 3402"
+      - header: "vrf instance VRF_PRODUCTION"
+      - header: "vrf instance VRF_DEVELOPMENT"
+      - header: "interface Vlan100"
+      - header: "interface Vlan101"
+      - header: "interface Vlan200"
+    artifact: "htns-l3-leaf1-services.cfg"
+    output_dir: "network_services/artifacts/"
+
+  - file: inventory/intended/configs/htns-l3-leaf2.cfg
+    sections:
+      - header: "vlan 200"
+      - header: "vrf instance VRF_DEVELOPMENT"
+      - header: "interface Vlan200"
+    artifact: "htns-l3-leaf2-services.cfg"
+    output_dir: "network_services/artifacts/"
+
+  # Fabric Topology artifacts
+  - file: inventory/intended/configs/htft-spine1.cfg
+    sections:
+      - header: "interface Ethernet1"
+      - header: "interface Ethernet2"
+      - header: "interface Loopback0"
+    artifact: "htft-spine1-links.cfg"
+    output_dir: "fabric_topology/artifacts/"
+
+  - file: inventory/intended/configs/htft-leaf1a.cfg
+    sections:
+      - header: "interface Port-Channel3"
+      - header: "interface Ethernet1"
+      - header: "interface Ethernet2"
+      - header: "interface Ethernet3"
+      - header: "interface Ethernet4"
+      - header: "interface Loopback0"
+      - header: "interface Loopback1"
+    artifact: "htft-leaf1a-links.cfg"
+    output_dir: "fabric_topology/artifacts/"
+
+  # IP Addressing artifacts
+  - file: inventory/intended/configs/htipa-leaf1.cfg
+    sections:
+      - header: "interface Ethernet1"
+      - header: "interface Ethernet2"
+    artifact: "leaf1-to-spines.cfg"
+    output_dir: "ip_addressing/artifacts/"
+
+  - file: inventory/intended/configs/htipa-leaf1.cfg
+    sections:
+      - header: "interface Loopback0"
+    artifact: "leaf1-loopback.cfg"
+    output_dir: "ip_addressing/artifacts/"
+
+  - file: inventory/intended/configs/htipa-leaf2.cfg
+    sections:
+      - header: "interface Loopback0"
+    artifact: "leaf2-loopback.cfg"
+    output_dir: "ip_addressing/artifacts/"
+
+  - file: inventory/intended/configs/htipa-spine1.cfg
+    sections:
+      - header: "interface Loopback0"
+    artifact: "spine1-loopback.cfg"
+    output_dir: "ip_addressing/artifacts/"
+
+  - file: inventory/intended/configs/htipa-spine2.cfg
+    sections:
+      - header: "interface Loopback0"
+    artifact: "spine2-loopback.cfg"
+    output_dir: "ip_addressing/artifacts/"

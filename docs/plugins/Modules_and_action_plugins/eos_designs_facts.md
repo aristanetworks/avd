@@ -29,6 +29,7 @@ The module is used in `arista.avd.eos_designs` to set facts for devices, which a
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| <samp>tmp_dir</samp> | str | True | None | - | Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.<br>Must be the same across all plugins. |
 | <samp>template_output</samp> | bool | False | None | - | If true, the output data will be run through another jinja2 rendering before returning. This is to resolve any input values with inline jinja using variables/facts set by the input templates.<br>Ignored for ansible-core versions &gt;= 2.19, since it is no longer needed. |
 | <samp>cprofile_file</samp> | str | False | None | - | Filename for storing cprofile data used to debug performance issues.<br>Running cprofile will slow down performance in it self, so only set this while troubleshooting. |
 | <samp>digital_twin</samp> | bool | optional | False | - | PREVIEW: This option is marked as &#34;preview&#34;, meaning the data models or generated configuration can change at any time.<br>Generate Digital Twin topology information. |
@@ -39,7 +40,7 @@ The module is used in `arista.avd.eos_designs` to set facts for devices, which a
 ---
 - name: Set eos_designs facts
   arista.avd.eos_designs_facts:
-    schema_id: eos_designs
+    tmp_dir: "intended/tmp_eos_designs"
   check_mode: false
   run_once: true
 ```

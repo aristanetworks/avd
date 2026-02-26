@@ -371,7 +371,11 @@ class AvdStructuredConfigBaseProtocol(
             if source_interface:
                 # Add to local tmp object to detect conflicts.
                 vrf_logging_config.append_new(name=host_vrf, source_interface=source_interface)
-                logging_vrf.source_interface = source_interface
+                # Set either local_interface or source_interface based on use_local_interface_cli
+                if settings.use_local_interface_cli:
+                    logging_vrf.local_interface = source_interface
+                else:
+                    logging_vrf.source_interface = source_interface
 
             # Add host entry under the correct VRF
             logging_vrf.hosts.append_new(
@@ -392,6 +396,8 @@ class AvdStructuredConfigBaseProtocol(
         """interface_defaults set based on default_interface_mtu."""
         if self.shared_utils.default_interface_mtu is not None:
             self.structured_config.interface_defaults.mtu = self.shared_utils.default_interface_mtu
+        if self.inputs.general_settings.interface_defaults.ethernet_shutdown:
+            self.structured_config.interface_defaults.ethernet.shutdown = True
 
     @structured_config_contributor
     def spanning_tree(self) -> None:
@@ -713,6 +719,8 @@ class AvdStructuredConfigBaseProtocol(
         if not self.inputs.aaa_settings.radius:
             return
 
+        use_new_ip_radius_model = self.inputs.avd_7_behaviors.ip_radius_source_interface_setting
+
         for server in self.inputs.aaa_settings.radius.servers:
             server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=server.vrf,
@@ -721,9 +729,17 @@ class AvdStructuredConfigBaseProtocol(
                 context=f"aaa_settings.radius.servers[host={server.host}].vrf",
             )
             if source_interface:
-                self.structured_config.ip_radius_source_interfaces.append_unique(
-                    EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
-                )
+                if use_new_ip_radius_model:
+                    # New behavior: separate keys for default VRF and others
+                    if server_vrf == "default":
+                        self.structured_config.ip_radius.source_interface = source_interface
+                    else:
+                        self.structured_config.ip_radius.vrfs.append_new(name=server_vrf, source_interface=source_interface)
+                else:
+                    # Old behavior: use deprecated ip_radius_source_interfaces list
+                    self.structured_config.ip_radius_source_interfaces.append_unique(
+                        EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
+                    )
 
             self._add_radius_server_config(server, server_vrf)
 

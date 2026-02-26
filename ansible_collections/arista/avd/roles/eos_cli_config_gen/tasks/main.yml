@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2026 Arista Networks, Inc.
+# Copyright (c) 2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
@@ -13,27 +13,42 @@
   run_once: true
   register: avd_requirements
 
-- name: Validate eos_cli_config_gen inputs
-  arista.avd.validate_inputs:
-    batch_size: "{{ eos_cli_config_gen_validate_inputs_batch_size | arista.avd.default(10) }}"
-    schema_name: eos_config
-    input_dir: "{{ structured_dir }}"
-    input_suffix: "{{ avd_structured_config_file_format }}"
-    read_from_input_dir: "{{ read_structured_config_from_file | arista.avd.default(true) }}"
-    fail_on_validation_errors: false
-  delegate_to: localhost
-  check_mode: false
-  run_once: true
+- name: Run eos_cli_config_gen
+  block:
+    - name: Validate eos_cli_config_gen inputs
+      arista.avd.validate_inputs:
+        tmp_dir: "{{ eos_cli_config_gen_tmp_dir }}"
+        batch_size: "{{ eos_cli_config_gen_validate_inputs_batch_size | arista.avd.default(10) }}"
+        schema_name: eos_config
+        input_dir: "{{ structured_dir }}"
+        input_suffix: "{{ avd_structured_config_file_format }}"
+        read_from_input_dir: "{{ read_structured_config_from_file | arista.avd.default(true) }}"
+        fail_on_validation_errors: false
+        vault_id: "{{ avd_vault_id }}"
+      delegate_to: localhost
+      check_mode: false
+      run_once: true
 
-- name: Generate EOS intended configuration and device documentation
-  when: >-
-    eos_cli_config_gen_configuration.enable | arista.avd.default(true) or
-    (eos_cli_config_gen_documentation.enable | arista.avd.default(true))
-  arista.avd.eos_cli_config_gen:
-    config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
-    documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"
-    generate_device_config: "{{ eos_cli_config_gen_configuration.enable | arista.avd.default(true) }}"
-    generate_device_doc: "{{ eos_cli_config_gen_documentation.enable | arista.avd.default(true) }}"
-    device_doc_toc: "{{ eos_cli_config_gen_documentation.toc | arista.avd.default(true) }}"
-    cprofile_file: "{{ eos_cli_config_gen_cprofile_file | default(omit) }}"
-  delegate_to: localhost
+    - name: Generate EOS intended configuration and device documentation
+      when: >-
+        eos_cli_config_gen_configuration.enable | arista.avd.default(true) or
+        (eos_cli_config_gen_documentation.enable | arista.avd.default(true))
+      arista.avd.eos_cli_config_gen:
+        tmp_dir: "{{ eos_cli_config_gen_tmp_dir }}"
+        config_filename: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
+        documentation_filename: "{{ devices_dir }}/{{ inventory_hostname }}.md"
+        generate_device_config: "{{ eos_cli_config_gen_configuration.enable | arista.avd.default(true) }}"
+        generate_device_doc: "{{ eos_cli_config_gen_documentation.enable | arista.avd.default(true) }}"
+        device_doc_toc: "{{ eos_cli_config_gen_documentation.toc | arista.avd.default(true) }}"
+        cprofile_file: "{{ eos_cli_config_gen_cprofile_file | default(omit) }}"
+      delegate_to: localhost
+
+  always:
+    - name: Clean up AVD temporary directory
+      when: not eos_cli_config_gen_keep_tmp_files
+      ansible.builtin.file:
+        path: "{{ eos_cli_config_gen_tmp_dir }}"
+        state: absent
+      delegate_to: localhost
+      run_once: true
+      changed_when: false
