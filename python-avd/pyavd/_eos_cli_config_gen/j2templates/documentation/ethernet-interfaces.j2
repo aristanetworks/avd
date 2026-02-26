@@ -430,8 +430,8 @@
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |  IPv6 ND RA RX Accept |
-| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ | --------------------- |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out | IPv6 ND RA RX Accept |
+| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ | -------------------- |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%             if ethernet_interface.channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
