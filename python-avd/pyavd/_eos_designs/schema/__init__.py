@@ -22694,6 +22694,72 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class MacAclsItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class EntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"sequence": {"type": int}, "action": {"type": str}}
+            sequence: int | None
+            action: str
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, sequence: int | None | UndefinedType = Undefined, action: str | UndefinedType = Undefined) -> None:
+                    """
+                    EntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sequence: sequence
+                        action: action
+
+                    """
+
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
+
+        Entries._item_type = EntriesItem
+
+        _fields: ClassVar[dict] = {"name": {"type": str}, "counters_per_entry": {"type": bool}, "entries": {"type": Entries}}
+        name: str
+        """MAC Access-list Name."""
+        counters_per_entry: bool | None
+        entries: Entries
+        """Subclass of AvdList with `EntriesItem` items."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                name: str | UndefinedType = Undefined,
+                counters_per_entry: bool | None | UndefinedType = Undefined,
+                entries: Entries | UndefinedType = Undefined,
+            ) -> None:
+                """
+                MacAclsItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    name: MAC Access-list Name.
+                    counters_per_entry: counters_per_entry
+                    entries: Subclass of AvdList with `EntriesItem` items.
+
+                """
+
+    class MacAcls(AvdIndexedList[str, MacAclsItem]):
+        """Subclass of AvdIndexedList with `MacAclsItem` items. Primary key is `name` (`str`)."""
+
+        _primary_key: ClassVar[str] = "name"
+
+    MacAcls._item_type = MacAclsItem
+
     class ManagementEapi(AvdModel):
         """Subclass of AvdModel."""
 
@@ -88138,7 +88204,7 @@ class EosDesigns(EosDesignsRootModel):
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
         "logging_settings": {"type": LoggingSettings},
-        "mac_acls": {"type": EosCliConfigGen.MacAccessLists},
+        "mac_acls": {"type": MacAcls},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
         "mgmt_destination_networks": {"type": MgmtDestinationNetworks},
@@ -89742,10 +89808,13 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
-    mac_acls: EosCliConfigGen.MacAccessLists
+    mac_acls: MacAcls
     """
     These MAC access-lists can be referenced under `network_ports/connected_endpoints` and only
     configured when it is in use.
+
+    Subclass of AvdIndexedList with `MacAclsItem` items. Primary key is
+    `name` (`str`).
     """
     mac_address_table: EosCliConfigGen.MacAddressTable
     management_eapi: ManagementEapi
@@ -90858,7 +90927,7 @@ class EosDesigns(EosDesignsRootModel):
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
             logging_settings: LoggingSettings | UndefinedType = Undefined,
-            mac_acls: EosCliConfigGen.MacAccessLists | UndefinedType = Undefined,
+            mac_acls: MacAcls | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
             mgmt_destination_networks: MgmtDestinationNetworks | UndefinedType = Undefined,
@@ -91714,6 +91783,9 @@ class EosDesigns(EosDesignsRootModel):
                 mac_acls:
                    These MAC access-lists can be referenced under `network_ports/connected_endpoints` and only
                    configured when it is in use.
+
+                   Subclass of AvdIndexedList with `MacAclsItem` items. Primary key is
+                   `name` (`str`).
                 mac_address_table: mac_address_table
                 management_eapi:
                    Default is HTTPS management eAPI enabled.
