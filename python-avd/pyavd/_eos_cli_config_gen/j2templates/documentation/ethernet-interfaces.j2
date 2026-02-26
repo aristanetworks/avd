@@ -70,7 +70,6 @@
                ethernet_interface.isis_passive is arista.avd.defined(true) or
                ethernet_interface.isis_circuit_type is arista.avd.defined or
                ethernet_interface.isis_hello_padding is arista.avd.defined or
-               ethernet_interface.isis_authentication_mode is arista.avd.defined or
                ethernet_interface.isis_authentication.both.mode is arista.avd.defined or
                ethernet_interface.isis_authentication.level_1.mode is arista.avd.defined or
                ethernet_interface.isis_authentication.level_2.mode is arista.avd.defined %}
@@ -122,26 +121,12 @@
 {%             do vlan_translation_interfaces.append(ethernet_interface) %}
 {%         endif %}
 {#         IPv4 flag - checking for various IPv4 configurations #}
-{%         if ethernet_interface.ip_address is arista.avd.defined or
-               ethernet_interface.dhcp_client_accept_default_route is arista.avd.defined or
-               ethernet_interface.ip_address_secondaries is arista.avd.defined or
-               ethernet_interface.ip_helpers is arista.avd.defined or
-               ethernet_interface.ip_nat is arista.avd.defined or
-               ethernet_interface.ipv4_acl_in is arista.avd.defined or
-               ethernet_interface.ipv4_acl_out is arista.avd.defined %}
+{%         if ethernet_interface.ip_address is arista.avd.defined %}
 {%             set ethernet_interface_ipv4.configured = true %}
 {%         endif %}
 {#         IPv6 flag - checking for various IPv6 configurations #}
 {%         if ethernet_interface.ipv6_enable is arista.avd.defined(true) or
-               ethernet_interface.ipv6_address is arista.avd.defined or
-               ethernet_interface.ipv6_address_virtual is arista.avd.defined or
-               ethernet_interface.ipv6_address_link_local is arista.avd.defined or
-               ethernet_interface.ipv6_dhcp_relay_destinations is arista.avd.defined or
-               ethernet_interface.ipv6_nd_ra_disabled is arista.avd.defined(true) or
-               ethernet_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) or
-               ethernet_interface.ipv6_nd_prefixes is arista.avd.defined or
-               ethernet_interface.ipv6_acl_in is arista.avd.defined or
-               ethernet_interface.ipv6_acl_out is arista.avd.defined %}
+               ethernet_interface.ipv6_address is arista.avd.defined %}
 {%             set ethernet_interface_ipv6.configured = true %}
 {%         endif %}
 {%     endfor %}
@@ -158,7 +143,6 @@
                port_channel_interface.isis_passive is arista.avd.defined(true) or
                port_channel_interface.isis_circuit_type is arista.avd.defined or
                port_channel_interface.isis_hello_padding is arista.avd.defined or
-               port_channel_interface.isis_authentication_mode is arista.avd.defined or
                port_channel_interface.isis_authentication.both.mode is arista.avd.defined or
                port_channel_interface.isis_authentication.level_1.mode is arista.avd.defined or
                port_channel_interface.isis_authentication.level_2.mode is arista.avd.defined %}
@@ -169,26 +153,12 @@
 {%             do phone_interfaces.append(port_channel_interface) %}
 {%         endif %}
 {#         IPv4 flag for port-channels #}
-{%         if port_channel_interface.ip_address is arista.avd.defined or
-               port_channel_interface.dhcp_client_accept_default_route is arista.avd.defined or
-               port_channel_interface.ip_address_secondaries is arista.avd.defined or
-               port_channel_interface.ip_helpers is arista.avd.defined or
-               port_channel_interface.ip_nat is arista.avd.defined or
-               port_channel_interface.ipv4_acl_in is arista.avd.defined or
-               port_channel_interface.ipv4_acl_out is arista.avd.defined %}
+{%         if port_channel_interface.ip_address is arista.avd.defined %}
 {%             set port_channel_interface_ipv4.configured = true %}
 {%         endif %}
 {#         IPv6 flag for port-channels #}
 {%         if port_channel_interface.ipv6_enable is arista.avd.defined(true) or
-               port_channel_interface.ipv6_address is arista.avd.defined or
-               port_channel_interface.ipv6_address_virtual is arista.avd.defined or
-               port_channel_interface.ipv6_address_link_local is arista.avd.defined or
-               port_channel_interface.ipv6_dhcp_relay_destinations is arista.avd.defined or
-               port_channel_interface.ipv6_nd_ra_disabled is arista.avd.defined(true) or
-               port_channel_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) or
-               port_channel_interface.ipv6_nd_prefixes is arista.avd.defined or
-               port_channel_interface.ipv6_acl_in is arista.avd.defined or
-               port_channel_interface.ipv6_acl_out is arista.avd.defined %}
+               port_channel_interface.ipv6_address is arista.avd.defined %}
 {%             set port_channel_interface_ipv6.configured = true %}
 {%         endif %}
 {%     endfor %}
