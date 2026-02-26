@@ -1072,15 +1072,11 @@ management console
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | True | True |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | True | True | 60 |
 
 Management HTTPS is using the SSL profile SSL_PROFILE
-
-#### Management API HTTP Session Timeout
-
-User session timeout is set to **60** minutes.
 
 #### Management API VRF Access
 

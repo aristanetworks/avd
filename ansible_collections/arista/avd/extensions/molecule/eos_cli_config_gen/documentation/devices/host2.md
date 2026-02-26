@@ -297,9 +297,9 @@ management cvx
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| True | False | - | False |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| True | False | - | False | 1440 |
 
 #### Management API HTTP Device Configuration
 
