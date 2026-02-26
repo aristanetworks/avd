@@ -4,6 +4,26 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet77
+  description: underlay-peer_Ethernet77
+  shutdown: false
+  channel_group:
+    id: 77
+    mode: active
+  metadata:
+    peer: underlay-peer
+    peer_interface: Ethernet77
+    peer_type: l3_port_channel_member
+- name: Ethernet78
+  description: underlay-peer_Ethernet78
+  shutdown: false
+  channel_group:
+    id: 77
+    mode: active
+  metadata:
+    peer: underlay-peer
+    peer_interface: Ethernet78
+    peer_type: l3_port_channel_member
 - name: Ethernet10
   description: inet-cloud_Ethernet10
   shutdown: false
@@ -142,6 +162,13 @@ metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 port_channel_interfaces:
+- name: Port-Channel77
+  shutdown: false
+  ip_address: 10.10.10.10/24
+  metadata:
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
 - name: Port-Channel11
   description: Po11
   shutdown: false
@@ -303,21 +330,17 @@ port_channel_interfaces:
     peer: inet-cloud-sub100
     peer_interface: Po22.100
     peer_type: l3_port_channel
-- name: Port-Channel99.500
-  description: inet-cloud-sub500_Po99.500
+- name: Port-Channel77.100
+  description: inet-cloud-sub100_Po77.100
   shutdown: false
   encapsulation_dot1q:
-    vlan: 500
+    vlan: 100
   vrf: subIntVRF
-  ip_address: 10.10.99.2/29
+  ip_address: 10.10.77.2/29
   metadata:
-    peer: inet-cloud-sub500
-    peer_interface: Po99.500
+    peer: inet-cloud-sub100
+    peer_interface: Po77.100
     peer_type: l3_port_channel
-- name: Port-Channel99
-  shutdown: false
-  metadata:
-    peer_type: subinterface_parent
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

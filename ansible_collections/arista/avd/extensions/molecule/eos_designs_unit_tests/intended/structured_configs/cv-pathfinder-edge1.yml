@@ -235,7 +235,7 @@ ethernet_interfaces:
 - name: Ethernet1/49
   shutdown: false
   metadata:
-    peer_type: subinterface_parent
+    peer_type: l3_interface
   switchport:
     enabled: false
 flow_tracking:

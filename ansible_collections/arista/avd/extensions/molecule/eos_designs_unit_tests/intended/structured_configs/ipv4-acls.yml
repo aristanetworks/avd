@@ -61,7 +61,7 @@ ethernet_interfaces:
 - name: Ethernet6/6
   shutdown: false
   metadata:
-    peer_type: subinterface_parent
+    peer_type: l3_interface
   switchport:
     enabled: false
 hostname: ipv4-acls
