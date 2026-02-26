@@ -43399,15 +43399,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NetworksItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                 prefix: str
                 """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                 route_map: str | None
                 """Route-map name."""
+                rcf: str | None
+                """
+                RCF name with parenthesis. Example "NETWORK-RCF()".
+                `route_map` and `rcf` are mutually exclusive.
+                `route_map` takes precedence.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | UndefinedType = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         NetworksItem.
 
@@ -43417,6 +43429,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                             route_map: Route-map name.
+                            rcf:
+                               RCF name with parenthesis. Example "NETWORK-RCF()".
+                               `route_map` and `rcf` are mutually exclusive.
+                               `route_map` takes precedence.
 
                         """
 
@@ -45714,15 +45730,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NetworksItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                 prefix: str
                 """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                 route_map: str | None
                 """Route-map name."""
+                rcf: str | None
+                """
+                RCF name with parenthesis. Example "NETWORK-RCF()".
+                `route_map` and `rcf` are mutually exclusive.
+                `route_map` takes precedence.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | UndefinedType = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         NetworksItem.
 
@@ -45732,6 +45760,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                             route_map: Route-map name.
+                            rcf:
+                               RCF name with parenthesis. Example "NETWORK-RCF()".
+                               `route_map` and `rcf` are mutually exclusive.
+                               `route_map` takes precedence.
 
                         """
 
@@ -46797,15 +46829,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NetworksItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                 prefix: str
                 """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                 route_map: str | None
                 """Route-map name."""
+                rcf: str | None
+                """
+                RCF name with parenthesis. Example "NETWORK-RCF()".
+                `route_map` and `rcf` are mutually exclusive.
+                `route_map` takes precedence.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | UndefinedType = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         NetworksItem.
 
@@ -46815,6 +46859,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                             route_map: Route-map name.
+                            rcf:
+                               RCF name with parenthesis. Example "NETWORK-RCF()".
+                               `route_map` and `rcf` are mutually exclusive.
+                               `route_map` takes precedence.
 
                         """
 
@@ -52498,14 +52546,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class NetworksItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                     prefix: str
                     """IPv4 prefix "A.B.C.D/E"."""
                     route_map: str | None
+                    rcf: str | None
+                    """
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive.
+                    `route_map` takes precedence.
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self,
+                            *,
+                            prefix: str | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                        ) -> None:
                             """
                             NetworksItem.
 
@@ -52515,6 +52575,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 prefix: IPv4 prefix "A.B.C.D/E".
                                 route_map: route_map
+                                rcf:
+                                   RCF name with parenthesis. Example "NETWORK-RCF()".
+                                   `route_map` and `rcf` are mutually exclusive.
+                                   `route_map` takes precedence.
 
                             """
 
@@ -53574,14 +53638,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class NetworksItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                     prefix: str
                     """IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                     route_map: str | None
+                    rcf: str | None
+                    """
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive.
+                    `route_map` takes precedence.
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self,
+                            *,
+                            prefix: str | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                        ) -> None:
                             """
                             NetworksItem.
 
@@ -53591,6 +53667,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 prefix: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                                 route_map: route_map
+                                rcf:
+                                   RCF name with parenthesis. Example "NETWORK-RCF()".
+                                   `route_map` and `rcf` are mutually exclusive.
+                                   `route_map` takes precedence.
 
                             """
 
