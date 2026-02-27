@@ -59840,6 +59840,27 @@ class EosDesigns(EosDesignsRootModel):
 
                 BgpPeerGroups._item_type = BgpPeerGroupsItem
 
+                class Igmp(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"fast_leave": {"type": bool}}
+                    fast_leave: bool | None
+                    """Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, fast_leave: bool | None | UndefinedType = Undefined) -> None:
+                            """
+                            Igmp.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                fast_leave: Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.
+
+                            """
+
                 class EvpnL2Multicast(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -67361,6 +67382,7 @@ class EosDesigns(EosDesignsRootModel):
                     "redistribute_mlag_ibgp_peering_vrfs": {"type": bool, "default": False},
                     "evpn_vlan_bundle": {"type": str},
                     "bgp_peer_groups": {"type": BgpPeerGroups},
+                    "igmp": {"type": Igmp},
                     "evpn_l2_multicast": {"type": EvpnL2Multicast},
                     "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                     "evpn_l3_multicast": {"type": EvpnL3Multicast},
@@ -67451,6 +67473,8 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of
                 AvdIndexedList with `BgpPeerGroupsItem` items. Primary key is `name` (`str`).
                 """
+                igmp: Igmp
+                """Subclass of AvdModel."""
                 evpn_l2_multicast: EvpnL2Multicast
                 """
                 Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant.
@@ -67581,6 +67605,7 @@ class EosDesigns(EosDesignsRootModel):
                         redistribute_mlag_ibgp_peering_vrfs: bool | UndefinedType = Undefined,
                         evpn_vlan_bundle: str | None | UndefinedType = Undefined,
                         bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
+                        igmp: Igmp | UndefinedType = Undefined,
                         evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                         vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                         evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
@@ -67654,6 +67679,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                Subclass of
                                AvdIndexedList with `BgpPeerGroupsItem` items. Primary key is `name` (`str`).
+                            igmp: Subclass of AvdModel.
                             evpn_l2_multicast:
                                Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant.
                                - Multicast group binding is

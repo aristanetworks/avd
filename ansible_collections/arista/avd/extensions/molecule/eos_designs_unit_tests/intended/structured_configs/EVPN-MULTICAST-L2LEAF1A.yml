@@ -27,6 +27,33 @@ ethernet_interfaces:
 hostname: EVPN-MULTICAST-L2LEAF1A
 ip_igmp_snooping:
   globally_enabled: true
+  vlans:
+  - id: 310
+    fast_leave: true
+  - id: 311
+    fast_leave: true
+  - id: 110
+    fast_leave: true
+  - id: 111
+    fast_leave: true
+  - id: 210
+    fast_leave: true
+  - id: 211
+    fast_leave: false
+  - id: 256
+    fast_leave: true
+  - id: 257
+    fast_leave: true
+  - id: 4092
+    fast_leave: true
+  - id: 1
+    fast_leave: true
+  - id: 230
+    fast_leave: true
+  - id: 251
+    fast_leave: false
+  - id: 252
+    fast_leave: false
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

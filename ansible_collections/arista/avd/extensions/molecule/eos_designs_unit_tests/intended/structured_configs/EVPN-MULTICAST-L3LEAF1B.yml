@@ -104,6 +104,10 @@ hostname: EVPN-MULTICAST-L3LEAF1B
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
+  - id: 310
+    fast_leave: true
+  - id: 311
+    fast_leave: true
   - id: 110
     querier:
       enabled: true
@@ -118,6 +122,10 @@ ip_igmp_snooping:
     querier:
       enabled: true
       address: 192.168.255.4
+    fast_leave: true
+  - id: 211
+    fast_leave: false
+  - id: 256
     fast_leave: true
   - id: 257
     querier:
@@ -167,11 +175,14 @@ ip_igmp_snooping:
     querier:
       enabled: true
       address: 192.168.255.4
+    fast_leave: true
+  - id: 251
+    fast_leave: false
   - id: 252
     querier:
       enabled: true
       address: 192.168.255.4
-    fast_leave: true
+    fast_leave: false
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 loopback_interfaces:

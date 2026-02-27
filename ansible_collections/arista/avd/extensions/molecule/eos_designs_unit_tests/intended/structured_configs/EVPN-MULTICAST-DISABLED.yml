@@ -22,10 +22,35 @@ hostname: EVPN-MULTICAST-DISABLED
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
+  - id: 310
+    fast_leave: true
+  - id: 311
+    fast_leave: true
+  - id: 110
+    fast_leave: true
+  - id: 111
+    fast_leave: true
+  - id: 210
+    fast_leave: true
+  - id: 211
+    fast_leave: false
+  - id: 256
+    fast_leave: true
+  - id: 257
+    fast_leave: true
+  - id: 4092
+    fast_leave: true
+  - id: 1
+    fast_leave: true
   - id: 230
     querier:
       enabled: true
       address: 192.168.255.8
+    fast_leave: true
+  - id: 251
+    fast_leave: false
+  - id: 252
+    fast_leave: false
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 loopback_interfaces:
