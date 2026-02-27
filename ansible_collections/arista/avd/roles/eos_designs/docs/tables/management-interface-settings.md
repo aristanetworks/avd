@@ -11,9 +11,9 @@
     | [<samp>ipv6_mgmt_destination_networks</samp>](## "ipv6_mgmt_destination_networks") | List, items: String |  |  |  | List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.<br>Replaces the default route.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv6_mgmt_destination_networks.[]") | String |  |  |  | IPv6_network/Mask. |
     | [<samp>ipv6_mgmt_gateway</samp>](## "ipv6_mgmt_gateway") | String |  |  | Format: ipv6 | OOB Management interface gateway in IPv6 format.<br>Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.<br> |
-    | [<samp>mgmt_destination_networks</samp>](## "mgmt_destination_networks") | List, items: String |  |  |  | List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.<br>Replaces the default route. |
+    | [<samp>mgmt_destination_networks</samp>](## "mgmt_destination_networks") | List, items: String |  |  |  | List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.<br>Replaces the default route.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide routes. |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "mgmt_destination_networks.[]") | String |  |  |  | IPv4_address/Mask. |
-    | [<samp>mgmt_gateway</samp>](## "mgmt_gateway") | String |  |  |  | OOB Management interface gateway in IPv4 format.<br>Used as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'.<br> |
+    | [<samp>mgmt_gateway</samp>](## "mgmt_gateway") | String |  |  |  | OOB Management interface gateway in IPv4 format.<br>Used as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway.<br> |
     | [<samp>mgmt_interface</samp>](## "mgmt_interface") | String |  | `Management1` |  | OOB Management interface. |
     | [<samp>mgmt_interface_description</samp>](## "mgmt_interface_description") | String |  | `OOB_MANAGEMENT` |  | Management interface description.<br> |
     | [<samp>mgmt_interface_vrf</samp>](## "mgmt_interface_vrf") | String |  | `MGMT` |  | OOB Management VRF. |
@@ -51,6 +51,7 @@
 
     # List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
     # Replaces the default route.
+    # This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide routes.
     mgmt_destination_networks:
 
         # IPv4_address/Mask.
@@ -58,6 +59,7 @@
 
     # OOB Management interface gateway in IPv4 format.
     # Used as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'.
+    # This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway.
     mgmt_gateway: <str>
 
     # OOB Management interface.

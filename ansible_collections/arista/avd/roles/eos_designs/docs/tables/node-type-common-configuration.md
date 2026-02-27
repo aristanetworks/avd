@@ -15,8 +15,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "<node_type_keys.key>.defaults.system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "<node_type_keys.key>.defaults.serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<node_type_keys.key>.defaults.rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.defaults.mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.defaults.mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.defaults.mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.defaults.mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "<node_type_keys.key>.defaults.ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "<node_type_keys.key>.defaults.ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "<node_type_keys.key>.defaults.mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
@@ -44,8 +44,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
@@ -69,8 +69,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "<node_type_keys.key>.node_groups.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "<node_type_keys.key>.node_groups.[].serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<node_type_keys.key>.node_groups.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "<node_type_keys.key>.node_groups.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "<node_type_keys.key>.node_groups.[].mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
@@ -96,8 +96,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "<node_type_keys.key>.nodes.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "<node_type_keys.key>.nodes.[].serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<node_type_keys.key>.nodes.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.nodes.[].mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.nodes.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.nodes.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "<node_type_keys.key>.nodes.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "<node_type_keys.key>.nodes.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "<node_type_keys.key>.nodes.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "<node_type_keys.key>.nodes.[].mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
@@ -123,8 +123,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "device_profiles.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "device_profiles.[].serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "device_profiles.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "device_profiles.[].mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "device_profiles.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "device_profiles.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "device_profiles.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "device_profiles.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "device_profiles.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "device_profiles.[].mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
@@ -150,8 +150,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "devices.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "devices.[].serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "devices.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "devices.[].mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "devices.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "devices.[].mgmt_ip") | String |  |  |  | Node management interface IPv4 address/Mask or 'dhcp'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_gateway</samp>](## "devices.[].mgmt_gateway") | String |  |  |  | This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.<br>This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "devices.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_gateway</samp>](## "devices.[].ipv6_mgmt_gateway") | String |  |  |  | This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "devices.[].mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
@@ -202,10 +202,11 @@
         # Rack that the switch is located in (only used in snmp_settings location).
         rack: <str>
 
-        # Node management interface IPv4 address.
+        # Node management interface IPv4 address/Mask or 'dhcp'.
         mgmt_ip: <str>
 
         # This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
+        # This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway.
         mgmt_gateway: <str>
 
         # Node management interface IPv6 address.
@@ -308,10 +309,11 @@
               # Rack that the switch is located in (only used in snmp_settings location).
               rack: <str>
 
-              # Node management interface IPv4 address.
+              # Node management interface IPv4 address/Mask or 'dhcp'.
               mgmt_ip: <str>
 
               # This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
+              # This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway.
               mgmt_gateway: <str>
 
               # Node management interface IPv6 address.
@@ -401,10 +403,11 @@
           # Rack that the switch is located in (only used in snmp_settings location).
           rack: <str>
 
-          # Node management interface IPv4 address.
+          # Node management interface IPv4 address/Mask or 'dhcp'.
           mgmt_ip: <str>
 
           # This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
+          # This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway.
           mgmt_gateway: <str>
 
           # Node management interface IPv6 address.
@@ -500,10 +503,11 @@
           # Rack that the switch is located in (only used in snmp_settings location).
           rack: <str>
 
-          # Node management interface IPv4 address.
+          # Node management interface IPv4 address/Mask or 'dhcp'.
           mgmt_ip: <str>
 
           # This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
+          # This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway.
           mgmt_gateway: <str>
 
           # Node management interface IPv6 address.
@@ -599,10 +603,11 @@
         # Rack that the switch is located in (only used in snmp_settings location).
         rack: <str>
 
-        # Node management interface IPv4 address.
+        # Node management interface IPv4 address/Mask or 'dhcp'.
         mgmt_ip: <str>
 
         # This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
+        # This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway.
         mgmt_gateway: <str>
 
         # Node management interface IPv6 address.
@@ -698,10 +703,11 @@
         # Rack that the switch is located in (only used in snmp_settings location).
         rack: <str>
 
-        # Node management interface IPv4 address.
+        # Node management interface IPv4 address/Mask or 'dhcp'.
         mgmt_ip: <str>
 
         # This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
+        # This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway.
         mgmt_gateway: <str>
 
         # Node management interface IPv6 address.

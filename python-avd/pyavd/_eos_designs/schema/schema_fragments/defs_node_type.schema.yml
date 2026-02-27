@@ -61,14 +61,15 @@ $defs:
           mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
-            description: Node management interface IPv4 address.
+            description: Node management interface IPv4 address/Mask or 'dhcp'.
             type: str
-            format: cidr
           mgmt_gateway:
             documentation_options:
               table: node-type-common-configuration
             type: str
-            description: This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
+            description: |-
+              This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
+              This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide the gateway.
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
