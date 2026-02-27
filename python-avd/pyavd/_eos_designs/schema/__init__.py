@@ -10046,7 +10046,12 @@ class EosDesigns(EosDesignsRootModel):
         rack: str | None
         """Rack that the switch is located in (only used in snmp_settings location)."""
         mgmt_ip: str | None
-        """Node management interface IPv4 address/Mask or 'dhcp'."""
+        """
+        Node management interface IPv4 address/Mask or 'dhcp'.
+        When set to 'dhcp', the
+        `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+        expected to provide the gateway and routes.
+        """
         mgmt_gateway: str | None
         """
         This key sets the management gateway for the device. It takes precedence over the global
@@ -11074,7 +11079,11 @@ class EosDesigns(EosDesignsRootModel):
                        hostvar.
                        If both are set, the setting under node type settings takes precedence.
                     rack: Rack that the switch is located in (only used in snmp_settings location).
-                    mgmt_ip: Node management interface IPv4 address/Mask or 'dhcp'.
+                    mgmt_ip:
+                       Node management interface IPv4 address/Mask or 'dhcp'.
+                       When set to 'dhcp', the
+                       `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                       expected to provide the gateway and routes.
                     mgmt_gateway:
                        This key sets the management gateway for the device. It takes precedence over the global
                        `mgmt_gateway`.
@@ -15123,7 +15132,12 @@ class EosDesigns(EosDesignsRootModel):
         rack: str | None
         """Rack that the switch is located in (only used in snmp_settings location)."""
         mgmt_ip: str | None
-        """Node management interface IPv4 address/Mask or 'dhcp'."""
+        """
+        Node management interface IPv4 address/Mask or 'dhcp'.
+        When set to 'dhcp', the
+        `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+        expected to provide the gateway and routes.
+        """
         mgmt_gateway: str | None
         """
         This key sets the management gateway for the device. It takes precedence over the global
@@ -16160,7 +16174,11 @@ class EosDesigns(EosDesignsRootModel):
                        hostvar.
                        If both are set, the setting under node type settings takes precedence.
                     rack: Rack that the switch is located in (only used in snmp_settings location).
-                    mgmt_ip: Node management interface IPv4 address/Mask or 'dhcp'.
+                    mgmt_ip:
+                       Node management interface IPv4 address/Mask or 'dhcp'.
+                       When set to 'dhcp', the
+                       `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                       expected to provide the gateway and routes.
                     mgmt_gateway:
                        This key sets the management gateway for the device. It takes precedence over the global
                        `mgmt_gateway`.
@@ -38683,7 +38701,12 @@ class EosDesigns(EosDesignsRootModel):
                     rack: str | None
                     """Rack that the switch is located in (only used in snmp_settings location)."""
                     mgmt_ip: str | None
-                    """Node management interface IPv4 address/Mask or 'dhcp'."""
+                    """
+                    Node management interface IPv4 address/Mask or 'dhcp'.
+                    When set to 'dhcp', the
+                    `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                    expected to provide the gateway and routes.
+                    """
                     mgmt_gateway: str | None
                     """
                     This key sets the management gateway for the device. It takes precedence over the global
@@ -39694,7 +39717,11 @@ class EosDesigns(EosDesignsRootModel):
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
                                 rack: Rack that the switch is located in (only used in snmp_settings location).
-                                mgmt_ip: Node management interface IPv4 address/Mask or 'dhcp'.
+                                mgmt_ip:
+                                   Node management interface IPv4 address/Mask or 'dhcp'.
+                                   When set to 'dhcp', the
+                                   `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                                   expected to provide the gateway and routes.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -43751,7 +43778,12 @@ class EosDesigns(EosDesignsRootModel):
                         rack: str | None
                         """Rack that the switch is located in (only used in snmp_settings location)."""
                         mgmt_ip: str | None
-                        """Node management interface IPv4 address/Mask or 'dhcp'."""
+                        """
+                        Node management interface IPv4 address/Mask or 'dhcp'.
+                        When set to 'dhcp', the
+                        `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                        expected to provide the gateway and routes.
+                        """
                         mgmt_gateway: str | None
                         """
                         This key sets the management gateway for the device. It takes precedence over the global
@@ -44771,7 +44803,11 @@ class EosDesigns(EosDesignsRootModel):
                                        hostvar.
                                        If both are set, the setting under node type settings takes precedence.
                                     rack: Rack that the switch is located in (only used in snmp_settings location).
-                                    mgmt_ip: Node management interface IPv4 address/Mask or 'dhcp'.
+                                    mgmt_ip:
+                                       Node management interface IPv4 address/Mask or 'dhcp'.
+                                       When set to 'dhcp', the
+                                       `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                                       expected to provide the gateway and routes.
                                     mgmt_gateway:
                                        This key sets the management gateway for the device. It takes precedence over the global
                                        `mgmt_gateway`.
@@ -48739,7 +48775,12 @@ class EosDesigns(EosDesignsRootModel):
                     rack: str | None
                     """Rack that the switch is located in (only used in snmp_settings location)."""
                     mgmt_ip: str | None
-                    """Node management interface IPv4 address/Mask or 'dhcp'."""
+                    """
+                    Node management interface IPv4 address/Mask or 'dhcp'.
+                    When set to 'dhcp', the
+                    `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                    expected to provide the gateway and routes.
+                    """
                     mgmt_gateway: str | None
                     """
                     This key sets the management gateway for the device. It takes precedence over the global
@@ -49761,7 +49802,11 @@ class EosDesigns(EosDesignsRootModel):
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
                                 rack: Rack that the switch is located in (only used in snmp_settings location).
-                                mgmt_ip: Node management interface IPv4 address/Mask or 'dhcp'.
+                                mgmt_ip:
+                                   Node management interface IPv4 address/Mask or 'dhcp'.
+                                   When set to 'dhcp', the
+                                   `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                                   expected to provide the gateway and routes.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -53801,7 +53846,12 @@ class EosDesigns(EosDesignsRootModel):
                     rack: str | None
                     """Rack that the switch is located in (only used in snmp_settings location)."""
                     mgmt_ip: str | None
-                    """Node management interface IPv4 address/Mask or 'dhcp'."""
+                    """
+                    Node management interface IPv4 address/Mask or 'dhcp'.
+                    When set to 'dhcp', the
+                    `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                    expected to provide the gateway and routes.
+                    """
                     mgmt_gateway: str | None
                     """
                     This key sets the management gateway for the device. It takes precedence over the global
@@ -54821,7 +54871,11 @@ class EosDesigns(EosDesignsRootModel):
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
                                 rack: Rack that the switch is located in (only used in snmp_settings location).
-                                mgmt_ip: Node management interface IPv4 address/Mask or 'dhcp'.
+                                mgmt_ip:
+                                   Node management interface IPv4 address/Mask or 'dhcp'.
+                                   When set to 'dhcp', the
+                                   `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                                   expected to provide the gateway and routes.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -71207,7 +71261,12 @@ class EosDesigns(EosDesignsRootModel):
                     rack: str | None
                     """Rack that the switch is located in (only used in snmp_settings location)."""
                     mgmt_ip: str | None
-                    """Node management interface IPv4 address/Mask or 'dhcp'."""
+                    """
+                    Node management interface IPv4 address/Mask or 'dhcp'.
+                    When set to 'dhcp', the
+                    `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                    expected to provide the gateway and routes.
+                    """
                     mgmt_gateway: str | None
                     """
                     This key sets the management gateway for the device. It takes precedence over the global
@@ -72218,7 +72277,11 @@ class EosDesigns(EosDesignsRootModel):
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
                                 rack: Rack that the switch is located in (only used in snmp_settings location).
-                                mgmt_ip: Node management interface IPv4 address/Mask or 'dhcp'.
+                                mgmt_ip:
+                                   Node management interface IPv4 address/Mask or 'dhcp'.
+                                   When set to 'dhcp', the
+                                   `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                                   expected to provide the gateway and routes.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -76275,7 +76338,12 @@ class EosDesigns(EosDesignsRootModel):
                         rack: str | None
                         """Rack that the switch is located in (only used in snmp_settings location)."""
                         mgmt_ip: str | None
-                        """Node management interface IPv4 address/Mask or 'dhcp'."""
+                        """
+                        Node management interface IPv4 address/Mask or 'dhcp'.
+                        When set to 'dhcp', the
+                        `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                        expected to provide the gateway and routes.
+                        """
                         mgmt_gateway: str | None
                         """
                         This key sets the management gateway for the device. It takes precedence over the global
@@ -77295,7 +77363,11 @@ class EosDesigns(EosDesignsRootModel):
                                        hostvar.
                                        If both are set, the setting under node type settings takes precedence.
                                     rack: Rack that the switch is located in (only used in snmp_settings location).
-                                    mgmt_ip: Node management interface IPv4 address/Mask or 'dhcp'.
+                                    mgmt_ip:
+                                       Node management interface IPv4 address/Mask or 'dhcp'.
+                                       When set to 'dhcp', the
+                                       `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                                       expected to provide the gateway and routes.
                                     mgmt_gateway:
                                        This key sets the management gateway for the device. It takes precedence over the global
                                        `mgmt_gateway`.
@@ -81263,7 +81335,12 @@ class EosDesigns(EosDesignsRootModel):
                     rack: str | None
                     """Rack that the switch is located in (only used in snmp_settings location)."""
                     mgmt_ip: str | None
-                    """Node management interface IPv4 address/Mask or 'dhcp'."""
+                    """
+                    Node management interface IPv4 address/Mask or 'dhcp'.
+                    When set to 'dhcp', the
+                    `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                    expected to provide the gateway and routes.
+                    """
                     mgmt_gateway: str | None
                     """
                     This key sets the management gateway for the device. It takes precedence over the global
@@ -82285,7 +82362,11 @@ class EosDesigns(EosDesignsRootModel):
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
                                 rack: Rack that the switch is located in (only used in snmp_settings location).
-                                mgmt_ip: Node management interface IPv4 address/Mask or 'dhcp'.
+                                mgmt_ip:
+                                   Node management interface IPv4 address/Mask or 'dhcp'.
+                                   When set to 'dhcp', the
+                                   `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                                   expected to provide the gateway and routes.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -86325,7 +86406,12 @@ class EosDesigns(EosDesignsRootModel):
                     rack: str | None
                     """Rack that the switch is located in (only used in snmp_settings location)."""
                     mgmt_ip: str | None
-                    """Node management interface IPv4 address/Mask or 'dhcp'."""
+                    """
+                    Node management interface IPv4 address/Mask or 'dhcp'.
+                    When set to 'dhcp', the
+                    `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                    expected to provide the gateway and routes.
+                    """
                     mgmt_gateway: str | None
                     """
                     This key sets the management gateway for the device. It takes precedence over the global
@@ -87345,7 +87431,11 @@ class EosDesigns(EosDesignsRootModel):
                                    hostvar.
                                    If both are set, the setting under node type settings takes precedence.
                                 rack: Rack that the switch is located in (only used in snmp_settings location).
-                                mgmt_ip: Node management interface IPv4 address/Mask or 'dhcp'.
+                                mgmt_ip:
+                                   Node management interface IPv4 address/Mask or 'dhcp'.
+                                   When set to 'dhcp', the
+                                   `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
+                                   expected to provide the gateway and routes.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
