@@ -47,7 +47,7 @@ underlay OSPF process id '{self.inputs.underlay_ospf_process_id}'."
 
                 process_id = default(vrf.ospf.process_id, vrf.vrf_id)
                 if not process_id:
-                    msg = f"Missing or invalid 'ospf.process_id' or 'vrf_id' under vrf '{vrf.name}"
+                    msg = f"Missing or invalid 'ospf.process_id' or 'vrf_id' under vrf '{vrf.name}'."
                     raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                 process = EosCliConfigGen.RouterOspf.ProcessIdsItem(

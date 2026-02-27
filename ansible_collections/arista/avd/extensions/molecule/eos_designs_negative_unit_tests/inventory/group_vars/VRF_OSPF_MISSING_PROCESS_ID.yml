@@ -32,4 +32,4 @@ tenants:
           router_id: none
 
 expected_error_message: >-
-  Missing or invalid 'ospf.process_id' or 'vrf_id' under vrf 'Tenant_X_OP_Zone
+  Missing or invalid 'ospf.process_id' or 'vrf_id' under vrf 'Tenant_X_OP_Zone' for host 'vrf-ospf-missing-process-id'.
