@@ -19130,13 +19130,49 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"interface_defaults": {"type": InterfaceDefaults}}
+        class Arp(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"persistent": {"type": EosCliConfigGen.Arp.Persistent}, "aging": {"type": EosCliConfigGen.Arp.Aging}}
+            persistent: EosCliConfigGen.Arp.Persistent
+            aging: EosCliConfigGen.Arp.Aging
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    persistent: EosCliConfigGen.Arp.Persistent | UndefinedType = Undefined,
+                    aging: EosCliConfigGen.Arp.Aging | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Arp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        persistent: persistent
+                        aging: aging
+
+                    """
+
+        _fields: ClassVar[dict] = {"interface_defaults": {"type": InterfaceDefaults}, "arp": {"type": Arp}, "ip_icmp_redirect": {"type": bool}}
         interface_defaults: InterfaceDefaults
         """Subclass of AvdModel."""
+        arp: Arp
+        """Subclass of AvdModel."""
+        ip_icmp_redirect: bool | None
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, interface_defaults: InterfaceDefaults | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                interface_defaults: InterfaceDefaults | UndefinedType = Undefined,
+                arp: Arp | UndefinedType = Undefined,
+                ip_icmp_redirect: bool | None | UndefinedType = Undefined,
+            ) -> None:
                 """
                 GeneralSettings.
 
@@ -19145,6 +19181,8 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     interface_defaults: Subclass of AvdModel.
+                    arp: Subclass of AvdModel.
+                    ip_icmp_redirect: ip_icmp_redirect
 
                 """
 
