@@ -16,4 +16,5 @@ spine:
       id: 1
 
 expected_error_message: >-
-  When in-band ZTP is enabled, at least one NTP server's `name` field provided under `ntp_settings.servers` must be a valid IPv4 address.
+  When in-band ZTP is enabled, at least one NTP server's `name` field provided under `ntp_settings.servers` must be a valid IPv4 address
+  for host 'missing-valid-ipv4-address-ntp-servers-spine'.

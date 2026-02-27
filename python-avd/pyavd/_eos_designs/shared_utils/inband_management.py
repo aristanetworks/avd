@@ -109,7 +109,7 @@ class InbandManagementMixin(Protocol):
 
         if self.id is None:
             msg = "'id' is required to set inband_mgmt_ip from inband_mgmt_subnet"
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         subnet = ip_network(self.node_config.inband_mgmt_subnet, strict=False)
         inband_mgmt_ip = str(subnet[3 + self.id + self.node_config.inband_mgmt_subnet_offset])
@@ -133,7 +133,7 @@ class InbandManagementMixin(Protocol):
 
         if self.id is None:
             msg = "'id' is required to set inband_mgmt_ipv6_address from inband_mgmt_ipv6_subnet"
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         subnet = ip_network(self.node_config.inband_mgmt_ipv6_subnet, strict=False)
         inband_mgmt_ipv6_address = str(subnet[3 + self.id])

@@ -50,4 +50,4 @@ wan_carriers:
     path_group: INET
     trusted: true
 expected_error_message: >-
-  'bgp_peer_groups.wan_overlay_peers.listen_range_prefixes' is required but was not found.
+  'bgp_peer_groups.wan_overlay_peers.listen_range_prefixes' is required but was not found for host 'missing-bgp-wan-overlay-peers-listen-range-prefixes'.

@@ -52,4 +52,4 @@ wan_carriers:
     trusted: true
 
 expected_error_message: >-
-  Invalid combination of inputs. WAN is not yet supported with IPv6 underlay (Problematic host: 'unsupported-wan-router-underlay-ipv6-numbered').
+  Invalid combination of inputs. WAN is not yet supported with IPv6 underlay for host 'unsupported-wan-router-underlay-ipv6-numbered'.

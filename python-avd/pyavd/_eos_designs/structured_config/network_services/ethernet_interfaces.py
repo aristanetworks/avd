@@ -244,7 +244,7 @@ class EthernetInterfacesMixin(Protocol):
                             f"point-to-point EthernetInterfaces. Interface {interface_name} defined under {context} "
                             f"conflicts with {self.structured_config.ethernet_interfaces[interface_name]._as_dict()}."
                         )
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                     if (port_channel_mode := endpoint.port_channel.mode) in ["active", "on"]:
                         first_interface_index = endpoint.nodes.index(self.shared_utils.hostname)
@@ -271,7 +271,7 @@ class EthernetInterfacesMixin(Protocol):
                                     f"point-to-point EthernetInterfaces. Interface {subif_name} defined under {context} "
                                     f"conflicts with {self.structured_config.ethernet_interfaces[subif_name]._as_dict()}."
                                 )
-                                raise AristaAvdInvalidInputsError(msg)
+                                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                             interface = EosCliConfigGen.EthernetInterfacesItem(
                                 name=subif_name,

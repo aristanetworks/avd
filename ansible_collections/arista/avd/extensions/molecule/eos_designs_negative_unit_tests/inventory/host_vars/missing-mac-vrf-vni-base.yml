@@ -24,4 +24,4 @@ tenants:
           - id: "110"
             name: Tenant_A_OP_Zone_1
 
-expected_error_message: "'mac_vrf_vni_base' for Tenant: Tenant_A is required."
+expected_error_message: "'mac_vrf_vni_base' for Tenant: Tenant_A is required for host 'missing-mac-vrf-vni-base'."

@@ -11,4 +11,4 @@ snmp_settings:
   compute_local_engineid_source: rfc3411_type3
   compute_v3_user_localized_key: true
 expected_error_message: >-
-  'compute_local_engineid_source: rfc3411_type3' requires 'system_mac_address' to be set.
+  'compute_local_engineid_source: rfc3411_type3' requires 'system_mac_address' to be set for host 'snmp-settings-missing-system-mac-address-rfc3411_type3'.

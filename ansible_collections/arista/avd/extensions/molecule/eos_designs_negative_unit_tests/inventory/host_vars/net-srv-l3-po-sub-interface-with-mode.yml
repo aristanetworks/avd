@@ -40,4 +40,4 @@ tenants:
             node: net-srv-l3-po-sub-interface-with-mode
 
 expected_error_message: >-
-  L3 Port-Channel sub-interface 'Port-Channel1111.100' has 'mode' set. This is not a valid setting.
+  L3 Port-Channel sub-interface 'Port-Channel1111.100' has 'mode' set. This is not a valid setting for host 'net-srv-l3-po-sub-interface-with-mode'.

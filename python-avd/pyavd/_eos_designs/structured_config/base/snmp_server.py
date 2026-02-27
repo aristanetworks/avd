@@ -71,21 +71,21 @@ class SnmpServerMixin(Protocol):
                     local_engineid_ip = "use_inband_mgmt_interface"
                 case "none" | _:
                     msg = "The key 'snmp_settings.local_engineid_ip' must be set when 'default_mgmt_method' is set to 'none'."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         match local_engineid_ip:
             case "use_mgmt_interface":
                 has_mgmt_ip = (self.shared_utils.node_config.mgmt_ip is not None) or (self.shared_utils.node_config.ipv6_mgmt_ip is not None)
                 if not has_mgmt_ip:
                     msg = "'snmp_settings.local_engineid_ip' is set to 'use_mgmt_interface' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 return default(self.shared_utils.node_config.mgmt_ip, self.shared_utils.node_config.ipv6_mgmt_ip)
             case "use_inband_mgmt_interface":
                 if self.shared_utils.inband_mgmt_interface is None:
                     msg = (
                         "'snmp_settings.local_engineid_ip' is set to 'use_inband_mgmt_interface' but this node is missing configuration for inband management."
                     )
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 return self.shared_utils.inband_mgmt_ip
             case _:
                 return self.inputs.snmp_settings.local_engineid_ip
@@ -123,13 +123,13 @@ class SnmpServerMixin(Protocol):
                 # 5th octet = 05 , meaning engine id is based on custom octet
                 if self.shared_utils.system_mac_address is None:
                     msg = "'compute_local_engineid_source: rfc3411_type3' requires 'system_mac_address' to be set."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 local_engine_id = f"8000757103{str(self.shared_utils.system_mac_address).replace(':', '').lower()}"
             case "system_mac" | _:
                 # This is the default value of the engine ID on EOS. Note that is is not RFC3411 compliant.
                 if self.shared_utils.system_mac_address is None:
                     msg = "'compute_local_engineid_source: system_mac' requires 'system_mac_address' to be set."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
 
         self.structured_config.snmp_server.engine_ids.local = local_engine_id

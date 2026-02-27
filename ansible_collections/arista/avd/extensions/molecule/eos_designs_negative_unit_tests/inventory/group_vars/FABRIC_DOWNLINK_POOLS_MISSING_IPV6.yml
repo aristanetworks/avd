@@ -36,4 +36,4 @@ l3leaf:
 
 expected_error_message: >-
   Unable to assign IPs for uplinks. Either 'uplink_ipv6_pool' on this switch or 'downlink_pools' on
-  all the uplink switches must be set (Problematic host: 'downlink-pools-missing-leaf-ipv6').
+  all the uplink switches must be set for host 'downlink-pools-missing-leaf-ipv6'.

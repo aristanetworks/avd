@@ -72,7 +72,7 @@ class UtilsMixin(Protocol):
                 f"Facts not found for node '{peer_name}'. Something in the input vars is pointing to this node. "
                 f"Check that '{peer_name}' is in the inventory and is part of the group set by 'fabric_name'. Node is required."
             )
-            raise AristaAvdInvalidInputsError(msg, host=peer_name)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
         return self.peer_facts[peer_name]
 
     def template_var(self: SharedUtilsProtocol, template_file: str, template_vars: MutableMapping) -> str:
@@ -105,13 +105,13 @@ class UtilsMixin(Protocol):
         """Resolve one port-profile and return it."""
         if profile_name not in self.inputs.port_profiles:
             msg = f"Profile '{profile_name}' applied under '{context}' does not exist in `port_profiles`."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         port_profile = self.inputs.port_profiles[profile_name]
         if port_profile.parent_profile:
             if port_profile.parent_profile not in self.inputs.port_profiles:
                 msg = f"Profile '{port_profile.parent_profile}' applied under port profile '{profile_name}' does not exist in `port_profiles`."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
             parent_profile = self.inputs.port_profiles[port_profile.parent_profile]
 
@@ -283,20 +283,20 @@ class UtilsMixin(Protocol):
                     vrf_input = "use_inband_mgmt_vrf"
                 case "none":
                     msg = f"The VRF '{context}' must be set when 'default_mgmt_method' is set to 'none'. Use 'default' for the default VRF."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         match vrf_input:
             case "use_mgmt_interface_vrf":
                 has_mgmt_ip = (self.node_config.mgmt_ip is not None) or (self.node_config.ipv6_mgmt_ip is not None)
                 if not has_mgmt_ip:
                     msg = f"'{context}' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
                 return self.inputs.mgmt_interface_vrf
             case "use_inband_mgmt_vrf":
                 if self.inband_mgmt_interface is None:
                     msg = f"'{context}' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
                 return self.inband_mgmt_vrf or "default"
             case _:

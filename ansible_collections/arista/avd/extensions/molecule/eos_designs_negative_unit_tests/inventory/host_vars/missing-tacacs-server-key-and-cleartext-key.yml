@@ -14,4 +14,5 @@ aaa_settings:
           - TACACS1
 
 expected_error_message: >-
-  '`aaa_settings.tacacs.servers[host=10.10.10.11].key` or `aaa_settings.tacacs.servers[host=10.10.10.11].cleartext_key`' is required but was not found.
+  '`aaa_settings.tacacs.servers[host=10.10.10.11].key` or `aaa_settings.tacacs.servers[host=10.10.10.11].cleartext_key`' is required but was not found
+  for host 'missing-tacacs-server-key-and-cleartext-key'.

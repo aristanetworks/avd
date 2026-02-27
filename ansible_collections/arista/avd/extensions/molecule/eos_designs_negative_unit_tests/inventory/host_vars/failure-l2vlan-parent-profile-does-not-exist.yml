@@ -29,4 +29,5 @@ tenants:
         profile: child_profile
 
 expected_error_message: >-
-  Profile 'THIS-PROFILE-DOES-NOT-EXIST' applied under L2VLAN Profile 'child_profile' does not exist in 'l2vlan_profiles'.
+  Profile 'THIS-PROFILE-DOES-NOT-EXIST' applied under L2VLAN Profile 'child_profile' does not exist in 'l2vlan_profiles'
+  for host 'failure-l2vlan-parent-profile-does-not-exist'.

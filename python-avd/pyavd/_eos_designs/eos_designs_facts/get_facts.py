@@ -75,13 +75,7 @@ def get_facts(
         generator.cross_pollinate()
 
     for hostname, generator in peer_facts_generators.items():
-        try:
-            all_facts[hostname] = generator.render()
-        except AristaAvdMissingVariableError as e:  # noqa: PERF203
-            raise AristaAvdMissingVariableError(variable=e.variable, host=e.host or hostname) from e
-        except AristaAvdError as e:
-            host = e.host if hasattr(e, "host") and e.host else hostname
-            raise type(e)(str(e), host=host, host_context_set=e.host_context_set) from e
+        all_facts[hostname] = generator.render()
 
     return all_facts
 

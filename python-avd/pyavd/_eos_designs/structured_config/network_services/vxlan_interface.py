@@ -158,7 +158,7 @@ class VxlanInterfaceMixin(Protocol):
                             f"'evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool' for Tenant: {tenant.name}"
                             f" or 'evpn_l3_multicast.evpn_underlay_l3_multicast_group' for VRF {vrf.name} is required."
                         )
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                     vxlan_vrf.multicast_group = self.shared_utils.ip_addressing.evpn_underlay_l3_multicast_group(
                         tenant.evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool,
@@ -188,14 +188,14 @@ class VxlanInterfaceMixin(Protocol):
         else:
             if tenant.mac_vrf_vni_base is None:
                 msg = f"'mac_vrf_vni_base' for Tenant: {tenant.name} is required."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             vxlan_vlan.vni = tenant.mac_vrf_vni_base + vlan.id
 
         vlan_evpn_l2_multicast_enabled = bool(default(vlan.evpn_l2_multicast.enabled, tenant.evpn_l2_multicast.enabled)) and self.shared_utils.evpn_multicast
         if vlan_evpn_l2_multicast_enabled is True:
             if not tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool:
                 msg = f"'evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant: {tenant.name} is required."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             vxlan_vlan.multicast_group = self.shared_utils.ip_addressing.evpn_underlay_l2_multicast_group(
                 tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool,
@@ -222,7 +222,7 @@ class VxlanInterfaceMixin(Protocol):
                         f"'{tenant.name}' or 'vxlan_flood_multicast.underlay_l2_multicast_group' for VLAN "
                         f"'{vlan.id}' is required."
                     )
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 vxlan_vlan.flood_group = self.shared_utils.ip_addressing.evpn_underlay_l2_flood_group(
                     tenant.vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool,
                     vlan.id,
@@ -258,7 +258,7 @@ class VxlanInterfaceMixin(Protocol):
 
         if overlay_her_flood_list_scope == "dc" and self.inputs.dc_name is None:
             msg = "'dc_name' is required with 'overlay_her_flood_list_scope: dc'"
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         for peer in self.shared_utils.all_fabric_devices:
             if peer == self.shared_utils.hostname:
@@ -295,4 +295,4 @@ class VxlanInterfaceMixin(Protocol):
                     f"Found duplicate objects with conflicting data while generating configuration for VXLAN VNI {vni}. "
                     f"The following items are conflicting: {', '.join(f'{item}' for item in sorted(items))}."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)

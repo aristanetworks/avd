@@ -17,4 +17,4 @@ overlay_routing_protocol_address_family: ipv6
 
 expected_error_message: >-
   'overlay_routing_protocol_address_family: ipv6' is only supported in combination with 'underlay_ipv6: True'
-  and 'underlay_rfc5549: True' (Problematic host: 'overlay-routing-protocol-address-family-ipv6').
+  and 'underlay_rfc5549: True' for host 'overlay-routing-protocol-address-family-ipv6'.

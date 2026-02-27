@@ -33,4 +33,4 @@ expected_error_message: >-
   '`tenants[name=L3PO].vrfs[name=TESTING].ospf.cleartext_simple_auth_key`
   or `tenants[name=L3PO].vrfs[name=TESTING].svis[id=42].ospf.simple_auth_key`
   or `tenants[name=L3PO].vrfs[name=TESTING].svis[id=42].ospf.cleartext_simple_auth_key`'
-  is required but was not found.
+  is required but was not found for host 'missing-network-services-svi-ospf-authentication-key'.

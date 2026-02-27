@@ -67,7 +67,7 @@ class PortChannelInterfacesMixin(Protocol):
                 f"One or more L3 Port-Channels '{', '.join(natural_sort(missing_parent_port_channels))}' "
                 "need to be specified as they have sub-interfaces referencing them."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     def _set_l3_port_channels(
         self: AvdStructuredConfigNetworkServicesProtocol,
@@ -97,15 +97,15 @@ class PortChannelInterfacesMixin(Protocol):
                     # Validation for l3_port_channel subinterface
                     if l3_port_channel.member_interfaces:
                         msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'member_interfaces' set. This is not a valid setting."
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                     if l3_port_channel._get("mode"):
                         # implies 'mode' is set when not applicable for a sub-interface
                         msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mode' set. This is not a valid setting."
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                     if l3_port_channel._get("mtu"):
                         # implies 'mtu' is set when not applicable for a sub-interface
                         msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mtu' set. This is not a valid setting."
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                 if not (interface_description := l3_port_channel.description):
                     interface_description = "_".join(filter(None, [l3_port_channel.peer, l3_port_channel.peer_port_channel]))
@@ -171,7 +171,7 @@ class PortChannelInterfacesMixin(Protocol):
                     if not l3_port_channel.ip_address:
                         msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_port_channels"
                         msg += f"[name={l3_port_channel.name}].ip_address"
-                        raise AristaAvdMissingVariableError(msg)
+                        raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
                 if l3_port_channel.structured_config:
                     self.custom_structured_configs.nested.port_channel_interfaces.obtain(l3_port_channel.name)._deepmerge(

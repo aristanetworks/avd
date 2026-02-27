@@ -143,11 +143,11 @@ class PortChannelInterfacesMixin(Protocol):
                 # Sub-interface specific validations.
                 if l3_port_channel.member_interfaces:
                     msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'member_interfaces' set. This is not a valid setting."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 if l3_port_channel._get("mode"):
                     # Implies 'mode' is set when not applicable for a sub-interface.
                     msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mode' set. This is not a valid setting."
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             else:
                 regular_names.add(l3_port_channel.name)
 
@@ -156,7 +156,7 @@ class PortChannelInterfacesMixin(Protocol):
             msg = (
                 f"One or more L3 Port-Channels '{', '.join(natural_sort(missing_parents))}' need to be specified as they have sub-interfaces referencing them."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     def _set_l3_port_channel(
         self: AvdStructuredConfigUnderlayProtocol, l3_port_channel: EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem

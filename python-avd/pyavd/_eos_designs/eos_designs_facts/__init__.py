@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
-from pyavd._errors import AristaAvdError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import remove_cached_property_type
 
 from .mlag import MlagMixin
@@ -116,14 +116,14 @@ class EosDesignsFactsGeneratorProtocol(
                     "'evpn_multicast: True' is only supported in combination with and 'igmp_snooping_enabled : true' "
                     "and either node_settings 'underlay_multicast.pim_sm.enabled: true' or 'underlay_multicast_pim_sm: true'."
                 )
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             if (
                 self.shared_utils.mlag
                 and self.shared_utils.overlay_rd_type_admin_subfield == self._mlag_peer_facts_generator.shared_utils.overlay_rd_type_admin_subfield
             ):
                 msg = "For MLAG devices Route Distinguisher must be unique when 'evpn_multicast: True' since it will create a multi-vtep configuration."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             return True
         return None
 

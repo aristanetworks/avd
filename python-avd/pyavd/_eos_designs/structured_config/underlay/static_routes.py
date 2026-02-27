@@ -37,7 +37,7 @@ class StaticRoutesMixin(Protocol):
                 # TODO: add better context to error message once source is available
                 # to hint whether interface is L3 interface vs L3 Port-Channel
                 msg = f"Cannot set a static_route route for interface {l3_generic_interface.name} because 'peer_ip' is missing."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             for l3_generic_interface_static_route in l3_generic_interface.static_routes:
                 static_route = EosCliConfigGen.StaticRoutesItem(prefix=l3_generic_interface_static_route.prefix, next_hop=l3_generic_interface.peer_ip)

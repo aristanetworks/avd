@@ -66,7 +66,7 @@ class VlansMixin(Protocol):
                             "The private VLAN feature is not enabled by default for this platform."
                             " It can be enabled in the platform settings, but might need additional configurations to work."
                         )
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
                     all_primary_vlans.add(l2vlan.private_vlan.primary_vlan)
                     vlan.private_vlan._update(type=l2vlan.private_vlan.type, primary_vlan=l2vlan.private_vlan.primary_vlan)
@@ -80,7 +80,7 @@ class VlansMixin(Protocol):
                 f"The primary VLANs '{missing_vlans}' referenced in a private_vlan definition, "
                 "do not exist. The primary VLANs must be defined under 'l2vlans' or 'svis'."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     def _get_vlan_config(
         self: AvdStructuredConfigNetworkServicesProtocol,
@@ -106,7 +106,7 @@ class VlansMixin(Protocol):
                     f"To configure address locking ipv4 for vlan {vlan.id} in Tenant '{tenant.name}' either `address_locking_settings.dhcp_servers_ipv4` "
                     "or `address_locking_settings.locked_address.ipv4_enforcement_disabled` is required."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         if vlan.address_locking.ipv6:
             if self.inputs.address_locking_settings.dhcp_servers_ipv4 or self.inputs.address_locking_settings.locked_address.ipv6_enforcement_disabled:
                 vlans_vlan.address_locking.address_family.ipv6 = vlan.address_locking.ipv6
@@ -115,7 +115,7 @@ class VlansMixin(Protocol):
                     f"To configure address locking ipv6 for vlan {vlan.id} in Tenant '{tenant.name}' either `address_locking_settings.dhcp_servers_ipv4` "
                     "or `address_locking_settings.locked_address.ipv6_enforcement_disabled` is required."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         if self.inputs.enable_trunk_groups:
             trunk_groups = set(vlan.trunk_groups)
             if self.shared_utils.only_local_vlan_trunk_groups:

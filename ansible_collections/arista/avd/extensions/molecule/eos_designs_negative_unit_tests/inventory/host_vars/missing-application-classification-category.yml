@@ -98,4 +98,4 @@ application_classification:
 
 expected_error_message: >-
   Category 'MISSING-CATEGORY' referenced in the Application Profile 'TEST' is not defined
-  in 'application_classification.categories'.
+  in 'application_classification.categories' for host 'missing-application-classification-category'.

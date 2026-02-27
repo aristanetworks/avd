@@ -39,6 +39,6 @@ class PtpMixin(Protocol):
     def ptp_profile(self: SharedUtilsProtocol) -> EosDesigns.PtpProfilesItem:
         if self.ptp_profile_name not in self.inputs.ptp_profiles:
             msg = f"PTP Profile '{self.ptp_profile_name}' referenced under `ptp.profile` node variables does not exist in `ptp_profiles`."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         return self.inputs.ptp_profiles[self.ptp_profile_name]

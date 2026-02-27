@@ -16,4 +16,4 @@ cvxserver:
         source_ip: router_id
 
 expected_error_message: >-
-  PTP source IP is set to 'ptp.source_ip: router_id' but no router ID is configured for this device.
+  PTP source IP is set to 'ptp.source_ip: router_id' but no router ID is configured for host 'missing-router-id-for-ptp-source-ip'.

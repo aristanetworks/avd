@@ -97,4 +97,4 @@ application_classification:
 
 expected_error_message: >-
   Application Profile 'TEST' referenced in policy 'DEFAULT-POLICY' is not defined
-  in 'application_classification.application_profiles'.
+  in 'application_classification.application_profiles' for host 'missing-application-classification-application-profile'.

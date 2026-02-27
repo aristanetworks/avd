@@ -2,4 +2,4 @@ underlay_ipv6: true
 underlay_rfc5549: true
 
 expected_error_message: >-
-  The uplink interface Ethernet52 used as WAN LAN HA does not have an IP address.
+  The uplink interface Ethernet52 used as WAN LAN HA does not have an IP address for host 'missing-ip-address-on-uplink-used-as-wan-lan-ha'.

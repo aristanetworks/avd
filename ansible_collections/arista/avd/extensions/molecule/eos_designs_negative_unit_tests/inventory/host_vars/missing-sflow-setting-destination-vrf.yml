@@ -41,4 +41,4 @@ l3_edge:
 
 expected_error_message: >-
   The VRF 'sflow_settings.destinations[destination=10.10.10.11].vrf' must be set when 'default_mgmt_method' is set to 'none'.
-  Use 'default' for the default VRF.
+  Use 'default' for the default VRF for host 'missing-sflow-setting-destination-vrf'.

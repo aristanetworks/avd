@@ -45,7 +45,7 @@ class MonitorSessionsMixin(Protocol):
                             f"Cannot set an ACL for both `session_settings` and `source_settings`"
                             f" under the monitor session '{session.name}' for {session._internal_data.context}."
                         )
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             monitor_session = EosCliConfigGen.MonitorSessionsItem(name=session_name)
             for session in session_configs_list:

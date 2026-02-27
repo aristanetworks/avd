@@ -18,4 +18,4 @@ wan_router:
     - name: wan-unsupported-platform
 
 expected_error_message: >-
-  The WAN features are not compatible with the 'vEOS' platform (Problematic host: 'wan-unsupported-platform').
+  The WAN features are not compatible with the 'vEOS' platform for host 'wan-unsupported-platform'.

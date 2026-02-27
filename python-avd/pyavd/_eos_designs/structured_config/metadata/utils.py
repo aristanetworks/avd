@@ -46,14 +46,14 @@ class UtilsMixin(Protocol):
 
         if profile_name not in validation_profiles:
             msg = f"Validation profile '{profile_name}' referenced in node configuration is not defined under 'validation_profiles'."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         validation_profile = validation_profiles[profile_name]
 
         if (parent_name := validation_profile.parent_profile) is not None:
             if parent_name not in validation_profiles:
                 msg = f"Parent validation profile '{parent_name}' referenced by validation profile '{profile_name}' is not defined under 'validation_profiles'."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             parent_profile = validation_profiles[parent_name]
             validation_profile = validation_profile._deepinherited(parent_profile)

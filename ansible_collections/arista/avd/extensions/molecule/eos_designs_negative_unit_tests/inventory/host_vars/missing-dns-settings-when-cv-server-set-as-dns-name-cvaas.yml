@@ -21,4 +21,5 @@ l3leaf:
       bgp_as: 65101
 
 expected_error_message: >-
-  'dns_settings' must be configured when 'cv_settings.cvaas.clusters[]' are defined with 'cv_settings.cvaas.enabled: true'.
+  'dns_settings' must be configured when 'cv_settings.cvaas.clusters[]' are defined with 'cv_settings.cvaas.enabled: true'
+  for host 'missing-dns-settings-when-cv-server-set-as-dns-name-cvaas'.

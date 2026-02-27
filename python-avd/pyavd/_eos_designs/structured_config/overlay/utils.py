@@ -120,7 +120,7 @@ class UtilsMixin(Protocol):
         # Keeping it as a safeguard for any unexpected behavior.
         if not (ip_address := peer_facts.overlay.peering_address):
             msg = f"switch.overlay.peering_address for {peer_name} is required."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         peers_dict[peer_name] = {
             "bgp_as": self.shared_utils.get_asn(str(bgp_as)) if bgp_as is not None else None,
             "ip_address": ip_address,

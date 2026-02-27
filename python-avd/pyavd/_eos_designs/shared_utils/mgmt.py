@@ -79,7 +79,7 @@ class MgmtMixin(Protocol):
         if default_mgmt_method == "oob":
             if self.node_config.mgmt_ip is None and self.node_config.ipv6_mgmt_ip is None:
                 msg = "'default_mgmt_method: oob' requires either 'mgmt_ip' or 'ipv6_mgmt_ip' to be set."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
             return default_mgmt_method
 
@@ -87,7 +87,7 @@ class MgmtMixin(Protocol):
             # Check for missing interface
             if self.inband_mgmt_interface is None:
                 msg = "'default_mgmt_method: inband' requires 'inband_mgmt_interface' to be set."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
             return default_mgmt_method
 

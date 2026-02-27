@@ -16,4 +16,4 @@ spine:
         source_ip: no_ip_address
 
 expected_error_message: >-
-  Invalid PTP source IP 'ptp.source_ip: no_ip_address'. The value must be either 'router_id' or a valid IPv4 address.
+  Invalid PTP source IP 'ptp.source_ip: no_ip_address'. The value must be either 'router_id' or a valid IPv4 address for host 'invalid-ptp-source-ip-address'.

@@ -99,28 +99,28 @@ class UnderlayMixin(Protocol):
         if self.inputs.underlay_ipv6_numbered:
             if self.is_wan_router:
                 msg = "Invalid combination of inputs. WAN is not yet supported with IPv6 underlay"
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             if self.underlay_multicast_rp_interfaces or self.underlay_multicast_static_enabled:
                 msg = "Invalid combination of inputs. Underlay multicast is not yet supported with IPv6 underlay"
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             if self.inputs.underlay_rfc5549:
                 msg = "Invalid combination of inputs. RFC5549 is not supported with numbered IPv6 underlay"
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             if self.inputs.vtep_vvtep_ip:
                 msg = "Invalid combination of inputs. vtep_vvtep_ip is not supported with numbered IPv6 underlay"
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             if self.node_config.inband_ztp:
                 msg = "Invalid combination of inputs. inband_ztp is not supported with numbered IPv6 underlay"
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             if self.inputs.underlay_routing_protocol not in (None, "ebgp"):
                 msg = (
                     f"Invalid combination of inputs. {self.inputs.underlay_routing_protocol} is not supported with numbered IPv6 underlay. "
                     "underlay_routing_protocol must be set to 'ebgp'"
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             if not self.underlay_ipv6:
                 msg = "underlay_ipv6: true"
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(msg, host=self.hostname)
         return self.inputs.underlay_ipv6_numbered
 
     @cached_property

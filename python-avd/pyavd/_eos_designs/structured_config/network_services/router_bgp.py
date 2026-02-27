@@ -536,7 +536,7 @@ class RouterBgpMixin(Protocol):
                 "The 'evpn_vlan_bundle' of the svis/l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurrence seen for svi/l2vlan"
                 f" {vlan.id} in Tenant '{tenant.name}' and evpn_vlan_bundle '{vlan.evpn_vlan_bundle}'."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         return self.inputs.evpn_vlan_bundles[bundle_name]
 
     def _get_svi_l2vlan_bundle(

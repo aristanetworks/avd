@@ -31,4 +31,4 @@ tenants:
               enabled: true
 
 expected_error_message: >-
-  'virtual_router_mac_address' must be set for node 'missing-virtual-router-mac-address' when using 'ip_address_virtual' under 'svis'.
+  'virtual_router_mac_address' must be set when using 'ip_address_virtual' under 'svis' for host 'missing-virtual-router-mac-address'.

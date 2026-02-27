@@ -29,4 +29,5 @@ wan_path_groups:
     id: 42
 
 expected_error_message: >-
-  'wan_router.nodes[name=missing-wan-router-l3-interfaces-ip-address].l3_interfaces[name=Ethernet42].ip_address' is required but was not found.
+  'wan_router.nodes[name=missing-wan-router-l3-interfaces-ip-address].l3_interfaces[name=Ethernet42].ip_address' is required but was not found
+  for host 'missing-wan-router-l3-interfaces-ip-address'.

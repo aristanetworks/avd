@@ -20,4 +20,4 @@ servers:
 
 expected_error_message: >-
   Adapter 'vlans' value must be a single vlan ID when mode is 'access' or 'dot1q-tunnel'.
-  Got 1-2 for interface Ethernet9.
+  Got 1-2 for interface Ethernet9 for host 'connected-endpoints-invalid-access-vlan-ethernet'.

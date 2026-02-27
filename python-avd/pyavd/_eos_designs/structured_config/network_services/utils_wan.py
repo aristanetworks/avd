@@ -63,7 +63,7 @@ class UtilsWanMixin(Protocol):
                         f"The policy {vrf.policy} applied to vrf {vrf.name} under `wan_virtual_topologies.vrfs` is not "
                         "defined under `wan_virtual_topologies.policies`."
                     )
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             else:
                 vrf_policy = self.inputs.wan_virtual_topologies.policies[vrf.policy]
 
@@ -104,7 +104,7 @@ class UtilsWanMixin(Protocol):
         """
         if not policy.default_virtual_topology:
             msg = f"wan_virtual_topologies.policies[{policy.name}].default_virtual_toplogy."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
         if not policy.default_virtual_topology.drop_unmatched:
             context_path = f"wan_virtual_topologies.policies[{policy.name}].default_virtual_topology"
@@ -112,7 +112,7 @@ class UtilsWanMixin(Protocol):
             # TODO: this functionality could be added to schema
             if not policy.default_virtual_topology.path_groups:
                 msg = f"Either 'drop_unmatched' or 'path_groups' must be set under '{context_path}'."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     def _verify_internet_exit_policy(self: AvdStructuredConfigNetworkServicesProtocol, ie_policy_name: str, policy_name: str) -> None:
         """
@@ -128,7 +128,7 @@ class UtilsWanMixin(Protocol):
                 f"`wan_virtual_topologies.policies[name={policy_name}].internet_exit.policy` "
                 "is not defined under `cv_pathfinder_internet_exit_policies`."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
     local_internet_exit_connections: dict[str, bool] | None = None
     """Poor-mans cache to only check local interfaces for an internet exit policy once."""
@@ -199,7 +199,7 @@ class UtilsWanMixin(Protocol):
                             f"Failed to retrieve path-group {path_group_name} from `wan_path_groups` when generating load balance policy {lb_policy_name}. "
                             f"Verify the path-groups defined under {context_path}."
                         )
-                        raise AristaAvdInvalidInputsError(msg)
+                        raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                     wan_path_group = self.inputs.wan_path_groups[path_group_name]
                     priority = self._path_group_preference_to_eos_priority(wan_path_group.default_preference, f"wan_path_groups[{wan_path_group.name}]")
 
@@ -352,11 +352,11 @@ class UtilsWanMixin(Protocol):
         """Returns ufqdn, shared_key based on various details from the given internet_exit_policy."""
         if not internet_exit_policy.zscaler.domain_name:
             msg = "zscaler.domain_name"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
         if not internet_exit_policy.zscaler.ipsec_key_salt:
             msg = "zscaler.ipsec_key_salt"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
 
         ipsec_key = self._generate_ipsec_key(name=internet_exit_policy.name, salt=internet_exit_policy.zscaler.ipsec_key_salt)
         ufqdn = f"{self.shared_utils.hostname}_{internet_exit_policy.name}@{internet_exit_policy.zscaler.domain_name}"

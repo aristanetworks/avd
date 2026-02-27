@@ -33,7 +33,7 @@ class CvPathfinderMixin(Protocol):
             return
         if self.shared_utils.is_cv_pathfinder_client and not self.inputs.wan_route_servers:
             msg = "'wan_route_servers' must be configured for WAN routers operating in 'cv_pathfinder' mode."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         region_name = self.shared_utils.wan_region.name if self.shared_utils.wan_region is not None else None
         site_name = self.shared_utils.wan_site.name if self.shared_utils.wan_site is not None else None
         self.structured_config.metadata.cv_pathfinder._update(
@@ -79,7 +79,7 @@ class CvPathfinderMixin(Protocol):
     def _metadata_regions(self: AvdStructuredConfigMetadataProtocol) -> None:
         if not self.inputs.cv_pathfinder_regions:
             msg = "'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         regions = self.inputs.cv_pathfinder_regions
         for region in regions:
             region_item = EosCliConfigGen.Metadata.CvPathfinder.RegionsItem(name=region.name, id=region.id)

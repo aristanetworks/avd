@@ -51,4 +51,5 @@ l2leaf:
         - Ethernet15
 expected_error_message: >-
   Found conflicting configuration for exporter 'Exporter1' while generating configuration for flow tracking 'export_to_cloudvision'.
-  One exporter defined for tracker 'FLOW-TRACKER-11' is conflicting with the 'cloudvision_exporter.name' configuration.
+  One exporter defined for tracker 'FLOW-TRACKER-11' is conflicting with the 'cloudvision_exporter.name' configuration
+  for host 'duplicate-flow-tracking-sampled-cloudvision-exporter'.

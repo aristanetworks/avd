@@ -62,7 +62,7 @@ class UtilsMixin(Protocol):
         if len(set(adapter.switches)) < 2:
             # Only configure ESI for multi-homing.
             msg = f"The length of '{adapter._internal_data.context}.switches' should be greater than 1 to configure short ESI."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         endpoint_ports = adapter.endpoint_ports
         short_esi = str(short_esi)
@@ -92,7 +92,7 @@ class UtilsMixin(Protocol):
 
         if adapter._get("trunk_groups") is None:
             msg = f"'trunk_groups' for the connected_endpoint {connected_endpoint.name} is required."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         return output_type(adapter.trunk_groups)
 
@@ -183,7 +183,7 @@ class UtilsMixin(Protocol):
         if (ptp_profile_name := adapter.ptp.profile or self.shared_utils.ptp_profile_name) is not None:
             if ptp_profile_name not in self.inputs.ptp_profiles:
                 msg = f"PTP Profile '{ptp_profile_name}' referenced under {adapter._internal_data.context} does not exist in `ptp_profiles`."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             # Create a copy and removes the .profile attribute since the target model has a .profile key with a different schema.
             ptp_profile_config = self.inputs.ptp_profiles[ptp_profile_name]._deepcopy()
@@ -248,7 +248,7 @@ class UtilsMixin(Protocol):
                 f"802.1X settings are configured under '{adapter._internal_data.context}' but 802.1X is not enabled globally. "
                 "802.1X must be enabled globally by setting 'dot1x_settings.enabled: true' before configuring 802.1X on any interface."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         return adapter.dot1x
 

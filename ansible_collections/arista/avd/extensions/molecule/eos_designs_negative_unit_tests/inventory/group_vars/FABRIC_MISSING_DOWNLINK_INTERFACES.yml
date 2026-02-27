@@ -28,4 +28,4 @@ l3leaf:
 
 expected_error_message: >-
   Either 'downlink_interfaces' must be set under 'default_interfaces' for uplink_switch' 'missing-downlink-interfaces-spine' or 'uplink_switch_interfaces'
-  must be set (Problematic host: 'missing-downlink-interfaces-l3leaf').
+  must be set for host 'missing-downlink-interfaces-l3leaf'.

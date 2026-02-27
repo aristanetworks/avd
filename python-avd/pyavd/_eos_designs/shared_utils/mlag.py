@@ -60,28 +60,28 @@ class MlagMixin(Protocol):
     def mlag_peer_ipv4_pool(self: SharedUtilsProtocol) -> str:
         if not self.node_config.mlag_peer_ipv4_pool:
             msg = "mlag_peer_ipv4_pool"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
         return self.node_config.mlag_peer_ipv4_pool
 
     @cached_property
     def mlag_peer_ipv6_pool(self: SharedUtilsProtocol) -> str:
         if not self.node_config.mlag_peer_ipv6_pool:
             msg = "mlag_peer_ipv6_pool"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
         return self.node_config.mlag_peer_ipv6_pool
 
     @cached_property
     def mlag_peer_l3_ipv4_pool(self: SharedUtilsProtocol) -> str:
         if not self.node_config.mlag_peer_l3_ipv4_pool:
             msg = "mlag_peer_l3_ipv4_pool"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
         return self.node_config.mlag_peer_l3_ipv4_pool
 
     @cached_property
     def mlag_peer_l3_ipv6_pool(self: SharedUtilsProtocol) -> str:
         if not self.node_config.mlag_peer_l3_ipv6_pool:
             msg = "mlag_peer_l3_ipv6_pool"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
         return self.node_config.mlag_peer_l3_ipv6_pool
 
     @cached_property
@@ -176,12 +176,12 @@ class MlagMixin(Protocol):
         if self.mlag_role == "primary":
             if self.id is None:
                 msg = "'id' is required to compute MLAG ids"
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             return {"primary": self.id, "secondary": self.mlag_peer_id}
         if self.mlag_role == "secondary":
             if self.id is None:
                 msg = "'id' is required to compute MLAG ids"
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             return {"primary": self.mlag_peer_id, "secondary": self.id}
         return None
 
@@ -189,7 +189,7 @@ class MlagMixin(Protocol):
     def mlag_port_channel_id(self: SharedUtilsProtocol) -> int:
         if not self.mlag_interfaces:
             msg = "'mlag_interfaces' not set"
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
         default_mlag_port_channel_id = int("".join(findall(r"\d", self.mlag_interfaces[0])))
         return default(self.node_config.mlag_port_channel_id, default_mlag_port_channel_id)
 

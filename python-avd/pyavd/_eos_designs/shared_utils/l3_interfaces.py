@@ -40,7 +40,7 @@ class L3InterfacesMixin(Protocol):
 
         if l3_interface.profile not in self.inputs.l3_interface_profiles:
             msg = f"Profile '{l3_interface.profile}' applied under l3_interface '{l3_interface.name}' does not exist in `l3_interface_profiles`."
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
         profile_as_interface = self.inputs.l3_interface_profiles[l3_interface.profile]._cast_as(
             EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem

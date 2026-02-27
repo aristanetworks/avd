@@ -19,4 +19,4 @@ l3leaf:
           ip_address: 172.16.0.2/30
 
 expected_error_message: >-
-  L3 Port-Channel sub-interface 'Port-Channel5.108' has 'mode' set. This is not a valid setting.
+  L3 Port-Channel sub-interface 'Port-Channel5.108' has 'mode' set. This is not a valid setting for host 'l3-port-channel-sub-interface-with-mode'.

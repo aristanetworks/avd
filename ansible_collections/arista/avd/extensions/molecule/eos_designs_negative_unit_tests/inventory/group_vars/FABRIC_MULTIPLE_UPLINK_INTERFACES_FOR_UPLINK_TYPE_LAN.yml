@@ -38,4 +38,4 @@ l3leaf:
 
 expected_error_message: >-
   'uplink_type: lan' only supports a single uplink interface.
-  Got ['Ethernet1', 'Ethernet2'] (Problematic host: 'multiple-uplink-interfaces-for-uplink-type-lan').
+  Got ['Ethernet1', 'Ethernet2'] for host 'multiple-uplink-interfaces-for-uplink-type-lan'.

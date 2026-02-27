@@ -86,11 +86,7 @@ class NodeConfigMixin(Protocol):
                         f"Found the device '{self.hostname}' under '{self.node_type_key_data.key}' but it also has 'device_profile' set. "
                         "Those two models are mutually exclusive one of them must be removed for this device."
                     )
-                raise AristaAvdInvalidInputsError(
-                    msg,
-                    host=self.hostname,
-                    host_context_set=True,
-                )
+                raise AristaAvdInvalidInputsError(msg)
 
             # Casting as NodesItem so all the code relying on this does not have to care which model the input came from.
             return self.device_config._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True)

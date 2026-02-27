@@ -38,4 +38,5 @@ tenants:
             node: net-srv-l3-po-sub-interface-without-ip
 
 expected_error_message: >-
-  'l3leaf.nodes[name=net-srv-l3-po-sub-interface-without-ip].l3_port_channels[name=Port-Channel1111.100].ip_address' is required but was not found.
+  'l3leaf.nodes[name=net-srv-l3-po-sub-interface-without-ip].l3_port_channels[name=Port-Channel1111.100].ip_address' is required but was not found
+  for host 'net-srv-l3-po-sub-interface-without-ip'.

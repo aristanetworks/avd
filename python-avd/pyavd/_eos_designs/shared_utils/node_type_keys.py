@@ -35,4 +35,4 @@ class NodeTypeKeysMixin(Protocol):
 
         # This should never happen, as it should be caught during validation
         msg = f"Could not find the given type '{self.type}' in node_type_keys or custom_node_type_keys."
-        raise AristaAvdInvalidInputsError(msg)
+        raise AristaAvdInvalidInputsError(msg, host=self.hostname)

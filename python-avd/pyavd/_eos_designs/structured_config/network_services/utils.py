@@ -155,7 +155,7 @@ class UtilsMixin(Protocol):
             vrf_id = default(vrf.vrf_id, vrf.vrf_vni)
             if vrf_id is None:
                 msg = f"Unable to assign MLAG VRF Peering VLAN for vrf {vrf.name}.Set either 'mlag_ibgp_peering_vlan' or 'vrf_id' or 'vrf_vni' on the VRF"
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             vlan_id = base_vlan + vrf_id - 1
 
         return vlan_id
@@ -207,7 +207,7 @@ class UtilsMixin(Protocol):
                 "'rt_override' or 'vni_override' or 'mac_vrf_id_base' or 'mac_vrf_vni_base' must be set. "
                 f"Unable to set EVPN RD/RT for vlan {vlan.id} in Tenant '{tenant.name}'"
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         return mac_vrf_id_base + vlan.id
 
     def get_vlan_mac_vrf_vni(
@@ -222,7 +222,7 @@ class UtilsMixin(Protocol):
                 "'rt_override' or 'vni_override' or 'mac_vrf_id_base' or 'mac_vrf_vni_base' must be set. "
                 f"Unable to set EVPN RD/RT for vlan {vlan.id} in Tenant '{tenant.name}'"
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
         return mac_vrf_vni_base + vlan.id
 
     def get_vlan_rd(
@@ -441,7 +441,7 @@ class UtilsMixin(Protocol):
                         "'vtep_diagnostic.loopback' along with either 'vtep_diagnostic.loopback_ip_pools' or "
                         "'vtep_diagnostic.loopback_ip_range' must be defined when 'router_id' is set to 'diagnostic_loopback' on the VRF."
                     )
-                    raise AristaAvdInvalidInputsError(msg)
+                    raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
                 # Resolve router ID from loopback interface
                 return get_ip_from_ip_prefix(interface_data.ip_address)
             case "main_router_id":

@@ -33,7 +33,7 @@ class CvxMixin(Protocol):
             peer_switch_facts = self.shared_utils.get_peer_facts(overlay_cvx_server)
             if not peer_switch_facts.mgmt_ip:
                 msg = f"'mgmt_ip' for CVX Server {overlay_cvx_server} is required."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             self.structured_config.cvx.peer_hosts.append(get_ip_from_ip_prefix(peer_switch_facts.mgmt_ip))
 
         self.structured_config.cvx.shutdown = False

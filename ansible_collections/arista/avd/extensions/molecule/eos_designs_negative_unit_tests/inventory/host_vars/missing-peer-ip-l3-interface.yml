@@ -16,4 +16,4 @@ spine:
           static_routes:
             - prefix: 0.0.0.0/0
 
-expected_error_message: "Cannot set a static_route route for interface Ethernet1 because 'peer_ip' is missing."
+expected_error_message: "Cannot set a static_route route for interface Ethernet1 because 'peer_ip' is missing for host 'missing-peer-ip-l3-interface'."

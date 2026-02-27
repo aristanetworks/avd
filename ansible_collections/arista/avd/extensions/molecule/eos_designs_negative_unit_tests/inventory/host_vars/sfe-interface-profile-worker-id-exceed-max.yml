@@ -20,4 +20,5 @@ l3leaf:
                   - 14-17
 
 expected_error_message: >-
-  Worker id '17' specified under 'rx_queue.workers' for interface 'Ethernet1/19' equals or exceeds maximum supported '16' for this platform.
+  Worker id '17' specified under 'rx_queue.workers' for interface 'Ethernet1/19' equals or exceeds maximum supported '16' for this platform
+  for host 'sfe-interface-profile-worker-id-exceed-max'.

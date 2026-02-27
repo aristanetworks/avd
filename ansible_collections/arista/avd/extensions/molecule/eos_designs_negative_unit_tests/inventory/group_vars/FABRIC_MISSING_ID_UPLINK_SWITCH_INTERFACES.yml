@@ -24,4 +24,4 @@ l2leaf:
       mgmt_ip: 192.168.0.2/24
 
 expected_error_message: >-
-  'id' is not set (Problematic host: 'missing-id-on-l2leaf-uplink-switch-interfaces').
+  'id' is not set for host 'missing-id-on-l2leaf-uplink-switch-interfaces'.

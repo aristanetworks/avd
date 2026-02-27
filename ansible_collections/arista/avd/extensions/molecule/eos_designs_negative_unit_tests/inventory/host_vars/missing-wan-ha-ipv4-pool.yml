@@ -110,4 +110,4 @@ cv_pathfinder_internet_exit_policies:
     type: direct
 
 expected_error_message: >-
-  Missing `wan_ha.ha_ipv4_pool` node settings to allocate an IP address to defined HA interface.
+  Missing `wan_ha.ha_ipv4_pool` node settings to allocate an IP address to defined HA interface for host 'missing-wan-ha-ipv4-pool'.

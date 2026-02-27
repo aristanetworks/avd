@@ -55,3 +55,4 @@ wan_carriers:
 
 expected_error_message: >-
   The 'cv_pathfinder_site 'Site422' defined at the node level could not be found under the 'cv_pathfinder_global_sites' list
+  for host 'missing-cv-pathfinder-site-under-cv-pathfinder-global-sites'.

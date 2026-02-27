@@ -11,4 +11,4 @@ device_profiles:
 
 expected_error_message: >-
   Device Profile 'missing-profile' applied as 'parent_profile' on the profile 'my-profile' does not exist under 'device_profiles'
-  (Problematic host: 'missing-devices-parent-profile').
+  for host 'missing-devices-parent-profile'.

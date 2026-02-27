@@ -50,7 +50,7 @@ class RouterInternetExitMixin(Protocol):
                 f"`wan_virtual_topologies.policies[name={policy_name}].internet_exit.policy` "
                 "is not defined under `cv_pathfinder_internet_exit_policies`."
             )
-            raise AristaAvdInvalidInputsError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         internet_exit_policy = self.inputs.cv_pathfinder_internet_exit_policies[internet_exit_policy_name]
 
@@ -105,7 +105,7 @@ class RouterInternetExitMixin(Protocol):
                     f"'l3_interfaces[name={wan_interface.name}].peer_ip' needs to be set. When using WAN interface "
                     "for direct type Internet exit, 'peer_ip' is used for nexthop, and connectivity monitoring."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             # wan interface ip will be used for acl, hence raise error if ip is not available
             if (ip_address := wan_interface.ip_address) == "dhcp" and not (ip_address := wan_interface.dhcp_ip):
@@ -113,7 +113,7 @@ class RouterInternetExitMixin(Protocol):
                     f"'l3_interfaces[name={wan_interface.name}].dhcp_ip' needs to be set. When using WAN interface for 'direct' type Internet exit, "
                     "'dhcp_ip' is used in the NAT ACL."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             if not ip_address:  # pragma: no cover
                 # This cannot raise in theory as it is currently caught in underlay so we can't test it with our scenarii.
@@ -121,7 +121,7 @@ class RouterInternetExitMixin(Protocol):
                     f"'l3_interfaces[name={wan_interface.name}].ip_address' or 'dhcp_ip' needs to be set when using WAN interface for 'direct' "
                     "type Internet Exit."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             connection_name = f"IE-{self.shared_utils.sanitize_interface_name(wan_interface.name)}"
             description = f"Internet Exit {internet_exit_policy.name}"
@@ -166,7 +166,7 @@ class RouterInternetExitMixin(Protocol):
         for wan_interface in local_wan_l3_interfaces:
             if not wan_interface.peer_ip:
                 msg = f"The configured internet-exit policy requires `peer_ip` configured under the WAN Interface {wan_interface.name}."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             interface_policy_config = wan_interface.cv_pathfinder_internet_exit.policies[internet_exit_policy.name]
 
@@ -175,7 +175,7 @@ class RouterInternetExitMixin(Protocol):
                     f"{wan_interface.name}.cv_pathfinder_internet_exit.policies[{internet_exit_policy.name}]."
                     "tunnel_interface_numbers needs to be set, when using wan interface for zscaler type internet exit."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             tunnel_id_range: list[int] = [int(tunnel_id) for tunnel_id in range_expand(interface_policy_config.tunnel_interface_numbers)]
 

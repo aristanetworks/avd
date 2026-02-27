@@ -14,4 +14,4 @@ l2leaf:
 
 expected_error_message: >-
   'id' is required to set inband_mgmt_ip from
-  inband_mgmt_subnet (Problematic host: 'inband-mgmt-missing-id-with-subnet').
+  inband_mgmt_subnet for host 'inband-mgmt-missing-id-with-subnet'.

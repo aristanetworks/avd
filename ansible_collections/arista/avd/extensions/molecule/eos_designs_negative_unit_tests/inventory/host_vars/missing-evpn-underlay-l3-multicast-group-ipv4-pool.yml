@@ -30,4 +30,4 @@ tenants:
 
 expected_error_message: >-
   'evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool' for Tenant: TenantA
-  or 'evpn_l3_multicast.evpn_underlay_l3_multicast_group' for VRF Tenant_A_OP_Zone_MC is required.
+  or 'evpn_l3_multicast.evpn_underlay_l3_multicast_group' for VRF Tenant_A_OP_Zone_MC is required for host 'missing-evpn-underlay-l3-multicast-group-ipv4-pool'.

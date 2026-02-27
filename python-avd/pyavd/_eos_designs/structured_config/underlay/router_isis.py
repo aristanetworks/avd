@@ -78,9 +78,9 @@ class RouterIsisMixin(Protocol):
             if self.shared_utils.underlay_isis is True and isis_system_id_prefix is None:
                 msg = (
                     f"'isis_system_id_prefix' is required when 'isis_system_id_format' is set to 'node_id'."
-                    f" 'isis_system_id_prefix' was not set for '{self.shared_utils.hostname}'"
+                    f" 'isis_system_id_prefix' was not set."
                 )
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             # This condition is not covered by current tests but is retained for potential unexpected behavior.
             if self.shared_utils.id is None:

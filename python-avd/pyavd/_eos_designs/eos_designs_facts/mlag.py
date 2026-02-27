@@ -44,7 +44,7 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
                     f"When trying to establish the MLAG pair, we found {length} member(s) {natural_sort(mlag_group_members)} "
                     f"of the 'mlag_group: \"{mlag_group}\"'. There should be exactly two members of the group to form an MLAG pair."
                 )
-                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname, host_context_set=True)
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             return next(iter(mlag_group_members.difference([self.shared_utils.hostname])))
 

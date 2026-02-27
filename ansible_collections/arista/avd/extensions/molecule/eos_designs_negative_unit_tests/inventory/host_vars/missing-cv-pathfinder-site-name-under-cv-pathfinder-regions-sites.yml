@@ -52,4 +52,5 @@ wan_carriers:
     trusted: true
 
 expected_error_message: >-
-  The 'cv_pathfinder_site 'WEST' defined at the node level could not be found under the 'sites' list for the region 'AVD_Land_West'.
+  The 'cv_pathfinder_site 'WEST' defined at the node level could not be found under the 'sites' list for the region 'AVD_Land_West'
+  for host 'missing-cv-pathfinder-site-name-under-cv-pathfinder-regions-sites'.

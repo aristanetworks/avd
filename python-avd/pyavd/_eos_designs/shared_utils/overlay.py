@@ -7,7 +7,7 @@ from functools import cached_property
 from ipaddress import ip_address
 from typing import TYPE_CHECKING, Protocol, cast
 
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default
 
 if TYPE_CHECKING:
@@ -85,7 +85,7 @@ class OverlayMixin(Protocol):
                 "Expected 'router_id', 'vtep_loopback', 'bgp_as', 'switch_id', a valid IPv4 address, or a numeric value from 0 to 4294967295."
             )
 
-            raise AristaAvdInvalidInputsError(msg) from None
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname) from None
 
         return admin_subfield
 
@@ -94,7 +94,7 @@ class OverlayMixin(Protocol):
         overlay_routing_protocol_address_family = self.inputs.overlay_routing_protocol_address_family
         if overlay_routing_protocol_address_family == "ipv6" and not (self.underlay_ipv6 is True and self.inputs.underlay_rfc5549):
             msg = "'overlay_routing_protocol_address_family: ipv6' is only supported in combination with 'underlay_ipv6: True' and 'underlay_rfc5549: True'"
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname)
         return overlay_routing_protocol_address_family
 
     @cached_property
@@ -124,7 +124,7 @@ class OverlayMixin(Protocol):
                 # The self.wan_site could be None only when 'cv_pathfinder_site' is not defined and 'self.is_cv_pathfinder_client' is false.
                 # it will return from line 116.
                 msg = "Could not find 'cv_pathfinder_site' so it is not possible to generate evpn_soo."
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
 
             if not self.wan_ha:
                 return f"{self.router_id}:{self.wan_site.id}"
@@ -180,8 +180,8 @@ class OverlayMixin(Protocol):
 
         # This condition is not expected to occur under normal circumstances, but is retained as a safeguard against unexpected behavior.
         if not peer_facts.vtep_ip:
-            msg = f"'vtep_ip' is required but was not found for host '{self.wan_ha_peer}'"
-            raise AristaAvdInvalidInputsError(msg)
+            msg = "vtep_ip"
+            raise AristaAvdMissingVariableError(msg, host=self.wan_ha_peer)
         return peer_facts.vtep_ip
 
     @cached_property
