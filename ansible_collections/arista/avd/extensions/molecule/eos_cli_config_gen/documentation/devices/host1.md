@@ -6199,10 +6199,10 @@ interface Ethernet89
 
 ##### IPv6
 
-| Interface | Description | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - |
-| Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | - | True | - | - |
+| Interface | Description | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out | IPv6 ND RA RX Accept |
+| --------- | ----------- | ------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ | -------------------- |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - | - |
+| Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | True | True | - | - | default-route, route-preference |
 
 ##### VRRP Details
 
@@ -6539,6 +6539,9 @@ interface Port-Channel100.101
    logging event link-status
    encapsulation dot1q vlan 101
    ipv6 address cafe::b4
+   ipv6 nd ra disabled
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
    ipv6 nd managed-config-flag
 !
 interface Port-Channel100.102

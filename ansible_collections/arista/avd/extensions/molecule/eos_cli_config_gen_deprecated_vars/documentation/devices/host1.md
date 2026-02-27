@@ -6,6 +6,8 @@
   - [IP Name Server Groups](#ip-name-server-groups)
 - [Authentication](#authentication)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
+- [Interfaces](#interfaces)
+  - [Port-Channel Interfaces](#port-channel-interfaces)
 
 ## Management
 
@@ -52,4 +54,25 @@ ip name-server group mynameserver1
 ip radius vrf default source-interface Loopback1
 ip radius source-interface Loopback10
 ip radius vrf MGMT source-interface Management1
+```
+
+## Interfaces
+
+### Port-Channel Interfaces
+
+#### Port-Channel Interfaces Summary
+
+##### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
+
+#### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel5
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
 ```

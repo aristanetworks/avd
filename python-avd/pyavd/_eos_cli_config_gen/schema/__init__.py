@@ -32628,6 +32628,147 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Ipv6NdPrefixes._item_type = Ipv6NdPrefixesItem
 
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ra(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RxAccept(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                    default_route: bool | None
+                    route_preference: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RxAccept.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                default_route: default_route
+                                route_preference: route_preference
+
+                            """
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                disabled: bool | None
+                """Disable Ipv6 Router advertisement messages on the interface."""
+                rx_accept: RxAccept
+                """
+                Accept information on received RA.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                        """
+                        Ra.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: Disable Ipv6 Router advertisement messages on the interface.
+                            rx_accept:
+                               Accept information on received RA.
+
+                               Subclass of AvdModel.
+
+                        """
+
+            class PrefixesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "ipv6_prefix": {"type": str},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                    "no_autoconfig_flag": {"type": bool},
+                }
+                ipv6_prefix: str
+                valid_lifetime: str | None
+                """Infinite or lifetime in seconds."""
+                preferred_lifetime: str | None
+                """Infinite or lifetime in seconds."""
+                no_autoconfig_flag: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        ipv6_prefix: str | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PrefixesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv6_prefix: ipv6_prefix
+                            valid_lifetime: Infinite or lifetime in seconds.
+                            preferred_lifetime: Infinite or lifetime in seconds.
+                            no_autoconfig_flag: no_autoconfig_flag
+
+                        """
+
+            class Prefixes(AvdIndexedList[str, PrefixesItem]):
+                """Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ipv6_prefix"
+
+            Prefixes._item_type = PrefixesItem
+
+            _fields: ClassVar[dict] = {"ra": {"type": Ra}, "managed_config_flag": {"type": bool}, "prefixes": {"type": Prefixes}}
+            ra: Ra
+            """
+            Router Advertisement.
+
+            Subclass of AvdModel.
+            """
+            managed_config_flag: bool | None
+            prefixes: Prefixes
+            """Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ra: Ra | UndefinedType = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
+                    prefixes: Prefixes | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ra:
+                           Router Advertisement.
+
+                           Subclass of AvdModel.
+                        managed_config_flag: managed_config_flag
+                        prefixes: Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
+
+                    """
+
         class Pim(AvdModel):
             """Subclass of AvdModel."""
 
@@ -35067,6 +35208,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ipv6_nd_ra_disabled": {"type": bool},
             "ipv6_nd_managed_config_flag": {"type": bool},
             "ipv6_nd_prefixes": {"type": Ipv6NdPrefixes},
+            "ipv6_nd": {"type": Ipv6Nd},
             "access_group_in": {"type": str},
             "access_group_out": {"type": str},
             "ipv6_access_group_in": {"type": str},
@@ -35202,6 +35344,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_nd_managed_config_flag: bool | None
         ipv6_nd_prefixes: Ipv6NdPrefixes
         """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+        ipv6_nd: Ipv6Nd
+        """Subclass of AvdModel."""
         access_group_in: str | None
         """Access list name."""
         access_group_out: str | None
@@ -35322,6 +35466,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_nd_ra_disabled: bool | None | UndefinedType = Undefined,
                 ipv6_nd_managed_config_flag: bool | None | UndefinedType = Undefined,
                 ipv6_nd_prefixes: Ipv6NdPrefixes | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 access_group_in: str | None | UndefinedType = Undefined,
                 access_group_out: str | None | UndefinedType = Undefined,
                 ipv6_access_group_in: str | None | UndefinedType = Undefined,
@@ -35422,6 +35567,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_nd_ra_disabled: ipv6_nd_ra_disabled
                     ipv6_nd_managed_config_flag: ipv6_nd_managed_config_flag
                     ipv6_nd_prefixes: Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
+                    ipv6_nd: Subclass of AvdModel.
                     access_group_in: Access list name.
                     access_group_out: Access list name.
                     ipv6_access_group_in: IPv6 access list name.
