@@ -315,7 +315,7 @@ class UtilsMixin(Protocol):
             return node_data.channel_id
         if p2p_link.port_channel.channel_id_algorithm == "p2p_link_id":
             if not p2p_link.id:
-                msg = f"'id' is not set for p2p link but the selected 'channel_id_algorithm' is 'p2p_link_id'."
+                msg = "'id' is not set for p2p link but the selected 'channel_id_algorithm' is 'p2p_link_id'."
                 raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
             return p2p_link.id + p2p_link.port_channel._get("channel_id_offset", 0)
 

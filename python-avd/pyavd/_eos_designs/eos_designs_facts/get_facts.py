@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, Any
 
 from pyavd._eos_designs.eos_designs_facts import EosDesignsFactsGenerator
 from pyavd._eos_designs.shared_utils import SharedUtils
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping

@@ -8,7 +8,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import remove_cached_property_type
 from pyavd.j2filters import list_compress, natural_sort, range_expand
 

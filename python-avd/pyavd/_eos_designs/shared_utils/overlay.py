@@ -7,7 +7,7 @@ from functools import cached_property
 from ipaddress import ip_address
 from typing import TYPE_CHECKING, Protocol, cast
 
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default
 
 if TYPE_CHECKING:

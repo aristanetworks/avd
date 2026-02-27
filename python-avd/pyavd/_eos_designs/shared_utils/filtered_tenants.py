@@ -456,12 +456,18 @@ class FilteredTenantsMixin(Protocol):
         return [int(vlan_id) for vlan_id in range_expand(endpoint_vlans)]
 
     @overload
-    def get_vrf_id(self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem, required: Literal[True] = True) -> int: ...
+    def get_vrf_id(
+        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem, required: Literal[True] = True
+    ) -> int: ...
 
     @overload
-    def get_vrf_id(self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem, required: Literal[False]) -> int | None: ...
+    def get_vrf_id(
+        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem, required: Literal[False]
+    ) -> int | None: ...
 
-    def get_vrf_id(self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem, required: bool = True) -> int | None:
+    def get_vrf_id(
+        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem, required: bool = True
+    ) -> int | None:
         vrf_id = default(vrf.vrf_id, vrf.vrf_vni)
         if vrf_id is None and required:
             msg = f"'vrf_id' or 'vrf_vni' for VRF '{vrf.name}' must be set."
