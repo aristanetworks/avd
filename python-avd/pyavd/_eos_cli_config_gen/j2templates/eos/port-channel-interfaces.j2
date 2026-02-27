@@ -334,14 +334,14 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.ipv6_address_link_local is arista.avd.defined %}
    ipv6 address {{ port_channel_interface.ipv6_address_link_local }} link-local
 {%     endif %}
-{%     if port_channel_interface.ipv6_nd.ra.disabled is arista.avd.defined(true) or port_channel_interface.ipv6_nd_ra_disabled is arista.avd.defined(true) %}
-   ipv6 nd ra disabled
-{%     endif %}
 {%     if port_channel_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
    ipv6 nd ra rx accept default-route
 {%     endif %}
 {%     if port_channel_interface.ipv6_nd.ra.rx_accept.route_preference is arista.avd.defined(true) %}
    ipv6 nd ra rx accept route-preference
+{%     endif %}
+{%     if port_channel_interface.ipv6_nd.ra.disabled is arista.avd.defined(true) or port_channel_interface.ipv6_nd_ra_disabled is arista.avd.defined(true) %}
+   ipv6 nd ra disabled
 {%     endif %}
 {%     if port_channel_interface.ipv6_nd.managed_config_flag is arista.avd.defined(true) or port_channel_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) %}
    ipv6 nd managed-config-flag
