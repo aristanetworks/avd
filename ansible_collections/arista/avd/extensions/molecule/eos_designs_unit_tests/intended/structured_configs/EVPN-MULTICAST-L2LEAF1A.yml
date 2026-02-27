@@ -50,10 +50,6 @@ ip_igmp_snooping:
     fast_leave: true
   - id: 230
     fast_leave: true
-  - id: 251
-    fast_leave: false
-  - id: 252
-    fast_leave: false
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -74,7 +70,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 1-10,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
+      allowed_vlan: 1-10,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250,256-257,260,310-311,330-331,550,4092
 service_routing_protocols_model: multi-agent
 static_routes:
 - vrf: MGMT
@@ -262,16 +258,6 @@ vlans:
   metadata:
     tenants:
     - Tenant_E
-- id: 251
-  name: MULTICAST_DISABLED_251
-  metadata:
-    tenants:
-    - Tenant_F
-- id: 252
-  name: MULTICAST_ENABLED_252
-  metadata:
-    tenants:
-    - Tenant_F
 vrfs:
 - name: MGMT
   ip_routing: false

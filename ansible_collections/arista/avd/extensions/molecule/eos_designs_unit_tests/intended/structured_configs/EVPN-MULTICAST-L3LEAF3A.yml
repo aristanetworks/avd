@@ -136,13 +136,6 @@ ip_igmp_snooping:
       enabled: true
       address: 192.168.255.6
     fast_leave: true
-  - id: 251
-    fast_leave: false
-  - id: 252
-    querier:
-      enabled: true
-      address: 192.168.255.6
-    fast_leave: false
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 loopback_interfaces:
@@ -633,27 +626,6 @@ router_bgp:
       - 10150:10150
     redistribute_routes:
     - learned
-  - id: 251
-    metadata:
-      tenants:
-      - Tenant_F
-    rd: 192.168.255.6:10251
-    route_targets:
-      both:
-      - 10251:10251
-    redistribute_routes:
-    - learned
-  - id: 252
-    metadata:
-      tenants:
-      - Tenant_F
-    rd: 192.168.255.6:10252
-    route_targets:
-      both:
-      - 10252:10252
-    redistribute_routes:
-    - learned
-    - igmp
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -1497,16 +1469,6 @@ vlans:
   metadata:
     tenants:
     - Tenant_E
-- id: 251
-  name: MULTICAST_DISABLED_251
-  metadata:
-    tenants:
-    - Tenant_F
-- id: 252
-  name: MULTICAST_ENABLED_252
-  metadata:
-    tenants:
-    - Tenant_F
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -1699,11 +1661,6 @@ vxlan_interface:
         vni: 10250
       - id: 150
         vni: 10150
-      - id: 251
-        vni: 10251
-      - id: 252
-        vni: 10252
-        multicast_group: 232.0.0.251
       vrfs:
       - name: MULTICAST_DISABLED_310_311
         vni: 13

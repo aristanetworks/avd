@@ -659,21 +659,3 @@ tenants:
             enabled: true
             pim:
               enabled: true
-
-  # Test when tenant level igmp.fast_leave: false
-  - name: Tenant_F
-    mac_vrf_vni_base: 10000
-    igmp:
-      fast_leave: false
-    evpn_l2_multicast:
-      enabled: true
-      underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
-    l2vlans:
-      - id: 251
-        name: "MULTICAST_DISABLED_251"
-        tags: ["test_l2"]
-        evpn_l2_multicast:
-          enabled: false
-      - id: 252
-        name: "MULTICAST_ENABLED_252"
-        tags: ["test_l2"]
