@@ -71,7 +71,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "<network_services_keys.name>.[].vrfs.[].ipv6_static_routes.[].interface") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_static</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_static") | Boolean |  |  |  | Enable or disable the redistribution of all static routes to BGP in the VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_connected</samp>](## "<network_services_keys.name>.[].vrfs.[].redistribute_connected") | Boolean |  | `True` |  | Enable or disable the redistribution of all connected routes to BGP in the VRF. Note this is not applicable to VRF `default`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_arp_entries</samp>](## "<network_services_keys.name>.[].vrfs.[].static_arp_entries") | List, items: Dictionary |  |  |  | List of static ARP entries.<br>This will create static ARP entries inside the tenant VRF.<br>If nodes are not specified, all devices that carry the VRF will also be applied the static ARP entries.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_arp_entries</samp>](## "<network_services_keys.name>.[].vrfs.[].static_arp_entries") | List, items: Dictionary |  |  |  | List of static ARP entries for the tenant VRF.<br>Entries are configured on all devices carrying the VRF unless filtered using the nodes key.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv4_address</samp>](## "<network_services_keys.name>.[].vrfs.[].static_arp_entries.[].ipv4_address") | String | Required |  |  | ARP entry IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "<network_services_keys.name>.[].vrfs.[].static_arp_entries.[].mac_address") | String | Required |  | Pattern: `[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}` | ARP entry MAC address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].static_arp_entries.[].nodes") | List, items: String |  |  |  | List of nodes where the ARP static entry should be configured.<br>If not set, the entry will be configured on all devices carrying the VRF.<br> |
@@ -314,9 +314,8 @@
             # Enable or disable the redistribution of all connected routes to BGP in the VRF. Note this is not applicable to VRF `default`.
             redistribute_connected: <bool; default=True>
 
-            # List of static ARP entries.
-            # This will create static ARP entries inside the tenant VRF.
-            # If nodes are not specified, all devices that carry the VRF will also be applied the static ARP entries.
+            # List of static ARP entries for the tenant VRF.
+            # Entries are configured on all devices carrying the VRF unless filtered using the nodes key.
             static_arp_entries:
 
                 # ARP entry IPv4 address.

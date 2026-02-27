@@ -1334,9 +1334,8 @@ $defs:
               static_arp_entries:
                 type: list
                 description: |
-                  List of static ARP entries.
-                  This will create static ARP entries inside the tenant VRF.
-                  If nodes are not specified, all devices that carry the VRF will also be applied the static ARP entries.
+                  List of static ARP entries for the tenant VRF.
+                  Entries are configured on all devices carrying the VRF unless filtered using the nodes key.
                 items:
                   type: dict
                   keys:

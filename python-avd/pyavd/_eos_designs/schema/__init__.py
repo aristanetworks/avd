@@ -66433,10 +66433,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     static_arp_entries: StaticArpEntries
                     """
-                    List of static ARP entries.
-                    This will create static ARP entries inside the tenant VRF.
-                    If nodes are
-                    not specified, all devices that carry the VRF will also be applied the static ARP entries.
+                    List of static ARP entries for the tenant VRF.
+                    Entries are configured on all devices carrying the
+                    VRF unless filtered using the nodes key.
+
+
                     Subclass of AvdList with `StaticArpEntriesItem` items.
                     """
                     bgp_peers: BgpPeers
@@ -66711,10 +66712,11 @@ class EosDesigns(EosDesignsRootModel):
                                    Enable or disable the redistribution of all connected routes to BGP in the VRF. Note this is not
                                    applicable to VRF `default`.
                                 static_arp_entries:
-                                   List of static ARP entries.
-                                   This will create static ARP entries inside the tenant VRF.
-                                   If nodes are
-                                   not specified, all devices that carry the VRF will also be applied the static ARP entries.
+                                   List of static ARP entries for the tenant VRF.
+                                   Entries are configured on all devices carrying the
+                                   VRF unless filtered using the nodes key.
+
+
                                    Subclass of AvdList with `StaticArpEntriesItem` items.
                                 bgp_peers:
                                    List of BGP peer definitions.

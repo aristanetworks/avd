@@ -9507,12 +9507,10 @@ $defs:
                   routes to BGP in the VRF. Note this is not applicable to VRF `default`.
               static_arp_entries:
                 type: list
-                description: 'List of static ARP entries.
+                description: 'List of static ARP entries for the tenant VRF.
 
-                  This will create static ARP entries inside the tenant VRF.
-
-                  If nodes are not specified, all devices that carry the VRF will
-                  also be applied the static ARP entries.
+                  Entries are configured on all devices carrying the VRF unless filtered
+                  using the nodes key.
 
                   '
                 items:
