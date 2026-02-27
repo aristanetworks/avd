@@ -475,6 +475,7 @@ ethernet_interfaces:
     spanning_tree_bpdufilter: true
     spanning_tree_bpduguard: true
     spanning_tree_portfast: edge
+    spanning_tree_link_type: shared
     vmtracer: true
     storm_control:
       all:
