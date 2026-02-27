@@ -24,8 +24,7 @@ class AristaAvdError(Exception):
 
 
 class AristaAvdHostError(AristaAvdError):
-    def __init__(self, message: str, host: str = "") -> None:
-        self.host = host
+    def __init__(self, message: str, host: str) -> None:
         self.message = f"{message.removesuffix('.')} for host '{host}'." if host.strip() else message
         super().__init__(self.message, host=host)
 
@@ -35,16 +34,13 @@ class AristaAvdInvalidInputsError(AristaAvdHostError):
         super().__init__(message, host=host)
 
 
-class AristaAvdMissingVariableError(AristaAvdError):
-    variable: str | None
-    host: str | None
+class AristaAvdMissingVariableError(AristaAvdHostError):
+    variable: str
 
-    def __init__(self, variable: str | None = None, host: str | None = None) -> None:
+    def __init__(self, variable: str, host: str = "") -> None:
         """Fact host message is used only if host is set as well."""
         self.variable = variable
-        self.host = host
-        host_msg = f" for host '{host}'" if host else ""
-        message = f"'{variable}' is required but was not found{host_msg}."
+        message = f"'{variable}' is required but was not found."
         super().__init__(message, host=host)
 
 

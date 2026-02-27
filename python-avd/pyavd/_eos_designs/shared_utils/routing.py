@@ -164,8 +164,8 @@ class RoutingMixin(Protocol):
                 return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
 
             if self.id is None:
-                msg = f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'"
-                raise AristaAvdInvalidInputsError(msg)
+                msg = "'id' is not set and is required when expanding 'bgp_as'."
+                raise AristaAvdInvalidInputsError(msg, host=self.hostname)
             return bgp_as_range_expanded[self.id - 1]
         except IndexError as exc:
             msg = f"Unable to allocate BGP AS: bgp_as range '{self.node_config.bgp_as}' is too small ({len(bgp_as_range_expanded)}) for the id '{self.id}'."

@@ -571,8 +571,8 @@ class AvdStructuredConfigBaseProtocol(
             return
 
         if (switch_id := self.shared_utils.id) is None:
-            msg = f"'id' is not set on '{self.shared_utils.hostname}' to set LACP port ID ranges"
-            raise AristaAvdInvalidInputsError(msg)
+            msg = "'id' is required to set LACP port ID ranges."
+            raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
         node_group_length = max(len(self.shared_utils.node_group_config.nodes), 1) if self.shared_utils.node_group_config is not None else 1
 
@@ -604,8 +604,8 @@ class AvdStructuredConfigBaseProtocol(
         priority2 = self.shared_utils.node_config.ptp.priority2
         if priority2 is None:
             if self.shared_utils.id is None:
-                msg = f"'id' must be set on '{self.shared_utils.hostname}' to set ptp priority2"
-                raise AristaAvdInvalidInputsError(msg)
+                msg = "'id' is required to set ptp priority2."
+                raise AristaAvdInvalidInputsError(msg, host=self.shared_utils.hostname)
 
             priority2 = self.shared_utils.id % 256
         if default(self.shared_utils.node_config.ptp.auto_clock_identity, self.inputs.ptp_settings.auto_clock_identity):
