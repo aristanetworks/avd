@@ -38,4 +38,5 @@ cv_topology_levels:
     level: 4
 
 expected_error_message: >-
-  'uplink_switches', 'uplink_interfaces', 'uplink_switch_interfaces' and 'mlag_interfaces' should not be set when 'use_cv_topology' is set to 'true' for host 'failure-cv-topology-uplink-interfaces'.
+  'uplink_switches', 'uplink_interfaces', 'uplink_switch_interfaces' and 'mlag_interfaces' should not be set when 'use_cv_topology' is set to 'true'
+  for host 'failure-cv-topology-uplink-interfaces'.
