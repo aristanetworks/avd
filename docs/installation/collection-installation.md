@@ -13,7 +13,7 @@
 - Modify `ansible.cfg` file to support additional [jinja2 extensions](#ansible-configuration-file)
 
 !!! danger "Python Version Compatibility Warning"
-    **Avoid Python 3.13.10 and 3.13.11** - These specific Python versions contain a bug that causes crashes when running AVD.
+    **Avoid Python 3.13.10 and 3.13.11** - These versions contain a bug that causes AVD to crash.
     More information in the [release notes](../release-notes/5.x.x.md#python-31310-and-31311-incompatibility).
 
 ## Install Collection from Ansible Galaxy
