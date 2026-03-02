@@ -18,3 +18,15 @@ keys:
             type: bool
             default: false
             description: Shutdown Ethernet interfaces by default unless they are explicitly enabled.
+      arp:
+        type: dict
+        keys:
+          persistent:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/arp/keys/persistent"
+          aging:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/arp/keys/aging"
+      ip_icmp_redirect:
+        type: bool
+        $ref: "eos_cli_config_gen#/keys/ip_icmp_redirect"
