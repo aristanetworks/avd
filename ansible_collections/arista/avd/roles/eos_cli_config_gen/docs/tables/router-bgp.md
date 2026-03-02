@@ -456,6 +456,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.address_family_ipv4.networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.address_family_ipv4.networks.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4.networks.[].route_map") | String |  |  |  | Route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4.networks.[].rcf") | String |  |  |  | RCF name with parenthesis. Example "NETWORK-RCF()".<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_ipv4.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4.bgp.additional_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.address_family_ipv4.bgp.additional_paths.install") | Boolean |  |  |  | Install BGP backup path. |
@@ -678,6 +679,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks.[].route_map") | String |  |  |  | Route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.networks.[].rcf") | String |  |  |  | RCF name with parenthesis. Example "NETWORK-RCF()".<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hops</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lfib_backup_ip_forwarding</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.next_hops.[].lfib_backup_ip_forwarding") | Boolean |  |  |  |  |
@@ -772,6 +774,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.address_family_ipv6.networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.address_family_ipv6.networks.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.networks.[].route_map") | String |  |  |  | Route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv6.networks.[].rcf") | String |  |  |  | RCF name with parenthesis. Example "NETWORK-RCF()".<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_ipv6.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_internal</samp>](## "router_bgp.address_family_ipv6.bgp.redistribute_internal") | Boolean |  |  |  | Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv6.bgp.additional_paths") | Dictionary |  |  |  |  |
@@ -1303,6 +1306,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.vrfs.[].address_family_ipv4.networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.vrfs.[].address_family_ipv4.networks.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv4.networks.[].route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].address_family_ipv4.networks.[].rcf") | String |  |  |  | RCF name with parenthesis. Example "NETWORK-RCF()".<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute") | Dictionary |  |  |  | Redistribute routes in to BGP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attached_host</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute.attached_host") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].address_family_ipv4.redistribute.attached_host.enabled") | Boolean | Required |  |  |  |
@@ -1401,6 +1405,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.vrfs.[].address_family_ipv6.networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.vrfs.[].address_family_ipv6.networks.[].prefix") | String | Required, Unique |  |  | IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv6.networks.[].route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].address_family_ipv6.networks.[].rcf") | String |  |  |  | RCF name with parenthesis. Example "NETWORK-RCF()".<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute") | Dictionary |  |  |  | Redistribute routes in to BGP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attached_host</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute.attached_host") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].address_family_ipv6.redistribute.attached_host.enabled") | Boolean | Required |  |  |  |
@@ -2521,6 +2526,10 @@
 
             # Route-map name.
             route_map: <str>
+
+            # RCF name with parenthesis. Example "NETWORK-RCF()".
+            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+            rcf: <str>
         bgp:
           additional_paths:
 
@@ -3046,6 +3055,10 @@
 
             # Route-map name.
             route_map: <str>
+
+            # RCF name with parenthesis. Example "NETWORK-RCF()".
+            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+            rcf: <str>
         next_hops: # >=1 items
           - ip_address: <str; required; unique>
             lfib_backup_ip_forwarding: <bool>
@@ -3220,6 +3233,10 @@
 
             # Route-map name.
             route_map: <str>
+
+            # RCF name with parenthesis. Example "NETWORK-RCF()".
+            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+            rcf: <str>
         bgp:
 
           # Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
@@ -4324,6 +4341,10 @@
               - prefix: <str; required; unique>
                 route_map: <str>
 
+                # RCF name with parenthesis. Example "NETWORK-RCF()".
+                # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                rcf: <str>
+
             # Redistribute routes in to BGP.
             redistribute:
               attached_host:
@@ -4534,6 +4555,10 @@
                 # IPv6 prefix "A:B:C:D:E:F:G:H/I".
               - prefix: <str; required; unique>
                 route_map: <str>
+
+                # RCF name with parenthesis. Example "NETWORK-RCF()".
+                # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                rcf: <str>
 
             # Redistribute routes in to BGP.
             redistribute:

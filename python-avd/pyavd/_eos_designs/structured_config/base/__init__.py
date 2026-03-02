@@ -396,6 +396,8 @@ class AvdStructuredConfigBaseProtocol(
         """interface_defaults set based on default_interface_mtu."""
         if self.shared_utils.default_interface_mtu is not None:
             self.structured_config.interface_defaults.mtu = self.shared_utils.default_interface_mtu
+        if self.inputs.general_settings.interface_defaults.ethernet_shutdown:
+            self.structured_config.interface_defaults.ethernet.shutdown = True
 
     @structured_config_contributor
     def spanning_tree(self) -> None:
@@ -831,6 +833,28 @@ class AvdStructuredConfigBaseProtocol(
             inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP HTTP Client", output_type=EosCliConfigGen.IpHttpClient
         ):
             self.structured_config.ip_http_client = source_interfaces
+
+    @structured_config_contributor
+    def arp(self: AvdStructuredConfigBaseProtocol) -> None:
+        """
+        Set ARP configuration.
+
+        ARP set based on "general_settings.arp" data-model.
+        """
+        if not (arp_settings := self.inputs.general_settings.arp):
+            return
+
+        self.structured_config.arp.persistent = arp_settings.persistent
+        self.structured_config.arp.aging.timeout_default = arp_settings.aging.timeout_default
+
+    @structured_config_contributor
+    def ip_icmp_redirect(self: AvdStructuredConfigBaseProtocol) -> None:
+        """
+        Set IP ICMP redirect.
+
+        IP ICMP redirect set based on "general_settings.ip_icmp_redirect" data-model.
+        """
+        self.structured_config.ip_icmp_redirect = self.inputs.general_settings.ip_icmp_redirect
 
     @structured_config_contributor
     def prefix_lists(self) -> None:
