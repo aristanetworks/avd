@@ -4501,9 +4501,9 @@ interface profile aa-profile-3
 
 #### DPS Interfaces Summary
 
-| Interface | IP address | IPv6 ND RA RX Accept | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
-| --------- | ---------- | -------------------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.42/24 | default-route<br>route-preference | True | 666 | Hardware: T3<br>Sampled: T2 | IPv4: 666<br>IPv6: 666<br>Direction: ingress |
+| Interface | IP address | ND RA RX Accept | ND RA Disabled | Managed Config Flag | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | --------------- | -------------- | ------------------- | -------- | --- | --------------- | --------------- |
+| Dps1 | 192.168.42.42/24 | default-route<br>route-preference | True | True | True | 666 | Hardware: T3<br>Sampled: T2 | IPv4: 666<br>IPv6: 666<br>Direction: ingress |
 
 #### DPS Interfaces Device Configuration
 
@@ -4518,6 +4518,11 @@ interface Dps1
    ip address 192.168.42.42/24
    ipv6 nd ra rx accept default-route
    ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
+   ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
+   ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
    tcp mss ceiling ipv4 666 ipv6 666 ingress
    load-interval 42
 ```

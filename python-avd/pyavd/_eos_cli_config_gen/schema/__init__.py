@@ -5895,7 +5895,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                _fields: ClassVar[dict] = {"rx_accept": {"type": RxAccept}}
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                disabled: bool | None
+                """Disable Ipv6 Router advertisement messages on the interface."""
                 rx_accept: RxAccept
                 """
                 Accept information on received RA.
@@ -5905,7 +5907,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
                         """
                         Ra.
 
@@ -5913,6 +5915,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
+                            disabled: Disable Ipv6 Router advertisement messages on the interface.
                             rx_accept:
                                Accept information on received RA.
 
@@ -5920,17 +5923,73 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"ra": {"type": Ra}}
+            class PrefixesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "ipv6_prefix": {"type": str},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                    "no_autoconfig_flag": {"type": bool},
+                }
+                ipv6_prefix: str
+                valid_lifetime: str | None
+                """Infinite or lifetime in seconds."""
+                preferred_lifetime: str | None
+                """Infinite or lifetime in seconds."""
+                no_autoconfig_flag: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        ipv6_prefix: str | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PrefixesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv6_prefix: ipv6_prefix
+                            valid_lifetime: Infinite or lifetime in seconds.
+                            preferred_lifetime: Infinite or lifetime in seconds.
+                            no_autoconfig_flag: no_autoconfig_flag
+
+                        """
+
+            class Prefixes(AvdIndexedList[str, PrefixesItem]):
+                """Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ipv6_prefix"
+
+            Prefixes._item_type = PrefixesItem
+
+            _fields: ClassVar[dict] = {"ra": {"type": Ra}, "managed_config_flag": {"type": bool}, "prefixes": {"type": Prefixes}}
             ra: Ra
             """
             Router Advertisement.
 
             Subclass of AvdModel.
             """
+            managed_config_flag: bool | None
+            prefixes: Prefixes
+            """Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, ra: Ra | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    ra: Ra | UndefinedType = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
+                    prefixes: Prefixes | UndefinedType = Undefined,
+                ) -> None:
                     """
                     Ipv6Nd.
 
@@ -5942,6 +6001,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Router Advertisement.
 
                            Subclass of AvdModel.
+                        managed_config_flag: managed_config_flag
+                        prefixes: Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
 
                     """
 

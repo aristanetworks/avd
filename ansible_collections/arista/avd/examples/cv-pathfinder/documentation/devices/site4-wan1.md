@@ -406,9 +406,9 @@ ip security
 
 #### DPS Interfaces Summary
 
-| Interface | IP address | IPv6 ND RA RX Accept | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
-| --------- | ---------- | -------------------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.15/32 | - | - | 9194 | Hardware: FLOW-TRACKER | - |
+| Interface | IP address | ND RA RX Accept | ND RA Disabled | Managed Config Flag | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | --------------- | -------------- | ------------------- | -------- | --- | --------------- | --------------- |
+| Dps1 | 192.168.42.15/32 | - | - | - | - | 9194 | Hardware: FLOW-TRACKER | - |
 
 #### DPS Interfaces Device Configuration
 

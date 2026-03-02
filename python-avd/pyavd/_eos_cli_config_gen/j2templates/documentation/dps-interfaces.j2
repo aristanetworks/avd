@@ -10,8 +10,8 @@
 
 #### DPS Interfaces Summary
 
-| Interface | IP address | IPv6 ND RA RX Accept | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
-| --------- | ---------- | -------------------- | -------- | --- | --------------- | --------------- |
+| Interface | IP address | ND RA RX Accept | ND RA Disabled | Managed Config Flag | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | --------------- | -------------- | ------------------- | -------- | --- | --------------- | --------------- |
 {%     for dps_interface in dps_interfaces | arista.avd.natural_sort('name') %}
 {%         set mtu = dps_interface.mtu | arista.avd.default("-") %}
 {%         set ip_address = dps_interface.ip_address | arista.avd.default("-") %}
@@ -25,6 +25,8 @@
 {%         if nd_ra_rx_accept == [] %}
 {%             do nd_ra_rx_accept.append("-") %}
 {%         endif %}
+{%         set nd_ra_disabled = dps_interface.ipv6_nd.ra.disabled | arista.avd.default(dps_interface.ipv6_nd_ra_disabled, "-") %}
+{%         set managed_config_flag = dps_interface.ipv6_nd.managed_config_flag | arista.avd.default(dps_interface.ipv6_nd_managed_config_flag, "-") %}
 {%         set flow_trackers = [] %}
 {%         if dps_interface.flow_tracker.hardware is arista.avd.defined %}
 {%             do flow_trackers.append("Hardware: " ~ dps_interface.flow_tracker.hardware) %}
@@ -46,7 +48,7 @@
 {%         if tcp_mss_settings | length == 0 %}
 {%             set tcp_mss_settings = ["-"] %}
 {%         endif %}
-| {{ dps_interface.name }} | {{ ip_address }} | {{ nd_ra_rx_accept | join("<br>") }} | {{ shutdown }} | {{ mtu }} | {{ flow_trackers | join("<br>") }} | {{ tcp_mss_settings | join("<br>") }} |
+| {{ dps_interface.name }} | {{ ip_address }} | {{ nd_ra_rx_accept | join("<br>") }} | {{ nd_ra_disabled }} | {{ managed_config_flag }} | {{ shutdown }} | {{ mtu }} | {{ flow_trackers | join("<br>") }} | {{ tcp_mss_settings | join("<br>") }} |
 {%     endfor %}
 
 #### DPS Interfaces Device Configuration

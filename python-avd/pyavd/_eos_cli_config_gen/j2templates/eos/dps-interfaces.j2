@@ -33,6 +33,26 @@ interface {{ dps_interface.name }}
 {%     if dps_interface.ipv6_nd.ra.rx_accept.route_preference is arista.avd.defined(true) %}
    ipv6 nd ra rx accept route-preference
 {%     endif %}
+{%     if dps_interface.ipv6_nd.ra.disabled is arista.avd.defined(true) or dps_interface.ipv6_nd_ra_disabled is arista.avd.defined(true) %}
+   ipv6 nd ra disabled
+{%     endif %}
+{%     if dps_interface.ipv6_nd.managed_config_flag is arista.avd.defined(true) or dps_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) %}
+   ipv6 nd managed-config-flag
+{%     endif %}
+{%     set ipv6_nd_prefixes = dps_interface.ipv6_nd.prefixes | arista.avd.default(dps_interface.ipv6_nd_prefixes) %}
+{%     for prefix in ipv6_nd_prefixes | arista.avd.natural_sort("ipv6_prefix") %}
+{%         set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ prefix.ipv6_prefix %}
+{%         if prefix.valid_lifetime is arista.avd.defined %}
+{%             set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.valid_lifetime %}
+{%             if prefix.preferred_lifetime is arista.avd.defined %}
+{%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.preferred_lifetime %}
+{%             endif %}
+{%         endif %}
+{%         if prefix.no_autoconfig_flag is arista.avd.defined(true) %}
+{%             set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " no-autoconfig" %}
+{%         endif %}
+   {{ ipv6_nd_prefix_cli }}
+{%     endfor %}
 {%     if dps_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined or dps_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
 {%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}
 {%         if dps_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined %}

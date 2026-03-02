@@ -2278,21 +2278,8 @@ keys:
           type: str
           description: IPv4 address/mask.
         ipv6_nd:
-          description: Neighbor Discovery / Router Advertisement.
           type: dict
-          keys:
-            ra:
-              description: Router Advertisement.
-              type: dict
-              keys:
-                rx_accept:
-                  description: Accept information on received RA.
-                  type: dict
-                  keys:
-                    default_route:
-                      type: bool
-                    route_preference:
-                      type: bool
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         flow_tracker:
           type: dict
           keys:
@@ -25985,6 +25972,47 @@ $defs:
           min: 1
           max: 65535
           description: requires 'original_port'.
+  ipv6_nd:
+    description: Neighbor Discovery / Router Advertisement.
+    type: dict
+    keys:
+      ra:
+        description: Router Advertisement.
+        type: dict
+        keys:
+          disabled:
+            type: bool
+            description: Disable Ipv6 Router advertisement messages on the interface.
+          rx_accept:
+            description: Accept information on received RA.
+            type: dict
+            keys:
+              default_route:
+                type: bool
+              route_preference:
+                type: bool
+      managed_config_flag:
+        type: bool
+      prefixes:
+        type: list
+        primary_key: ipv6_prefix
+        items:
+          type: dict
+          keys:
+            ipv6_prefix:
+              type: str
+            valid_lifetime:
+              type: str
+              convert_types:
+              - int
+              description: Infinite or lifetime in seconds.
+            preferred_lifetime:
+              type: str
+              convert_types:
+              - int
+              description: Infinite or lifetime in seconds.
+            no_autoconfig_flag:
+              type: bool
   source_interface_per_vrf:
     type: dict
     keys:
