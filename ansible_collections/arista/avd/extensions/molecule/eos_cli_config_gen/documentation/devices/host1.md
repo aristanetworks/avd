@@ -388,12 +388,12 @@ agent KernelFib shutdown supervisor standby
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | IPv6 ND RA RX Accept |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------------- |
-| Management0 | - | oob | default | - | - | - |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | default-route, route-preference |
-| Management42 | - | oob | default | - | - | - |
-| Vlan123 | inband_management | inband | default | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | Managed Config Flag |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ------------------- |
+| Management0 | - | oob | default | - | - | - | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | default-route, route-preference | True | True |
+| Management42 | - | oob | default | - | - | - | - | - |
+| Vlan123 | inband_management | inband | default | - | - | - | - | - |
 
 ##### Interface Redundancy
 
@@ -444,6 +444,11 @@ interface Management1
    ip address 10.73.255.122/24
    ipv6 nd ra rx accept default-route
    ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
+   ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
+   ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
    redundancy fallback-delay infinity
    redundancy monitor neighbor ipv6 1:1:1:1:1:1:1:1 interval 101 milliseconds multiplier 3
 !

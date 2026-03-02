@@ -25,8 +25,8 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | IPv6 ND RA RX Accept |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------------- |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | Managed Config Flag |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ------------------- |
 {%     for management_interface in management_interfaces | arista.avd.natural_sort('name') %}
 {%         set description = management_interface.description | arista.avd.default('-') %}
 {%         set vrf = management_interface.vrf | arista.avd.default('default') %}
@@ -43,7 +43,9 @@
 {%         if nd_ra_rx_accept == [] %}
 {%             do nd_ra_rx_accept.append("-") %}
 {%         endif %}
-| {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6 }} | {{ ipv6_gateway }} | {{ nd_ra_rx_accept | join(", ") }} |
+{%         set nd_ra_disabled = management_interface.ipv6_nd.ra.disabled | arista.avd.default(management_interface.ipv6_nd_ra_disabled, "-") %}
+{%         set managed_config_flag = management_interface.ipv6_nd.managed_config_flag | arista.avd.default(management_interface.ipv6_nd_managed_config_flag, "-") %}
+| {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6 }} | {{ ipv6_gateway }} | {{ nd_ra_rx_accept | join(", ") }} | {{ nd_ra_disabled }} | {{ managed_config_flag }} |
 {%     endfor %}
 {%     if management_interfaces | arista.avd.default([]) | selectattr('redundancy','arista.avd.defined') | list %}
 
