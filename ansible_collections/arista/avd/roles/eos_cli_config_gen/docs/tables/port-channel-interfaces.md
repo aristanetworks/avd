@@ -253,7 +253,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_autoconfig_flag</samp>](## "port_channel_interfaces.[].ipv6_nd_prefixes.[].no_autoconfig_flag") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd</samp>](## "port_channel_interfaces.[].ipv6_nd") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra</samp>](## "port_channel_interfaces.[].ipv6_nd.ra") | Dictionary |  |  |  | Router Advertisement. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "port_channel_interfaces.[].ipv6_nd.ra.disabled") | Boolean |  |  |  | Disable Ipv6 Router advertisement messages on the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "port_channel_interfaces.[].ipv6_nd.ra.disabled") | Boolean |  |  |  | Disable IPv6 Router advertisement messages on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_accept</samp>](## "port_channel_interfaces.[].ipv6_nd.ra.rx_accept") | Dictionary |  |  |  | Accept information on received RA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_route</samp>](## "port_channel_interfaces.[].ipv6_nd.ra.rx_accept.default_route") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_preference</samp>](## "port_channel_interfaces.[].ipv6_nd.ra.rx_accept.route_preference") | Boolean |  |  |  |  |
@@ -997,7 +997,7 @@
           # Router Advertisement.
           ra:
 
-            # Disable Ipv6 Router advertisement messages on the interface.
+            # Disable IPv6 Router advertisement messages on the interface.
             disabled: <bool>
 
             # Accept information on received RA.
