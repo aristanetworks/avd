@@ -1,0 +1,4 @@
+---
+router_multicast:
+  ipv6:
+    software_forwarding: kernel

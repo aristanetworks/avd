@@ -1,7 +1,12 @@
 ---
+
 - name: Testing All
   hosts: all
   tasks:
+    - name: Print Ansible version
+      ansible.builtin.debug:
+        msg: "Ansible version: {{ ansible_version.full }}"
+
     - name: Verify Global Variables
       ansible.builtin.assert:
         that:
@@ -10,6 +15,16 @@
           - overwritten_by_zz_global_vars_02 == 'ZZ_GLOBAL_VALUE_02'
           - not_overwritten_by_zz_global_vars_03 == 'GLOBAL_VALUE'
           - overwritten_by_group_all == 'ALL_VALUE'
+
+    - name: Verify Jinja2 Template Rendering
+      ansible.builtin.assert:
+        that:
+          - base_value == 'BASE'
+          - jinja_template_simple == 'BASE_RENDERED'
+          - jinja_template_filter == 'base_filtered'
+          - cleartext_password == 'vaulted_password'
+          - cleartext_password_2 == 'env_password'
+        fail_msg: "Jinja2 templates in global_vars are not being rendered correctly"
 
 - name: Testing leaf1
   hosts: leaf1
