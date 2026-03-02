@@ -51,13 +51,13 @@ ip_igmp_snooping:
       enabled: true
       address: 192.168.255.101
     fast_leave: true
-ip_radius:
-  source_interface: Vlan123
-  vrfs:
-  - name: MGMT1
-    source_interface: Vlan125
-  - name: MGMT
-    source_interface: Vlan125
+ip_radius_source_interfaces:
+- name: Vlan123
+  vrf: default
+- name: Vlan125
+  vrf: MGMT1
+- name: Vlan125
+  vrf: MGMT
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
