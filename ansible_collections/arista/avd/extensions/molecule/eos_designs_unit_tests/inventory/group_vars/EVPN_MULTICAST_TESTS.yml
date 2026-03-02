@@ -115,7 +115,7 @@ tenants:
       - id: 256
         name: "MULTICAST_DISABLED_256"
         tags: ["test_l2"]
-        # test for fast-leave when tenant level evpn_l2_multicast.enabled: true, evpn_l2_multicast.fast_leave: true and l2vlans.evpn_l2_multicast.enabled: false
+        # test for fast-leave when tenant level evpn_l2_multicast.enabled: true, igmp.fast_leave: true and l2vlans.evpn_l2_multicast.enabled: false
         # fast-leave is not expected for VLAN 256 since l2vlans.evpn_l2_multicast.enabled: false
         evpn_l2_multicast:
           enabled: false
