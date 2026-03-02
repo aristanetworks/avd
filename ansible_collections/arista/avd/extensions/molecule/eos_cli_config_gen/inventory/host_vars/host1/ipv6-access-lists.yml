@@ -17,18 +17,18 @@ ipv6_access_lists:
         action: permit
         protocol: ipv6
         source: any
-        destination: 2001:db8::/48
+        destination: 2001:db8::1
   - name: TEST1
     entries:
       - sequence: 5
         action: deny
         protocol: ipv6
-        source: fe80::/64
+        source: fe80::/64s
         destination: any
       - sequence: 10
         action: permit
         protocol: ipv6
-        source: fe90::/64
+        source: fe90::1
         destination: any
   - name: TEST2
     counters_per_entry: true

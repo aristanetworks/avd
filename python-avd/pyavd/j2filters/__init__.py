@@ -8,6 +8,7 @@ from .encrypt import encrypt
 from .hide_passwords import hide_passwords
 from .is_in_filter import is_in_filter
 from .list_compress import list_compress
+from .mandatory import mandatory
 from .natural_sort import natural_sort
 from .range_expand import range_expand
 from .secure_hash import secure_hash
@@ -22,6 +23,7 @@ __all__ = [
     "hide_passwords",
     "is_in_filter",
     "list_compress",
+    "mandatory",
     "natural_sort",
     "range_expand",
     "secure_hash",

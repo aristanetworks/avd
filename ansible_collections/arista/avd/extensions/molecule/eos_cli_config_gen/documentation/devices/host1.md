@@ -12140,8 +12140,8 @@ ipv6 access-list ACL_SEQUENCE_AND_COUNTERS
 ipv6 access-list ACL_WITHOUT_ENTRIES
 !
 ipv6 access-list TEST1
-   5 deny ipv6 fe80::/64 any
-   10 permit ipv6 fe90::/64 any
+   5 deny ipv6 fe80::/64s any
+   10 permit ipv6 host fe90::1 any
 !
 ipv6 access-list TEST2
    counters per-entry
@@ -12156,7 +12156,7 @@ ipv6 access-list acl_qos_tc0_v6
    10 permit ipv6 any any dscp cs1 15
 !
 ipv6 access-list acl_qos_tc5_v6
-   10 permit ipv6 any 2001:db8::/48
+   10 permit ipv6 any host 2001:db8::1
 ```
 
 ### MAC Access-lists

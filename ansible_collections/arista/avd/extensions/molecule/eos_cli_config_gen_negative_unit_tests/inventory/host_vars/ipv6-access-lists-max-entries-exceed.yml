@@ -1,0 +1,20 @@
+ipv6_access_lists_max_entries: 1
+ipv6_access_lists:
+  - name: acl_qos_tc0_v6
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: any
+        destination: any
+        dscp: cs1
+        dscp_mask: 0x0F
+  - name: acl_qos_tc5_v6
+    entries:
+      - sequence: 10
+        action: permit
+        protocol: ipv6
+        source: any
+        destination: 2001:db8::1
+
+expected_error_message: "Error during plugin execution: The number of ACL entries is above defined maximum!"
