@@ -44,7 +44,9 @@ class VlanInterfacesMixin(Protocol):
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is None:
                     continue
 
-                self.structured_config.vlan_interfaces.append(self._get_vlan_interface_config_for_mlag_peering(vrf, tenant, vlan_id), ignore_fields=("metadata",))
+                self.structured_config.vlan_interfaces.append(
+                    self._get_vlan_interface_config_for_mlag_peering(vrf, tenant, vlan_id), ignore_fields=("metadata",)
+                )
 
     def _check_virtual_router_mac_address(self: AvdStructuredConfigNetworkServicesProtocol, variable: str) -> None:
         """Raise if virtual router mac address is required but missing, otherwise return None."""
