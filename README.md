@@ -30,7 +30,7 @@ AVD Documentation:
 
 ## Reference designs
 
-- [L3LS VXLAN-EVPN, L2LS, MPLS and WAN](https://avd.arista.com/6.0/ansible_collections/arista/avd/roles/eos_designs/index.html#reference-designs)
+- [L3LS VXLAN-EVPN, L2LS, MPLS and WAN](https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/index.html#reference-designs)
 
 ## AVD Ansible Collection
 
