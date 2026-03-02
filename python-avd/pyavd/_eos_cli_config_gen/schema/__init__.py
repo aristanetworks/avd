@@ -9810,6 +9810,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         SpanningTreeGuard: TypeAlias = Literal["loop", "root", "disabled"]
         SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+        SpanningTreeLinkType: TypeAlias = Literal["shared", "point-to-point"]
 
         class PriorityFlowControl(AvdModel):
             """Subclass of AvdModel."""
@@ -12829,6 +12830,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "spanning_tree_bpduguard_rate_limit": {"type": SpanningTreeBpduguardRateLimit},
             "spanning_tree_guard": {"type": str},
             "spanning_tree_portfast": {"type": str},
+            "spanning_tree_link_type": {"type": str},
             "vmtracer": {"type": bool},
             "priority_flow_control": {"type": PriorityFlowControl},
             "bfd": {"type": Bfd},
@@ -13022,6 +13024,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         spanning_tree_guard: SpanningTreeGuard | None
         spanning_tree_portfast: SpanningTreePortfast | None
+        spanning_tree_link_type: SpanningTreeLinkType | None
         vmtracer: bool | None
         priority_flow_control: PriorityFlowControl
         """Subclass of AvdModel."""
@@ -13160,6 +13163,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 spanning_tree_bpduguard_rate_limit: SpanningTreeBpduguardRateLimit | UndefinedType = Undefined,
                 spanning_tree_guard: SpanningTreeGuard | None | UndefinedType = Undefined,
                 spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                spanning_tree_link_type: SpanningTreeLinkType | None | UndefinedType = Undefined,
                 vmtracer: bool | None | UndefinedType = Undefined,
                 priority_flow_control: PriorityFlowControl | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
@@ -13292,6 +13296,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     spanning_tree_bpduguard_rate_limit: Subclass of AvdModel.
                     spanning_tree_guard: spanning_tree_guard
                     spanning_tree_portfast: spanning_tree_portfast
+                    spanning_tree_link_type: spanning_tree_link_type
                     vmtracer: vmtracer
                     priority_flow_control: Subclass of AvdModel.
                     bfd: Subclass of AvdModel.
@@ -32203,6 +32208,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
         SpanningTreeGuard: TypeAlias = Literal["loop", "root", "disabled"]
         SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+        SpanningTreeLinkType: TypeAlias = Literal["shared", "point-to-point"]
 
         class Ptp(AvdModel):
             """Subclass of AvdModel."""
@@ -35198,6 +35204,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "spanning_tree_bpduguard": {"type": str},
             "spanning_tree_guard": {"type": str},
             "spanning_tree_portfast": {"type": str},
+            "spanning_tree_link_type": {"type": str},
             "vmtracer": {"type": bool},
             "ptp": {"type": Ptp},
             "ip_address": {"type": str},
@@ -35322,6 +35329,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         spanning_tree_bpduguard: SpanningTreeBpduguard | None
         spanning_tree_guard: SpanningTreeGuard | None
         spanning_tree_portfast: SpanningTreePortfast | None
+        spanning_tree_link_type: SpanningTreeLinkType | None
         vmtracer: bool | None
         ptp: Ptp
         """Subclass of AvdModel."""
@@ -35451,6 +35459,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
                 spanning_tree_guard: SpanningTreeGuard | None | UndefinedType = Undefined,
                 spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                spanning_tree_link_type: SpanningTreeLinkType | None | UndefinedType = Undefined,
                 vmtracer: bool | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
@@ -35550,6 +35559,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     spanning_tree_bpduguard: spanning_tree_bpduguard
                     spanning_tree_guard: spanning_tree_guard
                     spanning_tree_portfast: spanning_tree_portfast
+                    spanning_tree_link_type: spanning_tree_link_type
                     vmtracer: vmtracer
                     ptp: Subclass of AvdModel.
                     ip_address: IPv4 address/mask or "dhcp".
