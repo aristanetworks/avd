@@ -22711,7 +22711,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_address: str | None
         """IPv6_address/Mask."""
         ipv6_nd: Ipv6Nd
-        """Subclass of AvdModel."""
+        """
+        Neighbor Discovery / Router Advertisement.
+
+        Subclass of AvdModel.
+        """
         type: Type
         """
         For documentation purposes only.
@@ -22776,7 +22780,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_address: IPv4_address/Mask.
                     ipv6_enable: ipv6_enable
                     ipv6_address: IPv6_address/Mask.
-                    ipv6_nd: Subclass of AvdModel.
+                    ipv6_nd:
+                       Neighbor Discovery / Router Advertisement.
+
+                       Subclass of AvdModel.
                     type: For documentation purposes only.
                     gateway: IPv4 address of default gateway in management VRF.
                     ipv6_gateway: IPv6 address of default gateway in management VRF.

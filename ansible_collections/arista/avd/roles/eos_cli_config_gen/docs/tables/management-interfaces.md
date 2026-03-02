@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "management_interfaces.[].ip_address") | String |  |  |  | IPv4_address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "management_interfaces.[].ipv6_enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "management_interfaces.[].ipv6_address") | String |  |  |  | IPv6_address/Mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd</samp>](## "management_interfaces.[].ipv6_nd") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_nd</samp>](## "management_interfaces.[].ipv6_nd") | Dictionary |  |  |  | Neighbor Discovery / Router Advertisement. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ra</samp>](## "management_interfaces.[].ipv6_nd.ra") | Dictionary |  |  |  | Router Advertisement. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "management_interfaces.[].ipv6_nd.ra.disabled") | Boolean |  |  |  | Disable Ipv6 Router advertisement messages on the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rx_accept</samp>](## "management_interfaces.[].ipv6_nd.ra.rx_accept") | Dictionary |  |  |  | Accept information on received RA. |
@@ -79,6 +79,8 @@
 
         # IPv6_address/Mask.
         ipv6_address: <str>
+
+        # Neighbor Discovery / Router Advertisement.
         ipv6_nd:
 
           # Router Advertisement.
