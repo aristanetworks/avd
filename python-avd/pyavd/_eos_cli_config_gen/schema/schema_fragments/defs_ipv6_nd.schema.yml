@@ -1,0 +1,48 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  ipv6_nd:
+    type: dict
+    keys:
+      ra:
+        description: Router Advertisement.
+        type: dict
+        keys:
+          disabled:
+            type: bool
+            description: Disable IPv6 Router advertisement messages on the interface.
+          rx_accept:
+            description: Accept information on received RA.
+            type: dict
+            keys:
+              default_route:
+                type: bool
+              route_preference:
+                type: bool
+      managed_config_flag:
+        type: bool
+      prefixes:
+        type: list
+        primary_key: ipv6_prefix
+        items:
+          type: dict
+          keys:
+            ipv6_prefix:
+              type: str
+            valid_lifetime:
+              type: str
+              convert_types:
+                - int
+              description: Infinite or lifetime in seconds.
+            preferred_lifetime:
+              type: str
+              convert_types:
+                - int
+              description: Infinite or lifetime in seconds.
+            no_autoconfig_flag:
+              type: bool
