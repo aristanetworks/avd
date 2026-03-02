@@ -357,10 +357,12 @@ class RouterBgpMixin(Protocol):
                 # Check if d_path is defined before accessing it to avoid auto-creation
                 d_path_defined = self.shared_utils.node_config.evpn_gateway._get_defined_attr("d_path") is not Undefined
                 self.structured_config.router_bgp.address_family_evpn._update(
-                    domain_identifier=(self.shared_utils.node_config.evpn_gateway.d_path.local_domain_id if d_path_defined else None)
-                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_local,
-                    domain_identifier_remote=(self.shared_utils.node_config.evpn_gateway.d_path.remote_domain_id if d_path_defined else None)
-                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_remote,
+                    domain_identifier=self.shared_utils.node_config.evpn_gateway.d_path.local_domain_id
+                    if d_path_defined
+                    else self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_local,
+                    domain_identifier_remote=self.shared_utils.node_config.evpn_gateway.d_path.remote_domain_id
+                    if d_path_defined
+                    else self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_remote,
                 )
                 self.structured_config.router_bgp.address_family_evpn.evpn_ethernet_segment.append_new(
                     domain="all",
