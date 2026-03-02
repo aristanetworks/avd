@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;enable_unix</samp>](## "management_api_http.enable_unix") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;https_ssl_profile</samp>](## "management_api_http.https_ssl_profile") | String |  |  |  | SSL Profile Name. |
     | [<samp>&nbsp;&nbsp;default_services</samp>](## "management_api_http.default_services") | Boolean |  |  |  | Enable default services: capi-doc and tapagg. |
-    | [<samp>&nbsp;&nbsp;session_timeout</samp>](## "management_api_http.session_timeout") | Integer |  |  | Min: 1<br>Max: 1440 | User session timeout value in minutes. |
+    | [<samp>&nbsp;&nbsp;session_timeout</samp>](## "management_api_http.session_timeout") | Integer |  |  | Min: 1<br>Max: 1440 | User session timeout value in minutes. (EOS default is 1440 minutes.) |
     | [<samp>&nbsp;&nbsp;enable_vrfs</samp>](## "management_api_http.enable_vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_api_http.enable_vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "management_api_http.enable_vrfs.[].access_group") | String |  |  |  | Standard IPv4 ACL name. |
@@ -36,7 +36,7 @@
       # Enable default services: capi-doc and tapagg.
       default_services: <bool>
 
-      # User session timeout value in minutes.
+      # User session timeout value in minutes. (EOS default is 1440 minutes.)
       session_timeout: <int; 1-1440>
       enable_vrfs:
 

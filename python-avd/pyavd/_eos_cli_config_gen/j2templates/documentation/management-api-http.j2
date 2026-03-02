@@ -17,7 +17,7 @@
 
 Management HTTPS is using the SSL profile {{ management_api_http.https_ssl_profile }}
 {%     endif %}
-{%     if management_api_http.session_timeout is arista.avd.defined %}
+{%     if management_api_http.enable_vrfs is arista.avd.defined %}
 
 #### Management API VRF Access
 

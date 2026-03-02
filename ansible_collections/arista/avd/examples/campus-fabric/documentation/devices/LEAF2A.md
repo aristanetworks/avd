@@ -139,6 +139,12 @@ ntp server vrf MGMT time.google.com prefer
 | ---- | ----- | ----------- | ---------------- | --------------- |
 | False | True | - | - | 1440 minutes |
 
+#### Management API VRF Access
+
+| VRF Name | IPv4 ACL | IPv6 ACL |
+| -------- | -------- | -------- |
+| MGMT | - | - |
+
 #### Management API HTTP Device Configuration
 
 ```eos

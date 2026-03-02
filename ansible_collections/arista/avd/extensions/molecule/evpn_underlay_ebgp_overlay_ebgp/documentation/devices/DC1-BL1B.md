@@ -106,6 +106,12 @@ ip name-server vrf MGMT 192.168.200.5
 | ---- | ----- | ----------- | ---------------- | --------------- |
 | False | True | - | - | 1440 minutes |
 
+#### Management API VRF Access
+
+| VRF Name | IPv4 ACL | IPv6 ACL |
+| -------- | -------- | -------- |
+| MGMT | - | - |
+
 #### Management API HTTP Device Configuration
 
 ```eos

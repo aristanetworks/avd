@@ -57,6 +57,13 @@ interface Management1
 | ---- | ----- | ----------- | ---------------- | --------------- |
 | False | True | - | - | 1440 minutes |
 
+#### Management API VRF Access
+
+| VRF Name | IPv4 ACL | IPv6 ACL |
+| -------- | -------- | -------- |
+| default | - | - |
+| MGMT | - | - |
+
 #### Management API HTTP Device Configuration
 
 ```eos
