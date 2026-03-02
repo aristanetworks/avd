@@ -383,7 +383,7 @@ agent KernelFib shutdown supervisor standby
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management0 | - | oob | default | 10.1.1.1 | - |
 | Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
-| Management42 | - | oob | default | - | - |
+| Management42 | - | oob | default | dhcp | - |
 | Vlan123 | inband_management | inband | default | 10.73.0.123/24 | 10.73.0.1 |
 
 ##### IPv6
@@ -448,6 +448,8 @@ interface Management1
 interface Management42
    shutdown
    speed forced 1000full
+   ip address dhcp
+   dhcp client accept default-route
    no lldp transmit
    no lldp receive
    lldp tlv transmit ztp vlan 666
@@ -1599,18 +1601,18 @@ radius-server host 10.10.11.158 vrf mgt tls ssl-profile SSL_PROFILE
 | VRF | Source Interface Name |
 | --- | --------------- |
 | default | Loopback1 |
-| default | Loopback10 |
+| BLAH | Loopback10 |
 | MGMT | Management1 |
+| abc | Loopback10 |
 
 #### IP SOURCE Source Interfaces Device Configuration
 
 ```eos
 !
-ip radius vrf default source-interface Loopback1
-!
-ip radius source-interface Loopback10
-!
+ip radius source-interface Loopback1
+ip radius vrf BLAH source-interface Loopback10
 ip radius vrf MGMT source-interface Management1
+ip radius vrf abc source-interface Loopback10
 ```
 
 ### AAA Server Groups
@@ -5180,6 +5182,7 @@ interface Ethernet7
    storm-control unknown-unicast level 10
    storm-control all level 75
    spanning-tree portfast
+   spanning-tree link-type shared
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
    vmtracer vmware-esx
@@ -6398,6 +6401,7 @@ interface Port-Channel15
    qos cos 2
    isis authentication mode md5 rx-disabled
    isis authentication key 0 <removed>
+   spanning-tree link-type point-to-point
    spanning-tree guard loop
    link tracking group EVPN_MH_ES2 upstream
 !
@@ -9930,6 +9934,7 @@ router bgp 65101
       neighbor 192.0.2.1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4
       no neighbor 192.168.66.21 activate
       neighbor 192.168.66.21 additional-paths send any
+      network 1.1.1.0/24 rcf RCF-TEST()
       network 10.0.0.0/8
       network 172.16.0.0/12
       network 192.168.0.0/16 route-map RM-FOO-MATCH
@@ -10010,6 +10015,7 @@ router bgp 65101
       neighbor 198.51.100.2 multi-path
       network 203.0.113.0/25 route-map RM-TEST
       network 203.0.113.128/25
+      network 205.0.0.0/24 rcf RCF-TEST()
       next-hop 192.51.100.1 originate lfib-backup ip-forwarding
       lfib entry installation skipped
       label local-termination implicit-null
@@ -10097,6 +10103,7 @@ router bgp 65101
       neighbor 2001:db8::22 additional-paths send limit 5
       network 2001:db8:100::/40
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
+      network 2001:db8:300::/40 rcf RCF-IPV6-TEST()
       bgp redistribute-internal
       redistribute attached-host
       redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
@@ -10463,6 +10470,7 @@ router bgp 65101
          neighbor 1.2.3.4 additional-paths send any
          neighbor 1.2.3.4 peer-tag in PEER_TAG_IN_IPV4_VRF
          neighbor 1.2.3.4 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_VRF
+         network 1.2.3.0/24 rcf RCF-TEST()
          network 2.3.4.0/24 route-map BARFOO
          redistribute attached-host route-map VRF_AFIPV4_RM_HOST
          redistribute bgp leaked route-map VRF_AFIPV4_RM_BGP
@@ -10516,6 +10524,8 @@ router bgp 65101
          neighbor aa::2 activate
          neighbor aa::2 rcf in VRF_AFIPV6_RCF_IN()
          neighbor aa::2 rcf out VRF_AFIPV6_RCF_OUT()
+         network 2001:db9:200::/40 route-map RM-IPV6-TEST
+         network 2001:db9:300::/40 rcf RCF-IPV6-TEST()
          network aa::/64
          redistribute connected rcf VRF_AFIPV6_RCF_CONNECTED()
          redistribute isis include leaked
@@ -11026,9 +11036,11 @@ no ip igmp snooping vlan 25 proxy
 #### IP Router Multicast Summary
 
 - Counters rate period decay is set for 300 seconds
-- Routing for IPv4 multicast is enabled.
-- Multipathing deterministically by selecting the same upstream router.
-- Software forwarding by the Software Forwarding Engine (SFE)
+- IPv4 Multicast Routing is enabled.
+- IPv6 Multicast Routing is enabled.
+- Multipathing operates deterministically by selecting the same upstream router.
+- IPv4 software forwarding is handled by the Software Forwarding Engine (SFE).
+- IPv6 software forwarding is handled by the Software Forwarding Engine (SFE).
 
 #### IP Router Multicast RPF Routes
 
@@ -11063,6 +11075,8 @@ router multicast
    !
    ipv6
       activity polling-interval 20
+      routing
+      software-forwarding sfe
    !
    vrf MCAST_VRF1
       ipv4

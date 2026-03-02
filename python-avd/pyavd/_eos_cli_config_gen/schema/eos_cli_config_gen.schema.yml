@@ -3819,6 +3819,11 @@ keys:
           valid_values:
           - edge
           - network
+        spanning_tree_link_type:
+          type: str
+          valid_values:
+          - shared
+          - point-to-point
         vmtracer:
           type: bool
         priority_flow_control:
@@ -6692,7 +6697,17 @@ keys:
   ip_ospf_router_id_output_format_hostnames:
     type: bool
     description: Display DNS-resolved router names for OSPF router IDs.
+  ip_radius:
+    type: dict
+    documentation_options:
+      table: ip-radius-source-interfaces
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_radius_source_interfaces:
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 7.0.0
+      new_key: ip_radius
     type: list
     items:
       type: dict
@@ -8807,6 +8822,10 @@ keys:
         mac_address:
           type: str
           description: MAC address.
+        dhcp_client_accept_default_route:
+          type: bool
+          description: Install default-route obtained via DHCP. This is only applicable
+            when `ip_address` is configured as `dhcp`.
         lldp:
           type: dict
           keys:
@@ -12636,6 +12655,11 @@ keys:
           valid_values:
           - edge
           - network
+        spanning_tree_link_type:
+          type: str
+          valid_values:
+          - shared
+          - point-to-point
         vmtracer:
           type: bool
         ptp:
@@ -16752,6 +16776,12 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+                rcf:
+                  description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                    precedence.'
+                  type: str
           bgp:
             type: dict
             keys:
@@ -17501,6 +17531,12 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+                rcf:
+                  description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                    precedence.'
+                  type: str
           next_hops:
             type: list
             primary_key: ip_address
@@ -17834,6 +17870,12 @@ keys:
                   type: str
                 route_map:
                   description: Route-map name.
+                  type: str
+                rcf:
+                  description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                    precedence.'
                   type: str
           bgp:
             type: dict
@@ -19676,6 +19718,12 @@ keys:
                         description: IPv4 prefix "A.B.C.D/E".
                       route_map:
                         type: str
+                      rcf:
+                        description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                          `route_map` and `rcf` are mutually exclusive. `route_map`
+                          takes precedence.'
+                        type: str
                 redistribute:
                   type: dict
                   description: Redistribute routes in to BGP.
@@ -20007,6 +20055,12 @@ keys:
                         type: str
                         description: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                       route_map:
+                        type: str
+                      rcf:
+                        description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                          `route_map` and `rcf` are mutually exclusive. `route_map`
+                          takes precedence.'
                         type: str
                 redistribute:
                   type: dict
@@ -21700,6 +21754,13 @@ keys:
             min: 1
             max: 60
             description: MFIB entry activity polling interval.
+          routing:
+            type: bool
+          software_forwarding:
+            type: str
+            valid_values:
+            - kernel
+            - sfe
       vrfs:
         type: list
         primary_key: name

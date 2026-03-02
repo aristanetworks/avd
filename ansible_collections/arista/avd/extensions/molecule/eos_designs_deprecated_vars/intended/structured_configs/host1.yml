@@ -1,5 +1,15 @@
 aaa_root:
   disabled: true
+aaa_server_groups:
+- name: RADIUS1
+  type: radius
+  servers:
+  - server: 11.10.10.11
+    vrf: default
+  - server: 11.10.10.5
+    vrf: MGMT1
+  - server: 11.10.10.3
+    vrf: MGMT
 config_end: true
 enable_password:
   disabled: true
@@ -29,6 +39,13 @@ ethernet_interfaces:
 hostname: host1
 ip_igmp_snooping:
   globally_enabled: true
+ip_radius:
+  source_interface: Vlan123
+  vrfs:
+  - name: MGMT1
+    source_interface: Vlan125
+  - name: MGMT
+    source_interface: Vlan125
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
@@ -56,6 +73,22 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+radius_server:
+  servers:
+  - host: 11.10.10.11
+    key: 071B245F5A
+  vrfs:
+  - name: MGMT1
+    servers:
+    - host: 11.10.10.5
+      tls:
+        enabled: true
+        ssl_profile: HOST_SSL_PROFILE
+        port: 2080
+  - name: MGMT
+    servers:
+    - host: 11.10.10.3
+      key: 0112140D481F07
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:

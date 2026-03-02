@@ -909,6 +909,58 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class Avd7Behaviors(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"ip_radius_source_interface_setting": {"type": bool, "default": False}}
+        ip_radius_source_interface_setting: bool
+        """
+        Enable improved RADIUS source interface configuration with separate keys for VRF default and other
+        VRFs.
+
+        When enabled:
+        - VRF default: Uses `ip_radius.source_interface`
+        - Other VRFs: Uses
+        `ip_radius.vrfs` list
+        - Enforces VRF name uniqueness
+        - Aligns with EOS CLI behavior (where "vrf
+        default" is implicit)
+
+        When disabled (current):
+        - Uses `ip_radius_source_interfaces` list for all
+        VRF combinations
+
+        Default value: `False`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, ip_radius_source_interface_setting: bool | UndefinedType = Undefined) -> None:
+                """
+                Avd7Behaviors.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    ip_radius_source_interface_setting:
+                       Enable improved RADIUS source interface configuration with separate keys for VRF default and other
+                       VRFs.
+
+                       When enabled:
+                       - VRF default: Uses `ip_radius.source_interface`
+                       - Other VRFs: Uses
+                       `ip_radius.vrfs` list
+                       - Enforces VRF name uniqueness
+                       - Aligns with EOS CLI behavior (where "vrf
+                       default" is implicit)
+
+                       When disabled (current):
+                       - Uses `ip_radius_source_interfaces` list for all
+                       VRF combinations
+
+                """
+
     AvdStructuredConfigFileFormat: TypeAlias = Literal["yml", "yaml", "json"]
 
     class EosDesignsValidationConfiguration(AvdModel):
@@ -19039,6 +19091,90 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     trackers: Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
+
+                """
+
+    class GeneralSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class InterfaceDefaults(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"ethernet_shutdown": {"type": bool, "default": False}}
+            ethernet_shutdown: bool
+            """
+            Shutdown Ethernet interfaces by default unless they are explicitly enabled.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ethernet_shutdown: bool | UndefinedType = Undefined) -> None:
+                    """
+                    InterfaceDefaults.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ethernet_shutdown: Shutdown Ethernet interfaces by default unless they are explicitly enabled.
+
+                    """
+
+        class Arp(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"persistent": {"type": EosCliConfigGen.Arp.Persistent}, "aging": {"type": EosCliConfigGen.Arp.Aging}}
+            persistent: EosCliConfigGen.Arp.Persistent
+            aging: EosCliConfigGen.Arp.Aging
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    persistent: EosCliConfigGen.Arp.Persistent | UndefinedType = Undefined,
+                    aging: EosCliConfigGen.Arp.Aging | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Arp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        persistent: persistent
+                        aging: aging
+
+                    """
+
+        _fields: ClassVar[dict] = {"interface_defaults": {"type": InterfaceDefaults}, "arp": {"type": Arp}, "ip_icmp_redirect": {"type": bool}}
+        interface_defaults: InterfaceDefaults
+        """Subclass of AvdModel."""
+        arp: Arp
+        """Subclass of AvdModel."""
+        ip_icmp_redirect: bool | None
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                interface_defaults: InterfaceDefaults | UndefinedType = Undefined,
+                arp: Arp | UndefinedType = Undefined,
+                ip_icmp_redirect: bool | None | UndefinedType = Undefined,
+            ) -> None:
+                """
+                GeneralSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    interface_defaults: Subclass of AvdModel.
+                    arp: Subclass of AvdModel.
+                    ip_icmp_redirect: ip_icmp_redirect
 
                 """
 
@@ -64620,6 +64756,62 @@ class EosDesigns(EosDesignsRootModel):
 
                     Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
+                    class StaticArpEntriesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Nodes(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Nodes._item_type = str
+
+                        _fields: ClassVar[dict] = {"ipv4_address": {"type": str}, "mac_address": {"type": str}, "nodes": {"type": Nodes}}
+                        ipv4_address: str
+                        """ARP entry IPv4 address."""
+                        mac_address: str
+                        """ARP entry MAC address."""
+                        nodes: Nodes
+                        """
+                        List of nodes where the ARP static entry should be configured.
+                        If not set, the entry will be
+                        configured on all devices carrying the VRF.
+
+
+                        Subclass of AvdList with `str` items.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                ipv4_address: str | UndefinedType = Undefined,
+                                mac_address: str | UndefinedType = Undefined,
+                                nodes: Nodes | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                StaticArpEntriesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    ipv4_address: ARP entry IPv4 address.
+                                    mac_address: ARP entry MAC address.
+                                    nodes:
+                                       List of nodes where the ARP static entry should be configured.
+                                       If not set, the entry will be
+                                       configured on all devices carrying the VRF.
+
+
+                                       Subclass of AvdList with `str` items.
+
+                                """
+
+                    class StaticArpEntries(AvdList[StaticArpEntriesItem]):
+                        """Subclass of AvdList with `StaticArpEntriesItem` items."""
+
+                    StaticArpEntries._item_type = StaticArpEntriesItem
+
                     class BgpPeersItem(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -65990,6 +66182,7 @@ class EosDesigns(EosDesignsRootModel):
                         "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                         "redistribute_static": {"type": bool},
                         "redistribute_connected": {"type": bool, "default": True},
+                        "static_arp_entries": {"type": StaticArpEntries},
                         "bgp_peers": {"type": BgpPeers},
                         "bgp": {"type": Bgp},
                         "bgp_peer_groups": {"type": BgpPeerGroups},
@@ -66238,6 +66431,15 @@ class EosDesigns(EosDesignsRootModel):
 
                     Default value: `True`
                     """
+                    static_arp_entries: StaticArpEntries
+                    """
+                    List of static ARP entries for the tenant VRF.
+                    Entries are configured on all devices carrying the
+                    VRF unless filtered using the nodes key.
+
+
+                    Subclass of AvdList with `StaticArpEntriesItem` items.
+                    """
                     bgp_peers: BgpPeers
                     """
                     List of BGP peer definitions.
@@ -66320,6 +66522,7 @@ class EosDesigns(EosDesignsRootModel):
                             ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                             redistribute_static: bool | None | UndefinedType = Undefined,
                             redistribute_connected: bool | UndefinedType = Undefined,
+                            static_arp_entries: StaticArpEntries | UndefinedType = Undefined,
                             bgp_peers: BgpPeers | UndefinedType = Undefined,
                             bgp: Bgp | UndefinedType = Undefined,
                             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
@@ -66508,6 +66711,13 @@ class EosDesigns(EosDesignsRootModel):
                                 redistribute_connected:
                                    Enable or disable the redistribution of all connected routes to BGP in the VRF. Note this is not
                                    applicable to VRF `default`.
+                                static_arp_entries:
+                                   List of static ARP entries for the tenant VRF.
+                                   Entries are configured on all devices carrying the
+                                   VRF unless filtered using the nodes key.
+
+
+                                   Subclass of AvdList with `StaticArpEntriesItem` items.
                                 bgp_peers:
                                    List of BGP peer definitions.
                                    This will configure BGP neighbors inside the tenant VRF for peering
@@ -87905,6 +88115,7 @@ class EosDesigns(EosDesignsRootModel):
         "aaa_settings": {"type": AaaSettings},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
+        "avd_7_behaviors": {"type": Avd7Behaviors},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
@@ -88009,6 +88220,7 @@ class EosDesigns(EosDesignsRootModel):
         "fabric_numbering_node_id_pool": {"type": str, "default": "fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}"},
         "fabric_sflow": {"type": FabricSflow},
         "flow_tracking_settings": {"type": FlowTrackingSettings},
+        "general_settings": {"type": GeneralSettings},
         "generate_cv_tags": {"type": GenerateCvTags},
         "hardware_counters": {"type": EosCliConfigGen.HardwareCounters},
         "inband_ztp_bootstrap_file": {"type": str},
@@ -88620,6 +88832,13 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
+    avd_7_behaviors: Avd7Behaviors
+    """
+    Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
+
+    Subclass of
+    AvdModel.
+    """
     avd_digital_twin_mode: bool
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -89480,6 +89699,8 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    general_settings: GeneralSettings
+    """Subclass of AvdModel."""
     generate_cv_tags: GenerateCvTags
     """
     Generate CloudVision Tags based on AVD data.
@@ -90636,6 +90857,7 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
+            avd_7_behaviors: Avd7Behaviors | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
@@ -90718,6 +90940,7 @@ class EosDesigns(EosDesignsRootModel):
             fabric_numbering_node_id_pool: str | UndefinedType = Undefined,
             fabric_sflow: FabricSflow | UndefinedType = Undefined,
             flow_tracking_settings: FlowTrackingSettings | UndefinedType = Undefined,
+            general_settings: GeneralSettings | UndefinedType = Undefined,
             generate_cv_tags: GenerateCvTags | UndefinedType = Undefined,
             hardware_counters: EosCliConfigGen.HardwareCounters | UndefinedType = Undefined,
             inband_ztp_bootstrap_file: str | None | UndefinedType = Undefined,
@@ -90856,6 +91079,11 @@ class EosDesigns(EosDesignsRootModel):
                 aaa_settings: Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
+                avd_7_behaviors:
+                   Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
+
+                   Subclass of
+                   AvdModel.
                 avd_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
@@ -91487,6 +91715,7 @@ class EosDesigns(EosDesignsRootModel):
                    Define the flow tracking parameters for this topology.
 
                    Subclass of AvdModel.
+                general_settings: Subclass of AvdModel.
                 generate_cv_tags:
                    Generate CloudVision Tags based on AVD data.
 
