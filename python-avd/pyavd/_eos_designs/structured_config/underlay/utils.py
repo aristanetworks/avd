@@ -159,16 +159,14 @@ class UtilsMixin(Protocol):
         is_subinterface = "." in l3_generic_interface.name
 
         # logic below is common to l3_interface and l3_port_channel interface types
-        # Check if the interface is a L3 Port-Channel but not a subinterface.
-        is_l3_port_channel_not_subinterface = schema_key == "l3_port_channels" and not is_subinterface
 
         # TODO: catch if ip_address is not valid or not dhcp
-        # IP address is required for L3 interfaces and L3 Port-Channel subinterfaces,
-        # but optional for L3 Port-Channels which are not subinterfaces as we may define subinterfaces in other modules.
-        if not l3_generic_interface.ip_address and not is_l3_port_channel_not_subinterface:
+        # IP address is required for subinterfaces, but optional for main Ethernet interfaces or Port-Channels as we may define subinterfaces in other modules.
+        if is_subinterface and not l3_generic_interface.ip_address:
             msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}"
             msg += f"[name={l3_generic_interface.name}].ip_address"
             raise AristaAvdMissingVariableError(msg)
+
         interface._update(
             name=l3_generic_interface.name,
             ip_address=l3_generic_interface.ip_address,
