@@ -49,11 +49,11 @@ loopback_interfaces:
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.101/32
-- name: Loopback100
-  description: SHARED_VRF_LOOPBACK
+- name: Loopback20
+  description: TENANT2
   shutdown: false
-  vrf: SHARED_VRF
-  ip_address: 172.16.100.1/32
+  vrf: VRF1
+  ip_address: 172.26.128.12/32
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -176,24 +176,14 @@ router_bgp:
       enabled: true
       route_map: RM-CONN-2-BGP
   vlans:
-  - id: 110
+  - id: 666
     metadata:
       tenants:
-      - TENANT_A
-    rd: 192.168.255.101:10110
+      - TENANT1
+    rd: 192.168.255.101:10666
     route_targets:
       both:
-      - 10110:10110
-    redistribute_routes:
-    - learned
-  - id: 220
-    metadata:
-      tenants:
-      - TENANT_C
-    rd: 192.168.255.101:30220
-    route_targets:
-      both:
-      - 30220:30220
+      - 10666:10666
     redistribute_routes:
     - learned
   address_family_evpn:
@@ -209,46 +199,24 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: false
   vrfs:
-  - name: SHARED_VRF
-    rd: 192.168.255.101:100
+  - name: VRF1
+    rd: 192.168.255.101:14
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - 100:100
+        - '14:14'
       export:
       - address_family: evpn
         route_targets:
-        - 100:100
+        - '14:14'
     router_id: 192.168.255.101
     updates:
       wait_install: true
     neighbors:
     - ip_address: 10.255.251.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: MLAG-MULTI-TENANT-VRF-L3LEAF1B_Vlan3099
-    redistribute:
-      connected:
-        enabled: true
-        route_map: RM-CONN-2-BGP-VRFS
-  - name: TENANT_C_VRF
-    rd: 192.168.255.101:200
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 200:200
-      export:
-      - address_family: evpn
-        route_targets:
-        - 200:200
-    router_id: 192.168.255.101
-    updates:
-      wait_install: true
-    neighbors:
-    - ip_address: 10.255.251.1
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: MLAG-MULTI-TENANT-VRF-L3LEAF1B_Vlan3199
+      description: MLAG-MULTI-TENANT-VRF-L3LEAF1B_Vlan3013
     redistribute:
       connected:
         enabled: true
@@ -262,8 +230,8 @@ spanning_tree:
   no_spanning_tree_vlan: 4093-4094
 transceiver_qsfp_default_mode_4x10: true
 virtual_source_nat_vrfs:
-- name: SHARED_VRF
-  ip_address: 172.16.100.1
+- name: VRF1
+  ip_address: 172.26.128.12
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_L3
@@ -276,41 +244,23 @@ vlan_interfaces:
   ip_address: 10.255.252.0/31
   mtu: 9214
   no_autostate: true
-- name: Vlan110
-  description: SHARED_VRF_SVI
+- name: Vlan666
+  description: MDR-COLLECTORS
   shutdown: false
-  vrf: SHARED_VRF
-  ip_address_virtual: 10.110.110.1/24
+  vrf: VRF1
+  ip_address_virtual: 192.168.42.1/29
   metadata:
     tenants:
-    - TENANT_A
-- name: Vlan3099
-  description: MLAG_L3_VRF_SHARED_VRF
+    - TENANT1
+- name: Vlan3013
+  description: MLAG_L3_VRF_VRF1
   shutdown: false
-  vrf: SHARED_VRF
+  vrf: VRF1
   ip_address: 10.255.251.0/31
   mtu: 9214
   metadata:
     tenants:
-    - TENANT_A
-    type: underlay_peering
-- name: Vlan220
-  description: TENANT_C_SVI
-  shutdown: false
-  vrf: TENANT_C_VRF
-  ip_address_virtual: 10.220.220.1/24
-  metadata:
-    tenants:
-    - TENANT_C
-- name: Vlan3199
-  description: MLAG_L3_VRF_TENANT_C_VRF
-  shutdown: false
-  vrf: TENANT_C_VRF
-  ip_address: 10.255.251.0/31
-  mtu: 9214
-  metadata:
-    tenants:
-    - TENANT_C
+    - TENANT1
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -332,43 +282,26 @@ vlans:
   metadata:
     tenants:
     - system
-- id: 110
-  name: SHARED_VRF_SVI
+- id: 666
+  name: MDR-COLLECTORS
   metadata:
     tenants:
-    - TENANT_A
-- id: 3099
-  name: MLAG_L3_VRF_SHARED_VRF
+    - TENANT1
+- id: 3013
+  name: MLAG_L3_VRF_VRF1
   trunk_groups:
   - MLAG
   metadata:
     tenants:
-    - TENANT_A
-- id: 220
-  name: TENANT_C_SVI
-  metadata:
-    tenants:
-    - TENANT_C
-- id: 3199
-  name: MLAG_L3_VRF_TENANT_C_VRF
-  trunk_groups:
-  - MLAG
-  metadata:
-    tenants:
-    - TENANT_C
+    - TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: SHARED_VRF
+- name: VRF1
   ip_routing: true
   metadata:
     tenants:
-    - TENANT_A
-- name: TENANT_C_VRF
-  ip_routing: true
-  metadata:
-    tenants:
-    - TENANT_C
+    - TENANT1
 vxlan_interface:
   vxlan1:
     description: MLAG-MULTI-TENANT-VRF-L3LEAF1A_VTEP
@@ -377,12 +310,8 @@ vxlan_interface:
       udp_port: 4789
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
-      - id: 110
-        vni: 10110
-      - id: 220
-        vni: 30220
+      - id: 666
+        vni: 10666
       vrfs:
-      - name: SHARED_VRF
-        vni: 11100
-      - name: TENANT_C_VRF
-        vni: 12200
+      - name: VRF1
+        vni: 9014

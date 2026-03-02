@@ -50,26 +50,24 @@ l3leaf:
           uplink_switch_interfaces: [Ethernet2]
 
 tenants:
-  # Test case matching issue #6629
   # Tenant with SVIs and enable_mlag_ibgp_peering_vrfs at tenant level
-  - name: TenantCustomer1
+  - name: TENANT1
     enable_mlag_ibgp_peering_vrfs: true
     mac_vrf_vni_base: 10000
     vrfs:
-      - name: VRF-INFRA-MIRROR
+      - name: VRF1
         vrf_id: 14
         vrf_vni: 9014
         svis:
-          - id: 3423
+          - id: 666
             name: MDR-COLLECTORS
             enabled: true
-            ip_address_virtual: 100.74.2.129/29
+            ip_address_virtual: 192.168.42.1/29
 
-  # Tenant with only loopbacks and enable_mlag_ibgp_peering_vrfs at VRF level
   # Same VRF name as in TenantCustomer1 - this should work without conflicts
-  - name: VRF-INFRA-MIRROR
+  - name: TENANT2
     vrfs:
-      - name: VRF-INFRA-MIRROR
+      - name: VRF1
         vrf_id: 14
         vrf_vni: 9014
         enable_mlag_ibgp_peering_vrfs: true
@@ -77,11 +75,10 @@ tenants:
           - node: MLAG-MULTI-TENANT-VRF-L3LEAF1A
             ip_address: 172.26.128.12/32
             loopback: 20
-            description: VRF-INFRA-MIRROR
+            description: TENANT2
             enabled: true
           - node: MLAG-MULTI-TENANT-VRF-L3LEAF1B
             ip_address: 172.26.128.13/32
             loopback: 20
-            description: VRF-INFRA-MIRROR
+            description: TENANT2
             enabled: true
-
