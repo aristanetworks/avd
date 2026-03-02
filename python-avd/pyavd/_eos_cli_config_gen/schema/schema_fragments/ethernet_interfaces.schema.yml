@@ -463,44 +463,7 @@ keys:
                 type: bool
         ipv6_nd:
           type: dict
-          keys:
-            ra:
-              description: Router Advertisement.
-              type: dict
-              keys:
-                disabled:
-                  type: bool
-                  description: Disable Ipv6 Router advertisement messages on the interface.
-                rx_accept:
-                  description: Accept information on received RA.
-                  type: dict
-                  keys:
-                    default_route:
-                      type: bool
-                    route_preference:
-                      type: bool
-            managed_config_flag:
-              type: bool
-            prefixes:
-              type: list
-              primary_key: ipv6_prefix
-              items:
-                type: dict
-                keys:
-                  ipv6_prefix:
-                    type: str
-                  valid_lifetime:
-                    type: str
-                    convert_types:
-                      - int
-                    description: Infinite or lifetime in seconds.
-                  preferred_lifetime:
-                    type: str
-                    convert_types:
-                      - int
-                    description: Infinite or lifetime in seconds.
-                  no_autoconfig_flag:
-                    type: bool
+          $ref: "eos_cli_config_gen#/$defs/ipv6_nd"
         ipv6_dhcp_relay_destinations:
           type: list
           items:

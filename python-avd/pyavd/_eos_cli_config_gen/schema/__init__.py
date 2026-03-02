@@ -7429,7 +7429,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
                 disabled: bool | None
-                """Disable Ipv6 Router advertisement messages on the interface."""
+                """Disable IPv6 Router advertisement messages on the interface."""
                 rx_accept: RxAccept
                 """
                 Accept information on received RA.
@@ -7447,7 +7447,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            disabled: Disable Ipv6 Router advertisement messages on the interface.
+                            disabled: Disable IPv6 Router advertisement messages on the interface.
                             rx_accept:
                                Accept information on received RA.
 
