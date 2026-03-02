@@ -7,6 +7,7 @@
 type: dict
 $defs:
   ipv6_nd:
+    description: Neighbor Discovery / Router Advertisement.
     type: dict
     keys:
       ra:
