@@ -524,9 +524,10 @@ ethernet_interfaces:
 hostname: connected_endpoints
 ip_igmp_snooping:
   globally_enabled: true
-ip_radius_source_interfaces:
-- name: Management1
-  vrf: MGMT
+ip_radius:
+  vrfs:
+  - name: MGMT
+    source_interface: Management1
 link_tracking_groups:
 - name: LT_GROUP1
   recovery_delay: 300
