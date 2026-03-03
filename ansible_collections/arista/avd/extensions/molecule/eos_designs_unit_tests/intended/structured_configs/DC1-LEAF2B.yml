@@ -347,9 +347,10 @@ ip_name_server:
     - ip_address: 8.8.8.8
     - ip_address: 2001:db8::1
     - ip_address: 2001:db8::2
-ip_radius_source_interfaces:
-- name: Management99
-  vrf: MGMT
+ip_radius:
+  vrfs:
+  - name: MGMT
+    source_interface: Management99
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 ipv6_static_routes:

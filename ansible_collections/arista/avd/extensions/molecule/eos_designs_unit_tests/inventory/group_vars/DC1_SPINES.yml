@@ -1,1 +1,5 @@
 type: spine
+
+general_settings:
+  interface_defaults:
+    ethernet_shutdown: true
