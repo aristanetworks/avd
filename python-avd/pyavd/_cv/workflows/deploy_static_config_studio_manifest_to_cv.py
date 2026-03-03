@@ -82,8 +82,8 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
     desired_container_ids = {container.id for container in cv_manifest.containers}
     containers_to_delete = {
         container_id: cast("str", container.display_name)
-        for container in existing_containers
-        if (container_id := cast("str", container.key.configlet_assignment_id)).startswith(AVD_ENTITY_PREFIX) and container_id not in desired_container_ids
+        for container_id, container in existing_containers_by_id.items()
+        if container_id.startswith(AVD_ENTITY_PREFIX) and container_id not in desired_container_ids
     }
 
     if containers_to_delete:
