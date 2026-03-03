@@ -313,7 +313,7 @@ Molecule test scenarios are used to validate AVD functionality. These scenarios 
   border-leaf-1
   dc1-spine1
   cv-pathfinder-edge2a
-  dc1.l2leaf5a  # Period is acceptable for hierarchical naming
+  dc1.l2leaf5a
   ```
 
 - *Bad Examples*
