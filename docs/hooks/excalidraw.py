@@ -10,10 +10,10 @@ generates the appropriate HTML with both light and dark mode variants.
 Usage in markdown:
     ![Alt text](path/to/diagram.excalidraw)
 
-The hook expects pre-exported SVG files with -light.svg and -dark.svg suffixes
+The hook expects pre-exported SVG files with _light.svg and _dark.svg suffixes
 in an 'exported/' subdirectory relative to the .excalidraw file:
-    path/to/exported/diagram-light.svg
-    path/to/exported/diagram-dark.svg
+    path/to/exported/diagram_light.svg
+    path/to/exported/diagram_dark.svg
 
 These will be rendered as two images that show/hide based on the current theme.
 """
@@ -49,8 +49,8 @@ def on_page_markdown(markdown: str, page: Any, config: Any, files: Any, **kwargs
 
         # Build paths to exported/ subdirectory using pathlib
         exported_dir = excalidraw_file.parent / "exported"
-        light_path = exported_dir / f"{base_name}-light.svg"
-        dark_path = exported_dir / f"{base_name}-dark.svg"
+        light_path = exported_dir / f"{base_name}_light.svg"
+        dark_path = exported_dir / f"{base_name}_dark.svg"
 
         # Check if the exported SVGs exist on disk
         page_src_path = Path(page.file.src_path).parent
@@ -60,8 +60,8 @@ def on_page_markdown(markdown: str, page: Any, config: Any, files: Any, **kwargs
         check_base = docs_dir / excalidraw_path.lstrip("/") if excalidraw_path.startswith("/") else docs_dir / page_src_path / excalidraw_path
 
         check_base = check_base.resolve()
-        light_file = check_base.parent / "exported" / f"{base_name}-light.svg"
-        dark_file = check_base.parent / "exported" / f"{base_name}-dark.svg"
+        light_file = check_base.parent / "exported" / f"{base_name}_light.svg"
+        dark_file = check_base.parent / "exported" / f"{base_name}_dark.svg"
 
         # Warn if SVG files don't exist
         if not light_file.exists():
