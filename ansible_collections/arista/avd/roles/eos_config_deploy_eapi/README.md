@@ -23,8 +23,7 @@ The **eos_config_deploy_eapi** role:
 
 Figure 1 below provides a visualization of the role's inputs, outputs, and tasks in order executed by the role.
 
-![Figure 1: Ansible Role eos_config_deploy_eapi](../../../../../docs/_media/excalidraw/exported/eos_config_deploy_eapi_dark.svg#only-dark)
-![Figure 1: Ansible Role eos_config_deploy_eapi](../../../../../docs/_media/excalidraw/exported/eos_config_deploy_eapi_light.svg#only-light)
+![Figure 1: Ansible Role eos_config_deploy_eapi](../../../../../docs/_media/excalidraw/eos_config_deploy_eapi.excalidraw)
 
 **Inputs:**
 

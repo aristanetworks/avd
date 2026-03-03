@@ -23,8 +23,7 @@ The **eos_cli_config_gen** role:
 
 Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
 
-![Figure 1: Ansible Role eos_cli_config_gen](../../../../../docs/_media/excalidraw/exported/eos_cli_config_gen_dark.svg#only-dark)
-![Figure 1: Ansible Role eos_cli_config_gen](../../../../../docs/_media/excalidraw/exported/eos_cli_config_gen_light.svg#only-light)
+![Figure 1: Ansible Role eos_cli_config_gen](../../../../../docs/_media/excalidraw/eos_cli_config_gen.excalidraw)
 
 **Inputs:**
 

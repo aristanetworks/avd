@@ -95,8 +95,7 @@ The workspace will be built and submitted, and a change control will be created 
 
 Figure 2 below provides a visualization of the role's inputs, outputs executed by the role.
 
-![Figure 2: Ansible Role arista.avd.cv_deploy](../../../../../docs/_media/excalidraw/exported/cv_deploy_dark.svg#only-dark)
-![Figure 2: Ansible Role arista.avd.cv_deploy](../../../../../docs/_media/excalidraw/exported/cv_deploy_light.svg#only-light)
+![Figure 2: Ansible Role arista.avd.cv_deploy](../../../../../docs/_media/excalidraw/cv_deploy.excalidraw)
 
 ### Inputs
 
