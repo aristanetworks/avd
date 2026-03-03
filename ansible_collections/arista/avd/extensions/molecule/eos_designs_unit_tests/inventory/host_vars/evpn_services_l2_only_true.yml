@@ -4,6 +4,8 @@ l3leaf:
     loopback_ipv4_pool: 192.168.255.0/24
     loopback_ipv4_offset: 8
     vtep_loopback_ipv4_pool: 192.168.254.0/24
+    filter:
+      deny_vrfs: [ MULTI_TENANT_VRF_TEST ]
   nodes:
     - name: evpn_services_l2_only_true
       id: 101
