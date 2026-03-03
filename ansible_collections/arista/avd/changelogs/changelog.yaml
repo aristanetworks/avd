@@ -4214,3 +4214,13 @@ releases:
       name: validate_inputs
       namespace: ''
     release_date: '2026-02-19'
+  6.0.1:
+    changes:
+      minor_changes:
+      - 'Bump: grpclib>=0.4.8 (#6590) by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6605'
+      release_summary: 'Release 6.0.1 - See documentation on avd.arista.com for details.
+
+        '
+    fragments:
+    - v6.0.1.yml
+    release_date: '2026-02-25'
