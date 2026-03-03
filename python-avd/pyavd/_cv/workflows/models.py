@@ -188,6 +188,7 @@ class DeployToCvResult:
     skipped_cv_pathfinder_metadata: list[CVPathfinderMetadata] = field(default_factory=list)
     removed_configs: list[str] = field(default_factory=list)
     removed_static_config_root_containers: list[str] = field(default_factory=list)
+    removed_static_config_containers: list[str] = field(default_factory=list)
     removed_static_config_configlets: list[str] = field(default_factory=list)
     removed_device_tags: list[CVDeviceTag] = field(default_factory=list)
     removed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
