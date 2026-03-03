@@ -724,6 +724,9 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.spanning_tree_portfast is arista.avd.defined("network") %}
    spanning-tree portfast network
 {%     endif %}
+{%     if port_channel_interface.spanning_tree_link_type is arista.avd.defined %}
+   spanning-tree link-type {{ port_channel_interface.spanning_tree_link_type }}
+{%     endif %}
 {%     if port_channel_interface.spanning_tree_bpduguard is arista.avd.defined and port_channel_interface.spanning_tree_bpduguard in [True, "True", "enabled"] %}
    spanning-tree bpduguard enable
 {%     elif port_channel_interface.spanning_tree_bpduguard is arista.avd.defined("disabled") %}

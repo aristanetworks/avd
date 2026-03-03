@@ -1124,6 +1124,9 @@ keys:
         spanning_tree_portfast:
           type: str
           valid_values: ["edge", "network"]
+        spanning_tree_link_type:
+          type: str
+          valid_values: ["shared", "point-to-point"]
         vmtracer:
           type: bool
         priority_flow_control:

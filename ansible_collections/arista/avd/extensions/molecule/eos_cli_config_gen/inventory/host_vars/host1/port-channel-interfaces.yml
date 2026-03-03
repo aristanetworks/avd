@@ -97,6 +97,7 @@ port_channel_interfaces:
     mlag: 15
     ntp_serve: false
     spanning_tree_guard: loop
+    spanning_tree_link_type: point-to-point
     # Test isis authentication both md5 rx
     isis_authentication:
       both:

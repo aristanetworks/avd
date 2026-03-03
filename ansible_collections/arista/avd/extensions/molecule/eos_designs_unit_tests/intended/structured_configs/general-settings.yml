@@ -1,23 +1,18 @@
-aaa_authentication:
-  dot1x:
-    default: group radius
 aaa_root:
   disabled: true
+arp:
+  persistent:
+    enabled: true
+    refresh_delay: 1200
+  aging:
+    timeout_default: 1500
 config_end: true
-dot1x:
-  system_auth_control: true
-  protocol_lldp_bypass: false
-  protocol_bpdu_bypass: false
-  dynamic_authorization: false
 enable_password:
   disabled: true
-hostname: dot1x-settings-3
+hostname: general-settings
+ip_icmp_redirect: false
 ip_igmp_snooping:
   globally_enabled: true
-ip_radius:
-  vrfs:
-  - name: MGMT
-    source_interface: Management1
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -28,12 +23,6 @@ management_interfaces:
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
-radius_server:
-  vrfs:
-  - name: MGMT
-    servers:
-    - host: agni.arista.com
-      key: 1404071B09166738212B2130365E0C131A
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:

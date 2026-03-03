@@ -179,6 +179,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpduguard</samp>](## "port_channel_interfaces.[].spanning_tree_bpduguard") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_guard</samp>](## "port_channel_interfaces.[].spanning_tree_guard") | String |  |  | Valid Values:<br>- <code>loop</code><br>- <code>root</code><br>- <code>disabled</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_portfast</samp>](## "port_channel_interfaces.[].spanning_tree_portfast") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>network</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_link_type</samp>](## "port_channel_interfaces.[].spanning_tree_link_type") | String |  |  | Valid Values:<br>- <code>shared</code><br>- <code>point-to-point</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vmtracer</samp>](## "port_channel_interfaces.[].vmtracer") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "port_channel_interfaces.[].ptp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "port_channel_interfaces.[].ptp.enable") | Boolean |  |  |  |  |
@@ -842,6 +843,7 @@
         spanning_tree_bpduguard: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
         spanning_tree_guard: <str; "loop" | "root" | "disabled">
         spanning_tree_portfast: <str; "edge" | "network">
+        spanning_tree_link_type: <str; "shared" | "point-to-point">
         vmtracer: <bool>
         ptp:
           enable: <bool>
