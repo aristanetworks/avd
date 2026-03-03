@@ -43,26 +43,16 @@ def on_page_markdown(markdown: str, page: Any, config: Any, files: Any, **kwargs
         excalidraw_path = match.group(2)
         title = match.group(3) or alt_text
 
-        # Remove .excalidraw extension and create light/dark paths in exported/ subdirectory
-        # Get the directory and filename parts
-        if "/" in excalidraw_path:
-            dir_part = excalidraw_path.rsplit("/", 1)[0]
-            file_part = excalidraw_path.rsplit("/", 1)[1]
-        else:
-            dir_part = ""
-            file_part = excalidraw_path
+        # Use pathlib to parse the excalidraw path
+        excalidraw_file = Path(excalidraw_path)
+        base_name = excalidraw_file.stem  # Removes .excalidraw extension
 
-        base_name = file_part.rsplit(".excalidraw", 1)[0]
+        # Build paths to exported/ subdirectory using pathlib
+        exported_dir = excalidraw_file.parent / "exported"
+        light_path = exported_dir / f"{base_name}-light.svg"
+        dark_path = exported_dir / f"{base_name}-dark.svg"
 
-        # Build paths to exported/ subdirectory
-        if dir_part:
-            light_path = f"{dir_part}/exported/{base_name}-light.svg"
-            dark_path = f"{dir_part}/exported/{base_name}-dark.svg"
-        else:
-            light_path = f"exported/{base_name}-light.svg"
-            dark_path = f"exported/{base_name}-dark.svg"
-
-        # Check if the exported SVGs exist
+        # Check if the exported SVGs exist on disk
         page_src_path = Path(page.file.src_path).parent
         docs_dir = Path(config["docs_dir"])
 
@@ -83,7 +73,8 @@ def on_page_markdown(markdown: str, page: Any, config: Any, files: Any, **kwargs
         # Using two separate image tags that show/hide based on theme
         title_attr = f' "{title}"' if title else ""
 
-        result = f"![{alt_text}]({light_path}#only-light{title_attr})\n![{alt_text}]({dark_path}#only-dark{title_attr})"
+        # Convert Path objects to POSIX-style strings for markdown URLs
+        result = f"![{alt_text}]({light_path.as_posix()}#only-light{title_attr})\n![{alt_text}]({dark_path.as_posix()}#only-dark{title_attr})"
 
         log.debug("Replaced Excalidraw reference: %s -> light/dark SVGs", excalidraw_path)
 
