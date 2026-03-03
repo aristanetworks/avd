@@ -26,8 +26,8 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
 
 ## Functions overview
 
-![Arista AVD Overview](../_media/pyavd_functions_dark.svg#only-dark)
-![Arista AVD Overview](../_media/pyavd_functions_light.svg#only-light)
+![Arista AVD Overview](../_media/excalidraw/exported/pyavd_functions_dark.svg#only-dark)
+![Arista AVD Overview](../_media/excalidraw/exported/pyavd_functions_light.svg#only-light)
 
 ## Known limitations
 

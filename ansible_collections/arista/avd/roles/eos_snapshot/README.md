@@ -19,8 +19,8 @@ It supports reports with the following format: text, markdown, JSON, and YAML.
 
 Figure 1 below visualizes the role's inputs, outputs, and tasks.
 
-![Figure 1: Ansible Role eos_snapshot](../../../../../docs/_media/eos_snapshot_dark.svg#only-dark)
-![Figure 1: Ansible Role eos_snapshot](../../../../../docs/_media/eos_snapshot_light.svg#only-light)
+![Figure 1: Ansible Role eos_snapshot](../../../../../docs/_media/excalidraw/exported/eos_snapshot_dark.svg#only-dark)
+![Figure 1: Ansible Role eos_snapshot](../../../../../docs/_media/excalidraw/exported/eos_snapshot_light.svg#only-light)
 
 **Inputs:**
 

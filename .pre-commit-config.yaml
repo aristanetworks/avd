@@ -11,23 +11,24 @@ repos:
     hooks:
       - id: trailing-whitespace
         name: Trims trailing whitespace.
-        exclude: ansible_collections/arista/avd/extensions/molecule
+        exclude: (ansible_collections/arista/avd/extensions/molecule|\.excalidraw$)
       - id: end-of-file-fixer
         name: Ensures that a file is either empty, or ends with one newline.
         exclude_types: [svg, json]
-        exclude: ansible_collections/arista/avd/extensions/molecule
+        exclude: (ansible_collections/arista/avd/extensions/molecule|\.excalidraw$)
       - id: check-added-large-files
         name: Prevents giant files from being committed.
         exclude: >-
           (?x)
           (ansible_collections/arista/avd/extensions/molecule
           |pickle$
+          |\.excalidraw$
           |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/__init__.py
           |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py
           )
       - id: check-merge-conflict
         name: Checks for files that contain merge conflict strings.
-        exclude: ansible_collections/arista/avd/extensions/molecule
+        exclude: (ansible_collections/arista/avd/extensions/molecule|\.excalidraw$)
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.5.6

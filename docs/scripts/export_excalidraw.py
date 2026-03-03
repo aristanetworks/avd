@@ -102,8 +102,8 @@ def main() -> None:
         name = file_path.stem
         print(f"Processing: {file_path}")
 
-        light_output = output_dir / f"{name}-light.svg"
-        dark_output = output_dir / f"{name}-dark.svg"
+        light_output = output_dir / f"{name}_light.svg"
+        dark_output = output_dir / f"{name}_dark.svg"
 
         print(f"  -> Exporting light mode: {light_output}")
         light_ok = export_excalidraw(file_path, light_output, dark_mode=False)
