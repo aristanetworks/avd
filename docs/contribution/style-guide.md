@@ -236,36 +236,6 @@ Configurations for the above tools can be found in:
   {% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['isis', 'ospf'] %}
   ```
 
-### VAR-9 - Hostname and device naming conventions
-
-- *Description*
-
-  Hostnames and device names used in AVD inventory should follow these naming conventions:
-
-  - Use only lowercase letters (a-z)
-  - Use hyphens (-) as word separators instead of underscores (_)
-  - Avoid using uppercase letters or underscores in hostnames
-
-  These conventions are enforced by pytest validation checks to ensure consistency across AVD deployments and prevent potential issues with device configurations.
-
-- *Good Examples*
-
-  ```yaml
-  spine-1
-  leaf-2a
-  border-leaf-1
-  dc1-spine1
-  ```
-
-- *Bad Examples*
-
-  ```yaml
-  Spine_1         # Uses uppercase and underscore
-  LEAF_2A         # Uses uppercase and underscore
-  Border_Leaf_1   # Uses uppercase and underscore
-  DC1_SPINE1      # Uses underscore
-  ```
-
 ---
 
 ## AVD Plugins usage
@@ -314,4 +284,108 @@ See the menu on the left for Ansible Collection Plugins.
 
   {# Default test with a list of default options #}
   {{ vlan.name | arista.avd.default(default.vlan.name, 'test_vlan') }}
+  ```
+
+---
+
+## Molecule Test Scenarios
+
+Molecule test scenarios are used to validate AVD functionality. These scenarios must follow specific naming and organizational conventions to ensure consistency and maintainability.
+
+### Device naming conventions
+
+- *Description*
+
+  Device names (hostnames) used in Molecule test scenarios must follow these naming conventions:
+
+  - Use only lowercase letters (a-z), numbers (0-9), and periods (.)
+  - Use hyphens (-) as word separators instead of underscores (_)
+  - Avoid using uppercase letters or underscores in device names
+  - Device names should be naturally sortable when appropriate
+
+  These conventions are enforced by pytest validation checks (`test_host_naming.py`) to ensure consistency across all Molecule scenarios and prevent potential issues with device configurations.
+
+- *Good Examples*
+
+  ```yaml
+  spine-1
+  leaf-2a
+  border-leaf-1
+  dc1-spine1
+  cv-pathfinder-edge2a
+  dc1.l2leaf5a  # Period is acceptable for hierarchical naming
+  ```
+
+- *Bad Examples*
+
+  ```yaml
+  Spine_1         # Uses uppercase and underscore
+  LEAF_2A         # Uses uppercase and underscore
+  Border_Leaf_1   # Uses uppercase and underscore
+  DC1_SPINE1      # Uses underscore
+  l3_edge         # Uses underscore
+  ```
+
+### Group naming conventions
+
+- *Description*
+
+  Group names used in Molecule test scenarios should follow these naming conventions:
+
+  - Use uppercase letters (A-Z), numbers (0-9), and underscores (_)
+  - Use underscores (_) as word separators
+  - Group names should be descriptive and indicate their purpose
+  - Maintain consistency across related test scenarios
+
+- *Good Examples*
+
+  ```yaml
+  DC1_FABRIC
+  AUTO_BGP_ASN
+  EVPN_MULTICAST_TESTS
+  CV_PATHFINDER_TESTS
+  MLAG_OSPF_TESTS
+  UNDERLAY_MULTICAST_L3LEAFS
+  ```
+
+- *Bad Examples*
+
+  ```yaml
+  dc1-fabric           # Uses lowercase and hyphens
+  Auto_Bgp_Asn         # Uses mixed case
+  evpn-multicast-tests # Uses lowercase and hyphens
+  ```
+
+### Host sorting in inventory files
+
+- *Description*
+
+  Hosts in Molecule inventory files should be organized in a logical and consistent manner:
+
+  - Hosts within a group should be naturally sorted (alphanumeric order)
+  - Related hosts (e.g., MLAG pairs) should be grouped together
+  - Maintain alphabetical ordering where it improves readability
+
+- *Example*
+
+  ```yaml
+  all:
+    children:
+      DC1_FABRIC:
+        children:
+          DC1_SPINES:
+            hosts:
+              dc1-spine1:
+              dc1-spine2:
+              dc1-spine3:
+              dc1-spine4:
+          DC1_LEAFS:
+            children:
+              DC1_LEAF1:
+                hosts:
+                  dc1-leaf1a:
+              DC1_LEAF2:
+                hosts:
+                  dc1-leaf2a:
+                  dc1-leaf2b:
   ```

@@ -1,5 +1,5 @@
 ---
-# RD RT ADMIN SUBFIELD TESTS with inline Jinja
+# RD RT admin sub tests with inline Jinja
 type: l3leaf
 
 mgmt_gateway: 192.168.200.1
@@ -14,7 +14,7 @@ l3leaf:
       always_include_vrfs_in_tenants:
         - TENANT_WITH_VRFS_WITHOUT_SVIS
   nodes:
-    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF
+    - name: rd-rt-admin-subfield-l3leaf
       bgp_as: 65006
       id: 6
       mgmt_ip: 192.168.200.106/24
