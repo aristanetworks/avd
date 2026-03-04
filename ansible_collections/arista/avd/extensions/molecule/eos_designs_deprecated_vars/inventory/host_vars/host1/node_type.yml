@@ -47,9 +47,6 @@ l3leaf:
 # Used by source-interfaces test: Testing that the generated source interfaces do not contain the VRF if VRF "default"
 mgmt_interface_vrf: default
 
-avd_7_behaviors:
-  # Test for new behaviour of IP RADIUS server commands
-  ip_radius_source_interface_setting: true
 aaa_settings:
   radius:
     servers:

@@ -4,6 +4,19 @@ Arista.Avd Release Notes
 
 .. contents:: Topics
 
+v6.0.1
+======
+
+Release Summary
+---------------
+
+Release 6.0.1 - See documentation on avd.arista.com for details.
+
+Minor Changes
+-------------
+
+- Bump: grpclib>=0.4.8 (#6590) by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/6605
+
 v6.0.0
 ======
 

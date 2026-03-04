@@ -15,9 +15,9 @@ l3leaf:
     - group: MLAG_IPV6
       bgp_as: 65001
       nodes:
-        - name: MLAG_IPV6_L3LEAF1A
+        - name: mlag-ipv6-l3leaf1a
           id: 3
           mgmt_ip: 192.168.201.116/24
-        - name: MLAG_IPV6_L3LEAF1B
+        - name: mlag-ipv6-l3leaf1b
           id: 4
           mgmt_ip: 192.168.201.117/24

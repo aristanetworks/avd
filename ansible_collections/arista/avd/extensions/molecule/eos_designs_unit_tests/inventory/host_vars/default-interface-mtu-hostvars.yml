@@ -1,0 +1,7 @@
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: default-interface-mtu-hostvars
+
+default_interface_mtu: 1234

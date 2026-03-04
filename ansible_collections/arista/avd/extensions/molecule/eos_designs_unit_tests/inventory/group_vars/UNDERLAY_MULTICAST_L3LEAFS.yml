@@ -14,7 +14,7 @@ l3leaf:
     loopback_ipv4_offset: 2
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     uplink_interfaces: [Ethernet1, Ethernet2]
-    uplink_switches: ["UNDERLAY-MULTICAST-SPINE1", "UNDERLAY-MULTICAST-SPINE2"]
+    uplink_switches: ["underlay-multicast-spine1", "underlay-multicast-spine2"]
     uplink_ipv4_pool: 172.31.255.0/24
     mlag_interfaces: [Ethernet3, Ethernet4]
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
@@ -28,12 +28,12 @@ l3leaf:
     - group: DC1_LEAF1
       bgp_as: 65101
       nodes:
-        - name: UNDERLAY-MULTICAST-L3LEAF1A
+        - name: underlay-multicast-l3leaf1a
           id: 1
           mgmt_ip: 192.168.200.105/24
           uplink_switch_interfaces: [Ethernet1, Ethernet1]
         # Tested from host_vars
-        - name: UNDERLAY-MULTICAST-L3LEAF1B
+        - name: underlay-multicast-l3leaf1b
           # [...] defined in host_vars
           # Testing that node variables override global variables
 
@@ -47,7 +47,7 @@ l3leaf:
       bgp_as: 65102
       mlag_peer_l3_vlan: 4094
       nodes:
-        - name: UNDERLAY-MULTICAST-L3LEAF2A
+        - name: underlay-multicast-l3leaf2a
           id: 3
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: [Ethernet3, Ethernet3]
@@ -57,7 +57,7 @@ l3leaf:
               uplinks: true
             static:
               uplink_interfaces: [Ethernet1]
-        - name: UNDERLAY-MULTICAST-L3LEAF2B
+        - name: underlay-multicast-l3leaf2b
           id: 4
           mgmt_ip: 192.168.200.108/24
           uplink_switch_interfaces: [Ethernet4, Ethernet4]
@@ -85,11 +85,11 @@ l3leaf:
         static:
           uplinks: false
       nodes:
-        - name: UNDERLAY-MULTICAST-L3LEAF3A
+        - name: underlay-multicast-l3leaf3a
           id: 5
           mgmt_ip: 192.168.200.109/24
           uplink_switch_interfaces: [Ethernet5, Ethernet5]
-        - name: UNDERLAY-MULTICAST-L3LEAF3B
+        - name: underlay-multicast-l3leaf3b
           id: 6
           mgmt_ip: 192.168.200.10/24
           uplink_switch_interfaces: [Ethernet6, Ethernet6]
