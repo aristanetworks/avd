@@ -14,23 +14,23 @@ underlay_multicast_rps:
   - rp: 192.168.200.3
     access_list_name: RP_ACL_3
     nodes:
-      - name: UNDERLAY-MULTICAST-L3LEAF1A
+      - name: underlay-multicast-l3leaf1a
         loopback_number: 3
   - rp: 192.168.200.4
     groups:
       - 239.255.4.0/24
     access_list_name: RP_ACL_4
     nodes:
-      - name: UNDERLAY-MULTICAST-L3LEAF1A
+      - name: underlay-multicast-l3leaf1a
         loopback_number: 4
-      - name: UNDERLAY-MULTICAST-L3LEAF1B
+      - name: underlay-multicast-l3leaf1b
         loopback_number: 4
   - rp: 192.168.200.5
     groups:
       - 239.255.5.0/24
     access_list_name: RP_ACL_5
     nodes:
-      - name: UNDERLAY-MULTICAST-L3LEAF2A
+      - name: underlay-multicast-l3leaf2a
         loopback_number: 5
-      - name: UNDERLAY-MULTICAST-L3LEAF2B
+      - name: underlay-multicast-l3leaf2b
         loopback_number: 5
