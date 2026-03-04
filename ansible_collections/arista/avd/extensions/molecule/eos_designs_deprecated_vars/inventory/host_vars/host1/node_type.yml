@@ -58,6 +58,14 @@ aaa_settings:
         groups:
           - RADIUS1
 
+    vrfs:
+      - name: default
+        source_interface: Vlan123
+      - name: MGMT
+        source_interface: Vlan125
+      - name: MGMT1
+        source_interface: Vlan125
+
   tacacs:
     servers:
       - host: 10.10.10.11

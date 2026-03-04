@@ -61,6 +61,13 @@ ethernet_interfaces:
 hostname: host1
 ip_igmp_snooping:
   globally_enabled: true
+ip_radius_source_interfaces:
+- name: Vlan123
+  vrf: default
+- name: Vlan125
+  vrf: MGMT1
+- name: Vlan125
+  vrf: MGMT
 ip_routing: true
 ip_tacacs_source_interfaces:
 - name: Vlan123
