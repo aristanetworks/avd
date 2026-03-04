@@ -138,8 +138,20 @@ ethernet_interfaces:
     peer_type: other
   switchport:
     enabled: false
+- name: ethernet7
+  description: P2P_peer-ipv6_ethernet1
+  shutdown: false
+  mtu: 9214
+  ipv6_address: 2001:db8:1000::/127
+  metadata:
+    peer: peer-ipv6
+    peer_interface: ethernet1
+    peer_type: other
+  switchport:
+    enabled: false
 hostname: l3-edge-isis
 ip_routing: true
+ipv6_unicast_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID

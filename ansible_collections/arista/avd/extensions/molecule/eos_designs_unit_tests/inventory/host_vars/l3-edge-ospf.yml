@@ -27,6 +27,8 @@ l3_edge:
   p2p_links_ip_pools:
     - name: pool1
       ipv4_pool: 192.168.0.0/24
+    - name: ipv6_only_pool
+      ipv6_pool: 2001:db8:2000::/64
 
   p2p_links:
       # P2P link without routing. Settings set via profile
@@ -51,4 +53,12 @@ l3_edge:
       interfaces: [ethernet4, ethernet4]
       ip_pool: pool1
       id: 4
+      include_in_underlay_protocol: true
+
+    # IPv6-only link with OSPF underlay.
+    # Expects: No OSPF config (IPv6-only skips underlay), interface has IPv6 only, ipv6_unicast_routing enabled.
+    - nodes: [l3-edge-ospf, peer-ipv6]
+      interfaces: [ethernet5, ethernet1]
+      ip_pool: ipv6_only_pool
+      id: 1
       include_in_underlay_protocol: true

@@ -136,11 +136,17 @@ vlan internal order ascending range 1006 1199
 
 *Inherited from Port-Channel Interface
 
+##### IPv4
+
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Ethernet4 | P2P_SITE2-LSR1_Ethernet4 | - | 100.64.48.13/31 | default | 9178 | False | - | - |
+
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet4 | P2P_SITE2-LSR1_Ethernet4 | - | 2001:db8:64:50::d/127 | default | 9178 | False | - | - | - | - |
+| Ethernet4 | P2P_SITE2-LSR1_Ethernet4 | - | - | default | 9178 | False | - | - | - | - |
 
 ##### ISIS
 
@@ -158,8 +164,8 @@ interface Ethernet4
    mtu 9178
    speed forced 40gfull
    no switchport
+   ip address 100.64.48.13/31
    ipv6 enable
-   ipv6 address 2001:db8:64:50::d/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip

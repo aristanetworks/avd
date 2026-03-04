@@ -282,14 +282,6 @@ class UtilsMixin(Protocol):
             interface.ip_address = p2p_link_data["ip"]
 
         if p2p_link_data["ipv6"]:
-            # Raise an error if underlay_ipv6 is explicitly set to false but IPv6 is used on p2p_links.
-            if self.inputs._get_defined_attr("underlay_ipv6") is False:
-                msg = (
-                    f"IPv6 addressing is configured on {self.data_model}.p2p_links but 'underlay_ipv6' is set to 'false'. "
-                    "Either remove IPv6 addressing from p2p_links or set 'underlay_ipv6: true'."
-                )
-                raise AristaAvdInvalidInputsError(msg)
-
             interface.ipv6_address = p2p_link_data["ipv6"]
             # Enable IPv6 unicast routing when IPv6 addresses are configured on p2p_links.
             self.structured_config.ipv6_unicast_routing = True

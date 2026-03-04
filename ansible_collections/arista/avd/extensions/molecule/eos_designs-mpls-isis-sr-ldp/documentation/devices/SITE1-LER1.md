@@ -204,8 +204,8 @@ vlan 2020
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_SITE1-LSR1_Ethernet1 | - | 2001:db8:64:48::/127 | default | 9178 | False | - | - | - | - |
-| Ethernet2 | P2P_SITE1-LER2_Ethernet2 | - | 2001:db8:64:48::4/127 | default | 9178 | False | - | - | - | - |
+| Ethernet1 | P2P_SITE1-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet2 | P2P_SITE1-LER2_Ethernet2 | - | - | default | 9178 | False | - | - | - | - |
 
 ##### ISIS
 
@@ -226,7 +226,6 @@ interface Ethernet1
    no switchport
    ip address 100.64.48.0/31
    ipv6 enable
-   ipv6 address 2001:db8:64:48::/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -248,7 +247,6 @@ interface Ethernet2
    no switchport
    ip address 100.64.48.4/31
    ipv6 enable
-   ipv6 address 2001:db8:64:48::4/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip

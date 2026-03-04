@@ -257,11 +257,13 @@ ethernet_interfaces:
     peer_type: core_router
 hostname: core-2-ospf-ldp
 ip_routing: true
+ipv6_unicast_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
   ip_address: 10.0.0.2/32
+  ipv6_address: 2000:1234:ffff:ffff::2/128
   ospf_area: 0.0.0.0
   mpls:
     ldp:
@@ -399,6 +401,7 @@ ptp:
 router_general:
   router_id:
     ipv4: 10.0.0.2
+    ipv6: 2000:1234:ffff:ffff::2
 router_ospf:
   process_ids:
   - id: 101

@@ -4,5 +4,3 @@ bgp_mesh_pes: true
 
 # Test when evpn_overlay_bgp_rtc is true
 evpn_overlay_bgp_rtc: true
-
-underlay_ipv6: false

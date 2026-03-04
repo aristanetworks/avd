@@ -196,8 +196,8 @@ vlan 2020
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_SITE1-LSR2_Ethernet1 | - | 2001:db8:64:48:1234::4/127 | default | 9214 | False | - | - | - | - |
-| Ethernet2 | P2P_SITE1-LER1_Ethernet2 | - | 2001:db8:64:48::5/127 | default | 9178 | False | - | - | - | - |
+| Ethernet1 | P2P_SITE1-LSR2_Ethernet1 | - | - | default | 9214 | False | - | - | - | - |
+| Ethernet2 | P2P_SITE1-LER1_Ethernet2 | - | - | default | 9178 | False | - | - | - | - |
 
 ##### ISIS
 
@@ -218,7 +218,6 @@ interface Ethernet1
    no switchport
    ip address 100.64.48.2/31
    ipv6 enable
-   ipv6 address 2001:db8:64:48:1234::4/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -240,7 +239,6 @@ interface Ethernet2
    no switchport
    ip address 100.64.48.5/31
    ipv6 enable
-   ipv6 address 2001:db8:64:48::5/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -413,7 +411,7 @@ interface Port-Channel8.333
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | ROUTER_ID | default | - |
+| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::6/128 |
 
 ##### ISIS
 
@@ -429,8 +427,10 @@ interface Loopback0
    description ROUTER_ID
    no shutdown
    ip address 100.70.0.6/32
+   ipv6 address 2000:1234:ffff:ffff::6/128
    mpls ldp interface
    node-segment ipv4 index 206
+   node-segment ipv6 index 206
    isis enable CORE
    isis passive
 ```
@@ -570,13 +570,21 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 206 | - |
+| Loopback0 | 206 | 206 |
 
 #### ISIS IPv4 Address Family Summary
 
 | Settings | Value |
 | -------- | ----- |
 | IPv4 Address-family Enabled | True |
+| Maximum-paths | 4 |
+| TI-LFA Mode | link-protection |
+
+#### ISIS IPv6 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv6 Address-family Enabled | True |
 | Maximum-paths | 4 |
 | TI-LFA Mode | link-protection |
 
@@ -594,6 +602,10 @@ router isis CORE
    advertise passive-only
    !
    address-family ipv4 unicast
+      maximum-paths 4
+      fast-reroute ti-lfa mode link-protection
+   !
+   address-family ipv6 unicast
       maximum-paths 4
       fast-reroute ti-lfa mode link-protection
    !

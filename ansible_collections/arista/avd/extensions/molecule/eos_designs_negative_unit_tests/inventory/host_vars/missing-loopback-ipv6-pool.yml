@@ -1,7 +1,6 @@
 type: l3leaf
 
 underlay_ipv6: true
-underlay_routing_protocol: isis
 l3leaf:
   defaults:
     loopback_ipv4_pool: 192.168.255.0/24

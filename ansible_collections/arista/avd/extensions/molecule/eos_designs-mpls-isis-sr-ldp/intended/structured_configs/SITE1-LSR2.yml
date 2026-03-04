@@ -12,7 +12,6 @@ ethernet_interfaces:
   mtu: 9214
   ip_address: 100.64.48.3/31
   ipv6_enable: true
-  ipv6_address: 2001:db8:64:48:1234::5/127
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
@@ -42,9 +41,8 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 40gfull
   mtu: 9178
-  ip_address: 192.168.0.5/30
+  ip_address: 100.64.48.10/31
   ipv6_enable: true
-  ipv6_address: 2001:db8:64:48:1234::8/127
   isis_enable: CORE
   isis_metric: 60
   isis_network_point_to_point: true

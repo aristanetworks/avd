@@ -158,14 +158,9 @@ core_interfaces:
   p2p_links_ip_pools:
     - name: underlay_pool
       ipv4_pool: 100.64.48.0/24
-      ipv6_pool: 2001:db8:64:48::/64
     - name: underlay_pool_custom_mask
       ipv4_pool: 100.64.49.0/24
       prefix_size: 30
-      ipv6_pool: 2001:db8:64:49::/64
-      ipv6_prefix_size: 126
-    - name: underlay_pool_v6_only
-      ipv6_pool: 2001:db8:64:50::/64
   p2p_links_profiles:
     - name: default_bb_profile
       speed: "forced 40gfull"
@@ -195,7 +190,6 @@ core_interfaces:
       isis_hello_padding: false
       isis_circuit_type: level-1-2
       isis_metric: 50
-      ipv6_prefix: 2001:db8:64:48:1234::4/127
 
     - nodes: [ SITE1-LER1, SITE1-LER2 ]
       id: 3
@@ -210,40 +204,26 @@ core_interfaces:
       id: 4
       interfaces: [ Ethernet4, Ethernet4 ]
       profile: default_bb_profile
-      ipv6:
-        - 2001:db8:64:48:1234::6/127
-        - 2001:db8:64:48:1234::7/127
 
     - nodes: [ SITE1-LSR1, SITE2-LSR1 ]
       id: 5
       interfaces: [ Ethernet3, Ethernet3 ]
       profile: default_bb_profile
-      ip:
-        - 192.168.0.1/30
-        - 192.168.0.2/30
 
     - nodes: [ SITE1-LSR2, SITE2-LSR2 ]
       id: 6
       interfaces: [ Ethernet3, Ethernet3 ]
       profile: default_bb_profile
-      ip:
-        - 192.168.0.5/30
-        - 192.168.0.6/30
-      ipv6:
-        - 2001:db8:64:48:1234::8/127
-        - 2001:db8:64:48:1234::9/127
 
     - nodes: [ SITE2-LSR1, SITE2-RR1 ]
       id: 7
       interfaces: [ Ethernet4, Ethernet4 ]
       profile: default_bb_profile
-      ip_pool: underlay_pool_v6_only
 
     - nodes: [ SITE2-LSR1, SITE2-LER1 ]
       id: 8
       interfaces: [ Ethernet1, Ethernet1 ]
       profile: default_bb_profile
-      ip_pool: underlay_pool_v6_only
 
     - nodes: [ SITE2-LSR2, SITE2-LER1 ]
       id: 1

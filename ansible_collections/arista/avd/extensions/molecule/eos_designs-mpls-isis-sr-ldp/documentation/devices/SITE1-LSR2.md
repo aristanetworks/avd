@@ -138,14 +138,14 @@ vlan internal order ascending range 1006 1199
 | Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_SITE1-LER2_Ethernet1 | - | 100.64.48.3/31 | default | 9214 | False | - | - |
-| Ethernet3 | P2P_SITE2-LSR2_Ethernet3 | - | 192.168.0.5/30 | default | 9178 | False | - | - |
+| Ethernet3 | P2P_SITE2-LSR2_Ethernet3 | - | 100.64.48.10/31 | default | 9178 | False | - | - |
 
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_SITE1-LER2_Ethernet1 | - | 2001:db8:64:48:1234::5/127 | default | 9214 | False | - | - | - | - |
-| Ethernet3 | P2P_SITE2-LSR2_Ethernet3 | - | 2001:db8:64:48:1234::8/127 | default | 9178 | False | - | - | - | - |
+| Ethernet1 | P2P_SITE1-LER2_Ethernet1 | - | - | default | 9214 | False | - | - | - | - |
+| Ethernet3 | P2P_SITE2-LSR2_Ethernet3 | - | - | default | 9178 | False | - | - | - | - |
 
 ##### ISIS
 
@@ -166,7 +166,6 @@ interface Ethernet1
    no switchport
    ip address 100.64.48.3/31
    ipv6 enable
-   ipv6 address 2001:db8:64:48:1234::5/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -186,9 +185,8 @@ interface Ethernet3
    mtu 9178
    speed forced 40gfull
    no switchport
-   ip address 192.168.0.5/30
+   ip address 100.64.48.10/31
    ipv6 enable
-   ipv6 address 2001:db8:64:48:1234::8/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip

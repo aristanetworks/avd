@@ -62,12 +62,6 @@ core_router:
       id: 5
     - name: core-6-isis-ldp
       id: 6
-    - name: core-6-ebgp
-      id: 7
-      bgp_as: 65106
-    - name: core-7-ebgp
-      id: 8
-      bgp_as: 65107
 
 core_interfaces:
   p2p_links_ip_pools:
@@ -76,6 +70,11 @@ core_interfaces:
       ipv4_pool: 100.64.48.0-100.64.48.3, 100.64.48.4/30, 100.64.48.8-100.64.48.255
     - name: some_other_pool
       ipv4_pool: 100.123.123.0/24
+    - name: dual_stack_pool
+      ipv4_pool: 172.16.2.0/24
+      ipv6_pool: 2001:db8:64:48::/64
+    - name: ipv6_only_pool
+      ipv6_pool: 2001:db8:64:ff::/64
   p2p_links_profiles:
     - name: isis_bb_profile
       speed: "forced 1000full"
@@ -275,6 +274,21 @@ core_interfaces:
       ethernet_structured_config:
         description: Description set via ethernet_structured_config(core_interfaces)
 
+    # Dual-stack link (IPv4 + IPv6) from pool with ISIS underlay.
+    # Expects: ISIS config for IPv4, interface has both IPv4 and IPv6 addresses.
+    - nodes: [core-1-isis-sr-ldp, core-5-isis-sr-ldp]
+      id: 15
+      interfaces: [Ethernet26, Ethernet26]
+      ip_pool: dual_stack_pool
+
+    # IPv6-only link from pool with ISIS underlay.
+    # Expects: No ISIS config (IPv6-only skips underlay), interface has IPv6 only, ipv6_unicast_routing enabled.
+    - nodes: [core-1-isis-sr-ldp, core-5-isis-sr-ldp]
+      id: 16
+      interfaces: [Ethernet27, Ethernet27]
+      ip_pool: ipv6_only_pool
+      include_in_underlay_protocol: true
+
 l3_edge:
   p2p_links_ip_pools:
     - name: pool_default_mask
@@ -282,9 +296,6 @@ l3_edge:
     - name: pool_29_mask
       ipv4_pool: 172.16.1.0/24
       prefix_size: 29
-    - name: dual_stack_pool
-      ipv4_pool: 172.16.2.0/24
-      ipv6_pool: 2001:db8:64:48::/64
   p2p_links:
     # P2P link with mpls_ip and mpls_ldp set to false.
     - nodes: [core-1-isis-sr-ldp, peer2]
@@ -312,22 +323,3 @@ l3_edge:
       include_in_underlay_protocol: false
       ip_pool: pool_29_mask
       id: 2
-    - nodes: [core-6-ebgp, core-7-ebgp]
-      interfaces: [Ethernet1, Ethernet1]
-      id: 1
-      ip_pool: dual_stack_pool
-      as: [65106, 65107]
-    - nodes: [core-6-ebgp, core-7-ebgp]
-      interfaces: [Ethernet2, Ethernet2]
-      id: 1
-      ipv6_prefix: 2001:db8:64:1234::/127
-      as: [65106, 65107]
-      subnet: 172.16.3.0/31
-    - nodes: [core-6-ebgp, core-7-ebgp]
-      interfaces: [Ethernet3, Ethernet3]
-      id: 1
-      ipv6:
-        - 2001:db8:64:1234::2/127
-        - 2001:db8:64:1234::3/127
-      as: [65106, 65107]
-      subnet: 172.16.3.2/31

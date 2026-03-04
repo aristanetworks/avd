@@ -138,7 +138,7 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Ethernet3 | P2P_SITE1-LSR2_Ethernet3 | - | 192.168.0.6/30 | default | 9178 | False | - | - |
+| Ethernet3 | P2P_SITE1-LSR2_Ethernet3 | - | 100.64.48.11/31 | default | 9178 | False | - | - |
 | Ethernet12 | P2P_SITE2-LER1_Ethernet11 | 12 | *100.64.49.1/30 | *default | *9178 | *False | *- | *- |
 | Ethernet13 | P2P_SITE2-LER1_Ethernet12 | 12 | *100.64.49.1/30 | *default | *9178 | *False | *- | *- |
 | Ethernet14 | P2P_SITE2-LER1_Ethernet13 | 110 | *100.64.49.5/30 | *default | *9178 | *False | *- | *- |
@@ -150,11 +150,11 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet3 | P2P_SITE1-LSR2_Ethernet3 | - | 2001:db8:64:48:1234::9/127 | default | 9178 | False | - | - | - | - |
-| Ethernet12 | P2P_SITE2-LER1_Ethernet11 | 12 | *2001:db8:64:49::1/126 | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet13 | P2P_SITE2-LER1_Ethernet12 | 12 | *2001:db8:64:49::1/126 | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet14 | P2P_SITE2-LER1_Ethernet13 | 110 | *2001:db8:64:49::5/126 | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet15 | P2P_SITE2-LER1_Ethernet14 | 110 | *2001:db8:64:49::5/126 | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet3 | P2P_SITE1-LSR2_Ethernet3 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet12 | P2P_SITE2-LER1_Ethernet11 | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet13 | P2P_SITE2-LER1_Ethernet12 | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet14 | P2P_SITE2-LER1_Ethernet13 | 110 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet15 | P2P_SITE2-LER1_Ethernet14 | 110 | *- | *default | *9178 | *False | *- | *- | *- | *- |
 
 *Inherited from Port-Channel Interface
 
@@ -180,9 +180,8 @@ interface Ethernet3
    mtu 9178
    speed forced 40gfull
    no switchport
-   ip address 192.168.0.6/30
+   ip address 100.64.48.11/31
    ipv6 enable
-   ipv6 address 2001:db8:64:48:1234::9/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -237,13 +236,6 @@ interface Ethernet15
 | Port-Channel12 | P2P_SITE2-LER1_Port-Channel11 | - | 100.64.49.1/30 | default | 9178 | False | - | - |
 | Port-Channel110 | P2P_SITE2-LER1_Port-Channel220 | - | 100.64.49.5/30 | default | 9178 | False | - | - |
 
-##### IPv6
-
-| Interface | Description | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Port-Channel12 | P2P_SITE2-LER1_Port-Channel11 | - | 2001:db8:64:49::1/126 | default | 9178 | False | - | - | - | - |
-| Port-Channel110 | P2P_SITE2-LER1_Port-Channel220 | - | 2001:db8:64:49::5/126 | default | 9178 | False | - | - | - | - |
-
 ##### ISIS
 
 | Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
@@ -262,7 +254,6 @@ interface Port-Channel12
    no switchport
    ip address 100.64.49.1/30
    ipv6 enable
-   ipv6 address 2001:db8:64:49::1/126
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -283,7 +274,6 @@ interface Port-Channel110
    no switchport
    ip address 100.64.49.5/30
    ipv6 enable
-   ipv6 address 2001:db8:64:49::5/126
    mpls ldp igp sync
    mpls ldp interface
    mpls ip

@@ -137,15 +137,17 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Ethernet3 | P2P_SITE1-LSR1_Ethernet3 | - | 192.168.0.2/30 | default | 9178 | False | - | - |
+| Ethernet1 | P2P_SITE2-LER1_Ethernet1 | - | 100.64.48.14/31 | default | 9178 | False | - | - |
+| Ethernet3 | P2P_SITE1-LSR1_Ethernet3 | - | 100.64.48.9/31 | default | 9178 | False | - | - |
+| Ethernet4 | P2P_SITE2-RR1_Ethernet4 | - | 100.64.48.12/31 | default | 9178 | False | - | - |
 
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_SITE2-LER1_Ethernet1 | - | 2001:db8:64:50::e/127 | default | 9178 | False | - | - | - | - |
-| Ethernet3 | P2P_SITE1-LSR1_Ethernet3 | - | 2001:db8:64:48::9/127 | default | 9178 | False | - | - | - | - |
-| Ethernet4 | P2P_SITE2-RR1_Ethernet4 | - | 2001:db8:64:50::c/127 | default | 9178 | False | - | - | - | - |
+| Ethernet1 | P2P_SITE2-LER1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet3 | P2P_SITE1-LSR1_Ethernet3 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet4 | P2P_SITE2-RR1_Ethernet4 | - | - | default | 9178 | False | - | - | - | - |
 
 ##### ISIS
 
@@ -165,8 +167,8 @@ interface Ethernet1
    mtu 9178
    speed forced 40gfull
    no switchport
+   ip address 100.64.48.14/31
    ipv6 enable
-   ipv6 address 2001:db8:64:50::e/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -186,9 +188,8 @@ interface Ethernet3
    mtu 9178
    speed forced 40gfull
    no switchport
-   ip address 192.168.0.2/30
+   ip address 100.64.48.9/31
    ipv6 enable
-   ipv6 address 2001:db8:64:48::9/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
@@ -208,8 +209,8 @@ interface Ethernet4
    mtu 9178
    speed forced 40gfull
    no switchport
+   ip address 100.64.48.12/31
    ipv6 enable
-   ipv6 address 2001:db8:64:50::c/127
    mpls ldp igp sync
    mpls ldp interface
    mpls ip
