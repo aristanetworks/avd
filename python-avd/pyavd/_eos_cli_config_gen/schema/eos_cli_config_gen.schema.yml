@@ -18962,9 +18962,6 @@ keys:
                     keys:
                       address_family:
                         type: str
-                      domain_remote_route_target_import:
-                        type: str
-                        description: Only applicable if `address_family` is `evpn`.
                       route_targets:
                         type: list
                         items:
@@ -18998,9 +18995,6 @@ keys:
                     keys:
                       address_family:
                         type: str
-                      domain_remote_route_target_export:
-                        type: str
-                        description: Only applicable if `address_family` is `evpn`.
                       route_targets:
                         type: list
                         items:
@@ -19026,6 +19020,33 @@ keys:
 
                           Only applicable if `address_family` is one of `vpn-ipv4`
                           or `vpn-ipv6`.'
+                import_evpn_domains:
+                  type: list
+                  description: List of EVPN domains from which to import routes.
+                  items:
+                    type: dict
+                    keys:
+                      domain:
+                        type: str
+                        valid_values:
+                        - remote
+                        - all
+                      route_target:
+                        type: str
+                export_evpn_domains:
+                  type: list
+                  description: List of EVPN domains to which local routes should be
+                    exported.
+                  items:
+                    type: dict
+                    keys:
+                      domain:
+                        type: str
+                        valid_values:
+                        - remote
+                        - all
+                      route_target:
+                        type: str
             router_id:
               description: in IP address format A.B.C.D.
               type: str

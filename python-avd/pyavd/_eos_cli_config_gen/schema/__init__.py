@@ -50480,15 +50480,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {
                         "address_family": {"type": str},
-                        "domain_remote_route_target_import": {"type": str},
                         "route_targets": {"type": RouteTargets},
                         "route_map": {"type": str},
                         "rcf": {"type": str},
                         "vpn_route_filter_rcf": {"type": str},
                     }
                     address_family: str
-                    domain_remote_route_target_import: str | None
-                    """Only applicable if `address_family` is `evpn`."""
                     route_targets: RouteTargets
                     """Subclass of AvdList with `str` items."""
                     route_map: str | None
@@ -50514,7 +50511,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             address_family: str | UndefinedType = Undefined,
-                            domain_remote_route_target_import: str | None | UndefinedType = Undefined,
                             route_targets: RouteTargets | UndefinedType = Undefined,
                             route_map: str | None | UndefinedType = Undefined,
                             rcf: str | None | UndefinedType = Undefined,
@@ -50528,7 +50524,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 address_family: address_family
-                                domain_remote_route_target_import: Only applicable if `address_family` is `evpn`.
                                 route_targets: Subclass of AvdList with `str` items.
                                 route_map: Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.
                                 rcf:
@@ -50561,15 +50556,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {
                         "address_family": {"type": str},
-                        "domain_remote_route_target_export": {"type": str},
                         "route_targets": {"type": RouteTargets},
                         "route_map": {"type": str},
                         "rcf": {"type": str},
                         "vrf_route_filter_rcf": {"type": str},
                     }
                     address_family: str
-                    domain_remote_route_target_export: str | None
-                    """Only applicable if `address_family` is `evpn`."""
                     route_targets: RouteTargets
                     """Subclass of AvdList with `str` items."""
                     route_map: str | None
@@ -50595,7 +50587,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             address_family: str | UndefinedType = Undefined,
-                            domain_remote_route_target_export: str | None | UndefinedType = Undefined,
                             route_targets: RouteTargets | UndefinedType = Undefined,
                             route_map: str | None | UndefinedType = Undefined,
                             rcf: str | None | UndefinedType = Undefined,
@@ -50609,7 +50600,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 address_family: address_family
-                                domain_remote_route_target_export: Only applicable if `address_family` is `evpn`.
                                 route_targets: Subclass of AvdList with `str` items.
                                 route_map: Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`.
                                 rcf:
@@ -50632,17 +50622,99 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Export._item_type = ExportItem
 
-                _fields: ClassVar[dict] = {"field_import": {"type": Import}, "export": {"type": Export}}
+                class ImportEvpnDomainsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Domain: TypeAlias = Literal["remote", "all"]
+                    _fields: ClassVar[dict] = {"domain": {"type": str}, "route_target": {"type": str}}
+                    domain: Domain | None
+                    route_target: str | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            ImportEvpnDomainsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                domain: domain
+                                route_target: route_target
+
+                            """
+
+                class ImportEvpnDomains(AvdList[ImportEvpnDomainsItem]):
+                    """Subclass of AvdList with `ImportEvpnDomainsItem` items."""
+
+                ImportEvpnDomains._item_type = ImportEvpnDomainsItem
+
+                class ExportEvpnDomainsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Domain: TypeAlias = Literal["remote", "all"]
+                    _fields: ClassVar[dict] = {"domain": {"type": str}, "route_target": {"type": str}}
+                    domain: Domain | None
+                    route_target: str | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            ExportEvpnDomainsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                domain: domain
+                                route_target: route_target
+
+                            """
+
+                class ExportEvpnDomains(AvdList[ExportEvpnDomainsItem]):
+                    """Subclass of AvdList with `ExportEvpnDomainsItem` items."""
+
+                ExportEvpnDomains._item_type = ExportEvpnDomainsItem
+
+                _fields: ClassVar[dict] = {
+                    "field_import": {"type": Import},
+                    "export": {"type": Export},
+                    "import_evpn_domains": {"type": ImportEvpnDomains},
+                    "export_evpn_domains": {"type": ExportEvpnDomains},
+                }
                 _field_to_key_map: ClassVar[dict] = {"field_import": "import"}
                 _key_to_field_map: ClassVar[dict] = {"import": "field_import"}
                 field_import: Import
                 """Subclass of AvdIndexedList with `ImportItem` items. Primary key is `address_family` (`str`)."""
                 export: Export
                 """Subclass of AvdIndexedList with `ExportItem` items. Primary key is `address_family` (`str`)."""
+                import_evpn_domains: ImportEvpnDomains
+                """
+                List of EVPN domains from which to import routes.
+
+                Subclass of AvdList with `ImportEvpnDomainsItem`
+                items.
+                """
+                export_evpn_domains: ExportEvpnDomains
+                """
+                List of EVPN domains to which local routes should be exported.
+
+                Subclass of AvdList with
+                `ExportEvpnDomainsItem` items.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, field_import: Import | UndefinedType = Undefined, export: Export | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        field_import: Import | UndefinedType = Undefined,
+                        export: Export | UndefinedType = Undefined,
+                        import_evpn_domains: ImportEvpnDomains | UndefinedType = Undefined,
+                        export_evpn_domains: ExportEvpnDomains | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         RouteTargets.
 
@@ -50652,6 +50724,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             field_import: Subclass of AvdIndexedList with `ImportItem` items. Primary key is `address_family` (`str`).
                             export: Subclass of AvdIndexedList with `ExportItem` items. Primary key is `address_family` (`str`).
+                            import_evpn_domains:
+                               List of EVPN domains from which to import routes.
+
+                               Subclass of AvdList with `ImportEvpnDomainsItem`
+                               items.
+                            export_evpn_domains:
+                               List of EVPN domains to which local routes should be exported.
+
+                               Subclass of AvdList with
+                               `ExportEvpnDomainsItem` items.
 
                         """
 

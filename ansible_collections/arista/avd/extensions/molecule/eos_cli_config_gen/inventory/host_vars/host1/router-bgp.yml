@@ -2117,7 +2117,6 @@ router_bgp:
             route_targets:
               - "1:30001"
             route_map: RM-DENY-DEFAULT
-            domain_remote_route_target_import: "2:30005"
           - address_family: vpn-ipv4
             route_targets:
               - "1:30011"
@@ -2134,13 +2133,22 @@ router_bgp:
             route_targets:
               - "1:30001"
             rcf: RT_EXPORT_AF_RCF()
-            domain_remote_route_target_export: "2:30005"
           - address_family: vpn-ipv6
             route_targets:
               - "1:30011"
             rcf: RT_IMPORT_AF_RCF()
             route_map: RT_IMPORT_AF_RM
             vrf_route_filter_rcf: RT_IMPORT_AF_RCF_FILTER()
+        import_evpn_domains:
+          - domain: remote
+            route_target: 2:30005
+          - domain: all
+            route_target: 2:30006
+        export_evpn_domains:
+          - domain: remote
+            route_target: 2:40005
+          - domain: all
+            route_target: 2:40006
       redistribute:
         ospf:
           match_external:
