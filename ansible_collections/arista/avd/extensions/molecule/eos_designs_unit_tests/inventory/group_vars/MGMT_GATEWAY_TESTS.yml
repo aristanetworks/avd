@@ -4,7 +4,7 @@
 default_node_types:
   - node_type: l2leaf
     match_hostnames:
-      - "TEST-MGMT-GATEWAY-IN-NODE-GROUP"
+      - "test-mgmt-gateway-in-node-group"
 
 mgmt_gateway: 192.168.201.250
 ipv6_mgmt_gateway: 2000::1
@@ -16,7 +16,7 @@ l2leaf:
   node_groups:
     - group: MGMT_GATEWAY_TESTS
       nodes:
-        - name: TEST-MGMT-GATEWAY-IN-NODE-GROUP
+        - name: test-mgmt-gateway-in-node-group
           id: 3
           mgmt_ip: 192.168.201.202/24
           ipv6_mgmt_ip: 2001:db8::105/64
