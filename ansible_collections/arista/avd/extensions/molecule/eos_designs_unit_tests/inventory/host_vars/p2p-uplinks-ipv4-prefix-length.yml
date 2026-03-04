@@ -1,0 +1,15 @@
+fabric_ip_addressing:
+  p2p_uplinks:
+    ipv4_prefix_length: 30
+
+type: overlay-controller
+overlay_controller:
+  nodes:
+    - name: p2p-uplinks-ipv4-prefix-length
+      bgp_as: 65123
+      uplink_switches: [mlag-odd-id-l3leaf1a, mlag-odd-id-l3leaf1b]
+      uplink_switch_interfaces: [Ethernet10, Ethernet10]
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      loopback_ipv4_pool: 10.254.254.0/24
+      uplink_ipv4_pool: 10.254.255.0/24
+      id: 32

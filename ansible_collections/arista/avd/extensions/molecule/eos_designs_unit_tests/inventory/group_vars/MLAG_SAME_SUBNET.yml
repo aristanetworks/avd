@@ -17,19 +17,19 @@ l3leaf:
     - group: MLAG_SAME_SUBNET_L3LEAF1
       bgp_as: 923
       nodes:
-        - name: MLAG_SAME_SUBNET_L3LEAF1A
+        - name: mlag-same-subnet-l3leaf1a
           id: 0
           mgmt_ip: 192.168.201.116/24
-        - name: MLAG_SAME_SUBNET_L3LEAF1B
+        - name: mlag-same-subnet-l3leaf1b
           id: 1
           mgmt_ip: 192.168.201.117/24
     - group: MLAG_SAME_SUBNET_L3LEAF2
       bgp_as: 923
       nodes:
-        - name: MLAG_SAME_SUBNET_L3LEAF2A
+        - name: mlag-same-subnet-l3leaf2a
           id: 2
           mgmt_ip: 192.168.201.118/24
-        - name: MLAG_SAME_SUBNET_L3LEAF2B
+        - name: mlag-same-subnet-l3leaf2b
           id: 3
           mgmt_ip: 192.168.201.119/24
 tenants:
