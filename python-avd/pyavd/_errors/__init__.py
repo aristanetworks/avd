@@ -35,9 +35,9 @@ class AristaAvdInvalidInputsError(AristaAvdHostError):
 
 
 class AristaAvdMissingVariableError(AristaAvdHostError):
-    variable: str
+    variable: str | None
 
-    def __init__(self, variable: str, host: str = "") -> None:
+    def __init__(self, variable: str | None = None, host: str = "") -> None:
         """Fact host message is used only if host is set as well."""
         self.variable = variable
         message = f"'{variable}' is required but was not found."

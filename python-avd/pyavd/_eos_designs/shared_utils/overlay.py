@@ -181,7 +181,7 @@ class OverlayMixin(Protocol):
         # This condition is not expected to occur under normal circumstances, but is retained as a safeguard against unexpected behavior.
         if not peer_facts.vtep_ip:
             msg = "vtep_ip"
-            raise AristaAvdMissingVariableError(msg, host=self.wan_ha_peer)
+            raise AristaAvdMissingVariableError(msg, host=self.wan_ha_peer or "")
         return peer_facts.vtep_ip
 
     @cached_property
