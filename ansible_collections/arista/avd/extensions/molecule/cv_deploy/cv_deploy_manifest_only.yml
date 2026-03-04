@@ -220,3 +220,285 @@
               containers:
                 - name: "AVD-MANIFEST-ROOT"
                   tag_query: "dummy_name:dummy_val"
+
+        # TODO: Remove everything below once cv_deploy can handle complete removal of containers and configlets deployed using manifest approach
+        - name: "(ALWAYS) {{ test_id | upper }} Generate WS ID to cleanup assignment roots"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.set_fact:
+            cleanup_ws_id: "avd-cleanup-roots-workspace-{{ r }}-{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
+            clean_ws_build_request_id: "build-studio-roots-cleanup-ws-{{ r }}"
+            clean_ws_submit_request_id: "submit-studio-roots-cleanup-ws-{{ r }}"
+
+        - name: "(ALWAYS) {{ test_id | upper }} Create new workspace to clean up Manifest Root container and Assignment roots"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "key": {
+                  "workspaceId": "{{ cleanup_ws_id }}"
+                },
+                "request": "REQUEST_UNSPECIFIED",
+                "displayName": "{{ (cv_common_pattern + '_' + r + '_cleanup_roots') | upper }}",
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_cleanup_workspace_result
+          until: cvp_cleanup_workspace_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) {{ test_id | upper }} Fetch existing studio roots"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/studio/v1/Inputs/getsome
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "keys": [
+                  {
+                    "studioId": "studio-static-configlet",
+                    "workspaceId": "",
+                    "path": {
+                      "values": [
+                        "configletAssignmentRoots",
+                      ]
+                    }
+                  },
+                ]
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_fetch_studio_roots_result
+          until: cvp_fetch_studio_roots_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) {{ test_id | upper }} Parse current studio roots"
+          ansible.builtin.set_fact:
+            current_roots: "{{ cvp_fetch_studio_roots_result.json.result.value.inputs | from_json }}"
+
+        - name: "(ALWAYS) {{ test_id | upper }} Remove AVD-MANIFEST-ROOT from roots"
+          ansible.builtin.set_fact:
+            updated_roots: "{{ current_roots | reject('equalto', 'avd_3a4a3c55-8c4f-5a62-aae3-7d178ffe0286') | list }}"
+
+        - name: "(ALWAYS) {{ test_id | upper }} Debug updated studio roots"
+          ansible.builtin.debug:
+            msg: "{{ updated_roots | to_json }}"
+
+        - name: "(ALWAYS) {{ test_id | upper }} Remove root manifest assignment from studio roots"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/studio/v1/InputsConfig
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "key": {
+                  "studioId": "studio-static-configlet",
+                  "workspaceId": "{{ cleanup_ws_id }}",
+                  "path": {
+                    "values": [
+                      "configletAssignmentRoots",
+                    ]
+                  }
+                },
+                "inputs": "{{ updated_roots | to_json }}"
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_sync_studio_roots_result
+          until: cvp_sync_studio_roots_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) {{ test_id | upper }} Cleanup remaining AVD manifest root container"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/configlet/v1/ConfigletAssignmentConfig
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "key": {
+                  "workspaceId": "{{ cleanup_ws_id }}",
+                  "configletAssignmentId": "avd_3a4a3c55-8c4f-5a62-aae3-7d178ffe0286",
+                },
+                "remove": true,
+                "matchPolicy": 0,
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_remove_root_assignment_result
+          until: cvp_remove_root_assignment_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) {{ test_id | upper }} Build workspace to clean up Manifest Root container and Assignment roots"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "key": {
+                  "workspaceId": "{{ cleanup_ws_id }}"
+                },
+                "request": "REQUEST_START_BUILD",
+                "requestParams": {
+                  "requestId": "{{ clean_ws_build_request_id }}"
+                }
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_cleanup_workspace_build_result
+          until: cvp_cleanup_workspace_build_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) {{ test_id | upper }} Wait until workspace build completes"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/workspace/v1/Workspace/getsome
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "keys": [
+                  {
+                    "workspaceId": "{{ cleanup_ws_id }}"
+                  },
+                ],
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_cleanup_workspace_build_status_result
+          until:
+            - cvp_cleanup_workspace_build_status_result.status == 200
+            - >
+              cvp_cleanup_workspace_build_status_result.json.result.value.responses["values"][clean_ws_build_request_id].status | default("") ==
+              'RESPONSE_STATUS_SUCCESS'
+          retries: 10
+          delay: 5
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) {{ test_id | upper }} Submit workspace to clean up Manifest Root container and Assignment roots"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "key": {
+                  "workspaceId": "{{ cleanup_ws_id }}"
+                },
+                "request": "REQUEST_SUBMIT",
+                "requestParams": {
+                  "requestId": "{{ clean_ws_submit_request_id }}"
+                }
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_cleanup_workspace_submit_result
+          until: cvp_cleanup_workspace_submit_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) {{ test_id | upper }} Debug cvp_submit_ws"
+          ansible.builtin.debug:
+            msg: "{{ cvp_cleanup_workspace_submit_result }}"
