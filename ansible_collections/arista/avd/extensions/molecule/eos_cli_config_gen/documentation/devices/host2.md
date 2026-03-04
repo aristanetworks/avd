@@ -545,6 +545,10 @@ daemon TerminAttr
 | Sequence-numbers | false |
 | RFC5424 | False |
 
+| VRF | Source Interface |
+| --- | ---------------- |
+| - | Ethernet1 |
+
 **Syslog facility value:** syslog
 
 #### Logging Servers and Features Device Configuration
@@ -559,6 +563,7 @@ logging monitor debugging
 no logging synchronous
 logging format hostname ipv4
 logging facility syslog
+logging source-interface Ethernet1
 !
 logging event link-status global
 ```
@@ -1432,8 +1437,8 @@ no ip igmp snooping querier
 
 #### IP Router Multicast Summary
 
-- Multipathing deterministically by selecting the same-colored upstream routers.
-- Software forwarding by the Linux kernel
+- Multipathing operates deterministically by selecting the same-colored upstream routers.
+- IPv4 software forwarding is handled by the Linux kernel.
 
 #### Router Multicast Device Configuration
 
@@ -1765,7 +1770,6 @@ qos map cos 3 to traffic-class 3
 | errdisable | - | - | - | True |
 
 ```eos
-!
 priority-flow-control pause watchdog override action drop
 ```
 

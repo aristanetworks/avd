@@ -338,7 +338,7 @@ $defs:
           relaxed_validation: true
           documentation_options:
             hide_keys: true
-          description: Custom structured config for eos_cli_config_gen.
+          description: Custom structured config for the EOS Config schema.
           $ref: "eos_cli_config_gen#"
         raw_eos_cli:
           type: str

@@ -9,6 +9,6 @@ custom_spine:
     bgp_as: 65001
     loopback_ipv4_pool: 192.168.255.0/24
   nodes:
-    - name: CUSTOM-PYTHON_MODULES-SPINE1
+    - name: custom-python-modules-spine1
       id: 1
       mgmt_ip: 192.168.200.101/24

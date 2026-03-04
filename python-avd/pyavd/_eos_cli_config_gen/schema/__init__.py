@@ -9657,6 +9657,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         SpanningTreeGuard: TypeAlias = Literal["loop", "root", "disabled"]
         SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+        SpanningTreeLinkType: TypeAlias = Literal["shared", "point-to-point"]
 
         class PriorityFlowControl(AvdModel):
             """Subclass of AvdModel."""
@@ -12676,6 +12677,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "spanning_tree_bpduguard_rate_limit": {"type": SpanningTreeBpduguardRateLimit},
             "spanning_tree_guard": {"type": str},
             "spanning_tree_portfast": {"type": str},
+            "spanning_tree_link_type": {"type": str},
             "vmtracer": {"type": bool},
             "priority_flow_control": {"type": PriorityFlowControl},
             "bfd": {"type": Bfd},
@@ -12869,6 +12871,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         spanning_tree_guard: SpanningTreeGuard | None
         spanning_tree_portfast: SpanningTreePortfast | None
+        spanning_tree_link_type: SpanningTreeLinkType | None
         vmtracer: bool | None
         priority_flow_control: PriorityFlowControl
         """Subclass of AvdModel."""
@@ -13007,6 +13010,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 spanning_tree_bpduguard_rate_limit: SpanningTreeBpduguardRateLimit | UndefinedType = Undefined,
                 spanning_tree_guard: SpanningTreeGuard | None | UndefinedType = Undefined,
                 spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                spanning_tree_link_type: SpanningTreeLinkType | None | UndefinedType = Undefined,
                 vmtracer: bool | None | UndefinedType = Undefined,
                 priority_flow_control: PriorityFlowControl | UndefinedType = Undefined,
                 bfd: Bfd | UndefinedType = Undefined,
@@ -13139,6 +13143,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     spanning_tree_bpduguard_rate_limit: Subclass of AvdModel.
                     spanning_tree_guard: spanning_tree_guard
                     spanning_tree_portfast: spanning_tree_portfast
+                    spanning_tree_link_type: spanning_tree_link_type
                     vmtracer: vmtracer
                     priority_flow_control: Subclass of AvdModel.
                     bfd: Subclass of AvdModel.
@@ -17156,18 +17161,80 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class IpRadius(AvdModel):
+        """Subclass of AvdModel."""
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            source_interface: str
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        source_interface: source_interface
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"source_interface": {"type": str}, "vrfs": {"type": Vrfs}}
+        source_interface: str | None
+        """Define `source_interface` for VRF default."""
+        vrfs: Vrfs
+        """
+        Define `source interfaces` for any VRF other than default.
+
+        Subclass of AvdIndexedList with
+        `VrfsItem` items. Primary key is `name` (`str`).
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+                """
+                IpRadius.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    source_interface: Define `source_interface` for VRF default.
+                    vrfs:
+                       Define `source interfaces` for any VRF other than default.
+
+                       Subclass of AvdIndexedList with
+                       `VrfsItem` items. Primary key is `name` (`str`).
+
+                """
+
     class IpRadiusSourceInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-        name: str | None
+        name: str
         """Interface Name."""
         vrf: str | None
         """VRF Name."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                 """
                 IpRadiusSourceInterfacesItem.
 
@@ -17680,13 +17747,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-        name: str | None
+        name: str
         """Interface name."""
         vrf: str | None
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
+            def __init__(self, *, name: str | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
                 """
                 IpTacacsSourceInterfacesItem.
 
@@ -19934,11 +20001,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Hosts._item_type = HostsItem
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}, "hosts": {"type": Hosts}}
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}, "local_interface": {"type": str}, "hosts": {"type": Hosts}}
             name: str
             """VRF name."""
             source_interface: str | None
             """Source interface name."""
+            local_interface: str | None
+            """
+            Source Interface Name.
+            `logging vrf <vrf> source-interface <interface>` is deprecated in latest EOS
+            versions(4.35.1).
+            This key sets the new command `logging vrf <vrf> local-interface <interface>`.
+            `source_interface` takes precedence over `local_interface`.
+            """
             hosts: Hosts
             """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`)."""
 
@@ -19949,6 +20024,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     source_interface: str | None | UndefinedType = Undefined,
+                    local_interface: str | None | UndefinedType = Undefined,
                     hosts: Hosts | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -19960,6 +20036,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: VRF name.
                         source_interface: Source interface name.
+                        local_interface:
+                           Source Interface Name.
+                           `logging vrf <vrf> source-interface <interface>` is deprecated in latest EOS
+                           versions(4.35.1).
+                           This key sets the new command `logging vrf <vrf> local-interface <interface>`.
+                           `source_interface` takes precedence over `local_interface`.
                         hosts: Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`).
 
                     """
@@ -19984,11 +20066,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"name": {"type": str}, "action": {"type": str}}
                     name: str
                     """Match list."""
-                    action: Action | None
+                    action: Action
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, name: str | UndefinedType = Undefined, action: Action | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, name: str | UndefinedType = Undefined, action: Action | UndefinedType = Undefined) -> None:
                             """
                             MatchListsItem.
 
@@ -20134,7 +20216,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ]
             _fields: ClassVar[dict] = {"facility": {"type": str}, "severity": {"type": str}}
             facility: str
-            severity: Severity | None
+            severity: Severity
             """
             Severity of facility. Below are the supported severities.
             emergencies    System is unusable
@@ -20154,7 +20236,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, facility: str | UndefinedType = Undefined, severity: Severity | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, facility: str | UndefinedType = Undefined, severity: Severity | UndefinedType = Undefined) -> None:
                     """
                     LevelItem.
 
@@ -20198,6 +20280,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "format": {"type": Format},
             "facility": {"type": str},
             "source_interface": {"type": str},
+            "local_interface": {"type": str},
             "vrfs": {"type": Vrfs},
             "policy": {"type": Policy},
             "event": {"type": Event},
@@ -20220,6 +20303,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         facility: Facility | None
         source_interface: str | None
         """Source Interface Name."""
+        local_interface: str | None
+        """
+        Source Interface Name.
+        `logging source-interface <interface>` is deprecated in latest EOS
+        versions(4.35.1).
+        This key sets the new command `logging local-interface <interface>`.
+        `source_interface` takes precedence over `local_interface`.
+        """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         policy: Policy
@@ -20248,6 +20339,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 format: Format | UndefinedType = Undefined,
                 facility: Facility | None | UndefinedType = Undefined,
                 source_interface: str | None | UndefinedType = Undefined,
+                local_interface: str | None | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 policy: Policy | UndefinedType = Undefined,
                 event: Event | UndefinedType = Undefined,
@@ -20269,6 +20361,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     format: Subclass of AvdModel.
                     facility: facility
                     source_interface: Source Interface Name.
+                    local_interface:
+                       Source Interface Name.
+                       `logging source-interface <interface>` is deprecated in latest EOS
+                       versions(4.35.1).
+                       This key sets the new command `logging local-interface <interface>`.
+                       `source_interface` takes precedence over `local_interface`.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     policy: Subclass of AvdModel.
                     event: Subclass of AvdModel.
@@ -22455,6 +22553,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "gateway": {"type": str},
             "ipv6_gateway": {"type": str},
             "mac_address": {"type": str},
+            "dhcp_client_accept_default_route": {"type": bool},
             "lldp": {"type": Lldp},
             "redundancy": {"type": Redundancy},
             "eos_cli": {"type": str},
@@ -22485,6 +22584,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """IPv6 address of default gateway in management VRF."""
         mac_address: str | None
         """MAC address."""
+        dhcp_client_accept_default_route: bool | None
+        """
+        Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+        `dhcp`.
+        """
         lldp: Lldp
         """Subclass of AvdModel."""
         redundancy: Redundancy
@@ -22510,6 +22614,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 gateway: str | None | UndefinedType = Undefined,
                 ipv6_gateway: str | None | UndefinedType = Undefined,
                 mac_address: str | None | UndefinedType = Undefined,
+                dhcp_client_accept_default_route: bool | None | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
                 redundancy: Redundancy | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
@@ -22534,6 +22639,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     gateway: IPv4 address of default gateway in management VRF.
                     ipv6_gateway: IPv6 address of default gateway in management VRF.
                     mac_address: MAC address.
+                    dhcp_client_accept_default_route:
+                       Install default-route obtained via DHCP. This is only applicable when `ip_address` is configured as
+                       `dhcp`.
                     lldp: Subclass of AvdModel.
                     redundancy: Subclass of AvdModel.
                     eos_cli: Multiline EOS CLI rendered directly on the management interface in the final EOS configuration.
@@ -31947,6 +32055,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
         SpanningTreeGuard: TypeAlias = Literal["loop", "root", "disabled"]
         SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
+        SpanningTreeLinkType: TypeAlias = Literal["shared", "point-to-point"]
 
         class Ptp(AvdModel):
             """Subclass of AvdModel."""
@@ -34942,6 +35051,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "spanning_tree_bpduguard": {"type": str},
             "spanning_tree_guard": {"type": str},
             "spanning_tree_portfast": {"type": str},
+            "spanning_tree_link_type": {"type": str},
             "vmtracer": {"type": bool},
             "ptp": {"type": Ptp},
             "ip_address": {"type": str},
@@ -35066,6 +35176,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         spanning_tree_bpduguard: SpanningTreeBpduguard | None
         spanning_tree_guard: SpanningTreeGuard | None
         spanning_tree_portfast: SpanningTreePortfast | None
+        spanning_tree_link_type: SpanningTreeLinkType | None
         vmtracer: bool | None
         ptp: Ptp
         """Subclass of AvdModel."""
@@ -35195,6 +35306,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
                 spanning_tree_guard: SpanningTreeGuard | None | UndefinedType = Undefined,
                 spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
+                spanning_tree_link_type: SpanningTreeLinkType | None | UndefinedType = Undefined,
                 vmtracer: bool | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
@@ -35294,6 +35406,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     spanning_tree_bpduguard: spanning_tree_bpduguard
                     spanning_tree_guard: spanning_tree_guard
                     spanning_tree_portfast: spanning_tree_portfast
+                    spanning_tree_link_type: spanning_tree_link_type
                     vmtracer: vmtracer
                     ptp: Subclass of AvdModel.
                     ip_address: IPv4 address/mask or "dhcp".
@@ -43296,15 +43409,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NetworksItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                 prefix: str
                 """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                 route_map: str | None
                 """Route-map name."""
+                rcf: str | None
+                """
+                RCF name with parenthesis. Example "NETWORK-RCF()".
+                `route_map` and `rcf` are mutually exclusive.
+                `route_map` takes precedence.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | UndefinedType = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         NetworksItem.
 
@@ -43314,6 +43439,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                             route_map: Route-map name.
+                            rcf:
+                               RCF name with parenthesis. Example "NETWORK-RCF()".
+                               `route_map` and `rcf` are mutually exclusive.
+                               `route_map` takes precedence.
 
                         """
 
@@ -45611,15 +45740,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NetworksItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                 prefix: str
                 """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                 route_map: str | None
                 """Route-map name."""
+                rcf: str | None
+                """
+                RCF name with parenthesis. Example "NETWORK-RCF()".
+                `route_map` and `rcf` are mutually exclusive.
+                `route_map` takes precedence.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | UndefinedType = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         NetworksItem.
 
@@ -45629,6 +45770,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                             route_map: Route-map name.
+                            rcf:
+                               RCF name with parenthesis. Example "NETWORK-RCF()".
+                               `route_map` and `rcf` are mutually exclusive.
+                               `route_map` takes precedence.
 
                         """
 
@@ -46694,15 +46839,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class NetworksItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                 prefix: str
                 """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                 route_map: str | None
                 """Route-map name."""
+                rcf: str | None
+                """
+                RCF name with parenthesis. Example "NETWORK-RCF()".
+                `route_map` and `rcf` are mutually exclusive.
+                `route_map` takes precedence.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | UndefinedType = Undefined,
+                        route_map: str | None | UndefinedType = Undefined,
+                        rcf: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         NetworksItem.
 
@@ -46712,6 +46869,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                             route_map: Route-map name.
+                            rcf:
+                               RCF name with parenthesis. Example "NETWORK-RCF()".
+                               `route_map` and `rcf` are mutually exclusive.
+                               `route_map` takes precedence.
 
                         """
 
@@ -52395,14 +52556,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class NetworksItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                     prefix: str
                     """IPv4 prefix "A.B.C.D/E"."""
                     route_map: str | None
+                    rcf: str | None
+                    """
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive.
+                    `route_map` takes precedence.
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self,
+                            *,
+                            prefix: str | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                        ) -> None:
                             """
                             NetworksItem.
 
@@ -52412,6 +52585,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 prefix: IPv4 prefix "A.B.C.D/E".
                                 route_map: route_map
+                                rcf:
+                                   RCF name with parenthesis. Example "NETWORK-RCF()".
+                                   `route_map` and `rcf` are mutually exclusive.
+                                   `route_map` takes precedence.
 
                             """
 
@@ -53471,14 +53648,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class NetworksItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}}
+                    _fields: ClassVar[dict] = {"prefix": {"type": str}, "route_map": {"type": str}, "rcf": {"type": str}}
                     prefix: str
                     """IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
                     route_map: str | None
+                    rcf: str | None
+                    """
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive.
+                    `route_map` takes precedence.
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, prefix: str | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self,
+                            *,
+                            prefix: str | UndefinedType = Undefined,
+                            route_map: str | None | UndefinedType = Undefined,
+                            rcf: str | None | UndefinedType = Undefined,
+                        ) -> None:
                             """
                             NetworksItem.
 
@@ -53488,6 +53677,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 prefix: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                                 route_map: route_map
+                                rcf:
+                                   RCF name with parenthesis. Example "NETWORK-RCF()".
+                                   `route_map` and `rcf` are mutually exclusive.
+                                   `route_map` takes precedence.
 
                             """
 
@@ -58951,13 +59144,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Ipv6(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"activity_polling_interval": {"type": int}}
+            SoftwareForwarding: TypeAlias = Literal["kernel", "sfe"]
+            _fields: ClassVar[dict] = {"activity_polling_interval": {"type": int}, "routing": {"type": bool}, "software_forwarding": {"type": str}}
             activity_polling_interval: int | None
             """MFIB entry activity polling interval."""
+            routing: bool | None
+            software_forwarding: SoftwareForwarding | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, activity_polling_interval: int | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    activity_polling_interval: int | None | UndefinedType = Undefined,
+                    routing: bool | None | UndefinedType = Undefined,
+                    software_forwarding: SoftwareForwarding | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     Ipv6.
 
@@ -58966,6 +59168,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         activity_polling_interval: MFIB entry activity polling interval.
+                        routing: routing
+                        software_forwarding: software_forwarding
 
                     """
 
@@ -62184,7 +62388,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enable_default": {"type": bool}, "unmodified": {"type": bool}}
-                enable_default: bool | None
+                enable_default: bool
                 """Enable egress sFlow by default."""
                 unmodified: bool | None
                 """
@@ -62194,7 +62398,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enable_default: bool | None | UndefinedType = Undefined, unmodified: bool | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, enable_default: bool | UndefinedType = Undefined, unmodified: bool | None | UndefinedType = Undefined) -> None:
                         """
                         Egress.
 
@@ -69449,8 +69653,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "application_traffic_recognition": {"type": ApplicationTrafficRecognition},
         "arp": {"type": Arp},
         "as_path": {"type": AsPath},
-        "avd_eos_cli_config_gen_validate_inputs_batch_size": {"type": int, "default": 10},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
+        "avd_vault_id": {"type": str},
         "banners": {"type": Banners},
         "bgp_groups": {"type": BgpGroups},
         "boot": {"type": Boot},
@@ -69474,6 +69678,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "eos_cli": {"type": str},
         "eos_cli_config_gen_configuration": {"type": EosCliConfigGenConfiguration},
         "eos_cli_config_gen_documentation": {"type": EosCliConfigGenDocumentation},
+        "eos_cli_config_gen_keep_tmp_files": {"type": bool, "default": False},
+        "eos_cli_config_gen_tmp_dir": {"type": str},
+        "eos_cli_config_gen_validate_inputs_batch_size": {"type": int, "default": 10},
         "errdisable": {"type": Errdisable},
         "ethernet_interfaces": {"type": EthernetInterfaces},
         "event_handlers": {"type": EventHandlers},
@@ -69503,6 +69710,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_name_server_groups": {"type": IpNameServerGroups},
         "ip_nat": {"type": IpNat},
         "ip_ospf_router_id_output_format_hostnames": {"type": bool},
+        "ip_radius": {"type": IpRadius},
         "ip_radius_source_interfaces": {"type": IpRadiusSourceInterfaces},
         "ip_routing": {"type": bool},
         "ip_routing_ipv6_interfaces": {"type": bool},
@@ -69673,19 +69881,25 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     as_path: AsPath
     """Subclass of AvdModel."""
-    avd_eos_cli_config_gen_validate_inputs_batch_size: int
-    """
-    The number of hosts to process in each batch when validating inputs.
-    Depending on your inventory
-    size and the available resources, you may want to adjust this number.
-
-    Default value: `10`
-    """
     avd_structured_config_file_format: AvdStructuredConfigFileFormat
     """
     The file format to use when loading structured configuration files.
 
     Default value: `"yml"`
+    """
+    avd_vault_id: str | None
+    """
+    Vault ID used for encrypting temporary files generated by the role.
+    When Ansible Vault is not
+    configured, this parameter has no effect and files are written as plain JSON.
+    When Ansible Vault is
+    configured, AVD encrypts files containing templated and validated data
+    to prevent sensitive
+    information from being exposed in the temporary directories.
+      * When `avd_vault_id` is not
+    specified, AVD uses the *first* Vault ID in the list for encryption.
+      * When `avd_vault_id` is
+    specified, AVD uses the specified Vault ID for encryption.
     """
     banners: Banners
     """Subclass of AvdModel."""
@@ -69801,6 +70015,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     eos_cli_config_gen_documentation: EosCliConfigGenDocumentation
     """Subclass of AvdModel."""
+    eos_cli_config_gen_keep_tmp_files: bool
+    """
+    Avoid deleting temporary files.
+    This allows for inspecting templated inputs and validated inputs
+    used internally by AVD plugins.
+    When an Ansible Vault secret is set, temporary files holding input
+    variables are encrypted. Decryption is required to inspect them.
+
+    Default value: `False`
+    """
+    eos_cli_config_gen_tmp_dir: str | None
+    """
+    Path for temporary files created by the 'eos_cli_config_gen' role.
+    Contains templated inputs and
+    validated inputs used internally by AVD plugins.
+    Defaults to 'intended/tmp_eos_cli_config_gen'.
+    The
+    temporary directory is cleaned up at the end of the 'eos_cli_config_gen' role.
+    """
+    eos_cli_config_gen_validate_inputs_batch_size: int
+    """
+    The number of hosts to process in each batch when validating inputs.
+    Depending on your inventory
+    size and the available resources, you may want to adjust this number.
+
+    Default value: `10`
+    """
     errdisable: Errdisable
     """Subclass of AvdModel."""
     ethernet_interfaces: EthernetInterfaces
@@ -69877,6 +70118,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     ip_ospf_router_id_output_format_hostnames: bool | None
     """Display DNS-resolved router names for OSPF router IDs."""
+    ip_radius: IpRadius
+    """Subclass of AvdModel."""
     ip_radius_source_interfaces: IpRadiusSourceInterfaces
     """Subclass of AvdList with `IpRadiusSourceInterfacesItem` items."""
     ip_routing: bool | None
@@ -70227,8 +70470,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             application_traffic_recognition: ApplicationTrafficRecognition | UndefinedType = Undefined,
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
-            avd_eos_cli_config_gen_validate_inputs_batch_size: int | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
+            avd_vault_id: str | None | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
@@ -70252,6 +70495,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             eos_cli: str | None | UndefinedType = Undefined,
             eos_cli_config_gen_configuration: EosCliConfigGenConfiguration | UndefinedType = Undefined,
             eos_cli_config_gen_documentation: EosCliConfigGenDocumentation | UndefinedType = Undefined,
+            eos_cli_config_gen_keep_tmp_files: bool | UndefinedType = Undefined,
+            eos_cli_config_gen_tmp_dir: str | None | UndefinedType = Undefined,
+            eos_cli_config_gen_validate_inputs_batch_size: int | UndefinedType = Undefined,
             errdisable: Errdisable | UndefinedType = Undefined,
             ethernet_interfaces: EthernetInterfaces | UndefinedType = Undefined,
             event_handlers: EventHandlers | UndefinedType = Undefined,
@@ -70281,6 +70527,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_name_server_groups: IpNameServerGroups | UndefinedType = Undefined,
             ip_nat: IpNat | UndefinedType = Undefined,
             ip_ospf_router_id_output_format_hostnames: bool | None | UndefinedType = Undefined,
+            ip_radius: IpRadius | UndefinedType = Undefined,
             ip_radius_source_interfaces: IpRadiusSourceInterfaces | UndefinedType = Undefined,
             ip_routing: bool | None | UndefinedType = Undefined,
             ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
@@ -70443,11 +70690,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 arp: Subclass of AvdModel.
                 as_path: Subclass of AvdModel.
-                avd_eos_cli_config_gen_validate_inputs_batch_size:
-                   The number of hosts to process in each batch when validating inputs.
-                   Depending on your inventory
-                   size and the available resources, you may want to adjust this number.
                 avd_structured_config_file_format: The file format to use when loading structured configuration files.
+                avd_vault_id:
+                   Vault ID used for encrypting temporary files generated by the role.
+                   When Ansible Vault is not
+                   configured, this parameter has no effect and files are written as plain JSON.
+                   When Ansible Vault is
+                   configured, AVD encrypts files containing templated and validated data
+                   to prevent sensitive
+                   information from being exposed in the temporary directories.
+                     * When `avd_vault_id` is not
+                   specified, AVD uses the *first* Vault ID in the list for encryption.
+                     * When `avd_vault_id` is
+                   specified, AVD uses the specified Vault ID for encryption.
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
                 boot:
@@ -70527,6 +70782,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 eos_cli: Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration.
                 eos_cli_config_gen_configuration: Subclass of AvdModel.
                 eos_cli_config_gen_documentation: Subclass of AvdModel.
+                eos_cli_config_gen_keep_tmp_files:
+                   Avoid deleting temporary files.
+                   This allows for inspecting templated inputs and validated inputs
+                   used internally by AVD plugins.
+                   When an Ansible Vault secret is set, temporary files holding input
+                   variables are encrypted. Decryption is required to inspect them.
+                eos_cli_config_gen_tmp_dir:
+                   Path for temporary files created by the 'eos_cli_config_gen' role.
+                   Contains templated inputs and
+                   validated inputs used internally by AVD plugins.
+                   Defaults to 'intended/tmp_eos_cli_config_gen'.
+                   The
+                   temporary directory is cleaned up at the end of the 'eos_cli_config_gen' role.
+                eos_cli_config_gen_validate_inputs_batch_size:
+                   The number of hosts to process in each batch when validating inputs.
+                   Depending on your inventory
+                   size and the available resources, you may want to adjust this number.
                 errdisable: Subclass of AvdModel.
                 ethernet_interfaces: Subclass of AvdIndexedList with `EthernetInterfacesItem` items. Primary key is `name` (`str`).
                 event_handlers:
@@ -70573,6 +70845,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_name_server_groups: Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`).
                 ip_nat: Subclass of AvdModel.
                 ip_ospf_router_id_output_format_hostnames: Display DNS-resolved router names for OSPF router IDs.
+                ip_radius: Subclass of AvdModel.
                 ip_radius_source_interfaces: Subclass of AvdList with `IpRadiusSourceInterfacesItem` items.
                 ip_routing: ip_routing
                 ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces

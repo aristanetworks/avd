@@ -142,6 +142,13 @@ metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 port_channel_interfaces:
+- name: Port-Channel77
+  description: L3 Port-Channel without ip_address
+  shutdown: false
+  metadata:
+    peer_type: l3_port_channel
+  switchport:
+    enabled: false
 - name: Port-Channel11
   description: Po11
   shutdown: false
@@ -332,27 +339,10 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: TESTING
     rd: 192.168.255.109:2

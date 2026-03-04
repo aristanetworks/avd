@@ -230,14 +230,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   - name: WAN-OVERLAY-PEERS
     metadata:
       type: wan

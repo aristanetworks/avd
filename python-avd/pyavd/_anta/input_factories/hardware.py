@@ -16,8 +16,8 @@ from anta.tests.hardware import (
     VerifyTransceiversTemperature,
 )
 
-from ._base_classes import AntaTestInputFactory
-from ._decorators import skip_if_hardware_validation_disabled
+from .base_classes import AntaTestInputFactory
+from .decorators import skip_if_hardware_validation_disabled
 
 if TYPE_CHECKING:
     from collections.abc import Iterator

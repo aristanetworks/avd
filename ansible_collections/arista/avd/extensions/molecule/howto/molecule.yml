@@ -7,9 +7,9 @@ ansible:
         - --inventory=inventory/hosts.yml
   env:
     ANSIBLE_FORCE_COLOR: true
+    PYTHONPATH: ${PYTHONPATH}:${MOLECULE_SCENARIO_DIRECTORY}/custom_modules
   cfg:
     defaults:
-      jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
       gathering: explicit
 scenario:
   converge_sequence:

@@ -73,14 +73,6 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
-  - name: EVPN-OVERLAY-CORE
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 15
-    send_community: all
-    maximum_routes: 0
   neighbors:
   - ip_address: 192.168.255.112
     peer_group: EVPN-OVERLAY-PEERS
@@ -106,16 +98,11 @@ router_bgp:
         enable: true
         inter_domain: true
     peer_groups:
-    - name: EVPN-OVERLAY-CORE
-      activate: true
-      domain_remote: true
     - name: EVPN-OVERLAY-PEERS
       activate: true
   address_family_ipv4:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
-      activate: false
-    - name: EVPN-OVERLAY-CORE
       activate: false
 service_routing_protocols_model: multi-agent
 static_routes:

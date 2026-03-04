@@ -541,21 +541,21 @@ router_bgp:
         enable: true
         inter_domain: true
     peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     - name: WAN-OVERLAY-PEERS
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
       domain_remote: true
       encapsulation: path-selection
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: WAN-OVERLAY-PEERS
-      activate: false
     - name: EVPN-OVERLAY-PEERS
+      activate: false
+    - name: WAN-OVERLAY-PEERS
       activate: false
   address_family_ipv4_sr_te:
     peer_groups:

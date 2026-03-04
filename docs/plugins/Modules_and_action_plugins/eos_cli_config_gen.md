@@ -28,6 +28,7 @@ Note: Input validation is performed by the `arista.avd.validate_inputs` plugin, 
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| <samp>tmp_dir</samp> | str | True | None | - | Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.<br>Must be the same across all plugins. |
 | <samp>config_filename</samp> | str | optional | None | - | The path to save the generated config to. Required if generate_device_config is true. |
 | <samp>documentation_filename</samp> | str | optional | None | - | The path to save the generated documentation. Required if generate_device_doc is true. |
 | <samp>generate_device_config</samp> | bool | optional | True | - | Flag to generate the device configuration. |

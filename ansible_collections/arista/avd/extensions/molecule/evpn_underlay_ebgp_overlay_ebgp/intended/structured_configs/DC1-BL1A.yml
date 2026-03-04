@@ -95,7 +95,6 @@ ethernet_interfaces:
 - name: Ethernet10.100
   description: subinterface test
   shutdown: false
-  mtu: 9000
   vrf: Tenant_L3_VRF_Zone
   encapsulation_dot1q:
     vlan: 100
@@ -105,7 +104,6 @@ ethernet_interfaces:
 - name: Ethernet10.200
   description: subinterface test with vlan override
   shutdown: false
-  mtu: 9000
   vrf: Tenant_L3_VRF_Zone
   encapsulation_dot1q:
     vlan: 121

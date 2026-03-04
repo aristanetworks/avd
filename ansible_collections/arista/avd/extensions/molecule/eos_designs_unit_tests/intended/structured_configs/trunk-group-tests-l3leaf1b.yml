@@ -190,14 +190,6 @@ router_bgp:
     send_community: all
     maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   neighbors:
   - ip_address: 10.255.247.0
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -309,16 +301,10 @@ router_bgp:
       - 10399:10399
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: TG_100
     rd: 192.168.250.10:100

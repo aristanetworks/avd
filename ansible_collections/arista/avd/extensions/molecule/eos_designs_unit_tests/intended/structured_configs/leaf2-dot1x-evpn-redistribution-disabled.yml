@@ -14,9 +14,10 @@ enable_password:
 hostname: leaf2-dot1x-evpn-redistribution-disabled
 ip_igmp_snooping:
   globally_enabled: true
-ip_radius_source_interfaces:
-- name: Management0
-  vrf: MGMT
+ip_radius:
+  vrfs:
+  - name: MGMT
+    source_interface: Management1
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
 loopback_interfaces:
@@ -29,7 +30,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 10.1.1.12/32
 management_interfaces:
-- name: Management0
+- name: Management1
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
@@ -74,15 +75,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
@@ -108,14 +100,6 @@ router_bgp:
       - 10200:10200
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: DEV
     rd: 10.1.0.12:500

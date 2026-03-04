@@ -881,6 +881,9 @@ interface {{ ethernet_interface.name }}
 {%     elif ethernet_interface.spanning_tree_portfast is arista.avd.defined('network') %}
    spanning-tree portfast network
 {%     endif %}
+{%     if ethernet_interface.spanning_tree_link_type is arista.avd.defined %}
+   spanning-tree link-type {{ ethernet_interface.spanning_tree_link_type }}
+{%     endif %}
 {%     if ethernet_interface.spanning_tree_bpduguard is arista.avd.defined and ethernet_interface.spanning_tree_bpduguard in [True, "True", "enabled"] %}
    spanning-tree bpduguard enable
 {%     elif ethernet_interface.spanning_tree_bpduguard is arista.avd.defined("disabled") %}
@@ -1052,10 +1055,6 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
 {%         if ethernet_interface.switchport.tool.dot1q_remove_outer_vlan_tag is arista.avd.defined %}
    switchport tool dot1q remove outer {{ ethernet_interface.switchport.tool.dot1q_remove_outer_vlan_tag }}
-{%         endif %}
-{# TODO: his command was removed from EOS and will need to be removed from AVD #}
-{%         if ethernet_interface.switchport.tool.dzgre_preserve is arista.avd.defined(true) %}
-   switchport tool dzgre preserve
 {%         endif %}
 {%     endif %}
 {%     if ethernet_interface.traffic_engineering.enabled is arista.avd.defined(true) %}

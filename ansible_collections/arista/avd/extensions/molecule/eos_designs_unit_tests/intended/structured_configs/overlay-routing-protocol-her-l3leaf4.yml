@@ -1,0 +1,99 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet5
+  description: P2P_overlay-routing-protocol-cvx-l3leaf1_Ethernet5
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.31.255.9/31
+  metadata:
+    peer: overlay-routing-protocol-cvx-l3leaf1
+    peer_interface: Ethernet5
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+hostname: overlay-routing-protocol-her-l3leaf4
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.254.5/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.253.5/32
+metadata:
+  is_deployed: true
+  dc_name: OVERLAY_ROUTING_PROTOCOL_HER_TESTS
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.254.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.253.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bgp:
+  as: '65002'
+  router_id: 192.168.254.5
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    send_community: all
+    maximum_routes: 256000
+  neighbors:
+  - ip_address: 172.31.255.8
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: overlay-routing-protocol-cvx-l3leaf1
+    description: overlay-routing-protocol-cvx-l3leaf1_Ethernet5
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: overlay-routing-protocol-her-l3leaf4_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      flood_vteps:
+      - 192.168.253.1
+      - 192.168.253.2
+      - 192.168.253.3

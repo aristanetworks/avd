@@ -1,5 +1,15 @@
 aaa_root:
   disabled: true
+aaa_server_groups:
+- name: RADIUS1
+  type: radius
+  servers:
+  - server: 11.10.10.11
+    vrf: default
+  - server: 11.10.10.5
+    vrf: MGMT1
+  - server: 11.10.10.3
+    vrf: MGMT
 config_end: true
 enable_password:
   disabled: true
@@ -29,6 +39,13 @@ ethernet_interfaces:
 hostname: host1
 ip_igmp_snooping:
   globally_enabled: true
+ip_radius_source_interfaces:
+- name: Vlan123
+  vrf: default
+- name: Vlan125
+  vrf: MGMT1
+- name: Vlan125
+  vrf: MGMT
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
@@ -56,6 +73,22 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+radius_server:
+  servers:
+  - host: 11.10.10.11
+    key: 071B245F5A
+  vrfs:
+  - name: MGMT1
+    servers:
+    - host: 11.10.10.5
+      tls:
+        enabled: true
+        ssl_profile: HOST_SSL_PROFILE
+        port: 2080
+  - name: MGMT
+    servers:
+    - host: 11.10.10.3
+      key: 0112140D481F07
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -84,14 +117,6 @@ router_bgp:
       type: ipv4
     send_community: all
     maximum_routes: 256000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   neighbors:
   - ip_address: 192.168.42.201
     peer_group: IPv4-UNDERLAY-PEERS
@@ -109,16 +134,10 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:

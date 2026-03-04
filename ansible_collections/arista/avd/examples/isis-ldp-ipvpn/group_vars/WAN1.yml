@@ -16,7 +16,7 @@ p:
   # Definition of default values that will be configured to all nodes defined in this group
   defaults:
     # Set the relevant platform as each platform has different default values in Ansible AVD
-    platform: vEOS-lab
+    platform: cEOSLab
     # Pool of IPv4 addresses to configure interface Loopback0 used for Router ID
     loopback_ipv4_pool: 10.255.0.0/27
     # ISIS NET system id prefix
@@ -44,7 +44,7 @@ p:
 pe:
   defaults:
     # Set the relevant platform as each platform has different default values in Ansible AVD
-    platform: vEOS-lab
+    platform: cEOSLab
     # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
     loopback_ipv4_pool: 10.255.1.0/27
     virtual_router_mac_address: 00:1c:73:00:dc:00
@@ -76,7 +76,7 @@ pe:
 # RR router group
 rr:
   defaults:
-    platform: vEOS-lab
+    platform: cEOSLab
     spanning_tree_mode: none
     loopback_ipv4_pool: 10.255.2.0/27
     mpls_route_reflectors: [ rr1, rr2 ]

@@ -126,7 +126,7 @@ ethernet_interfaces:
 - name: Ethernet13
   description: P2P_DC1-POD1-LEAF1B_Ethernet2
   shutdown: false
-  ip_address: 172.17.110.14/31
+  ip_address: 172.17.110.6/31
   mac_security:
     profile: MACSEC_PROFILE
   ptp:
@@ -144,7 +144,7 @@ ethernet_interfaces:
   vrf: Common_VRF
   encapsulation_dot1q:
     vlan: 1025
-  ip_address: 172.17.110.14/31
+  ip_address: 172.17.110.6/31
   metadata:
     peer: DC1-POD1-LEAF1B
     peer_interface: Ethernet2.1025
@@ -155,7 +155,7 @@ ethernet_interfaces:
   vrf: vrf_with_loopbacks_dc1_pod1_only
   encapsulation_dot1q:
     vlan: 1102
-  ip_address: 172.17.110.14/31
+  ip_address: 172.17.110.6/31
   metadata:
     peer: DC1-POD1-LEAF1B
     peer_interface: Ethernet2.1102
@@ -166,7 +166,7 @@ ethernet_interfaces:
   vrf: vrf_with_loopbacks_from_overlapping_pool
   encapsulation_dot1q:
     vlan: 1100
-  ip_address: 172.17.110.14/31
+  ip_address: 172.17.110.6/31
   metadata:
     peer: DC1-POD1-LEAF1B
     peer_interface: Ethernet2.1100
@@ -177,7 +177,7 @@ ethernet_interfaces:
   vrf: vrf_with_loopbacks_from_pod_pools
   encapsulation_dot1q:
     vlan: 1101
-  ip_address: 172.17.110.14/31
+  ip_address: 172.17.110.6/31
   metadata:
     peer: DC1-POD1-LEAF1B
     peer_interface: Ethernet2.1101
@@ -348,7 +348,7 @@ loopback_interfaces:
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 172.18.110.4/32
+  ip_address: 172.18.110.6/32
 - name: Loopback102
   description: DIAG_VRF_vrf_with_loopbacks_dc1_pod1_only
   shutdown: false
@@ -389,7 +389,7 @@ metadata:
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094
-  peer_address: 172.20.110.2
+  peer_address: 172.20.110.6
   peer_address_heartbeat:
     peer_ip: 192.168.1.8
     vrf: MGMT
@@ -569,7 +569,7 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   neighbors:
-  - ip_address: 172.20.110.2
+  - ip_address: 172.20.110.6
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     metadata:
       peer: DC1.POD1.LEAF2A
@@ -598,7 +598,7 @@ router_bgp:
     metadata:
       peer: DC1-POD1-SPINE2
     description: DC1-POD1-SPINE2_Ethernet8
-  - ip_address: 172.17.110.15
+  - ip_address: 172.17.110.7
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65111.100'
     metadata:
@@ -763,18 +763,18 @@ router_bgp:
         enable: true
         inter_domain: false
     peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     - name: EVPN-OVERLAY-CORE
       activate: true
       domain_remote: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
     route:
       import_match_failure_action: discard
   address_family_rtc:
     peer_groups:
-    - name: EVPN-OVERLAY-CORE
-      activate: true
     - name: EVPN-OVERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-CORE
       activate: true
   address_family_ipv4:
     peer_groups:
@@ -800,7 +800,7 @@ router_bgp:
         - 1025:1025
     router_id: 172.16.110.5
     neighbors:
-    - ip_address: 172.17.110.15
+    - ip_address: 172.17.110.7
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65111.100'
       description: DC1-POD1-LEAF1B_Ethernet2.1025_vrf_Common_VRF
@@ -827,7 +827,7 @@ router_bgp:
         - 1102:1102
     router_id: 172.16.110.5
     neighbors:
-    - ip_address: 172.17.110.15
+    - ip_address: 172.17.110.7
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65111.100'
       description: DC1-POD1-LEAF1B_Ethernet2.1102_vrf_vrf_with_loopbacks_dc1_pod1_only
@@ -847,7 +847,7 @@ router_bgp:
         - 1100:1100
     router_id: 172.16.110.5
     neighbors:
-    - ip_address: 172.17.110.15
+    - ip_address: 172.17.110.7
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65111.100'
       description: DC1-POD1-LEAF1B_Ethernet2.1100_vrf_vrf_with_loopbacks_from_overlapping_pool
@@ -867,7 +867,7 @@ router_bgp:
         - 1101:1101
     router_id: 172.16.110.5
     neighbors:
-    - ip_address: 172.17.110.15
+    - ip_address: 172.17.110.7
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65111.100'
       description: DC1-POD1-LEAF1B_Ethernet2.1101_vrf_vrf_with_loopbacks_from_pod_pools
@@ -900,7 +900,7 @@ vlan_interfaces:
 - name: Vlan4094
   description: MLAG
   shutdown: false
-  ip_address: 172.20.110.3/31
+  ip_address: 172.20.110.7/31
   no_autostate: true
 - name: Vlan110
   description: set from structured_config on svi (was Tenant_A_OP_Zone_1)

@@ -127,15 +127,6 @@ router_bgp:
     bfd: false
     send_community: all
     maximum_routes: 0
-  - name: RR-OVERLAY-PEERS
-    metadata:
-      type: mpls
-    remote_as: '65001'
-    description: Description for rr_overlay_peers via structured_config
-    update_source: Loopback0
-    bfd: false
-    send_community: all
-    maximum_routes: 0
   neighbors:
   - ip_address: 192.168.253.204
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -176,12 +167,6 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-    - name: RR-OVERLAY-PEERS
-      activate: false
-  address_family_vpn_ipv4:
-    peer_groups:
-    - name: RR-OVERLAY-PEERS
-      activate: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
   no_spanning_tree_vlan: '4094'

@@ -29,7 +29,7 @@ PLUGIN_NAME = "arista.avd.anta_workflow"
 try:
     from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, TestResult, anta_runner
     from pyavd._utils import default, get, strip_empties_from_dict
-    from pyavd.api._anta import AvdCatalogGenerationSettings, AvdFabricData
+    from pyavd.api.anta import AVDCatalogGenerationSettings, AVDFabricData
     from pyavd.get_device_test_catalog import get_device_test_catalog
 
     HAS_PYAVD = True
@@ -137,7 +137,7 @@ ARGUMENT_SPEC = {
 # Global variables to share data between processes. Since the plugin is forked, these variables are inherited by child processes.
 # TODO: Consider aggregating some of them into a SHARED_VARS dict or use multiprocessing.Manager()
 STRUCTURED_CONFIGS: dict[str, dict[str, Any]] | None = None
-FABRIC_DATA: AvdFabricData | None = None
+FABRIC_DATA: AVDFabricData | None = None
 PLUGIN_ARGS: dict[str, Any] | None = None
 ANSIBLE_VARS: dict[str, dict[str, Any]] | None = None
 USER_CATALOG: AntaCatalog | None = None
@@ -216,7 +216,7 @@ class ActionModule(ActionBase):
             # Load the structured configs and build the minimal structured configs if needed
             if generate_avd_catalogs:
                 STRUCTURED_CONFIGS = load_structured_configs(deployed_devices, structured_config_dir, get(PLUGIN_ARGS, "avd_catalogs.structured_config_suffix"))
-                FABRIC_DATA = AvdFabricData.from_structured_configs(STRUCTURED_CONFIGS)
+                FABRIC_DATA = AVDFabricData.from_structured_configs(STRUCTURED_CONFIGS)
 
             with ProcessPoolExecutor(max_workers=max((ansible_forks - 1), 1), mp_context=get_context("fork")) as executor:
                 batch_size = get(PLUGIN_ARGS, "runner.batch_size")
@@ -470,7 +470,7 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
         inventory.add_device(anta_device)
         # We generate the device's AVD catalog only if structured configs are loaded
         if STRUCTURED_CONFIGS is not None and FABRIC_DATA is not None:
-            settings = AvdCatalogGenerationSettings(
+            settings = AVDCatalogGenerationSettings(
                 extra_fabric_validation=extra_fabric_validation,
                 output_dir=output_dir,
                 **get_device_catalog_filters(device, avd_catalogs_filters),

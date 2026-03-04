@@ -125,7 +125,7 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOSLab
   fabric_name: FABRIC
   validate_hardware:
     enabled: false
@@ -395,11 +395,11 @@ router_bgp:
         enable: true
         inter_domain: true
     peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     - name: EVPN-OVERLAY-CORE
       activate: true
       domain_remote: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
