@@ -1,0 +1,80 @@
+---
+name: L2LS Fabric
+prefix: ""
+
+mgmt:
+    network: custom_mgmt
+    ipv4-subnet: 172.16.100.0/24
+
+topology:
+    kinds:
+        arista_ceos:
+            enforce-startup-config: true
+            image: arista/ceos:latest
+            binds:
+                - interface_mapping.json:/mnt/flash/EosIntfMapping.json:ro
+    defaults:
+        kind: arista_ceos
+    nodes:
+        SPINE1:
+            mgmt-ipv4: 172.16.100.101
+            startup-config: init-configs/SPINE1.cfg
+        SPINE2:
+            mgmt-ipv4: 172.16.100.102
+            startup-config: init-configs/SPINE2.cfg
+        LEAF1:
+            mgmt-ipv4: 172.16.100.105
+            startup-config: init-configs/LEAF1.cfg
+        LEAF2:
+            mgmt-ipv4: 172.16.100.106
+            startup-config: init-configs/LEAF2.cfg
+        LEAF3:
+            mgmt-ipv4: 172.16.100.107
+            startup-config: init-configs/LEAF3.cfg
+        LEAF4:
+            mgmt-ipv4: 172.16.100.108
+            startup-config: init-configs/LEAF4.cfg
+        HostA:
+            mgmt-ipv4: 172.16.100.201
+            startup-config: init-configs/HostA.cfg
+        HostB:
+            mgmt-ipv4: 172.16.100.202
+            startup-config: init-configs/HostB.cfg
+        HostC:
+            mgmt-ipv4: 172.16.100.203
+            startup-config: init-configs/HostC.cfg
+        HostD:
+            mgmt-ipv4: 172.16.100.204
+            startup-config: init-configs/HostD.cfg
+        FW:
+            mgmt-ipv4: 172.16.100.200
+            startup-config: init-configs/FW.cfg
+
+    links:
+        # spines to leafs
+        - endpoints: ["SPINE1:eth1", "LEAF1:eth1"]
+        - endpoints: ["SPINE1:eth2", "LEAF2:eth1"]
+        - endpoints: ["SPINE1:eth3", "LEAF3:eth1"]
+        - endpoints: ["SPINE1:eth4", "LEAF4:eth1"]
+        - endpoints: ["SPINE2:eth1", "LEAF1:eth2"]
+        - endpoints: ["SPINE2:eth2", "LEAF2:eth2"]
+        - endpoints: ["SPINE2:eth3", "LEAF3:eth2"]
+        - endpoints: ["SPINE2:eth4", "LEAF4:eth2"]
+        # peer-links
+        - endpoints: ["LEAF1:eth47", "LEAF2:eth47"]
+        - endpoints: ["LEAF1:eth48", "LEAF2:eth48"]
+        - endpoints: ["LEAF3:eth47", "LEAF4:eth47"]
+        - endpoints: ["LEAF3:eth48", "LEAF4:eth48"]
+        - endpoints: ["SPINE1:eth47", "SPINE2:eth47"]
+        - endpoints: ["SPINE1:eth48", "SPINE2:eth48"]
+        # hosts
+        # host are using cEOS-lab image for 3 reasons
+        # - to avoid pulling another image
+        # - to support all kind of weird connections we may need for AVD examples
+        # - simplify host config
+        - endpoints: ["HostA:eth1", "LEAF1:eth3"]
+        - endpoints: ["HostB:eth1", "LEAF2:eth3"]
+        - endpoints: ["HostC:eth1", "LEAF3:eth3"]
+        - endpoints: ["HostD:eth1", "LEAF4:eth3"]
+        - endpoints: ["FW:eth1", "SPINE1:eth5"]
+        - endpoints: ["FW:eth2", "SPINE2:eth5"]

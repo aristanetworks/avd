@@ -10,10 +10,10 @@ underlay_rfc5549: true
 default_node_types:
   - node_type: l3spine
     match_hostnames:
-      - ".*SPINE.*"
+      - ".*spine.*"
   - node_type: l3leaf
     match_hostnames:
-      - ".*LEAF.*"
+      - ".*leaf.*"
 
 bgp_as: 65000
 
@@ -24,13 +24,13 @@ l3leaf:
     loopback_ipv6_pool: 2001:2::/64
     vtep_loopback_ipv4_pool: 172.16.0.0/24
     virtual_router_mac_address: cafe:cafe:cafe
-    uplink_switches: [UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1]
+    uplink_switches: [uplink-p2p-vrfs-rfc5549-tests-spine1]
     uplink_interfaces: [Ethernet1]
     uplink_type: p2p-vrfs
     filter:
       always_include_vrfs_in_tenants: [TenantA]
   nodes:
-    - name: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
+    - name: uplink-p2p-vrfs-rfc5549-tests-leaf
       bgp_as: 65106
       id: 8
       uplink_switch_interfaces: [Ethernet3]
@@ -43,7 +43,7 @@ l3spine:
     filter:
       always_include_vrfs_in_tenants: [TenantA]
   nodes:
-    - name: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+    - name: uplink-p2p-vrfs-rfc5549-tests-spine1
       id: 72
 
 tenants:
@@ -58,4 +58,4 @@ tenants:
         bgp_peers:
           - ip_address: 10.10.1.2
             peer_group: MYPEERGROUP
-            nodes: [UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF]
+            nodes: [uplink-p2p-vrfs-rfc5549-tests-leaf]

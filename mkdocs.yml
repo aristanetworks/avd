@@ -179,6 +179,7 @@ nav:
       - Ansible Collection: docs/installation/collection-installation.md
       - Containers: docs/containers/overview.md
   - Examples:
+      - How to use AVD examples: ansible_collections/arista/avd/examples/README.md
       - Single DC L3LS: ansible_collections/arista/avd/examples/single-dc-l3ls/README.md
       - Dual DC L3LS: ansible_collections/arista/avd/examples/dual-dc-l3ls/README.md
       - L2LS Fabric: ansible_collections/arista/avd/examples/l2ls-fabric/README.md
