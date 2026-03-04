@@ -506,7 +506,7 @@ class AvdStructuredConfigBaseProtocol(
             )
 
             # For DHCP, automatically accept default route instead of using gateway
-            if is_dhcp:
+            if is_dhcp and self.inputs.avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp:
                 interface_settings.dhcp_client_accept_default_route = True
             else:
                 # For static IP, set gateway (metadata field, actual routing done via static_routes)

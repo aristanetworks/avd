@@ -8,16 +8,16 @@ l3leaf:
     vtep_loopback_ipv4_pool: 10.10.0.0/24
     bgp_as: 65000
   nodes:
-    - name: DUP-LEAF1
+    - name: dup-leaf1
       id: 1
       mgmt_ip: 192.168.200.101/24
       filter:
-        tags: [DUP-LEAF1]
-    - name: DUP-LEAF2
+        tags: [dup-leaf1]
+    - name: dup-leaf2
       mgmt_ip: 192.168.200.102/24
       id: 2
       filter:
-        tags: [DUP-LEAF2]
+        tags: [dup-leaf2]
 
 tenants:
   - name: Tenant_A
@@ -30,17 +30,17 @@ tenants:
           # Test non unique svi ids in schema
           - id: 100
             name: Duplicate_SVI_100_LEAF1
-            tags: [ DUP-LEAF1 ]
+            tags: [ dup-leaf1 ]
             enabled: true
           - id: 100
             name: Duplicate_SVI_100_LEAF2
-            tags: [ DUP-LEAF2 ]
+            tags: [ dup-leaf2 ]
             enabled: true
     l2vlans:
       # Test non unique l2vlans ids in schema
       - id: 200
         name: Duplicate_L2VLAN_200_LEAF1
-        tags: [ DUP-LEAF1 ]
+        tags: [ dup-leaf1 ]
       - id: 200
         name: Duplicate_L2VLAN_200_LEAF2
-        tags: [ DUP-LEAF2 ]
+        tags: [ dup-leaf2 ]

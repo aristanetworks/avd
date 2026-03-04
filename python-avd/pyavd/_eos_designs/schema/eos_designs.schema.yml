@@ -349,6 +349,27 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
+  avd_design_future:
+    type: dict
+    description: Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors
+      in AVD 7.0.
+    documentation_options:
+      table: role-settings
+    deprecation:
+      warning: false
+      remove_in_version: 7.0.0
+    keys:
+      accept_dhcp_default_route_for_mgmt_ip_dhcp:
+        type: bool
+        default: false
+        description: 'When enabled, AVD will generate `accept-dhcp default-route`
+          under the management VRF when the management IP is obtained via DHCP.
+
+          This allows the device to accept the default route provided by the DHCP
+          server for the management interface,
+
+          which is essential for out-of-band management scenarios where the management
+          network provides routing information via DHCP.'
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -3650,8 +3671,8 @@ keys:
 
       Replaces the default route.
 
-      This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' since the DHCP server
-      will provide routes.'
+      This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' and avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp
+      is set to true, since the DHCP server will provide routes.'
     items:
       type: str
       description: IPv4_address/Mask.
@@ -3663,8 +3684,8 @@ keys:
 
       Used as next-hop for default gateway or static routes defined under ''mgmt_destination_networks''.
 
-      This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' since the DHCP server
-      will provide the gateway.
+      This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' and avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp
+      is set to true, since the DHCP server will provide the gateway.
 
       '
   mgmt_interface:
@@ -9511,6 +9532,37 @@ $defs:
                 default: true
                 description: Enable or disable the redistribution of all connected
                   routes to BGP in the VRF. Note this is not applicable to VRF `default`.
+              static_arp_entries:
+                type: list
+                description: 'List of static ARP entries for the tenant VRF.
+
+                  Entries are configured on all devices carrying the VRF unless filtered
+                  using the nodes key.
+
+                  '
+                items:
+                  type: dict
+                  keys:
+                    ipv4_address:
+                      type: str
+                      required: true
+                      description: ARP entry IPv4 address.
+                    mac_address:
+                      type: str
+                      description: ARP entry MAC address.
+                      required: true
+                      pattern: '[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}'
+                    nodes:
+                      type: list
+                      items:
+                        type: str
+                      description: 'List of nodes where the ARP static entry should
+                        be configured.
+
+                        If not set, the entry will be configured on all devices carrying
+                        the VRF.
+
+                        '
               bgp_peers:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings
@@ -10117,9 +10169,10 @@ $defs:
               table: node-type-common-configuration
             description: 'Node management interface IPv4 address/Mask or ''dhcp''.
 
-              When set to ''dhcp'', the `mgmt_destination_networks` and `mgmt_gateway`
-              settings will be ignored since the DHCP server is expected to provide
-              the gateway and routes.'
+              When set to ''dhcp'' and avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp
+              set to true, the `mgmt_destination_networks` and `mgmt_gateway` settings
+              will be ignored since the DHCP server is expected to provide the gateway
+              and routes.'
             type: str
           mgmt_gateway:
             documentation_options:
@@ -10128,8 +10181,8 @@ $defs:
             description: 'This key sets the management gateway for the device. It
               takes precedence over the global `mgmt_gateway`.
 
-              This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' since the
-              DHCP server will provide the gateway.'
+              This setting is ignored when ''mgmt_ip'' is set to ''dhcp'' and avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp
+              is set to true, since the DHCP server will provide the gateway.'
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration

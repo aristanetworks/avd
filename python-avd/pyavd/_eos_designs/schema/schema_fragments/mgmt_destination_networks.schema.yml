@@ -13,7 +13,7 @@ keys:
     description: |-
       List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
       Replaces the default route.
-      This setting is ignored when 'mgmt_ip' is set to 'dhcp' since the DHCP server will provide routes.
+      This setting is ignored when 'mgmt_ip' is set to 'dhcp' and avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp is set to true, since the DHCP server will provide routes.
     items:
       type: str
       description: IPv4_address/Mask.

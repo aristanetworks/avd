@@ -1,0 +1,25 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  avd_design_future:
+    type: dict
+    description: |-
+      Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
+    documentation_options:
+      table: role-settings
+    deprecation:
+      warning: false
+      remove_in_version: 7.0.0
+    keys:
+      accept_dhcp_default_route_for_mgmt_ip_dhcp:
+        type: bool
+        default: false
+        description: |-
+          When enabled, AVD will generate `accept-dhcp default-route` under the management VRF when the management IP is obtained via DHCP.
+          This allows the device to accept the default route provided by the DHCP server for the management interface,
+          which is essential for out-of-band management scenarios where the management network provides routing information via DHCP.
