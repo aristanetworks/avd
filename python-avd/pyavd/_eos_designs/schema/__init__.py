@@ -961,6 +961,34 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class AvdDesignFuture(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"bgp_always_disable_ipv4_unicast_for_peer_groups": {"type": bool, "default": True}}
+        bgp_always_disable_ipv4_unicast_for_peer_groups: bool
+        """
+        Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by
+        default.
+
+        Default value: `True`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, bgp_always_disable_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined) -> None:
+                """
+                AvdDesignFuture.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    bgp_always_disable_ipv4_unicast_for_peer_groups:
+                       Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by
+                       default.
+
+                """
+
     AvdStructuredConfigFileFormat: TypeAlias = Literal["yml", "yaml", "json"]
 
     class EosDesignsValidationConfiguration(AvdModel):
@@ -88004,13 +88032,13 @@ class EosDesigns(EosDesignsRootModel):
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_7_behaviors": {"type": Avd7Behaviors},
+        "avd_design_future": {"type": AvdDesignFuture},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
         "eos_designs_validation_configuration": {"type": EosDesignsValidationConfiguration},
         "avd_vault_id": {"type": str},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
-        "bgp_always_disable_ipv4_unicast_for_peer_groups": {"type": bool, "default": True},
         "bgp_as": {"type": str},
         "bgp_as_notation": {"type": str, "default": "auto"},
         "bgp_default_ipv4_unicast": {"type": bool, "default": False},
@@ -88728,6 +88756,13 @@ class EosDesigns(EosDesignsRootModel):
     Subclass of
     AvdModel.
     """
+    avd_design_future: AvdDesignFuture
+    """
+    Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
+
+    Subclass of
+    AvdModel.
+    """
     avd_digital_twin_mode: bool
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -88782,13 +88817,6 @@ class EosDesigns(EosDesignsRootModel):
     Subclass of AvdModel.
 
     Default value: `lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)`
-    """
-    bgp_always_disable_ipv4_unicast_for_peer_groups: bool
-    """
-    Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by
-    default.
-
-    Default value: `True`
     """
     bgp_as: str | None
     """
@@ -90754,13 +90782,13 @@ class EosDesigns(EosDesignsRootModel):
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_7_behaviors: Avd7Behaviors | UndefinedType = Undefined,
+            avd_design_future: AvdDesignFuture | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
             eos_designs_validation_configuration: EosDesignsValidationConfiguration | UndefinedType = Undefined,
             avd_vault_id: str | None | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
-            bgp_always_disable_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             bgp_as_notation: BgpAsNotation | UndefinedType = Undefined,
             bgp_default_ipv4_unicast: bool | UndefinedType = Undefined,
@@ -90981,6 +91009,11 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of
                    AvdModel.
+                avd_design_future:
+                   Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
+
+                   Subclass of
+                   AvdModel.
                 avd_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
@@ -91014,9 +91047,6 @@ class EosDesigns(EosDesignsRootModel):
                    BFD Multihop tuning.
 
                    Subclass of AvdModel.
-                bgp_always_disable_ipv4_unicast_for_peer_groups:
-                   Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by
-                   default.
                 bgp_as:
                    BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>" to use to configure
                    overlay when "overlay_routing_protocol" == ibgp.

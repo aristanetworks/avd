@@ -3,7 +3,8 @@ bgp_default_ipv4_unicast: true
 
 # Test for bgp_default_ipv4_unicast as true to deactivate the peer group on IPV4 address faimly
 # even if bgp_always_disable_ipv4_unicast_for_peer_groups set as false
-bgp_always_disable_ipv4_unicast_for_peer_groups: false
+avd_design_future:
+  bgp_always_disable_ipv4_unicast_for_peer_groups: false
 
 # Test to honor platform settings of vEOS-LAB
 bgp_update_wait_install: true

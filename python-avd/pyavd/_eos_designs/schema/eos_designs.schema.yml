@@ -349,6 +349,23 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
+  avd_design_future:
+    type: dict
+    description: Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors
+      in AVD 7.0.
+    documentation_options:
+      table: role-settings
+    deprecation:
+      warning: false
+      remove_in_version: 7.0.0
+    keys:
+      bgp_always_disable_ipv4_unicast_for_peer_groups:
+        documentation_options:
+          table: bgp-settings
+        type: bool
+        description: Deactivate the IPv4 unicast Address Family for BGP Peer Groups
+          even when IPv4 is not activated by default.
+        default: true
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -457,13 +474,6 @@ keys:
       interval: 300
       min_rx: 300
       multiplier: 3
-  bgp_always_disable_ipv4_unicast_for_peer_groups:
-    documentation_options:
-      table: bgp-settings
-    type: bool
-    description: Deactivate the IPv4 unicast Address Family for BGP Peer Groups even
-      when IPv4 is not activated by default.
-    default: true
   bgp_as:
     documentation_options:
       table: bgp-settings
