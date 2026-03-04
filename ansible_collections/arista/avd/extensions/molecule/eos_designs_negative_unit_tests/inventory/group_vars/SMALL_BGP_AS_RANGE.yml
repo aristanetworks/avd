@@ -11,12 +11,12 @@ l3leaf:
     - group: BGP_AS_LEAF1
       mlag: false
       nodes:
-        - name: BGP_AS_LEAF1A
+        - name: bgp-as-leaf1a
           id: 1
-        - name: BGP_AS_LEAF1B
+        - name: bgp-as-leaf1b
           id: 2
-        - name: BGP_AS_LEAF1C
+        - name: bgp-as-leaf1c
           id: 3
 
 expected_error_message: >-
-  Unable to allocate BGP AS: bgp_as range '65101-65102' is too small (2) for the id '3' for host 'BGP_AS_LEAF1C'.
+  Unable to allocate BGP AS: bgp_as range '65101-65102' is too small (2) for the id '3' for host 'bgp-as-leaf1c'.
