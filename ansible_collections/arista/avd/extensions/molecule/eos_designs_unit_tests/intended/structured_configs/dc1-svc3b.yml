@@ -1266,7 +1266,7 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.6
       peer_group: MLAG-PEERS
-      description: DC1-SVC3A
+      description: dc1-svc3a
     redistribute:
       connected:
         enabled: true
