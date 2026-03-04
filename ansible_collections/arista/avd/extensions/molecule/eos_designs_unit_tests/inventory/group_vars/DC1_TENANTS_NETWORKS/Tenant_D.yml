@@ -27,13 +27,13 @@ tenant_d:
             ip_virtual_router_addresses: [ 10.3.11.1/24 ]
             ipv6_virtual_router_addresses: [ "2001:db8:311::1" ]
             nodes:
-              - node: DC1-LEAF2A
+              - node: dc1-leaf2a
                 ip_address: 10.3.11.2/24
                 ipv6_address: 2001:db8:311::2/64
-              - node: DC1-LEAF2B
+              - node: dc1-leaf2b
                 ip_address: 10.3.11.3/24
                 ipv6_address: 2001:db8:311::3/64
-              - node: evpn_services_l2_only_false
+              - node: evpn-services-l2-only-false
                 ip_address: 10.3.11.4/24
                 ipv6_address: 2001:db8:311::4/64
           - id: 412
@@ -50,17 +50,17 @@ tenant_d:
             ip_virtual_router_addresses: [ "11.4.13.1" ]
             ipv6_virtual_router_addresses: [ "2001:db9:413::1" ]
             nodes:
-              - node: DC1-LEAF2A
+              - node: dc1-leaf2a
                 # ip/ipv6 virtual_router_addresses will be configured
                 ip_address: 11.4.13.2/24
                 ipv6_address: 2001:db9:413::2/64
-              - node: DC1-LEAF2B
+              - node: dc1-leaf2b
                 # Node specific config which has the highest precedence
                 ip_address: 101.4.13.2/24
                 ipv6_address: 2002:db9:413::2/64
                 ip_virtual_router_addresses: [ "101.4.13.1" ]
                 ipv6_virtual_router_addresses: [ "2002:db9:413::1" ]
-              - node: evpn_services_l2_only_false
+              - node: evpn-services-l2-only-false
                 # Inherit node specific config from the profile
                 # Configures the ip virtual router addresses picked from profile
                 # Configure the ip_helpers as mentioned below
@@ -71,30 +71,30 @@ tenant_d:
         static_routes:
           - prefix: 0.0.0.0/0
             next_hop: "10.3.11.4"
-            nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
+            nodes: [ dc1-leaf2a, dc1-leaf2b ]
           - prefix: 1.1.1.0/24
             next_hop: "10.3.11.4"
-            nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
+            nodes: [ dc1-leaf2a, dc1-leaf2b ]
             track_bfd: true
             name: Track-bfd-network-services
         ipv6_static_routes:
           - prefix: ::/0
             next_hop: 2001:db8:311::4
             name: IPv6-test-2
-            nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
+            nodes: [ dc1-leaf2a, dc1-leaf2b ]
           - prefix: 2001:db8::/32
             next_hop: 2001:db8:310::1
             name: IPv6-test
-            nodes: [ DC1-LEAF1A ]
+            nodes: [ dc1-leaf1a ]
           - prefix: 2001:db9::/32
             next_hop: 2001:db8:310::1
             name: IPv6-test-1
-            nodes: [ DC1-LEAF1A ]
+            nodes: [ dc1-leaf1a ]
           - prefix: 2001:dba::/32
             next_hop: 2001:db8:310::1
             name: Track-bfd-network-services
             track_bfd: true
-            nodes: [ DC1-LEAF2A ]
+            nodes: [ dc1-leaf2a ]
       - name: 12345678 # Testing all numeric VRF name (will require auto-conversion in schema)
         vrf_vni: 41
         svis:
