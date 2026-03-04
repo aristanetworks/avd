@@ -12,19 +12,19 @@ underlay_ospf_authentication:
 type: l3leaf
 use_cv_topology: true
 cv_topology:
-  - hostname: CV-MLAG-OSPF-L3LEAF1A
+  - hostname: cv-mlag-ospf-l3leaf1a
     platform: vEOS-LAB
     interfaces:
       - name: Management66
       - name: Management66/1 # Ignored since we only use the first managemetn interface.
       - name: Ethernet1
-        neighbor: DC1-SPINE4
+        neighbor: dc1-spine4
         neighbor_interface: Ethernet20
       - name: Ethernet5
-        neighbor: CV-MLAG-OSPF-L3LEAF1B
+        neighbor: cv-mlag-ospf-l3leaf1b
         neighbor_interface: Ethernet5
       - name: Ethernet6
-        neighbor: CV-MLAG-OSPF-L3LEAF1B
+        neighbor: cv-mlag-ospf-l3leaf1b
         neighbor_interface: Ethernet6
       - name: Ethernet100
         neighbor: some-device-not-in-inventory-getting-ignored
@@ -38,36 +38,36 @@ cv_topology:
       - name: Ethernet103
         # Ignoring when missing neighbor and/or neighbor_interface
 
-  - hostname: CV-MLAG-OSPF-L3LEAF1B
+  - hostname: cv-mlag-ospf-l3leaf1b
     platform: vEOS-LAB
     interfaces:
       - name: Management67
       - name: Ethernet1
-        neighbor: DC1-SPINE4
+        neighbor: dc1-spine4
         neighbor_interface: Ethernet21
       - name: Ethernet5
-        neighbor: CV-MLAG-OSPF-L3LEAF1A
+        neighbor: cv-mlag-ospf-l3leaf1a
         neighbor_interface: Ethernet5
       - name: Ethernet6
-        neighbor: CV-MLAG-OSPF-L3LEAF1A
+        neighbor: cv-mlag-ospf-l3leaf1a
         neighbor_interface: Ethernet6
-  - hostname: CV-TOPOLOGY-LEAF3A
+  - hostname: cv-topology-leaf3a
     platform: vEOS-LAB
     interfaces:
       - name: Ethernet1
-        neighbor: DC1-SPINE4
+        neighbor: dc1-spine4
         neighbor_interface: Ethernet16
       - name: Ethernet5
-        neighbor: CV-TOPOLOGY-LEAF3B
+        neighbor: cv-topology-leaf3b
         neighbor_interface: Ethernet5
-  - hostname: CV-TOPOLOGY-LEAF3B # Same level, not MLAG so this is ignored.
+  - hostname: cv-topology-leaf3b # Same level, not MLAG so this is ignored.
     platform: vEOS-LAB
     interfaces:
       - name: Ethernet1
-        neighbor: DC1-SPINE4
+        neighbor: dc1-spine4
         neighbor_interface: Ethernet17
       - name: Ethernet5
-        neighbor: CV-TOPOLOGY-LEAF3A
+        neighbor: cv-topology-leaf3a
         neighbor_interface: Ethernet5
 
 cv_topology_levels:
@@ -102,22 +102,22 @@ l3leaf:
       spanning_tree_mst_pvst_boundary: true
       uplink_interface_speed: forced 40gfull
       nodes:
-        - name: CV-MLAG-OSPF-L3LEAF1A
+        - name: cv-mlag-ospf-l3leaf1a
           id: 4
           bgp_as: 65161
           mgmt_ip: 192.168.201.114/24
-        - name: CV-MLAG-OSPF-L3LEAF1B
+        - name: cv-mlag-ospf-l3leaf1b
           id: 5
           bgp_as: 65161
           mgmt_ip: 192.168.201.115/24
     - group: CV-NON-MLAG
       mlag: false
       nodes:
-        - name: CV-TOPOLOGY-LEAF3A
+        - name: cv-topology-leaf3a
           id: 2
           mgmt_ip: 192.168.201.109/24
           bgp_as: 65161
-        - name: CV-TOPOLOGY-LEAF3B
+        - name: cv-topology-leaf3b
           id: 3
           mgmt_ip: 192.168.201.110/24
           bgp_as: 65161

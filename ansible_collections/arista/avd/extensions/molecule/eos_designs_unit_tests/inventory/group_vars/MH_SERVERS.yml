@@ -43,7 +43,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         profile: Tenant_X
         ethernet_segment:
           short_esi: 0001:1010:1010
@@ -56,7 +56,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1 ]
         switch_ports: [ Ethernet10 ]
-        switches: [ MH-L2LEAF1A ]
+        switches: [ mh-l2leaf1a ]
         link_tracking:
           enabled: true
           name: l2leaf-server02
@@ -66,7 +66,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet12, Ethernet12 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         profile: Tenant_X
         ethernet_segment:
           short_esi: auto
@@ -79,7 +79,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet13, Ethernet13 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         profile: Tenant_ESI_Auto
         port_channel:
           endpoint_port_channel: Auto-ESI PortChannel from profile
@@ -90,7 +90,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet14, Ethernet14 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         profile: Tenant_ESI_Auto
         ethernet_segment:
           short_esi: 010a:010a:010a
@@ -103,7 +103,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet15, Ethernet15 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         profile: Tenant_X_Trunk_Auto
         # All ethernet_segment settings from profile
         port_channel:
@@ -114,7 +114,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet16, Ethernet16 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         profile: Tenant_X_Trunk
         port_channel:
           endpoint_port_channel: Single-Active ESI with Manual DF
@@ -130,7 +130,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet17, Ethernet17 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         profile: Tenant_X_Trunk_Auto_Eth
 
   # Single-Active is the default for Ethernet interfaces in AVD
@@ -140,7 +140,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet18, Ethernet18 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         profile: Tenant_X_Trunk
         ethernet_segment:
           short_esi: 00dd:00dd:00dd
@@ -152,7 +152,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet19, Ethernet19 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         profile: Tenant_X_Trunk
         ethernet_segment:
           short_esi: auto
@@ -165,7 +165,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet20, Ethernet20 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         profile: Tenant_X_Trunk
         port_channel:
           endpoint_port_channel: Single-Active ESI with Manual DF
@@ -182,7 +182,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet21, Ethernet21 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         profile: Tenant_X_Trunk
         ethernet_segment:
           short_esi: auto
@@ -197,7 +197,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet22, Ethernet22 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         profile: Tenant_X_Trunk
         port_channel:
           endpoint_port_channel: Single-Active ESI with Manual DF
@@ -214,7 +214,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet23, Ethernet23 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         profile: Tenant_X_Trunk
         ethernet_segment:
           short_esi: auto
@@ -228,14 +228,14 @@ routers:
     adapters:
       - endpoint_ports: [ Eth1 ]
         switch_ports: [ Ethernet10 ]
-        switches: [ MH-LEAF2A ]
+        switches: [ mh-leaf2a ]
         profile: Tenant_X_LT
 
   - name: ROUTER02_WITH_SUBIF
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet11, Ethernet11 ]
-        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        switches: [ mh-leaf1a, mh-leaf1b ]
         port_channel:
           endpoint_port_channel: Testing L2 subinterfaces
           mode: active

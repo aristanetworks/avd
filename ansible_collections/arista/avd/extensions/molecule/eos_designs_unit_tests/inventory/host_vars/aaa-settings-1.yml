@@ -9,6 +9,9 @@ l2leaf:
 
 avd_design_future:
   ip_tacacs_source_interface_setting: true
+avd_7_behaviors:
+  # Test for new behaviour of IP RADIUS server commands
+  ip_radius_source_interface_setting: true
 
 aaa_settings:
   # adding test for enable_password.password
