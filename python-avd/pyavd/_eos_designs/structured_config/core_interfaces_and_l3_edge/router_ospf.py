@@ -27,7 +27,8 @@ class RouterOspfMixin(Protocol):
 
         no_passive_interfaces = EosCliConfigGen.RouterOspf.ProcessIdsItem.NoPassiveInterfaces()
         for p2p_link, p2p_link_data in self._filtered_p2p_links:
-            if p2p_link.include_in_underlay_protocol:
+            # Skip IPv6-only links since include_in_underlay_protocol is only supported for IPv4 underlay peering.
+            if p2p_link.include_in_underlay_protocol and not p2p_link_data["is_ipv6_only"]:
                 no_passive_interfaces.append(p2p_link_data["interface"])
 
         if no_passive_interfaces:

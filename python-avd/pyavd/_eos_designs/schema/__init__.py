@@ -4352,7 +4352,7 @@ class EosDesigns(EosDesignsRootModel):
             """IPv6 address/Mask. Prefix used on this P2P link."""
             ipv6: Ipv6
             """
-            Specific IP addresses used on this P2P link.
+            Specific IPv6 addresses used on this P2P link.
 
             Subclass of AvdList with `str` items.
             """
@@ -4385,7 +4385,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             include_in_underlay_protocol: bool
             """
-            Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
+            Add this interface to the underlay routing protocols.
+            This is only supported for IPv4 underlay
+            peering and will be ignored for IPv6-only links.
 
             Default value: `True`
             """
@@ -4566,7 +4568,7 @@ class EosDesigns(EosDesignsRootModel):
                            include_in_underlay_protocol).
                         ipv6_prefix: IPv6 address/Mask. Prefix used on this P2P link.
                         ipv6:
-                           Specific IP addresses used on this P2P link.
+                           Specific IPv6 addresses used on this P2P link.
 
                            Subclass of AvdList with `str` items.
                         nodes:
@@ -4588,7 +4590,10 @@ class EosDesigns(EosDesignsRootModel):
                            Interface descriptions.
 
                            Subclass of AvdList with `str` items.
-                        include_in_underlay_protocol: Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
+                        include_in_underlay_protocol:
+                           Add this interface to the underlay routing protocols.
+                           This is only supported for IPv4 underlay
+                           peering and will be ignored for IPv6-only links.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -5137,7 +5142,7 @@ class EosDesigns(EosDesignsRootModel):
             """IPv6 address/Mask. Prefix used on this P2P link."""
             ipv6: Ipv6
             """
-            Specific IP addresses used on this P2P link.
+            Specific IPv6 addresses used on this P2P link.
 
             Subclass of AvdList with `str` items.
             """
@@ -5164,7 +5169,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             include_in_underlay_protocol: bool
             """
-            Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
+            Add this interface to the underlay routing protocols.
+            This is only supported for IPv4 underlay
+            peering and will be ignored for IPv6-only links.
 
             Default value: `True`
             """
@@ -5349,7 +5356,7 @@ class EosDesigns(EosDesignsRootModel):
                            include_in_underlay_protocol).
                         ipv6_prefix: IPv6 address/Mask. Prefix used on this P2P link.
                         ipv6:
-                           Specific IP addresses used on this P2P link.
+                           Specific IPv6 addresses used on this P2P link.
 
                            Subclass of AvdList with `str` items.
                         interfaces:
@@ -5367,7 +5374,10 @@ class EosDesigns(EosDesignsRootModel):
                            Interface descriptions.
 
                            Subclass of AvdList with `str` items.
-                        include_in_underlay_protocol: Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
+                        include_in_underlay_protocol:
+                           Add this interface to the underlay routing protocols.
+                           This is only supported for IPv4 underlay
+                           peering and will be ignored for IPv6-only links.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -20849,7 +20859,7 @@ class EosDesigns(EosDesignsRootModel):
             """IPv6 address/Mask. Prefix used on this P2P link."""
             ipv6: Ipv6
             """
-            Specific IP addresses used on this P2P link.
+            Specific IPv6 addresses used on this P2P link.
 
             Subclass of AvdList with `str` items.
             """
@@ -20882,7 +20892,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             include_in_underlay_protocol: bool
             """
-            Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
+            Add this interface to the underlay routing protocols.
+            This is only supported for IPv4 underlay
+            peering and will be ignored for IPv6-only links.
 
             Default value: `True`
             """
@@ -21063,7 +21075,7 @@ class EosDesigns(EosDesignsRootModel):
                            include_in_underlay_protocol).
                         ipv6_prefix: IPv6 address/Mask. Prefix used on this P2P link.
                         ipv6:
-                           Specific IP addresses used on this P2P link.
+                           Specific IPv6 addresses used on this P2P link.
 
                            Subclass of AvdList with `str` items.
                         nodes:
@@ -21085,7 +21097,10 @@ class EosDesigns(EosDesignsRootModel):
                            Interface descriptions.
 
                            Subclass of AvdList with `str` items.
-                        include_in_underlay_protocol: Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
+                        include_in_underlay_protocol:
+                           Add this interface to the underlay routing protocols.
+                           This is only supported for IPv4 underlay
+                           peering and will be ignored for IPv6-only links.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -21634,7 +21649,7 @@ class EosDesigns(EosDesignsRootModel):
             """IPv6 address/Mask. Prefix used on this P2P link."""
             ipv6: Ipv6
             """
-            Specific IP addresses used on this P2P link.
+            Specific IPv6 addresses used on this P2P link.
 
             Subclass of AvdList with `str` items.
             """
@@ -21661,7 +21676,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             include_in_underlay_protocol: bool
             """
-            Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
+            Add this interface to the underlay routing protocols.
+            This is only supported for IPv4 underlay
+            peering and will be ignored for IPv6-only links.
 
             Default value: `True`
             """
@@ -21846,7 +21863,7 @@ class EosDesigns(EosDesignsRootModel):
                            include_in_underlay_protocol).
                         ipv6_prefix: IPv6 address/Mask. Prefix used on this P2P link.
                         ipv6:
-                           Specific IP addresses used on this P2P link.
+                           Specific IPv6 addresses used on this P2P link.
 
                            Subclass of AvdList with `str` items.
                         interfaces:
@@ -21864,7 +21881,10 @@ class EosDesigns(EosDesignsRootModel):
                            Interface descriptions.
 
                            Subclass of AvdList with `str` items.
-                        include_in_underlay_protocol: Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
+                        include_in_underlay_protocol:
+                           Add this interface to the underlay routing protocols.
+                           This is only supported for IPv4 underlay
+                           peering and will be ignored for IPv6-only links.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -90631,11 +90651,10 @@ class EosDesigns(EosDesignsRootModel):
     """
     underlay_ipv6: bool
     """
-    This feature turns on IPv6 routing in the underlay.
-    It works with isis underlays and ebgp underlays
-    using "underlay_rfc5549" or "underlay_ipv6_numbered".
-    It requires a "loopback_ipv6_pool" to be
-    defined under the node type settings.
+    This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4
+    advertisements as VXLAN tunnel endpoints.
+    Requires "underlay_rfc5549: true" and "loopback_ipv6_pool"
+    under the node type settings.
 
     Default value: `False`
     """
@@ -92413,11 +92432,10 @@ class EosDesigns(EosDesignsRootModel):
                    prefix-list assigned to redistribute connected permitting only loopbacks and inband management
                    subnets.
                 underlay_ipv6:
-                   This feature turns on IPv6 routing in the underlay.
-                   It works with isis underlays and ebgp underlays
-                   using "underlay_rfc5549" or "underlay_ipv6_numbered".
-                   It requires a "loopback_ipv6_pool" to be
-                   defined under the node type settings.
+                   This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4
+                   advertisements as VXLAN tunnel endpoints.
+                   Requires "underlay_rfc5549: true" and "loopback_ipv6_pool"
+                   under the node type settings.
                 underlay_ipv6_numbered:
                    This feature allows pure IPv6 underlay routing protocol with numbered addresses.
                    Currently sets both

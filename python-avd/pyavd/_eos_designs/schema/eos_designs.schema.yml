@@ -5876,12 +5876,11 @@ keys:
   underlay_ipv6:
     documentation_options:
       table: fabric-settings
-    description: 'This feature turns on IPv6 routing in the underlay.
+    description: 'This feature allows IPv6 underlay routing protocol with RFC5549
+      addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.
 
-      It works with isis underlays and ebgp underlays using "underlay_rfc5549" or
-      "underlay_ipv6_numbered".
-
-      It requires a "loopback_ipv6_pool" to be defined under the node type settings.
+      Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type
+      settings.
 
       '
     type: bool
@@ -12992,7 +12991,7 @@ $defs:
           description: IPv6 address/Mask. Prefix used on this P2P link.
         ipv6:
           type: list
-          description: Specific IP addresses used on this P2P link.
+          description: Specific IPv6 addresses used on this P2P link.
           min_length: 2
           max_length: 2
           items:
@@ -13054,8 +13053,10 @@ $defs:
         include_in_underlay_protocol:
           type: bool
           default: true
-          description: Add this interface to underlay routing protocol. This is only
-            supported with IPv4-enabled links.
+          description: 'Add this interface to the underlay routing protocols.
+
+            This is only supported for IPv4 underlay peering and will be ignored for
+            IPv6-only links.'
         isis_hello_padding:
           type: bool
           default: true

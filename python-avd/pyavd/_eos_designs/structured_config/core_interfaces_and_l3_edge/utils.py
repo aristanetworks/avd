@@ -65,46 +65,52 @@ class UtilsMixin(Protocol):
         return p2p_link._deepinherited(profile_as_p2p_link_item)
 
     def _resolve_p2p_ips(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> T_P2pLinksItem:
-        if p2p_link.ip and p2p_link.ipv6:
-            # ip and ipv6 address already set, so nothing to do
-            return p2p_link
-
-        if not p2p_link.ip:
-            if p2p_link.subnet:
-                # Resolve IPs from subnet
-                network = ip_network(p2p_link.subnet, strict=False)
-                p2p_link.ip.extend([f"{ip}/{network.prefixlen}" for ip in islice(network.hosts(), 2)])
-
-            elif p2p_link.ip_pool and p2p_link.id and p2p_link.ip_pool in self.inputs_data.p2p_links_ip_pools:
-                # Subnet not set but we have what we need to resolve IPs from pool.
-                ip_pool = self.inputs_data.p2p_links_ip_pools[p2p_link.ip_pool]
-                if ip_pool.ipv4_pool:
-                    p2p_link.ip.extend(
-                        [
-                            f"{get_ip_from_pool(ip_pool.ipv4_pool, ip_pool.prefix_size, p2p_link.id - 1, host_offset)}/{ip_pool.prefix_size}"
-                            for host_offset in [0, 1]
-                        ]
-                    )
-        if not p2p_link.ipv6:
-            if p2p_link.ipv6_prefix:
-                # Resolve IPv6 from prefix
-                v6_network = ip_network(p2p_link.ipv6_prefix, strict=False)
-                self.structured_config.ipv6_unicast_routing = True
-                p2p_link.ipv6.extend([f"{ip}/{v6_network.prefixlen}" for ip in islice(v6_network.hosts(), 2)])
-
-            elif p2p_link.ip_pool and p2p_link.id and p2p_link.ip_pool in self.inputs_data.p2p_links_ip_pools:
-                # Prefix not set but we have what we need to resolve IPv6 addresses from pool.
-                ip_pool = self.inputs_data.p2p_links_ip_pools[p2p_link.ip_pool]
-                if ip_pool.ipv6_pool:
-                    self.structured_config.ipv6_unicast_routing = True
-                    p2p_link.ipv6.extend(
-                        [
-                            f"{get_ip_from_pool(ip_pool.ipv6_pool, ip_pool.ipv6_prefix_size, p2p_link.id - 1, host_offset)}/{ip_pool.ipv6_prefix_size}"
-                            for host_offset in [0, 1]
-                        ]
-                    )
-
+        """Resolve both IPv4 and IPv6 addresses for a p2p_link."""
+        self._resolve_p2p_ipv4(p2p_link)
+        self._resolve_p2p_ipv6(p2p_link)
         return p2p_link
+
+    def _resolve_p2p_ipv4(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> None:
+        """Resolve IPv4 addresses from subnet or IP pool if not already set."""
+        if p2p_link.ip:
+            return
+
+        if p2p_link.subnet:
+            # Resolve IPs from subnet.
+            network = ip_network(p2p_link.subnet, strict=False)
+            p2p_link.ip.extend([f"{ip}/{network.prefixlen}" for ip in islice(network.hosts(), 2)])
+
+        elif p2p_link.ip_pool and p2p_link.id and p2p_link.ip_pool in self.inputs_data.p2p_links_ip_pools:
+            # Subnet not set but we have what we need to resolve IPs from pool.
+            ip_pool = self.inputs_data.p2p_links_ip_pools[p2p_link.ip_pool]
+            if ip_pool.ipv4_pool:
+                p2p_link.ip.extend(
+                    [
+                        f"{get_ip_from_pool(ip_pool.ipv4_pool, ip_pool.prefix_size, p2p_link.id - 1, host_offset)}/{ip_pool.prefix_size}"
+                        for host_offset in [0, 1]
+                    ]
+                )
+
+    def _resolve_p2p_ipv6(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> None:
+        """Resolve IPv6 addresses from prefix or IP pool if not already set."""
+        if p2p_link.ipv6:
+            return
+
+        if p2p_link.ipv6_prefix:
+            # Resolve IPv6 from prefix.
+            v6_network = ip_network(p2p_link.ipv6_prefix, strict=False)
+            p2p_link.ipv6.extend([f"{ip}/{v6_network.prefixlen}" for ip in islice(v6_network.hosts(), 2)])
+
+        elif p2p_link.ip_pool and p2p_link.id and p2p_link.ip_pool in self.inputs_data.p2p_links_ip_pools:
+            # Prefix not set but we have what we need to resolve IPv6 addresses from pool.
+            ip_pool = self.inputs_data.p2p_links_ip_pools[p2p_link.ip_pool]
+            if ip_pool.ipv6_pool:
+                p2p_link.ipv6.extend(
+                    [
+                        f"{get_ip_from_pool(ip_pool.ipv6_pool, ip_pool.ipv6_prefix_size, p2p_link.id - 1, host_offset)}/{ip_pool.ipv6_prefix_size}"
+                        for host_offset in [0, 1]
+                    ]
+                )
 
     def _get_p2p_data(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> dict:
         """
@@ -124,6 +130,7 @@ class UtilsMixin(Protocol):
             ipv6: <ipv6 if set | None>
             peer_ip: <peer ip if set | None>
             peer_ipv6: <peer ipv6 if set | None>
+            is_ipv6_only: <bool>
             bgp_as: <as if set | None>
             peer_bgp_as: <peer as if set | None>
         }
@@ -155,6 +162,7 @@ class UtilsMixin(Protocol):
             "ipv6": ipv6,
             "peer_ip": peer_ip,
             "peer_ipv6": peer_ipv6,
+            "is_ipv6_only": ipv6 is not None and ip is None,
             "bgp_as": self.shared_utils.get_asn(str(bgp_as[index])) if index < len(bgp_as) and bgp_as[index] else None,
             "peer_bgp_as": self.shared_utils.get_asn(str(bgp_as[peer_index])) if peer_index < len(bgp_as) and bgp_as[peer_index] else None,
             "description": description,
@@ -274,11 +282,22 @@ class UtilsMixin(Protocol):
             interface.ip_address = p2p_link_data["ip"]
 
         if p2p_link_data["ipv6"]:
+            # Raise an error if underlay_ipv6 is explicitly set to false but IPv6 is used on p2p_links.
+            if self.inputs._get_defined_attr("underlay_ipv6") is False:
+                msg = (
+                    f"IPv6 addressing is configured on {self.data_model}.p2p_links but 'underlay_ipv6' is set to 'false'. "
+                    "Either remove IPv6 addressing from p2p_links or set 'underlay_ipv6: true'."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+
             interface.ipv6_address = p2p_link_data["ipv6"]
+            # Enable IPv6 unicast routing when IPv6 addresses are configured on p2p_links.
+            self.structured_config.ipv6_unicast_routing = True
 
-        self._update_interface_multicast_config(p2p_link, interface)
+        self._update_interface_multicast_config(p2p_link, p2p_link_data, interface)
 
-        if p2p_link.include_in_underlay_protocol:
+        # Skip IPv6-only links for include_in_underlay_protocol since it is only supported for IPv4 underlay peering.
+        if p2p_link.include_in_underlay_protocol and not p2p_link_data["is_ipv6_only"]:
             if (self.inputs.underlay_rfc5549 and p2p_link.routing_protocol != "ebgp") or p2p_link.ipv6_enable is True:
                 interface.ipv6_enable = True
 
@@ -329,7 +348,13 @@ class UtilsMixin(Protocol):
 
         if self.shared_utils.mpls_lsr and default(p2p_link.mpls_ip, True):  # noqa: FBT003
             interface.mpls.ip = True
-            if p2p_link.include_in_underlay_protocol is True and self.shared_utils.underlay_ldp and default(p2p_link.mpls_ldp, True):  # noqa: FBT003
+            # Skip IPv6-only links for include_in_underlay_protocol since it is only supported for IPv4 underlay peering.
+            if (
+                p2p_link.include_in_underlay_protocol is True
+                and not p2p_link_data["is_ipv6_only"]
+                and self.shared_utils.underlay_ldp
+                and default(p2p_link.mpls_ldp, True)  # noqa: FBT003
+            ):
                 interface.mpls.ldp.interface = True
                 interface.mpls.ldp.igp_sync = True
 
@@ -354,16 +379,18 @@ class UtilsMixin(Protocol):
     def _update_interface_multicast_config(
         self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,
         p2p_link: T_P2pLinksItem,
+        p2p_link_data: dict,
         interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
     ) -> None:
-        if p2p_link.include_in_underlay_protocol:
+        # Skip IPv6-only links for include_in_underlay_protocol since it is only supported for IPv4 underlay peering.
+        if p2p_link.include_in_underlay_protocol and not p2p_link_data["is_ipv6_only"]:
             if self.shared_utils.underlay_multicast_pim_sm_enabled and p2p_link.multicast_pim_sm is not False:
                 interface.pim.ipv4.sparse_mode = True
 
             # static multicast
             if self.shared_utils.underlay_multicast_static_enabled and p2p_link.multicast_static is not False:
                 interface.multicast.ipv4.static = True
-        else:
+        elif not p2p_link.include_in_underlay_protocol:
             # not included in underlay protocol
             if self.shared_utils.underlay_multicast_pim_sm_enabled and p2p_link.multicast_pim_sm:
                 interface.pim.ipv4.sparse_mode = True

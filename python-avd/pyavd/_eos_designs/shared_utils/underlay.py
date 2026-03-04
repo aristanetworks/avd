@@ -58,9 +58,6 @@ class UnderlayMixin(Protocol):
 
     @cached_property
     def underlay_ipv6(self: SharedUtilsProtocol) -> bool:
-        if self.inputs.underlay_ipv6 and self.underlay_router and self.underlay_ospf:
-            msg = "Invalid combination of inputs. Underlay ospf variants are not yet supported with IPv6 underlay"
-            raise AristaAvdInvalidInputsError(msg)
         return self.inputs.underlay_ipv6 and self.underlay_router
 
     @cached_property

@@ -24,7 +24,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].ip.[]") | String |  |  |  | Node IPv4 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "core_interfaces.p2p_links_profiles.[].ipv6_enable") | Boolean |  | `False` |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_prefix</samp>](## "core_interfaces.p2p_links_profiles.[].ipv6_prefix") | String |  |  |  | IPv6 address/Mask. Prefix used on this P2P link. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "core_interfaces.p2p_links_profiles.[].ipv6") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Specific IP addresses used on this P2P link. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "core_interfaces.p2p_links_profiles.[].ipv6") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Specific IPv6 addresses used on this P2P link. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].ipv6.[]") | String |  |  |  | Node IPv6 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "core_interfaces.p2p_links_profiles.[].nodes") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Nodes where this link should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].nodes.[]") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].<br> |
@@ -34,7 +34,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].as.[]") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "core_interfaces.p2p_links_profiles.[].descriptions") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Interface descriptions. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].descriptions.[]") | String |  |  |  | Description or description template to be used on the ethernet interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br><br>The default description is set by `default_underlay_p2p_ethernet_description`.<br>By default the description is templated from the name and interface of the peer. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "core_interfaces.p2p_links_profiles.[].include_in_underlay_protocol") | Boolean |  | `True` |  | Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "core_interfaces.p2p_links_profiles.[].include_in_underlay_protocol") | Boolean |  | `True` |  | Add this interface to the underlay routing protocols.<br>This is only supported for IPv4 underlay peering and will be ignored for IPv6-only links. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "core_interfaces.p2p_links_profiles.[].isis_hello_padding") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "core_interfaces.p2p_links_profiles.[].isis_metric") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "core_interfaces.p2p_links_profiles.[].isis_circuit_type") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code><br>- <code>level-1-2</code> |  |
@@ -89,7 +89,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].ip.[]") | String |  |  |  | Node IPv4 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "core_interfaces.p2p_links.[].ipv6_enable") | Boolean |  | `False` |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_prefix</samp>](## "core_interfaces.p2p_links.[].ipv6_prefix") | String |  |  |  | IPv6 address/Mask. Prefix used on this P2P link. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "core_interfaces.p2p_links.[].ipv6") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Specific IP addresses used on this P2P link. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "core_interfaces.p2p_links.[].ipv6") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Specific IPv6 addresses used on this P2P link. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].ipv6.[]") | String |  |  |  | Node IPv6 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "core_interfaces.p2p_links.[].interfaces") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Interfaces where this link should be configured and Required unless using port-channels. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].interfaces.[]") | String |  |  |  | The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br> |
@@ -97,7 +97,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].as.[]") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "core_interfaces.p2p_links.[].descriptions") | List, items: String |  |  | Min Length: 2<br>Max Length: 2 | Interface descriptions. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].descriptions.[]") | String |  |  |  | Description or description template to be used on the ethernet interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br><br>The default description is set by `default_underlay_p2p_ethernet_description`.<br>By default the description is templated from the name and interface of the peer. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "core_interfaces.p2p_links.[].include_in_underlay_protocol") | Boolean |  | `True` |  | Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "core_interfaces.p2p_links.[].include_in_underlay_protocol") | Boolean |  | `True` |  | Add this interface to the underlay routing protocols.<br>This is only supported for IPv4 underlay peering and will be ignored for IPv6-only links. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "core_interfaces.p2p_links.[].isis_hello_padding") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "core_interfaces.p2p_links.[].isis_metric") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "core_interfaces.p2p_links.[].isis_circuit_type") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code><br>- <code>level-1-2</code> |  |
@@ -191,7 +191,7 @@
           # IPv6 address/Mask. Prefix used on this P2P link.
           ipv6_prefix: <str>
 
-          # Specific IP addresses used on this P2P link.
+          # Specific IPv6 addresses used on this P2P link.
           ipv6: # 2-2 items
 
               # Node IPv6 address/Mask.
@@ -232,7 +232,8 @@
               # By default the description is templated from the name and interface of the peer.
             - <str>
 
-          # Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
+          # Add this interface to the underlay routing protocols.
+          # This is only supported for IPv4 underlay peering and will be ignored for IPv6-only links.
           include_in_underlay_protocol: <bool; default=True>
           isis_hello_padding: <bool; default=True>
           isis_metric: <int>
@@ -399,7 +400,7 @@
           # IPv6 address/Mask. Prefix used on this P2P link.
           ipv6_prefix: <str>
 
-          # Specific IP addresses used on this P2P link.
+          # Specific IPv6 addresses used on this P2P link.
           ipv6: # 2-2 items
 
               # Node IPv6 address/Mask.
@@ -433,7 +434,8 @@
               # By default the description is templated from the name and interface of the peer.
             - <str>
 
-          # Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
+          # Add this interface to the underlay routing protocols.
+          # This is only supported for IPv4 underlay peering and will be ignored for IPv6-only links.
           include_in_underlay_protocol: <bool; default=True>
           isis_hello_padding: <bool; default=True>
           isis_metric: <int>

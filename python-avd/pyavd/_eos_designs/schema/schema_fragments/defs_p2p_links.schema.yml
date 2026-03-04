@@ -44,7 +44,7 @@ $defs:
           description: IPv6 address/Mask. Prefix used on this P2P link.
         ipv6:
           type: list
-          description: Specific IP addresses used on this P2P link.
+          description: Specific IPv6 addresses used on this P2P link.
           min_length: 2
           max_length: 2
           items:
@@ -100,7 +100,9 @@ $defs:
         include_in_underlay_protocol:
           type: bool
           default: true
-          description: Add this interface to underlay routing protocol. This is only supported with IPv4-enabled links.
+          description: |-
+            Add this interface to the underlay routing protocols.
+            This is only supported for IPv4 underlay peering and will be ignored for IPv6-only links.
         isis_hello_padding:
           type: bool
           default: true
