@@ -10,6 +10,9 @@ l2leaf:
 
 default_mgmt_method: inband
 
+avd_design_future:
+  ip_tacacs_source_interface_setting: true
+
 aaa_settings:
   tacacs:
     servers:

@@ -10,6 +10,28 @@ aaa_server_groups:
     vrf: MGMT1
   - server: 11.10.10.3
     vrf: MGMT
+- name: TACACS1
+  type: tacacs+
+  servers:
+  - server: 10.10.10.11
+    vrf: default
+  - server: 10.10.10.1
+    vrf: default
+  - server: 10.10.10.2
+    vrf: MGMT
+  - server: 10.10.10.3
+    vrf: default
+  - server: 10.10.10.2
+    vrf: MGMT1
+  - server: nodomain.co
+    vrf: default
+  - server: '1:1:1:1:1:1:1:1'
+    vrf: MGMT
+- name: TACACS2
+  type: tacacs+
+  servers:
+  - server: 10.10.10.1
+    vrf: default
 config_end: true
 enable_password:
   disabled: true
@@ -39,14 +61,14 @@ ethernet_interfaces:
 hostname: host1
 ip_igmp_snooping:
   globally_enabled: true
-ip_radius:
-  source_interface: Vlan123
-  vrfs:
-  - name: MGMT1
-    source_interface: Vlan125
-  - name: MGMT
-    source_interface: Vlan125
 ip_routing: true
+ip_tacacs_source_interfaces:
+- name: Vlan123
+  vrf: default
+- name: Vlan125
+  vrf: MGMT
+- name: Vlan125
+  vrf: MGMT1
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -139,6 +161,33 @@ router_bgp:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
 service_routing_protocols_model: multi-agent
+tacacs_servers:
+  hosts:
+  - host: 10.10.10.11
+    vrf: default
+    key: 071B245F5A
+  - host: 10.10.10.1
+    vrf: default
+    key: 071B245F5A
+  - host: 10.10.10.2
+    vrf: MGMT
+    key: 071B245F5A
+  - host: 10.10.10.3
+    vrf: default
+    key: 071B245F5A
+  - host: 10.10.10.2
+    vrf: MGMT1
+    key: 15131905173E2A
+  - host: nodomain.co
+    vrf: default
+    key: 071B245F5A
+  - host: '1:1:1:1:1:1:1:1'
+    vrf: MGMT
+    key: 071B245F5A
+  - host: 10.10.10.42
+    vrf: default
+    key: 071B245F5A
+  policy_unknown_mandatory_attribute_ignore: false
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

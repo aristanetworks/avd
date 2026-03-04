@@ -1387,20 +1387,18 @@ tacacs-server host 10.10.10.160
 #### IP TACACS Source Interfaces
 
 | VRF | Source Interface Name |
-| --- | --------------- |
-| default | Loopback1 |
-| TEST1 | Loopback3 |
+| --- | --------------------- |
 | default | Loopback10 |
+| TEST1 | Loopback3 |
+| default | Loopback1 |
 
 #### IP TACACS Source Interfaces Device Configuration
 
 ```eos
 !
-ip tacacs vrf default source-interface Loopback1
-!
-ip tacacs vrf TEST1 source-interface Loopback3
-!
 ip tacacs source-interface Loopback10
+ip tacacs vrf TEST1 source-interface Loopback3
+ip tacacs vrf default source-interface Loopback1
 ```
 
 ### Radius Proxy

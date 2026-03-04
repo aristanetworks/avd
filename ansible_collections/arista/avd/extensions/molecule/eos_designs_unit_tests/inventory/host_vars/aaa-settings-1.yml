@@ -7,6 +7,9 @@ l2leaf:
     - name: aaa-settings-1
       mgmt_ip: 192.168.0.2/24
 
+avd_design_future:
+  ip_tacacs_source_interface_setting: true
+
 aaa_settings:
   # adding test for enable_password.password
   enable_password:

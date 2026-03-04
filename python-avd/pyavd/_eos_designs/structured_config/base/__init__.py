@@ -753,6 +753,9 @@ class AvdStructuredConfigBaseProtocol(
         """Parse AAA tacacs server configurations and update structured config with server and source interface details."""
         if not self.inputs.aaa_settings.tacacs:
             return
+
+        use_new_ip_tacacs_model = self.inputs.avd_design_future.ip_tacacs_source_interface_setting
+
         all_tacacs_servers = EosCliConfigGen.TacacsServers.Hosts()
         for server in self.inputs.aaa_settings.tacacs.servers:
             server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
@@ -763,9 +766,17 @@ class AvdStructuredConfigBaseProtocol(
             )
 
             if source_interface:
-                self.structured_config.ip_tacacs_source_interfaces.append_unique(
-                    EosCliConfigGen.IpTacacsSourceInterfacesItem(name=source_interface, vrf=server_vrf)
-                )
+                if use_new_ip_tacacs_model:
+                    # New behavior: separate keys for default VRF and others
+                    if server_vrf == "default":
+                        self.structured_config.ip_tacacs.source_interface = source_interface
+                    else:
+                        self.structured_config.ip_tacacs.vrfs.append_new(name=server_vrf, source_interface=source_interface)
+                else:
+                    # Old behavior: use deprecated ip_tacacs_source_interfaces list
+                    self.structured_config.ip_tacacs_source_interfaces.append_unique(
+                        EosCliConfigGen.IpTacacsSourceInterfacesItem(name=source_interface, vrf=server_vrf)
+                    )
             tacacs_server = EosCliConfigGen.TacacsServers.HostsItem(host=server.host, vrf=server_vrf)
             if not all_tacacs_servers.__contains__(tacacs_server):
                 all_tacacs_servers.append(tacacs_server)
