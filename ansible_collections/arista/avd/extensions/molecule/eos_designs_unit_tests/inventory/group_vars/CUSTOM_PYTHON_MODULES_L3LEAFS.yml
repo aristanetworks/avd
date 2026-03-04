@@ -12,25 +12,25 @@ l3leaf:
     mlag_interfaces: [Ethernet3, Ethernet4]
     uplink_ipv4_pool: 172.31.255.0/24
     uplink_interfaces: [Ethernet1]
-    uplink_switches: [CUSTOM-PYTHON_MODULES-SPINE1]
+    uplink_switches: [custom-python-modules-spine1]
   node_groups:
     - group: CUSTOM_PYTHON_MODULES_L3LEAF1
       bgp_as: 65101
       nodes:
-        - name: CUSTOM-PYTHON_MODULES-L3LEAF1A
+        - name: custom-python-modules-l3leaf1a
           id: 1
           mgmt_ip: 192.168.200.101/24
           uplink_switch_interfaces: [Ethernet1]
-        - name: CUSTOM-PYTHON_MODULES-L3LEAF1B
+        - name: custom-python-modules-l3leaf1b
           id: 2
           mgmt_ip: 192.168.200.102/24
           uplink_switch_interfaces: [Ethernet2]
   nodes:
-    - name: CUSTOM-PYTHON_MODULES-L3LEAF2
+    - name: custom-python-modules-l3leaf2
       id: 3
       bgp_as: 65103
       uplink_type: p2p-vrfs
-      uplink_switches: [CUSTOM-PYTHON_MODULES-L3LEAF1A]
+      uplink_switches: [custom-python-modules-l3leaf1a]
       uplink_switch_interfaces: [Ethernet5]
 
 tenants:
@@ -51,13 +51,13 @@ tenants:
 l3_edge:
   p2p_links:
     - id: 1
-      nodes: [CUSTOM-PYTHON_MODULES-L3LEAF1A, RTR-1]
+      nodes: [custom-python-modules-l3leaf1a, RTR-1]
       interfaces: [Ethernet10, Ethernet1]
       include_in_underlay_protocol: false
 
 core_interfaces:
   p2p_links:
     - id: 1
-      nodes: [CUSTOM-PYTHON_MODULES-L3LEAF1A, RTR-1]
+      nodes: [custom-python-modules-l3leaf1a, RTR-1]
       interfaces: [Ethernet11, Ethernet2]
       include_in_underlay_protocol: false

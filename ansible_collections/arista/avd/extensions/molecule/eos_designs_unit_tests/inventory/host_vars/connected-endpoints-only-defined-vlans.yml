@@ -1,0 +1,40 @@
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: connected-endpoints-only-defined-vlans
+      filter:
+        only_vlans_in_use: true
+      mgmt_ip: 192.168.1.2
+
+servers:
+  - name: server_1
+    adapters:
+      - endpoint_ports: [eth0]
+        switch_ports: [Ethernet1]
+        switches: [connected-endpoints-only-defined-vlans]
+        vlans: defined_vlans
+        mode: trunk
+  - name: server_2
+    adapters:
+      - endpoint_ports: [eth0]
+        switch_ports: [Ethernet2]
+        switches: [connected-endpoints-only-defined-vlans]
+        vlans: defined_vlans
+        mode: trunk
+
+tenants:
+  - name: testtenant
+    vrfs:
+      - name: default
+        vrf_id: 100
+        svis:
+          - id: 101
+            name: vlan101
+          - id: 102
+            name: vlan102
+    l2vlans:
+      - id: 111
+        name: vlan111
+      - id: 112
+        name: vlan112
