@@ -100,7 +100,7 @@ tenant_c:
           - ip_address: 1.1.1.1
             peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
             description: test_description
-            nodes: [DC1-BL2B]
+            nodes: [dc1-bl2b]
             set_ipv4_next_hop: 1.1.1.1
             bfd: true
             bfd_timers:
@@ -109,17 +109,17 @@ tenant_c:
               multiplier: 3
           - ip_address: BEBA::C0CA:C07A
             peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
-            nodes: [ DC1-BL2B ]
+            nodes: [ dc1-bl2b ]
             description: test_ipv6
           - ip_address: 2.2.2.2
             peer_group: Tenant_C_BGP_PEER_GROUP
-            nodes: [ DC1-BL2A ]
+            nodes: [ dc1-bl2a ]
             description: test_bgp_peer_group_without_nodes
           - ip_address: 2.2.2.3
             peer_group: Tenant_C_BGP_PEER_GROUP2
-            nodes: [ DC1-BL2A ]
+            nodes: [ dc1-bl2a ]
             description: test_bgp_peer_group_without_nodes_2nd_time
           - ip_address: 2.2.2.3
             peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
-            nodes: [ DC1-BL2B ]
+            nodes: [ dc1-bl2b ]
             description: test_duplicate_peer_ip_address
