@@ -129,7 +129,7 @@ l3_edge:
         description: Description set via ethernet_structured_config(l3_edge)
 
     # Dual-stack link (IPv4 + IPv6 from pool) with include_in_underlay_protocol: true.
-    # Expects: BGP neighbor created for IPv4, interface has both IPv4 and IPv6 addresses.
+    # Expects: BGP neighbor created for IPv4, interface has both IPv4 and IPv6 addresses, ipv6_unicast_routing enabled.
     - nodes: [l3-edge-bgp, peer-ipv6-1]
       interfaces: [Ethernet13, Ethernet1]
       ip_pool: dual_stack_pool
@@ -147,7 +147,7 @@ l3_edge:
       include_in_underlay_protocol: true
 
     # IPv6-only link (addresses set manually) with include_in_underlay_protocol: true.
-    # Expects: Same as above.
+    # Expects: No BGP neighbor (IPv6-only skips underlay), interface has IPv6 only, ipv6_unicast_routing enabled.
     - nodes: [l3-edge-bgp, peer-ipv6-3]
       interfaces: [Ethernet15, Ethernet1]
       ipv6: ["2001:db8:3000::1/127", "2001:db8:3000::2/127"]
@@ -162,7 +162,7 @@ l3_edge:
       include_in_underlay_protocol: false
 
     # Dual-stack with ipv6_prefix key (manual IPv6, pool IPv4)
-    # Expects: BGP neighbor for IPv4, both addresses on interface.
+    # Expects: BGP neighbor created for IPv4, interface has both IPv4 and IPv6 addresses, ipv6_unicast_routing enabled.
     - nodes: [l3-edge-bgp, peer-ipv6-5]
       interfaces: [Ethernet17, Ethernet1]
       ip_pool: pool1
