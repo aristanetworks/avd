@@ -1,7 +1,5 @@
 ---
 ### IP TACACS source interface ###
-avd_design_future:
-  ip_tacacs_source_interface_setting: true
 ip_tacacs:
   source_interface: Loopback10
   vrfs:
