@@ -79,7 +79,7 @@ l3_edge:
       ip: [192.168.0.6/31, 192.168.0.7/31]
       isis_authentication_cleartext_key: arista
 
-    # IPv6-only link with ISIS underlay.
+    # IPv6-only link (ISIS underlay) with include_in_underlay_protocol: true.
     # Expects: No ISIS config (IPv6-only skips underlay), interface has IPv6 only, ipv6_unicast_routing enabled.
     - nodes: [l3-edge-isis, peer-ipv6]
       interfaces: [ethernet7, ethernet1]
