@@ -354,25 +354,38 @@ class RouterBgpMixin(Protocol):
                 if not self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain and self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
                     msg = "The all-active EVPN Gateway redundancy feature requires evpn_gateway.evpn_l3.inter_domain to be enabled."
                     raise AristaAvdError(msg)
-                # Check if d_path is defined before accessing it to avoid auto-creation
+
+                # Check if both old and new configuration models are defined
                 d_path_defined = self.shared_utils.node_config.evpn_gateway._get_defined_attr("d_path") is not Undefined
+                all_active_multihoming_domain_ids_defined = (
+                    self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("evpn_domain_id_local") is not Undefined
+                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("evpn_domain_id_remote") is not Undefined
+                )
+                if d_path_defined and all_active_multihoming_domain_ids_defined:
+                    msg = (
+                        "Both 'evpn_gateway.d_path' and 'evpn_gateway.all_active_multihoming' domain IDs are defined. "
+                        "Please use only 'evpn_gateway.d_path' as 'evpn_gateway.all_active_multihoming' is deprecated."
+                    )
+                    raise AristaAvdError(msg)
+
+                # Use OR to select from whichever model is defined
                 self.structured_config.router_bgp.address_family_evpn._update(
                     domain_identifier=self.shared_utils.node_config.evpn_gateway.d_path.local_domain_id
-                    if d_path_defined
-                    else self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_local,
+                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_local,
                     domain_identifier_remote=self.shared_utils.node_config.evpn_gateway.d_path.remote_domain_id
-                    if d_path_defined
-                    else self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_remote,
+                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_remote,
                 )
                 self.structured_config.router_bgp.address_family_evpn.evpn_ethernet_segment.append_new(
                     domain="all",
                     identifier=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier,
                     route_target_import=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import,
                 )
-                if d_path_defined:
-                    if self.shared_utils.node_config.evpn_gateway.d_path.enabled:
-                        self.structured_config.router_bgp.bgp.bestpath.d_path = True
-                elif self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enable_d_path:
+
+                # Use AND for boolean with default true - if either is false, result is false
+                if (
+                    self.shared_utils.node_config.evpn_gateway.d_path.enabled
+                    and self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enable_d_path
+                ):
                     self.structured_config.router_bgp.bgp.bestpath.d_path = True
             if self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
                 self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes._update(
