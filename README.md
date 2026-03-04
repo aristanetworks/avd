@@ -46,6 +46,7 @@ AVD Documentation:
 - Ansible [EOS modules](https://docs.ansible.com/ansible/latest/collections/arista/eos/index.html) on Ansible documentation
 - [CloudVision Portal](https://www.arista.com/en/products/eos/eos-cloudvision)
 - [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides)
+- [Arista Tech Library](https://tech-library.arista.com/)
 
 ## Contributing
 
