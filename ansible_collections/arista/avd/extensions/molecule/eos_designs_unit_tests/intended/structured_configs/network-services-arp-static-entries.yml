@@ -1,0 +1,294 @@
+aaa_root:
+  disabled: true
+arp:
+  static_entries:
+  - ipv4_address: 10.1.1.1
+    vrf: VRF1
+    mac_address: 0000.0000.0001
+  - ipv4_address: 10.1.1.2
+    vrf: VRF1
+    mac_address: 0000.0000.0002
+  - ipv4_address: 10.2.1.1
+    vrf: VRF2
+    mac_address: 0000.0000.0011
+  - ipv4_address: 10.2.1.2
+    vrf: VRF2
+    mac_address: 0000.0000.0012
+  - ipv4_address: 10.3.1.1
+    vrf: VRF3
+    mac_address: 0000.0000.0021
+  - ipv4_address: 10.3.1.2
+    vrf: VRF3
+    mac_address: 0000.0000.0022
+  - ipv4_address: 192.168.100.1
+    vrf: VRF4
+    mac_address: AAAA.BBBB.CCCC
+  - ipv4_address: 192.168.100.2
+    vrf: VRF4
+    mac_address: aaaa.bbbb.cccd
+  - ipv4_address: 192.168.100.3
+    vrf: VRF4
+    mac_address: 1234.5678.90AB
+config_end: true
+enable_password:
+  disabled: true
+hostname: network-services-arp-static-entries
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.112/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.254.112/32
+metadata:
+  is_deployed: true
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '102'
+  router_id: 192.168.255.112
+  maximum_paths:
+    paths: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 10
+    metadata:
+      tenants:
+      - TENANT1
+    rd: 192.168.255.112:10010
+    route_targets:
+      both:
+      - 10010:10010
+    redistribute_routes:
+    - learned
+  - id: 20
+    metadata:
+      tenants:
+      - TENANT1
+    rd: 192.168.255.112:10020
+    route_targets:
+      both:
+      - 10020:10020
+    redistribute_routes:
+    - learned
+  - id: 30
+    metadata:
+      tenants:
+      - TENANT1
+    rd: 192.168.255.112:10030
+    route_targets:
+      both:
+      - 10030:10030
+    redistribute_routes:
+    - learned
+  - id: 40
+    metadata:
+      tenants:
+      - TENANT1
+    rd: 192.168.255.112:10040
+    route_targets:
+      both:
+      - 10040:10040
+    redistribute_routes:
+    - learned
+  vrfs:
+  - name: VRF1
+    rd: 192.168.255.112:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+    router_id: 192.168.255.112
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF2
+    rd: 192.168.255.112:2
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '2:2'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '2:2'
+    router_id: 192.168.255.112
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF3
+    rd: 192.168.255.112:3
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '3:3'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '3:3'
+    router_id: 192.168.255.112
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF4
+    rd: 192.168.255.112:4
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '4:4'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '4:4'
+    router_id: 192.168.255.112
+    redistribute:
+      connected:
+        enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan10
+  description: VRF1_VLAN10
+  shutdown: false
+  vrf: VRF1
+  ip_address_virtual: 10.1.10.1/24
+  metadata:
+    tenants:
+    - TENANT1
+- name: Vlan20
+  description: VRF2_VLAN20
+  shutdown: false
+  vrf: VRF2
+  ip_address_virtual: 10.2.20.1/24
+  metadata:
+    tenants:
+    - TENANT1
+- name: Vlan30
+  description: VRF3_VLAN30
+  shutdown: false
+  vrf: VRF3
+  ip_address_virtual: 10.3.30.1/24
+  metadata:
+    tenants:
+    - TENANT1
+- name: Vlan40
+  description: VRF4_VLAN40
+  shutdown: false
+  vrf: VRF4
+  ip_address_virtual: 192.168.40.1/24
+  metadata:
+    tenants:
+    - TENANT1
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 10
+  name: VRF1_VLAN10
+  metadata:
+    tenants:
+    - TENANT1
+- id: 20
+  name: VRF2_VLAN20
+  metadata:
+    tenants:
+    - TENANT1
+- id: 30
+  name: VRF3_VLAN30
+  metadata:
+    tenants:
+    - TENANT1
+- id: 40
+  name: VRF4_VLAN40
+  metadata:
+    tenants:
+    - TENANT1
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF1
+  ip_routing: true
+  metadata:
+    tenants:
+    - TENANT1
+- name: VRF2
+  ip_routing: true
+  metadata:
+    tenants:
+    - TENANT1
+- name: VRF3
+  ip_routing: true
+  metadata:
+    tenants:
+    - TENANT1
+- name: VRF4
+  ip_routing: true
+  metadata:
+    tenants:
+    - TENANT1
+vxlan_interface:
+  vxlan1:
+    description: network-services-arp-static-entries_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 10
+        vni: 10010
+      - id: 20
+        vni: 10020
+      - id: 30
+        vni: 10030
+      - id: 40
+        vni: 10040
+      vrfs:
+      - name: VRF1
+        vni: 1
+      - name: VRF2
+        vni: 2
+      - name: VRF3
+        vni: 3
+      - name: VRF4
+        vni: 4

@@ -80,7 +80,7 @@ l3leaf:
     # Pool of IPv6 addresses to be used as Virtual Tunnel EndPoint (VXLAN origin and destination IPs)
     vtep_loopback_ipv6_pool: 2001:DB8:5::/48
     # Ansible hostname of the devices used to establish neighborship (IP assignments and BGP peering)
-    uplink_switches: ['IPV6_NUMBERED_SPINE1', 'IPV6_NUMBERED_SPINE2']
+    uplink_switches: ['ipv6-numbered-spine1', 'ipv6-numbered-spine2']
     # Pool of IPv6 addresses to be used in P2P links
     uplink_ipv6_pool: 2001:DB8:2::/48
     # descitpion
@@ -103,7 +103,7 @@ l3leaf:
       bgp_as: 65101
       nodes:
         # Definition of hostnames under the node_group
-        - name: IPV6_NUMBERED_LEAF1a
+        - name: ipv6-numbered-leaf1a
           id: 1
           mgmt_ip: 172.16.1.31/24
           # Definition of the port to be used in the uplink device facing this device.
@@ -111,7 +111,7 @@ l3leaf:
           uplink_switch_interfaces:
             - Ethernet1
             - Ethernet1
-        - name: IPV6_NUMBERED_LEAF1b
+        - name: ipv6-numbered-leaf1b
           id: 2
           mgmt_ip: 172.16.1.32/24
           uplink_switch_interfaces:
@@ -122,7 +122,7 @@ l3leaf:
       bgp_as: 65101
       nodes:
         # Definition of hostnames under the node_group
-        - name: IPV6_NUMBERED_LEAF2a
+        - name: ipv6-numbered-leaf2a
           id: 3
           mgmt_ip: 172.16.1.33/24
           # Definition of the port to be used in the uplink device facing this device.

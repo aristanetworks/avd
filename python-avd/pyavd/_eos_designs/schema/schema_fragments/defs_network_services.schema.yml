@@ -1333,6 +1333,30 @@ $defs:
                 type: bool
                 default: true
                 description: Enable or disable the redistribution of all connected routes to BGP in the VRF. Note this is not applicable to VRF `default`.
+              static_arp_entries:
+                type: list
+                description: |
+                  List of static ARP entries for the tenant VRF.
+                  Entries are configured on all devices carrying the VRF unless filtered using the nodes key.
+                items:
+                  type: dict
+                  keys:
+                    ipv4_address:
+                      type: str
+                      required: true
+                      description: ARP entry IPv4 address.
+                    mac_address:
+                      type: str
+                      description: ARP entry MAC address.
+                      required: true
+                      pattern: "[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}"
+                    nodes:
+                      type: list
+                      items:
+                        type: str
+                      description: |
+                        List of nodes where the ARP static entry should be configured.
+                        If not set, the entry will be configured on all devices carrying the VRF.
               bgp_peers:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings
