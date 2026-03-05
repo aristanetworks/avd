@@ -182,7 +182,7 @@ nav:
       - How to use AVD examples: ansible_collections/arista/avd/examples/README.md
       - Single DC L3LS: ansible_collections/arista/avd/examples/single-dc-l3ls/README.md
       - Dual DC L3LS: ansible_collections/arista/avd/examples/dual-dc-l3ls/README.md
-      - Multi-Pod L3LS: examples/single-dc-multipod-l3ls/README.md
+      - Multi-Pod L3LS: ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/README.md
       - L2LS Fabric: ansible_collections/arista/avd/examples/l2ls-fabric/README.md
       - Campus Fabric: ansible_collections/arista/avd/examples/campus-fabric/README.md
       - ISIS-LDP IPVPN: ansible_collections/arista/avd/examples/isis-ldp-ipvpn/README.md
