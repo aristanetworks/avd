@@ -24,47 +24,34 @@ Ansible playbooks are included to show the following:
 - Deploying the configuration via CloudVision to the switches, including a complete change-based workflow with rollback capability, etc.
 - Validating the configuration
 
+## AVD Playground
+
+--8<--
+ansible_collections/arista/avd/examples/common/start-avd-playground.md
+--8<--
+
 ## Installation
 
-Requirements to use this example:
-
-- Follow the installation guide for AVD found [here](../../docs/installation/collection-installation.md).
-- Run the following playbook to copy the AVD **examples** to your current working directory, for example `ansible-avd-examples`:
-
-`ansible-playbook arista.avd.install_examples`
-
-This will show the following:
-
-```shell
- ~/ansible-avd-examples# ansible-playbook arista.avd.install_examples
-
-PLAY [Install Examples]***************************************************************************************************************************************************************************************************************************************************************
-
-TASK [Copy all examples to ~/ansible-avd-examples]*****************************************************************************************************************************************************
-changed: [localhost]
-
-PLAY RECAP
-****************************************************************************************************************************************************************************************************************************************************************************
-localhost                  : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
-```
-
-After the playbook has run successfully, the directory structure will look as shown below, the contents of which will be covered in later sections:
+--8<--
+ansible_collections/arista/avd/examples/common/example-installation.md
+--8<--
 
 ```shell
 ansible-avd-examples/ (or wherever the playbook was run)
   |── single-dc-multipod-l3ls
     ├── ansible.cfg
+    ├── build.yml
+    ├── clab
+    ├── deploy-cvp.yml
+    ├── deploy.yml
     ├── documentation
     ├── group_vars
     ├── images
     ├── intended
     ├── inventory.yml
-    ├── playbooks
     ├── README.md
+    └── validate.yml
 ```
-
-!!! info
-    If the content of any file is ***modified*** and the playbook is rerun, the file ***will not*** be overwritten. However, if any file in the example is ***deleted*** and the playbook is rerun, Ansible will re-create the file.
 
 ## Overall design overview
 
@@ -91,78 +78,66 @@ The SUPERSPINES group has been added, as well as POD1 and POD2 groups with PODX_
 ```yaml title="inventory.yml"
 --8<--
 examples/single-dc-multipod-l3ls/inventory.yml
---8<-
+--8<--
 ```
 
 ## Fabric files
 
-With the topology, five YAML files are used in group_vars:
+With the topology, the following YAML files are used in group_vars:
 
-- FABRIC.yml
-- POD1.yml
-- POD2.yml
-- EVPN_SERVICES.yml
-- ENDPOINT_CONNECT.yml
+- FABRIC/fabric_ansible_connectivity.yml
+- FABRIC/fabric_variables.yml
+- SUPERSPINES/superspines.yml
+- POD1/pod1.yml
+- POD2/pod2.yml
+- EVPN_SERVICES/evpn_services.yml
+- ENDPOINTS/endpoints.yml
 
-The FABRIC.yml file contains parameters that would apply to the entire fabric, such as `evpn_vlan_aware_bundles: true`. FABRIC.yml also includes definitions of superspines.
+The fabric_variables.yml file contains parameters that would apply to the entire fabric, such as `evpn_vlan_aware_bundles: true`.
 
-```yaml title="FABRIC.yml"
----
-
-fabric_name: FABRIC
-
-# Various fabric settings
-
-# Enable vlan aware bundles
-evpn_vlan_aware_bundles: true
-
-# Super-Spine Switches
-super_spine:
-  defaults:
-    platform: cEOS
-    bgp_as: 65000
-    loopback_ipv4_pool: 192.168.101.0/24
-    mlag: false
-    evpn_role: server
-
-  nodes:
-    - name: dc1-ss1
-      id: 201
-      mgmt_ip: 192.168.0.25/24
-    - name: dc1-ss2
-      id: 202
-      mgmt_ip: 192.168.0.26/24
+```yaml title="FABRIC/fabric_variables.yml"
+--8<--
+examples/single-dc-multipod-l3ls/group_vars/FABRIC/fabric_variables.yml
+--8<--
 ```
 
-The POD leafs and spines are not in the FABRIC.yml file in this example (although the contents of POD1.yml and POD2.yml could be consolidated into FABRIC.yml). The super_spine section is new but works like the traditional spine section in a single POD L3LS. It will need an ASN (separate from the POD spines) and loopback pool (which can be the same pool as the PODs, as long as the IDs are unique). The `evpn_role: server` makes the super-spines a router server, as the PODs' routes need to be propagated to each other.
+The superspines.yml file contains the super-spine definitions.
 
-The rest of the FABRIC.yml would contain any parameters for your fabric, such as NTP servers, user accounts, and p2p MTUs. The leaf configurations, EVPN_SERVICES, and ENDPOINT_CONNECT sections aren't affected by the multi-pod format.
+```yaml title="SUPERSPINES/superspines.yml"
+--8<--
+examples/single-dc-multipod-l3ls/group_vars/SUPERSPINES/superspines.yml
+--8<--
+```
+
+The super_spine section works like the traditional spine section in a single POD L3LS. It will need an ASN (separate from the POD spines) and loopback pool (which can be the same pool as the PODs, as long as the IDs are unique). The `evpn_role: server` makes the super-spines a route server, as the PODs' routes need to be propagated to each other.
+
+The rest of the fabric_variables.yml would contain any parameters for your fabric, such as NTP servers, user accounts, and p2p MTUs. The leaf configurations, EVPN_SERVICES, and ENDPOINTS sections aren't affected by the multi-pod format.
 
 === "POD1"
-    The POD1 and POD2 YAML files contain the descriptions of the leafs and spines. Note that each POD's spines have its own unique ASN (eBGP). Also, the spines now have uplink interfaces and uplink switches specified (to the superspies) with the `uplink_switches` and `uplink_interfaces` directives. The uplink pool can overlap between the PODs in a DC. If doing multi-DC, the pools should be on different subnets.
+    The POD1 and POD2 YAML files contain the descriptions of the leafs and spines. Note that each POD's spines have its own unique ASN (eBGP). Also, the spines now have uplink interfaces and uplink switches specified (to the superspines) with the `uplink_switches` and `uplink_interfaces` directives. The uplink pool can overlap between the PODs in a DC. If doing multi-DC, the pools should be on different subnets.
 
-    ```yaml title="POD1.yml"
+    ```yaml title="POD1/pod1.yml"
     --8<--
-    examples/single-dc-multipod-l3ls/group_vars/POD1.yml
-    --8<-
+    examples/single-dc-multipod-l3ls/group_vars/POD1/pod1.yml
+    --8<--
     ```
 
 === "POD2"
     Please note the similarities between POD1 and POD2.
 
-    ```yaml title="POD2.yml"
+    ```yaml title="POD2/pod2.yml"
     --8<--
-    examples/single-dc-multipod-l3ls/group_vars/POD2.yml
-    --8<-
+    examples/single-dc-multipod-l3ls/group_vars/POD2/pod2.yml
+    --8<--
     ```
 
 ## Connecting an External Router
 
-In addition to the multi-pod, this example has a tenant/VRF connecting to an external network via a router (R1). This is defined in the EVPN_SERVICES.yml file. The `l3_interfaces` parameter creates an L3 interface in the VRF on a specific leaf and the `bgp_peer` section.
+In addition to the multi-pod, this example has a tenant/VRF connecting to an external network via a router (R1). This is defined in the evpn_services.yml file. The `l3_interfaces` parameter creates an L3 interface in the VRF on a specific leaf and the `bgp_peer` section.
 
-```yaml title="EVPN_SERVICES.yml"
+```yaml title="EVPN_SERVICES/evpn_services.yml"
 --8<--
-examples/single-dc-multipod-l3ls/group_vars/EVPN_SERVICES.yml
+examples/single-dc-multipod-l3ls/group_vars/EVPN_SERVICES/evpn_services.yml
 --8<--
 ```
 
@@ -170,61 +145,61 @@ examples/single-dc-multipod-l3ls/group_vars/EVPN_SERVICES.yml
 
 The final group variables file provides an example of connecting two servers across a leaf pair.
 
-```yaml title="ENDPOINT_CONNECT.yml"
+```yaml title="ENDPOINTS/endpoints.yml"
 --8<--
-examples/single-dc-multipod-l3ls/group_vars/ENDPOINT_CONNECT.yml
+examples/single-dc-multipod-l3ls/group_vars/ENDPOINTS/endpoints.yml
 --8<--
 ```
 
 ## The playbooks
 
-=== "build_fabric.yml"
+=== "build.yml"
 
-    The build_fabric.yml playbook imports two roles from the AVD collection; `eos_designs` and `eos_cli_config_gen`. These roles will produce any relevant documentation and configuration for our fabric deployment.
+    The `build.yml` playbook imports two roles from the AVD collection; `eos_designs` and `eos_cli_config_gen`. These roles will produce any relevant documentation and configuration for our fabric deployment.
 
     ``` yaml
     --8<--
-    examples/single-dc-multipod-l3ls/playbooks/build_fabric.yml
+    examples/single-dc-multipod-l3ls/playbooks/build.yml
     --8<--
     ```
 
-=== "deploy_cvp.yml"
+=== "deploy-cvp.yml"
 
-    The deploy_cvp.yml file leverages the artifacts from the build playbook to provision our fabric with CVP.
+    The `deploy-cvp.yml` file leverages the artifacts from the build playbook to provision our fabric with CVP.
 
     ``` yaml
     --8<--
-    examples/single-dc-multipod-l3ls/playbooks/deploy_cvp.yml
+    examples/single-dc-multipod-l3ls/playbooks/deploy-cvp.yml
     --8<--
     ```
 
-=== "deploy_eapi.yml"
+=== "deploy.yml"
 
-    The deploy_eapi.yml file leverages the artifacts from the build playbook to provision our fabric but connects directly to our EOS nodes.
+    The deploy.yml file leverages the artifacts from the build playbook to provision our fabric but connects directly to our EOS nodes.
 
     ``` yaml
     --8<--
-    examples/single-dc-multipod-l3ls/playbooks/deploy_eapi.yml
+    examples/single-dc-multipod-l3ls/playbooks/deploy.yml
     --8<--
     ```
 
-=== "test_fabric.yml"
+=== "validate.yml"
 
-    The test_fabric.yml file will connect to our EOS nodes and run validation tests against our fabric.
+    The `validate.yml` file will connect to our EOS nodes and run validation tests against our fabric.
 
     ``` yaml
     --8<--
-    examples/single-dc-multipod-l3ls/playbooks/test_fabric.yml
+    examples/single-dc-multipod-l3ls/playbooks/validate.yml
     --8<--
     ```
 
 ### Playbook Run
 
-To build the configuration files, run the playbook called `build_fabric.yml`.
+To build the configuration files, run the playbook called `build.yml`.
 
 ``` bash
 ### Build configurations
-ansible-playbook playbooks/build_fabric.yml
+ansible-playbook build.yml
 ```
 
 ### EOS Intended Configurations
