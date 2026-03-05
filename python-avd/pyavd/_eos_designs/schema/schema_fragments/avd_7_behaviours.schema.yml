@@ -6,7 +6,7 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  avd_7_behaviors:
+  avd_design_future:
     type: dict
     description: |-
       Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.

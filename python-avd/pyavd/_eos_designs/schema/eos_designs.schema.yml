@@ -294,7 +294,7 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  avd_7_behaviors:
+  avd_design_future:
     type: dict
     description: Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors
       in AVD 7.0.
