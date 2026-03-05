@@ -78,7 +78,7 @@ wan_router:
         enabled: true
         ipsec: false
       nodes:
-        - name: asdot-for-wan-ha-transit1A1
+        - name: asdot-for-wan-ha-transit1a1
           id: 1
           uplink_switch_interfaces: [Ethernet1]
           l3_interfaces:
@@ -92,7 +92,7 @@ wan_router:
               wan_carrier: Colt
               wan_circuit_id: 10666
               ip_address: 172.16.6.6/31
-        - name: asdot-for-wan-ha-transit1B1
+        - name: asdot-for-wan-ha-transit1b1
           id: 2
           uplink_switch_interfaces: [Ethernet2]
           l3_interfaces:

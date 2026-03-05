@@ -15,9 +15,9 @@ l3leaf:
     - group: MLAG_ODD_ID_L3LEAF1
       bgp_as: 923
       nodes:
-        - name: MLAG_ODD_ID_L3LEAF1A
+        - name: mlag-odd-id-l3leaf1a
           id: 3
           mgmt_ip: 192.168.201.116/24
-        - name: MLAG_ODD_ID_L3LEAF1B
+        - name: mlag-odd-id-l3leaf1b
           id: 4
           mgmt_ip: 192.168.201.117/24
