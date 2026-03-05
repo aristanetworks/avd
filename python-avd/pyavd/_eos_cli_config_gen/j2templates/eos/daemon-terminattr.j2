@@ -114,6 +114,9 @@ daemon TerminAttr
 {%     if daemon_terminattr.cvsourceintf is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cvsourceintf=" ~ daemon_terminattr.cvsourceintf %}
 {%     endif %}
+{%     if daemon_terminattr.cvlosstimeout is arista.avd.defined %}
+{%         set cvp_config.cli = cvp_config.cli ~ " -cv_loss_timeout=" ~ daemon_terminattr.cvlosstimeout ~ "m" %}
+{%     endif %}
    {{ cvp_config.cli }}
    no shutdown
 {% endif %}

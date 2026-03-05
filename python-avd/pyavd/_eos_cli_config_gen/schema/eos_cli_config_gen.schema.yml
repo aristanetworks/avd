@@ -1673,6 +1673,14 @@ keys:
           default is false).
 
           '
+      cvlosstimeout:
+        type: int
+        description: 'Value in minutes before the device will revert to ZTP mode.(Five
+          minutes is the recommended interval, -cv_loss_timeout=5m.)
+
+          '
+        convert_types:
+        - str
   daemons:
     type: list
     primary_key: name
