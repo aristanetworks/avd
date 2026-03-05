@@ -40,6 +40,10 @@ l3leaf:
     - name: network-services-l3-port-channels
       id: 101
       bgp_as: 101
+      # Making sure we can define a Port-Channel without ip_address
+      l3_port_channels:
+        - name: Port-Channel77
+          description: L3 Port-Channel without ip_address
 
 tenants:
   - name: L3PO
