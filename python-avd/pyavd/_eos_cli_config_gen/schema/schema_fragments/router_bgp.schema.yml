@@ -182,7 +182,7 @@ keys:
                   valid_values: ["l2-evpn", "l3-vrf"]
                   description: |-
                     l2-evpn: L2 EVPN VXLAN, VPWS, VLAN-aware-bundle, VNI-aware-bundle.
-                    l3-vrf: Enable auto rd assignment for L3 VRFs.
+                    l3-vrf: L3 EVPN and MPLS VPN.
       updates:
         type: dict
         keys:
