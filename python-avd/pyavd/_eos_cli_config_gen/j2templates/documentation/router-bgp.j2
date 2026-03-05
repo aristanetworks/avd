@@ -547,7 +547,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             set rd_range = router_bgp.route_distinguisher.assignment_auto.range.start~"-"~router_bgp.route_distinguisher.assignment_auto.range.end %}
 {%         endif %}
 
-| Address Family | Range |
+| Address Families | Range |
 | -------------- | ----- |
 | {{ address_family | arista.avd.default("-") }} | {{ rd_range | arista.avd.default("-") }} |
 {%     endif %}
