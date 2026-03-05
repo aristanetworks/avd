@@ -314,8 +314,8 @@ ASN Notation: asplain
 
 #### Route Distinguisher
 
-| Address Family | Range |
-| -------------- | ----- |
+| Address Families | Range |
+| ---------------- | ----- |
 | l3-vrf | - |
 
 #### Router BGP EVPN Address Family

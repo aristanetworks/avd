@@ -39330,8 +39330,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Start of range. EOS default is 4096."""
                     end: int
                     """
-                    End of range.
-                    `end` must be greater than or equal to `start`.
+                    End of range. Must be greater than or equal to `start`.
                     EOS default is 65535.
                     """
 
@@ -39347,8 +39346,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 start: Start of range. EOS default is 4096.
                                 end:
-                                   End of range.
-                                   `end` must be greater than or equal to `start`.
+                                   End of range. Must be greater than or equal to `start`.
                                    EOS default is 65535.
 
                             """
@@ -39361,12 +39359,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"range": {"type": Range}, "address_families": {"type": AddressFamilies}}
                 range: Range
                 """
-                Range for assigned value field of rd.
-
+                Range for the 2-byte assigned number field of RD.
+                The range is inclusive of start and end values.
                 Subclass of AvdModel.
                 """
                 address_families: AddressFamilies
-                """Subclass of AvdList with `str` items."""
+                """
+                Address families for which to enable automatic RD assignment.
+                Each address family has its own range
+                allocation.
+
+                Subclass of AvdList with `str` items.
+                """
 
                 if TYPE_CHECKING:
 
@@ -39379,17 +39383,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             range:
-                               Range for assigned value field of rd.
-
+                               Range for the 2-byte assigned number field of RD.
+                               The range is inclusive of start and end values.
                                Subclass of AvdModel.
-                            address_families: Subclass of AvdList with `str` items.
+                            address_families:
+                               Address families for which to enable automatic RD assignment.
+                               Each address family has its own range
+                               allocation.
+
+                               Subclass of AvdList with `str` items.
 
                         """
 
             _fields: ClassVar[dict] = {"assignment_auto": {"type": AssignmentAuto}}
             assignment_auto: AssignmentAuto
             """
-            Route distinguisher auto assignment.
+            Automatic Route Distinguisher (auto RD) feature.
 
             Subclass of AvdModel.
             """
@@ -39405,7 +39414,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         assignment_auto:
-                           Route distinguisher auto assignment.
+                           Automatic Route Distinguisher (auto RD) feature.
 
                            Subclass of AvdModel.
 

@@ -548,7 +548,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%         endif %}
 
 | Address Families | Range |
-| -------------- | ----- |
+| ---------------- | ----- |
 | {{ address_family | arista.avd.default("-") }} | {{ rd_range | arista.avd.default("-") }} |
 {%     endif %}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}

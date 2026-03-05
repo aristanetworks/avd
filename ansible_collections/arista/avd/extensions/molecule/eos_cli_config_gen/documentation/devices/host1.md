@@ -9160,8 +9160,8 @@ ASN Notation: asdot
 
 #### Route Distinguisher
 
-| Address Family | Range |
-| -------------- | ----- |
+| Address Families | Range |
+| ---------------- | ----- |
 | l3-vrf, l2-evpn | 2-45 |
 
 #### Router BGP EVPN Address Family

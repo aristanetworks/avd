@@ -15268,11 +15268,13 @@ keys:
         keys:
           assignment_auto:
             type: dict
-            description: Route distinguisher auto assignment.
+            description: Automatic Route Distinguisher (auto RD) feature.
             keys:
               range:
                 type: dict
-                description: Range for assigned value field of rd.
+                description: 'Range for the 2-byte assigned number field of RD.
+
+                  The range is inclusive of start and end values.'
                 keys:
                   start:
                     type: int
@@ -15289,14 +15291,15 @@ keys:
                     min: 1
                     max: 65535
                     required: true
-                    description: 'End of range.
-
-                      `end` must be greater than or equal to `start`.
+                    description: 'End of range. Must be greater than or equal to `start`.
 
                       EOS default is 65535.'
               address_families:
                 type: list
                 min_length: 1
+                description: 'Address families for which to enable automatic RD assignment.
+
+                  Each address family has its own range allocation.'
                 items:
                   type: str
                   valid_values:
