@@ -24,7 +24,7 @@ keys:
       session_timeout:
         type: int
         description: |-
-          User session timeout value in minutes. 
+          User session timeout value in minutes.
           EOS default is 1440 minutes.
         convert_types:
           - str
