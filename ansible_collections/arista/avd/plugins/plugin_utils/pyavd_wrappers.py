@@ -11,11 +11,14 @@ from ansible.errors import AnsibleFilterError, AnsibleInternalError, AnsibleUnde
 from ansible.utils.display import Display
 from jinja2.exceptions import UndefinedError
 
-from .utils.constants import ANSIBLE_ABOVE_2_19
-
-if ANSIBLE_ABOVE_2_19:
+# NOTE: We use try/except here instead of ANSIBLE_ABOVE_2_19 to avoid circular import.
+# Importing from .utils.constants creates a circular dependency:
+#   pyavd_wrappers.py -> utils.constants -> utils.__init__.py -> avd_switch_facts_default_dict.py -> pyavd_wrappers.py
+#   we could alternatively move the creation of RaiseOnUse to its own module to prevent this.
+try:
     from ansible.module_utils.common.text.converters import to_native
-else:
+except ImportError:
+    # Fallback for ansible-core < 2.19
     from ansible.module_utils.basic import to_native
 
 if TYPE_CHECKING:
