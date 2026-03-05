@@ -261,7 +261,7 @@ jobs:
           - "example-l2ls-fabric"
           - "example-single-dc-l3ls"
           - "example-single-dc-l3ls-ipv6"
-          - 'example-single-dc-multipod-l3ls'
+          - "example-single-dc-multipod-l3ls"
           - "example-cv-pathfinder"
           - "howto"
           - "eos_designs_negative_unit_tests"
