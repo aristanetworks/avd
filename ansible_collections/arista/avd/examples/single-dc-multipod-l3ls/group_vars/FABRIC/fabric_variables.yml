@@ -1,0 +1,83 @@
+---
+# Common AVD group variables
+fabric_name: FABRIC
+
+# Generate CSVs with fabric link info.
+eos_designs_documentation:
+  topology_csv: true
+  p2p_links_csv: true
+
+management_eapi:
+  enabled: true
+
+mgmt_gateway: 172.16.1.1
+
+# Enable VLAN aware bundles
+evpn_vlan_aware_bundles: true
+
+# Define default node types based on hostnames
+default_node_types:
+  - node_type: super-spine
+    match_hostnames:
+      - ".*-ss.*"
+  - node_type: spine
+    match_hostnames:
+      - ".*-spine.*"
+  - node_type: l3leaf
+    match_hostnames:
+      - ".*-leaf.*"
+
+# Set default uplink, downlink, and MLAG interfaces based on node type
+default_interfaces:
+  - types: [super-spine]
+    platforms: [default]
+    downlink_interfaces: [Ethernet1-8]
+  - types: [spine]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]
+    downlink_interfaces: [Ethernet3-8]
+  - types: [l3leaf]
+    platforms: [default]
+    uplink_interfaces: [Ethernet1-2]
+    mlag_interfaces: [Ethernet3-4]
+
+# Local users
+aaa_settings:
+  local_users:
+    # Username with no password configured
+    - name: admin
+      privilege: 15
+      role: network-admin
+      no_password: true
+    # Username with a password
+    - name: arista
+      privilege: 15
+      role: network-admin
+      sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
+
+# CloudVision Portal definitions
+cv_settings:
+  onprem_clusters:
+    - name: primary
+      servers:
+        - name: 172.16.1.5
+        - name: 172.16.1.6
+        - name: 172.16.1.7
+  terminattr:
+    disable_aaa: true
+
+# BFD Settings
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+
+dns_settings:
+  servers:
+    - ip_address: 192.168.1.1
+
+# NTP Servers IP or DNS name, first NTP server will be preferred, and sourced from Management VRF
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: 0.pool.ntp.org

@@ -1,0 +1,13 @@
+---
+- name: Deploy Configurations via CloudVision
+  hosts: FABRIC
+  gather_facts: false
+  connection: local
+  tasks:
+
+    - name: Deploy Configurations via CloudVision
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
+      vars:
+        cv_server: 172.16.1.5
+        cv_token: <insert service_account token here - use Ansible Vault>

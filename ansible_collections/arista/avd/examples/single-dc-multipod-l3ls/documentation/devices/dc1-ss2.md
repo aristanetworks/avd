@@ -4,8 +4,15 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [DNS Domain](#dns-domain)
+  - [IP Name Servers](#ip-name-servers)
+  - [Domain Lookup](#domain-lookup)
+  - [NTP](#ntp)
   - [Management API HTTP](#management-api-http)
+- [Authentication](#authentication)
+  - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
+- [Monitoring](#monitoring)
+  - [TerminAttr Daemon](#terminattr-daemon)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -40,43 +47,86 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | MGMT | 192.168.0.26/24 | 192.168.0.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 172.16.1.26/24 | 172.16.1.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
-interface Management0
-   description oob_management
+interface Management1
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
-   ip address 192.168.0.26/24
+   ip address 172.16.1.26/24
 ```
 
-### DNS Domain
+### IP Name Servers
 
-DNS domain: atd.lab
+#### IP Name Servers Summary
 
-#### DNS Domain Device Configuration
+| Name Server | VRF | Priority |
+| ----------- | --- | -------- |
+| 192.168.1.1 | MGMT | - |
+
+#### IP Name Servers Device Configuration
 
 ```eos
-dns domain atd.lab
+ip name-server vrf MGMT 192.168.1.1
+```
+
+### Domain Lookup
+
+#### DNS Domain Lookup Summary
+
+| Source interface | vrf |
+| ---------------- | --- |
+| Management1 | MGMT |
+
+#### DNS Domain Lookup Device Configuration
+
+```eos
+ip domain lookup vrf MGMT source-interface Management1
+```
+
+### NTP
+
+#### NTP Summary
+
+##### NTP Local Interface
+
+| Interface | VRF |
+| --------- | --- |
+| Management1 | MGMT |
+
+##### NTP Servers
+
+NTP servers VRF: MGMT
+
+| Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 0.pool.ntp.org | True | - | - | - | - | - | - | - |
+
+#### NTP Device Configuration
+
+```eos
 !
+ntp local-interface vrf MGMT Management1
+ntp server vrf MGMT 0.pool.ntp.org prefer
 ```
 
 ### Management API HTTP
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | Default Services |
-| ---- | ----- | ---------------- |
-| False | True | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services |
+| ---- | ----- | ----------- | ---------------- |
+| False | True | - | - |
 
 #### Management API VRF Access
 
@@ -94,6 +144,48 @@ management api http-commands
    !
    vrf MGMT
       no shutdown
+```
+
+## Authentication
+
+### Local Users
+
+#### Local Users Summary
+
+| User | Privilege | Role | Disabled | Shell |
+| ---- | --------- | ---- | -------- | ----- |
+| admin | 15 | network-admin | False | - |
+| arista | 15 | network-admin | False | - |
+
+#### Local Users Device Configuration
+
+```eos
+!
+username admin privilege 15 role network-admin nopassword
+username arista privilege 15 role network-admin secret sha512 <removed>
+```
+
+### Enable Password
+
+Enable password has been disabled
+
+## Monitoring
+
+### TerminAttr Daemon
+
+#### TerminAttr Daemon Summary
+
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 172.16.1.5:9910,172.16.1.6:9910,172.16.1.7:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | - | True |
+
+#### TerminAttr Daemon Device Configuration
+
+```eos
+!
+daemon TerminAttr
+   exec /usr/bin/TerminAttr -cvaddr=172.16.1.5:9910,172.16.1.6:9910,172.16.1.7:9910 -cvauth=token,/tmp/token -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs -cvsourceintf=Management1
+   no shutdown
 ```
 
 ## Spanning Tree
@@ -114,7 +206,7 @@ spanning-tree mode none
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
+| ----------------- | --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
 ### Internal VLAN Allocation Policy Device Configuration
@@ -139,42 +231,42 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet2 | routed | - | 192.168.103.42/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 192.168.103.46/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet2 | routed | - | 192.168.103.50/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet2 | routed | - | 192.168.103.54/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Ethernet1 | P2P_dc1-spine1_Ethernet2 | - | 192.168.103.42/31 | default | 9214 | False | - | - |
+| Ethernet2 | P2P_dc1-spine2_Ethernet2 | - | 192.168.103.46/31 | default | 9214 | False | - | - |
+| Ethernet3 | P2P_dc1-spine3_Ethernet2 | - | 192.168.103.50/31 | default | 9214 | False | - | - |
+| Ethernet4 | P2P_dc1-spine4_Ethernet2 | - | 192.168.103.54/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet2
+   description P2P_dc1-spine1_Ethernet2
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 192.168.103.42/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet2
+   description P2P_dc1-spine2_Ethernet2
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 192.168.103.46/31
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet2
+   description P2P_dc1-spine3_Ethernet2
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 192.168.103.50/31
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet2
+   description P2P_dc1-spine4_Ethernet2
    no shutdown
-   mtu 1500
+   mtu 9214
    no switchport
    ip address 192.168.103.54/31
 ```
@@ -187,20 +279,20 @@ interface Ethernet4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.101.202/32 |
+| Loopback0 | ROUTER_ID | default | 192.168.101.202/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 192.168.101.202/32
 ```
@@ -248,13 +340,13 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-| MGMT | 0.0.0.0/0 | 192.168.0.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 172.16.1.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf MGMT 0.0.0.0/0 192.168.0.1
+ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 ```
 
 ### Router BGP
@@ -270,7 +362,7 @@ ASN Notation: asplain
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 4 |
 
 #### Router BGP Peer Groups
 
@@ -292,7 +384,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv4 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -311,9 +403,9 @@ ASN Notation: asplain
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Encapsulation |
-| ---------- | -------- | ------------- |
-| EVPN-OVERLAY-PEERS | True | default |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| EVPN-OVERLAY-PEERS | True | - | - | - | - | default | - |
 
 #### Router BGP Device Configuration
 
@@ -321,8 +413,8 @@ ASN Notation: asplain
 !
 router bgp 65000
    router-id 192.168.101.202
-   maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
+   maximum-paths 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -332,19 +424,19 @@ router bgp 65000
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 256000
    neighbor 192.168.101.11 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.101.11 remote-as 65001
-   neighbor 192.168.101.11 description dc1-spine1
+   neighbor 192.168.101.11 description dc1-spine1_Loopback0
    neighbor 192.168.101.12 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.101.12 remote-as 65001
-   neighbor 192.168.101.12 description dc1-spine2
+   neighbor 192.168.101.12 description dc1-spine2_Loopback0
    neighbor 192.168.101.13 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.101.13 remote-as 65002
-   neighbor 192.168.101.13 description dc1-spine3
+   neighbor 192.168.101.13 description dc1-spine3_Loopback0
    neighbor 192.168.101.14 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.101.14 remote-as 65002
-   neighbor 192.168.101.14 description dc1-spine4
+   neighbor 192.168.101.14 description dc1-spine4_Loopback0
    neighbor 192.168.103.43 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.103.43 remote-as 65001
    neighbor 192.168.103.43 description dc1-spine1_Ethernet2

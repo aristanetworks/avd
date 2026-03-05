@@ -1,9 +1,9 @@
 ---
-- name: Run fabric states validation
+- name: Run fabric validation
   hosts: FABRIC
   gather_facts: false
   tasks:
 
     - name: Validate devices
       ansible.builtin.import_role:
-        name: arista.avd.eos_validate_state
+        name: arista.avd.anta_runner

@@ -1,151 +1,116 @@
-hostname: dc1-ss2
-is_deployed: true
-router_bgp:
-  as: '65000'
-  router_id: 192.168.101.202
-  bgp:
-    default:
-      ipv4_unicast: false
-  maximum_paths:
-    paths: 4
-    ecmp: 4
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
-    maximum_routes: 12000
-    send_community: all
-  - name: EVPN-OVERLAY-PEERS
-    type: evpn
-    update_source: Loopback0
-    bfd: true
-    send_community: all
-    maximum_routes: 0
-    ebgp_multihop: 3
-    next_hop_unchanged: true
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
-  neighbors:
-  - ip_address: 192.168.103.43
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65001'
-    peer: dc1-spine1
-    description: dc1-spine1_Ethernet2
-  - ip_address: 192.168.103.47
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65001'
-    peer: dc1-spine2
-    description: dc1-spine2_Ethernet2
-  - ip_address: 192.168.103.51
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65002'
-    peer: dc1-spine3
-    description: dc1-spine3_Ethernet2
-  - ip_address: 192.168.103.55
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65002'
-    peer: dc1-spine4
-    description: dc1-spine4_Ethernet2
-  - ip_address: 192.168.101.11
-    peer_group: EVPN-OVERLAY-PEERS
-    peer: dc1-spine1
-    description: dc1-spine1
-    remote_as: '65001'
-  - ip_address: 192.168.101.12
-    peer_group: EVPN-OVERLAY-PEERS
-    peer: dc1-spine2
-    description: dc1-spine2
-    remote_as: '65001'
-  - ip_address: 192.168.101.13
-    peer_group: EVPN-OVERLAY-PEERS
-    peer: dc1-spine3
-    description: dc1-spine3
-    remote_as: '65002'
-  - ip_address: 192.168.101.14
-    peer_group: EVPN-OVERLAY-PEERS
-    peer: dc1-spine4
-    description: dc1-spine4
-    remote_as: '65002'
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.0.1
-service_routing_protocols_model: multi-agent
-ip_routing: true
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
-spanning_tree:
-  mode: none
-vrfs:
-- name: MGMT
-  ip_routing: false
-management_interfaces:
-- name: Management0
-  description: oob_management
-  shutdown: false
-  vrf: MGMT
-  ip_address: 192.168.0.26/24
-  gateway: 192.168.0.1
-  type: oob
-management_api_http:
-  enable_vrfs:
-  - name: MGMT
-  enable_https: true
+aaa_root:
+  disabled: true
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 172.16.1.5:9910
+  - 172.16.1.6:9910
+  - 172.16.1.7:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvsourceintf: Management1
+  cvvrf: MGMT
+  disable_aaa: true
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+enable_password:
+  disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  peer: dc1-spine1
-  peer_interface: Ethernet2
-  peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet2
+  description: P2P_dc1-spine1_Ethernet2
   shutdown: false
-  mtu: 1500
-  type: routed
+  mtu: 9214
   ip_address: 192.168.103.42/31
+  metadata:
+    peer: dc1-spine1
+    peer_interface: Ethernet2
+    peer_type: spine
+  switchport:
+    enabled: false
 - name: Ethernet2
-  peer: dc1-spine2
-  peer_interface: Ethernet2
-  peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet2
+  description: P2P_dc1-spine2_Ethernet2
   shutdown: false
-  mtu: 1500
-  type: routed
+  mtu: 9214
   ip_address: 192.168.103.46/31
+  metadata:
+    peer: dc1-spine2
+    peer_interface: Ethernet2
+    peer_type: spine
+  switchport:
+    enabled: false
 - name: Ethernet3
-  peer: dc1-spine3
-  peer_interface: Ethernet2
-  peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE3_Ethernet2
+  description: P2P_dc1-spine3_Ethernet2
   shutdown: false
-  mtu: 1500
-  type: routed
+  mtu: 9214
   ip_address: 192.168.103.50/31
+  metadata:
+    peer: dc1-spine3
+    peer_interface: Ethernet2
+    peer_type: spine
+  switchport:
+    enabled: false
 - name: Ethernet4
-  peer: dc1-spine4
-  peer_interface: Ethernet2
-  peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE4_Ethernet2
+  description: P2P_dc1-spine4_Ethernet2
   shutdown: false
-  mtu: 1500
-  type: routed
+  mtu: 9214
   ip_address: 192.168.103.54/31
+  metadata:
+    peer: dc1-spine4
+    peer_interface: Ethernet2
+    peer_type: spine
+  switchport:
+    enabled: false
+hostname: dc1-ss2
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.1.1
+ip_routing: true
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: arista
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.101.202/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.16.1.26/24
+  type: oob
+  gateway: 172.16.1.1
+metadata:
+  is_deployed: true
+  platform: cEOS
+  fabric_name: FABRIC
+  validate_hardware:
+    enabled: false
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 0.pool.ntp.org
+    preferred: true
+  vrf: MGMT
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -163,5 +128,105 @@ router_bfd:
     interval: 1200
     min_rx: 1200
     multiplier: 3
-metadata:
-  platform: cEOS
+router_bgp:
+  as: '65000'
+  router_id: 192.168.101.202
+  maximum_paths:
+    paths: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    metadata:
+      type: ipv4
+    send_community: all
+    maximum_routes: 256000
+  - name: EVPN-OVERLAY-PEERS
+    metadata:
+      type: evpn
+    next_hop_unchanged: true
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.103.43
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: dc1-spine1
+    description: dc1-spine1_Ethernet2
+  - ip_address: 192.168.103.47
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: dc1-spine2
+    description: dc1-spine2_Ethernet2
+  - ip_address: 192.168.103.51
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65002'
+    metadata:
+      peer: dc1-spine3
+    description: dc1-spine3_Ethernet2
+  - ip_address: 192.168.103.55
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65002'
+    metadata:
+      peer: dc1-spine4
+    description: dc1-spine4_Ethernet2
+  - ip_address: 192.168.101.11
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: dc1-spine1
+    description: dc1-spine1_Loopback0
+  - ip_address: 192.168.101.12
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65001'
+    metadata:
+      peer: dc1-spine2
+    description: dc1-spine2_Loopback0
+  - ip_address: 192.168.101.13
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65002'
+    metadata:
+      peer: dc1-spine3
+    description: dc1-spine3_Loopback0
+  - ip_address: 192.168.101.14
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65002'
+    metadata:
+      peer: dc1-spine4
+    description: dc1-spine4_Loopback0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 172.16.1.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

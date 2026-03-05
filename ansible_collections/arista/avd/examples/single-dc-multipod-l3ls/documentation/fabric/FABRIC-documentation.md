@@ -17,16 +17,16 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| FABRIC | l3leaf | dc1-leaf1a | 192.168.0.21/24 | cEOS | Provisioned | - |
-| FABRIC | l3leaf | dc1-leaf1b | 192.168.0.22/24 | cEOS | Provisioned | - |
-| FABRIC | l3leaf | dc1-leaf2a | 192.168.0.23/24 | cEOS | Provisioned | - |
-| FABRIC | l3leaf | dc1-leaf2b | 192.168.0.24/24 | cEOS | Provisioned | - |
-| FABRIC | spine | dc1-spine1 | 192.168.0.11/24 | cEOS | Provisioned | - |
-| FABRIC | spine | dc1-spine2 | 192.168.0.12/24 | cEOS | Provisioned | - |
-| FABRIC | spine | dc1-spine3 | 192.168.0.13/24 | cEOS | Provisioned | - |
-| FABRIC | spine | dc1-spine4 | 192.168.0.14/24 | cEOS | Provisioned | - |
-| FABRIC | super-spine | dc1-ss1 | 192.168.0.25/24 | cEOS | Provisioned | - |
-| FABRIC | super-spine | dc1-ss2 | 192.168.0.26/24 | cEOS | Provisioned | - |
+| FABRIC | l3leaf | dc1-leaf1a | 172.16.1.21/24 | cEOS | Provisioned | - |
+| FABRIC | l3leaf | dc1-leaf1b | 172.16.1.22/24 | cEOS | Provisioned | - |
+| FABRIC | l3leaf | dc1-leaf2a | 172.16.1.23/24 | cEOS | Provisioned | - |
+| FABRIC | l3leaf | dc1-leaf2b | 172.16.1.24/24 | cEOS | Provisioned | - |
+| FABRIC | spine | dc1-spine1 | 172.16.1.11/24 | cEOS | Provisioned | - |
+| FABRIC | spine | dc1-spine2 | 172.16.1.12/24 | cEOS | Provisioned | - |
+| FABRIC | spine | dc1-spine3 | 172.16.1.13/24 | cEOS | Provisioned | - |
+| FABRIC | spine | dc1-spine4 | 172.16.1.14/24 | cEOS | Provisioned | - |
+| FABRIC | super-spine | dc1-ss1 | 172.16.1.25/24 | cEOS | Provisioned | - |
+| FABRIC | super-spine | dc1-ss2 | 172.16.1.26/24 | cEOS | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -38,7 +38,7 @@
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
-| ---- | ---- | -------------- | --------- | ----------| -------------- |
+| ---- | ---- | -------------- | --------- | --------- | -------------- |
 | l3leaf | dc1-leaf1a | Ethernet1 | spine | dc1-spine1 | Ethernet3 |
 | l3leaf | dc1-leaf1a | Ethernet2 | spine | dc1-spine2 | Ethernet3 |
 | l3leaf | dc1-leaf1a | Ethernet3 | mlag_peer | dc1-leaf1b | Ethernet3 |
@@ -113,7 +113,7 @@
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
-| --------------------- | ------------------- | ------------------ | ------------------ |
+| ------------------ | ------------------- | ------------------ | ------------------ |
 | 192.168.102.0/24 | 256 | 4 | 1.57 % |
 
 ### VTEP Loopback Node allocation

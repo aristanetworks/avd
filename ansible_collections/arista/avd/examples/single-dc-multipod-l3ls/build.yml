@@ -1,5 +1,5 @@
 ---
-- name: Build fabric configuration
+- name: Build Configurations and Documentation
   hosts: FABRIC
   gather_facts: false
   tasks:
