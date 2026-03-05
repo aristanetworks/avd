@@ -20,6 +20,5 @@ keys:
     valid_values:
       - source_peer_asn
       - as_path_acl
-      - peer_tag
       - rcf
     default: as_path_acl
