@@ -47,7 +47,7 @@
             msg:
               - "### ENGAGE CV_DEPLOY ROLE FOR MANIFEST-ONLY DEPLOYMENT {{ test_id[:69] | upper }} ###"
 
-        - name: "(BLOCK) {{ test_id | upper }} Deploy manifest only"
+        - name: "(BLOCK) {{ test_id | upper }} Provision CVP with manifest only"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost
@@ -65,9 +65,9 @@
             cv_devices: []
             cv_static_config_manifest:
               configlets:
-                - name: "TEST-MANIFEST-ONLY-ALIAS"
+                - name: "TEST-MANIFEST-ALIAS"
                   file: "{{ playbook_dir }}/intended/configlets/test_manifest_alias.txt"
-                - name: "TEST-MANIFEST-ONLY-ACCESS-LISTS"
+                - name: "TEST-MANIFEST-ACCESS-LISTS"
                   file: "{{ playbook_dir }}/intended/configlets/test_manifest_access_lists.txt"
               containers:
                 - name: "AVD-MANIFEST-ROOT"
@@ -75,11 +75,11 @@
                   # Tag query to match avd-ci-leaf1 (device tag is a part of the base configuration)
                   tag_query: "dummy_name:dummy_val"
                   sub_containers:
-                    - name: "AVD-MANIFEST-ONLY-CHILD"
+                    - name: "AVD-MANIFEST-CHILD"
                       description: "Child container for AVD manifest deployment"
                       tag_query: "device:avd-ci-leaf1"
                       configlets:
-                        - name: "TEST-MANIFEST-ONLY-ACCESS-LISTS"
+                        - name: "TEST-MANIFEST-ACCESS-LISTS"
 
         - name: "(BLOCK) {{ test_id | upper }} Check CVP returns"
           tags: ["{{ test_id }}"]
@@ -113,8 +113,8 @@
           ansible.builtin.assert:
             that:
               - cv_deploy_results.deployed_static_config_configlets is defined
-              - "'TEST-MANIFEST-ONLY-ACCESS-LISTS' in cv_deploy_results.deployed_static_config_configlets | map(attribute='name') | list"
-              - "'TEST-MANIFEST-ONLY-ALIAS' in cv_deploy_results.deployed_static_config_configlets | map(attribute='name') | list"
+              - "'TEST-MANIFEST-ACCESS-LISTS' in cv_deploy_results.deployed_static_config_configlets | map(attribute='name') | list"
+              - "'TEST-MANIFEST-ALIAS' in cv_deploy_results.deployed_static_config_configlets | map(attribute='name') | list"
 
         - name: "(BLOCK) {{ test_id | upper }} Verify manifest containers were deployed"
           tags: ["{{ test_id }}"]
@@ -122,7 +122,9 @@
           ansible.builtin.assert:
             that:
               - cv_deploy_results.deployed_static_config_containers is defined
-              - cv_deploy_results.deployed_static_config_containers | length == 1
+              - cv_deploy_results.deployed_static_config_containers | length == 2
+              - cv_deploy_results.skipped_static_config_containers is defined
+              - cv_deploy_results.skipped_static_config_containers | length == 0
               # AVD-MANIFEST-ROOT (root container)
               - (cv_deploy_results.deployed_static_config_containers | selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).configlets | length == 0
               - >
@@ -138,7 +140,7 @@
                 ((cv_deploy_results.deployed_static_config_containers |
                 selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).configlets | length == 1
               - >
-                'TEST-MANIFEST-ONLY-ACCESS-LISTS' in
+                'TEST-MANIFEST-ACCESS-LISTS' in
                 ((cv_deploy_results.deployed_static_config_containers |
                 selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).configlets
               - >
@@ -150,32 +152,29 @@
                 selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).match_policy == 'match_all'
               - >
                 ((cv_deploy_results.deployed_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).name == 'AVD-MANIFEST-ONLY-CHILD'
+                selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).name == 'AVD-MANIFEST-CHILD'
               - >
                 ((cv_deploy_results.deployed_static_config_containers |
                 selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).sub_containers | length == 0
               - >
                 ((cv_deploy_results.deployed_static_config_containers |
                 selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).tag_query == 'device:avd-ci-leaf1'
-              # AVD-MANIFEST-ONLY-CHILD (standalone container) is not "pushed" because cleanup only deletes container
-              # but not assignment and reference to the configlets
-              - cv_deploy_results.skipped_static_config_containers is defined
-              - cv_deploy_results.skipped_static_config_containers | length == 1
+              # AVD-MANIFEST-CHILD (standalone container)
               - >
-                (cv_deploy_results.skipped_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-ONLY-CHILD') | first).configlets | first == 'TEST-MANIFEST-ONLY-ACCESS-LISTS'
+                (cv_deploy_results.deployed_static_config_containers |
+                selectattr('name', 'eq', 'AVD-MANIFEST-CHILD') | first).configlets | first == 'TEST-MANIFEST-ACCESS-LISTS'
               - >
-                (cv_deploy_results.skipped_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-ONLY-CHILD') | first).description == 'Child container for AVD manifest deployment'
+                (cv_deploy_results.deployed_static_config_containers |
+                selectattr('name', 'eq', 'AVD-MANIFEST-CHILD') | first).description == 'Child container for AVD manifest deployment'
               - >
-                (cv_deploy_results.skipped_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-ONLY-CHILD') | first).match_policy == 'match_all'
+                (cv_deploy_results.deployed_static_config_containers |
+                selectattr('name', 'eq', 'AVD-MANIFEST-CHILD') | first).match_policy == 'match_all'
               - >
-                (cv_deploy_results.skipped_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-ONLY-CHILD') | first).sub_containers | length == 0
+                (cv_deploy_results.deployed_static_config_containers |
+                selectattr('name', 'eq', 'AVD-MANIFEST-CHILD') | first).sub_containers | length == 0
               - >
-                (cv_deploy_results.skipped_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-ONLY-CHILD') | first).tag_query == 'device:avd-ci-leaf1'
+                (cv_deploy_results.deployed_static_config_containers |
+                selectattr('name', 'eq', 'AVD-MANIFEST-CHILD') | first).tag_query == 'device:avd-ci-leaf1'
 
         - name: "(BLOCK) {{ test_id | upper }} Verify regular AVD device configs were not deployed"
           tags: ["{{ test_id }}"]
@@ -200,7 +199,79 @@
             msg:
               - "### ENGAGE CV_DEPLOY ROLE TO CLEANUP AFTER {{ test_id[:69] | upper }} ###"
 
-        - name: "(ALWAYS) {{ test_id | upper }} Cleanup manifest-only deployment"
+        - name: "(ALWAYS) {{ test_id | upper }} Check status of the Workspace"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/workspace/v1/Workspace?key.workspaceId={{ cv_deploy_results.workspace.id }}
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: GET
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_workspace_status_result
+          until: cvp_workspace_status_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          when: cv_deploy_results.workspace.id is not none and cv_deploy_results.workspace.id | length > 0
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) {{ test_id | upper }} Cleanup orphan workspace (if needed)"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig/some
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "values": [
+                  {
+                    "key": {
+                      "workspaceId": "{{ cv_deploy_results.workspace.id }}"
+                    },
+                    "request": "REQUEST_ABANDON",
+                    "requestParams": {
+                      "requestId": "{{ r }}"
+                    }
+                  }
+                ]
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_abandon_workspace_result
+          until: cvp_abandon_workspace_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          when:
+            - cv_deploy_results.workspace.id is not none and cv_deploy_results.workspace.id | length > 0
+            - >
+              cvp_workspace_status_result.json.value.state | default("WORKSPACE_STATE_UNSPECIFIED") not in
+              ["WORKSPACE_STATE_SUBMITTED", "WORKSPACE_STATE_ABANDONED", "WORKSPACE_STATE_ROLLED_BACK"]
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        # Apply base config (rollback) even if we expect no changes to regular AVD static configlets
+        - name: "(ALWAYS) {{ test_id | upper }} Rollback regular AVD configlets"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost
@@ -212,17 +283,14 @@
             cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
             cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
             cv_register_detailed_results: true
+            cv_devices: "{{ ansible_play_hosts_all }}"
+            eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
+            structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
             cv_submit_workspace_force: true
             cv_run_change_control: true
-            # Cleanup in manifest-only mode
-            cv_devices: []
-            cv_static_config_manifest:
-              containers:
-                - name: "AVD-MANIFEST-ROOT"
-                  tag_query: "dummy_name:dummy_val"
 
         # TODO: Remove everything below once cv_deploy can handle complete removal of containers and configlets deployed using manifest approach
-        - name: "(ALWAYS) {{ test_id | upper }} Generate WS ID to cleanup assignment roots"
+        - name: "(ALWAYS) {{ test_id | upper }} Generate WS ID to cleanup manifest artifacts"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.set_fact:
@@ -230,7 +298,7 @@
             clean_ws_build_request_id: "build-studio-roots-cleanup-ws-{{ r }}"
             clean_ws_submit_request_id: "submit-studio-roots-cleanup-ws-{{ r }}"
 
-        - name: "(ALWAYS) {{ test_id | upper }} Create new workspace to clean up Manifest Root container and Assignment roots"
+        - name: "(ALWAYS) {{ test_id | upper }} Create new workspace to cleanup manifest artifacts"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.legacy.uri:
@@ -250,7 +318,7 @@
                   "workspaceId": "{{ cleanup_ws_id }}"
                 },
                 "request": "REQUEST_UNSPECIFIED",
-                "displayName": "{{ (cv_common_pattern + '_' + r + '_cleanup_roots') | upper }}",
+                "displayName": "{{ (cv_common_pattern + '_' + r + '_cleanup_roots') }}",
               }
             force_basic_auth: true
             timeout: 10
@@ -355,7 +423,7 @@
             https_proxy: >-
               http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
 
-        - name: "(ALWAYS) {{ test_id | upper }} Cleanup remaining AVD manifest root container"
+        - name: "(ALWAYS) {{ test_id | upper }} Cleanup remaining AVD manifest container assignments"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.legacy.uri:
@@ -373,7 +441,7 @@
               {
                 "key": {
                   "workspaceId": "{{ cleanup_ws_id }}",
-                  "configletAssignmentId": "avd_3a4a3c55-8c4f-5a62-aae3-7d178ffe0286",
+                  "configletAssignmentId": "{{ item }}",
                 },
                 "remove": true,
                 "matchPolicy": 0,
@@ -385,12 +453,56 @@
           retries: 3
           delay: 3
           ignore_errors: true
+          loop:
+            # AVD-MANIFEST-ROOT
+            - avd_3a4a3c55-8c4f-5a62-aae3-7d178ffe0286
+            # AVD-MANIFEST-ROOT/AVD-MANIFEST-CHILD
+            - avd_cd84bbbf-fb04-59aa-b7a1-41af18bf8b0e
           # Set HTTPS_PROXY environment variable scoped for this task only
           environment:
             https_proxy: >-
               http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
 
-        - name: "(ALWAYS) {{ test_id | upper }} Build workspace to clean up Manifest Root container and Assignment roots"
+        - name: "(ALWAYS) {{ test_id | upper }} Cleanup remaining AVD manifest configlets"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/configlet/v1/ConfigletConfig
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "key": {
+                  "workspaceId": "{{ cleanup_ws_id }}",
+                  "configletId": "{{ item }}",
+                },
+                "remove": true,
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_remove_configlets_result
+          until: cvp_remove_configlets_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          loop:
+            # TEST-MANIFEST-ACCESS-LISTS
+            - avd_481d34ea-792b-506c-b80a-b62ea545ea60
+            # TEST-MANIFEST-ALIAS
+            - avd_f0e33409-e301-5867-9d0f-97986b5e0823
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) {{ test_id | upper }} Build workspace to cleanup manifest leftovers"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.legacy.uri:
@@ -458,12 +570,13 @@
               'RESPONSE_STATUS_SUCCESS'
           retries: 10
           delay: 5
+          ignore_errors: true
           # Set HTTPS_PROXY environment variable scoped for this task only
           environment:
             https_proxy: >-
               http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
 
-        - name: "(ALWAYS) {{ test_id | upper }} Submit workspace to clean up Manifest Root container and Assignment roots"
+        - name: "(ALWAYS) {{ test_id | upper }} Submit workspace to cleanup manifest root container and assignment roots"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.legacy.uri:
@@ -499,6 +612,166 @@
             https_proxy: >-
               http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
 
-        - name: "(ALWAYS) {{ test_id | upper }} Debug cvp_submit_ws"
+        - name: "(ALWAYS) {{ test_id | upper }} Debug cvp_cleanup_workspace_submit_result"
           ansible.builtin.debug:
             msg: "{{ cvp_cleanup_workspace_submit_result }}"
+
+        - name: "(ALWAYS) {{ test_id | upper }} Wait until workspace submission completes"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/workspace/v1/Workspace/getsome
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "keys": [
+                  {
+                    "workspaceId": "{{ cleanup_ws_id }}"
+                  },
+                ],
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_cleanup_workspace_submit_status_result
+          until:
+            - cvp_cleanup_workspace_submit_status_result.status == 200
+            - >
+              cvp_cleanup_workspace_submit_status_result.json.result.value.responses["values"][clean_ws_submit_request_id].status | default("") ==
+              'RESPONSE_STATUS_SUCCESS'
+            - >
+              cvp_cleanup_workspace_submit_status_result.json.result.value.ccIds["values"] is defined
+          retries: 10
+          delay: 5
+          ignore_errors: true
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) {{ test_id | upper }} Debug cvp_cleanup_workspace_submit_status_result"
+          ansible.builtin.debug:
+            msg: "{{ cvp_cleanup_workspace_submit_status_result }}"
+
+        - name: "(ALWAYS) {{ test_id | upper }} Set manifest cleanup ChangeControlId"
+          ansible.builtin.set_fact:
+            cleanup_cc_id: "{{ cvp_cleanup_workspace_submit_status_result.json.result.value.ccIds[\"values\"][0] | default('') }}"
+
+        - name: "(ALWAYS) {{ test_id | upper }} Fetch cleanup Change Control to get Timestamp"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/changecontrol/v1/ChangeControl?key.id={{ cleanup_cc_id }}
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: GET
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_cleanup_cc_fetch_result
+          until:
+            - cvp_cleanup_cc_fetch_result.status == 200
+            - cvp_cleanup_cc_fetch_result.json.value.change.time is defined
+          retries: 10
+          delay: 5
+          ignore_errors: true
+          when: cleanup_cc_id | length > 0
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) {{ test_id | upper }} Debug cvp_cleanup_cc_fetch_result"
+          ansible.builtin.debug:
+            msg: "{{ cvp_cleanup_cc_fetch_result }}"
+
+        - name: "(ALWAYS) {{ test_id | upper }} Set manifest cleanup Change Control version"
+          ansible.builtin.set_fact:
+            cleanup_cc_version: "{{ cvp_cleanup_cc_fetch_result.json.value.change.time | default('') }}"
+
+        - name: "(ALWAYS) {{ test_id | upper }} Approve cleanup Change Control"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/changecontrol/v1/ApproveConfig
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "key": {
+                  "id": "{{ cleanup_cc_id }}"
+                },
+                "approve": {
+                  "value": true,
+                },
+                "version": "{{ cleanup_cc_version }}",
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_cleanup_cc_approve_result
+          until:
+            - cvp_cleanup_cc_approve_result.status == 200
+          retries: 10
+          delay: 5
+          ignore_errors: true
+          when: cleanup_cc_id | length > 0
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
+
+        - name: "(ALWAYS) {{ test_id | upper }} Start cleanup Change Control"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/changecontrol/v1/ChangeControlConfig
+            use_proxy: "{{ true if proxy_host and proxy_port else false }}"
+            validate_certs: "{{ cv_verify_certs }}"
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
+              {
+                "key": {
+                  "id": "{{ cleanup_cc_id }}"
+                },
+                "start": {
+                  "value": true,
+                  "notes": "Automatically starting CC to clean manifest artifacts"
+                },
+              }
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_cleanup_cc_start_result
+          until:
+            - cvp_cleanup_cc_start_result.status == 200
+          retries: 10
+          delay: 5
+          ignore_errors: true
+          when: cleanup_cc_id | length > 0
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: >-
+              http://{{ (proxy_username and proxy_password) | ternary(proxy_username ~ ':' ~ proxy_password ~ '@', '') }}{{ proxy_host }}:{{ proxy_port }}
