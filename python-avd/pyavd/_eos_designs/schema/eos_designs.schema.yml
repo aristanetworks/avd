@@ -296,8 +296,8 @@ keys:
       remove_in_version: 6.0.0
   avd_design_future:
     type: dict
-    description: Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors
-      in AVD 7.0.
+    description: Opt-in to future AVD behaviors which will become default behaviors
+      in a future AVD major version.
     documentation_options:
       table: role-settings
     deprecation:
