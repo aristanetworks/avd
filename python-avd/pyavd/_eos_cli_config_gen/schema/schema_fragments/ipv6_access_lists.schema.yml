@@ -24,25 +24,8 @@ keys:
           description: ACL Entries.
           items:
             type: dict
+            $ref: "eos_cli_config_gen#/$defs/access_list_entry"
             keys:
-              sequence:
-                type: int
-                convert_types:
-                  - str
-                description: ACL entry sequence number.
-              remark:
-                type: str
-                description: |-
-                  Comment up to 100 characters.
-                  If remark is defined, other keys in the ACL entry will be ignored.
-              action:
-                type: str
-                valid_values:
-                  - "permit"
-                  - "deny"
-                description: |-
-                  ACL action.
-                  Required except for remarks.
               protocol:
                 type: str
                 description: |-
@@ -54,64 +37,12 @@ keys:
                   "any", "<ipv6>/<mask>" or "<ipv6>".
                   "<ipv6>" without a mask means host.
                   Required except for remarks.
-              source_ports_match:
-                type: str
-                valid_values:
-                  - "eq"
-                  - "gt"
-                  - "lt"
-                  - "neq"
-                  - "range"
-                default: "eq"
-              source_ports:
-                type: list
-                min_length: 1
-                items:
-                  type: str
-                  convert_types:
-                    - int
-                  description: TCP/UDP source port name or number.
               destination:
                 type: str
                 description: |-
                   "any", "<ipv6>/<mask>" or "<ipv6>".
                   "<ipv6>" without a mask means host.
                   Required except for remarks.
-              destination_ports_match:
-                type: str
-                valid_values:
-                  - "eq"
-                  - "gt"
-                  - "lt"
-                  - "neq"
-                  - "range"
-                default: "eq"
-              destination_ports:
-                type: list
-                min_length: 1
-                items:
-                  type: str
-                  convert_types:
-                    - int
-                  description: TCP/UDP destination port name or number.
-              tcp_flags:
-                type: list
-                items:
-                  type: str
-                  description: TCP Flag Name.
-              log:
-                type: bool
-                description: Log matches against this rule.
-              icmp_type:
-                type: str
-                convert_types:
-                  - int
-                description: Message type name/number for ICMP packets.
-              icmp_code:
-                type: str
-                convert_types:
-                  - int
-                description: Message code for ICMP packets.
               hop_limit:
                 type: int
                 convert_types:
@@ -126,29 +57,11 @@ keys:
                   - "lt"
                   - "neq"
                 default: "eq"
-              nexthop_group:
-                type: str
-                description: nexthop-group name.
-              tracked:
-                type: bool
-                description: Match packets in existing ICMP/UDP/TCP connections.
-              dscp:
-                type: str
-                convert_types:
-                  - int
-                description: DSCP value or name.
               dscp_mask:
                 type: str
                 convert_types:
                   - int
                 description: DSCP mask ranges from 0x00 to 0x3F.
-              vlan_number:
-                type: int
-                convert_types:
-                  - str
-              vlan_mask:
-                type: str
-                description: 0x000-0xFFF VLAN mask.
               inner_vlan_number:
                 type: int
                 convert_types:

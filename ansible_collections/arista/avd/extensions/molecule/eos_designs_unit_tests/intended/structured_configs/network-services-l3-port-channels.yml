@@ -113,18 +113,18 @@ hostname: network-services-l3-port-channels
 ip_access_lists:
 - name: inACL
   entries:
-  - sequence: 10
-    action: deny
-    protocol: ip
+  - protocol: ip
     source: any
     destination: any
+    sequence: 10
+    action: deny
 - name: outACL
   entries:
-  - sequence: 10
-    action: deny
-    protocol: ip
+  - protocol: ip
     source: any
     destination: any
+    sequence: 10
+    action: deny
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true

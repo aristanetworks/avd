@@ -49,11 +49,11 @@ hostname: cv-pathfinder-custom-control-plane-policy-edge-3
 ip_access_lists:
 - name: ACL-NAT-IE-ZSCALER
   entries:
-  - sequence: 10
-    action: permit
-    protocol: ip
+  - protocol: ip
     source: any
     destination: any
+    sequence: 10
+    action: permit
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:

@@ -182,16 +182,16 @@ hostname: cv-pathfinder-transit1a
 ip_access_lists:
 - name: ACL-NAT-IE-DIRECT
   entries:
-  - sequence: 10
-    action: deny
-    protocol: ip
+  - protocol: ip
     source: 172.16.6.6
     destination: any
-  - sequence: 20
-    action: permit
-    protocol: ip
+    sequence: 10
+    action: deny
+  - protocol: ip
     source: any
     destination: any
+    sequence: 20
+    action: permit
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:

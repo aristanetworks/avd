@@ -14837,6 +14837,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class EntriesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            TtlMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
             Action: TypeAlias = Literal["permit", "deny"]
             SourcePortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
 
@@ -14857,32 +14858,56 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             TcpFlags._item_type = str
 
-            TtlMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
             _fields: ClassVar[dict] = {
+                "protocol": {"type": str},
+                "source": {"type": str},
+                "destination": {"type": str},
+                "fragments": {"type": bool},
+                "ttl": {"type": int},
+                "ttl_match": {"type": str, "default": "eq"},
+                "vlan_inner": {"type": bool, "default": False},
                 "sequence": {"type": int},
                 "remark": {"type": str},
                 "action": {"type": str},
-                "protocol": {"type": str},
-                "source": {"type": str},
                 "source_ports_match": {"type": str, "default": "eq"},
                 "source_ports": {"type": SourcePorts},
-                "destination": {"type": str},
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
-                "fragments": {"type": bool},
                 "log": {"type": bool},
-                "ttl": {"type": int},
-                "ttl_match": {"type": str, "default": "eq"},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
                 "nexthop_group": {"type": str},
                 "tracked": {"type": bool},
                 "dscp": {"type": str},
                 "vlan_number": {"type": int},
-                "vlan_inner": {"type": bool, "default": False},
                 "vlan_mask": {"type": str},
             }
+            protocol: str | None
+            """
+            "ip", "tcp", "udp", "icmp" or other protocol name or number.
+            Required except for remarks.
+            """
+            source: str | None
+            """
+            "any", "<ip>/<mask>" or "<ip>".
+            "<ip>" without a mask means host.
+            Required except for remarks.
+            """
+            destination: str | None
+            """
+            "any", "<ip>/<mask>" or "<ip>".
+            "<ip>" without a mask means host.
+            Required except for remarks.
+            """
+            fragments: bool | None
+            """Match non-head fragment packets."""
+            ttl: int | None
+            """TTL value."""
+            ttl_match: TtlMatch
+            """Default value: `"eq"`"""
+            vlan_inner: bool
+            """Default value: `False`"""
             sequence: int | None
             """ACL entry sequence number."""
             remark: str | None
@@ -14895,41 +14920,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ACL action.
             Required except for remarks.
             """
-            protocol: str | None
-            """
-            "ip", "tcp", "udp", "icmp" or other protocol name or number.
-            Required except for remarks.
-            """
-            source: str | None
-            """
-            "any", "<ip>/<mask>" or "<ip>".
-            "<ip>" without a mask means host.
-            Required except for remarks.
-            """
             source_ports_match: SourcePortsMatch
             """Default value: `"eq"`"""
             source_ports: SourcePorts
             """Subclass of AvdList with `str` items."""
-            destination: str | None
-            """
-            "any", "<ip>/<mask>" or "<ip>".
-            "<ip>" without a mask means host.
-            Required except for remarks.
-            """
             destination_ports_match: DestinationPortsMatch
             """Default value: `"eq"`"""
             destination_ports: DestinationPorts
             """Subclass of AvdList with `str` items."""
             tcp_flags: TcpFlags
             """Subclass of AvdList with `str` items."""
-            fragments: bool | None
-            """Match non-head fragment packets."""
             log: bool | None
             """Log matches against this rule."""
-            ttl: int | None
-            """TTL value."""
-            ttl_match: TtlMatch
-            """Default value: `"eq"`"""
             icmp_type: str | None
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
@@ -14941,8 +14943,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             dscp: str | None
             """DSCP value or name."""
             vlan_number: int | None
-            vlan_inner: bool
-            """Default value: `False`"""
             vlan_mask: str | None
             """0x000-0xFFF VLAN mask."""
 
@@ -14951,28 +14951,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
+                    protocol: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    destination: str | None | UndefinedType = Undefined,
+                    fragments: bool | None | UndefinedType = Undefined,
+                    ttl: int | None | UndefinedType = Undefined,
+                    ttl_match: TtlMatch | UndefinedType = Undefined,
+                    vlan_inner: bool | UndefinedType = Undefined,
                     sequence: int | None | UndefinedType = Undefined,
                     remark: str | None | UndefinedType = Undefined,
                     action: Action | None | UndefinedType = Undefined,
-                    protocol: str | None | UndefinedType = Undefined,
-                    source: str | None | UndefinedType = Undefined,
                     source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
                     source_ports: SourcePorts | UndefinedType = Undefined,
-                    destination: str | None | UndefinedType = Undefined,
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
-                    fragments: bool | None | UndefinedType = Undefined,
                     log: bool | None | UndefinedType = Undefined,
-                    ttl: int | None | UndefinedType = Undefined,
-                    ttl_match: TtlMatch | UndefinedType = Undefined,
                     icmp_type: str | None | UndefinedType = Undefined,
                     icmp_code: str | None | UndefinedType = Undefined,
                     nexthop_group: str | None | UndefinedType = Undefined,
                     tracked: bool | None | UndefinedType = Undefined,
                     dscp: str | None | UndefinedType = Undefined,
                     vlan_number: int | None | UndefinedType = Undefined,
-                    vlan_inner: bool | UndefinedType = Undefined,
                     vlan_mask: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -14982,13 +14982,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        sequence: ACL entry sequence number.
-                        remark:
-                           Comment up to 100 characters.
-                           If remark is defined, other keys in the ACL entry will be ignored.
-                        action:
-                           ACL action.
-                           Required except for remarks.
                         protocol:
                            "ip", "tcp", "udp", "icmp" or other protocol name or number.
                            Required except for remarks.
@@ -14996,26 +14989,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            "any", "<ip>/<mask>" or "<ip>".
                            "<ip>" without a mask means host.
                            Required except for remarks.
-                        source_ports_match: source_ports_match
-                        source_ports: Subclass of AvdList with `str` items.
                         destination:
                            "any", "<ip>/<mask>" or "<ip>".
                            "<ip>" without a mask means host.
                            Required except for remarks.
+                        fragments: Match non-head fragment packets.
+                        ttl: TTL value.
+                        ttl_match: ttl_match
+                        vlan_inner: vlan_inner
+                        sequence: ACL entry sequence number.
+                        remark:
+                           Comment up to 100 characters.
+                           If remark is defined, other keys in the ACL entry will be ignored.
+                        action:
+                           ACL action.
+                           Required except for remarks.
+                        source_ports_match: source_ports_match
+                        source_ports: Subclass of AvdList with `str` items.
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
-                        fragments: Match non-head fragment packets.
                         log: Log matches against this rule.
-                        ttl: TTL value.
-                        ttl_match: ttl_match
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
                         nexthop_group: nexthop-group name.
                         tracked: Match packets in existing ICMP/UDP/TCP connections.
                         dscp: DSCP value or name.
                         vlan_number: vlan_number
-                        vlan_inner: vlan_inner
                         vlan_mask: 0x000-0xFFF VLAN mask.
 
                     """
@@ -17901,6 +17901,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class EntriesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            HopLimitMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
             Action: TypeAlias = Literal["permit", "deny"]
             SourcePortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
 
@@ -17921,33 +17922,58 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             TcpFlags._item_type = str
 
-            HopLimitMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
             _fields: ClassVar[dict] = {
+                "protocol": {"type": str},
+                "source": {"type": str},
+                "destination": {"type": str},
+                "hop_limit": {"type": int},
+                "hop_limit_match": {"type": str, "default": "eq"},
+                "dscp_mask": {"type": str},
+                "inner_vlan_number": {"type": int},
+                "inner_vlan_mask": {"type": str},
                 "sequence": {"type": int},
                 "remark": {"type": str},
                 "action": {"type": str},
-                "protocol": {"type": str},
-                "source": {"type": str},
                 "source_ports_match": {"type": str, "default": "eq"},
                 "source_ports": {"type": SourcePorts},
-                "destination": {"type": str},
                 "destination_ports_match": {"type": str, "default": "eq"},
                 "destination_ports": {"type": DestinationPorts},
                 "tcp_flags": {"type": TcpFlags},
                 "log": {"type": bool},
                 "icmp_type": {"type": str},
                 "icmp_code": {"type": str},
-                "hop_limit": {"type": int},
-                "hop_limit_match": {"type": str, "default": "eq"},
                 "nexthop_group": {"type": str},
                 "tracked": {"type": bool},
                 "dscp": {"type": str},
-                "dscp_mask": {"type": str},
                 "vlan_number": {"type": int},
                 "vlan_mask": {"type": str},
-                "inner_vlan_number": {"type": int},
-                "inner_vlan_mask": {"type": str},
             }
+            protocol: str | None
+            """
+            "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
+            Required except for remarks.
+            """
+            source: str | None
+            """
+            "any", "<ipv6>/<mask>" or "<ipv6>".
+            "<ipv6>" without a mask means host.
+            Required except for remarks.
+            """
+            destination: str | None
+            """
+            "any", "<ipv6>/<mask>" or "<ipv6>".
+            "<ipv6>" without a mask means host.
+            Required except for remarks.
+            """
+            hop_limit: int | None
+            """Match Hop Limit value."""
+            hop_limit_match: HopLimitMatch
+            """Default value: `"eq"`"""
+            dscp_mask: str | None
+            """DSCP mask ranges from 0x00 to 0x3F."""
+            inner_vlan_number: int | None
+            inner_vlan_mask: str | None
+            """0x000-0xFFF inner VLAN mask."""
             sequence: int | None
             """ACL entry sequence number."""
             remark: str | None
@@ -17960,27 +17986,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ACL action.
             Required except for remarks.
             """
-            protocol: str | None
-            """
-            "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
-            Required except for remarks.
-            """
-            source: str | None
-            """
-            "any", "<ipv6>/<mask>" or "<ipv6>".
-            "<ipv6>" without a mask means host.
-            Required except for remarks.
-            """
             source_ports_match: SourcePortsMatch
             """Default value: `"eq"`"""
             source_ports: SourcePorts
             """Subclass of AvdList with `str` items."""
-            destination: str | None
-            """
-            "any", "<ipv6>/<mask>" or "<ipv6>".
-            "<ipv6>" without a mask means host.
-            Required except for remarks.
-            """
             destination_ports_match: DestinationPortsMatch
             """Default value: `"eq"`"""
             destination_ports: DestinationPorts
@@ -17993,54 +18002,45 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Message type name/number for ICMP packets."""
             icmp_code: str | None
             """Message code for ICMP packets."""
-            hop_limit: int | None
-            """Match Hop Limit value."""
-            hop_limit_match: HopLimitMatch
-            """Default value: `"eq"`"""
             nexthop_group: str | None
             """nexthop-group name."""
             tracked: bool | None
             """Match packets in existing ICMP/UDP/TCP connections."""
             dscp: str | None
             """DSCP value or name."""
-            dscp_mask: str | None
-            """DSCP mask ranges from 0x00 to 0x3F."""
             vlan_number: int | None
             vlan_mask: str | None
             """0x000-0xFFF VLAN mask."""
-            inner_vlan_number: int | None
-            inner_vlan_mask: str | None
-            """0x000-0xFFF inner VLAN mask."""
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
+                    protocol: str | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    destination: str | None | UndefinedType = Undefined,
+                    hop_limit: int | None | UndefinedType = Undefined,
+                    hop_limit_match: HopLimitMatch | UndefinedType = Undefined,
+                    dscp_mask: str | None | UndefinedType = Undefined,
+                    inner_vlan_number: int | None | UndefinedType = Undefined,
+                    inner_vlan_mask: str | None | UndefinedType = Undefined,
                     sequence: int | None | UndefinedType = Undefined,
                     remark: str | None | UndefinedType = Undefined,
                     action: Action | None | UndefinedType = Undefined,
-                    protocol: str | None | UndefinedType = Undefined,
-                    source: str | None | UndefinedType = Undefined,
                     source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
                     source_ports: SourcePorts | UndefinedType = Undefined,
-                    destination: str | None | UndefinedType = Undefined,
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
                     destination_ports: DestinationPorts | UndefinedType = Undefined,
                     tcp_flags: TcpFlags | UndefinedType = Undefined,
                     log: bool | None | UndefinedType = Undefined,
                     icmp_type: str | None | UndefinedType = Undefined,
                     icmp_code: str | None | UndefinedType = Undefined,
-                    hop_limit: int | None | UndefinedType = Undefined,
-                    hop_limit_match: HopLimitMatch | UndefinedType = Undefined,
                     nexthop_group: str | None | UndefinedType = Undefined,
                     tracked: bool | None | UndefinedType = Undefined,
                     dscp: str | None | UndefinedType = Undefined,
-                    dscp_mask: str | None | UndefinedType = Undefined,
                     vlan_number: int | None | UndefinedType = Undefined,
                     vlan_mask: str | None | UndefinedType = Undefined,
-                    inner_vlan_number: int | None | UndefinedType = Undefined,
-                    inner_vlan_mask: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     EntriesItem.
@@ -18049,13 +18049,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        sequence: ACL entry sequence number.
-                        remark:
-                           Comment up to 100 characters.
-                           If remark is defined, other keys in the ACL entry will be ignored.
-                        action:
-                           ACL action.
-                           Required except for remarks.
                         protocol:
                            "ipv6", "tcp", "udp", "icmpv6" or other protocol name or number.
                            Required except for remarks.
@@ -18063,28 +18056,35 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            "any", "<ipv6>/<mask>" or "<ipv6>".
                            "<ipv6>" without a mask means host.
                            Required except for remarks.
-                        source_ports_match: source_ports_match
-                        source_ports: Subclass of AvdList with `str` items.
                         destination:
                            "any", "<ipv6>/<mask>" or "<ipv6>".
                            "<ipv6>" without a mask means host.
                            Required except for remarks.
+                        hop_limit: Match Hop Limit value.
+                        hop_limit_match: hop_limit_match
+                        dscp_mask: DSCP mask ranges from 0x00 to 0x3F.
+                        inner_vlan_number: inner_vlan_number
+                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask.
+                        sequence: ACL entry sequence number.
+                        remark:
+                           Comment up to 100 characters.
+                           If remark is defined, other keys in the ACL entry will be ignored.
+                        action:
+                           ACL action.
+                           Required except for remarks.
+                        source_ports_match: source_ports_match
+                        source_ports: Subclass of AvdList with `str` items.
                         destination_ports_match: destination_ports_match
                         destination_ports: Subclass of AvdList with `str` items.
                         tcp_flags: Subclass of AvdList with `str` items.
                         log: Log matches against this rule.
                         icmp_type: Message type name/number for ICMP packets.
                         icmp_code: Message code for ICMP packets.
-                        hop_limit: Match Hop Limit value.
-                        hop_limit_match: hop_limit_match
                         nexthop_group: nexthop-group name.
                         tracked: Match packets in existing ICMP/UDP/TCP connections.
                         dscp: DSCP value or name.
-                        dscp_mask: DSCP mask ranges from 0x00 to 0x3F.
                         vlan_number: vlan_number
                         vlan_mask: 0x000-0xFFF VLAN mask.
-                        inner_vlan_number: inner_vlan_number
-                        inner_vlan_mask: 0x000-0xFFF inner VLAN mask.
 
                     """
 
