@@ -149,7 +149,7 @@ keys:
         keys:
           assignment_auto:
             type: dict
-            description: Route distinguisher auto assignment.
+            description: Automatic Route Distinguisher (auto RD) feature.
             keys:
               range:
                 type: dict
