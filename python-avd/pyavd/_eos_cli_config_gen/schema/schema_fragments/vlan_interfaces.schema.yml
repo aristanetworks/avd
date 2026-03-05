@@ -1,3 +1,4 @@
+---
 # Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
@@ -273,19 +274,19 @@ keys:
         access_group_in:
           type: str
           description: IPv4 access-list name.
-          convert_types: [ int ]
+          convert_types: [int]
         access_group_out:
           type: str
           description: IPv4 access-list name.
-          convert_types: [ int ]
+          convert_types: [int]
         ipv6_access_group_in:
           type: str
           description: IPv6 access-list name.
-          convert_types: [ int ]
+          convert_types: [int]
         ipv6_access_group_out:
           type: str
           description: IPv6 access-list name.
-          convert_types: [ int ]
+          convert_types: [int]
         multicast:
           type: dict
           keys:
@@ -302,7 +303,7 @@ keys:
                       boundary:
                         type: str
                         description: IPv4 access-list name or IPv4 multicast group prefix with mask.
-                        convert_types: [ int ]
+                        convert_types: [int]
                       out:
                         type: bool
                 source_route_export:
@@ -332,7 +333,7 @@ keys:
                       boundary:
                         type: str
                         description: IPv6 access-list name or IPv6 multicast group prefix with mask.
-                        convert_types: [ int ]
+                        convert_types: [int]
                 source_route_export:
                   type: dict
                   keys:
@@ -349,16 +350,33 @@ keys:
                   type: bool
         ospf_network_point_to_point:
           type: bool
-        ipv6_ospf_network_point_to_point:
-          type: bool
         ospf_area:
           type: str
           convert_types:
             - int
-        ipv6_ospf_area:
-          type: str
-          convert_types:
-            - int
+        ipv6_ospf:
+          type: dict
+          description: IPv6 OSPF configuration for the interface.
+          keys:
+            process:
+              type: dict
+              keys:
+                id:
+                  type: int
+                  description: OSPF Process ID.
+                  min: 1
+                  max: 65535
+                  required: true
+                  convert_types:
+                    - str
+                area:
+                  type: str
+                  description: OSPF Area ID. Can be an integer (0-4294967295) or IP address format (0.0.0.0).
+                  convert_types:
+                    - int
+                  required: true
+            network_point_to_point:
+              type: bool
         ospf_cost:
           type: int
           convert_types:
@@ -680,9 +698,11 @@ keys:
         metadata:
           type: dict
           keys:
-            tenant:
-              type: str
-              description: Key only used for documentation or validation purposes.
+            tenants:
+              type: list
+              description: List of tenants where this VLAN interface is defined. Key only used for documentation or validation purposes.
+              items:
+                type: str
             tags:
               type: list
               items:

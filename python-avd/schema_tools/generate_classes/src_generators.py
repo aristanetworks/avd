@@ -409,7 +409,7 @@ class FileSrc:
     def _render_imports(self) -> str:
         """Render the python source code for imports."""
         imports = set()
-        for cls in self.classes:
+        for cls in filter(None, self.classes):
             imports.update(cls.get_imports())
         return "\n".join(str(imp) for imp in imports)
 

@@ -82,3 +82,15 @@ custom_structured_configuration_router_bgp:
       metadata:
         peer: dc1-svc-leaf1a
         validate_state: false
+
+# Custom VXLAN interface with Dps1 source interface to validate the WAN DPS reachability test
+# This host will now be considered as a WAN router because of the DPS VXLAN source interface
+custom_structured_configuration_vxlan_interface:
+  vxlan1:
+    vxlan:
+      source_interface: Dps1
+
+custom_structured_configuration_dps_interfaces:
+  - name: Dps1
+    description: WAN_DPS
+    ip_address: 10.99.99.1/24

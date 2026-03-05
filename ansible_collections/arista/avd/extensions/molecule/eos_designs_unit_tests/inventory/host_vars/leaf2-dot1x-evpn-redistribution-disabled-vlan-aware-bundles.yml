@@ -1,0 +1,18 @@
+---
+dot1x_settings:
+  enabled: true
+  accounting:
+    enabled: false
+  redistribute_in_evpn: false
+
+avd_7_behaviors:
+  # Test for new behaviour of IP RADIUS server commands
+  ip_radius_source_interface_setting: true
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        cleartext_key: super-secret-key
+
+evpn_vlan_aware_bundles: true

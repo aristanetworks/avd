@@ -1,3 +1,4 @@
+---
 # Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
@@ -19,8 +20,8 @@ keys:
       as_notation:
         display_name: ASN Notation
         type: str
-        description: 'BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>".
-          This flag indicates which mode is preferred - asplain is the default.'
+        description: 'BGP AS can be deplayed in the asplain <1-4294967295> or asdot notation "<1-65535>.<0-65535>". This flag indicates which mode is preferred -
+          asplain is the default.'
         valid_values:
           - asdot
           - asplain
@@ -1071,9 +1072,11 @@ keys:
             metadata:
               type: dict
               keys:
-                tenant:
-                  type: str
-                  description: Key only used for documentation or validation purposes.
+                tenants:
+                  type: list
+                  description: List of tenants where this bundle is defined. Key only used for documentation or validation purposes.
+                  items:
+                    type: str
                 description:
                   type: str
                   description: Key only used for documentation or validation purposes.
@@ -1171,9 +1174,11 @@ keys:
             metadata:
               type: dict
               keys:
-                tenant:
-                  type: str
-                  description: Key only used for documentation or validation purposes.
+                tenants:
+                  type: list
+                  description: List of tenants where this VLAN is defined. Key only used for documentation or validation purposes.
+                  items:
+                    type: str
             rd:
               description: Route distinguisher.
               type: str
@@ -1584,6 +1589,11 @@ keys:
                   type: str
                 route_map:
                   description: Route-map name.
+                  type: str
+                rcf:
+                  description: |-
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                   type: str
           bgp:
             type: dict
@@ -2286,6 +2296,11 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+                rcf:
+                  description: |-
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                  type: str
           next_hops:
             type: list
             primary_key: ip_address
@@ -2610,6 +2625,11 @@ keys:
                   type: str
                 route_map:
                   description: Route-map name.
+                  type: str
+                rcf:
+                  description: |-
+                    RCF name with parenthesis. Example "NETWORK-RCF()".
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                   type: str
           bgp:
             type: dict
@@ -4372,6 +4392,11 @@ keys:
                         description: IPv4 prefix "A.B.C.D/E".
                       route_map:
                         type: str
+                      rcf:
+                        description: |-
+                          RCF name with parenthesis. Example "NETWORK-RCF()".
+                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+                        type: str
                 redistribute:
                   type: dict
                   description: Redistribute routes in to BGP.
@@ -4686,6 +4711,11 @@ keys:
                         type: str
                         description: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                       route_map:
+                        type: str
+                      rcf:
+                        description: |-
+                          RCF name with parenthesis. Example "NETWORK-RCF()".
+                          `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
                         type: str
                 redistribute:
                   type: dict

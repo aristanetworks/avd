@@ -1,0 +1,27 @@
+---
+# Test for global 802.1X enabled with specific features turned off
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: dot1x-settings-3
+      mgmt_ip: 192.168.0.2/24
+
+dot1x_settings:
+  enabled: true
+  accounting:
+    enabled: false
+  bypass_bpdu: false
+  bypass_lldp: false
+  dynamic_authorization:
+    enabled: false
+
+avd_7_behaviors:
+  # Test for new behaviour of IP RADIUS server commands
+  ip_radius_source_interface_setting: true
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        cleartext_key: super-secret-key

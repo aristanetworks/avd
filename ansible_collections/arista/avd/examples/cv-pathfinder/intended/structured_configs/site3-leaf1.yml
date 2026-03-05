@@ -37,10 +37,10 @@ flow_tracking:
   sampled:
     sample: 10000
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER
+      record_export:
         on_inactive_timeout: 70000
         on_interval: 5000
-      name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
         collectors:
@@ -54,9 +54,11 @@ ip_domain_lookup:
     vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 192.168.17.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.17.1
 local_users:
 - name: admin
   privilege: 15
@@ -114,11 +116,13 @@ vlans:
 - id: 666
   name: BLUE-TEST
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 - id: 42
   name: RED-TEST
   metadata:
-    tenant: WAN-EXAMPLE-TENANT
+    tenants:
+    - WAN-EXAMPLE-TENANT
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -9,6 +9,16 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>default_igmp_snooping_enabled</samp>](## "default_igmp_snooping_enabled") | Boolean |  | `True` |  | When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.<br> |
     | [<samp>default_interface_mtu</samp>](## "default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Can be overridden per platform under platform settings.<br> |
+    | [<samp>general_settings</samp>](## "general_settings") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;interface_defaults</samp>](## "general_settings.interface_defaults") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ethernet_shutdown</samp>](## "general_settings.interface_defaults.ethernet_shutdown") | Boolean |  | `False` |  | Shutdown Ethernet interfaces by default unless they are explicitly enabled. |
+    | [<samp>&nbsp;&nbsp;arp</samp>](## "general_settings.arp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;persistent</samp>](## "general_settings.arp.persistent") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "general_settings.arp.persistent.enabled") | Boolean | Required |  |  | Restore the ARP cache after reboot. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refresh_delay</samp>](## "general_settings.arp.persistent.refresh_delay") | Integer |  |  | Min: 600<br>Max: 3600 | Time to wait in seconds before refreshing the ARP cache after reboot (EOS default 600). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;aging</samp>](## "general_settings.arp.aging") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout_default</samp>](## "general_settings.arp.aging.timeout_default") | Integer |  |  | Min: 60<br>Max: 65535 | Timeout in seconds. |
+    | [<samp>&nbsp;&nbsp;ip_icmp_redirect</samp>](## "general_settings.ip_icmp_redirect") | Boolean |  |  |  |  |
     | [<samp>hardware_counters</samp>](## "hardware_counters") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;features</samp>](## "hardware_counters.features") | List, items: Dictionary |  |  |  | This data model allows to configure the list of hardware counters feature<br>available on Arista platforms.<br><br>The `name` key accepts a list of valid_values which MUST be updated to support<br>new feature as they are released in EOS.<br><br>The available values of the different keys like 'direction' or 'address_type'<br>are feature and hardware dependent and this model DOES NOT validate that the<br>combinations are valid. It is the responsibility of the user of this data model<br>to make sure that the rendered CLI is accepted by the targeted device.<br><br>Examples:<br><br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: ip<br>          direction: out<br>          layer3: true<br>          units_packets: true<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature ip out layer3 units packets<br>    ```<br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: route<br>          address_type: ipv4<br>          vrf: test<br>          prefix: 192.168.0.0/24<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature route ipv4 vrf test 192.168.0.0/24<br>    ```<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "hardware_counters.features.[].name") | String | Required |  | Valid Values:<br>- <code>acl</code><br>- <code>decap-group</code><br>- <code>directflow</code><br>- <code>ecn</code><br>- <code>flow-spec</code><br>- <code>gre tunnel interface</code><br>- <code>ip</code><br>- <code>mpls interface</code><br>- <code>mpls lfib</code><br>- <code>mpls tunnel</code><br>- <code>multicast</code><br>- <code>nexthop</code><br>- <code>pbr</code><br>- <code>pdp</code><br>- <code>policing interface</code><br>- <code>qos</code><br>- <code>qos dual-rate-policer</code><br>- <code>route</code><br>- <code>routed-port</code><br>- <code>segment-security</code><br>- <code>subinterface</code><br>- <code>tapagg</code><br>- <code>traffic-class</code><br>- <code>traffic-policy</code><br>- <code>traffic-policy vlan-interface</code><br>- <code>vlan</code><br>- <code>vlan-interface</code><br>- <code>vni decap</code><br>- <code>vni encap</code><br>- <code>vtep decap</code><br>- <code>vtep encap</code> |  |
@@ -39,7 +49,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eligibility_forwarding</samp>](## "mac_address_table.static_entries.[].eligibility_forwarding") | Boolean |  |  |  | Enable the ability to forward traffic on the specified interface and VLAN for this MAC address.<br>This option is only applicable when 'interface' is defined. |
     | [<samp>queue_monitor_length</samp>](## "queue_monitor_length") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "queue_monitor_length.enabled") | Boolean | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;notifying</samp>](## "queue_monitor_length.notifying") | Boolean |  |  |  | If True, `eos_designs` will configure `queue-monitor length notifying` according to the<br>`platform_settings.[].feature_support.queue_monitor_length_notify` setting.<br> |
+    | [<samp>&nbsp;&nbsp;notifying</samp>](## "queue_monitor_length.notifying") | Boolean |  |  |  | If True, Arista AVD will configure `queue-monitor length notifying` according to the<br>`platform_settings.[].feature_support.queue_monitor_length_notify` setting.<br> |
     | [<samp>&nbsp;&nbsp;default_thresholds</samp>](## "queue_monitor_length.default_thresholds") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;high</samp>](## "queue_monitor_length.default_thresholds.high") | Integer | Required |  |  | Default high threshold for Ethernet Interfaces.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;low</samp>](## "queue_monitor_length.default_thresholds.low") | Integer |  |  |  | Default low threshold for Ethernet Interfaces.<br>Low threshold support is platform dependent.<br> |
@@ -76,6 +86,24 @@
     # Default interface MTU configured on EOS under "interface defaults".
     # Can be overridden per platform under platform settings.
     default_interface_mtu: <int; 68-65535>
+    general_settings:
+      interface_defaults:
+
+        # Shutdown Ethernet interfaces by default unless they are explicitly enabled.
+        ethernet_shutdown: <bool; default=False>
+      arp:
+        persistent:
+
+          # Restore the ARP cache after reboot.
+          enabled: <bool; required>
+
+          # Time to wait in seconds before refreshing the ARP cache after reboot (EOS default 600).
+          refresh_delay: <int; 600-3600>
+        aging:
+
+          # Timeout in seconds.
+          timeout_default: <int; 60-65535>
+      ip_icmp_redirect: <bool>
     hardware_counters:
 
       # This data model allows to configure the list of hardware counters feature
@@ -193,7 +221,7 @@
     queue_monitor_length:
       enabled: <bool; required>
 
-      # If True, `eos_designs` will configure `queue-monitor length notifying` according to the
+      # If True, Arista AVD will configure `queue-monitor length notifying` according to the
       # `platform_settings.[].feature_support.queue_monitor_length_notify` setting.
       notifying: <bool>
       default_thresholds:

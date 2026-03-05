@@ -7,8 +7,6 @@
 type: dict
 keys:
   management_eapi:
-    documentation_options:
-      table: management-settings
     description: |
       Default is HTTPS management eAPI enabled.
     type: dict

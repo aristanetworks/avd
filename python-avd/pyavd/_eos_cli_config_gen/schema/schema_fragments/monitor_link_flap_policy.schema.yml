@@ -1,0 +1,128 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  monitor_link_flap_policy:
+    type: dict
+    keys:
+      damping_profiles:
+        type: list
+        primary_key: name
+        description: |-
+          A list of damping profiles containing the set of parameters required by the damping logic, which is based on the BGP Route Flap Damping algorithm described in RFC2439.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+                - int
+              description: The profile name should be unique over all defined profiles (damping_profiles and max_flap_profiles).
+            penalty_decay:
+              type: dict
+              description: Decay rate for penalty.
+              keys:
+                half_life:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 1
+                  max: 5000
+                  required: true
+                units:
+                  type: str
+                  required: true
+                  valid_values:
+                    - "minutes"
+                    - "seconds"
+            mac_fault_local_penalty:
+              type: int
+              description: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
+              convert_types:
+                - str
+              min: 0
+              max: 5000
+            mac_fault_remote_penalty:
+              type: int
+              description: 0 refers to - No penalty, 1-5000 refers to penalty value for fault.
+              convert_types:
+                - str
+              min: 0
+              max: 5000
+            penalty_threshold:
+              type: dict
+              keys:
+                maximum:
+                  description: Maximum value of penalty for a link.
+                  type: int
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 1000000
+                reuse:
+                  description: Value of penalty below which suppressed link would be reused.
+                  type: int
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 1000000
+                suppression:
+                  description: Value of penalty above which link would be suppressed.
+                  type: int
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 1000000
+      max_flap_profiles:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+                - int
+              description: The profile name should be unique over all defined profiles (damping_profiles and max_flap_profiles).
+            max_flaps:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 100
+              description: Maximum number of flaps.
+              required: true
+            time:
+              type: int
+              description: The time period that flaps are counted (in seconds).
+              convert_types:
+                - str
+              min: 1
+              max: 1800
+              required: true
+            violations:
+              type: int
+              description: Number of violations to be detected.
+              convert_types:
+                - str
+              min: 1
+              max: 1000
+            intervals:
+              type: int
+              description: Intervals for monitoring violations. This key is required to configure violations.
+              convert_types:
+                - str
+              min: 1
+              max: 1000
+      default_profiles:
+        type: list
+        min_length: 1
+        items:
+          type: str
+          convert_types:
+            - int
+        description: The default-profile set may contain zero, one, or multiple profiles. When the default-profile set contains multiple profiles, error-disable criteria is satisfied when conditions match any profile.

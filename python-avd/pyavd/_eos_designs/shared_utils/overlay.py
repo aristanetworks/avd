@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from functools import cached_property
 from ipaddress import ip_address
-from re import fullmatch
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
@@ -75,13 +74,18 @@ class OverlayMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
             return str(self.id + admin_subfield_offset)
 
-        if fullmatch(r"\d+", str(admin_subfield)):
+        if admin_subfield.isdigit():
             return str(int(admin_subfield) + admin_subfield_offset)
 
         try:
             ip_address(admin_subfield)
         except ValueError:
-            return cast("str", self.router_id)
+            msg = (
+                f"Invalid value '{admin_subfield}' for 'overlay_rd_type.admin_subfield'. "
+                "Expected 'router_id', 'vtep_loopback', 'bgp_as', 'switch_id', a valid IPv4 address, or a numeric value from 0 to 4294967295."
+            )
+
+            raise AristaAvdInvalidInputsError(msg) from None
 
         return admin_subfield
 

@@ -233,7 +233,7 @@ no ptp monitor sequence-id
 
 | Idle Timeout | Connection Limit | Max from a single Host | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
 | ------------ | ---------------- | ---------------------- | ------- | -------------------- | -------------- | ------------------------- |
-| 15 | 55 | - | aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521 |
+| 15 | 55 | - | aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521, dsa |
 
 #### Management SSH Device Configuration
 
@@ -246,7 +246,7 @@ management ssh
    cipher aes256-cbc aes256-ctr aes256-gcm@openssh.com
    key-exchange ecdh-sha2-nistp521
    mac hmac-sha2-512 hmac-sha2-512-etm@openssh.com
-   hostkey server ecdsa-nistp256 ecdsa-nistp521
+   hostkey server dsa ecdsa-nistp256 ecdsa-nistp521
    connection limit 55
    authentication empty-passwords permit
    shutdown
@@ -545,6 +545,10 @@ daemon TerminAttr
 | Sequence-numbers | false |
 | RFC5424 | False |
 
+| VRF | Source Interface |
+| --- | ---------------- |
+| - | Ethernet1 |
+
 **Syslog facility value:** syslog
 
 #### Logging Servers and Features Device Configuration
@@ -559,6 +563,7 @@ logging monitor debugging
 no logging synchronous
 logging format hostname ipv4
 logging facility syslog
+logging source-interface Ethernet1
 !
 logging event link-status global
 ```
@@ -1432,8 +1437,8 @@ no ip igmp snooping querier
 
 #### IP Router Multicast Summary
 
-- Multipathing deterministically by selecting the same-colored upstream routers.
-- Software forwarding by the Linux kernel
+- Multipathing operates deterministically by selecting the same-colored upstream routers.
+- IPv4 software forwarding is handled by the Linux kernel.
 
 #### Router Multicast Device Configuration
 
@@ -1765,7 +1770,6 @@ qos map cos 3 to traffic-class 3
 | errdisable | - | - | - | True |
 
 ```eos
-!
 priority-flow-control pause watchdog override action drop
 ```
 

@@ -5,7 +5,7 @@ type: l3leaf
 
 l3leaf:
   defaults:
-    platform: vEOS-lab # (1)!
+    platform: cEOSLab # (1)!
     loopback_ipv4_pool: 10.255.128.0/27 # (2)!
     loopback_ipv4_offset: 2 # (3)!
     vtep_loopback_ipv4_pool: 10.255.129.0/27 # (4)!
@@ -22,13 +22,11 @@ l3leaf:
       bgp_as: 65201 # (13)!
       nodes:
         - name: dc2-leaf1a
-          id: 11
+          id: 1
           mgmt_ip: 172.16.1.111/24
-          uplink_switch_interfaces: [Ethernet1, Ethernet1]
         - name: dc2-leaf1b
-          id: 12
+          id: 2
           mgmt_ip: 172.16.1.112/24
-          uplink_switch_interfaces: [Ethernet2, Ethernet2]
 
     - group: DC2_L3_LEAF2
       bgp_as: 65202
@@ -40,16 +38,14 @@ l3leaf:
           inter_domain: true
       nodes:
         - name: dc2-leaf2a
-          id: 13
+          id: 3
           mgmt_ip: 172.16.1.113/24
-          uplink_switch_interfaces: [Ethernet3, Ethernet3]
           evpn_gateway:
             remote_peers: # (15)!
               - hostname: dc1-leaf2a
         - name: dc2-leaf2b
-          id: 14
+          id: 4
           mgmt_ip: 172.16.1.114/24
-          uplink_switch_interfaces: [Ethernet4, Ethernet4]
           evpn_gateway:
             remote_peers:
               - hostname: dc1-leaf2b

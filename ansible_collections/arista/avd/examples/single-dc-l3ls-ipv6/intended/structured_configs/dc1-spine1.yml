@@ -63,9 +63,11 @@ ip_domain_lookup:
   source_interfaces:
   - name: Management1
     vrf: MGMT
-ip_name_servers:
-- ip_address: 192.168.1.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.1.1
 ip_routing: true
 ipv6_prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY-V6
@@ -78,10 +80,10 @@ local_users:
   privilege: 15
   role: network-admin
   no_password: true
-- name: ansible
+- name: arista
   privilege: 15
   role: network-admin
-  sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -101,7 +103,7 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOSLab
   fabric_name: FABRIC
   validate_hardware:
     enabled: false
@@ -139,7 +141,7 @@ router_bgp:
       type: ipv6
     password: F0bdF6JLcJtagc6PCN8W0Q==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn

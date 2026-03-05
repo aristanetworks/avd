@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - vmtracer sessions #}
-{% for session in vmtracer_sessions | arista.avd.natural_sort('name') %}
+{% for session in vmtracer_sessions | arista.avd.natural_sort('name', ignore_case=false) %}
 !
 vmtracer session {{ session.name }}
 {%     if session.url is arista.avd.defined %}

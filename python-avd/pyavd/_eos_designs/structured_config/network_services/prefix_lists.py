@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._utils.run_once import run_once_method
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -29,9 +30,6 @@ class PrefixListsMixin(Protocol):
 
         Covers EVPN services in VRF "default" and redistribution of connected to BGP
         """
-        # Set prefix-lists from EVPN services in VRF "default" (if any)
-        self._set_prefix_lists_vrf_default()
-
         # Add prefix-list for VRFs where MLAG iBGP peering should not be redistributed
         if mlag_prefixes := self._mlag_ibgp_peering_subnets_without_redistribution:
             sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
@@ -44,23 +42,6 @@ class PrefixListsMixin(Protocol):
                 self.structured_config.ipv6_prefix_lists.append_new(
                     name="PL-MLAG-PEER-VRFS", sequence_numbers=sequence_numbers._cast_as(EosCliConfigGen.Ipv6PrefixListsItem.SequenceNumbers)
                 )
-
-    def _set_prefix_lists_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
-        """Set the prefix_lists for EVPN services in VRF "default"."""
-        if not self._vrf_default_evpn:
-            return
-
-        if subnets := self._vrf_default_ipv4_subnets:
-            sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
-            for index, subnet in enumerate(subnets, start=1):
-                sequence_numbers.append_new(sequence=index * 10, action=f"permit {subnet}")
-            self.structured_config.prefix_lists.append_new(name="PL-SVI-VRF-DEFAULT", sequence_numbers=sequence_numbers)
-
-        if static_routes := self._vrf_default_ipv4_static_routes["static_routes"]:
-            sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
-            for index, static_route in enumerate(static_routes, start=1):
-                sequence_numbers.append_new(sequence=index * 10, action=f"permit {static_route}")
-            self.structured_config.prefix_lists.append_new(name="PL-STATIC-VRF-DEFAULT", sequence_numbers=sequence_numbers)
 
     @cached_property
     def _mlag_ibgp_peering_subnets_without_redistribution(self: AvdStructuredConfigNetworkServicesProtocol) -> list:
@@ -85,3 +66,19 @@ class PrefixListsMixin(Protocol):
                     continue
 
         return natural_sort(mlag_prefixes)
+
+    @run_once_method
+    def set_once_prefix_list_svi_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+        """Set prefix-list PL-SVI-VRF-DEFAULT."""
+        sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
+        for index, subnet in enumerate(self._vrf_default_ipv4_subnets, start=1):
+            sequence_numbers.append_new(sequence=index * 10, action=f"permit {subnet}")
+        self.structured_config.prefix_lists.append_new(name="PL-SVI-VRF-DEFAULT", sequence_numbers=sequence_numbers)
+
+    @run_once_method
+    def set_once_prefix_list_static_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+        """Set prefix-list PL-STATIC-VRF-DEFAULT."""
+        sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
+        for index, static_route in enumerate(self._vrf_default_ipv4_static_routes["static_routes"], start=1):
+            sequence_numbers.append_new(sequence=index * 10, action=f"permit {static_route}")
+        self.structured_config.prefix_lists.append_new(name="PL-STATIC-VRF-DEFAULT", sequence_numbers=sequence_numbers)

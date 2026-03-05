@@ -30,8 +30,15 @@ management api http-commands
 {%     if management_api_http.https_ssl_profile is arista.avd.defined %}
    protocol https ssl profile {{ management_api_http.https_ssl_profile }}
 {%     endif %}
+{%     if management_api_http.protocol_https_certificate is arista.avd.defined %}
+   protocol https certificate
+   {{ management_api_http.protocol_https_certificate.certificate }}
+   EOF
+   {{ management_api_http.protocol_https_certificate.private_key }}
+   EOF
+{%     endif %}
    no shutdown
-{%     for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort('name') %}
+{%     for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    vrf {{ vrf.name }}
       no shutdown
@@ -42,11 +49,4 @@ management api http-commands
       ipv6 access-group {{ vrf.ipv6_access_group }}
 {%         endif %}
 {%     endfor %}
-{%     if management_api_http.protocol_https_certificate is arista.avd.defined %}
-   protocol https certificate
-{{ management_api_http.protocol_https_certificate.certificate }}
-EOF
-{{ management_api_http.protocol_https_certificate.private_key }}
-EOF
-{%     endif %}
 {% endif %}

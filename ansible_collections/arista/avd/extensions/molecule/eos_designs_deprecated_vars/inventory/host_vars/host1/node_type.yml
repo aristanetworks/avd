@@ -8,8 +8,8 @@ l3leaf:
     id: 101
     bgp_as: 101
     # Used for OSPF
-    uplink_switches: [host2]
-    uplink_switch_interfaces: [Ethernet42]
+    uplink_switches: [host1]
+    uplink_switch_interfaces: [Ethernet41]
     uplink_interfaces: [Ethernet42]
     uplink_ipv4_pool: 192.168.42.0/24
   nodes:
@@ -31,3 +31,37 @@ l3leaf:
 
 # Used by source-interfaces test: Testing that the generated source interfaces do not contain the VRF if VRF "default"
 mgmt_interface_vrf: default
+
+aaa_settings:
+  radius:
+    servers:
+      - host: 11.10.10.11
+        vrf: default
+        key: 071B245F5A
+        cleartext_key: arista
+        groups:
+          - RADIUS1
+
+      - host: 11.10.10.5
+        vrf: MGMT1
+        key: 071B245F5A
+        tls:
+          enabled: true
+          ssl_profile: HOST_SSL_PROFILE
+          port: 2080
+        groups:
+          - RADIUS1
+
+      - host: 11.10.10.3
+        vrf: MGMT
+        cleartext_key: arista
+        groups:
+          - RADIUS1
+
+    vrfs:
+      - name: default
+        source_interface: Vlan123
+      - name: MGMT
+        source_interface: Vlan125
+      - name: MGMT1
+        source_interface: Vlan125

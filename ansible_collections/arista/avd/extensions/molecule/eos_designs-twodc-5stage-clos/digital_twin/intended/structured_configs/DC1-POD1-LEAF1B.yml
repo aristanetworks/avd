@@ -12,7 +12,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_DC1.POD1.LEAF2A_Ethernet13
   shutdown: false
-  ip_address: 172.17.110.13/31
+  ip_address: 172.17.110.5/31
   mac_security:
     profile: MACSEC_PROFILE
   ptp:
@@ -30,7 +30,7 @@ ethernet_interfaces:
   vrf: Common_VRF
   encapsulation_dot1q:
     vlan: 1025
-  ip_address: 172.17.110.13/31
+  ip_address: 172.17.110.5/31
   metadata:
     peer: DC1.POD1.LEAF2A
     peer_interface: Ethernet13.1025
@@ -41,7 +41,7 @@ ethernet_interfaces:
   vrf: vrf_with_loopbacks_dc1_pod1_only
   encapsulation_dot1q:
     vlan: 1102
-  ip_address: 172.17.110.13/31
+  ip_address: 172.17.110.5/31
   metadata:
     peer: DC1.POD1.LEAF2A
     peer_interface: Ethernet13.1102
@@ -52,7 +52,7 @@ ethernet_interfaces:
   vrf: vrf_with_loopbacks_from_overlapping_pool
   encapsulation_dot1q:
     vlan: 1100
-  ip_address: 172.17.110.13/31
+  ip_address: 172.17.110.5/31
   metadata:
     peer: DC1.POD1.LEAF2A
     peer_interface: Ethernet13.1100
@@ -63,7 +63,7 @@ ethernet_interfaces:
   vrf: vrf_with_loopbacks_from_pod_pools
   encapsulation_dot1q:
     vlan: 1101
-  ip_address: 172.17.110.13/31
+  ip_address: 172.17.110.5/31
   metadata:
     peer: DC1.POD1.LEAF2A
     peer_interface: Ethernet13.1101
@@ -71,7 +71,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_DC1-POD1-LEAF2B_Ethernet13
   shutdown: false
-  ip_address: 172.17.110.15/31
+  ip_address: 172.17.110.7/31
   mac_security:
     profile: MACSEC_PROFILE
   ptp:
@@ -89,7 +89,7 @@ ethernet_interfaces:
   vrf: Common_VRF
   encapsulation_dot1q:
     vlan: 1025
-  ip_address: 172.17.110.15/31
+  ip_address: 172.17.110.7/31
   metadata:
     peer: DC1-POD1-LEAF2B
     peer_interface: Ethernet13.1025
@@ -100,7 +100,7 @@ ethernet_interfaces:
   vrf: vrf_with_loopbacks_dc1_pod1_only
   encapsulation_dot1q:
     vlan: 1102
-  ip_address: 172.17.110.15/31
+  ip_address: 172.17.110.7/31
   metadata:
     peer: DC1-POD1-LEAF2B
     peer_interface: Ethernet13.1102
@@ -111,7 +111,7 @@ ethernet_interfaces:
   vrf: vrf_with_loopbacks_from_overlapping_pool
   encapsulation_dot1q:
     vlan: 1100
-  ip_address: 172.17.110.15/31
+  ip_address: 172.17.110.7/31
   metadata:
     peer: DC1-POD1-LEAF2B
     peer_interface: Ethernet13.1100
@@ -122,7 +122,7 @@ ethernet_interfaces:
   vrf: vrf_with_loopbacks_from_pod_pools
   encapsulation_dot1q:
     vlan: 1101
-  ip_address: 172.17.110.15/31
+  ip_address: 172.17.110.7/31
   metadata:
     peer: DC1-POD1-LEAF2B
     peer_interface: Ethernet13.1101
@@ -137,28 +137,27 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-  no_password: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 172.16.110.6/32
+  ip_address: 172.16.110.4/32
 - name: Loopback102
   description: DIAG_VRF_vrf_with_loopbacks_dc1_pod1_only
   shutdown: false
   vrf: vrf_with_loopbacks_dc1_pod1_only
-  ip_address: 10.102.101.6/32
+  ip_address: 10.102.101.4/32
 - name: Loopback100
   description: DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool
   shutdown: false
   vrf: vrf_with_loopbacks_from_overlapping_pool
-  ip_address: 10.100.0.6/32
+  ip_address: 10.100.0.4/32
 - name: Loopback101
   description: DIAG_VRF_vrf_with_loopbacks_from_pod_pools
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
-  ip_address: 10.101.101.6/32
-  ipv6_address: 2001:db8:1::4/128
+  ip_address: 10.101.101.4/32
+  ipv6_address: 2001:db8:1::2/128
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -183,7 +182,7 @@ metadata:
 router_bgp:
   as: '65111.100'
   as_notation: asdot
-  router_id: 172.16.110.6
+  router_id: 172.16.110.4
   maximum_paths:
     paths: 4
   updates:
@@ -199,15 +198,15 @@ router_bgp:
       type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   neighbors:
-  - ip_address: 172.17.110.12
+  - ip_address: 172.17.110.4
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
     metadata:
       peer: DC1.POD1.LEAF2A
     description: DC1.POD1.LEAF2A_Ethernet13
-  - ip_address: 172.17.110.14
+  - ip_address: 172.17.110.6
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
     metadata:
@@ -222,7 +221,7 @@ router_bgp:
       activate: true
   vrfs:
   - name: Common_VRF
-    rd: 172.16.110.6:1025
+    rd: 172.16.110.4:1025
     route_targets:
       import:
       - address_family: evpn
@@ -232,13 +231,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1025:1025
-    router_id: 172.16.110.6
+    router_id: 172.16.110.4
     neighbors:
-    - ip_address: 172.17.110.12
+    - ip_address: 172.17.110.4
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
       description: DC1.POD1.LEAF2A_Ethernet13.1025_vrf_Common_VRF
-    - ip_address: 172.17.110.14
+    - ip_address: 172.17.110.6
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
       description: DC1-POD1-LEAF2B_Ethernet13.1025_vrf_Common_VRF
@@ -253,7 +252,7 @@ router_bgp:
 
       '
   - name: vrf_with_loopbacks_dc1_pod1_only
-    rd: 172.16.110.6:1102
+    rd: 172.16.110.4:1102
     route_targets:
       import:
       - address_family: evpn
@@ -263,13 +262,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1102:1102
-    router_id: 172.16.110.6
+    router_id: 172.16.110.4
     neighbors:
-    - ip_address: 172.17.110.12
+    - ip_address: 172.17.110.4
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
       description: DC1.POD1.LEAF2A_Ethernet13.1102_vrf_vrf_with_loopbacks_dc1_pod1_only
-    - ip_address: 172.17.110.14
+    - ip_address: 172.17.110.6
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
       description: DC1-POD1-LEAF2B_Ethernet13.1102_vrf_vrf_with_loopbacks_dc1_pod1_only
@@ -277,7 +276,7 @@ router_bgp:
       connected:
         enabled: true
   - name: vrf_with_loopbacks_from_overlapping_pool
-    rd: 172.16.110.6:1100
+    rd: 172.16.110.4:1100
     route_targets:
       import:
       - address_family: evpn
@@ -287,13 +286,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1100:1100
-    router_id: 172.16.110.6
+    router_id: 172.16.110.4
     neighbors:
-    - ip_address: 172.17.110.12
+    - ip_address: 172.17.110.4
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
       description: DC1.POD1.LEAF2A_Ethernet13.1100_vrf_vrf_with_loopbacks_from_overlapping_pool
-    - ip_address: 172.17.110.14
+    - ip_address: 172.17.110.6
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
       description: DC1-POD1-LEAF2B_Ethernet13.1100_vrf_vrf_with_loopbacks_from_overlapping_pool
@@ -301,7 +300,7 @@ router_bgp:
       connected:
         enabled: true
   - name: vrf_with_loopbacks_from_pod_pools
-    rd: 172.16.110.6:1101
+    rd: 172.16.110.4:1101
     route_targets:
       import:
       - address_family: evpn
@@ -311,13 +310,13 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1101:1101
-    router_id: 172.16.110.6
+    router_id: 172.16.110.4
     neighbors:
-    - ip_address: 172.17.110.12
+    - ip_address: 172.17.110.4
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
       description: DC1.POD1.LEAF2A_Ethernet13.1101_vrf_vrf_with_loopbacks_from_pod_pools
-    - ip_address: 172.17.110.14
+    - ip_address: 172.17.110.6
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65112.100'
       description: DC1-POD1-LEAF2B_Ethernet13.1101_vrf_vrf_with_loopbacks_from_pod_pools
@@ -341,7 +340,8 @@ vlan_interfaces:
   vrf: Common_VRF
   ip_address_virtual: 10.1.10.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
 - name: Vlan111
@@ -350,7 +350,8 @@ vlan_interfaces:
   vrf: Common_VRF
   ip_address_virtual: 10.1.11.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
 - name: Vlan112
@@ -359,7 +360,8 @@ vlan_interfaces:
   vrf: Common_VRF
   ip_address_virtual: 10.1.12.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
   eos_cli: 'comment
@@ -375,7 +377,8 @@ vlan_interfaces:
   vrf: Common_VRF
   ip_address_virtual: 10.10.13.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
 - name: Vlan1102
@@ -384,7 +387,8 @@ vlan_interfaces:
   vrf: vrf_with_loopbacks_dc1_pod1_only
   ip_address_virtual: 10.102.100.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
     - web
@@ -394,7 +398,8 @@ vlan_interfaces:
   vrf: vrf_with_loopbacks_from_overlapping_pool
   ip_address_virtual: 10.100.100.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
     - web
@@ -404,7 +409,8 @@ vlan_interfaces:
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address_virtual: 10.101.100.1/24
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
     tags:
     - opzone
     - web
@@ -417,59 +423,73 @@ vlans:
 - id: 110
   name: Tenant_A_OP_Zone_1
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 111
   name: Tenant_A_OP_Zone_2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 112
   name: Tenant_A_OP_Zone_3
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 113
   name: SVI_with_no_vxlan
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 1102
   name: test_svi
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 1100
   name: test_svi
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 1101
   name: test_svi
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 2500
   name: web-l2-vlan
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 2600
   name: web-l2-vlan-2
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - id: 2601
   name: l2vlan_with_no_vxlan
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Common_VRF
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: vrf_with_loopbacks_dc1_pod1_only
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: vrf_with_loopbacks_from_overlapping_pool
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A
 - name: vrf_with_loopbacks_from_pod_pools
   ip_routing: true
   metadata:
-    tenant: Tenant_A
+    tenants:
+    - Tenant_A

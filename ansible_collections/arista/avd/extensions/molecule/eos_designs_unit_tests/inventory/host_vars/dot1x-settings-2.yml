@@ -1,0 +1,46 @@
+---
+# Test for global 802.1X enabled with non-default values
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: dot1x-settings-2
+      mgmt_ip: 192.168.0.2/24
+
+avd_7_behaviors:
+  # Test for new behaviour of IP RADIUS server commands
+  ip_radius_source_interface_setting: true
+
+dot1x_settings:
+  enabled: true
+  authentication:
+    radius_groups: [agni-server-group, backup-agni-server-group]
+  accounting:
+    mode: stop-only
+    radius_groups: [agni-server-group, backup-agni-server-group]
+    multicast: true
+    syslog: true
+  dynamic_authorization:
+    additional_groups: [coa-server-group]
+  mac_based_authentication:
+    username_format:
+      delimiter: colon
+      letter_case: uppercase
+  radius_av_pairs:
+    service_type: true
+
+aaa_settings:
+  radius:
+    servers:
+      - host: agni.arista.com
+        groups:
+          - agni-server-group
+        cleartext_key: super-secret-key
+      - host: agni2.arista.com
+        groups:
+          - backup-agni-server-group
+        cleartext_key: super-secret-key
+      - host: coa.arista.com
+        groups:
+          - coa-server-group
+        cleartext_key: super-secret-key

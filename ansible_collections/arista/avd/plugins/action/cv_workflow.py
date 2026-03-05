@@ -15,7 +15,7 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 from yaml import load
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, raise_action_fail
 
 PLUGIN_NAME = "arista.avd.cv_workflow"
 
@@ -240,7 +240,7 @@ class ActionModule(ActionBase):
                 result_object.deployed_interface_tags,
                 result_object.deployed_cv_pathfinder_metadata,
                 result_object.removed_configs,
-                result_object.removed_static_config_root_containers,
+                result_object.removed_static_config_containers,
                 result_object.removed_static_config_configlets,
                 result_object.removed_device_tags,
                 result_object.removed_interface_tags,
@@ -250,7 +250,7 @@ class ActionModule(ActionBase):
         except Exception as error:
             # Recast errors as AnsibleActionFail
             msg = f"Error during plugin execution: {error}"
-            raise AnsibleActionFail(msg) from error
+            raise_action_fail(msg, error)
 
         return result
 

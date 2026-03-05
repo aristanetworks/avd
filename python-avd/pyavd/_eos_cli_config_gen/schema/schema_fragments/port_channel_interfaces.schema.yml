@@ -565,6 +565,9 @@ keys:
           valid_values:
             - edge
             - network
+        spanning_tree_link_type:
+          type: str
+          valid_values: ["shared", "point-to-point"]
         vmtracer:
           type: bool
         ptp:
@@ -1232,6 +1235,9 @@ keys:
                         type: int
                         convert_types:
                           - str
+                        required: true
+                        min: 0
+                        max: 1000
             tap:
               type: dict
               $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/switchport/keys/tap"

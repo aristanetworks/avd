@@ -1,0 +1,25 @@
+---
+# Note: The 'type' variable is not explicitly set here because the hostname
+# 'dc1-svc-leaf1' matches the pattern '.*-svc-leaf.*' in default_node_types,
+# which automatically assigns it the 'service_leaf' type.
+# This demonstrates automatic node type assignment from the node_types how-to.
+
+service_leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.0.0/27
+    vtep_loopback_ipv4_pool: 10.255.1.0/27
+    uplink_switches: ['dc1-spine1']
+    uplink_ipv4_pool: 10.255.255.64/26
+    mlag_peer_ipv4_pool: 10.255.1.64/27
+    mlag_peer_l3_ipv4_pool: 10.255.1.96/27
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 8192
+    spanning_tree_mode: mstp
+
+  nodes:
+    - name: dc1-svc-leaf1
+      id: 10
+      mgmt_ip: 172.16.1.111/24
+      bgp_as: 65110
+      uplink_switch_interfaces: [Ethernet3]
