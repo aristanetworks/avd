@@ -123,6 +123,7 @@ class ActionModule(ActionBase):
                 template = template_item["template"]
 
                 # Here we parse the template, expecting the result to be a YAML formatted string
+                # self.templar is an AVDTemplar instance which already contains loader and searchpath
                 template_result = templater(template, template_vars, self.templar)
 
                 # Load data from the template result.

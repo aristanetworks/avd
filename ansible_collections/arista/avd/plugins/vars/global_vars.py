@@ -89,11 +89,15 @@ from typing import Any
 from ansible.errors import AnsibleParserError
 from ansible.inventory.group import Group
 from ansible.inventory.host import Host
-from ansible.module_utils.basic import to_native
 from ansible.plugins.vars import BaseVarsPlugin
 from ansible.utils.vars import combine_vars
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_ABOVE_2_19
+
+if ANSIBLE_ABOVE_2_19:
+    from ansible.module_utils.common.text.converters import to_native
+else:
+    from ansible.module_utils.basic import to_native
 
 if ANSIBLE_ABOVE_2_19:
     from ansible.template import trust_as_template

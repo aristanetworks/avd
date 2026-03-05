@@ -11,6 +11,7 @@ from ansible.parsing.dataloader import DataLoader
 from ansible.release import __version__ as ansible_version
 from ansible.template import Templar
 
+from pyavd._utils import AVDTemplar
 from pyavd._utils.template import template
 
 
@@ -25,10 +26,13 @@ def test_template(tmp_path: Path) -> None:
     content = "{{ my_var }}"
     _ = file.write_text(content)
 
-    templar = Templar(DataLoader())
+    loader = DataLoader()
+    templar = Templar(loader)
+    searchpath = [str(tmp_path)]
+    avd_templar = AVDTemplar(templar, loader, searchpath)
 
     mocked_module = mock.MagicMock(ANSIBLE_ABOVE_2_19=ansible_version.startswith(("2.19", "2.2")))
     with mock.patch.dict(sys.modules, {"ansible_collections.arista.avd.plugins.plugin_utils.utils": mocked_module}):
-        result = template(str(file), {"my_var": 42}, templar)
+        result = template(str(file), {"my_var": 42}, avd_templar)
 
     assert result == 42
