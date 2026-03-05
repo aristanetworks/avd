@@ -22,9 +22,10 @@ enable_password:
 hostname: dot1x-settings-1
 ip_igmp_snooping:
   globally_enabled: true
-ip_radius_source_interfaces:
-- name: Management1
-  vrf: MGMT
+ip_radius:
+  vrfs:
+  - name: MGMT
+    source_interface: Management1
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
