@@ -173,8 +173,7 @@ keys:
                     max: 65535
                     required: true
                     description: |-
-                        End of range.
-                        `end` must be greater than or equal to `start`.
+                        End of range. Must be greater than or equal to `start`.
                         EOS default is 65535.
               address_families:
                 type: list
