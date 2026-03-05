@@ -3,6 +3,8 @@
   hosts: all
   gather_facts: false
   connection: local
+  vars:
+    root_dir: "${MOLECULE_SCENARIO_DIRECTORY}/../../../examples/single-dc-multipod-l3ls/"
   tasks:
     - name: Delete local folders
       delegate_to: 127.0.0.1
