@@ -153,7 +153,9 @@ keys:
             keys:
               range:
                 type: dict
-                description: Range for assigned value field of rd.
+                description: |-
+                  Range for the 2-byte assigned number field of RD.
+                  The range is inclusive of start and end values.
                 keys:
                   start:
                     type: int
