@@ -16,9 +16,9 @@ l3leaf:
     - group: MLAG_BGP_DIFFERENT_AS_NOTATION
       bgp_as: "923.923"
       nodes:
-        - name: MLAG_BGP_DIFFERENT_AS_NOTATION_1
+        - name: mlag-bgp-different-as-notation-1
           id: 0
           mgmt_ip: 192.168.201.116/24
-        - name: MLAG_BGP_DIFFERENT_AS_NOTATION_2
+        - name: mlag-bgp-different-as-notation-2
           id: 1
           mgmt_ip: 192.168.201.117/24
