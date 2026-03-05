@@ -181,7 +181,7 @@ keys:
                   type: str
                   valid_values: ["l2-evpn", "l3-vrf"]
                   description: |-
-                    l2-evpn: Enable auto rd assignment for L2 EVPN.
+                    l2-evpn: L2 EVPN VXLAN, VPWS, VLAN-aware-bundle, VNI-aware-bundle.
                     l3-vrf: Enable auto rd assignment for L3 VRFs.
       updates:
         type: dict
