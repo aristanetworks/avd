@@ -177,6 +177,9 @@ keys:
               address_families:
                 type: list
                 min_length: 1
+                description: |-
+                  Address families for which to enable automatic RD assignment.
+                  Each address family has its own range allocation.
                 items:
                   type: str
                   valid_values: ["l2-evpn", "l3-vrf"]
