@@ -98,7 +98,7 @@ class TestDeployStaticConfigStudio:
         assert len(deployment_result.deployed_static_config_containers) == 3
         assert not deployment_result.skipped_static_config_containers
         assert not deployment_result.removed_static_config_configlets
-        assert not deployment_result.removed_static_config_root_containers
+        assert not deployment_result.removed_static_config_containers
 
     async def test_no_changes_run(self, mock_cv_client: MagicMock, avd_initial_manifest: AvdManifest, deployment_result: DeployToCvResult) -> None:
         """Test a subsequent run where the AVD manifest has not changed."""
@@ -228,7 +228,7 @@ class TestDeployStaticConfigStudio:
         assert len(deployment_result.deployed_static_config_containers) == 2
         assert len(deployment_result.skipped_static_config_containers) == 2  # ROOT and CNT_LEAF2 were skipped
         assert deployment_result.removed_static_config_configlets == ["CF_UNUSED"]
-        assert deployment_result.removed_static_config_root_containers == ["UNUSED_ROOT"]
+        assert deployment_result.removed_static_config_containers == ["UNUSED_ROOT"]
 
     async def test_root_container_reordering_and_manual_preservation(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
         """Test reordering AVD root containers, deleting a stale one and preserving a manually-added root container."""
@@ -277,4 +277,50 @@ class TestDeployStaticConfigStudio:
         # Verify deployment result object.
         assert len(deployment_result.deployed_static_config_containers) == 1
         assert len(deployment_result.skipped_static_config_containers) == 1  # AVD_ROOT2 was skipped
-        assert deployment_result.removed_static_config_root_containers == ["AVD_ROOT1"]
+        assert deployment_result.removed_static_config_containers == ["AVD_ROOT1"]
+
+    async def test_non_root_container_deletion(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that non-root (child) containers are properly deleted when removed from the manifest."""
+        # Initial state on CV.
+        cf_leaf1_id = generate_id("CF_LEAF1")
+        root_id, cnt_leaf1_id, cnt_leaf2_id = generate_id("ROOT"), generate_id("ROOT/CNT_LEAF1"), generate_id("ROOT/CNT_LEAF2")
+
+        existing_containers = [
+            create_grpc_container(container_id=root_id, name="ROOT", description="Root container", query="device:*", child_ids=[cnt_leaf1_id, cnt_leaf2_id]),
+            create_grpc_container(
+                container_id=cnt_leaf1_id, name="CNT_LEAF1", description="LEAF1 container", query="device:LEAF1", configlet_ids=[cf_leaf1_id]
+            ),
+            create_grpc_container(container_id=cnt_leaf2_id, name="CNT_LEAF2", description="LEAF2 container", query="device:LEAF2"),
+        ]
+
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [root_id]
+
+        # New desired state from AVD: ROOT with only CNT_LEAF1, CNT_LEAF2 is removed from the manifest.
+        cfl1 = AvdConfiglet(name="CF_LEAF1", file=Path("/path/to/cfl1.cfg"))
+        cnt_leaf1 = AvdContainer(name="CNT_LEAF1", tag_query="device:LEAF1", description="LEAF1 container", configlets=(cfl1.name,))
+        root_container = AvdContainer(name="ROOT", tag_query="device:*", description="Root container", sub_containers=(cnt_leaf1,))
+
+        updated_manifest = AvdManifest(configlets=(cfl1,), containers=(root_container,))
+
+        await deploy_static_config_studio_manifest_to_cv(updated_manifest, deployment_result, mock_cv_client)
+
+        # Verify the non-root child container was deleted.
+        mock_cv_client.delete_configlet_container.assert_called_once_with(workspace_id=deployment_result.workspace.id, assignment_id=cnt_leaf2_id)
+
+        # Verify ROOT container was updated because child_ids changed.
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed_containers = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        assert len(pushed_containers) == 1
+        assert pushed_containers[0][1] == "ROOT"
+
+        # Studio roots should NOT be updated as they haven't changed.
+        mock_cv_client.set_studio_inputs.assert_not_called()
+
+        # Verify deployment result object.
+        assert len(deployment_result.deployed_static_config_configlets) == 1
+        assert len(deployment_result.deployed_static_config_containers) == 1  # ROOT was updated
+        assert len(deployment_result.skipped_static_config_containers) == 1  # CNT_LEAF1 was skipped
+        assert deployment_result.removed_static_config_containers == ["CNT_LEAF2"]
+        assert not deployment_result.removed_static_config_configlets
