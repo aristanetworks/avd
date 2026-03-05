@@ -487,8 +487,9 @@ class RouterBgpMixin(Protocol):
                             self.set_route_map_evpn_filter_as(remote_as)
                         case "rcf":
                             # RCF-based in/out filtering is applied at the AF level only
-                            evpn_rs_neighbor = self.structured_config.router_bgp.address_family_evpn.neighbors.obtain(remote_ip_address)
-                            evpn_rs_neighbor._update(rcf_out=f"RCF_EVPN_FILTER_AS( {remote_as} )")
+                            self.structured_config.router_bgp.address_family_evpn.neighbors.append_new(
+                                ip_address=remote_ip_address, rcf_out=f"RCF_EVPN_FILTER_AS( {remote_as} )"
+                            )
                             # Create RCF
                             self.set_once_rcf_evpn_filter_as()
                 neighbors.append(neighbor)
