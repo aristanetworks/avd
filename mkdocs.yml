@@ -175,15 +175,6 @@ markdown_extensions:
 docs_dir: .
 nav:
   - Home: index.md
-  - Getting Started:
-      - Introduction to Ansible and AVD: docs/getting-started/intro-to-ansible-and-avd.md
-  - Examples:
-      - Single DC L3LS: examples/single-dc-l3ls/README.md
-      - Dual DC L3LS: examples/dual-dc-l3ls/README.md
-      - Multi-Pod L3LS: examples/single-dc-multipod-l3ls/README.md
-      - L2LS Fabric: examples/l2ls-fabric/README.md
-      - Campus Fabric: examples/campus-fabric/README.md
-      - ISIS-LDP IPVPN: examples/isis-ldp-ipvpn/README.md
   - Installation:
       - Ansible Collection: docs/installation/collection-installation.md
       - Containers: docs/containers/overview.md
@@ -191,6 +182,7 @@ nav:
       - How to use AVD examples: ansible_collections/arista/avd/examples/README.md
       - Single DC L3LS: ansible_collections/arista/avd/examples/single-dc-l3ls/README.md
       - Dual DC L3LS: ansible_collections/arista/avd/examples/dual-dc-l3ls/README.md
+      - Multi-Pod L3LS: examples/single-dc-multipod-l3ls/README.md
       - L2LS Fabric: ansible_collections/arista/avd/examples/l2ls-fabric/README.md
       - Campus Fabric: ansible_collections/arista/avd/examples/campus-fabric/README.md
       - ISIS-LDP IPVPN: ansible_collections/arista/avd/examples/isis-ldp-ipvpn/README.md
