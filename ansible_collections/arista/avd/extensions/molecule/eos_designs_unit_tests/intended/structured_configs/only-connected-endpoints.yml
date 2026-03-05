@@ -238,9 +238,10 @@ ethernet_interfaces:
       allowed_vlan: 1-100
       native_vlan: 1000
 hostname: only-connected-endpoints
-ip_radius_source_interfaces:
-- name: Management1
-  vrf: MGMT
+ip_radius:
+  vrfs:
+  - name: MGMT
+    source_interface: Management1
 management_api_http: null
 management_interfaces:
 - name: Management1

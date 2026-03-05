@@ -174,11 +174,11 @@ enable_password:
 hostname: aaa-settings-1
 ip_igmp_snooping:
   globally_enabled: true
-ip_radius_source_interfaces:
-- name: Vlan123
-  vrf: default
-- name: Vlan125
-  vrf: MGMT
+ip_radius:
+  source_interface: Vlan123
+  vrfs:
+  - name: MGMT
+    source_interface: Vlan125
 ip_tacacs_source_interfaces:
 - name: Vlan123
   vrf: default
