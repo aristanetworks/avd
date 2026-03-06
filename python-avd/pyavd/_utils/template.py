@@ -39,7 +39,7 @@ def template(template_file: str, template_vars: dict[str, Any] | ChainMap[str, A
         raise NotImplementedError(msg)
 
     # We only get here when running from Ansible, so it is safe to import from ansible and jinja2.
-    from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_ABOVE_2_19  # noqa: PLC0415
+    from ansible_collections.arista.avd.plugins.plugin_utils.constants import ANSIBLE_ABOVE_2_19  # noqa: PLC0415
 
     template_file_path = templar.loader.path_dwim_relative_stack(templar.searchpath, "", template_file)
 

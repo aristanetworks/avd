@@ -92,7 +92,7 @@ from ansible.inventory.host import Host
 from ansible.plugins.vars import BaseVarsPlugin
 from ansible.utils.vars import combine_vars
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import ANSIBLE_ABOVE_2_19
+from ansible_collections.arista.avd.plugins.plugin_utils.constants import ANSIBLE_ABOVE_2_19
 
 if ANSIBLE_ABOVE_2_19:
     from ansible.module_utils.common.text.converters import to_native

@@ -8,20 +8,17 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from ansible.plugins.action import ActionBase
 
+from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
+
 from .compile_searchpath import compile_searchpath
 
-try:
-    # Try to import from pyavd if available (when running from Ansible with pyavd installed)
+if TYPE_CHECKING:
     from pyavd._utils import AVDTemplar
-except ImportError:
-    # Fallback for ansible-test sanity when pyavd is not available
-    # Define a minimal stub that will raise an error if actually used
-    class AVDTemplar:  # type: ignore[no-redef]
-        """Stub class that raises ImportError when instantiated."""
-
-        def __init__(self, *_args: Any, **_kwargs: Any) -> None:
-            msg = "The 'arista.avd' collection requires the 'pyavd' Python library."
-            raise ImportError(msg)
+else:
+    try:
+        from pyavd._utils import AVDTemplar
+    except ImportError as e:
+        AVDTemplar = RaiseOnUse(ImportError(f"The 'arista.avd' collection requires the 'pyavd' Python library. Got import error {e}"))
 
 
 def get_templar(action_plugin_instance: ActionBase, task_vars: dict[str, Any]) -> AVDTemplar:
