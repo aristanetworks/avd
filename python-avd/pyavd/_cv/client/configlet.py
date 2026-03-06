@@ -103,7 +103,7 @@ class ConfigletMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ConfigletAssignmentConfig:
         """
-        Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentServiceStub.Set API.
+        Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentConfigServiceStub.Set API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -140,7 +140,7 @@ class ConfigletMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[ConfigletAssignmentKey]:
         """
-        Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentServiceStub.SetSome API.
+        Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentConfigServiceStub.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -228,7 +228,7 @@ class ConfigletMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ConfigletAssignmentConfig:
         """
-        Delete a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentServiceStub.Set API.
+        Delete a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentConfigServiceStub.Set API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -294,7 +294,7 @@ class ConfigletMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ConfigletConfig:
         """
-        Create/update a Configlet using arista.configlet.v1.ConfigletServiceStub.Set API.
+        Create/update a Configlet using arista.configlet.v1.ConfigletConfigServiceStub.Set API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -331,7 +331,7 @@ class ConfigletMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ConfigletConfig:
         """
-        Create/update a Configlet using arista.configlet.v1.ConfigletServiceStub.Set API.
+        Create/update a Configlet using arista.configlet.v1.ConfigletConfigServiceStub.Set API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -362,11 +362,11 @@ class ConfigletMixin(Protocol):
     async def set_configlets_from_files(
         self: CVClientProtocol,
         workspace_id: str,
-        configlets: list[tuple[str, str]],
+        configlets: list[tuple[str, str, str, str]],
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> list[ConfigletKey]:
+    ) -> list[tuple[ConfigletKey, str]]:
         """
-        Create/update multiple Configlets using arista.configlet.v1.ConfigletServiceStub.SetSome API.
+        Create/update multiple Configlets using arista.configlet.v1.ConfigletConfigServiceStub.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -374,7 +374,7 @@ class ConfigletMixin(Protocol):
             timeout: Timeout in seconds.
 
         Returns:
-            List of ConfigletConfig objects after being set including any server-generated values.
+            List of (<ConfigletKey>, <error string>) tuples after being set including any server-generated values.
         """
         request = ConfigletConfigSetSomeRequest(values=[])
         for configlet in configlets:
@@ -391,7 +391,7 @@ class ConfigletMixin(Protocol):
 
         responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
 
-        return [response.key async for response in responses]
+        return [(response.key, response.error) async for response in responses]
 
     # Use this variant for versions below 2024.2.0 (still respecting overall min version)
     @LimitCvVersion(max_ver="2024.1.99")
@@ -399,9 +399,9 @@ class ConfigletMixin(Protocol):
     async def set_configlets_from_files(  # noqa: F811 - Redefining with decorator.
         self: CVClientProtocol,
         workspace_id: str,
-        configlets: list[tuple[str, str]],
+        configlets: list[tuple[str, str, str, str]],
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> list[ConfigletKey]:
+    ) -> list[tuple[ConfigletKey, str]]:
         """
         Create batches of configlets and do parallel calls to set_configlet_from_file for each batch.
 
@@ -411,7 +411,7 @@ class ConfigletMixin(Protocol):
             timeout: Timeout in seconds.
 
         Returns:
-            List of ConfigletConfig objects after being set including any server-generated values.
+            List of Tuples of (<ConfigletKey>, <error string>) after being set including any server-generated values.
         """
         coroutines = [
             self.set_configlet_from_file(
@@ -432,6 +432,8 @@ class ConfigletMixin(Protocol):
             LOGGER.info("set_configlets_from_files: Batch %s", index)
             configlet_configs.extend(await gather(*batch_coroutines))
 
+        return [(config.key, "") for config in configlet_configs]
+
     @GRPCRequestHandler(list_field="configlet_ids")
     async def delete_configlets(
         self: CVClientProtocol,
@@ -440,7 +442,7 @@ class ConfigletMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[ConfigletKey]:
         """
-        Delete a Configlet using arista.configlet.v1.ConfigletServiceStub.SetSome API.
+        Delete a Configlet using arista.configlet.v1.ConfigletConfigServiceStub.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
