@@ -1,5 +1,10 @@
 router_bgp:
   as: 65101
+  route_distinguisher:
+    assignment_auto:
+      range:
+        start: 25
+        end: 29
   bgp:
     default:
       ipv4_unicast: false

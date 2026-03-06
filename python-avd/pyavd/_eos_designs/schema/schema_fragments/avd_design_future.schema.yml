@@ -9,16 +9,26 @@ keys:
   avd_design_future:
     type: dict
     description: |-
-      Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
+      Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
     documentation_options:
       table: role-settings
-    deprecation:
-      warning: false
-      remove_in_version: 7.0.0
     keys:
+      ip_radius_source_interface_setting:
+        type: bool
+        default: false
+        description: |-
+          Enable improved RADIUS source interface configuration with separate keys for VRF default and other VRFs.
+
+          When enabled:
+          - VRF default: Uses `ip_radius.source_interface`
+          - Other VRFs: Uses `ip_radius.vrfs` list
+          - Enforces VRF name uniqueness
+          - Aligns with EOS CLI behavior (where "vrf default" is implicit)
+
+          When disabled (current):
+          - Uses `ip_radius_source_interfaces` list for all VRF combinations
       bgp_always_disable_ipv4_unicast_for_peer_groups:
         type: bool
         description: |-
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by default.
-        # TODO AVD 7.0 change the default to false.
-        default: true
+        default: true  
