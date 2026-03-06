@@ -3996,8 +3996,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false)."""
         cvlosstimeout: int | None
         """
-        Value in minutes before the device will revert to ZTP mode.(Five minutes is the recommended
-        interval, -cv_loss_timeout=5m.)
+        Timeout in minutes before the device will revert to ZTP mode.
+        The recommended timeout is five
+        minutes.
         """
 
         if TYPE_CHECKING:
@@ -4101,8 +4102,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        "127.0.0.1:6343").
                     cvconfig: Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
                     cvlosstimeout:
-                       Value in minutes before the device will revert to ZTP mode.(Five minutes is the recommended
-                       interval, -cv_loss_timeout=5m.)
+                       Timeout in minutes before the device will revert to ZTP mode.
+                       The recommended timeout is five
+                       minutes.
 
                 """
 

@@ -1675,10 +1675,9 @@ keys:
           '
       cvlosstimeout:
         type: int
-        description: 'Value in minutes before the device will revert to ZTP mode.(Five
-          minutes is the recommended interval, -cv_loss_timeout=5m.)
+        description: 'Timeout in minutes before the device will revert to ZTP mode.
 
-          '
+          The recommended timeout is five minutes.'
         convert_types:
         - str
   daemons:
