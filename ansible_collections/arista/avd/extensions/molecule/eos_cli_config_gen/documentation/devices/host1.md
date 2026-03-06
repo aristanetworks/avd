@@ -388,8 +388,8 @@ agent KernelFib shutdown supervisor standby
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | Managed Config Flag |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ------------------- |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
 | Management0 | - | oob | default | - | - | - | - | - |
 | Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | default-route, route-preference | True | True |
 | Management42 | - | oob | default | - | - | - | - | - |
