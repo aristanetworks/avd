@@ -63491,42 +63491,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class StandardAccessListsItem(AvdModel):
         """Subclass of AvdModel."""
 
-        class SequenceNumbersItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"sequence": {"type": int}, "action": {"type": str}}
-            sequence: int
-            """Sequence ID."""
-            action: str
-            """
-            Action as string.
-            Example: "deny ip any any"
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, sequence: int | UndefinedType = Undefined, action: str | UndefinedType = Undefined) -> None:
-                    """
-                    SequenceNumbersItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        sequence: Sequence ID.
-                        action:
-                           Action as string.
-                           Example: "deny ip any any"
-
-                    """
-
-        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
-            """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
-
-            _primary_key: ClassVar[str] = "sequence"
-
-        SequenceNumbers._item_type = SequenceNumbersItem
-
         class EntriesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -63623,22 +63587,55 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Entries._item_type = EntriesItem
 
+        class SequenceNumbersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"sequence": {"type": int}, "action": {"type": str}}
+            sequence: int
+            """Sequence ID."""
+            action: str
+            """
+            Action as string.
+            Example: "deny ip any any"
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, sequence: int | UndefinedType = Undefined, action: str | UndefinedType = Undefined) -> None:
+                    """
+                    SequenceNumbersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sequence: Sequence ID.
+                        action:
+                           Action as string.
+                           Example: "deny ip any any"
+
+                    """
+
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
+            """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
+
+            _primary_key: ClassVar[str] = "sequence"
+
+        SequenceNumbers._item_type = SequenceNumbersItem
+
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "counters_per_entry": {"type": bool},
-            "fragment_rules": {"type": bool},
-            "sequence_numbers": {"type": SequenceNumbers},
             "entries": {"type": Entries},
+            "sequence_numbers": {"type": SequenceNumbers},
         }
         name: str
         """Access-list Name."""
         counters_per_entry: bool | None
-        fragment_rules: bool | None
-        """Add fragment rules."""
-        sequence_numbers: SequenceNumbers
-        """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
         entries: Entries
         """Subclass of AvdIndexedList with `EntriesItem` items. Primary key is `sequence` (`int`)."""
+        sequence_numbers: SequenceNumbers
+        """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
 
         if TYPE_CHECKING:
 
@@ -63647,9 +63644,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 name: str | UndefinedType = Undefined,
                 counters_per_entry: bool | None | UndefinedType = Undefined,
-                fragment_rules: bool | None | UndefinedType = Undefined,
-                sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
                 entries: Entries | UndefinedType = Undefined,
+                sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
             ) -> None:
                 """
                 StandardAccessListsItem.
@@ -63660,9 +63656,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     name: Access-list Name.
                     counters_per_entry: counters_per_entry
-                    fragment_rules: Add fragment rules.
-                    sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
                     entries: Subclass of AvdIndexedList with `EntriesItem` items. Primary key is `sequence` (`int`).
+                    sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
 
                 """
 

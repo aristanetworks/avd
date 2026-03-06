@@ -23481,33 +23481,6 @@ keys:
           - int
         counters_per_entry:
           type: bool
-        fragment_rules:
-          type: bool
-          description: Add fragment rules.
-        sequence_numbers:
-          type: list
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 7.0.0
-            new_key: entries
-          primary_key: sequence
-          items:
-            type: dict
-            keys:
-              sequence:
-                type: int
-                description: Sequence ID.
-                convert_types:
-                - str
-              action:
-                type: str
-                required: true
-                description: 'Action as string.
-
-                  Example: "deny ip any any"
-
-                  '
         entries:
           type: list
           primary_key: sequence
@@ -23567,6 +23540,30 @@ keys:
               mirror_session:
                 type: str
                 description: Mirror session to mirror matches against this rule.
+        sequence_numbers:
+          type: list
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: entries
+          primary_key: sequence
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                description: Sequence ID.
+                convert_types:
+                - str
+              action:
+                type: str
+                required: true
+                description: 'Action as string.
+
+                  Example: "deny ip any any"
+
+                  '
   static_routes:
     type: list
     items:

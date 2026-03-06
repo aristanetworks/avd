@@ -10,10 +10,6 @@
     | [<samp>standard_access_lists</samp>](## "standard_access_lists") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "standard_access_lists.[].name") | String | Required, Unique |  |  | Access-list Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "standard_access_lists.[].counters_per_entry") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fragment_rules</samp>](## "standard_access_lists.[].fragment_rules") | Boolean |  |  |  | Add fragment rules. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "standard_access_lists.[].sequence_numbers") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>entries</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "standard_access_lists.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "standard_access_lists.[].sequence_numbers.[].action") | String | Required |  |  | Action as string.<br>Example: "deny ip any any"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "standard_access_lists.[].entries") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "standard_access_lists.[].entries.[].sequence") | Integer | Required, Unique |  |  | Sequence ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "standard_access_lists.[].entries.[].action") | String |  |  | Valid Values:<br>- <code>permit</code><br>- <code>deny</code> | Action as string.<br> |
@@ -26,6 +22,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan_mask</samp>](## "standard_access_lists.[].entries.[].inner_vlan_mask") | String |  |  |  | Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "standard_access_lists.[].entries.[].log") | Boolean |  |  |  | Log matches against this rule. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mirror_session</samp>](## "standard_access_lists.[].entries.[].mirror_session") | String |  |  |  | Mirror session to mirror matches against this rule. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "standard_access_lists.[].sequence_numbers") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>entries</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "standard_access_lists.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "standard_access_lists.[].sequence_numbers.[].action") | String | Required |  |  | Action as string.<br>Example: "deny ip any any"<br> |
 
 === "YAML"
 
@@ -35,20 +34,6 @@
         # Access-list Name.
       - name: <str; required; unique>
         counters_per_entry: <bool>
-
-        # Add fragment rules.
-        fragment_rules: <bool>
-        # This key is deprecated.
-        # Support will be removed in AVD version 7.0.0.
-        # Use `entries` instead.
-        sequence_numbers:
-
-            # Sequence ID.
-          - sequence: <int; required; unique>
-
-            # Action as string.
-            # Example: "deny ip any any"
-            action: <str; required>
         entries:
 
             # Sequence ID.
@@ -86,4 +71,15 @@
 
             # Mirror session to mirror matches against this rule.
             mirror_session: <str>
+        # This key is deprecated.
+        # Support will be removed in AVD version 7.0.0.
+        # Use `entries` instead.
+        sequence_numbers:
+
+            # Sequence ID.
+          - sequence: <int; required; unique>
+
+            # Action as string.
+            # Example: "deny ip any any"
+            action: <str; required>
     ```

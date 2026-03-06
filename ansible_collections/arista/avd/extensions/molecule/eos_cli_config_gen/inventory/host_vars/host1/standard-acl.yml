@@ -2,7 +2,6 @@
 ### Standard Access-Lists ###
 standard_access_lists:
   - name: ACL-API
-    fragment_rules: true
     entries:
       - sequence: 10
         remark: "ACL to restrict access to switch API to CVP and Ansible"
@@ -59,7 +58,7 @@ standard_access_lists:
       - sequence: 20
         action: permit
         source: 10.0.0.0/8
-        mirror_session: mirror
+        mirror_session: mirror1
       - sequence: 30
         action: permit
         source: 172.16.0.0/12
@@ -67,5 +66,5 @@ standard_access_lists:
       - sequence: 40
         action: permit
         source: 192.168.0.0/16
-        mirror_session: mirror
+        mirror_session: mirror2
         log: true

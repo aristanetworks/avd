@@ -11837,16 +11837,16 @@ poe
 ##### 99
 
 | Sequence | Action | Source | Remark | Log | Mirror Session |
-| -------- | ------ | ------ | ------ | --- | ------------- |
+| -------- | ------ | ------ | ------ | --- | -------------- |
 | 10 | - | - | ACL to restrict access RFC1918 addresses | - | - |
-| 20 | permit | 10.0.0.0/8 | - | - | mirror |
+| 20 | permit | 10.0.0.0/8 | - | - | mirror1 |
 | 30 | permit | 172.16.0.0/12 | - | True | - |
-| 40 | permit | 192.168.0.0/16 | - | True | mirror |
+| 40 | permit | 192.168.0.0/16 | - | True | mirror2 |
 
 ##### ACL-API
 
 | Sequence | Action | Source | Remark | Log | Mirror Session |
-| -------- | ------ | ------ | ------ | --- | ------------- |
+| -------- | ------ | ------ | ------ | --- | -------------- |
 | 10 | - | - | ACL to restrict access to switch API to CVP and Ansible | - | - |
 | 20 | permit | - | - | - | - |
 | 30 | permit | - | - | - | - |
@@ -11857,7 +11857,7 @@ poe
 ACL has counting mode `counters per-entry` enabled!
 
 | Sequence | Action | Source | Remark | Log | Mirror Session |
-| -------- | ------ | ------ | ------ | --- | ------------- |
+| -------- | ------ | ------ | ------ | --- | -------------- |
 | 10 | - | - | ACL to restrict access RFC1918 addresses | - | - |
 | 20 | permit | 10.0.0.0/8 | - | - | - |
 | 30 | permit | 172.16.0.0/12 | - | - | - |
@@ -11866,7 +11866,7 @@ ACL has counting mode `counters per-entry` enabled!
 ##### ACL-SSH-VRF
 
 | Sequence | Action | Source | Remark | Log | Mirror Session |
-| -------- | ------ | ------ | ------ | --- | ------------- |
+| -------- | ------ | ------ | ------ | --- | -------------- |
 | 10 | - | - | ACL to restrict access RFC1918 addresses | - | - |
 | 20 | permit | 10.0.0.0/8 | - | - | - |
 | 30 | permit | 172.16.0.0/12 | - | - | - |
@@ -11878,12 +11878,11 @@ ACL has counting mode `counters per-entry` enabled!
 !
 ip access-list standard 99
    10 remark ACL to restrict access RFC1918 addresses
-   20 permit 10.0.0.0/8 mirror
+   20 permit 10.0.0.0/8 mirror session mirror1
    30 permit 172.16.0.0/12 log
-   40 permit 192.168.0.0/16 mirror log
+   40 permit 192.168.0.0/16 mirror session mirror2 log
 !
 ip access-list standard ACL-API
-   fragement-rules
    10 remark ACL to restrict access to switch API to CVP and Ansible
    20 permit host 10.10.10.10 vlan 10 0x000
    30 permit host 10.10.10.11 vlan 10 0x000 inner 11 0x00A

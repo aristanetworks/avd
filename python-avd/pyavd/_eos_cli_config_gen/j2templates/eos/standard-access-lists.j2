@@ -10,16 +10,7 @@ ip access-list standard {{ standard_access_list.name }}
 {%     if standard_access_list.counters_per_entry is arista.avd.defined(true) %}
    counters per-entry
 {%     endif %}
-{%     if standard_access_list.fragment_rules is arista.avd.defined(true) %}
-   fragement-rules
-{%     endif %}
-{%     if standard_access_list.sequence_numbers is arista.avd.defined %}
-{%         for sequence in standard_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
-{%             if sequence.action is arista.avd.defined %}
-   {{ sequence.sequence }} {{ sequence.action }}
-{%             endif %}
-{%         endfor %}
-{%     elif standard_access_list.entries is arista.avd.defined %}
+{%     if standard_access_list.entries is arista.avd.defined %}
 {%         for entry in standard_access_list.entries | arista.avd.natural_sort("sequence") %}
 {%             if entry.remark is arista.avd.defined %}
    {{ entry.sequence }} remark {{ entry.remark }}
@@ -42,12 +33,18 @@ ip access-list standard {{ standard_access_list.name }}
 {%                     endif %}
 {%                 endif %}
 {%                 if entry.mirror_session is arista.avd.defined %}
-{%                     set entry_cli = entry_cli ~ " " ~ entry.mirror_session %}
+{%                     set entry_cli = entry_cli ~ " mirror session " ~ entry.mirror_session %}
 {%                 endif %}
 {%                 if entry.log is arista.avd.defined(true) %}
 {%                     set entry_cli = entry_cli ~ " log" %}
 {%                 endif %}
    {{ entry_cli }}
+{%             endif %}
+{%         endfor %}
+{%     elif standard_access_list.sequence_numbers is arista.avd.defined %}
+{%         for sequence in standard_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%             if sequence.action is arista.avd.defined %}
+   {{ sequence.sequence }} {{ sequence.action }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
