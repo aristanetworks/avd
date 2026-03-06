@@ -909,10 +909,24 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    class Avd7Behaviors(AvdModel):
+    class AvdDesignFuture(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"ip_radius_source_interface_setting": {"type": bool, "default": False}}
+        _fields: ClassVar[dict] = {
+            "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
+            "ip_radius_source_interface_setting": {"type": bool, "default": False},
+        }
+        accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
+        """
+        When enabled, AVD will generate `accept-dhcp default-route` under the management VRF when the
+        management IP is obtained via DHCP.
+        This allows the device to accept the default route provided by
+        the DHCP server for the management interface,
+        which is essential for out-of-band management
+        scenarios where the management network provides routing information via DHCP.
+
+        Default value: `False`
+        """
         ip_radius_source_interface_setting: bool
         """
         Enable improved RADIUS source interface configuration with separate keys for VRF default and other
@@ -935,14 +949,26 @@ class EosDesigns(EosDesignsRootModel):
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, ip_radius_source_interface_setting: bool | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
+                ip_radius_source_interface_setting: bool | UndefinedType = Undefined,
+            ) -> None:
                 """
-                Avd7Behaviors.
+                AvdDesignFuture.
 
 
                 Subclass of AvdModel.
 
                 Args:
+                    accept_dhcp_default_route_for_mgmt_ip_dhcp:
+                       When enabled, AVD will generate `accept-dhcp default-route` under the management VRF when the
+                       management IP is obtained via DHCP.
+                       This allows the device to accept the default route provided by
+                       the DHCP server for the management interface,
+                       which is essential for out-of-band management
+                       scenarios where the management network provides routing information via DHCP.
                     ip_radius_source_interface_setting:
                        Enable improved RADIUS source interface configuration with separate keys for VRF default and other
                        VRFs.
@@ -958,42 +984,6 @@ class EosDesigns(EosDesignsRootModel):
                        When disabled (current):
                        - Uses `ip_radius_source_interfaces` list for all
                        VRF combinations
-
-                """
-
-    class AvdDesignFuture(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False}}
-        accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
-        """
-        When enabled, AVD will generate `accept-dhcp default-route` under the management VRF when the
-        management IP is obtained via DHCP.
-        This allows the device to accept the default route provided by
-        the DHCP server for the management interface,
-        which is essential for out-of-band management
-        scenarios where the management network provides routing information via DHCP.
-
-        Default value: `False`
-        """
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined) -> None:
-                """
-                AvdDesignFuture.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    accept_dhcp_default_route_for_mgmt_ip_dhcp:
-                       When enabled, AVD will generate `accept-dhcp default-route` under the management VRF when the
-                       management IP is obtained via DHCP.
-                       This allows the device to accept the default route provided by
-                       the DHCP server for the management interface,
-                       which is essential for out-of-band management
-                       scenarios where the management network provides routing information via DHCP.
 
                 """
 
@@ -88321,7 +88311,6 @@ class EosDesigns(EosDesignsRootModel):
         "aaa_settings": {"type": AaaSettings},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
-        "avd_7_behaviors": {"type": Avd7Behaviors},
         "avd_design_future": {"type": AvdDesignFuture},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
@@ -89039,19 +89028,10 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
-    avd_7_behaviors: Avd7Behaviors
-    """
-    Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
-
-    Subclass of
-    AvdModel.
-    """
     avd_design_future: AvdDesignFuture
     """
-    Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
-
-    Subclass of
-    AvdModel.
+    Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
+    Subclass of AvdModel.
     """
     avd_digital_twin_mode: bool
     """
@@ -91077,7 +91057,6 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
-            avd_7_behaviors: Avd7Behaviors | UndefinedType = Undefined,
             avd_design_future: AvdDesignFuture | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
@@ -91300,16 +91279,9 @@ class EosDesigns(EosDesignsRootModel):
                 aaa_settings: Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
-                avd_7_behaviors:
-                   Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
-
-                   Subclass of
-                   AvdModel.
                 avd_design_future:
-                   Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
-
-                   Subclass of
-                   AvdModel.
+                   Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
+                   Subclass of AvdModel.
                 avd_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.

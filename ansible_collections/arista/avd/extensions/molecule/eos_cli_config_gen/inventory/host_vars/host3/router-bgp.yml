@@ -1,5 +1,9 @@
 router_bgp:
   as: "65101.0001"
+  route_distinguisher:
+    assignment_auto:
+      address_families:
+        - l3-vrf
   bgp_defaults:
     - no bgp default ipv4-unicast
     - update wait-install
