@@ -49,7 +49,8 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.1.72/32
-  ipv6_address: 2001:2::48/128
+  ipv6_addresses:
+  - 2001:2::48/128
 metadata:
   is_deployed: true
   platform: vEOS-LAB
