@@ -1,0 +1,65 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_uplink-p2p-vrfs-tests-leaf1_Ethernet51
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: uplink-p2p-vrfs-tests-leaf1
+    peer_interface: Ethernet51
+    peer_type: l3leaf
+- name: Ethernet2
+  description: L2_uplink-p2p-vrfs-tests-leaf1_Ethernet52
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: uplink-p2p-vrfs-tests-leaf1
+    peer_interface: Ethernet52
+    peer_type: l3leaf
+- name: Ethernet10
+  shutdown: false
+  metadata:
+    peer_type: network_port
+    peer_key: network_ports
+  switchport:
+    enabled: true
+hostname: uplink-p2p-vrfs-tests-l2leaf1
+ip_igmp_snooping:
+  globally_enabled: true
+metadata:
+  is_deployed: true
+  platform: vEOS-LAB
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+port_channel_interfaces:
+- name: Port-Channel1
+  description: L2_uplink-p2p-vrfs-tests-leaf1_Port-Channel51
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '66'
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 66
+  name: TEST-L2VLAN-ATTRACTION
+  metadata:
+    tenants:
+    - TenantC
+vrfs:
+- name: MGMT
+  ip_routing: false
