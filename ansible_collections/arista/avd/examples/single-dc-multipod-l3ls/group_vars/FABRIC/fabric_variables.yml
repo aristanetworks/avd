@@ -7,15 +7,18 @@ eos_designs_documentation:
   topology_csv: true
   p2p_links_csv: true
 
+# Enable eAPI for programmatic access
 management_eapi:
   enabled: true
 
+# Default gateway for management network (172.16.1.0/24)
 mgmt_gateway: 172.16.1.1
 
-# Enable VLAN aware bundles
+# VLAN-aware bundles reduce BGP EVPN route count by bundling VLANs
 evpn_vlan_aware_bundles: true
 
 # Define default node types based on hostnames
+# Eliminates need to specify 'type' per node in inventory
 default_node_types:
   - node_type: super-spine
     match_hostnames:
@@ -27,19 +30,20 @@ default_node_types:
     match_hostnames:
       - ".*-leaf.*"
 
-# Set default uplink, downlink, and MLAG interfaces based on node type
+# Automatically assign interfaces based on node type
+# Eliminates need to specify interfaces per node
 default_interfaces:
   - types: [super-spine]
     platforms: [default]
-    downlink_interfaces: [Ethernet1-8]
+    downlink_interfaces: [Ethernet1-6]   # Connects to pod spines
   - types: [spine]
     platforms: [default]
-    uplink_interfaces: [Ethernet1-2]
-    downlink_interfaces: [Ethernet3-8]
+    uplink_interfaces: [Ethernet1-2]     # Connects to super-spines
+    downlink_interfaces: [Ethernet3-8]   # Connects to leafs
   - types: [l3leaf]
     platforms: [default]
-    uplink_interfaces: [Ethernet1-2]
-    mlag_interfaces: [Ethernet3-4]
+    uplink_interfaces: [Ethernet1-2]     # Connects to spines
+    mlag_interfaces: [Ethernet3-4]       # MLAG peer-link
 
 # Local users
 aaa_settings:
@@ -55,7 +59,7 @@ aaa_settings:
       role: network-admin
       sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
 
-# CloudVision Portal definitions
+# CloudVision settings for streaming telemetry and management
 cv_settings:
   onprem_clusters:
     - name: primary

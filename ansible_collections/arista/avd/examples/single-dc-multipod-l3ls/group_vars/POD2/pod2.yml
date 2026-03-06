@@ -5,7 +5,6 @@ spine:
     platform: cEOS
     bgp_as: 65002
     loopback_ipv4_pool: 192.168.101.0/24
-    mlag: false
     uplink_switches: [dc1-ss1, dc1-ss2] # Where the leaf uplinks go
     uplink_ipv4_pool: 192.168.103.0/24 # For the p2p interfaces to chopped up into /31s
     evpn_route_servers: [dc1-ss1, dc1-ss2]
@@ -33,7 +32,6 @@ l3leaf:
     virtual_router_mac_address: 00:1c:73:00:00:99 # The vMAC for the anycast gateways
     spanning_tree_mode: mstp # Spanning Tree is still enabled even in EVPN setups
     spanning_tree_priority: 16384
-    # mlag: true # By default, use MLAG
 
   node_groups:
     - group: mlag2

@@ -21,7 +21,7 @@ This example only teaches some aspects of an L3LS EVPN/VXLAN build; please see t
 Ansible playbooks are included to show the following:
 
 - Building the intended configuration and documentation
-- Deploying the configuration via CloudVision to the switches, including a complete change-based workflow with rollback capability, etc.
+- Deploying the configuration via CloudVision or directly to the switches via eAPI
 - Validating the configuration
 
 ## AVD Playground
@@ -57,7 +57,7 @@ ansible-avd-examples/ (or wherever the playbook was run)
 
 ### Physical topology
 
-The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology.
+The drawing below shows the physical topology used in this example. The interface assignments shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology.
 
 ![Figure: Arista Leaf Spine physical topology](images/l3ls-multipod.svg)
 
@@ -77,7 +77,7 @@ The SUPERSPINES group has been added, as well as POD1 and POD2 groups with PODX_
 
 ```yaml title="inventory.yml"
 --8<--
-examples/single-dc-multipod-l3ls/inventory.yml
+ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/inventory.yml
 --8<--
 ```
 
@@ -91,13 +91,13 @@ With the topology, the following YAML files are used in group_vars:
 - POD1/pod1.yml
 - POD2/pod2.yml
 - EVPN_SERVICES/evpn_services.yml
-- ENDPOINTS/endpoints.yml
+- ENDPOINT_CONNECT/endpoints.yml
 
 The fabric_variables.yml file contains parameters that would apply to the entire fabric, such as `evpn_vlan_aware_bundles: true`.
 
 ```yaml title="FABRIC/fabric_variables.yml"
 --8<--
-examples/single-dc-multipod-l3ls/group_vars/FABRIC/fabric_variables.yml
+ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/group_vars/FABRIC/fabric_variables.yml
 --8<--
 ```
 
@@ -105,20 +105,20 @@ The superspines.yml file contains the super-spine definitions.
 
 ```yaml title="SUPERSPINES/superspines.yml"
 --8<--
-examples/single-dc-multipod-l3ls/group_vars/SUPERSPINES/superspines.yml
+ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/group_vars/SUPERSPINES/superspines.yml
 --8<--
 ```
 
 The super_spine section works like the traditional spine section in a single POD L3LS. It will need an ASN (separate from the POD spines) and loopback pool (which can be the same pool as the PODs, as long as the IDs are unique). The `evpn_role: server` makes the super-spines a route server, as the PODs' routes need to be propagated to each other.
 
-The rest of the fabric_variables.yml would contain any parameters for your fabric, such as NTP servers, user accounts, and p2p MTUs. The leaf configurations, EVPN_SERVICES, and ENDPOINTS sections aren't affected by the multi-pod format.
+The leaf configurations, EVPN services, and endpoints sections aren't affected by the multi-pod format.
 
 === "POD1"
-    The POD1 and POD2 YAML files contain the descriptions of the leafs and spines. Note that each POD's spines have its own unique ASN (eBGP). Also, the spines now have uplink interfaces and uplink switches specified (to the superspines) with the `uplink_switches` and `uplink_interfaces` directives. The uplink pool can overlap between the PODs in a DC. If doing multi-DC, the pools should be on different subnets.
+    The POD1 and POD2 YAML files contain the descriptions of the leafs and spines. Note that each POD's spines have its own unique ASN (eBGP). Also, the spines now have uplink interfaces and uplink switches specified (to the superspines) with the `uplink_switches` and `uplink_switch_interfaces` directives. The uplink pool can overlap between the PODs in a DC. If doing multi-DC, the pools should be on different subnets.
 
     ```yaml title="POD1/pod1.yml"
     --8<--
-    examples/single-dc-multipod-l3ls/group_vars/POD1/pod1.yml
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/group_vars/POD1/pod1.yml
     --8<--
     ```
 
@@ -127,17 +127,17 @@ The rest of the fabric_variables.yml would contain any parameters for your fabri
 
     ```yaml title="POD2/pod2.yml"
     --8<--
-    examples/single-dc-multipod-l3ls/group_vars/POD2/pod2.yml
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/group_vars/POD2/pod2.yml
     --8<--
     ```
 
 ## Connecting an External Router
 
-In addition to the multi-pod, this example has a tenant/VRF connecting to an external network via a router (R1). This is defined in the evpn_services.yml file. The `l3_interfaces` parameter creates an L3 interface in the VRF on a specific leaf and the `bgp_peer` section.
+In addition to the multi-pod, this example has a tenant/VRF connecting to an external network via a router (R1). This is defined in the `evpn_services.yml` file. The `l3_interfaces` parameter creates an L3 interface in the VRF on a specific leaf and the `bgp_peer` section defines the BGP peering with the external router.
 
 ```yaml title="EVPN_SERVICES/evpn_services.yml"
 --8<--
-examples/single-dc-multipod-l3ls/group_vars/EVPN_SERVICES/evpn_services.yml
+ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/group_vars/EVPN_SERVICES/evpn_services.yml
 --8<--
 ```
 
@@ -145,9 +145,9 @@ examples/single-dc-multipod-l3ls/group_vars/EVPN_SERVICES/evpn_services.yml
 
 The final group variables file provides an example of connecting two servers across a leaf pair.
 
-```yaml title="ENDPOINTS/endpoints.yml"
+```yaml title="ENDPOINT_CONNECT/endpoints.yml"
 --8<--
-examples/single-dc-multipod-l3ls/group_vars/ENDPOINTS/endpoints.yml
+ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/group_vars/ENDPOINT_CONNECT/endpoints.yml
 --8<--
 ```
 
@@ -159,7 +159,7 @@ examples/single-dc-multipod-l3ls/group_vars/ENDPOINTS/endpoints.yml
 
     ``` yaml
     --8<--
-    examples/single-dc-multipod-l3ls/playbooks/build.yml
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/build.yml
     --8<--
     ```
 
@@ -169,7 +169,7 @@ examples/single-dc-multipod-l3ls/group_vars/ENDPOINTS/endpoints.yml
 
     ``` yaml
     --8<--
-    examples/single-dc-multipod-l3ls/playbooks/deploy-cvp.yml
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/deploy-cvp.yml
     --8<--
     ```
 
@@ -179,7 +179,7 @@ examples/single-dc-multipod-l3ls/group_vars/ENDPOINTS/endpoints.yml
 
     ``` yaml
     --8<--
-    examples/single-dc-multipod-l3ls/playbooks/deploy.yml
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/deploy.yml
     --8<--
     ```
 
@@ -189,7 +189,7 @@ examples/single-dc-multipod-l3ls/group_vars/ENDPOINTS/endpoints.yml
 
     ``` yaml
     --8<--
-    examples/single-dc-multipod-l3ls/playbooks/validate.yml
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/validate.yml
     --8<--
     ```
 
@@ -210,7 +210,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    examples/single-dc-multipod-l3ls/intended/configs/dc1-ss1.cfg
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/intended/configs/dc1-ss1.cfg
     --8<--
     ```
 
@@ -218,7 +218,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    examples/single-dc-multipod-l3ls/intended/configs/dc1-ss2.cfg
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/intended/configs/dc1-ss2.cfg
     --8<--
     ```
 
@@ -226,7 +226,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    examples/single-dc-multipod-l3ls/intended/configs/dc1-spine1.cfg
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/intended/configs/dc1-spine1.cfg
     --8<--
     ```
 
@@ -234,7 +234,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    examples/single-dc-multipod-l3ls/intended/configs/dc1-spine2.cfg
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/intended/configs/dc1-spine2.cfg
     --8<--
     ```
 
@@ -242,7 +242,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    examples/single-dc-multipod-l3ls/intended/configs/dc1-spine3.cfg
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/intended/configs/dc1-spine3.cfg
     --8<--
     ```
 
@@ -250,7 +250,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    examples/single-dc-multipod-l3ls/intended/configs/dc1-spine4.cfg
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/intended/configs/dc1-spine4.cfg
     --8<--
     ```
 
@@ -258,7 +258,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    examples/single-dc-multipod-l3ls/intended/configs/dc1-leaf1a.cfg
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/intended/configs/dc1-leaf1a.cfg
     --8<--
     ```
 
@@ -266,7 +266,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    examples/single-dc-multipod-l3ls/intended/configs/dc1-leaf1b.cfg
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/intended/configs/dc1-leaf1b.cfg
     --8<--
     ```
 
@@ -274,7 +274,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    examples/single-dc-multipod-l3ls/intended/configs/dc1-leaf2a.cfg
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/intended/configs/dc1-leaf2a.cfg
     --8<--
     ```
 
@@ -282,6 +282,6 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    examples/single-dc-multipod-l3ls/intended/configs/dc1-leaf2b.cfg
+    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/intended/configs/dc1-leaf2b.cfg
     --8<--
     ```

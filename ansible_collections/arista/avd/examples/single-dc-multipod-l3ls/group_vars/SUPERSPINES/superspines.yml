@@ -5,7 +5,6 @@ super_spine:
     platform: cEOS
     bgp_as: 65000
     loopback_ipv4_pool: 192.168.101.0/24
-    mlag: false
     evpn_role: server
 
   nodes:

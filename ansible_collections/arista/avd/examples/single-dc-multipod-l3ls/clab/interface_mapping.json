@@ -7,6 +7,7 @@
         "eth2": "Ethernet2",
         "eth3": "Ethernet3",
         "eth4": "Ethernet4",
-        "eth5": "Ethernet5"
+        "eth5": "Ethernet5",
+        "eth6": "Ethernet6"
     }
 }

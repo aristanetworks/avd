@@ -41,7 +41,7 @@ all:
       children:
         POD1_LEAFS:
         POD2_LEAFS:
-    ENDPOINTS:
+    ENDPOINT_CONNECT:
       children:
         POD1_LEAFS:
         POD2_LEAFS:

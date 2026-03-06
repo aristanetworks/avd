@@ -1,5 +1,5 @@
 ---
-- name: Run fabric validation
+- name: Fabric Validation
   hosts: FABRIC
   gather_facts: false
   tasks:

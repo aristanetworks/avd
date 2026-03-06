@@ -51,6 +51,10 @@ topology:
         dc1-leaf2b:
             mgmt-ipv4: 172.16.1.24
             startup-config: init-configs/dc1-leaf2b.cfg
+        # R1, external router
+        R1:
+            mgmt-ipv4: 172.16.1.27
+            startup-config: init-configs/R1.cfg
         # Hosts
         host1:
             mgmt-ipv4: 172.16.1.101
@@ -86,6 +90,8 @@ topology:
         # POD2 leaf MLAG peer-links
         - endpoints: ["dc1-leaf2a:eth3", "dc1-leaf2b:eth3"]
         - endpoints: ["dc1-leaf2a:eth4", "dc1-leaf2b:eth4"]
+        # R1 to POD1 leafs
+        - endpoints: ["R1:eth1", "dc1-leaf2b:eth6"]
         # Hosts
         - endpoints: ["dc1-leaf1a:eth5", "host1:eth1"]
         - endpoints: ["dc1-leaf1b:eth5", "host1:eth2"]
