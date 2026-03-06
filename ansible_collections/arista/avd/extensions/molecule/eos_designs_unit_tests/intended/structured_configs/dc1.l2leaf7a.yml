@@ -86,7 +86,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452
+      allowed_vlan: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452,3099
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
@@ -172,6 +172,11 @@ vlans:
   metadata:
     tenants:
     - Tenant_B
+- id: 3099
+  name: MULTI_TENANT_VRF_TEST_C
+  metadata:
+    tenants:
+    - Tenant_C
 - id: 310
   name: Tenant_C_OP_Zone_1
   metadata:

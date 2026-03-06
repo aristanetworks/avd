@@ -632,7 +632,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 110-112,120-122,130-131,140-141,150,160-161,210-211,250,310-311,350
+      allowed_vlan: 110-112,120-122,130-131,140-141,150,160-161,210-211,250,310-311,350,3099
 - name: Port-Channel14
   description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
   shutdown: false
@@ -1088,6 +1088,14 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '250'
+  - name: MULTI_TENANT_VRF_TEST
+    rd: 65103:99
+    route_targets:
+      both:
+      - 99:99
+    redistribute_routes:
+    - learned
+    vlan: '3099'
   - name: Tenant_C_OP_Zone
     rd: '65103:30'
     route_targets:
@@ -1608,6 +1616,7 @@ vlan_interfaces:
   metadata:
     tenants:
     - Tenant_B
+    - Tenant_C
     type: underlay_peering
 - name: Vlan210
   description: Tenant_B_OP_Zone_1
@@ -1659,6 +1668,16 @@ vlan_interfaces:
     tenants:
     - Tenant_B
     type: underlay_peering
+- name: Vlan3099
+  description: MULTI_TENANT_VRF_TEST_C
+  shutdown: false
+  vrf: MULTI_TENANT_VRF_TEST
+  ip_address_virtual: 10.99.99.1/24
+  metadata:
+    tenants:
+    - Tenant_C
+    tags:
+    - opzone
 - name: Vlan310
   description: Tenant_C_OP_Zone_1
   shutdown: false
@@ -1843,6 +1862,7 @@ vlans:
   metadata:
     tenants:
     - Tenant_B
+    - Tenant_C
 - id: 210
   name: Tenant_B_OP_Zone_1
   metadata:
@@ -1872,6 +1892,11 @@ vlans:
   metadata:
     tenants:
     - Tenant_B
+- id: 3099
+  name: MULTI_TENANT_VRF_TEST_C
+  metadata:
+    tenants:
+    - Tenant_C
 - id: 310
   name: Tenant_C_OP_Zone_1
   metadata:
@@ -1940,6 +1965,7 @@ vrfs:
   metadata:
     tenants:
     - Tenant_B
+    - Tenant_C
 - name: Tenant_B_OP_Zone
   ip_routing: true
   metadata:
@@ -2000,6 +2026,8 @@ vxlan_interface:
         vni: 20211
       - id: 250
         vni: 20250
+      - id: 3099
+        vni: 33099
       - id: 310
         vni: 30310
       - id: 311

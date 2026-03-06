@@ -133,5 +133,6 @@ tenant_c:
         svis:
           - id: 3099
             name: MULTI_TENANT_VRF_TEST_C
+            tags: ['opzone']
             enabled: true
             ip_address_virtual: 10.99.99.1/24
