@@ -36,7 +36,7 @@ svi_profiles:
         source_interface: lo101
         source_vrf: TEST
     nodes:
-      - node: evpn_services_l2_only_false
+      - node: evpn-services-l2-only-false
         ip_address: 12.4.13.2/24
         ipv6_address: 2012:db9:413::2/64
         ip_virtual_router_addresses: [ "12.4.13.1" ]

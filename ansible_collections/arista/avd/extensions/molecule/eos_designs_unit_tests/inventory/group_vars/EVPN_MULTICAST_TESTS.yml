@@ -320,15 +320,15 @@ tenants:
             ip_virtual_router_addresses:
               - 10.1.14.1
             nodes:
-              - node: EVPN-MULTICAST-L3LEAF1A
+              - node: evpn-multicast-l3leaf1a
                 ip_address: 10.1.14.2/24
-              - node: EVPN-MULTICAST-L3LEAF1B
+              - node: evpn-multicast-l3leaf1b
                 ip_address: 10.1.14.3/24
-              - node: EVPN-MULTICAST-L3LEAF2A
+              - node: evpn-multicast-l3leaf2a
                 ip_address: 10.1.14.4/24
-              - node: EVPN-MULTICAST-L3LEAF3A
+              - node: evpn-multicast-l3leaf3a
                 ip_address: 10.1.14.5/24
-              - node: EVPN-MULTICAST-L3LEAF3B
+              - node: evpn-multicast-l3leaf3b
                 ip_address: 10.1.14.6/24
           - id: 136
             name: "L3_L2_MULTICAST_ENABLED_136"
@@ -469,12 +469,12 @@ tenants:
       evpn_peg:
         # Nodes should be in one node group only
         # Nodes is optional, settings apply everywhere if not defined
-        - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+        - nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
           transit: false
 
     # If pim_rp_addresses is defined and evpn_l3_multicast is enabled above create router pim sparse-mode
     pim_rp_addresses:
-      - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+      - nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
         rps:
           - 10.1.51.129
           - 10.1.52.129
@@ -485,11 +485,11 @@ tenants:
           - 10.1.50.100
         groups:
           - 232.0.112.0/21
-      - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+      - nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
         rps:
           - 10.1.51.130
           - 10.1.52.130
-      - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+      - nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
         rps:
           - 10.1.51.140
           - 10.1.52.140
@@ -525,20 +525,20 @@ tenants:
         l3_interfaces:
           - interfaces: [Ethernet7, Ethernet7]
             ip_addresses: [10.1.51.0/31, 10.1.51.2/31]
-            nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             enabled: true
             pim:
               enabled: true
           - interfaces: [Ethernet7.10, Ethernet7.10]
             ip_addresses: [10.1.51.4/31, 10.1.51.6/31]
-            nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+            nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
             enabled: true
             # Implicit disable
             # pim:
             #   enabled: false
           - interfaces: [Ethernet8, Ethernet8]
             ip_addresses: [10.1.51.4/31, 10.1.51.6/31]
-            nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+            nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
             enabled: true
             pim:
               enabled: true
@@ -564,7 +564,7 @@ tenants:
               - 10.40.40.40
           - rps:
               - 10.20.20.30
-            nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             groups:
               - 232.1.0.0/21
             access_list_name: RP_ACL_VRF_OVERRIDE
@@ -578,7 +578,7 @@ tenants:
         l3_interfaces:
           - interfaces: [Ethernet8, Ethernet8]
             ip_addresses: [10.1.55.0/31, 10.1.55.2/31]
-            nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             enabled: true
             pim:
               enabled: true
@@ -594,15 +594,15 @@ tenants:
           enabled: true
           # Test transit mode
           evpn_peg:
-            - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            - nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
               transit: true
-            - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+            - nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
               transit: true
         pim_rp_addresses:
-          - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+          - nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             rps:
               - 10.30.30.30
-          - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+          - nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
             rps:
               - 10.60.60.60
         vrf_vni: 52
@@ -615,13 +615,13 @@ tenants:
         l3_interfaces:
           - interfaces: [Ethernet9, Ethernet9]
             ip_addresses: [10.1.52.0/31, 10.1.52.2/31]
-            nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             enabled: true
             pim:
               enabled: true
           - interfaces: [Ethernet9, Ethernet9]
             ip_addresses: [10.2.52.0/31, 10.2.52.2/31]
-            nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+            nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
             enabled: true
             pim:
               enabled: true
@@ -639,10 +639,10 @@ tenants:
           evpn_peg:
             - transit: true
         pim_rp_addresses:
-          - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+          - nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             rps:
               - 10.30.30.30
-          - nodes: [EVPN-MULTICAST-L3LEAF3A, EVPN-MULTICAST-L3LEAF3B]
+          - nodes: [evpn-multicast-l3leaf3a, evpn-multicast-l3leaf3b]
             rps:
               - 10.60.60.60
         vrf_vni: 60
@@ -655,7 +655,7 @@ tenants:
         l3_interfaces:
           - interfaces: [Ethernet10, Ethernet10]
             ip_addresses: [10.1.60.0/31, 10.1.60.2/31]
-            nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            nodes: [evpn-multicast-l3leaf1a, evpn-multicast-l3leaf1b]
             enabled: true
             pim:
               enabled: true
