@@ -7,7 +7,7 @@ l3leaf:
     loopback_ipv4_offset: 2
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     uplink_interfaces: [ Ethernet1 ]
-    uplink_switches: [ EVPN-MULTICAST-SPINE1 ]
+    uplink_switches: [ evpn-multicast-spine1 ]
     uplink_ipv4_pool: 172.31.255.0/24
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     virtual_router_mac_address: 00:dc:00:00:00:0a
@@ -25,11 +25,11 @@ l3leaf:
   # - proper configuration of vlan-aware bundles (igmp redistribution)
     - group: EVPN_MULTICAST_L3LEAF1
       nodes:
-        - name: EVPN-MULTICAST-L3LEAF1A
+        - name: evpn-multicast-l3leaf1a
           id: 1
           mgmt_ip: 192.168.200.105/24
           uplink_switch_interfaces: [ Ethernet1 ]
-        - name: EVPN-MULTICAST-L3LEAF1B
+        - name: evpn-multicast-l3leaf1b
           id: 2
           mgmt_ip: 192.168.200.106/24
           uplink_switch_interfaces: [ Ethernet2 ]
@@ -45,25 +45,25 @@ l3leaf:
     - group: EVPN-MULTICAST-L3LEAF2
       platform: "7050X3"
       nodes:
-        - name: EVPN-MULTICAST-L3LEAF2A
+        - name: evpn-multicast-l3leaf2a
           id: 3
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: [ Ethernet3 ]
     - group: EVPN_MULTICAST_L3LEAF3
       mlag: false
       nodes:
-        - name: EVPN-MULTICAST-L3LEAF3A
+        - name: evpn-multicast-l3leaf3a
           id: 4
           mgmt_ip: 192.168.200.108/24
           uplink_switch_interfaces: [ Ethernet4 ]
-        - name: EVPN-MULTICAST-L3LEAF3B
+        - name: evpn-multicast-l3leaf3b
           id: 5
           mgmt_ip: 192.168.200.109/24
           uplink_switch_interfaces: [ Ethernet5 ]
     - group: EVPN_MULTICAST_DISABLED
       mlag: false
       nodes:
-        - name: EVPN-MULTICAST-DISABLED
+        - name: evpn-multicast-disabled
           id: 6
           mgmt_ip: 192.168.200.108/24
           uplink_switch_interfaces: [ Ethernet6 ]

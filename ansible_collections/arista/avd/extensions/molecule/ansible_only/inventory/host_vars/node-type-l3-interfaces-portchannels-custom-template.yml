@@ -11,6 +11,7 @@ node_type_keys:
       underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'
 
 type: l3spine
+
 l3spine:
   defaults:
     bgp_as: 65001
