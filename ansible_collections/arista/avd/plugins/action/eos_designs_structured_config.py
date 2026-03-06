@@ -126,6 +126,10 @@ class ActionModule(ActionBase):
                 # self.templar is an AVDTemplar instance which already contains loader and searchpath
                 template_result = templater(template, template_vars, self.templar)
 
+                # Skip if template result is None or empty string
+                if not template_result:
+                    continue
+
                 # Load data from the template result.
                 template_result_data = yaml.safe_load(template_result)
 
