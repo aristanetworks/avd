@@ -679,7 +679,7 @@ keys:
           items:
             type: str
             description: |-
-              IPv6_address/Mask.
+              IPv6 address with prefix length.
               This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined.
         ipv6_address_auto_config:
           type: bool
