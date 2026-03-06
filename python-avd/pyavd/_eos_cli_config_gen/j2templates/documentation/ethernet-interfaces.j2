@@ -349,23 +349,19 @@
 {%         endfor %}
 {%     endif %}
 {# IPv4 #}
-{%     set ethernet_interface_ipv4 = namespace() %}
-{%     set ethernet_interface_ipv4.configured = false %}
+{%     set ethernet_interfaces_ipv4 = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%         if ethernet_interface.ip_address is arista.avd.defined %}
-{%             set ethernet_interface_ipv4.configured = true %}
-{%             break %}
+{%             do ethernet_interfaces_ipv4.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
-{%     set port_channel_interface_ipv4 = namespace() %}
-{%     set port_channel_interface_ipv4.configured = false %}
+{%     set port_channel_interfaces_ipv4 = [] %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if port_channel_interface.ip_address is arista.avd.defined %}
-{%             set port_channel_interface_ipv4.configured = true %}
-{%             break %}
+{%             do port_channel_interfaces_ipv4.append(port_channel_interface) %}
 {%         endif %}
 {%     endfor %}
-{%     if ethernet_interface_ipv4.configured == true or port_channel_interface_ipv4.configured == true %}
+{%     if ethernet_interfaces_ipv4 | length > 0 or port_channel_interfaces_ipv4 | length > 0 %}
 
 ##### IPv4
 
@@ -402,7 +398,7 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if port_channel_interface_ipv4.configured == true %}
+{%     if port_channel_interfaces_ipv4 | length > 0 %}
 
 *Inherited from Port-Channel Interface
 {%     endif %}
@@ -410,25 +406,21 @@
 {%     set ip_nat_interfaces = ethernet_interfaces %}
 {%     include 'documentation/interfaces-ip-nat.j2' %}
 {# IPv6 #}
-{%     set ethernet_interface_ipv6 = namespace() %}
-{%     set ethernet_interface_ipv6.configured = false %}
+{%     set ethernet_interfaces_ipv6 = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%         if ethernet_interface.ipv6_addresses is arista.avd.defined or ethernet_interface.ipv6_address is arista.avd.defined
             or ethernet_interface.ipv6_enable is arista.avd.defined(true) or ethernet_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
-{%             set ethernet_interface_ipv6.configured = true %}
-{%             break %}
+{%             do ethernet_interfaces_ipv6.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
-{%     set port_channel_interface_ipv6 = namespace() %}
-{%     set port_channel_interface_ipv6.configured = false %}
+{%     set port_channel_interfaces_ipv6 = [] %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if port_channel_interface.ipv6_addresses is arista.avd.defined or port_channel_interface.ipv6_address is arista.avd.defined
             or port_channel_interface.ipv6_enable is arista.avd.defined(true) or port_channel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
-{%             set port_channel_interface_ipv6.configured = true %}
-{%             break %}
+{%             do port_channel_interfaces_ipv6.append(port_channel_interface) %}
 {%         endif %}
 {%     endfor %}
-{%     if ethernet_interface_ipv6.configured == true or port_channel_interface_ipv6.configured == true %}
+{%     if ethernet_interfaces_ipv6 | length > 0 or port_channel_interfaces_ipv6 | length > 0 %}
 
 ##### IPv6
 
@@ -487,7 +479,7 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if port_channel_interface_ipv6.configured == true %}
+{%     if port_channel_interfaces_ipv6 | length > 0 %}
 
 *Inherited from Port-Channel Interface
 {%     endif %}
