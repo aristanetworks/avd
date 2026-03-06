@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AvdDeprecationWarning
 from pyavd._utils import AvdStringFormatter, Undefined, default, strip_empties_from_dict
 from pyavd._utils.run_once import run_once_method
 from pyavd.j2filters import natural_sort
@@ -360,13 +360,14 @@ class RouterBgpMixin(Protocol):
                 all_active_multihoming_domain_ids_defined = (
                     self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("evpn_domain_id_local") is not Undefined
                     or self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("evpn_domain_id_remote") is not Undefined
+                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("enable_d_path") is not Undefined
                 )
                 if d_path_defined and all_active_multihoming_domain_ids_defined:
-                    msg = (
-                        "Both 'evpn_gateway.d_path' and 'evpn_gateway.all_active_multihoming' domain IDs are defined. "
-                        "Please use only 'evpn_gateway.d_path' as 'evpn_gateway.all_active_multihoming' is deprecated."
+                    raise AvdDeprecationWarning(
+                        key=["evpn_gateway", "all_active_multihoming"],
+                        new_key="d_path",
+                        conflict=True,
                     )
-                    raise AristaAvdError(msg)
 
                 # Use OR to select from whichever model is defined
                 self.structured_config.router_bgp.address_family_evpn._update(
