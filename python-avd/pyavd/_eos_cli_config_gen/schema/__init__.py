@@ -50731,12 +50731,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Domain: TypeAlias = Literal["remote", "all"]
                     _fields: ClassVar[dict] = {"domain": {"type": str}, "route_target": {"type": str}}
-                    domain: Domain | None
-                    route_target: str | None
+                    domain: Domain
+                    route_target: str
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, route_target: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, domain: Domain | UndefinedType = Undefined, route_target: str | UndefinedType = Undefined) -> None:
                             """
                             ImportEvpnDomainsItem.
 

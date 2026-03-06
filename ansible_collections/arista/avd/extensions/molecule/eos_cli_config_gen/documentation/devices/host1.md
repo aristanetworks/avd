@@ -10332,6 +10332,7 @@ router bgp 65101
       route-target import vpn-ipv6 rcf RT_IMPORT_AF_RCF()
       route-target import vpn-ipv6 route-map RT_IMPORT_AF_RM
       route-target import evpn domain all 2:30006
+      route-target import evpn domain all 2:30007
       route-target import evpn domain remote 2:30005
       route-target export evpn 1:30001
       route-target export evpn rcf RT_EXPORT_AF_RCF()
@@ -10340,6 +10341,7 @@ router bgp 65101
       route-target export vpn-ipv6 route-map RT_IMPORT_AF_RM
       route-target export evpn domain all 2:40006
       route-target export evpn domain remote 2:40005
+      route-target export evpn domain remote 2:40006
       redistribute connected
       redistribute ospf match external include leaked
       redistribute ospfv3

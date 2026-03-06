@@ -2724,7 +2724,10 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
-{%         for evpn_domain in vrf.route_targets.import_evpn_domains | arista.avd.natural_sort(sort_key='domain') %}
+{%         for evpn_domain in vrf.route_targets.import_evpn_domains | arista.avd.natural_sort(sort_key='route_target') | selectattr('domain', 'equalto', 'all') %}
+      route-target import evpn domain {{ evpn_domain.domain }} {{ evpn_domain.route_target }}
+{%         endfor %}
+{%         for evpn_domain in vrf.route_targets.import_evpn_domains | arista.avd.natural_sort(sort_key='route_target') | selectattr('domain', 'equalto', 'remote') %}
       route-target import evpn domain {{ evpn_domain.domain }} {{ evpn_domain.route_target }}
 {%         endfor %}
 {%         if vrf.route_targets.export is arista.avd.defined %}
@@ -2746,7 +2749,10 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
-{%         for evpn_domain in vrf.route_targets.export_evpn_domains | arista.avd.natural_sort(sort_key='domain') %}
+{%         for evpn_domain in vrf.route_targets.export_evpn_domains | arista.avd.natural_sort(sort_key='route_target') | selectattr('domain', 'equalto', 'all') %}
+      route-target export evpn domain {{ evpn_domain.domain }} {{ evpn_domain.route_target }}
+{%         endfor %}
+{%         for evpn_domain in vrf.route_targets.export_evpn_domains | arista.avd.natural_sort(sort_key='route_target') | selectattr('domain', 'equalto', 'remote') %}
       route-target export evpn domain {{ evpn_domain.domain }} {{ evpn_domain.route_target }}
 {%         endfor %}
 {%         if vrf.router_id is arista.avd.defined %}
