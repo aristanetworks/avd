@@ -125,6 +125,10 @@ class ActionModule(ActionBase):
                 # Here we parse the template, expecting the result to be a YAML formatted string
                 template_result = templater(template, template_vars, self.templar)
 
+                # Skip if template result is None or empty string
+                if not template_result:
+                    continue
+
                 # Load data from the template result.
                 template_result_data = yaml.safe_load(template_result)
 
