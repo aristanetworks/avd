@@ -73,7 +73,8 @@ vlan_interfaces:
   description: Inband Management
   shutdown: false
   ipv6_enable: true
-  ipv6_address: 2a00:106::9/64
+  ipv6_addresses:
+  - 2a00:106::9/64
   mtu: 1500
   metadata:
     type: inband_mgmt
