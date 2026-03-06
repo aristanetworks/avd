@@ -17,7 +17,7 @@ ipv6 access-list {{ acl.name }}
 {%         endif %}
 {# TODO: : AVD 7.0.0 Remove this if block once "sequence_numbers" key is removed #}
 {%         if acl.entries is not arista.avd.defined and acl.sequence_numbers is arista.avd.defined %}
-{%             for sequence in ipv6_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%             for sequence in acl.sequence_numbers | arista.avd.natural_sort('sequence') %}
    {{ sequence.sequence }} {{ sequence.action }}
 {%             endfor %}
 {%         else %}
