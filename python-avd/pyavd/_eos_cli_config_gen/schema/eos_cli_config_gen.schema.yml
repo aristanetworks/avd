@@ -3819,6 +3819,11 @@ keys:
           valid_values:
           - edge
           - network
+        spanning_tree_link_type:
+          type: str
+          valid_values:
+          - shared
+          - point-to-point
         vmtracer:
           type: bool
         priority_flow_control:
@@ -8817,6 +8822,10 @@ keys:
         mac_address:
           type: str
           description: MAC address.
+        dhcp_client_accept_default_route:
+          type: bool
+          description: Install default-route obtained via DHCP. This is only applicable
+            when `ip_address` is configured as `dhcp`.
         lldp:
           type: dict
           keys:
@@ -12646,6 +12655,11 @@ keys:
           valid_values:
           - edge
           - network
+        spanning_tree_link_type:
+          type: str
+          valid_values:
+          - shared
+          - point-to-point
         vmtracer:
           type: bool
         ptp:
@@ -15249,6 +15263,51 @@ keys:
             - str
             min: 1
             max: 600
+      route_distinguisher:
+        type: dict
+        keys:
+          assignment_auto:
+            type: dict
+            description: Automatic Route Distinguisher (auto RD) feature.
+            keys:
+              range:
+                type: dict
+                description: 'Range for the 2-byte assigned number field of RD.
+
+                  The range is inclusive of start and end values.'
+                keys:
+                  start:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 65535
+                    required: true
+                    description: Start of range. EOS default is 4096.
+                  end:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 65535
+                    required: true
+                    description: 'End of range. Must be greater than or equal to `start`.
+
+                      EOS default is 65535.'
+              address_families:
+                type: list
+                min_length: 1
+                description: 'Address families for which to enable automatic RD assignment.
+
+                  Each address family has its own range allocation.'
+                items:
+                  type: str
+                  valid_values:
+                  - l2-evpn
+                  - l3-vrf
+                  description: 'l2-evpn: L2 EVPN VXLAN, VPWS, VLAN-aware-bundle, VNI-aware-bundle.
+
+                    l3-vrf: L3 EVPN and MPLS VPN.'
       updates:
         type: dict
         keys:
@@ -16762,6 +16821,12 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+                rcf:
+                  description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                    precedence.'
+                  type: str
           bgp:
             type: dict
             keys:
@@ -17511,6 +17576,12 @@ keys:
                 route_map:
                   description: Route-map name.
                   type: str
+                rcf:
+                  description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                    precedence.'
+                  type: str
           next_hops:
             type: list
             primary_key: ip_address
@@ -17844,6 +17915,12 @@ keys:
                   type: str
                 route_map:
                   description: Route-map name.
+                  type: str
+                rcf:
+                  description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                    precedence.'
                   type: str
           bgp:
             type: dict
@@ -19686,6 +19763,12 @@ keys:
                         description: IPv4 prefix "A.B.C.D/E".
                       route_map:
                         type: str
+                      rcf:
+                        description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                          `route_map` and `rcf` are mutually exclusive. `route_map`
+                          takes precedence.'
+                        type: str
                 redistribute:
                   type: dict
                   description: Redistribute routes in to BGP.
@@ -20017,6 +20100,12 @@ keys:
                         type: str
                         description: IPv6 prefix "A:B:C:D:E:F:G:H/I".
                       route_map:
+                        type: str
+                      rcf:
+                        description: 'RCF name with parenthesis. Example "NETWORK-RCF()".
+
+                          `route_map` and `rcf` are mutually exclusive. `route_map`
+                          takes precedence.'
                         type: str
                 redistribute:
                   type: dict
