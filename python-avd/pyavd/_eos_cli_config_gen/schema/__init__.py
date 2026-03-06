@@ -7408,7 +7408,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
                     default_route: bool | None
+                    """Accept default route from received Router Advertisements."""
                     route_preference: bool | None
+                    """Accept route preference from received Router Advertisements."""
 
                     if TYPE_CHECKING:
 
@@ -7422,20 +7424,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                default_route: default_route
-                                route_preference: route_preference
+                                default_route: Accept default route from received Router Advertisements.
+                                route_preference: Accept route preference from received Router Advertisements.
 
                             """
 
                 _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
                 disabled: bool | None
-                """Disable IPv6 Router advertisement messages on the interface."""
+                """Disable Router Advertisement messages on the interface."""
                 rx_accept: RxAccept
-                """
-                Accept information on received RA.
-
-                Subclass of AvdModel.
-                """
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -7447,11 +7445,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            disabled: Disable IPv6 Router advertisement messages on the interface.
-                            rx_accept:
-                               Accept information on received RA.
-
-                               Subclass of AvdModel.
+                            disabled: Disable Router Advertisement messages on the interface.
+                            rx_accept: Subclass of AvdModel.
 
                         """
 
@@ -7466,10 +7461,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 }
                 ipv6_prefix: str
                 valid_lifetime: str | None
-                """Infinite or lifetime in seconds."""
+                """Valid lifetime in seconds '<0-4294967295>' or 'infinite'."""
                 preferred_lifetime: str | None
-                """Infinite or lifetime in seconds."""
+                """Preferred lifetime in seconds '<0-4294967295>' or 'infinite'."""
                 no_autoconfig_flag: bool | None
+                """Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC)."""
 
                 if TYPE_CHECKING:
 
@@ -7489,9 +7485,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             ipv6_prefix: ipv6_prefix
-                            valid_lifetime: Infinite or lifetime in seconds.
-                            preferred_lifetime: Infinite or lifetime in seconds.
-                            no_autoconfig_flag: no_autoconfig_flag
+                            valid_lifetime: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            preferred_lifetime: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            no_autoconfig_flag: Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
 
                         """
 
@@ -7510,8 +7506,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdModel.
             """
             managed_config_flag: bool | None
+            """Set the "Managed Address Configuration" (M) flag in Router Advertisements."""
             prefixes: Prefixes
-            """Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+            """
+            IPv6 prefixes to include in Router Advertisements.
+
+            Subclass of AvdIndexedList with `PrefixesItem`
+            items. Primary key is `ipv6_prefix` (`str`).
+            """
 
             if TYPE_CHECKING:
 
@@ -7533,8 +7535,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Router Advertisement.
 
                            Subclass of AvdModel.
-                        managed_config_flag: managed_config_flag
-                        prefixes: Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
+                        managed_config_flag: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+                        prefixes:
+                           IPv6 prefixes to include in Router Advertisements.
+
+                           Subclass of AvdIndexedList with `PrefixesItem`
+                           items. Primary key is `ipv6_prefix` (`str`).
 
                     """
 
@@ -12921,7 +12927,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_nd_prefixes: Ipv6NdPrefixes
         """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
         ipv6_nd: Ipv6Nd
-        """Subclass of AvdModel."""
+        """
+        IPv6 Neighbor Discovery protocol.
+
+        Subclass of AvdModel.
+        """
         ipv6_dhcp_relay_destinations: Ipv6DhcpRelayDestinations
         """Subclass of AvdList with `Ipv6DhcpRelayDestinationsItem` items."""
         access_group_in: str | None
@@ -13232,7 +13242,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_nd_ra_disabled: ipv6_nd_ra_disabled
                     ipv6_nd_managed_config_flag: ipv6_nd_managed_config_flag
                     ipv6_nd_prefixes: Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
-                    ipv6_nd: Subclass of AvdModel.
+                    ipv6_nd:
+                       IPv6 Neighbor Discovery protocol.
+
+                       Subclass of AvdModel.
                     ipv6_dhcp_relay_destinations: Subclass of AvdList with `Ipv6DhcpRelayDestinationsItem` items.
                     access_group_in: Access list name.
                     access_group_out: Access list name.
