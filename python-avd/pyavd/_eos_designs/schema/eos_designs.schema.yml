@@ -8077,8 +8077,10 @@ $defs:
           keys:
             fast_leave:
               type: bool
-              description: Enable IGMP snooping fast-leave feature for all SVIs and
-                l2vlans within the Tenant.
+              description: 'Explicitly enable or disable IGMP snooping fast-leave
+                feature for all SVIs and L2 VLANs within the Tenant.
+
+                On EOS, IGMP fast-leave is enabled on all VLANs by default.'
         evpn_l2_multicast:
           documentation_options:
             table: network-services-multicast-settings

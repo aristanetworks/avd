@@ -14,7 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan_aware_bundle_number_base</samp>](## "<network_services_keys.name>.[].vlan_aware_bundle_number_base") | Integer |  | `0` |  | Base number for VLAN aware bundle RD/RT.<br>The "Assigned Number" part of RD/RT is derived from vrf_vni + vlan_aware_bundle_number_base.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_vlan_bundle</samp>](## "<network_services_keys.name>.[].evpn_vlan_bundle") | String |  |  |  | Enable `evpn_vlan_bundle` for all l2vlans and SVIs under the tenant. This `evpn_vlan_bundle` should be present in `evpn_vlan_bundles`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;igmp</samp>](## "<network_services_keys.name>.[].igmp") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "<network_services_keys.name>.[].igmp.fast_leave") | Boolean |  |  |  | Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "<network_services_keys.name>.[].igmp.fast_leave") | Boolean |  |  |  | Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the Tenant.<br>On EOS, IGMP fast-leave is enabled on all VLANs by default. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "<network_services_keys.name>.[].evpn_l2_multi_domain") | Boolean |  | `True` |  | Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains. |
 
 === "YAML"
@@ -46,7 +46,8 @@
         evpn_vlan_bundle: <str>
         igmp:
 
-          # Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.
+          # Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the Tenant.
+          # On EOS, IGMP fast-leave is enabled on all VLANs by default.
           fast_leave: <bool>
 
         # Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains.

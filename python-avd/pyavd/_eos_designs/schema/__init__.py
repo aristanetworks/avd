@@ -59883,7 +59883,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {"fast_leave": {"type": bool}}
                     fast_leave: bool | None
-                    """Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant."""
+                    """
+                    Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the
+                    Tenant.
+                    On EOS, IGMP fast-leave is enabled on all VLANs by default.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -59895,7 +59899,10 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                fast_leave: Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.
+                                fast_leave:
+                                   Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the
+                                   Tenant.
+                                   On EOS, IGMP fast-leave is enabled on all VLANs by default.
 
                             """
 
