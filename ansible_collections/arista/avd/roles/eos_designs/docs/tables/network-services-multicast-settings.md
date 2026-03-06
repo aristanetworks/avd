@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].evpn_l2_multicast.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_l2_multicast_group_ipv4_pool</samp>](## "<network_services_keys.name>.[].evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_l2_multicast_group_ipv4_pool_offset</samp>](## "<network_services_keys.name>.[].evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset") | Integer |  | `0` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "<network_services_keys.name>.[].evpn_l2_multicast.fast_leave") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp>igmp.fast_leave</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "<network_services_keys.name>.[].evpn_l2_multicast.fast_leave") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><network_services_key.key>.igmp.fast_leave</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always_redistribute_igmp</samp>](## "<network_services_keys.name>.[].evpn_l2_multicast.always_redistribute_igmp") | Boolean |  |  |  | Always configure `redistribute igmp` under BGP for all SVIs within the Tenant if `evpn_l2_multicast` is True.<br>By default `redistribute igmp` is only configured when `evpn_l2_multicast` is True and `evpn_l3_multicast` for the VRF is False.<br>Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is enabled will take up additional control-plane and data-plane resources,<br>but it is required to support forwarding of TTL=1 multicast traffic within the VLAN.<br>This can be overridden per SVI. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vxlan_flood_multicast</samp>](## "<network_services_keys.name>.[].vxlan_flood_multicast") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vxlan_flood_multicast.enabled") | Boolean | Required |  |  | Enable Flood group Multicast for all SVIs and l2vlans within Tenant. |
@@ -175,7 +175,7 @@
           # Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.
           # This key is deprecated.
           # Support will be removed in AVD version 7.0.0.
-          # Use `igmp.fast_leave` instead.
+          # Use `<network_services_key.key>.igmp.fast_leave` instead.
           fast_leave: <bool>
 
           # Always configure `redistribute igmp` under BGP for all SVIs within the Tenant if `evpn_l2_multicast` is True.
