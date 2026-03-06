@@ -6,7 +6,7 @@ type: l3spine     # Must be either spine|l3spine
 # Spine Switches
 l3spine:
   defaults:
-    platform: cEOSLab
+    platform: cEOS
     spanning_tree_mode: mstp
     spanning_tree_priority: 4096
     loopback_ipv4_pool: 172.16.1.0/24

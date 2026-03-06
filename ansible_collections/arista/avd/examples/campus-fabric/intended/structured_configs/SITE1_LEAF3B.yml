@@ -3371,10 +3371,14 @@ ip_name_server:
     - ip_address: 8.8.4.4
     - ip_address: 8.8.8.8
 local_users:
-- name: admin
+- name: arista
   privilege: 15
   role: network-admin
-  sha512_password: $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -3385,7 +3389,7 @@ management_interfaces:
   gateway: 172.16.100.1
 metadata:
   is_deployed: true
-  platform: cEOSLab
+  platform: cEOS
   fabric_name: SITE1
   validate_hardware:
     enabled: false
@@ -3476,7 +3480,7 @@ vlan_interfaces:
   description: MLAG
   shutdown: false
   ip_address: 192.168.0.11/31
-  mtu: 1500
+  mtu: 9214
   no_autostate: true
 - name: Vlan10
   description: Inband Management
