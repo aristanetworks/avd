@@ -24,8 +24,13 @@ class AVDTemplar:
     """
 
     templar: Templar
+    """Ansible Templar instance"""
+
     loader: DataLoader
+    """Ansible DataLoader instance"""
+
     searchpath: list[str]
+    """List of paths to search for templates"""
 
     def __init__(self, templar: Templar, loader: DataLoader, searchpath: list[str]) -> None:
         """
