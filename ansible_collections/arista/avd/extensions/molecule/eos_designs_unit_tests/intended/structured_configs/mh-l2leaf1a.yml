@@ -1,0 +1,153 @@
+aaa_root:
+  disabled: true
+boot:
+  secret:
+    key: a153de6290ff1409257ade45f
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvvrf: MGMT
+  disable_aaa: false
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: MH-LEAF2A_Ethernet2
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: mh-leaf2a
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+- name: Ethernet10
+  description: server02_Eth1
+  shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server02
+    direction: downstream
+  metadata:
+    peer: server02
+    peer_interface: Eth1
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+hostname: mh-l2leaf1a
+ip_igmp_snooping:
+  globally_enabled: true
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
+    - ip_address: 2001:db8::1
+    - ip_address: 2001:db8::2
+link_tracking_groups:
+- name: l2leaf-server02
+  recovery_delay: 300
+local_users:
+- name: admin
+  disabled: true
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+  ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+    cvpadmin@hostmachine.local
+  secondary_ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkz=
+    cvpadmin@hostmachine.local
+management_api_http:
+  enable_https: true
+  default_services: false
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.201.201/24
+  type: oob
+  gateway: 192.168.200.5
+metadata:
+  is_deployed: true
+  platform: vEOS-LAB
+  pod_name: TENANT_NETWORKS_POD
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+  - name: 2001:db8::3
+  vrf: MGMT
+port_channel_interfaces:
+- name: Port-Channel1
+  description: MH-LEAF2A_Po2
+  shutdown: false
+  link_tracking_groups:
+  - name: l2leaf-server02
+    direction: upstream
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 310,315-316,320,324
+service_routing_protocols_model: multi-agent
+snmp_server:
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS TENANT_NETWORKS_POD mh-l2leaf1a
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 16384
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.5
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 310
+  name: Tenant_X_OP_Zone_1
+  metadata:
+    tenants:
+    - Tenant_X
+- id: 315
+  name: Tenant_network_vrf_1
+  metadata:
+    tenants:
+    - Tenant_X
+- id: 320
+  name: Tenant_network_vrf_3
+  metadata:
+    tenants:
+    - Tenant_X
+- id: 324
+  name: Tenant_network_vrf_4
+  metadata:
+    tenants:
+    - Tenant_X
+- id: 316
+  name: Tenant_network_vrf_2
+  metadata:
+    tenants:
+    - Tenant_X
+vrfs:
+- name: MGMT
+  ip_routing: false
