@@ -88894,10 +88894,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     avd_design_future: AvdDesignFuture
     """
-    Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
-
-    Subclass of
-    AvdModel.
+    Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
+    Subclass of AvdModel.
     """
     avd_digital_twin_mode: bool
     """
@@ -91146,10 +91144,8 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of
                    AvdModel.
                 avd_design_future:
-                   Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
-
-                   Subclass of
-                   AvdModel.
+                   Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
+                   Subclass of AvdModel.
                 avd_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.

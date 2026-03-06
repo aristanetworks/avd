@@ -14,12 +14,12 @@ ip tacacs vrf {{ vrf.name }} source-interface {{ vrf.source_interface }}
 {%     endfor %}
 {% elif ip_tacacs_source_interfaces is arista.avd.defined %}
 !
-{%     for ip_tacacs in ip_tacacs_source_interfaces | arista.avd.natural_sort(sort_key='name') %}
+{%     for source_interface in ip_tacacs_source_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%         set ip_tacacs_cli = "ip tacacs" %}
-{%         if ip_tacacs.vrf is arista.avd.defined %}
-{%             set ip_tacacs_cli = ip_tacacs_cli ~ " vrf " ~ ip_tacacs.vrf %}
+{%         if source_interface.vrf is arista.avd.defined %}
+{%             set ip_tacacs_cli = ip_tacacs_cli ~ " vrf " ~ source_interface.vrf %}
 {%         endif %}
-{%         set ip_tacacs_cli = ip_tacacs_cli ~ " source-interface " ~ ip_tacacs.name %}
+{%         set ip_tacacs_cli = ip_tacacs_cli ~ " source-interface " ~ source_interface.name %}
 {{ ip_tacacs_cli }}
 {%     endfor %}
 {% endif %}

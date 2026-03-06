@@ -18,8 +18,8 @@
 {%     for vrf in ip_tacacs.vrfs | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 | {{ vrf.name }} | {{ vrf.source_interface }} |
 {%     endfor %}
-{%     for ip_tacacs in ip_tacacs_source_interfaces | arista.avd.natural_sort(sort_key="name") %}
-| {{ ip_tacacs.vrf | arista.avd.default('default') }} | {{ ip_tacacs.name }} |
+{%     for source_interface in ip_tacacs_source_interfaces | arista.avd.default([]) %}
+| {{ source_interface.vrf | arista.avd.default('default') }} | {{ source_interface.name }} |
 {%     endfor %}
 
 #### IP TACACS Source Interfaces Device Configuration
