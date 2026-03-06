@@ -1675,7 +1675,8 @@ keys:
           '
       cvlosstimeout:
         type: int
-        description: 'Timeout in minutes before the device will revert to ZTP mode.
+        description: 'Timeout in minutes before the device will revert to ZTP mode
+          in case of losing connectivity to CloudVision after a configuration change.
 
           The recommended timeout is five minutes.'
         convert_types:
