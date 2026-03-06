@@ -1,0 +1,7 @@
+{# 
+  This template is used to test the output of custom template when the generated output is empty.
+  The behavior changed between ansible-core <2.19 and >=2.19
+#}
+{% if not_defined is arista.avd.defined %}
+{% endif %}
+
