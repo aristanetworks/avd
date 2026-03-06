@@ -5943,11 +5943,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ip_address: str | None
         """IPv4 address/mask."""
         ipv6_address_auto_config: bool | None
-        """
-        Use SLAAC to automatically configure the IPv6 address.
-        This option is mutually exclusive with
-        `ipv6_addresses`.
-        """
+        """Use SLAAC to automatically configure the IPv6 address."""
         flow_tracker: FlowTracker
         """Subclass of AvdModel."""
         tcp_mss_ceiling: TcpMssCeiling
@@ -5982,10 +5978,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     shutdown: shutdown
                     mtu: Maximum Transmission Unit in bytes.
                     ip_address: IPv4 address/mask.
-                    ipv6_address_auto_config:
-                       Use SLAAC to automatically configure the IPv6 address.
-                       This option is mutually exclusive with
-                       `ipv6_addresses`.
+                    ipv6_address_auto_config: Use SLAAC to automatically configure the IPv6 address.
                     flow_tracker: Subclass of AvdModel.
                     tcp_mss_ceiling: Subclass of AvdModel.
                     eos_cli: Multiline String with EOS CLI rendered directly on the Dps interface in the final EOS configuration.

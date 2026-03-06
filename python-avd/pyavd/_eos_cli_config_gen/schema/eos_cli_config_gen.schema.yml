@@ -2279,9 +2279,7 @@ keys:
           description: IPv4 address/mask.
         ipv6_address_auto_config:
           type: bool
-          description: 'Use SLAAC to automatically configure the IPv6 address.
-
-            This option is mutually exclusive with `ipv6_addresses`.'
+          description: Use SLAAC to automatically configure the IPv6 address.
         flow_tracker:
           type: dict
           keys:

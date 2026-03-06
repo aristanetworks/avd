@@ -1,3 +1,4 @@
+---
 # Test for deprecated key ipv6_address
 management_interfaces:
   - name: Management1
