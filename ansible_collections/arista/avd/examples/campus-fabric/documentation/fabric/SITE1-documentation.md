@@ -17,16 +17,16 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| SITE1 | l2leaf | SITE1_LEAF1A | 172.16.100.103/24 | cEOSLab | Provisioned | - |
-| SITE1 | l2leaf | SITE1_LEAF1B | 172.16.100.104/24 | cEOSLab | Provisioned | - |
-| SITE1 | l2leaf | SITE1_LEAF2A | 172.16.100.105/24 | cEOSLab | Provisioned | - |
-| SITE1 | l2leaf | SITE1_LEAF3A | 172.16.100.106/24 | cEOSLab | Provisioned | - |
-| SITE1 | l2leaf | SITE1_LEAF3B | 172.16.100.107/24 | cEOSLab | Provisioned | - |
-| SITE1 | l2leaf | SITE1_LEAF3C | 172.16.100.108/24 | cEOSLab | Provisioned | - |
-| SITE1 | l2leaf | SITE1_LEAF3D | 172.16.100.109/24 | cEOSLab | Provisioned | - |
-| SITE1 | l2leaf | SITE1_LEAF3E | 172.16.100.110/24 | cEOSLab | Provisioned | - |
-| SITE1 | l3spine | SITE1_SPINE1 | 172.16.100.101/24 | cEOSLab | Provisioned | - |
-| SITE1 | l3spine | SITE1_SPINE2 | 172.16.100.102/24 | cEOSLab | Provisioned | - |
+| SITE1 | l2leaf | SITE1_LEAF1A | 172.16.100.103/24 | cEOS | Provisioned | - |
+| SITE1 | l2leaf | SITE1_LEAF1B | 172.16.100.104/24 | cEOS | Provisioned | - |
+| SITE1 | l2leaf | SITE1_LEAF2A | 172.16.100.105/24 | cEOS | Provisioned | - |
+| SITE1 | l2leaf | SITE1_LEAF3A | 172.16.100.106/24 | cEOS | Provisioned | - |
+| SITE1 | l2leaf | SITE1_LEAF3B | 172.16.100.107/24 | cEOS | Provisioned | - |
+| SITE1 | l2leaf | SITE1_LEAF3C | 172.16.100.108/24 | cEOS | Provisioned | - |
+| SITE1 | l2leaf | SITE1_LEAF3D | 172.16.100.109/24 | cEOS | Provisioned | - |
+| SITE1 | l2leaf | SITE1_LEAF3E | 172.16.100.110/24 | cEOS | Provisioned | - |
+| SITE1 | l3spine | SITE1_SPINE1 | 172.16.100.101/24 | cEOS | Provisioned | - |
+| SITE1 | l3spine | SITE1_SPINE2 | 172.16.100.102/24 | cEOS | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 

@@ -7,6 +7,7 @@
   - [IP Name Servers](#ip-name-servers)
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
+  - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
@@ -57,8 +58,8 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Addresses | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | -------------- | ------------ |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
@@ -130,6 +131,32 @@ ntp server vrf MGMT pool.ntp.org
 ntp server vrf MGMT time.google.com prefer
 ```
 
+### Management API HTTP
+
+#### Management API HTTP Summary
+
+| HTTP | HTTPS | UNIX-Socket | Default Services |
+| ---- | ----- | ----------- | ---------------- |
+| False | True | - | - |
+
+#### Management API VRF Access
+
+| VRF Name | IPv4 ACL | IPv6 ACL |
+| -------- | -------- | -------- |
+| MGMT | - | - |
+
+#### Management API HTTP Device Configuration
+
+```eos
+!
+management api http-commands
+   protocol https
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+```
+
 ## Authentication
 
 ### Local Users
@@ -138,13 +165,13 @@ ntp server vrf MGMT time.google.com prefer
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
-| admin | 15 | network-admin | False | - |
+| arista | 15 | network-admin | False | - |
 
 #### Local Users Device Configuration
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 <removed>
+username arista privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ### Enable Password
@@ -2549,7 +2576,7 @@ interface Port-Channel983
 | Interface | Description | VRF | MTU | Shutdown |
 | --------- | ----------- | --- | --- | -------- |
 | Vlan10 | Inband Management | default | 1500 | False |
-| Vlan4094 | MLAG | default | 1500 | False |
+| Vlan4094 | MLAG | default | 9214 | False |
 
 ##### IPv4
 
@@ -2571,7 +2598,7 @@ interface Vlan10
 interface Vlan4094
    description MLAG
    no shutdown
-   mtu 1500
+   mtu 9214
    no autostate
    ip address 192.168.0.10/31
 ```
