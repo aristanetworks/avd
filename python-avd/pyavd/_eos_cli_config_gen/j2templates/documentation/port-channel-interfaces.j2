@@ -288,8 +288,8 @@
 
 ##### IPv6
 
-| Interface | Description | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out | IPv6 ND RA RX Accept |
-| --------- | ----------- | ------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ | -------------------- |
+| Interface | Description | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out | ND RA RX Accept |
+| --------- | ----------- | ------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ | --------------- |
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort(sort_key='name') %}
 {%             if port_channel_interface.ipv6_address is arista.avd.defined %}
 {%                 set description = port_channel_interface.description | arista.avd.default("-") %}
