@@ -51,8 +51,7 @@ interface {{ management_interface.name }}
 {%     if management_interface.ipv6_nd.managed_config_flag is arista.avd.defined(true) or management_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) %}
    ipv6 nd managed-config-flag
 {%     endif %}
-{%     set ipv6_nd_prefixes = management_interface.ipv6_nd.prefixes | arista.avd.default(management_interface.ipv6_nd_prefixes) %}
-{%     for prefix in ipv6_nd_prefixes | arista.avd.natural_sort("ipv6_prefix") %}
+{%     for prefix in management_interface.ipv6_nd.prefixes | arista.avd.natural_sort("ipv6_prefix") %}
 {%         set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ prefix.ipv6_prefix %}
 {%         if prefix.valid_lifetime is arista.avd.defined %}
 {%             set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.valid_lifetime %}
