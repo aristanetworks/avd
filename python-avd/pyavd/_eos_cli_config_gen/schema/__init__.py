@@ -39527,6 +39527,110 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class RouteDistinguisher(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AssignmentAuto(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Range(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"start": {"type": int}, "end": {"type": int}}
+                    start: int
+                    """Start of range. EOS default is 4096."""
+                    end: int
+                    """
+                    End of range. Must be greater than or equal to `start`.
+                    EOS default is 65535.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, start: int | UndefinedType = Undefined, end: int | UndefinedType = Undefined) -> None:
+                            """
+                            Range.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                start: Start of range. EOS default is 4096.
+                                end:
+                                   End of range. Must be greater than or equal to `start`.
+                                   EOS default is 65535.
+
+                            """
+
+                class AddressFamilies(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                AddressFamilies._item_type = str
+
+                _fields: ClassVar[dict] = {"range": {"type": Range}, "address_families": {"type": AddressFamilies}}
+                range: Range
+                """
+                Range for the 2-byte assigned number field of RD.
+                The range is inclusive of start and end values.
+                Subclass of AvdModel.
+                """
+                address_families: AddressFamilies
+                """
+                Address families for which to enable automatic RD assignment.
+                Each address family has its own range
+                allocation.
+
+                Subclass of AvdList with `str` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, range: Range | UndefinedType = Undefined, address_families: AddressFamilies | UndefinedType = Undefined) -> None:
+                        """
+                        AssignmentAuto.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            range:
+                               Range for the 2-byte assigned number field of RD.
+                               The range is inclusive of start and end values.
+                               Subclass of AvdModel.
+                            address_families:
+                               Address families for which to enable automatic RD assignment.
+                               Each address family has its own range
+                               allocation.
+
+                               Subclass of AvdList with `str` items.
+
+                        """
+
+            _fields: ClassVar[dict] = {"assignment_auto": {"type": AssignmentAuto}}
+            assignment_auto: AssignmentAuto
+            """
+            Automatic Route Distinguisher (auto RD) feature.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, assignment_auto: AssignmentAuto | UndefinedType = Undefined) -> None:
+                    """
+                    RouteDistinguisher.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        assignment_auto:
+                           Automatic Route Distinguisher (auto RD) feature.
+
+                           Subclass of AvdModel.
+
+                    """
+
         class Updates(AvdModel):
             """Subclass of AvdModel."""
 
@@ -56316,6 +56420,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "graceful_restart": {"type": GracefulRestart},
             "graceful_restart_helper": {"type": GracefulRestartHelper},
             "maximum_paths": {"type": MaximumPaths},
+            "route_distinguisher": {"type": RouteDistinguisher},
             "updates": {"type": Updates},
             "bgp_cluster_id": {"type": str},
             "bgp_defaults": {"type": BgpDefaults},
@@ -56374,6 +56479,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         graceful_restart_helper: GracefulRestartHelper
         """Subclass of AvdModel."""
         maximum_paths: MaximumPaths
+        """Subclass of AvdModel."""
+        route_distinguisher: RouteDistinguisher
         """Subclass of AvdModel."""
         updates: Updates
         """Subclass of AvdModel."""
@@ -56467,6 +56574,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 graceful_restart: GracefulRestart | UndefinedType = Undefined,
                 graceful_restart_helper: GracefulRestartHelper | UndefinedType = Undefined,
                 maximum_paths: MaximumPaths | UndefinedType = Undefined,
+                route_distinguisher: RouteDistinguisher | UndefinedType = Undefined,
                 updates: Updates | UndefinedType = Undefined,
                 bgp_cluster_id: str | None | UndefinedType = Undefined,
                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
@@ -56521,6 +56629,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     graceful_restart: Subclass of AvdModel.
                     graceful_restart_helper: Subclass of AvdModel.
                     maximum_paths: Subclass of AvdModel.
+                    route_distinguisher: Subclass of AvdModel.
                     updates: Subclass of AvdModel.
                     bgp_cluster_id: IP Address A.B.C.D.
                     bgp_defaults:
