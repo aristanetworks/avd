@@ -116,6 +116,7 @@ tenants:
         name: "MULTICAST_DISABLED_256"
         tags: ["test_l2"]
         # test for fast-leave when tenant level evpn_l2_multicast.enabled: true, igmp.fast_leave: true and l2vlans.evpn_l2_multicast.enabled: false
+        # fast_leave will be applied to VLAN 256 regardless of l2vlans.evpn_l2_multicast.enabled.
         evpn_l2_multicast:
           enabled: false
         # To test vxlan_flood_multicast enabled at l2vlans with underlay_multicast_group
