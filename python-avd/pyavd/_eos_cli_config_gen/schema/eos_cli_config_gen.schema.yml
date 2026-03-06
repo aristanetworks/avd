@@ -3055,7 +3055,7 @@ keys:
           type: list
           items:
             type: str
-            description: 'IPv6_address/Mask.
+            description: 'IPv6 address with prefix length.
 
               This option is mutually exclusive with `ipv6_address_auto_config` and
               takes precedence if both are defined.'
@@ -8158,7 +8158,7 @@ keys:
           type: list
           items:
             type: str
-            description: 'IPv6_address/Mask.
+            description: 'IPv6 address with prefix length.
 
               This option is mutually exclusive with `ipv6_address_auto_config` and
               takes precedence if both are defined.'
@@ -8857,10 +8857,9 @@ keys:
           type: list
           items:
             type: str
-            description: 'IPv6_address/Mask.
-
-              This option is mutually exclusive with `ipv6_address_auto_config` and
-              takes precedence if both are defined.'
+            description: "IPv6 address with prefix length.\n This option is mutually
+              exclusive with `ipv6_address_auto_config` and takes precedence if both
+              are defined."
         ipv6_address_auto_config:
           type: bool
           description: 'Use SLAAC to automatically configure the IPv6 address.
@@ -12834,7 +12833,7 @@ keys:
           type: list
           items:
             type: str
-            description: 'IPv6_address/Mask.
+            description: 'IPv6 address with prefix length.
 
               This option is mutually exclusive with `ipv6_address_auto_config` and
               takes precedence if both are defined.'
@@ -24512,7 +24511,7 @@ keys:
           type: list
           items:
             type: str
-            description: 'IPv6_address/Mask.
+            description: 'IPv6 address with prefix length.
 
               This option is mutually exclusive with `ipv6_address_auto_config` and
               takes precedence if both are defined.'
@@ -24803,7 +24802,7 @@ keys:
           type: list
           items:
             type: str
-            description: 'IPv6_address/Mask.
+            description: 'IPv6 address with prefix length.
 
               This option is mutually exclusive with `ipv6_address_auto_config` and
               takes precedence if both are defined.'
