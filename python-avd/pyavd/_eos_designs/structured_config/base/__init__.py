@@ -719,7 +719,7 @@ class AvdStructuredConfigBaseProtocol(
         if not self.inputs.aaa_settings.radius:
             return
 
-        use_new_ip_radius_model = self.inputs.avd_7_behaviors.ip_radius_source_interface_setting
+        use_new_ip_radius_model = self.inputs.avd_design_future.ip_radius_source_interface_setting
 
         for server in self.inputs.aaa_settings.radius.servers:
             server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
