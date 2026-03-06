@@ -18,7 +18,6 @@ $defs:
             type: bool
             description: Disable Router Advertisement messages on the interface.
           rx_accept:
-            description: Accept information on received RA.
             type: dict
             keys:
               default_route:
