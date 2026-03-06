@@ -43,8 +43,8 @@
 {%         if nd_ra_rx_accept == [] %}
 {%             do nd_ra_rx_accept.append("-") %}
 {%         endif %}
-{%         set nd_ra_disabled = management_interface.ipv6_nd.ra.disabled | arista.avd.default(management_interface.ipv6_nd_ra_disabled, "-") %}
-{%         set managed_config_flag = management_interface.ipv6_nd.managed_config_flag | arista.avd.default(management_interface.ipv6_nd_managed_config_flag, "-") %}
+{%         set nd_ra_disabled = management_interface.ipv6_nd.ra.disabled | arista.avd.default("-") %}
+{%         set managed_config_flag = management_interface.ipv6_nd.managed_config_flag | arista.avd.default("-") %}
 | {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6 }} | {{ ipv6_gateway }} | {{ nd_ra_rx_accept | join(", ") }} | {{ nd_ra_disabled }} | {{ managed_config_flag }} |
 {%     endfor %}
 {%     if management_interfaces | arista.avd.default([]) | selectattr('redundancy','arista.avd.defined') | list %}
