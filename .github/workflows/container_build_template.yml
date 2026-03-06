@@ -33,7 +33,7 @@ env:
         required: false
         type: string
         default: python
-      # From variant, e.g. "3.11-slim-bullseye".
+      # From variant, e.g. "3.12-slim-bookworm".
       # This is auto-generated for python-slim based builds.
       # Only specify for special builds.
       from_variant:
@@ -123,7 +123,7 @@ jobs:
           if [ "${{ inputs.from_image }}" == "python" ]; then
             if [ "${{ inputs.container_name }}" == "base" ]; then
               echo "from_image=${{ inputs.from_image }}" >> $GITHUB_OUTPUT
-              echo "from_variant=${{ inputs.python_version }}-slim-bullseye" >> $GITHUB_OUTPUT
+              echo "from_variant=${{ inputs.python_version }}-slim-bookworm" >> $GITHUB_OUTPUT
             else
               echo "from_image=ghcr.io/${{ github.repository }}/base" >> $GITHUB_OUTPUT
               echo "from_variant=python${{ inputs.python_version }}" >> $GITHUB_OUTPUT
