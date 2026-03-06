@@ -2160,7 +2160,7 @@ router_bgp:
           - domain: remote
             route_target: 2:40005
           - domain: all
-            route_target: 2:40006
+            route_target: 2:40002
       redistribute:
         ospf:
           match_external:

@@ -1114,10 +1114,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf_route_filter_rcf</samp>](## "router_bgp.vrfs.[].route_targets.export.[].vrf_route_filter_rcf") | String |  |  |  | RCF function name with parenthesis for filtering VRF routes. Also requires `rcf` to be set.<br>Example: MyFunction(myarg).<br>Only applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import_evpn_domains</samp>](## "router_bgp.vrfs.[].route_targets.import_evpn_domains") | List, items: Dictionary |  |  |  | List of EVPN domains from which to import routes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;domain</samp>](## "router_bgp.vrfs.[].route_targets.import_evpn_domains.[].domain") | String | Required |  | Valid Values:<br>- <code>remote</code><br>- <code>all</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_target</samp>](## "router_bgp.vrfs.[].route_targets.import_evpn_domains.[].route_target") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_target</samp>](## "router_bgp.vrfs.[].route_targets.import_evpn_domains.[].route_target") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;export_evpn_domains</samp>](## "router_bgp.vrfs.[].route_targets.export_evpn_domains") | List, items: Dictionary |  |  |  | List of EVPN domains to which local routes should be exported. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;domain</samp>](## "router_bgp.vrfs.[].route_targets.export_evpn_domains.[].domain") | String |  |  | Valid Values:<br>- <code>remote</code><br>- <code>all</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_target</samp>](## "router_bgp.vrfs.[].route_targets.export_evpn_domains.[].route_target") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;domain</samp>](## "router_bgp.vrfs.[].route_targets.export_evpn_domains.[].domain") | String | Required |  | Valid Values:<br>- <code>remote</code><br>- <code>all</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_target</samp>](## "router_bgp.vrfs.[].route_targets.export_evpn_domains.[].route_target") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_bgp.vrfs.[].router_id") | String |  |  |  | in IP address format A.B.C.D. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timers</samp>](## "router_bgp.vrfs.[].timers") | String |  |  |  | BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_bgp.vrfs.[].graceful_restart") | Dictionary |  |  |  |  |
@@ -3947,12 +3947,12 @@
             # List of EVPN domains from which to import routes.
             import_evpn_domains:
               - domain: <str; "remote" | "all"; required>
-                route_target: <str; required>
+                route_target: <str; required; unique>
 
             # List of EVPN domains to which local routes should be exported.
             export_evpn_domains:
-              - domain: <str; "remote" | "all">
-                route_target: <str>
+              - domain: <str; "remote" | "all"; required>
+                route_target: <str; required; unique>
 
           # in IP address format A.B.C.D.
           router_id: <str>

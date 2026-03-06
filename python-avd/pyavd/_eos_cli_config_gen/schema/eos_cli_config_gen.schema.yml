@@ -19068,6 +19068,7 @@ keys:
                 import_evpn_domains:
                   type: list
                   description: List of EVPN domains from which to import routes.
+                  primary_key: route_target
                   items:
                     type: dict
                     keys:
@@ -19079,16 +19080,17 @@ keys:
                         - all
                       route_target:
                         type: str
-                        required: true
                 export_evpn_domains:
                   type: list
                   description: List of EVPN domains to which local routes should be
                     exported.
+                  primary_key: route_target
                   items:
                     type: dict
                     keys:
                       domain:
                         type: str
+                        required: true
                         valid_values:
                         - remote
                         - all
