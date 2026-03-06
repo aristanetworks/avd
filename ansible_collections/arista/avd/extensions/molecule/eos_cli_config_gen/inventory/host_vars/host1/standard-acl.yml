@@ -8,20 +8,16 @@ standard_access_lists:
       - sequence: 20
         action: permit
         host: 10.10.10.10
-        vlan: 10
-        vlan_mask: "0x000"
+        mirror_session: mirror1
       - sequence: 30
         action: permit
         host: 10.10.10.11
-        vlan: 10
-        vlan_mask: "0x000"
-        inner_vlan: 11
-        inner_vlan_mask: "0x00A"
+        log: true
       - sequence: 40
         action: permit
         host: 10.10.10.12
-        inner_vlan: 11
-        inner_vlan_mask: "0x00A"
+        mirror_session: mirror1
+        log: true
   - name: ACL-SSH
     counters_per_entry: true
     entries:
