@@ -14,10 +14,10 @@ l3leaf:
       bgp_as: 923
       vtep: false
       nodes:
-        - name: OVERRIDE_VTEP_L3LEAF1A
+        - name: override-vtep-l3leaf1a
           id: 3
           mgmt_ip: 192.168.201.116/24
           vtep: true
-        - name: OVERRIDE_VTEP_L3LEAF1B
+        - name: override-vtep-l3leaf1b
           id: 4
           mgmt_ip: 192.168.201.117/24

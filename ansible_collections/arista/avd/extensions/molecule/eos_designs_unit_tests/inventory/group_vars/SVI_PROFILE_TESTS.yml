@@ -12,11 +12,11 @@ l3leaf:
     virtual_router_mac_address: 00:1c:73:00:DC:01
   nodes:
     #
-    - name: SVI_PROFILE_NODE_1
+    - name: svi-profile-node-1
       id: 1
       bgp_as: 65001
     # test with evpn_vlan_aware_bundles: true
-    - name: SVI_PROFILE_NODE_2
+    - name: svi-profile-node-2
       id: 1
       bgp_as: 65002
 
@@ -38,10 +38,10 @@ svi_profiles:
       mtu: 1200
       no_autostate: true
     nodes:
-      - node: SVI_PROFILE_NODE_1
+      - node: svi-profile-node-1
         structured_config:
           description: "set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config"
-      - node: SVI_PROFILE_NODE_2
+      - node: svi-profile-node-2
         structured_config:
           description: "set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config"
 
@@ -50,10 +50,10 @@ svi_profiles:
       description: "set from structured_config on svi_profile.structured_config"
       mtu: 1000
     nodes:
-      - node: SVI_PROFILE_NODE_1
+      - node: svi-profile-node-1
         structured_config:
           description: "set from structured_config on svi_profile.nodes[inventory_hostname].structured_config"
-      - node: SVI_PROFILE_NODE_2
+      - node: svi-profile-node-2
         structured_config:
           description: "set from structured_config on svi_profile.nodes[inventory_hostname].structured_config"
     parent_profile: struct_config_parent_profile_1
@@ -204,10 +204,10 @@ tenants:
             structured_config:
               description: set from svi.structured_config
             nodes:
-              - node: SVI_PROFILE_NODE_1
+              - node: svi-profile-node-1
                 structured_config:
                   description: set from structured_config on svi.nodes[inventory_hostname].structured_config
-              - node: SVI_PROFILE_NODE_2
+              - node: svi-profile-node-2
                 structured_config:
                   description: set from structured_config on svi.nodes[inventory_hostname].structured_config
             profile: struct_config_child_profile_1
@@ -336,9 +336,9 @@ tenants:
             ip_virtual_router_addresses: [10.4.10.1/24]
             profile: static_routes_child_profile_1
             nodes:
-              - node: SVI_PROFILE_NODE_1
+              - node: svi-profile-node-1
                 ip_address: 11.4.10.1/24
-              - node: SVI_PROFILE_NODE_2
+              - node: svi-profile-node-2
                 ip_address: 11.4.10.2/24
 
           # ip_virtual_router_addresses set on child_profile and parent_profile
@@ -348,9 +348,9 @@ tenants:
             enabled: true
             profile: static_routes_child_profile_2
             nodes:
-              - node: SVI_PROFILE_NODE_1
+              - node: svi-profile-node-1
                 ip_address: 11.4.11.1/24
-              - node: SVI_PROFILE_NODE_2
+              - node: svi-profile-node-2
                 ip_address: 11.4.11.2/24
 
           # ip_virtual_router_addresses set on child_profile and parent_profile
@@ -360,9 +360,9 @@ tenants:
             enabled: true
             profile: static_routes_child_profile_3
             nodes:
-              - node: SVI_PROFILE_NODE_1
+              - node: svi-profile-node-1
                 ip_address: 11.4.12.1/24
-              - node: SVI_PROFILE_NODE_2
+              - node: svi-profile-node-2
                 ip_address: 11.4.12.2/24
 
 #### ---- Test inheritance of svi ospf.enabled ----- ###

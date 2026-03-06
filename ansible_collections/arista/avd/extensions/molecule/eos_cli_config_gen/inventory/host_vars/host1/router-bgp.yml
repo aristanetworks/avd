@@ -3,6 +3,14 @@ router_bgp:
   as: 65101
   router_id: 192.168.255.3
   as_notation: asdot
+  route_distinguisher:
+    assignment_auto:
+      range:
+        start: 2
+        end: 45
+      address_families:
+        - l3-vrf
+        - l2-evpn
   updates:
     wait_for_convergence: true
     wait_install: true
