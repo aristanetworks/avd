@@ -237,7 +237,7 @@ class ActionModule(ActionBase):
                 result_object.deployed_interface_tags,
                 result_object.deployed_cv_pathfinder_metadata,
                 result_object.removed_configs,
-                result_object.removed_static_config_root_containers,
+                result_object.removed_static_config_containers,
                 result_object.removed_static_config_configlets,
                 result_object.removed_device_tags,
                 result_object.removed_interface_tags,

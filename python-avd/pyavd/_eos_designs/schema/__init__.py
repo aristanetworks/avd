@@ -909,7 +909,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    class Avd7Behaviors(AvdModel):
+    class AvdDesignFuture(AvdModel):
         """Subclass of AvdModel."""
 
         _fields: ClassVar[dict] = {"ip_radius_source_interface_setting": {"type": bool, "default": False}}
@@ -937,7 +937,7 @@ class EosDesigns(EosDesignsRootModel):
 
             def __init__(self, *, ip_radius_source_interface_setting: bool | UndefinedType = Undefined) -> None:
                 """
-                Avd7Behaviors.
+                AvdDesignFuture.
 
 
                 Subclass of AvdModel.
@@ -88115,7 +88115,7 @@ class EosDesigns(EosDesignsRootModel):
         "aaa_settings": {"type": AaaSettings},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
-        "avd_7_behaviors": {"type": Avd7Behaviors},
+        "avd_design_future": {"type": AvdDesignFuture},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
@@ -88832,12 +88832,10 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
-    avd_7_behaviors: Avd7Behaviors
+    avd_design_future: AvdDesignFuture
     """
-    Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
-
-    Subclass of
-    AvdModel.
+    Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
+    Subclass of AvdModel.
     """
     avd_digital_twin_mode: bool
     """
@@ -90857,7 +90855,7 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
-            avd_7_behaviors: Avd7Behaviors | UndefinedType = Undefined,
+            avd_design_future: AvdDesignFuture | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
@@ -91079,11 +91077,9 @@ class EosDesigns(EosDesignsRootModel):
                 aaa_settings: Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
-                avd_7_behaviors:
-                   Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
-
-                   Subclass of
-                   AvdModel.
+                avd_design_future:
+                   Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
+                   Subclass of AvdModel.
                 avd_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
