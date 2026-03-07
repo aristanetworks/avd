@@ -20,6 +20,7 @@ from pyavd._cv.api.arista.workspace.v1 import (
     WorkspaceKey,
     WorkspaceRequest,
     WorkspaceServiceStub,
+    WorkspaceState,
     WorkspaceStreamRequest,
 )
 
@@ -265,4 +266,43 @@ class WorkspaceMixin(Protocol):
 
         # Use case where stream completed without getting a response for the expected request_id
         msg = f"Failed to get a response for request '{request_id}' of the Workspace '{workspace_id}'."
+        raise CVResourceNotFound(msg)
+
+    @GRPCRequestHandler()
+    async def wait_for_new_workspace_readiness(
+        self: CVClientProtocol,
+        workspace_id: str,
+        timeout: float = 3600.0,
+    ) -> Workspace:
+        """
+        Monitor newly created Workspace using arista.workspace.v1.WorkspaceService.Subscribe API until Workspace is in PENDING (ready) state.
+
+        Blocks until a response in a terminal PENDING state (WorkspaceState.PENDING) is returned or timed out.
+        This is required to avoid attempts to update the Workspace right after INITIAL_SYNC_COMPLETE while it is still in WorkspaceState.UNSPECIFIED.
+        Such attempts may lead to the 'workspace status is not available' errors.
+        Responses for the Workspace in non-PENDING state are logged only.
+
+        Parameters:
+            workspace_id: Unique identifier for the Workspace.
+            timeout: Timeout in seconds for the Workspace to build.
+
+        Returns:
+            <Full Workspace object>
+        """
+        request = WorkspaceStreamRequest(
+            partial_eq_filter=[
+                Workspace(
+                    key=WorkspaceKey(workspace_id=workspace_id),
+                ),
+            ],
+        )
+        client = WorkspaceServiceStub(self._channel)
+        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        async for response in responses:
+            if response.value.state == WorkspaceState.PENDING:
+                LOGGER.debug("wait_for_workspace_readiness: Workspace reached required state (PENDING): %s", response)
+                return response.value
+            LOGGER.debug("wait_for_workspace_readiness: Got workspace update but it is not yet in PENDING state. Latest response: %s", response)
+
+        msg = f"wait_for_workspace_readiness: Timed out waiting for Workspace '{workspace_id}' to get in PENDING state."
         raise CVResourceNotFound(msg)

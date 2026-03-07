@@ -33,4 +33,6 @@ async def create_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) ->
             raise CVResourceInvalidState(msg)
     except CVResourceNotFound:
         await cv_client.create_workspace(workspace_id=workspace.id, display_name=workspace.name, description=workspace.description)
+        # Wait for the Workspace to be ready before continuing with any subsequent operations that depend on it.
+        await cv_client.wait_for_new_workspace_readiness(workspace_id=workspace.id)
         workspace.state = "pending"
