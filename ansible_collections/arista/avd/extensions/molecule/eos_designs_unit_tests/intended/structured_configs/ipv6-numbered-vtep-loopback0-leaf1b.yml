@@ -28,7 +28,8 @@ ethernet_interfaces:
   description: P2P_ipv6-numbered-vtep-loopback0-spine_Ethernet2
   shutdown: false
   mtu: 9214
-  ipv6_address: 2001:db8:2:1::2/64
+  ipv6_addresses:
+  - 2001:db8:2:1::2/64
   metadata:
     peer: ipv6-numbered-vtep-loopback0-spine
     peer_interface: Ethernet2
@@ -54,7 +55,8 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ipv6_address: 2001:db8:1::2/128
+  ipv6_addresses:
+  - 2001:db8:1::2/128
 - name: Loopback10
   description: DIAG_VRF_VRF10
   shutdown: false
@@ -241,12 +243,14 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_L3
   shutdown: false
-  ipv6_address: 2001:db8:4::2/64
+  ipv6_addresses:
+  - 2001:db8:4::2/64
   mtu: 9214
 - name: Vlan4094
   description: MLAG
   shutdown: false
-  ipv6_address: 2001:db8:3::2/64
+  ipv6_addresses:
+  - 2001:db8:3::2/64
   mtu: 9214
   no_autostate: true
 - name: Vlan11
@@ -269,7 +273,8 @@ vlan_interfaces:
   description: MLAG_L3_VRF_VRF10
   shutdown: false
   vrf: VRF10
-  ipv6_address: 2001:db8:4::2/64
+  ipv6_addresses:
+  - 2001:db8:4::2/64
   mtu: 9214
   metadata:
     tenants:
