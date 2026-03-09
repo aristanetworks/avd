@@ -31,4 +31,4 @@ keys:
         type: bool
         description: |-
           Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by default.
-        default: true  
+        default: true
