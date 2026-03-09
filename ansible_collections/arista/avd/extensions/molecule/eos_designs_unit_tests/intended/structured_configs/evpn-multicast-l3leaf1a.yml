@@ -104,6 +104,10 @@ hostname: evpn-multicast-l3leaf1a
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
+  - id: 310
+    fast_leave: true
+  - id: 311
+    fast_leave: true
   - id: 110
     querier:
       enabled: true
@@ -118,6 +122,10 @@ ip_igmp_snooping:
     querier:
       enabled: true
       address: 192.168.255.3
+    fast_leave: true
+  - id: 211
+    fast_leave: false
+  - id: 256
     fast_leave: true
   - id: 257
     querier:
@@ -164,10 +172,6 @@ ip_igmp_snooping:
       enabled: true
       address: 192.168.255.3
   - id: 230
-    querier:
-      enabled: true
-      address: 192.168.255.3
-  - id: 252
     querier:
       enabled: true
       address: 192.168.255.3
@@ -265,7 +269,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 1-10,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
+      allowed_vlan: 1-10,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250,256-257,260,310-311,330-331,550,4092
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -575,29 +579,6 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '150'
-  - name: MULTICAST_DISABLED_251
-    metadata:
-      tenants:
-      - Tenant_F
-    rd: 192.168.255.3:10251
-    route_targets:
-      both:
-      - 10251:10251
-    redistribute_routes:
-    - learned
-    vlan: '251'
-  - name: MULTICAST_ENABLED_252
-    metadata:
-      tenants:
-      - Tenant_F
-    rd: 192.168.255.3:10252
-    route_targets:
-      both:
-      - 10252:10252
-    redistribute_routes:
-    - learned
-    - igmp
-    vlan: '252'
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -1826,16 +1807,6 @@ vlans:
   metadata:
     tenants:
     - Tenant_E
-- id: 251
-  name: MULTICAST_DISABLED_251
-  metadata:
-    tenants:
-    - Tenant_F
-- id: 252
-  name: MULTICAST_ENABLED_252
-  metadata:
-    tenants:
-    - Tenant_F
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -2030,11 +2001,6 @@ vxlan_interface:
         vni: 10250
       - id: 150
         vni: 10150
-      - id: 251
-        vni: 10251
-      - id: 252
-        vni: 10252
-        multicast_group: 232.0.0.251
       vrfs:
       - name: MULTICAST_DISABLED_310_311
         vni: 13

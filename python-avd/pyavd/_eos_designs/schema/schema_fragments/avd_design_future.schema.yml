@@ -27,3 +27,15 @@ keys:
 
           When disabled (current):
           - Uses `ip_radius_source_interfaces` list for all VRF combinations
+      ip_tacacs_source_interface_setting:
+        type: bool
+        default: false
+        description: |-
+          Enable improved TACACS source interface configuration with separate keys for VRF default and other VRFs.
+          When enabled:
+          - VRF default: Uses `ip_tacacs.source_interface`
+          - Other VRFs: Uses `ip_tacacs.vrfs` list
+          - Enforces VRF name uniqueness
+          - Aligns with EOS CLI behavior (where "vrf default" is implicit)
+          When disabled (current):
+          - Uses `ip_tacacs_source_interfaces` list for all VRF combinations
