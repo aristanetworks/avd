@@ -13,6 +13,26 @@ management_interfaces:
           ipv6_address: "1:1:1:1:1:1:1:1"
           interval: 101
           multiplier: 3
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: 2345:ABCD:3FE0::1/96
+          valid_lifetime: infinite
+          preferred_lifetime: 50
+          no_autoconfig_flag: true
+        - ipv6_prefix: 2345:ABCD:3FE0::2/96
+          valid_lifetime: 50
+          preferred_lifetime: infinite
+          no_autoconfig_flag: false
+        - ipv6_prefix: 2345:ABCD:3FE0::3/96
+          valid_lifetime: 100000
+          no_autoconfig_flag: true
+
   - name: Management0
     ip_address: 10.1.1.1
     mac_address: 00:1c:73:00:00:aa
