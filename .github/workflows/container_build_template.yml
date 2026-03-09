@@ -168,7 +168,7 @@ jobs:
 
       - name: Setup QEMU for multi-arch builds 🏗️
         # if: ${{ steps.check-image-presence.outputs.not_present == '1' }}
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
         with:
           platforms: ${{ inputs.platform }}
           image: tonistiigi/binfmt:qemu-v9.2.2-52
