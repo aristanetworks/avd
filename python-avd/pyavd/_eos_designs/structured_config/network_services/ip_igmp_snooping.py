@@ -106,8 +106,17 @@ class IpIgmpSnoopingMixin(Protocol):
 
                 vlan_item.querier.version = default(vlan.igmp_snooping_querier.version, tenant.igmp_snooping_querier.version)
 
+        # When evpn_l2_multicast is enabled, can use deprecated evpn_l2_multicast.fast_leave for backward compatibility.
+        # TODO: 7.0.0 - Remove support for evpn_l2_multicast.fast_leave and clean up this logic.
         if evpn_l2_multicast_enabled:
-            vlan_item.fast_leave = default(vlan.igmp_snooping_querier.fast_leave, tenant.evpn_l2_multicast.fast_leave)
+            # tenant.igmp.fast_leave takes precedence over deprecated key tenant.evpn_l2_multicast.fast_leave if both are set.
+            fast_leave = default(vlan.igmp_snooping_querier.fast_leave, tenant.igmp.fast_leave, tenant.evpn_l2_multicast.fast_leave)
+        else:
+            # Set fast_leave regardless of evpn_l2_multicast_enabled state.
+            fast_leave = default(vlan.igmp_snooping_querier.fast_leave, tenant.igmp.fast_leave)
+
+        if fast_leave is not None:
+            vlan_item.fast_leave = fast_leave
 
         if vlan_item:
             vlan_item.id = vlan.id

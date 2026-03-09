@@ -169,8 +169,8 @@ EOF
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management Interface | Description | Type | VRF | IPv6 Addresses | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | -------------- | ------------ |
 | Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
@@ -913,9 +913,9 @@ interface defaults
 
 #### DPS Interfaces Summary
 
-| Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
-| --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.42/24 | False | 666 | Sampled: FT-S | - |
+| Interface | IP address | IPv6 addresses | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | -------------- | -------- | --- | --------------- | --------------- |
+| Dps1 | 192.168.42.42/24 | - | False | 666 | Sampled: FT-S | - |
 
 #### DPS Interfaces Device Configuration
 
