@@ -281,8 +281,8 @@ vlan 350
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
 | Ethernet1 | P2P_DC1-SPINE1_Ethernet7 | - | - | default | 1500 | False | - | - | - | - | - |
 | Ethernet2 | P2P_DC1-SPINE2_Ethernet7 | - | - | default | 1500 | False | - | - | - | - | - |
 | Ethernet3 | P2P_DC1-SPINE3_Ethernet7 | - | - | default | 1500 | False | - | - | - | - | - |

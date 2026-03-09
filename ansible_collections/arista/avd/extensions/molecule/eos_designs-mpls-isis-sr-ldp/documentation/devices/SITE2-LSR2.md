@@ -148,8 +148,8 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
 | Ethernet3 | P2P_SITE1-LSR2_Ethernet3 | - | - | default | 9178 | False | - | - | - | - | - |
 | Ethernet12 | P2P_SITE2-LER1_Ethernet11 | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- | - |
 | Ethernet13 | P2P_SITE2-LER1_Ethernet12 | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- | - |
