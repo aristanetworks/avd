@@ -12,11 +12,12 @@ l3leaf:
       bgp_as: 65233
       mgmt_ip: 192.168.0.204/24
       evpn_gateway:
+        d_path:
+          enabled: true
+          local_domain_id: "65200:2"
+          remote_domain_id: "65100:1"
         all_active_multihoming:
           enabled: true
-          enable_d_path: true
-          evpn_domain_id_local: "65200:2"
-          evpn_domain_id_remote: "65100:1"
           evpn_ethernet_segment:
             identifier: 0000:0001:0001:0000:0509
             rt_import: 00:00:00:00:07:09
