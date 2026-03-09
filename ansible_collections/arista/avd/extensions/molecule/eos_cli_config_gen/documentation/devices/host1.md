@@ -11879,6 +11879,7 @@ poe
 | 20 | permit | 10.0.0.0/8 | - | - | mirror1 |
 | 30 | permit | 172.16.0.0/12 | - | True | - |
 | 40 | permit | 192.168.0.0/16 | - | True | mirror2 |
+| 50 | permit | any | - | - | - |
 
 ##### ACL-API
 
@@ -11918,6 +11919,7 @@ ip access-list standard 99
    20 permit 10.0.0.0/8 mirror session mirror1
    30 permit 172.16.0.0/12 log
    40 permit 192.168.0.0/16 mirror session mirror2 log
+   50 permit any
 !
 ip access-list standard ACL-API
    10 remark ACL to restrict access to switch API to CVP and Ansible

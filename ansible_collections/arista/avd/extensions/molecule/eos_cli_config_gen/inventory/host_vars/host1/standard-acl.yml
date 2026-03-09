@@ -64,3 +64,6 @@ standard_access_lists:
         source: 192.168.0.0/16
         mirror_session: mirror2
         log: true
+      - sequence: 50
+        action: permit
+        source: any
