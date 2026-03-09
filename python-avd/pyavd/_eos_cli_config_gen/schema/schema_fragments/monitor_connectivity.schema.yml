@@ -49,6 +49,15 @@ keys:
               type: str
             description:
               type: str
+              description: |-
+                Description of format
+                ```
+                description
+                <description>
+                ```
+            description_new:
+              type: str
+              description: Description of format `description <description> `.
             ip:
               type: str
             icmp_echo_size:

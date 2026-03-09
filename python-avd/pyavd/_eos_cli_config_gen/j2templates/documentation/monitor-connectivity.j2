@@ -32,7 +32,7 @@
 | Host Name | Description | IPv4 Address | ICMP Echo Size | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | -------------- | --------------------- | ------------ | --- |
 {%         for host in monitor_connectivity.hosts | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
-| {{ host.name }} | {{ host.description | arista.avd.default('-') }} | {{ host.ip | arista.avd.default('-') }} | {{ host.icmp_echo_size | arista.avd.default('-') }} | {{ host.local_interfaces | arista.avd.default('-') }} | {{ host.address_only | arista.avd.default(true) }} | {{ host.url | arista.avd.default('-') }} |
+| {{ host.name }} | {{ host.description | arista.avd.default(host.description_new, '-') }} | {{ host.ip | arista.avd.default('-') }} | {{ host.icmp_echo_size | arista.avd.default('-') }} | {{ host.local_interfaces | arista.avd.default('-') }} | {{ host.address_only | arista.avd.default(true) }} | {{ host.url | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
 {%     if monitor_connectivity.vrfs is arista.avd.defined %}

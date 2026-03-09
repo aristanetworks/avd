@@ -26170,6 +26170,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "description": {"type": str},
+                "description_new": {"type": str},
                 "ip": {"type": str},
                 "icmp_echo_size": {"type": int},
                 "local_interfaces": {"type": str},
@@ -26179,6 +26180,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             name: str
             """Host Name."""
             description: str | None
+            """
+            Description of format
+            ```
+            description
+            <description>
+            ```
+            """
+            description_new: str | None
+            """Description of format `description <description> `."""
             ip: str | None
             icmp_echo_size: int | None
             """Size of ICMP probe in bytes."""
@@ -26202,6 +26212,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
+                    description_new: str | None | UndefinedType = Undefined,
                     ip: str | None | UndefinedType = Undefined,
                     icmp_echo_size: int | None | UndefinedType = Undefined,
                     local_interfaces: str | None | UndefinedType = Undefined,
@@ -26216,7 +26227,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: Host Name.
-                        description: description
+                        description:
+                           Description of format
+                           ```
+                           description
+                           <description>
+                           ```
+                        description_new: Description of format `description <description> `.
                         ip: ip
                         icmp_echo_size: Size of ICMP probe in bytes.
                         local_interfaces: local_interfaces
