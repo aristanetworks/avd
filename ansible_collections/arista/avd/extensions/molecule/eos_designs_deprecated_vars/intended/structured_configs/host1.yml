@@ -107,7 +107,10 @@ management_interfaces:
   gateway: 192.168.200.1
 metadata:
   is_deployed: true
+  platform: vEOS
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
+  validate_hardware:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -148,11 +151,11 @@ router_bgp:
   router_id: 192.168.255.101
   maximum_paths:
     paths: 4
-  updates:
-    wait_install: true
   bgp:
     default:
       ipv4_unicast: false
+    bestpath:
+      d_path: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     metadata:
@@ -198,6 +201,17 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
+  address_family_evpn:
+    domain_identifier: '65200:2'
+    domain_identifier_remote: '65100:1'
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: true
+    evpn_ethernet_segment:
+    - domain: all
+      identifier: 0000:0001:0001:0000:0509
+      route_target_import: 00:00:00:00:07:09
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
