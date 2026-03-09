@@ -22,27 +22,6 @@ if TYPE_CHECKING:
 
 LOGGER = logging.getLogger(__name__)
 
-# Constants for registered filters and tests - single source of truth
-CUSTOM_FILTERS = [
-    "add_md_toc",
-    "decrypt",
-    "default",
-    "encrypt",
-    "hide_passwords",
-    "is_in_filter",
-    "list_compress",
-    "natural_sort",
-    "range_expand",
-    "snmp_hash",
-    "status_render",
-    "secure_hash",
-]
-
-CUSTOM_TESTS = [
-    "defined",
-    "contains",
-]
-
 
 class Undefined(StrictUndefined):
     """
@@ -141,25 +120,45 @@ class Templar:
         self.import_filters_and_tests()
 
     def import_filters_and_tests(self) -> None:
-        # Dynamically import and register filters from constants
-        filters_module = importlib.import_module(".j2filters", package="pyavd")
-        for filter_name in CUSTOM_FILTERS:
-            try:
-                filter_func = getattr(filters_module, filter_name)
-            except AttributeError as exc:
-                msg = f"Filter '{filter_name}' not found in j2filters module"
-                raise AttributeError(msg) from exc
-            self.environment.filters[f"arista.avd.{filter_name}"] = filter_func
+        from .j2filters import (  # noqa: PLC0415
+            add_md_toc,
+            decrypt,
+            default,
+            encrypt,
+            hide_passwords,
+            is_in_filter,
+            list_compress,
+            natural_sort,
+            range_expand,
+            secure_hash,
+            snmp_hash,
+            status_render,
+        )
+        from .j2tests.contains import contains  # noqa: PLC0415
+        from .j2tests.defined import defined  # noqa: PLC0415
 
-        # Dynamically import and register tests from constants
-        for test_name in CUSTOM_TESTS:
-            try:
-                test_module = importlib.import_module(f".j2tests.{test_name}", package="pyavd")
-                test_func = getattr(test_module, test_name)
-            except (ImportError, AttributeError) as exc:
-                msg = f"Test '{test_name}' not found in j2tests.{test_name} module"
-                raise ImportError(msg) from exc
-            self.environment.tests[f"arista.avd.{test_name}"] = test_func
+        self.environment.filters.update(
+            {
+                "arista.avd.add_md_toc": add_md_toc,
+                "arista.avd.decrypt": decrypt,
+                "arista.avd.default": default,
+                "arista.avd.encrypt": encrypt,
+                "arista.avd.hide_passwords": hide_passwords,
+                "arista.avd.is_in_filter": is_in_filter,
+                "arista.avd.list_compress": list_compress,
+                "arista.avd.natural_sort": natural_sort,
+                "arista.avd.range_expand": range_expand,
+                "arista.avd.snmp_hash": snmp_hash,
+                "arista.avd.status_render": status_render,
+                "arista.avd.secure_hash": secure_hash,
+            },
+        )
+        self.environment.tests.update(
+            {
+                "arista.avd.defined": defined,
+                "arista.avd.contains": contains,
+            },
+        )
 
     def render_template_from_file(self, template_file: str, template_vars: dict[str, Any]) -> str:
         return self.environment.get_template(template_file).render(template_vars)

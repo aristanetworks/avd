@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 import pytest
 from jinja2 import TemplateNotFound
 
-from pyavd.templater import CUSTOM_FILTERS, CUSTOM_TESTS, CustomModuleLoader, ExtensionFileSystemLoader, Templar, Undefined
+from pyavd.templater import CustomModuleLoader, ExtensionFileSystemLoader, Templar, Undefined
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -191,24 +191,6 @@ class TestTemplar:
         templar = Templar(precompiled_templates_path=precompiled_dir)
 
         assert templar.environment.undefined is Undefined
-
-    def test_environment_has_filters(self, precompiled_dir: Path) -> None:
-        """Test that environment has all custom filters registered."""
-        templar = Templar(precompiled_templates_path=precompiled_dir)
-
-        expected_filters = [f"arista.avd.{name}" for name in CUSTOM_FILTERS]
-
-        for filter_name in expected_filters:
-            assert filter_name in templar.environment.filters
-
-    def test_environment_has_tests(self, precompiled_dir: Path) -> None:
-        """Test that environment has all custom tests registered."""
-        templar = Templar(precompiled_templates_path=precompiled_dir)
-
-        expected_tests = [f"arista.avd.{name}" for name in CUSTOM_TESTS]
-
-        for test_name in expected_tests:
-            assert test_name in templar.environment.tests
 
     def test_render_template_from_file(self, precompiled_dir: Path, template_files: dict[str, Path], monkeypatch: pytest.MonkeyPatch) -> None:
         """Test rendering a template from file."""
