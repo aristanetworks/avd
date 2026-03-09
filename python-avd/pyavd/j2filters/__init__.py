@@ -22,7 +22,6 @@ __all__ = [
     "hide_passwords",
     "is_in_filter",
     "list_compress",
-    "mandatory",
     "natural_sort",
     "range_expand",
     "secure_hash",
