@@ -631,7 +631,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452,3099
+      allowed_vlan: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452
 - name: Port-Channel32
   description: description through uplink_switch_port_channel_structured_config(dc1.l2leaf7a)
   shutdown: false
@@ -642,7 +642,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452,3099
+      allowed_vlan: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452
 - name: Port-Channel10
   description: server01_MLAG_PortChanne1
   shutdown: false

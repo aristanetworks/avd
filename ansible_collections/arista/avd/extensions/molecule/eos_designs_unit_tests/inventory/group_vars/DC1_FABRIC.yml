@@ -174,7 +174,7 @@ l3leaf:
       mlag_domain_id: custom_mlag_domain_id
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
-        tags: [ opzone, web, app, db, vmotion, nfs, wan, erp3 ]
+        tags: [ opzone, web, app, db, vmotion, nfs, wan, erp3, svc3only ]
         deny_vrfs: []
       nodes:
         - name: dc1-svc3a
@@ -373,6 +373,9 @@ l2leaf:
       uplink_switch_interface_speed: 100g-2
       uplink_switch_port_channel_id: 1007 # Test uplink_switch_port_channel_id on mlag l2leaf
       uplink_port_channel_id: 1001 # Test uplink_port_channel_id on mlag l2leaf
+      filter:
+        always_include_vrfs_in_tenants: [ Tenant_A, Tenant_B, Tenant_C ]
+        tags: [ opzone, web, app, db, vmotion, nfs, wan, erp3 ]
       nodes:
         - name: dc1-l2leaf2a
           id: 9

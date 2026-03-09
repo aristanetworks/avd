@@ -632,7 +632,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 110-112,120-122,130-131,140-141,150,160-161,210-211,250,310-311,350,3099
+      allowed_vlan: 110-112,120-122,130-131,140-141,150,160-161,210-211,250,310-311,350
 - name: Port-Channel14
   description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
   shutdown: false
@@ -1677,7 +1677,7 @@ vlan_interfaces:
     tenants:
     - Tenant_C
     tags:
-    - opzone
+    - svc3only
 - name: Vlan310
   description: Tenant_C_OP_Zone_1
   shutdown: false
