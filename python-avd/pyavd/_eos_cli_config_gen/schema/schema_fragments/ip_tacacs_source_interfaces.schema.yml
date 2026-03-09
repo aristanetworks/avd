@@ -9,6 +9,11 @@ keys:
   ip_tacacs_source_interfaces:
     type: list
     display_name: IP Tacacs Source Interfaces
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 7.0.0
+      new_key: ip_tacacs
     items:
       type: dict
       keys:

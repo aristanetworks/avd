@@ -6,6 +6,7 @@
   - [Management Interfaces](#management-interfaces)
   - [IP Name Server Groups](#ip-name-server-groups)
 - [Authentication](#authentication)
+  - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
@@ -67,6 +68,25 @@ ip name-server group mynameserver1
 ```
 
 ## Authentication
+
+### IP TACACS Source Interfaces
+
+#### IP TACACS Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------------- |
+| default | Loopback1 |
+| TEST1 | Loopback3 |
+| default | Loopback10 |
+
+#### IP TACACS Source Interfaces Device Configuration
+
+```eos
+!
+ip tacacs vrf default source-interface Loopback1
+ip tacacs vrf TEST1 source-interface Loopback3
+ip tacacs source-interface Loopback10
+```
 
 ### IP RADIUS Source Interfaces
 
