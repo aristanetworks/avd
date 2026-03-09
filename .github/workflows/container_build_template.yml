@@ -177,7 +177,7 @@ jobs:
 
       - name: Setup Docker buildX for multi-arch builds 🏗️
         # if: ${{ steps.check-image-presence.outputs.not_present == '1' }}
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Login to Docker Hub 🗝️
         # if: ${{ steps.check-image-presence.outputs.not_present == '1' }}
