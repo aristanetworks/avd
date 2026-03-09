@@ -10202,6 +10202,18 @@ keys:
               - int
             description:
               type: str
+              description: 'Description of format
+
+                ```
+
+                description
+
+                <description>
+
+                ```'
+            description_new:
+              type: str
+              description: Description of format `description <description> `.
             interface_sets:
               type: list
               primary_key: name
@@ -10234,6 +10246,19 @@ keys:
                     type: str
                   description:
                     type: str
+                    description: 'Description of format
+
+                      ```
+
+                      description
+
+                      <description>
+
+                      ```'
+                  description_new:
+                    type: str
+                    description: Description of format `description <description>
+                      `.
                   ip:
                     type: str
                   icmp_echo_size:

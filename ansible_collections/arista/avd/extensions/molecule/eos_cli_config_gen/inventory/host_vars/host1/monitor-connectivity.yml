@@ -39,7 +39,7 @@ monitor_connectivity:
       local_interfaces: VRF_GLOBAL_SET
       hosts:
         - name: server2
-          description: server2_connectivity_monitor
+          description_new: server2_connectivity_monitor
           ip: 10.10.20.1
           icmp_echo_size: 1300
           local_interfaces: VRF_HOST_SET
@@ -66,5 +66,6 @@ monitor_connectivity:
         - name: server6
     - name: Yellow
       address_only: true
+      description_new: Address_only
       interface_sets:
         - name: VRF_GLOBAL_SET
