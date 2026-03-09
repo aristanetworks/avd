@@ -3892,7 +3892,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "sflow": {"type": bool},
             "sflowaddr": {"type": str},
             "cvconfig": {"type": bool},
-            "cvlosstimeout": {"type": int},
+            "cv_loss_timeout": {"type": int},
         }
         cvaddrs: Cvaddrs
         """
@@ -3994,7 +3994,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         cvconfig: bool | None
         """Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false)."""
-        cvlosstimeout: int | None
+        cv_loss_timeout: int | None
         """
         Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to
         CloudVision after a configuration change.
@@ -4027,7 +4027,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 sflow: bool | None | UndefinedType = Undefined,
                 sflowaddr: str | None | UndefinedType = Undefined,
                 cvconfig: bool | None | UndefinedType = Undefined,
-                cvlosstimeout: int | None | UndefinedType = Undefined,
+                cv_loss_timeout: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 DaemonTerminattr.
@@ -4101,7 +4101,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        ECO sFlow Collector address to listen on to receive sFlow packets (TerminAttr default
                        "127.0.0.1:6343").
                     cvconfig: Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
-                    cvlosstimeout:
+                    cv_loss_timeout:
                        Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to
                        CloudVision after a configuration change.
                        The recommended timeout is five minutes.

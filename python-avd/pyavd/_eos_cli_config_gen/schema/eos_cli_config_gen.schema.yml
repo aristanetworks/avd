@@ -1673,7 +1673,7 @@ keys:
           default is false).
 
           '
-      cvlosstimeout:
+      cv_loss_timeout:
         type: int
         description: 'Timeout in minutes before the device will revert to ZTP mode
           in case of losing connectivity to CloudVision after a configuration change.
