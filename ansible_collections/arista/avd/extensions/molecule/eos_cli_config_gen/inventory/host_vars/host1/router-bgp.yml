@@ -2148,19 +2148,19 @@ router_bgp:
             route_map: RT_IMPORT_AF_RM
             vrf_route_filter_rcf: RT_IMPORT_AF_RCF_FILTER()
         import_evpn_domains:
-          - domain: remote
-            route_target: 2:30005
-          - domain: all
-            route_target: 2:30006
-          - domain: all
-            route_target: 2:30007
+          - route_target: 2:30005
+            domain: remote
+          - route_target: 2:30006
+            domain: all
+          - route_target: 2:30007
+            domain: all
         export_evpn_domains:
-          - domain: remote
-            route_target: 2:40006
-          - domain: remote
-            route_target: 2:40005
-          - domain: all
-            route_target: 2:40002
+          - route_target: 2:40006
+            domain: remote
+          - route_target: 2:40005
+            domain: remote
+          - route_target: 2:40002
+            domain: all
       redistribute:
         ospf:
           match_external:

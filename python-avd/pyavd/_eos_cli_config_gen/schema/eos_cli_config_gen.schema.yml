@@ -19072,14 +19072,14 @@ keys:
                   items:
                     type: dict
                     keys:
+                      route_target:
+                        type: str
                       domain:
                         type: str
                         required: true
                         valid_values:
                         - remote
                         - all
-                      route_target:
-                        type: str
                 export_evpn_domains:
                   type: list
                   description: List of EVPN domains to which local routes should be
@@ -19088,14 +19088,14 @@ keys:
                   items:
                     type: dict
                     keys:
+                      route_target:
+                        type: str
                       domain:
                         type: str
                         required: true
                         valid_values:
                         - remote
                         - all
-                      route_target:
-                        type: str
             router_id:
               description: in IP address format A.B.C.D.
               type: str
