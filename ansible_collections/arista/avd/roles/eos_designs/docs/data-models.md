@@ -1856,3 +1856,11 @@ See the [Node type settings](#node-type-settings) section for available keys.
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/devices.md
 --8<--
+
+## Future AVD Design Behaviors
+
+Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/avd-design-future.md
+--8<--

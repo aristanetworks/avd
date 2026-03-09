@@ -10,8 +10,6 @@ keys:
     type: dict
     description: |-
       Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
-    documentation_options:
-      table: role-settings
     keys:
       ip_radius_source_interface_setting:
         type: bool
