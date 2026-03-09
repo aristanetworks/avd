@@ -346,6 +346,25 @@ keys:
           When disabled (current):
 
           - Uses `ip_radius_source_interfaces` list for all VRF combinations'
+      ip_tacacs_source_interface_setting:
+        type: bool
+        default: false
+        description: 'Enable improved TACACS source interface configuration with separate
+          keys for VRF default and other VRFs.
+
+          When enabled:
+
+          - VRF default: Uses `ip_tacacs.source_interface`
+
+          - Other VRFs: Uses `ip_tacacs.vrfs` list
+
+          - Enforces VRF name uniqueness
+
+          - Aligns with EOS CLI behavior (where "vrf default" is implicit)
+
+          When disabled (current):
+
+          - Uses `ip_tacacs_source_interfaces` list for all VRF combinations'
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -8069,6 +8088,15 @@ $defs:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
+        igmp:
+          type: dict
+          keys:
+            fast_leave:
+              type: bool
+              description: 'Explicitly enable or disable IGMP snooping fast-leave
+                feature for all SVIs and L2 VLANs within the Tenant.
+
+                On EOS, IGMP fast-leave is enabled on all VLANs by default.'
         evpn_l2_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -8099,6 +8127,11 @@ $defs:
               - str
             fast_leave:
               type: bool
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 7.0.0
+                new_key: <network_services_key.key>.igmp.fast_leave
               description: Enable IGMP snooping fast-leave feature for all SVIs and
                 l2vlans within the Tenant.
             always_redistribute_igmp:
@@ -10966,6 +10999,24 @@ $defs:
                   inter_domain:
                     type: bool
                     default: true
+              d_path:
+                type: dict
+                keys:
+                  enabled:
+                    description: Enable D-path for use with BGP bestpath selection
+                      algorithm.
+                    type: bool
+                    default: true
+                  local_domain_id:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin
+                      notation
+                    type: str
+                    required: true
+                  remote_domain_id:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin
+                      notation
+                    type: str
+                    required: true
               all_active_multihoming:
                 description: 'Enable Active Active Multihoming architecture for EVPN
                   Gateways.
@@ -10983,16 +11034,43 @@ $defs:
                       algorithm.
                     type: bool
                     default: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 7.0.0
+                      new_key: <node_type_key>.defaults.evpn_gateway.d_path.enabled
+                        or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled
+                        or <node_type_key>.node_groups[].evpn_gateway.d_path.enabled
+                        or <node_type_key>.nodes[].evpn_gateway.d_path.enabled or
+                        device_profiles[].evpn_gateway.d_path.enabled or devices[].evpn_gateway.d_path.enabled
                   evpn_domain_id_local:
                     description: ASN(asplain):local_admin or ASN(asdot):local_admin
                       notation
                     type: str
-                    required: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 7.0.0
+                      new_key: <node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local
+                        or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local
+                        or <node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local
+                        or <node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local
+                        or device_profiles[].evpn_gateway.d_path.local_domain_id_local
+                        or devices[].evpn_gateway.d_path.local_domain_id_local
                   evpn_domain_id_remote:
                     description: ASN(asplain):local_admin or ASN(asdot):local_admin
                       notation
                     type: str
-                    required: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 7.0.0
+                      new_key: <node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id
+                        or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id
+                        or <node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id
+                        or <node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id
+                        or device_profiles[].evpn_gateway.d_path.remote_domain_id
+                        or devices[].evpn_gateway.d_path.remote_domain_id
                   evpn_ethernet_segment:
                     type: dict
                     required: true

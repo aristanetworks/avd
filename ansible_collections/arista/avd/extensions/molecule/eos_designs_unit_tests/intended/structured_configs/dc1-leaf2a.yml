@@ -1361,7 +1361,8 @@ vlan_interfaces:
   ip_address: 10.3.11.2/24
   ip_virtual_router_addresses:
   - 10.3.11.1/24
-  ipv6_address: 2001:db8:311::2/64
+  ipv6_addresses:
+  - 2001:db8:311::2/64
   ipv6_virtual_router_addresses:
   - 2001:db8:311::1
   metadata:
@@ -1394,7 +1395,8 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo101
     vrf: TEST
-  ipv6_address: 2001:db9:413::2/64
+  ipv6_addresses:
+  - 2001:db9:413::2/64
   ipv6_virtual_router_addresses:
   - 2001:db9:413::1
   mtu: 1560

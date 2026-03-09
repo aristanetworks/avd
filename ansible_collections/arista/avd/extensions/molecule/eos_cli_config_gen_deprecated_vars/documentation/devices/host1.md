@@ -3,13 +3,41 @@
 ## Table of Contents
 
 - [Management](#management)
+  - [Management Interfaces](#management-interfaces)
   - [IP Name Server Groups](#ip-name-server-groups)
 - [Authentication](#authentication)
+  - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
 - [ACL](#acl)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 
 ## Management
+
+### Management Interfaces
+
+#### Management Interfaces Summary
+
+##### IPv4
+
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | Test_ipv6_address | oob | default | 10.2.255.3/32 | - |
+
+##### IPv6
+
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
+| Management1 | Test_ipv6_address | oob | default | 2002::CAFE/128 | - | - | - | - |
+
+#### Management Interfaces Device Configuration
+
+```eos
+!
+interface Management1
+   description Test_ipv6_address
+   ip address 10.2.255.3/32
+   ipv6 address 2002::CAFE/128
+```
 
 ### IP Name Server Groups
 
@@ -36,6 +64,25 @@ ip name-server group mynameserver1
 ```
 
 ## Authentication
+
+### IP TACACS Source Interfaces
+
+#### IP TACACS Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------------- |
+| default | Loopback1 |
+| TEST1 | Loopback3 |
+| default | Loopback10 |
+
+#### IP TACACS Source Interfaces Device Configuration
+
+```eos
+!
+ip tacacs vrf default source-interface Loopback1
+ip tacacs vrf TEST1 source-interface Loopback3
+ip tacacs source-interface Loopback10
+```
 
 ### IP RADIUS Source Interfaces
 
