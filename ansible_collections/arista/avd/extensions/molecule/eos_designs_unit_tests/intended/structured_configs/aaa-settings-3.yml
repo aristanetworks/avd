@@ -47,18 +47,19 @@ enable_password:
 hostname: aaa-settings-3
 ip_igmp_snooping:
   globally_enabled: true
-ip_radius_source_interfaces:
-- name: Vlan123
-  vrf: INBAND_MGMT
-- name: Ma1/1
-  vrf: MGMT
-ip_tacacs_source_interfaces:
-- name: Vlan123
-  vrf: default
-- name: Vlan4092
-  vrf: INBAND_MGMT
-- name: Management1
-  vrf: MGMT
+ip_radius:
+  vrfs:
+  - name: INBAND_MGMT
+    source_interface: Vlan123
+  - name: MGMT
+    source_interface: Ma1/1
+ip_tacacs:
+  source_interface: Vlan123
+  vrfs:
+  - name: INBAND_MGMT
+    source_interface: Vlan4092
+  - name: MGMT
+    source_interface: Management1
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

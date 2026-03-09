@@ -32,9 +32,6 @@ l3leaf:
 # Used by source-interfaces test: Testing that the generated source interfaces do not contain the VRF if VRF "default"
 mgmt_interface_vrf: default
 
-avd_7_behaviors:
-  # Test for new behaviour of IP RADIUS server commands
-  ip_radius_source_interface_setting: true
 aaa_settings:
   radius:
     servers:
@@ -60,6 +57,78 @@ aaa_settings:
         cleartext_key: arista
         groups:
           - RADIUS1
+
+    vrfs:
+      - name: default
+        source_interface: Vlan123
+      - name: MGMT
+        source_interface: Vlan125
+      - name: MGMT1
+        source_interface: Vlan125
+
+  tacacs:
+    servers:
+      - host: 10.10.10.11
+        vrf: default
+        key: 071B245F5A
+        # key take precedence over cleartext_key
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      - host: 10.10.10.1
+        vrf: use_mgmt_interface_vrf
+        key: 071B245F5A
+        groups:
+          - TACACS1
+          - TACACS2
+
+      - host: 10.10.10.2
+        vrf: MGMT
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+      # Test with duplicate host/VRF data to ensure only the first entry is processed.
+      - host: 10.10.10.2
+        vrf: MGMT
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # No VRF, so it should honor default_mgmt_method which is oob in this case
+      - host: 10.10.10.3
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+      # Duplicate host with different vrf
+      - host: 10.10.10.2
+        vrf: MGMT1
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # Test with host as domain name and cleartext_key to AVD type-7 encrypt key
+      - host: nodomain.co
+        vrf: use_mgmt_interface_vrf
+        key: 071B245F5A
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # Test with host as IPv6 address and cleartext_key to AVD type-7 encrypt key
+      - host: "1:1:1:1:1:1:1:1"
+        vrf: MGMT
+        key: 071B245F5A
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # Test with default groups tacacs+
+      - host: 10.10.10.42
+        vrf: default
+        key: 071B245F5A
 
     vrfs:
       - name: default

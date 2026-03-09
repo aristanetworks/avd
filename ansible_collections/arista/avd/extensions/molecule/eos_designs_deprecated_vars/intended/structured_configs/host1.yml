@@ -10,6 +10,28 @@ aaa_server_groups:
     vrf: MGMT1
   - server: 11.10.10.3
     vrf: MGMT
+- name: TACACS1
+  type: tacacs+
+  servers:
+  - server: 10.10.10.11
+    vrf: default
+  - server: 10.10.10.1
+    vrf: default
+  - server: 10.10.10.2
+    vrf: MGMT
+  - server: 10.10.10.3
+    vrf: default
+  - server: 10.10.10.2
+    vrf: MGMT1
+  - server: nodomain.co
+    vrf: default
+  - server: '1:1:1:1:1:1:1:1'
+    vrf: MGMT
+- name: TACACS2
+  type: tacacs+
+  servers:
+  - server: 10.10.10.1
+    vrf: default
 config_end: true
 enable_password:
   disabled: true
@@ -19,6 +41,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.42.200/31
+  pim:
+    ipv4:
+      sparse_mode: true
   metadata:
     peer: host1
     peer_interface: Ethernet42
@@ -30,6 +55,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.42.201/31
+  pim:
+    ipv4:
+      sparse_mode: true
   metadata:
     peer: host1
     peer_interface: Ethernet41
@@ -39,14 +67,27 @@ ethernet_interfaces:
 hostname: host1
 ip_igmp_snooping:
   globally_enabled: true
-ip_radius:
-  source_interface: Vlan123
-  vrfs:
-  - name: MGMT1
-    source_interface: Vlan125
-  - name: MGMT
-    source_interface: Vlan125
+  vlans:
+  - id: 252
+    querier:
+      enabled: true
+      address: 192.168.255.101
+    fast_leave: true
+ip_radius_source_interfaces:
+- name: Vlan123
+  vrf: default
+- name: Vlan125
+  vrf: MGMT1
+- name: Vlan125
+  vrf: MGMT
 ip_routing: true
+ip_tacacs_source_interfaces:
+- name: Vlan123
+  vrf: default
+- name: Vlan125
+  vrf: MGMT
+- name: Vlan125
+  vrf: MGMT1
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -63,6 +104,7 @@ management_interfaces:
   vrf: default
   ip_address: 192.168.0.103/24
   type: oob
+  gateway: 192.168.200.1
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
@@ -134,17 +176,85 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 251
+    metadata:
+      tenants:
+      - Tenant_F
+    rd: 192.168.255.101:10251
+    route_targets:
+      both:
+      - 10251:10251
+    redistribute_routes:
+    - learned
+  - id: 252
+    metadata:
+      tenants:
+      - Tenant_F
+    rd: 192.168.255.101:10252
+    route_targets:
+      both:
+      - 10252:10252
+    redistribute_routes:
+    - learned
+    - igmp
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
+router_multicast:
+  ipv4:
+    routing: true
+    software_forwarding: sfe
 service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: default
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.1
+tacacs_servers:
+  hosts:
+  - host: 10.10.10.11
+    vrf: default
+    key: 071B245F5A
+  - host: 10.10.10.1
+    vrf: default
+    key: 071B245F5A
+  - host: 10.10.10.2
+    vrf: MGMT
+    key: 071B245F5A
+  - host: 10.10.10.3
+    vrf: default
+    key: 071B245F5A
+  - host: 10.10.10.2
+    vrf: MGMT1
+    key: 15131905173E2A
+  - host: nodomain.co
+    vrf: default
+    key: 071B245F5A
+  - host: '1:1:1:1:1:1:1:1'
+    vrf: MGMT
+    key: 071B245F5A
+  - host: 10.10.10.42
+    vrf: default
+    key: 071B245F5A
+  policy_unknown_mandatory_attribute_ignore: false
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
+vlans:
+- id: 251
+  name: MULTICAST_DISABLED_251
+  metadata:
+    tenants:
+    - Tenant_F
+- id: 252
+  name: MULTICAST_ENABLED_252
+  metadata:
+    tenants:
+    - Tenant_F
 vrfs:
 - name: default
   ip_routing: false
@@ -154,3 +264,9 @@ vxlan_interface:
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
+      vlans:
+      - id: 251
+        vni: 10251
+      - id: 252
+        vni: 10252
+        multicast_group: 232.0.0.251

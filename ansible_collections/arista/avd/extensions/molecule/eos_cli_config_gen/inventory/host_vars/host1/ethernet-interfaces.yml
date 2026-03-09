@@ -240,7 +240,8 @@ ethernet_interfaces:
       - name: EVPN_MH_ES2
         direction: downstream
     ipv6_enable: true
-    ipv6_address: 2002:ABDC::1/64
+    ipv6_addresses:
+      - 2002:ABDC::1/64
     ipv6_nd_prefixes:
       - ipv6_prefix: 2345:ABCD:3FE0::1/96
         valid_lifetime: infinite
@@ -307,7 +308,7 @@ ethernet_interfaces:
     shutdown: true
     mtu: 9100
     ipv6_enable: true
-    ipv6_address: 2020::2020/64
+    ipv6_address_auto_config: true
     ipv6_address_link_local: FE80:FEA::AB65/64
     ipv6_nd_ra_disabled: true
     ipv6_nd_managed_config_flag: true
@@ -538,7 +539,8 @@ ethernet_interfaces:
       vlan: 101
     ip_address: 172.31.128.1/31
     ipv6_enable: true
-    ipv6_address: 2002:ABDC::1/64
+    ipv6_addresses:
+      - 2002:ABDC::1/64
     # Test isis auth both md5
     isis_authentication:
       both:
@@ -1252,7 +1254,8 @@ ethernet_interfaces:
     switchport:
       enabled: false
     shutdown: false
-    ipv6_address: a0::1/64
+    ipv6_addresses:
+      - a0::1/64
     ipv6_dhcp_relay_destinations:
       - address: a0::2
         link_address: a0::3
@@ -1524,7 +1527,8 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 192.0.2.2/25
     ipv6_enable: true
-    ipv6_address: 2001:db8::2/64
+    ipv6_addresses:
+      - 2001:db8::2/64
     ipv6_address_link_local: fe80::2/64
     mac_timestamp: header
     vrrp_ids:
@@ -1565,7 +1569,8 @@ ethernet_interfaces:
       enabled: false
     ip_address: 192.0.2.2/25
     ipv6_enable: true
-    ipv6_address: 2001:db8::2/64
+    ipv6_addresses:
+      - 2001:db8::2/64
     ipv6_address_link_local: fe80::2/64
     vrrp_ids:
       - id: 1

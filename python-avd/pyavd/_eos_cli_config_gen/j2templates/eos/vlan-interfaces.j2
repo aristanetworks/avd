@@ -190,7 +190,13 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
-{%     if vlan_interface.ipv6_address is arista.avd.defined %}
+{%     if vlan_interface.ipv6_addresses is arista.avd.defined %}
+{%         for ipv6_address in vlan_interface.ipv6_addresses | arista.avd.natural_sort %}
+   ipv6 address {{ ipv6_address }}
+{%         endfor %}
+{%     elif vlan_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+   ipv6 address auto-config
+{%     elif vlan_interface.ipv6_address is arista.avd.defined %}
    ipv6 address {{ vlan_interface.ipv6_address }}
 {%     endif %}
 {%     if vlan_interface.ipv6_address_link_local is arista.avd.defined %}

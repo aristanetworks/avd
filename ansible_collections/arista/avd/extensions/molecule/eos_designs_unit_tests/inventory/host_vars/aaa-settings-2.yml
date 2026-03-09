@@ -10,6 +10,12 @@ l2leaf:
 
 default_mgmt_method: inband
 
+avd_design_future:
+  # Test for new behaviour of IP RADIUS server commands
+  ip_radius_source_interface_setting: true
+  # Test for new behaviour of IP TACACS server commands
+  ip_tacacs_source_interface_setting: true
+
 aaa_settings:
   tacacs:
     servers:

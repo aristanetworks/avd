@@ -294,37 +294,6 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
-  avd_7_behaviors:
-    type: dict
-    description: Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors
-      in AVD 7.0.
-    documentation_options:
-      table: role-settings
-    deprecation:
-      warning: false
-      remove_in_version: 7.0.0
-    keys:
-      ip_radius_source_interface_setting:
-        type: bool
-        default: false
-        description: 'Enable improved RADIUS source interface configuration with separate
-          keys for VRF default and other VRFs.
-
-
-          When enabled:
-
-          - VRF default: Uses `ip_radius.source_interface`
-
-          - Other VRFs: Uses `ip_radius.vrfs` list
-
-          - Enforces VRF name uniqueness
-
-          - Aligns with EOS CLI behavior (where "vrf default" is implicit)
-
-
-          When disabled (current):
-
-          - Uses `ip_radius_source_interfaces` list for all VRF combinations'
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
@@ -349,6 +318,53 @@ keys:
       warning: true
       removed: true
       remove_in_version: 6.0.0
+  avd_design_future:
+    type: dict
+    description: Opt-in to future AVD behaviors which will become default behaviors
+      in a future AVD major version.
+    documentation_options:
+      table: role-settings
+    keys:
+      ip_radius_source_interface_setting:
+        type: bool
+        default: false
+        description: 'Enable improved RADIUS source interface configuration with separate
+          keys for VRF default and other VRFs.
+
+
+          When enabled:
+
+          - VRF default: Uses `ip_radius.source_interface`
+
+          - Other VRFs: Uses `ip_radius.vrfs` list
+
+          - Enforces VRF name uniqueness
+
+          - Aligns with EOS CLI behavior (where "vrf default" is implicit)
+
+
+          When disabled (current):
+
+          - Uses `ip_radius_source_interfaces` list for all VRF combinations'
+      ip_tacacs_source_interface_setting:
+        type: bool
+        default: false
+        description: 'Enable improved TACACS source interface configuration with separate
+          keys for VRF default and other VRFs.
+
+          When enabled:
+
+          - VRF default: Uses `ip_tacacs.source_interface`
+
+          - Other VRFs: Uses `ip_tacacs.vrfs` list
+
+          - Enforces VRF name uniqueness
+
+          - Aligns with EOS CLI behavior (where "vrf default" is implicit)
+
+          When disabled (current):
+
+          - Uses `ip_tacacs_source_interfaces` list for all VRF combinations'
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -8072,6 +8088,15 @@ $defs:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
+        igmp:
+          type: dict
+          keys:
+            fast_leave:
+              type: bool
+              description: 'Explicitly enable or disable IGMP snooping fast-leave
+                feature for all SVIs and L2 VLANs within the Tenant.
+
+                On EOS, IGMP fast-leave is enabled on all VLANs by default.'
         evpn_l2_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -8102,6 +8127,11 @@ $defs:
               - str
             fast_leave:
               type: bool
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 7.0.0
+                new_key: <network_services_key.key>.igmp.fast_leave
               description: Enable IGMP snooping fast-leave feature for all SVIs and
                 l2vlans within the Tenant.
             always_redistribute_igmp:

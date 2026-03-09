@@ -8,7 +8,7 @@ l3leaf:
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     virtual_router_mac_address: 00:1c:73:00:DC:01
     platform: vEOS-LAB
-    uplink_switches: ['DC1-SPINE1']
+    uplink_switches: ['dc1-spine1']
     uplink_interfaces: ['Ethernet1']
     mlag: false
   node_groups:
@@ -21,14 +21,14 @@ l3leaf:
         tags: [opzone]
       # NB - uplink_switch_interfaces Ethernet22+ are defined in DC1_FABRIC.yml
       nodes:
-        - name: MH-LEAF1A
+        - name: mh-leaf1a
           id: 1
           bgp_as: 65151
           mgmt_ip: 192.168.201.104/24
           uplink_switch_interfaces: [Ethernet19]
           uplink_switch_ethernet_structured_config:
-            description: description through uplink_switch_ethernet_structured_config(MH-LEAF1A)
-        - name: MH-LEAF1B
+            description: description through uplink_switch_ethernet_structured_config(mh-leaf1a)
+        - name: mh-leaf1b
           id: 2
           bgp_as: 65152
           mgmt_ip: 192.168.201.105/24
@@ -45,7 +45,7 @@ l3leaf:
         offset: 256
         size: 512
       nodes:
-        - name: MH-LEAF2A
+        - name: mh-leaf2a
           id: 3
           bgp_as: 65153
           mgmt_ip: 192.168.201.106/24
