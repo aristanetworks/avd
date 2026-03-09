@@ -7,7 +7,7 @@
 - [Authentication](#authentication)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
 - [ACL](#acl)
-  - [IPv6 Access-lists](#ipv6-access-lists)
+  - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 
 ## Management
 
@@ -57,25 +57,21 @@ ip radius vrf MGMT source-interface Management1
 ```
 
 ## ACL
+### IPv6 Extended Access-lists
 
-### IPv6 Access-lists
-
-#### IPv6 Access-lists Summary
+#### IPv6 Extended Access-lists Summary
 
 ##### acl_qos_tc0_v6
-
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit ipv6 any any dscp cs1 |
 
 ##### acl_qos_tc5_v6
-
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit ipv6 any 2001:db8::/48 |
 
 ##### TEST1
-
 | Sequence | Action |
 | -------- | ------ |
 | 5 | deny ipv6 fe80::/64 any |
@@ -84,14 +80,12 @@ ip radius vrf MGMT source-interface Management1
 ##### TEST2
 
 ACL has counting mode `counters per-entry` enabled!
-
 | Sequence | Action |
 | -------- | ------ |
 | 5 | permit ipv6 2001:db8::/64 any |
 | 10 | deny ipv6 2001:db8::/32 any |
 
 ##### TEST3
-
 | Sequence | Action |
 | -------- | ------ |
 | 5 | deny ipv6 2001:db8:1000::/64 any |

@@ -1,6 +1,5 @@
 ---
 # eos - extended access-lists - improved data model, ipv6-access-lists.j2
-ipv6_access_lists_max_entries: 10000
 ipv6_access_lists:
   - name: acl_qos_tc0_v6
     entries:
@@ -23,7 +22,7 @@ ipv6_access_lists:
       - sequence: 5
         action: deny
         protocol: ipv6
-        source: fe80::/64s
+        source: fe80::/64
         destination: any
       - sequence: 10
         action: permit

@@ -79,7 +79,6 @@ class Templar:
             hide_passwords,
             is_in_filter,
             list_compress,
-            mandatory,
             natural_sort,
             range_expand,
             secure_hash,
@@ -103,7 +102,6 @@ class Templar:
                 "arista.avd.snmp_hash": snmp_hash,
                 "arista.avd.status_render": status_render,
                 "arista.avd.secure_hash": secure_hash,
-                "mandatory": mandatory,
             },
         )
         self.environment.tests.update(

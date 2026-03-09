@@ -5,9 +5,6 @@
 #}
 {# eos - ipv6 access lists #}
 {% if ipv6_access_lists is arista.avd.defined %}
-{#     set maximum number of ACL entries allowed, the playbook will fail if number is over the limit #}
-{%     set counter = namespace() %}
-{%     set counter.acle_number = 0 %}
 {#     START ACL CYCLE: walk over the list of defined ACLs #}
 {%     for acl in ipv6_access_lists | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 !
@@ -115,14 +112,6 @@ ipv6 access-list {{ acl.name }}
 {#                     * add log #}
 {%                     if acle.log is arista.avd.defined(true) %}
 {%                         set acl_entry.string = acl_entry.string ~ ' log' %}
-{%                     endif %}
-{#                     check if the number of ACL entries is below the limit #}
-{%                     if ipv6_access_lists_max_entries is arista.avd.defined %}
-{%                         set counter.acle_number = counter.acle_number + 1 %}
-{%                         if counter.acle_number > ipv6_access_lists_max_entries %}
-{#                     j2lint: disable=V1 #}
-   {{ a_non_existing_var | mandatory('The number of ACL entries is above defined maximum!') }}
-{%                         endif %}
 {%                     endif %}
 {%                 endif %}
 {#                   Only render if the string is not empty #}
