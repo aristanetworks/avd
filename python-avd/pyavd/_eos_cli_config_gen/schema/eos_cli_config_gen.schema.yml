@@ -23686,14 +23686,11 @@ keys:
                 type: str
                 description: 'The value can be:
 
-                  1. Source address with wildcard bits. e.g. ''10.0.0.1 0.0.0.255''.
+                  1. A single source address.
 
                   2. Source address with mask. e.g. ''10.0.0.1/8''.
 
                   3. ''any'' source address.'
-              host:
-                type: str
-                description: A single source host.
               vlan:
                 type: int
                 description: Match packets by VLAN value.

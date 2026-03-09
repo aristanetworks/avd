@@ -64025,7 +64025,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "action": {"type": str},
                 "remark": {"type": str},
                 "source": {"type": str},
-                "host": {"type": str},
                 "vlan": {"type": int},
                 "vlan_mask": {"type": str},
                 "inner_vlan": {"type": int},
@@ -64042,13 +64041,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             source: str | None
             """
             The value can be:
-            1. Source address with wildcard bits. e.g. '10.0.0.1 0.0.0.255'.
-            2. Source address
-            with mask. e.g. '10.0.0.1/8'.
-            3. 'any' source address.
+            1. A single source address.
+            2. Source address with mask. e.g. '10.0.0.1/8'.
+            3.
+            'any' source address.
             """
-            host: str | None
-            """A single source host."""
             vlan: int | None
             """Match packets by VLAN value."""
             vlan_mask: str | None
@@ -64071,7 +64068,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     action: Action | None | UndefinedType = Undefined,
                     remark: str | None | UndefinedType = Undefined,
                     source: str | None | UndefinedType = Undefined,
-                    host: str | None | UndefinedType = Undefined,
                     vlan: int | None | UndefinedType = Undefined,
                     vlan_mask: str | None | UndefinedType = Undefined,
                     inner_vlan: int | None | UndefinedType = Undefined,
@@ -64091,11 +64087,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         remark: Specify a comment. If remark is specified other keys of the entry are ignored.
                         source:
                            The value can be:
-                           1. Source address with wildcard bits. e.g. '10.0.0.1 0.0.0.255'.
-                           2. Source address
-                           with mask. e.g. '10.0.0.1/8'.
-                           3. 'any' source address.
-                        host: A single source host.
+                           1. A single source address.
+                           2. Source address with mask. e.g. '10.0.0.1/8'.
+                           3.
+                           'any' source address.
                         vlan: Match packets by VLAN value.
                         vlan_mask: VLAN mask. Range 0x000-0xFFF. Required when `vlan` is defined.
                         inner_vlan: Match packets by inner VLAN value.

@@ -18,7 +18,16 @@ ip access-list standard {{ standard_access_list.name }}
 {%             endif %}
 {%             if entry.action is arista.avd.defined %}
 {%                 set entry_cli = entry.sequence ~ " " ~ entry.action %}
-{%                 if entry.source is arista.avd.defined %}
+{%                 if '/' not in entry.source and entry.source != "any" %}
+{%                     set entry_cli = entry_cli ~ " host " ~ entry.source %}
+{%                     if entry.mirror_session is arista.avd.defined %}
+{%                         set entry_cli = entry_cli ~ " mirror session " ~ entry.mirror_session %}
+{%                     endif %}
+{%                     if entry.log is arista.avd.defined(true) %}
+{%                         set entry_cli = entry_cli ~ " log" %}
+{%                     endif %}
+   {{ entry_cli }}
+{%                 else %}
 {%                     set entry_cli = entry_cli ~ " " ~ entry.source %}
 {%                     if (entry.vlan is arista.avd.defined and entry.vlan_mask is arista.avd.defined) or (entry.inner_vlan is arista.avd.defined and entry.inner_vlan_mask is arista.avd.defined) %}
 {%                         set entry_cli = entry_cli ~ " vlan" %}
@@ -29,16 +38,14 @@ ip access-list standard {{ standard_access_list.name }}
 {%                             set entry_cli = entry_cli ~ " inner " ~ entry.inner_vlan ~ " " ~ entry.inner_vlan_mask %}
 {%                         endif %}
 {%                     endif %}
-{%                 elif entry.host is arista.avd.defined %}
-{%                     set entry_cli = entry_cli ~ " host " ~ entry.host %}
-{%                 endif %}
-{%                 if entry.mirror_session is arista.avd.defined %}
-{%                     set entry_cli = entry_cli ~ " mirror session " ~ entry.mirror_session %}
-{%                 endif %}
-{%                 if entry.log is arista.avd.defined(true) %}
-{%                     set entry_cli = entry_cli ~ " log" %}
-{%                 endif %}
+{%                     if entry.mirror_session is arista.avd.defined %}
+{%                         set entry_cli = entry_cli ~ " mirror session " ~ entry.mirror_session %}
+{%                     endif %}
+{%                     if entry.log is arista.avd.defined(true) %}
+{%                         set entry_cli = entry_cli ~ " log" %}
+{%                     endif %}
    {{ entry_cli }}
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     elif standard_access_list.sequence_numbers is arista.avd.defined %}

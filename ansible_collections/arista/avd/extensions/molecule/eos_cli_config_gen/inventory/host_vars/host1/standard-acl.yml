@@ -7,15 +7,15 @@ standard_access_lists:
         remark: "ACL to restrict access to switch API to CVP and Ansible"
       - sequence: 20
         action: permit
-        host: 10.10.10.10
+        source: 10.10.10.10
         mirror_session: mirror1
       - sequence: 30
         action: permit
-        host: 10.10.10.11
+        source: 10.10.10.11
         log: true
       - sequence: 40
         action: permit
-        host: 10.10.10.12
+        source: 10.10.10.12
         mirror_session: mirror1
         log: true
   - name: ACL-SSH
