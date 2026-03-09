@@ -177,6 +177,15 @@ $defs:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
+        igmp:
+          type: dict
+          keys:
+            fast_leave:
+              type: bool
+              description: |-
+                Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the Tenant.
+                On EOS, IGMP fast-leave is enabled on all VLANs by default.
+
         evpn_l2_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -205,6 +214,11 @@ $defs:
                 - str
             fast_leave:
               type: bool
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 7.0.0
+                new_key: <network_services_key.key>.igmp.fast_leave
               description: Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.
             always_redistribute_igmp:
               type: bool
