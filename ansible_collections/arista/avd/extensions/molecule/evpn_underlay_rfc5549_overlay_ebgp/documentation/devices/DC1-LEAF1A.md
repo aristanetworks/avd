@@ -63,9 +63,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -280,8 +280,8 @@ vlan 131
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out | ND RA RX Accept |
-| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ---------------------- | ----------- | ------------ | --------------- |
+| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
 | Ethernet1 | P2P_DC1-SPINE1_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - |
 | Ethernet2 | P2P_DC1-SPINE2_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - |
 | Ethernet3 | P2P_DC1-SPINE3_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - |
@@ -353,8 +353,8 @@ interface Ethernet7
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
 
