@@ -915,6 +915,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "ip_radius_source_interface_setting": {"type": bool, "default": False},
             "bgp_always_disable_ipv4_unicast_for_peer_groups": {"type": bool, "default": True},
+            "ip_tacacs_source_interface_setting": {"type": bool, "default": False},
         }
         ip_radius_source_interface_setting: bool
         """
@@ -942,6 +943,23 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `True`
         """
+        ip_tacacs_source_interface_setting: bool
+        """
+        Enable improved TACACS source interface configuration with separate keys for VRF default and other
+        VRFs.
+        When enabled:
+        - VRF default: Uses `ip_tacacs.source_interface`
+        - Other VRFs: Uses
+        `ip_tacacs.vrfs` list
+        - Enforces VRF name uniqueness
+        - Aligns with EOS CLI behavior (where "vrf
+        default" is implicit)
+        When disabled (current):
+        - Uses `ip_tacacs_source_interfaces` list for all VRF
+        combinations
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -950,6 +968,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 ip_radius_source_interface_setting: bool | UndefinedType = Undefined,
                 bgp_always_disable_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
+                ip_tacacs_source_interface_setting: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 AvdDesignFuture.
@@ -976,6 +995,19 @@ class EosDesigns(EosDesignsRootModel):
                     bgp_always_disable_ipv4_unicast_for_peer_groups:
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by
                        default.
+                    ip_tacacs_source_interface_setting:
+                       Enable improved TACACS source interface configuration with separate keys for VRF default and other
+                       VRFs.
+                       When enabled:
+                       - VRF default: Uses `ip_tacacs.source_interface`
+                       - Other VRFs: Uses
+                       `ip_tacacs.vrfs` list
+                       - Enforces VRF name uniqueness
+                       - Aligns with EOS CLI behavior (where "vrf
+                       default" is implicit)
+                       When disabled (current):
+                       - Uses `ip_tacacs_source_interfaces` list for all VRF
+                       combinations
 
                 """
 
