@@ -10,10 +10,10 @@ from .template import template
 if TYPE_CHECKING:
     from typing import Any
 
-    from ansible.template import Templar
+    from .avd_templar import AVDTemplar
 
 
-def template_var(template_file: str, template_vars: Any, templar: Templar | None) -> str:
+def template_var(template_file: str, template_vars: Any, templar: AVDTemplar | None) -> str:
     """
     Wrap "template" for single values like IP addresses.
 
@@ -25,8 +25,7 @@ def template_var(template_file: str, template_vars: Any, templar: Templar | None
     Args:
         template_file: Path to Jinja2 template file
         template_vars: Variables to use when rendering template
-        templar: Instance of Ansible Templar class
-        searchpath: List of Paths
+        templar: Instance of AVDTemplar wrapper
 
     Returns:
         The rendered template
