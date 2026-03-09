@@ -310,7 +310,8 @@ vlan_interfaces:
   shutdown: false
   vrf: INBANDMGMT
   ipv6_enable: true
-  ipv6_address: 2a00:106::3/64
+  ipv6_addresses:
+  - 2a00:106::3/64
   ipv6_virtual_router_addresses:
   - 2a00:106::1
   mtu: 1500
@@ -322,7 +323,8 @@ vlan_interfaces:
   shutdown: false
   vrf: INBANDMGMT
   ipv6_enable: true
-  ipv6_address: 2a00:107::3/64
+  ipv6_addresses:
+  - 2a00:107::3/64
   ipv6_virtual_router_addresses:
   - 2a00:107::1
   mtu: 1500
