@@ -25,15 +25,35 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
 {%     for management_interface in management_interfaces | arista.avd.natural_sort('name') %}
 {%         set description = management_interface.description | arista.avd.default('-') %}
 {%         set vrf = management_interface.vrf | arista.avd.default('default') %}
-{%         set ipv6 = management_interface.ipv6_address | arista.avd.default('-') %}
+{%         if management_interface.ipv6_addresses is arista.avd.defined %}
+{%             set ipv6_address = management_interface.ipv6_addresses | arista.avd.natural_sort | join(', ') %}
+{%         elif management_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+{%             set ipv6_address = "auto-config" %}
+{%         elif management_interface.ipv6_address is arista.avd.defined %}
+{%             set ipv6_address = management_interface.ipv6_address %}
+{%         else %}
+{%             set ipv6_address = "-" %}
+{%         endif %}
 {%         set ipv6_gateway = management_interface.ipv6_gateway | arista.avd.default('-') %}
 {%         set int_type = management_interface.type | arista.avd.default('oob') %}
-| {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6 }} | {{ ipv6_gateway }} |
+{%         set nd_ra_rx_accept = [] %}
+{%         if management_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
+{%             do nd_ra_rx_accept.append("default-route") %}
+{%         endif %}
+{%         if management_interface.ipv6_nd.ra.rx_accept.route_preference is arista.avd.defined(true) %}
+{%             do nd_ra_rx_accept.append("route-preference") %}
+{%         endif %}
+{%         if nd_ra_rx_accept == [] %}
+{%             do nd_ra_rx_accept.append("-") %}
+{%         endif %}
+{%         set nd_ra_disabled = management_interface.ipv6_nd.ra.disabled | arista.avd.default("-") %}
+{%         set managed_config_flag = management_interface.ipv6_nd.managed_config_flag | arista.avd.default("-") %}
+| {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6_address }} | {{ ipv6_gateway }} | {{ nd_ra_rx_accept | join(", ") }} | {{ nd_ra_disabled }} | {{ managed_config_flag }} |
 {%     endfor %}
 {%     if management_interfaces | arista.avd.default([]) | selectattr('redundancy','arista.avd.defined') | list %}
 

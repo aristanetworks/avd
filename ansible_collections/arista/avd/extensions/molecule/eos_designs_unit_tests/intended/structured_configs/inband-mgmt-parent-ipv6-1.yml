@@ -322,7 +322,8 @@ vlan_interfaces:
   description: Inband Management
   shutdown: false
   ipv6_enable: true
-  ipv6_address: 2a00:106::2/64
+  ipv6_addresses:
+  - 2a00:106::2/64
   ipv6_virtual_router_addresses:
   - 2a00:106::1
   mtu: 1500
@@ -333,7 +334,8 @@ vlan_interfaces:
   description: Inband Management
   shutdown: false
   ipv6_enable: true
-  ipv6_address: 2a00:107::2/64
+  ipv6_addresses:
+  - 2a00:107::2/64
   ipv6_virtual_router_addresses:
   - 2a00:107::1
   mtu: 1500

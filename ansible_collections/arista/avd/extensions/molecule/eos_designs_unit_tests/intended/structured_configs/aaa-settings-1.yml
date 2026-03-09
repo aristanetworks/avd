@@ -179,13 +179,13 @@ ip_radius:
   vrfs:
   - name: MGMT
     source_interface: Vlan125
-ip_tacacs_source_interfaces:
-- name: Vlan123
-  vrf: default
-- name: Management1
-  vrf: MGMT
-- name: Vlan125
-  vrf: MGMT1
+ip_tacacs:
+  source_interface: Vlan123
+  vrfs:
+  - name: MGMT
+    source_interface: Management1
+  - name: MGMT1
+    source_interface: Vlan125
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
