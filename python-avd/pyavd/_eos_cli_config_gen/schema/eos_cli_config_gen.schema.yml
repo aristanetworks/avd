@@ -8709,6 +8709,15 @@ keys:
       default_services:
         type: bool
         description: 'Enable default services: capi-doc and tapagg.'
+      session_timeout:
+        type: int
+        description: 'User session timeout value in minutes.
+
+          EOS default is 1440 minutes.'
+        convert_types:
+        - str
+        min: 1
+        max: 1440
       enable_vrfs:
         type: list
         primary_key: name

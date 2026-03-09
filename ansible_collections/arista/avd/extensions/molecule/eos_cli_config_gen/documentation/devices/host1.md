@@ -1083,9 +1083,9 @@ management console
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | True | True |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | True | True | 60 minutes |
 
 Management HTTPS is using the SSL profile SSL_PROFILE
 
@@ -1194,6 +1194,7 @@ lRIvIpbuqzZ1QzAdWwCX/5mgBk/xoI88N3EcxvgEJJhiXihYwW/630KkKETqnu64
 -----END PRIVATE KEY-----
    EOF
    no shutdown
+   session timeout 60 minutes
    !
    vrf MGMT
       no shutdown
