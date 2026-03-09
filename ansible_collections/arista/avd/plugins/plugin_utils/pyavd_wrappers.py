@@ -8,9 +8,16 @@ from functools import partial, wraps
 from typing import TYPE_CHECKING, Any, Literal
 
 from ansible.errors import AnsibleFilterError, AnsibleInternalError, AnsibleUndefinedVariable
-from ansible.module_utils.basic import to_native
 from ansible.utils.display import Display
 from jinja2.exceptions import UndefinedError
+
+from .constants import ANSIBLE_ABOVE_2_19
+
+if ANSIBLE_ABOVE_2_19:
+    from ansible.module_utils.common.text.converters import to_native
+else:
+    # Fallback for ansible-core < 2.19
+    from ansible.module_utils.basic import to_native
 
 if TYPE_CHECKING:
     from collections.abc import Callable
