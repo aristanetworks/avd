@@ -99,15 +99,15 @@ ipv6 access-list {{ acl.name }}
 {%                     if acle.tracked is arista.avd.defined(true) %}
 {%                         set acl_entry.string = acl_entry.string ~ ' tracked' %}
 {%                     endif %}
+{%                     if acle.hop_limit is arista.avd.defined %}
+{%                         set acl_entry.string = acl_entry.string ~ ' hop-limit ' ~ acle.hop_limit_match | arista.avd.default('eq') ~ ' ' ~ acle.hop_limit | lower %}
+{%                     endif %}
 {#                     * add dscp #}
 {%                     if acle.dscp is arista.avd.defined %}
 {%                         set acl_entry.string = acl_entry.string ~ ' dscp ' ~ acle.dscp | lower %}
 {%                         if acle.dscp_mask is arista.avd.defined %}
 {%                             set acl_entry.string = acl_entry.string ~ ' ' ~ acle.dscp_mask | lower %}
 {%                         endif %}
-{%                     endif %}
-{%                     if acle.hop_limit is arista.avd.defined %}
-{%                         set acl_entry.string = acl_entry.string ~ ' hop-limit ' ~ acle.hop_limit_match | arista.avd.default('eq') ~ ' ' ~ acle.hop_limit | lower %}
 {%                     endif %}
 {#                     * add log #}
 {%                     if acle.log is arista.avd.defined(true) %}

@@ -12115,6 +12115,7 @@ ipv6 access-list standard ipv6_test1
    5 deny 2001:db8:1000::/64
    10 permit 2001:db8::/32
 ```
+
 ### IPv6 Extended Access-lists
 
 #### IPv6 Extended Access-lists Summary
@@ -12162,6 +12163,7 @@ ACL has counting mode `counters per-entry` enabled!
 | 4294967295 | - | deny | - | - | - | - | - | - | - | - | - | - | - | ipv6 | any | any | - | - | - | - | - | - | - |
 
 ##### ACL_WITHOUT_ENTRIES
+
 | Sequence | Action |
 | -------- | ------ |
 
@@ -12198,7 +12200,7 @@ ipv6 access-list ACL_NO_SEQUENCE
    permit icmpv6 any any 3 4
    permit icmpv6 any any unreachable
    permit ipv6 any any dscp 46 3
-   permit ipv6 any any tracked dscp ef hop-limit gt 3
+   permit ipv6 any any tracked hop-limit gt 3 dscp ef
    permit ipv6 any any nexthop-group NH_TEST hop-limit eq 254
    permit vlan 235 0x1FF inner 124 0x001 ipv6 any any
    permit vlan inner 123 0x000 ipv6 any any
