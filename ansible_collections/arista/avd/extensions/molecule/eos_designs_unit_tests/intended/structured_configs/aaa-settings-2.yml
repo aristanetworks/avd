@@ -47,13 +47,13 @@ ip_radius:
   vrfs:
   - name: INBAND_MGMT
     source_interface: Vlan4092
-ip_tacacs_source_interfaces:
-- name: Vlan123
-  vrf: default
-- name: Vlan126
-  vrf: INBAND_MGMT
-- name: Vlan125
-  vrf: MGMT1
+ip_tacacs:
+  source_interface: Vlan123
+  vrfs:
+  - name: INBAND_MGMT
+    source_interface: Vlan126
+  - name: MGMT1
+    source_interface: Vlan125
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
