@@ -3612,7 +3612,7 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 
 | Name | Description | Default Interface Set | Address Only |
 | ---- | ----------- | --------------------- | ------------ |
-| Yellow | - | - | True |
+| Yellow | Address_only | - | True |
 | blue | - | VRF_GLOBAL_SET | False |
 | red | vrf_connectivity_monitor | VRF_GLOBAL_SET | True |
 
@@ -3652,7 +3652,7 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 
 | Host Name | Description | IPv4 Address | ICMP Echo Size | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | -------------- | --------------------- | ------------ | --- |
-| server2 | - | 10.10.20.1 | 1300 | VRF_HOST_SET | True | https://server2.local.com |
+| server2 | server2_connectivity_monitor | 10.10.20.1 | 1300 | VRF_HOST_SET | True | https://server2.local.com |
 
 ##### Name-server
 
