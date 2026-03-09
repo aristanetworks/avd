@@ -153,7 +153,8 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 100.70.0.5/32
-  ipv6_address: 2000:1234:ffff:ffff::5/128
+  ipv6_addresses:
+  - 2000:1234:ffff:ffff::5/128
   mpls:
     ldp:
       interface: true
