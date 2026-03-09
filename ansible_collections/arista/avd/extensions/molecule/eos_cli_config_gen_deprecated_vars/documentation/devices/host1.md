@@ -28,9 +28,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Addresses | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | -------------- | ------------ |
-| Management1 | Test_ipv6_address | oob | default | 2002::CAFE/128 | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
+| Management1 | Test_ipv6_address | oob | default | 2002::CAFE/128 | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 

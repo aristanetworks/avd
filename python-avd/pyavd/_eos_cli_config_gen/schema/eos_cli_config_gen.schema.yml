@@ -8845,7 +8845,7 @@ keys:
           type: bool
         ipv6_address:
           type: str
-          description: IPv6_address/Mask.
+          description: IPv6 address with prefix length.
           deprecation:
             warning: true
             removed: false
@@ -8855,14 +8855,18 @@ keys:
           type: list
           items:
             type: str
-            description: "IPv6 address with prefix length.\n This option is mutually
-              exclusive with `ipv6_address_auto_config` and takes precedence if both
-              are defined."
+            description: 'IPv6 address with prefix length.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
         ipv6_address_auto_config:
           type: bool
           description: 'Use SLAAC to automatically configure the IPv6 address.
 
             This option is mutually exclusive with `ipv6_addresses`.'
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         type:
           type: str
           valid_values:
@@ -26135,6 +26139,52 @@ $defs:
           min: 1
           max: 65535
           description: requires 'original_port'.
+  ipv6_nd:
+    description: IPv6 Neighbor Discovery protocol.
+    type: dict
+    keys:
+      ra:
+        description: Router Advertisement.
+        type: dict
+        keys:
+          disabled:
+            type: bool
+            description: Disable Router Advertisement messages on the interface.
+          rx_accept:
+            type: dict
+            keys:
+              default_route:
+                type: bool
+                description: Accept default route from received Router Advertisements.
+              route_preference:
+                type: bool
+                description: Accept route preference from received Router Advertisements.
+      managed_config_flag:
+        type: bool
+        description: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+      prefixes:
+        type: list
+        primary_key: ipv6_prefix
+        description: IPv6 prefixes to include in Router Advertisements.
+        items:
+          type: dict
+          keys:
+            ipv6_prefix:
+              type: str
+            valid_lifetime:
+              type: str
+              convert_types:
+              - int
+              description: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+            preferred_lifetime:
+              type: str
+              convert_types:
+              - int
+              description: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+            no_autoconfig_flag:
+              type: bool
+              description: Indicate that the prefix cannot be used for stateless address
+                autoconfiguration (SLAAC).
   source_interface_per_vrf:
     type: dict
     keys:
