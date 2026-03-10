@@ -376,7 +376,9 @@ tacacs-server host 10.10.10.159 key 8a <removed>
 ```eos
 !
 ip tacacs vrf default source-interface Loopback1
+!
 ip tacacs vrf TEST1 source-interface Loopback3
+!
 ip tacacs vrf default source-interface Loopback10
 ```
 
@@ -407,8 +409,11 @@ radius-server attribute 32 include-in-access-req format myformat
 ```eos
 !
 ip radius vrf default source-interface Loopback1
+!
 ip radius vrf abc source-interface Loopback10
+!
 ip radius vrf BLAH source-interface Loopback10
+!
 ip radius vrf MGMT source-interface Management1
 ```
 

@@ -5,8 +5,8 @@
 #}
 {# eos - ip tacacs source interfaces #}
 {% if ip_tacacs is arista.avd.defined %}
-!
 {%     if eos_config_future.new_ip_tacacs_cli_order is arista.avd.defined(true) %}
+!
 {%         if ip_tacacs.source_interface is arista.avd.defined %}
 ip tacacs source-interface {{ ip_tacacs.source_interface }}
 {%         endif %}
@@ -22,6 +22,7 @@ ip tacacs vrf {{ vrf.name }} source-interface {{ vrf.source_interface }}
 {%             do new_ip_tacacs_list.append({'name': vrf.source_interface, 'vrf': vrf.name}) %}
 {%         endfor %}
 {%         for entry in new_ip_tacacs_list | arista.avd.natural_sort(sort_key='name') %}
+!
 {%             set ip_tacacs_cli = "ip tacacs" %}
 {%             if entry.vrf is arista.avd.defined %}
 {%                 set ip_tacacs_cli = ip_tacacs_cli ~ " vrf " ~ entry.vrf %}

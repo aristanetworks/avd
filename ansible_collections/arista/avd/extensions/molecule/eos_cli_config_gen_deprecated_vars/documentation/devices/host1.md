@@ -103,7 +103,9 @@ ip tacacs source-interface Loopback10
 ```eos
 !
 ip radius vrf default source-interface Loopback1
+!
 ip radius source-interface Loopback10
+!
 ip radius vrf MGMT source-interface Management1
 ```
 
