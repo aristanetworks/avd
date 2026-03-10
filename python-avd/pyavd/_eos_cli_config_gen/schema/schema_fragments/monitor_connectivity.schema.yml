@@ -55,7 +55,7 @@ keys:
                 description
                 <description>
                 ```
-            description_new:
+            single_line_description:
               type: str
               description: Description in the form of `description <description>`.
             ip:
@@ -100,7 +100,7 @@ keys:
                 description
                 <description>
                 ```
-            description_new:
+            single_line_description:
               type: str
               description: Description in the form of `description <description> `.
             interface_sets:
@@ -140,7 +140,7 @@ keys:
                       description
                       <description>
                       ```
-                  description_new:
+                  single_line_description:
                     type: str
                     description: Description in the form of `description <description> `.
                   ip:

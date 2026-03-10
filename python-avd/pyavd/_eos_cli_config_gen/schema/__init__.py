@@ -26170,7 +26170,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "description": {"type": str},
-                "description_new": {"type": str},
+                "single_line_description": {"type": str},
                 "ip": {"type": str},
                 "icmp_echo_size": {"type": int},
                 "local_interfaces": {"type": str},
@@ -26187,7 +26187,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             <description>
             ```
             """
-            description_new: str | None
+            single_line_description: str | None
             """Description in the form of `description <description>`."""
             ip: str | None
             icmp_echo_size: int | None
@@ -26212,7 +26212,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
-                    description_new: str | None | UndefinedType = Undefined,
+                    single_line_description: str | None | UndefinedType = Undefined,
                     ip: str | None | UndefinedType = Undefined,
                     icmp_echo_size: int | None | UndefinedType = Undefined,
                     local_interfaces: str | None | UndefinedType = Undefined,
@@ -26233,7 +26233,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            description
                            <description>
                            ```
-                        description_new: Description in the form of `description <description>`.
+                        single_line_description: Description in the form of `description <description>`.
                         ip: ip
                         icmp_echo_size: Size of ICMP probe in bytes.
                         local_interfaces: local_interfaces
@@ -26292,7 +26292,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "description": {"type": str},
-                    "description_new": {"type": str},
+                    "single_line_description": {"type": str},
                     "ip": {"type": str},
                     "icmp_echo_size": {"type": int},
                     "local_interfaces": {"type": str},
@@ -26309,7 +26309,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 <description>
                 ```
                 """
-                description_new: str | None
+                single_line_description: str | None
                 """Description in the form of `description <description> `."""
                 ip: str | None
                 icmp_echo_size: int | None
@@ -26334,7 +26334,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         name: str | UndefinedType = Undefined,
                         description: str | None | UndefinedType = Undefined,
-                        description_new: str | None | UndefinedType = Undefined,
+                        single_line_description: str | None | UndefinedType = Undefined,
                         ip: str | None | UndefinedType = Undefined,
                         icmp_echo_size: int | None | UndefinedType = Undefined,
                         local_interfaces: str | None | UndefinedType = Undefined,
@@ -26355,7 +26355,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                description
                                <description>
                                ```
-                            description_new: Description in the form of `description <description> `.
+                            single_line_description: Description in the form of `description <description> `.
                             ip: ip
                             icmp_echo_size: Size of ICMP probe in bytes.
                             local_interfaces: local_interfaces
@@ -26379,7 +26379,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "description": {"type": str},
-                "description_new": {"type": str},
+                "single_line_description": {"type": str},
                 "interface_sets": {"type": InterfaceSets},
                 "local_interfaces": {"type": str},
                 "address_only": {"type": bool, "default": True},
@@ -26395,7 +26395,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             <description>
             ```
             """
-            description_new: str | None
+            single_line_description: str | None
             """Description in the form of `description <description> `."""
             interface_sets: InterfaceSets
             """Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`)."""
@@ -26420,7 +26420,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
-                    description_new: str | None | UndefinedType = Undefined,
+                    single_line_description: str | None | UndefinedType = Undefined,
                     interface_sets: InterfaceSets | UndefinedType = Undefined,
                     local_interfaces: str | None | UndefinedType = Undefined,
                     address_only: bool | UndefinedType = Undefined,
@@ -26440,7 +26440,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            description
                            <description>
                            ```
-                        description_new: Description in the form of `description <description> `.
+                        single_line_description: Description in the form of `description <description> `.
                         interface_sets: Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`).
                         local_interfaces: local_interfaces
                         address_only:
