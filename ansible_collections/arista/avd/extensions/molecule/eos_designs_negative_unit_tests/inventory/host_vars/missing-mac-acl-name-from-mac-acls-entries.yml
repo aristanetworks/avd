@@ -22,4 +22,4 @@ servers:
         mac_acl_in: ACL1
 
 expected_error_message: >-
-  mac_acls[name=ACL1] is required but was not found for the host 'missing-mac-acl-name-from-mac-acls-entries'.
+  'mac_acls[name=ACL1]' is required but was not found for host 'missing-mac-acl-name-from-mac-acls-entries'.
