@@ -1673,6 +1673,14 @@ keys:
           default is false).
 
           '
+      cv_loss_timeout:
+        type: int
+        description: 'Timeout in minutes before the device will revert to ZTP mode
+          in case of losing connectivity to CloudVision after a configuration change.
+
+          The recommended timeout is five minutes.'
+        convert_types:
+        - str
   daemons:
     type: list
     primary_key: name
@@ -8709,6 +8717,15 @@ keys:
       default_services:
         type: bool
         description: 'Enable default services: capi-doc and tapagg.'
+      session_timeout:
+        type: int
+        description: 'User session timeout value in minutes.
+
+          EOS default is 1440 minutes.'
+        convert_types:
+        - str
+        min: 1
+        max: 1440
       enable_vrfs:
         type: list
         primary_key: name
@@ -12859,11 +12876,26 @@ keys:
           description: Link local IPv6 address/mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_prefixes:
           type: list
           primary_key: ipv6_prefix
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           items:
             type: dict
             keys:
@@ -12881,6 +12913,9 @@ keys:
                 description: Infinite or lifetime in seconds.
               no_autoconfig_flag:
                 type: bool
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         access_group_in:
           type: str
           description: Access list name.
