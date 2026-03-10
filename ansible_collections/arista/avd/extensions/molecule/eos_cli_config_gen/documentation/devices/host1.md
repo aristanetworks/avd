@@ -12160,13 +12160,13 @@ ipv6 access-list standard ipv6_test1
 
 | Sequence | Remark | Action | Source Ports Match | Source Ports | Destination Ports Match | Destination Ports | Tcp Flags | Log | Icmp Type | Icmp Code | Nexthop Group | Tracked | Dscp | Protocol | Source | Destination | Hop Limit | Hop Limit Match | Dscp Mask | Vlan Number | Vlan Mask | Inner Vlan Number | Inner Vlan Mask |
 | -------- | ------ | ------ | ------------------ | ------------ | ----------------------- | ----------------- | --------- | --- | --------- | --------- | ------------- | ------- | ---- | -------- | ------ | ----------- | --------- | --------------- | --------- | ----------- | --------- | ----------------- | --------------- |
-| 10 | - | permit | - | - | - | - | - | - | - | - | - | - | cs1 | ipv6 | any | any | - | - | 15 | - | - | - | - |
+| 10 | - | permit | - | - | - | - | - | - | - | - | - | - | cs1 | ipv6 | any | any | - | - | - | - | - | - | - |
 
 ##### acl_qos_tc5_v6
 
 | Sequence | Remark | Action | Source Ports Match | Source Ports | Destination Ports Match | Destination Ports | Tcp Flags | Log | Icmp Type | Icmp Code | Nexthop Group | Tracked | Dscp | Protocol | Source | Destination | Hop Limit | Hop Limit Match | Dscp Mask | Vlan Number | Vlan Mask | Inner Vlan Number | Inner Vlan Mask |
 | -------- | ------ | ------ | ------------------ | ------------ | ----------------------- | ----------------- | --------- | --- | --------- | --------- | ------------- | ------- | ---- | -------- | ------ | ----------- | --------- | --------------- | --------- | ----------- | --------- | ----------------- | --------------- |
-| 10 | - | permit | - | - | - | - | - | - | - | - | - | - | - | ipv6 | any | 2001:db8::1 | - | - | - | - | - | - | - |
+| 10 | - | permit | - | - | - | - | - | - | - | - | - | - | - | ipv6 | any | 2001:db8::/48 | - | - | - | - | - | - | - |
 
 ##### ACL_SEQUENCE_AND_COUNTERS
 
@@ -12175,9 +12175,9 @@ ACL has counting mode `counters per-entry` enabled!
 | Sequence | Remark | Action | Source Ports Match | Source Ports | Destination Ports Match | Destination Ports | Tcp Flags | Log | Icmp Type | Icmp Code | Nexthop Group | Tracked | Dscp | Protocol | Source | Destination | Hop Limit | Hop Limit Match | Dscp Mask | Vlan Number | Vlan Mask | Inner Vlan Number | Inner Vlan Mask |
 | -------- | ------ | ------ | ------------------ | ------------ | ----------------------- | ----------------- | --------- | --- | --------- | --------- | ------------- | ------- | ---- | -------- | ------ | ----------- | --------- | --------------- | --------- | ----------- | --------- | ----------------- | --------------- |
 | 10 | test acl with sequence numbers | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 20 | - | permit | - | - | - | - | - | - | - | - | - | - | - | ipv6 | fe81::/64 | any | - | - | - | - | - | - | - |
+| 20 | - | permit | - | - | - | - | - | - | - | - | - | - | - | ipv6 | fe81::1 | any | - | - | - | - | - | - | - |
 | 30 | - | permit | - | - | - | - | ['established'] | - | - | - | - | - | - | tcp | fe82::/64 | any | - | - | - | - | - | - | - |
-| 40 | - | permit | gt | ['1023'] | - | ['22'] | - | - | - | - | - | - | - | tcp | any | fe83::/64 | - | - | - | - | - | - | - |
+| 40 | - | permit | gt | ['1023'] | - | ['22'] | - | - | - | - | - | - | - | tcp | any | fe83::1 | - | - | - | - | - | - | - |
 | 50 | - | permit | range | ['1000', '1100'] | range | ['10', '20'] | - | - | - | - | - | - | - | tcp | any | any | - | - | - | - | - | - | - |
 | 60 | - | - | - | - | - | - | - | - | - | - | - | - | - | - | any | any | - | - | - | - | - | - | - |
 | 4294967295 | - | deny | - | - | - | - | - | - | - | - | - | - | - | ipv6 | any | any | - | - | - | - | - | - | - |
@@ -12192,7 +12192,7 @@ ACL has counting mode `counters per-entry` enabled!
 | Sequence | Remark | Action | Source Ports Match | Source Ports | Destination Ports Match | Destination Ports | Tcp Flags | Log | Icmp Type | Icmp Code | Nexthop Group | Tracked | Dscp | Protocol | Source | Destination | Hop Limit | Hop Limit Match | Dscp Mask | Vlan Number | Vlan Mask | Inner Vlan Number | Inner Vlan Mask |
 | -------- | ------ | ------ | ------------------ | ------------ | ----------------------- | ----------------- | --------- | --- | --------- | --------- | ------------- | ------- | ---- | -------- | ------ | ----------- | --------- | --------------- | --------- | ----------- | --------- | ----------------- | --------------- |
 | 5 | - | deny | - | - | - | - | - | - | - | - | - | - | - | ipv6 | fe80::/64 | any | - | - | - | - | - | - | - |
-| 10 | - | permit | - | - | - | - | - | - | - | - | - | - | - | ipv6 | fe90::1 | any | - | - | - | - | - | - | - |
+| 10 | - | permit | - | - | - | - | - | - | - | - | - | - | - | ipv6 | fe90::/64 | any | - | - | - | - | - | - | - |
 
 ##### TEST2
 
@@ -12230,9 +12230,9 @@ ipv6 access-list ACL_NO_SEQUENCE
 ipv6 access-list ACL_SEQUENCE_AND_COUNTERS
    counters per-entry
    10 remark test acl with sequence numbers
-   20 permit ipv6 fe81::/64 any
+   20 permit ipv6 host fe81::1 any
    30 permit tcp fe82::/64 any established
-   40 permit tcp any gt 1023 fe83::/64 eq 22
+   40 permit tcp any gt 1023 host fe83::1 eq 22
    50 permit tcp any range 1000 1100 any range 10 20
    4294967295 deny ipv6 any any
 !
@@ -12240,7 +12240,7 @@ ipv6 access-list ACL_WITHOUT_ENTRIES
 !
 ipv6 access-list TEST1
    5 deny ipv6 fe80::/64 any
-   10 permit ipv6 host fe90::1 any
+   10 permit ipv6 fe90::/64 any
 !
 ipv6 access-list TEST2
    counters per-entry
@@ -12252,10 +12252,10 @@ ipv6 access-list TEST3
    10 permit ipv6 2001:db8::/32 any
 !
 ipv6 access-list acl_qos_tc0_v6
-   10 permit ipv6 any any dscp cs1 15
+   10 permit ipv6 any any dscp cs1
 !
 ipv6 access-list acl_qos_tc5_v6
-   10 permit ipv6 any host 2001:db8::1
+   10 permit ipv6 any 2001:db8::/48
 ```
 
 ### MAC Access-lists
