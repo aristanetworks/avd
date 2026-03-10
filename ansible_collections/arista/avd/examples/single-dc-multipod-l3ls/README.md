@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: AVD example for a single data center using multiple PODs for L3LS
+title: Mutli-Pod L3LS
 ---
 <!--
   ~ Copyright (c) 2023-2026 Arista Networks, Inc.
