@@ -71,6 +71,7 @@ include-package-data = true
 [tool.setuptools.package-data]
 "*" = [
     "avd_meta_schema.pickle",
+    "cv_deploy.schema.pickle",
     "eos_cli_config_gen.schema.pickle",
     "eos_designs.schema.pickle",
     "schemas.json.gz",
