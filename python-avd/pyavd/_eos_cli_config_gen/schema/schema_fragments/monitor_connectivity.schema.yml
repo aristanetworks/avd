@@ -95,14 +95,14 @@ keys:
             description:
               type: str
               description: |-
-                Description of format
+                Description in the form of
                 ```
                 description
                 <description>
                 ```
             description_new:
               type: str
-              description: Description of format `description <description> `.
+              description: Description in the form of `description <description> `.
             interface_sets:
               type: list
               primary_key: name
@@ -135,14 +135,14 @@ keys:
                   description:
                     type: str
                     description: |-
-                      Description of format
+                      Description in the for of
                       ```
                       description
                       <description>
                       ```
                   description_new:
                     type: str
-                    description: Description of format `description <description> `.
+                    description: Description in the form of `description <description> `.
                   ip:
                     type: str
                   icmp_echo_size:

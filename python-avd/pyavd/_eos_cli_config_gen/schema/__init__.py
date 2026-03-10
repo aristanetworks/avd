@@ -26303,14 +26303,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Host name."""
                 description: str | None
                 """
-                Description of format
+                Description in the for of
                 ```
                 description
                 <description>
                 ```
                 """
                 description_new: str | None
-                """Description of format `description <description> `."""
+                """Description in the form of `description <description> `."""
                 ip: str | None
                 icmp_echo_size: int | None
                 """Size of ICMP probe in bytes."""
@@ -26350,12 +26350,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             name: Host name.
                             description:
-                               Description of format
+                               Description in the for of
                                ```
                                description
                                <description>
                                ```
-                            description_new: Description of format `description <description> `.
+                            description_new: Description in the form of `description <description> `.
                             ip: ip
                             icmp_echo_size: Size of ICMP probe in bytes.
                             local_interfaces: local_interfaces
@@ -26389,14 +26389,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """VRF Name."""
             description: str | None
             """
-            Description of format
+            Description in the form of
             ```
             description
             <description>
             ```
             """
             description_new: str | None
-            """Description of format `description <description> `."""
+            """Description in the form of `description <description> `."""
             interface_sets: InterfaceSets
             """Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`)."""
             local_interfaces: str | None
@@ -26435,12 +26435,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: VRF Name.
                         description:
-                           Description of format
+                           Description in the form of
                            ```
                            description
                            <description>
                            ```
-                        description_new: Description of format `description <description> `.
+                        description_new: Description in the form of `description <description> `.
                         interface_sets: Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`).
                         local_interfaces: local_interfaces
                         address_only:

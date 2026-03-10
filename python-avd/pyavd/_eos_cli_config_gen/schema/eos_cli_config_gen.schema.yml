@@ -10202,7 +10202,7 @@ keys:
               - int
             description:
               type: str
-              description: 'Description of format
+              description: 'Description in the form of
 
                 ```
 
@@ -10213,7 +10213,7 @@ keys:
                 ```'
             description_new:
               type: str
-              description: Description of format `description <description> `.
+              description: Description in the form of `description <description> `.
             interface_sets:
               type: list
               primary_key: name
@@ -10246,7 +10246,7 @@ keys:
                     type: str
                   description:
                     type: str
-                    description: 'Description of format
+                    description: 'Description in the for of
 
                       ```
 
@@ -10257,7 +10257,7 @@ keys:
                       ```'
                   description_new:
                     type: str
-                    description: Description of format `description <description>
+                    description: Description in the form of `description <description>
                       `.
                   ip:
                     type: str
