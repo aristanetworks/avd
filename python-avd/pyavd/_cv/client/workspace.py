@@ -272,7 +272,7 @@ class WorkspaceMixin(Protocol):
     async def wait_for_new_workspace_readiness(
         self: CVClientProtocol,
         workspace_id: str,
-        timeout: float = 3600.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> Workspace:
         """
         Monitor newly created Workspace using arista.workspace.v1.WorkspaceService.Subscribe API until Workspace is in PENDING (ready) state.
