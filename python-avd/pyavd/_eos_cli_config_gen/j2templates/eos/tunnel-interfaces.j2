@@ -36,6 +36,31 @@ interface {{ tunnel_interface.name }}
 {%     elif tunnel_interface.ipv6_address is arista.avd.defined %}
    ipv6 address {{ tunnel_interface.ipv6_address }}
 {%     endif %}
+{%     if tunnel_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
+   ipv6 nd ra rx accept default-route
+{%     endif %}
+{%     if tunnel_interface.ipv6_nd.ra.rx_accept.route_preference is arista.avd.defined(true) %}
+   ipv6 nd ra rx accept route-preference
+{%     endif %}
+{%     if tunnel_interface.ipv6_nd.ra.disabled is arista.avd.defined(true) %}
+   ipv6 nd ra disabled
+{%     endif %}
+{%     if tunnel_interface.ipv6_nd.managed_config_flag is arista.avd.defined(true) or tunnel_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) %}
+   ipv6 nd managed-config-flag
+{%     endif %}
+{%     for prefix in tunnel_interface.ipv6_nd.prefixes | arista.avd.natural_sort("ipv6_prefix") %}
+{%         set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ prefix.ipv6_prefix %}
+{%         if prefix.valid_lifetime is arista.avd.defined %}
+{%             set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.valid_lifetime %}
+{%             if prefix.preferred_lifetime is arista.avd.defined %}
+{%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.preferred_lifetime %}
+{%             endif %}
+{%         endif %}
+{%         if prefix.no_autoconfig_flag is arista.avd.defined(true) %}
+{%             set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " no-autoconfig" %}
+{%         endif %}
+   {{ ipv6_nd_prefix_cli }}
+{%     endfor %}
 {%     if tunnel_interface.tcp_mss_ceiling is arista.avd.defined %}
 {%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}
 {%         if tunnel_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined %}

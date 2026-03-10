@@ -7042,12 +7042,12 @@ interface Loopback100
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | -------------- | ------- | ----------------- | ----------- | ------------ |
-| Tunnel1 | Tunnel-VRF | auto-config | - | ingress | - | - |
-| Tunnel2 | default | cafe::1/64 | 666 | egress | test-in | test-out |
-| Tunnel3 | default | beef::64/64 | 666 | - | - | - |
-| Tunnel4 | default | beef::64/64 | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| --------- | --- | -------------- | ------- | ----------------- | ----------- | ------------ | --------------- | -------------- | ---------------------- |
+| Tunnel1 | Tunnel-VRF | auto-config | - | ingress | - | - | default-route, route-preference | True | True |
+| Tunnel2 | default | cafe::1/64 | 666 | egress | test-in | test-out | - | - | - |
+| Tunnel3 | default | beef::64/64 | 666 | - | - | - | - | - | - |
+| Tunnel4 | default | beef::64/64 | - | - | - | - | - | - | - |
 
 #### Tunnel Interfaces Device Configuration
 
@@ -7060,6 +7060,13 @@ interface Tunnel1
    vrf Tunnel-VRF
    ip address 42.42.42.42/24
    ipv6 address auto-config
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
+   ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
+   ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
    tcp mss ceiling ipv4 666 ingress
    ip access-group test-in in
    ip access-group test-out out
