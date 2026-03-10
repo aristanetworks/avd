@@ -8,6 +8,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).parents[2]
 PYAVD_DIR = REPO_ROOT.joinpath("python-avd/pyavd")
+SCHEMAS_DIR = REPO_ROOT.joinpath("schemas")
 
 LICENSE_HEADER = REPO_ROOT.joinpath("development/license-short.txt").read_text(encoding="UTF-8").strip()
 
@@ -15,7 +16,7 @@ METASCHEMA_DIR = PYAVD_DIR.joinpath("_schema")
 EOS_CLI_CONFIG_GEN_SCHEMA_DIR = PYAVD_DIR.joinpath("_eos_cli_config_gen/schema")
 EOS_DESIGNS_SCHEMA_DIR = PYAVD_DIR.joinpath("_eos_designs/schema")
 EOS_DESIGNS_FACTS_SCHEMA_DIR = PYAVD_DIR.joinpath("_eos_designs/eos_designs_facts/schema")
-CV_DEPLOY_SCHEMA_DIR = REPO_ROOT.joinpath("schemas/cv_deploy")
+CV_DEPLOY_SCHEMA_DIR = PYAVD_DIR.joinpath("_cv/schema")
 
 
 @dataclass(frozen=True)
@@ -54,9 +55,9 @@ SCHEMAS = {
         docs_path=REPO_ROOT.joinpath("docs/contribution/eos_designs_facts_internal"),
     ),
     "cv_deploy": SchemaPaths(
-        yaml_file=CV_DEPLOY_SCHEMA_DIR.joinpath("cv_deploy.schema.yml"),
+        yaml_file=SCHEMAS_DIR.joinpath("cv_deploy/cv_deploy.schema.yml"),
         pickled_schema=CV_DEPLOY_SCHEMA_DIR.joinpath("cv_deploy.schema.pickle"),
-        fragments_dir=CV_DEPLOY_SCHEMA_DIR.joinpath("schema_fragments"),
+        fragments_dir=SCHEMAS_DIR.joinpath("cv_deploy/schema_fragments"),
         python_class=CV_DEPLOY_SCHEMA_DIR.joinpath("__init__.py"),
         docs_path=REPO_ROOT.joinpath("ansible_collections/arista/avd/roles/cv_deploy/docs"),
     ),

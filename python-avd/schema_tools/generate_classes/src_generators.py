@@ -15,7 +15,7 @@ TYPE_CHECKING_IMPORT = """\
 from typing import TYPE_CHECKING
 """
 
-BASE_IMPORTS_MAP = {
+BASE_MODEL_IMPORTS_MAP = {
     "AvdIndexedList": "from pyavd._schema.models.avd_indexed_list import AvdIndexedList",
     "AvdList": "from pyavd._schema.models.avd_list import AvdList",
     "AvdModel": "from pyavd._schema.models.avd_model import AvdModel",
@@ -414,8 +414,8 @@ class FileSrc:
         for cls in filter(None, self.classes):
             imports.update(cls.get_imports())
 
-        # Check which base model are actually used in the generated classes
-        base_model_imports = [import_statement for model_name, import_statement in BASE_IMPORTS_MAP.items() if model_name in classes_src]
+        # Check which base models are actually used in the generated classes
+        base_model_imports = [import_statement for model_name, import_statement in BASE_MODEL_IMPORTS_MAP.items() if model_name in classes_src]
 
         # Add TYPE_CHECKING import, base model imports and if TYPE_CHECKING block
         imports.add(TYPE_CHECKING_IMPORT)

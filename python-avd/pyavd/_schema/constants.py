@@ -3,8 +3,7 @@
 # that can be found in the LICENSE file.
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).parents[3]
-PYAVD_DIR = REPO_ROOT.joinpath("python-avd/pyavd")
+PYAVD_DIR = Path(__file__).parents[1]
 
 EOS_DESIGNS_SCHEMA_DIR = PYAVD_DIR.joinpath("_eos_designs/schema")
 EOS_DESIGNS_PICKLED_SCHEMA_PATH = EOS_DESIGNS_SCHEMA_DIR.joinpath("eos_designs.schema.pickle")
@@ -15,7 +14,7 @@ EOS_CLI_CONFIG_GEN_PICKLED_SCHEMA_PATH = EOS_CLI_CONFIG_GEN_SCHEMA_DIR.joinpath(
 METASCHEMA_DIR = PYAVD_DIR.joinpath("_schema")
 METASCHEMA_PICKLED_SCHEMA_PATH = METASCHEMA_DIR.joinpath("avd_meta_schema.pickle")
 
-CV_DEPLOY_SCHEMA_DIR = REPO_ROOT.joinpath("schemas/cv_deploy")
+CV_DEPLOY_SCHEMA_DIR = PYAVD_DIR.joinpath("_cv/schema")
 CV_DEPLOY_PICKLED_SCHEMA_PATH = CV_DEPLOY_SCHEMA_DIR.joinpath("cv_deploy.schema.pickle")
 
 PICKLED_SCHEMAS = {

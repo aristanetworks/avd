@@ -96,58 +96,6 @@ class CvDeploy(AvdModel):
 
     CvInterfaceTags._item_type = CvInterfaceTagsItem
 
-    class Metadata(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {
-            "is_deployed": {"type": bool},
-            "serial_number": {"type": str},
-            "system_mac_address": {"type": str},
-            "cv_tags": {"type": EosCliConfigGen.Metadata.CvTags},
-            "cv_pathfinder": {"type": EosCliConfigGen.Metadata.CvPathfinder},
-        }
-        _allow_other_keys: ClassVar[bool] = True
-        is_deployed: bool | None
-        """Key only used for documentation or validation purposes."""
-        serial_number: str | None
-        """
-        Serial Number of the device.
-        Used only for documentation and deployment purposes. It is used by the
-        'cv_deploy' role.
-        """
-        system_mac_address: str | None
-        cv_tags: EosCliConfigGen.Metadata.CvTags
-        cv_pathfinder: EosCliConfigGen.Metadata.CvPathfinder
-        """Metadata used for CV Pathfinder visualization on CloudVision."""
-
-        if TYPE_CHECKING:
-
-            def __init__(
-                self,
-                *,
-                is_deployed: bool | None | UndefinedType = Undefined,
-                serial_number: str | None | UndefinedType = Undefined,
-                system_mac_address: str | None | UndefinedType = Undefined,
-                cv_tags: EosCliConfigGen.Metadata.CvTags | UndefinedType = Undefined,
-                cv_pathfinder: EosCliConfigGen.Metadata.CvPathfinder | UndefinedType = Undefined,
-            ) -> None:
-                """
-                Metadata.
-
-                Subclass of AvdModel.
-
-                Args:
-                    is_deployed: Key only used for documentation or validation purposes.
-                    serial_number:
-                       Serial Number of the device.
-                       Used only for documentation and deployment purposes. It is used by the
-                       'cv_deploy' role.
-                    system_mac_address: system_mac_address
-                    cv_tags: cv_tags
-                    cv_pathfinder: Metadata used for CV Pathfinder visualization on CloudVision.
-
-                """
-
     _fields: ClassVar[dict] = {
         "is_deployed": {"type": bool, "default": True},
         "serial_number": {"type": str},
@@ -155,7 +103,7 @@ class CvDeploy(AvdModel):
         "cv_device_tags": {"type": CvDeviceTags},
         "cv_interface_tags": {"type": CvInterfaceTags},
         "cv_pathfinder_metadata": {"type": EosCliConfigGen.Metadata.CvPathfinder},
-        "metadata": {"type": Metadata},
+        "metadata": {"type": EosCliConfigGen.Metadata},
     }
     _allow_other_keys: ClassVar[bool] = True
     is_deployed: bool
@@ -208,8 +156,14 @@ class CvDeploy(AvdModel):
     """
     cv_pathfinder_metadata: EosCliConfigGen.Metadata.CvPathfinder
     """Metadata used for CV Pathfinder visualization on CloudVision."""
-    metadata: Metadata
-    """Subclass of AvdModel."""
+    metadata: EosCliConfigGen.Metadata
+    """
+    Metadata from the `eos_designs` role, loaded automatically from structured configs.
+    For standalone
+    usage without `eos_designs`, use the other `cv_deploy` schema keys instead.
+    If both are provided,
+    `metadata` takes precedence.
+    """
 
     if TYPE_CHECKING:
 
@@ -222,7 +176,7 @@ class CvDeploy(AvdModel):
             cv_device_tags: CvDeviceTags | UndefinedType = Undefined,
             cv_interface_tags: CvInterfaceTags | UndefinedType = Undefined,
             cv_pathfinder_metadata: EosCliConfigGen.Metadata.CvPathfinder | UndefinedType = Undefined,
-            metadata: Metadata | UndefinedType = Undefined,
+            metadata: EosCliConfigGen.Metadata | UndefinedType = Undefined,
         ) -> None:
             """
             CvDeploy.
@@ -267,6 +221,11 @@ class CvDeploy(AvdModel):
                    Subclass of AvdList
                    with `CvInterfaceTagsItem` items.
                 cv_pathfinder_metadata: Metadata used for CV Pathfinder visualization on CloudVision.
-                metadata: Subclass of AvdModel.
+                metadata:
+                   Metadata from the `eos_designs` role, loaded automatically from structured configs.
+                   For standalone
+                   usage without `eos_designs`, use the other `cv_deploy` schema keys instead.
+                   If both are provided,
+                   `metadata` takes precedence.
 
             """

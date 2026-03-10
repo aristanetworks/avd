@@ -8,8 +8,8 @@ ignore-paths=
   python-avd/pyavd/_eos_cli_config_gen/schema/__init__.py,
   python-avd/pyavd/_eos_designs/schema/__init__.py,
   python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py,
+  python-avd/pyavd/_cv/schema/__init__.py,
   python-avd/tests/pyavd/schema/data_merging_schema_class.py,
-  schemas/.*/__init__.py,
 
 [MESSAGES CONTROL]
 disable=
