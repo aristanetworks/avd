@@ -6191,6 +6191,52 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class EosConfigFuture(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"new_ip_radius_cli_order": {"type": bool, "default": False}, "new_ip_tacacs_cli_order": {"type": bool, "default": False}}
+        new_ip_radius_cli_order: bool
+        """
+        When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.
+        When `false`
+        (default), renders the legacy CLI order using `ip_radius_source_interfaces`, sorted by source
+        interface name.
+
+        Default value: `False`
+        """
+        new_ip_tacacs_cli_order: bool
+        """
+        When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by VRF name.
+        When `false`
+        (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source
+        interface name.
+
+        Default value: `False`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, new_ip_radius_cli_order: bool | UndefinedType = Undefined, new_ip_tacacs_cli_order: bool | UndefinedType = Undefined) -> None:
+                """
+                EosConfigFuture.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    new_ip_radius_cli_order:
+                       When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.
+                       When `false`
+                       (default), renders the legacy CLI order using `ip_radius_source_interfaces`, sorted by source
+                       interface name.
+                    new_ip_tacacs_cli_order:
+                       When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by VRF name.
+                       When `false`
+                       (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source
+                       interface name.
+
+                """
+
     class Errdisable(AvdModel):
         """Subclass of AvdModel."""
 
@@ -70331,6 +70377,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "eos_cli_config_gen_keep_tmp_files": {"type": bool, "default": False},
         "eos_cli_config_gen_tmp_dir": {"type": str},
         "eos_cli_config_gen_validate_inputs_batch_size": {"type": int, "default": 10},
+        "eos_config_future": {"type": EosConfigFuture},
         "errdisable": {"type": Errdisable},
         "ethernet_interfaces": {"type": EthernetInterfaces},
         "event_handlers": {"type": EventHandlers},
@@ -70692,6 +70739,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     size and the available resources, you may want to adjust this number.
 
     Default value: `10`
+    """
+    eos_config_future: EosConfigFuture
+    """
+    Opt-in to future EOS cli behaviors which will become default behaviors in a future AVD major
+    version.
+
+    Subclass of AvdModel.
     """
     errdisable: Errdisable
     """Subclass of AvdModel."""
@@ -71151,6 +71205,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             eos_cli_config_gen_keep_tmp_files: bool | UndefinedType = Undefined,
             eos_cli_config_gen_tmp_dir: str | None | UndefinedType = Undefined,
             eos_cli_config_gen_validate_inputs_batch_size: int | UndefinedType = Undefined,
+            eos_config_future: EosConfigFuture | UndefinedType = Undefined,
             errdisable: Errdisable | UndefinedType = Undefined,
             ethernet_interfaces: EthernetInterfaces | UndefinedType = Undefined,
             event_handlers: EventHandlers | UndefinedType = Undefined,
@@ -71453,6 +71508,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
                    size and the available resources, you may want to adjust this number.
+                eos_config_future:
+                   Opt-in to future EOS cli behaviors which will become default behaviors in a future AVD major
+                   version.
+
+                   Subclass of AvdModel.
                 errdisable: Subclass of AvdModel.
                 ethernet_interfaces: Subclass of AvdIndexedList with `EthernetInterfacesItem` items. Primary key is `name` (`str`).
                 event_handlers:

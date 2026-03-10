@@ -2442,6 +2442,29 @@ keys:
 
       Depending on your inventory size and the available resources, you may want to
       adjust this number.'
+  eos_config_future:
+    type: dict
+    description: Opt-in to future EOS cli behaviors which will become default behaviors
+      in a future AVD major version.
+    documentation_options:
+      table: role-settings
+    keys:
+      new_ip_radius_cli_order:
+        type: bool
+        default: false
+        description: 'When `true`, renders the new EOS CLI order using `ip_radius`,
+          sorted by VRF name.
+
+          When `false` (default), renders the legacy CLI order using `ip_radius_source_interfaces`,
+          sorted by source interface name.'
+      new_ip_tacacs_cli_order:
+        type: bool
+        default: false
+        description: 'When `true`, renders the new EOS CLI order using `ip_tacacs`,
+          sorted by VRF name.
+
+          When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`,
+          sorted by source interface name.'
   errdisable:
     type: dict
     keys:

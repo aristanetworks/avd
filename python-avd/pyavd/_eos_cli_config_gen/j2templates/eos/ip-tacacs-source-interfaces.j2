@@ -6,12 +6,30 @@
 {# eos - ip tacacs source interfaces #}
 {% if ip_tacacs is arista.avd.defined %}
 !
-{%     if ip_tacacs.source_interface is arista.avd.defined %}
+{%     if eos_config_future.new_ip_tacacs_cli_order is arista.avd.defined(true) %}
+{%         if ip_tacacs.source_interface is arista.avd.defined %}
 ip tacacs source-interface {{ ip_tacacs.source_interface }}
-{%     endif %}
-{%     for vrf in ip_tacacs.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
+{%         endif %}
+{%         for vrf in ip_tacacs.vrfs | arista.avd.natural_sort('name', ignore_case=false) %}
 ip tacacs vrf {{ vrf.name }} source-interface {{ vrf.source_interface }}
-{%     endfor %}
+{%         endfor %}
+{%     else %}
+{%         set new_ip_tacacs_list = [] %}
+{%         if ip_tacacs.source_interface is arista.avd.defined %}
+{%             do new_ip_tacacs_list.append({'name': ip_tacacs.source_interface, 'vrf': 'default'}) %}
+{%         endif %}
+{%         for vrf in ip_tacacs.vrfs | arista.avd.default([]) %}
+{%             do new_ip_tacacs_list.append({'name': vrf.source_interface, 'vrf': vrf.name}) %}
+{%         endfor %}
+{%         for entry in new_ip_tacacs_list | arista.avd.natural_sort(sort_key='name') %}
+{%             set ip_tacacs_cli = "ip tacacs" %}
+{%             if entry.vrf is arista.avd.defined %}
+{%                 set ip_tacacs_cli = ip_tacacs_cli ~ " vrf " ~ entry.vrf %}
+{%             endif %}
+{%             set ip_tacacs_cli = ip_tacacs_cli ~ " source-interface " ~ entry.name %}
+{{ ip_tacacs_cli }}
+{%         endfor %}
+{%     endif %}
 {% elif ip_tacacs_source_interfaces is arista.avd.defined %}
 !
 {%     for source_interface in ip_tacacs_source_interfaces | arista.avd.natural_sort(sort_key='name') %}
