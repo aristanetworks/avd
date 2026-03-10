@@ -51,6 +51,7 @@ repos:
           (ansible_collections/arista/avd/roles/.*/(handlers|tasks)/.*\.yml
           |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/.*\.yml
           |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/.*\.yml
+          |schemas/.*/.*\.yml
           )
 
         args:
@@ -267,7 +268,7 @@ repos:
         name: Build AVD schemas and documentation.
         entry: sh -c 'exec python-avd/scripts/build_schemas.py'
         language: python
-        files: python-avd/pyavd/[a-z_]+/schema
+        files: (python-avd/pyavd/[a-z_]+/schema|schemas/[a-z_]+)
         pass_filenames: false
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.7.2']
 

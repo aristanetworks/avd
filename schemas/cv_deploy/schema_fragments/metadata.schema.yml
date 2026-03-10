@@ -1,0 +1,30 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../python-avd/pyavd/_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  metadata:
+    type: dict
+    allow_other_keys: true
+    documentation_options:
+      table: metadata
+      hide_keys: true
+    keys:
+      is_deployed:
+        type: bool
+        $ref: eos_cli_config_gen#/keys/metadata/keys/is_deployed
+      serial_number:
+        type: str
+        $ref: eos_cli_config_gen#/keys/metadata/keys/serial_number
+      system_mac_address:
+        type: str
+        $ref: eos_cli_config_gen#/keys/metadata/keys/system_mac_address
+      cv_tags:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/metadata/keys/cv_tags
+      cv_pathfinder:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/metadata/keys/cv_pathfinder

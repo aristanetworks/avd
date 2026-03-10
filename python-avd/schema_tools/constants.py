@@ -15,6 +15,7 @@ METASCHEMA_DIR = PYAVD_DIR.joinpath("_schema")
 EOS_CLI_CONFIG_GEN_SCHEMA_DIR = PYAVD_DIR.joinpath("_eos_cli_config_gen/schema")
 EOS_DESIGNS_SCHEMA_DIR = PYAVD_DIR.joinpath("_eos_designs/schema")
 EOS_DESIGNS_FACTS_SCHEMA_DIR = PYAVD_DIR.joinpath("_eos_designs/eos_designs_facts/schema")
+CV_DEPLOY_SCHEMA_DIR = REPO_ROOT.joinpath("schemas/cv_deploy")
 
 
 @dataclass(frozen=True)
@@ -51,6 +52,13 @@ SCHEMAS = {
         pickled_schema=EOS_DESIGNS_FACTS_SCHEMA_DIR.joinpath("eos_designs.schema.pickle"),
         python_class=EOS_DESIGNS_FACTS_SCHEMA_DIR.joinpath("protocol.py"),
         docs_path=REPO_ROOT.joinpath("docs/contribution/eos_designs_facts_internal"),
+    ),
+    "cv_deploy": SchemaPaths(
+        yaml_file=CV_DEPLOY_SCHEMA_DIR.joinpath("cv_deploy.schema.yml"),
+        pickled_schema=CV_DEPLOY_SCHEMA_DIR.joinpath("cv_deploy.schema.pickle"),
+        fragments_dir=CV_DEPLOY_SCHEMA_DIR.joinpath("schema_fragments"),
+        python_class=CV_DEPLOY_SCHEMA_DIR.joinpath("__init__.py"),
+        docs_path=REPO_ROOT.joinpath("ansible_collections/arista/avd/roles/cv_deploy/docs"),
     ),
 }
 
