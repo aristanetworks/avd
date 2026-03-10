@@ -124,9 +124,9 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -281,15 +281,15 @@ vlan 350
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_DC1-SPINE1_Ethernet7 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_DC1-SPINE2_Ethernet7 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet3 | P2P_DC1-SPINE3_Ethernet7 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet4 | P2P_DC1-SPINE4_Ethernet7 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet9 | P2P_DC1-BL1A_Ethernet9 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet10 | P2P_DC1-BL1A_Ethernet10 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet11 | P2P_outside-r1_other2 | - | - | default | 1500 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
+| Ethernet1 | P2P_DC1-SPINE1_Ethernet7 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet2 | P2P_DC1-SPINE2_Ethernet7 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet3 | P2P_DC1-SPINE3_Ethernet7 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet4 | P2P_DC1-SPINE4_Ethernet7 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet9 | P2P_DC1-BL1A_Ethernet9 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet10 | P2P_DC1-BL1A_Ethernet10 | - | - | default | 1500 | False | - | - | - | - | - |
+| Ethernet11 | P2P_outside-r1_other2 | - | - | default | 1500 | False | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
