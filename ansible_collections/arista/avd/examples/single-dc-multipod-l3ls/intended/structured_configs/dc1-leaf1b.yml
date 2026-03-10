@@ -144,7 +144,7 @@ port_channel_interfaces:
       groups:
       - MLAG
 - name: Port-Channel5
-  description: PortChannel host1
+  description: SERVER_host1
   shutdown: false
   mlag: 5
   spanning_tree_portfast: edge

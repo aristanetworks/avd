@@ -63,9 +63,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Addresses | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | -------------- | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -136,9 +136,9 @@ ntp server vrf MGMT 0.pool.ntp.org prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -364,7 +364,7 @@ interface Ethernet5
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_dc1-leaf1b_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
-| Port-Channel5 | PortChannel host1 | access | 10 | - | - | - | - | 5 | - |
+| Port-Channel5 | SERVER_host1 | access | 10 | - | - | - | - | 5 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -378,7 +378,7 @@ interface Port-Channel3
    switchport
 !
 interface Port-Channel5
-   description PortChannel host1
+   description SERVER_host1
    no shutdown
    switchport access vlan 10
    switchport mode access
