@@ -10152,7 +10152,7 @@ keys:
               type: str
             description:
               type: str
-              description: 'Description in the format
+              description: 'Description in the form of
 
                 ```
 
@@ -10163,7 +10163,7 @@ keys:
                 ```'
             description_new:
               type: str
-              description: Description in the format `description <description> `.
+              description: Description in the form of `description <description>`.
             ip:
               type: str
             icmp_echo_size:

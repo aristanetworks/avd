@@ -26181,14 +26181,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Host Name."""
             description: str | None
             """
-            Description in the format
+            Description in the form of
             ```
             description
             <description>
             ```
             """
             description_new: str | None
-            """Description in the format `description <description> `."""
+            """Description in the form of `description <description>`."""
             ip: str | None
             icmp_echo_size: int | None
             """Size of ICMP probe in bytes."""
@@ -26228,12 +26228,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: Host Name.
                         description:
-                           Description in the format
+                           Description in the form of
                            ```
                            description
                            <description>
                            ```
-                        description_new: Description in the format `description <description> `.
+                        description_new: Description in the form of `description <description>`.
                         ip: ip
                         icmp_echo_size: Size of ICMP probe in bytes.
                         local_interfaces: local_interfaces
