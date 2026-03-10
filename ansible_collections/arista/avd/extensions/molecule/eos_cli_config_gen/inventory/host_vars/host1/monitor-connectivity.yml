@@ -66,6 +66,7 @@ monitor_connectivity:
         - name: server6
     - name: Yellow
       address_only: true
-      description_new: Address_only
       interface_sets:
         - name: VRF_GLOBAL_SET
+    - name: VRF1
+      description_new: latest description format

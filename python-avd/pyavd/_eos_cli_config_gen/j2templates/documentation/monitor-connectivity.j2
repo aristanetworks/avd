@@ -46,7 +46,7 @@
 {%         endfor %}
 {%         for vrf in monitor_connectivity.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 
-#### Vrf {{ vrf.name }} Configuration
+#### VRF {{ vrf.name }} Configuration
 {%             if vrf.interface_sets is arista.avd.defined %}
 
 ##### Interface Sets

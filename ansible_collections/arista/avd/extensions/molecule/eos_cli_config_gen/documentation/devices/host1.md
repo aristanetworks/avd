@@ -3612,18 +3612,21 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 
 | Name | Description | Default Interface Set | Address Only |
 | ---- | ----------- | --------------------- | ------------ |
-| Yellow | Address_only | - | True |
+| VRF1 | latest description format | - | True |
+| Yellow | - | - | True |
 | blue | - | VRF_GLOBAL_SET | False |
 | red | vrf_connectivity_monitor | VRF_GLOBAL_SET | True |
 
-#### Vrf Yellow Configuration
+#### VRF VRF1 Configuration
+
+#### VRF Yellow Configuration
 
 ##### Interface Sets
 
 | Name | Interfaces |
 | ---- | ---------- |
 
-#### Vrf blue Configuration
+#### VRF blue Configuration
 
 ##### Interface Sets
 
@@ -3639,7 +3642,7 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 | server4 | server4_connectivity_monitor | 10.10.20.1 | - | VRF_GLOBAL_SET | False | https://server2.local.com |
 | server6 | - | - | - | - | True | - |
 
-#### Vrf red Configuration
+#### VRF red Configuration
 
 ##### Interface Sets
 
@@ -3692,8 +3695,10 @@ monitor connectivity
    !
    host server4
    !
+   vrf VRF1
+      description latest description format
+   !
    vrf Yellow
-      description Address_only
    !
    vrf blue
       interface set VRF_GLOBAL_SET Vlan21-24, Vlan29-32
