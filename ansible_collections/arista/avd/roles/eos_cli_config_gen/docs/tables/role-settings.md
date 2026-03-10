@@ -19,9 +19,6 @@
     | [<samp>eos_cli_config_gen_keep_tmp_files</samp>](## "eos_cli_config_gen_keep_tmp_files") | Boolean |  | `False` |  | Avoid deleting temporary files.<br>This allows for inspecting templated inputs and validated inputs used internally by AVD plugins.<br>When an Ansible Vault secret is set, temporary files holding input variables are encrypted. Decryption is required to inspect them.<br> |
     | [<samp>eos_cli_config_gen_tmp_dir</samp>](## "eos_cli_config_gen_tmp_dir") | String |  |  |  | Path for temporary files created by the 'eos_cli_config_gen' role.<br>Contains templated inputs and validated inputs used internally by AVD plugins.<br>Defaults to 'intended/tmp_eos_cli_config_gen'.<br>The temporary directory is cleaned up at the end of the 'eos_cli_config_gen' role.<br> |
     | [<samp>eos_cli_config_gen_validate_inputs_batch_size</samp>](## "eos_cli_config_gen_validate_inputs_batch_size") | Integer |  | `10` |  | The number of hosts to process in each batch when validating inputs.<br>Depending on your inventory size and the available resources, you may want to adjust this number. |
-    | [<samp>eos_config_future</samp>](## "eos_config_future") | Dictionary |  |  |  | Opt-in to future EOS cli behaviors which will become default behaviors in a future AVD major version. |
-    | [<samp>&nbsp;&nbsp;new_ip_radius_cli_order</samp>](## "eos_config_future.new_ip_radius_cli_order") | Boolean |  | `False` |  | When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.<br>When `false` (default), renders the legacy CLI order using `ip_radius_source_interfaces`, sorted by source interface name. |
-    | [<samp>&nbsp;&nbsp;new_ip_tacacs_cli_order</samp>](## "eos_config_future.new_ip_tacacs_cli_order") | Boolean |  | `False` |  | When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by VRF name.<br>When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source interface name. |
     | [<samp>generate_default_config</samp>](## "generate_default_config") <span style="color:red">removed</span> | Boolean |  | `False` |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. See [here](https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#default-eos-configuration-is-no-longer-automatically-generated) for details.</span> |
     | [<samp>generate_device_documentation</samp>](## "generate_device_documentation") <span style="color:red">removed</span> | Boolean |  | `True` |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>eos_cli_config_gen_documentation.enable</samp> instead.</span> |
     | [<samp>read_structured_config_from_file</samp>](## "read_structured_config_from_file") | Boolean |  | `True` |  | Read structured configuration from files in `structured_dir` (default directory also used by the `eos_designs` role).<br>If set to false, `eos_cli_config_gen` will read structured configuration from hostvars.<br> |
@@ -71,17 +68,6 @@
     # The number of hosts to process in each batch when validating inputs.
     # Depending on your inventory size and the available resources, you may want to adjust this number.
     eos_cli_config_gen_validate_inputs_batch_size: <int; default=10>
-
-    # Opt-in to future EOS cli behaviors which will become default behaviors in a future AVD major version.
-    eos_config_future:
-
-      # When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.
-      # When `false` (default), renders the legacy CLI order using `ip_radius_source_interfaces`, sorted by source interface name.
-      new_ip_radius_cli_order: <bool; default=False>
-
-      # When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by VRF name.
-      # When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source interface name.
-      new_ip_tacacs_cli_order: <bool; default=False>
 
     # Read structured configuration from files in `structured_dir` (default directory also used by the `eos_designs` role).
     # If set to false, `eos_cli_config_gen` will read structured configuration from hostvars.

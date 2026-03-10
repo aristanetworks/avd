@@ -10,8 +10,6 @@ keys:
     type: dict
     description: |-
       Opt-in to future EOS cli behaviors which will become default behaviors in a future AVD major version.
-    documentation_options:
-      table: role-settings
     keys:
       new_ip_radius_cli_order:
         type: bool
