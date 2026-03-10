@@ -135,7 +135,7 @@ keys:
                   description:
                     type: str
                     description: |-
-                      Description in the for of
+                      Description in the form of
                       ```
                       description
                       <description>
