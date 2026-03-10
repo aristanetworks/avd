@@ -3892,6 +3892,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "sflow": {"type": bool},
             "sflowaddr": {"type": str},
             "cvconfig": {"type": bool},
+            "cv_loss_timeout": {"type": int},
         }
         cvaddrs: Cvaddrs
         """
@@ -3993,6 +3994,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         cvconfig: bool | None
         """Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false)."""
+        cv_loss_timeout: int | None
+        """
+        Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to
+        CloudVision after a configuration change.
+        The recommended timeout is five minutes.
+        """
 
         if TYPE_CHECKING:
 
@@ -4020,6 +4027,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 sflow: bool | None | UndefinedType = Undefined,
                 sflowaddr: str | None | UndefinedType = Undefined,
                 cvconfig: bool | None | UndefinedType = Undefined,
+                cv_loss_timeout: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 DaemonTerminattr.
@@ -4093,6 +4101,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        ECO sFlow Collector address to listen on to receive sFlow packets (TerminAttr default
                        "127.0.0.1:6343").
                     cvconfig: Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
+                    cv_loss_timeout:
+                       Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to
+                       CloudVision after a configuration change.
+                       The recommended timeout is five minutes.
 
                 """
 
@@ -5929,6 +5941,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "shutdown": {"type": bool},
             "mtu": {"type": int},
             "ip_address": {"type": str},
+            "ipv6_address_auto_config": {"type": bool},
             "flow_tracker": {"type": FlowTracker},
             "tcp_mss_ceiling": {"type": TcpMssCeiling},
             "eos_cli": {"type": str},
@@ -5941,6 +5954,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Maximum Transmission Unit in bytes."""
         ip_address: str | None
         """IPv4 address/mask."""
+        ipv6_address_auto_config: bool | None
+        """Use SLAAC to automatically configure the IPv6 address."""
         flow_tracker: FlowTracker
         """Subclass of AvdModel."""
         tcp_mss_ceiling: TcpMssCeiling
@@ -5958,6 +5973,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 shutdown: bool | None | UndefinedType = Undefined,
                 mtu: int | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 flow_tracker: FlowTracker | UndefinedType = Undefined,
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
@@ -5974,6 +5990,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     shutdown: shutdown
                     mtu: Maximum Transmission Unit in bytes.
                     ip_address: IPv4 address/mask.
+                    ipv6_address_auto_config: Use SLAAC to automatically configure the IPv6 address.
                     flow_tracker: Subclass of AvdModel.
                     tcp_mss_ceiling: Subclass of AvdModel.
                     eos_cli: Multiline String with EOS CLI rendered directly on the Dps interface in the final EOS configuration.
@@ -7349,6 +7366,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         source: Subclass of AvdModel.
 
                     """
+
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
 
         class Ipv6NdPrefixesItem(AvdModel):
             """Subclass of AvdModel."""
@@ -12630,6 +12652,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_nat": {"type": IpNat},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
             "ipv6_address_link_local": {"type": str},
             "ipv6_nd_ra_disabled": {"type": bool},
             "ipv6_nd_managed_config_flag": {"type": bool},
@@ -12772,6 +12796,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         ipv6_enable: bool | None
         ipv6_address: str | None
+        """IPv6_address/Mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         ipv6_address_link_local: str | None
         """Link local IPv6 address/mask."""
         ipv6_nd_ra_disabled: bool | None
@@ -12963,6 +12996,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_nat: IpNat | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_address_link_local: str | None | UndefinedType = Undefined,
                 ipv6_nd_ra_disabled: bool | None | UndefinedType = Undefined,
                 ipv6_nd_managed_config_flag: bool | None | UndefinedType = Undefined,
@@ -13082,7 +13117,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_helpers: Subclass of AvdIndexedList with `IpHelpersItem` items. Primary key is `ip_helper` (`str`).
                     ip_nat: Subclass of AvdModel.
                     ipv6_enable: ipv6_enable
-                    ipv6_address: ipv6_address
+                    ipv6_address: IPv6_address/Mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     ipv6_address_link_local: Link local IPv6 address/mask.
                     ipv6_nd_ra_disabled: ipv6_nd_ra_disabled
                     ipv6_nd_managed_config_flag: ipv6_nd_managed_config_flag
@@ -17743,6 +17783,68 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class IpTacacs(AvdModel):
+        """Subclass of AvdModel."""
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            source_interface: str
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        source_interface: source_interface
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"source_interface": {"type": str}, "vrfs": {"type": Vrfs}}
+        source_interface: str | None
+        """Define `source_interface` for VRF default."""
+        vrfs: Vrfs
+        """
+        Define `source interfaces` for any VRF other than default.
+
+        Subclass of AvdIndexedList with
+        `VrfsItem` items. Primary key is `name` (`str`).
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, source_interface: str | None | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+                """
+                IpTacacs.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    source_interface: Define `source_interface` for VRF default.
+                    vrfs:
+                       Define `source interfaces` for any VRF other than default.
+
+                       Subclass of AvdIndexedList with
+                       `VrfsItem` items. Primary key is `name` (`str`).
+
+                """
+
     class IpTacacsSourceInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -20386,6 +20488,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         IpAddressSecondaries._item_type = str
 
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
         class Mpls(AvdModel):
             """Subclass of AvdModel."""
 
@@ -20458,6 +20565,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_address_secondaries": {"type": IpAddressSecondaries},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
             "ip_proxy_arp": {"type": bool},
             "ospf_area": {"type": str},
             "mpls": {"type": Mpls},
@@ -20483,6 +20592,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_enable: bool | None
         ipv6_address: str | None
         """IPv6_address/Mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         ip_proxy_arp: bool | None
         ospf_area: str | None
         mpls: Mpls
@@ -20514,6 +20631,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ip_proxy_arp: bool | None | UndefinedType = Undefined,
                 ospf_area: str | None | UndefinedType = Undefined,
                 mpls: Mpls | UndefinedType = Undefined,
@@ -20541,6 +20660,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_address_secondaries: Subclass of AvdList with `str` items.
                     ipv6_enable: ipv6_enable
                     ipv6_address: IPv6_address/Mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     ip_proxy_arp: ip_proxy_arp
                     ospf_area: ospf_area
                     mpls: Subclass of AvdModel.
@@ -21860,6 +21984,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "enable_unix": {"type": bool},
             "https_ssl_profile": {"type": str},
             "default_services": {"type": bool},
+            "session_timeout": {"type": int},
             "enable_vrfs": {"type": EnableVrfs},
             "protocol_https_certificate": {"type": ProtocolHttpsCertificate},
         }
@@ -21870,6 +21995,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """SSL Profile Name."""
         default_services: bool | None
         """Enable default services: capi-doc and tapagg."""
+        session_timeout: int | None
+        """
+        User session timeout value in minutes.
+        EOS default is 1440 minutes.
+        """
         enable_vrfs: EnableVrfs
         """Subclass of AvdIndexedList with `EnableVrfsItem` items. Primary key is `name` (`str`)."""
         protocol_https_certificate: ProtocolHttpsCertificate
@@ -21885,6 +22015,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 enable_unix: bool | None | UndefinedType = Undefined,
                 https_ssl_profile: str | None | UndefinedType = Undefined,
                 default_services: bool | None | UndefinedType = Undefined,
+                session_timeout: int | None | UndefinedType = Undefined,
                 enable_vrfs: EnableVrfs | UndefinedType = Undefined,
                 protocol_https_certificate: ProtocolHttpsCertificate | UndefinedType = Undefined,
             ) -> None:
@@ -21900,6 +22031,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enable_unix: enable_unix
                     https_ssl_profile: SSL Profile Name.
                     default_services: Enable default services: capi-doc and tapagg.
+                    session_timeout:
+                       User session timeout value in minutes.
+                       EOS default is 1440 minutes.
                     enable_vrfs: Subclass of AvdIndexedList with `EnableVrfsItem` items. Primary key is `name` (`str`).
                     protocol_https_certificate: Subclass of AvdModel.
 
@@ -22283,6 +22417,159 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "forced 40gfull",
             "forced 50gfull",
         ]
+
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ra(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RxAccept(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                    default_route: bool | None
+                    """Accept default route from received Router Advertisements."""
+                    route_preference: bool | None
+                    """Accept route preference from received Router Advertisements."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RxAccept.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                default_route: Accept default route from received Router Advertisements.
+                                route_preference: Accept route preference from received Router Advertisements.
+
+                            """
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                disabled: bool | None
+                """Disable Router Advertisement messages on the interface."""
+                rx_accept: RxAccept
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                        """
+                        Ra.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: Disable Router Advertisement messages on the interface.
+                            rx_accept: Subclass of AvdModel.
+
+                        """
+
+            class PrefixesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "ipv6_prefix": {"type": str},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                    "no_autoconfig_flag": {"type": bool},
+                }
+                ipv6_prefix: str
+                valid_lifetime: str | None
+                """Valid lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                preferred_lifetime: str | None
+                """Preferred lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                no_autoconfig_flag: bool | None
+                """Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        ipv6_prefix: str | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PrefixesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv6_prefix: ipv6_prefix
+                            valid_lifetime: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            preferred_lifetime: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            no_autoconfig_flag: Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
+
+                        """
+
+            class Prefixes(AvdIndexedList[str, PrefixesItem]):
+                """Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ipv6_prefix"
+
+            Prefixes._item_type = PrefixesItem
+
+            _fields: ClassVar[dict] = {"ra": {"type": Ra}, "managed_config_flag": {"type": bool}, "prefixes": {"type": Prefixes}}
+            ra: Ra
+            """
+            Router Advertisement.
+
+            Subclass of AvdModel.
+            """
+            managed_config_flag: bool | None
+            """Set the "Managed Address Configuration" (M) flag in Router Advertisements."""
+            prefixes: Prefixes
+            """
+            IPv6 prefixes to include in Router Advertisements.
+
+            Subclass of AvdIndexedList with `PrefixesItem`
+            items. Primary key is `ipv6_prefix` (`str`).
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ra: Ra | UndefinedType = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
+                    prefixes: Prefixes | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ra:
+                           Router Advertisement.
+
+                           Subclass of AvdModel.
+                        managed_config_flag: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+                        prefixes:
+                           IPv6 prefixes to include in Router Advertisements.
+
+                           Subclass of AvdIndexedList with `PrefixesItem`
+                           items. Primary key is `ipv6_prefix` (`str`).
+
+                    """
+
         Type: TypeAlias = Literal["oob", "inband"]
 
         class Lldp(AvdModel):
@@ -22549,6 +22836,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_address": {"type": str},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
+            "ipv6_nd": {"type": Ipv6Nd},
             "type": {"type": str, "default": "oob"},
             "gateway": {"type": str},
             "ipv6_gateway": {"type": str},
@@ -22571,7 +22861,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """IPv4_address/Mask."""
         ipv6_enable: bool | None
         ipv6_address: str | None
-        """IPv6_address/Mask."""
+        """IPv6 address with prefix length."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
+        ipv6_nd: Ipv6Nd
+        """
+        IPv6 Neighbor Discovery protocol.
+
+        Subclass of AvdModel.
+        """
         type: Type
         """
         For documentation purposes only.
@@ -22610,6 +22914,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_address: str | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 type: Type | UndefinedType = Undefined,
                 gateway: str | None | UndefinedType = Undefined,
                 ipv6_gateway: str | None | UndefinedType = Undefined,
@@ -22634,7 +22941,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     vrf: VRF Name.
                     ip_address: IPv4_address/Mask.
                     ipv6_enable: ipv6_enable
-                    ipv6_address: IPv6_address/Mask.
+                    ipv6_address: IPv6 address with prefix length.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
+                    ipv6_nd:
+                       IPv6 Neighbor Discovery protocol.
+
+                       Subclass of AvdModel.
                     type: For documentation purposes only.
                     gateway: IPv4 address of default gateway in management VRF.
                     ipv6_gateway: IPv6 address of default gateway in management VRF.
@@ -32581,6 +32897,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
         class Ipv6NdPrefixesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -32627,6 +32948,153 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _primary_key: ClassVar[str] = "ipv6_prefix"
 
         Ipv6NdPrefixes._item_type = Ipv6NdPrefixesItem
+
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ra(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RxAccept(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                    default_route: bool | None
+                    """Accept default route from received Router Advertisements."""
+                    route_preference: bool | None
+                    """Accept route preference from received Router Advertisements."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RxAccept.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                default_route: Accept default route from received Router Advertisements.
+                                route_preference: Accept route preference from received Router Advertisements.
+
+                            """
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                disabled: bool | None
+                """Disable Router Advertisement messages on the interface."""
+                rx_accept: RxAccept
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                        """
+                        Ra.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: Disable Router Advertisement messages on the interface.
+                            rx_accept: Subclass of AvdModel.
+
+                        """
+
+            class PrefixesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "ipv6_prefix": {"type": str},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                    "no_autoconfig_flag": {"type": bool},
+                }
+                ipv6_prefix: str
+                valid_lifetime: str | None
+                """Valid lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                preferred_lifetime: str | None
+                """Preferred lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                no_autoconfig_flag: bool | None
+                """Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        ipv6_prefix: str | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PrefixesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv6_prefix: ipv6_prefix
+                            valid_lifetime: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            preferred_lifetime: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            no_autoconfig_flag: Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
+
+                        """
+
+            class Prefixes(AvdIndexedList[str, PrefixesItem]):
+                """Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ipv6_prefix"
+
+            Prefixes._item_type = PrefixesItem
+
+            _fields: ClassVar[dict] = {"ra": {"type": Ra}, "managed_config_flag": {"type": bool}, "prefixes": {"type": Prefixes}}
+            ra: Ra
+            """
+            Router Advertisement.
+
+            Subclass of AvdModel.
+            """
+            managed_config_flag: bool | None
+            """Set the "Managed Address Configuration" (M) flag in Router Advertisements."""
+            prefixes: Prefixes
+            """
+            IPv6 prefixes to include in Router Advertisements.
+
+            Subclass of AvdIndexedList with `PrefixesItem`
+            items. Primary key is `ipv6_prefix` (`str`).
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ra: Ra | UndefinedType = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
+                    prefixes: Prefixes | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ra:
+                           Router Advertisement.
+
+                           Subclass of AvdModel.
+                        managed_config_flag: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+                        prefixes:
+                           IPv6 prefixes to include in Router Advertisements.
+
+                           Subclass of AvdIndexedList with `PrefixesItem`
+                           items. Primary key is `ipv6_prefix` (`str`).
+
+                    """
 
         class Pim(AvdModel):
             """Subclass of AvdModel."""
@@ -35063,10 +35531,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_nat": {"type": IpNat},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
             "ipv6_address_link_local": {"type": str},
             "ipv6_nd_ra_disabled": {"type": bool},
             "ipv6_nd_managed_config_flag": {"type": bool},
             "ipv6_nd_prefixes": {"type": Ipv6NdPrefixes},
+            "ipv6_nd": {"type": Ipv6Nd},
             "access_group_in": {"type": str},
             "access_group_out": {"type": str},
             "ipv6_access_group_in": {"type": str},
@@ -35196,12 +35667,26 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_enable: bool | None
         ipv6_address: str | None
         """IPv6 address/mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         ipv6_address_link_local: str | None
         """Link local IPv6 address/mask."""
         ipv6_nd_ra_disabled: bool | None
         ipv6_nd_managed_config_flag: bool | None
         ipv6_nd_prefixes: Ipv6NdPrefixes
         """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+        ipv6_nd: Ipv6Nd
+        """
+        IPv6 Neighbor Discovery protocol.
+
+        Subclass of AvdModel.
+        """
         access_group_in: str | None
         """Access list name."""
         access_group_out: str | None
@@ -35318,10 +35803,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_nat: IpNat | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_address_link_local: str | None | UndefinedType = Undefined,
                 ipv6_nd_ra_disabled: bool | None | UndefinedType = Undefined,
                 ipv6_nd_managed_config_flag: bool | None | UndefinedType = Undefined,
                 ipv6_nd_prefixes: Ipv6NdPrefixes | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 access_group_in: str | None | UndefinedType = Undefined,
                 access_group_out: str | None | UndefinedType = Undefined,
                 ipv6_access_group_in: str | None | UndefinedType = Undefined,
@@ -35418,10 +35906,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_nat: Subclass of AvdModel.
                     ipv6_enable: ipv6_enable
                     ipv6_address: IPv6 address/mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     ipv6_address_link_local: Link local IPv6 address/mask.
                     ipv6_nd_ra_disabled: ipv6_nd_ra_disabled
                     ipv6_nd_managed_config_flag: ipv6_nd_managed_config_flag
                     ipv6_nd_prefixes: Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
+                    ipv6_nd:
+                       IPv6 Neighbor Discovery protocol.
+
+                       Subclass of AvdModel.
                     access_group_in: Access list name.
                     access_group_out: Access list name.
                     ipv6_access_group_in: IPv6 access list name.
@@ -39313,6 +39810,110 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         paths: paths
                         ecmp: ecmp
+
+                    """
+
+        class RouteDistinguisher(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AssignmentAuto(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Range(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"start": {"type": int}, "end": {"type": int}}
+                    start: int
+                    """Start of range. EOS default is 4096."""
+                    end: int
+                    """
+                    End of range. Must be greater than or equal to `start`.
+                    EOS default is 65535.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, start: int | UndefinedType = Undefined, end: int | UndefinedType = Undefined) -> None:
+                            """
+                            Range.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                start: Start of range. EOS default is 4096.
+                                end:
+                                   End of range. Must be greater than or equal to `start`.
+                                   EOS default is 65535.
+
+                            """
+
+                class AddressFamilies(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                AddressFamilies._item_type = str
+
+                _fields: ClassVar[dict] = {"range": {"type": Range}, "address_families": {"type": AddressFamilies}}
+                range: Range
+                """
+                Range for the 2-byte assigned number field of RD.
+                The range is inclusive of start and end values.
+                Subclass of AvdModel.
+                """
+                address_families: AddressFamilies
+                """
+                Address families for which to enable automatic RD assignment.
+                Each address family has its own range
+                allocation.
+
+                Subclass of AvdList with `str` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, range: Range | UndefinedType = Undefined, address_families: AddressFamilies | UndefinedType = Undefined) -> None:
+                        """
+                        AssignmentAuto.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            range:
+                               Range for the 2-byte assigned number field of RD.
+                               The range is inclusive of start and end values.
+                               Subclass of AvdModel.
+                            address_families:
+                               Address families for which to enable automatic RD assignment.
+                               Each address family has its own range
+                               allocation.
+
+                               Subclass of AvdList with `str` items.
+
+                        """
+
+            _fields: ClassVar[dict] = {"assignment_auto": {"type": AssignmentAuto}}
+            assignment_auto: AssignmentAuto
+            """
+            Automatic Route Distinguisher (auto RD) feature.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, assignment_auto: AssignmentAuto | UndefinedType = Undefined) -> None:
+                    """
+                    RouteDistinguisher.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        assignment_auto:
+                           Automatic Route Distinguisher (auto RD) feature.
+
+                           Subclass of AvdModel.
 
                     """
 
@@ -56105,6 +56706,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "graceful_restart": {"type": GracefulRestart},
             "graceful_restart_helper": {"type": GracefulRestartHelper},
             "maximum_paths": {"type": MaximumPaths},
+            "route_distinguisher": {"type": RouteDistinguisher},
             "updates": {"type": Updates},
             "bgp_cluster_id": {"type": str},
             "bgp_defaults": {"type": BgpDefaults},
@@ -56163,6 +56765,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         graceful_restart_helper: GracefulRestartHelper
         """Subclass of AvdModel."""
         maximum_paths: MaximumPaths
+        """Subclass of AvdModel."""
+        route_distinguisher: RouteDistinguisher
         """Subclass of AvdModel."""
         updates: Updates
         """Subclass of AvdModel."""
@@ -56256,6 +56860,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 graceful_restart: GracefulRestart | UndefinedType = Undefined,
                 graceful_restart_helper: GracefulRestartHelper | UndefinedType = Undefined,
                 maximum_paths: MaximumPaths | UndefinedType = Undefined,
+                route_distinguisher: RouteDistinguisher | UndefinedType = Undefined,
                 updates: Updates | UndefinedType = Undefined,
                 bgp_cluster_id: str | None | UndefinedType = Undefined,
                 bgp_defaults: BgpDefaults | UndefinedType = Undefined,
@@ -56310,6 +56915,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     graceful_restart: Subclass of AvdModel.
                     graceful_restart_helper: Subclass of AvdModel.
                     maximum_paths: Subclass of AvdModel.
+                    route_distinguisher: Subclass of AvdModel.
                     updates: Subclass of AvdModel.
                     bgp_cluster_id: IP Address A.B.C.D.
                     bgp_defaults:
@@ -65676,6 +66282,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class TunnelInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
+
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
@@ -65721,6 +66332,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_address": {"type": str},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
             "access_group_in": {"type": str},
             "access_group_out": {"type": str},
             "ipv6_access_group_in": {"type": str},
@@ -65749,6 +66362,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_enable: bool | None
         ipv6_address: str | None
         """IPv6_address/Mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         access_group_in: str | None
         """IPv4 ACL Name for ingress."""
         access_group_out: str | None
@@ -65809,6 +66430,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_address: str | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 access_group_in: str | None | UndefinedType = Undefined,
                 access_group_out: str | None | UndefinedType = Undefined,
                 ipv6_access_group_in: str | None | UndefinedType = Undefined,
@@ -65839,6 +66462,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_address: IPv4_address/Mask.
                     ipv6_enable: ipv6_enable
                     ipv6_address: IPv6_address/Mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     access_group_in: IPv4 ACL Name for ingress.
                     access_group_out: IPv4 ACL Name for egress.
                     ipv6_access_group_in: IPv6 ACL Name for ingress.
@@ -66550,6 +67178,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         source: Subclass of AvdModel.
 
                     """
+
+        class Ipv6Addresses(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        Ipv6Addresses._item_type = str
 
         class Ipv6AddressVirtuals(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -68253,6 +68886,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "dhcp_server_ipv6": {"type": bool},
             "ipv6_enable": {"type": bool},
             "ipv6_address": {"type": str},
+            "ipv6_addresses": {"type": Ipv6Addresses},
+            "ipv6_address_auto_config": {"type": bool},
             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
             "ipv6_address_link_local": {"type": str},
             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -68345,6 +68980,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_enable: bool | None
         ipv6_address: str | None
         """IPv6_address/Mask."""
+        ipv6_addresses: Ipv6Addresses
+        """Subclass of AvdList with `str` items."""
+        ipv6_address_auto_config: bool | None
+        """
+        Use SLAAC to automatically configure the IPv6 address.
+        This option is mutually exclusive with
+        `ipv6_addresses`.
+        """
         ipv6_address_virtuals: Ipv6AddressVirtuals
         """
         The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
@@ -68487,6 +69130,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dhcp_server_ipv6: bool | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
+                ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                ipv6_address_auto_config: bool | None | UndefinedType = Undefined,
                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
                 ipv6_address_link_local: str | None | UndefinedType = Undefined,
                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -68569,6 +69214,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     dhcp_server_ipv6: Enable IPv6 DHCP server.
                     ipv6_enable: ipv6_enable
                     ipv6_address: IPv6_address/Mask.
+                    ipv6_addresses: Subclass of AvdList with `str` items.
+                    ipv6_address_auto_config:
+                       Use SLAAC to automatically configure the IPv6 address.
+                       This option is mutually exclusive with
+                       `ipv6_addresses`.
                     ipv6_address_virtuals:
                        The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
 
@@ -69716,6 +70366,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_routing_ipv6_interfaces": {"type": bool},
         "ip_security": {"type": IpSecurity},
         "ip_ssh_client": {"type": IpSshClient},
+        "ip_tacacs": {"type": IpTacacs},
         "ip_tacacs_source_interfaces": {"type": IpTacacsSourceInterfaces},
         "ip_telnet_client": {"type": IpTelnetClient},
         "ip_tftp_client": {"type": IpTftpClient},
@@ -70128,6 +70779,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     ip_ssh_client: IpSshClient
     """Subclass of AvdModel."""
+    ip_tacacs: IpTacacs
+    """Subclass of AvdModel."""
     ip_tacacs_source_interfaces: IpTacacsSourceInterfaces
     """Subclass of AvdList with `IpTacacsSourceInterfacesItem` items."""
     ip_telnet_client: IpTelnetClient
@@ -70533,6 +71186,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
             ip_security: IpSecurity | UndefinedType = Undefined,
             ip_ssh_client: IpSshClient | UndefinedType = Undefined,
+            ip_tacacs: IpTacacs | UndefinedType = Undefined,
             ip_tacacs_source_interfaces: IpTacacsSourceInterfaces | UndefinedType = Undefined,
             ip_telnet_client: IpTelnetClient | UndefinedType = Undefined,
             ip_tftp_client: IpTftpClient | UndefinedType = Undefined,
@@ -70851,6 +71505,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
                 ip_security: Subclass of AvdModel.
                 ip_ssh_client: Subclass of AvdModel.
+                ip_tacacs: Subclass of AvdModel.
                 ip_tacacs_source_interfaces: Subclass of AvdList with `IpTacacsSourceInterfacesItem` items.
                 ip_telnet_client: Subclass of AvdModel.
                 ip_tftp_client: Subclass of AvdModel.

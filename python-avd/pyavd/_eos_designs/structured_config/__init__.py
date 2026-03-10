@@ -24,10 +24,9 @@ from .underlay import AvdStructuredConfigUnderlay
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
-    from ansible.template import Templar
-
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._eos_designs.schema import EosDesigns
+    from pyavd._utils import AVDTemplar
 
     from .structured_config_generator import StructuredConfigGenerator
 
@@ -63,7 +62,7 @@ def get_structured_config(
     inputs: EosDesigns,
     all_facts: Mapping[str, EosDesignsFacts],
     hostvars: MutableMapping | None = None,
-    templar: Templar | None = None,
+    templar: AVDTemplar | None = None,
     digital_twin: bool = False,
 ) -> EosCliConfigGen:
     """

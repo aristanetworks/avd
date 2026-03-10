@@ -22,6 +22,7 @@ loopback_interfaces:
     description: TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
     vrf: TENANT_A_PROJECT02
     ip_address: 10.1.255.3/32
+    ipv6_address_auto_config: true
     hardware_forwarding_id: true
 
   - name: Loopback99
@@ -34,7 +35,8 @@ loopback_interfaces:
       - 192.168.1.1/32
       - 10.0.0.254/32
     ipv6_enable: true
-    ipv6_address: 2002::CAFE/64
+    ipv6_addresses:
+      - 2002::CAFE/64
     isis_enable: ISIS_TEST
     isis_bfd: true
     isis_passive: true
@@ -47,7 +49,8 @@ loopback_interfaces:
   - name: Loopback10
     description: Test_Node_Segment
     ip_address: 10.2.255.3/32
-    ipv6_address: 2002::CAFE/128
+    ipv6_addresses:
+      - 2002::CAFE/128
     node_segment:
       ipv4_index: 34
       ipv6_index: 23
