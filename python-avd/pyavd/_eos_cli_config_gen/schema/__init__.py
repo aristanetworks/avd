@@ -26303,7 +26303,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Host name."""
                 description: str | None
                 """
-                Description in the for of
+                Description in the form of
                 ```
                 description
                 <description>
@@ -26350,7 +26350,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             name: Host name.
                             description:
-                               Description in the for of
+                               Description in the form of
                                ```
                                description
                                <description>

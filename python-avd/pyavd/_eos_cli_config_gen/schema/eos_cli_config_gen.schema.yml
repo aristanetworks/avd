@@ -10246,7 +10246,7 @@ keys:
                     type: str
                   description:
                     type: str
-                    description: 'Description in the for of
+                    description: 'Description in the form of
 
                       ```
 
