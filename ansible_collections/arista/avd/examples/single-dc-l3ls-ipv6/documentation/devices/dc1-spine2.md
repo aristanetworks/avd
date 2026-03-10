@@ -231,12 +231,12 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_dc1-leaf1a_Ethernet2 | - | 2001:db8:2:1::1/64 | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_dc1-leaf1b_Ethernet2 | - | 2001:db8:2:3::1/64 | default | 1500 | False | - | - | - | - |
-| Ethernet3 | P2P_dc1-leaf2a_Ethernet2 | - | 2001:db8:2:5::1/64 | default | 1500 | False | - | - | - | - |
-| Ethernet4 | P2P_dc1-leaf2b_Ethernet2 | - | 2001:db8:2:7::1/64 | default | 1500 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
+| Ethernet1 | P2P_dc1-leaf1a_Ethernet2 | - | 2001:db8:2:1::1/64 | default | 1500 | False | - | - | - | - | - |
+| Ethernet2 | P2P_dc1-leaf1b_Ethernet2 | - | 2001:db8:2:3::1/64 | default | 1500 | False | - | - | - | - | - |
+| Ethernet3 | P2P_dc1-leaf2a_Ethernet2 | - | 2001:db8:2:5::1/64 | default | 1500 | False | - | - | - | - | - |
+| Ethernet4 | P2P_dc1-leaf2b_Ethernet2 | - | 2001:db8:2:7::1/64 | default | 1500 | False | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 

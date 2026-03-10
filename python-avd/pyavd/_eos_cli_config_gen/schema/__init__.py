@@ -3892,6 +3892,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "sflow": {"type": bool},
             "sflowaddr": {"type": str},
             "cvconfig": {"type": bool},
+            "cv_loss_timeout": {"type": int},
         }
         cvaddrs: Cvaddrs
         """
@@ -3993,6 +3994,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         cvconfig: bool | None
         """Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false)."""
+        cv_loss_timeout: int | None
+        """
+        Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to
+        CloudVision after a configuration change.
+        The recommended timeout is five minutes.
+        """
 
         if TYPE_CHECKING:
 
@@ -4020,6 +4027,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 sflow: bool | None | UndefinedType = Undefined,
                 sflowaddr: str | None | UndefinedType = Undefined,
                 cvconfig: bool | None | UndefinedType = Undefined,
+                cv_loss_timeout: int | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 DaemonTerminattr.
@@ -4093,6 +4101,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        ECO sFlow Collector address to listen on to receive sFlow packets (TerminAttr default
                        "127.0.0.1:6343").
                     cvconfig: Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
+                    cv_loss_timeout:
+                       Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to
+                       CloudVision after a configuration change.
+                       The recommended timeout is five minutes.
 
                 """
 
@@ -33148,6 +33160,153 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Ipv6NdPrefixes._item_type = Ipv6NdPrefixesItem
 
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ra(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RxAccept(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"default_route": {"type": bool}, "route_preference": {"type": bool}}
+                    default_route: bool | None
+                    """Accept default route from received Router Advertisements."""
+                    route_preference: bool | None
+                    """Accept route preference from received Router Advertisements."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, default_route: bool | None | UndefinedType = Undefined, route_preference: bool | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RxAccept.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                default_route: Accept default route from received Router Advertisements.
+                                route_preference: Accept route preference from received Router Advertisements.
+
+                            """
+
+                _fields: ClassVar[dict] = {"disabled": {"type": bool}, "rx_accept": {"type": RxAccept}}
+                disabled: bool | None
+                """Disable Router Advertisement messages on the interface."""
+                rx_accept: RxAccept
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled: bool | None | UndefinedType = Undefined, rx_accept: RxAccept | UndefinedType = Undefined) -> None:
+                        """
+                        Ra.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled: Disable Router Advertisement messages on the interface.
+                            rx_accept: Subclass of AvdModel.
+
+                        """
+
+            class PrefixesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "ipv6_prefix": {"type": str},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                    "no_autoconfig_flag": {"type": bool},
+                }
+                ipv6_prefix: str
+                valid_lifetime: str | None
+                """Valid lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                preferred_lifetime: str | None
+                """Preferred lifetime in seconds '<0-4294967295>' or 'infinite'."""
+                no_autoconfig_flag: bool | None
+                """Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        ipv6_prefix: str | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PrefixesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv6_prefix: ipv6_prefix
+                            valid_lifetime: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            preferred_lifetime: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+                            no_autoconfig_flag: Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
+
+                        """
+
+            class Prefixes(AvdIndexedList[str, PrefixesItem]):
+                """Subclass of AvdIndexedList with `PrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ipv6_prefix"
+
+            Prefixes._item_type = PrefixesItem
+
+            _fields: ClassVar[dict] = {"ra": {"type": Ra}, "managed_config_flag": {"type": bool}, "prefixes": {"type": Prefixes}}
+            ra: Ra
+            """
+            Router Advertisement.
+
+            Subclass of AvdModel.
+            """
+            managed_config_flag: bool | None
+            """Set the "Managed Address Configuration" (M) flag in Router Advertisements."""
+            prefixes: Prefixes
+            """
+            IPv6 prefixes to include in Router Advertisements.
+
+            Subclass of AvdIndexedList with `PrefixesItem`
+            items. Primary key is `ipv6_prefix` (`str`).
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ra: Ra | UndefinedType = Undefined,
+                    managed_config_flag: bool | None | UndefinedType = Undefined,
+                    prefixes: Prefixes | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ra:
+                           Router Advertisement.
+
+                           Subclass of AvdModel.
+                        managed_config_flag: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+                        prefixes:
+                           IPv6 prefixes to include in Router Advertisements.
+
+                           Subclass of AvdIndexedList with `PrefixesItem`
+                           items. Primary key is `ipv6_prefix` (`str`).
+
+                    """
+
         class Pim(AvdModel):
             """Subclass of AvdModel."""
 
@@ -35589,6 +35748,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ipv6_nd_ra_disabled": {"type": bool},
             "ipv6_nd_managed_config_flag": {"type": bool},
             "ipv6_nd_prefixes": {"type": Ipv6NdPrefixes},
+            "ipv6_nd": {"type": Ipv6Nd},
             "access_group_in": {"type": str},
             "access_group_out": {"type": str},
             "ipv6_access_group_in": {"type": str},
@@ -35732,6 +35892,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ipv6_nd_managed_config_flag: bool | None
         ipv6_nd_prefixes: Ipv6NdPrefixes
         """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+        ipv6_nd: Ipv6Nd
+        """
+        IPv6 Neighbor Discovery protocol.
+
+        Subclass of AvdModel.
+        """
         access_group_in: str | None
         """Access list name."""
         access_group_out: str | None
@@ -35854,6 +36020,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_nd_ra_disabled: bool | None | UndefinedType = Undefined,
                 ipv6_nd_managed_config_flag: bool | None | UndefinedType = Undefined,
                 ipv6_nd_prefixes: Ipv6NdPrefixes | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 access_group_in: str | None | UndefinedType = Undefined,
                 access_group_out: str | None | UndefinedType = Undefined,
                 ipv6_access_group_in: str | None | UndefinedType = Undefined,
@@ -35959,6 +36126,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_nd_ra_disabled: ipv6_nd_ra_disabled
                     ipv6_nd_managed_config_flag: ipv6_nd_managed_config_flag
                     ipv6_nd_prefixes: Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
+                    ipv6_nd:
+                       IPv6 Neighbor Discovery protocol.
+
+                       Subclass of AvdModel.
                     access_group_in: Access list name.
                     access_group_out: Access list name.
                     ipv6_access_group_in: IPv6 access list name.

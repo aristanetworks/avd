@@ -354,10 +354,10 @@ vlan 4094
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_dc1-spine1_Ethernet3 | - | 2001:db8:2:4::2/64 | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_dc1-spine2_Ethernet3 | - | 2001:db8:2:5::2/64 | default | 1500 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
+| Ethernet1 | P2P_dc1-spine1_Ethernet3 | - | 2001:db8:2:4::2/64 | default | 1500 | False | - | - | - | - | - |
+| Ethernet2 | P2P_dc1-spine2_Ethernet3 | - | 2001:db8:2:5::2/64 | default | 1500 | False | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
