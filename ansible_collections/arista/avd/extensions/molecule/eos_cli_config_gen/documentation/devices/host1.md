@@ -1083,9 +1083,9 @@ management console
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | True | True |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | True | True | 60 minutes |
 
 Management HTTPS is using the SSL profile SSL_PROFILE
 
@@ -1194,6 +1194,7 @@ lRIvIpbuqzZ1QzAdWwCX/5mgBk/xoI88N3EcxvgEJJhiXihYwW/630KkKETqnu64
 -----END PRIVATE KEY-----
    EOF
    no shutdown
+   session timeout 60 minutes
    !
    vrf MGMT
       no shutdown
@@ -2284,7 +2285,7 @@ kernel software forwarding ecmp
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m
    no shutdown
 ```
 
@@ -4807,7 +4808,7 @@ interface Dps1
 | Ethernet55 | DHCPv6 Relay Testing | - | a0::1/64 | default | - | False | - | - | - | - | - |
 | Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - |
 | Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - |
-| Ethernet77 | MLAG_PEER_DC1-LEAF1B_Ethernet8 | 8 | *auto-config | *default | *- | *- | *- | - | *- | *- | *- |
+| Ethernet77 | MLAG_PEER_DC1-LEAF1B_Ethernet8 | 8 | *auto-config | *default | *- | *- | *- | *- | *- | *- | *- |
 
 *Inherited from Port-Channel Interface
 
@@ -6212,11 +6213,11 @@ interface Ethernet89
 
 ##### IPv6
 
-| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - |
-| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - |
-| Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | - | True | - | - |
+| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
+| Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - | - |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - | - |
+| Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | True | default-route, route-preference | True | - | - |
 
 ##### VRRP Details
 
@@ -6554,6 +6555,9 @@ interface Port-Channel100.101
    logging event link-status
    encapsulation dot1q vlan 101
    ipv6 address cafe::b4
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
    ipv6 nd managed-config-flag
 !
 interface Port-Channel100.102

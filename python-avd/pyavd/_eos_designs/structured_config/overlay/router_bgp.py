@@ -9,8 +9,8 @@ from typing import TYPE_CHECKING, Literal, Protocol, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, default, strip_empties_from_dict
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AvdDeprecationWarning
+from pyavd._utils import AvdStringFormatter, Undefined, default, strip_empties_from_dict
 from pyavd._utils.run_once import run_once_method
 from pyavd.j2filters import natural_sort
 
@@ -354,16 +354,39 @@ class RouterBgpMixin(Protocol):
                 if not self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain and self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
                     msg = "The all-active EVPN Gateway redundancy feature requires evpn_gateway.evpn_l3.inter_domain to be enabled."
                     raise AristaAvdError(msg)
+
+                # Check if both old and new configuration models are defined
+                d_path_defined = self.shared_utils.node_config.evpn_gateway._get_defined_attr("d_path") is not Undefined
+                all_active_multihoming_domain_ids_defined = (
+                    self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("evpn_domain_id_local") is not Undefined
+                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("evpn_domain_id_remote") is not Undefined
+                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming._get_defined_attr("enable_d_path") is not Undefined
+                )
+                if d_path_defined and all_active_multihoming_domain_ids_defined:
+                    raise AvdDeprecationWarning(
+                        key=["evpn_gateway", "all_active_multihoming"],
+                        new_key="d_path",
+                        conflict=True,
+                    )
+
+                # Use OR to select from whichever model is defined
                 self.structured_config.router_bgp.address_family_evpn._update(
-                    domain_identifier=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_local,
-                    domain_identifier_remote=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_remote,
+                    domain_identifier=self.shared_utils.node_config.evpn_gateway.d_path.local_domain_id
+                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_local,
+                    domain_identifier_remote=self.shared_utils.node_config.evpn_gateway.d_path.remote_domain_id
+                    or self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_remote,
                 )
                 self.structured_config.router_bgp.address_family_evpn.evpn_ethernet_segment.append_new(
                     domain="all",
                     identifier=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier,
                     route_target_import=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import,
                 )
-                if self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enable_d_path:
+
+                # Use AND for boolean with default true - if either is false, result is false
+                if (
+                    self.shared_utils.node_config.evpn_gateway.d_path.enabled
+                    and self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enable_d_path
+                ):
                     self.structured_config.router_bgp.bgp.bestpath.d_path = True
             if self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
                 self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes._update(

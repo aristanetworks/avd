@@ -65,9 +65,9 @@ interface Management1
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -151,10 +151,10 @@ vlan internal order ascending range 1006 1199
 | Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
 | Ethernet3 | P2P_SITE1-LSR2_Ethernet3 | - | - | default | 9178 | False | - | - | - | - | - |
-| Ethernet12 | P2P_SITE2-LER1_Ethernet11 | 12 | *- | *default | *9178 | *False | *- | - | *- | *- | *- |
-| Ethernet13 | P2P_SITE2-LER1_Ethernet12 | 12 | *- | *default | *9178 | *False | *- | - | *- | *- | *- |
-| Ethernet14 | P2P_SITE2-LER1_Ethernet13 | 110 | *- | *default | *9178 | *False | *- | - | *- | *- | *- |
-| Ethernet15 | P2P_SITE2-LER1_Ethernet14 | 110 | *- | *default | *9178 | *False | *- | - | *- | *- | *- |
+| Ethernet12 | P2P_SITE2-LER1_Ethernet11 | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- |
+| Ethernet13 | P2P_SITE2-LER1_Ethernet12 | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- |
+| Ethernet14 | P2P_SITE2-LER1_Ethernet13 | 110 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- |
+| Ethernet15 | P2P_SITE2-LER1_Ethernet14 | 110 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- |
 
 *Inherited from Port-Channel Interface
 
