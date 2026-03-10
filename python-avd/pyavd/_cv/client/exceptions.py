@@ -8,43 +8,47 @@ class CVClientException(Exception):  # noqa: N818
     """Base exception."""
 
 
-class CVTimeoutError(CVClientException):
+class CVClientGRPCException(CVClientException):
+    """API call failed due to a gRPC error."""
+
+
+class CVTimeoutError(CVClientGRPCException):
     """API call timed out."""
 
 
-class CVResourceNotFound(CVClientException):
+class CVResourceNotFound(CVClientGRPCException):
     """CloudVision Resource not found."""
 
 
-class CVResourceInvalidState(CVClientException):
+class CVResourceInvalidState(CVClientGRPCException):
     """Invalid state for CloudVision Resource."""
 
 
-class CVWorkspaceBuildTimeout(CVClientException):
+class CVWorkspaceBuildTimeout(CVClientGRPCException):
     """Build of CloudVision Workspace timed out."""
 
 
-class CVWorkspaceBuildFailed(CVClientException):
+class CVWorkspaceBuildFailed(CVClientGRPCException):
     """Build of CloudVision Workspace failed."""
 
 
-class CVWorkspaceSubmitFailed(CVClientException):
+class CVWorkspaceSubmitFailed(CVClientGRPCException):
     """Failed to submit CloudVision Workspace."""
 
 
-class CVWorkspaceSubmitFailedInactiveDevices(CVClientException):
+class CVWorkspaceSubmitFailedInactiveDevices(CVClientGRPCException):
     """Failed to submit CloudVision Workspace due to the presence of inactive devices."""
 
 
-class CVWorkspaceStateTimeout(CVClientException):
+class CVWorkspaceStateTimeout(CVClientGRPCException):
     """Timed out waiting for Workspace to get to the expected state."""
 
 
-class CVChangeControlFailed(CVClientException):
+class CVChangeControlFailed(CVClientGRPCException):
     """CloudVision ChangeControl failed during execution."""
 
 
-class CVMessageSizeExceeded(CVClientException):
+class CVMessageSizeExceeded(CVClientGRPCException):
     """GRPC message to CloudVision exceeded the allowed message size."""
 
     max_size: int
@@ -57,9 +61,13 @@ class CVDuplicatedDevices(CVClientException):
     """Device inputs contain duplicated serial_number or system_mac_address."""
 
 
-class CVGRPCStatusUnavailable(CVClientException):
+class CVGRPCStatusUnavailable(CVClientGRPCException):
     """CloudVision gRPC status is unavailable."""
 
 
 class CVManifestError(CVClientException):
     """Error while creating a CVManifest instance from a user AvdManifest."""
+
+
+class CVConfigletCreationFailed(CVClientGRPCException):
+    """Creation of the CloudVision Static Studio configlet failed."""

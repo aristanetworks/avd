@@ -1,0 +1,6 @@
+{
+	"raise": {
+		"status": "INVALID_ARGUMENT",
+		"message": "static configlet ID cannot be empty"
+	}
+}

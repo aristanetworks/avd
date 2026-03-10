@@ -29,6 +29,7 @@ from pyavd._cv.api.arista.configlet.v1 import (
 )
 from pyavd._cv.api.arista.time import TimeBounds
 from pyavd._cv.api.fmp import RepeatedString
+from pyavd._cv.client.exceptions import CVClientGRPCException
 from pyavd._utils import batch
 
 from .async_decorators import GRPCRequestHandler, LimitCvVersion
@@ -103,7 +104,7 @@ class ConfigletMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ConfigletAssignmentConfig:
         """
-        Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentServiceStub.Set API.
+        Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentConfigServiceStub.Set API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -140,7 +141,7 @@ class ConfigletMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[ConfigletAssignmentKey]:
         """
-        Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentServiceStub.SetSome API.
+        Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentConfigServiceStub.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -228,7 +229,7 @@ class ConfigletMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ConfigletAssignmentConfig:
         """
-        Delete a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentServiceStub.Set API.
+        Delete a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentConfigServiceStub.Set API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -294,7 +295,7 @@ class ConfigletMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ConfigletConfig:
         """
-        Create/update a Configlet using arista.configlet.v1.ConfigletServiceStub.Set API.
+        Create/update a Configlet using arista.configlet.v1.ConfigletConfigServiceStub.Set API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -331,7 +332,7 @@ class ConfigletMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> ConfigletConfig:
         """
-        Create/update a Configlet using arista.configlet.v1.ConfigletServiceStub.Set API.
+        Create/update a Configlet using arista.configlet.v1.ConfigletConfigServiceStub.Set API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -362,11 +363,11 @@ class ConfigletMixin(Protocol):
     async def set_configlets_from_files(
         self: CVClientProtocol,
         workspace_id: str,
-        configlets: list[tuple[str, str]],
+        configlets: list[tuple[str, str, str, str]],
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> list[ConfigletKey]:
+    ) -> list[tuple[ConfigletKey, str]]:
         """
-        Create/update multiple Configlets using arista.configlet.v1.ConfigletServiceStub.SetSome API.
+        Create/update multiple Configlets using arista.configlet.v1.ConfigletConfigServiceStub.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
@@ -374,7 +375,7 @@ class ConfigletMixin(Protocol):
             timeout: Timeout in seconds.
 
         Returns:
-            List of ConfigletConfig objects after being set including any server-generated values.
+            List of (<ConfigletKey>, <gRPC error message>) tuples for Configlets that failed to be created/updated due to encountered gRPC error.
         """
         request = ConfigletConfigSetSomeRequest(values=[])
         for configlet in configlets:
@@ -391,7 +392,7 @@ class ConfigletMixin(Protocol):
 
         responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
 
-        return [response.key async for response in responses]
+        return [(response.key, response.error) async for response in responses if response.key and response.error]
 
     # Use this variant for versions below 2024.2.0 (still respecting overall min version)
     @LimitCvVersion(max_ver="2024.1.99")
@@ -399,9 +400,9 @@ class ConfigletMixin(Protocol):
     async def set_configlets_from_files(  # noqa: F811 - Redefining with decorator.
         self: CVClientProtocol,
         workspace_id: str,
-        configlets: list[tuple[str, str]],
+        configlets: list[tuple[str, str, str, str]],
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> list[ConfigletKey]:
+    ) -> list[tuple[ConfigletKey, str]]:
         """
         Create batches of configlets and do parallel calls to set_configlet_from_file for each batch.
 
@@ -411,8 +412,10 @@ class ConfigletMixin(Protocol):
             timeout: Timeout in seconds.
 
         Returns:
-            List of ConfigletConfig objects after being set including any server-generated values.
+            List of (<ConfigletKey>, <gRPC error message>) tuples for Configlets that failed to be created/updated due to encountered gRPC error.
         """
+        responses_with_errors: list[tuple[ConfigletKey, str]] = []
+
         coroutines = [
             self.set_configlet_from_file(
                 workspace_id=workspace_id,
@@ -425,12 +428,37 @@ class ConfigletMixin(Protocol):
             for configlet_id, display_name, description, file in configlets
         ]
 
-        configlet_configs = []
-
         LOGGER.info("set_configlets_from_files: Deploying %s configlets in batches of %s.", len(coroutines), PARALLEL_COROUTINES)
+        batch_offset = 0
         for index, batch_coroutines in enumerate(batch(coroutines, PARALLEL_COROUTINES), start=1):
             LOGGER.info("set_configlets_from_files: Batch %s", index)
-            configlet_configs.extend(await gather(*batch_coroutines))
+
+            # Prepare to map configlet tuples to coroutines.
+            batch_size = len(batch_coroutines)
+            batch_configlets = configlets[batch_offset : batch_offset + batch_size]
+            batch_offset += batch_size
+
+            configlet_configs = await gather(*batch_coroutines, return_exceptions=True)
+
+            # Process results of each batch. Raise for any non-gRPC error. Collect gRPC errors.
+            for (configlet_id, _, _, _), configlet_config in zip(batch_configlets, configlet_configs, strict=False):
+                # Append all GRPC errors to the list of responses_with_errors.
+                if isinstance(configlet_config, CVClientGRPCException):
+                    responses_with_errors.append(
+                        (
+                            ConfigletKey(workspace_id=workspace_id, configlet_id=configlet_id),
+                            str(configlet_config),
+                        )
+                    )
+                # Raise for any other type of Exception (FileNotFound, etc.).
+                elif isinstance(configlet_config, Exception):
+                    raise configlet_config
+                # configlet_config is not an Exception and is a ConfigletConfig object, meaning the Configlet was successfully deployed.
+                else:
+                    # We do not return anything here to have a consistent behavior with 2024.2.0+ implementation.
+                    pass
+
+        return responses_with_errors
 
     @GRPCRequestHandler(list_field="configlet_ids")
     async def delete_configlets(
@@ -440,7 +468,7 @@ class ConfigletMixin(Protocol):
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[ConfigletKey]:
         """
-        Delete a Configlet using arista.configlet.v1.ConfigletServiceStub.SetSome API.
+        Delete a Configlet using arista.configlet.v1.ConfigletConfigServiceStub.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.

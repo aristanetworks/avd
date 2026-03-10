@@ -16,7 +16,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, ParamSpec, TypeVar, get_args, g
 from grpclib import Status
 from grpclib.exceptions import GRPCError
 
-from pyavd._cv.client.exceptions import CVClientException, CVResourceNotFound, CVTimeoutError
+from pyavd._cv.client.exceptions import CVClientException, CVClientGRPCException, CVResourceNotFound, CVTimeoutError
 from pyavd._utils import batch
 
 from .constants import CVAAS_VERSION_STRING
@@ -250,7 +250,7 @@ class GRPCRequestHandler:
                                     raise new_exception
 
                             case _:
-                                raise CVClientException(*e.args, call_args, call_kwargs)
+                                raise CVClientGRPCException(*e.args, call_args, call_kwargs)
 
                     case _:
                         raise CVClientException(*e.args, call_args, call_kwargs)
