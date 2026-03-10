@@ -9,8 +9,9 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>avd_6_behaviors</samp>](## "avd_6_behaviors") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
     | [<samp>avd_design_future</samp>](## "avd_design_future") | Dictionary |  |  |  | Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version. |
-    | [<samp>&nbsp;&nbsp;accept_dhcp_default_route_for_mgmt_ip_dhcp</samp>](## "avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp") | Boolean |  | `False` |  | When enabled, AVD will generate `accept-dhcp default-route` under the management VRF when the management IP is obtained via DHCP.<br>This allows the device to accept the default route provided by the DHCP server for the management interface,<br>which is essential for out-of-band management scenarios where the management network provides routing information via DHCP. |
+    | [<samp>&nbsp;&nbsp;accept_dhcp_default_route_for_mgmt_ip_dhcp</samp>](## "avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp") | Boolean |  | `False` |  | Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'. |
     | [<samp>&nbsp;&nbsp;ip_radius_source_interface_setting</samp>](## "avd_design_future.ip_radius_source_interface_setting") | Boolean |  | `False` |  | Enable improved RADIUS source interface configuration with separate keys for VRF default and other VRFs.<br><br>When enabled:<br>- VRF default: Uses `ip_radius.source_interface`<br>- Other VRFs: Uses `ip_radius.vrfs` list<br>- Enforces VRF name uniqueness<br>- Aligns with EOS CLI behavior (where "vrf default" is implicit)<br><br>When disabled (current):<br>- Uses `ip_radius_source_interfaces` list for all VRF combinations |
+    | [<samp>&nbsp;&nbsp;ip_tacacs_source_interface_setting</samp>](## "avd_design_future.ip_tacacs_source_interface_setting") | Boolean |  | `False` |  | Enable improved TACACS source interface configuration with separate keys for VRF default and other VRFs.<br>When enabled:<br>- VRF default: Uses `ip_tacacs.source_interface`<br>- Other VRFs: Uses `ip_tacacs.vrfs` list<br>- Enforces VRF name uniqueness<br>- Aligns with EOS CLI behavior (where "vrf default" is implicit)<br>When disabled (current):<br>- Uses `ip_tacacs_source_interfaces` list for all VRF combinations |
     | [<samp>avd_digital_twin_mode</samp>](## "avd_digital_twin_mode") | Boolean |  | `False` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).<br>By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation) will replace original fabric artifacts.<br>To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated output location. |
     | [<samp>avd_eos_designs_debug</samp>](## "avd_eos_designs_debug") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>eos_designs_keep_tmp_files</samp> instead.</span> |
     | [<samp>avd_eos_designs_enforce_duplication_checks_across_all_models</samp>](## "avd_eos_designs_enforce_duplication_checks_across_all_models") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
@@ -37,9 +38,7 @@
     # Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
     avd_design_future:
 
-      # When enabled, AVD will generate `accept-dhcp default-route` under the management VRF when the management IP is obtained via DHCP.
-      # This allows the device to accept the default route provided by the DHCP server for the management interface,
-      # which is essential for out-of-band management scenarios where the management network provides routing information via DHCP.
+      # Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
       accept_dhcp_default_route_for_mgmt_ip_dhcp: <bool; default=False>
 
       # Enable improved RADIUS source interface configuration with separate keys for VRF default and other VRFs.
@@ -53,6 +52,16 @@
       # When disabled (current):
       # - Uses `ip_radius_source_interfaces` list for all VRF combinations
       ip_radius_source_interface_setting: <bool; default=False>
+
+      # Enable improved TACACS source interface configuration with separate keys for VRF default and other VRFs.
+      # When enabled:
+      # - VRF default: Uses `ip_tacacs.source_interface`
+      # - Other VRFs: Uses `ip_tacacs.vrfs` list
+      # - Enforces VRF name uniqueness
+      # - Aligns with EOS CLI behavior (where "vrf default" is implicit)
+      # When disabled (current):
+      # - Uses `ip_tacacs_source_interfaces` list for all VRF combinations
+      ip_tacacs_source_interface_setting: <bool; default=False>
 
     # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
     # Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).

@@ -63,7 +63,7 @@ $defs:
               table: node-type-common-configuration
             description: |-
               Node management interface IPv4 address/Mask or 'dhcp'.
-              When set to 'dhcp' and avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp set to true, the `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is expected to provide the gateway and routes.
+              When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is expected to provide the gateway and routes.
             type: str
           # TODO 7.0: Move mgmt_gateway to metadata
           mgmt_gateway:
@@ -72,7 +72,7 @@ $defs:
             type: str
             description: |-
               This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
-              This setting is ignored when 'mgmt_ip' is set to 'dhcp' and avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp is set to true, since the DHCP server will provide the gateway.
+              This setting is ignored when 'mgmt_ip' is set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', since the DHCP server will provide the gateway.
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
@@ -741,6 +741,21 @@ $defs:
                   inter_domain:
                     type: bool
                     default: true
+              d_path:
+                type: dict
+                keys:
+                  enabled:
+                    description: Enable D-path for use with BGP bestpath selection algorithm.
+                    type: bool
+                    default: true
+                  local_domain_id:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                    type: str
+                    required: true
+                  remote_domain_id:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                    type: str
+                    required: true
               all_active_multihoming:
                 description: |-
                   Enable Active Active Multihoming architecture for EVPN Gateways.
@@ -755,14 +770,45 @@ $defs:
                     description: Enable D-path for use with BGP bestpath selection algorithm.
                     type: bool
                     default: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 7.0.0
+                      new_key: >-
+                        <node_type_key>.defaults.evpn_gateway.d_path.enabled or
+                        <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled or
+                        <node_type_key>.node_groups[].evpn_gateway.d_path.enabled or
+                        <node_type_key>.nodes[].evpn_gateway.d_path.enabled or
+                        device_profiles[].evpn_gateway.d_path.enabled or
+                        devices[].evpn_gateway.d_path.enabled
                   evpn_domain_id_local:
                     description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                     type: str
-                    required: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 7.0.0
+                      new_key: >-
+                        <node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local or
+                        <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local or
+                        <node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local or
+                        <node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local or
+                        device_profiles[].evpn_gateway.d_path.local_domain_id_local or
+                        devices[].evpn_gateway.d_path.local_domain_id_local
                   evpn_domain_id_remote:
                     description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                     type: str
-                    required: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 7.0.0
+                      new_key: >-
+                        <node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id or
+                        <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id or
+                        <node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id or
+                        <node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id or
+                        device_profiles[].evpn_gateway.d_path.remote_domain_id or
+                        devices[].evpn_gateway.d_path.remote_domain_id
                   evpn_ethernet_segment:
                     type: dict
                     required: true

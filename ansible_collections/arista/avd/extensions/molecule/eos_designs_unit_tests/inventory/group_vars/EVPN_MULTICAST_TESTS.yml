@@ -27,10 +27,11 @@ bgp_peer_groups:
 tenants:
   - name: Tenant_A
     mac_vrf_vni_base: 10000
+    igmp:
+      fast_leave: true
     evpn_l2_multicast:
       enabled: true
       underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
-      fast_leave: true
     # TO test vxlan_flood_multicast disabled at tenants.
     vxlan_flood_multicast:
       enabled: false
@@ -79,6 +80,8 @@ tenants:
             tags: ["test_l3"]
             enabled: true
             ip_address_virtual: 10.2.11.1/24
+            igmp_snooping_querier:
+              fast_leave: false
             evpn_l2_multicast:
               enabled: false
       - name: MULTICAST_DISABLED_310_311
@@ -112,8 +115,8 @@ tenants:
       - id: 256
         name: "MULTICAST_DISABLED_256"
         tags: ["test_l2"]
-        # test for fast-leave when tenant level evpn_l2_multicast.enabled: true, evpn_l2_multicast.fast_leave: true and l2vlans.evpn_l2_multicast.enabled: false
-        # fast-leave is not expected for VLAN 256 since l2vlans.evpn_l2_multicast.enabled: false
+        # test for fast-leave when tenant level evpn_l2_multicast.enabled: true, igmp.fast_leave: true and l2vlans.evpn_l2_multicast.enabled: false
+        # fast_leave will be applied to VLAN 256 regardless of l2vlans.evpn_l2_multicast.enabled.
         evpn_l2_multicast:
           enabled: false
         # To test vxlan_flood_multicast enabled at l2vlans with underlay_multicast_group
@@ -360,8 +363,7 @@ tenants:
             tags: ["test_l3"]
             enabled: true
             ip_address_virtual: 10.2.23.1/24
-            # test for fast-leave when igmp_snooping_querier.fast_leave: true but evpn_l2_multicast.enabled is not set
-            # fast-leave is not expected for VLAN 230 since evpn_l2_multicast.enabled is not set
+            # test for fast-leave when igmp_snooping_querier.fast_leave: true
             igmp_snooping_querier:
               enabled: true
               fast_leave: true
@@ -657,20 +659,3 @@ tenants:
             enabled: true
             pim:
               enabled: true
-
-  # Test when tenant level evpn_l2_multicast.enabled: true and evpn_l2_multicast.fast_leave: true
-  - name: Tenant_F
-    mac_vrf_vni_base: 10000
-    evpn_l2_multicast:
-      enabled: true
-      fast_leave: true
-      underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
-    l2vlans:
-      - id: 251
-        name: "MULTICAST_DISABLED_251"
-        tags: ["test_l2"]
-        evpn_l2_multicast:
-          enabled: false
-      - id: 252
-        name: "MULTICAST_ENABLED_252"
-        tags: ["test_l2"]
