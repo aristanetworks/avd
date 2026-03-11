@@ -26188,7 +26188,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ```
             """
             single_line_description: str | None
-            """Description in the form of `description <description>`."""
+            """
+            Description in the form of `description <description>`.
+            Supported in EOS versions 4.32.2F and above.
+            """
             ip: str | None
             icmp_echo_size: int | None
             """Size of ICMP probe in bytes."""
@@ -26233,7 +26236,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            description
                            <description>
                            ```
-                        single_line_description: Description in the form of `description <description>`.
+                        single_line_description:
+                           Description in the form of `description <description>`.
+                           Supported in EOS versions 4.32.2F and above.
                         ip: ip
                         icmp_echo_size: Size of ICMP probe in bytes.
                         local_interfaces: local_interfaces
@@ -26310,7 +26315,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ```
                 """
                 single_line_description: str | None
-                """Description in the form of `description <description> `."""
+                """
+                Description in the form of `description <description>`.
+                Supported in EOS versions 4.32.2F and above.
+                """
                 ip: str | None
                 icmp_echo_size: int | None
                 """Size of ICMP probe in bytes."""
@@ -26355,7 +26363,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                description
                                <description>
                                ```
-                            single_line_description: Description in the form of `description <description> `.
+                            single_line_description:
+                               Description in the form of `description <description>`.
+                               Supported in EOS versions 4.32.2F and above.
                             ip: ip
                             icmp_echo_size: Size of ICMP probe in bytes.
                             local_interfaces: local_interfaces
@@ -26396,7 +26406,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ```
             """
             single_line_description: str | None
-            """Description in the form of `description <description> `."""
+            """
+            Description in the form of `description <description>`.
+            Supported in EOS versions 4.32.2F and above.
+            """
             interface_sets: InterfaceSets
             """Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`)."""
             local_interfaces: str | None
@@ -26440,7 +26453,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            description
                            <description>
                            ```
-                        single_line_description: Description in the form of `description <description> `.
+                        single_line_description:
+                           Description in the form of `description <description>`.
+                           Supported in EOS versions 4.32.2F and above.
                         interface_sets: Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`).
                         local_interfaces: local_interfaces
                         address_only:

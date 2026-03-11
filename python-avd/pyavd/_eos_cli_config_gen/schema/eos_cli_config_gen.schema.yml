@@ -10163,7 +10163,9 @@ keys:
                 ```'
             single_line_description:
               type: str
-              description: Description in the form of `description <description>`.
+              description: 'Description in the form of `description <description>`.
+
+                Supported in EOS versions 4.32.2F and above.'
             ip:
               type: str
             icmp_echo_size:
@@ -10213,7 +10215,9 @@ keys:
                 ```'
             single_line_description:
               type: str
-              description: Description in the form of `description <description> `.
+              description: 'Description in the form of `description <description>`.
+
+                Supported in EOS versions 4.32.2F and above.'
             interface_sets:
               type: list
               primary_key: name
@@ -10257,8 +10261,9 @@ keys:
                       ```'
                   single_line_description:
                     type: str
-                    description: Description in the form of `description <description>
-                      `.
+                    description: 'Description in the form of `description <description>`.
+
+                      Supported in EOS versions 4.32.2F and above.'
                   ip:
                     type: str
                   icmp_echo_size:
