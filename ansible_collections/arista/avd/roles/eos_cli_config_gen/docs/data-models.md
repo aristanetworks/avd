@@ -164,10 +164,6 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-access-li
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ipv6-access-lists.md
 --8<--
 
---8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ipv6-access-lists-max-entries.md
---8<--
-
 ### IPv6 standard access-lists
 
 --8<--
