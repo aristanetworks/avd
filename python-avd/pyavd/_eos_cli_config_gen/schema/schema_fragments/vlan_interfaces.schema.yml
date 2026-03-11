@@ -333,7 +333,7 @@ keys:
                   max: 4294967295
                 expire:
                   type: int
-                  description: Cache entries expirery in seconds.
+                  description: Cache entries expiry in seconds.
                   convert_types:
                     - str
                   min: 1
