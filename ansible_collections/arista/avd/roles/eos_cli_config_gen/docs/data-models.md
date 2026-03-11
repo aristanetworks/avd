@@ -1186,7 +1186,7 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/metadata.md
 
 ## Future EOS CLI Behaviors
 
-Opt-in to future EOS cli behaviors which will become default behaviors in a future AVD major version.
+Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major version.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/eos-config-future.md
