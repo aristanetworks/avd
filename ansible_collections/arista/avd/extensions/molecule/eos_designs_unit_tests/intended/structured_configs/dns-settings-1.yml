@@ -3,8 +3,8 @@ aaa_root:
 config_end: true
 dns_domain: testfabric.local
 domain_list:
-- domain1
-- domain2
+- avd.lab
+- other.net
 enable_password:
   disabled: true
 ethernet_interfaces:
