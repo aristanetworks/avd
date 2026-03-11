@@ -22,9 +22,6 @@ dot1x:
   dynamic_authorization: true
 enable_password:
   disabled: true
-eos_config_future:
-  new_ip_radius_cli_order: true
-  new_ip_tacacs_cli_order: true
 ethernet_interfaces:
 - name: Ethernet53
   description: MLAG_LEAF1B_Ethernet53

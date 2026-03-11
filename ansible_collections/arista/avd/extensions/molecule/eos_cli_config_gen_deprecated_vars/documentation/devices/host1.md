@@ -98,7 +98,7 @@ ip tacacs source-interface Loopback10
 | default | Loopback10 |
 | MGMT | Management1 |
 
-#### IP SOURCE Source Interfaces Device Configuration
+#### IP RADIUS SOURCE Source Interfaces Device Configuration
 
 ```eos
 !

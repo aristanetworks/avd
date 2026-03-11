@@ -1615,7 +1615,7 @@ radius-server host 10.10.11.158 vrf mgt tls ssl-profile SSL_PROFILE
 | MGMT | Management1 |
 | abc | Loopback10 |
 
-#### IP SOURCE Source Interfaces Device Configuration
+#### IP RADIUS SOURCE Source Interfaces Device Configuration
 
 ```eos
 !

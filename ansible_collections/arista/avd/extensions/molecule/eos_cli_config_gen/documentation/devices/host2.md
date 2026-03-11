@@ -369,13 +369,13 @@ tacacs-server host 10.10.10.159 key 8a <removed>
 | --- | --------------------- |
 | default | Loopback10 |
 | TEST1 | Loopback3 |
-| default | Loopback1 |
+| mgmt | Loopback1 |
 
 #### IP TACACS Source Interfaces Device Configuration
 
 ```eos
 !
-ip tacacs vrf default source-interface Loopback1
+ip tacacs vrf mgmt source-interface Loopback1
 !
 ip tacacs vrf TEST1 source-interface Loopback3
 !
@@ -404,7 +404,7 @@ radius-server attribute 32 include-in-access-req format myformat
 | MGMT | Management1 |
 | abc | Loopback10 |
 
-#### IP SOURCE Source Interfaces Device Configuration
+#### IP RADIUS SOURCE Source Interfaces Device Configuration
 
 ```eos
 !
