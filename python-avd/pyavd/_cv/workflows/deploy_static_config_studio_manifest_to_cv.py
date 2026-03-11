@@ -7,8 +7,6 @@ from asyncio import gather
 from logging import getLogger
 from typing import TYPE_CHECKING, cast
 
-from pyavd._cv.client.exceptions import CVConfigletCreationFailed
-
 from .models import AVD_ENTITY_PREFIX, CVManifest
 
 if TYPE_CHECKING:
@@ -100,30 +98,23 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
 async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
     """Synchronize configlets. Create/update new ones and delete unused AVD-managed ones."""
     workspace_id = deployment_result.workspace.id
-    desired_configlets_by_id = {configlet.id: configlet.name for configlet in cv_manifest.configlets}
 
     # Create or update configlets.
     if cv_manifest.configlets:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Applying changes for %d configlets (create/update)...", len(cv_manifest.configlets))
         deployment_result.deployed_static_config_configlets.extend(configlet.avd_configlet for configlet in cv_manifest.configlets)
         configlet_tuples = [configlet.api_tuple for configlet in cv_manifest.configlets]
-        set_configlets_responce = await cv_client.set_configlets_from_files(workspace_id=workspace_id, configlets=configlet_tuples)
-
-        # Loop through response tuples to check if creation of any configlet failed.
-        for configlet_key, error in set_configlets_responce:
-            if error:
-                configlet_name = desired_configlets_by_id.get(configlet_key.configlet_id)
-                msg = f"Failed to create Static Studio configlet '{configlet_name}' ('{configlet_key.configlet_id}'): {error}"
-                raise CVConfigletCreationFailed(msg)
+        await cv_client.set_configlets_from_files(workspace_id=workspace_id, configlets=configlet_tuples)
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No configlet creations or updates are needed.")
 
     # Delete unused AVD-managed configlets.
     existing_configlets = await cv_client.get_configlets(workspace_id=workspace_id)
+    desired_configlet_ids = {configlet.id for configlet in cv_manifest.configlets}
     configlets_to_delete = {
         configlet_id: cast("str", configlet.display_name)
         for configlet in existing_configlets
-        if (configlet_id := cast("str", configlet.key.configlet_id)).startswith(AVD_ENTITY_PREFIX) and configlet_id not in desired_configlets_by_id
+        if (configlet_id := cast("str", configlet.key.configlet_id)).startswith(AVD_ENTITY_PREFIX) and configlet_id not in desired_configlet_ids
     }
 
     if configlets_to_delete:

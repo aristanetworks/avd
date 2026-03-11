@@ -63,7 +63,3 @@ class CVGRPCStatusUnavailable(CVClientException):
 
 class CVManifestError(CVClientException):
     """Error while creating a CVManifest instance from a user AvdManifest."""
-
-
-class CVConfigletCreationFailed(CVClientException):
-    """Creation of the CloudVision Static Studio configlet failed."""
