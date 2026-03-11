@@ -67500,7 +67500,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dynamic_capacity: int | None
                 """Capacity of dynamic cache entries."""
                 expire: int | None
-                """Cache entries expirery in seconds."""
+                """Cache entries expiry in seconds."""
                 refresh_always: bool | None
                 """Force refresh on cache expiry."""
 
@@ -67521,7 +67521,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             dynamic_capacity: Capacity of dynamic cache entries.
-                            expire: Cache entries expirery in seconds.
+                            expire: Cache entries expiry in seconds.
                             refresh_always: Force refresh on cache expiry.
 
                         """
