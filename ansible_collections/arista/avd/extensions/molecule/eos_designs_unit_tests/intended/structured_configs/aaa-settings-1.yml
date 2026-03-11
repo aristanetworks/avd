@@ -171,6 +171,9 @@ config_end: true
 enable_password:
   hash_algorithm: sha512
   key: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.
+eos_config_future:
+  new_ip_radius_cli_order: true
+  new_ip_tacacs_cli_order: true
 hostname: aaa-settings-1
 ip_igmp_snooping:
   globally_enabled: true

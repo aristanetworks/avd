@@ -6,6 +6,11 @@ type: l2leaf     # Must be l2leaf
 dot1x_settings:
   enabled: true
 
+# TODO 7.0: Remove the eos_config_future settings
+custom_structured_configuration_eos_config_future:
+  new_ip_tacacs_cli_order: true
+  new_ip_radius_cli_order: true
+
 # local users
 aaa_settings:
   # AAA Authorization
