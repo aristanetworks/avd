@@ -15,8 +15,8 @@ from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase
 
+from ansible_collections.arista.avd.plugins.plugin_utils.constants import ANSIBLE_ABOVE_2_19
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
-    ANSIBLE_ABOVE_2_19,
     AVDFileHandler,
     AvdSwitchFactsDefaultDict,
     AVDVaultHandler,
@@ -123,7 +123,12 @@ class ActionModule(ActionBase):
                 template = template_item["template"]
 
                 # Here we parse the template, expecting the result to be a YAML formatted string
+                # self.templar is an AVDTemplar instance which already contains loader and searchpath
                 template_result = templater(template, template_vars, self.templar)
+
+                # Skip if template result is None or empty string
+                if not template_result:
+                    continue
 
                 # Load data from the template result.
                 template_result_data = yaml.safe_load(template_result)
