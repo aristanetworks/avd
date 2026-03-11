@@ -17023,6 +17023,11 @@ class EosDesigns(EosDesignsRootModel):
     class DnsSettings(AvdModel):
         """Subclass of AvdModel."""
 
+        class DomainList(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DomainList._item_type = str
+
         class ServersItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -17130,12 +17135,19 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "domain": {"type": str},
+            "domain_list": {"type": DomainList},
             "servers": {"type": Servers},
             "vrfs": {"type": Vrfs},
             "set_source_interfaces": {"type": bool, "default": True},
         }
         domain: str | None
         """DNS domain name like 'fabric.local'"""
+        domain_list: DomainList
+        """
+        Search list of DNS domains.
+
+        Subclass of AvdList with `str` items.
+        """
         servers: Servers
         """Subclass of AvdList with `ServersItem` items."""
         vrfs: Vrfs
@@ -17156,6 +17168,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 domain: str | None | UndefinedType = Undefined,
+                domain_list: DomainList | UndefinedType = Undefined,
                 servers: Servers | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 set_source_interfaces: bool | UndefinedType = Undefined,
@@ -17168,6 +17181,10 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     domain: DNS domain name like 'fabric.local'
+                    domain_list:
+                       Search list of DNS domains.
+
+                       Subclass of AvdList with `str` items.
                     servers: Subclass of AvdList with `ServersItem` items.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     set_source_interfaces:

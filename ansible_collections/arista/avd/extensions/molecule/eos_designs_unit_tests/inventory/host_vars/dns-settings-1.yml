@@ -10,6 +10,9 @@ l2leaf:
 
 dns_settings:
   domain: testfabric.local
+  domain_list:
+    - domain1
+    - domain2
   servers:
     - ip_address: 10.10.10.1
       priority: 1

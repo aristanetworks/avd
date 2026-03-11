@@ -2091,6 +2091,11 @@ keys:
       domain:
         type: str
         description: DNS domain name like 'fabric.local'
+      domain_list:
+        type: list
+        description: Search list of DNS domains.
+        items:
+          type: str
       servers:
         type: list
         required: true
