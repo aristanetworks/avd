@@ -6191,6 +6191,52 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class EosConfigFuture(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"new_ip_radius_cli_order": {"type": bool, "default": False}, "new_ip_tacacs_cli_order": {"type": bool, "default": False}}
+        new_ip_radius_cli_order: bool
+        """
+        When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.
+        When `false`
+        (default), renders the legacy CLI order using `ip_radius_source_interfaces`, sorted by source
+        interface name.
+
+        Default value: `False`
+        """
+        new_ip_tacacs_cli_order: bool
+        """
+        When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by VRF name.
+        When `false`
+        (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source
+        interface name.
+
+        Default value: `False`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, new_ip_radius_cli_order: bool | UndefinedType = Undefined, new_ip_tacacs_cli_order: bool | UndefinedType = Undefined) -> None:
+                """
+                EosConfigFuture.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    new_ip_radius_cli_order:
+                       When `true`, renders the new EOS CLI order using `ip_radius`, sorted by VRF name.
+                       When `false`
+                       (default), renders the legacy CLI order using `ip_radius_source_interfaces`, sorted by source
+                       interface name.
+                    new_ip_tacacs_cli_order:
+                       When `true`, renders the new EOS CLI order using `ip_tacacs`, sorted by VRF name.
+                       When `false`
+                       (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`, sorted by source
+                       interface name.
+
+                """
+
     class Errdisable(AvdModel):
         """Subclass of AvdModel."""
 
@@ -70490,6 +70536,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "eos_cli_config_gen_keep_tmp_files": {"type": bool, "default": False},
         "eos_cli_config_gen_tmp_dir": {"type": str},
         "eos_cli_config_gen_validate_inputs_batch_size": {"type": int, "default": 10},
+        "eos_config_future": {"type": EosConfigFuture},
         "errdisable": {"type": Errdisable},
         "ethernet_interfaces": {"type": EthernetInterfaces},
         "event_handlers": {"type": EventHandlers},
@@ -70852,6 +70899,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     Default value: `10`
     """
+    eos_config_future: EosConfigFuture
+    """
+    Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major
+    version.
+
+    Subclass of AvdModel.
+    """
     errdisable: Errdisable
     """Subclass of AvdModel."""
     ethernet_interfaces: EthernetInterfaces
@@ -70929,7 +70983,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ip_ospf_router_id_output_format_hostnames: bool | None
     """Display DNS-resolved router names for OSPF router IDs."""
     ip_radius: IpRadius
-    """Subclass of AvdModel."""
+    """
+    IP RADIUS source interface configuration.
+    This requires to set the
+    'eos_config_future.new_ip_radius_cli_order: true' to render the new CLI order.
+
+    Subclass of
+    AvdModel.
+    """
     ip_radius_source_interfaces: IpRadiusSourceInterfaces
     """Subclass of AvdList with `IpRadiusSourceInterfacesItem` items."""
     ip_routing: bool | None
@@ -70939,7 +71000,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ip_ssh_client: IpSshClient
     """Subclass of AvdModel."""
     ip_tacacs: IpTacacs
-    """Subclass of AvdModel."""
+    """
+    IP TACACS source interface configuration.
+    This requires to set the
+    'eos_config_future.new_ip_tacacs_cli_order: true' to render the new CLI order.
+
+    Subclass of
+    AvdModel.
+    """
     ip_tacacs_source_interfaces: IpTacacsSourceInterfaces
     """Subclass of AvdList with `IpTacacsSourceInterfacesItem` items."""
     ip_telnet_client: IpTelnetClient
@@ -71310,6 +71378,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             eos_cli_config_gen_keep_tmp_files: bool | UndefinedType = Undefined,
             eos_cli_config_gen_tmp_dir: str | None | UndefinedType = Undefined,
             eos_cli_config_gen_validate_inputs_batch_size: int | UndefinedType = Undefined,
+            eos_config_future: EosConfigFuture | UndefinedType = Undefined,
             errdisable: Errdisable | UndefinedType = Undefined,
             ethernet_interfaces: EthernetInterfaces | UndefinedType = Undefined,
             event_handlers: EventHandlers | UndefinedType = Undefined,
@@ -71612,6 +71681,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    The number of hosts to process in each batch when validating inputs.
                    Depending on your inventory
                    size and the available resources, you may want to adjust this number.
+                eos_config_future:
+                   Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major
+                   version.
+
+                   Subclass of AvdModel.
                 errdisable: Subclass of AvdModel.
                 ethernet_interfaces: Subclass of AvdIndexedList with `EthernetInterfacesItem` items. Primary key is `name` (`str`).
                 event_handlers:
@@ -71658,13 +71732,25 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_name_server_groups: Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`).
                 ip_nat: Subclass of AvdModel.
                 ip_ospf_router_id_output_format_hostnames: Display DNS-resolved router names for OSPF router IDs.
-                ip_radius: Subclass of AvdModel.
+                ip_radius:
+                   IP RADIUS source interface configuration.
+                   This requires to set the
+                   'eos_config_future.new_ip_radius_cli_order: true' to render the new CLI order.
+
+                   Subclass of
+                   AvdModel.
                 ip_radius_source_interfaces: Subclass of AvdList with `IpRadiusSourceInterfacesItem` items.
                 ip_routing: ip_routing
                 ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
                 ip_security: Subclass of AvdModel.
                 ip_ssh_client: Subclass of AvdModel.
-                ip_tacacs: Subclass of AvdModel.
+                ip_tacacs:
+                   IP TACACS source interface configuration.
+                   This requires to set the
+                   'eos_config_future.new_ip_tacacs_cli_order: true' to render the new CLI order.
+
+                   Subclass of
+                   AvdModel.
                 ip_tacacs_source_interfaces: Subclass of AvdList with `IpTacacsSourceInterfacesItem` items.
                 ip_telnet_client: Subclass of AvdModel.
                 ip_tftp_client: Subclass of AvdModel.

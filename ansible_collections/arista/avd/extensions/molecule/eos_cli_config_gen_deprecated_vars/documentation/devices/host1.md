@@ -98,12 +98,14 @@ ip tacacs source-interface Loopback10
 | default | Loopback10 |
 | MGMT | Management1 |
 
-#### IP SOURCE Source Interfaces Device Configuration
+#### IP RADIUS Source Interfaces Device Configuration
 
 ```eos
 !
 ip radius vrf default source-interface Loopback1
+!
 ip radius source-interface Loopback10
+!
 ip radius vrf MGMT source-interface Management1
 ```
 
