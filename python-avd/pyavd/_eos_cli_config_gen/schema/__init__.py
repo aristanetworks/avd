@@ -70901,7 +70901,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     eos_config_future: EosConfigFuture
     """
-    Opt-in to future EOS cli behaviors which will become default behaviors in a future AVD major
+    Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major
     version.
 
     Subclass of AvdModel.
@@ -71682,7 +71682,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Depending on your inventory
                    size and the available resources, you may want to adjust this number.
                 eos_config_future:
-                   Opt-in to future EOS cli behaviors which will become default behaviors in a future AVD major
+                   Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major
                    version.
 
                    Subclass of AvdModel.
