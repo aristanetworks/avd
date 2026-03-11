@@ -242,18 +242,20 @@ interface Tunnel1
 | Interface | Description | VRF | MTU | Shutdown |
 | --------- | ----------- | --- | --- | -------- |
 | VLAN10 | Test_ipv6_address | default | - | - |
+| VLAN20 | - | default | - | - |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
 | VLAN10 | default | 10.2.255.3/32 | - | - | - | - |
+| VLAN20 | default | - | - | - | - | - |
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
-| VLAN10 | default | 2002::CAFE/128 | - | - | - | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | ----------- | ------------ |
+| VLAN10 | default | 2002::CAFE/128 | - | - | - | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -263,4 +265,13 @@ interface VLAN10
    description Test_ipv6_address
    ip address 10.2.255.3/32
    ipv6 address 2002::CAFE/128
+!
+interface VLAN20
+   ipv6 nd cache expire 200
+   ipv6 nd cache dynamic capacity 800
+   ipv6 nd cache refresh always
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd other-config-flag
+   ipv6 nd prefix 2001:db8:20::/64 infinite infinite no-autoconfig
 ```
