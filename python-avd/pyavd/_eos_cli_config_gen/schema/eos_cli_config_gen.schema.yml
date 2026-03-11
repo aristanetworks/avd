@@ -6750,6 +6750,10 @@ keys:
     description: Display DNS-resolved router names for OSPF router IDs.
   ip_radius:
     type: dict
+    description: 'IP RADIUS source interface configuration.
+
+      This requires to set the ''eos_config_future.new_ip_radius_cli_order: true''
+      to render the new CLI order.'
     documentation_options:
       table: ip-radius-source-interfaces
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
@@ -7019,6 +7023,10 @@ keys:
       remove_in_version: 6.0.0
   ip_tacacs:
     type: dict
+    description: 'IP TACACS source interface configuration.
+
+      This requires to set the ''eos_config_future.new_ip_tacacs_cli_order: true''
+      to render the new CLI order.'
     documentation_options:
       table: ip-tacacs-source-interfaces
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf

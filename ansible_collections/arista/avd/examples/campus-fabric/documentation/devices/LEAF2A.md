@@ -203,7 +203,7 @@ radius-server host agni.arista.com vrf MGMT key 7 <removed>
 | --- | --------------- |
 | MGMT | Management0 |
 
-#### IP RADIUS SOURCE Source Interfaces Device Configuration
+#### IP RADIUS Source Interfaces Device Configuration
 
 ```eos
 !

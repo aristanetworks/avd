@@ -404,7 +404,7 @@ radius-server attribute 32 include-in-access-req format myformat
 | MGMT | Management1 |
 | abc | Loopback10 |
 
-#### IP RADIUS SOURCE Source Interfaces Device Configuration
+#### IP RADIUS Source Interfaces Device Configuration
 
 ```eos
 !
