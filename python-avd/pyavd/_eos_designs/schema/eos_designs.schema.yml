@@ -2707,8 +2707,6 @@ keys:
         type: dict
         keys:
           ipv6_prefix_length:
-            documentation_options:
-              table: node-type-loopback-vtep-configuration
             description: IPv6 prefix length used for Router ID, VTEP and diagnostic
               loopbacks.
             type: int
