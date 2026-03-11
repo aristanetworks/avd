@@ -22723,6 +22723,28 @@ keys:
                         max: 32
                       override:
                         type: bool
+                anycast_rps:
+                  type: list
+                  primary_key: address
+                  items:
+                    type: dict
+                    keys:
+                      address:
+                        type: str
+                        description: Anycast RP Address.
+                      other_anycast_rp_addresses:
+                        type: list
+                        primary_key: address
+                        items:
+                          type: dict
+                          keys:
+                            address:
+                              type: str
+                              description: Other Anycast RP Address.
+                            register_count:
+                              type: int
+                              convert_types:
+                              - str
                 ssm_range:
                   type: str
                   description: 'Standard access list name or use the specific keyword

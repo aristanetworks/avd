@@ -61866,11 +61866,83 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 RpAddresses._item_type = RpAddressesItem
 
+                class AnycastRpsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class OtherAnycastRpAddressesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"address": {"type": str}, "register_count": {"type": int}}
+                        address: str
+                        """Other Anycast RP Address."""
+                        register_count: int | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, address: str | UndefinedType = Undefined, register_count: int | None | UndefinedType = Undefined) -> None:
+                                """
+                                OtherAnycastRpAddressesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    address: Other Anycast RP Address.
+                                    register_count: register_count
+
+                                """
+
+                    class OtherAnycastRpAddresses(AvdIndexedList[str, OtherAnycastRpAddressesItem]):
+                        """
+                        Subclass of AvdIndexedList with `OtherAnycastRpAddressesItem` items. Primary key is `address`
+                        (`str`).
+                        """
+
+                        _primary_key: ClassVar[str] = "address"
+
+                    OtherAnycastRpAddresses._item_type = OtherAnycastRpAddressesItem
+
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "other_anycast_rp_addresses": {"type": OtherAnycastRpAddresses}}
+                    address: str
+                    """Anycast RP Address."""
+                    other_anycast_rp_addresses: OtherAnycastRpAddresses
+                    """
+                    Subclass of AvdIndexedList with `OtherAnycastRpAddressesItem` items. Primary key is `address`
+                    (`str`).
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, address: str | UndefinedType = Undefined, other_anycast_rp_addresses: OtherAnycastRpAddresses | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            AnycastRpsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                address: Anycast RP Address.
+                                other_anycast_rp_addresses:
+                                   Subclass of AvdIndexedList with `OtherAnycastRpAddressesItem` items. Primary key is `address`
+                                   (`str`).
+
+                            """
+
+                class AnycastRps(AvdIndexedList[str, AnycastRpsItem]):
+                    """Subclass of AvdIndexedList with `AnycastRpsItem` items. Primary key is `address` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "address"
+
+                AnycastRps._item_type = AnycastRpsItem
+
                 _fields: ClassVar[dict] = {
                     "bfd": {"type": bool},
                     "make_before_break": {"type": bool},
                     "register_local_interface": {"type": str},
                     "rp_addresses": {"type": RpAddresses},
+                    "anycast_rps": {"type": AnycastRps},
                     "ssm_range": {"type": str},
                 }
                 bfd: bool | None
@@ -61881,6 +61953,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Local interface to use for PIM register messages."""
                 rp_addresses: RpAddresses
                 """Subclass of AvdList with `RpAddressesItem` items."""
+                anycast_rps: AnycastRps
+                """Subclass of AvdIndexedList with `AnycastRpsItem` items. Primary key is `address` (`str`)."""
                 ssm_range: str | None
                 """
                 Standard access list name or use the specific keyword 'standard' as a shortcut to apply
@@ -61897,6 +61971,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         make_before_break: bool | None | UndefinedType = Undefined,
                         register_local_interface: str | None | UndefinedType = Undefined,
                         rp_addresses: RpAddresses | UndefinedType = Undefined,
+                        anycast_rps: AnycastRps | UndefinedType = Undefined,
                         ssm_range: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -61910,6 +61985,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             make_before_break: Enable/Disable Make-Before-Break.
                             register_local_interface: Local interface to use for PIM register messages.
                             rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
+                            anycast_rps: Subclass of AvdIndexedList with `AnycastRpsItem` items. Primary key is `address` (`str`).
                             ssm_range:
                                Standard access list name or use the specific keyword 'standard' as a shortcut to apply
                                a predefined

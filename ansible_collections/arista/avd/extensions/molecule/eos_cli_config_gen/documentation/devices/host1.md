@@ -11161,6 +11161,13 @@ Register Local Interface: Ethernet1
 | Test_RP_ACL | 10.238.4.161 | - | RP_ACL | - | - | - |
 | Test_RP_ACL | 10.238.4.161 | - | RP_ACL2 | 20 | 30 | True |
 
+##### VRF IP Anycast Information
+
+| VRF Name | IP Anycast Address | Other Rendezvous Point Address | Register Count |
+| -------- | ------------------ | ------------------------------ | -------------- |
+| MCAST_VRF1 | 10.48.2.164 | 10.58.5.165 | - |
+| MCAST_VRF1 | 10.48.2.164 | 10.58.5.166 | 15 |
+
 ##### Router Multicast Device Configuration
 
 ```eos
@@ -11191,6 +11198,8 @@ router pim sparse-mode
          rp address 10.238.2.161 239.12.22.12/32
          rp address 10.238.2.161 239.12.22.13/32
          rp address 10.238.2.161 239.12.22.14/32
+         anycast-rp 10.48.2.164 10.58.5.165
+         anycast-rp 10.48.2.164 10.58.5.166 register-count 15
          register local-interface Loopback0
    !
    vrf MCAST_VRF2_ALL_GROUPS

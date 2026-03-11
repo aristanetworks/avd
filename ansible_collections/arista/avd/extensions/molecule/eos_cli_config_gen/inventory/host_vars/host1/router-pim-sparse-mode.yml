@@ -43,6 +43,12 @@ router_pim_sparse_mode:
               - 239.12.22.12/32
               - 239.12.22.13/32
               - 239.12.22.14/32
+        anycast_rps:
+          - address: 10.48.2.164
+            other_anycast_rp_addresses:
+              - address: 10.58.5.165
+              - address: 10.58.5.166
+                register_count: 15
     - name: MCAST_VRF2_ALL_GROUPS
       ipv4:
         rp_addresses:

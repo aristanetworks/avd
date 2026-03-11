@@ -1475,6 +1475,11 @@ Make-before-break: True
 | -------- | ------------- | ----------- | ----------------- | ------------------------ |
 | MCAST_VRF1 | standard | False | True | - |
 
+##### VRF IP Anycast Information
+
+| VRF Name | IP Anycast Address | Other Rendezvous Point Address | Register Count |
+| -------- | ------------------ | ------------------------------ | -------------- |
+
 ##### Router Multicast Device Configuration
 
 ```eos
