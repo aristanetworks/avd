@@ -51097,6 +51097,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class RdEvpnDomain(AvdModel):
+                """Subclass of AvdModel."""
+
+                Domain: TypeAlias = Literal["remote", "all"]
+                _fields: ClassVar[dict] = {"domain": {"type": str}, "rd": {"type": str}}
+                domain: Domain | None
+                rd: str | None
+                """Route distinguisher."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, rd: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        RdEvpnDomain.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            domain: domain
+                            rd: Route distinguisher.
+
+                        """
+
             class EvpnMulticastAddressFamily(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -56737,7 +56761,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "name": {"type": str},
                 "bgp": {"type": Bgp},
                 "rd": {"type": str},
-                "rd_evpn_domain_remote": {"type": str},
+                "rd_evpn_domain": {"type": RdEvpnDomain},
                 "evpn_multicast": {"type": bool},
                 "evpn_multicast_address_family": {"type": EvpnMulticastAddressFamily},
                 "evpn_multicast_gateway_dr_election": {"type": EvpnMulticastGatewayDrElection},
@@ -56768,8 +56792,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             rd: str | None
             """Route distinguisher."""
-            rd_evpn_domain_remote: str | None
-            """Route distinguisher used to advertise routes to the remote EVPN domain."""
+            rd_evpn_domain: RdEvpnDomain
+            """Subclass of AvdModel."""
             evpn_multicast: bool | None
             evpn_multicast_address_family: EvpnMulticastAddressFamily
             """
@@ -56846,7 +56870,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     rd: str | None | UndefinedType = Undefined,
-                    rd_evpn_domain_remote: str | None | UndefinedType = Undefined,
+                    rd_evpn_domain: RdEvpnDomain | UndefinedType = Undefined,
                     evpn_multicast: bool | None | UndefinedType = Undefined,
                     evpn_multicast_address_family: EvpnMulticastAddressFamily | UndefinedType = Undefined,
                     evpn_multicast_gateway_dr_election: EvpnMulticastGatewayDrElection | UndefinedType = Undefined,
@@ -56881,7 +56905,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: VRF name.
                         bgp: Subclass of AvdModel.
                         rd: Route distinguisher.
-                        rd_evpn_domain_remote: Route distinguisher used to advertise routes to the remote EVPN domain.
+                        rd_evpn_domain: Subclass of AvdModel.
                         evpn_multicast: evpn_multicast
                         evpn_multicast_address_family:
                            Enable per-AF EVPN multicast settings.

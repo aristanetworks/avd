@@ -2118,7 +2118,9 @@ router_bgp:
             enabled: false
     - name: Tenant_A
       rd: "10.50.64.15:30001"
-      rd_evpn_domain_remote: "10.50.64.15:30002"
+      rd_evpn_domain:
+        domain: remote
+        rd: "10.50.64.15:30002"
       route_targets:
         import:
           - address_family: evpn

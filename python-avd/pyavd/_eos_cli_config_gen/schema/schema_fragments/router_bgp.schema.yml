@@ -3666,9 +3666,17 @@ keys:
             rd:
               type: str
               description: Route distinguisher.
-            rd_evpn_domain_remote:
-              type: str
-              description: Route distinguisher used to advertise routes to the remote EVPN domain.
+            rd_evpn_domain:
+              type: dict
+              keys:
+                domain:
+                  type: str
+                  valid_values:
+                    - "remote"
+                    - "all"
+                rd:
+                  type: str
+                  description: Route distinguisher.
             evpn_multicast:
               type: bool
             evpn_multicast_address_family:
