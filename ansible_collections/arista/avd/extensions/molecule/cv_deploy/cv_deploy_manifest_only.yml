@@ -116,7 +116,7 @@
               - "'TEST-MANIFEST-ACCESS-LISTS' in cv_deploy_results.deployed_static_config_configlets | map(attribute='name') | list"
               - "'TEST-MANIFEST-ALIAS' in cv_deploy_results.deployed_static_config_configlets | map(attribute='name') | list"
 
-        - name: "(BLOCK) {{ test_id | upper }} Verify manifest containers were deployed"
+        - name: "(BLOCK) {{ test_id | upper }} Verify summary of the container changes"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -127,56 +127,42 @@
               - cv_deploy_results.skipped_static_config_containers | length == 0
               # Verify placeholder container was removed
               - "'AVD-MANIFEST-ROOT-CLEANUP-PLACEHOLDER' in cv_deploy_results.removed_static_config_containers | list"
-              # AVD-MANIFEST-ROOT (root container)
-              - (cv_deploy_results.deployed_static_config_containers | selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).configlets | length == 0
-              - >
-                (cv_deploy_results.deployed_static_config_containers | selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).description ==
-                'Root container for AVD manifest deployment'
-              - (cv_deploy_results.deployed_static_config_containers | selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).match_policy == 'match_all'
-              - (cv_deploy_results.deployed_static_config_containers | selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | length == 1
-              - >
-                (cv_deploy_results.deployed_static_config_containers | selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).tag_query ==
-                'dummy_name:dummy_val'
-              # AVD-MANIFEST-CHILD (nested sub-container)
-              - >
-                ((cv_deploy_results.deployed_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).configlets | length == 1
-              - >
-                'TEST-MANIFEST-ACCESS-LISTS' in
-                ((cv_deploy_results.deployed_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).configlets
-              - >
-                ((cv_deploy_results.deployed_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).description ==
-                'Child container for AVD manifest deployment'
-              - >
-                ((cv_deploy_results.deployed_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).match_policy == 'match_all'
-              - >
-                ((cv_deploy_results.deployed_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).name == 'AVD-MANIFEST-CHILD'
-              - >
-                ((cv_deploy_results.deployed_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).sub_containers | length == 0
-              - >
-                ((cv_deploy_results.deployed_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-ROOT') | first).sub_containers | first).tag_query == 'device:avd-ci-leaf1'
-              # AVD-MANIFEST-CHILD (standalone container)
-              - >
-                (cv_deploy_results.deployed_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-CHILD') | first).configlets | first == 'TEST-MANIFEST-ACCESS-LISTS'
-              - >
-                (cv_deploy_results.deployed_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-CHILD') | first).description == 'Child container for AVD manifest deployment'
-              - >
-                (cv_deploy_results.deployed_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-CHILD') | first).match_policy == 'match_all'
-              - >
-                (cv_deploy_results.deployed_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-CHILD') | first).sub_containers | length == 0
-              - >
-                (cv_deploy_results.deployed_static_config_containers |
-                selectattr('name', 'eq', 'AVD-MANIFEST-CHILD') | first).tag_query == 'device:avd-ci-leaf1'
+
+        - name: "(BLOCK) {{ test_id | upper }} Verify manifest containers were deployed"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              # Using '| to_json | from_json' filter chain to bypass key ordering issues
+              - expected | to_json | from_json == received | to_json | from_json
+            fail_msg: |
+              Containers mismatch!
+              Expected: {{ expected | to_nice_json }}
+              Received: {{ received | to_nice_json }}
+          vars:
+            expected:
+              - configlets:
+                  - TEST-MANIFEST-ACCESS-LISTS
+                description: Child container for AVD manifest deployment
+                match_policy: match_all
+                name: AVD-MANIFEST-CHILD
+                sub_containers: []
+                tag_query: "device:avd-ci-leaf1"
+
+              - configlets: []
+                description: Root container for AVD manifest deployment
+                match_policy: match_all
+                name: AVD-MANIFEST-ROOT
+                sub_containers:
+                  - configlets:
+                      - TEST-MANIFEST-ACCESS-LISTS
+                    description: Child container for AVD manifest deployment
+                    match_policy: match_all
+                    name: AVD-MANIFEST-CHILD
+                    sub_containers: []
+                    tag_query: "device:avd-ci-leaf1"
+                tag_query: "dummy_name:dummy_val"
+            received: "{{ cv_deploy_results.deployed_static_config_containers }}"
 
         - name: "(BLOCK) {{ test_id | upper }} Verify regular AVD device configs were not deployed"
           tags: ["{{ test_id }}"]
