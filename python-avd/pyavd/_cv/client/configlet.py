@@ -359,7 +359,7 @@ class ConfigletMixin(Protocol):
         return response.value
 
     @LimitCvVersion(min_ver="2024.2.0")
-    @GRPCRequestHandler(list_field="configlets")
+    @GRPCRequestHandler(list_field="configlets", check_response_errors=True)
     async def set_configlets_from_files(
         self: CVClientProtocol,
         workspace_id: str,
@@ -396,7 +396,7 @@ class ConfigletMixin(Protocol):
 
     # Use this variant for versions below 2024.2.0 (still respecting overall min version)
     @LimitCvVersion(max_ver="2024.1.99")
-    @GRPCRequestHandler()
+    @GRPCRequestHandler(check_response_errors=True)
     async def set_configlets_from_files(  # noqa: F811 - Redefining with decorator.
         self: CVClientProtocol,
         workspace_id: str,

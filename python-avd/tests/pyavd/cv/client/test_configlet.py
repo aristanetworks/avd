@@ -3,12 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import re
 import tempfile
+from logging import ERROR
 from typing import TYPE_CHECKING
 
 import pytest
 
-from pyavd._cv.client.exceptions import CVClientException
+from pyavd._cv.client.exceptions import CVClientException, CVClientGRPCException
 from tests.pyavd.cv.constants import (
     MOCKED_CONFIGLET_BODY,
     MOCKED_CONFIGLET_DESCRIPTION,
@@ -109,7 +111,7 @@ async def test_set_configlet_from_file_failure(
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
-async def test_set_configlets_from_files_cvaas_success(cv_client: CVClient) -> None:
+async def test_set_configlets_from_files_cvaas_success(caplog: pytest.LogCaptureFixture, cv_client: CVClient) -> None:
     """
     Test successful creation of the Static Studio Configlet using the `arista.configlet.v1.ConfigletConfigServiceStub.SetSome` API.
 
@@ -124,7 +126,10 @@ async def test_set_configlets_from_files_cvaas_success(cv_client: CVClient) -> N
             description='Configuration created and uploaded by AVD for avd-ci-leaf2', body='alias test test')])'
         targeted_file: 'arista.configlet.v1.ConfigletConfigService/SetSome/www.cv-prod-us-central1-c.arista.io/9928854663237cf59f5710079cb64befccffd7cc.json'
     """
-    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", delete=True) as temp_configlet_file:
+    with (
+        caplog.at_level(ERROR),
+        tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", delete=True) as temp_configlet_file,
+    ):
         temp_configlet_file.write(MOCKED_CONFIGLET_BODY)
         temp_configlet_file.flush()
 
@@ -141,11 +146,13 @@ async def test_set_configlets_from_files_cvaas_success(cv_client: CVClient) -> N
         )
 
     assert len(response) == 0
+    # Assert that no ERROR-level logs were emitted by decorator
+    assert len(caplog.records) == 0
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
-async def test_set_configlets_from_files_cvaas_failure(cv_client: CVClient) -> None:
+async def test_set_configlets_from_files_cvaas_failure(caplog: pytest.LogCaptureFixture, cv_client: CVClient) -> None:
     """
     Test attempt to create two Static Studio Configlets with second confilet having an empty ID.
 
@@ -159,41 +166,53 @@ async def test_set_configlets_from_files_cvaas_failure(cv_client: CVClient) -> N
             description='Configuration created and uploaded by AVD for avd-ci-leaf2', body='alias test test'),
             ConfigletConfig(key=ConfigletKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_id=''),
             display_name='TEST_CONFIGLET_NAME', description='Configuration created and uploaded by AVD for avd-ci-leaf2', body='alias test test')])'
-        targeted_file: 'arista.configlet.v1.ConfigletConfigService/SetSome/www.cv-prod-us-central1-c.arista.io/9928854663237cf59f5710079cb64befccffd7cc.json'
+        targeted_file: 'arista.configlet.v1.ConfigletConfigService/SetSome/www.cv-prod-us-central1-c.arista.io/8e8300f8e318258406abd987d2ad34e8ac52f114.json'
     """
     with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", delete=True) as temp_configlet_file:
         temp_configlet_file.write(MOCKED_CONFIGLET_BODY)
         temp_configlet_file.flush()
 
-        response = await cv_client.set_configlets_from_files(
-            workspace_id=MOCKED_WORKSPACE_ID,
-            configlets=[
-                (
-                    MOCKED_CONFIGLET_ID,
-                    MOCKED_CONFIGLET_NAME,
-                    MOCKED_CONFIGLET_DESCRIPTION,
-                    temp_configlet_file.name,
+        with (
+            caplog.at_level(ERROR),
+            pytest.raises(
+                CVClientGRPCException,
+                match=(
+                    r"'GRPCRequestHandler': Execution of the gRPC call for 'set_configlets_from_files' for list_field 'configlets' failed.*"
+                    r"ConfigletKey\(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_id=''\), 'static configlet ID cannot be empty'.*"
+                    r"Please check execution log for a full list of the failed items."
                 ),
-                (
-                    MOCKED_EMPTY_CONFIGLET_ID,
-                    MOCKED_CONFIGLET_NAME,
-                    MOCKED_CONFIGLET_DESCRIPTION,
-                    temp_configlet_file.name,
-                ),
-            ],
-        )
+            ),
+        ):
+            _ = await cv_client.set_configlets_from_files(
+                workspace_id=MOCKED_WORKSPACE_ID,
+                configlets=[
+                    (
+                        MOCKED_CONFIGLET_ID,
+                        MOCKED_CONFIGLET_NAME,
+                        MOCKED_CONFIGLET_DESCRIPTION,
+                        temp_configlet_file.name,
+                    ),
+                    (
+                        MOCKED_EMPTY_CONFIGLET_ID,
+                        MOCKED_CONFIGLET_NAME,
+                        MOCKED_CONFIGLET_DESCRIPTION,
+                        temp_configlet_file.name,
+                    ),
+                ],
+            )
 
-    assert len(response) == 1
-    assert response[0][0].workspace_id == MOCKED_WORKSPACE_ID
-    assert response[0][0].configlet_id == MOCKED_EMPTY_CONFIGLET_ID
-    assert "static configlet ID cannot be empty" in response[0][1]
+    assert len(caplog.records) == 1
+    assert caplog.records[0].message == (
+        "GRPCRequestHandler: Execution of the gRPC call for 'set_configlets_from_files' for list_field 'configlets' failed for the following item: "
+        "'(ConfigletKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_id=''), 'static configlet ID cannot be empty')'."
+    )
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("cv_client", [{"static_recording": True, "cv_version": "2024.1.99"}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
 async def test_set_configlets_from_files_max_2024_1_99_success(cv_client: CVClient) -> None:
     """
-    Test successful creation of the Static Studio configlets on CLoudvision <= 2024.1.99 using the `arista.configlet.v1.ConfigletConfigServiceStub.Set` API.
+    Test successful creation of the Static Studio configlets on Cloudvision <= 2024.1.99 using the `arista.configlet.v1.ConfigletConfigServiceStub.Set` API.
 
     This test generates two calls towards the `arista.configlet.v1.ConfigletConfigServiceStub.Set` API.
     Received responses are identical to those seen when calling self.set_configlet_from_file().
@@ -239,7 +258,7 @@ async def test_set_configlets_from_files_max_2024_1_99_success(cv_client: CVClie
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("cv_client", [{"static_recording": True, "cv_version": "2024.1.99"}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
-async def test_set_configlets_from_files_max_2024_1_99_failure(cv_client: CVClient) -> None:
+async def test_set_configlets_from_files_max_2024_1_99_failure(caplog: pytest.LogCaptureFixture, cv_client: CVClient) -> None:
     """
     Test creation of the Static Studio configlets on Cloudvision <= 2024.1.99 with second configlet having an empty ID.
 
@@ -264,28 +283,44 @@ async def test_set_configlets_from_files_max_2024_1_99_failure(cv_client: CVClie
         temp_configlet_file.write(MOCKED_CONFIGLET_BODY)
         temp_configlet_file.flush()
 
-        response = await cv_client.set_configlets_from_files(
-            workspace_id=MOCKED_WORKSPACE_ID,
-            configlets=[
-                (
-                    MOCKED_CONFIGLET_ID,
-                    MOCKED_CONFIGLET_NAME,
-                    MOCKED_CONFIGLET_DESCRIPTION,
-                    temp_configlet_file.name,
+        with (
+            caplog.at_level(ERROR),
+            pytest.raises(
+                CVClientGRPCException,
+                match=(
+                    r"'GRPCRequestHandler': Execution of the gRPC call for 'set_configlets_from_files' for list_field 'None' failed.*"
+                    r"ConfigletKey\(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_id=''\).*"
+                    r"<Status.INVALID_ARGUMENT: 3>, 'static configlet ID cannot be empty'.*"
+                    r"Please check execution log for a full list of the failed items."
                 ),
-                (
-                    MOCKED_EMPTY_CONFIGLET_ID,
-                    MOCKED_CONFIGLET_NAME,
-                    MOCKED_CONFIGLET_DESCRIPTION,
-                    temp_configlet_file.name,
-                ),
-            ],
-        )
+            ),
+        ):
+            _ = await cv_client.set_configlets_from_files(
+                workspace_id=MOCKED_WORKSPACE_ID,
+                configlets=[
+                    (
+                        MOCKED_CONFIGLET_ID,
+                        MOCKED_CONFIGLET_NAME,
+                        MOCKED_CONFIGLET_DESCRIPTION,
+                        temp_configlet_file.name,
+                    ),
+                    (
+                        MOCKED_EMPTY_CONFIGLET_ID,
+                        MOCKED_CONFIGLET_NAME,
+                        MOCKED_CONFIGLET_DESCRIPTION,
+                        temp_configlet_file.name,
+                    ),
+                ],
+            )
 
-    assert len(response) == 1
-    assert response[0][0].workspace_id == MOCKED_WORKSPACE_ID
-    assert response[0][0].configlet_id == MOCKED_EMPTY_CONFIGLET_ID
-    assert "static configlet ID cannot be empty" in response[0][1]
+    assert len(caplog.records) == 1
+    expected_log_pattern = (
+        r"GRPCRequestHandler: Execution of the gRPC call for 'set_configlets_from_files'.*"
+        r"workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'.*"
+        r"static configlet ID cannot be empty"
+    )
+
+    assert re.search(expected_log_pattern, caplog.records[0].message)
 
 
 @pytest.mark.asyncio
