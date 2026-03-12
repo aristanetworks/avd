@@ -130,7 +130,7 @@ repos:
         # as well.
         additional_dependencies:
           - 'ansible-core>=2.16.0,<2.21.0'
-          - 'anta==1.7.0'
+          - 'anta==1.8.0'
           - 'deepmerge>=1.1.0'
           - 'jsonschema-rs>=0.24'
           - 'pyavd-utils==0.0.2'
