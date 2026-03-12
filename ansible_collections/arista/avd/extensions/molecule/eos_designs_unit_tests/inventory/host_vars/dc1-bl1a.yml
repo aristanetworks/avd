@@ -74,3 +74,7 @@ management_eapi:
   enable_https: false
   enable_http: false
   default_services: false
+
+# Test for remove redundant command no neighbor activate when no bgp default ipv4-unicast is configured
+avd_design_future:
+  remove_redundant_ipv4_unicast_for_peer_groups: true
