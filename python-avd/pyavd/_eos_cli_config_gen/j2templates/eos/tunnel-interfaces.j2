@@ -45,7 +45,7 @@ interface {{ tunnel_interface.name }}
 {%     if tunnel_interface.ipv6_nd.ra.disabled is arista.avd.defined(true) %}
    ipv6 nd ra disabled
 {%     endif %}
-{%     if tunnel_interface.ipv6_nd.managed_config_flag is arista.avd.defined(true) or tunnel_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) %}
+{%     if tunnel_interface.ipv6_nd.managed_config_flag is arista.avd.defined(true) %}
    ipv6 nd managed-config-flag
 {%     endif %}
 {%     for prefix in tunnel_interface.ipv6_nd.prefixes | arista.avd.natural_sort("ipv6_prefix") %}
