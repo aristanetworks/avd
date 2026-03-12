@@ -1673,6 +1673,14 @@ keys:
           default is false).
 
           '
+      cv_loss_timeout:
+        type: int
+        description: 'Timeout in minutes before the device will revert to ZTP mode
+          in case of losing connectivity to CloudVision after a configuration change.
+
+          The recommended timeout is five minutes.'
+        convert_types:
+        - str
   daemons:
     type: list
     primary_key: name
@@ -2434,6 +2442,27 @@ keys:
 
       Depending on your inventory size and the available resources, you may want to
       adjust this number.'
+  eos_config_future:
+    type: dict
+    description: Opt-in to future EOS CLI behaviors which will become default behaviors
+      in a future AVD major version.
+    keys:
+      new_ip_radius_cli_order:
+        type: bool
+        default: false
+        description: 'When `true`, renders the new EOS CLI order using `ip_radius`,
+          sorted by VRF name.
+
+          When `false` (default), renders the legacy CLI order using `ip_radius_source_interfaces`,
+          sorted by source interface name.'
+      new_ip_tacacs_cli_order:
+        type: bool
+        default: false
+        description: 'When `true`, renders the new EOS CLI order using `ip_tacacs`,
+          sorted by VRF name.
+
+          When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`,
+          sorted by source interface name.'
   errdisable:
     type: dict
     keys:
@@ -3067,11 +3096,26 @@ keys:
           description: Link local IPv6 address/mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_prefixes:
           type: list
           primary_key: ipv6_prefix
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           items:
             type: dict
             keys:
@@ -3089,6 +3133,9 @@ keys:
                 description: Infinite or lifetime in seconds.
               no_autoconfig_flag:
                 type: bool
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         ipv6_dhcp_relay_destinations:
           type: list
           items:
@@ -6721,6 +6768,10 @@ keys:
     description: Display DNS-resolved router names for OSPF router IDs.
   ip_radius:
     type: dict
+    description: 'IP RADIUS source interface configuration.
+
+      This requires to set the ''eos_config_future.new_ip_radius_cli_order: true''
+      to render the new CLI order.'
     documentation_options:
       table: ip-radius-source-interfaces
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
@@ -6990,6 +7041,10 @@ keys:
       remove_in_version: 6.0.0
   ip_tacacs:
     type: dict
+    description: 'IP TACACS source interface configuration.
+
+      This requires to set the ''eos_config_future.new_ip_tacacs_cli_order: true''
+      to render the new CLI order.'
     documentation_options:
       table: ip-tacacs-source-interfaces
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
@@ -8709,6 +8764,15 @@ keys:
       default_services:
         type: bool
         description: 'Enable default services: capi-doc and tapagg.'
+      session_timeout:
+        type: int
+        description: 'User session timeout value in minutes.
+
+          EOS default is 1440 minutes.'
+        convert_types:
+        - str
+        min: 1
+        max: 1440
       enable_vrfs:
         type: list
         primary_key: name
@@ -12859,11 +12923,26 @@ keys:
           description: Link local IPv6 address/mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_prefixes:
           type: list
           primary_key: ipv6_prefix
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           items:
             type: dict
             keys:
@@ -12881,6 +12960,9 @@ keys:
                 description: Infinite or lifetime in seconds.
               no_autoconfig_flag:
                 type: bool
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         access_group_in:
           type: str
           description: Access list name.
@@ -24841,14 +24923,34 @@ keys:
             description: IPv6 address or IPv6_address/Mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_other_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.other_config_flag
+            removed: false
+            remove_in_version: 7.0.0
           description: Set the "other stateful configuration" flag in IPv6 router
             advertisements.
         ipv6_nd_cache:
           type: dict
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.cache
+            removed: false
+            remove_in_version: 7.0.0
           description: IPv6 neighbor cache options.
           keys:
             dynamic_capacity:
@@ -24870,6 +24972,11 @@ keys:
               description: Force refresh on cache expiry.
         ipv6_nd_prefixes:
           type: list
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           primary_key: ipv6_prefix
           items:
             type: dict
@@ -24918,6 +25025,35 @@ keys:
           type: bool
           description: Allow forwarding requests with additional IPv6 addresses in
             the gateway address "giaddr" field.
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
+          keys:
+            other_config_flag:
+              type: bool
+              description: Set the "other stateful configuration" flag in IPv6 router
+                advertisements.
+            cache:
+              type: dict
+              description: IPv6 neighbor cache options.
+              keys:
+                dynamic_capacity:
+                  type: int
+                  description: Capacity of dynamic cache entries.
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 4294967295
+                expire:
+                  type: int
+                  description: Cache entries expiry in seconds.
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 65535
+                refresh_always:
+                  type: bool
+                  description: Force refresh on cache expiry.
         access_group_in:
           type: str
           description: IPv4 access-list name.

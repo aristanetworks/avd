@@ -16,7 +16,9 @@
 - [Authentication](#authentication)
   - [Enable Password](#enable-password)
   - [TACACS Servers](#tacacs-servers)
+  - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [RADIUS Server](#radius-server)
+  - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
@@ -297,9 +299,9 @@ management cvx
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| True | False | - | False |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| True | False | - | False | 1440 minutes |
 
 #### Management API HTTP Device Configuration
 
@@ -359,6 +361,27 @@ enable password 5 <removed>
 tacacs-server host 10.10.10.159 key 8a <removed>
 ```
 
+### IP TACACS Source Interfaces
+
+#### IP TACACS Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------------- |
+| default | Loopback10 |
+| TEST1 | Loopback3 |
+| mgmt | Loopback1 |
+
+#### IP TACACS Source Interfaces Device Configuration
+
+```eos
+!
+ip tacacs vrf mgmt source-interface Loopback1
+!
+ip tacacs vrf TEST1 source-interface Loopback3
+!
+ip tacacs vrf default source-interface Loopback10
+```
+
 ### RADIUS Server
 
 - Attribute 32 is included in access requests using format 'myformat'
@@ -368,6 +391,30 @@ tacacs-server host 10.10.10.159 key 8a <removed>
 ```eos
 !
 radius-server attribute 32 include-in-access-req format myformat
+```
+
+### IP RADIUS Source Interfaces
+
+#### IP RADIUS Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+| default | Loopback1 |
+| BLAH | Loopback10 |
+| MGMT | Management1 |
+| abc | Loopback10 |
+
+#### IP RADIUS Source Interfaces Device Configuration
+
+```eos
+!
+ip radius vrf default source-interface Loopback1
+!
+ip radius vrf abc source-interface Loopback10
+!
+ip radius vrf BLAH source-interface Loopback10
+!
+ip radius vrf MGMT source-interface Management1
 ```
 
 ### AAA Authentication
