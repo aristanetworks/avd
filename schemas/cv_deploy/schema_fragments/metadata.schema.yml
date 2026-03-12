@@ -8,12 +8,27 @@ type: dict
 keys:
   metadata:
     type: dict
+    # Allowing other keys to avoid validation errors when used with eos_designs.
+    allow_other_keys: true
     description: |-
       Metadata from the `eos_designs` role, loaded automatically from structured configs.
       For standalone usage without `eos_designs`, use the other `cv_deploy` schema keys instead.
       If both are provided, `metadata` takes precedence.
     documentation_options:
       hide_keys: true
-    # Using the full metadata dict as a $ref to avoid errors on non-cv_deploy keys in metadata.
-    # Using specific keys requires allow_other_keys: true which we want to avoid.
-    $ref: eos_cli_config_gen#/keys/metadata
+    keys:
+      is_deployed:
+        type: bool
+        $ref: eos_cli_config_gen#/keys/metadata/keys/is_deployed
+      serial_number:
+        type: str
+        $ref: eos_cli_config_gen#/keys/metadata/keys/serial_number
+      system_mac_address:
+        type: str
+        $ref: eos_cli_config_gen#/keys/metadata/keys/system_mac_address
+      cv_tags:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/metadata/keys/cv_tags
+      cv_pathfinder:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/metadata/keys/cv_pathfinder
