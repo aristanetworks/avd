@@ -22701,13 +22701,13 @@ keys:
                         type: str
                         description: Other Anycast RP Address.
                       register_count:
-                        type: int
+                        type: str
                         description: 'Number of registers to forward before pausing
                           in range of 0 to 4294967295.
 
                           Use ''infinity'' to forward all registers.'
                         convert_types:
-                        - str
+                        - int
       vrfs:
         type: list
         primary_key: name

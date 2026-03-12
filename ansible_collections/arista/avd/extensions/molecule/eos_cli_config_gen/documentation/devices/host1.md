@@ -11184,6 +11184,8 @@ Register Local Interface: Ethernet1
 | -------- | ------------------ | ------------------------------ | -------------- |
 | MCAST_VRF1 | 10.48.2.164 | 10.58.5.165 | - |
 | MCAST_VRF1 | 10.48.2.164 | 10.58.5.166 | 15 |
+| MCAST_VRF1 | 12.48.2.164 | 11.58.5.166 | 15 |
+| MCAST_VRF1 | 12.48.2.164 | 12.58.5.165 | infinity |
 
 ##### Router Multicast Device Configuration
 
@@ -11217,6 +11219,8 @@ router pim sparse-mode
          rp address 10.238.2.161 239.12.22.14/32
          anycast-rp 10.48.2.164 10.58.5.165
          anycast-rp 10.48.2.164 10.58.5.166 register-count 15
+         anycast-rp 12.48.2.164 11.58.5.166 register-count 15
+         anycast-rp 12.48.2.164 12.58.5.165 register-count infinity
          register local-interface Loopback0
    !
    vrf MCAST_VRF2_ALL_GROUPS

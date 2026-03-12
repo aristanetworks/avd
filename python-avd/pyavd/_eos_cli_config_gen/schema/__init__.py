@@ -61728,10 +61728,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class OtherAnycastRpAddressesItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"address": {"type": str}, "register_count": {"type": int}}
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "register_count": {"type": str}}
                     address: str
                     """Other Anycast RP Address."""
-                    register_count: int | None
+                    register_count: str | None
                     """
                     Number of registers to forward before pausing in range of 0 to 4294967295.
                     Use 'infinity' to forward
@@ -61740,7 +61740,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, address: str | UndefinedType = Undefined, register_count: int | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, register_count: str | None | UndefinedType = Undefined) -> None:
                             """
                             OtherAnycastRpAddressesItem.
 
@@ -61926,10 +61926,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class OtherAnycastRpAddressesItem(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"address": {"type": str}, "register_count": {"type": int}}
+                        _fields: ClassVar[dict] = {"address": {"type": str}, "register_count": {"type": str}}
                         address: str
                         """Other Anycast RP Address."""
-                        register_count: int | None
+                        register_count: str | None
                         """
                         Number of registers to forward before pausing in range of 0 to 4294967295.
                         Use 'infinity' to forward
@@ -61938,7 +61938,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, address: str | UndefinedType = Undefined, register_count: int | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, address: str | UndefinedType = Undefined, register_count: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 OtherAnycastRpAddressesItem.
 
