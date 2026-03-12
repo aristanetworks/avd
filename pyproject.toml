@@ -3,7 +3,7 @@
 # anta is set to latest version to make sure developers run with the latest version
 # when generating molecule artifacts.
 dev = [
-    "anta==1.7.0",
+    "anta==1.8.0",
     "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
     "netaddr>=0.7.19",
@@ -53,7 +53,7 @@ molecule = [
 ]
 pytest = [
     "ansible-core>=2.16.0,<2.21.0",
-    "anta>=1.7.0",
+    "anta==1.8.0",
     "pytest>=8.2.0",
     "pytest-asyncio>=1.2.0",
     "pydantic>=2.3.0",

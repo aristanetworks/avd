@@ -133,6 +133,7 @@ vrfs:
   metadata:
     tenants:
     - DUPLICATE_TENANT1
+    - TENANT1
 vxlan_interface:
   vxlan1:
     description: duplicate-vrfs_VTEP

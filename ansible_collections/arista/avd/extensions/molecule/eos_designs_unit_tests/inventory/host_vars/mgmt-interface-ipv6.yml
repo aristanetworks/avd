@@ -3,7 +3,6 @@ mgmt_interface_vrf: MGMT
 type: l2leaf
 ipv6_mgmt_gateway: 0200::1
 l2leaf:
-  defaults:
   nodes:
     - name: mgmt-interface-ipv6
       ipv6_mgmt_ip: 0200::105/64
