@@ -355,6 +355,14 @@ class AvdStructuredConfigBaseProtocol(
             level=settings.level,
         )
 
+        # Apply monitor_layer1 settings
+        if settings.monitor_layer1:
+            self.structured_config.monitor_layer1._update(
+                enabled=settings.monitor_layer1.enabled,
+                logging_mac_fault=settings.monitor_layer1.logging_mac_fault,
+                logging_transceiver=settings.monitor_layer1.logging_transceiver,
+            )
+
         # Temporary structure to detect source interface conflicts
         vrf_logging_config = EosCliConfigGen.Logging.Vrfs()
 
@@ -384,6 +392,23 @@ class AvdStructuredConfigBaseProtocol(
                 ssl_profile=host.ssl_profile,
                 ports=EosCliConfigGen.Logging.VrfsItem.HostsItem.Ports(items=host.ports),
             )
+
+    @structured_config_contributor
+    def monitor_connectivity(self) -> None:
+        """Set monitor_connectivity based on the input data model."""
+        if not self.inputs.monitor_connectivity:
+            return
+
+        self.structured_config.monitor_connectivity._update(
+            shutdown=self.inputs.monitor_connectivity.shutdown,
+            interval=self.inputs.monitor_connectivity.interval,
+            interface_sets=self.inputs.monitor_connectivity.interface_sets,
+            local_interfaces=self.inputs.monitor_connectivity.local_interfaces,
+            address_only=self.inputs.monitor_connectivity.address_only,
+            hosts=self.inputs.monitor_connectivity.hosts,
+            name_server_group=self.inputs.monitor_connectivity.name_server_group,
+            vrfs=self.inputs.monitor_connectivity.vrfs,
+        )
 
     @structured_config_contributor
     def redundancy(self) -> None:

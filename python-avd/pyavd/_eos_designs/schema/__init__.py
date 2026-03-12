@@ -22723,6 +22723,7 @@ class EosDesigns(EosDesignsRootModel):
             "policy": {"type": EosCliConfigGen.Logging.Policy},
             "event": {"type": EosCliConfigGen.Logging.Event},
             "level": {"type": EosCliConfigGen.Logging.Level},
+            "monitor_layer1": {"type": EosCliConfigGen.MonitorLayer1},
         }
         use_local_interface_cli: bool
         """
@@ -22752,6 +22753,8 @@ class EosDesigns(EosDesignsRootModel):
         event: EosCliConfigGen.Logging.Event
         level: EosCliConfigGen.Logging.Level
         """Configure logging severity."""
+        monitor_layer1: EosCliConfigGen.MonitorLayer1
+        """Enable SYSLOG messages on transceiver SMBus communication failures."""
 
         if TYPE_CHECKING:
 
@@ -22772,6 +22775,7 @@ class EosDesigns(EosDesignsRootModel):
                 policy: EosCliConfigGen.Logging.Policy | UndefinedType = Undefined,
                 event: EosCliConfigGen.Logging.Event | UndefinedType = Undefined,
                 level: EosCliConfigGen.Logging.Level | UndefinedType = Undefined,
+                monitor_layer1: EosCliConfigGen.MonitorLayer1 | UndefinedType = Undefined,
             ) -> None:
                 """
                 LoggingSettings.
@@ -22797,6 +22801,7 @@ class EosDesigns(EosDesignsRootModel):
                     policy: policy
                     event: event
                     level: Configure logging severity.
+                    monitor_layer1: Enable SYSLOG messages on transceiver SMBus communication failures.
 
                 """
 
@@ -88699,6 +88704,7 @@ class EosDesigns(EosDesignsRootModel):
         "mlag_peer_svi_description": {"type": str, "default": "MLAG"},
         "mlag_peer_vlan_name": {"type": str, "default": "MLAG"},
         "mlag_port_channel_description": {"type": str, "default": "MLAG_{mlag_peer}_{peer_interface}"},
+        "monitor_connectivity": {"type": EosCliConfigGen.MonitorConnectivity},
         "network_ports": {"type": NetworkPorts},
         "network_services_keys": {"type": NetworkServicesKeys, "default": lambda cls: coerce_type([{"name": "tenants"}], target_type=cls)},
         "custom_node_type_keys": {"type": CustomNodeTypeKeys},
@@ -90518,6 +90524,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"MLAG_{mlag_peer}_{peer_interface}"`
     """
+    monitor_connectivity: EosCliConfigGen.MonitorConnectivity
     network_ports: NetworkPorts
     """Subclass of AvdList with `NetworkPortsItem` items."""
     network_services_keys: NetworkServicesKeys
@@ -91408,6 +91415,7 @@ class EosDesigns(EosDesignsRootModel):
             mlag_peer_svi_description: str | UndefinedType = Undefined,
             mlag_peer_vlan_name: str | UndefinedType = Undefined,
             mlag_port_channel_description: str | UndefinedType = Undefined,
+            monitor_connectivity: EosCliConfigGen.MonitorConnectivity | UndefinedType = Undefined,
             network_ports: NetworkPorts | UndefinedType = Undefined,
             network_services_keys: NetworkServicesKeys | UndefinedType = Undefined,
             custom_node_type_keys: CustomNodeTypeKeys | UndefinedType = Undefined,
@@ -92405,6 +92413,7 @@ class EosDesigns(EosDesignsRootModel):
 
                    By
                    default the description is templated from the name and port-channel interface of the MLAG peer.
+                monitor_connectivity: monitor_connectivity
                 network_ports: Subclass of AvdList with `NetworkPortsItem` items.
                 network_services_keys:
                    Network Services can be grouped by using separate keys.

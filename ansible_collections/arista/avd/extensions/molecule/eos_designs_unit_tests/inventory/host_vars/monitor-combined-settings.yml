@@ -1,0 +1,28 @@
+---
+# Test case for both monitor_layer1 and monitor_connectivity together
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.52
+  nodes:
+    - name: monitor-combined-settings
+      id: 152
+      bgp_as: 152
+
+logging_settings:
+  hosts:
+    - name: syslog.example.com
+  monitor_layer1:
+    enabled: true
+    logging_transceiver:
+      enabled: true
+
+monitor_connectivity:
+  interval: 10
+  hosts:
+    - name: INTERNET_CHECK
+      ip: 8.8.4.4

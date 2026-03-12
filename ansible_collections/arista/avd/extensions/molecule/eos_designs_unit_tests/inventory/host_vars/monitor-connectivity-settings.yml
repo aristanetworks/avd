@@ -1,0 +1,47 @@
+---
+# Test case for monitor_connectivity as top-level key
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.51
+  nodes:
+    - name: monitor-connectivity-settings
+      id: 151
+      bgp_as: 151
+
+monitor_connectivity:
+  shutdown: false
+  interval: 5
+  interface_sets:
+    - name: SET_INTERNET
+      interfaces: Ethernet1-2
+  local_interfaces: Loopback0
+  address_only: true
+  hosts:
+    - name: DNS1
+      description: Primary DNS Server
+      ip: 8.8.8.8
+      icmp_echo_size: 100
+      local_interfaces: SET_INTERNET
+      address_only: false
+      url: http://www.dummy.com
+    - name: DNS2
+      description: Secondary DNS Server
+      ip: 1.1.1.1
+      icmp_echo_size: 100
+  vrfs:
+    - name: MGMT
+      description: Management VRF monitoring
+      interface_sets:
+        - name: SET_MGMT
+          interfaces: Management1
+      hosts:
+        - name: MGMT_SERVER
+          description: Management server
+          ip: 10.0.0.1
+          local_interfaces: SET_MGMT
+          address_only: false

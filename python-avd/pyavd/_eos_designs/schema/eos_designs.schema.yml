@@ -3550,6 +3550,9 @@ keys:
       level:
         type: list
         $ref: eos_cli_config_gen#/keys/logging/keys/level
+      monitor_layer1:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/monitor_layer1
   mac_address_table:
     documentation_options:
       table: system-settings
@@ -3802,6 +3805,11 @@ keys:
       ID on the MLAG peer.\n\nBy default the description is templated from the name
       and port-channel interface of the MLAG peer."
     default: MLAG_{mlag_peer}_{peer_interface}
+  monitor_connectivity:
+    documentation_options:
+      table: system-settings
+    $ref: eos_cli_config_gen#/keys/monitor_connectivity
+    type: dict
   name_servers:
     documentation_options:
       table: removed-keys
