@@ -7,7 +7,7 @@ dev = [
     "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
     "netaddr>=0.7.19",
-    "pyavd-utils==0.0.2",
+    "pyavd-utils==0.0.3",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     # dev requirements"
