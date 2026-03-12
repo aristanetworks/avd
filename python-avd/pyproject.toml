@@ -22,7 +22,7 @@ classifiers = [
 keywords = ["pyavd"]
 requires-python = ">=3.10"
 dependencies = [
-    "anta>=1.7.0",
+    "anta>=1.8.0",
     "aristaproto>=0.1.1",
     "cryptography>=43.0.0",
     "deepmerge>=1.1.0",

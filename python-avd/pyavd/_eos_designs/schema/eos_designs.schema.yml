@@ -322,49 +322,12 @@ keys:
     type: dict
     description: Opt-in to future AVD behaviors which will become default behaviors
       in a future AVD major version.
-    documentation_options:
-      table: role-settings
     keys:
-      ip_radius_source_interface_setting:
+      remove_redundant_ipv4_unicast_for_peer_groups:
         type: bool
+        description: Deactivate the IPv4 unicast Address Family for BGP Peer Groups
+          only when IPv4 is activated by default instead of always deactivating it.
         default: false
-        description: 'Enable improved RADIUS source interface configuration with separate
-          keys for VRF default and other VRFs.
-
-
-          When enabled:
-
-          - VRF default: Uses `ip_radius.source_interface`
-
-          - Other VRFs: Uses `ip_radius.vrfs` list
-
-          - Enforces VRF name uniqueness
-
-          - Aligns with EOS CLI behavior (where "vrf default" is implicit)
-
-
-          When disabled (current):
-
-          - Uses `ip_radius_source_interfaces` list for all VRF combinations'
-      ip_tacacs_source_interface_setting:
-        type: bool
-        default: false
-        description: 'Enable improved TACACS source interface configuration with separate
-          keys for VRF default and other VRFs.
-
-          When enabled:
-
-          - VRF default: Uses `ip_tacacs.source_interface`
-
-          - Other VRFs: Uses `ip_tacacs.vrfs` list
-
-          - Enforces VRF name uniqueness
-
-          - Aligns with EOS CLI behavior (where "vrf default" is implicit)
-
-          When disabled (current):
-
-          - Uses `ip_tacacs_source_interfaces` list for all VRF combinations'
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -2707,8 +2670,6 @@ keys:
         type: dict
         keys:
           ipv6_prefix_length:
-            documentation_options:
-              table: node-type-loopback-vtep-configuration
             description: IPv6 prefix length used for Router ID, VTEP and diagnostic
               loopbacks.
             type: int

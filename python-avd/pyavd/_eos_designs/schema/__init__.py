@@ -912,55 +912,18 @@ class EosDesigns(EosDesignsRootModel):
     class AvdDesignFuture(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {
-            "ip_radius_source_interface_setting": {"type": bool, "default": False},
-            "ip_tacacs_source_interface_setting": {"type": bool, "default": False},
-        }
-        ip_radius_source_interface_setting: bool
+        _fields: ClassVar[dict] = {"remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False}}
+        remove_redundant_ipv4_unicast_for_peer_groups: bool
         """
-        Enable improved RADIUS source interface configuration with separate keys for VRF default and other
-        VRFs.
-
-        When enabled:
-        - VRF default: Uses `ip_radius.source_interface`
-        - Other VRFs: Uses
-        `ip_radius.vrfs` list
-        - Enforces VRF name uniqueness
-        - Aligns with EOS CLI behavior (where "vrf
-        default" is implicit)
-
-        When disabled (current):
-        - Uses `ip_radius_source_interfaces` list for all
-        VRF combinations
-
-        Default value: `False`
-        """
-        ip_tacacs_source_interface_setting: bool
-        """
-        Enable improved TACACS source interface configuration with separate keys for VRF default and other
-        VRFs.
-        When enabled:
-        - VRF default: Uses `ip_tacacs.source_interface`
-        - Other VRFs: Uses
-        `ip_tacacs.vrfs` list
-        - Enforces VRF name uniqueness
-        - Aligns with EOS CLI behavior (where "vrf
-        default" is implicit)
-        When disabled (current):
-        - Uses `ip_tacacs_source_interfaces` list for all VRF
-        combinations
+        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
+        default instead of always deactivating it.
 
         Default value: `False`
         """
 
         if TYPE_CHECKING:
 
-            def __init__(
-                self,
-                *,
-                ip_radius_source_interface_setting: bool | UndefinedType = Undefined,
-                ip_tacacs_source_interface_setting: bool | UndefinedType = Undefined,
-            ) -> None:
+            def __init__(self, *, remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined) -> None:
                 """
                 AvdDesignFuture.
 
@@ -968,34 +931,9 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    ip_radius_source_interface_setting:
-                       Enable improved RADIUS source interface configuration with separate keys for VRF default and other
-                       VRFs.
-
-                       When enabled:
-                       - VRF default: Uses `ip_radius.source_interface`
-                       - Other VRFs: Uses
-                       `ip_radius.vrfs` list
-                       - Enforces VRF name uniqueness
-                       - Aligns with EOS CLI behavior (where "vrf
-                       default" is implicit)
-
-                       When disabled (current):
-                       - Uses `ip_radius_source_interfaces` list for all
-                       VRF combinations
-                    ip_tacacs_source_interface_setting:
-                       Enable improved TACACS source interface configuration with separate keys for VRF default and other
-                       VRFs.
-                       When enabled:
-                       - VRF default: Uses `ip_tacacs.source_interface`
-                       - Other VRFs: Uses
-                       `ip_tacacs.vrfs` list
-                       - Enforces VRF name uniqueness
-                       - Aligns with EOS CLI behavior (where "vrf
-                       default" is implicit)
-                       When disabled (current):
-                       - Uses `ip_tacacs_source_interfaces` list for all VRF
-                       combinations
+                    remove_redundant_ipv4_unicast_for_peer_groups:
+                       Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
+                       default instead of always deactivating it.
 
                 """
 
