@@ -76,19 +76,28 @@ Register Local Interface: {{ router_pim_sparse_mode.ipv4.register_local_interfac
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
+{%         set any_ipv4_anycast_rp = namespace(present=false) %}
+{%         for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
+{%             if vrf.ipv4.anycast_rps is arista.avd.defined %}
+{%                 set any_ipv4_anycast_rp.present = true %}
+{%                 break %}
+{%             endif %}
+{%         endfor %}
+{%         if any_ipv4_anycast_rp.present %}
 
 ##### VRF IP Anycast Information
 
 | VRF Name | IP Anycast Address | Other Rendezvous Point Address | Register Count |
 | -------- | ------------------ | ------------------------------ | -------------- |
-{%         for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
-{%             for anycast_rp in vrf.ipv4.anycast_rps | arista.avd.natural_sort('address') %}
-{%                 for other_anycast_rp_address in anycast_rp.other_anycast_rp_addresses | arista.avd.natural_sort('address') %}
-{%                     set register_count = other_anycast_rp_address.register_count | arista.avd.default('-') %}
+{%             for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
+{%                 for anycast_rp in vrf.ipv4.anycast_rps | arista.avd.natural_sort('address') %}
+{%                     for other_anycast_rp_address in anycast_rp.other_anycast_rp_addresses | arista.avd.natural_sort('address') %}
+{%                         set register_count = other_anycast_rp_address.register_count | arista.avd.default('-') %}
 | {{ vrf.name }} | {{ anycast_rp.address }} | {{ other_anycast_rp_address.address }} | {{ register_count }} |
+{%                     endfor %}
 {%                 endfor %}
 {%             endfor %}
-{%         endfor %}
+{%         endif %}
 {%     endif %}
 
 ##### Router Multicast Device Configuration

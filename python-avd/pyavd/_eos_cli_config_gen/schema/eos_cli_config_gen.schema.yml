@@ -22682,6 +22682,7 @@ keys:
                   type: bool
           anycast_rps:
             type: list
+            min_length: 1
             primary_key: address
             items:
               type: dict
@@ -22691,6 +22692,7 @@ keys:
                   description: Anycast RP Address.
                 other_anycast_rp_addresses:
                   type: list
+                  min_length: 1
                   primary_key: address
                   items:
                     type: dict
@@ -22700,6 +22702,10 @@ keys:
                         description: Other Anycast RP Address.
                       register_count:
                         type: int
+                        description: 'Number of registers to forward before pausing
+                          in range of 0 to 4294967295.
+
+                          Use ''infinity'' to forward all registers.'
                         convert_types:
                         - str
       vrfs:
@@ -22754,26 +22760,7 @@ keys:
                         type: bool
                 anycast_rps:
                   type: list
-                  primary_key: address
-                  items:
-                    type: dict
-                    keys:
-                      address:
-                        type: str
-                        description: Anycast RP Address.
-                      other_anycast_rp_addresses:
-                        type: list
-                        primary_key: address
-                        items:
-                          type: dict
-                          keys:
-                            address:
-                              type: str
-                              description: Other Anycast RP Address.
-                            register_count:
-                              type: int
-                              convert_types:
-                              - str
+                  $ref: eos_cli_config_gen#/keys/router_pim_sparse_mode/keys/ipv4/keys/anycast_rps
                 ssm_range:
                   type: str
                   description: 'Standard access list name or use the specific keyword

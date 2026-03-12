@@ -61732,6 +61732,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     address: str
                     """Other Anycast RP Address."""
                     register_count: int | None
+                    """
+                    Number of registers to forward before pausing in range of 0 to 4294967295.
+                    Use 'infinity' to forward
+                    all registers.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -61744,7 +61749,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 address: Other Anycast RP Address.
-                                register_count: register_count
+                                register_count:
+                                   Number of registers to forward before pausing in range of 0 to 4294967295.
+                                   Use 'infinity' to forward
+                                   all registers.
 
                             """
 
@@ -61922,6 +61930,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         address: str
                         """Other Anycast RP Address."""
                         register_count: int | None
+                        """
+                        Number of registers to forward before pausing in range of 0 to 4294967295.
+                        Use 'infinity' to forward
+                        all registers.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -61934,7 +61947,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     address: Other Anycast RP Address.
-                                    register_count: register_count
+                                    register_count:
+                                       Number of registers to forward before pausing in range of 0 to 4294967295.
+                                       Use 'infinity' to forward
+                                       all registers.
 
                                 """
 

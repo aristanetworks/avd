@@ -47,7 +47,7 @@ router_pim_sparse_mode:
           - address: 12.48.2.164
             other_anycast_rp_addresses:
               - address: 12.58.5.165
-                 register_count: infinity
+                register_count: infinity
               - address: 11.58.5.166
                 register_count: 15
           - address: 10.48.2.164
