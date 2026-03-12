@@ -25,11 +25,11 @@ keys:
 
           When disabled (current):
           - Uses `ip_radius_source_interfaces` list for all VRF combinations
-      bgp_always_disable_ipv4_unicast_for_peer_groups:
+      remove_redundant_ipv4_unicast_for_peer_groups:
         type: bool
         description: |-
-          Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by default.
-        default: true
+          Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
+        default: false
       ip_tacacs_source_interface_setting:
         type: bool
         default: false

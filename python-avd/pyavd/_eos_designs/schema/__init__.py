@@ -914,7 +914,7 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "ip_radius_source_interface_setting": {"type": bool, "default": False},
-            "bgp_always_disable_ipv4_unicast_for_peer_groups": {"type": bool, "default": True},
+            "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
             "ip_tacacs_source_interface_setting": {"type": bool, "default": False},
         }
         ip_radius_source_interface_setting: bool
@@ -936,12 +936,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        bgp_always_disable_ipv4_unicast_for_peer_groups: bool
+        remove_redundant_ipv4_unicast_for_peer_groups: bool
         """
-        Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by
-        default.
+        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
+        default instead of always deactivating it.
 
-        Default value: `True`
+        Default value: `False`
         """
         ip_tacacs_source_interface_setting: bool
         """
@@ -967,7 +967,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 ip_radius_source_interface_setting: bool | UndefinedType = Undefined,
-                bgp_always_disable_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
+                remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
                 ip_tacacs_source_interface_setting: bool | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -992,9 +992,9 @@ class EosDesigns(EosDesignsRootModel):
                        When disabled (current):
                        - Uses `ip_radius_source_interfaces` list for all
                        VRF combinations
-                    bgp_always_disable_ipv4_unicast_for_peer_groups:
-                       Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by
-                       default.
+                    remove_redundant_ipv4_unicast_for_peer_groups:
+                       Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
+                       default instead of always deactivating it.
                     ip_tacacs_source_interface_setting:
                        Enable improved TACACS source interface configuration with separate keys for VRF default and other
                        VRFs.

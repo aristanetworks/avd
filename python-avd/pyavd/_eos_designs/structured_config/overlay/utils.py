@@ -159,4 +159,4 @@ class UtilsMixin(Protocol):
 
     @cached_property
     def _disable_ipv4_unicast_for_peer_groups(self: AvdStructuredConfigOverlayProtocol) -> bool:
-        return self.inputs.avd_design_future.bgp_always_disable_ipv4_unicast_for_peer_groups or self.inputs.bgp_default_ipv4_unicast
+        return not self.inputs.avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups or self.inputs.bgp_default_ipv4_unicast

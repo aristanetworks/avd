@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>avd_design_future</samp>](## "avd_design_future") | Dictionary |  |  |  | Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version. |
     | [<samp>&nbsp;&nbsp;ip_radius_source_interface_setting</samp>](## "avd_design_future.ip_radius_source_interface_setting") | Boolean |  | `False` |  | Enable improved RADIUS source interface configuration with separate keys for VRF default and other VRFs.<br><br>When enabled:<br>- VRF default: Uses `ip_radius.source_interface`<br>- Other VRFs: Uses `ip_radius.vrfs` list<br>- Enforces VRF name uniqueness<br>- Aligns with EOS CLI behavior (where "vrf default" is implicit)<br><br>When disabled (current):<br>- Uses `ip_radius_source_interfaces` list for all VRF combinations |
-    | [<samp>&nbsp;&nbsp;bgp_always_disable_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.bgp_always_disable_ipv4_unicast_for_peer_groups") | Boolean |  | `True` |  | Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by default. |
+    | [<samp>&nbsp;&nbsp;remove_redundant_ipv4_unicast_for_peer_groups</samp>](## "avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups") | Boolean |  | `False` |  | Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it. |
     | [<samp>&nbsp;&nbsp;ip_tacacs_source_interface_setting</samp>](## "avd_design_future.ip_tacacs_source_interface_setting") | Boolean |  | `False` |  | Enable improved TACACS source interface configuration with separate keys for VRF default and other VRFs.<br>When enabled:<br>- VRF default: Uses `ip_tacacs.source_interface`<br>- Other VRFs: Uses `ip_tacacs.vrfs` list<br>- Enforces VRF name uniqueness<br>- Aligns with EOS CLI behavior (where "vrf default" is implicit)<br>When disabled (current):<br>- Uses `ip_tacacs_source_interfaces` list for all VRF combinations |
 
 === "YAML"
@@ -30,8 +30,8 @@
       # - Uses `ip_radius_source_interfaces` list for all VRF combinations
       ip_radius_source_interface_setting: <bool; default=False>
 
-      # Deactivate the IPv4 unicast Address Family for BGP Peer Groups even when IPv4 is not activated by default.
-      bgp_always_disable_ipv4_unicast_for_peer_groups: <bool; default=True>
+      # Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by default instead of always deactivating it.
+      remove_redundant_ipv4_unicast_for_peer_groups: <bool; default=False>
 
       # Enable improved TACACS source interface configuration with separate keys for VRF default and other VRFs.
       # When enabled:
