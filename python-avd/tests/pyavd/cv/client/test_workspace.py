@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import asyncio
+from asyncio.exceptions import TimeoutError as AsyncioTimeoutError
 from typing import TYPE_CHECKING, Any
 from unittest.mock import patch
 
@@ -39,20 +40,20 @@ async def test_wait_for_workspace_state_timeout(cv_client: CVClient) -> None:
     """
     Test unsuccessful attempt to wait for a Workspace to reach `rolled_back` state where timeout expires before Workspace reaches the desired state.
 
-    This is to replicate the following real events:
+    This is to replicate the following real events (high level):
     -  `grpclib.client.Stream` object fetches messages by removing them from the `asyncio` queue
     -  If queue is empty for <timeout> seconds, `asyncio.exceptions.CancelledError` is raised
     -  This exception is caught by `grpclib` client
-    -  `grpclib` client then raises `TimeoutError("Deadline exceeded.")`
+    -  `grpclib` client then raises `asyncio.TimeoutError("Deadline exceeded")`
     -  `pyavd`'s `async_decorator` intercepts this exception and raises `CVTimeoutError`
     """
 
     async def async_iterator_with_timeout(timeout: float = 1.0) -> AsyncIterator[Any]:
         """Async iterator that yields a message and waits for the specified 'timeout' time before raising a TimeoutError."""
-        yield "Single message that you will get before I timeout."
+        yield "Single message that you will get before I timeout and raise asyncio.TimeoutError."
         await asyncio.sleep(int(timeout))
-        msg = "Deadline exceeded."
-        raise TimeoutError(msg)
+        msg = "Deadline exceeded"
+        raise AsyncioTimeoutError(msg)
 
     with (
         pytest.raises(
