@@ -128,26 +128,7 @@ keys:
                         type: bool
                 anycast_rps:
                   type: list
-                  primary_key: address
-                  items:
-                    type: dict
-                    keys:
-                      address:
-                        type: str
-                        description: Anycast RP Address.
-                      other_anycast_rp_addresses:
-                        type: list
-                        primary_key: address
-                        items:
-                          type: dict
-                          keys:
-                            address:
-                              type: str
-                              description: Other Anycast RP Address.
-                            register_count:
-                              type: int
-                              convert_types:
-                                - str
+                  $ref: $ref: "eos_cli_config_gen#/keys/router_pim_sparse_mode/keys/ipv4/keys/anycast_rps"
                 ssm_range:
                   type: str
                   description: |-
