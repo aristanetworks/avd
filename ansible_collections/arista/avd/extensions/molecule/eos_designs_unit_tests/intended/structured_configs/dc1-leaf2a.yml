@@ -1339,16 +1339,17 @@ vlan_interfaces:
   - 2001:db8:310::1/64
   - 2001:db8:311::1/64
   - 2001:db8:312::1/64
-  ipv6_nd_prefixes:
-  - ipv6_prefix: 2001:db8:310::1/64
-    valid_lifetime: '200'
-    preferred_lifetime: '100'
-  - ipv6_prefix: 2001:db8:311::1/64
-    valid_lifetime: '200'
-    preferred_lifetime: '100'
-  - ipv6_prefix: 2001:db8:312::1/64
-    valid_lifetime: '200'
-    preferred_lifetime: '100'
+  ipv6_nd:
+    prefixes:
+    - ipv6_prefix: 2001:db8:310::1/64
+      valid_lifetime: '200'
+      preferred_lifetime: '100'
+    - ipv6_prefix: 2001:db8:311::1/64
+      valid_lifetime: '200'
+      preferred_lifetime: '100'
+    - ipv6_prefix: 2001:db8:312::1/64
+      valid_lifetime: '200'
+      preferred_lifetime: '100'
   metadata:
     tenants:
     - Tenant_D
