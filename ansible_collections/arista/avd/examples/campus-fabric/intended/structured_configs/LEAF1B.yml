@@ -1698,9 +1698,10 @@ ip_name_server:
     servers:
     - ip_address: 8.8.4.4
     - ip_address: 8.8.8.8
-ip_radius_source_interfaces:
-- name: Management1
-  vrf: MGMT
+ip_radius:
+  vrfs:
+  - name: MGMT
+    source_interface: Management1
 local_users:
 - name: admin
   privilege: 15

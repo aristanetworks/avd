@@ -1,0 +1,4 @@
+---
+eos_config_future:
+  new_ip_tacacs_cli_order: true
+  new_ip_radius_cli_order: true
