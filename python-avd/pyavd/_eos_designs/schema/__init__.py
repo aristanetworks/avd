@@ -912,63 +912,17 @@ class EosDesigns(EosDesignsRootModel):
     class AvdDesignFuture(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {
-            "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
-            "ip_radius_source_interface_setting": {"type": bool, "default": False},
-            "ip_tacacs_source_interface_setting": {"type": bool, "default": False},
-        }
+        _fields: ClassVar[dict] = {"accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False}}
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
         Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
 
         Default value: `False`
         """
-        ip_radius_source_interface_setting: bool
-        """
-        Enable improved RADIUS source interface configuration with separate keys for VRF default and other
-        VRFs.
-
-        When enabled:
-        - VRF default: Uses `ip_radius.source_interface`
-        - Other VRFs: Uses
-        `ip_radius.vrfs` list
-        - Enforces VRF name uniqueness
-        - Aligns with EOS CLI behavior (where "vrf
-        default" is implicit)
-
-        When disabled (current):
-        - Uses `ip_radius_source_interfaces` list for all
-        VRF combinations
-
-        Default value: `False`
-        """
-        ip_tacacs_source_interface_setting: bool
-        """
-        Enable improved TACACS source interface configuration with separate keys for VRF default and other
-        VRFs.
-        When enabled:
-        - VRF default: Uses `ip_tacacs.source_interface`
-        - Other VRFs: Uses
-        `ip_tacacs.vrfs` list
-        - Enforces VRF name uniqueness
-        - Aligns with EOS CLI behavior (where "vrf
-        default" is implicit)
-        When disabled (current):
-        - Uses `ip_tacacs_source_interfaces` list for all VRF
-        combinations
-
-        Default value: `False`
-        """
 
         if TYPE_CHECKING:
 
-            def __init__(
-                self,
-                *,
-                accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
-                ip_radius_source_interface_setting: bool | UndefinedType = Undefined,
-                ip_tacacs_source_interface_setting: bool | UndefinedType = Undefined,
-            ) -> None:
+            def __init__(self, *, accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined) -> None:
                 """
                 AvdDesignFuture.
 
@@ -977,34 +931,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     accept_dhcp_default_route_for_mgmt_ip_dhcp: Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
-                    ip_radius_source_interface_setting:
-                       Enable improved RADIUS source interface configuration with separate keys for VRF default and other
-                       VRFs.
-
-                       When enabled:
-                       - VRF default: Uses `ip_radius.source_interface`
-                       - Other VRFs: Uses
-                       `ip_radius.vrfs` list
-                       - Enforces VRF name uniqueness
-                       - Aligns with EOS CLI behavior (where "vrf
-                       default" is implicit)
-
-                       When disabled (current):
-                       - Uses `ip_radius_source_interfaces` list for all
-                       VRF combinations
-                    ip_tacacs_source_interface_setting:
-                       Enable improved TACACS source interface configuration with separate keys for VRF default and other
-                       VRFs.
-                       When enabled:
-                       - VRF default: Uses `ip_tacacs.source_interface`
-                       - Other VRFs: Uses
-                       `ip_tacacs.vrfs` list
-                       - Enforces VRF name uniqueness
-                       - Aligns with EOS CLI behavior (where "vrf
-                       default" is implicit)
-                       When disabled (current):
-                       - Uses `ip_tacacs_source_interfaces` list for all VRF
-                       combinations
 
                 """
 
