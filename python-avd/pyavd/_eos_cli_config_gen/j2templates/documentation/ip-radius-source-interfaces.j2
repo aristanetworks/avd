@@ -22,7 +22,7 @@
 | {{ ip_radius.vrf | arista.avd.default('default') }} | {{ ip_radius.name }} |
 {%     endfor %}
 
-#### IP SOURCE Source Interfaces Device Configuration
+#### IP RADIUS Source Interfaces Device Configuration
 
 ```eos
 {%     include 'eos/ip-radius-source-interfaces.j2' %}
