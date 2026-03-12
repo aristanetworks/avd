@@ -26,7 +26,7 @@ from pyavd._cv.api.arista.workspace.v1 import (
 
 from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
-from .exceptions import CVResourceNotFound
+from .exceptions import CVResourceNotFound, CVWorkspaceFailed
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -43,6 +43,15 @@ REQUEST_MAP = {
     "start_build": Request.START_BUILD,
     "submit": Request.SUBMIT,
     None: None,
+}
+
+WORKSPACE_STATE_MAP = {
+    "unspecified": WorkspaceState.UNSPECIFIED,
+    "pending": WorkspaceState.PENDING,
+    "submitted": WorkspaceState.SUBMITTED,
+    "abandoned": WorkspaceState.ABANDONED,
+    "conflicts": WorkspaceState.CONFLICTS,
+    "rolled_back": WorkspaceState.ROLLED_BACK,
 }
 
 
@@ -266,24 +275,25 @@ class WorkspaceMixin(Protocol):
 
         # Use case where stream completed without getting a response for the expected request_id
         msg = f"Failed to get a response for request '{request_id}' of the Workspace '{workspace_id}'."
+        # TODO: Consider raising a more specific CVWorkspaceFailed exception.
         raise CVResourceNotFound(msg)
 
     @GRPCRequestHandler()
-    async def wait_for_new_workspace_readiness(
+    async def wait_for_workspace_state(
         self: CVClientProtocol,
         workspace_id: str,
+        state: Literal["unspecified", "pending", "submitted", "abandoned", "conflicts", "rolled_back"],
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> Workspace:
         """
-        Monitor newly created Workspace using arista.workspace.v1.WorkspaceService.Subscribe API until Workspace is in PENDING (ready) state.
+        Monitor Workspace using arista.workspace.v1.WorkspaceService.Subscribe API.
 
-        Blocks until a response in a terminal PENDING state (WorkspaceState.PENDING) is returned or timed out.
-        This is required to avoid attempts to update the Workspace right after INITIAL_SYNC_COMPLETE while it is still in WorkspaceState.UNSPECIFIED.
-        Such attempts may lead to the 'workspace status is not available' errors.
-        Responses for the Workspace in non-PENDING state are logged only.
+        Blocks until Workspace reaches the desired state, Stream is closed or timed out.
+        Responses for the Workspace in non-desired states are logged only.
 
         Parameters:
             workspace_id: Unique identifier for the Workspace.
+            state: Workspace state to wait for.
             timeout: Timeout in seconds for the Workspace to build.
 
         Returns:
@@ -299,10 +309,11 @@ class WorkspaceMixin(Protocol):
         client = WorkspaceServiceStub(self._channel)
         responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
         async for response in responses:
-            if response.value.state == WorkspaceState.PENDING:
-                LOGGER.debug("wait_for_workspace_readiness: Workspace reached required state (PENDING): %s", response)
+            if hasattr(response, "value") and response.value.state == WORKSPACE_STATE_MAP[state]:
+                LOGGER.debug("wait_for_workspace_state: Workspace reached desired state (%s): %s", state, response)
                 return response.value
-            LOGGER.debug("wait_for_workspace_readiness: Got workspace update but it is not yet in PENDING state. Latest response: %s", response)
+            LOGGER.debug("wait_for_workspace_state: Got workspace update: %s", response)
 
-        msg = f"wait_for_workspace_readiness: Timed out waiting for Workspace '{workspace_id}' to get in PENDING state."
-        raise CVResourceNotFound(msg)
+        # Use case where stream completed without getting Workspace update in the desired state
+        msg = f"Workspace '{workspace_id}' has not reached desired state '{state}'."
+        raise CVWorkspaceFailed(msg)
