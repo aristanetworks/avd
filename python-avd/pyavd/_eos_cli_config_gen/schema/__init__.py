@@ -51148,13 +51148,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Domain: TypeAlias = Literal["remote", "all"]
                 _fields: ClassVar[dict] = {"domain": {"type": str}, "rd": {"type": str}}
-                domain: Domain | None
-                rd: str | None
+                domain: Domain
+                rd: str
                 """Route distinguisher."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, domain: Domain | None | UndefinedType = Undefined, rd: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, domain: Domain | UndefinedType = Undefined, rd: str | UndefinedType = Undefined) -> None:
                         """
                         RdEvpnDomain.
 

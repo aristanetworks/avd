@@ -3674,9 +3674,11 @@ keys:
                   valid_values:
                     - "remote"
                     - "all"
+                  required: true
                 rd:
                   type: str
                   description: Route distinguisher.
+                  required: true
             evpn_multicast:
               type: bool
             evpn_multicast_address_family:

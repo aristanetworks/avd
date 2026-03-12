@@ -2688,8 +2688,8 @@ router bgp {{ router_bgp.as }}
 {%         if vrf.rd is arista.avd.defined %}
       rd {{ vrf.rd }}
 {%         endif %}
-{#         Refactor candidate: This section can be improved. Consider this in a future iteration. #}
-{%         if vrf.rd_evpn_domain.domain is arista.avd.defined and vrf.rd_evpn_domain.rd is arista.avd.defined %}
+{#         NOTE: vrf.rd should not be configured when domain is all. #}
+{%         if vrf.rd_evpn_domain is arista.avd.defined %}
       rd evpn domain {{ vrf.rd_evpn_domain.domain }} {{ vrf.rd_evpn_domain.rd }}
 {%         endif %}
 {%         if vrf.default_route_exports is arista.avd.defined %}
