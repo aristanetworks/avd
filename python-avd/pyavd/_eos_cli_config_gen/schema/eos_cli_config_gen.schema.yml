@@ -1673,6 +1673,14 @@ keys:
           default is false).
 
           '
+      cv_loss_timeout:
+        type: int
+        description: 'Timeout in minutes before the device will revert to ZTP mode
+          in case of losing connectivity to CloudVision after a configuration change.
+
+          The recommended timeout is five minutes.'
+        convert_types:
+        - str
   daemons:
     type: list
     primary_key: name
@@ -2277,6 +2285,9 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask.
+        ipv6_address_auto_config:
+          type: bool
+          description: Use SLAAC to automatically configure the IPv6 address.
         flow_tracker:
           type: dict
           keys:
@@ -2431,6 +2442,27 @@ keys:
 
       Depending on your inventory size and the available resources, you may want to
       adjust this number.'
+  eos_config_future:
+    type: dict
+    description: Opt-in to future EOS CLI behaviors which will become default behaviors
+      in a future AVD major version.
+    keys:
+      new_ip_radius_cli_order:
+        type: bool
+        default: false
+        description: 'When `true`, renders the new EOS CLI order using `ip_radius`,
+          sorted by VRF name.
+
+          When `false` (default), renders the legacy CLI order using `ip_radius_source_interfaces`,
+          sorted by source interface name.'
+      new_ip_tacacs_cli_order:
+        type: bool
+        default: false
+        description: 'When `true`, renders the new EOS CLI order using `ip_tacacs`,
+          sorted by VRF name.
+
+          When `false` (default), renders the legacy CLI order using `ip_tacacs_source_interfaces`,
+          sorted by source interface name.'
   errdisable:
     type: dict
     keys:
@@ -3040,16 +3072,50 @@ keys:
           type: bool
         ipv6_address:
           type: str
+          description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: 'IPv6 address with prefix length.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
+        ipv6_address_auto_config:
+          type: bool
+          description: 'Use SLAAC to automatically configure the IPv6 address.
+
+            This option is mutually exclusive with `ipv6_addresses`.'
         ipv6_address_link_local:
           type: str
           description: Link local IPv6 address/mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_prefixes:
           type: list
           primary_key: ipv6_prefix
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           items:
             type: dict
             keys:
@@ -3067,6 +3133,9 @@ keys:
                 description: Infinite or lifetime in seconds.
               no_autoconfig_flag:
                 type: bool
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         ipv6_dhcp_relay_destinations:
           type: list
           items:
@@ -6699,6 +6768,10 @@ keys:
     description: Display DNS-resolved router names for OSPF router IDs.
   ip_radius:
     type: dict
+    description: 'IP RADIUS source interface configuration.
+
+      This requires to set the ''eos_config_future.new_ip_radius_cli_order: true''
+      to render the new CLI order.'
     documentation_options:
       table: ip-radius-source-interfaces
     $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
@@ -6966,9 +7039,23 @@ keys:
       warning: true
       new_key: ip_ssh_client
       remove_in_version: 6.0.0
+  ip_tacacs:
+    type: dict
+    description: 'IP TACACS source interface configuration.
+
+      This requires to set the ''eos_config_future.new_ip_tacacs_cli_order: true''
+      to render the new CLI order.'
+    documentation_options:
+      table: ip-tacacs-source-interfaces
+    $ref: eos_cli_config_gen#/$defs/source_interface_per_vrf
   ip_tacacs_source_interfaces:
     type: list
     display_name: IP Tacacs Source Interfaces
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 7.0.0
+      new_key: ip_tacacs
     items:
       type: dict
       keys:
@@ -8125,6 +8212,24 @@ keys:
         ipv6_address:
           type: str
           description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: 'IPv6 address with prefix length.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
+        ipv6_address_auto_config:
+          type: bool
+          description: 'Use SLAAC to automatically configure the IPv6 address.
+
+            This option is mutually exclusive with `ipv6_addresses`.'
         ip_proxy_arp:
           type: bool
         ospf_area:
@@ -8659,6 +8764,15 @@ keys:
       default_services:
         type: bool
         description: 'Enable default services: capi-doc and tapagg.'
+      session_timeout:
+        type: int
+        description: 'User session timeout value in minutes.
+
+          EOS default is 1440 minutes.'
+        convert_types:
+        - str
+        min: 1
+        max: 1440
       enable_vrfs:
         type: list
         primary_key: name
@@ -8805,7 +8919,28 @@ keys:
           type: bool
         ipv6_address:
           type: str
-          description: IPv6_address/Mask.
+          description: IPv6 address with prefix length.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: 'IPv6 address with prefix length.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
+        ipv6_address_auto_config:
+          type: bool
+          description: 'Use SLAAC to automatically configure the IPv6 address.
+
+            This option is mutually exclusive with `ipv6_addresses`.'
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         type:
           type: str
           valid_values:
@@ -12765,16 +12900,49 @@ keys:
         ipv6_address:
           type: str
           description: IPv6 address/mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: 'IPv6 address with prefix length.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
+        ipv6_address_auto_config:
+          type: bool
+          description: 'Use SLAAC to automatically configure the IPv6 address.
+
+            This option is mutually exclusive with `ipv6_addresses`.'
         ipv6_address_link_local:
           type: str
           description: Link local IPv6 address/mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_prefixes:
           type: list
           primary_key: ipv6_prefix
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           items:
             type: dict
             keys:
@@ -12792,6 +12960,9 @@ keys:
                 description: Infinite or lifetime in seconds.
               no_autoconfig_flag:
                 type: bool
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         access_group_in:
           type: str
           description: Access list name.
@@ -15263,6 +15434,51 @@ keys:
             - str
             min: 1
             max: 600
+      route_distinguisher:
+        type: dict
+        keys:
+          assignment_auto:
+            type: dict
+            description: Automatic Route Distinguisher (auto RD) feature.
+            keys:
+              range:
+                type: dict
+                description: 'Range for the 2-byte assigned number field of RD.
+
+                  The range is inclusive of start and end values.'
+                keys:
+                  start:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 65535
+                    required: true
+                    description: Start of range. EOS default is 4096.
+                  end:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 65535
+                    required: true
+                    description: 'End of range. Must be greater than or equal to `start`.
+
+                      EOS default is 65535.'
+              address_families:
+                type: list
+                min_length: 1
+                description: 'Address families for which to enable automatic RD assignment.
+
+                  Each address family has its own range allocation.'
+                items:
+                  type: str
+                  valid_values:
+                  - l2-evpn
+                  - l3-vrf
+                  description: 'l2-evpn: L2 EVPN VXLAN, VPWS, VLAN-aware-bundle, VNI-aware-bundle.
+
+                    l3-vrf: L3 EVPN and MPLS VPN.'
       updates:
         type: dict
         keys:
@@ -24380,6 +24596,27 @@ keys:
           type: str
           format: ipv6_cidr
           description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: 'IPv6 address with prefix length.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
+        ipv6_address_auto_config:
+          type: bool
+          description: 'Use SLAAC to automatically configure the IPv6 address.
+
+            This option is mutually exclusive with `ipv6_addresses`.'
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         access_group_in:
           description: IPv4 ACL Name for ingress.
           type: str
@@ -24653,6 +24890,24 @@ keys:
         ipv6_address:
           type: str
           description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: 'IPv6 address with prefix length.
+
+              This option is mutually exclusive with `ipv6_address_auto_config` and
+              takes precedence if both are defined.'
+        ipv6_address_auto_config:
+          type: bool
+          description: 'Use SLAAC to automatically configure the IPv6 address.
+
+            This option is mutually exclusive with `ipv6_addresses`.'
         ipv6_address_virtuals:
           type: list
           description: The new "ipv6_address_virtuals" key support multiple virtual
@@ -24671,14 +24926,34 @@ keys:
             description: IPv6 address or IPv6_address/Mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_other_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.other_config_flag
+            removed: false
+            remove_in_version: 7.0.0
           description: Set the "other stateful configuration" flag in IPv6 router
             advertisements.
         ipv6_nd_cache:
           type: dict
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.cache
+            removed: false
+            remove_in_version: 7.0.0
           description: IPv6 neighbor cache options.
           keys:
             dynamic_capacity:
@@ -24700,6 +24975,11 @@ keys:
               description: Force refresh on cache expiry.
         ipv6_nd_prefixes:
           type: list
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           primary_key: ipv6_prefix
           items:
             type: dict
@@ -24748,6 +25028,35 @@ keys:
           type: bool
           description: Allow forwarding requests with additional IPv6 addresses in
             the gateway address "giaddr" field.
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
+          keys:
+            other_config_flag:
+              type: bool
+              description: Set the "other stateful configuration" flag in IPv6 router
+                advertisements.
+            cache:
+              type: dict
+              description: IPv6 neighbor cache options.
+              keys:
+                dynamic_capacity:
+                  type: int
+                  description: Capacity of dynamic cache entries.
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 4294967295
+                expire:
+                  type: int
+                  description: Cache entries expiry in seconds.
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 65535
+                refresh_always:
+                  type: bool
+                  description: Force refresh on cache expiry.
         access_group_in:
           type: str
           description: IPv4 access-list name.
@@ -25979,6 +26288,52 @@ $defs:
           min: 1
           max: 65535
           description: requires 'original_port'.
+  ipv6_nd:
+    description: IPv6 Neighbor Discovery protocol.
+    type: dict
+    keys:
+      ra:
+        description: Router Advertisement.
+        type: dict
+        keys:
+          disabled:
+            type: bool
+            description: Disable Router Advertisement messages on the interface.
+          rx_accept:
+            type: dict
+            keys:
+              default_route:
+                type: bool
+                description: Accept default route from received Router Advertisements.
+              route_preference:
+                type: bool
+                description: Accept route preference from received Router Advertisements.
+      managed_config_flag:
+        type: bool
+        description: Set the "Managed Address Configuration" (M) flag in Router Advertisements.
+      prefixes:
+        type: list
+        primary_key: ipv6_prefix
+        description: IPv6 prefixes to include in Router Advertisements.
+        items:
+          type: dict
+          keys:
+            ipv6_prefix:
+              type: str
+            valid_lifetime:
+              type: str
+              convert_types:
+              - int
+              description: Valid lifetime in seconds '<0-4294967295>' or 'infinite'.
+            preferred_lifetime:
+              type: str
+              convert_types:
+              - int
+              description: Preferred lifetime in seconds '<0-4294967295>' or 'infinite'.
+            no_autoconfig_flag:
+              type: bool
+              description: Indicate that the prefix cannot be used for stateless address
+                autoconfiguration (SLAAC).
   source_interface_per_vrf:
     type: dict
     keys:

@@ -388,12 +388,12 @@ agent KernelFib shutdown supervisor standby
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | - | oob | default | - | - |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
-| Management42 | - | oob | default | - | - |
-| Vlan123 | inband_management | inband | default | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
+| Management0 | - | oob | default | - | - | - | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | default-route, route-preference | True | True |
+| Management42 | - | oob | default | auto-config | - | - | - | - |
+| Vlan123 | inband_management | inband | default | 2001:db8:abcd:1234::1/64, 2001:db8:abcd:1234::2/64 | - | - | - | - |
 
 ##### Interface Redundancy
 
@@ -442,6 +442,13 @@ interface Management1
    description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
+   ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
+   ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
    redundancy fallback-delay infinity
    redundancy monitor neighbor ipv6 1:1:1:1:1:1:1:1 interval 101 milliseconds multiplier 3
 !
@@ -450,6 +457,8 @@ interface Management42
    speed forced 1000full
    ip address dhcp
    dhcp client accept default-route
+   ipv6 enable
+   ipv6 address auto-config
    no lldp transmit
    no lldp receive
    lldp tlv transmit ztp vlan 666
@@ -460,6 +469,8 @@ interface Vlan123
    description inband_management
    mtu 1500
    ip address 10.73.0.123/24
+   ipv6 address 2001:db8:abcd:1234::1/64
+   ipv6 address 2001:db8:abcd:1234::2/64
    ip virtual-router address 10.73.0.1
 ```
 
@@ -1072,9 +1083,9 @@ management console
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | True | True |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | True | True | 60 minutes |
 
 Management HTTPS is using the SSL profile SSL_PROFILE
 
@@ -1183,6 +1194,7 @@ lRIvIpbuqzZ1QzAdWwCX/5mgBk/xoI88N3EcxvgEJJhiXihYwW/630KkKETqnu64
 -----END PRIVATE KEY-----
    EOF
    no shutdown
+   session timeout 60 minutes
    !
    vrf MGMT
       no shutdown
@@ -1387,20 +1399,18 @@ tacacs-server host 10.10.10.160
 #### IP TACACS Source Interfaces
 
 | VRF | Source Interface Name |
-| --- | --------------- |
-| default | Loopback1 |
-| TEST1 | Loopback3 |
+| --- | --------------------- |
 | default | Loopback10 |
+| TEST1 | Loopback3 |
+| default | Loopback1 |
 
 #### IP TACACS Source Interfaces Device Configuration
 
 ```eos
 !
-ip tacacs vrf default source-interface Loopback1
-!
-ip tacacs vrf TEST1 source-interface Loopback3
-!
 ip tacacs source-interface Loopback10
+ip tacacs vrf TEST1 source-interface Loopback3
+ip tacacs vrf default source-interface Loopback1
 ```
 
 ### Radius Proxy
@@ -1605,7 +1615,7 @@ radius-server host 10.10.11.158 vrf mgt tls ssl-profile SSL_PROFILE
 | MGMT | Management1 |
 | abc | Loopback10 |
 
-#### IP SOURCE Source Interfaces Device Configuration
+#### IP RADIUS Source Interfaces Device Configuration
 
 ```eos
 !
@@ -2275,7 +2285,7 @@ kernel software forwarding ecmp
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=mgt -cvsourceip=10.10.10.10 -cvgnmi -cvobscurekeyfile -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/ -ecodhcpaddr=127.0.0.1:67 -ipfix -ipfixaddr=10.10.10.12 -sflow -sflowaddr=10.10.10.11 -cvconfig -cvsourceintf=Vlan100 -cv_loss_timeout=5m
    no shutdown
 ```
 
@@ -4501,9 +4511,9 @@ interface profile aa-profile-3
 
 #### DPS Interfaces Summary
 
-| Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
-| --------- | ---------- | -------- | --- | --------------- | --------------- |
-| Dps1 | 192.168.42.42/24 | True | 666 | Hardware: T3<br>Sampled: T2 | IPv4: 666<br>IPv6: 666<br>Direction: ingress |
+| Interface | IP address | IPv6 addresses | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | -------------- | -------- | --- | --------------- | --------------- |
+| Dps1 | 192.168.42.42/24 | auto-config | True | 666 | Hardware: T3<br>Sampled: T2 | IPv4: 666<br>IPv6: 666<br>Direction: ingress |
 
 #### DPS Interfaces Device Configuration
 
@@ -4516,6 +4526,7 @@ interface Dps1
    flow tracker hardware T3
    flow tracker sampled T2
    ip address 192.168.42.42/24
+   ipv6 address auto-config
    tcp mss ceiling ipv4 666 ipv6 666 ingress
    load-interval 42
 ```
@@ -4789,14 +4800,15 @@ interface Dps1
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
-| Ethernet4 | Molecule IPv6 | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
-| Ethernet55 | DHCPv6 Relay Testing | - | a0::1/64 | default | - | False | - | - | - | - |
-| Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
-| Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - | - |
+| Ethernet4 | Molecule IPv6 | - | auto-config | default | 9100 | True | True | default-route, route-preference | True | IPv6_ACL_IN | IPv6_ACL_OUT |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - | - |
+| Ethernet55 | DHCPv6 Relay Testing | - | a0::1/64 | default | - | False | - | - | - | - | - |
+| Ethernet65 | Multiple VRIDs | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - |
+| Ethernet66 | Multiple VRIDs and tracking | - | 2001:db8::2/64 | default | - | False | - | - | - | - | - |
+| Ethernet77 | MLAG_PEER_DC1-LEAF1B_Ethernet8 | 8 | *auto-config | *default | *- | *- | *- | *- | *- | *- | *- |
 
 *Inherited from Port-Channel Interface
 
@@ -5070,8 +5082,10 @@ interface Ethernet4
       address-family ipv6
    snmp trap link-change
    ipv6 enable
-   ipv6 address 2020::2020/64
+   ipv6 address auto-config
    ipv6 address FE80:FEA::AB65/64 link-local
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
    ipv6 nd ra disabled
    ipv6 nd managed-config-flag
    tcp mss ceiling ipv4 65
@@ -6199,10 +6213,11 @@ interface Ethernet89
 
 ##### IPv6
 
-| Interface | Description | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - |
-| Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | - | True | - | - |
+| Interface | Description | MLAG ID | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
+| Port-Channel8 | to Dev02 Port-channel 8 | - | auto-config | default | - | - | - | - | - | - | - |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - | - |
+| Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | True | default-route, route-preference | True | - | - |
 
 ##### VRRP Details
 
@@ -6307,6 +6322,7 @@ interface Port-Channel5
 interface Port-Channel8
    description to Dev02 Port-channel 8
    no switchport
+   ipv6 address auto-config
    switchport port-security violation protect
    isis enable EVPN_UNDERLAY
    isis authentication mode md5 level-1
@@ -6539,6 +6555,9 @@ interface Port-Channel100.101
    logging event link-status
    encapsulation dot1q vlan 101
    ipv6 address cafe::b4
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
    ipv6 nd managed-config-flag
 !
 interface Port-Channel100.102
@@ -6937,14 +6956,14 @@ interface Port-Channel667
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 | Loopback2 | - | default | - |
 | Loopback10 | Test_Node_Segment | default | 2002::CAFE/128 |
 | Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 2002::CAFE/64 |
-| Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | - |
+| Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | auto-config |
 
 ##### ISIS
 
@@ -7000,6 +7019,7 @@ interface Loopback100
    description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
    vrf TENANT_A_PROJECT02
    ip address 10.1.255.3/32
+   ipv6 address auto-config
    hardware forwarding id
 ```
 
@@ -7024,11 +7044,12 @@ interface Loopback100
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ------- | ----------------- | ----------- | ------------ |
-| Tunnel2 | default | cafe::1/64 | 666 | egress | test-in | test-out |
-| Tunnel3 | default | beef::64/64 | 666 | - | - | - |
-| Tunnel4 | default | beef::64/64 | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| --------- | --- | -------------- | ------- | ----------------- | ----------- | ------------ | --------------- | -------------- | ---------------------- |
+| Tunnel1 | Tunnel-VRF | auto-config | - | ingress | - | - | default-route, route-preference | True | True |
+| Tunnel2 | default | cafe::1/64 | 666 | egress | test-in | test-out | - | - | - |
+| Tunnel3 | default | beef::64/64 | 666 | - | - | - | - | - | - |
+| Tunnel4 | default | beef::64/64 | - | - | - | - | - | - | - |
 
 #### Tunnel Interfaces Device Configuration
 
@@ -7040,6 +7061,14 @@ interface Tunnel1
    mtu 1500
    vrf Tunnel-VRF
    ip address 42.42.42.42/24
+   ipv6 address auto-config
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
+   ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
+   ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
    tcp mss ceiling ipv4 666 ingress
    ip access-group test-in in
    ip access-group test-out out
@@ -7125,6 +7154,7 @@ interface Tunnel4
 | Vlan337 | v4 dhcp relay all-subnets | default | - | - |
 | Vlan338 | v6 dhcp relay all-subnets | default | - | - |
 | Vlan339 | v6 nd options | default | - | - |
+| Vlan340 | v6 nd new structure | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -7174,6 +7204,7 @@ interface Tunnel4
 | Vlan337 | default | 10.0.2.2/25 | - | - | - | - |
 | Vlan338 | default | - | - | - | - | - |
 | Vlan339 | default | - | - | - | - | - |
+| Vlan340 | default | - | - | - | - | - |
 | Vlan501 | default | 10.50.26.29/27 | - | - | - | - |
 | Vlan667 | default | 192.0.2.2/25 | - | - | - | - |
 | Vlan1001 | Tenant_A | - | 10.1.1.1/24 | - | - | - |
@@ -7210,25 +7241,26 @@ interface Tunnel4
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
-| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | True | - | - | - |
-| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - |
-| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - |
-| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - |
-| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | True | - | - | - |
-| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - |
-| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | True | - | - | - |
-| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - |
-| Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - |
-| Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - |
-| Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - |
-| Vlan338 | default | 2001:db8:338::1/64 | - | - | - | - | - | - | - |
-| Vlan339 | default | 2001:db8:339::1/64 | - | - | - | - | True | - | - |
-| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | True | - | - | - | - |
-| Vlan667 | default | 2001:db8:667::2/64 | - | - | - | - | - | - | - |
-| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | True | - | - | - |
-| Vlan1002 | Tenant_A | a2::1/64 | - | - | True | True | - | - | - |
+| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | ----------- | ------------ |
+| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - | - |
+| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - | - |
+| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - | - |
+| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - | - |
+| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - | - |
+| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - | - |
+| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - | - |
+| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - | - |
+| Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - | - |
+| Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - | - |
+| Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - | - |
+| Vlan338 | default | 2001:db8:338::1/64 | - | - | - | - | - | - | - | - |
+| Vlan339 | default | 2001:db8:339::1/64 | - | - | - | - | - | True | - | - |
+| Vlan340 | default | 2001:db8:340::1/64 | - | - | True | default-route, route-preference | True | True | - | - |
+| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | True | - | - | - | - | - |
+| Vlan667 | default | 2001:db8:667::2/64 | - | - | - | - | - | - | - | - |
+| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - | - |
+| Vlan1002 | Tenant_A | a2::1/64 | - | - | True | - | True | - | - | - |
 
 ##### VRRP Details
 
@@ -7575,6 +7607,20 @@ interface Vlan339
    ipv6 enable
    ipv6 address 2001:db8:339::1/64
    ipv6 nd other-config-flag
+!
+interface Vlan340
+   description v6 nd new structure
+   ipv6 nd cache expire 300
+   ipv6 nd cache dynamic capacity 1000
+   ipv6 nd cache refresh always
+   ipv6 enable
+   ipv6 address 2001:db8:340::1/64
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd other-config-flag
+   ipv6 nd prefix 2001:db8:340::/64 100 50 no-autoconfig
 !
 interface Vlan501
    description SVI Description
@@ -9158,6 +9204,12 @@ ASN Notation: asdot
 | 2.2.1.0/24 | False | False | - | - | - | False |
 | 3.3.3.0/24 | False | False | - | AGG-ADD-RCF() | - | False |
 
+#### Route Distinguisher
+
+| Address Families | Range |
+| ---------------- | ----- |
+| l3-vrf, l2-evpn | 2-45 |
+
 #### Router BGP EVPN Address Family
 
 - VPN import pruning is **enabled**
@@ -9787,6 +9839,11 @@ router bgp 65101
       route-target export evpn domain remote 2:12
       redistribute learned
       vlan 112
+   !
+   route-distinguisher
+      assignment auto range 2 45
+      assignment auto address-family l2-evpn
+      assignment auto address-family l3-vrf
    !
    address-family evpn
       route export ethernet-segment ip mass-withdraw

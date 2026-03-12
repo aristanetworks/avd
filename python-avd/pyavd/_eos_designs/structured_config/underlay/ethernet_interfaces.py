@@ -91,7 +91,7 @@ class EthernetInterfacesMixin(Protocol):
                 # IP address
                 if link.ip_address:
                     if self.shared_utils.underlay_ipv6_numbered:
-                        ethernet_interface.ipv6_address = f"{link.ip_address}/{link.prefix_length}"
+                        ethernet_interface.ipv6_addresses.append(f"{link.ip_address}/{link.prefix_length}")
                     elif "unnumbered" in link.ip_address.lower():
                         ethernet_interface.ip_address = link.ip_address
                     else:
@@ -209,7 +209,7 @@ class EthernetInterfacesMixin(Protocol):
                         ethernet_subinterface.ip_address = f"{subinterface.ip_address}/{subinterface.prefix_length}"
 
                     if subinterface.ipv6_address:
-                        ethernet_subinterface.ipv6_address = f"{subinterface.ipv6_address}/{subinterface.ipv6_prefix_length}"
+                        ethernet_subinterface.ipv6_addresses.append(f"{subinterface.ipv6_address}/{subinterface.ipv6_prefix_length}")
 
                     self.structured_config_utils.parent_interfaces_tracker.register_ethernet_subinterface(subinterface.interface)
 

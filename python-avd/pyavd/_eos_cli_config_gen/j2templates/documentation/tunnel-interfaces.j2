@@ -15,7 +15,7 @@
 | Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source | Destination | PMTU-Discovery | IPsec Profile |
 | --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ------ | ----------- | -------------- | ------------- |
 {%     for tunnel_interface in tunnel_interfaces | arista.avd.natural_sort('name') %}
-{%         if tunnel_interface.ipv6_address is arista.avd.defined %}
+{%         if tunnel_interface.ipv6_addresses is arista.avd.defined or tunnel_interface.ipv6_address is arista.avd.defined or tunnel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
 {%             do tunnel_interfaces_ipv6.append(tunnel_interface) %}
 {%         endif %}
 {%         if tunnel_interface.ip_address is arista.avd.defined %}
@@ -28,7 +28,7 @@
 {%         set shutdown = tunnel_interface.shutdown | arista.avd.default('-') %}
 {%         set nat_profile = tunnel_interface.nat_profile | arista.avd.default('-') %}
 {%         set tunnel_mode = tunnel_interface.tunnel_mode | arista.avd.default("-") %}
-{%         set row_source = tunnel_interface.source_interface | default(tunnel_interface.source, "-") %}
+{%         set row_source = tunnel_interface.source_interface | arista.avd.default(tunnel_interface.source, "-") %}
 {%         set row_destination = tunnel_interface.destination | arista.avd.default("-") %}
 {%         set row_pmtu = tunnel_interface.path_mtu_discovery | arista.avd.default("-") %}
 {%         set ipsec_profile = tunnel_interface.ipsec_profile | arista.avd.default("-") %}
@@ -56,16 +56,36 @@
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Address | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ------- | ----------------- | ----------- | ------------ |
+| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| --------- | --- | -------------- | ------- | ----------------- | ----------- | ------------ | --------------- | -------------- | ---------------------- |
 {%         for tunnel_interface in tunnel_interfaces_ipv6 | arista.avd.natural_sort('name') %}
 {%             set row_vrf = tunnel_interface.vrf | arista.avd.default('default') %}
-{%             set row_ip_addr = tunnel_interface.ipv6_address | arista.avd.default("-") %}
+{%             if tunnel_interface.ipv6_addresses is arista.avd.defined %}
+{%                 set row_ipv6_address = tunnel_interface.ipv6_addresses | arista.avd.natural_sort | join(', ') %}
+{%             elif tunnel_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+{%                 set row_ipv6_address = "auto-config" %}
+{%             elif tunnel_interface.ipv6_address is arista.avd.defined %}
+{%                 set row_ipv6_address = tunnel_interface.ipv6_address %}
+{%             else %}
+{%                 set row_ipv6_address = "-" %}
+{%             endif %}
+{%             set nd_ra_rx_accept = [] %}
+{%             if tunnel_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
+{%                 do nd_ra_rx_accept.append("default-route") %}
+{%             endif %}
+{%             if tunnel_interface.ipv6_nd.ra.rx_accept.route_preference is arista.avd.defined(true) %}
+{%                 do nd_ra_rx_accept.append("route-preference") %}
+{%             endif %}
+{%             if nd_ra_rx_accept == [] %}
+{%                 do nd_ra_rx_accept.append("-") %}
+{%             endif %}
+{%             set nd_ra_disabled = tunnel_interface.ipv6_nd.ra.disabled | arista.avd.default("-") %}
+{%             set managed_config_flag = tunnel_interface.ipv6_nd.managed_config_flag | arista.avd.default("-") %}
 {%             set row_tcp_mss = tunnel_interface.tcp_mss_ceiling.ipv6 | arista.avd.default("-") %}
 {%             set row_tcp_mss_direction = tunnel_interface.tcp_mss_ceiling.direction | arista.avd.default("-") %}
 {%             set row_acl_in = tunnel_interface.ipv6_access_group_in | arista.avd.default("-") %}
 {%             set row_acl_out = tunnel_interface.ipv6_access_group_out | arista.avd.default("-") %}
-| {{ tunnel_interface.name }} | {{ row_vrf }} | {{ row_ip_addr }} | {{ row_tcp_mss }} | {{ row_tcp_mss_direction }} | {{ row_acl_in }} | {{ row_acl_out }} |
+| {{ tunnel_interface.name }} | {{ row_vrf }} | {{ row_ipv6_address }} | {{ row_tcp_mss }} | {{ row_tcp_mss_direction }} | {{ row_acl_in }} | {{ row_acl_out }} | {{ nd_ra_rx_accept | join(", ") }} | {{ nd_ra_disabled }} | {{ managed_config_flag }} |
 {%         endfor %}
 {%     endif %}
 

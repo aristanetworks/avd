@@ -1,0 +1,22 @@
+---
+# Test for deprecated key ipv6_address
+vlan_interfaces:
+  - name: VLAN10
+    description: Test_ipv6_address
+    ip_address: 10.2.255.3/32
+    ipv6_address: 2002::CAFE/128
+
+  # Test for deprecated keys ipv6_nd_ra_disabled, ipv6_nd_managed_config_flag, ipv6_nd_prefixes, ipv6_nd_other_config_flag, ipv6_nd_cache
+  - name: VLAN20
+    ipv6_nd_ra_disabled: true
+    ipv6_nd_managed_config_flag: true
+    ipv6_nd_other_config_flag: true
+    ipv6_nd_cache:
+      dynamic_capacity: 800
+      expire: 200
+      refresh_always: true
+    ipv6_nd_prefixes:
+      - ipv6_prefix: 2001:db8:20::/64
+        valid_lifetime: infinite
+        preferred_lifetime: infinite
+        no_autoconfig_flag: true
