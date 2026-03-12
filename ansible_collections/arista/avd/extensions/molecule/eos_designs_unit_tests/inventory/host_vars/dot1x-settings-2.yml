@@ -7,10 +7,6 @@ l2leaf:
     - name: dot1x-settings-2
       mgmt_ip: 192.168.0.2/24
 
-avd_design_future:
-  # Test for new behaviour of IP RADIUS server commands
-  ip_radius_source_interface_setting: true
-
 dot1x_settings:
   enabled: true
   authentication:
