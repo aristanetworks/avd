@@ -11,13 +11,18 @@ ip access-list standard {{ standard_access_list.name }}
    counters per-entry
 {%     endif %}
 {%     if standard_access_list.entries is arista.avd.defined %}
-{%         for entry in standard_access_list.entries | arista.avd.natural_sort("sequence") %}
+{%         for entry in standard_access_list.entries %}
+{%             set entry_cli = "" %}
+{%             if entry.sequence is arista.avd.defined %}
+{%                 set entry_cli = entry.sequence %}
+{%             endif %}
 {%             if entry.remark is arista.avd.defined %}
-   {{ entry.sequence }} remark {{ entry.remark }}
+{%                 set entry_cli = entry_cli ~ " remark " ~ entry.remark %}
+   {{ entry_cli | trim }}
 {%                 continue %}
 {%             endif %}
 {%             if entry.action is arista.avd.defined %}
-{%                 set entry_cli = entry.sequence ~ " " ~ entry.action %}
+{%                 set entry_cli = entry_cli ~ " " ~ entry.action %}
 {%                 if '/' not in entry.source and entry.source != "any" %}
 {%                     set entry_cli = entry_cli ~ " host " ~ entry.source %}
 {%                     if entry.mirror_session is arista.avd.defined %}
@@ -26,7 +31,7 @@ ip access-list standard {{ standard_access_list.name }}
 {%                     if entry.log is arista.avd.defined(true) %}
 {%                         set entry_cli = entry_cli ~ " log" %}
 {%                     endif %}
-   {{ entry_cli }}
+   {{ entry_cli | trim }}
 {%                 else %}
 {%                     set entry_cli = entry_cli ~ " " ~ entry.source %}
 {%                     if (entry.vlan is arista.avd.defined and entry.vlan_mask is arista.avd.defined) or (entry.inner_vlan is arista.avd.defined and entry.inner_vlan_mask is arista.avd.defined) %}
@@ -44,7 +49,7 @@ ip access-list standard {{ standard_access_list.name }}
 {%                     if entry.log is arista.avd.defined(true) %}
 {%                         set entry_cli = entry_cli ~ " log" %}
 {%                     endif %}
-   {{ entry_cli }}
+   {{ entry_cli | trim }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}

@@ -23714,7 +23714,6 @@ keys:
           type: bool
         entries:
           type: list
-          primary_key: sequence
           items:
             type: dict
             keys:

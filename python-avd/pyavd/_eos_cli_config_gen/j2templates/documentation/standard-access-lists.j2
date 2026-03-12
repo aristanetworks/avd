@@ -21,8 +21,8 @@ ACL has counting mode `counters per-entry` enabled!
 | Sequence | Action | Source | Remark | Log | Mirror Session |
 | -------- | ------ | ------ | ------ | --- | -------------- |
 {%             if standard_access_list.entries is arista.avd.defined %}
-{%                 for entry in standard_access_list.entries | arista.avd.natural_sort("sequence") %}
-| {{ entry.sequence }} | {{ entry.action | arista.avd.default("-") }} | {{ entry.source | arista.avd.default("-") }} | {{ entry.remark | arista.avd.default("-") }} | {{ entry.log | arista.avd.default("-") }} | {{ entry.mirror_session | arista.avd.default("-") }} |
+{%                 for entry in standard_access_list.entries %}
+| {{ entry.sequence | arista.avd.default("-") }} | {{ entry.action | arista.avd.default("-") }} | {{ entry.source | arista.avd.default("-") }} | {{ entry.remark | arista.avd.default("-") }} | {{ entry.log | arista.avd.default("-") }} | {{ entry.mirror_session | arista.avd.default("-") }} |
 {%                 endfor %}
 {%             elif standard_access_list.sequence_numbers is arista.avd.defined %}
 {%                 for sequence in standard_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}

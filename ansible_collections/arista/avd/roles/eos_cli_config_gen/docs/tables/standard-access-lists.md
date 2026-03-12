@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "standard_access_lists.[].name") | String | Required, Unique |  |  | Access-list Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "standard_access_lists.[].counters_per_entry") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "standard_access_lists.[].entries") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "standard_access_lists.[].entries.[].sequence") | Integer | Required, Unique |  |  | Sequence ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "standard_access_lists.[].entries.[].sequence") | Integer |  |  |  | Sequence ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "standard_access_lists.[].entries.[].action") | String |  |  | Valid Values:<br>- <code>permit</code><br>- <code>deny</code> | Action as string.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remark</samp>](## "standard_access_lists.[].entries.[].remark") | String |  |  |  | Specify a comment. If remark is specified other keys of the entry are ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "standard_access_lists.[].entries.[].source") | String |  |  |  | The value can be:<br>1. A single source address.<br>2. Source address with mask. e.g. '10.0.0.1/8'.<br>3. 'any' source address. |
@@ -36,7 +36,7 @@
         entries:
 
             # Sequence ID.
-          - sequence: <int; required; unique>
+          - sequence: <int>
 
             # Action as string.
             action: <str; "permit" | "deny">

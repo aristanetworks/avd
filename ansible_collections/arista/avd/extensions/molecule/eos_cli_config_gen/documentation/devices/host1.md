@@ -11881,8 +11881,8 @@ poe
 
 | Sequence | Action | Source | Remark | Log | Mirror Session |
 | -------- | ------ | ------ | ------ | --- | -------------- |
-| 10 | - | - | ACL to restrict access RFC1918 addresses | - | - |
-| 20 | permit | 10.0.0.0/8 | - | - | mirror1 |
+| - | - | - | ACL to restrict access RFC1918 addresses | - | - |
+| - | permit | 10.0.0.0/8 | - | - | mirror1 |
 | 30 | permit | 172.16.0.0/12 | - | True | - |
 | 40 | permit | 192.168.0.0/16 | - | True | mirror2 |
 | 50 | permit | any | - | - | - |
@@ -11921,8 +11921,8 @@ ACL has counting mode `counters per-entry` enabled!
 ```eos
 !
 ip access-list standard 99
-   10 remark ACL to restrict access RFC1918 addresses
-   20 permit 10.0.0.0/8 mirror session mirror1
+   remark ACL to restrict access RFC1918 addresses
+   permit 10.0.0.0/8 mirror session mirror1
    30 permit 172.16.0.0/12 log
    40 permit 192.168.0.0/16 mirror session mirror2 log
    50 permit any

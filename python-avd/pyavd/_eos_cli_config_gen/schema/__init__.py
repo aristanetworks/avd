@@ -64372,7 +64372,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "log": {"type": bool},
                 "mirror_session": {"type": str},
             }
-            sequence: int
+            sequence: int | None
             """Sequence ID."""
             action: Action | None
             """Action as string."""
@@ -64404,7 +64404,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    sequence: int | UndefinedType = Undefined,
+                    sequence: int | None | UndefinedType = Undefined,
                     action: Action | None | UndefinedType = Undefined,
                     remark: str | None | UndefinedType = Undefined,
                     source: str | None | UndefinedType = Undefined,
@@ -64440,10 +64440,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class Entries(AvdIndexedList[int, EntriesItem]):
-            """Subclass of AvdIndexedList with `EntriesItem` items. Primary key is `sequence` (`int`)."""
-
-            _primary_key: ClassVar[str] = "sequence"
+        class Entries(AvdList[EntriesItem]):
+            """Subclass of AvdList with `EntriesItem` items."""
 
         Entries._item_type = EntriesItem
 
@@ -64493,7 +64491,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Access-list Name."""
         counters_per_entry: bool | None
         entries: Entries
-        """Subclass of AvdIndexedList with `EntriesItem` items. Primary key is `sequence` (`int`)."""
+        """Subclass of AvdList with `EntriesItem` items."""
         sequence_numbers: SequenceNumbers
         """Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`)."""
 
@@ -64516,7 +64514,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     name: Access-list Name.
                     counters_per_entry: counters_per_entry
-                    entries: Subclass of AvdIndexedList with `EntriesItem` items. Primary key is `sequence` (`int`).
+                    entries: Subclass of AvdList with `EntriesItem` items.
                     sequence_numbers: Subclass of AvdIndexedList with `SequenceNumbersItem` items. Primary key is `sequence` (`int`).
 
                 """

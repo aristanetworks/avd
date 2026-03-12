@@ -49,10 +49,8 @@ standard_access_lists:
   - name: 99  # numeric ACL name
     counters_per_entry: false
     entries:
-      - sequence: 10
-        remark: "ACL to restrict access RFC1918 addresses"
-      - sequence: 20
-        action: permit
+      - remark: "ACL to restrict access RFC1918 addresses"
+      - action: permit
         source: 10.0.0.0/8
         mirror_session: mirror1
       - sequence: 30
