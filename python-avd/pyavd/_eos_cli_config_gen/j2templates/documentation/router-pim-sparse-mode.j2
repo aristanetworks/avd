@@ -58,7 +58,7 @@ Register Local Interface: {{ router_pim_sparse_mode.ipv4.register_local_interfac
 | -------- | ------------- | ----------- | ----------------- | ------------------------ |
 {%         for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
 {%             set any_ipv4_ip_addresses.present = any_ipv4_ip_addresses.present or (vrf.ipv4.rp_addresses is arista.avd.defined and (vrf.ipv4.rp_addresses | length) > 0) %}
-{%             set any_ipv4_anycast_rp.present = vrf.ipv4.anycast_rps is arista.avd.defined %}
+{%             set any_ipv4_anycast_rp.present = any_ipv4_anycast_rp.present or vrf.ipv4.anycast_rps is arista.avd.defined %}
 | {{ vrf.name }} | {{ vrf.ipv4.ssm_range | arista.avd.default("-") }} | {{ vrf.ipv4.bfd | arista.avd.default(false) }} | {{ vrf.ipv4.make_before_break | arista.avd.default("-") }} | {{ vrf.ipv4.register_local_interface | arista.avd.default("-") }} |
 {%         endfor %}
 {%         if any_ipv4_ip_addresses.present %}
