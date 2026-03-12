@@ -19,11 +19,14 @@ The parent interfaces functionality uses a global tracking pattern:
    - Registration happens in all modules that create ethernet_interfaces or port_channel_interfaces.
 
 3. **Parent Creation Phase**: The `AvdStructuredConfigParentInterfaces` module runs near the end
-   of the pipeline (before flow and custom_structured_configuration) and creates any missing parent interfaces
-   with minimal configuration:
-   - `shutdown: false`
-   - `switchport.enabled: false` (for Ethernet interfaces)
-   - `metadata.peer_type: l3_interface`
+   of the pipeline (before flow and custom_structured_configuration)
+   a. It validates that no required parents exist as an L2 interface which would bring up
+      the subinterface in a dormant state.
+   b. It creates any missing parent interfaces
+      with minimal configuration:
+      - `shutdown: false`
+      - `switchport.enabled: false` (for Ethernet interfaces)
+      - `metadata.peer_type: l3_interface`
 """
 
 from __future__ import annotations
@@ -111,6 +114,45 @@ class AvdStructuredConfigParentInterfacesProtocol(
     that were created by other modules but don't have their parent interfaces defined.
     """
 
+    def _validate_parent_switchport_config(
+        self: AvdStructuredConfigParentInterfacesProtocol,
+        required_parents: set[str],
+        existing_interfaces: EosCliConfigGen.EthernetInterfaces | EosCliConfigGen.PortChannelInterfaces,
+        interface_type: str,
+    ) -> None:
+        """
+        Validate that parent interfaces don't have switchport enabled.
+
+        Args:
+            required_parents: Set of parent interface names that have subinterfaces.
+            existing_interfaces: AvdIndexedList of existing interface configurations (O(1) lookup by name).
+            interface_type: Type of interface for error message (e.g., "Ethernet", "Port-Channel").
+
+        Raises:
+            AristaAvdInvalidInputsError: If any required parent interfaces have switchport enabled.
+        """
+        if not required_parents:
+            return
+
+        # Collect all problematic interfaces
+        # AvdIndexedList supports O(1) lookup by interface name, so no need to create a dict
+        problematic_interfaces = []
+        for parent_name in required_parents:
+            if parent_name in existing_interfaces:
+                interface = existing_interfaces[parent_name]
+                # Check if switchport is enabled
+                if interface.switchport.enabled is True:
+                    problematic_interfaces.append(parent_name)
+
+        if problematic_interfaces:
+            msg = (
+                f"The following {interface_type} interface(s) have subinterfaces configured but are set as switchports "
+                f"(switchport enabled), which will cause the subinterfaces to be in a dormant state: "
+                f"{', '.join(natural_sort(problematic_interfaces))}. "
+                f"Please configure these interfaces with 'no switchport' (switchport.enabled: false) or remove the subinterfaces."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
     @structured_config_contributor
     def ethernet_interfaces(self: AvdStructuredConfigParentInterfacesProtocol) -> None:
         """
@@ -119,7 +161,18 @@ class AvdStructuredConfigParentInterfacesProtocol(
         This method uses the global ParentInterfacesTracker to determine which
         parent interfaces need to be created based on tracking done throughout
         the structured config generation pipeline.
+
+        Raises:
+            AristaAvdInvalidInputsError: If there are subinterfaces whose parent interfaces
+                have switchport enabled, which would result in dormant state.
         """
+        # Check for existing parent interfaces with switchport enabled
+        self._validate_parent_switchport_config(
+            required_parents=self.structured_config_utils.parent_interfaces_tracker.required_ethernet_parents,
+            existing_interfaces=self.structured_config.ethernet_interfaces,
+            interface_type="Ethernet",
+        )
+
         for interface_name in natural_sort(self.structured_config_utils.parent_interfaces_tracker.get_missing_ethernet_parents()):
             interface = EosCliConfigGen.EthernetInterfacesItem(
                 name=interface_name,
@@ -140,8 +193,17 @@ class AvdStructuredConfigParentInterfacesProtocol(
 
         Raises:
             AristaAvdInvalidInputsError: If there are missing parent Port-Channel interfaces
-                that cannot be auto-created (i.e., those without member_interfaces defined).
+                that cannot be auto-created (i.e., those without member_interfaces defined),
+                or if there are subinterfaces whose parent interfaces have switchport enabled,
+                which would result in dormant state.
         """
+        # Check for existing parent interfaces with switchport enabled
+        self._validate_parent_switchport_config(
+            required_parents=self.structured_config_utils.parent_interfaces_tracker.required_port_channel_parents,
+            existing_interfaces=self.structured_config.port_channel_interfaces,
+            interface_type="Port-Channel",
+        )
+
         missing_port_channel_parents = self.structured_config_utils.parent_interfaces_tracker.get_missing_port_channel_parents()
 
         if missing_port_channel_parents:
