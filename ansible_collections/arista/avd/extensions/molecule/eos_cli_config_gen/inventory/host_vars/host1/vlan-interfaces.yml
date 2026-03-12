@@ -422,7 +422,9 @@ vlan_interfaces:
     ip_address: 10.50.26.29/27
     ipv6_addresses:
       - 1b11:3a00:22b0:0088::207/127
-    ipv6_nd_ra_disabled: true
+    ipv6_nd:
+      ra:
+        disabled: true
 
   - name: Vlan1001
     description: SVI Description
@@ -431,12 +433,13 @@ vlan_interfaces:
     ip_address_virtual: 10.1.1.1/24
     ipv6_addresses:
       - a1::1/64
-    ipv6_nd_managed_config_flag: true
-    ipv6_nd_prefixes:
-      - ipv6_prefix: a1::/64
-        valid_lifetime: infinite
-        preferred_lifetime: infinite
-        no_autoconfig_flag: true
+    ipv6_nd:
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: a1::/64
+          valid_lifetime: infinite
+          preferred_lifetime: infinite
+          no_autoconfig_flag: true
 
   - name: Vlan24
     description: SVI Description
@@ -444,12 +447,13 @@ vlan_interfaces:
     ip_address_virtual: 10.10.24.1/24
     ipv6_addresses:
       - 1b11:3a00:22b0:6::15/64
-    ipv6_nd_managed_config_flag: true
-    ipv6_nd_prefixes:
-      - ipv6_prefix: 1b11:3a00:22b0:6::/64
-        valid_lifetime: infinite
-        preferred_lifetime: infinite
-        no_autoconfig_flag: true
+    ipv6_nd:
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: 1b11:3a00:22b0:6::/64
+          valid_lifetime: infinite
+          preferred_lifetime: infinite
+          no_autoconfig_flag: true
     ipv6_virtual_router_addresses:
       - 1b11:3a00:22b0:6::1
 
@@ -492,13 +496,15 @@ vlan_interfaces:
     ip_address_virtual: 10.1.2.1/24
     ipv6_addresses:
       - a2::1/64
-    ipv6_nd_managed_config_flag: true
-    ipv6_nd_prefixes:
-      - ipv6_prefix: a2::/64
-        valid_lifetime: infinite
-        preferred_lifetime: infinite
-        no_autoconfig_flag: true
-    ipv6_nd_ra_disabled: true
+    ipv6_nd:
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: a2::/64
+          valid_lifetime: infinite
+          preferred_lifetime: infinite
+          no_autoconfig_flag: true
+      ra:
+        disabled: true
 
   - name: Vlan75
     description: SVI Description
@@ -506,12 +512,13 @@ vlan_interfaces:
     ip_address_virtual: 10.10.75.1/24
     ipv6_addresses:
       - 1b11:3a00:22b0:1000::15/64
-    ipv6_nd_managed_config_flag: true
-    ipv6_nd_prefixes:
-      - ipv6_prefix: 1b11:3a00:22b0:1000::/64
-        valid_lifetime: infinite
-        preferred_lifetime: infinite
-        no_autoconfig_flag: true
+    ipv6_nd:
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: 1b11:3a00:22b0:1000::/64
+          valid_lifetime: infinite
+          preferred_lifetime: infinite
+          no_autoconfig_flag: true
     ipv6_virtual_router_addresses:
       - 1b11:3a00:22b0:1000::1
     multicast:
@@ -537,12 +544,13 @@ vlan_interfaces:
     ip_address_virtual: 10.10.144.3/20
     ipv6_addresses:
       - 1b11:3a00:22b0:5200::15/64
-    ipv6_nd_managed_config_flag: true
-    ipv6_nd_prefixes:
-      - ipv6_prefix: 1b11:3a00:22b0:5200::/64
-        valid_lifetime: infinite
-        preferred_lifetime: infinite
-        no_autoconfig_flag: true
+    ipv6_nd:
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: 1b11:3a00:22b0:5200::/64
+          valid_lifetime: infinite
+          preferred_lifetime: infinite
+          no_autoconfig_flag: true
     ipv6_virtual_router_addresses:
       - 1b11:3a00:22b0:5200::3
     ip_helpers:
@@ -739,8 +747,32 @@ vlan_interfaces:
     ipv6_enable: true
     ipv6_addresses:
       - 2001:db8:339::1/64
-    ipv6_nd_other_config_flag: true
-    ipv6_nd_cache:
-      dynamic_capacity: 900
-      expire: 250
-      refresh_always: true
+    ipv6_nd:
+      other_config_flag: true
+      cache:
+        dynamic_capacity: 900
+        expire: 250
+        refresh_always: true
+
+  - name: Vlan340
+    description: v6 nd new structure
+    ipv6_enable: true
+    ipv6_addresses:
+      - 2001:db8:340::1/64
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
+      other_config_flag: true
+      cache:
+        dynamic_capacity: 1000
+        expire: 300
+        refresh_always: true
+      prefixes:
+        - ipv6_prefix: 2001:db8:340::/64
+          valid_lifetime: 100
+          preferred_lifetime: 50
+          no_autoconfig_flag: true
