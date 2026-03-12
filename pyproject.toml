@@ -3,7 +3,7 @@
 # anta is set to latest version to make sure developers run with the latest version
 # when generating molecule artifacts.
 dev = [
-    "anta==1.7.0",
+    "anta==1.8.0",
     "cryptography>=43.0.0",
     "deepmerge>=1.1.0",
     "netaddr>=0.7.19",
@@ -25,7 +25,7 @@ dev = [
     "pre-commit-hooks>=3.3.0",
     "pre-commit>=3.2.0",
     "pylint>=3.2.6",
-    "ruff==0.15.2",
+    "ruff==0.15.5",
     "setuptools>=77.0", # for pyright check in CI
     "tox>4",
     "twine>=6.2.0",
@@ -54,7 +54,7 @@ molecule = [
 ]
 pytest = [
     "ansible-core>=2.16.0,<2.21.0",
-    "anta>=1.7.0",
+    "anta==1.8.0",
     "pytest>=8.2.0",
     "pytest-asyncio>=1.2.0",
     "pydantic>=2.3.0",
@@ -258,7 +258,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.0.0"
+current_version = "6.1.0-dev1"
 
 allow_dirty = true
 commit = false

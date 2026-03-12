@@ -6,6 +6,8 @@
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
+- [Multicast](#multicast)
+  - [Router Multicast](#router-multicast)
 
 ## Management
 
@@ -21,9 +23,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -52,4 +54,22 @@ interface Management1
 daemon TerminAttr
    exec /usr/bin/TerminAttr -cvaddr=192.0.2.1:9910,192.0.2.2:9910,192.0.2.3:9910 -cvauth=token,/tmp/token -cvvrf=mgt -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
+```
+
+## Multicast
+
+### Router Multicast
+
+#### IP Router Multicast Summary
+
+- IPv6 software forwarding is handled by the Linux kernel.
+
+#### Router Multicast Device Configuration
+
+```eos
+!
+router multicast
+   !
+   ipv6
+      software-forwarding kernel
 ```

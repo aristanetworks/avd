@@ -149,7 +149,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth2, Eth3 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
-        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        switches: [ dc1-leaf2a, dc1-leaf2b ]
         profile: TENANT_B
         port_channel:
           endpoint_port_channel: PortChanne1
@@ -162,7 +162,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth4, Eth5 ]
         switch_ports: [ Ethernet11, Ethernet11 ]
-        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        switches: [ dc1-leaf2a, dc1-leaf2b ]
         profile: TENANT_A_MTU
         port_channel:
           endpoint_port_channel: PortChanne1
@@ -175,7 +175,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth6, Eth7 ]
         switch_ports: [ Ethernet12, Ethernet12 ]
-        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        switches: [ dc1-leaf2a, dc1-leaf2b ]
         mtu: 1601
         port_channel:
           endpoint_port_channel: PortChanne1
@@ -188,7 +188,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1 ]
         switch_ports: [ Ethernet6 ]
-        switches: [ DC1-LEAF1A ]
+        switches: [ dc1-leaf1a ]
         profile: ALL_WITH_SECURITY
         spanning_tree_bpdufilter: false
         spanning_tree_bpduguard: false
@@ -198,7 +198,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1 ]
         switch_ports: [ Ethernet7 ]
-        switches: [ DC1-LEAF1A ]
+        switches: [ dc1-leaf1a ]
         profile: TENANT_A
 
   - name: server03_ESI
@@ -206,7 +206,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
-        switches: [ DC1-SVC3A, DC1-SVC4A ]
+        switches: [ dc1-svc3a, DC1-SVC4A ]
         profile: TENANT_A_B
         ethernet_segment:
           short_esi: '0303:0202:0101'
@@ -220,7 +220,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet5, Ethernet5 ]
-        switches: [ DC1-L2LEAF1A, DC1-L2LEAF1B ]
+        switches: [ dc1-l2leaf1a, dc1-l2leaf1b ]
         profile: TENANT_A_B
         ethernet_segment:
           short_esi: '0303:0202:0101'
@@ -233,7 +233,7 @@ servers:
     adapters:
       - switch_ports: [ Ethernet11, Ethernet11 ]
         endpoint_ports: [ Eth1, Eth2 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: ALL_WITH_SECURITY
 
   - name: server05_no_profile
@@ -241,7 +241,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet12, Ethernet12 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         mode: trunk
         vlans: "1-4094"
         spanning_tree_bpdufilter: true
@@ -266,7 +266,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet13, Ethernet13 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: ALL_WITH_SECURITY
         mode: access
         vlans: "210"
@@ -292,7 +292,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet14, Ethernet14 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: ALL_WITH_SECURITY_PORT_CHANNEL
 
   - name: server08_no_profile_port_channel
@@ -300,7 +300,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet15, Ethernet15 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         mode: trunk
         vlans: "1-4094"
         spanning_tree_bpdufilter: true
@@ -328,7 +328,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet16, Ethernet16 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: ALL_WITH_SECURITY_PORT_CHANNEL
         mode: access
         vlans: "210"
@@ -355,7 +355,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet17, Ethernet17 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         mode: trunk
         vlans: "1-4094"
         spanning_tree_bpdufilter: true
@@ -385,7 +385,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet18, Ethernet18 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
 
   - name: server12_inherit_nested_profile_port_channel_lacp_fallback
@@ -393,7 +393,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet19, Ethernet19 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: NESTED_PORT_PROFILE
 
   - name: server13_disabled_interfaces
@@ -401,7 +401,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet20, Ethernet20 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: TENANT_A
         enabled: false
 
@@ -410,7 +410,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet21, Ethernet21 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: TENANT_A
         enabled: true
 
@@ -419,7 +419,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet22, Ethernet22 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: TENANT_A
         enabled: false
         port_channel:
@@ -432,7 +432,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet23, Ethernet23 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: TENANT_A
         port_channel:
           endpoint_port_channel: server16_port_channel_with_disabled_port_channel
@@ -444,7 +444,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet24, Ethernet24 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: TENANT_A
         enabled: false
         port_channel:
@@ -457,7 +457,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet25, Ethernet25 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: TENANT_A
         monitor_sessions:
           - name: MonitoringSessionServer18WithDest
@@ -474,7 +474,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth3, Eth4 ]
         switch_ports: [ Ethernet27, Ethernet27 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: TENANT_A
         enabled: true
         port_channel:
@@ -492,7 +492,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth5 ]
         switch_ports: [ Ethernet28 ]
-        switches: [ DC1-SVC3A ]
+        switches: [ dc1-svc3a ]
         profile: TENANT_A
         enabled: true
         monitor_sessions:
@@ -506,7 +506,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet26, Ethernet26 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         monitor_sessions:
           - name: MonitoringSessionServer18WithDest
             role: destination
@@ -528,7 +528,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1 ]
         switch_ports: [ Ethernet40 ]
-        switches: [ DC1-SVC3A ]
+        switches: [ dc1-svc3a ]
         monitor_sessions:
           - name: MonitoringSessionServer18WithDest
             role: destination
@@ -550,7 +550,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet42, Ethernet42 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: TENANT_A
         enabled: true
         port_channel:
@@ -566,7 +566,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet29, Ethernet29 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: TENANT_A
         # testing using port_channel_id for member interface description
         description: "{endpoint_type!u}_{endpoint}{port_channel_id?<_Po}"
@@ -581,7 +581,7 @@ servers:
     adapters:
       - endpoint_ports: [ int_1 ]
         switch_ports: [ Ethernet30 ]
-        switches: [ DC1-SVC3A ]
+        switches: [ dc1-svc3a ]
         profile: TENANT_A
         mode: trunk phone
         enabled: true
@@ -591,7 +591,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet31, Ethernet31 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: PORT_CHANNEL_LACP_TIMER
         port_channel:
           endpoint_port_channel: server24_port_channel_with_lacp_timer
@@ -601,7 +601,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet32, Ethernet32 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         port_channel:
           endpoint_port_channel: server25_port_channel_with_lacp_timer
           mode: active
@@ -615,7 +615,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet33, Ethernet33 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: PORT_CHANNEL_LACP_TIMER_NORMAL
         port_channel:
           endpoint_port_channel: server26_port_channel_with_lacp_timer
@@ -625,7 +625,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet34, Ethernet34 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         port_channel:
           endpoint_port_channel: server27_port_channel_with_lacp_timer
           mode: active
@@ -639,7 +639,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth3, Eth4 ]
         switch_ports: [ Ethernet43, Ethernet44 ]
-        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        switches: [ dc1-svc3a, dc1-svc3b ]
         profile: TENANT_A
         enabled: true
         port_channel:
@@ -661,7 +661,7 @@ phones:
     adapters:
       - endpoint_ports: [ Eth0 ]
         switch_ports: [ Ethernet8 ]
-        switches: [ DC1-LEAF1A ]
+        switches: [ dc1-leaf1a ]
         mode: trunk phone
         native_vlan: 120
         phone_vlan: 113
@@ -671,7 +671,7 @@ phones:
     adapters:
       - endpoint_ports: [ Eth0 ]
         switch_ports: [ Ethernet9 ]
-        switches: [ DC1-LEAF1A ]
+        switches: [ dc1-leaf1a ]
         mode: trunk phone
         native_vlan: 120
         phone_vlan: 113
@@ -681,7 +681,7 @@ phones:
     adapters:
       - endpoint_ports: [ Eth0, Eth1 ]
         switch_ports: [ Ethernet26, Ethernet26 ]
-        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        switches: [ dc1-leaf2a, dc1-leaf2b ]
         profile: PHONE_WITH_PC
         port_channel:
           mode: active
@@ -702,7 +702,7 @@ firewalls:
     adapters:
       - endpoint_ports: [ E0, E1 ]
         switch_ports: [ Ethernet20, Ethernet20 ]
-        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        switches: [ dc1-leaf2a, dc1-leaf2b ]
         profile: TENANT_A_B
         port_channel:
           endpoint_port_channel: PortChanne1
@@ -722,12 +722,12 @@ routers:
     adapters:
       - endpoint_ports: [ Eth0, Eth1 ]
         switch_ports: [ Ethernet21, Ethernet21 ]
-        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        switches: [ dc1-leaf2a, dc1-leaf2b ]
         profile: TENANT_A
 
 network_ports:
   - switches:
-      - DC1-LEAF2A
+      - dc1-leaf2a
     switch_ports:
       - Ethernet24-25
     profile: DOT1X_PORT_PROFILE

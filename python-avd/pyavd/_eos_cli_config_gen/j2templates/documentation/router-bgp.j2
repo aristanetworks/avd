@@ -537,6 +537,20 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | {{ aggregate_address.prefix }} | {{ as_set }} | {{ summary_only }} | {{ attribute_map }} | {{ attribute_rcf }} | {{ match_map }} | {{ advertise_only }} |
 {%         endfor %}
 {%     endif %}
+{%     if router_bgp.route_distinguisher.assignment_auto is arista.avd.defined %}
+
+#### Route Distinguisher
+{%         if router_bgp.route_distinguisher.assignment_auto.address_families is arista.avd.defined %}
+{%             set address_family = router_bgp.route_distinguisher.assignment_auto.address_families | join(", ") %}
+{%         endif %}
+{%         if router_bgp.route_distinguisher.assignment_auto.range is arista.avd.defined %}
+{%             set rd_range = router_bgp.route_distinguisher.assignment_auto.range.start~"-"~router_bgp.route_distinguisher.assignment_auto.range.end %}
+{%         endif %}
+
+| Address Families | Range |
+| ---------------- | ----- |
+| {{ address_family | arista.avd.default("-") }} | {{ rd_range | arista.avd.default("-") }} |
+{%     endif %}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
 
 #### Router BGP EVPN Address Family
