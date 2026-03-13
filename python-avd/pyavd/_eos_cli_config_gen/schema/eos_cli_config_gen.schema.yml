@@ -441,6 +441,7 @@ keys:
       removed: false
       remove_in_version: 7.0.0
       new_key: ip_access_lists
+      allow_with_new_key: true
     items:
       type: dict
       keys:
