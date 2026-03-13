@@ -22,6 +22,10 @@ hostname: evpn-multicast-l3leaf2a
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
+  - id: 310
+    fast_leave: true
+  - id: 311
+    fast_leave: true
   - id: 110
     querier:
       enabled: true
@@ -36,6 +40,10 @@ ip_igmp_snooping:
     querier:
       enabled: true
       address: 192.168.255.5
+    fast_leave: true
+  - id: 211
+    fast_leave: false
+  - id: 256
     fast_leave: true
   - id: 257
     querier:
@@ -82,10 +90,6 @@ ip_igmp_snooping:
       enabled: true
       address: 192.168.255.5
   - id: 230
-    querier:
-      enabled: true
-      address: 192.168.255.5
-  - id: 252
     querier:
       enabled: true
       address: 192.168.255.5
@@ -583,27 +587,6 @@ router_bgp:
       - 10150:10150
     redistribute_routes:
     - learned
-  - id: 251
-    metadata:
-      tenants:
-      - Tenant_F
-    rd: 192.168.255.5:10251
-    route_targets:
-      both:
-      - 10251:10251
-    redistribute_routes:
-    - learned
-  - id: 252
-    metadata:
-      tenants:
-      - Tenant_F
-    rd: 192.168.255.5:10252
-    route_targets:
-      both:
-      - 10252:10252
-    redistribute_routes:
-    - learned
-    - igmp
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -1418,16 +1401,6 @@ vlans:
   metadata:
     tenants:
     - Tenant_E
-- id: 251
-  name: MULTICAST_DISABLED_251
-  metadata:
-    tenants:
-    - Tenant_F
-- id: 252
-  name: MULTICAST_ENABLED_252
-  metadata:
-    tenants:
-    - Tenant_F
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -1620,11 +1593,6 @@ vxlan_interface:
         vni: 10250
       - id: 150
         vni: 10150
-      - id: 251
-        vni: 10251
-      - id: 252
-        vni: 10252
-        multicast_group: 232.0.0.251
       vrfs:
       - name: MULTICAST_DISABLED_310_311
         vni: 13

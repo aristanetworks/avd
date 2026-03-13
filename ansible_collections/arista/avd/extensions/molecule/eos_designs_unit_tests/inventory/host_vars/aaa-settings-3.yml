@@ -11,9 +11,10 @@ l2leaf:
 
 default_mgmt_method: oob
 
-avd_7_behaviors:
-  # Test for new behaviour of IP RADIUS server commands
-  ip_radius_source_interface_setting: true
+# TODO 7.0: Remove the eos_config_future settings
+custom_structured_configuration_eos_config_future:
+  new_ip_tacacs_cli_order: true
+  new_ip_radius_cli_order: true
 
 aaa_settings:
   tacacs:

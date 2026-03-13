@@ -51,6 +51,7 @@
     | [<samp>&nbsp;&nbsp;sflow</samp>](## "daemon_terminattr.sflow") | Boolean |  |  |  | Enable sFlow provider (TerminAttr default is true).<br> |
     | [<samp>&nbsp;&nbsp;sflowaddr</samp>](## "daemon_terminattr.sflowaddr") | String |  |  |  | ECO sFlow Collector address to listen on to receive sFlow packets (TerminAttr default "127.0.0.1:6343").<br> |
     | [<samp>&nbsp;&nbsp;cvconfig</samp>](## "daemon_terminattr.cvconfig") | Boolean |  |  |  | Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).<br> |
+    | [<samp>&nbsp;&nbsp;cv_loss_timeout</samp>](## "daemon_terminattr.cv_loss_timeout") | Integer |  |  |  | Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to CloudVision after a configuration change.<br>The recommended timeout is five minutes. |
 
 === "YAML"
 
@@ -205,4 +206,8 @@
 
       # Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
       cvconfig: <bool>
+
+      # Timeout in minutes before the device will revert to ZTP mode in case of losing connectivity to CloudVision after a configuration change.
+      # The recommended timeout is five minutes.
+      cv_loss_timeout: <int>
     ```

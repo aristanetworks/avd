@@ -27,6 +27,29 @@ ethernet_interfaces:
 hostname: evpn-multicast-l2leaf1a
 ip_igmp_snooping:
   globally_enabled: true
+  vlans:
+  - id: 310
+    fast_leave: true
+  - id: 311
+    fast_leave: true
+  - id: 110
+    fast_leave: true
+  - id: 111
+    fast_leave: true
+  - id: 210
+    fast_leave: true
+  - id: 211
+    fast_leave: false
+  - id: 256
+    fast_leave: true
+  - id: 257
+    fast_leave: true
+  - id: 4092
+    fast_leave: true
+  - id: 1
+    fast_leave: true
+  - id: 230
+    fast_leave: true
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -47,7 +70,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 1-10,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
+      allowed_vlan: 1-10,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250,256-257,260,310-311,330-331,550,4092
 service_routing_protocols_model: multi-agent
 static_routes:
 - vrf: MGMT
@@ -235,16 +258,6 @@ vlans:
   metadata:
     tenants:
     - Tenant_E
-- id: 251
-  name: MULTICAST_DISABLED_251
-  metadata:
-    tenants:
-    - Tenant_F
-- id: 252
-  name: MULTICAST_ENABLED_252
-  metadata:
-    tenants:
-    - Tenant_F
 vrfs:
 - name: MGMT
   ip_routing: false
