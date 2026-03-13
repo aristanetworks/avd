@@ -43,6 +43,8 @@ For additional documentation regarding AVD playgrounds and other community labs 
 
 AVD playground lab files are available for [download on aclabs.arista.com](https://aristanetworks.github.io/aclabs/lab_archives/avd-playground.tar.gz). The download option is for skilled users only that can manage the environment without extra support.
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KmOd50MpkUA?si=zeP7VYJ4OxqVm8E7" title="AVD Playground" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ## AVD as Reference Inventory
 
 If you don't have access to AVD playgrounds, simply build a working Ansible environment with the AVD collection installed to start testing examples.
