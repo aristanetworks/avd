@@ -8,6 +8,9 @@ type: dict
 keys:
   ip_radius:
     type: dict
+    description: |-
+      IP RADIUS source interface configuration.
+      This requires to set the 'eos_config_future.new_ip_radius_cli_order: true' to render the new CLI order.
     documentation_options:
       table: ip-radius-source-interfaces
     $ref: "eos_cli_config_gen#/$defs/source_interface_per_vrf"

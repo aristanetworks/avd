@@ -1183,3 +1183,11 @@ These fields are not generating any configuration. They are meant to be used by 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/metadata.md
 --8<--
+
+## Future EOS CLI Behaviors
+
+Opt-in to future EOS CLI behaviors which will become default behaviors in a future AVD major version.
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/eos-config-future.md
+--8<--

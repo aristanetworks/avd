@@ -44,7 +44,14 @@ class VlanInterfacesMixin(Protocol):
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is None:
                     continue
 
-                self.structured_config.vlan_interfaces.append(self._get_vlan_interface_config_for_mlag_peering(vrf, tenant, vlan_id), ignore_fields=("tenant",))
+                vlan_interface_config = self._get_vlan_interface_config_for_mlag_peering(vrf, tenant, vlan_id)
+                self.structured_config.vlan_interfaces.append(vlan_interface_config, ignore_fields=("metadata",))
+
+                # If the VLAN interface already existed (shared VRF across multiple tenants),
+                # append this tenant to the existing item's metadata.
+                existing_vlan_interface = self.structured_config.vlan_interfaces.obtain(f"Vlan{vlan_id}")
+                if tenant.name not in existing_vlan_interface.metadata.tenants:
+                    existing_vlan_interface.metadata.tenants.append(tenant.name)
 
     def _check_virtual_router_mac_address(self: AvdStructuredConfigNetworkServicesProtocol, variable: str) -> None:
         """Raise if virtual router mac address is required but missing, otherwise return None."""
@@ -154,7 +161,7 @@ class VlanInterfacesMixin(Protocol):
 
             if svi.ipv6_nd.advertise_ipv6_address_virtuals:
                 for ipv6_address in svi.ipv6_address_virtuals:
-                    vlan_interface_config.ipv6_nd_prefixes.append_new(
+                    vlan_interface_config.ipv6_nd.prefixes.append_new(
                         ipv6_prefix=ipv6_address,
                         valid_lifetime=svi.ipv6_nd.valid_lifetime,
                         preferred_lifetime=svi.ipv6_nd.preferred_lifetime,

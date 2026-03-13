@@ -231,6 +231,7 @@ vrfs:
   metadata:
     tenants:
     - TenantA
+    - TenantB
 - name: ONLY-ON-L2LEAF
   ip_routing: true
   metadata:
