@@ -331,6 +331,17 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ip_verify_unicast_source_reachable_via is arista.avd.defined %}
    ip verify unicast source reachable-via {{ ethernet_interface.ip_verify_unicast_source_reachable_via }}
 {%     endif %}
+{%     if ethernet_interface.ipv6_nd.cache is arista.avd.defined %}
+{%         if ethernet_interface.ipv6_nd.cache.expire is arista.avd.defined %}
+   ipv6 nd cache expire {{ ethernet_interface.ipv6_nd.cache.expire }}
+{%         endif %}
+{%         if ethernet_interface.ipv6_nd.cache.dynamic_capacity is arista.avd.defined %}
+   ipv6 nd cache dynamic capacity {{ ethernet_interface.ipv6_nd.cache.dynamic_capacity }}
+{%         endif %}
+{%         if ethernet_interface.ipv6_nd.cache.refresh_always is arista.avd.defined(true) %}
+   ipv6 nd cache refresh always
+{%         endif %}
+{%     endif %}
 {%     if ethernet_interface.bfd.interval is arista.avd.defined and
           ethernet_interface.bfd.min_rx is arista.avd.defined and
           ethernet_interface.bfd.multiplier is arista.avd.defined %}
@@ -419,17 +430,6 @@ interface {{ ethernet_interface.name }}
 {%     endif %}
 {%     if ethernet_interface.ipv6_address_link_local is arista.avd.defined %}
    ipv6 address {{ ethernet_interface.ipv6_address_link_local }} link-local
-{%     endif %}
-{%     if ethernet_interface.ipv6_nd.cache is arista.avd.defined %}
-{%         if ethernet_interface.ipv6_nd.cache.expire is arista.avd.defined %}
-   ipv6 nd cache expire {{ ethernet_interface.ipv6_nd.cache.expire }}
-{%         endif %}
-{%         if ethernet_interface.ipv6_nd.cache.dynamic_capacity is arista.avd.defined %}
-   ipv6 nd cache dynamic capacity {{ ethernet_interface.ipv6_nd.cache.dynamic_capacity }}
-{%         endif %}
-{%         if ethernet_interface.ipv6_nd.cache.refresh_always is arista.avd.defined(true) %}
-   ipv6 nd cache refresh always
-{%         endif %}
 {%     endif %}
 {%     if ethernet_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
    ipv6 nd ra rx accept default-route

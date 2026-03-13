@@ -458,11 +458,11 @@ interface Management3
    description IPv6 ND new structure test
    no shutdown
    vrf MGMT
-   ipv6 enable
-   ipv6 address 2001:db8:100::1/64
    ipv6 nd cache expire 350
    ipv6 nd cache dynamic capacity 1500
    ipv6 nd cache refresh always
+   ipv6 enable
+   ipv6 address 2001:db8:100::1/64
    ipv6 nd ra rx accept default-route
    ipv6 nd ra rx accept route-preference
    ipv6 nd ra disabled
@@ -6063,11 +6063,11 @@ interface Ethernet89
 interface Ethernet90
    description IPv6 ND new structure test
    no shutdown
-   ipv6 enable
-   ipv6 address 2001:db8:90::1/64
    ipv6 nd cache expire 400
    ipv6 nd cache dynamic capacity 2000
    ipv6 nd cache refresh always
+   ipv6 enable
+   ipv6 address 2001:db8:90::1/64
    ipv6 nd ra rx accept default-route
    ipv6 nd ra rx accept route-preference
    ipv6 nd ra disabled
@@ -7174,11 +7174,11 @@ interface Tunnel5
    description IPv6 ND new structure test
    no shutdown
    mtu 1500
-   ipv6 enable
-   ipv6 address 2001:db8:200::1/64
    ipv6 nd cache expire 380
    ipv6 nd cache dynamic capacity 1800
    ipv6 nd cache refresh always
+   ipv6 enable
+   ipv6 address 2001:db8:200::1/64
    ipv6 nd ra rx accept default-route
    ipv6 nd ra rx accept route-preference
    ipv6 nd ra disabled

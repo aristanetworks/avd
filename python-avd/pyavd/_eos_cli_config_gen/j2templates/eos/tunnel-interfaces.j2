@@ -24,6 +24,17 @@ interface {{ tunnel_interface.name }}
 {%     if tunnel_interface.ip_address is arista.avd.defined %}
    ip address {{ tunnel_interface.ip_address }}
 {%     endif %}
+{%     if tunnel_interface.ipv6_nd.cache is arista.avd.defined %}
+{%         if tunnel_interface.ipv6_nd.cache.expire is arista.avd.defined %}
+   ipv6 nd cache expire {{ tunnel_interface.ipv6_nd.cache.expire }}
+{%         endif %}
+{%         if tunnel_interface.ipv6_nd.cache.dynamic_capacity is arista.avd.defined %}
+   ipv6 nd cache dynamic capacity {{ tunnel_interface.ipv6_nd.cache.dynamic_capacity }}
+{%         endif %}
+{%         if tunnel_interface.ipv6_nd.cache.refresh_always is arista.avd.defined(true) %}
+   ipv6 nd cache refresh always
+{%         endif %}
+{%     endif %}
 {%     if tunnel_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
@@ -35,17 +46,6 @@ interface {{ tunnel_interface.name }}
    ipv6 address auto-config
 {%     elif tunnel_interface.ipv6_address is arista.avd.defined %}
    ipv6 address {{ tunnel_interface.ipv6_address }}
-{%     endif %}
-{%     if tunnel_interface.ipv6_nd.cache is arista.avd.defined %}
-{%         if tunnel_interface.ipv6_nd.cache.expire is arista.avd.defined %}
-   ipv6 nd cache expire {{ tunnel_interface.ipv6_nd.cache.expire }}
-{%         endif %}
-{%         if tunnel_interface.ipv6_nd.cache.dynamic_capacity is arista.avd.defined %}
-   ipv6 nd cache dynamic capacity {{ tunnel_interface.ipv6_nd.cache.dynamic_capacity }}
-{%         endif %}
-{%         if tunnel_interface.ipv6_nd.cache.refresh_always is arista.avd.defined(true) %}
-   ipv6 nd cache refresh always
-{%         endif %}
 {%     endif %}
 {%     if tunnel_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
    ipv6 nd ra rx accept default-route
