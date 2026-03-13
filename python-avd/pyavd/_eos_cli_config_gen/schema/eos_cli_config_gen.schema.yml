@@ -24658,6 +24658,9 @@ keys:
           description: 'Use SLAAC to automatically configure the IPv6 address.
 
             This option is mutually exclusive with `ipv6_addresses`.'
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         access_group_in:
           description: IPv4 ACL Name for ingress.
           type: str

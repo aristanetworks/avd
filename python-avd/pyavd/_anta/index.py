@@ -43,7 +43,7 @@ AVD_TEST_INDEX: list[AVDTestSpec] = [
     AVDTestSpec(test_class=VerifyReachability, input_factory=VerifyReachabilityInputFactory),
     AVDTestSpec(test_class=VerifyReloadCause, input_factory=VerifyReloadCauseInputFactory),
     AVDTestSpec(test_class=VerifyRoutingProtocolModel, input_factory=VerifyRoutingProtocolModelInputFactory),
-    AVDTestSpec(test_class=VerifyRoutingTableEntry, input_factory=VerifyRoutingTableEntryInputFactory),
+    AVDTestSpec(test_class=VerifyIPv4RoutePresencePerVRF, input_factory=VerifyIPv4RoutePresencePerVRFInputFactory),
     AVDTestSpec(test_class=VerifySpecificIPSecConn, input_factory=VerifySpecificIPSecConnInputFactory),
     AVDTestSpec(test_class=VerifySTPCounters),
     AVDTestSpec(test_class=VerifyTemperature, input_factory=VerifyTemperatureInputFactory),

@@ -909,6 +909,34 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class AvdDesignFuture(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False}}
+        remove_redundant_ipv4_unicast_for_peer_groups: bool
+        """
+        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
+        default instead of always deactivating it.
+
+        Default value: `False`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined) -> None:
+                """
+                AvdDesignFuture.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    remove_redundant_ipv4_unicast_for_peer_groups:
+                       Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
+                       default instead of always deactivating it.
+
+                """
+
     AvdStructuredConfigFileFormat: TypeAlias = Literal["yml", "yaml", "json"]
 
     class EosDesignsValidationConfiguration(AvdModel):
@@ -88548,6 +88576,7 @@ class EosDesigns(EosDesignsRootModel):
         "aaa_settings": {"type": AaaSettings},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
+        "avd_design_future": {"type": AvdDesignFuture},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_structured_config_file_format": {"type": str, "default": "yml"},
@@ -89264,6 +89293,11 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
+    avd_design_future: AvdDesignFuture
+    """
+    Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
+    Subclass of AvdModel.
+    """
     avd_digital_twin_mode: bool
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -91282,6 +91316,7 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
+            avd_design_future: AvdDesignFuture | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_structured_config_file_format: AvdStructuredConfigFileFormat | UndefinedType = Undefined,
@@ -91503,6 +91538,9 @@ class EosDesigns(EosDesignsRootModel):
                 aaa_settings: Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
+                avd_design_future:
+                   Opt-in to future AVD behaviors which will become default behaviors in a future AVD major version.
+                   Subclass of AvdModel.
                 avd_digital_twin_mode:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
