@@ -1220,16 +1220,17 @@ vlan_interfaces:
   - 2001:db8:310::1/64
   - 2001:db8:311::1/64
   - 2001:db8:312::1/64
-  ipv6_nd_prefixes:
-  - ipv6_prefix: 2001:db8:310::1/64
-    valid_lifetime: '200'
-    preferred_lifetime: '100'
-  - ipv6_prefix: 2001:db8:311::1/64
-    valid_lifetime: '200'
-    preferred_lifetime: '100'
-  - ipv6_prefix: 2001:db8:312::1/64
-    valid_lifetime: '200'
-    preferred_lifetime: '100'
+  ipv6_nd:
+    prefixes:
+    - ipv6_prefix: 2001:db8:310::1/64
+      valid_lifetime: '200'
+      preferred_lifetime: '100'
+    - ipv6_prefix: 2001:db8:311::1/64
+      valid_lifetime: '200'
+      preferred_lifetime: '100'
+    - ipv6_prefix: 2001:db8:312::1/64
+      valid_lifetime: '200'
+      preferred_lifetime: '100'
   metadata:
     tenants:
     - Tenant_D
@@ -1242,7 +1243,8 @@ vlan_interfaces:
   ip_address: 10.3.11.3/24
   ip_virtual_router_addresses:
   - 10.3.11.1/24
-  ipv6_address: 2001:db8:311::3/64
+  ipv6_addresses:
+  - 2001:db8:311::3/64
   ipv6_virtual_router_addresses:
   - 2001:db8:311::1
   metadata:
@@ -1275,7 +1277,8 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo101
     vrf: TEST
-  ipv6_address: 2002:db9:413::2/64
+  ipv6_addresses:
+  - 2002:db9:413::2/64
   ipv6_virtual_router_addresses:
   - 2002:db9:413::1
   mtu: 1560

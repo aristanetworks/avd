@@ -8,7 +8,8 @@ ethernet_interfaces:
   description: P2P_bgp-peer-groups-3_Ethernet61
   shutdown: false
   mtu: 9214
-  ipv6_address: 2001:db8:a11:beef::d1/127
+  ipv6_addresses:
+  - 2001:db8:a11:beef::d1/127
   metadata:
     peer: bgp-peer-groups-3
     peer_interface: Ethernet61
@@ -29,7 +30,8 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ipv6_address: 2001:db8:dead:beef::69/128
+  ipv6_addresses:
+  - 2001:db8:dead:beef::69/128
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
