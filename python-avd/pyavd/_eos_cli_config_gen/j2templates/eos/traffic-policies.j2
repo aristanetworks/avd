@@ -14,10 +14,9 @@ traffic-policies
 {%             if vrf.cpu.enforcement_management is arista.avd.defined(true) %}
          enforcement management
 {%             endif %}
-   !
 {%         endif %}
 {%         if vrf.traffic_policy_input_physical is arista.avd.defined %}
-   vrf {{ vrf.name }}
+      !
       traffic-policy input {{ vrf.traffic_policy_input_physical }} physical
    !
 {%         endif %}
