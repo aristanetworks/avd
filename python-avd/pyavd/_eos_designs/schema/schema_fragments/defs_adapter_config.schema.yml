@@ -437,6 +437,13 @@ $defs:
           and the peer interface is not administratively shutdown.
           - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
           - `false`: Disables validation for the interface.
+      validate_error:
+        type: bool
+        description: |-
+          Control Interface error disabled validation performed by the `anta_runner` role.
+          - Unset (Default): Validation is performed only if the interface is not administratively shutdown.
+          - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
+          - `false`: Disables validation for the interface.
       campus_link_type:
         type: list
         $ref: "eos_designs#/$defs/campus_link_type"

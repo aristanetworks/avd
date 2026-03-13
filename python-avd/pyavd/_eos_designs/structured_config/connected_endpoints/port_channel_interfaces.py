@@ -169,6 +169,7 @@ class PortChannelInterfacesMixin(Protocol):
         port_channel_interface.metadata._update(
             validate_state=False if adapter.validate_state is False else None,
             validate_lldp=adapter.validate_lldp,
+            validate_error=adapter.validate_error,
         )
         port_channel_interface.sflow.enable = self.shared_utils.get_interface_sflow(
             port_channel_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)

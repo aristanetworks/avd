@@ -143,8 +143,9 @@ ethernet_interfaces:
     peer_interface: e1
     peer_type: workstation
     peer_key: workstations
-    port_profile: Workstations_NoLLDP
+    port_profile: Workstations_NoLLDP_and_NoError
     validate_lldp: false
+    validate_error: false
   switchport:
     enabled: true
     mode: access

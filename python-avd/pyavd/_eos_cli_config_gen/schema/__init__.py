@@ -10525,6 +10525,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "port_profile": {"type": str},
                 "validate_state": {"type": bool},
                 "validate_lldp": {"type": bool},
+                "validate_error": {"type": bool},
             }
             peer: str | None
             """Key only used for documentation or validation purposes."""
@@ -10553,6 +10554,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             - `false`: Disables validation for
             the interface.
             """
+            validate_error: bool | None
+            """
+            Control Interface error disabled validation performed by the `anta_runner` role.
+            - Unset (Default):
+            Validation is performed only if the interface is not administratively shutdown.
+            - `true`: Forces
+            validation. Use this for connected endpoints not managed by AVD.
+            - `false`: Disables validation for
+            the interface.
+            """
 
             if TYPE_CHECKING:
 
@@ -10566,6 +10577,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     port_profile: str | None | UndefinedType = Undefined,
                     validate_state: bool | None | UndefinedType = Undefined,
                     validate_lldp: bool | None | UndefinedType = Undefined,
+                    validate_error: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Metadata.
@@ -10588,6 +10600,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            is treated as an AVD-managed device. Validation is performed only if the peer is deployed
                            (`is_deployed: true`)
                            and the peer interface is not administratively shutdown.
+                           - `true`: Forces
+                           validation. Use this for connected endpoints not managed by AVD.
+                           - `false`: Disables validation for
+                           the interface.
+                        validate_error:
+                           Control Interface error disabled validation performed by the `anta_runner` role.
+                           - Unset (Default):
+                           Validation is performed only if the interface is not administratively shutdown.
                            - `true`: Forces
                            validation. Use this for connected endpoints not managed by AVD.
                            - `false`: Disables validation for
@@ -33700,6 +33720,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "peer_key": {"type": str},
                 "validate_state": {"type": bool},
                 "validate_lldp": {"type": bool},
+                "validate_error": {"type": bool},
             }
             peer: str | None
             """Key only used for documentation or validation purposes."""
@@ -33726,6 +33747,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             - `false`: Disables validation for
             the interface.
             """
+            validate_error: bool | None
+            """
+            Control Interface error disabled validation performed by the `anta_runner` role.
+            - Unset (Default):
+            Validation is performed only if the interface is not administratively shutdown.
+            - `true`: Forces
+            validation. Use this for connected endpoints not managed by AVD.
+            - `false`: Disables validation for
+            the interface.
+            """
 
             if TYPE_CHECKING:
 
@@ -33738,6 +33769,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_key: str | None | UndefinedType = Undefined,
                     validate_state: bool | None | UndefinedType = Undefined,
                     validate_lldp: bool | None | UndefinedType = Undefined,
+                    validate_error: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Metadata.
@@ -33759,6 +33791,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            is treated as an AVD-managed device. Validation is performed only if the peer is deployed
                            (`is_deployed: true`)
                            and the peer interface is not administratively shutdown.
+                           - `true`: Forces
+                           validation. Use this for connected endpoints not managed by AVD.
+                           - `false`: Disables validation for
+                           the interface.
+                        validate_error:
+                           Control Interface error disabled validation performed by the `anta_runner` role.
+                           - Unset (Default):
+                           Validation is performed only if the interface is not administratively shutdown.
                            - `true`: Forces
                            validation. Use this for connected endpoints not managed by AVD.
                            - `false`: Disables validation for
