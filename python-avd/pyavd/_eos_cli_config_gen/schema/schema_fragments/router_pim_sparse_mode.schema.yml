@@ -55,7 +55,7 @@ keys:
                   type: bool
           anycast_rps:
             type: list
-            min_length: 1
+            # TODO AVD7.0: min_length: 1
             primary_key: address
             items:
               type: dict
