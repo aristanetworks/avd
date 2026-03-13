@@ -3612,18 +3612,21 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 
 | Name | Description | Default Interface Set | Address Only |
 | ---- | ----------- | --------------------- | ------------ |
+| VRF1 | latest description format | - | True |
 | Yellow | - | - | True |
 | blue | - | VRF_GLOBAL_SET | False |
 | red | vrf_connectivity_monitor | VRF_GLOBAL_SET | True |
 
-#### Vrf Yellow Configuration
+#### VRF VRF1 Configuration
+
+#### VRF Yellow Configuration
 
 ##### Interface Sets
 
 | Name | Interfaces |
 | ---- | ---------- |
 
-#### Vrf blue Configuration
+#### VRF blue Configuration
 
 ##### Interface Sets
 
@@ -3639,7 +3642,7 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 | server4 | server4_connectivity_monitor | 10.10.20.1 | - | VRF_GLOBAL_SET | False | https://server2.local.com |
 | server6 | - | - | - | - | True | - |
 
-#### Vrf red Configuration
+#### VRF red Configuration
 
 ##### Interface Sets
 
@@ -3671,8 +3674,7 @@ monitor connectivity
    local-interfaces GLOBAL_SET address-only default
    !
    host Server3
-      description
-      server3_connectivity_monitor
+      description server3_connectivity_monitor
       local-interfaces HOST_SET
       ip 10.10.10.3
       icmp echo size 1200
@@ -3692,6 +3694,9 @@ monitor connectivity
       url https://server2.local.com
    !
    host server4
+   !
+   vrf VRF1
+      description latest description format
    !
    vrf Yellow
    !
@@ -3723,8 +3728,7 @@ monitor connectivity
       local-interfaces VRF_GLOBAL_SET address-only default
       !
       host server2
-         description
-         server2_connectivity_monitor
+         description server2_connectivity_monitor
          local-interfaces VRF_HOST_SET address-only
          ip 10.10.20.1
          icmp echo size 1300
