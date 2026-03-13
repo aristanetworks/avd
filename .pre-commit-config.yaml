@@ -142,7 +142,7 @@ repos:
     rev: 38bfb07c0c64c304f47eb52090f8288150c77730  # frozen: v0.17.1
     hooks:
       # Run the linter.
-      - id: ruff
+      - id: ruff-check
         args:
           - --fix
       # Run the formatter.
