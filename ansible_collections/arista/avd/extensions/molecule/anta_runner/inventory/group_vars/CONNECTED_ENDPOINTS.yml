@@ -12,7 +12,7 @@ port_profiles:
     vlans: 11
     spanning_tree_portfast: edge
     validate_lldp: false
-    validate_error: false
+    validate_error_disabled: false
 
 servers:
   - name: dc1-leaf1-server1
@@ -109,7 +109,7 @@ servers:
         mode: access
         spanning_tree_portfast: edge
         validate_lldp: true
-        validate_error: true
+        validate_error_disabled: true
 
 workstations:
   - name: dc1-leaf1-workstation1

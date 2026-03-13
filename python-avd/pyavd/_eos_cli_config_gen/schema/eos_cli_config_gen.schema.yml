@@ -4188,7 +4188,7 @@ keys:
                 managed by AVD.
 
                 - `false`: Disables validation for the interface.'
-            validate_error:
+            validate_error_disabled:
               type: bool
               description: 'Control Interface error disabled validation performed
                 by the `anta_runner` role.
@@ -13204,7 +13204,7 @@ keys:
                 managed by AVD.
 
                 - `false`: Disables validation for the interface.'
-            validate_error:
+            validate_error_disabled:
               type: bool
               description: 'Control Interface error disabled validation performed
                 by the `anta_runner` role.

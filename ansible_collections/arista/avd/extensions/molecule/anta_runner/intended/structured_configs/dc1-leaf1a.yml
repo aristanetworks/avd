@@ -145,7 +145,7 @@ ethernet_interfaces:
     peer_key: workstations
     port_profile: Workstations_NoLLDP_and_NoError
     validate_lldp: false
-    validate_error: false
+    validate_error_disabled: false
   switchport:
     enabled: true
     mode: access

@@ -34,7 +34,7 @@ ethernet_interfaces:
     peer_type: server
     peer_key: servers
     validate_lldp: true
-    validate_error: true
+    validate_error_disabled: true
   switchport:
     enabled: true
     mode: access
