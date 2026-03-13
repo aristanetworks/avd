@@ -396,6 +396,8 @@ class AvdStructuredConfigBaseProtocol(
         """interface_defaults set based on default_interface_mtu."""
         if self.shared_utils.default_interface_mtu is not None:
             self.structured_config.interface_defaults.mtu = self.shared_utils.default_interface_mtu
+        if self.inputs.general_settings.interface_defaults.ethernet_shutdown:
+            self.structured_config.interface_defaults.ethernet.shutdown = True
 
     @structured_config_contributor
     def spanning_tree(self) -> None:
@@ -501,8 +503,10 @@ class AvdStructuredConfigBaseProtocol(
             """
             if self.shared_utils.node_config.ipv6_mgmt_ip:
                 interface_settings._update(
-                    ipv6_enable=True, ipv6_address=self.shared_utils.node_config.ipv6_mgmt_ip, ipv6_gateway=self.shared_utils.ipv6_mgmt_gateway
+                    ipv6_enable=True,
+                    ipv6_gateway=self.shared_utils.ipv6_mgmt_gateway,
                 )
+                interface_settings.ipv6_addresses.append(self.shared_utils.node_config.ipv6_mgmt_ip)
             self.structured_config.management_interfaces.append(interface_settings)
 
     @structured_config_contributor
@@ -717,8 +721,6 @@ class AvdStructuredConfigBaseProtocol(
         if not self.inputs.aaa_settings.radius:
             return
 
-        use_new_ip_radius_model = self.inputs.avd_7_behaviors.ip_radius_source_interface_setting
-
         for server in self.inputs.aaa_settings.radius.servers:
             server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
                 vrf_input=server.vrf,
@@ -727,17 +729,10 @@ class AvdStructuredConfigBaseProtocol(
                 context=f"aaa_settings.radius.servers[host={server.host}].vrf",
             )
             if source_interface:
-                if use_new_ip_radius_model:
-                    # New behavior: separate keys for default VRF and others
-                    if server_vrf == "default":
-                        self.structured_config.ip_radius.source_interface = source_interface
-                    else:
-                        self.structured_config.ip_radius.vrfs.append_new(name=server_vrf, source_interface=source_interface)
+                if server_vrf == "default":
+                    self.structured_config.ip_radius.source_interface = source_interface
                 else:
-                    # Old behavior: use deprecated ip_radius_source_interfaces list
-                    self.structured_config.ip_radius_source_interfaces.append_unique(
-                        EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
-                    )
+                    self.structured_config.ip_radius.vrfs.append_new(name=server_vrf, source_interface=source_interface)
 
             self._add_radius_server_config(server, server_vrf)
 
@@ -751,6 +746,7 @@ class AvdStructuredConfigBaseProtocol(
         """Parse AAA tacacs server configurations and update structured config with server and source interface details."""
         if not self.inputs.aaa_settings.tacacs:
             return
+
         all_tacacs_servers = EosCliConfigGen.TacacsServers.Hosts()
         for server in self.inputs.aaa_settings.tacacs.servers:
             server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
@@ -761,9 +757,11 @@ class AvdStructuredConfigBaseProtocol(
             )
 
             if source_interface:
-                self.structured_config.ip_tacacs_source_interfaces.append_unique(
-                    EosCliConfigGen.IpTacacsSourceInterfacesItem(name=source_interface, vrf=server_vrf)
-                )
+                if server_vrf == "default":
+                    self.structured_config.ip_tacacs.source_interface = source_interface
+                else:
+                    self.structured_config.ip_tacacs.vrfs.append_new(name=server_vrf, source_interface=source_interface)
+
             tacacs_server = EosCliConfigGen.TacacsServers.HostsItem(host=server.host, vrf=server_vrf)
             if not all_tacacs_servers.__contains__(tacacs_server):
                 all_tacacs_servers.append(tacacs_server)
@@ -831,6 +829,28 @@ class AvdStructuredConfigBaseProtocol(
             inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP HTTP Client", output_type=EosCliConfigGen.IpHttpClient
         ):
             self.structured_config.ip_http_client = source_interfaces
+
+    @structured_config_contributor
+    def arp(self: AvdStructuredConfigBaseProtocol) -> None:
+        """
+        Set ARP configuration.
+
+        ARP set based on "general_settings.arp" data-model.
+        """
+        if not (arp_settings := self.inputs.general_settings.arp):
+            return
+
+        self.structured_config.arp.persistent = arp_settings.persistent
+        self.structured_config.arp.aging.timeout_default = arp_settings.aging.timeout_default
+
+    @structured_config_contributor
+    def ip_icmp_redirect(self: AvdStructuredConfigBaseProtocol) -> None:
+        """
+        Set IP ICMP redirect.
+
+        IP ICMP redirect set based on "general_settings.ip_icmp_redirect" data-model.
+        """
+        self.structured_config.ip_icmp_redirect = self.inputs.general_settings.ip_icmp_redirect
 
     @structured_config_contributor
     def prefix_lists(self) -> None:

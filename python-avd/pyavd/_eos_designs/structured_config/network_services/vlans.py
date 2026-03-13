@@ -56,6 +56,12 @@ class VlansMixin(Protocol):
                 vlan.metadata.tenants.append(tenant.name)
                 self.structured_config.vlans.append(vlan, ignore_fields=("metadata",))
 
+                # If the VLAN already existed (shared VRF across multiple tenants),
+                # append this tenant to the existing item's metadata.
+                existing_vlan = self.structured_config.vlans.obtain(vlan_id)
+                if tenant.name not in existing_vlan.metadata.tenants:
+                    existing_vlan.metadata.tenants.append(tenant.name)
+
             # L2 Vlans per Tenant
             for l2vlan in tenant.l2vlans:
                 vlan = self._get_vlan_config(l2vlan, tenant)

@@ -110,7 +110,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.15.2
+    rev: v0.15.5
     hooks:
       # Run the linter.
       - id: ruff
@@ -130,10 +130,10 @@ repos:
         # as well.
         additional_dependencies:
           - 'ansible-core>=2.16.0,<2.21.0'
-          - 'anta==1.7.0'
+          - 'anta==1.8.0'
           - 'deepmerge>=1.1.0'
           - 'jsonschema-rs>=0.24'
-          - 'pyavd-utils==0.0.2'
+          - 'pyavd-utils==0.0.3'
           - 'pydantic>=2.3.0'
           - 'pytest>=8.2.0'
           - 'pyyaml>=6.0.0'
@@ -173,7 +173,7 @@ repos:
         name: Check for Linting errors on Jinja2 files
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
+    rev: v2.4.2
     hooks:
       - id: codespell
         name: Check for common misspellings in text files.
@@ -293,6 +293,23 @@ repos:
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/removed-keys.md
         pass_filenames: false
+
+      - id: sort-hosts-yml
+        name: Auto-sort host names in Ansible inventory hosts.yml files.
+        entry: development/sort_hosts_yml.py
+        language: python
+        # Matches hosts.yml in: eos_cli_config_gen*, eos_designs*
+        files: >-
+          (?x)
+          ^ansible_collections/arista/avd/extensions/molecule/
+          (eos_cli_config_gen.*|
+          eos_designs_unit_tests|
+          eos_designs_negative_unit_tests|
+          eos_designs_deprecated_vars|
+          ansible_only
+          )
+          /inventory/hosts.yml$
+        additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=43.0.0', 'deepmerge>=1.1.0']
 
       - id: templates
         name: Precompile Jinja2 templates

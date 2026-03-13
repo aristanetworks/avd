@@ -7,6 +7,11 @@ l2leaf:
     - name: aaa-settings-1
       mgmt_ip: 192.168.0.2/24
 
+# TODO 7.0: Remove the eos_config_future settings
+custom_structured_configuration_eos_config_future:
+  new_ip_tacacs_cli_order: true
+  new_ip_radius_cli_order: true
+
 aaa_settings:
   # adding test for enable_password.password
   enable_password:

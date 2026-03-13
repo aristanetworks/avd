@@ -43,6 +43,9 @@ spine:
           enabled: true
           description: "{main_interface_wan_carrier}"
           ip_address: 192.168.44.45/24
+        - # Main interface without subinterface not ip address
+          name: Ethernet45
+          description: "Main interface without ip address"
 l3_interface_profiles:
   - profile: profile1
     speed: "forced 10000full"

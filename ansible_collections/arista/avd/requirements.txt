@@ -2,7 +2,7 @@
 # Please do not edit it manually.
 
 ansible-core<2.21.0,>=2.16.0
-anta>=1.7.0
+anta>=1.8.0
 aristaproto>=0.1.1
 cryptography>=43.0.0
 deepmerge>=1.1.0
@@ -10,8 +10,8 @@ distlib>=0.3.9
 grpclib>=0.4.8
 jinja2>=3.0
 netaddr>=0.7.19
-pyavd==6.0.0
-pyavd-utils==0.0.2
+pyavd==6.1.0.dev1
+pyavd-utils==0.0.3
 python-socks[asyncio]>=2.7.2
 pyyaml>=6.0.0
 requests>=2.27.0

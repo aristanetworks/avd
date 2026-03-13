@@ -3,6 +3,14 @@ router_bgp:
   as: 65101
   router_id: 192.168.255.3
   as_notation: asdot
+  route_distinguisher:
+    assignment_auto:
+      range:
+        start: 2
+        end: 45
+      address_families:
+        - l3-vrf
+        - l2-evpn
   updates:
     wait_for_convergence: true
     wait_install: true
@@ -505,6 +513,9 @@ router_bgp:
       - prefix: 172.16.0.0/12
       - prefix: 192.168.0.0/16
         route_map: RM-FOO-MATCH
+        rcf: RCF-TEST() # GH Issue 6500: Validate RM takes precedence
+      - prefix: 1.1.1.0/24 # GH Issue 6500: Validate RCF config
+        rcf: RCF-TEST()
     bgp:
       redistribute_internal: false
       additional_paths:
@@ -666,6 +677,9 @@ router_bgp:
       - prefix: 2001:db8:100::/40
       - prefix: 2001:db8:200::/40
         route_map: RM-BAR-MATCH
+        rcf: RCF-IPV6-TEST() # GH Issue 6500: Validate RM takes precedence
+      - prefix: 2001:db8:300::/40 # GH Issue 6500: Validate RCF config
+        rcf: RCF-IPV6-TEST()
     bgp:
       redistribute_internal: true
       additional_paths:
@@ -860,7 +874,10 @@ router_bgp:
     networks:
       - prefix: 203.0.113.0/25
         route_map: RM-TEST
+        rcf: RCF-TEST() # GH Issue 6500: Validate RM takes precedence
       - prefix: 203.0.113.128/25
+      - prefix: 205.0.0.0/24
+        rcf: RCF-TEST() # GH Issue 6500: Validate RCF config
     tunnel_source_protocols:
       - protocol: isis segment-routing
       - protocol: ldp
@@ -1660,6 +1677,9 @@ router_bgp:
         networks:
           - prefix: 2.3.4.0/24
             route_map: BARFOO
+            rcf: RCF-TEST() # GH Issue 6500: Validate RM takes precedence
+          - prefix: 1.2.3.0/24 # GH Issue 6500: Validate RCF config
+            rcf: RCF-TEST()
         redistribute:
           user:
             enabled: true
@@ -1741,6 +1761,11 @@ router_bgp:
             rcf_out: VRF_AFIPV6_RCF_OUT()
         networks:
           - prefix: aa::/64
+          - prefix: 2001:db9:200::/40 # GH Issue 6500: Validate RM takes precedence
+            route_map: RM-IPV6-TEST
+            rcf: RCF-IPV6-TEST()
+          - prefix: 2001:db9:300::/40 # GH Issue 6500: Validate RCF config
+            rcf: RCF-IPV6-TEST()
         redistribute:
           ospfv3:
             match_external:

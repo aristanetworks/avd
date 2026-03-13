@@ -53,6 +53,7 @@ def mocked_cvdevices(hostnames: list[str] | None = None, device_count: int | Non
 def get_recording_file(route: str, request: IProtoMessage, cv_server: str, recording_dir: Path = RECORDING_DIR) -> Path:
     digest = sha1(str(request).encode("UTF-8"), usedforsecurity=False).hexdigest()
     recording_file = recording_dir / Path(route.strip("/")) / cv_server / f"{digest}.json"
+    LOGGER.debug("get_recording_file:\nRoute: '%s'\nRequest: '%s'\nRecording file: '%s'", route, request, recording_file)
     if environ.get("RECORDING"):
         recording_file.parent.mkdir(parents=True, exist_ok=True)
     return recording_file
@@ -68,11 +69,20 @@ async def recording_unary_unary(
     deadline: Deadline | None = None,
     metadata: MetadataLike | None = None,
 ) -> T_Message:
-    LOGGER.info("Recording API request: %s", request)
+    LOGGER.info("recording_unary_unary: Recording API request: %s", request)
     recording_file = get_recording_file(route, request, cv_server=self.channel._host)
-    result = await self._org_unary_unary(route, request, response_type, timeout=timeout, deadline=deadline, metadata=metadata)
-    recording_file.write_text(result.to_json(indent=4))
-    return result
+    try:
+        result = await self._org_unary_unary(route, request, response_type, timeout=timeout, deadline=deadline, metadata=metadata)
+    # Catch returned gRPC Exception (like Workspace is not found, etc.)
+    except Exception as e:
+        LOGGER.debug("recording_unary_unary: Got exception executing request '%s': %s", request, e)
+        # Dump gRPC exception details into the recording file so that it can be easily replayed
+        recording_file.write_text(f'{{\n\t"raise": {{\n\t\t"status": "{str(e.args[0]).removeprefix("Status.")}",\n\t\t"message": "{e.args[1]}"\n\t}}\n}}')
+        # Re-raise exception so that it is passed to and processed by our gRPC decorator
+        raise
+    else:
+        recording_file.write_text(result.to_json(indent=4))
+        return result
 
 
 async def recording_unary_stream(
@@ -85,14 +95,16 @@ async def recording_unary_stream(
     deadline: Deadline | None = None,
     metadata: MetadataLike | None = None,
 ) -> AsyncIterator[T_Message]:
-    LOGGER.info("Recording API request: %s", request)
+    LOGGER.info("recording_unary_stream: Recording API request: %s", request)
     recording_file = get_recording_file(route, request, cv_server=self.channel._host)
     messages_as_json = []
-    async for message in self._org_unary_stream(route, request, response_type, timeout=timeout, deadline=deadline, metadata=metadata):
-        messages_as_json.append(message.to_json(indent=4))
-        yield message
-    result = f"[{', '.join(messages_as_json)}]"
-    recording_file.write_text(result)
+    try:
+        async for message in self._org_unary_stream(route, request, response_type, timeout=timeout, deadline=deadline, metadata=metadata):
+            messages_as_json.append(message.to_json(indent=4))
+            yield message
+    finally:
+        result = f"[{', '.join(messages_as_json)}]"
+        recording_file.write_text(result)
 
 
 async def playback_unary_unary(
@@ -102,7 +114,7 @@ async def playback_unary_unary(
     response_type: type[T_Message],
     **_kwargs: Any,
 ) -> T_Message:
-    LOGGER.info("Playing back recording for API request: %s", request)
+    LOGGER.info("playback_unary_unary: Playing back recording for API request: %s", request)
     recording_file = get_recording_file(route, request, cv_server=self.channel._host)
     if not recording_file.exists():
         raise FileNotFoundError(recording_file, "for request", request)
@@ -117,7 +129,7 @@ async def playback_unary_stream(
     response_type: type[T_Message],
     **_kwargs: Any,
 ) -> AsyncIterator[T_Message]:
-    LOGGER.info("Playing back recording for API request: %s", request)
+    LOGGER.info("playback_unary_stream: Playing back recording for API request: %s", request)
     recording_file = get_recording_file(route, request, cv_server=self.channel._host)
     if not recording_file.exists():
         raise FileNotFoundError(recording_file, "for request", request)
@@ -137,7 +149,7 @@ async def playback_static_recording_unary_unary(
     response_type: type[T_Message],
     **_kwargs: Any,
 ) -> T_Message:
-    LOGGER.info("Playing back static recording for API request: %s", request)
+    LOGGER.info("playback_static_recording_unary_unary: Playing back static recording for API request: %s", request)
     recording_dir = Path(__file__).parent / "mocked_api_recordings"
     recording_file = get_recording_file(route, request, cv_server=self.channel._host, recording_dir=recording_dir)
     if not recording_file.exists():
@@ -155,7 +167,7 @@ async def playback_static_recording_unary_stream(
     response_type: type[T_Message],
     **_kwargs: Any,
 ) -> AsyncIterator[T_Message]:
-    LOGGER.info("Playing back static recording for API request: %s", request)
+    LOGGER.info("playback_static_recording_unary_stream: Playing back static recording for API request: %s", request)
     recording_dir = Path(__file__).parent / "mocked_api_recordings"
     recording_file = get_recording_file(route, request, cv_server=self.channel._host, recording_dir=recording_dir)
     if not recording_file.exists():

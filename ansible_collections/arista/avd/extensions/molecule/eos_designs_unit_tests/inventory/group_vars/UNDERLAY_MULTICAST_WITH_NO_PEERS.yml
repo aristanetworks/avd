@@ -19,7 +19,7 @@ l3leaf:
   node_groups:
     - group: DC1_LEAF1
       nodes:
-        - name: UNDERLAY_MULTICAST_LEAF1
+        - name: underlay-multicast-leaf1
           id: 1
           mgmt_ip: 192.168.200.109/24
           bgp_as: 65001
