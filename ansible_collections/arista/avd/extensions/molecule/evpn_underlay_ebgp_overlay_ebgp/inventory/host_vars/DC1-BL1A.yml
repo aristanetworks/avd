@@ -5,7 +5,7 @@ my_special_dci_ethernet_interfaces:
 
 custom_structured_configuration_list_merge: append
 
-# Test appending to list of ip name-servers.
+# Test adding an extra ip name-server.
 override_ip_name_server:
   vrfs:
     - name: MGMT
