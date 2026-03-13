@@ -328,6 +328,11 @@ keys:
         default: false
         description: Configure management interface to accept DHCP default route when
           the management IP is set to 'dhcp'.
+      remove_redundant_ipv4_unicast_for_peer_groups:
+        type: bool
+        description: Deactivate the IPv4 unicast Address Family for BGP Peer Groups
+          only when IPv4 is activated by default instead of always deactivating it.
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings

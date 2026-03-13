@@ -912,17 +912,32 @@ class EosDesigns(EosDesignsRootModel):
     class AvdDesignFuture(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False}}
+        _fields: ClassVar[dict] = {
+            "accept_dhcp_default_route_for_mgmt_ip_dhcp": {"type": bool, "default": False},
+            "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
+        }
         accept_dhcp_default_route_for_mgmt_ip_dhcp: bool
         """
         Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
 
         Default value: `False`
         """
+        remove_redundant_ipv4_unicast_for_peer_groups: bool
+        """
+        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
+        default instead of always deactivating it.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                accept_dhcp_default_route_for_mgmt_ip_dhcp: bool | UndefinedType = Undefined,
+                remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
+            ) -> None:
                 """
                 AvdDesignFuture.
 
@@ -931,6 +946,9 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     accept_dhcp_default_route_for_mgmt_ip_dhcp: Configure management interface to accept DHCP default route when the management IP is set to 'dhcp'.
+                    remove_redundant_ipv4_unicast_for_peer_groups:
+                       Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
+                       default instead of always deactivating it.
 
                 """
 
