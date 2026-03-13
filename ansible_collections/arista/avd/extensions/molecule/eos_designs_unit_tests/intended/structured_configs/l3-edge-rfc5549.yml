@@ -55,7 +55,8 @@ ethernet_interfaces:
   mtu: 9214
   ip_address: 192.168.100.0/31
   ipv6_enable: true
-  ipv6_address: 2001:db8:2000::/127
+  ipv6_addresses:
+  - 2001:db8:2000::/127
   metadata:
     peer: peer-ipv6
     peer_interface: ethernet1

@@ -30,8 +30,6 @@ l3_edge:
   p2p_links_ip_pools:
     - name: pool1
       ipv4_pool: 192.168.0.0/24
-    - name: ipv6_pool
-      ipv6_pool: 2001:db8:1000::/64
     - name: dual_stack_pool
       ipv4_pool: 192.168.100.0/24
       ipv6_pool: 2001:db8:2000::/64

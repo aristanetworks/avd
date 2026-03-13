@@ -284,7 +284,7 @@ class UtilsMixin(Protocol):
             interface.ip_address = p2p_link_data["ip"]
 
         if p2p_link_data["ipv6"]:
-            interface.ipv6_address = p2p_link_data["ipv6"]
+            interface.ipv6_addresses.append(p2p_link_data["ipv6"])
             # Enable IPv6 unicast routing when IPv6 addresses are configured on p2p_links.
             self.structured_config.ipv6_unicast_routing = True
 
