@@ -25,7 +25,7 @@ AVD playground is an interactive, Cloud-based lab environment sponsored by Arist
 
 [Start AVD Playground :octicons-play-16:](https://labs.arista.com/launch?lab_type=avd-playground&origin=tech-lib){ .md-button .md-button--primary target=_blank}
 
-Once the playground is ready to use, use the interactive menu at the bottom of the [code-server](https://github.com/coder/code-server) UI to pick the AVD release and the example you want to test. Some examples and older AVD releases may not include lab definitions; in that case, the lab selector menu will prompt you to choose a different option. Please select 6.0.0 releases or newer.
+Once the playground is ready to use, use the interactive menu at the bottom of the [code-server](https://github.com/coder/code-server) UI to pick the AVD release and the example you want to test. Some examples and older AVD releases may not include lab definitions; in that case, the lab selector menu will prompt you to choose a different option. Please select 6.1 releases or newer.
 
 !!! tip
 
