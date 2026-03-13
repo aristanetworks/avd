@@ -65,7 +65,7 @@ keys:
                   description: Anycast RP Address.
                 other_anycast_rp_addresses:
                   type: list
-                  min_length: 1
+                  # TODO AVD7.0: min_length: 1
                   primary_key: address
                   items:
                     type: dict
