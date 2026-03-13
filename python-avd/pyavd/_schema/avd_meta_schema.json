@@ -403,6 +403,11 @@
         "url": {
           "type": "string",
           "description": "URL detailing the deprecation and migration guidelines"
+        },
+        "allow_with_new_key": {
+          "type": "boolean",
+          "description": "Allow the deprecated key to be used in parallel with the new key without raising a conflict error",
+          "default": false
         }
       }
     }

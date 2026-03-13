@@ -216,6 +216,7 @@ port_profiles:
     native_vlan: 123
     spanning_tree_portfast: "edge"
     spanning_tree_bpdufilter: true
+    spanning_tree_link_type: point-to-point
     dot1x:
       unauthorized:
         access_vlan_membership_egress: true
@@ -248,10 +249,6 @@ monitor:
 
 dot1x_settings:
   enabled: true
-
-avd_7_behaviors:
-  # Test for new behaviour of IP RADIUS server commands
-  ip_radius_source_interface_setting: true
 
 aaa_settings:
   radius:

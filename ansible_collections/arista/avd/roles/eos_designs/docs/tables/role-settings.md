@@ -8,8 +8,6 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>avd_6_behaviors</samp>](## "avd_6_behaviors") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
-    | [<samp>avd_7_behaviors</samp>](## "avd_7_behaviors") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0.</span> |
-    | [<samp>&nbsp;&nbsp;ip_radius_source_interface_setting</samp>](## "avd_7_behaviors.ip_radius_source_interface_setting") | Boolean |  | `False` |  | Enable improved RADIUS source interface configuration with separate keys for VRF default and other VRFs.<br><br>When enabled:<br>- VRF default: Uses `ip_radius.source_interface`<br>- Other VRFs: Uses `ip_radius.vrfs` list<br>- Enforces VRF name uniqueness<br>- Aligns with EOS CLI behavior (where "vrf default" is implicit)<br><br>When disabled (current):<br>- Uses `ip_radius_source_interfaces` list for all VRF combinations |
     | [<samp>avd_digital_twin_mode</samp>](## "avd_digital_twin_mode") | Boolean |  | `False` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).<br>By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation) will replace original fabric artifacts.<br>To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated output location. |
     | [<samp>avd_eos_designs_debug</samp>](## "avd_eos_designs_debug") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>eos_designs_keep_tmp_files</samp> instead.</span> |
     | [<samp>avd_eos_designs_enforce_duplication_checks_across_all_models</samp>](## "avd_eos_designs_enforce_duplication_checks_across_all_models") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0.</span> |
@@ -33,23 +31,6 @@
 === "YAML"
 
     ```yaml
-    # Opt-in to AVD 7 behaviors. These behaviors will be the default behaviors in AVD 7.0.
-    # This key is deprecated.
-    # Support will be removed in AVD version 7.0.0.
-    avd_7_behaviors:
-
-      # Enable improved RADIUS source interface configuration with separate keys for VRF default and other VRFs.
-      #
-      # When enabled:
-      # - VRF default: Uses `ip_radius.source_interface`
-      # - Other VRFs: Uses `ip_radius.vrfs` list
-      # - Enforces VRF name uniqueness
-      # - Aligns with EOS CLI behavior (where "vrf default" is implicit)
-      #
-      # When disabled (current):
-      # - Uses `ip_radius_source_interfaces` list for all VRF combinations
-      ip_radius_source_interface_setting: <bool; default=False>
-
     # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
     # Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).
     # By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation) will replace original fabric artifacts.

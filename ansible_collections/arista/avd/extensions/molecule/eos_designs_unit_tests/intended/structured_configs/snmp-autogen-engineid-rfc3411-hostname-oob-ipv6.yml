@@ -12,7 +12,8 @@ management_interfaces:
   shutdown: false
   vrf: MGMT
   ipv6_enable: true
-  ipv6_address: 2001:db8::dead:beef:cafe/64
+  ipv6_addresses:
+  - 2001:db8::dead:beef:cafe/64
   type: oob
 metadata:
   is_deployed: true

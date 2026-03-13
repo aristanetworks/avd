@@ -157,7 +157,8 @@ loopback_interfaces:
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.101.4/32
-  ipv6_address: 2001:db8:1::2/128
+  ipv6_addresses:
+  - 2001:db8:1::2/128
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
