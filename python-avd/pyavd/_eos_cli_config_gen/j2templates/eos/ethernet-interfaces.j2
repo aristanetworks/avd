@@ -420,6 +420,17 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ipv6_address_link_local is arista.avd.defined %}
    ipv6 address {{ ethernet_interface.ipv6_address_link_local }} link-local
 {%     endif %}
+{%     if ethernet_interface.ipv6_nd.cache is arista.avd.defined %}
+{%         if ethernet_interface.ipv6_nd.cache.expire is arista.avd.defined %}
+   ipv6 nd cache expire {{ ethernet_interface.ipv6_nd.cache.expire }}
+{%         endif %}
+{%         if ethernet_interface.ipv6_nd.cache.dynamic_capacity is arista.avd.defined %}
+   ipv6 nd cache dynamic capacity {{ ethernet_interface.ipv6_nd.cache.dynamic_capacity }}
+{%         endif %}
+{%         if ethernet_interface.ipv6_nd.cache.refresh_always is arista.avd.defined(true) %}
+   ipv6 nd cache refresh always
+{%         endif %}
+{%     endif %}
 {%     if ethernet_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
    ipv6 nd ra rx accept default-route
 {%     endif %}
@@ -431,6 +442,9 @@ interface {{ ethernet_interface.name }}
 {%     endif %}
 {%     if ethernet_interface.ipv6_nd.managed_config_flag is arista.avd.defined(true) or ethernet_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) %}
    ipv6 nd managed-config-flag
+{%     endif %}
+{%     if ethernet_interface.ipv6_nd.other_config_flag is arista.avd.defined(true) %}
+   ipv6 nd other-config-flag
 {%     endif %}
 {%     set ipv6_nd_prefixes = ethernet_interface.ipv6_nd.prefixes | arista.avd.default(ethernet_interface.ipv6_nd_prefixes) %}
 {%     for prefix in ipv6_nd_prefixes | arista.avd.natural_sort("ipv6_prefix") %}

@@ -45,6 +45,17 @@ interface {{ management_interface.name }}
 {%     elif management_interface.ipv6_address is arista.avd.defined %}
    ipv6 address {{ management_interface.ipv6_address }}
 {%     endif %}
+{%     if management_interface.ipv6_nd.cache is arista.avd.defined %}
+{%         if management_interface.ipv6_nd.cache.expire is arista.avd.defined %}
+   ipv6 nd cache expire {{ management_interface.ipv6_nd.cache.expire }}
+{%         endif %}
+{%         if management_interface.ipv6_nd.cache.dynamic_capacity is arista.avd.defined %}
+   ipv6 nd cache dynamic capacity {{ management_interface.ipv6_nd.cache.dynamic_capacity }}
+{%         endif %}
+{%         if management_interface.ipv6_nd.cache.refresh_always is arista.avd.defined(true) %}
+   ipv6 nd cache refresh always
+{%         endif %}
+{%     endif %}
 {%     if management_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
    ipv6 nd ra rx accept default-route
 {%     endif %}
@@ -56,6 +67,9 @@ interface {{ management_interface.name }}
 {%     endif %}
 {%     if management_interface.ipv6_nd.managed_config_flag is arista.avd.defined(true) or management_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) %}
    ipv6 nd managed-config-flag
+{%     endif %}
+{%     if management_interface.ipv6_nd.other_config_flag is arista.avd.defined(true) %}
+   ipv6 nd other-config-flag
 {%     endif %}
 {%     for prefix in management_interface.ipv6_nd.prefixes | arista.avd.natural_sort("ipv6_prefix") %}
 {%         set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ prefix.ipv6_prefix %}
