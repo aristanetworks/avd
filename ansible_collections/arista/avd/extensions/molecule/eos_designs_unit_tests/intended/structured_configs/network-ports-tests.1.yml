@@ -29,6 +29,7 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
+  spanning_tree_link_type: shared
   metadata:
     peer: PCs
     peer_type: network_port
@@ -43,6 +44,7 @@ ethernet_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: enabled
   spanning_tree_portfast: edge
+  spanning_tree_link_type: shared
   metadata:
     peer: PCs
     peer_type: network_port
