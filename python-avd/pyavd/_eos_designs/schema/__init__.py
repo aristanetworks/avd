@@ -2119,6 +2119,7 @@ class EosDesigns(EosDesignsRootModel):
             SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
             SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
             SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+            SpanningTreeLinkType: TypeAlias = Literal["shared", "point-to-point"]
 
             class Ptp(AvdModel):
                 """Subclass of AvdModel."""
@@ -3213,6 +3214,7 @@ class EosDesigns(EosDesignsRootModel):
                 "spanning_tree_portfast": {"type": str},
                 "spanning_tree_bpdufilter": {"type": str},
                 "spanning_tree_bpduguard": {"type": str},
+                "spanning_tree_link_type": {"type": str},
                 "flowcontrol": {"type": EosCliConfigGen.EthernetInterfacesItem.Flowcontrol},
                 "qos_profile": {"type": str},
                 "ptp": {"type": Ptp},
@@ -3356,6 +3358,7 @@ class EosDesigns(EosDesignsRootModel):
             spanning_tree_portfast: SpanningTreePortfast | None
             spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
             spanning_tree_bpduguard: SpanningTreeBpduguard | None
+            spanning_tree_link_type: SpanningTreeLinkType | None
             flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
             qos_profile: str | None
             """QOS profile name."""
@@ -3481,6 +3484,7 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                     spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                     spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
+                    spanning_tree_link_type: SpanningTreeLinkType | None | UndefinedType = Undefined,
                     flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
@@ -3600,6 +3604,7 @@ class EosDesigns(EosDesignsRootModel):
                         spanning_tree_portfast: spanning_tree_portfast
                         spanning_tree_bpdufilter: spanning_tree_bpdufilter
                         spanning_tree_bpduguard: spanning_tree_bpduguard
+                        spanning_tree_link_type: spanning_tree_link_type
                         flowcontrol: flowcontrol
                         qos_profile: QOS profile name.
                         ptp:
@@ -23089,6 +23094,7 @@ class EosDesigns(EosDesignsRootModel):
         SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
         SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
         SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+        SpanningTreeLinkType: TypeAlias = Literal["shared", "point-to-point"]
 
         class Ptp(AvdModel):
             """Subclass of AvdModel."""
@@ -24183,6 +24189,7 @@ class EosDesigns(EosDesignsRootModel):
             "spanning_tree_portfast": {"type": str},
             "spanning_tree_bpdufilter": {"type": str},
             "spanning_tree_bpduguard": {"type": str},
+            "spanning_tree_link_type": {"type": str},
             "flowcontrol": {"type": EosCliConfigGen.EthernetInterfacesItem.Flowcontrol},
             "qos_profile": {"type": str},
             "ptp": {"type": Ptp},
@@ -24327,6 +24334,7 @@ class EosDesigns(EosDesignsRootModel):
         spanning_tree_portfast: SpanningTreePortfast | None
         spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
         spanning_tree_bpduguard: SpanningTreeBpduguard | None
+        spanning_tree_link_type: SpanningTreeLinkType | None
         flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
         qos_profile: str | None
         """QOS profile name."""
@@ -24452,6 +24460,7 @@ class EosDesigns(EosDesignsRootModel):
                 spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                 spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                 spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
+                spanning_tree_link_type: SpanningTreeLinkType | None | UndefinedType = Undefined,
                 flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
                 qos_profile: str | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
@@ -24573,6 +24582,7 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_portfast: spanning_tree_portfast
                     spanning_tree_bpdufilter: spanning_tree_bpdufilter
                     spanning_tree_bpduguard: spanning_tree_bpduguard
+                    spanning_tree_link_type: spanning_tree_link_type
                     flowcontrol: flowcontrol
                     qos_profile: QOS profile name.
                     ptp:
@@ -27934,6 +27944,7 @@ class EosDesigns(EosDesignsRootModel):
         SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
         SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
         SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+        SpanningTreeLinkType: TypeAlias = Literal["shared", "point-to-point"]
 
         class Ptp(AvdModel):
             """Subclass of AvdModel."""
@@ -29025,6 +29036,7 @@ class EosDesigns(EosDesignsRootModel):
             "spanning_tree_portfast": {"type": str},
             "spanning_tree_bpdufilter": {"type": str},
             "spanning_tree_bpduguard": {"type": str},
+            "spanning_tree_link_type": {"type": str},
             "flowcontrol": {"type": EosCliConfigGen.EthernetInterfacesItem.Flowcontrol},
             "qos_profile": {"type": str},
             "ptp": {"type": Ptp},
@@ -29126,6 +29138,7 @@ class EosDesigns(EosDesignsRootModel):
         spanning_tree_portfast: SpanningTreePortfast | None
         spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
         spanning_tree_bpduguard: SpanningTreeBpduguard | None
+        spanning_tree_link_type: SpanningTreeLinkType | None
         flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
         qos_profile: str | None
         """QOS profile name."""
@@ -29248,6 +29261,7 @@ class EosDesigns(EosDesignsRootModel):
                 spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                 spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                 spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
+                spanning_tree_link_type: SpanningTreeLinkType | None | UndefinedType = Undefined,
                 flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
                 qos_profile: str | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
@@ -29331,6 +29345,7 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_portfast: spanning_tree_portfast
                     spanning_tree_bpdufilter: spanning_tree_bpdufilter
                     spanning_tree_bpduguard: spanning_tree_bpduguard
+                    spanning_tree_link_type: spanning_tree_link_type
                     flowcontrol: flowcontrol
                     qos_profile: QOS profile name.
                     ptp:
@@ -55844,6 +55859,7 @@ class EosDesigns(EosDesignsRootModel):
                     SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
                     SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
                     SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+                    SpanningTreeLinkType: TypeAlias = Literal["shared", "point-to-point"]
 
                     class Ptp(AvdModel):
                         """Subclass of AvdModel."""
@@ -56947,6 +56963,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_portfast": {"type": str},
                         "spanning_tree_bpdufilter": {"type": str},
                         "spanning_tree_bpduguard": {"type": str},
+                        "spanning_tree_link_type": {"type": str},
                         "flowcontrol": {"type": EosCliConfigGen.EthernetInterfacesItem.Flowcontrol},
                         "qos_profile": {"type": str},
                         "ptp": {"type": Ptp},
@@ -57090,6 +57107,7 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_portfast: SpanningTreePortfast | None
                     spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
                     spanning_tree_bpduguard: SpanningTreeBpduguard | None
+                    spanning_tree_link_type: SpanningTreeLinkType | None
                     flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
                     qos_profile: str | None
                     """QOS profile name."""
@@ -57215,6 +57233,7 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                             spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                             spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
+                            spanning_tree_link_type: SpanningTreeLinkType | None | UndefinedType = Undefined,
                             flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
                             qos_profile: str | None | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
@@ -57334,6 +57353,7 @@ class EosDesigns(EosDesignsRootModel):
                                 spanning_tree_portfast: spanning_tree_portfast
                                 spanning_tree_bpdufilter: spanning_tree_bpdufilter
                                 spanning_tree_bpduguard: spanning_tree_bpduguard
+                                spanning_tree_link_type: spanning_tree_link_type
                                 flowcontrol: flowcontrol
                                 qos_profile: QOS profile name.
                                 ptp:
@@ -57620,6 +57640,7 @@ class EosDesigns(EosDesignsRootModel):
                     SpanningTreePortfast: TypeAlias = Literal["edge", "network"]
                     SpanningTreeBpdufilter: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
                     SpanningTreeBpduguard: TypeAlias = Literal["enabled", "disabled", "True", "False", "true", "false"]
+                    SpanningTreeLinkType: TypeAlias = Literal["shared", "point-to-point"]
 
                     class Ptp(AvdModel):
                         """Subclass of AvdModel."""
@@ -58723,6 +58744,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_portfast": {"type": str},
                         "spanning_tree_bpdufilter": {"type": str},
                         "spanning_tree_bpduguard": {"type": str},
+                        "spanning_tree_link_type": {"type": str},
                         "flowcontrol": {"type": EosCliConfigGen.EthernetInterfacesItem.Flowcontrol},
                         "qos_profile": {"type": str},
                         "ptp": {"type": Ptp},
@@ -58866,6 +58888,7 @@ class EosDesigns(EosDesignsRootModel):
                     spanning_tree_portfast: SpanningTreePortfast | None
                     spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
                     spanning_tree_bpduguard: SpanningTreeBpduguard | None
+                    spanning_tree_link_type: SpanningTreeLinkType | None
                     flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
                     qos_profile: str | None
                     """QOS profile name."""
@@ -58991,6 +59014,7 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_portfast: SpanningTreePortfast | None | UndefinedType = Undefined,
                             spanning_tree_bpdufilter: SpanningTreeBpdufilter | None | UndefinedType = Undefined,
                             spanning_tree_bpduguard: SpanningTreeBpduguard | None | UndefinedType = Undefined,
+                            spanning_tree_link_type: SpanningTreeLinkType | None | UndefinedType = Undefined,
                             flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
                             qos_profile: str | None | UndefinedType = Undefined,
                             ptp: Ptp | UndefinedType = Undefined,
@@ -59110,6 +59134,7 @@ class EosDesigns(EosDesignsRootModel):
                                 spanning_tree_portfast: spanning_tree_portfast
                                 spanning_tree_bpdufilter: spanning_tree_bpdufilter
                                 spanning_tree_bpduguard: spanning_tree_bpduguard
+                                spanning_tree_link_type: spanning_tree_link_type
                                 flowcontrol: flowcontrol
                                 qos_profile: QOS profile name.
                                 ptp:
