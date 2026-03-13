@@ -90,6 +90,7 @@ class EosDesigns(EosDesignsRootModel):
                     "host": {"type": str},
                     "groups": {"type": Groups},
                     "vrf": {"type": str},
+                    "timeout": {"type": int},
                     "key": {"type": str},
                     "cleartext_key": {"type": str},
                 }
@@ -117,6 +118,8 @@ class EosDesigns(EosDesignsRootModel):
                 `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
                 """
+                timeout: int | None
+                """Timeout in seconds."""
                 key: str | None
                 """
                 Encrypted Type 7 key.
@@ -143,6 +146,7 @@ class EosDesigns(EosDesignsRootModel):
                         host: str | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                         vrf: str | None | UndefinedType = Undefined,
+                        timeout: int | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         cleartext_key: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -172,6 +176,7 @@ class EosDesigns(EosDesignsRootModel):
                                the VRF and source-interface for one of the two options above depending on the value of
                                `default_mgmt_method`.
                                - Any other string will be used directly as the VRF name.
+                            timeout: Timeout in seconds.
                             key:
                                Encrypted Type 7 key.
                                Takes precedence over `cleartext_key` if both are provided.

@@ -63,6 +63,13 @@ keys:
                     - Any other string will be used directly as the VRF name.
                   convert_types:
                     - int
+                timeout:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Timeout in seconds.
+                  min: 1
+                  max: 1000
                 key:
                   type: str
                   description: |-
