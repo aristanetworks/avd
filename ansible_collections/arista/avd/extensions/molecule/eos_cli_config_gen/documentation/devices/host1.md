@@ -9458,7 +9458,7 @@ ASN Notation: asdot
 | NHP-PEER | - | - | - | IPv4: False<br>Transit: False |
 | NHP-PEER1 | - | - | - | IPv4: False<br>Transit: False |
 | RED-C1 | 1.0.1.1:102 | - | - | IPv4: False<br>Transit: False |
-| Tenant_A | 10.50.64.15:30001 | ospf<br>ospfv3<br>connected | - | IPv4: False<br>Transit: False |
+| Tenant_A | 10.50.64.15:30001 (Remote Domain: 10.50.64.15:30002) | ospf<br>ospfv3<br>connected | - | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static | - | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static | True (120s) | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT03 | 192.168.255.3:13 | - | - | IPv4: True<br>Transit: True |
@@ -10368,6 +10368,7 @@ router bgp 65101
    !
    vrf Tenant_A
       rd 10.50.64.15:30001
+      rd evpn domain remote 10.50.64.15:30002
       route-target import evpn 1:30001
       route-target import evpn route-map RM-DENY-DEFAULT
       route-target import vpn-ipv4 1:30011
@@ -10376,11 +10377,17 @@ router bgp 65101
       route-target import vpn-ipv6 1:30011
       route-target import vpn-ipv6 rcf RT_IMPORT_AF_RCF()
       route-target import vpn-ipv6 route-map RT_IMPORT_AF_RM
+      route-target import evpn domain all 2:30006
+      route-target import evpn domain all 2:30007
+      route-target import evpn domain remote 2:30005
       route-target export evpn 1:30001
       route-target export evpn rcf RT_EXPORT_AF_RCF()
       route-target export vpn-ipv6 1:30011
       route-target export vpn-ipv6 rcf RT_IMPORT_AF_RCF() vrf-route filter-rcf RT_IMPORT_AF_RCF_FILTER()
       route-target export vpn-ipv6 route-map RT_IMPORT_AF_RM
+      route-target export evpn domain all 2:40002
+      route-target export evpn domain remote 2:40005
+      route-target export evpn domain remote 2:40006
       redistribute connected
       redistribute ospf match external include leaked
       redistribute ospfv3
