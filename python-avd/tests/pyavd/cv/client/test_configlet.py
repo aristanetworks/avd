@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from pyavd._cv.client.exceptions import CVClientException, CVClientGRPCException
+from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVClientException
 from tests.pyavd.cv.constants import (
     MOCKED_CONFIGLET_BODY,
     MOCKED_CONFIGLET_DESCRIPTION,
@@ -79,7 +79,7 @@ async def test_set_configlet_from_file_failure(
     Test failing creation of the Static Studio configlet.
 
     Specific use cases:
-    1. Attempt to create new configlet referencing non existing workspace.
+    1. Attempt to create new configlet referencing non-existing workspace.
         Exact test steps:
         -   description: Create configlet
             request: 'ConfigletConfigSetRequest(value=ConfigletConfig(key=ConfigletKey(workspace_id='ws-missing-workspace-id',
@@ -117,7 +117,7 @@ async def test_set_configlets_from_files_cvaas_success(caplog: pytest.LogCapture
 
     arista.configlet.v1.ConfigletConfigServiceStub.SetSome:
         - returns no responses for configlets that were successfully created/updated.
-        - returns ConfigletConfigSetSomeResponse object containing ConfigletKey and error message for configlets that failed to be created/updated.
+        - returns ConfigletConfigSetSomeResponse object containing ConfigletKey and error (<str>) message for configlets that failed to be created/updated.
 
     Exact test steps:
     -   description: Create configlet
@@ -175,11 +175,10 @@ async def test_set_configlets_from_files_cvaas_failure(caplog: pytest.LogCapture
         with (
             caplog.at_level(ERROR),
             pytest.raises(
-                CVClientGRPCException,
+                CVClientBulkAPIError,
                 match=(
-                    r"'GRPCRequestHandler': Execution of the gRPC call for 'set_configlets_from_files' for list_field 'configlets' failed.*"
-                    r"ConfigletKey\(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_id=''\), 'static configlet ID cannot be empty'.*"
-                    r"Please check execution log for a full list of the failed items."
+                    r"One or more server-side errors happened during the execution of the bulk gRPC call for 'set_configlets_from_files'. "
+                    r"Please check execution logs for a full list of the failed items."
                 ),
             ),
         ):
@@ -253,6 +252,7 @@ async def test_set_configlets_from_files_max_2024_1_99_success(cv_client: CVClie
             ],
         )
 
+    # Making sure that old version of the method is not returning any responses for successfully created configlets, just like the new one.
     assert len(response) == 0
 
 
@@ -275,9 +275,9 @@ async def test_set_configlets_from_files_max_2024_1_99_failure(caplog: pytest.Lo
 
     -   description: Create configlet #2
         request: 'ConfigletConfigSetRequest(value=ConfigletConfig(key=ConfigletKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e',
-            configlet_id='avd-B51AA89B6E51E89E1422107EDE3A9438-2'), display_name='TEST_CONFIGLET_NAME',
+            configlet_id=''), display_name='TEST_CONFIGLET_NAME',
             description='Configuration created and uploaded by AVD for avd-ci-leaf2', body='alias test test'))'
-        targeted_file: '/arista.configlet.v1.ConfigletConfigService/Set/www.cv-prod-us-central1-c.arista.io/67921e934c74597cacfd4a2b347f6fa8345adcf5.json'
+        targeted_file: '/arista.configlet.v1.ConfigletConfigService/Set/www.cv-prod-us-central1-c.arista.io/10ca64d1b48d1bd7d931422ea6a17f4e3af541d9.json'
     """
     with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", delete=True) as temp_configlet_file:
         temp_configlet_file.write(MOCKED_CONFIGLET_BODY)
@@ -286,12 +286,10 @@ async def test_set_configlets_from_files_max_2024_1_99_failure(caplog: pytest.Lo
         with (
             caplog.at_level(ERROR),
             pytest.raises(
-                CVClientGRPCException,
+                CVClientBulkAPIError,
                 match=(
-                    r"'GRPCRequestHandler': Execution of the gRPC call for 'set_configlets_from_files' for list_field 'None' failed.*"
-                    r"ConfigletKey\(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_id=''\).*"
-                    r"<Status.INVALID_ARGUMENT: 3>, 'static configlet ID cannot be empty'.*"
-                    r"Please check execution log for a full list of the failed items."
+                    r"One or more server-side errors happened during the execution of the bulk gRPC call for 'set_configlets_from_files'. "
+                    r"Please check execution logs for a full list of the failed items."
                 ),
             ),
         ):

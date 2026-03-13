@@ -29,7 +29,7 @@ from pyavd._cv.api.arista.configlet.v1 import (
 )
 from pyavd._cv.api.arista.time import TimeBounds
 from pyavd._cv.api.fmp import RepeatedString
-from pyavd._cv.client.exceptions import CVClientGRPCException
+from pyavd._cv.client.exceptions import CVGRPCError, CVGRPCStatusUnavailable, CVMessageSizeExceeded, CVResourceNotFound, CVTimeoutError
 from pyavd._utils import batch
 
 from .async_decorators import GRPCRequestHandler, LimitCvVersion
@@ -359,7 +359,7 @@ class ConfigletMixin(Protocol):
         return response.value
 
     @LimitCvVersion(min_ver="2024.2.0")
-    @GRPCRequestHandler(list_field="configlets", check_response_errors=True)
+    @GRPCRequestHandler(list_field="configlets", check_bulk_response_errors=True)
     async def set_configlets_from_files(
         self: CVClientProtocol,
         workspace_id: str,
@@ -396,7 +396,7 @@ class ConfigletMixin(Protocol):
 
     # Use this variant for versions below 2024.2.0 (still respecting overall min version)
     @LimitCvVersion(max_ver="2024.1.99")
-    @GRPCRequestHandler(check_response_errors=True)
+    @GRPCRequestHandler(check_bulk_response_errors=True)
     async def set_configlets_from_files(  # noqa: F811 - Redefining with decorator.
         self: CVClientProtocol,
         workspace_id: str,
@@ -433,29 +433,40 @@ class ConfigletMixin(Protocol):
         for index, batch_coroutines in enumerate(batch(coroutines, PARALLEL_COROUTINES), start=1):
             LOGGER.info("set_configlets_from_files: Batch %s", index)
 
-            # Prepare to map configlet tuples to coroutines.
+            # Pre work for mapping configlet tuples to coroutines.
             batch_size = len(batch_coroutines)
             batch_configlets = configlets[batch_offset : batch_offset + batch_size]
             batch_offset += batch_size
 
+            # Results are returned in the same order as the coroutines.
+            # Coroutines will either return a ConfigletConfig object (for successful deployment) or an Exception (for a failed deployment).
             configlet_configs = await gather(*batch_coroutines, return_exceptions=True)
 
-            # Process results of each batch. Raise for any non-gRPC error. Collect gRPC errors.
+            # Process results of each batch. Collect all Cloudvision/GRPC-related exceptions. Raise for any other type of Exception.
             for (configlet_id, _, _, _), configlet_config in zip(batch_configlets, configlet_configs, strict=False):
-                # Append all GRPC errors to the list of responses_with_errors.
-                if isinstance(configlet_config, CVClientGRPCException):
+                # Append all Cloudvision/GRPC-related errors to the list of responses_with_errors.
+                if isinstance(
+                    configlet_config,
+                    (
+                        CVTimeoutError,
+                        CVResourceNotFound,
+                        CVGRPCStatusUnavailable,
+                        CVMessageSizeExceeded,
+                        CVGRPCError,
+                    ),
+                ):
                     responses_with_errors.append(
                         (
                             ConfigletKey(workspace_id=workspace_id, configlet_id=configlet_id),
                             str(configlet_config),
                         )
                     )
-                # Raise for any other type of Exception (FileNotFound, etc.).
+                # Raise immediately for any other type of Exception (FileNotFound, etc.).
                 elif isinstance(configlet_config, Exception):
                     raise configlet_config
                 # configlet_config is not an Exception and is a ConfigletConfig object, meaning the Configlet was successfully deployed.
                 else:
-                    # We do not return anything here to have a consistent behavior with 2024.2.0+ implementation.
+                    # We do not return anything here to have a consistent behavior with 2024.2.0+ implementation of the 'set_configlets_from_files' method.
                     pass
 
         return responses_with_errors

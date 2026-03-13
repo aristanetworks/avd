@@ -16,7 +16,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, ParamSpec, TypeVar, get_args, g
 from grpclib import Status
 from grpclib.exceptions import GRPCError
 
-from pyavd._cv.client.exceptions import CVClientException, CVClientGRPCException, CVResourceNotFound, CVTimeoutError
+from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVClientException, CVGRPCError, CVResourceNotFound, CVTimeoutError
 from pyavd._utils import batch
 
 from .constants import CVAAS_VERSION_STRING
@@ -123,6 +123,7 @@ class GRPCRequestHandler:
         factor (int): Multiplier for the delay in subsequent retries.
         list_field (str): Name of the parameter to be split if Status.RESOURCE_EXHAUSTED is received.
         min_items_for_splitting_attempt (int): Minimum length of the item that we'll still try to split.
+        check_bulk_response_errors (bool): Check for the presence of the 'error' inside each response tuple for bulk (stream-based) gRPC calls.
     """
 
     max_retries: int
@@ -130,7 +131,7 @@ class GRPCRequestHandler:
     factor: int
     list_field: str | None
     min_items_for_splitting_attempt: int
-    check_response_errors: bool
+    check_bulk_response_errors: bool
     func: Callable
     func_signature: Signature
     bound_arguments: BoundArguments
@@ -143,14 +144,14 @@ class GRPCRequestHandler:
         factor: int = 2,
         list_field: str | None = None,
         min_items_for_splitting_attempt: int = 2,
-        check_response_errors: bool = False,
+        check_bulk_response_errors: bool = False,
     ) -> None:
         self.max_retries = max_retries
         self.initial_delay = initial_delay
         self.factor = factor
         self.list_field = list_field
         self.min_items_for_splitting_attempt = max(2, min_items_for_splitting_attempt)
-        self.check_response_errors = check_response_errors
+        self.check_bulk_response_errors = check_bulk_response_errors
 
     def __call__(self, func: Callable[P, T]) -> Callable[P, T]:
         self.func = func
@@ -184,9 +185,9 @@ class GRPCRequestHandler:
         async def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
             result = await self._execute_with_splitting(args, kwargs)
 
-            # Check for the presence of the 'error' field inside each response. Log all errors and raise if any are found.
-            if self.check_response_errors and result:
-                self._check_response_errors(result)
+            # Check for the presence of the 'error' inside each response tuple for bulk (stream-based) gRPC calls. Log all errors and raise if any are found.
+            if self.check_bulk_response_errors and result:
+                self._check_bulk_response_errors(result)
 
             return result
 
@@ -259,7 +260,8 @@ class GRPCRequestHandler:
                                     raise new_exception
 
                             case _:
-                                raise CVClientGRPCException(*e.args, call_args, call_kwargs)
+                                # All other gRPC errors are converted to CVGRPCError
+                                raise CVGRPCError(*e.args, call_args, call_kwargs)
 
                     case _:
                         raise CVClientException(*e.args, call_args, call_kwargs)
@@ -340,15 +342,15 @@ class GRPCRequestHandler:
 
         return aggregated_results
 
-    def _check_response_errors(self, responses: list) -> None:
+    def _check_bulk_response_errors(self, responses: list) -> None:
         """
-        Check each response for the presence of the error field.
+        Check each response tuple (produced from the streamed responses) for the presence of the error.
 
-        Log each found error and raise a CVClientGRPCException for the first error found.
+        Log each found error and raise a CVClientBulkAPIError for the first error found.
         Available fields of the response objects depend on the gRPC method called.
 
         Raises:
-            CVClientGRPCException for the first error found.
+            CVClientBulkAPIError for the first error found.
         """
         func_name = self.func.__name__
         found_errors: list[str] = []
@@ -366,7 +368,7 @@ class GRPCRequestHandler:
 
         if found_errors:
             msg = (
-                f"'{self.__class__.__name__}': Execution of the gRPC call for '{func_name}' for list_field '{self.list_field}' "
-                f"failed for at least one item: '{found_errors[0]}'. Please check execution log for a full list of the failed items."
+                f"One or more server-side errors happened during the execution of the bulk gRPC call for '{func_name}'. "
+                f"Please check execution logs for a full list of the failed items."
             )
-            raise CVClientGRPCException(msg)
+            raise CVClientBulkAPIError(msg)
