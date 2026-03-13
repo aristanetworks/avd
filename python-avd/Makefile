@@ -45,3 +45,15 @@ compile-schemas:
 .PHONY: compile-templates
 compile-templates:
 	$(SCRIPTS_DIR)/compile_templates.py
+
+.PHONY: benchmark
+benchmark: ## Run performance benchmarks
+	pytest --codspeed --no-cov tests/benchmark
+
+.PHONY: benchmark-api
+benchmark-api: ## Run PyAVD API benchmarks only
+	pytest --codspeed --no-cov tests/benchmark/test_pyavd_api.py
+
+.PHONY: benchmark-scaling
+benchmark-scaling: ## Run large fabric scaling benchmarks only
+	pytest --codspeed --no-cov tests/benchmark/test_large_fabric_scaling.py
