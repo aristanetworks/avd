@@ -278,11 +278,11 @@ repos:
         language: python
         args:
           - --root-path
-          - "ansible_collections/arista/avd"
+          - "."
           - --table-files
           - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*.md"
           - "ansible_collections/arista/avd/roles/eos_designs/docs/tables/*.md"
-          - "ansible_collections/arista/avd/roles/cv_deploy/docs/tables/*.md"
+          - "schemas/cv_deploy/docs/tables/*.md"
           - --global-docs
           - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md"
           - "ansible_collections/arista/avd/roles/eos_designs/docs/*.md"
@@ -295,7 +295,7 @@ repos:
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-input-validation.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/removed-keys.md
-          - ansible_collections/arista/avd/roles/cv_deploy/docs/tables/metadata.md
+          - schemas/cv_deploy/docs/tables/metadata.md
         pass_filenames: false
 
       - id: sort-hosts-yml

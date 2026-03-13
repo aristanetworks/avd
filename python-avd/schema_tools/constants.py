@@ -61,7 +61,7 @@ SCHEMAS = {
         pickled_schema=CV_DEPLOY_SCHEMA_DIR.joinpath("cv_deploy.schema.pickle"),
         fragments_dir=SCHEMAS_DIR.joinpath("cv_deploy/schema_fragments"),
         python_class=CV_DEPLOY_SCHEMA_DIR.joinpath(PYTHON_CLASS_INIT_PATH),
-        docs_path=REPO_ROOT.joinpath("ansible_collections/arista/avd/roles/cv_deploy/docs"),
+        docs_path=SCHEMAS_DIR.joinpath("cv_deploy/docs"),
     ),
 }
 

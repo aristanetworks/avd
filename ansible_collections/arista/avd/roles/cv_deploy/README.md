@@ -317,7 +317,7 @@ No additional configuration is required when using this standard AVD workflow (`
 For users *not* using `eos_designs` in their workflow, the `cv_deploy` role can be used independently by providing the required variables directly as Ansible host variables.
 
 --8<--
-ansible_collections/arista/avd/roles/cv_deploy/docs/tables/cv_deploy.md
+schemas/cv_deploy/docs/tables/cv_deploy.md
 --8<--
 
 #### Input Variables Validation
