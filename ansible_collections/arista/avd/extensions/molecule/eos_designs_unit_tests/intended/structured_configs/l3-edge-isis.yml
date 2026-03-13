@@ -142,7 +142,19 @@ ethernet_interfaces:
   description: P2P_peer-ipv6_ethernet1
   shutdown: false
   mtu: 9214
-  ipv6_address: 2001:db8:1000::/127
+  ip_address: 192.168.100.0/31
+  ipv6_address: 2001:db8:2000::/127
+  isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  isis_hello_padding: true
+  isis_authentication:
+    both:
+      key_type: '7'
+      key: $1c$sTNAlR6rKSw=
+      mode: text
   metadata:
     peer: peer-ipv6
     peer_interface: ethernet1

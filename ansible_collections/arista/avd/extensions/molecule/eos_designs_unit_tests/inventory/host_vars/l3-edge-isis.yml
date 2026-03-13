@@ -32,8 +32,9 @@ l3_edge:
   p2p_links_ip_pools:
     - name: pool1
       ipv4_pool: 192.168.0.0/24
-    - name: ipv6_only_pool
-      ipv6_pool: 2001:db8:1000::/64
+    - name: dual_stack_pool
+      ipv4_pool: 192.168.100.0/24
+      ipv6_pool: 2001:db8:2000::/64
 
   p2p_links:
       # P2P link without routing. Settings set via profile
@@ -79,10 +80,9 @@ l3_edge:
       ip: [192.168.0.6/31, 192.168.0.7/31]
       isis_authentication_cleartext_key: arista
 
-    # IPv6-only link (ISIS underlay) with include_in_underlay_protocol: true.
-    # Expects: No ISIS config (IPv6-only skips underlay), interface has IPv6 only, ipv6_unicast_routing enabled.
+    # Dual-stack link with include_in_underlay_protocol: true.
     - nodes: [l3-edge-isis, peer-ipv6]
       interfaces: [ethernet7, ethernet1]
-      ip_pool: ipv6_only_pool
+      ip_pool: dual_stack_pool
       id: 1
       include_in_underlay_protocol: true

@@ -1,0 +1,31 @@
+---
+# Testing core_interfaces.p2p_links with IPv6-only and include_in_underlay_protocol: true
+
+# Fabric node type keys
+node_type_keys:
+  - key: core_router
+    type: core_router
+
+bgp_as: 65000
+
+# Nodes
+type: core_router
+core_router:
+  defaults:
+    loopback_ipv4_pool: 10.0.0.0/24
+  nodes:
+    - name: core-interfaces-ipv6-only-include-in-underlay-protocol
+      id: 1
+
+core_interfaces:
+  p2p_links_ip_pools:
+    - name: ipv6_only_pool
+      ipv6_pool: 2001:db8:64:ff::/64
+  p2p_links:
+    - nodes: [core-interfaces-ipv6-only-include-in-underlay-protocol, peer1]
+      id: 1
+      interfaces: [Ethernet1, Ethernet1]
+      ip_pool: ipv6_only_pool
+      include_in_underlay_protocol: true
+
+expected_error_message: "core_interfaces.p2p_links.[].include_in_underlay_protocol is not supported with IPv6-only links."

@@ -13096,8 +13096,9 @@ $defs:
           default: true
           description: 'Add this interface to the underlay routing protocols.
 
-            This is only supported for IPv4 underlay peering and will be ignored for
-            IPv6-only links.'
+            This is not supported with IPv6-only links.
+
+            For dual-stack links, only the IPv4 address is used for underlay peering.'
         isis_hello_padding:
           type: bool
           default: true

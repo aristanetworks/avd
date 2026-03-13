@@ -53,7 +53,9 @@ ethernet_interfaces:
   description: P2P_peer-ipv6_ethernet1
   shutdown: false
   mtu: 9214
-  ipv6_address: 2001:db8:5549::/127
+  ip_address: 192.168.100.0/31
+  ipv6_enable: true
+  ipv6_address: 2001:db8:2000::/127
   metadata:
     peer: peer-ipv6
     peer_interface: ethernet1
@@ -118,6 +120,12 @@ router_bgp:
       peer: peer_with_underlay
     peer_group: IPv4-UNDERLAY-PEERS
     description: peer_with_underlay
+  - name: ethernet5
+    remote_as: '65005'
+    metadata:
+      peer: peer-ipv6
+    peer_group: IPv4-UNDERLAY-PEERS
+    description: peer-ipv6
   redistribute:
     connected:
       enabled: true

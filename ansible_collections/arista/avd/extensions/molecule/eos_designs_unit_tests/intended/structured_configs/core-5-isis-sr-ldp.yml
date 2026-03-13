@@ -4,28 +4,6 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet26
-  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet26
-  shutdown: false
-  mtu: 1600
-  ip_address: 172.16.2.29/31
-  ipv6_address: 2001:db8:64:48::1d/127
-  isis_enable: CORE
-  isis_metric: 50
-  isis_network_point_to_point: true
-  isis_circuit_type: level-2
-  isis_hello_padding: true
-  mpls:
-    ip: true
-    ldp:
-      interface: true
-      igp_sync: true
-  metadata:
-    peer: core-1-isis-sr-ldp
-    peer_interface: Ethernet26
-    peer_type: core_router
-  switchport:
-    enabled: false
 - name: Ethernet27
   description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet27
   shutdown: false
@@ -36,6 +14,32 @@ ethernet_interfaces:
   metadata:
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet27
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Ethernet28
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet28
+  shutdown: false
+  mtu: 1600
+  ipv6_address: 2001:db8:100::2/64
+  mpls:
+    ip: true
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet28
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Ethernet29
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet29
+  shutdown: false
+  mtu: 1600
+  ipv6_address: 2001:db8:200::2/64
+  mpls:
+    ip: true
+  metadata:
+    peer: core-1-isis-sr-ldp
+    peer_interface: Ethernet29
     peer_type: core_router
   switchport:
     enabled: false

@@ -160,51 +160,6 @@ ethernet_interfaces:
     peer_type: other
   switchport:
     enabled: false
-- name: Ethernet14
-  description: P2P_peer-ipv6-2_Ethernet1
-  shutdown: false
-  mtu: 9214
-  ipv6_address: 2001:db8:1000::/127
-  metadata:
-    peer: peer-ipv6-2
-    peer_interface: Ethernet1
-    peer_type: other
-  switchport:
-    enabled: false
-- name: Ethernet15
-  description: P2P_peer-ipv6-3_Ethernet1
-  shutdown: false
-  mtu: 9214
-  ipv6_address: 2001:db8:3000::1/127
-  metadata:
-    peer: peer-ipv6-3
-    peer_interface: Ethernet1
-    peer_type: other
-  switchport:
-    enabled: false
-- name: Ethernet16
-  description: P2P_peer-ipv6-4_Ethernet1
-  shutdown: false
-  mtu: 9214
-  ipv6_address: 2001:db8:4000::1/127
-  metadata:
-    peer: peer-ipv6-4
-    peer_interface: Ethernet1
-    peer_type: other
-  switchport:
-    enabled: false
-- name: Ethernet17
-  description: P2P_peer-ipv6-5_Ethernet1
-  shutdown: false
-  mtu: 9214
-  ip_address: 192.168.0.18/31
-  ipv6_address: 2001:db8:5000::/127
-  metadata:
-    peer: peer-ipv6-5
-    peer_interface: Ethernet1
-    peer_type: other
-  switchport:
-    enabled: false
 hostname: l3-edge-bgp
 ip_routing: true
 ipv6_unicast_routing: true
@@ -356,12 +311,6 @@ router_bgp:
     metadata:
       peer: peer-ipv6-1
     description: peer-ipv6-1
-  - ip_address: 192.168.0.19
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65104'
-    metadata:
-      peer: peer-ipv6-5
-    description: peer-ipv6-5
   redistribute:
     connected:
       enabled: true

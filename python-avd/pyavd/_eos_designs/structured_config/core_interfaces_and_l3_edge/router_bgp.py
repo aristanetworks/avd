@@ -27,10 +27,6 @@ class RouterBgpMixin(Protocol):
         if not self.shared_utils.underlay_bgp:
             return
         for p2p_link, p2p_link_data in self._filtered_p2p_links:
-            # Skip IPv6 only links for include_in_underlay_protocol since it is only supported for IPv4 underlay peering.
-            if p2p_link.include_in_underlay_protocol and p2p_link_data["is_ipv6_only"]:
-                continue
-
             if not p2p_link.include_in_underlay_protocol and p2p_link.routing_protocol != "ebgp":
                 continue
 

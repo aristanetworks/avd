@@ -130,11 +130,14 @@ class UtilsMixin(Protocol):
             ipv6: <ipv6 if set | None>
             peer_ip: <peer ip if set | None>
             peer_ipv6: <peer ipv6 if set | None>
-            is_ipv6_only: <bool>
             bgp_as: <as if set | None>
             peer_bgp_as: <peer as if set | None>
         }
         """
+        if p2p_link.include_in_underlay_protocol and not p2p_link.ip and p2p_link.ipv6:
+            msg = f"{self.data_model}.p2p_links.[].include_in_underlay_protocol is not supported with IPv6-only links."
+            raise AristaAvdInvalidInputsError(msg)
+
         index = p2p_link.nodes.index(self.shared_utils.hostname)
         peer_index = (index + 1) % 2
         peer = p2p_link.nodes[peer_index]
@@ -162,7 +165,6 @@ class UtilsMixin(Protocol):
             "ipv6": ipv6,
             "peer_ip": peer_ip,
             "peer_ipv6": peer_ipv6,
-            "is_ipv6_only": ipv6 is not None and ip is None,
             "bgp_as": self.shared_utils.get_asn(str(bgp_as[index])) if index < len(bgp_as) and bgp_as[index] else None,
             "peer_bgp_as": self.shared_utils.get_asn(str(bgp_as[peer_index])) if peer_index < len(bgp_as) and bgp_as[peer_index] else None,
             "description": description,
@@ -286,10 +288,9 @@ class UtilsMixin(Protocol):
             # Enable IPv6 unicast routing when IPv6 addresses are configured on p2p_links.
             self.structured_config.ipv6_unicast_routing = True
 
-        self._update_interface_multicast_config(p2p_link, p2p_link_data, interface)
+        self._update_interface_multicast_config(p2p_link, interface)
 
-        # Skip IPv6-only links for include_in_underlay_protocol since it is only supported for IPv4 underlay peering.
-        if p2p_link.include_in_underlay_protocol and not p2p_link_data["is_ipv6_only"]:
+        if p2p_link.include_in_underlay_protocol:
             if (self.inputs.underlay_rfc5549 and p2p_link.routing_protocol != "ebgp") or p2p_link.ipv6_enable is True:
                 interface.ipv6_enable = True
 
@@ -340,13 +341,7 @@ class UtilsMixin(Protocol):
 
         if self.shared_utils.mpls_lsr and default(p2p_link.mpls_ip, True):  # noqa: FBT003
             interface.mpls.ip = True
-            # Skip IPv6-only links for include_in_underlay_protocol since it is only supported for IPv4 underlay peering.
-            if (
-                p2p_link.include_in_underlay_protocol is True
-                and not p2p_link_data["is_ipv6_only"]
-                and self.shared_utils.underlay_ldp
-                and default(p2p_link.mpls_ldp, True)  # noqa: FBT003
-            ):
+            if p2p_link.include_in_underlay_protocol is True and self.shared_utils.underlay_ldp and default(p2p_link.mpls_ldp, True):  # noqa: FBT003
                 interface.mpls.ldp.interface = True
                 interface.mpls.ldp.igp_sync = True
 
@@ -371,18 +366,16 @@ class UtilsMixin(Protocol):
     def _update_interface_multicast_config(
         self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,
         p2p_link: T_P2pLinksItem,
-        p2p_link_data: dict,
         interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
     ) -> None:
-        # Skip IPv6-only links for include_in_underlay_protocol since it is only supported for IPv4 underlay peering.
-        if p2p_link.include_in_underlay_protocol and not p2p_link_data["is_ipv6_only"]:
+        if p2p_link.include_in_underlay_protocol:
             if self.shared_utils.underlay_multicast_pim_sm_enabled and p2p_link.multicast_pim_sm is not False:
                 interface.pim.ipv4.sparse_mode = True
 
             # static multicast
             if self.shared_utils.underlay_multicast_static_enabled and p2p_link.multicast_static is not False:
                 interface.multicast.ipv4.static = True
-        elif not p2p_link.include_in_underlay_protocol:
+        else:
             # not included in underlay protocol
             if self.shared_utils.underlay_multicast_pim_sm_enabled and p2p_link.multicast_pim_sm:
                 interface.pim.ipv4.sparse_mode = True

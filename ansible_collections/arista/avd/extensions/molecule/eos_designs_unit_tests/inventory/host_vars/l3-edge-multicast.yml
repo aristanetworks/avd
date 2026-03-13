@@ -28,8 +28,9 @@ l3_edge:
   p2p_links_ip_pools:
     - name: pool1
       ipv4_pool: 192.168.0.0/24
-    - name: ipv6_only_pool
-      ipv6_pool: 2001:db8:3000::/64
+    - name: dual_stack_pool
+      ipv4_pool: 192.168.100.0/24
+      ipv6_pool: 2001:db8:2000::/64
 
   p2p_links:
     - nodes: [l3-edge-multicast, peer1]
@@ -93,13 +94,12 @@ l3_edge:
       # added to not pollute the test
       multicast_pim_sm: false
 
-    # IPv6-only link (OSPF multicast underlay) with include_in_underlay_protocol: true.
-    # Expects: No OSPF/PIM/static multicast config (IPv6-only skips underlay), interface has IPv6 only, ipv6_unicast_routing enabled.
+    # Dual-stack link with include_in_underlay_protocol: true.
     - nodes: [l3-edge-multicast, peer-ipv6]
       descriptions:
-        - IPv6-only link, included in underlay protocol, PIM SM and static multicast default.
+        - Dual-stack link, included in underlay protocol, PIM SM and static multicast default.
         - dummy
       interfaces: [ethernet7, ethernet1]
-      ip_pool: ipv6_only_pool
+      ip_pool: dual_stack_pool
       id: 1
       include_in_underlay_protocol: true
