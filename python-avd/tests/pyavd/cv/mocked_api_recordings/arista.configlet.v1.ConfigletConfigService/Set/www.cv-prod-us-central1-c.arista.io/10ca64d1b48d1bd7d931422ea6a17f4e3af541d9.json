@@ -1,5 +1,6 @@
 {
 	"raise": {
+		"type": "GRPCError",
 		"status": "INVALID_ARGUMENT",
 		"message": "static configlet ID cannot be empty"
 	}

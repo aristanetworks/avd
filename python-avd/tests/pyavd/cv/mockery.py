@@ -76,8 +76,17 @@ async def recording_unary_unary(
     # Catch returned gRPC Exception (like Workspace is not found, etc.)
     except Exception as e:
         LOGGER.debug("recording_unary_unary: Got exception executing request '%s': %s", request, e)
+        stringified_exception = (
+            "{\n"
+            '\t"raise": {\n'
+            f'\t\t"type": "{type(e).__name__}",\n'
+            f'\t\t"status": "{str(e.args[0]).removeprefix("Status.")}",\n'
+            f'\t\t"message": "{e.args[1]}"\n'
+            "\t}\n"
+            "}"
+        )
         # Dump gRPC exception details into the recording file so that it can be easily replayed
-        recording_file.write_text(f'{{\n\t"raise": {{\n\t\t"status": "{str(e.args[0]).removeprefix("Status.")}",\n\t\t"message": "{e.args[1]}"\n\t}}\n}}')
+        recording_file.write_text(stringified_exception)
         # Re-raise exception so that it is passed to and processed by our gRPC decorator
         raise
     else:
@@ -102,9 +111,30 @@ async def recording_unary_stream(
         async for message in self._org_unary_stream(route, request, response_type, timeout=timeout, deadline=deadline, metadata=metadata):
             messages_as_json.append(message.to_json(indent=4))
             yield message
+    # Catch returned gRPC Exception
+    except Exception as e:
+        LOGGER.debug("recording_unary_stream: Got exception executing request '%s': %s", request, e)
+        stringified_exception = (
+            "{\n"
+            '\t"raise": {\n'
+            f'\t\t"type": "{type(e).__name__}",\n'
+            f'\t\t"status": "{str(e.args[0]).removeprefix("Status.")}",\n'
+            f'\t\t"message": "{e.args[1]}"\n'
+            "\t}\n"
+            "}"
+        )
+        # If no messages were yet recorded - just dump gRPC exception details into the recording file so that exception can be re-raised.
+        if not messages_as_json:
+            recording_file.write_text(stringified_exception)
+        # If some messages were already recorded - dump exception into the list of messages.
+        else:
+            messages_as_json.append(stringified_exception)
+        # Re-raise exception so that it is passed to and processed by our gRPC decorator
+        raise
     finally:
-        result = f"[{', '.join(messages_as_json)}]"
-        recording_file.write_text(result)
+        # Write messages together with stringified exception if some messages were recorded prior to exception
+        if messages_as_json:
+            recording_file.write_text(f"[{', '.join(messages_as_json)}]")
 
 
 async def playback_unary_unary(
@@ -156,7 +186,7 @@ async def playback_static_recording_unary_unary(
         raise FileNotFoundError(recording_file, "for request", request)
     recording = json.loads(recording_file.read_text())
     if recorded_exception := get_v2(recording, "raise"):
-        raise GRPCError(Status[recorded_exception["status"]], recorded_exception["message"])
+        raise_recorded_exception(recorded_exception)
     return response_type().from_dict(recording["payload"])
 
 
@@ -173,9 +203,14 @@ async def playback_static_recording_unary_stream(
     if not recording_file.exists():
         raise FileNotFoundError(recording_file, "for request", request)
     recording = json.loads(recording_file.read_text())
+    # Raise if recording file only contains exception
     if recorded_exception := get_v2(recording, "raise"):
-        raise GRPCError(Status[recorded_exception["status"]], recorded_exception["message"])
+        raise_recorded_exception(recorded_exception)
+    # Replay messages
     for message_as_dict in recording["payload"]:
+        # If exception was sent between messages during recording - raise it the same way it was raised during recording
+        if recorded_exception := get_v2(message_as_dict, "raise"):
+            raise_recorded_exception(recorded_exception)
         yield response_type().from_dict(message_as_dict)
 
 
@@ -195,3 +230,16 @@ async def mocked_cv_client_aenter(self: CVClient) -> CVClient:
     self._channel._host = self._servers[0]
     self._metadata = {}
     return self
+
+
+# Helper function to raise exception based on the previously recorded (in a form of stringified json) exception
+def raise_recorded_exception(recorded_exception: dict[str, Any]) -> None:
+    exception_type = get_v2(recorded_exception, "type")
+    exception_status = get_v2(recorded_exception, "status")
+    exception_message = get_v2(recorded_exception, "message")
+
+    match exception_type:
+        # TODO: Add additional match/case statements below this line to match new exception types once they are faced
+        # Raise GRPC exception by default.
+        case _:
+            raise GRPCError(Status[exception_status], exception_message)
