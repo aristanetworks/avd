@@ -322,9 +322,7 @@ ansible_collections/arista/avd/roles/cv_deploy/docs/tables/cv_deploy.md
 
 #### Input Variables Validation
 
-Schema validation is performed by the `validate_inputs` action plugin which is called automatically by the role. The plugin performs variable type conversion and validation of the converted data against the AVD schema.
-
-Any data validation issues will trigger errors - blocking further processing.
+The role automatically validates all inputs. Any validation errors will block further processing.
 
 !!! warning
     The presence of the same `serial_number` or `system_mac_address` values for multiple EOS devices may lead to unexpected results (or even network outages) on CloudVision due to the possibility of pushing the configuration of one device to another.
@@ -334,13 +332,11 @@ Any data validation issues will trigger errors - blocking further processing.
     - Two or more targeted devices have the same `serial_number` (values of `system_mac_address` are not important in this case).
     - Two or more targeted devices have the same `system_mac_address` and at least one of these devices has an unset `serial_number` value.
 
-    By default, the role will warn the user about inconsistencies in the following case:
+    However, by default the role will only warn (not error) in the following case:
 
     - Two or more targeted devices have the same `system_mac_address` but unique `serial_number` values.
 
-    Having duplicate `system_mac_address` but unique `serial_number` will not lead to unexpected results on CloudVision as `serial_number` takes precedence.
-
-    To force an error to always be raised in case of duplicate `system_mac_address`, set the role variable `cv_strict_system_mac_address` to `true`:
+    To raise an error instead of a warning for the above case, set the role variable `cv_strict_system_mac_address` to `true`:
 
     ```yaml
     cv_strict_system_mac_address: true
