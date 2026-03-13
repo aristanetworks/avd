@@ -55,6 +55,12 @@ class VrfsMixin(Protocol):
                     new_vrf.description = vrf.description
                 self.structured_config.vrfs.append(new_vrf, ignore_fields=("metadata",))
 
+                # If the VRF already existed (shared VRF across multiple tenants),
+                # append this tenant to the existing item's metadata.
+                existing_vrf = self.structured_config.vrfs.obtain(vrf_name)
+                if tenant.name not in existing_vrf.metadata.tenants:
+                    existing_vrf.metadata.tenants.append(tenant.name)
+
     def _has_ipv6(
         self: AvdStructuredConfigNetworkServicesProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
     ) -> bool:

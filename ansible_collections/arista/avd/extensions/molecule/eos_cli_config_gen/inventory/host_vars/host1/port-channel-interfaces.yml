@@ -246,11 +246,12 @@ port_channel_interfaces:
             mac_address_maximum: 3
           - range: 4-5
             mac_address_maximum: 4
-    ipv6_nd_prefixes:
-      - ipv6_prefix: a1::/64
-        valid_lifetime: infinite
-        preferred_lifetime: infinite
-        no_autoconfig_flag: true
+    ipv6_nd:
+      prefixes:
+        - ipv6_prefix: a1::/64
+          valid_lifetime: infinite
+          preferred_lifetime: infinite
+          no_autoconfig_flag: true
     # Test isis auth both shared secret
     isis_enable: "EVPN_UNDERLAY"
     isis_authentication:
@@ -352,8 +353,15 @@ port_channel_interfaces:
         link_status: true
     description: IFL for TENANT01
     mtu: 1500
-    ipv6_address: "cafe::b4"
-    ipv6_nd_managed_config_flag: true
+    ipv6_addresses:
+      - "cafe::b4"
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
     encapsulation_dot1q:
       vlan: 101
 
@@ -375,6 +383,7 @@ port_channel_interfaces:
 
   - name: Port-Channel8
     description: to Dev02 Port-channel 8
+    ipv6_address_auto_config: true
     switchport:
       enabled: false
       port_security:
@@ -394,7 +403,8 @@ port_channel_interfaces:
 
   - name: Port-Channel8.101
     description: to Dev02 Port-Channel8.101 - VRF-C1
-    ipv6_address: "cafe::b4"
+    ipv6_addresses:
+      - "cafe::b4"
     encapsulation_dot1q:
       vlan: 101
 

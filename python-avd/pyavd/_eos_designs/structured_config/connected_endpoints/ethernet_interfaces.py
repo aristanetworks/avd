@@ -98,6 +98,7 @@ class EthernetInterfacesMixin(Protocol):
             spanning_tree_portfast=adapter.spanning_tree_portfast,
             spanning_tree_bpdufilter=adapter.spanning_tree_bpdufilter,
             spanning_tree_bpduguard=adapter.spanning_tree_bpduguard,
+            spanning_tree_link_type=adapter.spanning_tree_link_type,
             storm_control=self._get_adapter_storm_control(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.StormControl),
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.Ptp),
             service_profile=adapter.qos_profile,

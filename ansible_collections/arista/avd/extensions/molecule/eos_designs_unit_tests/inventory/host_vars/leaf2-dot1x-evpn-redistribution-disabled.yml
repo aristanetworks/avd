@@ -5,10 +5,6 @@ dot1x_settings:
     enabled: false
   redistribute_in_evpn: false
 
-avd_7_behaviors:
-  # Test for new behaviour of IP RADIUS server commands
-  ip_radius_source_interface_setting: true
-
 aaa_settings:
   radius:
     servers:

@@ -144,6 +144,49 @@ keys:
               - str
             min: 1
             max: 600
+      route_distinguisher:
+        type: dict
+        keys:
+          assignment_auto:
+            type: dict
+            description: Automatic Route Distinguisher (auto RD) feature.
+            keys:
+              range:
+                type: dict
+                description: |-
+                  Range for the 2-byte assigned number field of RD.
+                  The range is inclusive of start and end values.
+                keys:
+                  start:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 65535
+                    required: true
+                    description: Start of range. EOS default is 4096.
+                  end:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 65535
+                    required: true
+                    description: |-
+                        End of range. Must be greater than or equal to `start`.
+                        EOS default is 65535.
+              address_families:
+                type: list
+                min_length: 1
+                description: |-
+                  Address families for which to enable automatic RD assignment.
+                  Each address family has its own range allocation.
+                items:
+                  type: str
+                  valid_values: ["l2-evpn", "l3-vrf"]
+                  description: |-
+                    l2-evpn: L2 EVPN VXLAN, VPWS, VLAN-aware-bundle, VNI-aware-bundle.
+                    l3-vrf: L3 EVPN and MPLS VPN.
       updates:
         type: dict
         keys:
@@ -3623,6 +3666,19 @@ keys:
             rd:
               type: str
               description: Route distinguisher.
+            rd_evpn_domain:
+              type: dict
+              keys:
+                domain:
+                  type: str
+                  valid_values:
+                    - "remote"
+                    - "all"
+                  required: true
+                rd:
+                  type: str
+                  description: Route distinguisher.
+                  required: true
             evpn_multicast:
               type: bool
             evpn_multicast_address_family:
@@ -3736,6 +3792,36 @@ keys:
                           RCF function name with parenthesis for filtering VRF routes. Also requires `rcf` to be set.
                           Example: MyFunction(myarg).
                           Only applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`.
+                import_evpn_domains:
+                  type: list
+                  description: List of EVPN domains from which to import routes.
+                  primary_key: route_target
+                  items:
+                    type: dict
+                    keys:
+                      route_target:
+                        type: str
+                      domain:
+                        type: str
+                        required: true
+                        valid_values:
+                          - "remote"
+                          - "all"
+                export_evpn_domains:
+                  type: list
+                  description: List of EVPN domains to which local routes should be exported.
+                  primary_key: route_target
+                  items:
+                    type: dict
+                    keys:
+                      route_target:
+                        type: str
+                      domain:
+                        type: str
+                        required: true
+                        valid_values:
+                          - "remote"
+                          - "all"
             router_id:
               description: in IP address format A.B.C.D.
               type: str
