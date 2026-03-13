@@ -33,7 +33,6 @@ ip access-list standard {{ standard_access_list.name }}
 {%                     endif %}
    {{ entry_cli | trim }}
 {%                 else %}
-{%                     set entry_cli = entry_cli ~ " " ~ entry.source %}
 {%                     if (entry.vlan is arista.avd.defined and entry.vlan_mask is arista.avd.defined) or (entry.inner_vlan is arista.avd.defined and entry.inner_vlan_mask is arista.avd.defined) %}
 {%                         set entry_cli = entry_cli ~ " vlan" %}
 {%                         if entry.vlan is arista.avd.defined and entry.vlan_mask is arista.avd.defined %}
@@ -43,6 +42,7 @@ ip access-list standard {{ standard_access_list.name }}
 {%                             set entry_cli = entry_cli ~ " inner " ~ entry.inner_vlan ~ " " ~ entry.inner_vlan_mask %}
 {%                         endif %}
 {%                     endif %}
+{%                     set entry_cli = entry_cli ~ " " ~ entry.source %}
 {%                     if entry.mirror_session is arista.avd.defined %}
 {%                         set entry_cli = entry_cli ~ " mirror session " ~ entry.mirror_session %}
 {%                     endif %}

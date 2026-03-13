@@ -11960,15 +11960,15 @@ ip access-list standard ACL-API
 ip access-list standard ACL-SSH
    counters per-entry
    10 remark ACL to restrict access RFC1918 addresses
-   20 permit 10.0.0.0/8 vlan 10 0 inner 20 1 mirror session mirror1 log
-   30 permit 172.16.0.0/12 vlan inner 20 1 mirror session mirror1 log
+   20 permit vlan 10 0 inner 20 1 10.0.0.0/8 mirror session mirror1 log
+   30 permit vlan inner 20 1 172.16.0.0/12 mirror session mirror1 log
    40 permit 192.168.0.0/16
 !
 ip access-list standard ACL-SSH-VRF
    10 remark ACL to restrict access RFC1918 addresses
-   20 permit 10.0.0.0/8 vlan 10 0 inner 20 1
-   30 permit 172.16.0.0/12 vlan 10 0
-   40 permit 192.168.0.0/16 vlan inner 20 1
+   20 permit vlan 10 0 inner 20 1 10.0.0.0/8
+   30 permit vlan 10 0 172.16.0.0/12
+   40 permit vlan inner 20 1 192.168.0.0/16
 ```
 
 ### Extended Access-lists
