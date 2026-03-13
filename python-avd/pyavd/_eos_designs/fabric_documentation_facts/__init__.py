@@ -196,11 +196,12 @@ class FabricDocumentationFacts(AvdFacts):
         networks = [network for pool in pools_set for network in get_networks_from_pool(pool) if network.version == 4]
 
         # Build list of ip addresses found in topology
+        # Filter out IPv6 addresses (containing ":") to avoid errors when creating IPv4Network objects
         ip_addresses = [
             IPv4Network(data[2], strict=False)
             for edge in self._topology.get_edges()
             for _, data in edge.node_data
-            if data[2] is not None and "unnumbered" not in data[2]
+            if data[2] is not None and "unnumbered" not in data[2] and ":" not in data[2]
         ]
 
         return self.render_networks_as_list(networks, ip_addresses)

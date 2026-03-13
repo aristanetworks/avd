@@ -1,0 +1,91 @@
+---
+name: "Benchmarks"
+
+"on":
+  workflow_dispatch:
+    inputs:
+      python_versions:
+        description: "Python versions to test (JSON array or single version)"
+        required: false
+        default: '["3.12"]'
+        type: string
+      ansible_versions:
+        description: "Ansible-core versions to test (JSON array or single version)"
+        required: false
+        default: '["2.20"]'
+        type: string
+      scenarios:
+        description: "Molecule scenarios to benchmark (pytest -k filter, or empty for all)"
+        required: false
+        default: "eos_designs_unit_tests"
+        type: string
+  workflow_call:
+    inputs:
+      python_versions:
+        description: "Python versions to test (JSON array)"
+        required: false
+        default: '["3.12"]'
+        type: string
+      ansible_versions:
+        description: "Ansible-core versions to test (JSON array)"
+        required: false
+        default: '["2.20"]'
+        type: string
+      scenarios:
+        description: "Molecule scenarios to benchmark"
+        required: false
+        default: "eos_designs_unit_tests"
+        type: string
+  schedule:
+    # Run weekly on Sunday at 2 AM UTC with full matrix
+    - cron: '0 2 * * 0'
+
+env:
+  PY_COLORS: 1
+  ANSIBLE_FORCE_COLOR: 1
+
+jobs:
+  benchmarks:
+    name: Benchmark (Python ${{ matrix.python }}, Ansible ${{ matrix.ansible }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ${{ fromJson(github.event_name == 'schedule' && '["3.10", "3.11", "3.12", "3.13", "3.14"]' || inputs.python_versions || '["3.12"]') }}
+        ansible: ${{ fromJson(github.event_name == 'schedule' && '["2.16", "2.18", "2.20"]' || inputs.ansible_versions || '["2.20"]') }}
+        exclude:
+          # Ansible 2.16 doesn't support Python 3.13+
+          - python: "3.13"
+            ansible: "2.16"
+          - python: "3.14"
+            ansible: "2.16"
+          # Ansible 2.18 doesn't support Python 3.14
+          - python: "3.14"
+            ansible: "2.18"
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Python ${{ matrix.python }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies with Ansible ${{ matrix.ansible }}
+        run: |
+          pip install --group dev --upgrade
+          # Override ansible-core version if needed
+          if [[ "${{ matrix.ansible }}" != "latest" ]]; then
+            pip install "ansible-core~=${{ matrix.ansible }}.0" --upgrade
+          fi
+
+      - name: Run benchmarks
+        uses: CodSpeedHQ/action@v4
+        with:
+          token: ${{ secrets.CODSPEED_TOKEN }}
+          mode: simulation
+          run: |
+            if [[ -n "${{ inputs.scenarios }}" ]]; then
+              pytest --codspeed --no-cov python-avd/tests/benchmark -k "${{ inputs.scenarios }}"
+            else
+              pytest --codspeed --no-cov python-avd/tests/benchmark
+            fi
