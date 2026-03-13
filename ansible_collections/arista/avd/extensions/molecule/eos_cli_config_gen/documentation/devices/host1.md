@@ -9458,7 +9458,7 @@ ASN Notation: asdot
 | NHP-PEER | - | - | - | IPv4: False<br>Transit: False |
 | NHP-PEER1 | - | - | - | IPv4: False<br>Transit: False |
 | RED-C1 | 1.0.1.1:102 | - | - | IPv4: False<br>Transit: False |
-| Tenant_A | 10.50.64.15:30001<br>Local (Remote Domain: 10.50.64.15:30002) | ospf<br>ospfv3<br>connected | - | IPv4: False<br>Transit: False |
+| Tenant_A | 10.50.64.15:30001 (Remote Domain: 10.50.64.15:30002) | ospf<br>ospfv3<br>connected | - | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static | - | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static | True (120s) | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT03 | 192.168.255.3:13 | - | - | IPv4: True<br>Transit: True |
