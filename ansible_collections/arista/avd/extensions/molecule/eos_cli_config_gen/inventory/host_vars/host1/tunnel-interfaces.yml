@@ -9,6 +9,25 @@ tunnel_interfaces:
     mtu: 1500
     ip_address: 42.42.42.42/24
     ipv6_address_auto_config: true
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: 2345:ABCD:3FE0::1/96
+          valid_lifetime: infinite
+          preferred_lifetime: 50
+          no_autoconfig_flag: true
+        - ipv6_prefix: 2345:ABCD:3FE0::2/96
+          valid_lifetime: 50
+          preferred_lifetime: infinite
+          no_autoconfig_flag: false
+        - ipv6_prefix: 2345:ABCD:3FE0::3/96
+          valid_lifetime: 100000
+          no_autoconfig_flag: true
     access_group_in: test-in
     access_group_out: test-out
     tcp_mss_ceiling:

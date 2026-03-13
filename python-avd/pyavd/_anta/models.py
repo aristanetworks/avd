@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import cached_property
-from ipaddress import IPv4Address, IPv6Address, ip_interface
+from ipaddress import IPv4Address, IPv4Network, IPv6Address, ip_interface
 from logging import getLogger
 from typing import TYPE_CHECKING
 
@@ -94,9 +94,9 @@ class InputFactoryDataSource:
         return device_data
 
     @cached_property
-    def fabric_underlay_reachability_targets(self) -> list[IPv4Address]:
-        """Get a sorted list of all underlay reachability target IPv4 addresses (Loopback0, VTEP, and MLAG VTEP) from deployed non-WAN devices in the fabric."""
-        return natural_sort(self._fabric_data.underlay_reachability_targets)
+    def fabric_underlay_reachability_prefixes(self) -> list[IPv4Network]:
+        """Get a sorted list of all underlay reachability IPv4 prefixes (Loopback0, VTEP, and MLAG VTEP) from deployed non-WAN devices in the fabric."""
+        return natural_sort(IPv4Network(f"{ip}/32") for ip in self._fabric_data.underlay_reachability_targets)
 
     @cached_property
     def bgp_neighbors(self) -> list[ResolvedBgpNeighbor]:

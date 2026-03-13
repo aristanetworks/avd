@@ -105,7 +105,8 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(evpn_overlay_peer_group)
 
         # Deactivate IPv4 Address Family
-        self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
+        if self._disable_ipv4_unicast_for_peer_groups:
+            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
 
         # EVPN Address Family
         overlay_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyEvpn.PeerGroupsItem(name=peer_group_name, activate=True)
@@ -141,7 +142,8 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(evpn_overlay_core_peer_group)
 
         # Deactivate IPv4 Address Family
-        self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
+        if self._disable_ipv4_unicast_for_peer_groups:
+            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
 
         # EVPN Address Family
         self.structured_config.router_bgp.address_family_evpn.peer_groups.append_new(
@@ -171,7 +173,8 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(mpls_peer_group)
 
         # Deactivate IPv4 Address Family
-        self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
+        if self._disable_ipv4_unicast_for_peer_groups:
+            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
 
         # EVPN Address Family
         if self.shared_utils.overlay_evpn_mpls:
@@ -211,7 +214,8 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(rr_overlay_peer_group)
 
         # Deactivate IPv4 Address Family
-        self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
+        if self._disable_ipv4_unicast_for_peer_groups:
+            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
 
         # IPv4 VPN Address Family
         if self.shared_utils.overlay_vpn_ipv4:
@@ -241,7 +245,8 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(wan_overlay_peer_group)
 
         # Deactivate IPv4 Address Family
-        self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
+        if self._disable_ipv4_unicast_for_peer_groups:
+            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
 
         # Activate EVPN Address Family
         evpn_wan_overlay_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyEvpn.PeerGroupsItem(
@@ -295,7 +300,8 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(wan_rr_overlay_peer_group)
 
         # Deactivate IPv4 Address Family
-        self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
+        if self._disable_ipv4_unicast_for_peer_groups:
+            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=peer_group_name, activate=False)
 
         # EVPN Address Family
         self.structured_config.router_bgp.address_family_evpn.peer_groups.append_new(
@@ -323,7 +329,10 @@ class RouterBgpMixin(Protocol):
         self.structured_config.router_bgp.peer_groups.append(ipvpn_gateway_peer_group)
 
         # Deactivate IPv4 Address Family
-        self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(name=self.inputs.bgp_peer_groups.ipvpn_gateway_peers.name, activate=False)
+        if self._disable_ipv4_unicast_for_peer_groups:
+            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append_new(
+                name=self.inputs.bgp_peer_groups.ipvpn_gateway_peers.name, activate=False
+            )
 
         # IPv4 VPN Address Family
         if self.shared_utils.overlay_vpn_ipv4:
