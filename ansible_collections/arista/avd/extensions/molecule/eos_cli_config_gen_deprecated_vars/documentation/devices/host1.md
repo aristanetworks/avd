@@ -223,9 +223,9 @@ interface Loopback2
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | -------------- | ------- | ----------------- | ----------- | ------------ |
-| Tunnel1 | default | 2002::CAFE/128 | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| --------- | --- | -------------- | ------- | ----------------- | ----------- | ------------ | --------------- | -------------- | ---------------------- |
+| Tunnel1 | default | 2002::CAFE/128 | - | - | - | - | - | - | - |
 
 #### Tunnel Interfaces Device Configuration
 
