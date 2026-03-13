@@ -156,3 +156,7 @@ class UtilsMixin(Protocol):
                     for interface in path_group.interfaces
                 )
         return stun_server_profiles
+
+    @cached_property
+    def _disable_ipv4_unicast_for_peer_groups(self: AvdStructuredConfigOverlayProtocol) -> bool:
+        return not self.inputs.avd_design_future.remove_redundant_ipv4_unicast_for_peer_groups or self.inputs.bgp_default_ipv4_unicast

@@ -16,10 +16,6 @@ dot1x_settings:
   dynamic_authorization:
     enabled: false
 
-avd_7_behaviors:
-  # Test for new behaviour of IP RADIUS server commands
-  ip_radius_source_interface_setting: true
-
 aaa_settings:
   radius:
     servers:

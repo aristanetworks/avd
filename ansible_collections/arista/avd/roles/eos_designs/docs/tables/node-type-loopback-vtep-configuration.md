@@ -91,9 +91,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;loopback_ipv6_offset</samp>](## "devices.[].loopback_ipv6_offset") | Integer |  | `0` |  | Offset all assigned loopback IPv6 addresses.<br>Required when the 'loopback_ipv6_pool' is same for 2 different node_types (like spine and l3leaf) to avoid overlapping IPs.<br>For example, set the minimum offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep</samp>](## "devices.[].vtep") | Boolean |  |  |  | Node is configured as a VTEP when applicable based on 'overlay_routing_protocol'.<br>Overrides VTEP setting inherited from node_type_keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback</samp>](## "devices.[].vtep_loopback") | String |  |  | Pattern: `Loopback[\d/]+` | Set VXLAN source interface. |
-    | [<samp>fabric_ip_addressing</samp>](## "fabric_ip_addressing") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;loopback</samp>](## "fabric_ip_addressing.loopback") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_prefix_length</samp>](## "fabric_ip_addressing.loopback.ipv6_prefix_length") | Integer |  | `128` | Valid Values:<br>- <code>64</code><br>- <code>128</code> | IPv6 prefix length used for Router ID, VTEP and diagnostic loopbacks. |
 
 === "YAML"
 
@@ -421,9 +418,4 @@
 
         # Set VXLAN source interface.
         vtep_loopback: <str>
-    fabric_ip_addressing:
-      loopback:
-
-        # IPv6 prefix length used for Router ID, VTEP and diagnostic loopbacks.
-        ipv6_prefix_length: <int; 64 | 128; default=128>
     ```

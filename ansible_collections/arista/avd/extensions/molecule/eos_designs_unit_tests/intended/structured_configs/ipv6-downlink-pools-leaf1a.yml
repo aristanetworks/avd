@@ -8,7 +8,8 @@ ethernet_interfaces:
   description: P2P_ipv6-downlink-pools-spine_Ethernet1
   shutdown: false
   mtu: 9214
-  ipv6_address: 2001:db8:12::2/64
+  ipv6_addresses:
+  - 2001:db8:12::2/64
   metadata:
     peer: ipv6-downlink-pools-spine
     peer_interface: Ethernet1
@@ -30,7 +31,8 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ipv6_address: 2001:db8:13::1/128
+  ipv6_addresses:
+  - 2001:db8:13::1/128
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

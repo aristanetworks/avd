@@ -613,6 +613,11 @@ loopback_interfaces:
   shutdown: false
   vrf: Tenant_A_OP_Zone
   ip_address: 10.255.1.12/32
+- name: Loopback99
+  description: MULTI_TENANT_VRF_TEST_TENANT_B
+  shutdown: false
+  vrf: MULTI_TENANT_VRF_TEST
+  ip_address: 172.26.128.12/32
 management_api_http:
   enable_https: true
   default_services: false
@@ -1173,6 +1178,14 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '250'
+  - name: MULTI_TENANT_VRF_TEST
+    rd: 65103:99
+    route_targets:
+      both:
+      - 99:99
+    redistribute_routes:
+    - learned
+    vlan: '3099'
   - name: Tenant_C_OP_Zone
     rd: '65103:30'
     route_targets:
@@ -1334,6 +1347,28 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+  - name: MULTI_TENANT_VRF_TEST
+    rd: 65103:99
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 99:99
+      export:
+      - address_family: evpn
+        route_targets:
+        - 99:99
+    router_id: 192.168.255.12
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: 10.255.251.7
+      peer_group: MLAG-PEERS
+      description: dc1-svc3b
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
   - name: Tenant_B_OP_Zone
     rd: '65103:20'
     route_targets:
@@ -1445,6 +1480,8 @@ transceiver_qsfp_default_mode_4x10: true
 virtual_source_nat_vrfs:
 - name: Tenant_A_OP_Zone
   ip_address: 10.255.1.12
+- name: MULTI_TENANT_VRF_TEST
+  ip_address: 172.26.128.12
 vlan_interfaces:
 - name: Vlan4090
   description: MLAG_PEER_L3_PEERING
@@ -1660,6 +1697,17 @@ vlan_interfaces:
     tenants:
     - Tenant_A
     type: underlay_peering
+- name: Vlan3098
+  description: 'MLAG_PEER_L3_iBGP: vrf MULTI_TENANT_VRF_TEST'
+  shutdown: false
+  vrf: MULTI_TENANT_VRF_TEST
+  ip_address: 10.255.251.6/31
+  mtu: 1500
+  metadata:
+    tenants:
+    - Tenant_B
+    - Tenant_C
+    type: underlay_peering
 - name: Vlan210
   description: Tenant_B_OP_Zone_1
   shutdown: false
@@ -1710,6 +1758,16 @@ vlan_interfaces:
     tenants:
     - Tenant_B
     type: underlay_peering
+- name: Vlan3099
+  description: MULTI_TENANT_VRF_TEST_C
+  shutdown: false
+  vrf: MULTI_TENANT_VRF_TEST
+  ip_address_virtual: 10.99.99.1/24
+  metadata:
+    tenants:
+    - Tenant_C
+    tags:
+    - svc3only
 - name: Vlan310
   description: Tenant_C_OP_Zone_1
   shutdown: false
@@ -1887,6 +1945,14 @@ vlans:
   metadata:
     tenants:
     - Tenant_A
+- id: 3098
+  name: MLAG_iBGP_MULTI_TENANT_VRF_TEST
+  trunk_groups:
+  - LEAF_PEER_L3
+  metadata:
+    tenants:
+    - Tenant_B
+    - Tenant_C
 - id: 210
   name: Tenant_B_OP_Zone_1
   metadata:
@@ -1916,6 +1982,11 @@ vlans:
   metadata:
     tenants:
     - Tenant_B
+- id: 3099
+  name: MULTI_TENANT_VRF_TEST_C
+  metadata:
+    tenants:
+    - Tenant_C
 - id: 310
   name: Tenant_C_OP_Zone_1
   metadata:
@@ -1979,6 +2050,12 @@ vrfs:
   metadata:
     tenants:
     - Tenant_A
+- name: MULTI_TENANT_VRF_TEST
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_B
+    - Tenant_C
 - name: Tenant_B_OP_Zone
   ip_routing: true
   metadata:
@@ -2039,6 +2116,8 @@ vxlan_interface:
         vni: 20211
       - id: 250
         vni: 20250
+      - id: 3099
+        vni: 33099
       - id: 310
         vni: 30310
       - id: 311
@@ -2058,6 +2137,8 @@ vxlan_interface:
         vni: 14
       - name: Tenant_A_WEB_Zone
         vni: 11
+      - name: MULTI_TENANT_VRF_TEST
+        vni: 99099
       - name: Tenant_B_OP_Zone
         vni: 20
       - name: Tenant_B_WAN_Zone

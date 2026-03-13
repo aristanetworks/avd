@@ -7,7 +7,6 @@ from .avd_file_handler import AVDFileHandler
 from .avd_switch_facts_default_dict import AvdSwitchFactsDefaultDict
 from .avd_vault_handler import AVDVaultHandler
 from .compile_searchpath import compile_searchpath
-from .constants import ANSIBLE_ABOVE_2_19
 from .cprofile_decorator import cprofile
 from .get_templar import get_templar
 from .get_workers import get_workers
@@ -20,7 +19,6 @@ from .yaml_dumper import NoAliasDumper, YamlDumper
 from .yaml_loader import YamlLoader
 
 __all__ = [
-    "ANSIBLE_ABOVE_2_19",
     "AVDFileHandler",
     "AVDVaultHandler",
     "ActionPluginVars",

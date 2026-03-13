@@ -180,6 +180,23 @@ keys:
         ipv6_address:
           type: str
           description: IPv6_address/Mask.
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: ipv6_addresses
+        ipv6_addresses:
+          type: list
+          items:
+            type: str
+            description: |-
+              IPv6 address with prefix length.
+              This option is mutually exclusive with `ipv6_address_auto_config` and takes precedence if both are defined.
+        ipv6_address_auto_config:
+          type: bool
+          description: |-
+            Use SLAAC to automatically configure the IPv6 address.
+            This option is mutually exclusive with `ipv6_addresses`.
         ipv6_address_virtuals:
           type: list
           description: The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
@@ -197,13 +214,33 @@ keys:
             description: IPv6 address or IPv6_address/Mask.
         ipv6_nd_ra_disabled:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.ra.disabled
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_managed_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.managed_config_flag
+            removed: false
+            remove_in_version: 7.0.0
         ipv6_nd_other_config_flag:
           type: bool
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.other_config_flag
+            removed: false
+            remove_in_version: 7.0.0
           description: Set the "other stateful configuration" flag in IPv6 router advertisements.
         ipv6_nd_cache:
           type: dict
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.cache
+            removed: false
+            remove_in_version: 7.0.0
           description: IPv6 neighbor cache options.
           keys:
             dynamic_capacity:
@@ -225,6 +262,11 @@ keys:
               description: Force refresh on cache expiry.
         ipv6_nd_prefixes:
           type: list
+          deprecation:
+            warning: true
+            new_key: ipv6_nd.prefixes
+            removed: false
+            remove_in_version: 7.0.0
           primary_key: ipv6_prefix
           items:
             type: dict
@@ -271,6 +313,34 @@ keys:
         ipv6_dhcp_relay_all_subnets:
           type: bool
           description: Allow forwarding requests with additional IPv6 addresses in the gateway address "giaddr" field.
+        ipv6_nd:
+          type: dict
+          $ref: "eos_cli_config_gen#/$defs/ipv6_nd"
+          keys:
+            other_config_flag:
+              type: bool
+              description: Set the "other stateful configuration" flag in IPv6 router advertisements.
+            cache:
+              type: dict
+              description: IPv6 neighbor cache options.
+              keys:
+                dynamic_capacity:
+                  type: int
+                  description: Capacity of dynamic cache entries.
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 4294967295
+                expire:
+                  type: int
+                  description: Cache entries expiry in seconds.
+                  convert_types:
+                    - str
+                  min: 1
+                  max: 65535
+                refresh_always:
+                  type: bool
+                  description: Force refresh on cache expiry.
         access_group_in:
           type: str
           description: IPv4 access-list name.

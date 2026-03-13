@@ -46,7 +46,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             return
 
         if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
-            self.structured_config.vlan_interfaces.append_new(
+            vlan_interface = self.structured_config.vlan_interfaces.append_new(
                 name=cast("str", self.shared_utils.inband_mgmt_interface),
                 description=self.shared_utils.node_config.inband_mgmt_description,
                 shutdown=False,
@@ -54,9 +54,11 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                 vrf=self.shared_utils.inband_mgmt_vrf,
                 ip_address=self.shared_utils.inband_mgmt_ip,
                 ipv6_enable=None if not self.shared_utils.configure_inband_mgmt_ipv6 else True,
-                ipv6_address=self.shared_utils.inband_mgmt_ipv6_address,
                 metadata=EosCliConfigGen.VlanInterfacesItem.Metadata(type="inband_mgmt"),
             )
+            if ipv6_address := self.shared_utils.inband_mgmt_ipv6_address:
+                vlan_interface.ipv6_addresses.append(ipv6_address)
+
             return
         for vlan, subnet in self.shared_utils.inband_management_parent_vlans.items():
             self.structured_config.vlan_interfaces.append(self.get_parent_svi_cfg(vlan, subnet["ipv4"], subnet["ipv6"]))
@@ -207,7 +209,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         if ipv6_subnet is not None:
             v6_network = ip_network(ipv6_subnet, strict=False)
             ipv6 = str(v6_network[3]) if self.shared_utils.mlag_role == "secondary" else str(v6_network[2])
-            svi.ipv6_address = f"{ipv6}/{v6_network.prefixlen}"
+            svi.ipv6_addresses.append(f"{ipv6}/{v6_network.prefixlen}")
             svi.ipv6_enable = True
             svi.ipv6_virtual_router_addresses.append(str(v6_network[1]))
             if self.shared_utils.underlay_routing_protocol == "ebgp":

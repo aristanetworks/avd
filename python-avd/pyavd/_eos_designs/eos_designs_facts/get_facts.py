@@ -11,8 +11,7 @@ from pyavd._eos_designs.shared_utils import SharedUtils
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
-    from ansible.template import Templar
-
+    from pyavd._utils import AVDTemplar
     from pyavd.api.pool_manager import PoolManager
     from pyavd.api.schemas import AVDDesign
 
@@ -22,7 +21,7 @@ if TYPE_CHECKING:
 def get_facts(
     all_inputs: Mapping[str, AVDDesign | Mapping],
     all_hostvars: Mapping[str, MutableMapping[str, Any]] | None = None,
-    templar: Templar | None = None,
+    templar: AVDTemplar | None = None,
     pool_manager: PoolManager | None = None,
     digital_twin: bool = False,
 ) -> dict[str, EosDesignsFacts]:
@@ -34,7 +33,7 @@ def get_facts(
             Supporting dicts as well for backwards compatibility.
         all_hostvars: Raw hostvars exposed to custom jinja templates or custom python logic for each device.
             This is optional and only needed if custom templates or python modules are used for descriptions or IP addressing.
-        templar: Templater used to render custom jinja templates.
+        templar: AVDTemplar wrapper used to render custom jinja templates.
             This is optional and only needed if custom templates are used for descriptions or IP addressing.
         pool_manager: instance of pool-manager used for dynamic assignments like node ids.
         digital_twin: Optional flag to enable avd_digital_twin_mode.
@@ -83,7 +82,7 @@ def _create_generator_instance(
     hostname: str,
     inputs: AVDDesign,
     hostvars: MutableMapping,
-    templar: Templar | None,
+    templar: AVDTemplar | None,
     pool_manager: PoolManager | None,
     digital_twin: bool,
     peer_facts_generators: dict[str, EosDesignsFactsGenerator],
