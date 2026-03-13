@@ -240,6 +240,9 @@ def raise_recorded_exception(recorded_exception: dict[str, Any]) -> None:
 
     match exception_type:
         # TODO: Add additional match/case statements below this line to match new exception types once they are faced
-        # Raise GRPC exception by default.
-        case _:
+        # Raise GRPC exception.
+        case "GRPCError":
             raise GRPCError(Status[exception_status], exception_message)
+        case _:
+            msg = "Unknown error returned. Update mockery.py"
+            raise NotImplementedError(msg)

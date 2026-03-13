@@ -187,7 +187,7 @@ class GRPCRequestHandler:
 
             # Check for the presence of the 'error' inside each response tuple for bulk (stream-based) gRPC calls. Log all errors and raise if any are found.
             if self.check_bulk_response_errors and result:
-                self._check_bulk_response_errors(result)
+                self._raise_on_bulk_response_errors(result)
 
             return result
 
@@ -342,33 +342,28 @@ class GRPCRequestHandler:
 
         return aggregated_results
 
-    def _check_bulk_response_errors(self, responses: list) -> None:
+    def _raise_on_bulk_response_errors(self, responses: list) -> None:
         """
         Check each response tuple (produced from the streamed responses) for the presence of the error.
 
-        Log each found error and raise a CVClientBulkAPIError for the first error found.
-        Available fields of the response objects depend on the gRPC method called.
+        Log each found error.
 
         Raises:
-            CVClientBulkAPIError for the first error found.
+            CVClientBulkAPIError if errors are found.
         """
         func_name = self.func.__name__
-        found_errors: list[str] = []
+        found_errors = 0
 
         for response in responses:
             if isinstance(response, tuple) and len(response) > 1 and response[1]:
                 LOGGER.error(
-                    "%s: Execution of the gRPC call for '%s' for list_field '%s' failed for the following item: '%s'.",
+                    "%s: %s API Call failed for '%s': '%s'.",
                     self.__class__.__name__,
                     func_name,
-                    self.list_field,
-                    str(response),
+                    response[0],
+                    response[1],
                 )
-                found_errors.append(str(response))
+                found_errors += 1
 
         if found_errors:
-            msg = (
-                f"One or more server-side errors happened during the execution of the bulk gRPC call for '{func_name}'. "
-                f"Please check execution logs for a full list of the failed items."
-            )
-            raise CVClientBulkAPIError(msg)
+            raise CVClientBulkAPIError(func_name, found_errors)

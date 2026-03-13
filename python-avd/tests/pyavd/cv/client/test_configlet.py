@@ -177,8 +177,8 @@ async def test_set_configlets_from_files_cvaas_failure(caplog: pytest.LogCapture
             pytest.raises(
                 CVClientBulkAPIError,
                 match=(
-                    r"One or more server-side errors happened during the execution of the bulk gRPC call for 'set_configlets_from_files'. "
-                    r"Please check execution logs for a full list of the failed items."
+                    r"1 server-side error\(s\) was returned from the 'set_configlets_from_files' bulk API call. "
+                    r"Please check logs for the failed items and error messages."
                 ),
             ),
         ):
@@ -202,8 +202,8 @@ async def test_set_configlets_from_files_cvaas_failure(caplog: pytest.LogCapture
 
     assert len(caplog.records) == 1
     assert caplog.records[0].message == (
-        "GRPCRequestHandler: Execution of the gRPC call for 'set_configlets_from_files' for list_field 'configlets' failed for the following item: "
-        "'(ConfigletKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_id=''), 'static configlet ID cannot be empty')'."
+        "GRPCRequestHandler: set_configlets_from_files API Call failed for "
+        "'ConfigletKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_id='')': 'static configlet ID cannot be empty'."
     )
 
 
@@ -288,8 +288,8 @@ async def test_set_configlets_from_files_max_2024_1_99_failure(caplog: pytest.Lo
             pytest.raises(
                 CVClientBulkAPIError,
                 match=(
-                    r"One or more server-side errors happened during the execution of the bulk gRPC call for 'set_configlets_from_files'. "
-                    r"Please check execution logs for a full list of the failed items."
+                    r"1 server-side error\(s\) was returned from the 'set_configlets_from_files' bulk API call. "
+                    r"Please check logs for the failed items and error messages."
                 ),
             ),
         ):
@@ -313,9 +313,8 @@ async def test_set_configlets_from_files_max_2024_1_99_failure(caplog: pytest.Lo
 
     assert len(caplog.records) == 1
     expected_log_pattern = (
-        r"GRPCRequestHandler: Execution of the gRPC call for 'set_configlets_from_files'.*"
-        r"workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'.*"
-        r"static configlet ID cannot be empty"
+        r".*set_configlets_from_files API Call failed for 'ConfigletKey\(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_id=''\)':.*"
+        r"<Status.INVALID_ARGUMENT: 3>, 'static configlet ID cannot be empty'.*"
     )
 
     assert re.search(expected_log_pattern, caplog.records[0].message)

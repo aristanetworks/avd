@@ -726,8 +726,8 @@ async def test_responses_mixed_errors_check_bulk_response_errors(caplog: pytest.
         pytest.raises(
             CVClientBulkAPIError,
             match=re.escape(
-                "One or more server-side errors happened during the execution of the bulk gRPC call for 'responses_mixed_errors_check_bulk_response_errors'. "
-                "Please check execution logs for a full list of the failed items."
+                r"1 server-side error(s) was returned from the 'responses_mixed_errors_check_bulk_response_errors' bulk API call. "
+                r"Please check logs for the failed items and error messages."
             ),
         ),
     ):
@@ -735,8 +735,7 @@ async def test_responses_mixed_errors_check_bulk_response_errors(caplog: pytest.
 
     assert len(caplog.records) == 1
     assert caplog.records[0].message == (
-        "GRPCRequestHandler: Execution of the gRPC call for 'responses_mixed_errors_check_bulk_response_errors' for list_field 'field' failed for the "
-        "following item: 'MockedResponseWithError(response=MockedResponse(response_id='2'), error='Error for item 2')'."
+        "GRPCRequestHandler: responses_mixed_errors_check_bulk_response_errors API Call failed for 'MockedResponse(response_id='2')': 'Error for item 2'."
     )
 
 
@@ -766,8 +765,8 @@ async def test_responses_all_errors_check_bulk_response_errors(caplog: pytest.Lo
         pytest.raises(
             CVClientBulkAPIError,
             match=re.escape(
-                "One or more server-side errors happened during the execution of the bulk gRPC call for 'responses_all_errors_check_bulk_response_errors'. "
-                "Please check execution logs for a full list of the failed items."
+                r"3 server-side error(s) was returned from the 'responses_all_errors_check_bulk_response_errors' bulk API call. "
+                r"Please check logs for the failed items and error messages."
             ),
         ),
     ):
@@ -775,14 +774,11 @@ async def test_responses_all_errors_check_bulk_response_errors(caplog: pytest.Lo
 
     assert len(caplog.records) == 3
     assert caplog.records[0].message == (
-        "GRPCRequestHandler: Execution of the gRPC call for 'responses_all_errors_check_bulk_response_errors' for list_field 'field' failed for the following "
-        "item: 'MockedResponseWithError(response=MockedResponse(response_id='1'), error='Error for item 1')'."
+        "GRPCRequestHandler: responses_all_errors_check_bulk_response_errors API Call failed for 'MockedResponse(response_id='1')': 'Error for item 1'."
     )
     assert caplog.records[1].message == (
-        "GRPCRequestHandler: Execution of the gRPC call for 'responses_all_errors_check_bulk_response_errors' for list_field 'field' failed for the following "
-        "item: 'MockedResponseWithError(response=MockedResponse(response_id='2'), error='Error for item 2')'."
+        "GRPCRequestHandler: responses_all_errors_check_bulk_response_errors API Call failed for 'MockedResponse(response_id='2')': 'Error for item 2'."
     )
     assert caplog.records[2].message == (
-        "GRPCRequestHandler: Execution of the gRPC call for 'responses_all_errors_check_bulk_response_errors' for list_field 'field' failed for the following "
-        "item: 'MockedResponseWithError(response=MockedResponse(response_id='3'), error='Error for item 3')'."
+        "GRPCRequestHandler: responses_all_errors_check_bulk_response_errors API Call failed for 'MockedResponse(response_id='3')': 'Error for item 3'."
     )
