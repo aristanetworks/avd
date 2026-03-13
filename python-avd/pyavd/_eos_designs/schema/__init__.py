@@ -17082,7 +17082,7 @@ class EosDesigns(EosDesignsRootModel):
         """DNS domain name like 'fabric.local'"""
         domain_list: DomainList
         """
-        Search list of DNS domains.
+        Domain names to complete unqualified host.
 
         Subclass of AvdList with `str` items.
         """
@@ -17120,7 +17120,7 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     domain: DNS domain name like 'fabric.local'
                     domain_list:
-                       Search list of DNS domains.
+                       Domain names to complete unqualified host.
 
                        Subclass of AvdList with `str` items.
                     servers: Subclass of AvdList with `ServersItem` items.

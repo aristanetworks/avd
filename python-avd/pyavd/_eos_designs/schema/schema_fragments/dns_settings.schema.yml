@@ -16,9 +16,10 @@ keys:
         description: DNS domain name like 'fabric.local'
       domain_list:
         type: list
-        description: Search list of DNS domains.
+        description: Domain names to complete unqualified host.
         items:
           type: str
+          description: Domain name.
       servers:
         type: list
         required: true
