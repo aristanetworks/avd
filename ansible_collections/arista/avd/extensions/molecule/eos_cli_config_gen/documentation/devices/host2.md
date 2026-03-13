@@ -1227,7 +1227,7 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute | Graceful Restart |
 | --- | ------------------- | ------------ | ---------------- |
-| VRF01 | - | - | - |
+| VRF01 | -<br>All (Remote Domain: 10.50.64.15:30003) | - | - |
 
 #### Router BGP Device Configuration
 

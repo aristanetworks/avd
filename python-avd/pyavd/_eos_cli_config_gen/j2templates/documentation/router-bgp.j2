@@ -1059,6 +1059,13 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%         endif %}
 {%         for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}
 {%             set route_distinguisher = vrf.rd | arista.avd.default("-") %}
+{%             if vrf.rd_evpn_domain is arista.avd.defined %}
+{%                 if vrf.rd_evpn_domain.domain == "remote" %}
+{%                     set route_distinguisher = route_distinguisher ~ "<br>" ~ "Local (Remote Domain: " ~ vrf.rd_evpn_domain.rd ~ ")" %}
+{%                 elif vrf.rd_evpn_domain.domain == "all" %}
+{%                     set route_distinguisher = route_distinguisher ~ "<br>" ~ "All (Remote Domain: " ~ vrf.rd_evpn_domain.rd ~ ")"%}
+{%                 endif %}
+{%             endif %}
 {%             if vrf.redistribute is arista.avd.defined %}
 {%                 set redistribute = vrf.redistribute.keys() %}
 {%             else %}
