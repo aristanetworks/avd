@@ -71226,7 +71226,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Domain Name."""
     domain_list: DomainList
     """
-    Search list of DNS domains.
+    Domain names to complete unqualified host.
 
     Subclass of AvdList with `str` items.
     """
@@ -72026,7 +72026,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dhcp_servers: Subclass of AvdIndexedList with `DhcpServersItem` items. Primary key is `vrf` (`str`).
                 dns_domain: Domain Name.
                 domain_list:
-                   Search list of DNS domains.
+                   Domain names to complete unqualified host.
 
                    Subclass of AvdList with `str` items.
                 dot1x: Subclass of AvdModel.

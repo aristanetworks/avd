@@ -16,10 +16,7 @@ keys:
         description: DNS domain name like 'fabric.local'
       domain_list:
         type: list
-        description: Domain names to complete unqualified host.
-        items:
-          type: str
-          description: Domain name.
+        $ref: "eos_cli_config_gen#/keys/domain_list"
       servers:
         type: list
         required: true

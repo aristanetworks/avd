@@ -1950,7 +1950,7 @@ keys:
     description: Domain Name.
   domain_list:
     type: list
-    description: Search list of DNS domains.
+    description: Domain names to complete unqualified host.
     items:
       type: str
       description: Domain name.
