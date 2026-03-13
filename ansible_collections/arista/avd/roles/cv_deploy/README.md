@@ -322,7 +322,7 @@ ansible_collections/arista/avd/roles/cv_deploy/docs/tables/cv_deploy.md
 
 #### Input Variables Validation
 
-The role automatically validates all inputs. Any validation errors will block further processing.
+The role automatically validates all inputs specified above. Any validation errors will block further processing.
 
 !!! warning
     The presence of the same `serial_number` or `system_mac_address` values for multiple EOS devices may lead to unexpected results (or even network outages) on CloudVision due to the possibility of pushing the configuration of one device to another.
