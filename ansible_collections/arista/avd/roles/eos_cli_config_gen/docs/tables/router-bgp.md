@@ -1084,6 +1084,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.vrfs.[].bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd</samp>](## "router_bgp.vrfs.[].rd") | String |  |  |  | Route distinguisher. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd_evpn_domain</samp>](## "router_bgp.vrfs.[].rd_evpn_domain") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain</samp>](## "router_bgp.vrfs.[].rd_evpn_domain.domain") | String | Required |  | Valid Values:<br>- <code>remote</code><br>- <code>all</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd</samp>](## "router_bgp.vrfs.[].rd_evpn_domain.rd") | String | Required |  |  | Route distinguisher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_multicast</samp>](## "router_bgp.vrfs.[].evpn_multicast") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_multicast_address_family</samp>](## "router_bgp.vrfs.[].evpn_multicast_address_family") | Dictionary |  |  |  | Enable per-AF EVPN multicast settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "router_bgp.vrfs.[].evpn_multicast_address_family.ipv4") | Dictionary |  |  |  |  |
@@ -1111,6 +1114,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].route_targets.export.[].route_map") | String |  |  |  | Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].route_targets.export.[].rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>Only applicable if `address_family` is one of `evpn`, `vpn-ipv4` or `vpn-ipv6`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf_route_filter_rcf</samp>](## "router_bgp.vrfs.[].route_targets.export.[].vrf_route_filter_rcf") | String |  |  |  | RCF function name with parenthesis for filtering VRF routes. Also requires `rcf` to be set.<br>Example: MyFunction(myarg).<br>Only applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import_evpn_domains</samp>](## "router_bgp.vrfs.[].route_targets.import_evpn_domains") | List, items: Dictionary |  |  |  | List of EVPN domains from which to import routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;route_target</samp>](## "router_bgp.vrfs.[].route_targets.import_evpn_domains.[].route_target") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain</samp>](## "router_bgp.vrfs.[].route_targets.import_evpn_domains.[].domain") | String | Required |  | Valid Values:<br>- <code>remote</code><br>- <code>all</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;export_evpn_domains</samp>](## "router_bgp.vrfs.[].route_targets.export_evpn_domains") | List, items: Dictionary |  |  |  | List of EVPN domains to which local routes should be exported. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;route_target</samp>](## "router_bgp.vrfs.[].route_targets.export_evpn_domains.[].route_target") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain</samp>](## "router_bgp.vrfs.[].route_targets.export_evpn_domains.[].domain") | String | Required |  | Valid Values:<br>- <code>remote</code><br>- <code>all</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "router_bgp.vrfs.[].router_id") | String |  |  |  | in IP address format A.B.C.D. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timers</samp>](## "router_bgp.vrfs.[].timers") | String |  |  |  | BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_bgp.vrfs.[].graceful_restart") | Dictionary |  |  |  |  |
@@ -3870,6 +3879,11 @@
 
           # Route distinguisher.
           rd: <str>
+          rd_evpn_domain:
+            domain: <str; "remote" | "all"; required>
+
+            # Route distinguisher.
+            rd: <str; required>
           evpn_multicast: <bool>
 
           # Enable per-AF EVPN multicast settings.
@@ -3933,6 +3947,16 @@
                 # Example: MyFunction(myarg).
                 # Only applicable if `address_family` is one of `vpn-ipv4` or `vpn-ipv6`.
                 vrf_route_filter_rcf: <str>
+
+            # List of EVPN domains from which to import routes.
+            import_evpn_domains:
+              - route_target: <str; required; unique>
+                domain: <str; "remote" | "all"; required>
+
+            # List of EVPN domains to which local routes should be exported.
+            export_evpn_domains:
+              - route_target: <str; required; unique>
+                domain: <str; "remote" | "all"; required>
 
           # in IP address format A.B.C.D.
           router_id: <str>
