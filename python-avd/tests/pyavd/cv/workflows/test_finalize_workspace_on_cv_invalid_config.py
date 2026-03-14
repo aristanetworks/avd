@@ -480,7 +480,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 id=self.workspace_id,
                 requested_state="built",
                 build_warnings=CVWorkspaceBuildWarnings(
-                    suppress_patterns=[r"^! /32 IPv4 address is not configured on the interface\o$"],
+                    suppress_patterns=[r"(?P<invalid"],
                 ),
             )
             with pytest.raises(CVWorkspaceBuildFailed):
@@ -492,8 +492,8 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         assert not workspace.build_warnings.suppress_portfast
         assert len(warnings) == 1
         assert warnings[0] == (
-            r"_prepare_build_warnings_suppress_patterns: Failed to process proposed regex pattern '^! /32 IPv4 address is not configured on the interface\o$'. "
-            r"This incorrect pattern will not be used for warnings suppression. Error: 'bad escape \o at position 54'"
+            r"_prepare_build_warnings_suppress_patterns: Failed to process proposed regex pattern '(?P<invalid'. "
+            r"This incorrect pattern will not be used for warnings suppression. Error: 'missing >, unterminated name at position 4'"
         )
         assert len(workspace.build_results) == 3
         for build_result in workspace.build_results:
