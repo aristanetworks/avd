@@ -4,9 +4,8 @@
 from __future__ import annotations
 
 from logging import getLogger
-from re import Pattern
+from re import Pattern, error
 from re import compile as re_compile
-from re import error as re_error
 from typing import TYPE_CHECKING
 
 from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus, WorkspaceBuildDetails, WorkspaceState
@@ -156,7 +155,7 @@ def _prepare_build_warnings_suppress_patterns(
     for proposed_regex_pattern in workspace_build_warnings_suppress_set:
         try:
             compiled_workspace_build_warnings_suppress_list.append(re_compile(proposed_regex_pattern))
-        except re_error as e:  # noqa: PERF203
+        except error as e:  # noqa: PERF203
             warning = (
                 f"_prepare_build_warnings_suppress_patterns: Failed to process proposed regex pattern '{proposed_regex_pattern}'. "
                 f"This incorrect pattern will not be used for warnings suppression. Error: '{e}'"
