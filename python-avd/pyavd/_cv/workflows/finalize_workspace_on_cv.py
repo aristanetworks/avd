@@ -6,6 +6,7 @@ from __future__ import annotations
 from logging import getLogger
 from re import Pattern
 from re import compile as re_compile
+from re import error as re_error
 from typing import TYPE_CHECKING
 
 from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus, WorkspaceBuildDetails, WorkspaceState
@@ -14,6 +15,7 @@ from pyavd._utils import get_v2
 
 from .constants import EOS_CLI_WARNINGS
 from .models import (
+    CVDevice,
     CVWorkspaceBuildConfigValidationError,
     CVWorkspaceBuildConfigValidationResult,
     CVWorkspaceBuildConfigValidationWarning,
@@ -23,7 +25,7 @@ from .models import (
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
 
-    from .models import CVDevice, CVWorkspace
+    from .models import CVWorkspace
 
 LOGGER = getLogger(__name__)
 
@@ -145,28 +147,156 @@ def _prepare_build_warnings_suppress_patterns(
         Unified list of compiled Regex patterns describing Workspace Build warnings that we would like to suppress.
     """
     # Deduplicate list of patterns from user
-    workspace_build_warning_suppress_list = list(set(workspace.build_warnings_suppress_patterns[:]))
-    # Append predefined static patterns if requested
-    if (
-        workspace.build_warnings_suppress_portfast
-        and (pattern := static_suppression_patterns.get("portfast"))
-        and pattern not in workspace_build_warning_suppress_list
-    ):
-        workspace_build_warning_suppress_list.append(pattern)
+    workspace_build_warnings_suppress_set = set(workspace.build_warnings.suppress_patterns[:])
+    # Add predefined static patterns if requested
+    if workspace.build_warnings.suppress_portfast and (pattern := static_suppression_patterns.get("portfast")):
+        workspace_build_warnings_suppress_set.add(pattern)
 
     compiled_workspace_build_warnings_suppress_list: list[Pattern] = []
-    for proposed_regex_pattern in workspace_build_warning_suppress_list:
+    for proposed_regex_pattern in workspace_build_warnings_suppress_set:
         try:
             compiled_workspace_build_warnings_suppress_list.append(re_compile(proposed_regex_pattern))
-        except Exception as e:  # noqa: PERF203
+        except re_error as e:  # noqa: PERF203
             warning = (
-                f"prepare_build_warnings_suppress_patterns: Failed to process proposed regex pattern '{proposed_regex_pattern}'. "
+                f"_prepare_build_warnings_suppress_patterns: Failed to process proposed regex pattern '{proposed_regex_pattern}'. "
                 f"This incorrect pattern will not be used for warnings suppression. Error: '{e}'"
             )
             LOGGER.info(warning)
             warnings.append(warning)
 
     return compiled_workspace_build_warnings_suppress_list
+
+
+def _warning_is_suppressed(warning_msg: str, compiled_workspace_build_warnings_suppress_list: list[Pattern]) -> bool:
+    """
+    Check if a warning message matches any of the suppression patterns.
+
+    Parameters:
+        warning_msg: Warning message to check.
+        compiled_workspace_build_warnings_suppress_list: List of compiled Regex patterns for matching undesired warnings.
+
+    Returns:
+        True if the warning message matches any suppression pattern, False otherwise.
+    """
+    return any(pattern.fullmatch(warning_msg) for pattern in compiled_workspace_build_warnings_suppress_list)
+
+
+def _has_unsuppressed_warnings(workspace_build_details_item: WorkspaceBuildDetails, compiled_workspace_build_warnings_suppress_list: list[Pattern]) -> bool:
+    """
+    Check if workspace build details item has at least one warning that is not suppressed.
+
+    Parameters:
+        workspace_build_details_item: WorkspaceBuildDetails object to check.
+        compiled_workspace_build_warnings_suppress_list: List of compiled Regex patterns for matching undesired warnings.
+
+    Returns:
+        True if at least one warning is not suppressed, False otherwise.
+    """
+    # If no suppression patterns are provided, all warnings are unsuppressed
+    if len(compiled_workspace_build_warnings_suppress_list) == 0:
+        return True
+
+    # Check if at least one warning is not matched by any suppression pattern
+    warning_values = get_v2(workspace_build_details_item, "config_validation_result.warnings.values", [])
+    return any(not _warning_is_suppressed(warning_value.error_msg, compiled_workspace_build_warnings_suppress_list) for warning_value in warning_values)
+
+
+def _should_include_build_details(
+    workspace_build_details_item: WorkspaceBuildDetails,
+    workspace: CVWorkspace,
+    compiled_workspace_build_warnings_suppress_list: list[Pattern],
+) -> bool:
+    """
+    Check if workspace build details item contains errors or unsuppressed warnings and therefore should be included in the results.
+
+    Parameters:
+        workspace_build_details_item: WorkspaceBuildDetails object to check.
+        workspace: Active Workspace.
+        compiled_workspace_build_warnings_suppress_list: List of compiled Regex patterns for matching undesired warnings.
+
+    Returns:
+        True if the build details should be included, False otherwise.
+    """
+    # Always include if errors are present
+    if workspace_build_details_item.config_validation_result.errors:
+        return True
+
+    # Include if build warnings are present and they are not requested to be suppressed
+    return (
+        workspace.build_warnings.enabled
+        and workspace_build_details_item.config_validation_result.warnings
+        and _has_unsuppressed_warnings(workspace_build_details_item, compiled_workspace_build_warnings_suppress_list)
+    )
+
+
+def _build_errors_list(workspace_build_details_item: WorkspaceBuildDetails) -> list[CVWorkspaceBuildConfigValidationError]:
+    """
+    Build list of CVWorkspaceBuildConfigValidationError objects from WorkspaceBuildDetails object.
+
+    Parameters:
+        workspace_build_details_item: WorkspaceBuildDetails object for one device.
+
+    Returns:
+        List of CVWorkspaceBuildConfigValidationError objects for one device.
+    """
+    return [
+        CVWorkspaceBuildConfigValidationError(
+            error_msg=config_validation_error.error_msg,
+            line_num=config_validation_error.line_num,
+            configlet_name=config_validation_error.configlet_name,
+        )
+        for config_validation_error in get_v2(workspace_build_details_item, "config_validation_result.errors.values", [])
+    ]
+
+
+def _build_warnings_list(
+    workspace_build_details_item: WorkspaceBuildDetails,
+    workspace: CVWorkspace,
+    compiled_workspace_build_warnings_suppress_list: list[Pattern],
+) -> list[CVWorkspaceBuildConfigValidationWarning]:
+    """
+    Build list of CVWorkspaceBuildConfigValidationWarning objects from WorkspaceBuildDetails object.
+
+    Filter out warnings that match any suppression pattern.
+
+    Parameters:
+        workspace_build_details_item: WorkspaceBuildDetails object for one device.
+        workspace: Active Workspace.
+        compiled_workspace_build_warnings_suppress_list: List of compiled Regex patterns for matching undesired warnings.
+
+    Returns:
+        List of CVWorkspaceBuildConfigValidationWarning objects for one device.
+    """
+    if not workspace.build_warnings.enabled:
+        return []
+
+    return [
+        CVWorkspaceBuildConfigValidationWarning(
+            warning_msg=config_validation_warning.error_msg,
+            line_num=config_validation_warning.line_num,
+            configlet_name=config_validation_warning.configlet_name,
+        )
+        for config_validation_warning in get_v2(workspace_build_details_item, "config_validation_result.warnings.values", [])
+        if not _warning_is_suppressed(config_validation_warning.error_msg, compiled_workspace_build_warnings_suppress_list)
+    ]
+
+
+def _get_device_by_serial(devices: list[CVDevice], serial_number: str) -> CVDevice:
+    """
+    Get CVDevice by serial number.
+
+    Parameters:
+        devices: List of CVDevice objects.
+        serial_number: Serial number to search for.
+
+    Returns:
+        CVDevice object matching the serial number.
+    """
+    # TODO: Can there be a case where no device is found here? Like if we apply Tag changes that lead to the config change for the device we have not targeted?
+    try:
+        return next(device for device in devices if device.serial_number == serial_number)
+    except StopIteration:
+        return CVDevice(hostname="Unknown Device (was not directly targeted by AVD deployment)", serial_number=serial_number)
 
 
 async def _produce_cvworkspace_build_result(
@@ -187,54 +317,32 @@ async def _produce_cvworkspace_build_result(
     Returns:
         List of CVWorkspaceBuildResult objects defining details of the Workspace build.
     """
-    return [
-        CVWorkspaceBuildResult(
-            # CVDevice for which configuration error or warning is triggered
-            device=next(device for device in devices if device.serial_number == workspace_build_details_item.key.device_id),
-            config_validation=CVWorkspaceBuildConfigValidationResult(
-                errors=[
-                    CVWorkspaceBuildConfigValidationError(
-                        error_msg=config_validation_error.error_msg,
-                        line_num=config_validation_error.line_num,
-                        configlet_name=config_validation_error.configlet_name,
-                    )
-                    for config_validation_error in get_v2(workspace_build_details_item, "config_validation_result.errors.values", [])
-                ],
-                warnings=[
-                    CVWorkspaceBuildConfigValidationWarning(
-                        warning_msg=config_validation_warning.error_msg,
-                        line_num=config_validation_warning.line_num,
-                        configlet_name=config_validation_warning.configlet_name,
-                    )
-                    for config_validation_warning in get_v2(workspace_build_details_item, "config_validation_result.warnings.values", [])
-                    # Render if warning message is not matched by any suppress pattern
-                    if not any(pattern.search(config_validation_warning.error_msg) for pattern in compiled_workspace_build_warnings_suppress_list)
-                ]
-                if workspace.build_warnings
-                else [],
-            ),
-        )
-        for workspace_build_details_item in workspace_build_details
-        if (
-            # Render build details if errors are present
-            workspace_build_details_item.config_validation_result.errors
-            or (
-                # Render build warnings if requested in inputs and warnings not matching suppress patterns are present
-                workspace.build_warnings
-                and workspace_build_details_item.config_validation_result.warnings
-                and (
-                    # Either no warnings suppression patterns are provided in inputs
-                    len(compiled_workspace_build_warnings_suppress_list) == 0
-                    # Or at least one warning message is not matched by the suppression patterns
-                    or {False}
-                    in [
-                        {bool(pattern.search(warning_value.error_msg)) for pattern in compiled_workspace_build_warnings_suppress_list}
-                        for warning_value in get_v2(workspace_build_details_item, "config_validation_result.warnings.values", [])
-                    ]
-                )
+    results = []
+
+    for workspace_build_details_item in workspace_build_details:
+        # Skip items that don't have errors or unsuppressed warnings
+        if not _should_include_build_details(workspace_build_details_item, workspace, compiled_workspace_build_warnings_suppress_list):
+            continue
+
+        # Get the device for this build details item
+        device = _get_device_by_serial(devices, workspace_build_details_item.key.device_id)
+
+        # Build errors and warnings lists
+        errors = _build_errors_list(workspace_build_details_item)
+        warnings = _build_warnings_list(workspace_build_details_item, workspace, compiled_workspace_build_warnings_suppress_list)
+
+        # Create and append the result
+        results.append(
+            CVWorkspaceBuildResult(
+                device=device,
+                config_validation=CVWorkspaceBuildConfigValidationResult(
+                    errors=errors,
+                    warnings=warnings,
+                ),
             )
         )
-    ]
+
+    return results
 
 
 async def _process_workspace_build_details(
@@ -267,7 +375,7 @@ async def _process_workspace_build_details(
 
     # Process list of warning suppress patterns if build warnings were requested to be part of the build results.
     compiled_workspace_build_warnings_suppress_list = []
-    if workspace.build_warnings:
+    if workspace.build_warnings.enabled:
         compiled_workspace_build_warnings_suppress_list = _prepare_build_warnings_suppress_patterns(
             workspace=workspace, static_suppression_patterns=EOS_CLI_WARNINGS, warnings=warnings
         )

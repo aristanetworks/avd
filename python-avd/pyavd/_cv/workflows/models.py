@@ -166,6 +166,16 @@ class CVWorkspaceBuildResult:
 
 
 @dataclass
+class CVWorkspaceBuildWarnings:
+    enabled: bool = True
+    """Fetch and expose Workspace build warnings."""
+    suppress_patterns: list[str] = field(default_factory=list)
+    """Arbitrary list of the EoS CLI warning string patterns to suppress."""
+    suppress_portfast: bool = False
+    """Suppress Workspace build warnings related to the usage of the `portfast` feature on switchports."""
+
+
+@dataclass
 class CVWorkspace:
     name: str = field(default_factory=lambda: f"AVD {datetime.now()}")
     description: str | None = None
@@ -190,12 +200,8 @@ class CVWorkspace:
     """Do not set this manually."""
     build_id: str | None = None
     """last_build_id of the Workspace. Used to fetch build details related to the last Workspace build attempt."""
-    build_warnings: bool = True
+    build_warnings: CVWorkspaceBuildWarnings = field(default_factory=CVWorkspaceBuildWarnings)
     """Fetch and expose Workspace build warnings."""
-    build_warnings_suppress_patterns: list[str] = field(default_factory=list)
-    """Arbitrary list of the EoS CLI warning string patterns to suppress."""
-    build_warnings_suppress_portfast: bool = False
-    """Suppress Workspace build warnings related to the usage of the `portfast` feature on switchports."""
     build_results: list[CVWorkspaceBuildResult] = field(default_factory=list)
     """Details of Workspace build results."""
 

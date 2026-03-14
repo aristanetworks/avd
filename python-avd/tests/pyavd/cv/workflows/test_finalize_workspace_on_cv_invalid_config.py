@@ -11,7 +11,13 @@ import pytest
 from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed
 from pyavd._cv.workflows.constants import EOS_CLI_WARNINGS
 from pyavd._cv.workflows.finalize_workspace_on_cv import finalize_workspace_on_cv
-from pyavd._cv.workflows.models import CVDevice, CVWorkspace, CVWorkspaceBuildConfigValidationError, CVWorkspaceBuildConfigValidationWarning
+from pyavd._cv.workflows.models import (
+    CVDevice,
+    CVWorkspace,
+    CVWorkspaceBuildConfigValidationError,
+    CVWorkspaceBuildConfigValidationWarning,
+    CVWorkspaceBuildWarnings,
+)
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_ID,
     MOCKED_WORKSPACE_REQUEST_ID_BUILD_FAIL_CONFIG_VALIDATION,
@@ -133,13 +139,17 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         warnings = []
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[workspace_build_id.removeprefix("req-")]):
-            workspace = CVWorkspace(id=workspace_id, requested_state=workspace_requested_state, build_warnings=build_warnings)
+            workspace = CVWorkspace(
+                id=workspace_id,
+                requested_state=workspace_requested_state,
+                build_warnings=CVWorkspaceBuildWarnings(enabled=build_warnings),
+            )
             await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1", "avd-ci-spine1", "avd-ci-spine2"]), warnings)
 
         assert workspace.build_id == workspace_build_id
-        assert workspace.build_warnings == build_warnings
-        assert not workspace.build_warnings_suppress_patterns
-        assert not workspace.build_warnings_suppress_portfast
+        assert workspace.build_warnings.enabled == build_warnings
+        assert not workspace.build_warnings.suppress_patterns
+        assert not workspace.build_warnings.suppress_portfast
         assert not workspace.build_results
         assert not warnings
 
@@ -153,9 +163,9 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings is True
-        assert not workspace.build_warnings_suppress_patterns
-        assert not workspace.build_warnings_suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert not workspace.build_warnings.suppress_patterns
+        assert not workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.build_results) == 3
         for build_result in workspace.build_results:
@@ -220,14 +230,18 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         warnings = []
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
-            workspace = CVWorkspace(id=self.workspace_id, requested_state="built", build_warnings_suppress_portfast=True)
+            workspace = CVWorkspace(
+                id=self.workspace_id,
+                requested_state="built",
+                build_warnings=CVWorkspaceBuildWarnings(suppress_portfast=True),
+            )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings is True
-        assert not workspace.build_warnings_suppress_patterns
-        assert workspace.build_warnings_suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert not workspace.build_warnings.suppress_patterns
+        assert workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.build_results) == 2
         for build_result in workspace.build_results:
@@ -277,15 +291,17 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
             workspace = CVWorkspace(
-                id=self.workspace_id, requested_state="built", build_warnings_suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"]
+                id=self.workspace_id,
+                requested_state="built",
+                build_warnings=CVWorkspaceBuildWarnings(suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"]),
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings is True
-        assert len(workspace.build_warnings_suppress_patterns) == 1
-        assert not workspace.build_warnings_suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert len(workspace.build_warnings.suppress_patterns) == 1
+        assert not workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.build_results) == 3
         for build_result in workspace.build_results:
@@ -348,15 +364,17 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             workspace = CVWorkspace(
                 id=self.workspace_id,
                 requested_state="built",
-                build_warnings_suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*", EOS_CLI_WARNINGS.get("portfast", "")],
+                build_warnings=CVWorkspaceBuildWarnings(
+                    suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*", EOS_CLI_WARNINGS.get("portfast", "")]
+                ),
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings is True
-        assert len(workspace.build_warnings_suppress_patterns) == 2
-        assert not workspace.build_warnings_suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert len(workspace.build_warnings.suppress_patterns) == 2
+        assert not workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.build_results) == 2
         for build_result in workspace.build_results:
@@ -403,16 +421,18 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             workspace = CVWorkspace(
                 id=self.workspace_id,
                 requested_state="built",
-                build_warnings_suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"],
-                build_warnings_suppress_portfast=True,
+                build_warnings=CVWorkspaceBuildWarnings(
+                    suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"],
+                    suppress_portfast=True,
+                ),
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings is True
-        assert len(workspace.build_warnings_suppress_patterns) == 1
-        assert workspace.build_warnings_suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert len(workspace.build_warnings.suppress_patterns) == 1
+        assert workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.build_results) == 2
         for build_result in workspace.build_results:
@@ -459,18 +479,20 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             workspace = CVWorkspace(
                 id=self.workspace_id,
                 requested_state="built",
-                build_warnings_suppress_patterns=[r"^! /32 IPv4 address is not configured on the interface\z$"],
+                build_warnings=CVWorkspaceBuildWarnings(
+                    suppress_patterns=[r"^! /32 IPv4 address is not configured on the interface\z$"],
+                ),
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings is True
-        assert len(workspace.build_warnings_suppress_patterns) == 1
-        assert not workspace.build_warnings_suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert len(workspace.build_warnings.suppress_patterns) == 1
+        assert not workspace.build_warnings.suppress_portfast
         assert len(warnings) == 1
         assert warnings[0] == (
-            r"prepare_build_warnings_suppress_patterns: Failed to process proposed regex pattern '^! /32 IPv4 address is not configured on the interface\z$'. "
+            r"_prepare_build_warnings_suppress_patterns: Failed to process proposed regex pattern '^! /32 IPv4 address is not configured on the interface\z$'. "
             r"This incorrect pattern will not be used for warnings suppression. Error: 'bad escape \z at position 54'"
         )
         assert len(workspace.build_results) == 3
@@ -539,16 +561,18 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             workspace = CVWorkspace(
                 id=self.workspace_id,
                 requested_state="built",
-                build_warnings_suppress_patterns=[".*portfast should only be enabled on ports connected to a single host.*"],
-                build_warnings_suppress_portfast=True,
+                build_warnings=CVWorkspaceBuildWarnings(
+                    suppress_patterns=[".*portfast should only be enabled on ports connected to a single host.*"],
+                    suppress_portfast=True,
+                ),
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert workspace.build_warnings is True
-        assert len(workspace.build_warnings_suppress_patterns) == 1
-        assert workspace.build_warnings_suppress_portfast
+        assert workspace.build_warnings.enabled is True
+        assert len(workspace.build_warnings.suppress_patterns) == 1
+        assert workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.build_results) == 2
         for build_result in workspace.build_results:
@@ -597,14 +621,20 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         warnings = []
 
         with patch("pyavd._cv.client.workspace.uuid4", side_effect=[self.workspace_build_id.removeprefix("req-")]):
-            workspace = CVWorkspace(id=self.workspace_id, requested_state="built", build_warnings=False)
+            workspace = CVWorkspace(
+                id=self.workspace_id,
+                requested_state="built",
+                build_warnings=CVWorkspaceBuildWarnings(
+                    enabled=False,
+                ),
+            )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
 
         assert workspace.build_id == self.workspace_build_id
-        assert not workspace.build_warnings
-        assert not workspace.build_warnings_suppress_patterns
-        assert not workspace.build_warnings_suppress_portfast
+        assert not workspace.build_warnings.enabled
+        assert not workspace.build_warnings.suppress_patterns
+        assert not workspace.build_warnings.suppress_portfast
         assert not warnings
         assert len(workspace.build_results) == 2
         for build_result in workspace.build_results:
