@@ -12189,6 +12189,7 @@ ipv6 access-list standard ipv6_test1
 ### IPv6 Extended Access-lists
 
 #### IPv6 Extended Access-lists Summary
+
 ##### ACL_NO_SEQUENCE
 
 | Sequence | Action |
