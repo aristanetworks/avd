@@ -17,12 +17,14 @@
 
 ACL has counting mode `counters per-entry` enabled!
 {%         endif %}
+{%         if ipv6_access_list.sequence_numbers is arista.avd.defined %}
 
 | Sequence | Action |
 | -------- | ------ |
-{%         for sequence in ipv6_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%             for sequence in ipv6_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
 | {{ sequence.sequence }} | {{ sequence.action }} |
-{%         endfor %}
+{%             endfor %}
+{%         endif %}
 
 {%     endfor %}
 #### IPv6 Extended Access-lists Device Configuration
