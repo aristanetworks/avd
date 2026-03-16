@@ -8,6 +8,7 @@ traffic_policies:
       traffic_policy_input_physical: TP1
     - name: VRF4
       traffic_policy_input_physical: TP4
+    # VRF5 should not generate any config
     - name: VRF5
     - name: VRF2
       cpu:

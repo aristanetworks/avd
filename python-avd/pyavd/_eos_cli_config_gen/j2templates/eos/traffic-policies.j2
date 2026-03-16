@@ -8,17 +8,21 @@
 !
 traffic-policies
 {%     for vrf in traffic_policies.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
-{%         if vrf.cpu is arista.avd.defined %}
+{%         if vrf.cpu is arista.avd.defined or vrf.traffic_policy_input_physical is arista.avd.defined %}
    vrf {{ vrf.name }}
+{%             if vrf.cpu is arista.avd.defined %}
       cpu traffic-policy {{ vrf.cpu.traffic_policy_fallback_none }} fallback traffic-policy none
-{%             if vrf.cpu.enforcement_management is arista.avd.defined(true) %}
+{%                 if vrf.cpu.enforcement_management is arista.avd.defined(true) %}
          enforcement management
+{%                 endif %}
 {%             endif %}
-{%         endif %}
-{%         if vrf.traffic_policy_input_physical is arista.avd.defined %}
+{%             if vrf.cpu is arista.avd.defined and vrf.traffic_policy_input_physical is arista.avd.defined %}
       !
       traffic-policy input {{ vrf.traffic_policy_input_physical }} physical
+{%             elif vrf.traffic_policy_input_physical is arista.avd.defined %}
+      traffic-policy input {{ vrf.traffic_policy_input_physical }} physical
    !
+{%             endif %}
 {%         endif %}
 {%     endfor %}
 {# FIELD SET #}
