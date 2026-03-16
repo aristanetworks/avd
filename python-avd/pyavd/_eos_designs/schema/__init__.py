@@ -90,6 +90,7 @@ class EosDesigns(EosDesignsRootModel):
                     "host": {"type": str},
                     "groups": {"type": Groups},
                     "vrf": {"type": str},
+                    "timeout": {"type": int},
                     "key": {"type": str},
                     "cleartext_key": {"type": str},
                 }
@@ -117,6 +118,8 @@ class EosDesigns(EosDesignsRootModel):
                 `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
                 """
+                timeout: int | None
+                """Timeout in seconds."""
                 key: str | None
                 """
                 Encrypted Type 7 key.
@@ -143,6 +146,7 @@ class EosDesigns(EosDesignsRootModel):
                         host: str | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                         vrf: str | None | UndefinedType = Undefined,
+                        timeout: int | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         cleartext_key: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -172,6 +176,7 @@ class EosDesigns(EosDesignsRootModel):
                                the VRF and source-interface for one of the two options above depending on the value of
                                `default_mgmt_method`.
                                - Any other string will be used directly as the VRF name.
+                            timeout: Timeout in seconds.
                             key:
                                Encrypted Type 7 key.
                                Takes precedence over `cleartext_key` if both are provided.
@@ -16966,6 +16971,11 @@ class EosDesigns(EosDesignsRootModel):
     class DnsSettings(AvdModel):
         """Subclass of AvdModel."""
 
+        class DomainList(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DomainList._item_type = str
+
         class ServersItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -17073,12 +17083,19 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "domain": {"type": str},
+            "domain_list": {"type": DomainList},
             "servers": {"type": Servers},
             "vrfs": {"type": Vrfs},
             "set_source_interfaces": {"type": bool, "default": True},
         }
         domain: str | None
         """DNS domain name like 'fabric.local'"""
+        domain_list: DomainList
+        """
+        Domain names to complete unqualified host names.
+
+        Subclass of AvdList with `str` items.
+        """
         servers: Servers
         """Subclass of AvdList with `ServersItem` items."""
         vrfs: Vrfs
@@ -17099,6 +17116,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 domain: str | None | UndefinedType = Undefined,
+                domain_list: DomainList | UndefinedType = Undefined,
                 servers: Servers | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 set_source_interfaces: bool | UndefinedType = Undefined,
@@ -17111,6 +17129,10 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     domain: DNS domain name like 'fabric.local'
+                    domain_list:
+                       Domain names to complete unqualified host names.
+
+                       Subclass of AvdList with `str` items.
                     servers: Subclass of AvdList with `ServersItem` items.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     set_source_interfaces:

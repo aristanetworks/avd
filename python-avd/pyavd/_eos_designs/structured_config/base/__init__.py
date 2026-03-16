@@ -312,6 +312,8 @@ class AvdStructuredConfigBaseProtocol(
         if self.inputs.dns_settings.domain:
             self.structured_config.dns_domain = self.inputs.dns_settings.domain
 
+        self.structured_config.domain_list = EosCliConfigGen.DomainList(self.inputs.dns_settings.domain_list)
+
         vrfs = self.inputs.dns_settings.vrfs
         for server in self.inputs.dns_settings.servers:
             server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
@@ -766,7 +768,7 @@ class AvdStructuredConfigBaseProtocol(
             if not all_tacacs_servers.__contains__(tacacs_server):
                 all_tacacs_servers.append(tacacs_server)
                 server_key = self._get_tacacs_or_radius_server_password(server)
-                self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
+                self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key, timeout=server.timeout)
 
                 for group in server.groups:
                     tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
