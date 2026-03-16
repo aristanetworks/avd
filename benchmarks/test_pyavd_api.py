@@ -252,13 +252,15 @@ def test_get_device_doc_benchmark(
         # Generate facts and structured configs for the entire fabric (not part of benchmark)
         avd_facts = get_avd_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=molecule_scenario.pool_manager)
 
-        structured_configs = {}
+        structured_configs_dicts = {}
         for hostname, inputs in all_inputs.items():
-            structured_configs[hostname] = get_device_structured_config(
+            structured_config = get_device_structured_config(
                 hostname=hostname,
                 inputs=inputs,
                 avd_facts=avd_facts,
             )
+            # Convert to dict - get_device_doc templates expect dict format
+            structured_configs_dicts[hostname] = structured_config._as_dict()
 
         # Disable logging during benchmark
         logging.disable(logging.CRITICAL)
@@ -267,8 +269,8 @@ def test_get_device_doc_benchmark(
         def _() -> None:
             # Generate documentation for ALL devices
             docs = {}
-            for hostname, structured_config in structured_configs.items():
-                docs[hostname] = get_device_doc(structured_config, add_md_toc=True)
+            for structured_config_dict in structured_configs_dicts.values():
+                docs[len(docs)] = get_device_doc(structured_config_dict, add_md_toc=True)
             assert len(docs) == len(all_inputs)
 
         logging.disable(logging.NOTSET)

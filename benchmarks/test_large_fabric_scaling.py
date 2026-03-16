@@ -8,9 +8,8 @@ import logging
 import pytest
 from pytest_codspeed import BenchmarkFixture
 
+from benchmarks.generate_inventory import generate_hostvars
 from pyavd import get_avd_facts, get_device_config, get_device_structured_config, validate_inputs
-
-from .generate_inventory import generate_hostvars
 
 logger = logging.getLogger(__name__)
 
