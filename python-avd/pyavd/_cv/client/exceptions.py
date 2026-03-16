@@ -65,10 +65,6 @@ class CVManifestError(CVClientException):
     """Error while creating a CVManifest instance from a user AvdManifest."""
 
 
-class CVConfigletCreationFailed(CVClientException):
-    """Creation of the CloudVision Static Studio configlet failed."""
-
-
 class CVClientBulkAPIError(CVClientException):
     """Bulk API call failed due to server-side error(s). See logging for details."""
 
