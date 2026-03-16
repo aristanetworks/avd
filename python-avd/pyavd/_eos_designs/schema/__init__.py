@@ -19556,8 +19556,8 @@ class EosDesigns(EosDesignsRootModel):
         class EntriesItem(AvdModel):
             """Subclass of AvdModel."""
 
-            TtlMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
             Action: TypeAlias = Literal["permit", "deny"]
+            TtlMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
             SourcePortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
 
             class SourcePorts(AvdList[str]):
@@ -19580,14 +19580,14 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "source": {"type": str},
                 "destination": {"type": str},
+                "sequence": {"type": int},
+                "remark": {"type": str},
+                "action": {"type": str},
                 "protocol": {"type": str},
                 "fragments": {"type": bool},
                 "ttl": {"type": int},
                 "ttl_match": {"type": str, "default": "eq"},
                 "vlan_inner": {"type": bool, "default": False},
-                "sequence": {"type": int},
-                "remark": {"type": str},
-                "action": {"type": str},
                 "source_ports_match": {"type": str, "default": "eq"},
                 "source_ports": {"type": SourcePorts},
                 "destination_ports_match": {"type": str, "default": "eq"},
@@ -19620,19 +19620,6 @@ class EosDesigns(EosDesignsRootModel):
             "<ip>" without a mask means host.
             Required except for remarks.
             """
-            protocol: str | None
-            """
-            "ip", "tcp", "udp", "icmp" or other protocol name or number.
-            Required except for remarks.
-            """
-            fragments: bool | None
-            """Match non-head fragment packets."""
-            ttl: int | None
-            """TTL value."""
-            ttl_match: TtlMatch
-            """Default value: `"eq"`"""
-            vlan_inner: bool
-            """Default value: `False`"""
             sequence: int | None
             """ACL entry sequence number."""
             remark: str | None
@@ -19645,6 +19632,15 @@ class EosDesigns(EosDesignsRootModel):
             ACL action.
             Required except for remarks.
             """
+            protocol: str | None
+            fragments: bool | None
+            """Match non-head fragment packets."""
+            ttl: int | None
+            """TTL value."""
+            ttl_match: TtlMatch
+            """Default value: `"eq"`"""
+            vlan_inner: bool
+            """Default value: `False`"""
             source_ports_match: SourcePortsMatch
             """Default value: `"eq"`"""
             source_ports: SourcePorts
@@ -19678,14 +19674,14 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     source: str | None | UndefinedType = Undefined,
                     destination: str | None | UndefinedType = Undefined,
+                    sequence: int | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
                     protocol: str | None | UndefinedType = Undefined,
                     fragments: bool | None | UndefinedType = Undefined,
                     ttl: int | None | UndefinedType = Undefined,
                     ttl_match: TtlMatch | UndefinedType = Undefined,
                     vlan_inner: bool | UndefinedType = Undefined,
-                    sequence: int | None | UndefinedType = Undefined,
-                    remark: str | None | UndefinedType = Undefined,
-                    action: Action | None | UndefinedType = Undefined,
                     source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
                     source_ports: SourcePorts | UndefinedType = Undefined,
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
@@ -19721,13 +19717,6 @@ class EosDesigns(EosDesignsRootModel):
                            "<ip>/<mask>" or "<ip>".
                            "<ip>" without a mask means host.
                            Required except for remarks.
-                        protocol:
-                           "ip", "tcp", "udp", "icmp" or other protocol name or number.
-                           Required except for remarks.
-                        fragments: Match non-head fragment packets.
-                        ttl: TTL value.
-                        ttl_match: ttl_match
-                        vlan_inner: vlan_inner
                         sequence: ACL entry sequence number.
                         remark:
                            Comment up to 100 characters.
@@ -19735,6 +19724,11 @@ class EosDesigns(EosDesignsRootModel):
                         action:
                            ACL action.
                            Required except for remarks.
+                        protocol: protocol
+                        fragments: Match non-head fragment packets.
+                        ttl: TTL value.
+                        ttl_match: ttl_match
+                        vlan_inner: vlan_inner
                         source_ports_match: source_ports_match
                         source_ports: Subclass of AvdList with `str` items.
                         destination_ports_match: destination_ports_match

@@ -19,18 +19,18 @@ hostname: evpn-services-l2-only-false
 ip_access_lists:
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Vlan110
   entries:
-  - protocol: ip
+  - sequence: 15
+    action: deny
+    protocol: ip
     source: any
     destination: 10.1.10.1
-    sequence: 15
-    action: deny
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Vlan110
   entries:
   - remark: Some remark will not require source and destination fields.
-  - protocol: ip
+  - action: permit
+    protocol: ip
     source: 10.1.10.1
     destination: any
-    action: permit
 ip_igmp_snooping:
   globally_enabled: true
   vlans:

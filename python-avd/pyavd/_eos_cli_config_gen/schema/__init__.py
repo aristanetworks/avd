@@ -15082,8 +15082,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class EntriesItem(AvdModel):
             """Subclass of AvdModel."""
 
-            TtlMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
             Action: TypeAlias = Literal["permit", "deny"]
+            TtlMatch: TypeAlias = Literal["eq", "gt", "lt", "neq"]
             SourcePortsMatch: TypeAlias = Literal["eq", "gt", "lt", "neq", "range"]
 
             class SourcePorts(AvdList[str]):
@@ -15104,6 +15104,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             TcpFlags._item_type = str
 
             _fields: ClassVar[dict] = {
+                "sequence": {"type": int},
+                "remark": {"type": str},
+                "action": {"type": str},
                 "protocol": {"type": str},
                 "source": {"type": str},
                 "destination": {"type": str},
@@ -15111,9 +15114,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "ttl": {"type": int},
                 "ttl_match": {"type": str, "default": "eq"},
                 "vlan_inner": {"type": bool, "default": False},
-                "sequence": {"type": int},
-                "remark": {"type": str},
-                "action": {"type": str},
                 "source_ports_match": {"type": str, "default": "eq"},
                 "source_ports": {"type": SourcePorts},
                 "destination_ports_match": {"type": str, "default": "eq"},
@@ -15128,11 +15128,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "vlan_number": {"type": int},
                 "vlan_mask": {"type": str},
             }
-            protocol: str | None
+            sequence: int | None
+            """ACL entry sequence number."""
+            remark: str | None
             """
-            "ip", "tcp", "udp", "icmp" or other protocol name or number.
+            Comment up to 100 characters.
+            If remark is defined, other keys in the ACL entry will be ignored.
+            """
+            action: Action | None
+            """
+            ACL action.
             Required except for remarks.
             """
+            protocol: str | None
             source: str | None
             """
             "any", "<ip>/<mask>" or "<ip>".
@@ -15153,18 +15161,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Default value: `"eq"`"""
             vlan_inner: bool
             """Default value: `False`"""
-            sequence: int | None
-            """ACL entry sequence number."""
-            remark: str | None
-            """
-            Comment up to 100 characters.
-            If remark is defined, other keys in the ACL entry will be ignored.
-            """
-            action: Action | None
-            """
-            ACL action.
-            Required except for remarks.
-            """
             source_ports_match: SourcePortsMatch
             """Default value: `"eq"`"""
             source_ports: SourcePorts
@@ -15196,6 +15192,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
+                    sequence: int | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
                     protocol: str | None | UndefinedType = Undefined,
                     source: str | None | UndefinedType = Undefined,
                     destination: str | None | UndefinedType = Undefined,
@@ -15203,9 +15202,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ttl: int | None | UndefinedType = Undefined,
                     ttl_match: TtlMatch | UndefinedType = Undefined,
                     vlan_inner: bool | UndefinedType = Undefined,
-                    sequence: int | None | UndefinedType = Undefined,
-                    remark: str | None | UndefinedType = Undefined,
-                    action: Action | None | UndefinedType = Undefined,
                     source_ports_match: SourcePortsMatch | UndefinedType = Undefined,
                     source_ports: SourcePorts | UndefinedType = Undefined,
                     destination_ports_match: DestinationPortsMatch | UndefinedType = Undefined,
@@ -15227,9 +15223,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        protocol:
-                           "ip", "tcp", "udp", "icmp" or other protocol name or number.
+                        sequence: ACL entry sequence number.
+                        remark:
+                           Comment up to 100 characters.
+                           If remark is defined, other keys in the ACL entry will be ignored.
+                        action:
+                           ACL action.
                            Required except for remarks.
+                        protocol: protocol
                         source:
                            "any", "<ip>/<mask>" or "<ip>".
                            "<ip>" without a mask means host.
@@ -15242,13 +15243,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         ttl: TTL value.
                         ttl_match: ttl_match
                         vlan_inner: vlan_inner
-                        sequence: ACL entry sequence number.
-                        remark:
-                           Comment up to 100 characters.
-                           If remark is defined, other keys in the ACL entry will be ignored.
-                        action:
-                           ACL action.
-                           Required except for remarks.
                         source_ports_match: source_ports_match
                         source_ports: Subclass of AvdList with `str` items.
                         destination_ports_match: destination_ports_match

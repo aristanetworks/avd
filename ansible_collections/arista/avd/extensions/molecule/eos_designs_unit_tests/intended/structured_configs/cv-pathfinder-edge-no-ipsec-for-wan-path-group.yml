@@ -60,11 +60,11 @@ hostname: cv-pathfinder-edge-no-ipsec-for-wan-path-group
 ip_access_lists:
 - name: ACL-NAT-IE-ZSCALER
   entries:
-  - protocol: ip
+  - sequence: 10
+    action: permit
+    protocol: ip
     source: any
     destination: any
-    sequence: 10
-    action: permit
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:

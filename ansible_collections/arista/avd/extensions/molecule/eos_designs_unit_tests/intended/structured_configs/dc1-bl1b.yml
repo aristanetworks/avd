@@ -171,32 +171,32 @@ hostname: dc1-bl1b
 ip_access_lists:
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet12
   entries:
-  - protocol: ip
+  - sequence: 15
+    action: deny
+    protocol: ip
     source: any
     destination: 10.10.50.10
-    sequence: 15
-    action: deny
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet12
   entries:
   - remark: Some remark will not require source and destination fields.
-  - protocol: ip
+  - action: permit
+    protocol: ip
     source: 10.10.50.10
     destination: any
-    action: permit
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
   entries:
-  - protocol: ip
+  - sequence: 15
+    action: deny
+    protocol: ip
     source: any
     destination: 10.10.50.20
-    sequence: 15
-    action: deny
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
   entries:
   - remark: Some remark will not require source and destination fields.
-  - protocol: ip
+  - action: permit
+    protocol: ip
     source: 10.10.50.20
     destination: any
-    action: permit
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_server:

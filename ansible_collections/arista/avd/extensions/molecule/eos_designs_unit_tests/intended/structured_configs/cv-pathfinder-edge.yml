@@ -186,28 +186,28 @@ hostname: cv-pathfinder-edge
 ip_access_lists:
 - name: ACL-NAT-IE-DIRECT
   entries:
-  - protocol: ip
+  - sequence: 10
+    action: deny
+    protocol: ip
     source: 172.15.5.5
     destination: any
-    sequence: 10
+  - sequence: 20
     action: deny
-  - protocol: ip
+    protocol: ip
     source: 172.15.5.6
     destination: any
-    sequence: 20
-    action: deny
-  - protocol: ip
+  - sequence: 30
+    action: permit
+    protocol: ip
     source: any
     destination: any
-    sequence: 30
-    action: permit
 - name: ACL-NAT-IE-ZSCALER
   entries:
-  - protocol: ip
+  - sequence: 10
+    action: permit
+    protocol: ip
     source: any
     destination: any
-    sequence: 10
-    action: permit
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:

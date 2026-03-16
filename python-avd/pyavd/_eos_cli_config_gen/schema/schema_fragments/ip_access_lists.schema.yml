@@ -27,11 +27,14 @@ keys:
             type: dict
             $ref: "eos_cli_config_gen#/$defs/access_list_entry"
             keys:
+              sequence:
+                type: int
+              remark:
+                type: str
+              action:
+                type: str
               protocol:
                 type: str
-                description: |-
-                  "ip", "tcp", "udp", "icmp" or other protocol name or number.
-                  Required except for remarks.
               source:
                 type: str
                 description: |-
