@@ -48,6 +48,7 @@ jobs:
   benchmarks:
     name: Benchmark (Python ${{ matrix.python }}, Ansible ${{ matrix.ansible }})
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:

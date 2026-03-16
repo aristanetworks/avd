@@ -13,6 +13,7 @@ jobs:
   pr-benchmarks:
     name: PR Benchmarks (Python 3.12)
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     if: contains(github.event.pull_request.labels.*.name, 'benchmark')
     steps:
       - uses: actions/checkout@v6
@@ -37,4 +38,7 @@ jobs:
         with:
           token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
-          run: pytest --codspeed benchmarks
+          run: |
+            # Run API benchmarks + scale tests (15 and 150 devices) for PRs
+            # Full benchmark suite (including 1500 devices and molecule scenarios) runs on schedule
+            pytest --codspeed benchmarks/test_pyavd_api.py benchmarks/test_large_fabric_scaling.py -k "15_devices or 150_devices"
