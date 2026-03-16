@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - route maps #}
-{% for route_map in route_maps | arista.avd.natural_sort('name') %}
+{% for route_map in route_maps | arista.avd.natural_sort('name', ignore_case=false) %}
 {%     for sequence in route_map.sequence_numbers | arista.avd.natural_sort('sequence') %}
 {%         if sequence.type is arista.avd.defined %}
 !

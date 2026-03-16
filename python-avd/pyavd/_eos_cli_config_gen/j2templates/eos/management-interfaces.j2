@@ -30,12 +30,46 @@ interface {{ management_interface.name }}
 {%     if management_interface.ip_address is arista.avd.defined %}
    ip address {{ management_interface.ip_address }}
 {%     endif %}
+{%     if management_interface.ip_address is arista.avd.defined("dhcp") and management_interface.dhcp_client_accept_default_route is arista.avd.defined(true) %}
+   dhcp client accept default-route
+{%     endif %}
 {%     if management_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
-{%     if management_interface.ipv6_address is arista.avd.defined %}
+{%     if management_interface.ipv6_addresses is arista.avd.defined %}
+{%         for ipv6_address in management_interface.ipv6_addresses | arista.avd.natural_sort %}
+   ipv6 address {{ ipv6_address }}
+{%         endfor %}
+{%     elif management_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+   ipv6 address auto-config
+{%     elif management_interface.ipv6_address is arista.avd.defined %}
    ipv6 address {{ management_interface.ipv6_address }}
 {%     endif %}
+{%     if management_interface.ipv6_nd.ra.rx_accept.default_route is arista.avd.defined(true) %}
+   ipv6 nd ra rx accept default-route
+{%     endif %}
+{%     if management_interface.ipv6_nd.ra.rx_accept.route_preference is arista.avd.defined(true) %}
+   ipv6 nd ra rx accept route-preference
+{%     endif %}
+{%     if management_interface.ipv6_nd.ra.disabled is arista.avd.defined(true) %}
+   ipv6 nd ra disabled
+{%     endif %}
+{%     if management_interface.ipv6_nd.managed_config_flag is arista.avd.defined(true) or management_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) %}
+   ipv6 nd managed-config-flag
+{%     endif %}
+{%     for prefix in management_interface.ipv6_nd.prefixes | arista.avd.natural_sort("ipv6_prefix") %}
+{%         set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ prefix.ipv6_prefix %}
+{%         if prefix.valid_lifetime is arista.avd.defined %}
+{%             set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.valid_lifetime %}
+{%             if prefix.preferred_lifetime is arista.avd.defined %}
+{%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.preferred_lifetime %}
+{%             endif %}
+{%         endif %}
+{%         if prefix.no_autoconfig_flag is arista.avd.defined(true) %}
+{%             set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " no-autoconfig" %}
+{%         endif %}
+   {{ ipv6_nd_prefix_cli }}
+{%     endfor %}
 {%     if management_interface.lldp.transmit is arista.avd.defined(false) %}
    no lldp transmit
 {%     endif %}

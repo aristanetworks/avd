@@ -9,10 +9,12 @@ from typing import TYPE_CHECKING
 from anta.input_models.path_selection import DpsPath
 from anta.tests.path_selection import VerifySpecificPath
 
+from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
-from ._base_classes import AntaTestInputFactory
+from .base_classes import AntaTestInputFactory
+from .decorators import skip_if_missing_config
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -29,6 +31,7 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory[VerifySpecificPath.Inp
     It collects the peer and destination address from static peers, source address for local interfaces and path name from path groups.
     """
 
+    @skip_if_missing_config(StructuredConfigKey.ROUTER_PATH_SELECTION)
     def create(self) -> Iterator[VerifySpecificPath.Input]:
         """Generate the inputs for the `VerifySpecificPath` test."""
         all_dps_paths: list[DpsPath] = []

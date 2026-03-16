@@ -3,6 +3,8 @@
   hosts: EOS_CLI_CONFIG_GEN_NEGATIVE_TESTS
   gather_facts: false
   connection: local
+  vars:
+    read_structured_config_from_file: false
   tasks:
     - name: Run failure scenario Test
       block:

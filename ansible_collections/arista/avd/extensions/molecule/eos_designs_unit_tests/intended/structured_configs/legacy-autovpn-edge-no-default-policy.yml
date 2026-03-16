@@ -290,11 +290,13 @@ vrfs:
 - name: IT
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: PROD
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 vxlan_interface:
   vxlan1:
     description: legacy-autovpn-edge-no-default-policy_VTEP

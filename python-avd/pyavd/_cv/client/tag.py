@@ -63,7 +63,7 @@ class TagMixin(Protocol):
         element_type: Literal["device", "interface"] | None = None,
         creator_type: Literal["user", "system", "external"] | None = None,
         time: datetime | None = None,
-        timeout: float = 30.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[Tag]:
         """
         Get Tags using arista.tag.v2.TagServiceStub.GetAll arista.tag.v2.TagConfigServiceStub.GetAll APIs.
@@ -261,7 +261,7 @@ class TagMixin(Protocol):
         self: CVClientProtocol,
         workspace_id: str,
         tag_assignments: set[CVTagAssignment],
-        timeout: float = 30.0,
+        timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagAssignmentKey]:
         """
         Set Tags using arista.tag.v2.TagAssignmentConfigServiceStub.SetSome API.

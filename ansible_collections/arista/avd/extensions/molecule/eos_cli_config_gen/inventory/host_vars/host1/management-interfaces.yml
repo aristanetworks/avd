@@ -13,6 +13,26 @@ management_interfaces:
           ipv6_address: "1:1:1:1:1:1:1:1"
           interval: 101
           multiplier: 3
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: 2345:ABCD:3FE0::1/96
+          valid_lifetime: infinite
+          preferred_lifetime: 50
+          no_autoconfig_flag: true
+        - ipv6_prefix: 2345:ABCD:3FE0::2/96
+          valid_lifetime: 50
+          preferred_lifetime: infinite
+          no_autoconfig_flag: false
+        - ipv6_prefix: 2345:ABCD:3FE0::3/96
+          valid_lifetime: 100000
+          no_autoconfig_flag: true
+
   - name: Management0
     ip_address: 10.1.1.1
     mac_address: 00:1c:73:00:00:aa
@@ -34,6 +54,11 @@ management_interfaces:
     description: inband_management
     vrf: default
     ip_address: 10.73.0.123/24
+    ipv6_addresses:
+      - 2001:db8:abcd:1234::2/64
+      - 2001:db8:abcd:1234::1/64
+    # This is to test that the default route is only rendered when ip_address is dhcp and dhcp_client_accept_default_route is true
+    dhcp_client_accept_default_route: true
     gateway: 10.73.0.1
     type: inband
     mtu: 1500
@@ -50,3 +75,7 @@ management_interfaces:
       monitor:
         neighbor:
           ipv6_address: "1:1:1:1:1:1:1:1"
+    ipv6_address_auto_config: true
+    ipv6_enable: true
+    ip_address: dhcp
+    dhcp_client_accept_default_route: true

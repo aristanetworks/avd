@@ -1,5 +1,5 @@
 ---
-# Not testing anything, but just a placeholder for future tests.
+evpn_overlay_bgp_rtc: true
 type: l3leaf
 l3leaf:
   defaults:
@@ -8,10 +8,11 @@ l3leaf:
     id: 101
     bgp_as: 101
     # Used for OSPF
-    uplink_switches: [host2]
-    uplink_switch_interfaces: [Ethernet42]
+    uplink_switches: [host1]
+    uplink_switch_interfaces: [Ethernet41]
     uplink_interfaces: [Ethernet42]
     uplink_ipv4_pool: 192.168.42.0/24
+    platform: vEOS
   nodes:
     - name: host1
       id: 101
@@ -22,12 +23,132 @@ l3leaf:
       nodes:
         - name: host1
           id: 5
+          mlag: false
           mgmt_ip: 192.168.0.103/24
           # Used by source-interfaces test:
           inband_mgmt_interface: Vlan10
           inband_mgmt_ip: 10.20.30.40/24
           inband_mgmt_gateway: 10.20.30.1
           inband_mgmt_vrf: INBANDMGMT
+          evpn_gateway:
+            evpn_l3:
+              enabled: true
+              inter_domain: true
+            # Testing the deprecated enable_d_path, evpn_domain_id_local and evpn_domain_id_remote keys
+            all_active_multihoming:
+              enabled: true
+              enable_d_path: true
+              evpn_domain_id_local: "65200:2"
+              evpn_domain_id_remote: "65100:1"
+              evpn_ethernet_segment:
+                identifier: 0000:0001:0001:0000:0509
+                rt_import: 00:00:00:00:07:09
 
 # Used by source-interfaces test: Testing that the generated source interfaces do not contain the VRF if VRF "default"
 mgmt_interface_vrf: default
+
+aaa_settings:
+  radius:
+    servers:
+      - host: 11.10.10.11
+        vrf: default
+        key: 071B245F5A
+        cleartext_key: arista
+        groups:
+          - RADIUS1
+
+      - host: 11.10.10.5
+        vrf: MGMT1
+        key: 071B245F5A
+        tls:
+          enabled: true
+          ssl_profile: HOST_SSL_PROFILE
+          port: 2080
+        groups:
+          - RADIUS1
+
+      - host: 11.10.10.3
+        vrf: MGMT
+        cleartext_key: arista
+        groups:
+          - RADIUS1
+
+    vrfs:
+      - name: default
+        source_interface: Vlan123
+      - name: MGMT
+        source_interface: Vlan125
+      - name: MGMT1
+        source_interface: Vlan125
+
+  tacacs:
+    servers:
+      - host: 10.10.10.11
+        vrf: default
+        key: 071B245F5A
+        # key take precedence over cleartext_key
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      - host: 10.10.10.1
+        vrf: use_mgmt_interface_vrf
+        key: 071B245F5A
+        groups:
+          - TACACS1
+          - TACACS2
+
+      - host: 10.10.10.2
+        vrf: MGMT
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+      # Test with duplicate host/VRF data to ensure only the first entry is processed.
+      - host: 10.10.10.2
+        vrf: MGMT
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # No VRF, so it should honor default_mgmt_method which is oob in this case
+      - host: 10.10.10.3
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+      # Duplicate host with different vrf
+      - host: 10.10.10.2
+        vrf: MGMT1
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # Test with host as domain name and cleartext_key to AVD type-7 encrypt key
+      - host: nodomain.co
+        vrf: use_mgmt_interface_vrf
+        key: 071B245F5A
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # Test with host as IPv6 address and cleartext_key to AVD type-7 encrypt key
+      - host: "1:1:1:1:1:1:1:1"
+        vrf: MGMT
+        key: 071B245F5A
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # Test with default groups tacacs+
+      - host: 10.10.10.42
+        vrf: default
+        key: 071B245F5A
+
+    vrfs:
+      - name: default
+        source_interface: Vlan123
+      - name: MGMT
+        source_interface: Vlan125
+      - name: MGMT1
+        source_interface: Vlan125

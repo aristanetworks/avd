@@ -52,6 +52,14 @@ port_channel_interfaces:
       groups:
       - MLAG
 route_maps:
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
   - sequence: 10
@@ -77,7 +85,7 @@ router_bgp:
     description: bgp-from-network-services-31
     next_hop_self: true
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
     route_map_in: RM-MLAG-PEER-IN
   neighbor_interfaces:
   - name: Vlan3103
@@ -117,7 +125,8 @@ vlan_interfaces:
   ipv6_enable: true
   mtu: 9214
   metadata:
-    tenant: TEST4
+    tenants:
+    - TEST4
     type: underlay_peering
 vlan_internal_order:
   allocation: ascending
@@ -130,13 +139,15 @@ vlans:
   trunk_groups:
   - MLAG
   metadata:
-    tenant: system
+    tenants:
+    - system
 - id: 3103
   name: MLAG_L3_VRF_default
   trunk_groups:
   - MLAG
   metadata:
-    tenant: TEST4
+    tenants:
+    - TEST4
 vrfs:
 - name: MGMT
   ip_routing: false

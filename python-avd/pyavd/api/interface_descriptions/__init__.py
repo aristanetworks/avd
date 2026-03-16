@@ -98,6 +98,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             **strip_null_from_data(
                 {
                     "peer": data.peer,
+                    "interface": data.interface,
                     "peer_interface": data.peer_interface,
                     "vrf": data.vrf,
                     "wan_carrier": data.wan_carrier,

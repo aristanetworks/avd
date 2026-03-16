@@ -1,0 +1,678 @@
+aaa_accounting:
+  dot1x:
+    default:
+      type: start-stop
+      methods:
+      - multicast: false
+        method: group
+        group: radius
+aaa_authentication:
+  dot1x:
+    default: group radius
+aaa_root:
+  disabled: true
+config_end: true
+dot1x:
+  system_auth_control: true
+  protocol_lldp_bypass: true
+  protocol_bpdu_bypass: true
+  dynamic_authorization: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: Interface description custom_server_OLD_SW-1/2_ENDPOINT_PORT1
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: OLD_SW-1/2
+    peer_interface: Endpoint_port1
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet2
+  description: Interface description custom_server_OLD_SW-1/2_ENDPOINT_PORT2
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  metadata:
+    peer: OLD_SW-1/2
+    peer_interface: ENDPOINT_PORT2
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet3
+  description: CUSTOM_SERVER_OLD_SW-1/3_ENDPOINT_PORT
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+  metadata:
+    peer: OLD_SW-1/3
+    peer_interface: ENDPOINT_PORT
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet4
+  description: PHYSICAL_PORT_DESCRIPTION
+  shutdown: false
+  metadata:
+    peer: OLD_SW-1/4
+    peer_type: custom_server
+    peer_key: servers
+  switchport:
+    enabled: true
+- name: Ethernet5
+  description: CUSTOM_SERVER_OLD_SW-1/5
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  metadata:
+    peer: OLD_SW-1/5
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet6
+  description: CUSTOM_SERVER_OLD_SW-1/5
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  metadata:
+    peer: OLD_SW-1/5
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet7
+  description: PHYSICAL_PORT_DESCRIPTION
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  metadata:
+    peer: OLD_SW-1/6
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet8
+  description: PHYSICAL_PORT_DESCRIPTION
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  metadata:
+    peer: OLD_SW-1/6
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet10
+  description: PHYSICAL_PORT_DESCRIPTION_1
+  shutdown: false
+  channel_group:
+    id: 10
+    mode: active
+  metadata:
+    peer: OLD_SW-1/7
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet11
+  description: PHYSICAL_PORT_DESCRIPTION_2
+  shutdown: false
+  channel_group:
+    id: 10
+    mode: active
+  metadata:
+    peer: OLD_SW-1/7
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet19
+  description: CUSTOM_SERVER_OLD_SW-1/8_Endpoint_port4
+  shutdown: false
+  metadata:
+    peer: OLD_SW-1/8
+    peer_interface: Endpoint_port4
+    peer_type: custom_server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+- name: Ethernet20
+  description: CUSTOM_SERVER_OLD_SW-1/9
+  shutdown: false
+  channel_group:
+    id: 20
+    mode: active
+  metadata:
+    peer: OLD_SW-1/9
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet21
+  description: CUSTOM_SERVER_OLD_SW-1/9
+  shutdown: false
+  channel_group:
+    id: 20
+    mode: active
+  metadata:
+    peer: OLD_SW-1/9
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet25
+  description: CUSTOM_SERVER_OLD_SW-1/12_Endpoint_port6
+  shutdown: false
+  channel_group:
+    id: 25
+    mode: active
+  metadata:
+    peer: OLD_SW-1/12
+    peer_interface: Endpoint_port6
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet12
+  description: CUSTOM_SERVER_INDIVIDUAL_1
+  shutdown: false
+  channel_group:
+    id: 12
+    mode: active
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  service_profile: MYQOS
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
+  metadata:
+    peer: INDIVIDUAL_1
+    peer_type: custom_server
+    peer_key: servers
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1,2,3,4,5,6,7,123,234
+      native_vlan: 123
+      native_vlan_tag: false
+- name: Ethernet13
+  description: CUSTOM_SERVER_INDIVIDUAL_1
+  shutdown: false
+  channel_group:
+    id: 12
+    mode: active
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  service_profile: MYQOS
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
+  metadata:
+    peer: INDIVIDUAL_1
+    peer_type: custom_server
+    peer_key: servers
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1,2,3,4,5,6,7,123,234
+      native_vlan: 123
+      native_vlan_tag: false
+- name: Ethernet14
+  description: CUSTOM_SERVER_DOT1X_UNAUTHORIZED
+  shutdown: false
+  poe:
+    disabled: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  dot1x:
+    unauthorized:
+      access_vlan_membership_egress: true
+      native_vlan_membership_egress: true
+  service_profile: MYQOS
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
+  metadata:
+    peer: DOT1X_UNAUTHORIZED
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: INDIVIDUAL_TRUNK
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1,2,3,4,5,6,7,123,234
+      native_vlan: 123
+      native_vlan_tag: false
+- name: Ethernet15
+  description: CUSTOM_SERVER_INDIVIDUAL_2_TRUNK_PHONE
+  shutdown: false
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
+  channel_group:
+    id: 15
+    mode: active
+  metadata:
+    peer: INDIVIDUAL_2_TRUNK_PHONE
+    peer_type: custom_server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 123
+    phone:
+      vlan: 321
+- name: Ethernet16
+  description: CUSTOM_SERVER_INDIVIDUAL_2_TRUNK_PHONE
+  shutdown: false
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
+  channel_group:
+    id: 15
+    mode: active
+  metadata:
+    peer: INDIVIDUAL_2_TRUNK_PHONE
+    peer_type: custom_server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk phone
+    trunk:
+      native_vlan: 123
+    phone:
+      vlan: 321
+- name: Ethernet17
+  description: CUSTOM_SERVER_DOT1X_UNAUTHORIZED_PORT_CHANNEL
+  shutdown: false
+  channel_group:
+    id: 17
+    mode: active
+  poe:
+    disabled: true
+  dot1x:
+    unauthorized:
+      access_vlan_membership_egress: true
+      native_vlan_membership_egress: true
+  metadata:
+    peer: DOT1X_UNAUTHORIZED_PORT_CHANNEL
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: INDIVIDUAL_TRUNK
+- name: Ethernet18
+  description: CUSTOM_SERVER_DOT1X_UNAUTHORIZED_PORT_CHANNEL
+  shutdown: false
+  channel_group:
+    id: 17
+    mode: active
+  poe:
+    disabled: true
+  dot1x:
+    unauthorized:
+      access_vlan_membership_egress: true
+      native_vlan_membership_egress: true
+  metadata:
+    peer: DOT1X_UNAUTHORIZED_PORT_CHANNEL
+    peer_type: custom_server
+    peer_key: servers
+    port_profile: INDIVIDUAL_TRUNK
+- name: Ethernet26
+  description: CUSTOM_SERVER_INDIVIDUAL_3
+  shutdown: false
+  channel_group:
+    id: 26
+    mode: active
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  service_profile: MYQOS
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
+  metadata:
+    peer: INDIVIDUAL_3
+    peer_type: custom_server
+    peer_key: servers
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 5
+- name: Ethernet27
+  description: CUSTOM_SERVER_INDIVIDUAL_3
+  shutdown: false
+  channel_group:
+    id: 26
+    mode: active
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  service_profile: MYQOS
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
+  metadata:
+    peer: INDIVIDUAL_3
+    peer_type: custom_server
+    peer_key: servers
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 5
+- name: Ethernet28
+  description: CUSTOM_SERVER_INDIVIDUAL_4
+  shutdown: false
+  channel_group:
+    id: 28
+    mode: active
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  service_profile: MYQOS
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
+  metadata:
+    peer: INDIVIDUAL_4
+    peer_type: custom_server
+    peer_key: servers
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1,2,3,4
+      native_vlan: 5
+      native_vlan_tag: false
+- name: Ethernet29
+  description: CUSTOM_SERVER_INDIVIDUAL_4
+  shutdown: false
+  channel_group:
+    id: 28
+    mode: active
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  service_profile: MYQOS
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
+  metadata:
+    peer: INDIVIDUAL_4
+    peer_type: custom_server
+    peer_key: servers
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1,2,3,4
+      native_vlan: 5
+      native_vlan_tag: false
+- name: Ethernet24
+  description: CUSTOM_SERVER_OLD_SW-1/11_Endpoint_port5
+  shutdown: false
+  metadata:
+    peer: OLD_SW-1/11
+    peer_interface: Endpoint_port5
+    peer_type: custom_server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4096
+- name: Ethernet32
+  description: CUSTOM_SERVER_DOT1X_SUPPLICANT_PORT_CHANNEL
+  shutdown: false
+  channel_group:
+    id: 32
+    mode: active
+  dot1x:
+    pae:
+      mode: supplicant
+      supplicant_profile: test_profile_network_ports
+  metadata:
+    peer: DOT1X_SUPPLICANT_PORT_CHANNEL
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet33
+  description: CUSTOM_SERVER_DOT1X_SUPPLICANT_PORT_CHANNEL
+  shutdown: false
+  channel_group:
+    id: 32
+    mode: active
+  dot1x:
+    pae:
+      mode: supplicant
+      supplicant_profile: test_profile_network_ports
+  metadata:
+    peer: DOT1X_SUPPLICANT_PORT_CHANNEL
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet31
+  description: MONITOR_custom_connected_endpoint_Nic101
+  shutdown: false
+  metadata:
+    peer: custom_connected_endpoint
+    peer_interface: Nic101
+    peer_type: monitor
+    peer_key: monitor
+  switchport:
+    enabled: true
+- name: Ethernet111
+  description: TESTING_TYPE_1_testing_Nic1
+  shutdown: false
+  metadata:
+    peer: testing
+    peer_interface: Nic1
+    peer_type: Testing_Type_1
+    peer_key: testing_1
+  switchport:
+    enabled: true
+hostname: connected-endpoints
+ip_igmp_snooping:
+  globally_enabled: true
+ip_radius:
+  vrfs:
+  - name: MGMT
+    source_interface: Management1
+link_tracking_groups:
+- name: LT_GROUP1
+  recovery_delay: 300
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.1.2
+  type: oob
+metadata:
+  is_deployed: true
+  platform: 720XP
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+port_channel_interfaces:
+- name: Port-Channel1
+  description: Port channel description custom_server_OLD_SW-1/2_Po1_ENDPOINT_PORT_CHANNEL_INTERFACE DESCRIPTION CUSTOM_SERVER_OLD_SW-1/2_ENDPOINT_PORT_CHANNEL
+  shutdown: false
+  switchport:
+    enabled: true
+- name: Port-Channel3
+  description: CUSTOM_SERVER_OLD_SW-1/3_ENDPOINT_PORT_CHANNEL
+  shutdown: false
+  switchport:
+    enabled: true
+- name: Port-Channel5
+  description: PORT_CHANNEL_DESCRIPTION
+  shutdown: false
+  switchport:
+    enabled: true
+- name: Port-Channel7
+  description: PORT_CHANNEL_DESCRIPTION
+  shutdown: false
+  switchport:
+    enabled: true
+- name: Port-Channel10
+  description: PORT_CHANNEL_DESCRIPTION
+  shutdown: false
+  switchport:
+    enabled: true
+- name: Port-Channel20
+  description: CUSTOM_SERVER_OLD_SW-1/9
+  shutdown: false
+  switchport:
+    enabled: false
+- name: Port-Channel20.100
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 100
+    network:
+      encapsulation: client
+  vlan_id: 100
+- name: Port-Channel20.200
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 200
+    network:
+      encapsulation: client
+  vlan_id: 200
+- name: Port-Channel25
+  description: CUSTOM_SERVER_OLD_SW-1/12
+  shutdown: false
+  switchport:
+    enabled: false
+- name: Port-Channel12
+  description: CUSTOM_SERVER_INDIVIDUAL_1_INDIVIDUAL_1
+  shutdown: false
+  lacp_fallback_timeout: 90
+  lacp_fallback_mode: individual
+  switchport:
+    enabled: true
+- name: Port-Channel15
+  description: CUSTOM_SERVER_INDIVIDUAL_2_TRUNK_PHONE
+  shutdown: false
+  lacp_fallback_timeout: 90
+  lacp_fallback_mode: individual
+  switchport:
+    enabled: true
+- name: Port-Channel17
+  description: CUSTOM_SERVER_DOT1X_UNAUTHORIZED_PORT_CHANNEL
+  shutdown: false
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  service_profile: MYQOS
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1,2,3,4,5,6,7,123,234
+      native_vlan: 123
+      native_vlan_tag: false
+- name: Port-Channel26
+  description: CUSTOM_SERVER_INDIVIDUAL_3_INDIVIDUAL_3
+  shutdown: false
+  lacp_fallback_timeout: 90
+  lacp_fallback_mode: individual
+  switchport:
+    enabled: true
+- name: Port-Channel28
+  description: CUSTOM_SERVER_INDIVIDUAL_4_INDIVIDUAL_4
+  shutdown: false
+  lacp_fallback_timeout: 90
+  lacp_fallback_mode: individual
+  switchport:
+    enabled: true
+- name: Port-Channel32
+  description: CUSTOM_SERVER_DOT1X_SUPPLICANT_PORT_CHANNEL
+  shutdown: false
+  switchport:
+    enabled: true
+radius_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - host: agni.arista.com
+      key: 1404071B09166738212B2130365E0C131A
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

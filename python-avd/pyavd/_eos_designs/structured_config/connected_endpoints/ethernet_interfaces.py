@@ -98,6 +98,7 @@ class EthernetInterfacesMixin(Protocol):
             spanning_tree_portfast=adapter.spanning_tree_portfast,
             spanning_tree_bpdufilter=adapter.spanning_tree_bpdufilter,
             spanning_tree_bpduguard=adapter.spanning_tree_bpduguard,
+            spanning_tree_link_type=adapter.spanning_tree_link_type,
             storm_control=self._get_adapter_storm_control(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.StormControl),
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.Ptp),
             service_profile=adapter.qos_profile,
@@ -189,10 +190,16 @@ class EthernetInterfacesMixin(Protocol):
             or None,
             speed=adapter.speed,
             shutdown=not (adapter.enabled if adapter.enabled is not None else True),
-            dot1x=adapter.dot1x,
             poe=adapter.poe if self.shared_utils.platform_settings.feature_support.poe else Undefined,
             eos_cli=adapter.raw_eos_cli,
         )
+
+        # 802.1x settings
+        if adapter.dot1x:
+            ethernet_interface._update(
+                dot1x=self._get_adapter_dot1x(adapter),
+            )
+
         ethernet_interface.metadata._update(
             peer=peer,
             peer_interface=peer_interface,
@@ -200,7 +207,7 @@ class EthernetInterfacesMixin(Protocol):
             port_profile=adapter.profile,
             peer_key=connected_endpoint._internal_data.context,
             validate_state=False if adapter.validate_state is False else None,
-            validate_lldp=False if adapter.validate_lldp is False else None,
+            validate_lldp=adapter.validate_lldp,
         )
 
         # Port-channel member

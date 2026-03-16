@@ -119,7 +119,8 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 100.70.0.6/32
-  ipv6_address: 2000:1234:ffff:ffff::6/128
+  ipv6_addresses:
+  - 2000:1234:ffff:ffff::6/128
   mpls:
     ldp:
       interface: true
@@ -354,7 +355,8 @@ router_bgp:
   vlans:
   - id: 10
     metadata:
-      tenant: TENANT_A
+      tenants:
+      - TENANT_A
     rd: 100.70.0.6:10010
     route_targets:
       both:
@@ -363,7 +365,8 @@ router_bgp:
     - learned
   - id: 20
     metadata:
-      tenant: TENANT_A
+      tenants:
+      - TENANT_A
     rd: 100.70.0.6:123456
     route_targets:
       both:
@@ -372,7 +375,8 @@ router_bgp:
     - learned
   - id: 2020
     metadata:
-      tenant: TENANT_B
+      tenants:
+      - TENANT_B
     rd: 100.70.0.6:22020
     route_targets:
       both:
@@ -518,7 +522,8 @@ vlan_interfaces:
   shutdown: false
   vrf: TENANT_B_INTRA
   metadata:
-    tenant: TENANT_B
+    tenants:
+    - TENANT_B
     tags:
     - tag1
 vlan_internal_order:
@@ -530,23 +535,28 @@ vlans:
 - id: 10
   name: TENANT_A_L2_SERVICE
   metadata:
-    tenant: TENANT_A
+    tenants:
+    - TENANT_A
 - id: 20
   name: TENANT_A_L2_SERVICE
   metadata:
-    tenant: TENANT_A
+    tenants:
+    - TENANT_A
 - id: 2020
   name: TENANT_B_INSIDE_FW
   metadata:
-    tenant: TENANT_B
+    tenants:
+    - TENANT_B
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TENANT_B_INTRA
   ip_routing: true
   metadata:
-    tenant: TENANT_B
+    tenants:
+    - TENANT_B
 - name: TENANT_B_WAN
   ip_routing: true
   metadata:
-    tenant: TENANT_B
+    tenants:
+    - TENANT_B

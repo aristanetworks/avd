@@ -9,10 +9,12 @@ from typing import TYPE_CHECKING
 from anta.input_models.security import IPSecPeer
 from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn
 
+from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
-from ._base_classes import AntaTestInputFactory
+from .base_classes import AntaTestInputFactory
+from .decorators import skip_if_missing_config
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -26,6 +28,7 @@ class VerifyAPIHttpsSSLInputFactory(AntaTestInputFactory[VerifyAPIHttpsSSL.Input
     `management_api_http.https_ssl_profile` of the device structured config.
     """
 
+    @skip_if_missing_config(StructuredConfigKey.HTTPS_SSL_PROFILE)
     def create(self) -> Iterator[VerifyAPIHttpsSSL.Input]:
         """Generate the inputs for the `VerifyAPIHttpsSSL test."""
         if not (profile := self.structured_config.management_api_http.https_ssl_profile):
@@ -47,6 +50,7 @@ class VerifySpecificIPSecConnInputFactory(AntaTestInputFactory[VerifySpecificIPS
     It deduplicates connections and always uses the default VRF.
     """
 
+    @skip_if_missing_config(StructuredConfigKey.ROUTER_PATH_SELECTION)
     def create(self) -> Iterator[VerifySpecificIPSecConn.Input]:
         """Generate the inputs for the `VerifySpecificIPSecConn` test."""
         ip_security_connections: list[IPSecPeer] = []

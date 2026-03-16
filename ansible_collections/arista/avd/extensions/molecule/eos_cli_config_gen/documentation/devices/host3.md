@@ -14,9 +14,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -179,12 +179,26 @@ daemon TerminAttr
 | Sequence-numbers | false |
 | RFC5424 | False |
 
+| VRF | Source Interface |
+| --- | ---------------- |
+| - | Ethernet1 |
+| check_source_interface_table_created | Ethernet1 |
+
+| VRF | Hosts | Ports | Protocol | SSL-profile |
+| --- | ----- | ----- | -------- | ----------- |
+| check_source_interface_table_created | 1.2.3.4 | Default | UDP | - |
+| check_source_interface_table_created | 2001:db8::1:2:3:4 | Default | UDP | - |
+
 #### Logging Servers and Features Device Configuration
 
 ```eos
 !
 logging synchronous level critical
+logging vrf check_source_interface_table_created host 1.2.3.4
+logging vrf check_source_interface_table_created host 2001:db8::1:2:3:4
 logging format timestamp traditional year timezone
+logging local-interface Ethernet1
+logging vrf check_source_interface_table_created source-interface Ethernet1
 ```
 
 ### MCS Client Summary
@@ -271,7 +285,6 @@ spanning-tree mst configuration
 ```eos
 !
 router isis EVPN_UNDERLAY
-   set-overload-bit
    set-overload-bit on-startup 55
    spf-interval 250 30
    authentication mode shared-secret profile test1 algorithm md5 rx-disabled
@@ -299,6 +312,12 @@ ASN Notation: asplain
 | graceful-restart-helper long-lived |
 | bgp additional-paths send limit 5 |
 
+#### Route Distinguisher
+
+| Address Families | Range |
+| ---------------- | ----- |
+| l3-vrf | - |
+
 #### Router BGP EVPN Address Family
 
 #### Router BGP IPv4 Labeled Unicast
@@ -325,6 +344,9 @@ router bgp 65101.0001
    bgp additional-paths send limit 5
    redistribute ospf include leaked route-map RM-OSPF-TO-BGP
    redistribute static
+   !
+   route-distinguisher
+      assignment auto address-family l3-vrf
    !
    address-family evpn
       bgp additional-paths send ecmp limit 10
@@ -395,7 +417,7 @@ mpls rsvp
 
 #### IP Router Multicast Summary
 
-- Multipathing via ECMP.
+- Multipathing operates via ECMP.
 
 #### Router Multicast Device Configuration
 
@@ -404,6 +426,28 @@ mpls rsvp
 router multicast
    ipv4
       multipath deterministic
+```
+
+## IPv6 DHCP Relay
+
+### IPv6 DHCP Relay Summary
+
+DhcpRelay Agent is in always-on mode.
+
+Forwarding requests with additional IPv6 addresses in the "giaddr" field is allowed.
+
+Add Option 79 - Link Layer Address Option.
+
+Add RemoteID option 37 in format MAC address, hostname and interface name.
+
+### IPv6 DHCP Relay Device Configuration
+
+```eos
+!
+ipv6 dhcp relay always-on
+ipv6 dhcp relay all-subnets default
+ipv6 dhcp relay option link-layer address
+ipv6 dhcp relay option remote-id format %m:%h:%p
 ```
 
 ## Errdisable

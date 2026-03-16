@@ -183,7 +183,7 @@ $defs:
             documentation_options:
               table: node-type-common-configuration
               hide_keys: true
-            description: Custom structured config for eos_cli_config_gen.
+            description: Custom structured config for the EOS Config schema.
             type: dict
             relaxed_validation: true
             $ref: "eos_cli_config_gen#"
@@ -414,7 +414,7 @@ $defs:
             relaxed_validation: true
             description: |
               Custom structured config applied to MLAG peer link port-channel id.
-              Added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+              Added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
               Overrides the settings on the port-channel interface level.
               "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_vlan_structured_config:
@@ -426,7 +426,7 @@ $defs:
             relaxed_validation: true
             description: |
               Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
-              Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+              Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
               Overrides the settings on the vlan interface level.
               "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_l3_vlan_structured_config:
@@ -438,7 +438,7 @@ $defs:
             relaxed_validation: true
             description: |
               Custom structured config applied to MLAG underlay L3 peering SVI interface id.
-              Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+              Added under vlan_interfaces.[name=<interface>] for the EOS Config schema.
               Overrides the settings on the vlan interface level.
               "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           short_esi:
@@ -737,6 +737,21 @@ $defs:
                   inter_domain:
                     type: bool
                     default: true
+              d_path:
+                type: dict
+                keys:
+                  enabled:
+                    description: Enable D-path for use with BGP bestpath selection algorithm.
+                    type: bool
+                    default: true
+                  local_domain_id:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                    type: str
+                    required: true
+                  remote_domain_id:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                    type: str
+                    required: true
               all_active_multihoming:
                 description: |-
                   Enable Active Active Multihoming architecture for EVPN Gateways.
@@ -751,14 +766,45 @@ $defs:
                     description: Enable D-path for use with BGP bestpath selection algorithm.
                     type: bool
                     default: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 7.0.0
+                      new_key: >-
+                        <node_type_key>.defaults.evpn_gateway.d_path.enabled or
+                        <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled or
+                        <node_type_key>.node_groups[].evpn_gateway.d_path.enabled or
+                        <node_type_key>.nodes[].evpn_gateway.d_path.enabled or
+                        device_profiles[].evpn_gateway.d_path.enabled or
+                        devices[].evpn_gateway.d_path.enabled
                   evpn_domain_id_local:
                     description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                     type: str
-                    required: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 7.0.0
+                      new_key: >-
+                        <node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local or
+                        <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local or
+                        <node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local or
+                        <node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local or
+                        device_profiles[].evpn_gateway.d_path.local_domain_id_local or
+                        devices[].evpn_gateway.d_path.local_domain_id_local
                   evpn_domain_id_remote:
                     description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
                     type: str
-                    required: true
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 7.0.0
+                      new_key: >-
+                        <node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id or
+                        <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id or
+                        <node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id or
+                        <node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id or
+                        device_profiles[].evpn_gateway.d_path.remote_domain_id or
+                        devices[].evpn_gateway.d_path.remote_domain_id
                   evpn_ethernet_segment:
                     type: dict
                     required: true
@@ -1290,7 +1336,9 @@ $defs:
                 type: str
                 description: |
                   By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
-                  This can be set manually if required, for example, to a value of "10.1.2.3".
+                  This value can be set manually if required:
+                  - Set to 'router_id' in order to use the device router ID as the source IP.
+                  - Set to a valid IPv4 address which will be used directly.
               mode:
                 type: str
                 valid_values:
@@ -1568,7 +1616,7 @@ $defs:
               - "hardware"
             description: |-
               Set the flow tracker type.
-              Override the `default_flow_tracker_type`` set at the `node_type_key` level.
+              Override the `default_flow_tracker_type` set at the `node_type_key` level.
               `default_flow_tracker_type` default value is `sampled`.
           underlay_multicast:
             type: dict

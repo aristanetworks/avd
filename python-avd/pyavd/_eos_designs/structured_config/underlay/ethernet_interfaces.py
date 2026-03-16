@@ -92,7 +92,7 @@ class EthernetInterfacesMixin(Protocol):
                 # IP address
                 if link.ip_address:
                     if self.shared_utils.underlay_ipv6_numbered:
-                        ethernet_interface.ipv6_address = f"{link.ip_address}/{link.prefix_length}"
+                        ethernet_interface.ipv6_addresses.append(f"{link.ip_address}/{link.prefix_length}")
                     elif "unnumbered" in link.ip_address.lower():
                         ethernet_interface.ip_address = link.ip_address
                     else:
@@ -206,7 +206,7 @@ class EthernetInterfacesMixin(Protocol):
                         ethernet_subinterface.ip_address = f"{subinterface.ip_address}/{subinterface.prefix_length}"
 
                     if subinterface.ipv6_address:
-                        ethernet_subinterface.ipv6_address = f"{subinterface.ipv6_address}/{subinterface.ipv6_prefix_length}"
+                        ethernet_subinterface.ipv6_addresses.append(f"{subinterface.ipv6_address}/{subinterface.ipv6_prefix_length}")
 
                     self.structured_config.ethernet_interfaces.append(ethernet_subinterface)
 
@@ -325,7 +325,7 @@ class EthernetInterfacesMixin(Protocol):
         for member_intf in l3_port_channel.member_interfaces:
             # derive values for peer from parent L3 port-channel
             # if not defined explicitly for member interface
-            peer = member_intf.peer if member_intf.peer else l3_port_channel.peer
+            peer = member_intf.peer or l3_port_channel.peer
             interface_description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
                 InterfaceDescriptionData(
                     shared_utils=self.shared_utils,
@@ -339,7 +339,7 @@ class EthernetInterfacesMixin(Protocol):
                 name=member_intf.name,
                 description=interface_description or None,
                 shutdown=not l3_port_channel.enabled,
-                speed=member_intf.speed if member_intf.speed else None,
+                speed=member_intf.speed or None,
                 channel_group=EosCliConfigGen.EthernetInterfacesItem.ChannelGroup(id=int(channel_group_id), mode=l3_port_channel.mode),
             )
             ethernet_interface.metadata._update(peer_interface=member_intf.peer_interface, peer_type="l3_port_channel_member", peer=peer)

@@ -32,7 +32,6 @@ validation_profiles:
       min_fabric_cards: 5
       transceiver_manufacturers:
         - Third-party vendor
-
 type: l3leaf
 l3leaf:
   defaults:
@@ -49,17 +48,17 @@ l3leaf:
       bgp_as: 923
       vtep: false
       nodes:
-        - name: 7010TX-LEAF1
+        - name: 7010tx-leaf1
           id: 3
           platform: 7010TX
           mgmt_ip: 192.168.201.116/24
           vtep: true
-        - name: 7010TX-LEAF2
+        - name: 7010tx-leaf2
           id: 4
           platform: 7010TX
           mgmt_ip: 192.168.201.117/24
   nodes:
-    - name: 7020TX-LEAF1
+    - name: 7020tx-leaf1
       bgp_as: 924
       id: 5
       platform: 7020TX

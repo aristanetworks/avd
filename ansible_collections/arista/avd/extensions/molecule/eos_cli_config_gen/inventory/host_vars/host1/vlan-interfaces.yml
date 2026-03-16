@@ -1,3 +1,4 @@
+---
 ### VLAN Interfaces ###
 vlan_interfaces:
 # Standard SVI configuration
@@ -318,7 +319,9 @@ vlan_interfaces:
   - name: Vlan43
     description: SVI Description
     shutdown: false
-    ipv6_address: a0::1/64
+    ipv6_addresses:
+      - a0::1/64
+    ipv6_address_auto_config: true
     ipv6_dhcp_relay_destinations:
       - address: a0::2
         vrf: TEST
@@ -377,7 +380,8 @@ vlan_interfaces:
   - name: Vlan44
     description: SVI Description
     shutdown: false
-    ipv6_address: a0::4/64
+    ipv6_addresses:
+      - a0::4/64
     ipv6_dhcp_relay_destinations:
       - address: a0::5
         vrf: TEST
@@ -416,40 +420,48 @@ vlan_interfaces:
     description: SVI Description
     shutdown: false
     ip_address: 10.50.26.29/27
-    ipv6_address: 1b11:3a00:22b0:0088::207/127
-    ipv6_nd_ra_disabled: true
+    ipv6_addresses:
+      - 1b11:3a00:22b0:0088::207/127
+    ipv6_nd:
+      ra:
+        disabled: true
 
   - name: Vlan1001
     description: SVI Description
     shutdown: false
     vrf: Tenant_A
     ip_address_virtual: 10.1.1.1/24
-    ipv6_address: a1::1/64
-    ipv6_nd_managed_config_flag: true
-    ipv6_nd_prefixes:
-      - ipv6_prefix: a1::/64
-        valid_lifetime: infinite
-        preferred_lifetime: infinite
-        no_autoconfig_flag: true
+    ipv6_addresses:
+      - a1::1/64
+    ipv6_nd:
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: a1::/64
+          valid_lifetime: infinite
+          preferred_lifetime: infinite
+          no_autoconfig_flag: true
 
   - name: Vlan24
     description: SVI Description
     shutdown: false
     ip_address_virtual: 10.10.24.1/24
-    ipv6_address: 1b11:3a00:22b0:6::15/64
-    ipv6_nd_managed_config_flag: true
-    ipv6_nd_prefixes:
-      - ipv6_prefix: 1b11:3a00:22b0:6::/64
-        valid_lifetime: infinite
-        preferred_lifetime: infinite
-        no_autoconfig_flag: true
+    ipv6_addresses:
+      - 1b11:3a00:22b0:6::15/64
+    ipv6_nd:
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: 1b11:3a00:22b0:6::/64
+          valid_lifetime: infinite
+          preferred_lifetime: infinite
+          no_autoconfig_flag: true
     ipv6_virtual_router_addresses:
       - 1b11:3a00:22b0:6::1
 
   - name: Vlan25
     description: SVI Description
     shutdown: false
-    ipv6_address: 1b11:3a00:22b0:16::16/64
+    ipv6_addresses:
+      - 1b11:3a00:22b0:16::16/64
     ipv6_virtual_router_addresses:
       - 1b11:3a00:22b0:16::15
       - 1b11:3a00:22b0:16::14
@@ -459,8 +471,11 @@ vlan_interfaces:
 
   - name: Vlan26
     ntp_serve: true
-    ipv6_ospf_network_point_to_point: true
-    ipv6_ospf_area: 0.0.0.29
+    ipv6_ospf:
+      process:
+        id: 100
+        area: 0.0.0.29
+      network_point_to_point: true
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.24
     ospf_cost: 99
@@ -479,26 +494,31 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_A
     ip_address_virtual: 10.1.2.1/24
-    ipv6_address: a2::1/64
-    ipv6_nd_managed_config_flag: true
-    ipv6_nd_prefixes:
-      - ipv6_prefix: a2::/64
-        valid_lifetime: infinite
-        preferred_lifetime: infinite
-        no_autoconfig_flag: true
-    ipv6_nd_ra_disabled: true
+    ipv6_addresses:
+      - a2::1/64
+    ipv6_nd:
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: a2::/64
+          valid_lifetime: infinite
+          preferred_lifetime: infinite
+          no_autoconfig_flag: true
+      ra:
+        disabled: true
 
   - name: Vlan75
     description: SVI Description
     shutdown: false
     ip_address_virtual: 10.10.75.1/24
-    ipv6_address: 1b11:3a00:22b0:1000::15/64
-    ipv6_nd_managed_config_flag: true
-    ipv6_nd_prefixes:
-      - ipv6_prefix: 1b11:3a00:22b0:1000::/64
-        valid_lifetime: infinite
-        preferred_lifetime: infinite
-        no_autoconfig_flag: true
+    ipv6_addresses:
+      - 1b11:3a00:22b0:1000::15/64
+    ipv6_nd:
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: 1b11:3a00:22b0:1000::/64
+          valid_lifetime: infinite
+          preferred_lifetime: infinite
+          no_autoconfig_flag: true
     ipv6_virtual_router_addresses:
       - 1b11:3a00:22b0:1000::1
     multicast:
@@ -522,13 +542,15 @@ vlan_interfaces:
     ip_igmp_version: 2
     ip_igmp_querier_address_virtual: true
     ip_address_virtual: 10.10.144.3/20
-    ipv6_address: 1b11:3a00:22b0:5200::15/64
-    ipv6_nd_managed_config_flag: true
-    ipv6_nd_prefixes:
-      - ipv6_prefix: 1b11:3a00:22b0:5200::/64
-        valid_lifetime: infinite
-        preferred_lifetime: infinite
-        no_autoconfig_flag: true
+    ipv6_addresses:
+      - 1b11:3a00:22b0:5200::15/64
+    ipv6_nd:
+      managed_config_flag: true
+      prefixes:
+        - ipv6_prefix: 1b11:3a00:22b0:5200::/64
+          valid_lifetime: infinite
+          preferred_lifetime: infinite
+          no_autoconfig_flag: true
     ipv6_virtual_router_addresses:
       - 1b11:3a00:22b0:5200::3
     ip_helpers:
@@ -574,7 +596,8 @@ vlan_interfaces:
 
   - name: Vlan111
     metadata:
-      tenant: Tenant_A
+      tenants:
+        - Tenant_A
       tags: ['DC1']
     description: PR01-DEMO
     shutdown: false
@@ -588,7 +611,8 @@ vlan_interfaces:
     arp_aging_timeout: 180
     ip_address: 192.0.2.2/25
     ipv6_enable: true
-    ipv6_address: 2001:db8:667::2/64
+    ipv6_addresses:
+      - 2001:db8:667::2/64
     ipv6_address_link_local: fe80::2/64
     vrrp_ids:
       - id: 1
@@ -626,7 +650,8 @@ vlan_interfaces:
     arp_aging_timeout: 180
     ip_address: 192.0.2.2/25
     ipv6_enable: true
-    ipv6_address: 2001:db8:333::2/64
+    ipv6_addresses:
+      - 2001:db8:333::2/64
     ipv6_address_link_local: fe80::2/64
     vrrp_ids:
       - id: 1
@@ -681,7 +706,8 @@ vlan_interfaces:
   - name: Vlan334
     description: v6 attached host exports
     ipv6_enable: true
-    ipv6_address: 2001:db8:334::1/64
+    ipv6_addresses:
+      - 2001:db8:334::1/64
     ipv6_attached_host_route_export:
       enabled: true
       distance: 19
@@ -689,7 +715,8 @@ vlan_interfaces:
   - name: Vlan335
     description: v6 attached host exports
     ipv6_enable: true
-    ipv6_address: 2001:db8:335::1/64
+    ipv6_addresses:
+      - 2001:db8:335::1/64
     ipv6_attached_host_route_export:
       enabled: true
       prefix_length: 64
@@ -697,7 +724,8 @@ vlan_interfaces:
   - name: Vlan336
     description: v6 attached host exports
     ipv6_enable: true
-    ipv6_address: 2001:db8:336::1/64
+    ipv6_addresses:
+      - 2001:db8:336::1/64
     ipv6_attached_host_route_export:
       enabled: true
       distance: 18
@@ -710,15 +738,41 @@ vlan_interfaces:
 
   - name: Vlan338
     description: v6 dhcp relay all-subnets
-    ipv6_address: 2001:db8:338::1/64
+    ipv6_addresses:
+      - 2001:db8:338::1/64
     ipv6_dhcp_relay_all_subnets: true
 
   - name: Vlan339
     description: v6 nd options
     ipv6_enable: true
-    ipv6_address: 2001:db8:339::1/64
-    ipv6_nd_other_config_flag: true
-    ipv6_nd_cache:
-      dynamic_capacity: 900
-      expire: 250
-      refresh_always: true
+    ipv6_addresses:
+      - 2001:db8:339::1/64
+    ipv6_nd:
+      other_config_flag: true
+      cache:
+        dynamic_capacity: 900
+        expire: 250
+        refresh_always: true
+
+  - name: Vlan340
+    description: v6 nd new structure
+    ipv6_enable: true
+    ipv6_addresses:
+      - 2001:db8:340::1/64
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
+      other_config_flag: true
+      cache:
+        dynamic_capacity: 1000
+        expire: 300
+        refresh_always: true
+      prefixes:
+        - ipv6_prefix: 2001:db8:340::/64
+          valid_lifetime: 100
+          preferred_lifetime: 50
+          no_autoconfig_flag: true

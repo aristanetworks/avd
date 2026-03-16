@@ -51,9 +51,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -124,9 +124,9 @@ ntp server vrf MGMT 0.pool.ntp.org prefer
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -155,14 +155,14 @@ management api http-commands
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
 | admin | 15 | network-admin | False | - |
-| ansible | 15 | network-admin | False | - |
+| arista | 15 | network-admin | False | - |
 
 #### Local Users Device Configuration
 
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
-username ansible privilege 15 role network-admin secret sha512 <removed>
+username arista privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ### Enable Password
@@ -231,12 +231,12 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_dc1-leaf1a_Ethernet1 | - | 2001:db8:2::1/64 | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_dc1-leaf1b_Ethernet1 | - | 2001:db8:2:2::1/64 | default | 1500 | False | - | - | - | - |
-| Ethernet3 | P2P_dc1-leaf2a_Ethernet1 | - | 2001:db8:2:4::1/64 | default | 1500 | False | - | - | - | - |
-| Ethernet4 | P2P_dc1-leaf2b_Ethernet1 | - | 2001:db8:2:6::1/64 | default | 1500 | False | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
+| Ethernet1 | P2P_dc1-leaf1a_Ethernet1 | - | 2001:db8:2::1/64 | default | 1500 | False | - | - | - | - | - |
+| Ethernet2 | P2P_dc1-leaf1b_Ethernet1 | - | 2001:db8:2:2::1/64 | default | 1500 | False | - | - | - | - | - |
+| Ethernet3 | P2P_dc1-leaf2a_Ethernet1 | - | 2001:db8:2:4::1/64 | default | 1500 | False | - | - | - | - | - |
+| Ethernet4 | P2P_dc1-leaf2b_Ethernet1 | - | 2001:db8:2:6::1/64 | default | 1500 | False | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -283,8 +283,8 @@ interface Ethernet4
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | 2001:db8:0:1::1/64 |
 
 #### Loopback Interfaces Device Configuration
@@ -391,7 +391,7 @@ ASN Notation: asplain
 | -------- | ----- |
 | Address Family | ipv6 |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 256000 |
 
 #### BGP Neighbors
 
@@ -433,7 +433,7 @@ router bgp 65100
    neighbor IPv6-UNDERLAY-PEERS peer group
    neighbor IPv6-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv6-UNDERLAY-PEERS send-community
-   neighbor IPv6-UNDERLAY-PEERS maximum-routes 12000
+   neighbor IPv6-UNDERLAY-PEERS maximum-routes 256000
    neighbor 2001:db8:1:1::1 peer group EVPN-OVERLAY-PEERS
    neighbor 2001:db8:1:1::1 remote-as 65101
    neighbor 2001:db8:1:1::1 description dc1-leaf1a_Loopback0

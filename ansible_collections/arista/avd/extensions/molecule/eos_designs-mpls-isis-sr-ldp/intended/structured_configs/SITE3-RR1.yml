@@ -12,7 +12,8 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 100.70.0.12/32
-  ipv6_address: 2000:1234:ffff:ffff::c/128
+  ipv6_addresses:
+  - 2000:1234:ffff:ffff::c/128
   mpls:
     ldp:
       interface: true
@@ -64,16 +65,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: MPLS-OVERLAY-PEERS
-    metadata:
-      type: mpls
-    remote_as: '65000'
-    update_source: Loopback0
-    route_reflector_client: true
-    bfd: true
-    password: SHsTgDgjVUU5a9blyxSt3Q==
-    send_community: all
-    maximum_routes: 0
   - name: RR-OVERLAY-PEERS
     metadata:
       type: mpls
@@ -96,14 +87,10 @@ router_bgp:
     description: SITE2-RR1_Loopback0
   address_family_ipv4:
     peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: false
     - name: RR-OVERLAY-PEERS
       activate: false
   address_family_vpn_ipv4:
     peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: true
     - name: RR-OVERLAY-PEERS
       activate: true
 router_isis:

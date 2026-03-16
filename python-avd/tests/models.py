@@ -18,6 +18,7 @@ from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._utils import get
 from pyavd.api.pool_manager import PoolManager
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from ansible.inventory.host import Host as AnsibleHost
@@ -144,14 +145,16 @@ class MoleculeScenario:
         self._inventory = InventoryManager(loader=DataLoader(), sources=[inventory_path.as_posix()])
         self._vars = VariableManager(loader=DataLoader(), inventory=self._inventory)
         self.hosts = []
-        for host in self._inventory.get_hosts():
-            if self.name.startswith("example-") and host.name in ["cvp", "cloudvision"]:
+        inventory_hosts: dict[str, AnsibleHost] = self._inventory.hosts
+        for hostname in natural_sort(inventory_hosts, ignore_case=False):
+            if hostname.startswith("example-") and hostname in ["cvp", "cloudvision"]:
                 # Ignore CVP devices in examples without bloating the example without test groups.
                 continue
+            host: AnsibleHost = inventory_hosts[hostname]
             if "IGNORE_IN_PYTEST" in [group.name for group in host.groups]:
                 # Ignore members of the group IGNORE_IN_PYTEST from Molecule scenarios.
                 continue
-            self.hosts.append(MoleculeHost(name=host.name, ansible_host=host, scenario=self))
+            self.hosts.append(MoleculeHost(name=hostname, ansible_host=host, scenario=self))
         self.pool_manager = PoolManager(self.path / "intended")
 
         self.extra_python_paths = []
@@ -164,7 +167,7 @@ class MoleculeScenario:
         """The AVD facts calculated from the full Ansible inventory in the molecule scenario."""
         all_hostvars = {host.name: deepcopy(host.hostvars) for host in self.hosts}
         all_inputs = {hostname: EosDesigns._from_dict(hostvars) for hostname, hostvars in all_hostvars.items()}
-        return get_facts(all_inputs=all_inputs, pool_manager=self.pool_manager, all_hostvars=all_hostvars, digital_twin=self.digital_twin)
+        return get_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=self.pool_manager, digital_twin=self.digital_twin)
 
     @cached_property
     def fabric_documentation(self) -> str | None:

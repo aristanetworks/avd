@@ -18,19 +18,25 @@ interface {{ loopback_interface.name }}
 {%     if loopback_interface.vrf is arista.avd.defined %}
    vrf {{ loopback_interface.vrf }}
 {%     endif %}
-{%     if loopback_interface.ip_proxy_arp is arista.avd.defined(true) %}
-   ip proxy-arp
-{%     endif %}
 {%     if loopback_interface.ip_address is arista.avd.defined %}
    ip address {{ loopback_interface.ip_address }}
 {%         for ip_address_secondary in loopback_interface.ip_address_secondaries | arista.avd.natural_sort %}
    ip address {{ ip_address_secondary }} secondary
 {%         endfor %}
 {%     endif %}
+{%     if loopback_interface.ip_proxy_arp is arista.avd.defined(true) %}
+   ip proxy-arp
+{%     endif %}
 {%     if loopback_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
-{%     if loopback_interface.ipv6_address is arista.avd.defined %}
+{%     if loopback_interface.ipv6_addresses is arista.avd.defined %}
+{%         for ipv6_address in loopback_interface.ipv6_addresses | arista.avd.natural_sort %}
+   ipv6 address {{ ipv6_address }}
+{%         endfor %}
+{%     elif loopback_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+   ipv6 address auto-config
+{%     elif loopback_interface.ipv6_address is arista.avd.defined %}
    ipv6 address {{ loopback_interface.ipv6_address }}
 {%     endif %}
 {%     if loopback_interface.mpls.ldp.interface is arista.avd.defined(true) %}

@@ -152,12 +152,12 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
 
         vlans = set()
         trunk_groups = set()
-        for fabric_switch in self.shared_utils.all_fabric_devices:
-            fabric_switch_facts = self.get_peer_facts_generator(fabric_switch)
-            if fabric_switch_facts.shared_utils.uplink_type == "port-channel" and self.shared_utils.hostname in fabric_switch_facts.uplink_peers:
-                fabric_switch_endpoint_vlans, fabric_switch_endpoint_trunk_groups = fabric_switch_facts._endpoint_vlans_and_trunk_groups
-                vlans.update(fabric_switch_endpoint_vlans)
-                trunk_groups.update(fabric_switch_endpoint_trunk_groups)
+        for downlink_switch in self._downlink_switches:
+            downlink_switch_facts = self.get_peer_facts_generator(downlink_switch)
+            if downlink_switch_facts.shared_utils.uplink_type == "port-channel":
+                downlink_switch_endpoint_vlans, downlink_switch_endpoint_trunk_groups = downlink_switch_facts._endpoint_vlans_and_trunk_groups
+                vlans.update(downlink_switch_endpoint_vlans)
+                trunk_groups.update(downlink_switch_endpoint_trunk_groups)
 
         return vlans, trunk_groups
 

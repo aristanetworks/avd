@@ -33,14 +33,14 @@ node_type_keys:
 default_node_types:
   - node_type: spine
     match_hostnames:
-      - ".*SPINE.*"
+      - ".*spine.*"
   # Order matters
   - node_type: l2leaf
     match_hostnames:
-      - ".*L2LEAF.*"
+      - ".*l2leaf.*"
   - node_type: l3leaf
     match_hostnames:
-      - ".*LEAF.*"
+      - ".*leaf.*"
 
 bgp_as: 65000
 
@@ -51,7 +51,7 @@ l3leaf:
     vtep_loopback_ipv4_pool: 172.16.0.0/24
     virtual_router_mac_address: cafe:cafe:cafe
     uplink_ipv4_pool: 10.42.42.0/24
-    uplink_switches: [ UPLINK_P2P_VRFS_TESTS_SPINE1, UPLINK_P2P_VRFS_TESTS_SPINE2 ]
+    uplink_switches: [ uplink-p2p-vrfs-tests-spine1, uplink-p2p-vrfs-tests-spine2 ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     uplink_type: p2p-vrfs
     uplink_macsec:
@@ -68,12 +68,12 @@ l3leaf:
     filter:
       always_include_vrfs_in_tenants: [TenantA, TenantB]
   nodes:
-    - name: UPLINK_P2P_VRFS_TESTS_LEAF1
+    - name: uplink-p2p-vrfs-tests-leaf1
       id: 3
       uplink_switch_interfaces: [ Ethernet1, Ethernet2 ]
 
     # Test leaf with underlay_ipv6_numbered (set in hostvars) and p2p_uplinks_vrf
-    - name: UPLINK_P2P_VRFS_TESTS_LEAF2
+    - name: uplink-p2p-vrfs-tests-leaf2
       id: 5
       loopback_ipv6_pool: 2001:db8:1:0::1/56
       vtep_loopback_ipv6_pool: 2001:db8:2:0::1/56
@@ -84,10 +84,10 @@ l3leaf:
 l2leaf:
   defaults:
     platform: vEOS-LAB
-    uplink_switches: [ UPLINK_P2P_VRFS_TESTS_LEAF1, UPLINK_P2P_VRFS_TESTS_LEAF1]
+    uplink_switches: [ uplink-p2p-vrfs-tests-leaf1, uplink-p2p-vrfs-tests-leaf1]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
   nodes:
-    - name: UPLINK_P2P_VRFS_TESTS_L2LEAF1
+    - name: uplink-p2p-vrfs-tests-l2leaf1
       id: 4
       uplink_switch_interfaces: [ Ethernet51, Ethernet52 ]
       filter:
@@ -98,14 +98,14 @@ spine:
     platform: vEOS-LAB
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
-    - name: UPLINK_P2P_VRFS_TESTS_SPINE1
+    - name: uplink-p2p-vrfs-tests-spine1
       id: 1
       filter:
         # TenantC to check that the VRF attracted from L2LEAF1 on LEAF1 makes it
         # to the uplink
         always_include_vrfs_in_tenants: [TenantB, TenantC]
         tags: [not-on-spine-2]
-    - name: UPLINK_P2P_VRFS_TESTS_SPINE2
+    - name: uplink-p2p-vrfs-tests-spine2
       id: 2
       filter:
         always_include_vrfs_in_tenants: [TenantA]
@@ -140,6 +140,6 @@ tenants:
             ip_address_virtual: 172.16.0.1/24
 
 network_ports:
-  - switches: [ UPLINK_P2P_VRFS_TESTS_L2LEAF1 ]
+  - switches: [ uplink-p2p-vrfs-tests-l2leaf1 ]
     switch_ports: [ Ethernet10 ]
     vlans: 66

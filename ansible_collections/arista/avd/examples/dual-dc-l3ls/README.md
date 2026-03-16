@@ -40,6 +40,12 @@ There are two playbooks included in this example to show the following:
 - Building the intended configuration and documentation
 - Deploying the configuration directly to the switches using eAPI
 
+## AVD Playground
+
+--8<--
+ansible_collections/arista/avd/examples/common/start-avd-playground.md
+--8<--
+
 ## Installation
 
 --8<--
@@ -224,7 +230,7 @@ In this section, only additions to the previous example will be discussed. The o
 
 ```yaml title="FABRIC.yml"
 --8<--
-ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/FABRIC.yml:77:98
+ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/FABRIC.yml:80:101
 --8<--
 ```
 
@@ -260,7 +266,7 @@ ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_SPINES.yml
 2. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0.
 3. `bgp_as` defines the BGP AS number.
 4. `nodes` defines the spine switches using the hostnames defined in the inventory.
-5. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc2-spine1 will get the IPv4 address 10.255.128.11/27 assigned to the Loopback0 interface.
+5. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc2-spine1 will get the IPv4 address 10.255.128.1/27 assigned to the Loopback0 interface.
 6. `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier, Ansible will perform name lookups using the hostnames specified in the inventory unless using the `ansible_host` option. However, there is no automatic mechanism to grab the result of the name lookup and use that to generate the management interface configuration.
 
 The following section covers the L3 leaf switches`ansible-avd-examples/dual-dc-l3ls/group_vars/DC2_L3_LEAFS.yml`. Significantly more settings need to be set compared to the spine switches:

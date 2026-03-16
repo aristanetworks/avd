@@ -15,10 +15,8 @@
 
 | Name | Interfaces |
 | ---- | ---------- |
-{%         for interface_set in monitor_connectivity.interface_sets | arista.avd.natural_sort('name') %}
-{%             if interface_set.name is arista.avd.defined and interface_set.interfaces is arista.avd.defined %}
+{%         for interface_set in monitor_connectivity.interface_sets | arista.avd.natural_sort(sort_key='name', ignore_case=false) | selectattr("interfaces","arista.avd.defined") %}
 | {{ interface_set.name }} | {{ interface_set.interfaces }} |
-{%             endif %}
 {%         endfor %}
 {%     endif %}
 
@@ -33,10 +31,8 @@
 
 | Host Name | Description | IPv4 Address | ICMP Echo Size | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | -------------- | --------------------- | ------------ | --- |
-{%         for host in monitor_connectivity.hosts | arista.avd.natural_sort('name') %}
-{%             if host.name is arista.avd.defined %}
-| {{ host.name }} | {{ host.description | arista.avd.default('-') }} | {{ host.ip | arista.avd.default('-') }} | {{ host.icmp_echo_size | arista.avd.default('-') }} | {{ host.local_interfaces | arista.avd.default('-') }} | {{ host.address_only | arista.avd.default(true) }} | {{ host.url | arista.avd.default('-') }} |
-{%             endif %}
+{%         for host in monitor_connectivity.hosts | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+| {{ host.name }} | {{ host.description | arista.avd.default(host.single_line_description, '-') }} | {{ host.ip | arista.avd.default('-') }} | {{ host.icmp_echo_size | arista.avd.default('-') }} | {{ host.local_interfaces | arista.avd.default('-') }} | {{ host.address_only | arista.avd.default(true) }} | {{ host.url | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
 {%     if monitor_connectivity.vrfs is arista.avd.defined %}
@@ -45,39 +41,31 @@
 
 | Name | Description | Default Interface Set | Address Only |
 | ---- | ----------- | --------------------- | ------------ |
-{%         for vrf in monitor_connectivity.vrfs | arista.avd.natural_sort('name') %}
-{%             if vrf.name is arista.avd.defined %}
-| {{ vrf.name }} | {{ vrf.description | arista.avd.default('-') }} | {{ vrf.local_interfaces | arista.avd.default('-') }} | {{ vrf.address_only | arista.avd.default(true) }} |
-{%             endif %}
+{%         for vrf in monitor_connectivity.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+| {{ vrf.name }} | {{ vrf.description | arista.avd.default(vrf.single_line_description, '-') }} | {{ vrf.local_interfaces | arista.avd.default('-') }} | {{ vrf.address_only | arista.avd.default(true) }} |
 {%         endfor %}
-{%         for vrf in monitor_connectivity.vrfs | arista.avd.natural_sort('name') %}
-{%             if vrf.name is arista.avd.defined %}
+{%         for vrf in monitor_connectivity.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 
-#### Vrf {{ vrf.name }} Configuration
-{%                 if vrf.interface_sets is arista.avd.defined %}
+#### VRF {{ vrf.name }} Configuration
+{%             if vrf.interface_sets is arista.avd.defined %}
 
 ##### Interface Sets
 
 | Name | Interfaces |
 | ---- | ---------- |
-{%                     for interface_set in vrf.interface_sets | arista.avd.natural_sort('name') %}
-{%                         if interface_set.name is arista.avd.defined and interface_set.interfaces is arista.avd.defined %}
+{%                 for interface_set in vrf.interface_sets | arista.avd.natural_sort(sort_key='name', ignore_case=false) | selectattr("interfaces","arista.avd.defined") %}
 | {{ interface_set.name }} | {{ interface_set.interfaces }} |
-{%                         endif %}
-{%                     endfor %}
-{%                 endif %}
-{%                 if vrf.hosts is arista.avd.defined %}
+{%                 endfor %}
+{%             endif %}
+{%             if vrf.hosts is arista.avd.defined %}
 
 ##### Host Parameters
 
 | Host Name | Description | IPv4 Address | ICMP Echo Size | Probing Interface Set | Address Only | URL |
 | --------- | ----------- | ------------ | -------------- | --------------------- | ------------ | --- |
-{%                     for host in vrf.hosts | arista.avd.natural_sort('name') %}
-{%                         if host.name is arista.avd.defined %}
-| {{ host.name }} | {{ host.description | arista.avd.default('-') }} | {{ host.ip | arista.avd.default('-') }} | {{ host.icmp_echo_size | arista.avd.default('-') }} | {{ host.local_interfaces | arista.avd.default('-') }} | {{ host.address_only | arista.avd.default(true) }} | {{ host.url | arista.avd.default('-') }} |
-{%                         endif %}
-{%                     endfor %}
-{%                 endif %}
+{%                 for host in vrf.hosts | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
+| {{ host.name }} | {{ host.description | arista.avd.default(host.single_line_description, '-') }} | {{ host.ip | arista.avd.default('-') }} | {{ host.icmp_echo_size | arista.avd.default('-') }} | {{ host.local_interfaces | arista.avd.default('-') }} | {{ host.address_only | arista.avd.default(true) }} | {{ host.url | arista.avd.default('-') }} |
+{%                 endfor %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}

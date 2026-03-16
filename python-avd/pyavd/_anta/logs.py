@@ -57,7 +57,7 @@ class TestLoggerAdapter(LoggerAdapter):
 
         prefix = f"<{device}> {test}"
         if context:
-            prefix += f" {context}"
+            prefix += f" ({context})"
 
         return f"{prefix} {formatted_msg}", kwargs
 
@@ -95,6 +95,7 @@ class LogMessage(Enum):
     INTERFACE_VALIDATION_DISABLED = "{interface} skipped - validate_state or validate_lldp disabled"
     INTERFACE_NO_IP = "{interface} skipped - No IP address configured"
     INTERFACE_UNNUMBERED = "{interface} skipped - IP unnumbered interface"
+    INTERFACE_NOT_INBAND_MGMT = "{interface} skipped - Not an inband management interface"
 
     # Vxlan interface state messages
     INTERFACE_VXLAN1_NO_VNI = "Vxlan1 skipped - No VNI configured"
@@ -117,3 +118,5 @@ class LogMessage(Enum):
 
     # Device role message
     DEVICE_IS_WAN_ROUTER = "skipped - Device is a WAN router"
+    DEVICE_IS_NOT_VTEP = "skipped - Device is not a VTEP"
+    DEVICE_IS_NOT_WAN_ROUTER = "skipped - Device is not a WAN router"

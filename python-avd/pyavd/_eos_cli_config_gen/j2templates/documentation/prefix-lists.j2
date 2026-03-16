@@ -10,15 +10,17 @@
 
 #### Prefix-lists Summary
 
-{%     for prefix_list in prefix_lists | arista.avd.natural_sort('name') %}
+{%     for prefix_list in prefix_lists | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
 ##### {{ prefix_list.name }}
 
+{%         if prefix_list.sequence_numbers is arista.avd.defined %}
 | Sequence | Action |
 | -------- | ------ |
-{%         for sequence in prefix_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%             for sequence in prefix_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
 | {{ sequence.sequence }} | {{ sequence.action }} |
-{%         endfor %}
+{%             endfor %}
 
+{%         endif %}
 {%     endfor %}
 #### Prefix-lists Device Configuration
 

@@ -18,7 +18,8 @@ ethernet_interfaces:
   description: P2P_dc1-leaf1a_Ethernet1
   shutdown: false
   mtu: 1500
-  ipv6_address: 2001:db8:2::1/64
+  ipv6_addresses:
+  - 2001:db8:2::1/64
   metadata:
     peer: dc1-leaf1a
     peer_interface: Ethernet1
@@ -29,7 +30,8 @@ ethernet_interfaces:
   description: P2P_dc1-leaf1b_Ethernet1
   shutdown: false
   mtu: 1500
-  ipv6_address: 2001:db8:2:2::1/64
+  ipv6_addresses:
+  - 2001:db8:2:2::1/64
   metadata:
     peer: dc1-leaf1b
     peer_interface: Ethernet1
@@ -40,7 +42,8 @@ ethernet_interfaces:
   description: P2P_dc1-leaf2a_Ethernet1
   shutdown: false
   mtu: 1500
-  ipv6_address: 2001:db8:2:4::1/64
+  ipv6_addresses:
+  - 2001:db8:2:4::1/64
   metadata:
     peer: dc1-leaf2a
     peer_interface: Ethernet1
@@ -51,7 +54,8 @@ ethernet_interfaces:
   description: P2P_dc1-leaf2b_Ethernet1
   shutdown: false
   mtu: 1500
-  ipv6_address: 2001:db8:2:6::1/64
+  ipv6_addresses:
+  - 2001:db8:2:6::1/64
   metadata:
     peer: dc1-leaf2b
     peer_interface: Ethernet1
@@ -63,9 +67,11 @@ ip_domain_lookup:
   source_interfaces:
   - name: Management1
     vrf: MGMT
-ip_name_servers:
-- ip_address: 192.168.1.1
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: MGMT
+    servers:
+    - ip_address: 192.168.1.1
 ip_routing: true
 ipv6_prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY-V6
@@ -78,15 +84,16 @@ local_users:
   privilege: 15
   role: network-admin
   no_password: true
-- name: ansible
+- name: arista
   privilege: 15
   role: network-admin
-  sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ipv6_address: 2001:db8:0:1::1/64
+  ipv6_addresses:
+  - 2001:db8:0:1::1/64
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -101,7 +108,7 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: vEOS-lab
+  platform: cEOSLab
   fabric_name: FABRIC
   validate_hardware:
     enabled: false
@@ -139,7 +146,7 @@ router_bgp:
       type: ipv6
     password: F0bdF6JLcJtagc6PCN8W0Q==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 256000
   - name: EVPN-OVERLAY-PEERS
     metadata:
       type: evpn

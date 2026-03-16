@@ -90,11 +90,13 @@ vlans:
 - id: 11
   name: VLAN11
   metadata:
-    tenant: SFLOW
+    tenants:
+    - SFLOW
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

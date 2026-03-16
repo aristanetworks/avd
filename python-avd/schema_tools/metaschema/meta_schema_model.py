@@ -72,6 +72,8 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         """Date after which the key will be removed in the next major version."""
         url: str | None = None
         """URL detailing the deprecation and migration guidelines."""
+        allow_with_new_key: bool | None = False
+        """Allow the deprecated key to be used in parallel with the new key without raising a conflict error."""
 
     class DocumentationOptions(BaseModel):
         """Schema field options used for controlling documentation generation."""
@@ -194,6 +196,8 @@ class AvdSchemaBaseModel(BaseModel, ABC):
 
         Like "rootkey.subkey.[].mykey".
         """
+        if self._parent_schema is None:
+            return [self._key] if self._key else []
         # A list item has no key, so add "[]" to the parent schema for representing the list-item
         if not self._key:
             return [*self._parent_schema._path, "[]"]
@@ -497,7 +501,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
         hide_keys: bool | None = None
         # """
         # Prevent keys of the dict from being displayed in the generated documentation.
-        # This is used for structured_config where we wish to avoid displaying the full eos_cli_config_gen schema everywhere.
+        # This is used for structured_config where we wish to avoid displaying the full EOS Config schema everywhere.
         # """
 
     # AvdSchema field properties

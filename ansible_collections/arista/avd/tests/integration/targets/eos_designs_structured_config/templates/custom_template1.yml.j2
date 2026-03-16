@@ -8,3 +8,6 @@ custom_template1_var: {{ (l2leaf.nodes | selectattr("name", "eq", "testhost") | 
 custom_template1_list:
   - custom_template1_item
 custom_template1_none_var: {# Nothing here on purpose. Means "null" #}
+
+{# Testing access to structured config #}
+my_is_deployed: {{ metadata.is_deployed }}

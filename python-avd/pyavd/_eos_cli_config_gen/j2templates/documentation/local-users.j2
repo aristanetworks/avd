@@ -12,7 +12,7 @@
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
-{%     for local_user in local_users | arista.avd.natural_sort('name') %}
+{%     for local_user in local_users | arista.avd.natural_sort('name', ignore_case=false) %}
 {%         set role = local_user.role | arista.avd.default("-") %}
 {%         set privilege = local_user.privilege | arista.avd.default("-") %}
 {%         set disabled = local_user.disabled | arista.avd.default(false) %}
