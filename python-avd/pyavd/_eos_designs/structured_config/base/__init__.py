@@ -356,12 +356,8 @@ class AvdStructuredConfigBaseProtocol(
         )
 
         # Apply monitor_layer1 settings
-        if settings.monitor_layer1:
-            self.structured_config.monitor_layer1._update(
-                enabled=settings.monitor_layer1.enabled,
-                logging_mac_fault=settings.monitor_layer1.logging_mac_fault,
-                logging_transceiver=settings.monitor_layer1.logging_transceiver,
-            )
+        if settings.monitor_layer1.enabled:
+            self.structured_config.monitor_layer1 = settings.monitor_layer1._cast_as(EosCliConfigGen.MonitorLayer1)
 
         # Temporary structure to detect source interface conflicts
         vrf_logging_config = EosCliConfigGen.Logging.Vrfs()
@@ -398,7 +394,7 @@ class AvdStructuredConfigBaseProtocol(
         """Set monitor_connectivity based on the input data model."""
         if not self.inputs.monitor_connectivity:
             return
-
+        # Here _cast_as is not possible since there is default value set for address_only.
         self.structured_config.monitor_connectivity._update(
             shutdown=self.inputs.monitor_connectivity.shutdown,
             interval=self.inputs.monitor_connectivity.interval,
