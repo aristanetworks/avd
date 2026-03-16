@@ -123,3 +123,16 @@ tenant_c:
             peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
             nodes: [ dc1-bl2b ]
             description: test_duplicate_peer_ip_address
+      # Test for VRF across multiple tenants with MLAG IBGP peering enabled
+      # This VRF is also defined in Tenant_B to test that the same VRF name
+      # across multiple tenants doesn't create duplicate MLAG L3 peering VLAN interfaces
+      - name: MULTI_TENANT_VRF_TEST
+        vrf_id: 99
+        vrf_vni: 99099
+        enable_mlag_ibgp_peering_vrfs: true
+        svis:
+          - id: 3099
+            name: MULTI_TENANT_VRF_TEST_C
+            tags: ['svc3only']
+            enabled: true
+            ip_address_virtual: 10.99.99.1/24

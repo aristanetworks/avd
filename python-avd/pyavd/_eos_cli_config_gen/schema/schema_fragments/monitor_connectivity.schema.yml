@@ -49,6 +49,17 @@ keys:
               type: str
             description:
               type: str
+              description: |-
+                Description in the form of
+                ```
+                description
+                <description>
+                ```
+            single_line_description:
+              type: str
+              description: |-
+                Description in the form of `description <description>`.
+                Supported in EOS versions 4.32.2F and above.
             ip:
               type: str
             icmp_echo_size:
@@ -85,6 +96,17 @@ keys:
                 - int
             description:
               type: str
+              description: |-
+                Description in the form of
+                ```
+                description
+                <description>
+                ```
+            single_line_description:
+              type: str
+              description: |-
+                Description in the form of `description <description>`.
+                Supported in EOS versions 4.32.2F and above.
             interface_sets:
               type: list
               primary_key: name
@@ -116,6 +138,17 @@ keys:
                     type: str
                   description:
                     type: str
+                    description: |-
+                      Description in the form of
+                      ```
+                      description
+                      <description>
+                      ```
+                  single_line_description:
+                    type: str
+                    description: |-
+                      Description in the form of `description <description>`.
+                      Supported in EOS versions 4.32.2F and above.
                   ip:
                     type: str
                   icmp_echo_size:

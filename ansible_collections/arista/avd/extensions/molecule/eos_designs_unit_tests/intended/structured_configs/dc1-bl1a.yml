@@ -534,10 +534,6 @@ router_bgp:
     peer_groups:
     - name: UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
-    - name: EVPN-OVERLAY-CORE
-      activate: false
   vrfs:
   - name: Tenant_A_L3_VRF_Zone
     rd: 192.168.254.14:15

@@ -1950,7 +1950,7 @@ keys:
     description: Domain Name.
   domain_list:
     type: list
-    description: Search list of DNS domains.
+    description: Domain names to complete unqualified host names.
     items:
       type: str
       description: Domain name.
@@ -10150,6 +10150,20 @@ keys:
               type: str
             description:
               type: str
+              description: 'Description in the form of
+
+                ```
+
+                description
+
+                <description>
+
+                ```'
+            single_line_description:
+              type: str
+              description: 'Description in the form of `description <description>`.
+
+                Supported in EOS versions 4.32.2F and above.'
             ip:
               type: str
             icmp_echo_size:
@@ -10188,6 +10202,20 @@ keys:
               - int
             description:
               type: str
+              description: 'Description in the form of
+
+                ```
+
+                description
+
+                <description>
+
+                ```'
+            single_line_description:
+              type: str
+              description: 'Description in the form of `description <description>`.
+
+                Supported in EOS versions 4.32.2F and above.'
             interface_sets:
               type: list
               primary_key: name
@@ -10220,6 +10248,20 @@ keys:
                     type: str
                   description:
                     type: str
+                    description: 'Description in the form of
+
+                      ```
+
+                      description
+
+                      <description>
+
+                      ```'
+                  single_line_description:
+                    type: str
+                    description: 'Description in the form of `description <description>`.
+
+                      Supported in EOS versions 4.32.2F and above.'
                   ip:
                     type: str
                   icmp_echo_size:
@@ -19077,6 +19119,19 @@ keys:
             rd:
               type: str
               description: Route distinguisher.
+            rd_evpn_domain:
+              type: dict
+              keys:
+                domain:
+                  type: str
+                  valid_values:
+                  - remote
+                  - all
+                  required: true
+                rd:
+                  type: str
+                  description: Route distinguisher.
+                  required: true
             evpn_multicast:
               type: bool
             evpn_multicast_address_family:
@@ -19201,6 +19256,37 @@ keys:
 
                           Only applicable if `address_family` is one of `vpn-ipv4`
                           or `vpn-ipv6`.'
+                import_evpn_domains:
+                  type: list
+                  description: List of EVPN domains from which to import routes.
+                  primary_key: route_target
+                  items:
+                    type: dict
+                    keys:
+                      route_target:
+                        type: str
+                      domain:
+                        type: str
+                        required: true
+                        valid_values:
+                        - remote
+                        - all
+                export_evpn_domains:
+                  type: list
+                  description: List of EVPN domains to which local routes should be
+                    exported.
+                  primary_key: route_target
+                  items:
+                    type: dict
+                    keys:
+                      route_target:
+                        type: str
+                      domain:
+                        type: str
+                        required: true
+                        valid_values:
+                        - remote
+                        - all
             router_id:
               description: in IP address format A.B.C.D.
               type: str
@@ -22668,9 +22754,13 @@ keys:
                         type: str
                         description: Other Anycast RP Address.
                       register_count:
-                        type: int
+                        type: str
+                        description: 'Number of registers to forward before pausing
+                          in range of 0 to 4294967295.
+
+                          Use ''infinity'' to forward all registers.'
                         convert_types:
-                        - str
+                        - int
       vrfs:
         type: list
         primary_key: name
@@ -22721,6 +22811,9 @@ keys:
                         max: 32
                       override:
                         type: bool
+                anycast_rps:
+                  type: list
+                  $ref: eos_cli_config_gen#/keys/router_pim_sparse_mode/keys/ipv4/keys/anycast_rps
                 ssm_range:
                   type: str
                   description: 'Standard access list name or use the specific keyword
@@ -24583,6 +24676,9 @@ keys:
           description: 'Use SLAAC to automatically configure the IPv6 address.
 
             This option is mutually exclusive with `ipv6_addresses`.'
+        ipv6_nd:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/ipv6_nd
         access_group_in:
           description: IPv4 ACL Name for ingress.
           type: str
