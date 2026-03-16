@@ -184,6 +184,7 @@ class PortChannelInterfacesMixin(Protocol):
                 spanning_tree_portfast=adapter.spanning_tree_portfast,
                 spanning_tree_bpdufilter=adapter.spanning_tree_bpdufilter,
                 spanning_tree_bpduguard=adapter.spanning_tree_bpduguard,
+                spanning_tree_link_type=adapter.spanning_tree_link_type,
             )
             port_channel_interface.switchport._update(
                 enabled=True,
