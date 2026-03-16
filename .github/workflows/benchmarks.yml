@@ -78,6 +78,12 @@ jobs:
             pip install "ansible-core~=${{ matrix.ansible }}.0" --upgrade
           fi
 
+      - name: Build schemas and templates
+        working-directory: python-avd
+        run: |
+          make compile-schemas
+          make compile-templates
+
       - name: Run benchmarks
         uses: CodSpeedHQ/action@v4
         with:
