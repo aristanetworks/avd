@@ -3612,18 +3612,21 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 
 | Name | Description | Default Interface Set | Address Only |
 | ---- | ----------- | --------------------- | ------------ |
+| VRF1 | latest description format | - | True |
 | Yellow | - | - | True |
 | blue | - | VRF_GLOBAL_SET | False |
 | red | vrf_connectivity_monitor | VRF_GLOBAL_SET | True |
 
-#### Vrf Yellow Configuration
+#### VRF VRF1 Configuration
+
+#### VRF Yellow Configuration
 
 ##### Interface Sets
 
 | Name | Interfaces |
 | ---- | ---------- |
 
-#### Vrf blue Configuration
+#### VRF blue Configuration
 
 ##### Interface Sets
 
@@ -3639,7 +3642,7 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 | server4 | server4_connectivity_monitor | 10.10.20.1 | - | VRF_GLOBAL_SET | False | https://server2.local.com |
 | server6 | - | - | - | - | True | - |
 
-#### Vrf red Configuration
+#### VRF red Configuration
 
 ##### Interface Sets
 
@@ -3671,8 +3674,7 @@ monitor connectivity
    local-interfaces GLOBAL_SET address-only default
    !
    host Server3
-      description
-      server3_connectivity_monitor
+      description server3_connectivity_monitor
       local-interfaces HOST_SET
       ip 10.10.10.3
       icmp echo size 1200
@@ -3692,6 +3694,9 @@ monitor connectivity
       url https://server2.local.com
    !
    host server4
+   !
+   vrf VRF1
+      description latest description format
    !
    vrf Yellow
    !
@@ -3723,8 +3728,7 @@ monitor connectivity
       local-interfaces VRF_GLOBAL_SET address-only default
       !
       host server2
-         description
-         server2_connectivity_monitor
+         description server2_connectivity_monitor
          local-interfaces VRF_HOST_SET address-only
          ip 10.10.20.1
          icmp echo size 1300
@@ -9458,7 +9462,7 @@ ASN Notation: asdot
 | NHP-PEER | - | - | - | IPv4: False<br>Transit: False |
 | NHP-PEER1 | - | - | - | IPv4: False<br>Transit: False |
 | RED-C1 | 1.0.1.1:102 | - | - | IPv4: False<br>Transit: False |
-| Tenant_A | 10.50.64.15:30001 | ospf<br>ospfv3<br>connected | - | IPv4: False<br>Transit: False |
+| Tenant_A | 10.50.64.15:30001 (Remote Domain: 10.50.64.15:30002) | ospf<br>ospfv3<br>connected | - | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static | - | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static | True (120s) | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT03 | 192.168.255.3:13 | - | - | IPv4: True<br>Transit: True |
@@ -10368,6 +10372,7 @@ router bgp 65101
    !
    vrf Tenant_A
       rd 10.50.64.15:30001
+      rd evpn domain remote 10.50.64.15:30002
       route-target import evpn 1:30001
       route-target import evpn route-map RM-DENY-DEFAULT
       route-target import vpn-ipv4 1:30011
@@ -10376,11 +10381,17 @@ router bgp 65101
       route-target import vpn-ipv6 1:30011
       route-target import vpn-ipv6 rcf RT_IMPORT_AF_RCF()
       route-target import vpn-ipv6 route-map RT_IMPORT_AF_RM
+      route-target import evpn domain all 2:30006
+      route-target import evpn domain all 2:30007
+      route-target import evpn domain remote 2:30005
       route-target export evpn 1:30001
       route-target export evpn rcf RT_EXPORT_AF_RCF()
       route-target export vpn-ipv6 1:30011
       route-target export vpn-ipv6 rcf RT_IMPORT_AF_RCF() vrf-route filter-rcf RT_IMPORT_AF_RCF_FILTER()
       route-target export vpn-ipv6 route-map RT_IMPORT_AF_RM
+      route-target export evpn domain all 2:40002
+      route-target export evpn domain remote 2:40005
+      route-target export evpn domain remote 2:40006
       redistribute connected
       redistribute ospf match external include leaked
       redistribute ospfv3
@@ -11185,6 +11196,15 @@ Register Local Interface: Ethernet1
 | Test_RP_ACL | 10.238.4.161 | - | RP_ACL | - | - | - |
 | Test_RP_ACL | 10.238.4.161 | - | RP_ACL2 | 20 | 30 | True |
 
+##### VRF IP Anycast Information
+
+| VRF Name | IP Anycast Address | Other Rendezvous Point Address | Register Count |
+| -------- | ------------------ | ------------------------------ | -------------- |
+| MCAST_VRF1 | 10.48.2.164 | 10.58.5.165 | - |
+| MCAST_VRF1 | 10.48.2.164 | 10.58.5.166 | 15 |
+| MCAST_VRF1 | 12.48.2.164 | 11.58.5.166 | 15 |
+| MCAST_VRF1 | 12.48.2.164 | 12.58.5.165 | infinity |
+
 ##### Router Multicast Device Configuration
 
 ```eos
@@ -11215,6 +11235,10 @@ router pim sparse-mode
          rp address 10.238.2.161 239.12.22.12/32
          rp address 10.238.2.161 239.12.22.13/32
          rp address 10.238.2.161 239.12.22.14/32
+         anycast-rp 10.48.2.164 10.58.5.165
+         anycast-rp 10.48.2.164 10.58.5.166 register-count 15
+         anycast-rp 12.48.2.164 11.58.5.166 register-count 15
+         anycast-rp 12.48.2.164 12.58.5.165 register-count infinity
          register local-interface Loopback0
    !
    vrf MCAST_VRF2_ALL_GROUPS

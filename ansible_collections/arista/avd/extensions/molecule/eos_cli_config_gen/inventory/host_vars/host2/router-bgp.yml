@@ -188,3 +188,16 @@ router_bgp:
     bgp:
       additional_paths:
         send: disabled
+  vrfs:
+    - name: VRF01
+      rd_evpn_domain:
+        domain: all
+        rd: "10.50.64.15:30003"
+    - name: VRF02
+      rd_evpn_domain:
+        domain: remote
+        rd: "10.50.64.15:30006"
+    - name: VRF03
+      redistribute:
+        connected:
+          enabled: true
