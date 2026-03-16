@@ -10089,7 +10089,7 @@ class EosDesigns(EosDesignsRootModel):
         When set to 'dhcp' and
         'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
         `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-        expected to provide the gateway and routes.
+        expected to provide the gateway and the default route.
         """
         mgmt_gateway: str | None
         """
@@ -11124,7 +11124,7 @@ class EosDesigns(EosDesignsRootModel):
                        When set to 'dhcp' and
                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                        `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                       expected to provide the gateway and routes.
+                       expected to provide the gateway and the default route.
                     mgmt_gateway:
                        This key sets the management gateway for the device. It takes precedence over the global
                        `mgmt_gateway`.
@@ -15221,7 +15221,7 @@ class EosDesigns(EosDesignsRootModel):
         When set to 'dhcp' and
         'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
         `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-        expected to provide the gateway and routes.
+        expected to provide the gateway and the default route.
         """
         mgmt_gateway: str | None
         """
@@ -16265,7 +16265,7 @@ class EosDesigns(EosDesignsRootModel):
                        When set to 'dhcp' and
                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                        `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                       expected to provide the gateway and routes.
+                       expected to provide the gateway and the default route.
                     mgmt_gateway:
                        This key sets the management gateway for the device. It takes precedence over the global
                        `mgmt_gateway`.
@@ -38867,7 +38867,7 @@ class EosDesigns(EosDesignsRootModel):
                     When set to 'dhcp' and
                     'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                     `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                    expected to provide the gateway and routes.
+                    expected to provide the gateway and the default route.
                     """
                     mgmt_gateway: str | None
                     """
@@ -39885,7 +39885,7 @@ class EosDesigns(EosDesignsRootModel):
                                    When set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                    `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                                   expected to provide the gateway and routes.
+                                   expected to provide the gateway and the default route.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -43994,7 +43994,7 @@ class EosDesigns(EosDesignsRootModel):
                         When set to 'dhcp' and
                         'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                         `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                        expected to provide the gateway and routes.
+                        expected to provide the gateway and the default route.
                         """
                         mgmt_gateway: str | None
                         """
@@ -45021,7 +45021,7 @@ class EosDesigns(EosDesignsRootModel):
                                        When set to 'dhcp' and
                                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                        `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                                       expected to provide the gateway and routes.
+                                       expected to provide the gateway and the default route.
                                     mgmt_gateway:
                                        This key sets the management gateway for the device. It takes precedence over the global
                                        `mgmt_gateway`.
@@ -49041,7 +49041,7 @@ class EosDesigns(EosDesignsRootModel):
                     When set to 'dhcp' and
                     'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                     `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                    expected to provide the gateway and routes.
+                    expected to provide the gateway and the default route.
                     """
                     mgmt_gateway: str | None
                     """
@@ -50070,7 +50070,7 @@ class EosDesigns(EosDesignsRootModel):
                                    When set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                    `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                                   expected to provide the gateway and routes.
+                                   expected to provide the gateway and the default route.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -54162,7 +54162,7 @@ class EosDesigns(EosDesignsRootModel):
                     When set to 'dhcp' and
                     'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                     `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                    expected to provide the gateway and routes.
+                    expected to provide the gateway and the default route.
                     """
                     mgmt_gateway: str | None
                     """
@@ -55189,7 +55189,7 @@ class EosDesigns(EosDesignsRootModel):
                                    When set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                    `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                                   expected to provide the gateway and routes.
+                                   expected to provide the gateway and the default route.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -71744,7 +71744,7 @@ class EosDesigns(EosDesignsRootModel):
                     When set to 'dhcp' and
                     'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                     `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                    expected to provide the gateway and routes.
+                    expected to provide the gateway and the default route.
                     """
                     mgmt_gateway: str | None
                     """
@@ -72762,7 +72762,7 @@ class EosDesigns(EosDesignsRootModel):
                                    When set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                    `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                                   expected to provide the gateway and routes.
+                                   expected to provide the gateway and the default route.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -76871,7 +76871,7 @@ class EosDesigns(EosDesignsRootModel):
                         When set to 'dhcp' and
                         'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                         `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                        expected to provide the gateway and routes.
+                        expected to provide the gateway and the default route.
                         """
                         mgmt_gateway: str | None
                         """
@@ -77898,7 +77898,7 @@ class EosDesigns(EosDesignsRootModel):
                                        When set to 'dhcp' and
                                        'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                        `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                                       expected to provide the gateway and routes.
+                                       expected to provide the gateway and the default route.
                                     mgmt_gateway:
                                        This key sets the management gateway for the device. It takes precedence over the global
                                        `mgmt_gateway`.
@@ -81918,7 +81918,7 @@ class EosDesigns(EosDesignsRootModel):
                     When set to 'dhcp' and
                     'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                     `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                    expected to provide the gateway and routes.
+                    expected to provide the gateway and the default route.
                     """
                     mgmt_gateway: str | None
                     """
@@ -82947,7 +82947,7 @@ class EosDesigns(EosDesignsRootModel):
                                    When set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                    `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                                   expected to provide the gateway and routes.
+                                   expected to provide the gateway and the default route.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -87039,7 +87039,7 @@ class EosDesigns(EosDesignsRootModel):
                     When set to 'dhcp' and
                     'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                     `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                    expected to provide the gateway and routes.
+                    expected to provide the gateway and the default route.
                     """
                     mgmt_gateway: str | None
                     """
@@ -88066,7 +88066,7 @@ class EosDesigns(EosDesignsRootModel):
                                    When set to 'dhcp' and
                                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the
                                    `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is
-                                   expected to provide the gateway and routes.
+                                   expected to provide the gateway and the default route.
                                 mgmt_gateway:
                                    This key sets the management gateway for the device. It takes precedence over the global
                                    `mgmt_gateway`.
@@ -90552,7 +90552,7 @@ class EosDesigns(EosDesignsRootModel):
     Replaces the default route.
     This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
     'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true`, since the DHCP server will
-    provide routes.
+    provide the default route.
 
     Subclass of AvdList with `str` items.
     """
@@ -92518,7 +92518,7 @@ class EosDesigns(EosDesignsRootModel):
                    Replaces the default route.
                    This setting is ignored when 'mgmt_ip' is set to 'dhcp' and
                    'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true`, since the DHCP server will
-                   provide routes.
+                   provide the default route.
 
                    Subclass of AvdList with `str` items.
                 mgmt_gateway:
