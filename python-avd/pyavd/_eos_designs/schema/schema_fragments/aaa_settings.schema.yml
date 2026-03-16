@@ -65,11 +65,7 @@ keys:
                     - int
                 timeout:
                   type: int
-                  convert_types:
-                    - str
-                  description: Timeout in seconds.
-                  min: 1
-                  max: 1000
+                  $ref: "eos_cli_config_gen#/keys/tacacs_servers/keys/hosts/items/keys/timeout"
                 key:
                   type: str
                   description: |-
