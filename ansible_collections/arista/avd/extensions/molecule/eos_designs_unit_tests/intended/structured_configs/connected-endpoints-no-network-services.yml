@@ -16,7 +16,7 @@ ethernet_interfaces:
     enabled: true
     mode: trunk
 - name: Ethernet20
-  description: SERVER_OLD_SW-1/8_Endpoint_port5
+  description: connected-endpoints-no-network-services_vlans="all->alias of EOS's default/implicit '1-4094'"
   shutdown: false
   metadata:
     peer: OLD_SW-1/8
@@ -27,7 +27,7 @@ ethernet_interfaces:
     enabled: true
     mode: trunk
 - name: Ethernet21
-  description: SERVER_OLD_SW-1/8_Endpoint_port6
+  description: connected-endpoints-no-network-services_vlans="defined_vlans->none"
   shutdown: false
   metadata:
     peer: OLD_SW-1/8
@@ -40,7 +40,7 @@ ethernet_interfaces:
     trunk:
       allowed_vlan: none
 - name: Ethernet22
-  description: SERVER_OLD_SW-1/8_Endpoint_port7
+  description: connected-endpoints-no-network-services_vlans="100,200"
   shutdown: false
   metadata:
     peer: OLD_SW-1/8
@@ -53,7 +53,7 @@ ethernet_interfaces:
     trunk:
       allowed_vlan: 100,200
 - name: Ethernet23
-  description: SERVER_OLD_SW-1/8_Endpoint_port8
+  description: connected-endpoints-no-network-services_vlans="none"
   shutdown: false
   metadata:
     peer: OLD_SW-1/8

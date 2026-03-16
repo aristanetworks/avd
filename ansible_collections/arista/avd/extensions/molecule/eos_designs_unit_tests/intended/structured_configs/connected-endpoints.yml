@@ -747,13 +747,13 @@ port_channel_interfaces:
   switchport:
     enabled: true
 - name: Port-Channel34
-  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS_vlans="all->alias of EOS's default/implicit '1-4094'"
   shutdown: false
   switchport:
     enabled: true
     mode: trunk
 - name: Port-Channel35
-  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS_vlans="defined_vlans->101-102,111-112"
   shutdown: false
   switchport:
     enabled: true
@@ -761,7 +761,7 @@ port_channel_interfaces:
     trunk:
       allowed_vlan: 101-102,111-112
 - name: Port-Channel36
-  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS_vlans="102,112"
   shutdown: false
   switchport:
     enabled: true
@@ -769,7 +769,7 @@ port_channel_interfaces:
     trunk:
       allowed_vlan: 102,112
 - name: Port-Channel37
-  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS_vlans="none"
   shutdown: false
   switchport:
     enabled: true

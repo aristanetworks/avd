@@ -233,6 +233,7 @@ network_ports:
     port_channel:
       channel_id: 226
       mode: "active"
+      description: network-ports-tests_vlans="all-> alias of EOS's default/implicit '1-4094'"
   - switches:
       - network-ports-tests.1
     switch_ports:
@@ -243,11 +244,12 @@ network_ports:
     port_channel:
       channel_id: 227
       mode: "active"
+      description: network-ports-tests_vlans="defined_vlans->100,200,300,400"
   - switches:
       - network-ports-tests.1
     switch_ports:
       - Ethernet28
-    description: PO trunk with some defined VLANs explicitly allowed
+    description: network-ports-tests_vlans="100,300"
     mode: trunk
     vlans: 100,300
     port_channel:
@@ -263,33 +265,34 @@ network_ports:
     port_channel:
       channel_id: 229
       mode: "active"
+      description: network-ports-tests_vlans="none"
 
   - switches:
       - network-ports-tests.1
     switch_ports:
       - Ethernet30
-    description: Trunk with all VLANs explicitly allowed
+    description: network-ports-tests_vlans="all" is an alias of EOS's default/implicit "1-4094".""
     mode: trunk
     vlans: all
   - switches:
       - network-ports-tests.1
     switch_ports:
       - Ethernet31
-    description: Trunk with all defined VLANs explicitly allowed
+    description: network-ports-tests_vlans="defined_vlans"
     mode: trunk
     vlans: defined_vlans
   - switches:
       - network-ports-tests.1
     switch_ports:
       - Ethernet32
-    description: Trunk with some defined VLANs explicitly allowed
+    description: network-ports-tests_vlans="100,300"
     mode: trunk
     vlans: 100,300
   - switches:
       - network-ports-tests.1
     switch_ports:
       - Ethernet33
-    description: Trunk with all VLANs explicitly disallowed
+    description: network-ports-tests_vlans="none"
     mode: trunk
     vlans: none
 

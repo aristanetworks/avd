@@ -896,7 +896,7 @@ ethernet_interfaces:
     peer_type: network_port
     peer_key: network_ports
 - name: Ethernet28
-  description: PO trunk with some defined VLANs explicitly allowed
+  description: network-ports-tests_vlans="100,300"
   shutdown: false
   channel_group:
     id: 228
@@ -914,7 +914,7 @@ ethernet_interfaces:
     peer_type: network_port
     peer_key: network_ports
 - name: Ethernet30
-  description: Trunk with all VLANs explicitly allowed
+  description: network-ports-tests_vlans="all" is an alias of EOS's default/implicit "1-4094".""
   shutdown: false
   metadata:
     peer_type: network_port
@@ -923,7 +923,7 @@ ethernet_interfaces:
     enabled: true
     mode: trunk
 - name: Ethernet31
-  description: Trunk with all defined VLANs explicitly allowed
+  description: network-ports-tests_vlans="defined_vlans"
   shutdown: false
   metadata:
     peer_type: network_port
@@ -934,7 +934,7 @@ ethernet_interfaces:
     trunk:
       allowed_vlan: 100,200,300,400
 - name: Ethernet32
-  description: Trunk with some defined VLANs explicitly allowed
+  description: network-ports-tests_vlans="100,300"
   shutdown: false
   metadata:
     peer_type: network_port
@@ -945,7 +945,7 @@ ethernet_interfaces:
     trunk:
       allowed_vlan: 100,300
 - name: Ethernet33
-  description: Trunk with all VLANs explicitly disallowed
+  description: network-ports-tests_vlans="none"
   shutdown: false
   metadata:
     peer_type: network_port
@@ -987,12 +987,14 @@ port_channel_interfaces:
     enabled: true
     access_vlan: 666
 - name: Port-Channel226
+  description: network-ports-tests_vlans="all-> alias of EOS's default/implicit '1-4094'"
   shutdown: false
   mlag: 226
   switchport:
     enabled: true
     mode: trunk
 - name: Port-Channel227
+  description: network-ports-tests_vlans="defined_vlans->100,200,300,400"
   shutdown: false
   mlag: 227
   switchport:
@@ -1009,6 +1011,7 @@ port_channel_interfaces:
     trunk:
       allowed_vlan: 100,300
 - name: Port-Channel229
+  description: network-ports-tests_vlans="none"
   shutdown: false
   mlag: 229
   switchport:

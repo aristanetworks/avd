@@ -13,6 +13,7 @@ servers:
       - endpoint_ports: [eth0]
         switch_ports: [Ethernet1]
         switches: [connected-endpoints-only-defined-vlans]
+        description: connected-endpoints-only-defined-vlans_vlans="defined_vlans->101-102,111-112"
         vlans: defined_vlans
         mode: trunk
   - name: server_2
@@ -20,11 +21,12 @@ servers:
       - endpoint_ports: [eth0]
         switch_ports: [Ethernet2]
         switches: [connected-endpoints-only-defined-vlans]
+        description: connected-endpoints-only-defined-vlans_vlans="defined_vlans->101-102,111-112"
         vlans: defined_vlans
         mode: trunk
 
 tenants:
-  - name: testtenant
+  - name: test_tenant
     vrfs:
       - name: default
         vrf_id: 100
