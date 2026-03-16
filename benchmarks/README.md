@@ -79,35 +79,46 @@ CodSpeed provides:
 
 ## Running Benchmarks Locally
 
-### Using Makefile
+### Prerequisites
+
+Install the benchmark dependencies:
 
 ```bash
-cd python-avd
+pip install --group dev --group benchmark --upgrade
+```
 
-# Run all benchmarks
+### Using Makefile (Recommended)
+
+```bash
+# From python-avd directory
+cd python-avd
 make benchmark
 
-# Run only PyAVD API benchmarks (faster)
-make benchmark-api
-
-# Run only large fabric scaling benchmarks
-make benchmark-scaling
+# Or from repo root
+cd benchmarks
+pytest --codspeed .
 ```
+
+**Makefile targets:**
+
+- `make benchmark` - Run all benchmarks
+- `make benchmark-api` - Run only PyAVD API benchmarks (faster)
+- `make benchmark-scaling` - Run only large fabric scaling benchmarks
 
 ### Using pytest Directly
 
 ```bash
-# Run all benchmarks
-pytest --codspeed --no-cov python-avd/tests/benchmark
+# From repo root
+pytest --codspeed benchmarks
 
 # Run specific benchmark file
-pytest --codspeed --no-cov python-avd/tests/benchmark/test_pyavd_api.py
+pytest --codspeed benchmarks/test_pyavd_api.py
 
 # Run specific benchmark test
-pytest --codspeed --no-cov python-avd/tests/benchmark/test_pyavd_api.py::test_validate_inputs_benchmark
+pytest --codspeed benchmarks/test_pyavd_api.py::test_validate_inputs_benchmark
 
 # Run with pytest -k filter
-pytest --codspeed --no-cov python-avd/tests/benchmark -k "test_get_avd_facts"
+pytest --codspeed benchmarks -k "test_get_avd_facts"
 ```
 
 ## Adding New Benchmarks
