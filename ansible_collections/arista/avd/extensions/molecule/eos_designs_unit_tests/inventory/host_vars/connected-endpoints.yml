@@ -208,6 +208,60 @@ servers:
             supplicant_profile: test_profile_network_ports
         port_channel:
           mode: active
+  - name: TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+    adapters:
+      # POs
+      # "all" is an alias of EOS's default/implicit "1-4094".
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet34]
+        mode: trunk
+        vlans: all
+        port_channel:
+          mode: active
+          channel_id: 34
+          description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS_vlans="all->alias of EOS's default/implicit '1-4094'"
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet35]
+        mode: trunk
+        vlans: defined_vlans
+        port_channel:
+          mode: active
+          channel_id: 35
+          description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS_vlans="defined_vlans->101-102,111-112"
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet36]
+        mode: trunk
+        vlans: 102,112
+        port_channel:
+          mode: active
+          channel_id: 36
+          description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS_vlans="102,112"
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet37]
+        mode: trunk
+        vlans: none
+        port_channel:
+          mode: active
+          channel_id: 37
+          description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS_vlans="none"
+      # Standalone interfaces
+      # "all" is an alias of EOS's default/implicit "1-4094".
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet38]
+        mode: trunk
+        vlans: all
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet39]
+        mode: trunk
+        vlans: defined_vlans
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet40]
+        mode: trunk
+        vlans: 201,112
+      - switches: [connected-endpoints]
+        switch_ports: [Ethernet41]
+        mode: trunk
+        vlans: none
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
@@ -255,3 +309,19 @@ aaa_settings:
     servers:
       - host: agni.arista.com
         cleartext_key: super-secret-key
+
+tenants:
+  - name: testtenant
+    vrfs:
+      - name: default
+        vrf_id: 100
+        svis:
+          - id: 101
+            name: vlan101
+          - id: 102
+            name: vlan102
+    l2vlans:
+      - id: 111
+        name: vlan111
+      - id: 112
+        name: vlan112

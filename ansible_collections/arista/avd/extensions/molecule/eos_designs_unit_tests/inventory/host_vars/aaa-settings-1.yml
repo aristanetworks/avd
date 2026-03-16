@@ -22,6 +22,7 @@ aaa_settings:
     servers:
       - host: 10.10.10.11
         vrf: default
+        timeout: 30
         key: 071B245F5A
         # key take precedence over cleartext_key
         cleartext_key: arista
@@ -30,6 +31,7 @@ aaa_settings:
 
       - host: 10.10.10.1
         vrf: use_mgmt_interface_vrf
+        timeout: 60
         key: 071B245F5A
         groups:
           - TACACS1

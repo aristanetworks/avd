@@ -68,6 +68,9 @@ keys:
                     Any other string will be used directly as the VRF name."
                   convert_types:
                   - int
+                timeout:
+                  type: int
+                  $ref: eos_cli_config_gen#/keys/tacacs_servers/keys/hosts/items/keys/timeout
                 key:
                   type: str
                   description: 'Encrypted Type 7 key.
@@ -7005,8 +7008,21 @@ $defs:
           '
       vlans:
         type: str
-        description: Interface VLANs - if not set, the EOS default is that all VLANs
-          are allowed for trunk ports, and VLAN 1 will be used for access ports.
+        description: 'Access VLAN for an access port or a range of VLANs to be allowed
+          on a trunk port.
+
+          The value will be interpreted according to these rules:
+
+          - `defined_vlans` will configure all VLANs defined under network services
+          as explicitly allowed VLANs on the trunk port.
+
+          - Any other string will be interpreted as a single VLAN (for access ports)
+          or a range of VLANs (for trunk ports).
+
+          If not set, the EOS default is that all VLANs are implicitly allowed for
+          trunk ports, and VLAN 1 will be used for access ports.
+
+          '
         convert_types:
         - int
       spanning_tree_portfast:

@@ -234,9 +234,11 @@ tacacs_servers:
   - host: 10.10.10.11
     vrf: default
     key: 071B245F5A
+    timeout: 30
   - host: 10.10.10.1
     vrf: MGMT
     key: 071B245F5A
+    timeout: 60
   - host: 10.10.10.2
     vrf: MGMT
     key: 071B245F5A
