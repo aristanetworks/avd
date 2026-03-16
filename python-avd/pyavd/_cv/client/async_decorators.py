@@ -355,7 +355,7 @@ class GRPCRequestHandler:
         found_errors = 0
 
         for response in responses:
-            if isinstance(response, tuple) and len(response) > 1 and response[1]:
+            if isinstance(response, tuple) and len(response) > 1:
                 LOGGER.error(
                     "%s: %s API Call failed for '%s': '%s'.",
                     self.__class__.__name__,
