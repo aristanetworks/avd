@@ -735,7 +735,7 @@ async def test_responses_mixed_errors_check_bulk_response_errors(caplog: pytest.
 
     assert len(caplog.records) == 1
     assert caplog.records[0].message == (
-        "GRPCRequestHandler: responses_mixed_errors_check_bulk_response_errors API Call failed for 'MockedResponse(response_id='2')': 'Error for item 2'."
+        "responses_mixed_errors_check_bulk_response_errors: API Call failed 'Error for item 2' for 'MockedResponse(response_id='2')'."
     )
 
 
@@ -774,11 +774,11 @@ async def test_responses_all_errors_check_bulk_response_errors(caplog: pytest.Lo
 
     assert len(caplog.records) == 3
     assert caplog.records[0].message == (
-        "GRPCRequestHandler: responses_all_errors_check_bulk_response_errors API Call failed for 'MockedResponse(response_id='1')': 'Error for item 1'."
+        "responses_all_errors_check_bulk_response_errors: API Call failed 'Error for item 1' for 'MockedResponse(response_id='1')'."
     )
     assert caplog.records[1].message == (
-        "GRPCRequestHandler: responses_all_errors_check_bulk_response_errors API Call failed for 'MockedResponse(response_id='2')': 'Error for item 2'."
+        "responses_all_errors_check_bulk_response_errors: API Call failed 'Error for item 2' for 'MockedResponse(response_id='2')'."
     )
     assert caplog.records[2].message == (
-        "GRPCRequestHandler: responses_all_errors_check_bulk_response_errors API Call failed for 'MockedResponse(response_id='3')': 'Error for item 3'."
+        "responses_all_errors_check_bulk_response_errors: API Call failed 'Error for item 3' for 'MockedResponse(response_id='3')'."
     )

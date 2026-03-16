@@ -202,8 +202,8 @@ async def test_set_configlets_from_files_cvaas_failure(caplog: pytest.LogCapture
 
     assert len(caplog.records) == 1
     assert caplog.records[0].message == (
-        "GRPCRequestHandler: set_configlets_from_files API Call failed for "
-        "'ConfigletKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_id='')': 'static configlet ID cannot be empty'."
+        "set_configlets_from_files: API Call failed 'static configlet ID cannot be empty' for "
+        "'ConfigletKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_id='')'."
     )
 
 
@@ -313,8 +313,8 @@ async def test_set_configlets_from_files_max_2024_1_99_failure(caplog: pytest.Lo
 
     assert len(caplog.records) == 1
     expected_log_pattern = (
-        r".*set_configlets_from_files API Call failed for 'ConfigletKey\(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_id=''\)':.*"
-        r"<Status.INVALID_ARGUMENT: 3>, 'static configlet ID cannot be empty'.*"
+        r"set_configlets_from_files: API Call failed 'Status.INVALID_ARGUMENT: static configlet ID cannot be empty' for "
+        r"'ConfigletKey\(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_id=''\)'."
     )
 
     assert re.search(expected_log_pattern, caplog.records[0].message)

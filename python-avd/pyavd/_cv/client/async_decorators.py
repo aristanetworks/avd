@@ -357,11 +357,10 @@ class GRPCRequestHandler:
         for response in responses:
             if isinstance(response, tuple) and len(response) > 1:
                 LOGGER.error(
-                    "%s: %s API Call failed for '%s': '%s'.",
-                    self.__class__.__name__,
+                    "%s: API Call failed '%s' for '%s'.",
                     func_name,
-                    response[0],
                     response[1],
+                    response[0],
                 )
                 found_errors += 1
 

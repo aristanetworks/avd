@@ -455,10 +455,16 @@ class ConfigletMixin(Protocol):
                         CVGRPCError,
                     ),
                 ):
+                    # Attempt to fetch reason of the original GRPCError exception using 'GRPCError.status' (args[0]) and 'GRPCError.message' (args[1])
+                    try:
+                        error_message = f"{configlet_config.args[0]}: {configlet_config.args[1]}"
+                    # fall back to the full error if not possible
+                    except (AttributeError, IndexError):
+                        error_message = str(configlet_config)
                     responses_with_errors.append(
                         (
                             ConfigletKey(workspace_id=workspace_id, configlet_id=configlet_id),
-                            str(configlet_config),
+                            error_message,
                         )
                     )
                 # Raise immediately for any other type of Exception (FileNotFound, etc.).
