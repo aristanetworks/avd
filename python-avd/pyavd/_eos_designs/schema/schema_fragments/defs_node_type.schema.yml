@@ -63,7 +63,7 @@ $defs:
               table: node-type-common-configuration
             description: |-
               Node management interface IPv4 address/Mask or 'dhcp'.
-              When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is expected to provide the gateway and routes.
+              When set to 'dhcp' and 'avd_design_future.accept_dhcp_default_route_for_mgmt_ip_dhcp: true', the `mgmt_destination_networks` and `mgmt_gateway` settings will be ignored since the DHCP server is expected to provide the gateway and the default route.
             type: str
           # TODO 7.0: Move mgmt_gateway to metadata
           mgmt_gateway:
