@@ -1223,6 +1223,14 @@ ASN Notation: asplain
 
 #### Router BGP Path-Selection Address Family
 
+#### Router BGP VRFs
+
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| VRF01 | 10.50.64.15:30003 (Remote Domain: 10.50.64.15:30003) | - | - |
+| VRF02 | - (Remote Domain: 10.50.64.15:30006) | - | - |
+| VRF03 | - | connected | - |
+
 #### Router BGP Device Configuration
 
 ```eos
@@ -1301,6 +1309,15 @@ router bgp 65101
    !
    address-family path-selection
       no bgp additional-paths send
+   !
+   vrf VRF01
+      rd evpn domain all 10.50.64.15:30003
+   !
+   vrf VRF02
+      rd evpn domain remote 10.50.64.15:30006
+   !
+   vrf VRF03
+      redistribute connected
 ```
 
 ### PBR Policy Maps
