@@ -8,56 +8,6 @@
 
 ### IPv6 Extended Access-lists
 
-#### IPv6 Extended Access-lists Summary
-{%     for ipv6_access_list in ipv6_access_lists | arista.avd.natural_sort('name') %}
-
-##### {{ ipv6_access_list.name }}
-{%         if ipv6_access_list.counters_per_entry is arista.avd.defined(true) %}
-
-ACL has counting mode `counters per-entry` enabled!
-{%         endif %}
-{%         if ipv6_access_list.entries is arista.avd.defined %}
-
-| Sequence | Remark | Action | Source Ports Match | Source Ports | Destination Ports Match | Destination Ports | Tcp Flags | Log | Icmp Type | Icmp Code | Nexthop Group | Tracked | Dscp | Protocol | Source | Destination | Hop Limit | Hop Limit Match | Dscp Mask | Vlan Number | Vlan Mask | Inner Vlan Number | Inner Vlan Mask |
-| -------- | ------ | ------ | ------------------ | ------------ | ----------------------- | ----------------- | --------- | --- | --------- | --------- | ------------- | ------- | ---- | -------- | ------ | ----------- | --------- | --------------- | --------- | ----------- | --------- | ----------------- | --------------- |
-{%             for entry in ipv6_access_list.entries %}
-{%                 set sequence = entry.sequence | arista.avd.default('-') %}
-{%                 set remark = entry.remark | arista.avd.default('-') %}
-{%                 set action = entry.action | arista.avd.default('-') %}
-{%                 set source_ports_match = entry.source_ports_match | arista.avd.default('-') %}
-{%                 set source_ports = entry.source_ports | arista.avd.default('-') %}
-{%                 set destination_ports_match = entry.destination_ports_match | arista.avd.default('-') %}
-{%                 set destination_ports = entry.destination_ports | arista.avd.default('-') %}
-{%                 set tcp_flags = entry.tcp_flags | arista.avd.default('-') %}
-{%                 set log = entry.log | arista.avd.default('-') %}
-{%                 set icmp_type = entry.icmp_type | arista.avd.default('-') %}
-{%                 set icmp_code = entry.icmp_code | arista.avd.default('-') %}
-{%                 set nexthop_group = entry.nexthop_group | arista.avd.default('-') %}
-{%                 set tracked = entry.tracked | arista.avd.default('-') %}
-{%                 set dscp = entry.dscp | arista.avd.default('-') %}
-{%                 set protocol = entry.protocol | arista.avd.default('-') %}
-{%                 set source = entry.source | arista.avd.default('-') %}
-{%                 set destination = entry.destination | arista.avd.default('-') %}
-{%                 set hop_limit = entry.hop_limit | arista.avd.default('-') %}
-{%                 set hop_limit_match = entry.hop_limit_match | arista.avd.default('-') %}
-{%                 set dscp_mask = entry.dscp_mask | arista.avd.default('-') %}
-{%                 set vlan_number = entry.vlan_number | arista.avd.default('-') %}
-{%                 set vlan_mask = entry.vlan_mask | arista.avd.default('-') %}
-{%                 set inner_vlan_number = entry.inner_vlan_number | arista.avd.default('-') %}
-{%                 set inner_vlan_mask = entry.inner_vlan_mask | arista.avd.default('-') %}
-| {{ sequence }} | {{ remark }} | {{ action }} | {{ source_ports_match }} | {{ source_ports }} | {{ destination_ports_match }} | {{ destination_ports }} | {{ tcp_flags }} | {{ log }} | {{ icmp_type }} | {{ icmp_code }} | {{ nexthop_group }} | {{ tracked }} | {{ dscp }} | {{ protocol }} | {{ source }} | {{ destination }} | {{ hop_limit }} | {{ hop_limit_match }} | {{ dscp_mask }} | {{ vlan_number }} | {{ vlan_mask }} | {{ inner_vlan_number }} | {{ inner_vlan_mask }} |
-{%             endfor %}
-{%         else %}
-{# TODO: : AVD 7.0.0 Remove this else block once "sequence_numbers" key is removed #}
-
-| Sequence | Action |
-| -------- | ------ |
-{%             for sequence in ipv6_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
-| {{ sequence.sequence }} | {{ sequence.action }} |
-{%             endfor %}
-{%         endif %}
-{%     endfor %}
-
 #### IPv6 Access-lists Device Configuration
 
 ```eos
