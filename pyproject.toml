@@ -9,8 +9,9 @@ dev = [
     "python-socks[asyncio]>=2.7.2",
     {include-group = "schema-tools"},
     # dev requirements"
-    {include-group = "pytest"},
+    {include-group = "benchmark"},
     {include-group = "molecule"},
+    {include-group = "pytest"},
     "ansible-doc-extractor>=0.1.11",
     "ansible-lint>=26.6.0",
     "aristaproto[compiler]==0.1.5",

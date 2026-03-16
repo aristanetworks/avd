@@ -24,12 +24,12 @@ from pyavd import (
 from pyavd.api.anta import AVDFabricData
 
 if TYPE_CHECKING:
-    from tests.models import MoleculeScenario
+    from tests.models import MoleculeHost, MoleculeScenario
 
 logger = logging.getLogger(__name__)
 
 
-def get_deterministic_sample_host(molecule_scenario: "MoleculeScenario") -> "MoleculeScenario.Host":
+def get_deterministic_sample_host(molecule_scenario: "MoleculeScenario") -> "MoleculeHost":
     """
     Get a deterministic sample host from a molecule scenario.
 
