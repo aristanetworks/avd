@@ -49,20 +49,6 @@ ethernet_interfaces:
     peer_type: other
   switchport:
     enabled: false
-- name: ethernet5
-  description: P2P_peer-ipv6_ethernet1
-  shutdown: false
-  mtu: 9214
-  ip_address: 192.168.100.0/31
-  ipv6_enable: true
-  ipv6_addresses:
-  - 2001:db8:2000::/127
-  metadata:
-    peer: peer-ipv6
-    peer_interface: ethernet1
-    peer_type: other
-  switchport:
-    enabled: false
 hostname: l3-edge-rfc5549
 ip_routing_ipv6_interfaces: true
 ipv6_unicast_routing: true
@@ -121,12 +107,6 @@ router_bgp:
       peer: peer_with_underlay
     peer_group: IPv4-UNDERLAY-PEERS
     description: peer_with_underlay
-  - name: ethernet5
-    remote_as: '65005'
-    metadata:
-      peer: peer-ipv6
-    peer_group: IPv4-UNDERLAY-PEERS
-    description: peer-ipv6
   redistribute:
     connected:
       enabled: true

@@ -30,9 +30,6 @@ l3_edge:
   p2p_links_ip_pools:
     - name: pool1
       ipv4_pool: 192.168.0.0/24
-    - name: dual_stack_pool
-      ipv4_pool: 192.168.100.0/24
-      ipv6_pool: 2001:db8:2000::/64
 
   p2p_links:
     # P2P link without routing. Settings set via profile
@@ -125,11 +122,3 @@ l3_edge:
         description: Description set via port_channel_structured_config(l3_edge)
       ethernet_structured_config:
         description: Description set via ethernet_structured_config(l3_edge)
-
-    # Dual-stack link with include_in_underlay_protocol: true.
-    - nodes: [l3-edge-bgp, peer-ipv6-1]
-      interfaces: [Ethernet13, Ethernet1]
-      ip_pool: dual_stack_pool
-      id: 1
-      as: [65000, 65101]
-      include_in_underlay_protocol: true

@@ -134,8 +134,8 @@ class UtilsMixin(Protocol):
             peer_bgp_as: <peer as if set | None>
         }
         """
-        if p2p_link.include_in_underlay_protocol and not p2p_link.ip and p2p_link.ipv6:
-            msg = f"{self.data_model}.p2p_links.[].include_in_underlay_protocol is not supported with IPv6-only links."
+        if p2p_link.include_in_underlay_protocol and p2p_link.ipv6:
+            msg = f"{self.data_model}.p2p_links.[].include_in_underlay_protocol is not supported with IPv6 addresses."
             raise AristaAvdInvalidInputsError(msg)
 
         index = p2p_link.nodes.index(self.shared_utils.hostname)

@@ -67,24 +67,8 @@ ethernet_interfaces:
     peer_type: other
   switchport:
     enabled: false
-- name: ethernet5
-  description: P2P_peer-ipv6_ethernet1
-  shutdown: false
-  mtu: 9214
-  ip_address: 192.168.100.0/31
-  ipv6_addresses:
-  - 2001:db8:2000::/127
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  metadata:
-    peer: peer-ipv6
-    peer_interface: ethernet1
-    peer_type: other
-  switchport:
-    enabled: false
 hostname: l3-edge-ospf
 ip_routing: true
-ipv6_unicast_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -122,7 +106,6 @@ router_ospf:
     - ethernet2
     - ethernet3
     - ethernet4
-    - ethernet5
     max_lsa: 12000
 service_routing_protocols_model: multi-agent
 spanning_tree:

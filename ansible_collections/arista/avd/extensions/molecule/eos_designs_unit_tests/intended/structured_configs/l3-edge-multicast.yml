@@ -90,30 +90,8 @@ ethernet_interfaces:
     peer_type: other
   switchport:
     enabled: false
-- name: ethernet7
-  description: Dual-stack link, included in underlay protocol, PIM SM and static multicast default.
-  shutdown: false
-  mtu: 9214
-  ip_address: 192.168.100.0/31
-  ipv6_addresses:
-  - 2001:db8:2000::/127
-  multicast:
-    ipv4:
-      static: true
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  pim:
-    ipv4:
-      sparse_mode: true
-  metadata:
-    peer: peer-ipv6
-    peer_interface: ethernet1
-    peer_type: other
-  switchport:
-    enabled: false
 hostname: l3-edge-multicast
 ip_routing: true
-ipv6_unicast_routing: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -137,7 +115,6 @@ router_ospf:
     - ethernet2
     - ethernet4
     - ethernet5
-    - ethernet7
     max_lsa: 12000
     graceful_restart:
       enabled: true
