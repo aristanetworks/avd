@@ -24,11 +24,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --group dev --upgrade
+          pip install --group dev --group benchmark --upgrade
 
       - name: Run benchmarks
         uses: CodSpeedHQ/action@v4
         with:
           token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
-          run: pytest --codspeed --no-cov python-avd/tests/benchmark
+          run: pytest --codspeed benchmarks

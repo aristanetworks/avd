@@ -72,7 +72,7 @@ jobs:
 
       - name: Install dependencies with Ansible ${{ matrix.ansible }}
         run: |
-          pip install --group dev --upgrade
+          pip install --group dev --group benchmark --upgrade
           # Override ansible-core version if needed
           if [[ "${{ matrix.ansible }}" != "latest" ]]; then
             pip install "ansible-core~=${{ matrix.ansible }}.0" --upgrade
@@ -85,7 +85,7 @@ jobs:
           mode: simulation
           run: |
             if [[ -n "${{ inputs.scenarios }}" ]]; then
-              pytest --codspeed --no-cov python-avd/tests/benchmark -k "${{ inputs.scenarios }}"
+              pytest --codspeed benchmarks -k "${{ inputs.scenarios }}"
             else
-              pytest --codspeed --no-cov python-avd/tests/benchmark
+              pytest --codspeed benchmarks
             fi
