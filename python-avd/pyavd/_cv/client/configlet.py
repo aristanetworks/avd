@@ -392,7 +392,7 @@ class ConfigletMixin(Protocol):
 
         responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
 
-        return [(response.key, response.error) async for response in responses if response.key and response.error]
+        return [(response.key, response.error) async for response in responses]
 
     # Use this variant for versions below 2024.2.0 (still respecting overall min version)
     @LimitCvVersion(max_ver="2024.1.99")
