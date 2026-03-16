@@ -4388,8 +4388,8 @@ class EosDesigns(EosDesignsRootModel):
             include_in_underlay_protocol: bool
             """
             Add this interface to the underlay routing protocols.
-            This is not supported with IPv6-only links.
-            For dual-stack links, only the IPv4 address is used for underlay peering.
+            This is not supported when IPv6 addresses are
+            used.
 
             Default value: `True`
             """
@@ -4594,8 +4594,8 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdList with `str` items.
                         include_in_underlay_protocol:
                            Add this interface to the underlay routing protocols.
-                           This is not supported with IPv6-only links.
-                           For dual-stack links, only the IPv4 address is used for underlay peering.
+                           This is not supported when IPv6 addresses are
+                           used.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -5172,8 +5172,8 @@ class EosDesigns(EosDesignsRootModel):
             include_in_underlay_protocol: bool
             """
             Add this interface to the underlay routing protocols.
-            This is not supported with IPv6-only links.
-            For dual-stack links, only the IPv4 address is used for underlay peering.
+            This is not supported when IPv6 addresses are
+            used.
 
             Default value: `True`
             """
@@ -5378,8 +5378,8 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdList with `str` items.
                         include_in_underlay_protocol:
                            Add this interface to the underlay routing protocols.
-                           This is not supported with IPv6-only links.
-                           For dual-stack links, only the IPv4 address is used for underlay peering.
+                           This is not supported when IPv6 addresses are
+                           used.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -20996,8 +20996,8 @@ class EosDesigns(EosDesignsRootModel):
             include_in_underlay_protocol: bool
             """
             Add this interface to the underlay routing protocols.
-            This is not supported with IPv6-only links.
-            For dual-stack links, only the IPv4 address is used for underlay peering.
+            This is not supported when IPv6 addresses are
+            used.
 
             Default value: `True`
             """
@@ -21202,8 +21202,8 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdList with `str` items.
                         include_in_underlay_protocol:
                            Add this interface to the underlay routing protocols.
-                           This is not supported with IPv6-only links.
-                           For dual-stack links, only the IPv4 address is used for underlay peering.
+                           This is not supported when IPv6 addresses are
+                           used.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -21780,8 +21780,8 @@ class EosDesigns(EosDesignsRootModel):
             include_in_underlay_protocol: bool
             """
             Add this interface to the underlay routing protocols.
-            This is not supported with IPv6-only links.
-            For dual-stack links, only the IPv4 address is used for underlay peering.
+            This is not supported when IPv6 addresses are
+            used.
 
             Default value: `True`
             """
@@ -21986,8 +21986,8 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdList with `str` items.
                         include_in_underlay_protocol:
                            Add this interface to the underlay routing protocols.
-                           This is not supported with IPv6-only links.
-                           For dual-stack links, only the IPv4 address is used for underlay peering.
+                           This is not supported when IPv6 addresses are
+                           used.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
