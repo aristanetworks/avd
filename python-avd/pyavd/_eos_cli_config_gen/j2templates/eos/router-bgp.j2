@@ -2688,6 +2688,10 @@ router bgp {{ router_bgp.as }}
 {%         if vrf.rd is arista.avd.defined %}
       rd {{ vrf.rd }}
 {%         endif %}
+{#         NOTE: vrf.rd should not be configured when domain is all. #}
+{%         if vrf.rd_evpn_domain is arista.avd.defined %}
+      rd evpn domain {{ vrf.rd_evpn_domain.domain }} {{ vrf.rd_evpn_domain.rd }}
+{%         endif %}
 {%         if vrf.default_route_exports is arista.avd.defined %}
 {%             for default_route_export in vrf.default_route_exports | arista.avd.natural_sort(sort_key='address_family') %}
 {%                 set vrf_default_route_export_cli = "default-route export " ~ default_route_export.address_family %}
@@ -2721,6 +2725,12 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
+{%         for evpn_domain in vrf.route_targets.import_evpn_domains | arista.avd.natural_sort(sort_key='route_target') | selectattr('domain', 'equalto', 'all') %}
+      route-target import evpn domain {{ evpn_domain.domain }} {{ evpn_domain.route_target }}
+{%         endfor %}
+{%         for evpn_domain in vrf.route_targets.import_evpn_domains | arista.avd.natural_sort(sort_key='route_target') | selectattr('domain', 'equalto', 'remote') %}
+      route-target import evpn domain {{ evpn_domain.domain }} {{ evpn_domain.route_target }}
+{%         endfor %}
 {%         if vrf.route_targets.export is arista.avd.defined %}
 {%             for address_family in vrf.route_targets.export %}
 {%                 for route_target in address_family.route_targets %}
@@ -2740,6 +2750,12 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
+{%         for evpn_domain in vrf.route_targets.export_evpn_domains | arista.avd.natural_sort(sort_key='route_target') | selectattr('domain', 'equalto', 'all') %}
+      route-target export evpn domain {{ evpn_domain.domain }} {{ evpn_domain.route_target }}
+{%         endfor %}
+{%         for evpn_domain in vrf.route_targets.export_evpn_domains | arista.avd.natural_sort(sort_key='route_target') | selectattr('domain', 'equalto', 'remote') %}
+      route-target export evpn domain {{ evpn_domain.domain }} {{ evpn_domain.route_target }}
+{%         endfor %}
 {%         if vrf.router_id is arista.avd.defined %}
       router-id {{ vrf.router_id }}
 {%         endif %}

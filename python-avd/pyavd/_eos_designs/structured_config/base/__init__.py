@@ -312,6 +312,8 @@ class AvdStructuredConfigBaseProtocol(
         if self.inputs.dns_settings.domain:
             self.structured_config.dns_domain = self.inputs.dns_settings.domain
 
+        self.structured_config.domain_list = EosCliConfigGen.DomainList(self.inputs.dns_settings.domain_list)
+
         vrfs = self.inputs.dns_settings.vrfs
         for server in self.inputs.dns_settings.servers:
             server_vrf, source_interface = self.shared_utils.get_vrf_and_source_interface(
