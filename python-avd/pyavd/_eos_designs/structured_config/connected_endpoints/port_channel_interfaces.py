@@ -191,6 +191,7 @@ class PortChannelInterfacesMixin(Protocol):
                 spanning_tree_portfast=adapter.spanning_tree_portfast,
                 spanning_tree_bpdufilter=adapter.spanning_tree_bpdufilter,
                 spanning_tree_bpduguard=adapter.spanning_tree_bpduguard,
+                spanning_tree_link_type=adapter.spanning_tree_link_type,
             )
             port_channel_interface.switchport._update(
                 enabled=True,
@@ -210,7 +211,7 @@ class PortChannelInterfacesMixin(Protocol):
 
             elif adapter.mode in ["trunk", "trunk phone"]:
                 port_channel_interface.switchport.trunk._update(
-                    allowed_vlan=adapter.vlans if adapter.mode == "trunk" else None,
+                    allowed_vlan=self._get_adapter_vlans(adapter),
                     groups=self._get_adapter_trunk_groups(
                         adapter, connected_endpoint, output_type=EosCliConfigGen.PortChannelInterfacesItem.Switchport.Trunk.Groups
                     ),

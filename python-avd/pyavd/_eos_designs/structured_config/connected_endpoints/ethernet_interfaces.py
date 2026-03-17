@@ -103,6 +103,7 @@ class EthernetInterfacesMixin(Protocol):
             spanning_tree_portfast=adapter.spanning_tree_portfast,
             spanning_tree_bpdufilter=adapter.spanning_tree_bpdufilter,
             spanning_tree_bpduguard=adapter.spanning_tree_bpduguard,
+            spanning_tree_link_type=adapter.spanning_tree_link_type,
             storm_control=self._get_adapter_storm_control(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.StormControl),
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.Ptp),
             service_profile=adapter.qos_profile,
@@ -130,7 +131,7 @@ class EthernetInterfacesMixin(Protocol):
 
         elif adapter.mode in ["trunk", "trunk phone"]:
             ethernet_interface.switchport.trunk._update(
-                allowed_vlan=adapter.vlans if adapter.mode == "trunk" else None,
+                allowed_vlan=self._get_adapter_vlans(adapter),
                 groups=self._get_adapter_trunk_groups(adapter, connected_endpoint, output_type=EosCliConfigGen.EthernetInterfacesItem.Switchport.Trunk.Groups),
                 native_vlan_tag=adapter.native_vlan_tag,
                 native_vlan=adapter.native_vlan,
