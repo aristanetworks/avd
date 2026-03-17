@@ -7657,7 +7657,7 @@ $defs:
               keys:
                 enabled:
                   type: bool
-                  description: Will be enabled automatically if evpn_l2_multicast
+                  description: Will be enabled automatically if `evpn_l2_multicast`
                     is enabled.
                 source_address:
                   type: str
@@ -8135,7 +8135,7 @@ $defs:
               keys:
                 enabled:
                   type: bool
-                  description: Will be enabled automatically if "evpn_l2_multicast"
+                  description: Will be enabled automatically if `evpn_l2_multicast`
                     is enabled.
                 source_address:
                   type: str
@@ -14149,8 +14149,8 @@ $defs:
             keys:
               enabled:
                 type: bool
-                description: Will be enabled automatically if evpn_l2_multicast is
-                  enabled.
+                description: Will be enabled automatically if `evpn_l2_multicast`
+                  is enabled.
               source_address:
                 type: str
                 description: 'The value of `source_address` will be interpreted according

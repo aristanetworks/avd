@@ -20029,7 +20029,7 @@ class EosDesigns(EosDesignsRootModel):
                 Version: TypeAlias = Literal[1, 2, 3]
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
                 enabled: bool | None
-                """Will be enabled automatically if evpn_l2_multicast is enabled."""
+                """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
                 source_address: str | None
                 """
                 The value of `source_address` will be interpreted according to these rules:
@@ -20063,7 +20063,7 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
+                            enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
                             source_address:
                                The value of `source_address` will be interpreted according to these rules:
                                - `vrf_router_id` will
@@ -31506,7 +31506,7 @@ class EosDesigns(EosDesignsRootModel):
                     Version: TypeAlias = Literal[1, 2, 3]
                     _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
                     enabled: bool | None
-                    """Will be enabled automatically if evpn_l2_multicast is enabled."""
+                    """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
                     source_address: str | None
                     """
                     The value of `source_address` will be interpreted according to these rules:
@@ -31540,7 +31540,7 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
+                                enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
                                 source_address:
                                    The value of `source_address` will be interpreted according to these rules:
                                    - `vrf_router_id` will
@@ -32598,7 +32598,7 @@ class EosDesigns(EosDesignsRootModel):
                 Version: TypeAlias = Literal[1, 2, 3]
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
                 enabled: bool | None
-                """Will be enabled automatically if evpn_l2_multicast is enabled."""
+                """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
                 source_address: str | None
                 """
                 The value of `source_address` will be interpreted according to these rules:
@@ -32632,7 +32632,7 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
+                            enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
                             source_address:
                                The value of `source_address` will be interpreted according to these rules:
                                - `vrf_router_id` will
@@ -60547,7 +60547,7 @@ class EosDesigns(EosDesignsRootModel):
                             "version": {"type": int},
                         }
                         enabled: bool | None
-                        """Will be enabled automatically if "evpn_l2_multicast" is enabled."""
+                        """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
                         source_address: str
                         """
                         The value of `source_address` will be interpreted according to these rules:
@@ -60581,7 +60581,7 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    enabled: Will be enabled automatically if "evpn_l2_multicast" is enabled.
+                                    enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
                                     source_address:
                                        The value of `source_address` will be interpreted according to these rules:
                                        - `vrf_router_id` will
@@ -61979,7 +61979,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Version: TypeAlias = Literal[1, 2, 3]
                                     _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
                                     enabled: bool | None
-                                    """Will be enabled automatically if evpn_l2_multicast is enabled."""
+                                    """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
                                     source_address: str | None
                                     """
                                     The value of `source_address` will be interpreted according to these rules:
@@ -62013,7 +62013,7 @@ class EosDesigns(EosDesignsRootModel):
                                             Subclass of AvdModel.
 
                                             Args:
-                                                enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
+                                                enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
                                                 source_address:
                                                    The value of `source_address` will be interpreted according to these rules:
                                                    - `vrf_router_id` will
@@ -63098,7 +63098,7 @@ class EosDesigns(EosDesignsRootModel):
                                 Version: TypeAlias = Literal[1, 2, 3]
                                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
                                 enabled: bool | None
-                                """Will be enabled automatically if evpn_l2_multicast is enabled."""
+                                """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
                                 source_address: str | None
                                 """
                                 The value of `source_address` will be interpreted according to these rules:
@@ -63132,7 +63132,7 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
+                                            enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
                                             source_address:
                                                The value of `source_address` will be interpreted according to these rules:
                                                - `vrf_router_id` will
@@ -67768,7 +67768,7 @@ class EosDesigns(EosDesignsRootModel):
                             Version: TypeAlias = Literal[1, 2, 3]
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
                             enabled: bool | None
-                            """Will be enabled automatically if evpn_l2_multicast is enabled."""
+                            """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
                             source_address: str | None
                             """
                             The value of `source_address` will be interpreted according to these rules:
@@ -67802,7 +67802,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
+                                        enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
                                         source_address:
                                            The value of `source_address` will be interpreted according to these rules:
                                            - `vrf_router_id` will

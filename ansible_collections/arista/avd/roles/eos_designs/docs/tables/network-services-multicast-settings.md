@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "<network_services_keys.name>.[].name") | String | Required, Unique |  |  | Specify a tenant name.<br>Tenant provide a construct to group L3 VRFs and L2 VLANs.<br>Networks services can be filtered by tenant name.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping</samp>](## "<network_services_keys.name>.[].igmp_snooping") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;querier</samp>](## "<network_services_keys.name>.[].igmp_snooping.querier") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if "evpn_l2_multicast" is enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if `evpn_l2_multicast` is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "<network_services_keys.name>.[].igmp_snooping.querier.source_address") | String |  | `main_router_id` |  | The value of `source_address` will be interpreted according to these rules:<br>- `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.<br>- `diagnostic_loopback` will configure the VRF Diagnostic Loopback.<br>- `main_router_id` will configure the Loopback0 IP address.<br>- An IPv4 address will be used directly as the source address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "<network_services_keys.name>.[].igmp_snooping.querier.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>3</code> | IGMP Version (By default EOS uses IGMP version 2 for IGMP querier). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "<network_services_keys.name>.[].igmp_snooping.fast_leave") | Boolean |  |  |  | Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the Tenant.<br>On EOS, IGMP fast-leave is enabled on all VLANs by default. |
@@ -77,7 +77,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].igmp_snooping") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].igmp_snooping.enabled") | Boolean |  |  |  | Enable or disable IGMP snooping (Enabled by default on EOS). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;querier</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].igmp_snooping.querier") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if evpn_l2_multicast is enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if `evpn_l2_multicast` is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].igmp_snooping.querier.source_address") | String |  |  |  | The value of `source_address` will be interpreted according to these rules:<br>- `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.<br>- 'diagnostic_loopback' will configure the VRF Diagnostic Loopback address.<br>- `main_router_id` will configure the Loopback0 IP address.<br>- An IPv4 address will be used directly as the source address.<br>Overrides `<network_services_key>[].igmp_snooping.querier.source_address`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].igmp_snooping.querier.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>3</code> | IGMP Version (By default EOS uses IGMP version 2 for IGMP querier). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].igmp_snooping.fast_leave") | Boolean |  |  |  | Enable IGMP snooping fast-leave feature. |
@@ -98,7 +98,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].igmp_snooping") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].igmp_snooping.enabled") | Boolean |  |  |  | Enable or disable IGMP snooping (Enabled by default on EOS). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;querier</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].igmp_snooping.querier") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if evpn_l2_multicast is enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if `evpn_l2_multicast` is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].igmp_snooping.querier.source_address") | String |  |  |  | The value of `source_address` will be interpreted according to these rules:<br>- `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.<br>- 'diagnostic_loopback' will configure the VRF Diagnostic Loopback address.<br>- `main_router_id` will configure the Loopback0 IP address.<br>- An IPv4 address will be used directly as the source address.<br>Overrides `<network_services_key>[].igmp_snooping.querier.source_address`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].igmp_snooping.querier.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>3</code> | IGMP Version (By default EOS uses IGMP version 2 for IGMP querier). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].igmp_snooping.fast_leave") | Boolean |  |  |  | Enable IGMP snooping fast-leave feature. |
@@ -118,7 +118,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping.enabled") | Boolean |  |  |  | Enable or disable IGMP snooping (Enabled by default on EOS). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;querier</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping.querier") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if evpn_l2_multicast is enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if `evpn_l2_multicast` is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping.querier.source_address") | String |  |  |  | The value of `source_address` will be interpreted according to these rules:<br>- `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.<br>- 'diagnostic_loopback' will configure the VRF Diagnostic Loopback address.<br>- `main_router_id` will configure the Loopback0 IP address.<br>- An IPv4 address will be used directly as the source address.<br>Overrides `<network_services_key>[].igmp_snooping.querier.source_address`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping.querier.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>3</code> | IGMP Version (By default EOS uses IGMP version 2 for IGMP querier). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping.fast_leave") | Boolean |  |  |  | Enable IGMP snooping fast-leave feature. |
@@ -138,7 +138,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping</samp>](## "l2vlan_profiles.[].igmp_snooping") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l2vlan_profiles.[].igmp_snooping.enabled") | Boolean |  |  |  | Enable or disable IGMP snooping (Enabled by default on EOS). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;querier</samp>](## "l2vlan_profiles.[].igmp_snooping.querier") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l2vlan_profiles.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if evpn_l2_multicast is enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l2vlan_profiles.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if `evpn_l2_multicast` is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "l2vlan_profiles.[].igmp_snooping.querier.source_address") | String |  |  |  | The value of `source_address` will be interpreted according to these rules:<br>- `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.<br>- 'diagnostic_loopback' will configure the VRF Diagnostic Loopback address.<br>- `main_router_id` will configure the Loopback0 IP address.<br>- An IPv4 address will be used directly as the source address.<br>Overrides `<network_services_key>[].igmp_snooping.querier.source_address`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "l2vlan_profiles.[].igmp_snooping.querier.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>3</code> | IGMP Version (By default EOS uses IGMP version 2 for IGMP querier). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "l2vlan_profiles.[].igmp_snooping.fast_leave") | Boolean |  |  |  | Enable IGMP snooping fast-leave feature. |
@@ -163,7 +163,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping</samp>](## "svi_profiles.[].nodes.[].igmp_snooping") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].nodes.[].igmp_snooping.enabled") | Boolean |  |  |  | Enable or disable IGMP snooping (Enabled by default on EOS). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;querier</samp>](## "svi_profiles.[].nodes.[].igmp_snooping.querier") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].nodes.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if evpn_l2_multicast is enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].nodes.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if `evpn_l2_multicast` is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "svi_profiles.[].nodes.[].igmp_snooping.querier.source_address") | String |  |  |  | The value of `source_address` will be interpreted according to these rules:<br>- `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.<br>- 'diagnostic_loopback' will configure the VRF Diagnostic Loopback address.<br>- `main_router_id` will configure the Loopback0 IP address.<br>- An IPv4 address will be used directly as the source address.<br>Overrides `<network_services_key>[].igmp_snooping.querier.source_address`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "svi_profiles.[].nodes.[].igmp_snooping.querier.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>3</code> | IGMP Version (By default EOS uses IGMP version 2 for IGMP querier). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "svi_profiles.[].nodes.[].igmp_snooping.fast_leave") | Boolean |  |  |  | Enable IGMP snooping fast-leave feature. |
@@ -184,7 +184,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping</samp>](## "svi_profiles.[].igmp_snooping") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].igmp_snooping.enabled") | Boolean |  |  |  | Enable or disable IGMP snooping (Enabled by default on EOS). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;querier</samp>](## "svi_profiles.[].igmp_snooping.querier") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if evpn_l2_multicast is enabled. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].igmp_snooping.querier.enabled") | Boolean |  |  |  | Will be enabled automatically if `evpn_l2_multicast` is enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_address</samp>](## "svi_profiles.[].igmp_snooping.querier.source_address") | String |  |  |  | The value of `source_address` will be interpreted according to these rules:<br>- `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.<br>- 'diagnostic_loopback' will configure the VRF Diagnostic Loopback address.<br>- `main_router_id` will configure the Loopback0 IP address.<br>- An IPv4 address will be used directly as the source address.<br>Overrides `<network_services_key>[].igmp_snooping.querier.source_address`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "svi_profiles.[].igmp_snooping.querier.version") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code><br>- <code>3</code> | IGMP Version (By default EOS uses IGMP version 2 for IGMP querier). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fast_leave</samp>](## "svi_profiles.[].igmp_snooping.fast_leave") | Boolean |  |  |  | Enable IGMP snooping fast-leave feature. |
@@ -207,7 +207,7 @@
         igmp_snooping:
           querier:
 
-            # Will be enabled automatically if "evpn_l2_multicast" is enabled.
+            # Will be enabled automatically if `evpn_l2_multicast` is enabled.
             enabled: <bool>
 
             # The value of `source_address` will be interpreted according to these rules:
@@ -434,7 +434,7 @@
                       enabled: <bool>
                       querier:
 
-                        # Will be enabled automatically if evpn_l2_multicast is enabled.
+                        # Will be enabled automatically if `evpn_l2_multicast` is enabled.
                         enabled: <bool>
 
                         # The value of `source_address` will be interpreted according to these rules:
@@ -507,7 +507,7 @@
                   enabled: <bool>
                   querier:
 
-                    # Will be enabled automatically if evpn_l2_multicast is enabled.
+                    # Will be enabled automatically if `evpn_l2_multicast` is enabled.
                     enabled: <bool>
 
                     # The value of `source_address` will be interpreted according to these rules:
@@ -575,7 +575,7 @@
               enabled: <bool>
               querier:
 
-                # Will be enabled automatically if evpn_l2_multicast is enabled.
+                # Will be enabled automatically if `evpn_l2_multicast` is enabled.
                 enabled: <bool>
 
                 # The value of `source_address` will be interpreted according to these rules:
@@ -641,7 +641,7 @@
           enabled: <bool>
           querier:
 
-            # Will be enabled automatically if evpn_l2_multicast is enabled.
+            # Will be enabled automatically if `evpn_l2_multicast` is enabled.
             enabled: <bool>
 
             # The value of `source_address` will be interpreted according to these rules:
@@ -733,7 +733,7 @@
               enabled: <bool>
               querier:
 
-                # Will be enabled automatically if evpn_l2_multicast is enabled.
+                # Will be enabled automatically if `evpn_l2_multicast` is enabled.
                 enabled: <bool>
 
                 # The value of `source_address` will be interpreted according to these rules:
@@ -806,7 +806,7 @@
           enabled: <bool>
           querier:
 
-            # Will be enabled automatically if evpn_l2_multicast is enabled.
+            # Will be enabled automatically if `evpn_l2_multicast` is enabled.
             enabled: <bool>
 
             # The value of `source_address` will be interpreted according to these rules:
