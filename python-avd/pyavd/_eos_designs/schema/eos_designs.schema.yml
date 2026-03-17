@@ -3578,6 +3578,8 @@ keys:
           - int
         entries:
           type: list
+          unique_keys:
+          - sequence
           items:
             type: dict
             keys:
