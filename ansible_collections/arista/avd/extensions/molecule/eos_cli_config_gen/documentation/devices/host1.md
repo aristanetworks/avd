@@ -9486,7 +9486,6 @@ ASN Notation: asdot
 !
 router bgp 65101
    bgp asn notation asdot
-   bgp labeled-unicast rib ip route-map RM-TEST
    router-id 192.168.255.3
    update wait-for-convergence
    update wait-install

@@ -59,7 +59,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_internal</samp>](## "router_bgp.bgp.redistribute_internal") | Boolean |  |  |  | Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;labeled_unicast</samp>](## "router_bgp.bgp.labeled_unicast") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rib</samp>](## "router_bgp.bgp.labeled_unicast.rib") | String |  |  | Valid Values:<br>- <code>ip</code><br>- <code>tunnel</code><br>- <code>ip-tunnel</code> | Which rib to install LU routes.  EOS default is tunnel. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rib</samp>](## "router_bgp.bgp.labeled_unicast.rib") | String |  |  | Valid Values:<br>- <code>ip</code><br>- <code>tunnel</code><br>- <code>ip-tunnel</code> | Set the labeled-unicast rib mode.  EOS default is tunnel. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.bgp.labeled_unicast.route_map") | String |  |  |  | Define a route-map to use. |
     | [<samp>&nbsp;&nbsp;listen_ranges</samp>](## "router_bgp.listen_ranges") | List, items: Dictionary |  |  |  | Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.listen_ranges.[].prefix") | String |  |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
@@ -1745,7 +1745,7 @@
         redistribute_internal: <bool>
         labeled_unicast:
 
-          # Which rib to install LU routes.  EOS default is tunnel.
+          # Set the labeled-unicast rib mode.  EOS default is tunnel.
           rib: <str; "ip" | "tunnel" | "ip-tunnel">
 
           # Define a route-map to use.
