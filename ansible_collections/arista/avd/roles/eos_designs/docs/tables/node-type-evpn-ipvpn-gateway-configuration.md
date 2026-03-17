@@ -12,7 +12,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_gateway</samp>](## "<node_type_keys.key>.defaults.ipvpn_gateway") | Dictionary |  |  |  | Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".<br>L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.ipvpn_gateway.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id</samp>](## "<node_type_keys.key>.defaults.ipvpn_gateway.evpn_domain_id") | String |  | `65535:1` |  | Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "<node_type_keys.key>.defaults.ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. `Format <nn>:<nn>`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "<node_type_keys.key>.defaults.ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "<node_type_keys.key>.defaults.ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "<node_type_keys.key>.defaults.ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "<node_type_keys.key>.defaults.ipvpn_gateway.local_as") | String |  |  |  | Local BGP AS applied to peering with IPVPN remote peers.<br>BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
@@ -29,7 +29,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_gateway</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipvpn_gateway") | Dictionary |  |  |  | Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".<br>L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipvpn_gateway.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipvpn_gateway.evpn_domain_id") | String |  | `65535:1` |  | Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. `Format <nn>:<nn>`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ipvpn_gateway.local_as") | String |  |  |  | Local BGP AS applied to peering with IPVPN remote peers.<br>BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
@@ -42,7 +42,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_gateway</samp>](## "<node_type_keys.key>.node_groups.[].ipvpn_gateway") | Dictionary |  |  |  | Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".<br>L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].ipvpn_gateway.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].ipvpn_gateway.evpn_domain_id") | String |  | `65535:1` |  | Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. `Format <nn>:<nn>`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "<node_type_keys.key>.node_groups.[].ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "<node_type_keys.key>.node_groups.[].ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "<node_type_keys.key>.node_groups.[].ipvpn_gateway.local_as") | String |  |  |  | Local BGP AS applied to peering with IPVPN remote peers.<br>BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
@@ -57,7 +57,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_gateway</samp>](## "<node_type_keys.key>.nodes.[].ipvpn_gateway") | Dictionary |  |  |  | Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".<br>L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].ipvpn_gateway.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id</samp>](## "<node_type_keys.key>.nodes.[].ipvpn_gateway.evpn_domain_id") | String |  | `65535:1` |  | Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "<node_type_keys.key>.nodes.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. `Format <nn>:<nn>`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "<node_type_keys.key>.nodes.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "<node_type_keys.key>.nodes.[].ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "<node_type_keys.key>.nodes.[].ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "<node_type_keys.key>.nodes.[].ipvpn_gateway.local_as") | String |  |  |  | Local BGP AS applied to peering with IPVPN remote peers.<br>BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
@@ -72,7 +72,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_gateway</samp>](## "device_profiles.[].ipvpn_gateway") | Dictionary |  |  |  | Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".<br>L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].ipvpn_gateway.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id</samp>](## "device_profiles.[].ipvpn_gateway.evpn_domain_id") | String |  | `65535:1` |  | Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "device_profiles.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. `Format <nn>:<nn>`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "device_profiles.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "device_profiles.[].ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "device_profiles.[].ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "device_profiles.[].ipvpn_gateway.local_as") | String |  |  |  | Local BGP AS applied to peering with IPVPN remote peers.<br>BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
@@ -87,7 +87,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_gateway</samp>](## "devices.[].ipvpn_gateway") | Dictionary |  |  |  | Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".<br>L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].ipvpn_gateway.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id</samp>](## "devices.[].ipvpn_gateway.evpn_domain_id") | String |  | `65535:1` |  | Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "devices.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. `Format <nn>:<nn>`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipvpn_domain_id</samp>](## "devices.[].ipvpn_gateway.ipvpn_domain_id") | String |  | `65535:2` |  | Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "devices.[].ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "devices.[].ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "devices.[].ipvpn_gateway.local_as") | String |  |  |  | Local BGP AS applied to peering with IPVPN remote peers.<br>BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
@@ -114,7 +114,7 @@
           # Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
           evpn_domain_id: <str; default="65535:1">
 
-          # Domain ID to assign to IPVPN address families for use with D-path. `Format <nn>:<nn>`.
+          # Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
           ipvpn_domain_id: <str; default="65535:2">
 
           # Enable D-path for use with BGP bestpath selection algorithm.
@@ -164,7 +164,7 @@
                 # Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
                 evpn_domain_id: <str; default="65535:1">
 
-                # Domain ID to assign to IPVPN address families for use with D-path. `Format <nn>:<nn>`.
+                # Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                 ipvpn_domain_id: <str; default="65535:2">
 
                 # Enable D-path for use with BGP bestpath selection algorithm.
@@ -201,7 +201,7 @@
             # Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
             evpn_domain_id: <str; default="65535:1">
 
-            # Domain ID to assign to IPVPN address families for use with D-path. `Format <nn>:<nn>`.
+            # Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
             ipvpn_domain_id: <str; default="65535:2">
 
             # Enable D-path for use with BGP bestpath selection algorithm.
@@ -244,7 +244,7 @@
             # Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
             evpn_domain_id: <str; default="65535:1">
 
-            # Domain ID to assign to IPVPN address families for use with D-path. `Format <nn>:<nn>`.
+            # Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
             ipvpn_domain_id: <str; default="65535:2">
 
             # Enable D-path for use with BGP bestpath selection algorithm.
@@ -287,7 +287,7 @@
           # Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
           evpn_domain_id: <str; default="65535:1">
 
-          # Domain ID to assign to IPVPN address families for use with D-path. `Format <nn>:<nn>`.
+          # Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
           ipvpn_domain_id: <str; default="65535:2">
 
           # Enable D-path for use with BGP bestpath selection algorithm.
@@ -330,7 +330,7 @@
           # Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
           evpn_domain_id: <str; default="65535:1">
 
-          # Domain ID to assign to IPVPN address families for use with D-path. `Format <nn>:<nn>`.
+          # Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
           ipvpn_domain_id: <str; default="65535:2">
 
           # Enable D-path for use with BGP bestpath selection algorithm.
