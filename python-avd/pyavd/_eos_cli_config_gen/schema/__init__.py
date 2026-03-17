@@ -40366,7 +40366,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Rib: TypeAlias = Literal["ip", "tunnel", "ip-tunnel"]
                 _fields: ClassVar[dict] = {"rib": {"type": str}, "route_map": {"type": str}}
                 rib: Rib | None
-                """Set the labeled-unicast rib mode.  EOS default is tunnel."""
+                """Which rib to install LU routes.  EOS default is tunnel."""
                 route_map: str | None
                 """Define a route-map to use."""
 
@@ -40380,7 +40380,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            rib: Set the labeled-unicast rib mode.  EOS default is tunnel.
+                            rib: Which rib to install LU routes.  EOS default is tunnel.
                             route_map: Define a route-map to use.
 
                         """
