@@ -7600,17 +7600,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Prefixes._item_type = PrefixesItem
 
             _fields: ClassVar[dict] = {
-                "other_config_flag": {"type": bool},
                 "cache": {"type": Cache},
                 "ra": {"type": Ra},
                 "managed_config_flag": {"type": bool},
                 "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
             }
-            other_config_flag: bool | None
-            """Set the "other stateful configuration" flag in IPv6 router advertisements."""
             cache: Cache
             """
-            IPv6 neighbor cache options.
+            Neighbor cache options.
 
             Subclass of AvdModel.
             """
@@ -7629,17 +7627,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `PrefixesItem`
             items. Primary key is `ipv6_prefix` (`str`).
             """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
-                    other_config_flag: bool | None | UndefinedType = Undefined,
                     cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
                     managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -7648,9 +7648,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        other_config_flag: Set the "other stateful configuration" flag in IPv6 router advertisements.
                         cache:
-                           IPv6 neighbor cache options.
+                           Neighbor cache options.
 
                            Subclass of AvdModel.
                         ra:
@@ -7663,6 +7662,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdIndexedList with `PrefixesItem`
                            items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
 
                     """
 
@@ -22817,17 +22817,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Prefixes._item_type = PrefixesItem
 
             _fields: ClassVar[dict] = {
-                "other_config_flag": {"type": bool},
                 "cache": {"type": Cache},
                 "ra": {"type": Ra},
                 "managed_config_flag": {"type": bool},
                 "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
             }
-            other_config_flag: bool | None
-            """Set the "other stateful configuration" flag in IPv6 router advertisements."""
             cache: Cache
             """
-            IPv6 neighbor cache options.
+            Neighbor cache options.
 
             Subclass of AvdModel.
             """
@@ -22846,17 +22844,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `PrefixesItem`
             items. Primary key is `ipv6_prefix` (`str`).
             """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
-                    other_config_flag: bool | None | UndefinedType = Undefined,
                     cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
                     managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -22865,9 +22865,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        other_config_flag: Set the "other stateful configuration" flag in IPv6 router advertisements.
                         cache:
-                           IPv6 neighbor cache options.
+                           Neighbor cache options.
 
                            Subclass of AvdModel.
                         ra:
@@ -22880,6 +22879,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdIndexedList with `PrefixesItem`
                            items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
 
                     """
 
@@ -33463,17 +33463,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Prefixes._item_type = PrefixesItem
 
             _fields: ClassVar[dict] = {
-                "other_config_flag": {"type": bool},
                 "cache": {"type": Cache},
                 "ra": {"type": Ra},
                 "managed_config_flag": {"type": bool},
                 "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
             }
-            other_config_flag: bool | None
-            """Set the "other stateful configuration" flag in IPv6 router advertisements."""
             cache: Cache
             """
-            IPv6 neighbor cache options.
+            Neighbor cache options.
 
             Subclass of AvdModel.
             """
@@ -33492,17 +33490,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `PrefixesItem`
             items. Primary key is `ipv6_prefix` (`str`).
             """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
-                    other_config_flag: bool | None | UndefinedType = Undefined,
                     cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
                     managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -33511,9 +33511,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        other_config_flag: Set the "other stateful configuration" flag in IPv6 router advertisements.
                         cache:
-                           IPv6 neighbor cache options.
+                           Neighbor cache options.
 
                            Subclass of AvdModel.
                         ra:
@@ -33526,6 +33525,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdIndexedList with `PrefixesItem`
                            items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
 
                     """
 
@@ -67078,17 +67078,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Prefixes._item_type = PrefixesItem
 
             _fields: ClassVar[dict] = {
-                "other_config_flag": {"type": bool},
                 "cache": {"type": Cache},
                 "ra": {"type": Ra},
                 "managed_config_flag": {"type": bool},
                 "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
             }
-            other_config_flag: bool | None
-            """Set the "other stateful configuration" flag in IPv6 router advertisements."""
             cache: Cache
             """
-            IPv6 neighbor cache options.
+            Neighbor cache options.
 
             Subclass of AvdModel.
             """
@@ -67107,17 +67105,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `PrefixesItem`
             items. Primary key is `ipv6_prefix` (`str`).
             """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
-                    other_config_flag: bool | None | UndefinedType = Undefined,
                     cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
                     managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -67126,9 +67126,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        other_config_flag: Set the "other stateful configuration" flag in IPv6 router advertisements.
                         cache:
-                           IPv6 neighbor cache options.
+                           Neighbor cache options.
 
                            Subclass of AvdModel.
                         ra:
@@ -67141,6 +67140,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdIndexedList with `PrefixesItem`
                            items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
 
                     """
 
@@ -68335,17 +68335,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Prefixes._item_type = PrefixesItem
 
             _fields: ClassVar[dict] = {
-                "other_config_flag": {"type": bool},
                 "cache": {"type": Cache},
                 "ra": {"type": Ra},
                 "managed_config_flag": {"type": bool},
                 "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
             }
-            other_config_flag: bool | None
-            """Set the "other stateful configuration" flag in IPv6 router advertisements."""
             cache: Cache
             """
-            IPv6 neighbor cache options.
+            Neighbor cache options.
 
             Subclass of AvdModel.
             """
@@ -68364,17 +68362,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `PrefixesItem`
             items. Primary key is `ipv6_prefix` (`str`).
             """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
-                    other_config_flag: bool | None | UndefinedType = Undefined,
                     cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
                     managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -68383,9 +68383,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        other_config_flag: Set the "other stateful configuration" flag in IPv6 router advertisements.
                         cache:
-                           IPv6 neighbor cache options.
+                           Neighbor cache options.
 
                            Subclass of AvdModel.
                         ra:
@@ -68398,6 +68397,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdIndexedList with `PrefixesItem`
                            items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
 
                     """
 

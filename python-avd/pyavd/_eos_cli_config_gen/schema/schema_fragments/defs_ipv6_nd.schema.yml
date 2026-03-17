@@ -10,12 +10,9 @@ $defs:
     description: IPv6 Neighbor Discovery protocol.
     type: dict
     keys:
-      other_config_flag:
-        type: bool
-        description: Set the "other stateful configuration" flag in IPv6 router advertisements.
       cache:
         type: dict
-        description: IPv6 neighbor cache options.
+        description: Neighbor cache options.
         keys:
           dynamic_capacity:
             type: int
@@ -75,3 +72,6 @@ $defs:
             no_autoconfig_flag:
               type: bool
               description: Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
+      other_config_flag:
+        type: bool
+        description: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
