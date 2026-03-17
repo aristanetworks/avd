@@ -1221,6 +1221,12 @@ ASN Notation: asplain
 | -------- | ----- |
 | Graceful-restart | Enabled |
 
+##### BGP LU RIB
+
+| RIB | Route-map |
+| --- | --------- |
+| ip tunnel | None |
+
 #### Router BGP Path-Selection Address Family
 
 #### Router BGP VRFs
@@ -1236,6 +1242,7 @@ ASN Notation: asplain
 ```eos
 !
 router bgp 65101
+   bgp labeled-unicast rib ip tunnel
    no bgp default ipv4-unicast
    no bgp default ipv4-unicast transport ipv6
    graceful-restart

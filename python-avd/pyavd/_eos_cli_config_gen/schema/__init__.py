@@ -40363,7 +40363,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class LabeledUnicast(AvdModel):
                 """Subclass of AvdModel."""
 
-                Rib: TypeAlias = Literal["ip", "tunnel", "ip-tunnel"]
+                Rib: TypeAlias = Literal["ip", "tunnel", "ip tunnel"]
                 _fields: ClassVar[dict] = {"rib": {"type": str}, "route_map": {"type": str}}
                 rib: Rib | None
                 """Which rib to install LU routes.  EOS default is tunnel."""

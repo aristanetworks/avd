@@ -16,7 +16,7 @@ router_bgp:
       receive: false
       send: disabled
     labeled_unicast:
-      rib: "ip-tunnel"
+      rib: "ip tunnel"
   neighbor_default:
     send_community: large
   graceful_restart:

@@ -862,7 +862,6 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 | L3 Gateway Configured | True |
-
 #### Router BGP IPv4 SR-TE Address Family
 
 ##### IPv4 SR-TE Peer Groups

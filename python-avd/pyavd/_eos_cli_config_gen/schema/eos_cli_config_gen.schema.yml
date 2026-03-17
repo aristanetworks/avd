@@ -15590,7 +15590,7 @@ keys:
                 valid_values:
                 - ip
                 - tunnel
-                - ip-tunnel
+                - ip tunnel
               route_map:
                 type: str
                 description: Define a route-map to use.

@@ -792,7 +792,6 @@ ASN Notation: asplain
 | ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
 | WAN-OVERLAY-PEERS | True | - | - | - | - | path-selection | - |
 | WAN-RR-OVERLAY-PEERS | True | - | - | - | - | path-selection | - |
-
 #### Router BGP IPv4 SR-TE Address Family
 
 ##### IPv4 SR-TE Peer Groups

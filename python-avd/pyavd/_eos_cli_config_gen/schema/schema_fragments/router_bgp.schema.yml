@@ -243,7 +243,7 @@ keys:
               rib:
                 type: str
                 description: Which rib to install LU routes.  EOS default is tunnel.
-                valid_values: ["ip", "tunnel", "ip-tunnel"]
+                valid_values: ["ip", "tunnel", "ip tunnel"]
               route_map:
                 type: str
                 description: Define a route-map to use.
