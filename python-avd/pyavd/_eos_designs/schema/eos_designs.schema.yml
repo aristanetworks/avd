@@ -11087,7 +11087,7 @@ $defs:
                 required: true
               evpn_domain_id:
                 description: Domain ID to assign to EVPN address family for use with
-                  D-path. `Format <nn>:<nn>`.
+                  D-path. Format `<nn>:<nn>`.
                 type: str
                 default: '65535:1'
               ipvpn_domain_id:
