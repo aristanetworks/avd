@@ -13656,7 +13656,6 @@ mac security
 | VRF2 | TP2 | - | TP2 |
 | VRF3 | TP3 | - | - |
 | VRF4 | - | - | TP4 |
-| VRF5 | - | - | - |
 
 #### IPv4 Field Sets
 
@@ -13742,14 +13741,15 @@ traffic-policies
    vrf VRF1
       cpu traffic-policy TP1 fallback traffic-policy none
          enforcement management
-      !
       traffic-policy input TP1 physical
+   !
    vrf VRF2
       cpu traffic-policy TP2 fallback traffic-policy none
-      !
       traffic-policy input TP2 physical
+   !
    vrf VRF3
       cpu traffic-policy TP3 fallback traffic-policy none
+   !
    vrf VRF4
       traffic-policy input TP4 physical
    !
