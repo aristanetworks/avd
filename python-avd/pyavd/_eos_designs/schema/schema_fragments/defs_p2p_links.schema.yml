@@ -102,7 +102,7 @@ $defs:
           default: true
           description: |-
             Add this interface to the underlay routing protocols.
-            This is not supported when IPv6 addresses are used.
+            This is currently not supported when IPv6 addresses are used.
         isis_hello_padding:
           type: bool
           default: true

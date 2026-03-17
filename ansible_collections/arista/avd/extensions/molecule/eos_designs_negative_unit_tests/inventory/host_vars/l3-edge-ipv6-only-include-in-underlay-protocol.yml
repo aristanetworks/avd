@@ -18,4 +18,4 @@ l3_edge:
       ipv6: [2001:db8:100::1/64, 2001:db8:100::2/64]
       include_in_underlay_protocol: true
 
-expected_error_message: "l3_edge.p2p_links.[].include_in_underlay_protocol is not supported with IPv6 addresses."
+expected_error_message: "l3_edge.p2p_links.[].include_in_underlay_protocol is currently not supported with IPv6 addresses."

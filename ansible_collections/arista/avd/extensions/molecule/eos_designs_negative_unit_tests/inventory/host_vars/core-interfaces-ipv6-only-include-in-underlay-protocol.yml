@@ -28,4 +28,4 @@ core_interfaces:
       ip_pool: ipv6_only_pool
       include_in_underlay_protocol: true
 
-expected_error_message: "core_interfaces.p2p_links.[].include_in_underlay_protocol is not supported with IPv6 addresses."
+expected_error_message: "core_interfaces.p2p_links.[].include_in_underlay_protocol is currently not supported with IPv6 addresses."
