@@ -40360,12 +40360,38 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class LabeledUnicast(AvdModel):
+                """Subclass of AvdModel."""
+
+                Rib: TypeAlias = Literal["ip", "tunnel", "ip-tunnel"]
+                _fields: ClassVar[dict] = {"rib": {"type": str}, "route_map": {"type": str}}
+                rib: Rib | None
+                """Set the labeled-unicast rib mode.  EOS default is tunnel."""
+                route_map: str | None
+                """Define a route-map to use."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, rib: Rib | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        LabeledUnicast.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            rib: Set the labeled-unicast rib mode.  EOS default is tunnel.
+                            route_map: Define a route-map to use.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "default": {"type": Default},
                 "route_reflector_preserve_attributes": {"type": RouteReflectorPreserveAttributes},
                 "bestpath": {"type": Bestpath},
                 "additional_paths": {"type": AdditionalPaths},
                 "redistribute_internal": {"type": bool},
+                "labeled_unicast": {"type": LabeledUnicast},
             }
             default: Default
             """Subclass of AvdModel."""
@@ -40377,6 +40403,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             redistribute_internal: bool | None
             """Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true."""
+            labeled_unicast: LabeledUnicast
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -40388,6 +40416,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     bestpath: Bestpath | UndefinedType = Undefined,
                     additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     redistribute_internal: bool | None | UndefinedType = Undefined,
+                    labeled_unicast: LabeledUnicast | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Bgp.
@@ -40401,6 +40430,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bestpath: Subclass of AvdModel.
                         additional_paths: Subclass of AvdModel.
                         redistribute_internal: Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
+                        labeled_unicast: Subclass of AvdModel.
 
                     """
 

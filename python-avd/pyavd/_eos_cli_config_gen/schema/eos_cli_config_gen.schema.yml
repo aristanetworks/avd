@@ -15581,6 +15581,19 @@ keys:
             type: bool
             description: Allow redistribution of iBGP routes into an Interior Gateway
               Protocol (IGP). EOS default is true.
+          labeled_unicast:
+            type: dict
+            keys:
+              rib:
+                type: str
+                description: Set the labeled-unicast rib mode.  EOS default is tunnel.
+                valid_values:
+                - ip
+                - tunnel
+                - ip-tunnel
+              route_map:
+                type: str
+                description: Define a route-map to use.
       listen_ranges:
         type: list
         description: 'Improved "listen_ranges" data model to support multiple listen
