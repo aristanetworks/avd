@@ -7643,6 +7643,51 @@ $defs:
             underlay_multicast_group:
               description: Specific multicast group to use for this VLAN.
               type: str
+        igmp_snooping:
+          type: dict
+          documentation_options:
+            table: network-services-multicast-settings
+          keys:
+            enabled:
+              type: bool
+              description: Enable or disable IGMP snooping (Enabled by default on
+                EOS).
+            querier:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Will be enabled automatically if evpn_l2_multicast
+                    is enabled.
+                source_address:
+                  type: str
+                  description: 'The value of `source_address` will be interpreted
+                    according to these rules:
+
+                    - `vrf_router_id` will configure the VRF router ID address according
+                    to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+
+                    - ''diagnostic_loopback'' will configure the VRF Diagnostic Loopback
+                    address.
+
+                    - `main_router_id` will configure the Loopback0 IP address.
+
+                    - An IPv4 address will be used directly as the source address.
+
+                    Overrides `<network_services_key>[].igmp_snooping.querier.source_address`.'
+                version:
+                  type: int
+                  description: IGMP Version (By default EOS uses IGMP version 2 for
+                    IGMP querier).
+                  convert_types:
+                  - str
+                  valid_values:
+                  - 1
+                  - 2
+                  - 3
+            fast_leave:
+              type: bool
+              description: Enable IGMP snooping fast-leave feature.
         igmp_snooping_enabled:
           documentation_options:
             table: network-services-multicast-settings
@@ -7652,6 +7697,11 @@ $defs:
           documentation_options:
             table: network-services-multicast-settings
           type: dict
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: igmp_snooping.querier
           description: 'Enable igmp snooping querier, by default using IP address
             of Loopback 0.
 
@@ -7684,9 +7734,6 @@ $defs:
               - 1
               - 2
               - 3
-            fast_leave:
-              type: bool
-              description: Enable IGMP snooping fast-leave feature.
         bgp:
           type: dict
           keys:
@@ -8075,9 +8122,42 @@ $defs:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
-        igmp:
+        igmp_snooping:
+          documentation_options:
+            table: network-services-multicast-settings
           type: dict
           keys:
+            querier:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Will be enabled automatically if "evpn_l2_multicast"
+                    is enabled.
+                source_address:
+                  type: str
+                  description: 'The value of `source_address` will be interpreted
+                    according to these rules:
+
+                    - `vrf_router_id` will configure the VRF router ID address according
+                    to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+
+                    - `diagnostic_loopback` will configure the VRF Diagnostic Loopback.
+
+                    - `main_router_id` will configure the Loopback0 IP address.
+
+                    - An IPv4 address will be used directly as the source address.'
+                  default: main_router_id
+                version:
+                  type: int
+                  description: IGMP Version (By default EOS uses IGMP version 2 for
+                    IGMP querier).
+                  convert_types:
+                  - str
+                  valid_values:
+                  - 1
+                  - 2
+                  - 3
             fast_leave:
               type: bool
               description: 'Explicitly enable or disable IGMP snooping fast-leave
@@ -8118,7 +8198,7 @@ $defs:
                 warning: true
                 removed: false
                 remove_in_version: 7.0.0
-                new_key: <network_services_key.key>.igmp.fast_leave
+                new_key: <network_services_key.key>.igmp_snooping.fast_leave
               description: Enable IGMP snooping fast-leave feature for all SVIs and
                 l2vlans within the Tenant.
             always_redistribute_igmp:
@@ -8272,6 +8352,11 @@ $defs:
 
             '
           type: dict
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: igmp_snooping.querier
           keys:
             enabled:
               type: bool
@@ -14048,15 +14133,69 @@ $defs:
         keys:
           enabled:
             type: bool
+      igmp_snooping:
+        type: dict
+        documentation_options:
+          table: network-services-multicast-settings
+        keys:
+          enabled:
+            type: bool
+            description: Enable or disable IGMP snooping (Enabled by default on EOS).
+          querier:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+                description: Will be enabled automatically if evpn_l2_multicast is
+                  enabled.
+              source_address:
+                type: str
+                description: 'The value of `source_address` will be interpreted according
+                  to these rules:
+
+                  - `vrf_router_id` will configure the VRF router ID address according
+                  to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+
+                  - ''diagnostic_loopback'' will configure the VRF Diagnostic Loopback
+                  address.
+
+                  - `main_router_id` will configure the Loopback0 IP address.
+
+                  - An IPv4 address will be used directly as the source address.
+
+                  Overrides `<network_services_key>[].igmp_snooping.querier.source_address`.'
+              version:
+                type: int
+                description: IGMP Version (By default EOS uses IGMP version 2 for
+                  IGMP querier).
+                convert_types:
+                - str
+                valid_values:
+                - 1
+                - 2
+                - 3
+          fast_leave:
+            type: bool
+            description: Enable IGMP snooping fast-leave feature.
       igmp_snooping_enabled:
         documentation_options:
           table: network-services-multicast-settings
         type: bool
         description: Enable or disable IGMP snooping (Enabled by default on EOS).
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: igmp_snooping.enabled
       igmp_snooping_querier:
         documentation_options:
           table: network-services-multicast-settings
         type: dict
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: igmp_snooping.querier
         keys:
           enabled:
             type: bool
@@ -14076,7 +14215,7 @@ $defs:
 
               - An IPv4 address will be used directly as the source address.
 
-              Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.'
+              Overrides `<network_services_key>[].igmp_snooping.querier.source_address`.'
           version:
             type: int
             description: IGMP Version (By default EOS uses IGMP version 2 for IGMP
@@ -14087,9 +14226,6 @@ $defs:
             - 1
             - 2
             - 3
-          fast_leave:
-            type: bool
-            description: Enable IGMP snooping fast-leave feature.
       vxlan:
         type: bool
         default: true
