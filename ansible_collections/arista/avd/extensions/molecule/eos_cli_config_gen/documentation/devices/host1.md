@@ -12192,47 +12192,23 @@ ipv6 access-list standard ipv6_test1
 
 ##### ACL_NO_SEQUENCE
 
-| Sequence | Action |
-| -------- | ------ |
-
 ##### acl_qos_tc0_v6
 
-| Sequence | Action |
-| -------- | ------ |
-
 ##### acl_qos_tc5_v6
-
-| Sequence | Action |
-| -------- | ------ |
 
 ##### ACL_SEQUENCE_AND_COUNTERS
 
 ACL has counting mode `counters per-entry` enabled!
 
-| Sequence | Action |
-| -------- | ------ |
-
 ##### ACL_WITHOUT_ENTRIES
 
-| Sequence | Action |
-| -------- | ------ |
-
 ##### TEST1
-
-| Sequence | Action |
-| -------- | ------ |
 
 ##### TEST2
 
 ACL has counting mode `counters per-entry` enabled!
 
-| Sequence | Action |
-| -------- | ------ |
-
 ##### TEST3
-
-| Sequence | Action |
-| -------- | ------ |
 
 #### IPv6 Extended Access-lists Device Configuration
 
