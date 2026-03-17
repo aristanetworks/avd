@@ -10,8 +10,8 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.as_notation is arista.avd.defined %}
    bgp asn notation {{ router_bgp.as_notation }}
 {%     endif %}
-{%     if router_bgp.bgp.labeled_unicast.rib is arista.avd.defined(true) %}
-{%         if router_bgp.bgp.labeled_unicast.route_map is arista.avd.defined(true) %}
+{%     if router_bgp.bgp.labeled_unicast.rib is arista.avd.defined %}
+{%         if router_bgp.bgp.labeled_unicast.route_map is arista.avd.defined %}
    bgp labeled-unicast rib {{ router_bgp.bgp.labeled_unicast.rib }} route-map {{ router_bgp.bgp.labeled_unicast.route_map }}
 {%         else %}
    bgp labeled-unicast rib {{ router_bgp.bgp.labeled_unicast.rib }}
