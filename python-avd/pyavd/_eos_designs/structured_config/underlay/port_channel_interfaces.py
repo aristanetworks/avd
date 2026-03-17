@@ -151,6 +151,11 @@ class PortChannelInterfacesMixin(Protocol):
             else:
                 regular_names.add(l3_port_channel.name)
 
+                # Validation: Non-subinterface port-channels must have at least one member interface
+                if self.inputs.avd_design_future.raise_for_port_channels_without_members and not l3_port_channel.member_interfaces:
+                    msg = f"L3 Port-Channel '{l3_port_channel.name}' must have at least one member interface defined."
+                    raise AristaAvdInvalidInputsError(msg)
+
         # We need to ensure that parent port-channel interfaces are also included explicitly within list of port-channel interfaces.
         if missing_parents := parent_names.difference(regular_names):
             msg = (

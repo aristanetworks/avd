@@ -90,6 +90,11 @@ class PortChannelInterfacesMixin(Protocol):
                     # This is a regular Port-Channel (not sub-interface)
                     regular_l3_port_channel_names.add(l3_port_channel.name)
                     subif_parent_port_channel_names.add(l3_port_channel.name)
+
+                    # Validation: Non-subinterface port-channels must have at least one member interface
+                    if self.inputs.avd_design_future.raise_for_port_channels_without_members and not l3_port_channel.member_interfaces:
+                        msg = f"L3 Port-Channel '{l3_port_channel.name}' must have at least one member interface defined."
+                        raise AristaAvdInvalidInputsError(msg)
                 else:
                     parent_port_channel_name = l3_port_channel.name.split(".", maxsplit=1)[0]
                     subif_parent_port_channel_names.add(parent_port_channel_name)
