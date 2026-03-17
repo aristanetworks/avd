@@ -64730,7 +64730,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             inner_vlan_mask: str | None
             """Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined."""
             log: bool | None
-            """Log matches against this rule."""
+            """Enable logging when a packet matches the ACL rule."""
             mirror_session: str | None
             """Mirror session to mirror matches against this rule."""
 
@@ -64770,7 +64770,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         vlan_mask: VLAN mask. Range 0x000-0xFFF. Required when `vlan` is defined.
                         inner_vlan: Match packets by inner VLAN value.
                         inner_vlan_mask: Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
-                        log: Log matches against this rule.
+                        log: Enable logging when a packet matches the ACL rule.
                         mirror_session: Mirror session to mirror matches against this rule.
 
                     """
