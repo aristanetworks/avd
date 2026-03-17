@@ -5140,7 +5140,7 @@ keys:
         $ref: eos_cli_config_gen#/keys/ptp/keys/free_running
   queue_monitor_length:
     documentation_options:
-      table: system-settings
+      table: latency-analyzer
     $ref: eos_cli_config_gen#/keys/queue_monitor_length
     type: dict
     keys:
@@ -5155,6 +5155,8 @@ keys:
 
           '
   queue_monitor_streaming:
+    documentation_options:
+      table: latency-analyzer
     type: dict
     $ref: eos_cli_config_gen#/keys/queue_monitor_streaming
   redundancy:

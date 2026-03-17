@@ -1059,12 +1059,10 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/event-monitor.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/load-interval.md
 --8<--
 
-## Quality of Service
-
-### Queue monitor-streaming
+### Latency Analyzer (LANZ)
 
 --8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/queue-monitor-streaming.md
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/latency-analyzer.md
 --8<--
 
 ## System settings
