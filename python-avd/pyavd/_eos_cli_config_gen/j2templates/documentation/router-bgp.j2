@@ -752,13 +752,10 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 | RIB | Route-map |
 | --- | --------- |
-{%         if router_bgp.bgp.labeled_unicast.route_map is arista.avd.defined %}
-| {{ router_bgp.bgp.labeled_unicast.rib }} | {{ router_bgp.bgp.labeled_unicast.route_map }} |
-{%         else %}
-| {{ router_bgp.bgp.labeled_unicast.rib }} | None |
-{%         endif %}
+| {{ router_bgp.bgp.labeled_unicast.rib }} | {{ router_bgp.bgp.labeled_unicast.route_map | arista.avd.default("-")}} |
 {%     endif %}
 {%     if router_bgp.address_family_ipv4_sr_te is arista.avd.defined %}
+
 #### Router BGP IPv4 SR-TE Address Family
 {%         if router_bgp.address_family_ipv4_sr_te.neighbors is arista.avd.defined %}
 
