@@ -1,0 +1,13 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: snmp-settings-dhcp-mgmt-ip
+      mgmt_ip: dhcp
+
+snmp_settings:
+  compute_local_engineid: true
+  # mgmt_ip is dhcp which is not supported for engine ID computation via use_mgmt_interface
+expected_error_message: >-
+  'snmp_settings.local_engineid_ip' is set to 'use_mgmt_interface' but 'mgmt_ip: dhcp' is not supported. A static IP address is required.

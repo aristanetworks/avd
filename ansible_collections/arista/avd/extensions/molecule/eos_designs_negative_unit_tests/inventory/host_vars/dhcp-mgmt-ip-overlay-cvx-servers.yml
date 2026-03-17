@@ -1,0 +1,27 @@
+---
+type: cvxserver
+
+overlay_routing_protocol: CVX
+overlay_cvx_servers: [dhcp-mgmt-ip-overlay-cvx-servers]
+
+node_type_keys:
+  - key: cvxserver
+    type: cvxserver
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    default_ptp_priority1: 30
+
+cvxserver:
+  defaults:
+    loopback_ipv4_pool: 192.168.254.0/24
+    vtep_loopback_ipv4_pool: 192.168.253.0/24
+  nodes:
+    - name: dhcp-mgmt-ip-overlay-cvx-servers
+      bgp_as: 65001
+      id: 2
+      mgmt_ip: dhcp
+
+expected_error_message: >-
+  'mgmt_ip' for CVX Server dhcp-mgmt-ip-overlay-cvx-servers must be a static IP address, 'dhcp' is not supported.

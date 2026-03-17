@@ -1,0 +1,2 @@
+expected_error_message: >-
+  'mgmt_ip: dhcp' is not supported for MLAG peer 'mlag-dhcp-mgmt-ip-2'. MLAG dual-primary detection heartbeat requires a static management IP address.

@@ -1,0 +1,20 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-act-dhcp-ip-addr
+      platform: vEOS-lab
+      mgmt_ip: dhcp
+
+platform_settings:
+  - platforms: [vEOS-lab]
+    digital_twin:
+      platform: vEOS-lab
+      act_node_type: veos
+
+avd_digital_twin_mode: true
+
+expected_error_message: >-
+  Failed to generate ACT Digital Twin metadata for device 'digital-twin-act-dhcp-ip-addr'. 'mgmt_ip: dhcp' is not supported for Digital Twin.
+  A static IP address must be used.

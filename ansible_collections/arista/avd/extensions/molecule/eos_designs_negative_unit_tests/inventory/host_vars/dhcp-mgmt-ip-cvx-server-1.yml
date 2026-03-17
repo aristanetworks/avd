@@ -1,0 +1,19 @@
+---
+type: cvxserver
+
+overlay_routing_protocol: CVX
+overlay_cvx_servers: [dhcp-mgmt-ip-cvx-server-1, dhcp-mgmt-ip-cvx-server-2]
+
+node_type_keys:
+  - key: cvxserver
+    type: cvxserver
+    underlay_router: false
+
+cvxserver:
+  nodes:
+    - name: dhcp-mgmt-ip-cvx-server-1
+      id: 3
+      mgmt_ip: 192.168.201.118/24
+
+expected_error_message: >-
+  'mgmt_ip' for CVX Server dhcp-mgmt-ip-cvx-server-2 must be a static IP address, 'dhcp' is not supported.

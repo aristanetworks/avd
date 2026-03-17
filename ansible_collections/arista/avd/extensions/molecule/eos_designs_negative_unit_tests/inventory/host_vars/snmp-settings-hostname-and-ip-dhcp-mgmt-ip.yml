@@ -1,0 +1,14 @@
+---
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: snmp-settings-hostname-and-ip-dhcp-mgmt-ip
+      mgmt_ip: dhcp
+
+snmp_settings:
+  compute_local_engineid: true
+  compute_local_engineid_source: hostname_and_ip
+  # mgmt_ip is dhcp which is not supported for engine ID computation with hostname_and_ip
+expected_error_message: >-
+  'mgmt_ip: dhcp' is not supported for SNMP engine ID computation with 'hostname_and_ip'. A static management IP address is required.
