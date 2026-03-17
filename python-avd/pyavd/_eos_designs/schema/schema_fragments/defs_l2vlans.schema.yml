@@ -110,7 +110,7 @@ $defs:
               keys:
                 enabled:
                   type: bool
-                  description: Will be enabled automatically if evpn_l2_multicast is enabled.
+                  description: Will be enabled automatically if `evpn_l2_multicast` is enabled.
                 source_address:
                   type: str
                   description: |-
