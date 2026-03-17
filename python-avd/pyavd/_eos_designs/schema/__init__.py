@@ -7629,13 +7629,13 @@ class EosDesigns(EosDesignsRootModel):
             enabled: bool
             evpn_domain_id: str
             """
-            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+            Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
             Default value: `"65535:1"`
             """
             ipvpn_domain_id: str
             """
-            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+            Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
             Default value: `"65535:2"`
             """
@@ -7692,8 +7692,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: enabled
-                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                         enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                         maximum_routes: Maximum routes to accept from IPVPN remote peers.
                         local_as:
@@ -12733,13 +12733,13 @@ class EosDesigns(EosDesignsRootModel):
             enabled: bool
             evpn_domain_id: str
             """
-            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+            Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
             Default value: `"65535:1"`
             """
             ipvpn_domain_id: str
             """
-            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+            Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
             Default value: `"65535:2"`
             """
@@ -12796,8 +12796,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: enabled
-                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                         enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                         maximum_routes: Maximum routes to accept from IPVPN remote peers.
                         local_as:
@@ -20024,6 +20024,96 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class IgmpSnooping(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Querier(AvdModel):
+                """Subclass of AvdModel."""
+
+                Version: TypeAlias = Literal[1, 2, 3]
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                enabled: bool | None
+                """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                source_address: str | None
+                """
+                The value of `source_address` will be interpreted according to these rules:
+                - `vrf_router_id` will
+                configure the VRF router ID address according to
+                `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                - 'diagnostic_loopback' will configure the
+                VRF Diagnostic Loopback address.
+                - `main_router_id` will configure the Loopback0 IP address.
+                - An
+                IPv4 address will be used directly as the source address.
+                Overrides
+                `<network_services_key>[].igmp_snooping.querier.source_address`.
+                """
+                version: Version | None
+                """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        source_address: str | None | UndefinedType = Undefined,
+                        version: Version | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Querier.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                            source_address:
+                               The value of `source_address` will be interpreted according to these rules:
+                               - `vrf_router_id` will
+                               configure the VRF router ID address according to
+                               `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                               - 'diagnostic_loopback' will configure the
+                               VRF Diagnostic Loopback address.
+                               - `main_router_id` will configure the Loopback0 IP address.
+                               - An
+                               IPv4 address will be used directly as the source address.
+                               Overrides
+                               `<network_services_key>[].igmp_snooping.querier.source_address`.
+                            version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                        """
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "querier": {"type": Querier}, "fast_leave": {"type": bool}}
+            enabled: bool | None
+            """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+            querier: Querier
+            """Subclass of AvdModel."""
+            fast_leave: bool | None
+            """Enable IGMP snooping fast-leave feature."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    querier: Querier | UndefinedType = Undefined,
+                    fast_leave: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    IgmpSnooping.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                        querier: Subclass of AvdModel.
+                        fast_leave: Enable IGMP snooping fast-leave feature.
+
+                    """
+
         class IgmpSnoopingQuerier(AvdModel):
             """Subclass of AvdModel."""
 
@@ -20158,6 +20248,7 @@ class EosDesigns(EosDesignsRootModel):
             "evpn_l2_multi_domain": {"type": bool},
             "evpn_l2_multicast": {"type": EvpnL2Multicast},
             "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
+            "igmp_snooping": {"type": IgmpSnooping},
             "igmp_snooping_enabled": {"type": bool},
             "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
             "bgp": {"type": Bgp},
@@ -20247,6 +20338,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         vxlan_flood_multicast: VxlanFloodMulticast
         """Subclass of AvdModel."""
+        igmp_snooping: IgmpSnooping
+        """Subclass of AvdModel."""
         igmp_snooping_enabled: bool | None
         """Enable or disable IGMP snooping (Enabled by default on EOS)."""
         igmp_snooping_querier: IgmpSnoopingQuerier
@@ -20281,6 +20374,7 @@ class EosDesigns(EosDesignsRootModel):
                 evpn_l2_multi_domain: bool | None | UndefinedType = Undefined,
                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                 vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
+                igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                 igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                 igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
@@ -20353,6 +20447,7 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of
                        AvdModel.
                     vxlan_flood_multicast: Subclass of AvdModel.
+                    igmp_snooping: Subclass of AvdModel.
                     igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                     igmp_snooping_querier:
                        Enable igmp snooping querier, by default using IP address of Loopback 0.
@@ -31414,6 +31509,96 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class IgmpSnooping(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Querier(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Version: TypeAlias = Literal[1, 2, 3]
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                    enabled: bool | None
+                    """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                    source_address: str | None
+                    """
+                    The value of `source_address` will be interpreted according to these rules:
+                    - `vrf_router_id` will
+                    configure the VRF router ID address according to
+                    `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                    - 'diagnostic_loopback' will configure the
+                    VRF Diagnostic Loopback address.
+                    - `main_router_id` will configure the Loopback0 IP address.
+                    - An
+                    IPv4 address will be used directly as the source address.
+                    Overrides
+                    `<network_services_key>[].igmp_snooping.querier.source_address`.
+                    """
+                    version: Version | None
+                    """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            source_address: str | None | UndefinedType = Undefined,
+                            version: Version | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Querier.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                                source_address:
+                                   The value of `source_address` will be interpreted according to these rules:
+                                   - `vrf_router_id` will
+                                   configure the VRF router ID address according to
+                                   `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                   - 'diagnostic_loopback' will configure the
+                                   VRF Diagnostic Loopback address.
+                                   - `main_router_id` will configure the Loopback0 IP address.
+                                   - An
+                                   IPv4 address will be used directly as the source address.
+                                   Overrides
+                                   `<network_services_key>[].igmp_snooping.querier.source_address`.
+                                version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                            """
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "querier": {"type": Querier}, "fast_leave": {"type": bool}}
+                enabled: bool | None
+                """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+                querier: Querier
+                """Subclass of AvdModel."""
+                fast_leave: bool | None
+                """Enable IGMP snooping fast-leave feature."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        querier: Querier | UndefinedType = Undefined,
+                        fast_leave: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        IgmpSnooping.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                            querier: Subclass of AvdModel.
+                            fast_leave: Enable IGMP snooping fast-leave feature.
+
+                        """
+
             class IgmpSnoopingQuerier(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -31433,7 +31618,7 @@ class EosDesigns(EosDesignsRootModel):
                 - An
                 IPv4 address will be used directly as the source address.
                 Overrides
-                `<network_services_key>[].igmp_snooping_querier.source_address`.
+                `<network_services_key>[].igmp_snooping.querier.source_address`.
                 """
                 version: Version | None
                 """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
@@ -31469,7 +31654,7 @@ class EosDesigns(EosDesignsRootModel):
                                - An
                                IPv4 address will be used directly as the source address.
                                Overrides
-                               `<network_services_key>[].igmp_snooping_querier.source_address`.
+                               `<network_services_key>[].igmp_snooping.querier.source_address`.
                             version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                             fast_leave: Enable IGMP snooping fast-leave feature.
 
@@ -31680,6 +31865,7 @@ class EosDesigns(EosDesignsRootModel):
                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
                 "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
+                "igmp_snooping": {"type": IgmpSnooping},
                 "igmp_snooping_enabled": {"type": bool},
                 "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                 "vxlan": {"type": bool, "default": True},
@@ -31849,6 +32035,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
+            igmp_snooping: IgmpSnooping
+            """Subclass of AvdModel."""
             igmp_snooping_enabled: bool | None
             """Enable or disable IGMP snooping (Enabled by default on EOS)."""
             igmp_snooping_querier: IgmpSnoopingQuerier
@@ -31923,6 +32111,7 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                     vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
+                    igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                     igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                     igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                     vxlan: bool | UndefinedType = Undefined,
@@ -32057,6 +32246,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdModel.
+                        igmp_snooping: Subclass of AvdModel.
                         igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                         igmp_snooping_querier: Subclass of AvdModel.
                         vxlan: Extend this SVI over VXLAN.
@@ -32411,6 +32601,96 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class IgmpSnooping(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Querier(AvdModel):
+                """Subclass of AvdModel."""
+
+                Version: TypeAlias = Literal[1, 2, 3]
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                enabled: bool | None
+                """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                source_address: str | None
+                """
+                The value of `source_address` will be interpreted according to these rules:
+                - `vrf_router_id` will
+                configure the VRF router ID address according to
+                `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                - 'diagnostic_loopback' will configure the
+                VRF Diagnostic Loopback address.
+                - `main_router_id` will configure the Loopback0 IP address.
+                - An
+                IPv4 address will be used directly as the source address.
+                Overrides
+                `<network_services_key>[].igmp_snooping.querier.source_address`.
+                """
+                version: Version | None
+                """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        source_address: str | None | UndefinedType = Undefined,
+                        version: Version | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Querier.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                            source_address:
+                               The value of `source_address` will be interpreted according to these rules:
+                               - `vrf_router_id` will
+                               configure the VRF router ID address according to
+                               `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                               - 'diagnostic_loopback' will configure the
+                               VRF Diagnostic Loopback address.
+                               - `main_router_id` will configure the Loopback0 IP address.
+                               - An
+                               IPv4 address will be used directly as the source address.
+                               Overrides
+                               `<network_services_key>[].igmp_snooping.querier.source_address`.
+                            version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                        """
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "querier": {"type": Querier}, "fast_leave": {"type": bool}}
+            enabled: bool | None
+            """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+            querier: Querier
+            """Subclass of AvdModel."""
+            fast_leave: bool | None
+            """Enable IGMP snooping fast-leave feature."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    querier: Querier | UndefinedType = Undefined,
+                    fast_leave: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    IgmpSnooping.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                        querier: Subclass of AvdModel.
+                        fast_leave: Enable IGMP snooping fast-leave feature.
+
+                    """
+
         class IgmpSnoopingQuerier(AvdModel):
             """Subclass of AvdModel."""
 
@@ -32430,7 +32710,7 @@ class EosDesigns(EosDesignsRootModel):
             - An
             IPv4 address will be used directly as the source address.
             Overrides
-            `<network_services_key>[].igmp_snooping_querier.source_address`.
+            `<network_services_key>[].igmp_snooping.querier.source_address`.
             """
             version: Version | None
             """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
@@ -32466,7 +32746,7 @@ class EosDesigns(EosDesignsRootModel):
                            - An
                            IPv4 address will be used directly as the source address.
                            Overrides
-                           `<network_services_key>[].igmp_snooping_querier.source_address`.
+                           `<network_services_key>[].igmp_snooping.querier.source_address`.
                         version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                         fast_leave: Enable IGMP snooping fast-leave feature.
 
@@ -32679,6 +32959,7 @@ class EosDesigns(EosDesignsRootModel):
             "evpn_l2_multicast": {"type": EvpnL2Multicast},
             "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
             "evpn_l3_multicast": {"type": EvpnL3Multicast},
+            "igmp_snooping": {"type": IgmpSnooping},
             "igmp_snooping_enabled": {"type": bool},
             "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
             "vxlan": {"type": bool, "default": True},
@@ -32864,6 +33145,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        igmp_snooping: IgmpSnooping
+        """Subclass of AvdModel."""
         igmp_snooping_enabled: bool | None
         """Enable or disable IGMP snooping (Enabled by default on EOS)."""
         igmp_snooping_querier: IgmpSnoopingQuerier
@@ -32940,6 +33223,7 @@ class EosDesigns(EosDesignsRootModel):
                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                 vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
+                igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                 igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                 igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                 vxlan: bool | UndefinedType = Undefined,
@@ -33086,6 +33370,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdModel.
+                    igmp_snooping: Subclass of AvdModel.
                     igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                     igmp_snooping_querier: Subclass of AvdModel.
                     vxlan: Extend this SVI over VXLAN.
@@ -36431,13 +36716,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -36494,8 +36779,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -41512,13 +41797,13 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             evpn_domain_id: str
                             """
-                            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                            Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                             Default value: `"65535:1"`
                             """
                             ipvpn_domain_id: str
                             """
-                            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                            Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                             Default value: `"65535:2"`
                             """
@@ -41575,8 +41860,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
-                                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                         enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                         maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                         local_as:
@@ -46556,13 +46841,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -46619,8 +46904,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -51663,13 +51948,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -51726,8 +52011,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -60269,10 +60554,71 @@ class EosDesigns(EosDesignsRootModel):
 
                 BgpPeerGroups._item_type = BgpPeerGroupsItem
 
-                class Igmp(AvdModel):
+                class IgmpSnooping(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"fast_leave": {"type": bool}}
+                    class Querier(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Version: TypeAlias = Literal[1, 2, 3]
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool},
+                            "source_address": {"type": str, "default": "main_router_id"},
+                            "version": {"type": int},
+                        }
+                        enabled: bool | None
+                        """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                        source_address: str
+                        """
+                        The value of `source_address` will be interpreted according to these rules:
+                        - `vrf_router_id` will
+                        configure the VRF router ID address according to
+                        `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                        - `diagnostic_loopback` will configure the
+                        VRF Diagnostic Loopback.
+                        - `main_router_id` will configure the Loopback0 IP address.
+                        - An IPv4
+                        address will be used directly as the source address.
+
+                        Default value: `"main_router_id"`
+                        """
+                        version: Version | None
+                        """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | None | UndefinedType = Undefined,
+                                source_address: str | UndefinedType = Undefined,
+                                version: Version | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Querier.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                                    source_address:
+                                       The value of `source_address` will be interpreted according to these rules:
+                                       - `vrf_router_id` will
+                                       configure the VRF router ID address according to
+                                       `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                       - `diagnostic_loopback` will configure the
+                                       VRF Diagnostic Loopback.
+                                       - `main_router_id` will configure the Loopback0 IP address.
+                                       - An IPv4
+                                       address will be used directly as the source address.
+                                    version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                                """
+
+                    _fields: ClassVar[dict] = {"querier": {"type": Querier}, "fast_leave": {"type": bool}}
+                    querier: Querier
+                    """Subclass of AvdModel."""
                     fast_leave: bool | None
                     """
                     Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the
@@ -60282,14 +60628,15 @@ class EosDesigns(EosDesignsRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, fast_leave: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, querier: Querier | UndefinedType = Undefined, fast_leave: bool | None | UndefinedType = Undefined) -> None:
                             """
-                            Igmp.
+                            IgmpSnooping.
 
 
                             Subclass of AvdModel.
 
                             Args:
+                                querier: Subclass of AvdModel.
                                 fast_leave:
                                    Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the
                                    Tenant.
@@ -61643,6 +61990,96 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
+                            class IgmpSnooping(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Querier(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    Version: TypeAlias = Literal[1, 2, 3]
+                                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                                    enabled: bool | None
+                                    """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                                    source_address: str | None
+                                    """
+                                    The value of `source_address` will be interpreted according to these rules:
+                                    - `vrf_router_id` will
+                                    configure the VRF router ID address according to
+                                    `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                    - 'diagnostic_loopback' will configure the
+                                    VRF Diagnostic Loopback address.
+                                    - `main_router_id` will configure the Loopback0 IP address.
+                                    - An
+                                    IPv4 address will be used directly as the source address.
+                                    Overrides
+                                    `<network_services_key>[].igmp_snooping.querier.source_address`.
+                                    """
+                                    version: Version | None
+                                    """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            enabled: bool | None | UndefinedType = Undefined,
+                                            source_address: str | None | UndefinedType = Undefined,
+                                            version: Version | None | UndefinedType = Undefined,
+                                        ) -> None:
+                                            """
+                                            Querier.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                                                source_address:
+                                                   The value of `source_address` will be interpreted according to these rules:
+                                                   - `vrf_router_id` will
+                                                   configure the VRF router ID address according to
+                                                   `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                                   - 'diagnostic_loopback' will configure the
+                                                   VRF Diagnostic Loopback address.
+                                                   - `main_router_id` will configure the Loopback0 IP address.
+                                                   - An
+                                                   IPv4 address will be used directly as the source address.
+                                                   Overrides
+                                                   `<network_services_key>[].igmp_snooping.querier.source_address`.
+                                                version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                                            """
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "querier": {"type": Querier}, "fast_leave": {"type": bool}}
+                                enabled: bool | None
+                                """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+                                querier: Querier
+                                """Subclass of AvdModel."""
+                                fast_leave: bool | None
+                                """Enable IGMP snooping fast-leave feature."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        querier: Querier | UndefinedType = Undefined,
+                                        fast_leave: bool | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        IgmpSnooping.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                                            querier: Subclass of AvdModel.
+                                            fast_leave: Enable IGMP snooping fast-leave feature.
+
+                                        """
+
                             class IgmpSnoopingQuerier(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -61667,7 +62104,7 @@ class EosDesigns(EosDesignsRootModel):
                                 - An
                                 IPv4 address will be used directly as the source address.
                                 Overrides
-                                `<network_services_key>[].igmp_snooping_querier.source_address`.
+                                `<network_services_key>[].igmp_snooping.querier.source_address`.
                                 """
                                 version: Version | None
                                 """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
@@ -61703,7 +62140,7 @@ class EosDesigns(EosDesignsRootModel):
                                                - An
                                                IPv4 address will be used directly as the source address.
                                                Overrides
-                                               `<network_services_key>[].igmp_snooping_querier.source_address`.
+                                               `<network_services_key>[].igmp_snooping.querier.source_address`.
                                             version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                                             fast_leave: Enable IGMP snooping fast-leave feature.
 
@@ -61915,6 +62352,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
                                 "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
+                                "igmp_snooping": {"type": IgmpSnooping},
                                 "igmp_snooping_enabled": {"type": bool},
                                 "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                                 "vxlan": {"type": bool, "default": True},
@@ -62094,6 +62532,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdModel.
                             """
+                            igmp_snooping: IgmpSnooping
+                            """Subclass of AvdModel."""
                             igmp_snooping_enabled: bool | None
                             """Enable or disable IGMP snooping (Enabled by default on EOS)."""
                             igmp_snooping_querier: IgmpSnoopingQuerier
@@ -62169,6 +62609,7 @@ class EosDesigns(EosDesignsRootModel):
                                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                                     vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
+                                    igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                                     igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                                     igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                                     vxlan: bool | UndefinedType = Undefined,
@@ -62309,6 +62750,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                            Subclass of AvdModel.
+                                        igmp_snooping: Subclass of AvdModel.
                                         igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                                         igmp_snooping_querier: Subclass of AvdModel.
                                         vxlan: Extend this SVI over VXLAN.
@@ -62667,6 +63109,96 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class IgmpSnooping(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Querier(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                Version: TypeAlias = Literal[1, 2, 3]
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                                enabled: bool | None
+                                """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                                source_address: str | None
+                                """
+                                The value of `source_address` will be interpreted according to these rules:
+                                - `vrf_router_id` will
+                                configure the VRF router ID address according to
+                                `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                - 'diagnostic_loopback' will configure the
+                                VRF Diagnostic Loopback address.
+                                - `main_router_id` will configure the Loopback0 IP address.
+                                - An
+                                IPv4 address will be used directly as the source address.
+                                Overrides
+                                `<network_services_key>[].igmp_snooping.querier.source_address`.
+                                """
+                                version: Version | None
+                                """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        source_address: str | None | UndefinedType = Undefined,
+                                        version: Version | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Querier.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                                            source_address:
+                                               The value of `source_address` will be interpreted according to these rules:
+                                               - `vrf_router_id` will
+                                               configure the VRF router ID address according to
+                                               `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                               - 'diagnostic_loopback' will configure the
+                                               VRF Diagnostic Loopback address.
+                                               - `main_router_id` will configure the Loopback0 IP address.
+                                               - An
+                                               IPv4 address will be used directly as the source address.
+                                               Overrides
+                                               `<network_services_key>[].igmp_snooping.querier.source_address`.
+                                            version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "querier": {"type": Querier}, "fast_leave": {"type": bool}}
+                            enabled: bool | None
+                            """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+                            querier: Querier
+                            """Subclass of AvdModel."""
+                            fast_leave: bool | None
+                            """Enable IGMP snooping fast-leave feature."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    querier: Querier | UndefinedType = Undefined,
+                                    fast_leave: bool | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    IgmpSnooping.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                                        querier: Subclass of AvdModel.
+                                        fast_leave: Enable IGMP snooping fast-leave feature.
+
+                                    """
+
                         class IgmpSnoopingQuerier(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -62691,7 +63223,7 @@ class EosDesigns(EosDesignsRootModel):
                             - An
                             IPv4 address will be used directly as the source address.
                             Overrides
-                            `<network_services_key>[].igmp_snooping_querier.source_address`.
+                            `<network_services_key>[].igmp_snooping.querier.source_address`.
                             """
                             version: Version | None
                             """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
@@ -62727,7 +63259,7 @@ class EosDesigns(EosDesignsRootModel):
                                            - An
                                            IPv4 address will be used directly as the source address.
                                            Overrides
-                                           `<network_services_key>[].igmp_snooping_querier.source_address`.
+                                           `<network_services_key>[].igmp_snooping.querier.source_address`.
                                         version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                                         fast_leave: Enable IGMP snooping fast-leave feature.
 
@@ -62943,6 +63475,7 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_l2_multicast": {"type": EvpnL2Multicast},
                             "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                             "evpn_l3_multicast": {"type": EvpnL3Multicast},
+                            "igmp_snooping": {"type": IgmpSnooping},
                             "igmp_snooping_enabled": {"type": bool},
                             "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                             "vxlan": {"type": bool, "default": True},
@@ -63152,6 +63685,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        igmp_snooping: IgmpSnooping
+                        """Subclass of AvdModel."""
                         igmp_snooping_enabled: bool | None
                         """Enable or disable IGMP snooping (Enabled by default on EOS)."""
                         igmp_snooping_querier: IgmpSnoopingQuerier
@@ -63231,6 +63766,7 @@ class EosDesigns(EosDesignsRootModel):
                                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                                 vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
+                                igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                                 igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                                 igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                                 vxlan: bool | UndefinedType = Undefined,
@@ -63393,6 +63929,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdModel.
+                                    igmp_snooping: Subclass of AvdModel.
                                     igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                                     igmp_snooping_querier: Subclass of AvdModel.
                                     vxlan: Extend this SVI over VXLAN.
@@ -67242,6 +67779,96 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class IgmpSnooping(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Querier(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Version: TypeAlias = Literal[1, 2, 3]
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                            enabled: bool | None
+                            """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                            source_address: str | None
+                            """
+                            The value of `source_address` will be interpreted according to these rules:
+                            - `vrf_router_id` will
+                            configure the VRF router ID address according to
+                            `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                            - 'diagnostic_loopback' will configure the
+                            VRF Diagnostic Loopback address.
+                            - `main_router_id` will configure the Loopback0 IP address.
+                            - An
+                            IPv4 address will be used directly as the source address.
+                            Overrides
+                            `<network_services_key>[].igmp_snooping.querier.source_address`.
+                            """
+                            version: Version | None
+                            """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    source_address: str | None | UndefinedType = Undefined,
+                                    version: Version | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Querier.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                                        source_address:
+                                           The value of `source_address` will be interpreted according to these rules:
+                                           - `vrf_router_id` will
+                                           configure the VRF router ID address according to
+                                           `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                           - 'diagnostic_loopback' will configure the
+                                           VRF Diagnostic Loopback address.
+                                           - `main_router_id` will configure the Loopback0 IP address.
+                                           - An
+                                           IPv4 address will be used directly as the source address.
+                                           Overrides
+                                           `<network_services_key>[].igmp_snooping.querier.source_address`.
+                                        version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "querier": {"type": Querier}, "fast_leave": {"type": bool}}
+                        enabled: bool | None
+                        """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+                        querier: Querier
+                        """Subclass of AvdModel."""
+                        fast_leave: bool | None
+                        """Enable IGMP snooping fast-leave feature."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | None | UndefinedType = Undefined,
+                                querier: Querier | UndefinedType = Undefined,
+                                fast_leave: bool | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                IgmpSnooping.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                                    querier: Subclass of AvdModel.
+                                    fast_leave: Enable IGMP snooping fast-leave feature.
+
+                                """
+
                     class IgmpSnoopingQuerier(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -67383,6 +68010,7 @@ class EosDesigns(EosDesignsRootModel):
                         "evpn_l2_multi_domain": {"type": bool},
                         "evpn_l2_multicast": {"type": EvpnL2Multicast},
                         "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
+                        "igmp_snooping": {"type": IgmpSnooping},
                         "igmp_snooping_enabled": {"type": bool},
                         "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                         "bgp": {"type": Bgp},
@@ -67485,6 +68113,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vxlan_flood_multicast: VxlanFloodMulticast
                     """Subclass of AvdModel."""
+                    igmp_snooping: IgmpSnooping
+                    """Subclass of AvdModel."""
                     igmp_snooping_enabled: bool | None
                     """Enable or disable IGMP snooping (Enabled by default on EOS)."""
                     igmp_snooping_querier: IgmpSnoopingQuerier
@@ -67521,6 +68151,7 @@ class EosDesigns(EosDesignsRootModel):
                             evpn_l2_multi_domain: bool | None | UndefinedType = Undefined,
                             evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                             vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
+                            igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                             igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                             igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                             bgp: Bgp | UndefinedType = Undefined,
@@ -67601,6 +68232,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of
                                    AvdModel.
                                 vxlan_flood_multicast: Subclass of AvdModel.
+                                igmp_snooping: Subclass of AvdModel.
                                 igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                                 igmp_snooping_querier:
                                    Enable igmp snooping querier, by default using IP address of Loopback 0.
@@ -67896,7 +68528,7 @@ class EosDesigns(EosDesignsRootModel):
                     "redistribute_mlag_ibgp_peering_vrfs": {"type": bool, "default": False},
                     "evpn_vlan_bundle": {"type": str},
                     "bgp_peer_groups": {"type": BgpPeerGroups},
-                    "igmp": {"type": Igmp},
+                    "igmp_snooping": {"type": IgmpSnooping},
                     "evpn_l2_multicast": {"type": EvpnL2Multicast},
                     "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                     "evpn_l3_multicast": {"type": EvpnL3Multicast},
@@ -67987,7 +68619,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of
                 AvdIndexedList with `BgpPeerGroupsItem` items. Primary key is `name` (`str`).
                 """
-                igmp: Igmp
+                igmp_snooping: IgmpSnooping
                 """Subclass of AvdModel."""
                 evpn_l2_multicast: EvpnL2Multicast
                 """
@@ -68119,7 +68751,7 @@ class EosDesigns(EosDesignsRootModel):
                         redistribute_mlag_ibgp_peering_vrfs: bool | UndefinedType = Undefined,
                         evpn_vlan_bundle: str | None | UndefinedType = Undefined,
                         bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
-                        igmp: Igmp | UndefinedType = Undefined,
+                        igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                         evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                         vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                         evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
@@ -68193,7 +68825,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                Subclass of
                                AvdIndexedList with `BgpPeerGroupsItem` items. Primary key is `name` (`str`).
-                            igmp: Subclass of AvdModel.
+                            igmp_snooping: Subclass of AvdModel.
                             evpn_l2_multicast:
                                Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant.
                                - Multicast group binding is
@@ -69284,13 +69916,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -69347,8 +69979,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -74365,13 +74997,13 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             evpn_domain_id: str
                             """
-                            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                            Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                             Default value: `"65535:1"`
                             """
                             ipvpn_domain_id: str
                             """
-                            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                            Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                             Default value: `"65535:2"`
                             """
@@ -74428,8 +75060,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
-                                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                         enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                         maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                         local_as:
@@ -79409,13 +80041,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -79472,8 +80104,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -84516,13 +85148,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -84579,8 +85211,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
