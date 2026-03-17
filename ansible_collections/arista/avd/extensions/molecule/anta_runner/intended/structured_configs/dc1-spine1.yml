@@ -108,6 +108,8 @@ metadata:
   validate_hardware:
     enabled: false
   validate_no_errors_period: 1
+  interfaces:
+    avd_managed_only: true
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

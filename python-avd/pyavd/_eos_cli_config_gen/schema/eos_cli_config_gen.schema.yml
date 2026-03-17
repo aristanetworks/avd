@@ -4188,18 +4188,6 @@ keys:
                 managed by AVD.
 
                 - `false`: Disables validation for the interface.'
-            validate_error_disabled:
-              type: bool
-              description: 'Control Interface error disabled validation performed
-                by the `anta_runner` role.
-
-                - Unset (Default): Validation is performed only if the interface is
-                not administratively shutdown.
-
-                - `true`: Forces validation. Use this for connected endpoints not
-                managed by AVD.
-
-                - `false`: Disables validation for the interface.'
         sflow:
           type: dict
           keys:
@@ -10083,6 +10071,27 @@ keys:
           `anta_runner` role.
 
           '
+      interfaces:
+        type: dict
+        description: Interface validation settings.
+        keys:
+          avd_managed_only:
+            type: bool
+            description: 'When true, only validate interfaces defined in the device
+              structured configuration.
+
+              When false, validate all interfaces on the device.
+
+              This setting applies to all interface tests unless overridden per test.'
+            default: false
+          errdisable:
+            type: dict
+            description: Settings for the VerifyInterfaceErrDisabled test.
+            keys:
+              avd_managed_only:
+                type: bool
+                description: Override the global `avd_managed_only` setting for this
+                  specific test.
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -13241,18 +13250,6 @@ keys:
                 is performed only if the peer is deployed (`is_deployed: true`)
 
                 and the peer interface is not administratively shutdown.
-
-                - `true`: Forces validation. Use this for connected endpoints not
-                managed by AVD.
-
-                - `false`: Disables validation for the interface.'
-            validate_error_disabled:
-              type: bool
-              description: 'Control Interface error disabled validation performed
-                by the `anta_runner` role.
-
-                - Unset (Default): Validation is performed only if the interface is
-                not administratively shutdown.
 
                 - `true`: Forces validation. Use this for connected endpoints not
                 managed by AVD.

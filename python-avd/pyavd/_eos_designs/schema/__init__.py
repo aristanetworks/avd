@@ -3229,7 +3229,6 @@ class EosDesigns(EosDesignsRootModel):
                 "port_channel": {"type": PortChannel},
                 "validate_state": {"type": bool},
                 "validate_lldp": {"type": bool},
-                "validate_error_disabled": {"type": bool},
                 "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -3437,16 +3436,6 @@ class EosDesigns(EosDesignsRootModel):
             - `false`: Disables validation for
             the interface.
             """
-            validate_error_disabled: bool | None
-            """
-            Control Interface error disabled validation performed by the `anta_runner` role.
-            - Unset (Default):
-            Validation is performed only if the interface is not administratively shutdown.
-            - `true`: Forces
-            validation. Use this for connected endpoints not managed by AVD.
-            - `false`: Disables validation for
-            the interface.
-            """
             campus_link_type: CampusLinkType
             """
             PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -3510,7 +3499,6 @@ class EosDesigns(EosDesignsRootModel):
                     port_channel: PortChannel | UndefinedType = Undefined,
                     validate_state: bool | None | UndefinedType = Undefined,
                     validate_lldp: bool | None | UndefinedType = Undefined,
-                    validate_error_disabled: bool | None | UndefinedType = Undefined,
                     campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -3668,14 +3656,6 @@ class EosDesigns(EosDesignsRootModel):
                            is treated as an AVD-managed device. Validation is performed only if the peer is deployed
                            (`is_deployed: true`)
                            and the peer interface is not administratively shutdown.
-                           - `true`: Forces
-                           validation. Use this for connected endpoints not managed by AVD.
-                           - `false`: Disables validation for
-                           the interface.
-                        validate_error_disabled:
-                           Control Interface error disabled validation performed by the `anta_runner` role.
-                           - Unset (Default):
-                           Validation is performed only if the interface is not administratively shutdown.
                            - `true`: Forces
                            validation. Use this for connected endpoints not managed by AVD.
                            - `false`: Disables validation for
@@ -24241,7 +24221,6 @@ class EosDesigns(EosDesignsRootModel):
             "port_channel": {"type": PortChannel},
             "validate_state": {"type": bool},
             "validate_lldp": {"type": bool},
-            "validate_error_disabled": {"type": bool},
             "campus_link_type": {"type": CampusLinkType},
             "raw_eos_cli": {"type": str},
             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -24450,16 +24429,6 @@ class EosDesigns(EosDesignsRootModel):
         - `false`: Disables validation for
         the interface.
         """
-        validate_error_disabled: bool | None
-        """
-        Control Interface error disabled validation performed by the `anta_runner` role.
-        - Unset (Default):
-        Validation is performed only if the interface is not administratively shutdown.
-        - `true`: Forces
-        validation. Use this for connected endpoints not managed by AVD.
-        - `false`: Disables validation for
-        the interface.
-        """
         campus_link_type: CampusLinkType
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -24523,7 +24492,6 @@ class EosDesigns(EosDesignsRootModel):
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
-                validate_error_disabled: bool | None | UndefinedType = Undefined,
                 campus_link_type: CampusLinkType | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -24683,14 +24651,6 @@ class EosDesigns(EosDesignsRootModel):
                        is treated as an AVD-managed device. Validation is performed only if the peer is deployed
                        (`is_deployed: true`)
                        and the peer interface is not administratively shutdown.
-                       - `true`: Forces
-                       validation. Use this for connected endpoints not managed by AVD.
-                       - `false`: Disables validation for
-                       the interface.
-                    validate_error_disabled:
-                       Control Interface error disabled validation performed by the `anta_runner` role.
-                       - Unset (Default):
-                       Validation is performed only if the interface is not administratively shutdown.
                        - `true`: Forces
                        validation. Use this for connected endpoints not managed by AVD.
                        - `false`: Disables validation for
@@ -29108,7 +29068,6 @@ class EosDesigns(EosDesignsRootModel):
             "port_channel": {"type": PortChannel},
             "validate_state": {"type": bool},
             "validate_lldp": {"type": bool},
-            "validate_error_disabled": {"type": bool},
             "campus_link_type": {"type": CampusLinkType},
             "raw_eos_cli": {"type": str},
             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -29274,16 +29233,6 @@ class EosDesigns(EosDesignsRootModel):
         - `false`: Disables validation for
         the interface.
         """
-        validate_error_disabled: bool | None
-        """
-        Control Interface error disabled validation performed by the `anta_runner` role.
-        - Unset (Default):
-        Validation is performed only if the interface is not administratively shutdown.
-        - `true`: Forces
-        validation. Use this for connected endpoints not managed by AVD.
-        - `false`: Disables validation for
-        the interface.
-        """
         campus_link_type: CampusLinkType
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -29344,7 +29293,6 @@ class EosDesigns(EosDesignsRootModel):
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
-                validate_error_disabled: bool | None | UndefinedType = Undefined,
                 campus_link_type: CampusLinkType | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -29466,14 +29414,6 @@ class EosDesigns(EosDesignsRootModel):
                        is treated as an AVD-managed device. Validation is performed only if the peer is deployed
                        (`is_deployed: true`)
                        and the peer interface is not administratively shutdown.
-                       - `true`: Forces
-                       validation. Use this for connected endpoints not managed by AVD.
-                       - `false`: Disables validation for
-                       the interface.
-                    validate_error_disabled:
-                       Control Interface error disabled validation performed by the `anta_runner` role.
-                       - Unset (Default):
-                       Validation is performed only if the interface is not administratively shutdown.
                        - `true`: Forces
                        validation. Use this for connected endpoints not managed by AVD.
                        - `false`: Disables validation for
@@ -33566,12 +33506,78 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Interfaces(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Errdisable(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"avd_managed_only": {"type": bool}}
+                avd_managed_only: bool | None
+                """Override the global `avd_managed_only` setting for this specific test."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, avd_managed_only: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Errdisable.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            avd_managed_only: Override the global `avd_managed_only` setting for this specific test.
+
+                        """
+
+            _fields: ClassVar[dict] = {"avd_managed_only": {"type": bool, "default": False}, "errdisable": {"type": Errdisable}}
+            avd_managed_only: bool
+            """
+            When true, only validate interfaces defined in the device structured configuration.
+            When false,
+            validate all interfaces on the device.
+            This setting applies to all interface tests unless overridden
+            per test.
+
+            Default value: `False`
+            """
+            errdisable: Errdisable
+            """
+            Settings for the VerifyInterfaceErrDisabled test.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, avd_managed_only: bool | UndefinedType = Undefined, errdisable: Errdisable | UndefinedType = Undefined) -> None:
+                    """
+                    Interfaces.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        avd_managed_only:
+                           When true, only validate interfaces defined in the device structured configuration.
+                           When false,
+                           validate all interfaces on the device.
+                           This setting applies to all interface tests unless overridden
+                           per test.
+                        errdisable:
+                           Settings for the VerifyInterfaceErrDisabled test.
+
+                           Subclass of AvdModel.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "parent_profile": {"type": str},
             "hardware": {"type": Hardware},
             "logging": {"type": Logging},
             "exclude_as_extra_fabric_validation_target": {"type": bool, "default": False},
+            "interfaces": {"type": Interfaces},
         }
         name: str
         parent_profile: str | None
@@ -33599,6 +33605,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        interfaces: Interfaces
+        """
+        Interface validation settings.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -33610,6 +33622,7 @@ class EosDesigns(EosDesignsRootModel):
                 hardware: Hardware | UndefinedType = Undefined,
                 logging: Logging | UndefinedType = Undefined,
                 exclude_as_extra_fabric_validation_target: bool | UndefinedType = Undefined,
+                interfaces: Interfaces | UndefinedType = Undefined,
             ) -> None:
                 """
                 ValidationProfilesItem.
@@ -33635,6 +33648,10 @@ class EosDesigns(EosDesignsRootModel):
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
                        fabric validation tests performed by the `anta_runner` role.
+                    interfaces:
+                       Interface validation settings.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -57055,7 +57072,6 @@ class EosDesigns(EosDesignsRootModel):
                         "port_channel": {"type": PortChannel},
                         "validate_state": {"type": bool},
                         "validate_lldp": {"type": bool},
-                        "validate_error_disabled": {"type": bool},
                         "campus_link_type": {"type": CampusLinkType},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -57263,16 +57279,6 @@ class EosDesigns(EosDesignsRootModel):
                     - `false`: Disables validation for
                     the interface.
                     """
-                    validate_error_disabled: bool | None
-                    """
-                    Control Interface error disabled validation performed by the `anta_runner` role.
-                    - Unset (Default):
-                    Validation is performed only if the interface is not administratively shutdown.
-                    - `true`: Forces
-                    validation. Use this for connected endpoints not managed by AVD.
-                    - `false`: Disables validation for
-                    the interface.
-                    """
                     campus_link_type: CampusLinkType
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -57336,7 +57342,6 @@ class EosDesigns(EosDesignsRootModel):
                             port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
-                            validate_error_disabled: bool | None | UndefinedType = Undefined,
                             campus_link_type: CampusLinkType | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -57494,14 +57499,6 @@ class EosDesigns(EosDesignsRootModel):
                                    is treated as an AVD-managed device. Validation is performed only if the peer is deployed
                                    (`is_deployed: true`)
                                    and the peer interface is not administratively shutdown.
-                                   - `true`: Forces
-                                   validation. Use this for connected endpoints not managed by AVD.
-                                   - `false`: Disables validation for
-                                   the interface.
-                                validate_error_disabled:
-                                   Control Interface error disabled validation performed by the `anta_runner` role.
-                                   - Unset (Default):
-                                   Validation is performed only if the interface is not administratively shutdown.
                                    - `true`: Forces
                                    validation. Use this for connected endpoints not managed by AVD.
                                    - `false`: Disables validation for
@@ -58856,7 +58853,6 @@ class EosDesigns(EosDesignsRootModel):
                         "port_channel": {"type": PortChannel},
                         "validate_state": {"type": bool},
                         "validate_lldp": {"type": bool},
-                        "validate_error_disabled": {"type": bool},
                         "campus_link_type": {"type": CampusLinkType},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -59064,16 +59060,6 @@ class EosDesigns(EosDesignsRootModel):
                     - `false`: Disables validation for
                     the interface.
                     """
-                    validate_error_disabled: bool | None
-                    """
-                    Control Interface error disabled validation performed by the `anta_runner` role.
-                    - Unset (Default):
-                    Validation is performed only if the interface is not administratively shutdown.
-                    - `true`: Forces
-                    validation. Use this for connected endpoints not managed by AVD.
-                    - `false`: Disables validation for
-                    the interface.
-                    """
                     campus_link_type: CampusLinkType
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -59137,7 +59123,6 @@ class EosDesigns(EosDesignsRootModel):
                             port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
-                            validate_error_disabled: bool | None | UndefinedType = Undefined,
                             campus_link_type: CampusLinkType | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -59295,14 +59280,6 @@ class EosDesigns(EosDesignsRootModel):
                                    is treated as an AVD-managed device. Validation is performed only if the peer is deployed
                                    (`is_deployed: true`)
                                    and the peer interface is not administratively shutdown.
-                                   - `true`: Forces
-                                   validation. Use this for connected endpoints not managed by AVD.
-                                   - `false`: Disables validation for
-                                   the interface.
-                                validate_error_disabled:
-                                   Control Interface error disabled validation performed by the `anta_runner` role.
-                                   - Unset (Default):
-                                   Validation is performed only if the interface is not administratively shutdown.
                                    - `true`: Forces
                                    validation. Use this for connected endpoints not managed by AVD.
                                    - `false`: Disables validation for

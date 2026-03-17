@@ -319,7 +319,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_key</samp>](## "port_channel_interfaces.[].metadata.peer_key") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "port_channel_interfaces.[].metadata.validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "port_channel_interfaces.[].metadata.validate_lldp") | Boolean |  |  |  | Controls LLDP topology validation performed by the `anta_runner` role.<br>- Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)<br>and the peer interface is not administratively shutdown.<br>- `true`: Forces validation. Use this for connected endpoints not managed by AVD.<br>- `false`: Disables validation for the interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_error_disabled</samp>](## "port_channel_interfaces.[].metadata.validate_error_disabled") | Boolean |  |  |  | Control Interface error disabled validation performed by the `anta_runner` role.<br>- Unset (Default): Validation is performed only if the interface is not administratively shutdown.<br>- `true`: Forces validation. Use this for connected endpoints not managed by AVD.<br>- `false`: Disables validation for the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "port_channel_interfaces.[].sflow") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "port_channel_interfaces.[].sflow.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;egress</samp>](## "port_channel_interfaces.[].sflow.egress") | Dictionary |  |  |  |  |
@@ -1159,12 +1158,6 @@
           # - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
           # - `false`: Disables validation for the interface.
           validate_lldp: <bool>
-
-          # Control Interface error disabled validation performed by the `anta_runner` role.
-          # - Unset (Default): Validation is performed only if the interface is not administratively shutdown.
-          # - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
-          # - `false`: Disables validation for the interface.
-          validate_error_disabled: <bool>
         sflow:
           enable: <bool>
           egress:

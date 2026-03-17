@@ -257,6 +257,9 @@ metadata:
     min_line_cards: 0
     transceiver_manufacturers:
     - Third-party vendor
+  interfaces:
+    errdisable:
+      avd_managed_only: true
 mlag_configuration:
   domain_id: DC1_L3_LEAF1
   local_interface: Vlan4094

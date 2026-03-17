@@ -234,7 +234,19 @@
           "tags": [
             "dc1-leaf2a"
           ]
-        }
+        },
+        "interfaces": [
+          "Ethernet1",
+          "Ethernet2",
+          "Ethernet3",
+          "Ethernet4",
+          "Ethernet5",
+          "Ethernet6",
+          "Ethernet8",
+          "Port-Channel3",
+          "Port-Channel5",
+          "Port-Channel8"
+        ]
       }
     },
     {

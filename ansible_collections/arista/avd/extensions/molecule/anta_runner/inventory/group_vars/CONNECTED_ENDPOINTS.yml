@@ -7,12 +7,11 @@ port_profiles:
     spanning_tree_portfast: edge
     validate_state: false
 
-  - profile: Workstations_NoLLDP_and_NoError
+  - profile: Workstations_NoLLDP
     mode: access
     vlans: 11
     spanning_tree_portfast: edge
     validate_lldp: false
-    validate_error_disabled: false
 
 servers:
   - name: dc1-leaf1-server1
@@ -109,7 +108,6 @@ servers:
         mode: access
         spanning_tree_portfast: edge
         validate_lldp: true
-        validate_error_disabled: true
 
 workstations:
   - name: dc1-leaf1-workstation1
@@ -141,7 +139,7 @@ workstations:
 
   - name: dc1-leaf1-workstationNoLLDP
     adapters:
-      - profile: Workstations_NoLLDP_and_NoError
+      - profile: Workstations_NoLLDP
         endpoint_ports: [e1]
         switch_ports: [Ethernet33]
         switches: [dc1-leaf1a]

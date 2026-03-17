@@ -245,7 +245,15 @@
           "tags": [
             "dc1-spine1"
           ]
-        }
+        },
+        "interfaces": [
+          "Ethernet1",
+          "Ethernet2",
+          "Ethernet3",
+          "Ethernet4",
+          "Ethernet5",
+          "Ethernet6"
+        ]
       }
     },
     {

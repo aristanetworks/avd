@@ -414,7 +414,29 @@
           "tags": [
             "dc1-leaf1b"
           ]
-        }
+        },
+        "interfaces": [
+          "Ethernet1",
+          "Ethernet2",
+          "Ethernet3",
+          "Ethernet4",
+          "Ethernet5",
+          "Ethernet6",
+          "Ethernet7",
+          "Ethernet8",
+          "Ethernet41",
+          "Ethernet42",
+          "Ethernet43",
+          "Ethernet44",
+          "Ethernet45",
+          "Ethernet46",
+          "Ethernet47",
+          "Ethernet48",
+          "Ethernet49",
+          "Port-Channel3",
+          "Port-Channel5",
+          "Port-Channel8"
+        ]
       }
     },
     {

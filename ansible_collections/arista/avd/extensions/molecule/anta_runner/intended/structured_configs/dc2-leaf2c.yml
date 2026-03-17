@@ -34,7 +34,6 @@ ethernet_interfaces:
     peer_type: server
     peer_key: servers
     validate_lldp: true
-    validate_error_disabled: true
   switchport:
     enabled: true
     mode: access
@@ -71,6 +70,9 @@ metadata:
   fabric_name: FABRIC
   validate_hardware:
     enabled: false
+  interfaces:
+    errdisable:
+      avd_managed_only: true
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_DC2_L3_LEAF2_Port-Channel8

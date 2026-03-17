@@ -69,6 +69,9 @@ metadata:
   fabric_name: FABRIC
   validate_hardware:
     enabled: false
+  interfaces:
+    errdisable:
+      avd_managed_only: true
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_DC2_L3_LEAF1_Port-Channel8
