@@ -853,6 +853,7 @@ ASN Notation: asplain
 | Remote Domain Peer Groups | WAN-OVERLAY-PEERS |
 | L3 Gateway Configured | True |
 | L3 Gateway Inter-domain | True |
+
 #### Router BGP IPv4 SR-TE Address Family
 
 ##### IPv4 SR-TE Peer Groups
