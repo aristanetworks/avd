@@ -214,7 +214,7 @@ class PortChannelInterfacesMixin(Protocol):
 
             elif adapter.mode in ["trunk", "trunk phone"]:
                 port_channel_interface.switchport.trunk._update(
-                    allowed_vlan=adapter.vlans if adapter.mode == "trunk" else None,
+                    allowed_vlan=self._get_adapter_vlans(adapter),
                     groups=self._get_adapter_trunk_groups(
                         adapter, connected_endpoint, output_type=EosCliConfigGen.PortChannelInterfacesItem.Switchport.Trunk.Groups
                     ),

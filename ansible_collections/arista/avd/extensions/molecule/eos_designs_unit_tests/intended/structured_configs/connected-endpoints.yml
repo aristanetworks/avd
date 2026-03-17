@@ -514,6 +514,92 @@ ethernet_interfaces:
     peer: DOT1X_SUPPLICANT_PORT_CHANNEL
     peer_type: custom_server
     peer_key: servers
+- name: Ethernet34
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+  shutdown: false
+  channel_group:
+    id: 34
+    mode: active
+  metadata:
+    peer: TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet35
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+  shutdown: false
+  channel_group:
+    id: 35
+    mode: active
+  metadata:
+    peer: TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet36
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+  shutdown: false
+  channel_group:
+    id: 36
+    mode: active
+  metadata:
+    peer: TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet37
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+  shutdown: false
+  channel_group:
+    id: 37
+    mode: active
+  metadata:
+    peer: TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+    peer_type: custom_server
+    peer_key: servers
+- name: Ethernet38
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+  shutdown: false
+  metadata:
+    peer: TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+    peer_type: custom_server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+- name: Ethernet39
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+  shutdown: false
+  metadata:
+    peer: TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+    peer_type: custom_server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 101-102,111-112
+- name: Ethernet40
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+  shutdown: false
+  metadata:
+    peer: TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+    peer_type: custom_server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 201,112
+- name: Ethernet41
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+  shutdown: false
+  metadata:
+    peer: TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS
+    peer_type: custom_server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false
@@ -682,6 +768,36 @@ port_channel_interfaces:
   shutdown: false
   switchport:
     enabled: true
+- name: Port-Channel34
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS_vlans="all->alias of EOS's default/implicit '1-4094'"
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+- name: Port-Channel35
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS_vlans="defined_vlans->101-102,111-112"
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 101-102,111-112
+- name: Port-Channel36
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS_vlans="102,112"
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 102,112
+- name: Port-Channel37
+  description: CUSTOM_SERVER_TEST_TRUNK_WITH_EXPLICITLY_SET_VLANS_vlans="none"
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
 radius_server:
   vrfs:
   - name: MGMT
@@ -695,6 +811,27 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+vlans:
+- id: 101
+  name: vlan101
+  metadata:
+    tenants:
+    - testtenant
+- id: 102
+  name: vlan102
+  metadata:
+    tenants:
+    - testtenant
+- id: 111
+  name: vlan111
+  metadata:
+    tenants:
+    - testtenant
+- id: 112
+  name: vlan112
+  metadata:
+    tenants:
+    - testtenant
 vrfs:
 - name: MGMT
   ip_routing: false

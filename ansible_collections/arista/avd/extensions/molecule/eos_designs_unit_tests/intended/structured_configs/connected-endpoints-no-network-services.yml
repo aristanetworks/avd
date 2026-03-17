@@ -15,6 +15,56 @@ ethernet_interfaces:
   switchport:
     enabled: true
     mode: trunk
+- name: Ethernet20
+  description: connected-endpoints-no-network-services_vlans="all->alias of EOS's default/implicit '1-4094'"
+  shutdown: false
+  metadata:
+    peer: OLD_SW-1/8
+    peer_interface: Endpoint_port5
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+- name: Ethernet21
+  description: connected-endpoints-no-network-services_vlans="defined_vlans->none"
+  shutdown: false
+  metadata:
+    peer: OLD_SW-1/8
+    peer_interface: Endpoint_port6
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+- name: Ethernet22
+  description: connected-endpoints-no-network-services_vlans="100,200"
+  shutdown: false
+  metadata:
+    peer: OLD_SW-1/8
+    peer_interface: Endpoint_port7
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 100,200
+- name: Ethernet23
+  description: connected-endpoints-no-network-services_vlans="none"
+  shutdown: false
+  metadata:
+    peer: OLD_SW-1/8
+    peer_interface: Endpoint_port8
+    peer_type: server
+    peer_key: servers
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
 hostname: connected-endpoints-no-network-services
 management_interfaces:
 - name: Management1

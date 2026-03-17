@@ -262,6 +262,23 @@ class UtilsMixin(Protocol):
 
         return None
 
+    def _get_adapter_vlans(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> str | UndefinedType:
+        """Return a list of allowed VLANs for a Trunk port for one adapter."""
+        if adapter.mode == "trunk":
+            if adapter.vlans == "defined_vlans":
+                return self.facts.vlans or "none"
+            # EOS default is implicit "switchport trunk allowed vlan 1-4094" ("all" is its alias)
+            if adapter.vlans == "all":
+                return Undefined
+            # Covers both "none" and actual range of VLANs
+            if adapter.vlans:
+                return adapter.vlans
+
+        return Undefined
+
     def get_mac_acl(self: AvdStructuredConfigConnectedEndpointsProtocol, acl_name: str) -> EosDesigns.MacAclsItem:
         """Returns MAC ACL."""
         if acl_name not in self.inputs.mac_acls:
