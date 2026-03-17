@@ -46,14 +46,15 @@ env:
 
 jobs:
   benchmarks:
-    name: Benchmark (Python ${{ matrix.python }}, Ansible ${{ matrix.ansible }})
+    name: Benchmark (Shard ${{ matrix.shard }}/5, Python ${{ matrix.python }}, Ansible ${{ matrix.ansible }})
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
         python: ${{ fromJson(github.event_name == 'schedule' && '["3.10", "3.11", "3.12", "3.13", "3.14"]' || inputs.python_versions || '["3.12"]') }}
         ansible: ${{ fromJson(github.event_name == 'schedule' && '["2.16", "2.18", "2.20"]' || inputs.ansible_versions || '["2.20"]') }}
+        shard: [1, 2, 3, 4, 5]
         exclude:
           # Ansible 2.16 doesn't support Python 3.13+
           - python: "3.13"
@@ -85,14 +86,13 @@ jobs:
           make compile-schemas
           make compile-templates
 
-      - name: Run benchmarks
+      - name: Run benchmarks (shard ${{ matrix.shard }}/5)
         uses: CodSpeedHQ/action@v4
         with:
           token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
           run: |
-            if [[ -n "${{ inputs.scenarios }}" ]]; then
-              pytest --codspeed benchmarks -k "${{ inputs.scenarios }}"
-            else
-              pytest --codspeed benchmarks
-            fi
+            # Run all benchmarks split across 5 shards
+            # pytest-test-group automatically distributes tests evenly
+            pytest --codspeed benchmarks \
+              --test-group=${{ matrix.shard }} --test-group-count=5
