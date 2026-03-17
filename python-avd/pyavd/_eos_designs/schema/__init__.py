@@ -3080,14 +3080,16 @@ class EosDesigns(EosDesignsRootModel):
                 Port-Channel L2 Subinterfaces
                 Subinterfaces are only supported on routed port-channels, which means
                 they cannot be configured on MLAG port-channels.
-                Setting short_esi: auto generates the short_esi
-                automatically using a hash of configuration elements.
-                Please see the notes under "EVPN A/A ESI dual-
-                attached endpoint scenario" before setting short_esi: auto.
+                The parent Port-Channel interface is automatically
+                created if not defined elsewhere.
+                Setting short_esi: auto generates the short_esi automatically
+                using a hash of configuration elements.
+                Please see the notes under "EVPN A/A ESI dual-attached
+                endpoint scenario" before setting short_esi: auto.
 
 
-                Subclass of AvdList with
-                `SubinterfacesItem` items.
+                Subclass of AvdList with `SubinterfacesItem`
+                items.
                 """
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -3177,14 +3179,16 @@ class EosDesigns(EosDesignsRootModel):
                                Port-Channel L2 Subinterfaces
                                Subinterfaces are only supported on routed port-channels, which means
                                they cannot be configured on MLAG port-channels.
-                               Setting short_esi: auto generates the short_esi
-                               automatically using a hash of configuration elements.
-                               Please see the notes under "EVPN A/A ESI dual-
-                               attached endpoint scenario" before setting short_esi: auto.
+                               The parent Port-Channel interface is automatically
+                               created if not defined elsewhere.
+                               Setting short_esi: auto generates the short_esi automatically
+                               using a hash of configuration elements.
+                               Please see the notes under "EVPN A/A ESI dual-attached
+                               endpoint scenario" before setting short_esi: auto.
 
 
-                               Subclass of AvdList with
-                               `SubinterfacesItem` items.
+                               Subclass of AvdList with `SubinterfacesItem`
+                               items.
                             raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                             structured_config:
                                Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -8775,7 +8779,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
             For a
-            subinterface, the parent physical interface is automatically created.
+            subinterface, the parent physical interface is automatically created if not defined elsewhere.
             """
             profile: str | None
             """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -8972,7 +8976,7 @@ class EosDesigns(EosDesignsRootModel):
                         name:
                            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                            For a
-                           subinterface, the parent physical interface is automatically created.
+                           subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                         description:
                            Interface description.
@@ -13879,7 +13883,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
             For a
-            subinterface, the parent physical interface is automatically created.
+            subinterface, the parent physical interface is automatically created if not defined elsewhere.
             """
             profile: str | None
             """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -14076,7 +14080,7 @@ class EosDesigns(EosDesignsRootModel):
                         name:
                            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                            For a
-                           subinterface, the parent physical interface is automatically created.
+                           subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                         description:
                            Interface description.
@@ -22551,7 +22555,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
         For a
-        subinterface, the parent physical interface is automatically created.
+        subinterface, the parent physical interface is automatically created if not defined elsewhere.
         """
         description: str | None
         """
@@ -22749,7 +22753,7 @@ class EosDesigns(EosDesignsRootModel):
                     name:
                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                        For a
-                       subinterface, the parent physical interface is automatically created.
+                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                     description:
                        Interface description.
                        If not set a default description will be configured with '[<peer>[
@@ -24327,14 +24331,16 @@ class EosDesigns(EosDesignsRootModel):
             Port-Channel L2 Subinterfaces
             Subinterfaces are only supported on routed port-channels, which means
             they cannot be configured on MLAG port-channels.
-            Setting short_esi: auto generates the short_esi
-            automatically using a hash of configuration elements.
-            Please see the notes under "EVPN A/A ESI dual-
-            attached endpoint scenario" before setting short_esi: auto.
+            The parent Port-Channel interface is automatically
+            created if not defined elsewhere.
+            Setting short_esi: auto generates the short_esi automatically
+            using a hash of configuration elements.
+            Please see the notes under "EVPN A/A ESI dual-attached
+            endpoint scenario" before setting short_esi: auto.
 
 
-            Subclass of AvdList with
-            `SubinterfacesItem` items.
+            Subclass of AvdList with `SubinterfacesItem`
+            items.
             """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -24424,14 +24430,16 @@ class EosDesigns(EosDesignsRootModel):
                            Port-Channel L2 Subinterfaces
                            Subinterfaces are only supported on routed port-channels, which means
                            they cannot be configured on MLAG port-channels.
-                           Setting short_esi: auto generates the short_esi
-                           automatically using a hash of configuration elements.
-                           Please see the notes under "EVPN A/A ESI dual-
-                           attached endpoint scenario" before setting short_esi: auto.
+                           The parent Port-Channel interface is automatically
+                           created if not defined elsewhere.
+                           Setting short_esi: auto generates the short_esi automatically
+                           using a hash of configuration elements.
+                           Please see the notes under "EVPN A/A ESI dual-attached
+                           endpoint scenario" before setting short_esi: auto.
 
 
-                           Subclass of AvdList with
-                           `SubinterfacesItem` items.
+                           Subclass of AvdList with `SubinterfacesItem`
+                           items.
                         raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                         structured_config:
                            Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -29193,14 +29201,16 @@ class EosDesigns(EosDesignsRootModel):
             Port-Channel L2 Subinterfaces
             Subinterfaces are only supported on routed port-channels, which means
             they cannot be configured on MLAG port-channels.
-            Setting short_esi: auto generates the short_esi
-            automatically using a hash of configuration elements.
-            Please see the notes under "EVPN A/A ESI dual-
-            attached endpoint scenario" before setting short_esi: auto.
+            The parent Port-Channel interface is automatically
+            created if not defined elsewhere.
+            Setting short_esi: auto generates the short_esi automatically
+            using a hash of configuration elements.
+            Please see the notes under "EVPN A/A ESI dual-attached
+            endpoint scenario" before setting short_esi: auto.
 
 
-            Subclass of AvdList with
-            `SubinterfacesItem` items.
+            Subclass of AvdList with `SubinterfacesItem`
+            items.
             """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -29290,14 +29300,16 @@ class EosDesigns(EosDesignsRootModel):
                            Port-Channel L2 Subinterfaces
                            Subinterfaces are only supported on routed port-channels, which means
                            they cannot be configured on MLAG port-channels.
-                           Setting short_esi: auto generates the short_esi
-                           automatically using a hash of configuration elements.
-                           Please see the notes under "EVPN A/A ESI dual-
-                           attached endpoint scenario" before setting short_esi: auto.
+                           The parent Port-Channel interface is automatically
+                           created if not defined elsewhere.
+                           Setting short_esi: auto generates the short_esi automatically
+                           using a hash of configuration elements.
+                           Please see the notes under "EVPN A/A ESI dual-attached
+                           endpoint scenario" before setting short_esi: auto.
 
 
-                           Subclass of AvdList with
-                           `SubinterfacesItem` items.
+                           Subclass of AvdList with `SubinterfacesItem`
+                           items.
                         raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                         structured_config:
                            Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -37933,7 +37945,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
-                        subinterface, the parent physical interface is automatically created.
+                        subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         """
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -38130,7 +38142,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
-                                       subinterface, the parent physical interface is automatically created.
+                                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                     profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
@@ -43025,7 +43037,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                             For a
-                            subinterface, the parent physical interface is automatically created.
+                            subinterface, the parent physical interface is automatically created if not defined elsewhere.
                             """
                             profile: str | None
                             """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -43222,7 +43234,7 @@ class EosDesigns(EosDesignsRootModel):
                                         name:
                                            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                            For a
-                                           subinterface, the parent physical interface is automatically created.
+                                           subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                         profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                         description:
                                            Interface description.
@@ -48058,7 +48070,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
-                        subinterface, the parent physical interface is automatically created.
+                        subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         """
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -48255,7 +48267,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
-                                       subinterface, the parent physical interface is automatically created.
+                                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                     profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
@@ -53165,7 +53177,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
-                        subinterface, the parent physical interface is automatically created.
+                        subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         """
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -53362,7 +53374,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
-                                       subinterface, the parent physical interface is automatically created.
+                                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                     profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
@@ -57323,14 +57335,16 @@ class EosDesigns(EosDesignsRootModel):
                         Port-Channel L2 Subinterfaces
                         Subinterfaces are only supported on routed port-channels, which means
                         they cannot be configured on MLAG port-channels.
-                        Setting short_esi: auto generates the short_esi
-                        automatically using a hash of configuration elements.
-                        Please see the notes under "EVPN A/A ESI dual-
-                        attached endpoint scenario" before setting short_esi: auto.
+                        The parent Port-Channel interface is automatically
+                        created if not defined elsewhere.
+                        Setting short_esi: auto generates the short_esi automatically
+                        using a hash of configuration elements.
+                        Please see the notes under "EVPN A/A ESI dual-attached
+                        endpoint scenario" before setting short_esi: auto.
 
 
-                        Subclass of AvdList with
-                        `SubinterfacesItem` items.
+                        Subclass of AvdList with `SubinterfacesItem`
+                        items.
                         """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -57420,14 +57434,16 @@ class EosDesigns(EosDesignsRootModel):
                                        Port-Channel L2 Subinterfaces
                                        Subinterfaces are only supported on routed port-channels, which means
                                        they cannot be configured on MLAG port-channels.
-                                       Setting short_esi: auto generates the short_esi
-                                       automatically using a hash of configuration elements.
-                                       Please see the notes under "EVPN A/A ESI dual-
-                                       attached endpoint scenario" before setting short_esi: auto.
+                                       The parent Port-Channel interface is automatically
+                                       created if not defined elsewhere.
+                                       Setting short_esi: auto generates the short_esi automatically
+                                       using a hash of configuration elements.
+                                       Please see the notes under "EVPN A/A ESI dual-attached
+                                       endpoint scenario" before setting short_esi: auto.
 
 
-                                       Subclass of AvdList with
-                                       `SubinterfacesItem` items.
+                                       Subclass of AvdList with `SubinterfacesItem`
+                                       items.
                                     raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                                     structured_config:
                                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -59120,14 +59136,16 @@ class EosDesigns(EosDesignsRootModel):
                         Port-Channel L2 Subinterfaces
                         Subinterfaces are only supported on routed port-channels, which means
                         they cannot be configured on MLAG port-channels.
-                        Setting short_esi: auto generates the short_esi
-                        automatically using a hash of configuration elements.
-                        Please see the notes under "EVPN A/A ESI dual-
-                        attached endpoint scenario" before setting short_esi: auto.
+                        The parent Port-Channel interface is automatically
+                        created if not defined elsewhere.
+                        Setting short_esi: auto generates the short_esi automatically
+                        using a hash of configuration elements.
+                        Please see the notes under "EVPN A/A ESI dual-attached
+                        endpoint scenario" before setting short_esi: auto.
 
 
-                        Subclass of AvdList with
-                        `SubinterfacesItem` items.
+                        Subclass of AvdList with `SubinterfacesItem`
+                        items.
                         """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -59217,14 +59235,16 @@ class EosDesigns(EosDesignsRootModel):
                                        Port-Channel L2 Subinterfaces
                                        Subinterfaces are only supported on routed port-channels, which means
                                        they cannot be configured on MLAG port-channels.
-                                       Setting short_esi: auto generates the short_esi
-                                       automatically using a hash of configuration elements.
-                                       Please see the notes under "EVPN A/A ESI dual-
-                                       attached endpoint scenario" before setting short_esi: auto.
+                                       The parent Port-Channel interface is automatically
+                                       created if not defined elsewhere.
+                                       Setting short_esi: auto generates the short_esi automatically
+                                       using a hash of configuration elements.
+                                       Please see the notes under "EVPN A/A ESI dual-attached
+                                       endpoint scenario" before setting short_esi: auto.
 
 
-                                       Subclass of AvdList with
-                                       `SubinterfacesItem` items.
+                                       Subclass of AvdList with `SubinterfacesItem`
+                                       items.
                                     raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                                     structured_config:
                                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -68521,6 +68541,8 @@ class EosDesigns(EosDesignsRootModel):
                         Interfaces patched to the pseudowire on this endpoints.
                         The list of interfaces is mapped to the list
                         of nodes, so they must have the same length.
+                        For subinterfaces, the parent physical interface is
+                        automatically created if not defined elsewhere.
 
 
                         Subclass of AvdList with `str` items.
@@ -68555,6 +68577,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Interfaces patched to the pseudowire on this endpoints.
                                        The list of interfaces is mapped to the list
                                        of nodes, so they must have the same length.
+                                       For subinterfaces, the parent physical interface is
+                                       automatically created if not defined elsewhere.
 
 
                                        Subclass of AvdList with `str` items.
@@ -71121,7 +71145,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
-                        subinterface, the parent physical interface is automatically created.
+                        subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         """
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -71318,7 +71342,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
-                                       subinterface, the parent physical interface is automatically created.
+                                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                     profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
@@ -76213,7 +76237,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                             For a
-                            subinterface, the parent physical interface is automatically created.
+                            subinterface, the parent physical interface is automatically created if not defined elsewhere.
                             """
                             profile: str | None
                             """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -76410,7 +76434,7 @@ class EosDesigns(EosDesignsRootModel):
                                         name:
                                            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                            For a
-                                           subinterface, the parent physical interface is automatically created.
+                                           subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                         profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                         description:
                                            Interface description.
@@ -81246,7 +81270,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
-                        subinterface, the parent physical interface is automatically created.
+                        subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         """
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -81443,7 +81467,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
-                                       subinterface, the parent physical interface is automatically created.
+                                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                     profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
@@ -86353,7 +86377,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
-                        subinterface, the parent physical interface is automatically created.
+                        subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         """
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -86550,7 +86574,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
-                                       subinterface, the parent physical interface is automatically created.
+                                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                     profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.

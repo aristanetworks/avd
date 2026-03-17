@@ -7360,6 +7360,9 @@ $defs:
               Subinterfaces are only supported on routed port-channels, which means
               they cannot be configured on MLAG port-channels.
 
+              The parent Port-Channel interface is automatically created if not defined
+              elsewhere.
+
               Setting short_esi: auto generates the short_esi automatically using
               a hash of configuration elements.
 
@@ -9066,7 +9069,10 @@ $defs:
                       type: list
                       items:
                         type: str
-                        description: Interface name.
+                        description: 'Interface name.
+
+                          For subinterfaces, the parent physical interface is automatically
+                          created if not defined elsewhere.'
                     encapsulation_dot1q_vlan:
                       type: list
                       description: For sub-interfaces the dot1q vlan is derived from
@@ -10177,6 +10183,9 @@ $defs:
 
                         The list of interfaces is mapped to the list of nodes, so
                         they must have the same length.
+
+                        For subinterfaces, the parent physical interface is automatically
+                        created if not defined elsewhere.
 
                         '
                       required: true
@@ -12672,7 +12681,8 @@ $defs:
           description: 'Ethernet interface name like ''Ethernet2'' or subinterface
             name like ''Ethernet2.42''.
 
-            For a subinterface, the parent physical interface is automatically created.'
+            For a subinterface, the parent physical interface is automatically created
+            if not defined elsewhere.'
           pattern: Ethernet[\d/]+(\.[\d]+)?
         description:
           type: str
