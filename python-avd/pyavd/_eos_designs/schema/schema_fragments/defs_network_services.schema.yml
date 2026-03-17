@@ -244,7 +244,7 @@ $defs:
                 warning: true
                 removed: false
                 remove_in_version: 7.0.0
-                new_key: <network_services_key.key>.igmp_snooping.fast_leave
+                new_key: igmp_snooping.fast_leave under the Tenant
               description: Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.
             always_redistribute_igmp:
               type: bool
