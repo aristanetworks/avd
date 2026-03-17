@@ -21,4 +21,11 @@ class MacAccessListsMixin(Protocol):
     """
 
     def _set_mac_acls(self: AvdStructuredConfigConnectedEndpointsProtocol, mac_acl: EosDesigns.MacAclsItem) -> None:
-        self.structured_config.mac_access_lists.append(mac_acl._cast_as(EosCliConfigGen.MacAccessListsItem))
+        acl = self.structured_config.mac_access_lists.obtain(mac_acl.name)
+        for acl_entry in mac_acl.entries:
+            action = [acl_entry.action, acl_entry.source, acl_entry.source_wildcard, acl_entry.destination, acl_entry.destination_wildcard]
+            action = [act for act in action if act is not None]
+            action = (" ").join(action)
+            entry = EosCliConfigGen.MacAccessListsItem.EntriesItem(sequence=acl_entry.sequence, action=action)
+            if entry not in acl.entries:
+                acl.entries.append(entry)

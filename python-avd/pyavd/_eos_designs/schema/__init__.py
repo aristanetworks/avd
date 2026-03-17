@@ -22866,13 +22866,34 @@ class EosDesigns(EosDesignsRootModel):
         class EntriesItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"sequence": {"type": int}, "action": {"type": str}}
+            Action: TypeAlias = Literal["permit", "deny"]
+            _fields: ClassVar[dict] = {
+                "sequence": {"type": int},
+                "action": {"type": str},
+                "source": {"type": str},
+                "source_wildcard": {"type": str},
+                "destination": {"type": str},
+                "destination_wildcard": {"type": str},
+            }
             sequence: int | None
-            action: str
+            action: Action | None
+            source: str | None
+            source_wildcard: str | None
+            destination: str | None
+            destination_wildcard: str | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, sequence: int | None | UndefinedType = Undefined, action: str | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    sequence: int | None | UndefinedType = Undefined,
+                    action: Action | None | UndefinedType = Undefined,
+                    source: str | None | UndefinedType = Undefined,
+                    source_wildcard: str | None | UndefinedType = Undefined,
+                    destination: str | None | UndefinedType = Undefined,
+                    destination_wildcard: str | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     EntriesItem.
 
@@ -22882,6 +22903,10 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         sequence: sequence
                         action: action
+                        source: source
+                        source_wildcard: source_wildcard
+                        destination: destination
+                        destination_wildcard: destination_wildcard
 
                     """
 
@@ -22890,22 +22915,14 @@ class EosDesigns(EosDesignsRootModel):
 
         Entries._item_type = EntriesItem
 
-        _fields: ClassVar[dict] = {"name": {"type": str}, "counters_per_entry": {"type": bool}, "entries": {"type": Entries}}
+        _fields: ClassVar[dict] = {"name": {"type": str}, "entries": {"type": Entries}}
         name: str
-        """MAC Access-list Name."""
-        counters_per_entry: bool | None
         entries: Entries
         """Subclass of AvdList with `EntriesItem` items."""
 
         if TYPE_CHECKING:
 
-            def __init__(
-                self,
-                *,
-                name: str | UndefinedType = Undefined,
-                counters_per_entry: bool | None | UndefinedType = Undefined,
-                entries: Entries | UndefinedType = Undefined,
-            ) -> None:
+            def __init__(self, *, name: str | UndefinedType = Undefined, entries: Entries | UndefinedType = Undefined) -> None:
                 """
                 MacAclsItem.
 
@@ -22913,8 +22930,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    name: MAC Access-list Name.
-                    counters_per_entry: counters_per_entry
+                    name: name
                     entries: Subclass of AvdList with `EntriesItem` items.
 
                 """
@@ -90472,7 +90488,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     mac_acls: MacAcls
     """
-    These MAC access-lists can be referenced under `network_ports/connected_endpoints` and only
+    These MAC access-lists can be referenced under `network_ports/connected_endpoints`
+    and only
     configured when it is in use.
 
     Subclass of AvdIndexedList with `MacAclsItem` items. Primary key is
@@ -92443,7 +92460,8 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of AvdModel.
                 mac_acls:
-                   These MAC access-lists can be referenced under `network_ports/connected_endpoints` and only
+                   These MAC access-lists can be referenced under `network_ports/connected_endpoints`
+                   and only
                    configured when it is in use.
 
                    Subclass of AvdIndexedList with `MacAclsItem` items. Primary key is

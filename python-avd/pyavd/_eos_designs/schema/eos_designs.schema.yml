@@ -3565,9 +3565,10 @@ keys:
         $ref: eos_cli_config_gen#/keys/logging/keys/level
   mac_acls:
     type: list
-    $ref: eos_cli_config_gen#/keys/mac_access_lists
-    description: These MAC access-lists can be referenced under `network_ports/connected_endpoints`
-      and only configured when it is in use.
+    primary_key: name
+    description: 'These MAC access-lists can be referenced under `network_ports/connected_endpoints`
+
+      and only configured when it is in use.'
     items:
       type: dict
       keys:
@@ -3575,6 +3576,28 @@ keys:
           type: str
           convert_types:
           - int
+        entries:
+          type: list
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                convert_types:
+                - str
+              action:
+                type: str
+                valid_values:
+                - permit
+                - deny
+              source:
+                type: str
+              source_wildcard:
+                type: str
+              destination:
+                type: str
+              destination_wildcard:
+                type: str
   mac_address_table:
     documentation_options:
       table: system-settings
