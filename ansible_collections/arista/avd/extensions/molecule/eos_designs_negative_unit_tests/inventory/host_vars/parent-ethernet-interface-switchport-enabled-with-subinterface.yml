@@ -42,6 +42,6 @@ tenants:
             enabled: true
 
 expected_error_message: >-
-  Ethernet5 Ethernet interface has subinterfaces configured but is set as a switchport (switchport enabled),
+  Ethernet5 has subinterfaces configured but is set as a switchport (switchport enabled),
   which will cause the subinterfaces to be in a dormant state. Parent interface must be routed interface
   (switchport.enabled: false) or remove the subinterfaces.

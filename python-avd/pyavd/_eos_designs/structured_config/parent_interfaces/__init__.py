@@ -118,7 +118,6 @@ class AvdStructuredConfigParentInterfacesProtocol(
         self: AvdStructuredConfigParentInterfacesProtocol,
         required_parents: set[str],
         existing_interfaces: EosCliConfigGen.EthernetInterfaces | EosCliConfigGen.PortChannelInterfaces,
-        interface_type: str,
     ) -> None:
         """
         Validate that parent interfaces don't have switchport enabled.
@@ -126,7 +125,6 @@ class AvdStructuredConfigParentInterfacesProtocol(
         Args:
             required_parents: Set of parent interface names that have subinterfaces.
             existing_interfaces: AvdIndexedList of existing interface configurations (O(1) lookup by name).
-            interface_type: Type of interface for error message (e.g., "Ethernet", "Port-Channel").
 
         Raises:
             AristaAvdInvalidInputsError: If any required parent interfaces have switchport enabled.
@@ -148,10 +146,9 @@ class AvdStructuredConfigParentInterfacesProtocol(
 
         if problematic_interfaces:
             interface_list = ", ".join(natural_sort(problematic_interfaces))
-            interface_word = "interface" if len(problematic_interfaces) == 1 else "interfaces"
             verb = "has" if len(problematic_interfaces) == 1 else "have"
             msg = (
-                f"{interface_list} {interface_type} {interface_word} {verb} subinterfaces configured "
+                f"{interface_list} {verb} subinterfaces configured "
                 f"but {'is' if len(problematic_interfaces) == 1 else 'are'} set as {'a switchport' if len(problematic_interfaces) == 1 else 'switchports'} "
                 f"(switchport enabled), which will cause the subinterfaces to be in a dormant state. "
                 f"Parent {'interface' if len(problematic_interfaces) == 1 else 'interfaces'} must be routed "
@@ -176,7 +173,6 @@ class AvdStructuredConfigParentInterfacesProtocol(
         self._validate_parent_switchport_config(
             required_parents=self.structured_config_utils.parent_interfaces_tracker.required_ethernet_parents,
             existing_interfaces=self.structured_config.ethernet_interfaces,
-            interface_type="Ethernet",
         )
 
         for interface_name in natural_sort(self.structured_config_utils.parent_interfaces_tracker.get_missing_ethernet_parents()):
@@ -207,7 +203,6 @@ class AvdStructuredConfigParentInterfacesProtocol(
         self._validate_parent_switchport_config(
             required_parents=self.structured_config_utils.parent_interfaces_tracker.required_port_channel_parents,
             existing_interfaces=self.structured_config.port_channel_interfaces,
-            interface_type="Port-Channel",
         )
 
         missing_port_channel_parents = self.structured_config_utils.parent_interfaces_tracker.get_missing_port_channel_parents()
