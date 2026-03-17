@@ -16,7 +16,7 @@ router bgp {{ router_bgp.as }}
 {%         else %}
    bgp labeled-unicast rib {{ router_bgp.bgp.labeled_unicast.rib }}
 {%         endif %}
-{%     endif%}
+{%     endif %}
 {%     if router_bgp.router_id is arista.avd.defined %}
    router-id {{ router_bgp.router_id }}
 {%     endif %}
