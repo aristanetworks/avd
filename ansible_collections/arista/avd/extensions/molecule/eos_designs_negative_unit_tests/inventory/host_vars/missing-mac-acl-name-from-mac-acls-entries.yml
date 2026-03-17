@@ -9,9 +9,15 @@ mac_acls:
   - name: ACL2
     entries:
       - sequence: 10
-        action: "deny any 01:80:c2:00:00:00 00:00:00:00:00:00"
+        action: deny
+        source: any
+        destination: 01:80:c2:00:00:00
+        destination_wildcard: 00:00:00:00:00:00
       - sequence: 5
-        action: "deny any 01:80:c2:00:00:00 00:00:00:00:00:01"
+        action: deny
+        source: any
+        destination: 01:80:c2:00:00:00
+        destination_wildcard: 00:00:00:00:00:01
 
 servers:
   - name: Server1
