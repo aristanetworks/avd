@@ -22878,9 +22878,21 @@ class EosDesigns(EosDesignsRootModel):
             sequence: int | None
             action: Action | None
             source: str | None
+            """
+            Source mac-address.
+            This can be `any` or a MAC address.
+            """
             source_wildcard: str | None
+            """
+            Wildcard bits for source MAC address.
+            Required when source is not `any`.
+            """
             destination: str | None
             destination_wildcard: str | None
+            """
+            Wildcard bits for destination MAC address.
+            Required when destination is not `any`.
+            """
 
             if TYPE_CHECKING:
 
@@ -22903,10 +22915,16 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         sequence: sequence
                         action: action
-                        source: source
-                        source_wildcard: source_wildcard
+                        source:
+                           Source mac-address.
+                           This can be `any` or a MAC address.
+                        source_wildcard:
+                           Wildcard bits for source MAC address.
+                           Required when source is not `any`.
                         destination: destination
-                        destination_wildcard: destination_wildcard
+                        destination_wildcard:
+                           Wildcard bits for destination MAC address.
+                           Required when destination is not `any`.
 
                     """
 
@@ -22917,6 +22935,7 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {"name": {"type": str}, "entries": {"type": Entries}}
         name: str
+        """Access-list name."""
         entries: Entries
         """Subclass of AvdList with `EntriesItem` items."""
 
@@ -22930,7 +22949,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    name: name
+                    name: Access-list name.
                     entries: Subclass of AvdList with `EntriesItem` items.
 
                 """
@@ -90488,7 +90507,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     mac_acls: MacAcls
     """
-    These MAC access-lists can be referenced under `network_ports/connected_endpoints`
+    MAC access-lists.
+    These can be referenced under `network_ports/connected_endpoints`
     and only
     configured when it is in use.
 
@@ -92460,7 +92480,8 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of AvdModel.
                 mac_acls:
-                   These MAC access-lists can be referenced under `network_ports/connected_endpoints`
+                   MAC access-lists.
+                   These can be referenced under `network_ports/connected_endpoints`
                    and only
                    configured when it is in use.
 

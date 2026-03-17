@@ -10,13 +10,15 @@ keys:
     type: list
     primary_key: name
     description: |-
-      These MAC access-lists can be referenced under `network_ports/connected_endpoints`
+      MAC access-lists.
+      These can be referenced under `network_ports/connected_endpoints`
       and only configured when it is in use.
     items:
       type: dict
       keys:
         name:
           type: str
+          description: Access-list name.
           convert_types:
             - int
         entries:
@@ -34,9 +36,18 @@ keys:
                 valid_values: [permit, deny]
               source:
                 type: str
+                description: |-
+                  Source mac-address.
+                  This can be `any` or a MAC address.
               source_wildcard:
                 type: str
+                description: |-
+                  Wildcard bits for source MAC address.
+                  Required when source is not `any`.
               destination:
                 type: str
               destination_wildcard:
                 type: str
+                description: |-
+                  Wildcard bits for destination MAC address.
+                  Required when destination is not `any`.

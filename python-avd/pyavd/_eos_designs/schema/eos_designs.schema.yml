@@ -3566,7 +3566,9 @@ keys:
   mac_acls:
     type: list
     primary_key: name
-    description: 'These MAC access-lists can be referenced under `network_ports/connected_endpoints`
+    description: 'MAC access-lists.
+
+      These can be referenced under `network_ports/connected_endpoints`
 
       and only configured when it is in use.'
     items:
@@ -3574,6 +3576,7 @@ keys:
       keys:
         name:
           type: str
+          description: Access-list name.
           convert_types:
           - int
         entries:
@@ -3594,12 +3597,21 @@ keys:
                 - deny
               source:
                 type: str
+                description: 'Source mac-address.
+
+                  This can be `any` or a MAC address.'
               source_wildcard:
                 type: str
+                description: 'Wildcard bits for source MAC address.
+
+                  Required when source is not `any`.'
               destination:
                 type: str
               destination_wildcard:
                 type: str
+                description: 'Wildcard bits for destination MAC address.
+
+                  Required when destination is not `any`.'
   mac_address_table:
     documentation_options:
       table: system-settings
