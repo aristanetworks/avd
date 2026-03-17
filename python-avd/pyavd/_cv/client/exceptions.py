@@ -20,6 +20,10 @@ class CVResourceInvalidState(CVClientException):
     """Invalid state for CloudVision Resource."""
 
 
+class CVWorkspaceFailed(CVClientException):
+    """CloudVision Workspace failed."""
+
+
 class CVWorkspaceBuildTimeout(CVClientException):
     """Build of CloudVision Workspace timed out."""
 
