@@ -147,13 +147,20 @@ class AvdStructuredConfigParentInterfacesProtocol(
         if problematic_interfaces:
             interface_list = ", ".join(natural_sort(problematic_interfaces))
             verb = "has" if len(problematic_interfaces) == 1 else "have"
-            msg = (
-                f"{interface_list} {verb} subinterfaces configured "
-                f"but {'is' if len(problematic_interfaces) == 1 else 'are'} set as {'a switchport' if len(problematic_interfaces) == 1 else 'switchports'} "
-                f"(switchport enabled), which will cause the subinterfaces to be in a dormant state. "
-                f"Parent {'interface' if len(problematic_interfaces) == 1 else 'interfaces'} must be routed "
-                f"{'interface' if len(problematic_interfaces) == 1 else 'interfaces'} (switchport.enabled: false) or remove the subinterfaces."
-            )
+            if len(problematic_interfaces) == 1:
+                msg = (
+                    f"'{interface_list}' has subinterfaces configured but is "
+                    "set as a switchport (switchport enabled), which will cause "
+                    "the subinterfaces to be in a dormant state. "
+                    "The parent interface must be a routed interface to support subinterfaces."
+                )
+            else:
+                msg = (
+                    f"'{interface_list}' have subinterfaces configured but are"
+                    "configured at switchports (switchport enabled), which will cause "
+                    "the subinterfaces to be in a dormant state. "
+                    f"The parent interfaces must be routed interfaces to support subinterfaces."
+                )
             raise AristaAvdInvalidInputsError(msg)
 
     @structured_config_contributor
