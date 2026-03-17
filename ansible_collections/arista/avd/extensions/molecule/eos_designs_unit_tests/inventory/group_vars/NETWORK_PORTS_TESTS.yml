@@ -49,6 +49,7 @@ network_ports:
       - Ethernet1-2
     profile: pc
     endpoint: PCs
+    spanning_tree_link_type: shared
 
   - switches:
       - network-ports-tests-2$

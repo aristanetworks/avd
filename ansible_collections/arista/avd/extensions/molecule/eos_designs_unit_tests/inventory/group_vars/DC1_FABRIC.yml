@@ -104,6 +104,7 @@ l3leaf:
     filter:
       tenants: [ Tenant_A, Tenant_B, Tenant_C, Tenant_D ]
       tags: [ opzone, web, app, db, vmotion, nfs, v6wan, v6opzone ]
+      deny_vrfs: [ MULTI_TENANT_VRF_TEST ]
     # Testing multiple pools and ranges to represent 10.255.251.0/24
     mlag_peer_l3_ipv4_pool: 10.255.251.0/29, 10.255.251.8-10.255.251.127, 10.255.251.128/25
     # Testing multiple pools and ranges to represent 10.255.252.0/24
@@ -114,6 +115,7 @@ l3leaf:
       filter:
         tenants: [ all ]
         tags: [ web, app, erp2, v6wan ]
+        deny_vrfs: [ MULTI_TENANT_VRF_TEST ]
       nodes:
         - name: dc1-leaf1a
           id: 1
@@ -172,7 +174,8 @@ l3leaf:
       mlag_domain_id: custom_mlag_domain_id
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
-        tags: [ opzone, web, app, db, vmotion, nfs, wan, erp3 ]
+        tags: [ opzone, web, app, db, vmotion, nfs, wan, erp3, svc3only ]
+        deny_vrfs: []
       nodes:
         - name: dc1-svc3a
           id: 4
@@ -370,6 +373,9 @@ l2leaf:
       uplink_switch_interface_speed: 100g-2
       uplink_switch_port_channel_id: 1007 # Test uplink_switch_port_channel_id on mlag l2leaf
       uplink_port_channel_id: 1001 # Test uplink_port_channel_id on mlag l2leaf
+      filter:
+        always_include_vrfs_in_tenants: [ Tenant_A, Tenant_B, Tenant_C ]
+        tags: [ opzone, web, app, db, vmotion, nfs, wan, erp3 ]
       nodes:
         - name: dc1-l2leaf2a
           id: 9

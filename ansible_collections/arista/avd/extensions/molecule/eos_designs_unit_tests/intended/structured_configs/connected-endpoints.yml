@@ -185,6 +185,7 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
   metadata:
     peer: INDIVIDUAL_1
     peer_type: custom_server
@@ -217,6 +218,7 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
   metadata:
     peer: INDIVIDUAL_1
     peer_type: custom_server
@@ -252,6 +254,7 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
   metadata:
     peer: DOT1X_UNAUTHORIZED
     peer_type: custom_server
@@ -363,6 +366,7 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
   metadata:
     peer: INDIVIDUAL_3
     peer_type: custom_server
@@ -392,6 +396,7 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
   metadata:
     peer: INDIVIDUAL_3
     peer_type: custom_server
@@ -421,6 +426,7 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
   metadata:
     peer: INDIVIDUAL_4
     peer_type: custom_server
@@ -453,6 +459,7 @@ ethernet_interfaces:
   service_profile: MYQOS
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
   metadata:
     peer: INDIVIDUAL_4
     peer_type: custom_server
@@ -635,6 +642,7 @@ port_channel_interfaces:
   shutdown: false
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
+  spanning_tree_link_type: point-to-point
   ptp:
     enable: true
     announce:

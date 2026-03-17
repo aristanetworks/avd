@@ -5,7 +5,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from anta.tests.routing.generic import VerifyRoutingProtocolModel, VerifyRoutingTableEntry
+from anta.input_models.routing.generic import IPv4RouteEntry
+from anta.tests.routing.generic import VerifyIPv4RoutePresencePerVRF, VerifyRoutingProtocolModel
 
 from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
@@ -35,9 +36,9 @@ class VerifyRoutingProtocolModelInputFactory(AntaTestInputFactory[VerifyRoutingP
         yield VerifyRoutingProtocolModel.Input(model=model)
 
 
-class VerifyRoutingTableEntryInputFactory(AntaTestInputFactory[VerifyRoutingTableEntry.Input]):
+class VerifyIPv4RoutePresencePerVRFInputFactory(AntaTestInputFactory[VerifyIPv4RoutePresencePerVRF.Input]):
     """
-    Input factory class for the `VerifyRoutingTableEntry` test.
+    Input factory class for the `VerifyIPv4RoutePresencePerVRF` test.
 
     On VTEP devices (excluding WAN routers), generates inputs to verify IPv4 routing table entries
     for other fabric non-WAN devices' Loopback0 and VTEP IPs in the underlay. Only IPv4 underlays are supported.
@@ -48,10 +49,13 @@ class VerifyRoutingTableEntryInputFactory(AntaTestInputFactory[VerifyRoutingTabl
     @skip_if_extra_fabric_validation_disabled
     @skip_if_not_vtep
     @skip_if_wan_router
-    def create(self) -> Iterator[VerifyRoutingTableEntry.Input]:
-        """Generate the inputs for the `VerifyRoutingTableEntry` test."""
-        if not self.data_source.fabric_underlay_reachability_targets:
+    def create(self) -> Iterator[VerifyIPv4RoutePresencePerVRF.Input]:
+        """Generate the inputs for the `VerifyIPv4RoutePresencePerVRF` test."""
+        if not self.data_source.fabric_underlay_reachability_prefixes:
             self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
             return
 
-        yield VerifyRoutingTableEntry.Input(routes=self.data_source.fabric_underlay_reachability_targets, collect="all")
+        # TODO: Provide the target hostname as the description for each route entry.
+        yield VerifyIPv4RoutePresencePerVRF.Input(
+            route_entries=[IPv4RouteEntry(prefix=prefix, vrf="default") for prefix in self.data_source.fabric_underlay_reachability_prefixes]
+        )

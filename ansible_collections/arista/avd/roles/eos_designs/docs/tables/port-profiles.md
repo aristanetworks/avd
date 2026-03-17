@@ -29,6 +29,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_portfast</samp>](## "port_profiles.[].spanning_tree_portfast") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>network</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpdufilter</samp>](## "port_profiles.[].spanning_tree_bpdufilter") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpduguard</samp>](## "port_profiles.[].spanning_tree_bpduguard") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_link_type</samp>](## "port_profiles.[].spanning_tree_link_type") | String |  |  | Valid Values:<br>- <code>shared</code><br>- <code>point-to-point</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flowcontrol</samp>](## "port_profiles.[].flowcontrol") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;received</samp>](## "port_profiles.[].flowcontrol.received") | String |  |  | Valid Values:<br>- <code>desired</code><br>- <code>on</code><br>- <code>off</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "port_profiles.[].qos_profile") | String |  |  |  | QOS profile name. |
@@ -260,6 +261,7 @@
         spanning_tree_portfast: <str; "edge" | "network">
         spanning_tree_bpdufilter: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
         spanning_tree_bpduguard: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
+        spanning_tree_link_type: <str; "shared" | "point-to-point">
         flowcontrol:
           received: <str; "desired" | "on" | "off">
 

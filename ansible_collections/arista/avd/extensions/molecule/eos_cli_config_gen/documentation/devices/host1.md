@@ -1615,7 +1615,7 @@ radius-server host 10.10.11.158 vrf mgt tls ssl-profile SSL_PROFILE
 | MGMT | Management1 |
 | abc | Loopback10 |
 
-#### IP SOURCE Source Interfaces Device Configuration
+#### IP RADIUS Source Interfaces Device Configuration
 
 ```eos
 !
@@ -3612,18 +3612,21 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 
 | Name | Description | Default Interface Set | Address Only |
 | ---- | ----------- | --------------------- | ------------ |
+| VRF1 | latest description format | - | True |
 | Yellow | - | - | True |
 | blue | - | VRF_GLOBAL_SET | False |
 | red | vrf_connectivity_monitor | VRF_GLOBAL_SET | True |
 
-#### Vrf Yellow Configuration
+#### VRF VRF1 Configuration
+
+#### VRF Yellow Configuration
 
 ##### Interface Sets
 
 | Name | Interfaces |
 | ---- | ---------- |
 
-#### Vrf blue Configuration
+#### VRF blue Configuration
 
 ##### Interface Sets
 
@@ -3639,7 +3642,7 @@ Transceiver dom-threshold file: flash:/dom_threshold.csv
 | server4 | server4_connectivity_monitor | 10.10.20.1 | - | VRF_GLOBAL_SET | False | https://server2.local.com |
 | server6 | - | - | - | - | True | - |
 
-#### Vrf red Configuration
+#### VRF red Configuration
 
 ##### Interface Sets
 
@@ -3671,8 +3674,7 @@ monitor connectivity
    local-interfaces GLOBAL_SET address-only default
    !
    host Server3
-      description
-      server3_connectivity_monitor
+      description server3_connectivity_monitor
       local-interfaces HOST_SET
       ip 10.10.10.3
       icmp echo size 1200
@@ -3692,6 +3694,9 @@ monitor connectivity
       url https://server2.local.com
    !
    host server4
+   !
+   vrf VRF1
+      description latest description format
    !
    vrf Yellow
    !
@@ -3723,8 +3728,7 @@ monitor connectivity
       local-interfaces VRF_GLOBAL_SET address-only default
       !
       host server2
-         description
-         server2_connectivity_monitor
+         description server2_connectivity_monitor
          local-interfaces VRF_HOST_SET address-only
          ip 10.10.20.1
          icmp echo size 1300
@@ -7044,12 +7048,12 @@ interface Loopback100
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | -------------- | ------- | ----------------- | ----------- | ------------ |
-| Tunnel1 | Tunnel-VRF | auto-config | - | ingress | - | - |
-| Tunnel2 | default | cafe::1/64 | 666 | egress | test-in | test-out |
-| Tunnel3 | default | beef::64/64 | 666 | - | - | - |
-| Tunnel4 | default | beef::64/64 | - | - | - | - |
+| Interface | VRF | IPv6 Addresses | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
+| --------- | --- | -------------- | ------- | ----------------- | ----------- | ------------ | --------------- | -------------- | ---------------------- |
+| Tunnel1 | Tunnel-VRF | auto-config | - | ingress | - | - | default-route, route-preference | True | True |
+| Tunnel2 | default | cafe::1/64 | 666 | egress | test-in | test-out | - | - | - |
+| Tunnel3 | default | beef::64/64 | 666 | - | - | - | - | - | - |
+| Tunnel4 | default | beef::64/64 | - | - | - | - | - | - | - |
 
 #### Tunnel Interfaces Device Configuration
 
@@ -7062,6 +7066,13 @@ interface Tunnel1
    vrf Tunnel-VRF
    ip address 42.42.42.42/24
    ipv6 address auto-config
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
+   ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
+   ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
    tcp mss ceiling ipv4 666 ingress
    ip access-group test-in in
    ip access-group test-out out
@@ -7147,6 +7158,7 @@ interface Tunnel4
 | Vlan337 | v4 dhcp relay all-subnets | default | - | - |
 | Vlan338 | v6 dhcp relay all-subnets | default | - | - |
 | Vlan339 | v6 nd options | default | - | - |
+| Vlan340 | v6 nd new structure | default | - | - |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -7196,6 +7208,7 @@ interface Tunnel4
 | Vlan337 | default | 10.0.2.2/25 | - | - | - | - |
 | Vlan338 | default | - | - | - | - | - |
 | Vlan339 | default | - | - | - | - | - |
+| Vlan340 | default | - | - | - | - | - |
 | Vlan501 | default | 10.50.26.29/27 | - | - | - | - |
 | Vlan667 | default | 192.0.2.2/25 | - | - | - | - |
 | Vlan1001 | Tenant_A | - | 10.1.1.1/24 | - | - | - |
@@ -7232,25 +7245,26 @@ interface Tunnel4
 
 ##### IPv6
 
-| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | Managed Config Flag | Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | ------------------- | ----------------- | ----------- | ------------ |
-| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | True | - | - | - |
-| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - |
-| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - |
-| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - |
-| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | True | - | - | - |
-| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - |
-| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | True | - | - | - |
-| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - |
-| Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - |
-| Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - |
-| Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - |
-| Vlan338 | default | 2001:db8:338::1/64 | - | - | - | - | - | - | - |
-| Vlan339 | default | 2001:db8:339::1/64 | - | - | - | - | True | - | - |
-| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | True | - | - | - | - |
-| Vlan667 | default | 2001:db8:667::2/64 | - | - | - | - | - | - | - |
-| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | True | - | - | - |
-| Vlan1002 | Tenant_A | a2::1/64 | - | - | True | True | - | - | - |
+| Interface | VRF | IPv6 Addresses | IPv6 Virtual Addresses | Virtual Router Addresses | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | -------------- | ---------------------- | ------------------------ | -------------- | --------------- | ---------------------- | -------------------- | ----------- | ------------ |
+| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - | - |
+| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - | - |
+| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - | - |
+| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - | - |
+| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - | - |
+| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - | - |
+| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - | - |
+| Vlan333 | default | 2001:db8:333::2/64 | - | - | - | - | - | - | - | - |
+| Vlan334 | default | 2001:db8:334::1/64 | - | - | - | - | - | - | - | - |
+| Vlan335 | default | 2001:db8:335::1/64 | - | - | - | - | - | - | - | - |
+| Vlan336 | default | 2001:db8:336::1/64 | - | - | - | - | - | - | - | - |
+| Vlan338 | default | 2001:db8:338::1/64 | - | - | - | - | - | - | - | - |
+| Vlan339 | default | 2001:db8:339::1/64 | - | - | - | - | - | True | - | - |
+| Vlan340 | default | 2001:db8:340::1/64 | - | - | True | default-route, route-preference | True | True | - | - |
+| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | True | - | - | - | - | - |
+| Vlan667 | default | 2001:db8:667::2/64 | - | - | - | - | - | - | - | - |
+| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - | - |
+| Vlan1002 | Tenant_A | a2::1/64 | - | - | True | - | True | - | - | - |
 
 ##### VRRP Details
 
@@ -7597,6 +7611,20 @@ interface Vlan339
    ipv6 enable
    ipv6 address 2001:db8:339::1/64
    ipv6 nd other-config-flag
+!
+interface Vlan340
+   description v6 nd new structure
+   ipv6 nd cache expire 300
+   ipv6 nd cache dynamic capacity 1000
+   ipv6 nd cache refresh always
+   ipv6 enable
+   ipv6 address 2001:db8:340::1/64
+   ipv6 nd ra rx accept default-route
+   ipv6 nd ra rx accept route-preference
+   ipv6 nd ra disabled
+   ipv6 nd managed-config-flag
+   ipv6 nd other-config-flag
+   ipv6 nd prefix 2001:db8:340::/64 100 50 no-autoconfig
 !
 interface Vlan501
    description SVI Description
@@ -9434,7 +9462,7 @@ ASN Notation: asdot
 | NHP-PEER | - | - | - | IPv4: False<br>Transit: False |
 | NHP-PEER1 | - | - | - | IPv4: False<br>Transit: False |
 | RED-C1 | 1.0.1.1:102 | - | - | IPv4: False<br>Transit: False |
-| Tenant_A | 10.50.64.15:30001 | ospf<br>ospfv3<br>connected | - | IPv4: False<br>Transit: False |
+| Tenant_A | 10.50.64.15:30001 (Remote Domain: 10.50.64.15:30002) | ospf<br>ospfv3<br>connected | - | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static | - | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static | True (120s) | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT03 | 192.168.255.3:13 | - | - | IPv4: True<br>Transit: True |
@@ -10344,6 +10372,7 @@ router bgp 65101
    !
    vrf Tenant_A
       rd 10.50.64.15:30001
+      rd evpn domain remote 10.50.64.15:30002
       route-target import evpn 1:30001
       route-target import evpn route-map RM-DENY-DEFAULT
       route-target import vpn-ipv4 1:30011
@@ -10352,11 +10381,17 @@ router bgp 65101
       route-target import vpn-ipv6 1:30011
       route-target import vpn-ipv6 rcf RT_IMPORT_AF_RCF()
       route-target import vpn-ipv6 route-map RT_IMPORT_AF_RM
+      route-target import evpn domain all 2:30006
+      route-target import evpn domain all 2:30007
+      route-target import evpn domain remote 2:30005
       route-target export evpn 1:30001
       route-target export evpn rcf RT_EXPORT_AF_RCF()
       route-target export vpn-ipv6 1:30011
       route-target export vpn-ipv6 rcf RT_IMPORT_AF_RCF() vrf-route filter-rcf RT_IMPORT_AF_RCF_FILTER()
       route-target export vpn-ipv6 route-map RT_IMPORT_AF_RM
+      route-target export evpn domain all 2:40002
+      route-target export evpn domain remote 2:40005
+      route-target export evpn domain remote 2:40006
       redistribute connected
       redistribute ospf match external include leaked
       redistribute ospfv3
@@ -11161,6 +11196,15 @@ Register Local Interface: Ethernet1
 | Test_RP_ACL | 10.238.4.161 | - | RP_ACL | - | - | - |
 | Test_RP_ACL | 10.238.4.161 | - | RP_ACL2 | 20 | 30 | True |
 
+##### VRF IP Anycast Information
+
+| VRF Name | IP Anycast Address | Other Rendezvous Point Address | Register Count |
+| -------- | ------------------ | ------------------------------ | -------------- |
+| MCAST_VRF1 | 10.48.2.164 | 10.58.5.165 | - |
+| MCAST_VRF1 | 10.48.2.164 | 10.58.5.166 | 15 |
+| MCAST_VRF1 | 12.48.2.164 | 11.58.5.166 | 15 |
+| MCAST_VRF1 | 12.48.2.164 | 12.58.5.165 | infinity |
+
 ##### Router Multicast Device Configuration
 
 ```eos
@@ -11191,6 +11235,10 @@ router pim sparse-mode
          rp address 10.238.2.161 239.12.22.12/32
          rp address 10.238.2.161 239.12.22.13/32
          rp address 10.238.2.161 239.12.22.14/32
+         anycast-rp 10.48.2.164 10.58.5.165
+         anycast-rp 10.48.2.164 10.58.5.166 register-count 15
+         anycast-rp 12.48.2.164 11.58.5.166 register-count 15
+         anycast-rp 12.48.2.164 12.58.5.165 register-count infinity
          register local-interface Loopback0
    !
    vrf MCAST_VRF2_ALL_GROUPS
