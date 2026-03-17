@@ -20114,7 +20114,7 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
 
             Version: TypeAlias = Literal[1, 2, 3]
-            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}, "fast_leave": {"type": bool}}
             enabled: bool | None
             """Will be enabled automatically if evpn_l2_multicast is enabled."""
             source_address: str | None
@@ -20129,6 +20129,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             version: Version | None
             """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+            fast_leave: bool | None
+            """Enable IGMP snooping fast-leave feature."""
 
             if TYPE_CHECKING:
 
@@ -20138,6 +20140,7 @@ class EosDesigns(EosDesignsRootModel):
                     enabled: bool | None | UndefinedType = Undefined,
                     source_address: str | None | UndefinedType = Undefined,
                     version: Version | None | UndefinedType = Undefined,
+                    fast_leave: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     IgmpSnoopingQuerier.
@@ -20156,6 +20159,7 @@ class EosDesigns(EosDesignsRootModel):
                            Overrides
                            `<network_services_key>[].igmp_snooping_querier.source_address`.
                         version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                        fast_leave: Enable IGMP snooping fast-leave feature.
 
                     """
 
@@ -31587,7 +31591,7 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
 
                 Version: TypeAlias = Literal[1, 2, 3]
-                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}, "fast_leave": {"type": bool}}
                 enabled: bool | None
                 """Will be enabled automatically if evpn_l2_multicast is enabled."""
                 source_address: str | None
@@ -31606,6 +31610,8 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 version: Version | None
                 """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+                fast_leave: bool | None
+                """Enable IGMP snooping fast-leave feature."""
 
                 if TYPE_CHECKING:
 
@@ -31615,6 +31621,7 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool | None | UndefinedType = Undefined,
                         source_address: str | None | UndefinedType = Undefined,
                         version: Version | None | UndefinedType = Undefined,
+                        fast_leave: bool | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         IgmpSnoopingQuerier.
@@ -31637,6 +31644,7 @@ class EosDesigns(EosDesignsRootModel):
                                Overrides
                                `<network_services_key>[].igmp_snooping.querier.source_address`.
                             version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                            fast_leave: Enable IGMP snooping fast-leave feature.
 
                         """
 
@@ -32675,7 +32683,7 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
 
             Version: TypeAlias = Literal[1, 2, 3]
-            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}, "fast_leave": {"type": bool}}
             enabled: bool | None
             """Will be enabled automatically if evpn_l2_multicast is enabled."""
             source_address: str | None
@@ -32694,6 +32702,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             version: Version | None
             """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+            fast_leave: bool | None
+            """Enable IGMP snooping fast-leave feature."""
 
             if TYPE_CHECKING:
 
@@ -32703,6 +32713,7 @@ class EosDesigns(EosDesignsRootModel):
                     enabled: bool | None | UndefinedType = Undefined,
                     source_address: str | None | UndefinedType = Undefined,
                     version: Version | None | UndefinedType = Undefined,
+                    fast_leave: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     IgmpSnoopingQuerier.
@@ -32725,6 +32736,7 @@ class EosDesigns(EosDesignsRootModel):
                            Overrides
                            `<network_services_key>[].igmp_snooping.querier.source_address`.
                         version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                        fast_leave: Enable IGMP snooping fast-leave feature.
 
                     """
 
@@ -62052,7 +62064,12 @@ class EosDesigns(EosDesignsRootModel):
                                 """Subclass of AvdModel."""
 
                                 Version: TypeAlias = Literal[1, 2, 3]
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "source_address": {"type": str},
+                                    "version": {"type": int},
+                                    "fast_leave": {"type": bool},
+                                }
                                 enabled: bool | None
                                 """Will be enabled automatically if evpn_l2_multicast is enabled."""
                                 source_address: str | None
@@ -62071,6 +62088,8 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 version: Version | None
                                 """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+                                fast_leave: bool | None
+                                """Enable IGMP snooping fast-leave feature."""
 
                                 if TYPE_CHECKING:
 
@@ -62080,6 +62099,7 @@ class EosDesigns(EosDesignsRootModel):
                                         enabled: bool | None | UndefinedType = Undefined,
                                         source_address: str | None | UndefinedType = Undefined,
                                         version: Version | None | UndefinedType = Undefined,
+                                        fast_leave: bool | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         IgmpSnoopingQuerier.
@@ -62102,6 +62122,7 @@ class EosDesigns(EosDesignsRootModel):
                                                Overrides
                                                `<network_services_key>[].igmp_snooping.querier.source_address`.
                                             version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                                            fast_leave: Enable IGMP snooping fast-leave feature.
 
                                         """
 
@@ -63162,7 +63183,12 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             Version: TypeAlias = Literal[1, 2, 3]
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "source_address": {"type": str},
+                                "version": {"type": int},
+                                "fast_leave": {"type": bool},
+                            }
                             enabled: bool | None
                             """Will be enabled automatically if evpn_l2_multicast is enabled."""
                             source_address: str | None
@@ -63181,6 +63207,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             version: Version | None
                             """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+                            fast_leave: bool | None
+                            """Enable IGMP snooping fast-leave feature."""
 
                             if TYPE_CHECKING:
 
@@ -63190,6 +63218,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None | UndefinedType = Undefined,
                                     source_address: str | None | UndefinedType = Undefined,
                                     version: Version | None | UndefinedType = Undefined,
+                                    fast_leave: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     IgmpSnoopingQuerier.
@@ -63212,6 +63241,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Overrides
                                            `<network_services_key>[].igmp_snooping.querier.source_address`.
                                         version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                                        fast_leave: Enable IGMP snooping fast-leave feature.
 
                                     """
 
@@ -67823,7 +67853,12 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
 
                         Version: TypeAlias = Literal[1, 2, 3]
-                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool},
+                            "source_address": {"type": str},
+                            "version": {"type": int},
+                            "fast_leave": {"type": bool},
+                        }
                         enabled: bool | None
                         """Will be enabled automatically if evpn_l2_multicast is enabled."""
                         source_address: str | None
@@ -67838,6 +67873,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         version: Version | None
                         """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+                        fast_leave: bool | None
+                        """Enable IGMP snooping fast-leave feature."""
 
                         if TYPE_CHECKING:
 
@@ -67847,6 +67884,7 @@ class EosDesigns(EosDesignsRootModel):
                                 enabled: bool | None | UndefinedType = Undefined,
                                 source_address: str | None | UndefinedType = Undefined,
                                 version: Version | None | UndefinedType = Undefined,
+                                fast_leave: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 IgmpSnoopingQuerier.
@@ -67865,6 +67903,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Overrides
                                        `<network_services_key>[].igmp_snooping_querier.source_address`.
                                     version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                                    fast_leave: Enable IGMP snooping fast-leave feature.
 
                                 """
 
