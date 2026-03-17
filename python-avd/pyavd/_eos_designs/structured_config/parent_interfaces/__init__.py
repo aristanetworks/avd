@@ -146,7 +146,6 @@ class AvdStructuredConfigParentInterfacesProtocol(
 
         if problematic_interfaces:
             interface_list = ", ".join(natural_sort(problematic_interfaces))
-            verb = "has" if len(problematic_interfaces) == 1 else "have"
             if len(problematic_interfaces) == 1:
                 msg = (
                     f"'{interface_list}' has subinterfaces configured but is "
