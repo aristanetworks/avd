@@ -43,11 +43,12 @@ jobs:
           token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
           run: |
-            # Run API + scale benchmarks (15 and 150 devices) split across 5 shards
-            # pytest-test-group automatically distributes tests evenly
+            # Run API benchmarks (8 tests) + filtered scale benchmarks (8 tests) = 16 total
+            # All tests collected together and split across 5 shards (~3-4 tests per shard)
+            # The -k filter applies to the entire test collection
             pytest --codspeed \
               benchmarks/test_pyavd_api.py \
               benchmarks/test_large_fabric_scaling.py \
-              -k "15_devices or 150_devices" \
+              -k "test_pyavd_api or 15_devices or 150_devices" \
               --test-group=${{ matrix.shard }} --test-group-count=5 \
               -v -s --log-cli-level=INFO
