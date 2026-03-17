@@ -9383,8 +9383,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
             For a
-            Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-            elsewhere.
+            Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+            of AVDDesign.
             """
             description: str | None
             """
@@ -9563,8 +9563,8 @@ class EosDesigns(EosDesignsRootModel):
                         name:
                            Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                            For a
-                           Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                           elsewhere.
+                           Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                           of AVDDesign.
                         description:
                            Interface description.
                            If not set, a default description will be configured with '[<peer>[
@@ -14489,8 +14489,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
             For a
-            Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-            elsewhere.
+            Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+            of AVDDesign.
             """
             description: str | None
             """
@@ -14669,8 +14669,8 @@ class EosDesigns(EosDesignsRootModel):
                         name:
                            Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                            For a
-                           Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                           elsewhere.
+                           Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                           of AVDDesign.
                         description:
                            Interface description.
                            If not set, a default description will be configured with '[<peer>[
@@ -38196,8 +38196,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                         For a
-                        Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                        elsewhere.
+                        Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                        of AVDDesign.
                         """
                         description: str | None
                         """
@@ -38376,8 +38376,8 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                                        For a
-                                       Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                                       elsewhere.
+                                       Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                                       of AVDDesign.
                                     description:
                                        Interface description.
                                        If not set, a default description will be configured with '[<peer>[
@@ -43296,8 +43296,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                             For a
-                            Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                            elsewhere.
+                            Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                            of AVDDesign.
                             """
                             description: str | None
                             """
@@ -43476,8 +43476,8 @@ class EosDesigns(EosDesignsRootModel):
                                         name:
                                            Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                                            For a
-                                           Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                                           elsewhere.
+                                           Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                                           of AVDDesign.
                                         description:
                                            Interface description.
                                            If not set, a default description will be configured with '[<peer>[
@@ -48325,8 +48325,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                         For a
-                        Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                        elsewhere.
+                        Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                        of AVDDesign.
                         """
                         description: str | None
                         """
@@ -48505,8 +48505,8 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                                        For a
-                                       Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                                       elsewhere.
+                                       Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                                       of AVDDesign.
                                     description:
                                        Interface description.
                                        If not set, a default description will be configured with '[<peer>[
@@ -53434,8 +53434,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                         For a
-                        Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                        elsewhere.
+                        Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                        of AVDDesign.
                         """
                         description: str | None
                         """
@@ -53614,8 +53614,8 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                                        For a
-                                       Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                                       elsewhere.
+                                       Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                                       of AVDDesign.
                                     description:
                                        Interface description.
                                        If not set, a default description will be configured with '[<peer>[
@@ -64768,8 +64768,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                         For a
-                        Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                        elsewhere.
+                        Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                        of AVDDesign.
                         """
                         node: str
                         """Node."""
@@ -64889,8 +64889,8 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                                        For a
-                                       Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                                       elsewhere.
+                                       Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                                       of AVDDesign.
                                     node: Node.
                                     arp_gratuitous_accept: Accept gratuitous ARP.
                                     description:
@@ -71059,8 +71059,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                         For a
-                        Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                        elsewhere.
+                        Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                        of AVDDesign.
                         """
                         description: str | None
                         """
@@ -71239,8 +71239,8 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                                        For a
-                                       Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                                       elsewhere.
+                                       Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                                       of AVDDesign.
                                     description:
                                        Interface description.
                                        If not set, a default description will be configured with '[<peer>[
@@ -76159,8 +76159,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                             For a
-                            Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                            elsewhere.
+                            Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                            of AVDDesign.
                             """
                             description: str | None
                             """
@@ -76339,8 +76339,8 @@ class EosDesigns(EosDesignsRootModel):
                                         name:
                                            Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                                            For a
-                                           Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                                           elsewhere.
+                                           Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                                           of AVDDesign.
                                         description:
                                            Interface description.
                                            If not set, a default description will be configured with '[<peer>[
@@ -81188,8 +81188,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                         For a
-                        Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                        elsewhere.
+                        Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                        of AVDDesign.
                         """
                         description: str | None
                         """
@@ -81368,8 +81368,8 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                                        For a
-                                       Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                                       elsewhere.
+                                       Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                                       of AVDDesign.
                                     description:
                                        Interface description.
                                        If not set, a default description will be configured with '[<peer>[
@@ -86297,8 +86297,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                         For a
-                        Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                        elsewhere.
+                        Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                        of AVDDesign.
                         """
                         description: str | None
                         """
@@ -86477,8 +86477,8 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
                                        For a
-                                       Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined
-                                       elsewhere.
+                                       Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs
+                                       of AVDDesign.
                                     description:
                                        Interface description.
                                        If not set, a default description will be configured with '[<peer>[

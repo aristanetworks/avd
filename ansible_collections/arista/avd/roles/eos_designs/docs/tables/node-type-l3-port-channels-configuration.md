@@ -10,7 +10,7 @@
     | [<samp>&lt;node_type_keys.key&gt;</samp>](## "<node_type_keys.key>") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "<node_type_keys.key>.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l3_port_channels</samp>](## "<node_type_keys.key>.defaults.l3_port_channels") | List, items: Dictionary |  |  |  | L3 Port-Channel interfaces to configure on the node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].name") | String | Required, Unique |  | Pattern: `Port-Channel[\d/]+(\.[\d]+)?` | Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.<br>For a Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined elsewhere. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].name") | String | Required, Unique |  | Pattern: `Port-Channel[\d/]+(\.[\d]+)?` | Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.<br>For a Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs of AVDDesign. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].description") | String |  |  |  | Interface description.<br>If not set, a default description will be configured with '[<peer>[ <peer_port_channel>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].mode") | String |  | `active` | Valid Values:<br>- <code>active</code><br>- <code>passive</code><br>- <code>on</code> | Port-Channel mode.<br>Should not be set on Port-Channel subinterfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;member_interfaces</samp>](## "<node_type_keys.key>.defaults.l3_port_channels.[].member_interfaces") | List, items: Dictionary |  |  |  | Port-Channel member interfaces.<br>Should not be set on Port-Channel subinterfaces. |
@@ -56,7 +56,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3_port_channels</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels") | List, items: Dictionary |  |  |  | L3 Port-Channel interfaces to configure on the node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].name") | String | Required, Unique |  | Pattern: `Port-Channel[\d/]+(\.[\d]+)?` | Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.<br>For a Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined elsewhere. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].name") | String | Required, Unique |  | Pattern: `Port-Channel[\d/]+(\.[\d]+)?` | Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.<br>For a Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs of AVDDesign. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].description") | String |  |  |  | Interface description.<br>If not set, a default description will be configured with '[<peer>[ <peer_port_channel>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].mode") | String |  | `active` | Valid Values:<br>- <code>active</code><br>- <code>passive</code><br>- <code>on</code> | Port-Channel mode.<br>Should not be set on Port-Channel subinterfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;member_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].member_interfaces") | List, items: Dictionary |  |  |  | Port-Channel member interfaces.<br>Should not be set on Port-Channel subinterfaces. |
@@ -98,7 +98,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_port_channels.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Port-Channel interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3_port_channels</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels") | List, items: Dictionary |  |  |  | L3 Port-Channel interfaces to configure on the node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].name") | String | Required, Unique |  | Pattern: `Port-Channel[\d/]+(\.[\d]+)?` | Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.<br>For a Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined elsewhere. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].name") | String | Required, Unique |  | Pattern: `Port-Channel[\d/]+(\.[\d]+)?` | Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.<br>For a Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs of AVDDesign. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].description") | String |  |  |  | Interface description.<br>If not set, a default description will be configured with '[<peer>[ <peer_port_channel>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].mode") | String |  | `active` | Valid Values:<br>- <code>active</code><br>- <code>passive</code><br>- <code>on</code> | Port-Channel mode.<br>Should not be set on Port-Channel subinterfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;member_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].l3_port_channels.[].member_interfaces") | List, items: Dictionary |  |  |  | Port-Channel member interfaces.<br>Should not be set on Port-Channel subinterfaces. |
@@ -142,7 +142,7 @@
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3_port_channels</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels") | List, items: Dictionary |  |  |  | L3 Port-Channel interfaces to configure on the node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].name") | String | Required, Unique |  | Pattern: `Port-Channel[\d/]+(\.[\d]+)?` | Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.<br>For a Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined elsewhere. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].name") | String | Required, Unique |  | Pattern: `Port-Channel[\d/]+(\.[\d]+)?` | Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.<br>For a Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs of AVDDesign. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].description") | String |  |  |  | Interface description.<br>If not set, a default description will be configured with '[<peer>[ <peer_port_channel>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].mode") | String |  | `active` | Valid Values:<br>- <code>active</code><br>- <code>passive</code><br>- <code>on</code> | Port-Channel mode.<br>Should not be set on Port-Channel subinterfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;member_interfaces</samp>](## "<node_type_keys.key>.nodes.[].l3_port_channels.[].member_interfaces") | List, items: Dictionary |  |  |  | Port-Channel member interfaces.<br>Should not be set on Port-Channel subinterfaces. |
@@ -186,7 +186,7 @@
     | [<samp>device_profiles</samp>](## "device_profiles") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l3_port_channels</samp>](## "device_profiles.[].l3_port_channels") | List, items: Dictionary |  |  |  | L3 Port-Channel interfaces to configure on the node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].l3_port_channels.[].name") | String | Required, Unique |  | Pattern: `Port-Channel[\d/]+(\.[\d]+)?` | Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.<br>For a Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined elsewhere. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].l3_port_channels.[].name") | String | Required, Unique |  | Pattern: `Port-Channel[\d/]+(\.[\d]+)?` | Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.<br>For a Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs of AVDDesign. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "device_profiles.[].l3_port_channels.[].description") | String |  |  |  | Interface description.<br>If not set, a default description will be configured with '[<peer>[ <peer_port_channel>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "device_profiles.[].l3_port_channels.[].mode") | String |  | `active` | Valid Values:<br>- <code>active</code><br>- <code>passive</code><br>- <code>on</code> | Port-Channel mode.<br>Should not be set on Port-Channel subinterfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;member_interfaces</samp>](## "device_profiles.[].l3_port_channels.[].member_interfaces") | List, items: Dictionary |  |  |  | Port-Channel member interfaces.<br>Should not be set on Port-Channel subinterfaces. |
@@ -230,7 +230,7 @@
     | [<samp>devices</samp>](## "devices") | List, items: Dictionary |  |  |  | PREVIEW - This datamodel is still under development and may change or get removed at any time. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l3_port_channels</samp>](## "devices.[].l3_port_channels") | List, items: Dictionary |  |  |  | L3 Port-Channel interfaces to configure on the node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "devices.[].l3_port_channels.[].name") | String | Required, Unique |  | Pattern: `Port-Channel[\d/]+(\.[\d]+)?` | Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.<br>For a Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined elsewhere. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "devices.[].l3_port_channels.[].name") | String | Required, Unique |  | Pattern: `Port-Channel[\d/]+(\.[\d]+)?` | Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.<br>For a Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs of AVDDesign. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "devices.[].l3_port_channels.[].description") | String |  |  |  | Interface description.<br>If not set, a default description will be configured with '[<peer>[ <peer_port_channel>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "devices.[].l3_port_channels.[].mode") | String |  | `active` | Valid Values:<br>- <code>active</code><br>- <code>passive</code><br>- <code>on</code> | Port-Channel mode.<br>Should not be set on Port-Channel subinterfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;member_interfaces</samp>](## "devices.[].l3_port_channels.[].member_interfaces") | List, items: Dictionary |  |  |  | Port-Channel member interfaces.<br>Should not be set on Port-Channel subinterfaces. |
@@ -284,7 +284,7 @@
         l3_port_channels:
 
             # Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
-            # For a Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined elsewhere.
+            # For a Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs of AVDDesign.
           - name: <str; required; unique>
 
             # Interface description.
@@ -452,7 +452,7 @@
               l3_port_channels:
 
                   # Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
-                  # For a Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined elsewhere.
+                  # For a Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs of AVDDesign.
                 - name: <str; required; unique>
 
                   # Interface description.
@@ -607,7 +607,7 @@
           l3_port_channels:
 
               # Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
-              # For a Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined elsewhere.
+              # For a Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs of AVDDesign.
             - name: <str; required; unique>
 
               # Interface description.
@@ -768,7 +768,7 @@
           l3_port_channels:
 
               # Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
-              # For a Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined elsewhere.
+              # For a Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs of AVDDesign.
             - name: <str; required; unique>
 
               # Interface description.
@@ -929,7 +929,7 @@
         l3_port_channels:
 
             # Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
-            # For a Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined elsewhere.
+            # For a Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs of AVDDesign.
           - name: <str; required; unique>
 
             # Interface description.
@@ -1090,7 +1090,7 @@
         l3_port_channels:
 
             # Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
-            # For a Port-Channel subinterface, the parent Port-Channel interface is automatically created if not defined elsewhere.
+            # For a Port-Channel subinterface, the parent Port-Channel interface must be defined as well in the inputs of AVDDesign.
           - name: <str; required; unique>
 
             # Interface description.

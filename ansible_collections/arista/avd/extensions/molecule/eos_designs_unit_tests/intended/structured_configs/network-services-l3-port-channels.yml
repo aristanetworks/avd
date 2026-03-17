@@ -4,6 +4,16 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet77
+  description: underlay-peer_Ethernet77
+  shutdown: false
+  channel_group:
+    id: 77
+    mode: active
+  metadata:
+    peer: underlay-peer
+    peer_interface: Ethernet77
+    peer_type: l3_port_channel_member
 - name: Ethernet78
   description: underlay-peer_Ethernet78
   shutdown: false

@@ -44,6 +44,10 @@ l3leaf:
         # Making sure we can define a Port-Channel without ip_address
         - name: Port-Channel77
           description: L3 Port-Channel without ip_address
+          member_interfaces:
+            - name: Ethernet77
+              peer_interface: Ethernet77
+              peer: underlay-peer
         # Test case: Parent Port-Channel created in underlay with member_interfaces
         # Subinterfaces will be created in network services
         # This should work without errors

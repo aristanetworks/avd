@@ -141,15 +141,21 @@ class AvdStructuredConfigParentInterfacesProtocol(
             if parent_name in existing_interfaces:
                 interface = existing_interfaces[parent_name]
                 # Check if switchport is enabled
+                # TODO: Once we introduce switchport default mode in AVDDesign, we need
+                # to take this into consideration here.
                 if interface.switchport.enabled is True:
                     problematic_interfaces.append(parent_name)
 
         if problematic_interfaces:
+            interface_list = ", ".join(natural_sort(problematic_interfaces))
+            interface_word = "interface" if len(problematic_interfaces) == 1 else "interfaces"
+            verb = "has" if len(problematic_interfaces) == 1 else "have"
             msg = (
-                f"The following {interface_type} interface(s) have subinterfaces configured but are set as switchports "
-                f"(switchport enabled), which will cause the subinterfaces to be in a dormant state: "
-                f"{', '.join(natural_sort(problematic_interfaces))}. "
-                f"Please configure these interfaces with 'no switchport' (switchport.enabled: false) or remove the subinterfaces."
+                f"{interface_list} {interface_type} {interface_word} {verb} subinterfaces configured "
+                f"but {'is' if len(problematic_interfaces) == 1 else 'are'} set as {'a switchport' if len(problematic_interfaces) == 1 else 'switchports'} "
+                f"(switchport enabled), which will cause the subinterfaces to be in a dormant state. "
+                f"Parent {'interface' if len(problematic_interfaces) == 1 else 'interfaces'} must be routed "
+                f"{'interface' if len(problematic_interfaces) == 1 else 'interfaces'} (switchport.enabled: false) or remove the subinterfaces."
             )
             raise AristaAvdInvalidInputsError(msg)
 
