@@ -11,14 +11,14 @@ env:
 
 jobs:
   pr-benchmarks:
-    name: PR Benchmarks (Shard ${{ matrix.shard }}/3)
+    name: PR Benchmarks (Shard ${{ matrix.shard }}/5)
     runs-on: ubuntu-latest
     timeout-minutes: 60
     if: contains(github.event.pull_request.labels.*.name, 'benchmark')
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3]
+        shard: [1, 2, 3, 4, 5]
     steps:
       - uses: actions/checkout@v6
 
@@ -37,17 +37,17 @@ jobs:
           make compile-schemas
           make compile-templates
 
-      - name: Run benchmarks (shard ${{ matrix.shard }}/3)
+      - name: Run benchmarks (shard ${{ matrix.shard }}/5)
         uses: CodSpeedHQ/action@v4
         with:
           token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
           run: |
-            # Run API + scale benchmarks (15 and 150 devices) split across 3 shards
+            # Run API + scale benchmarks (15 and 150 devices) split across 5 shards
             # pytest-test-group automatically distributes tests evenly
             pytest --codspeed \
               benchmarks/test_pyavd_api.py \
               benchmarks/test_large_fabric_scaling.py \
               -k "15_devices or 150_devices" \
-              --test-group=${{ matrix.shard }} --test-group-count=3 \
+              --test-group=${{ matrix.shard }} --test-group-count=5 \
               -v -s --log-cli-level=INFO
