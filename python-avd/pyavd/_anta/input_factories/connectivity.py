@@ -124,7 +124,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
 
     3. Reachability between DPS interfaces (VXLAN source interfaces) of WAN routers.
 
-    4. Reachability from devices with inband management SVIs to all other fabric devices Loopback0 addresses.
+    4. Reachability from devices with inband management SVIs to all other fabric devices Loopback0 addresses within the default VRF only.
 
     5. Reachability to BGP neighbors across all VRFs.
        Includes neighbors that are not administratively shutdown or part of a shutdown peer group.
@@ -230,6 +230,11 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
                 continue
 
             vrf = svi.vrf or "default"
+
+            # Currently not supporting the non-default vrf as topology limitation.
+            if vrf != "default":
+                self.logger_adapter.debug(LogMessage.NON_DEFAULT_INBAND_MGMT_VRF, svi=svi.name)
+                continue
 
             for hostname, ip in self.data_source.fabric_loopback0_mapping.items():
                 if hostname == self.data_source.hostname:
