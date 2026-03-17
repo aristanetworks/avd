@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -24,11 +23,6 @@ class PortChannelInterfacesMixin(Protocol):
 
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
-
-    @cached_property
-    def _l3_port_channels_with_subinterfaces(self: AvdStructuredConfigUnderlayProtocol) -> set[str]:
-        """Return a set of L3 Port-Channel names that have sub-interfaces."""
-        return {port_channel.name.split(".", maxsplit=1)[0] for port_channel in self.shared_utils.node_config.l3_port_channels if "." in port_channel.name}
 
     @structured_config_contributor
     def port_channel_interfaces(self: AvdStructuredConfigUnderlayProtocol) -> None:
