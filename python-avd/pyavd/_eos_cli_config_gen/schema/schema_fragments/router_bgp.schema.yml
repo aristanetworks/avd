@@ -242,7 +242,7 @@ keys:
             keys:
               rib:
                 type: str
-                description: Set the labeled-unicast rib mode.  EOS default is tunnel.
+                description: Which rib to install LU routes.  EOS default is tunnel.
                 valid_values: ["ip", "tunnel", "ip-tunnel"]
               route_map:
                 type: str
