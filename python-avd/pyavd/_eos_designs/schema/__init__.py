@@ -7697,13 +7697,13 @@ class EosDesigns(EosDesignsRootModel):
             enabled: bool
             evpn_domain_id: str
             """
-            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+            Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
             Default value: `"65535:1"`
             """
             ipvpn_domain_id: str
             """
-            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+            Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
             Default value: `"65535:2"`
             """
@@ -7760,8 +7760,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: enabled
-                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                         enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                         maximum_routes: Maximum routes to accept from IPVPN remote peers.
                         local_as:
@@ -12801,13 +12801,13 @@ class EosDesigns(EosDesignsRootModel):
             enabled: bool
             evpn_domain_id: str
             """
-            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+            Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
             Default value: `"65535:1"`
             """
             ipvpn_domain_id: str
             """
-            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+            Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
             Default value: `"65535:2"`
             """
@@ -12864,8 +12864,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: enabled
-                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                         enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                         maximum_routes: Maximum routes to accept from IPVPN remote peers.
                         local_as:
@@ -36563,13 +36563,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -36626,8 +36626,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -41644,13 +41644,13 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             evpn_domain_id: str
                             """
-                            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                            Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                             Default value: `"65535:1"`
                             """
                             ipvpn_domain_id: str
                             """
-                            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                            Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                             Default value: `"65535:2"`
                             """
@@ -41707,8 +41707,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
-                                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                         enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                         maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                         local_as:
@@ -46688,13 +46688,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -46751,8 +46751,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -51795,13 +51795,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -51858,8 +51858,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -69404,13 +69404,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -69467,8 +69467,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -74485,13 +74485,13 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             evpn_domain_id: str
                             """
-                            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                            Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                             Default value: `"65535:1"`
                             """
                             ipvpn_domain_id: str
                             """
-                            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                            Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                             Default value: `"65535:2"`
                             """
@@ -74548,8 +74548,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
-                                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                         enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                         maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                         local_as:
@@ -79529,13 +79529,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -79592,8 +79592,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -84636,13 +84636,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -84699,8 +84699,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
