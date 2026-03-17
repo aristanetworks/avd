@@ -642,7 +642,7 @@ mac_access_lists:
   - sequence: 5
     action: permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00
   - sequence: 10
-    action: deny any 01:80:c2:00:00:00 00:00:00:00:00:00
+    action: deny 01:80:c2:00:00:00 00:00:00:00:00:00 any
 - name: no-entries
 management_interfaces:
 - name: Management1
