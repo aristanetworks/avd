@@ -1,6 +1,9 @@
 {
     "payload": [
         {
+            "type": "INITIAL_SYNC_COMPLETE"
+        },
+        {
             "value": {
                 "key": {
                     "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
@@ -19,10 +22,7 @@
                 "description": "MOCKED_WS_DESCRIPTION"
             },
             "time": "2025-05-06T16:28:02.222973524",
-            "type": "INITIAL"
-        },
-        {
-            "type": "INITIAL_SYNC_COMPLETE"
+            "type": "UPDATED"
         },
         {
             "value": {
