@@ -155,7 +155,7 @@ class AvdStructuredConfigParentInterfacesProtocol(
                 )
             else:
                 msg = (
-                    f"'{interface_list}' have subinterfaces configured but are"
+                    f"'{interface_list}' have subinterfaces configured but are "
                     "configured as switchports (switchport enabled), which will cause "
                     "the subinterfaces to be in a dormant state. "
                     f"The parent interfaces must be routed interfaces to support subinterfaces."
