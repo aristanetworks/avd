@@ -42,6 +42,9 @@ class EthernetInterfacesMixin(Protocol):
                         continue
 
                     ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
+
+                    self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
+
                     self.structured_config.ethernet_interfaces.append(ethernet_interface)
                     if adapter.structured_config:
                         self.custom_structured_configs.nested.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
@@ -79,6 +82,8 @@ class EthernetInterfacesMixin(Protocol):
 
         # Now insert into the actual structured config and custom structured config
         for ethernet_interface, structured_config in network_ports_ethernet_interfaces.values():
+            self.structured_config_utils.parent_interfaces_tracker.register_ethernet_parent(ethernet_interface.name)
+
             self.structured_config.ethernet_interfaces.append(ethernet_interface)
             if structured_config:
                 self.custom_structured_configs.nested.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(

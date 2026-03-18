@@ -24,7 +24,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].endpoints.[].id") | Integer | Required |  |  | Pseudowire ID on this endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].endpoints.[].nodes") | List, items: String | Required |  | Min Length: 1 | Usually one node. With ESI multihoming we support two nodes per pseudowire endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].endpoints.[].nodes.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].endpoints.[].interfaces") | List, items: String | Required |  | Min Length: 1 | Interfaces patched to the pseudowire on this endpoints.<br>The list of interfaces is mapped to the list of nodes, so they must have the same length.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].endpoints.[].interfaces") | List, items: String | Required |  | Min Length: 1 | Interfaces patched to the pseudowire on this endpoints.<br>The list of interfaces is mapped to the list of nodes, so they must have the same length.<br>For subinterfaces, the parent physical interface is automatically created if not defined elsewhere.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].endpoints.[].interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].endpoints.[].port_channel") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].endpoints.[].port_channel.mode") | String |  |  | Valid Values:<br>- <code>active</code><br>- <code>on</code> |  |
@@ -87,6 +87,7 @@
 
                 # Interfaces patched to the pseudowire on this endpoints.
                 # The list of interfaces is mapped to the list of nodes, so they must have the same length.
+                # For subinterfaces, the parent physical interface is automatically created if not defined elsewhere.
                 interfaces: # >=1 items; required
                   - <str>
                 port_channel:
