@@ -11,11 +11,11 @@
 
 #### Traffic Policies VRF Interfaces
 
-| VRF | CPU Fallback None | Excluded Prefixes | Input Physical |
-| --- | ----------------- | ----------------- | -------------- |
+| VRF | CPU Traffic Policy | Management Ports | Physical Interfaces Traffic Policy |
+| --- | ------------------ | ---------------- | ---------------------------------- |
 {%         for vrf in traffic_policies.vrfs | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
-{%             if vrf.cpu.traffic_policy_fallback_none is arista.avd.defined or vrf.traffic_policy_input_physical is arista.avd.defined %}
-| {{ vrf.name }} | {{ vrf.cpu.traffic_policy_fallback_none | arista.avd.default("-") }} | {{ vrf.cpu.enforcement_management | arista.avd.default("-") }} | {{ vrf.traffic_policy_input_physical | arista.avd.default("-") }} |
+{%             if vrf.cpu.traffic_policy is arista.avd.defined or vrf.traffic_policy_input_physical is arista.avd.defined %}
+| {{ vrf.name }} | {{ vrf.cpu.traffic_policy.name | arista.avd.default("-") }} | {{ vrf.cpu.traffic_policy.enforcement_management | arista.avd.default("-") }} | {{ vrf.traffic_policy_input_physical | arista.avd.default("-") }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

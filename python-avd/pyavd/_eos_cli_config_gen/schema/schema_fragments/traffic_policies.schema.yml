@@ -23,15 +23,20 @@ keys:
             cpu:
               type: dict
               keys:
-                traffic_policy_fallback_none:
-                  type: str
-                  convert_types:
-                    - int
-                  required: true
-                  description: Traffic-policy name.
-                enforcement_management:
-                  type: bool
-                  description: Enforce CPU traffic-policy on management ports.
+                traffic_policy:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      convert_types:
+                        - int
+                      required: true
+                      description: |-
+                        Traffic-policy name.
+                        Currently this is always configured with "fallback traffic policy none".
+                    enforcement_management:
+                      type: bool
+                      description: Enforce CPU traffic-policy on management ports.
             traffic_policy_input_physical:
               type: str
               convert_types:

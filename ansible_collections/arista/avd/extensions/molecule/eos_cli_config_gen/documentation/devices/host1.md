@@ -13650,8 +13650,8 @@ mac security
 
 #### Traffic Policies VRF Interfaces
 
-| VRF | CPU Fallback None | Excluded Prefixes | Input Physical |
-| --- | ----------------- | ----------------- | -------------- |
+| VRF | CPU Traffic Policy | Management Ports | Physical Interfaces Traffic Policy |
+| --- | ------------------ | ---------------- | ---------------------------------- |
 | VRF1 | TP1 | True | TP1 |
 | VRF2 | TP2 | - | TP2 |
 | VRF3 | TP3 | - | - |
