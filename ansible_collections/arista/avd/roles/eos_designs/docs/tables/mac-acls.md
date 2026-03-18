@@ -13,9 +13,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "mac_acls.[].entries.[].sequence") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "mac_acls.[].entries.[].action") | String |  |  | Valid Values:<br>- <code>permit</code><br>- <code>deny</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "mac_acls.[].entries.[].source") | String |  |  |  | Source mac-address.<br>This can be `any` or a MAC address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_wildcard</samp>](## "mac_acls.[].entries.[].source_wildcard") | String |  |  |  | Wildcard bits for source MAC address.<br>Required when source is not `any`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "mac_acls.[].entries.[].destination") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_wildcard</samp>](## "mac_acls.[].entries.[].destination_wildcard") | String |  |  |  | Wildcard bits for destination MAC address.<br>Required when destination is not `any`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_wildcard</samp>](## "mac_acls.[].entries.[].source_wildcard") | String |  |  |  | Wildcard bits for source MAC address.<br>Required when `source` is not `any`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "mac_acls.[].entries.[].destination") | String |  |  |  | Destination MAC address.<br>This can be `any` or a MAC address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination_wildcard</samp>](## "mac_acls.[].entries.[].destination_wildcard") | String |  |  |  | Wildcard bits for destination MAC address.<br>Required when `destination` is not `any`. |
 
 === "YAML"
 
@@ -36,11 +36,14 @@
             source: <str>
 
             # Wildcard bits for source MAC address.
-            # Required when source is not `any`.
+            # Required when `source` is not `any`.
             source_wildcard: <str>
+
+            # Destination MAC address.
+            # This can be `any` or a MAC address.
             destination: <str>
 
             # Wildcard bits for destination MAC address.
-            # Required when destination is not `any`.
+            # Required when `destination` is not `any`.
             destination_wildcard: <str>
     ```

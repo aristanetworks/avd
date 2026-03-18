@@ -22906,13 +22906,17 @@ class EosDesigns(EosDesignsRootModel):
             source_wildcard: str | None
             """
             Wildcard bits for source MAC address.
-            Required when source is not `any`.
+            Required when `source` is not `any`.
             """
             destination: str | None
+            """
+            Destination MAC address.
+            This can be `any` or a MAC address.
+            """
             destination_wildcard: str | None
             """
             Wildcard bits for destination MAC address.
-            Required when destination is not `any`.
+            Required when `destination` is not `any`.
             """
 
             if TYPE_CHECKING:
@@ -22941,11 +22945,13 @@ class EosDesigns(EosDesignsRootModel):
                            This can be `any` or a MAC address.
                         source_wildcard:
                            Wildcard bits for source MAC address.
-                           Required when source is not `any`.
-                        destination: destination
+                           Required when `source` is not `any`.
+                        destination:
+                           Destination MAC address.
+                           This can be `any` or a MAC address.
                         destination_wildcard:
                            Wildcard bits for destination MAC address.
-                           Required when destination is not `any`.
+                           Required when `destination` is not `any`.
 
                     """
 

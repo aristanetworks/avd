@@ -3607,14 +3607,17 @@ keys:
                 type: str
                 description: 'Wildcard bits for source MAC address.
 
-                  Required when source is not `any`.'
+                  Required when `source` is not `any`.'
               destination:
                 type: str
+                description: 'Destination MAC address.
+
+                  This can be `any` or a MAC address.'
               destination_wildcard:
                 type: str
                 description: 'Wildcard bits for destination MAC address.
 
-                  Required when destination is not `any`.'
+                  Required when `destination` is not `any`.'
   mac_address_table:
     documentation_options:
       table: system-settings
