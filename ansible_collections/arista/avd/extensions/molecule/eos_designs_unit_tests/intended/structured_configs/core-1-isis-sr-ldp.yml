@@ -301,6 +301,48 @@ ethernet_interfaces:
     peer: core-2-ospf-ldp
     peer_interface: Ethernet21
     peer_type: core_router
+- name: Ethernet26
+  description: P2P_LINK_TO_CORE-5-ISIS-SR-LDP_Ethernet26
+  shutdown: false
+  mtu: 1600
+  ipv6_addresses:
+  - 2001:db8:64:ff::1e/127
+  mpls:
+    ip: true
+  metadata:
+    peer: core-5-isis-sr-ldp
+    peer_interface: Ethernet26
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Ethernet27
+  description: P2P_LINK_TO_CORE-5-ISIS-SR-LDP_Ethernet27
+  shutdown: false
+  mtu: 1600
+  ipv6_addresses:
+  - 2001:db8:100::1/64
+  mpls:
+    ip: true
+  metadata:
+    peer: core-5-isis-sr-ldp
+    peer_interface: Ethernet27
+    peer_type: core_router
+  switchport:
+    enabled: false
+- name: Ethernet28
+  description: P2P_LINK_TO_CORE-5-ISIS-SR-LDP_Ethernet28
+  shutdown: false
+  mtu: 1600
+  ipv6_addresses:
+  - 2001:db8:200::1/64
+  mpls:
+    ip: true
+  metadata:
+    peer: core-5-isis-sr-ldp
+    peer_interface: Ethernet28
+    peer_type: core_router
+  switchport:
+    enabled: false
 - name: ethernet21
   description: P2P_LINK_TO_PEER2_ethernet21
   shutdown: false
