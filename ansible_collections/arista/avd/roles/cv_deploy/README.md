@@ -305,6 +305,8 @@ ansible_collections/arista/avd/roles/cv_deploy/defaults/main/directories.yml
 --8<--
 ```
 
+#### Device metadata from structured configuration
+
 `cv_deploy` uses the `metadata` key from each device structured configuration to get the following information:
 
 - **Device identification**: `serial_number` and `system_mac_address`
@@ -312,9 +314,11 @@ ansible_collections/arista/avd/roles/cv_deploy/defaults/main/directories.yml
 - **CloudVision tags**: `cv_tags` (device and interface tags)
 - **CV Pathfinder metadata**: `cv_pathfinder`
 
-No additional configuration is required when using this standard AVD workflow (`eos_designs` → `eos_cli_config_gen` → `cv_deploy`).
+No additional configuration is required when using the standard AVD workflow (`eos_designs` → `eos_cli_config_gen` → `cv_deploy`).
 
-For users *not* using `eos_designs` in their workflow, the `cv_deploy` role can be used independently by providing the required variables directly as Ansible host variables.
+#### Using cv_deploy without eos_designs
+
+For users *not* using `eos_designs` in their workflow, the `cv_deploy` role can be used independently by providing the required variables directly as Ansible variables.
 
 --8<--
 schemas/cv_deploy/docs/tables/cv_deploy.md
