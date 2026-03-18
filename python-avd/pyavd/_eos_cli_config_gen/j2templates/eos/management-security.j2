@@ -8,7 +8,7 @@
 !
 management security
 {%     if management_security.auto_certificate_profiles is arista.avd.defined %}
-{%         for auto_certificate_profile in management_security.auto_certificate_profiles | arista.avd.natural_sort(sort_key="name") %}
+{%         for auto_certificate_profile in management_security.auto_certificate_profiles | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
    auto-certificate profile {{ auto_certificate_profile.name }}
       key {{ auto_certificate_profile.key }}
 {%             if auto_certificate_profile.parameters.distinguished_name.common_name is arista.avd.defined %}
@@ -62,7 +62,7 @@ management security
 {%         endfor %}
 {%     endif %}
 {%     if management_security.auto_certificate_protocols is arista.avd.defined %}
-{%         for auto_certificate_protocol in management_security.auto_certificate_protocols | arista.avd.natural_sort(sort_key="name") %}
+{%         for auto_certificate_protocol in management_security.auto_certificate_protocols | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
    auto-certificate protocol {{ auto_certificate_protocol.protocol }} {{ auto_certificate_protocol.name }}
       server url {{ auto_certificate_protocol.server.url }}
       server ssl profile {{ auto_certificate_protocol.server.ssl_profile }}
@@ -70,12 +70,11 @@ management security
       server vrf {{ auto_certificate_protocol.server.vrf }}
 {%             endif %}
 {%             if auto_certificate_protocol.connection.retry.interval is arista.avd.defined %}
+{%                 set conn_retry_interval = "connection retry interval " ~ auto_certificate_protocol.connection.retry.interval ~ " seconds" %}
 {%                 if auto_certificate_protocol.connection.retry.exponential_backoff is arista.avd.defined(true) %}
-{%                     set auto_cert_backoff_exponential = " backoff exponential" %}
-{%                 else %}
-{%                     set auto_cert_backoff_exponential = "" %}
+{%                     set conn_retry_interval = conn_retry_interval ~ " backoff exponential" %}
 {%                 endif %}
-      connection retry interval {{ auto_certificate_protocol.connection.retry.interval }} seconds{{ auto_cert_backoff_exponential }}
+      {{ conn_retry_interval }}
 {%             endif %}
 {%             if auto_certificate_protocol.connection.retry.count is arista.avd.defined %}
       connection retry count {{ auto_certificate_protocol.connection.retry.count }}
@@ -89,9 +88,9 @@ management security
       credentials enroll username {{ auto_certificate_protocol.credentials.enroll.username }} secret 7 {{ auto_certificate_protocol.credentials.enroll.secret | arista.avd.hide_passwords(hide_passwords) }}
 {%             endif %}
 {%             if auto_certificate_protocol.credentials.re_enroll.token is arista.avd.defined %}
-      credentials enroll token 7 {{ auto_certificate_protocol.credentials.re_enroll.token | arista.avd.hide_passwords(hide_passwords) }}
+      credentials re-enroll token 7 {{ auto_certificate_protocol.credentials.re_enroll.token | arista.avd.hide_passwords(hide_passwords) }}
 {%             elif auto_certificate_protocol.credentials.re_enroll.username is arista.avd.defined and auto_certificate_protocol.credentials.re_enroll.secret is arista.avd.defined %}
-      credentials enroll username {{ auto_certificate_protocol.credentials.re_enroll.username }} secret 7 {{ auto_certificate_protocol.credentials.re_enroll.secret | arista.avd.hide_passwords(hide_passwords) }}
+      credentials re-enroll username {{ auto_certificate_protocol.credentials.re_enroll.username }} secret 7 {{ auto_certificate_protocol.credentials.re_enroll.secret | arista.avd.hide_passwords(hide_passwords) }}
 {%             endif %}
    !
 {%         endfor %}
