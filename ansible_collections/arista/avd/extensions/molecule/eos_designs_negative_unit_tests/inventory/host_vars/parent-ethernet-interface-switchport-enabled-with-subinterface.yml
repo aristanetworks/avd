@@ -1,0 +1,47 @@
+---
+# Test case for Ethernet parent interface with switchport enabled and subinterface configured
+# This should fail because a parent interface with switchport enabled will cause subinterfaces to be dormant
+
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    uplink_switches: []
+    uplink_interfaces: []
+  node_groups:
+    - group: PARENT_ETHERNET_SWITCHPORT_TEST
+      bgp_as: 65100
+      nodes:
+        - name: parent-ethernet-interface-switchport-enabled-with-subinterface
+          id: 1
+          mgmt_ip: 192.168.200.105/24
+
+# Configure a connected endpoint that sets the parent interface as a switchport
+servers:
+  - name: test-server
+    adapters:
+      - endpoint_ports: [eth0]
+        switch_ports: [Ethernet5]
+        switches: [parent-ethernet-interface-switchport-enabled-with-subinterface]
+        mode: trunk
+        vlans: 10-20
+
+# Configure network services with a subinterface on the same parent interface
+tenants:
+  - name: TEST_TENANT
+    vrfs:
+      - name: TEST_VRF
+        vrf_id: 100
+        l3_interfaces:
+          - interfaces: [Ethernet5.100]
+            nodes: [parent-ethernet-interface-switchport-enabled-with-subinterface]
+            ip_addresses: [10.1.1.1/30]
+            descriptions: [Test subinterface]
+            enabled: true
+
+expected_error_message: >-
+  'Ethernet5' has subinterfaces configured but is set as a switchport (switchport enabled),
+  which will cause the subinterfaces to be in a dormant state.
+  The parent interface must be a routed interface to support subinterfaces.
