@@ -5141,7 +5141,7 @@ keys:
         $ref: eos_cli_config_gen#/keys/ptp/keys/free_running
   queue_monitor_length:
     documentation_options:
-      table: system-settings
+      table: latency-analyzer
     $ref: eos_cli_config_gen#/keys/queue_monitor_length
     type: dict
     keys:
@@ -5156,6 +5156,8 @@ keys:
 
           '
   queue_monitor_streaming:
+    documentation_options:
+      table: latency-analyzer
     type: dict
     $ref: eos_cli_config_gen#/keys/queue_monitor_streaming
   redundancy:
@@ -7367,6 +7369,9 @@ $defs:
               Subinterfaces are only supported on routed port-channels, which means
               they cannot be configured on MLAG port-channels.
 
+              The parent Port-Channel interface is automatically created if not defined
+              elsewhere.
+
               Setting short_esi: auto generates the short_esi automatically using
               a hash of configuration elements.
 
@@ -7650,6 +7655,51 @@ $defs:
             underlay_multicast_group:
               description: Specific multicast group to use for this VLAN.
               type: str
+        igmp_snooping:
+          type: dict
+          documentation_options:
+            table: network-services-multicast-settings
+          keys:
+            enabled:
+              type: bool
+              description: Enable or disable IGMP snooping (Enabled by default on
+                EOS).
+            querier:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Will be enabled automatically if `evpn_l2_multicast`
+                    is enabled.
+                source_address:
+                  type: str
+                  description: 'The value of `source_address` will be interpreted
+                    according to these rules:
+
+                    - `vrf_router_id` will configure the VRF router ID address according
+                    to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+
+                    - ''diagnostic_loopback'' will configure the VRF Diagnostic Loopback
+                    address.
+
+                    - `main_router_id` will configure the Loopback0 IP address.
+
+                    - An IPv4 address will be used directly as the source address.
+
+                    Overrides `<network_services_key>[].igmp_snooping.querier.source_address`.'
+                version:
+                  type: int
+                  description: IGMP Version (By default EOS uses IGMP version 2 for
+                    IGMP querier).
+                  convert_types:
+                  - str
+                  valid_values:
+                  - 1
+                  - 2
+                  - 3
+            fast_leave:
+              type: bool
+              description: Enable IGMP snooping fast-leave feature.
         igmp_snooping_enabled:
           documentation_options:
             table: network-services-multicast-settings
@@ -7659,6 +7709,11 @@ $defs:
           documentation_options:
             table: network-services-multicast-settings
           type: dict
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: igmp_snooping.querier
           description: 'Enable igmp snooping querier, by default using IP address
             of Loopback 0.
 
@@ -7751,6 +7806,19 @@ $defs:
               default: 31
               min: 8
               max: 31
+            ipv6_pool:
+              type: str
+              description: Comma separated list of prefixes (IPv6 address/Mask) or
+                ranges (IPv6_address-IPv6_address).
+              format: ipv6_pool
+            ipv6_prefix_size:
+              type: int
+              convert_types:
+              - str
+              description: IPv6 prefix size.
+              default: 127
+              min: 32
+              max: 127
       p2p_links_profiles:
         type: list
         primary_key: name
@@ -8082,9 +8150,42 @@ $defs:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
-        igmp:
+        igmp_snooping:
+          documentation_options:
+            table: network-services-multicast-settings
           type: dict
           keys:
+            querier:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Will be enabled automatically if `evpn_l2_multicast`
+                    is enabled.
+                source_address:
+                  type: str
+                  description: 'The value of `source_address` will be interpreted
+                    according to these rules:
+
+                    - `vrf_router_id` will configure the VRF router ID address according
+                    to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+
+                    - `diagnostic_loopback` will configure the VRF Diagnostic Loopback.
+
+                    - `main_router_id` will configure the Loopback0 IP address.
+
+                    - An IPv4 address will be used directly as the source address.'
+                  default: main_router_id
+                version:
+                  type: int
+                  description: IGMP Version (By default EOS uses IGMP version 2 for
+                    IGMP querier).
+                  convert_types:
+                  - str
+                  valid_values:
+                  - 1
+                  - 2
+                  - 3
             fast_leave:
               type: bool
               description: 'Explicitly enable or disable IGMP snooping fast-leave
@@ -8125,7 +8226,7 @@ $defs:
                 warning: true
                 removed: false
                 remove_in_version: 7.0.0
-                new_key: <network_services_key.key>.igmp.fast_leave
+                new_key: igmp_snooping.fast_leave under the Tenant
               description: Enable IGMP snooping fast-leave feature for all SVIs and
                 l2vlans within the Tenant.
             always_redistribute_igmp:
@@ -8279,6 +8380,11 @@ $defs:
 
             '
           type: dict
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: igmp_snooping.querier
           keys:
             enabled:
               type: bool
@@ -8972,7 +9078,10 @@ $defs:
                       type: list
                       items:
                         type: str
-                        description: Interface name.
+                        description: 'Interface name.
+
+                          For subinterfaces, the parent physical interface is automatically
+                          created if not defined elsewhere.'
                     encapsulation_dot1q_vlan:
                       type: list
                       description: For sub-interfaces the dot1q vlan is derived from
@@ -10084,6 +10193,9 @@ $defs:
                         The list of interfaces is mapped to the list of nodes, so
                         they must have the same length.
 
+                        For subinterfaces, the parent physical interface is automatically
+                        created if not defined elsewhere.
+
                         '
                       required: true
                       min_length: 1
@@ -11094,12 +11206,12 @@ $defs:
                 required: true
               evpn_domain_id:
                 description: Domain ID to assign to EVPN address family for use with
-                  D-path. Format <nn>:<nn>.
+                  D-path. Format `<nn>:<nn>`.
                 type: str
                 default: '65535:1'
               ipvpn_domain_id:
                 description: Domain ID to assign to IPVPN address families for use
-                  with D-path. Format <nn>:<nn>.
+                  with D-path. Format `<nn>:<nn>`.
                 type: str
                 default: '65535:2'
               enable_d_path:
@@ -12578,7 +12690,8 @@ $defs:
           description: 'Ethernet interface name like ''Ethernet2'' or subinterface
             name like ''Ethernet2.42''.
 
-            For a subinterface, the parent physical interface is automatically created.'
+            For a subinterface, the parent physical interface is automatically created
+            if not defined elsewhere.'
           pattern: Ethernet[\d/]+(\.[\d]+)?
         description:
           type: str
@@ -13024,7 +13137,8 @@ $defs:
         ip_pool:
           type: str
           description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A
-            /31 will be taken from the pool per P2P link.
+            /31 IPv4 subnet or /127 IPv6 prefix will be taken from the pool per P2P
+            link.
         subnet:
           type: str
           description: IPv4 address/Mask. Subnet used on this P2P link.
@@ -13041,6 +13155,17 @@ $defs:
           default: false
           description: Allows turning on ipv6 for the link or profile (also autodetected
             based on underlay_rfc5549 and include_in_underlay_protocol).
+        ipv6_prefix:
+          type: str
+          description: IPv6 address/Mask. Prefix used on this P2P link.
+        ipv6:
+          type: list
+          description: Specific IPv6 addresses used on this P2P link.
+          min_length: 2
+          max_length: 2
+          items:
+            type: str
+            description: Node IPv6 address/Mask.
         nodes:
           type: list
           description: Nodes where this link should be configured.
@@ -13097,7 +13222,9 @@ $defs:
         include_in_underlay_protocol:
           type: bool
           default: true
-          description: Add this interface to underlay routing protocol.
+          description: 'Add this interface to the underlay routing protocols.
+
+            This is currently not supported when IPv6 addresses are used.'
         isis_hello_padding:
           type: bool
           default: true
@@ -14055,15 +14182,69 @@ $defs:
         keys:
           enabled:
             type: bool
+      igmp_snooping:
+        type: dict
+        documentation_options:
+          table: network-services-multicast-settings
+        keys:
+          enabled:
+            type: bool
+            description: Enable or disable IGMP snooping (Enabled by default on EOS).
+          querier:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+                description: Will be enabled automatically if `evpn_l2_multicast`
+                  is enabled.
+              source_address:
+                type: str
+                description: 'The value of `source_address` will be interpreted according
+                  to these rules:
+
+                  - `vrf_router_id` will configure the VRF router ID address according
+                  to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+
+                  - ''diagnostic_loopback'' will configure the VRF Diagnostic Loopback
+                  address.
+
+                  - `main_router_id` will configure the Loopback0 IP address.
+
+                  - An IPv4 address will be used directly as the source address.
+
+                  Overrides `<network_services_key>[].igmp_snooping.querier.source_address`.'
+              version:
+                type: int
+                description: IGMP Version (By default EOS uses IGMP version 2 for
+                  IGMP querier).
+                convert_types:
+                - str
+                valid_values:
+                - 1
+                - 2
+                - 3
+          fast_leave:
+            type: bool
+            description: Enable IGMP snooping fast-leave feature.
       igmp_snooping_enabled:
         documentation_options:
           table: network-services-multicast-settings
         type: bool
         description: Enable or disable IGMP snooping (Enabled by default on EOS).
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: igmp_snooping.enabled
       igmp_snooping_querier:
         documentation_options:
           table: network-services-multicast-settings
         type: dict
+        deprecation:
+          warning: true
+          removed: false
+          remove_in_version: 7.0.0
+          new_key: igmp_snooping.querier
         keys:
           enabled:
             type: bool
@@ -14083,7 +14264,7 @@ $defs:
 
               - An IPv4 address will be used directly as the source address.
 
-              Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.'
+              Overrides `<network_services_key>[].igmp_snooping.querier.source_address`.'
           version:
             type: int
             description: IGMP Version (By default EOS uses IGMP version 2 for IGMP

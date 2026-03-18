@@ -86,9 +86,17 @@ class IpIgmpSnoopingMixin(Protocol):
             igmp_snooping_querier_enabled = True
 
         else:
-            igmp_snooping_enabled = vlan.igmp_snooping_enabled
+            # vlan.igmp_snooping.enabled takes precedence over deprecated key vlan.igmp_snooping_enabled.
+            igmp_snooping_enabled = default(vlan.igmp_snooping.enabled, vlan.igmp_snooping_enabled)
             if self.shared_utils.network_services_l3 and self.shared_utils.uplink_type in ["p2p", "p2p-vrfs"]:
-                igmp_snooping_querier_enabled = default(vlan.igmp_snooping_querier.enabled, tenant.igmp_snooping_querier.enabled)
+                # vlan.igmp_snooping.querier.enabled takes precedence over deprecated key vlan.igmp_snooping_querier.enabled.
+                # tenant.igmp_snooping.querier.enabled takes precedence over deprecated key tenant.igmp_snooping_querier.enabled.
+                igmp_snooping_querier_enabled = default(
+                    vlan.igmp_snooping.querier.enabled,
+                    vlan.igmp_snooping_querier.enabled,
+                    tenant.igmp_snooping.querier.enabled,
+                    tenant.igmp_snooping_querier.enabled,
+                )
 
         vlan_item = EosCliConfigGen.IpIgmpSnooping.VlansItem()
         if igmp_snooping_enabled is not None:
@@ -104,16 +112,27 @@ class IpIgmpSnoopingMixin(Protocol):
                     vlan = cast("EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem", vlan)
                     vlan_item.querier.address = self._get_svi_igmp_querier_source_address(vlan, tenant, vrf)
 
-                vlan_item.querier.version = default(vlan.igmp_snooping_querier.version, tenant.igmp_snooping_querier.version)
+                # vlan.igmp_snooping.querier.version takes precedence over deprecated key vlan.igmp_snooping_querier.version.
+                # tenant.igmp_snooping.querier.version takes precedence over deprecated key tenant.igmp_snooping_querier.version.
+                vlan_item.querier.version = default(
+                    vlan.igmp_snooping.querier.version,
+                    vlan.igmp_snooping_querier.version,
+                    tenant.igmp_snooping.querier.version,
+                    tenant.igmp_snooping_querier.version,
+                )
 
         # When evpn_l2_multicast is enabled, can use deprecated evpn_l2_multicast.fast_leave for backward compatibility.
-        # TODO: 7.0.0 - Remove support for evpn_l2_multicast.fast_leave and clean up this logic.
+        # TODO: 7.0.0 - Remove support for evpn_l2_multicast.fast_leave and igmp_snooping_querier.fast_leave and clean up this logic.
         if evpn_l2_multicast_enabled:
-            # tenant.igmp.fast_leave takes precedence over deprecated key tenant.evpn_l2_multicast.fast_leave if both are set.
-            fast_leave = default(vlan.igmp_snooping_querier.fast_leave, tenant.igmp.fast_leave, tenant.evpn_l2_multicast.fast_leave)
+            # vlan.igmp_snooping.fast_leave takes precedence over deprecated key vlan.igmp_snooping_querier.fast_leave.
+            # tenant.igmp_snooping.fast_leave takes precedence over deprecated key tenant.evpn_l2_multicast.fast_leave if both are set.
+            fast_leave = default(
+                vlan.igmp_snooping.fast_leave, vlan.igmp_snooping_querier.fast_leave, tenant.igmp_snooping.fast_leave, tenant.evpn_l2_multicast.fast_leave
+            )
         else:
             # Set fast_leave regardless of evpn_l2_multicast_enabled state.
-            fast_leave = default(vlan.igmp_snooping_querier.fast_leave, tenant.igmp.fast_leave)
+            # vlan.igmp_snooping.fast_leave takes precedence over deprecated key vlan.igmp_snooping_querier.fast_leave.
+            fast_leave = default(vlan.igmp_snooping.fast_leave, vlan.igmp_snooping_querier.fast_leave, tenant.igmp_snooping.fast_leave)
 
         if fast_leave is not None:
             vlan_item.fast_leave = fast_leave
@@ -128,13 +147,20 @@ class IpIgmpSnoopingMixin(Protocol):
         tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> str:
         """Return the IGMP snooping querier source address for an L2VLAN."""
-        source_address_key = default(l2vlan.igmp_snooping_querier.source_address, tenant.igmp_snooping_querier.source_address)
+        # l2vlan.igmp_snooping.querier.source_address takes precedence over deprecated key l2vlan.igmp_snooping_querier.source_address.
+        # tenant.igmp_snooping.querier.source_address takes precedence over deprecated key tenant.igmp_snooping_querier.source_address.
+        source_address_key = default(
+            l2vlan.igmp_snooping.querier.source_address,
+            l2vlan.igmp_snooping_querier.source_address,
+            tenant.igmp_snooping.querier.source_address,
+            tenant.igmp_snooping_querier.source_address,
+        )
 
         source_address = self.shared_utils.router_id if source_address_key in {"main_router_id", "diagnostic_loopback", "vrf_router_id"} else source_address_key
         msg = (
             f"Invalid IGMP snooping querier source address for VLAN '{l2vlan.name}' "
             f"in Tenant '{tenant.name}'. The value '{source_address}' resolved from "
-            f"'igmp_snooping_querier.source_address: {source_address_key}' "
+            f"'igmp_snooping.querier.source_address: {source_address_key}' "
             "is not a valid IPv4 address."
         )
         if source_address is not None:
@@ -153,7 +179,14 @@ class IpIgmpSnoopingMixin(Protocol):
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
     ) -> str:
         """Return the IGMP snooping querier source address for an SVI."""
-        source_address_key = default(svi.igmp_snooping_querier.source_address, tenant.igmp_snooping_querier.source_address)
+        # svi.igmp_snooping.querier.source_address takes precedence over deprecated key svi.igmp_snooping_querier.source_address.
+        # tenant.igmp_snooping.querier.source_address takes precedence over deprecated key tenant.igmp_snooping_querier.source_address.
+        source_address_key = default(
+            svi.igmp_snooping.querier.source_address,
+            svi.igmp_snooping_querier.source_address,
+            tenant.igmp_snooping.querier.source_address,
+            tenant.igmp_snooping_querier.source_address,
+        )
 
         match source_address_key:
             case "main_router_id":
@@ -169,7 +202,7 @@ class IpIgmpSnoopingMixin(Protocol):
                     msg = (
                         f"Invalid configuration on VRF '{vrf.name}' in Tenant '{tenant.name}'. 'vtep_diagnostic.loopback' along with either "
                         "'vtep_diagnostic.loopback_ip_pools' or 'vtep_diagnostic.loopback_ip_range' must be defined "
-                        "when 'igmp_snooping_querier.source_address' is set to 'diagnostic_loopback' on the VRF."
+                        "when 'igmp_snooping.querier.source_address' is set to 'diagnostic_loopback' on the VRF."
                     )
                     raise AristaAvdInvalidInputsError(msg) from None
             case _:
@@ -179,7 +212,7 @@ class IpIgmpSnoopingMixin(Protocol):
             f"Invalid IGMP snooping querier source address for VLAN '{svi.name}' "
             f"in VRF '{vrf.name}' in Tenant '{tenant.name}'. "
             f"The value '{source_address}' resolved from "
-            f"'igmp_snooping_querier.source_address: {source_address_key}' is not a valid IPv4 address."
+            f"'igmp_snooping.querier.source_address: {source_address_key}' is not a valid IPv4 address."
         )
 
         if source_address is not None:
