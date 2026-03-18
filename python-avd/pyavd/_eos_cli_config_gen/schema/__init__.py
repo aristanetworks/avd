@@ -26216,6 +26216,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "description": {"type": str},
+                "single_line_description": {"type": str},
                 "ip": {"type": str},
                 "icmp_echo_size": {"type": int},
                 "local_interfaces": {"type": str},
@@ -26225,6 +26226,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             name: str
             """Host Name."""
             description: str | None
+            """
+            Description in the form of
+            ```
+            description
+            <description>
+            ```
+            """
+            single_line_description: str | None
+            """
+            Description in the form of `description <description>`.
+            Supported in EOS versions 4.32.2F and above.
+            """
             ip: str | None
             icmp_echo_size: int | None
             """Size of ICMP probe in bytes."""
@@ -26248,6 +26261,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
+                    single_line_description: str | None | UndefinedType = Undefined,
                     ip: str | None | UndefinedType = Undefined,
                     icmp_echo_size: int | None | UndefinedType = Undefined,
                     local_interfaces: str | None | UndefinedType = Undefined,
@@ -26262,7 +26276,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: Host Name.
-                        description: description
+                        description:
+                           Description in the form of
+                           ```
+                           description
+                           <description>
+                           ```
+                        single_line_description:
+                           Description in the form of `description <description>`.
+                           Supported in EOS versions 4.32.2F and above.
                         ip: ip
                         icmp_echo_size: Size of ICMP probe in bytes.
                         local_interfaces: local_interfaces
@@ -26321,6 +26343,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "description": {"type": str},
+                    "single_line_description": {"type": str},
                     "ip": {"type": str},
                     "icmp_echo_size": {"type": int},
                     "local_interfaces": {"type": str},
@@ -26330,6 +26353,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name: str
                 """Host name."""
                 description: str | None
+                """
+                Description in the form of
+                ```
+                description
+                <description>
+                ```
+                """
+                single_line_description: str | None
+                """
+                Description in the form of `description <description>`.
+                Supported in EOS versions 4.32.2F and above.
+                """
                 ip: str | None
                 icmp_echo_size: int | None
                 """Size of ICMP probe in bytes."""
@@ -26353,6 +26388,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         name: str | UndefinedType = Undefined,
                         description: str | None | UndefinedType = Undefined,
+                        single_line_description: str | None | UndefinedType = Undefined,
                         ip: str | None | UndefinedType = Undefined,
                         icmp_echo_size: int | None | UndefinedType = Undefined,
                         local_interfaces: str | None | UndefinedType = Undefined,
@@ -26367,7 +26403,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             name: Host name.
-                            description: description
+                            description:
+                               Description in the form of
+                               ```
+                               description
+                               <description>
+                               ```
+                            single_line_description:
+                               Description in the form of `description <description>`.
+                               Supported in EOS versions 4.32.2F and above.
                             ip: ip
                             icmp_echo_size: Size of ICMP probe in bytes.
                             local_interfaces: local_interfaces
@@ -26391,6 +26435,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "description": {"type": str},
+                "single_line_description": {"type": str},
                 "interface_sets": {"type": InterfaceSets},
                 "local_interfaces": {"type": str},
                 "address_only": {"type": bool, "default": True},
@@ -26399,6 +26444,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             name: str
             """VRF Name."""
             description: str | None
+            """
+            Description in the form of
+            ```
+            description
+            <description>
+            ```
+            """
+            single_line_description: str | None
+            """
+            Description in the form of `description <description>`.
+            Supported in EOS versions 4.32.2F and above.
+            """
             interface_sets: InterfaceSets
             """Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`)."""
             local_interfaces: str | None
@@ -26422,6 +26479,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
+                    single_line_description: str | None | UndefinedType = Undefined,
                     interface_sets: InterfaceSets | UndefinedType = Undefined,
                     local_interfaces: str | None | UndefinedType = Undefined,
                     address_only: bool | UndefinedType = Undefined,
@@ -26435,7 +26493,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: VRF Name.
-                        description: description
+                        description:
+                           Description in the form of
+                           ```
+                           description
+                           <description>
+                           ```
+                        single_line_description:
+                           Description in the form of `description <description>`.
+                           Supported in EOS versions 4.32.2F and above.
                         interface_sets: Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`).
                         local_interfaces: local_interfaces
                         address_only:
@@ -51143,6 +51209,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class RdEvpnDomain(AvdModel):
+                """Subclass of AvdModel."""
+
+                Domain: TypeAlias = Literal["remote", "all"]
+                _fields: ClassVar[dict] = {"domain": {"type": str}, "rd": {"type": str}}
+                domain: Domain
+                rd: str
+                """Route distinguisher."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, domain: Domain | UndefinedType = Undefined, rd: str | UndefinedType = Undefined) -> None:
+                        """
+                        RdEvpnDomain.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            domain: domain
+                            rd: Route distinguisher.
+
+                        """
+
             class EvpnMulticastAddressFamily(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -51428,17 +51518,109 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Export._item_type = ExportItem
 
-                _fields: ClassVar[dict] = {"field_import": {"type": Import}, "export": {"type": Export}}
+                class ImportEvpnDomainsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Domain: TypeAlias = Literal["remote", "all"]
+                    _fields: ClassVar[dict] = {"route_target": {"type": str}, "domain": {"type": str}}
+                    route_target: str
+                    domain: Domain
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, route_target: str | UndefinedType = Undefined, domain: Domain | UndefinedType = Undefined) -> None:
+                            """
+                            ImportEvpnDomainsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                route_target: route_target
+                                domain: domain
+
+                            """
+
+                class ImportEvpnDomains(AvdIndexedList[str, ImportEvpnDomainsItem]):
+                    """
+                    Subclass of AvdIndexedList with `ImportEvpnDomainsItem` items. Primary key is `route_target`
+                    (`str`).
+                    """
+
+                    _primary_key: ClassVar[str] = "route_target"
+
+                ImportEvpnDomains._item_type = ImportEvpnDomainsItem
+
+                class ExportEvpnDomainsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Domain: TypeAlias = Literal["remote", "all"]
+                    _fields: ClassVar[dict] = {"route_target": {"type": str}, "domain": {"type": str}}
+                    route_target: str
+                    domain: Domain
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, route_target: str | UndefinedType = Undefined, domain: Domain | UndefinedType = Undefined) -> None:
+                            """
+                            ExportEvpnDomainsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                route_target: route_target
+                                domain: domain
+
+                            """
+
+                class ExportEvpnDomains(AvdIndexedList[str, ExportEvpnDomainsItem]):
+                    """
+                    Subclass of AvdIndexedList with `ExportEvpnDomainsItem` items. Primary key is `route_target`
+                    (`str`).
+                    """
+
+                    _primary_key: ClassVar[str] = "route_target"
+
+                ExportEvpnDomains._item_type = ExportEvpnDomainsItem
+
+                _fields: ClassVar[dict] = {
+                    "field_import": {"type": Import},
+                    "export": {"type": Export},
+                    "import_evpn_domains": {"type": ImportEvpnDomains},
+                    "export_evpn_domains": {"type": ExportEvpnDomains},
+                }
                 _field_to_key_map: ClassVar[dict] = {"field_import": "import"}
                 _key_to_field_map: ClassVar[dict] = {"import": "field_import"}
                 field_import: Import
                 """Subclass of AvdIndexedList with `ImportItem` items. Primary key is `address_family` (`str`)."""
                 export: Export
                 """Subclass of AvdIndexedList with `ExportItem` items. Primary key is `address_family` (`str`)."""
+                import_evpn_domains: ImportEvpnDomains
+                """
+                List of EVPN domains from which to import routes.
+
+                Subclass of AvdIndexedList with
+                `ImportEvpnDomainsItem` items. Primary key is `route_target` (`str`).
+                """
+                export_evpn_domains: ExportEvpnDomains
+                """
+                List of EVPN domains to which local routes should be exported.
+
+                Subclass of AvdIndexedList with
+                `ExportEvpnDomainsItem` items. Primary key is `route_target` (`str`).
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, field_import: Import | UndefinedType = Undefined, export: Export | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        field_import: Import | UndefinedType = Undefined,
+                        export: Export | UndefinedType = Undefined,
+                        import_evpn_domains: ImportEvpnDomains | UndefinedType = Undefined,
+                        export_evpn_domains: ExportEvpnDomains | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         RouteTargets.
 
@@ -51448,6 +51630,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             field_import: Subclass of AvdIndexedList with `ImportItem` items. Primary key is `address_family` (`str`).
                             export: Subclass of AvdIndexedList with `ExportItem` items. Primary key is `address_family` (`str`).
+                            import_evpn_domains:
+                               List of EVPN domains from which to import routes.
+
+                               Subclass of AvdIndexedList with
+                               `ImportEvpnDomainsItem` items. Primary key is `route_target` (`str`).
+                            export_evpn_domains:
+                               List of EVPN domains to which local routes should be exported.
+
+                               Subclass of AvdIndexedList with
+                               `ExportEvpnDomainsItem` items. Primary key is `route_target` (`str`).
 
                         """
 
@@ -56681,6 +56873,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "name": {"type": str},
                 "bgp": {"type": Bgp},
                 "rd": {"type": str},
+                "rd_evpn_domain": {"type": RdEvpnDomain},
                 "evpn_multicast": {"type": bool},
                 "evpn_multicast_address_family": {"type": EvpnMulticastAddressFamily},
                 "evpn_multicast_gateway_dr_election": {"type": EvpnMulticastGatewayDrElection},
@@ -56711,6 +56904,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             rd: str | None
             """Route distinguisher."""
+            rd_evpn_domain: RdEvpnDomain
+            """Subclass of AvdModel."""
             evpn_multicast: bool | None
             evpn_multicast_address_family: EvpnMulticastAddressFamily
             """
@@ -56787,6 +56982,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     bgp: Bgp | UndefinedType = Undefined,
                     rd: str | None | UndefinedType = Undefined,
+                    rd_evpn_domain: RdEvpnDomain | UndefinedType = Undefined,
                     evpn_multicast: bool | None | UndefinedType = Undefined,
                     evpn_multicast_address_family: EvpnMulticastAddressFamily | UndefinedType = Undefined,
                     evpn_multicast_gateway_dr_election: EvpnMulticastGatewayDrElection | UndefinedType = Undefined,
@@ -56821,6 +57017,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: VRF name.
                         bgp: Subclass of AvdModel.
                         rd: Route distinguisher.
+                        rd_evpn_domain: Subclass of AvdModel.
                         evpn_multicast: evpn_multicast
                         evpn_multicast_address_family:
                            Enable per-AF EVPN multicast settings.
@@ -61728,14 +61925,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class OtherAnycastRpAddressesItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"address": {"type": str}, "register_count": {"type": int}}
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "register_count": {"type": str}}
                     address: str
                     """Other Anycast RP Address."""
-                    register_count: int | None
+                    register_count: str | None
+                    """
+                    Number of registers to forward before pausing in range of 0 to 4294967295.
+                    Use 'infinity' to forward
+                    all registers.
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, address: str | UndefinedType = Undefined, register_count: int | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, address: str | UndefinedType = Undefined, register_count: str | None | UndefinedType = Undefined) -> None:
                             """
                             OtherAnycastRpAddressesItem.
 
@@ -61744,7 +61946,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 address: Other Anycast RP Address.
-                                register_count: register_count
+                                register_count:
+                                   Number of registers to forward before pausing in range of 0 to 4294967295.
+                                   Use 'infinity' to forward
+                                   all registers.
 
                             """
 
@@ -61912,11 +62117,91 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 RpAddresses._item_type = RpAddressesItem
 
+                class AnycastRpsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class OtherAnycastRpAddressesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"address": {"type": str}, "register_count": {"type": str}}
+                        address: str
+                        """Other Anycast RP Address."""
+                        register_count: str | None
+                        """
+                        Number of registers to forward before pausing in range of 0 to 4294967295.
+                        Use 'infinity' to forward
+                        all registers.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, address: str | UndefinedType = Undefined, register_count: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                OtherAnycastRpAddressesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    address: Other Anycast RP Address.
+                                    register_count:
+                                       Number of registers to forward before pausing in range of 0 to 4294967295.
+                                       Use 'infinity' to forward
+                                       all registers.
+
+                                """
+
+                    class OtherAnycastRpAddresses(AvdIndexedList[str, OtherAnycastRpAddressesItem]):
+                        """
+                        Subclass of AvdIndexedList with `OtherAnycastRpAddressesItem` items. Primary key is `address`
+                        (`str`).
+                        """
+
+                        _primary_key: ClassVar[str] = "address"
+
+                    OtherAnycastRpAddresses._item_type = OtherAnycastRpAddressesItem
+
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "other_anycast_rp_addresses": {"type": OtherAnycastRpAddresses}}
+                    address: str
+                    """Anycast RP Address."""
+                    other_anycast_rp_addresses: OtherAnycastRpAddresses
+                    """
+                    Subclass of AvdIndexedList with `OtherAnycastRpAddressesItem` items. Primary key is `address`
+                    (`str`).
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, address: str | UndefinedType = Undefined, other_anycast_rp_addresses: OtherAnycastRpAddresses | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            AnycastRpsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                address: Anycast RP Address.
+                                other_anycast_rp_addresses:
+                                   Subclass of AvdIndexedList with `OtherAnycastRpAddressesItem` items. Primary key is `address`
+                                   (`str`).
+
+                            """
+
+                class AnycastRps(AvdIndexedList[str, AnycastRpsItem]):
+                    """Subclass of AvdIndexedList with `AnycastRpsItem` items. Primary key is `address` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "address"
+
+                AnycastRps._item_type = AnycastRpsItem
+
                 _fields: ClassVar[dict] = {
                     "bfd": {"type": bool},
                     "make_before_break": {"type": bool},
                     "register_local_interface": {"type": str},
                     "rp_addresses": {"type": RpAddresses},
+                    "anycast_rps": {"type": AnycastRps},
                     "ssm_range": {"type": str},
                 }
                 bfd: bool | None
@@ -61927,6 +62212,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Local interface to use for PIM register messages."""
                 rp_addresses: RpAddresses
                 """Subclass of AvdList with `RpAddressesItem` items."""
+                anycast_rps: AnycastRps
+                """Subclass of AvdIndexedList with `AnycastRpsItem` items. Primary key is `address` (`str`)."""
                 ssm_range: str | None
                 """
                 Standard access list name or use the specific keyword 'standard' as a shortcut to apply
@@ -61943,6 +62230,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         make_before_break: bool | None | UndefinedType = Undefined,
                         register_local_interface: str | None | UndefinedType = Undefined,
                         rp_addresses: RpAddresses | UndefinedType = Undefined,
+                        anycast_rps: AnycastRps | UndefinedType = Undefined,
                         ssm_range: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -61956,6 +62244,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             make_before_break: Enable/Disable Make-Before-Break.
                             register_local_interface: Local interface to use for PIM register messages.
                             rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
+                            anycast_rps: Subclass of AvdIndexedList with `AnycastRpsItem` items. Primary key is `address` (`str`).
                             ssm_range:
                                Standard access list name or use the specific keyword 'standard' as a shortcut to apply
                                a predefined
@@ -71226,7 +71515,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Domain Name."""
     domain_list: DomainList
     """
-    Search list of DNS domains.
+    Domain names to complete unqualified host names.
 
     Subclass of AvdList with `str` items.
     """
@@ -72026,7 +72315,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 dhcp_servers: Subclass of AvdIndexedList with `DhcpServersItem` items. Primary key is `vrf` (`str`).
                 dns_domain: Domain Name.
                 domain_list:
-                   Search list of DNS domains.
+                   Domain names to complete unqualified host names.
 
                    Subclass of AvdList with `str` items.
                 dot1x: Subclass of AvdModel.

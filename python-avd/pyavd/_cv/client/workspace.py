@@ -20,12 +20,13 @@ from pyavd._cv.api.arista.workspace.v1 import (
     WorkspaceKey,
     WorkspaceRequest,
     WorkspaceServiceStub,
+    WorkspaceState,
     WorkspaceStreamRequest,
 )
 
 from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
-from .exceptions import CVResourceNotFound
+from .exceptions import CVResourceNotFound, CVWorkspaceFailed
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -42,6 +43,15 @@ REQUEST_MAP = {
     "start_build": Request.START_BUILD,
     "submit": Request.SUBMIT,
     None: None,
+}
+
+WORKSPACE_STATE_MAP = {
+    "unspecified": WorkspaceState.UNSPECIFIED,
+    "pending": WorkspaceState.PENDING,
+    "submitted": WorkspaceState.SUBMITTED,
+    "abandoned": WorkspaceState.ABANDONED,
+    "conflicts": WorkspaceState.CONFLICTS,
+    "rolled_back": WorkspaceState.ROLLED_BACK,
 }
 
 
@@ -265,4 +275,45 @@ class WorkspaceMixin(Protocol):
 
         # Use case where stream completed without getting a response for the expected request_id
         msg = f"Failed to get a response for request '{request_id}' of the Workspace '{workspace_id}'."
+        # TODO: Consider raising a more specific CVWorkspaceFailed exception.
         raise CVResourceNotFound(msg)
+
+    @GRPCRequestHandler()
+    async def wait_for_workspace_state(
+        self: CVClientProtocol,
+        workspace_id: str,
+        state: Literal["unspecified", "pending", "submitted", "abandoned", "conflicts", "rolled_back"],
+        timeout: float = DEFAULT_API_TIMEOUT,
+    ) -> Workspace:
+        """
+        Monitor Workspace using arista.workspace.v1.WorkspaceService.Subscribe API.
+
+        Blocks until Workspace reaches the desired state, Stream is closed or timed out.
+        Responses for the Workspace in non-desired states are logged only.
+
+        Parameters:
+            workspace_id: Unique identifier for the Workspace.
+            state: Workspace state to wait for.
+            timeout: Timeout in seconds for the Workspace to build.
+
+        Returns:
+            <Full Workspace object>
+        """
+        request = WorkspaceStreamRequest(
+            partial_eq_filter=[
+                Workspace(
+                    key=WorkspaceKey(workspace_id=workspace_id),
+                ),
+            ],
+        )
+        client = WorkspaceServiceStub(self._channel)
+        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        async for response in responses:
+            if hasattr(response, "value") and response.value.state == WORKSPACE_STATE_MAP[state]:
+                LOGGER.debug("wait_for_workspace_state: Workspace reached desired state (%s): %s", state, response)
+                return response.value
+            LOGGER.debug("wait_for_workspace_state: Got workspace update: %s", response)
+
+        # Use case where stream completed without getting Workspace update in the desired state
+        msg = f"Workspace '{workspace_id}' has not reached desired state '{state}'."
+        raise CVWorkspaceFailed(msg)

@@ -24,7 +24,7 @@ dev = [
     "pre-commit-hooks>=3.3.0",
     "pre-commit>=3.2.0",
     "pylint>=3.2.6",
-    "ruff==0.15.5",
+    "ruff==0.15.6",
     "setuptools>=77.0", # for pyright check in CI
     "tox>4",
     "twine>=6.2.0",
@@ -257,7 +257,7 @@ exclude_also = [
 
 [tool.bumpversion]
 
-current_version = "6.1.0-dev1"
+current_version = "6.1.0"
 
 allow_dirty = true
 commit = false

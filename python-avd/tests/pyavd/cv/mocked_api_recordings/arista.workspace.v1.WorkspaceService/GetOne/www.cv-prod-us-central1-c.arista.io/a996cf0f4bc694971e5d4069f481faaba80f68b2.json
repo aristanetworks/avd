@@ -1,6 +1,7 @@
 {
-    "raise": {
-        "status": "NOT_FOUND",
-        "message": "Requested entity was not found."
-    }
+	"raise": {
+		"type": "GRPCError",
+		"status": "NOT_FOUND",
+		"message": "resource not found"
+	}
 }

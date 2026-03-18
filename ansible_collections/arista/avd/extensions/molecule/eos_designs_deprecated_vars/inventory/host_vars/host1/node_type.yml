@@ -13,6 +13,7 @@ l3leaf:
     uplink_interfaces: [Ethernet42]
     uplink_ipv4_pool: 192.168.42.0/24
     platform: vEOS
+    virtual_router_mac_address: 00:1c:73:00:00:01
   nodes:
     - name: host1
       id: 101
