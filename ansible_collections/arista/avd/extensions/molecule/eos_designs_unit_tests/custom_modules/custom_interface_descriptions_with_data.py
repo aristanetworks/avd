@@ -16,6 +16,7 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
         Implementation using new data.
 
         Available data:
+            - interface
             - link_type
             - peer
             - peer_interface
@@ -25,19 +26,20 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
             - type
             - vrf
         """
+        interface = data.interface
         link_peer = str(data.peer).upper()
         if data.link_type == "underlay_p2p":
             vrf_desc = f" VRF {data.vrf}" if data.vrf else ""
-            return f"{self._custom_description_prefix}_P2P_LINK_TO_{link_peer}_{data.peer_interface}{vrf_desc}"
+            return f"{self._custom_description_prefix}_{interface}_P2P_LINK_TO_{link_peer}_{data.peer_interface}{vrf_desc}"
 
         if data.link_type == "underlay_l2":
-            return f"{self._custom_description_prefix}_{link_peer}_{data.peer_interface}"
+            return f"{self._custom_description_prefix}_{interface}_{link_peer}_{data.peer_interface}"
 
         if data.link_type == "l3_edge":
-            return f"{self._custom_description_prefix}_L3_EDGE_{link_peer}_{data.peer_interface}"
+            return f"{self._custom_description_prefix}_{interface}_L3_EDGE_{link_peer}_{data.peer_interface}"
 
         if data.link_type == "core_interfaces":
-            return f"{self._custom_description_prefix}_CORE_INTERFACES_{link_peer}_{data.peer_interface}"
+            return f"{self._custom_description_prefix}_{interface}_CORE_INTERFACES_{link_peer}_{data.peer_interface}"
 
         return ""
 
@@ -46,6 +48,7 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
         Implementation using new data.
 
         Available data:
+            - interafce
             - peer
             - peer_channel_group_id
             - port_channel_description
@@ -54,12 +57,13 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
             - overlay_routing_protocol
             - type
         """
+        interface = data.interface
         if data.port_channel_description is not None:
             link_channel_description = str(data.port_channel_description).upper()
-            return f"{self._custom_description_prefix}_{link_channel_description}_Po{data.peer_channel_group_id}"
+            return f"{self._custom_description_prefix}_{interface}_{link_channel_description}_Po{data.peer_channel_group_id}"
 
         link_peer = str(data.peer).upper()
-        return f"{self._custom_description_prefix}_{link_peer}_Po{data.peer_channel_group_id}"
+        return f"{self._custom_description_prefix}_{interface}_{link_peer}_Po{data.peer_channel_group_id}"
 
     def mlag_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
         """
@@ -86,7 +90,7 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
             - overlay_routing_protocol
             - type
         """
-        return f"{self._custom_description_prefix}_MLAG_PEER_{data.mlag_peer}_Po{data.mlag_port_channel_id}"
+        return f"{self._custom_description_prefix}_{data.interface}_MLAG_PEER_{data.mlag_peer}_Po{data.mlag_port_channel_id}"
 
     def mlag_peer_svi(self, data: InterfaceDescriptionData) -> str:  # noqa: ARG002
         return "MLAG_PEER"
@@ -102,6 +106,7 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
         Implementation using new data.
 
         Available data:
+            - interface
             - peer
             - peer_interface
             - description
@@ -110,7 +115,7 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
             - overlay_routing_protocol
             - type
         """
-        elements = [data.peer, data.peer_interface]
+        elements = [ data.interface, data.peer, data.peer_interface]
         return "_".join([str(element) for element in elements if element is not None])
 
     def connected_endpoints_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
@@ -126,7 +131,7 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
             - overlay_routing_protocol
             - type
         """
-        elements = [self._custom_description_prefix, data.peer, data.port_channel_description]
+        elements = [self._custom_description_prefix, data.interface, data.peer, data.port_channel_description]
         return "_".join([str(element) for element in elements if element is not None])
 
     def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str:
@@ -141,9 +146,9 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
         - type
         """
         switch_type = str(data.type).upper()
-        return f"{self._custom_description_prefix}_EVPN_Overlay_Peering_{switch_type}"
+        return f"{self._custom_description_prefix}_{data.interface}_EVPN_Overlay_Peering_{switch_type}"
 
     def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str:  # noqa: ARG002
         """Implementation of custom code similar to jinja."""
         switch_type = str(self.shared_utils.type).upper()
-        return f"{self._custom_description_prefix}_VTEP_VXLAN_Tunnel_Source_{switch_type}"
+        return f"{self._custom_description_prefix}_{data.interface}_VTEP_VXLAN_Tunnel_Source_{switch_type}"

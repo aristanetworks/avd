@@ -25,7 +25,7 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: mlag_peer
 - name: Ethernet1
-  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON-MODULES-SPINE1_Ethernet1
+  description: TEST_CUSTOM_PREFIX_Ethernet1_P2P_LINK_TO_CUSTOM-PYTHON-MODULES-SPINE1_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.21/31
@@ -36,7 +36,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet5
-  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON-MODULES-L3LEAF2_Ethernet1
+  description: TEST_CUSTOM_PREFIX_Ethernet5_P2P_LINK_TO_CUSTOM-PYTHON-MODULES-L3LEAF2_Ethernet1
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.24/31
@@ -47,7 +47,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet5.1
-  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON-MODULES-L3LEAF2_Ethernet1.1 VRF TEST_VRF
+  description: TEST_CUSTOM_PREFIX_Ethernet5.1_P2P_LINK_TO_CUSTOM-PYTHON-MODULES-L3LEAF2_Ethernet1.1 VRF TEST_VRF
   shutdown: false
   mtu: 9214
   vrf: TEST_VRF
@@ -59,7 +59,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1.1
     peer_type: l3leaf
 - name: Ethernet11
-  description: TEST_CUSTOM_PREFIX_CORE_INTERFACES_RTR-1_Ethernet2
+  description: TEST_CUSTOM_PREFIX_Ethernet11_CORE_INTERFACES_RTR-1_Ethernet2
   shutdown: false
   mtu: 9214
   metadata:
@@ -69,7 +69,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet10
-  description: TEST_CUSTOM_PREFIX_L3_EDGE_RTR-1_Ethernet1
+  description: TEST_CUSTOM_PREFIX_Ethernet10_L3_EDGE_RTR-1_Ethernet1
   shutdown: false
   mtu: 9214
   metadata:
@@ -85,11 +85,11 @@ ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 loopback_interfaces:
 - name: Loopback0
-  description: TEST_CUSTOM_PREFIX_EVPN_Overlay_Peering_L3LEAF
+  description: TEST_CUSTOM_PREFIX_Loopback0_EVPN_Overlay_Peering_L3LEAF
   shutdown: false
   ip_address: 192.168.255.21/32
 - name: Loopback1
-  description: TEST_CUSTOM_PREFIX_VTEP_VXLAN_Tunnel_Source_L3LEAF
+  description: TEST_CUSTOM_PREFIX_Loopback1_VTEP_VXLAN_Tunnel_Source_L3LEAF
   shutdown: false
   ip_address: 192.168.254.21/32
 management_interfaces:
@@ -113,7 +113,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel3
-  description: TEST_CUSTOM_PREFIX_MLAG_PEER_custom-python-modules-l3leaf1b_Po3
+  description: TEST_CUSTOM_PREFIX_Port-Channel3_MLAG_PEER_custom-python-modules-l3leaf1b_Po3
   shutdown: false
   switchport:
     enabled: true
