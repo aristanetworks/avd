@@ -115,7 +115,7 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
             - overlay_routing_protocol
             - type
         """
-        elements = [ data.interface, data.peer, data.peer_interface]
+        elements = [data.interface, data.peer, data.peer_interface]
         return "_".join([str(element) for element in elements if element is not None])
 
     def connected_endpoints_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
@@ -148,7 +148,7 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
         switch_type = str(data.type).upper()
         return f"{self._custom_description_prefix}_{data.interface}_EVPN_Overlay_Peering_{switch_type}"
 
-    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str:  # noqa: ARG002
+    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str:
         """Implementation of custom code similar to jinja."""
         switch_type = str(self.shared_utils.type).upper()
         return f"{self._custom_description_prefix}_{data.interface}_VTEP_VXLAN_Tunnel_Source_{switch_type}"
