@@ -9316,7 +9316,7 @@ ASN Notation: asdot
 
 | RIB | Enabled | Route-map |
 | --- | ------- | --------- |
-| ip | True | RM-rib1 | 
+| ip | True | RM-rib1 |
 | tunnel | False | - |
 
 #### Router BGP IPv4 SR-TE Address Family
