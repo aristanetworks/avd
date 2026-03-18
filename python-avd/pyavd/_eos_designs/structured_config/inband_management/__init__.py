@@ -8,8 +8,10 @@ from ipaddress import ip_network
 from typing import cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.shared_utils.static_routes import append_gateway_routes
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._utils.run_once import run_once_method
 
 
 class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
@@ -79,23 +81,32 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                     return True
         return False
 
+    @run_once_method
+    def _populate_inband_mgmt_static_routes(self) -> None:
+        """Populate static_routes and ipv6_static_routes from inband management config in a single pass."""
+        if self.shared_utils.configure_inband_mgmt:
+            append_gateway_routes(
+                self.structured_config.static_routes,
+                self.shared_utils.inband_mgmt_gateway,
+                self.shared_utils.inband_mgmt_vrf,
+                default_prefix="0.0.0.0/0",
+            )
+
+        if self.shared_utils.configure_inband_mgmt_ipv6:
+            append_gateway_routes(
+                self.structured_config.ipv6_static_routes,
+                self.shared_utils.inband_mgmt_ipv6_gateway,
+                self.shared_utils.inband_mgmt_vrf,
+                default_prefix="::/0",
+            )
+
     @structured_config_contributor
     def static_routes(self) -> None:
-        if not self.shared_utils.configure_inband_mgmt or self.shared_utils.inband_mgmt_gateway is None:
-            return
-
-        self.structured_config.static_routes.append_new(
-            prefix="0.0.0.0/0", next_hop=self.shared_utils.inband_mgmt_gateway, vrf=self.shared_utils.inband_mgmt_vrf
-        )
+        self._populate_inband_mgmt_static_routes()
 
     @structured_config_contributor
     def ipv6_static_routes(self) -> None:
-        if not self.shared_utils.configure_inband_mgmt_ipv6 or self.shared_utils.inband_mgmt_ipv6_gateway is None:
-            return
-
-        self.structured_config.ipv6_static_routes.append_new(
-            prefix="::/0", next_hop=self.shared_utils.inband_mgmt_ipv6_gateway, vrf=self.shared_utils.inband_mgmt_vrf
-        )
+        self._populate_inband_mgmt_static_routes()
 
     @structured_config_contributor
     def vrfs(self) -> None:

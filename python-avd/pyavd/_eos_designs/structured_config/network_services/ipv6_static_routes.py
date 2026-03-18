@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 
 if TYPE_CHECKING:
@@ -28,22 +27,4 @@ class Ipv6StaticRoutesMixin(Protocol):
         - ipv6 static_routes defined under the vrfs
         - static routes added automatically for VARPv6 with prefixes
         """
-        if not self.shared_utils.network_services_l3:
-            return
-
-        for tenant in self.shared_utils.filtered_tenants:
-            for vrf in tenant.vrfs:
-                for static_route in vrf.ipv6_static_routes:
-                    static_route_item = EosCliConfigGen.Ipv6StaticRoutesItem()
-                    static_route_item._update(
-                        vrf=vrf.name,
-                        prefix=static_route.prefix,
-                        interface=static_route.interface,
-                        next_hop=static_route.next_hop,
-                        track_bfd=static_route.track_bfd,
-                        distance=static_route.distance,
-                        tag=static_route.tag,
-                        metric=static_route.metric,
-                        name=static_route.name,
-                    )
-                    self.structured_config.ipv6_static_routes.append_unique(static_route_item)
+        self._populate_static_routes_from_network_services()
