@@ -46,8 +46,10 @@ jobs:
             # Extreme sharding: 16 benchmarks / 16 shards = 1 test per shard
             # This ensures each shard only runs ONE benchmark, avoiding memory issues
             # API benchmarks (8 tests) + scale benchmarks (8 tests) = 16 total
+            echo "=== Shard ${{ matrix.shard }}/16 - Collecting tests ==="
             pytest --codspeed \
               benchmarks/test_pyavd_api.py \
               benchmarks/test_large_fabric_scaling.py \
               -k "test_pyavd_api or 15_devices or 150_devices" \
-              --test-group=${{ matrix.shard }} --test-group-count=16
+              --test-group=${{ matrix.shard }} --test-group-count=16 \
+              -v --tb=short
