@@ -12190,19 +12190,13 @@ ipv6 access-list standard ipv6_test1
 
 #### IPv6 Extended Access-lists Summary
 
-
-
-
 ##### ACL_SEQUENCE_AND_COUNTERS
 
 ACL has counting mode `counters per-entry` enabled!
 
-
-
 ##### TEST2
 
 ACL has counting mode `counters per-entry` enabled!
-
 
 #### IPv6 Extended Access-lists Device Configuration
 
