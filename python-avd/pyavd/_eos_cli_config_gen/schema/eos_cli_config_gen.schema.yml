@@ -10075,23 +10075,17 @@ keys:
         type: dict
         description: Interface validation settings.
         keys:
-          avd_managed_only:
-            type: bool
-            description: 'When true, only validate interfaces defined in the device
-              structured configuration.
-
-              When false, validate all interfaces on the device.
-
-              This setting applies to all interface tests unless overridden per test.'
-            default: false
           errdisable:
             type: dict
             description: Settings for the VerifyInterfaceErrDisabled test.
             keys:
               avd_managed_only:
                 type: bool
-                description: Override the global `avd_managed_only` setting for this
-                  specific test.
+                description: 'When true, only validate interfaces defined in the device
+                  structured configuration.
+
+                  When false, validate all interfaces on the device.'
+                default: false
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration

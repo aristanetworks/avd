@@ -144,9 +144,8 @@
     | [<samp>&nbsp;&nbsp;validate_no_errors_period</samp>](## "metadata.validate_no_errors_period") | Integer |  |  |  | Threshold (in minutes) defining how far back to check the logging buffer for error-level logs during the validation performed by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "metadata.exclude_as_extra_fabric_validation_target") | Boolean |  |  |  | Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role.<br> |
     | [<samp>&nbsp;&nbsp;interfaces</samp>](## "metadata.interfaces") | Dictionary |  |  |  | Interface validation settings. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;avd_managed_only</samp>](## "metadata.interfaces.avd_managed_only") | Boolean |  | `False` |  | When true, only validate interfaces defined in the device structured configuration.<br>When false, validate all interfaces on the device.<br>This setting applies to all interface tests unless overridden per test. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;errdisable</samp>](## "metadata.interfaces.errdisable") | Dictionary |  |  |  | Settings for the VerifyInterfaceErrDisabled test. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;avd_managed_only</samp>](## "metadata.interfaces.errdisable.avd_managed_only") | Boolean |  |  |  | Override the global `avd_managed_only` setting for this specific test. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;avd_managed_only</samp>](## "metadata.interfaces.errdisable.avd_managed_only") | Boolean |  | `False` |  | When true, only validate interfaces defined in the device structured configuration.<br>When false, validate all interfaces on the device. |
 
 === "YAML"
 
@@ -346,16 +345,12 @@
       # Interface validation settings.
       interfaces:
 
-        # When true, only validate interfaces defined in the device structured configuration.
-        # When false, validate all interfaces on the device.
-        # This setting applies to all interface tests unless overridden per test.
-        avd_managed_only: <bool; default=False>
-
         # Settings for the VerifyInterfaceErrDisabled test.
         errdisable:
 
-          # Override the global `avd_managed_only` setting for this specific test.
-          avd_managed_only: <bool>
+          # When true, only validate interfaces defined in the device structured configuration.
+          # When false, validate all interfaces on the device.
+          avd_managed_only: <bool; default=False>
     ```
 
     1. Default Value

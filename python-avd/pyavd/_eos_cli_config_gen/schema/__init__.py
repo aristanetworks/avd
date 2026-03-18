@@ -25935,13 +25935,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Errdisable(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"avd_managed_only": {"type": bool}}
-                avd_managed_only: bool | None
-                """Override the global `avd_managed_only` setting for this specific test."""
+                _fields: ClassVar[dict] = {"avd_managed_only": {"type": bool, "default": False}}
+                avd_managed_only: bool
+                """
+                When true, only validate interfaces defined in the device structured configuration.
+                When false,
+                validate all interfaces on the device.
+
+                Default value: `False`
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, avd_managed_only: bool | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, avd_managed_only: bool | UndefinedType = Undefined) -> None:
                         """
                         Errdisable.
 
@@ -25949,21 +25955,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            avd_managed_only: Override the global `avd_managed_only` setting for this specific test.
+                            avd_managed_only:
+                               When true, only validate interfaces defined in the device structured configuration.
+                               When false,
+                               validate all interfaces on the device.
 
                         """
 
-            _fields: ClassVar[dict] = {"avd_managed_only": {"type": bool, "default": False}, "errdisable": {"type": Errdisable}}
-            avd_managed_only: bool
-            """
-            When true, only validate interfaces defined in the device structured configuration.
-            When false,
-            validate all interfaces on the device.
-            This setting applies to all interface tests unless overridden
-            per test.
-
-            Default value: `False`
-            """
+            _fields: ClassVar[dict] = {"errdisable": {"type": Errdisable}}
             errdisable: Errdisable
             """
             Settings for the VerifyInterfaceErrDisabled test.
@@ -25973,7 +25972,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, avd_managed_only: bool | UndefinedType = Undefined, errdisable: Errdisable | UndefinedType = Undefined) -> None:
+                def __init__(self, *, errdisable: Errdisable | UndefinedType = Undefined) -> None:
                     """
                     Interfaces.
 
@@ -25981,12 +25980,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        avd_managed_only:
-                           When true, only validate interfaces defined in the device structured configuration.
-                           When false,
-                           validate all interfaces on the device.
-                           This setting applies to all interface tests unless overridden
-                           per test.
                         errdisable:
                            Settings for the VerifyInterfaceErrDisabled test.
 

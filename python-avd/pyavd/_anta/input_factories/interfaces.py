@@ -11,7 +11,6 @@ from anta.tests.interfaces import VerifyIllegalLACP, VerifyInterfaceErrDisabled,
 
 from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
-from pyavd._utils import default
 from pyavd.j2filters import natural_sort
 
 from .base_classes import AntaTestInputFactory
@@ -187,18 +186,13 @@ class VerifyInterfaceErrDisabledInputFactory(AntaTestInputFactory[VerifyInterfac
     """
     Input factory class for the `VerifyInterfaceErrDisabled` test.
 
-    When `metadata.interfaces.errdisable.avd_managed_only` (or the legacy
-    `metadata.interfaces.avd_managed_only`) is True, only the AVD-managed
+    When `metadata.interfaces.errdisable.avd_managed_only` is True, only the AVD-managed
     Ethernet and Port-Channel interfaces are checked. Otherwise, all interfaces are checked.
     """
 
     def create(self) -> Iterator[VerifyInterfaceErrDisabled.Input]:
         """Generate the inputs for the `VerifyInterfaceErrDisabled` test."""
-        avd_managed_only = default(
-            self.structured_config.metadata.interfaces.errdisable.avd_managed_only,
-            self.structured_config.metadata.interfaces.avd_managed_only,
-        )
-        if avd_managed_only:
+        if self.structured_config.metadata.interfaces.errdisable.avd_managed_only:
             all_interfaces = chain(self.structured_config.ethernet_interfaces, self.structured_config.port_channel_interfaces)
             interface_names = [intf.name for intf in all_interfaces]
             if not interface_names:

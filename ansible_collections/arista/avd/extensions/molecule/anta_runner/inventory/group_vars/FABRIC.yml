@@ -129,9 +129,5 @@ validation_profiles:
   - name: profile2
     logging:
       validate_no_errors_period: 1
-    interfaces:
-      avd_managed_only: true
-      errdisable:
-        avd_managed_only: false
   - name: profile3
     exclude_as_extra_fabric_validation_target: true
