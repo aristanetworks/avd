@@ -71,11 +71,11 @@ interface {{ vlan_interface.name }}
 {%     if ipv6_nd_cache.dynamic_capacity is arista.avd.defined %}
    ipv6 nd cache dynamic capacity {{ ipv6_nd_cache.dynamic_capacity }}
 {%     endif %}
-{%     if vlan_interface.arp_monitor_mac_address is arista.avd.defined(true) %}
-   arp monitor mac-address
-{%     endif %}
 {%     if ipv6_nd_cache.refresh_always is arista.avd.defined(true) %}
    ipv6 nd cache refresh always
+{%     endif %}
+{%     if vlan_interface.arp_monitor_mac_address is arista.avd.defined(true) %}
+   arp monitor mac-address
 {%     endif %}
 {%     if vlan_interface.bfd.interval is arista.avd.defined and
           vlan_interface.bfd.min_rx is arista.avd.defined and
