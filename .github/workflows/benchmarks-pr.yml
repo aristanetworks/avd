@@ -11,14 +11,14 @@ env:
 
 jobs:
   pr-benchmarks:
-    name: PR Benchmarks (Shard ${{ matrix.shard }}/7)
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
+    name: PR Benchmarks (Shard ${{ matrix.shard }}/16)
+    runs-on: ubuntu-latest  # Standard runner (free)
+    timeout-minutes: 120
     if: contains(github.event.pull_request.labels.*.name, 'benchmark')
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7]
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
     steps:
       - uses: actions/checkout@v6
 
@@ -37,17 +37,17 @@ jobs:
           make compile-schemas
           make compile-templates
 
-      - name: Run benchmarks (shard ${{ matrix.shard }}/7)
+      - name: Run benchmarks (shard ${{ matrix.shard }}/16)
         uses: CodSpeedHQ/action@v4
         with:
           token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
           run: |
-            # Run API benchmarks (8 tests) + filtered scale benchmarks (8 tests) = 16 total
-            # All tests collected together and split across 7 shards (~2-3 tests per shard)
-            # The -k filter applies to the entire test collection
+            # Extreme sharding: 16 benchmarks / 16 shards = 1 test per shard
+            # This ensures each shard only runs ONE benchmark, avoiding memory issues
+            # API benchmarks (8 tests) + scale benchmarks (8 tests) = 16 total
             pytest --codspeed \
               benchmarks/test_pyavd_api.py \
               benchmarks/test_large_fabric_scaling.py \
               -k "test_pyavd_api or 15_devices or 150_devices" \
-              --test-group=${{ matrix.shard }} --test-group-count=7
+              --test-group=${{ matrix.shard }} --test-group-count=16
