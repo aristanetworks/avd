@@ -15,20 +15,21 @@
 ##### {{ ipv6_access_list.name }}
 
 ACL has counting mode `counters per-entry` enabled!
+
 {%         endif %}
 {# Remove the below code in 7.0 leave only configuration #}
 {%         if ipv6_access_list.sequence_numbers is arista.avd.defined %}
 {%             if ipv6_access_list.counters_per_entry is not arista.avd.defined(true) %}
 ##### {{ ipv6_access_list.name }}
-{%             endif %}
 
+{%             endif %}
 | Sequence | Action |
 | -------- | ------ |
 {%             for sequence in ipv6_access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
 | {{ sequence.sequence }} | {{ sequence.action }} |
 {%             endfor %}
-{%         endif %}
 
+{%         endif %}
 {%     endfor %}
 #### IPv6 Extended Access-lists Device Configuration
 
