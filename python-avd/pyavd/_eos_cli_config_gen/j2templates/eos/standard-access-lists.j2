@@ -21,7 +21,7 @@ ip access-list standard {{ standard_access_list.name }}
    {{ entry_cli | trim }}
 {%                 continue %}
 {%             endif %}
-{%             if entry.action is arista.avd.defined %}
+{%             if entry.action is arista.avd.defined and entry.source is arista.avd.defined %}
 {%                 set entry_cli = entry_cli ~ " " ~ entry.action %}
 {%                 if '/' not in entry.source and entry.source != "any" %}
 {%                     set entry_cli = entry_cli ~ " host " ~ entry.source %}
