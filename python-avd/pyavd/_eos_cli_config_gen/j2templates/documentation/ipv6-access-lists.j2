@@ -10,14 +10,17 @@
 
 #### IPv6 Extended Access-lists Summary
 
-{# Remove the below code in 7.0 leave only configuration #}
 {%     for ipv6_access_list in ipv6_access_lists | arista.avd.natural_sort('name') %}
-##### {{ ipv6_access_list.name }}
 {%         if ipv6_access_list.counters_per_entry is arista.avd.defined(true) %}
+##### {{ ipv6_access_list.name }}
 
 ACL has counting mode `counters per-entry` enabled!
 {%         endif %}
+{# Remove the below code in 7.0 leave only configuration #}
 {%         if ipv6_access_list.sequence_numbers is arista.avd.defined %}
+{%             if ipv6_access_list.counters_per_entry is not arista.avd.defined(true) %}
+##### {{ ipv6_access_list.name }}
+{%             endif %}
 
 | Sequence | Action |
 | -------- | ------ |

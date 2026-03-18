@@ -12190,25 +12190,19 @@ ipv6 access-list standard ipv6_test1
 
 #### IPv6 Extended Access-lists Summary
 
-##### ACL_NO_SEQUENCE
 
-##### acl_qos_tc0_v6
 
-##### acl_qos_tc5_v6
 
 ##### ACL_SEQUENCE_AND_COUNTERS
 
 ACL has counting mode `counters per-entry` enabled!
 
-##### ACL_WITHOUT_ENTRIES
 
-##### TEST1
 
 ##### TEST2
 
 ACL has counting mode `counters per-entry` enabled!
 
-##### TEST3
 
 #### IPv6 Extended Access-lists Device Configuration
 
