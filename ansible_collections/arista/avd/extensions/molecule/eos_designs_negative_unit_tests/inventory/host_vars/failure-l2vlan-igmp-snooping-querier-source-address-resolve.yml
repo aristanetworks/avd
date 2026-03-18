@@ -14,13 +14,14 @@ l3leaf:
 tenants:
   - name: Tenant_A
     mac_vrf_vni_base: 10000
-    igmp_snooping_querier:
-      enabled: true
-      source_address: none
+    igmp_snooping:
+      querier:
+        enabled: true
+        source_address: none
     l2vlans:
       - id: 110
         name: research1
 
 expected_error_message: >-
   Invalid IGMP snooping querier source address for VLAN 'research1' in Tenant 'Tenant_A'.
-  The value 'none' resolved from 'igmp_snooping_querier.source_address: none' is not a valid IPv4 address.
+  The value 'none' resolved from 'igmp_snooping.querier.source_address: none' is not a valid IPv4 address.

@@ -90,6 +90,7 @@ class EosDesigns(EosDesignsRootModel):
                     "host": {"type": str},
                     "groups": {"type": Groups},
                     "vrf": {"type": str},
+                    "timeout": {"type": int},
                     "key": {"type": str},
                     "cleartext_key": {"type": str},
                 }
@@ -117,6 +118,8 @@ class EosDesigns(EosDesignsRootModel):
                 `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
                 """
+                timeout: int | None
+                """Timeout in seconds."""
                 key: str | None
                 """
                 Encrypted Type 7 key.
@@ -143,6 +146,7 @@ class EosDesigns(EosDesignsRootModel):
                         host: str | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                         vrf: str | None | UndefinedType = Undefined,
+                        timeout: int | None | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                         cleartext_key: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -172,6 +176,7 @@ class EosDesigns(EosDesignsRootModel):
                                the VRF and source-interface for one of the two options above depending on the value of
                                `default_mgmt_method`.
                                - Any other string will be used directly as the VRF name.
+                            timeout: Timeout in seconds.
                             key:
                                Encrypted Type 7 key.
                                Takes precedence over `cleartext_key` if both are provided.
@@ -3075,14 +3080,16 @@ class EosDesigns(EosDesignsRootModel):
                 Port-Channel L2 Subinterfaces
                 Subinterfaces are only supported on routed port-channels, which means
                 they cannot be configured on MLAG port-channels.
-                Setting short_esi: auto generates the short_esi
-                automatically using a hash of configuration elements.
-                Please see the notes under "EVPN A/A ESI dual-
-                attached endpoint scenario" before setting short_esi: auto.
+                The parent Port-Channel interface is automatically
+                created if not defined elsewhere.
+                Setting short_esi: auto generates the short_esi automatically
+                using a hash of configuration elements.
+                Please see the notes under "EVPN A/A ESI dual-attached
+                endpoint scenario" before setting short_esi: auto.
 
 
-                Subclass of AvdList with
-                `SubinterfacesItem` items.
+                Subclass of AvdList with `SubinterfacesItem`
+                items.
                 """
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -3172,14 +3179,16 @@ class EosDesigns(EosDesignsRootModel):
                                Port-Channel L2 Subinterfaces
                                Subinterfaces are only supported on routed port-channels, which means
                                they cannot be configured on MLAG port-channels.
-                               Setting short_esi: auto generates the short_esi
-                               automatically using a hash of configuration elements.
-                               Please see the notes under "EVPN A/A ESI dual-
-                               attached endpoint scenario" before setting short_esi: auto.
+                               The parent Port-Channel interface is automatically
+                               created if not defined elsewhere.
+                               Setting short_esi: auto generates the short_esi automatically
+                               using a hash of configuration elements.
+                               Please see the notes under "EVPN A/A ESI dual-attached
+                               endpoint scenario" before setting short_esi: auto.
 
 
-                               Subclass of AvdList with
-                               `SubinterfacesItem` items.
+                               Subclass of AvdList with `SubinterfacesItem`
+                               items.
                             raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                             structured_config:
                                Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -3352,8 +3361,16 @@ class EosDesigns(EosDesignsRootModel):
             """
             vlans: str | None
             """
-            Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-            VLAN 1 will be used for access ports.
+            Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+            The value will be
+            interpreted according to these rules:
+            - `defined_vlans` will configure all VLANs defined under
+            network services as explicitly allowed VLANs on the trunk port.
+            - Any other string will be
+            interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+            If not set,
+            the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+            for access ports.
             """
             spanning_tree_portfast: SpanningTreePortfast | None
             spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
@@ -3599,8 +3616,16 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdList with `str` items.
                         vlans:
-                           Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                           VLAN 1 will be used for access ports.
+                           Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                           The value will be
+                           interpreted according to these rules:
+                           - `defined_vlans` will configure all VLANs defined under
+                           network services as explicitly allowed VLANs on the trunk port.
+                           - Any other string will be
+                           interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                           If not set,
+                           the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                           for access ports.
                         spanning_tree_portfast: spanning_tree_portfast
                         spanning_tree_bpdufilter: spanning_tree_bpdufilter
                         spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -3818,7 +3843,13 @@ class EosDesigns(EosDesignsRootModel):
         class P2pLinksIpPoolsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "ipv4_pool": {"type": str}, "prefix_size": {"type": int, "default": 31}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "ipv4_pool": {"type": str},
+                "prefix_size": {"type": int, "default": 31},
+                "ipv6_pool": {"type": str},
+                "ipv6_prefix_size": {"type": int, "default": 127},
+            }
             name: str
             """P2P pool name."""
             ipv4_pool: str | None
@@ -3829,6 +3860,14 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `31`
             """
+            ipv6_pool: str | None
+            """Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address)."""
+            ipv6_prefix_size: int
+            """
+            IPv6 prefix size.
+
+            Default value: `127`
+            """
 
             if TYPE_CHECKING:
 
@@ -3838,6 +3877,8 @@ class EosDesigns(EosDesignsRootModel):
                     name: str | UndefinedType = Undefined,
                     ipv4_pool: str | None | UndefinedType = Undefined,
                     prefix_size: int | UndefinedType = Undefined,
+                    ipv6_pool: str | None | UndefinedType = Undefined,
+                    ipv6_prefix_size: int | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksIpPoolsItem.
@@ -3849,6 +3890,8 @@ class EosDesigns(EosDesignsRootModel):
                         name: P2P pool name.
                         ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                         prefix_size: Subnet mask size.
+                        ipv6_pool: Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                        ipv6_prefix_size: IPv6 prefix size.
 
                     """
 
@@ -3951,6 +3994,11 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdList with `str` items."""
 
             Ip._item_type = str
+
+            class Ipv6(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Ipv6._item_type = str
 
             class Nodes(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -4242,6 +4290,8 @@ class EosDesigns(EosDesignsRootModel):
                 "subnet": {"type": str},
                 "ip": {"type": Ip},
                 "ipv6_enable": {"type": bool, "default": False},
+                "ipv6_prefix": {"type": str},
+                "ipv6": {"type": Ipv6},
                 "nodes": {"type": Nodes},
                 "interfaces": {"type": Interfaces},
                 "field_as": {"type": As},
@@ -4286,8 +4336,8 @@ class EosDesigns(EosDesignsRootModel):
             """Interface Speed."""
             ip_pool: str | None
             """
-            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-            link.
+            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+            be taken from the pool per P2P link.
             """
             subnet: str | None
             """IPv4 address/Mask. Subnet used on this P2P link."""
@@ -4303,6 +4353,14 @@ class EosDesigns(EosDesignsRootModel):
             include_in_underlay_protocol).
 
             Default value: `False`
+            """
+            ipv6_prefix: str | None
+            """IPv6 address/Mask. Prefix used on this P2P link."""
+            ipv6: Ipv6
+            """
+            Specific IPv6 addresses used on this P2P link.
+
+            Subclass of AvdList with `str` items.
             """
             nodes: Nodes
             """
@@ -4333,7 +4391,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             include_in_underlay_protocol: bool
             """
-            Add this interface to underlay routing protocol.
+            Add this interface to the underlay routing protocols.
+            This is currently not supported when IPv6
+            addresses are used.
 
             Default value: `True`
             """
@@ -4456,6 +4516,8 @@ class EosDesigns(EosDesignsRootModel):
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
                     ipv6_enable: bool | UndefinedType = Undefined,
+                    ipv6_prefix: str | None | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
                     nodes: Nodes | UndefinedType = Undefined,
                     interfaces: Interfaces | UndefinedType = Undefined,
                     field_as: As | UndefinedType = Undefined,
@@ -4500,8 +4562,8 @@ class EosDesigns(EosDesignsRootModel):
                            from 1.
                         speed: Interface Speed.
                         ip_pool:
-                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-                           link.
+                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+                           be taken from the pool per P2P link.
                         subnet: IPv4 address/Mask. Subnet used on this P2P link.
                         ip:
                            Specific IP addresses used on this P2P link.
@@ -4510,6 +4572,11 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_enable:
                            Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and
                            include_in_underlay_protocol).
+                        ipv6_prefix: IPv6 address/Mask. Prefix used on this P2P link.
+                        ipv6:
+                           Specific IPv6 addresses used on this P2P link.
+
+                           Subclass of AvdList with `str` items.
                         nodes:
                            Nodes where this link should be configured.
 
@@ -4529,7 +4596,10 @@ class EosDesigns(EosDesignsRootModel):
                            Interface descriptions.
 
                            Subclass of AvdList with `str` items.
-                        include_in_underlay_protocol: Add this interface to underlay routing protocol.
+                        include_in_underlay_protocol:
+                           Add this interface to the underlay routing protocols.
+                           This is currently not supported when IPv6
+                           addresses are used.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -4713,6 +4783,11 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdList with `str` items."""
 
             Ip._item_type = str
+
+            class Ipv6(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Ipv6._item_type = str
 
             class Interfaces(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -5000,6 +5075,8 @@ class EosDesigns(EosDesignsRootModel):
                 "subnet": {"type": str},
                 "ip": {"type": Ip},
                 "ipv6_enable": {"type": bool, "default": False},
+                "ipv6_prefix": {"type": str},
+                "ipv6": {"type": Ipv6},
                 "interfaces": {"type": Interfaces},
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
@@ -5049,8 +5126,8 @@ class EosDesigns(EosDesignsRootModel):
             """Interface Speed."""
             ip_pool: str | None
             """
-            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-            link.
+            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+            be taken from the pool per P2P link.
             """
             subnet: str | None
             """IPv4 address/Mask. Subnet used on this P2P link."""
@@ -5066,6 +5143,14 @@ class EosDesigns(EosDesignsRootModel):
             include_in_underlay_protocol).
 
             Default value: `False`
+            """
+            ipv6_prefix: str | None
+            """IPv6 address/Mask. Prefix used on this P2P link."""
+            ipv6: Ipv6
+            """
+            Specific IPv6 addresses used on this P2P link.
+
+            Subclass of AvdList with `str` items.
             """
             interfaces: Interfaces
             """
@@ -5090,7 +5175,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             include_in_underlay_protocol: bool
             """
-            Add this interface to underlay routing protocol.
+            Add this interface to the underlay routing protocols.
+            This is currently not supported when IPv6
+            addresses are used.
 
             Default value: `True`
             """
@@ -5214,6 +5301,8 @@ class EosDesigns(EosDesignsRootModel):
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
                     ipv6_enable: bool | UndefinedType = Undefined,
+                    ipv6_prefix: str | None | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
                     interfaces: Interfaces | UndefinedType = Undefined,
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
@@ -5261,8 +5350,8 @@ class EosDesigns(EosDesignsRootModel):
                            from 1.
                         speed: Interface Speed.
                         ip_pool:
-                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-                           link.
+                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+                           be taken from the pool per P2P link.
                         subnet: IPv4 address/Mask. Subnet used on this P2P link.
                         ip:
                            Specific IP addresses used on this P2P link.
@@ -5271,6 +5360,11 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_enable:
                            Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and
                            include_in_underlay_protocol).
+                        ipv6_prefix: IPv6 address/Mask. Prefix used on this P2P link.
+                        ipv6:
+                           Specific IPv6 addresses used on this P2P link.
+
+                           Subclass of AvdList with `str` items.
                         interfaces:
                            Interfaces where this link should be configured and Required unless using port-channels.
 
@@ -5286,7 +5380,10 @@ class EosDesigns(EosDesignsRootModel):
                            Interface descriptions.
 
                            Subclass of AvdList with `str` items.
-                        include_in_underlay_protocol: Add this interface to underlay routing protocol.
+                        include_in_underlay_protocol:
+                           Add this interface to the underlay routing protocols.
+                           This is currently not supported when IPv6
+                           addresses are used.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -7604,13 +7701,13 @@ class EosDesigns(EosDesignsRootModel):
             enabled: bool
             evpn_domain_id: str
             """
-            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+            Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
             Default value: `"65535:1"`
             """
             ipvpn_domain_id: str
             """
-            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+            Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
             Default value: `"65535:2"`
             """
@@ -7667,8 +7764,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: enabled
-                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                         enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                         maximum_routes: Maximum routes to accept from IPVPN remote peers.
                         local_as:
@@ -8682,7 +8779,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
             For a
-            subinterface, the parent physical interface is automatically created.
+            subinterface, the parent physical interface is automatically created if not defined elsewhere.
             """
             profile: str | None
             """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -8879,7 +8976,7 @@ class EosDesigns(EosDesignsRootModel):
                         name:
                            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                            For a
-                           subinterface, the parent physical interface is automatically created.
+                           subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                         description:
                            Interface description.
@@ -12708,13 +12805,13 @@ class EosDesigns(EosDesignsRootModel):
             enabled: bool
             evpn_domain_id: str
             """
-            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+            Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
             Default value: `"65535:1"`
             """
             ipvpn_domain_id: str
             """
-            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+            Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
             Default value: `"65535:2"`
             """
@@ -12771,8 +12868,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: enabled
-                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                         enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                         maximum_routes: Maximum routes to accept from IPVPN remote peers.
                         local_as:
@@ -13786,7 +13883,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
             For a
-            subinterface, the parent physical interface is automatically created.
+            subinterface, the parent physical interface is automatically created if not defined elsewhere.
             """
             profile: str | None
             """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -13983,7 +14080,7 @@ class EosDesigns(EosDesignsRootModel):
                         name:
                            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                            For a
-                           subinterface, the parent physical interface is automatically created.
+                           subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                         description:
                            Interface description.
@@ -19999,6 +20096,96 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class IgmpSnooping(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Querier(AvdModel):
+                """Subclass of AvdModel."""
+
+                Version: TypeAlias = Literal[1, 2, 3]
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                enabled: bool | None
+                """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                source_address: str | None
+                """
+                The value of `source_address` will be interpreted according to these rules:
+                - `vrf_router_id` will
+                configure the VRF router ID address according to
+                `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                - 'diagnostic_loopback' will configure the
+                VRF Diagnostic Loopback address.
+                - `main_router_id` will configure the Loopback0 IP address.
+                - An
+                IPv4 address will be used directly as the source address.
+                Overrides
+                `<network_services_key>[].igmp_snooping.querier.source_address`.
+                """
+                version: Version | None
+                """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        source_address: str | None | UndefinedType = Undefined,
+                        version: Version | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Querier.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                            source_address:
+                               The value of `source_address` will be interpreted according to these rules:
+                               - `vrf_router_id` will
+                               configure the VRF router ID address according to
+                               `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                               - 'diagnostic_loopback' will configure the
+                               VRF Diagnostic Loopback address.
+                               - `main_router_id` will configure the Loopback0 IP address.
+                               - An
+                               IPv4 address will be used directly as the source address.
+                               Overrides
+                               `<network_services_key>[].igmp_snooping.querier.source_address`.
+                            version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                        """
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "querier": {"type": Querier}, "fast_leave": {"type": bool}}
+            enabled: bool | None
+            """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+            querier: Querier
+            """Subclass of AvdModel."""
+            fast_leave: bool | None
+            """Enable IGMP snooping fast-leave feature."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    querier: Querier | UndefinedType = Undefined,
+                    fast_leave: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    IgmpSnooping.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                        querier: Subclass of AvdModel.
+                        fast_leave: Enable IGMP snooping fast-leave feature.
+
+                    """
+
         class IgmpSnoopingQuerier(AvdModel):
             """Subclass of AvdModel."""
 
@@ -20133,6 +20320,7 @@ class EosDesigns(EosDesignsRootModel):
             "evpn_l2_multi_domain": {"type": bool},
             "evpn_l2_multicast": {"type": EvpnL2Multicast},
             "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
+            "igmp_snooping": {"type": IgmpSnooping},
             "igmp_snooping_enabled": {"type": bool},
             "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
             "bgp": {"type": Bgp},
@@ -20222,6 +20410,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         vxlan_flood_multicast: VxlanFloodMulticast
         """Subclass of AvdModel."""
+        igmp_snooping: IgmpSnooping
+        """Subclass of AvdModel."""
         igmp_snooping_enabled: bool | None
         """Enable or disable IGMP snooping (Enabled by default on EOS)."""
         igmp_snooping_querier: IgmpSnoopingQuerier
@@ -20256,6 +20446,7 @@ class EosDesigns(EosDesignsRootModel):
                 evpn_l2_multi_domain: bool | None | UndefinedType = Undefined,
                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                 vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
+                igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                 igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                 igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                 bgp: Bgp | UndefinedType = Undefined,
@@ -20328,6 +20519,7 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of
                        AvdModel.
                     vxlan_flood_multicast: Subclass of AvdModel.
+                    igmp_snooping: Subclass of AvdModel.
                     igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                     igmp_snooping_querier:
                        Enable igmp snooping querier, by default using IP address of Loopback 0.
@@ -20354,7 +20546,13 @@ class EosDesigns(EosDesignsRootModel):
         class P2pLinksIpPoolsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "ipv4_pool": {"type": str}, "prefix_size": {"type": int, "default": 31}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "ipv4_pool": {"type": str},
+                "prefix_size": {"type": int, "default": 31},
+                "ipv6_pool": {"type": str},
+                "ipv6_prefix_size": {"type": int, "default": 127},
+            }
             name: str
             """P2P pool name."""
             ipv4_pool: str | None
@@ -20365,6 +20563,14 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `31`
             """
+            ipv6_pool: str | None
+            """Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address)."""
+            ipv6_prefix_size: int
+            """
+            IPv6 prefix size.
+
+            Default value: `127`
+            """
 
             if TYPE_CHECKING:
 
@@ -20374,6 +20580,8 @@ class EosDesigns(EosDesignsRootModel):
                     name: str | UndefinedType = Undefined,
                     ipv4_pool: str | None | UndefinedType = Undefined,
                     prefix_size: int | UndefinedType = Undefined,
+                    ipv6_pool: str | None | UndefinedType = Undefined,
+                    ipv6_prefix_size: int | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksIpPoolsItem.
@@ -20385,6 +20593,8 @@ class EosDesigns(EosDesignsRootModel):
                         name: P2P pool name.
                         ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                         prefix_size: Subnet mask size.
+                        ipv6_pool: Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                        ipv6_prefix_size: IPv6 prefix size.
 
                     """
 
@@ -20487,6 +20697,11 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdList with `str` items."""
 
             Ip._item_type = str
+
+            class Ipv6(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Ipv6._item_type = str
 
             class Nodes(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -20778,6 +20993,8 @@ class EosDesigns(EosDesignsRootModel):
                 "subnet": {"type": str},
                 "ip": {"type": Ip},
                 "ipv6_enable": {"type": bool, "default": False},
+                "ipv6_prefix": {"type": str},
+                "ipv6": {"type": Ipv6},
                 "nodes": {"type": Nodes},
                 "interfaces": {"type": Interfaces},
                 "field_as": {"type": As},
@@ -20822,8 +21039,8 @@ class EosDesigns(EosDesignsRootModel):
             """Interface Speed."""
             ip_pool: str | None
             """
-            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-            link.
+            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+            be taken from the pool per P2P link.
             """
             subnet: str | None
             """IPv4 address/Mask. Subnet used on this P2P link."""
@@ -20839,6 +21056,14 @@ class EosDesigns(EosDesignsRootModel):
             include_in_underlay_protocol).
 
             Default value: `False`
+            """
+            ipv6_prefix: str | None
+            """IPv6 address/Mask. Prefix used on this P2P link."""
+            ipv6: Ipv6
+            """
+            Specific IPv6 addresses used on this P2P link.
+
+            Subclass of AvdList with `str` items.
             """
             nodes: Nodes
             """
@@ -20869,7 +21094,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             include_in_underlay_protocol: bool
             """
-            Add this interface to underlay routing protocol.
+            Add this interface to the underlay routing protocols.
+            This is currently not supported when IPv6
+            addresses are used.
 
             Default value: `True`
             """
@@ -20992,6 +21219,8 @@ class EosDesigns(EosDesignsRootModel):
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
                     ipv6_enable: bool | UndefinedType = Undefined,
+                    ipv6_prefix: str | None | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
                     nodes: Nodes | UndefinedType = Undefined,
                     interfaces: Interfaces | UndefinedType = Undefined,
                     field_as: As | UndefinedType = Undefined,
@@ -21036,8 +21265,8 @@ class EosDesigns(EosDesignsRootModel):
                            from 1.
                         speed: Interface Speed.
                         ip_pool:
-                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-                           link.
+                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+                           be taken from the pool per P2P link.
                         subnet: IPv4 address/Mask. Subnet used on this P2P link.
                         ip:
                            Specific IP addresses used on this P2P link.
@@ -21046,6 +21275,11 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_enable:
                            Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and
                            include_in_underlay_protocol).
+                        ipv6_prefix: IPv6 address/Mask. Prefix used on this P2P link.
+                        ipv6:
+                           Specific IPv6 addresses used on this P2P link.
+
+                           Subclass of AvdList with `str` items.
                         nodes:
                            Nodes where this link should be configured.
 
@@ -21065,7 +21299,10 @@ class EosDesigns(EosDesignsRootModel):
                            Interface descriptions.
 
                            Subclass of AvdList with `str` items.
-                        include_in_underlay_protocol: Add this interface to underlay routing protocol.
+                        include_in_underlay_protocol:
+                           Add this interface to the underlay routing protocols.
+                           This is currently not supported when IPv6
+                           addresses are used.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -21249,6 +21486,11 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdList with `str` items."""
 
             Ip._item_type = str
+
+            class Ipv6(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Ipv6._item_type = str
 
             class Interfaces(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
@@ -21536,6 +21778,8 @@ class EosDesigns(EosDesignsRootModel):
                 "subnet": {"type": str},
                 "ip": {"type": Ip},
                 "ipv6_enable": {"type": bool, "default": False},
+                "ipv6_prefix": {"type": str},
+                "ipv6": {"type": Ipv6},
                 "interfaces": {"type": Interfaces},
                 "field_as": {"type": As},
                 "descriptions": {"type": Descriptions},
@@ -21585,8 +21829,8 @@ class EosDesigns(EosDesignsRootModel):
             """Interface Speed."""
             ip_pool: str | None
             """
-            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-            link.
+            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+            be taken from the pool per P2P link.
             """
             subnet: str | None
             """IPv4 address/Mask. Subnet used on this P2P link."""
@@ -21602,6 +21846,14 @@ class EosDesigns(EosDesignsRootModel):
             include_in_underlay_protocol).
 
             Default value: `False`
+            """
+            ipv6_prefix: str | None
+            """IPv6 address/Mask. Prefix used on this P2P link."""
+            ipv6: Ipv6
+            """
+            Specific IPv6 addresses used on this P2P link.
+
+            Subclass of AvdList with `str` items.
             """
             interfaces: Interfaces
             """
@@ -21626,7 +21878,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             include_in_underlay_protocol: bool
             """
-            Add this interface to underlay routing protocol.
+            Add this interface to the underlay routing protocols.
+            This is currently not supported when IPv6
+            addresses are used.
 
             Default value: `True`
             """
@@ -21750,6 +22004,8 @@ class EosDesigns(EosDesignsRootModel):
                     subnet: str | None | UndefinedType = Undefined,
                     ip: Ip | UndefinedType = Undefined,
                     ipv6_enable: bool | UndefinedType = Undefined,
+                    ipv6_prefix: str | None | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
                     interfaces: Interfaces | UndefinedType = Undefined,
                     field_as: As | UndefinedType = Undefined,
                     descriptions: Descriptions | UndefinedType = Undefined,
@@ -21797,8 +22053,8 @@ class EosDesigns(EosDesignsRootModel):
                            from 1.
                         speed: Interface Speed.
                         ip_pool:
-                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
-                           link.
+                           P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 IPv4 subnet or /127 IPv6 prefix will
+                           be taken from the pool per P2P link.
                         subnet: IPv4 address/Mask. Subnet used on this P2P link.
                         ip:
                            Specific IP addresses used on this P2P link.
@@ -21807,6 +22063,11 @@ class EosDesigns(EosDesignsRootModel):
                         ipv6_enable:
                            Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and
                            include_in_underlay_protocol).
+                        ipv6_prefix: IPv6 address/Mask. Prefix used on this P2P link.
+                        ipv6:
+                           Specific IPv6 addresses used on this P2P link.
+
+                           Subclass of AvdList with `str` items.
                         interfaces:
                            Interfaces where this link should be configured and Required unless using port-channels.
 
@@ -21822,7 +22083,10 @@ class EosDesigns(EosDesignsRootModel):
                            Interface descriptions.
 
                            Subclass of AvdList with `str` items.
-                        include_in_underlay_protocol: Add this interface to underlay routing protocol.
+                        include_in_underlay_protocol:
+                           Add this interface to the underlay routing protocols.
+                           This is currently not supported when IPv6
+                           addresses are used.
                         isis_hello_padding: isis_hello_padding
                         isis_metric: isis_metric
                         isis_circuit_type: isis_circuit_type
@@ -22291,7 +22555,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
         For a
-        subinterface, the parent physical interface is automatically created.
+        subinterface, the parent physical interface is automatically created if not defined elsewhere.
         """
         description: str | None
         """
@@ -22489,7 +22753,7 @@ class EosDesigns(EosDesignsRootModel):
                     name:
                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                        For a
-                       subinterface, the parent physical interface is automatically created.
+                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                     description:
                        Interface description.
                        If not set a default description will be configured with '[<peer>[
@@ -24067,14 +24331,16 @@ class EosDesigns(EosDesignsRootModel):
             Port-Channel L2 Subinterfaces
             Subinterfaces are only supported on routed port-channels, which means
             they cannot be configured on MLAG port-channels.
-            Setting short_esi: auto generates the short_esi
-            automatically using a hash of configuration elements.
-            Please see the notes under "EVPN A/A ESI dual-
-            attached endpoint scenario" before setting short_esi: auto.
+            The parent Port-Channel interface is automatically
+            created if not defined elsewhere.
+            Setting short_esi: auto generates the short_esi automatically
+            using a hash of configuration elements.
+            Please see the notes under "EVPN A/A ESI dual-attached
+            endpoint scenario" before setting short_esi: auto.
 
 
-            Subclass of AvdList with
-            `SubinterfacesItem` items.
+            Subclass of AvdList with `SubinterfacesItem`
+            items.
             """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -24164,14 +24430,16 @@ class EosDesigns(EosDesignsRootModel):
                            Port-Channel L2 Subinterfaces
                            Subinterfaces are only supported on routed port-channels, which means
                            they cannot be configured on MLAG port-channels.
-                           Setting short_esi: auto generates the short_esi
-                           automatically using a hash of configuration elements.
-                           Please see the notes under "EVPN A/A ESI dual-
-                           attached endpoint scenario" before setting short_esi: auto.
+                           The parent Port-Channel interface is automatically
+                           created if not defined elsewhere.
+                           Setting short_esi: auto generates the short_esi automatically
+                           using a hash of configuration elements.
+                           Please see the notes under "EVPN A/A ESI dual-attached
+                           endpoint scenario" before setting short_esi: auto.
 
 
-                           Subclass of AvdList with
-                           `SubinterfacesItem` items.
+                           Subclass of AvdList with `SubinterfacesItem`
+                           items.
                         raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                         structured_config:
                            Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -24345,8 +24613,16 @@ class EosDesigns(EosDesignsRootModel):
         """
         vlans: str | None
         """
-        Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-        VLAN 1 will be used for access ports.
+        Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+        The value will be
+        interpreted according to these rules:
+        - `defined_vlans` will configure all VLANs defined under
+        network services as explicitly allowed VLANs on the trunk port.
+        - Any other string will be
+        interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+        If not set,
+        the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+        for access ports.
         """
         spanning_tree_portfast: SpanningTreePortfast | None
         spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
@@ -24594,8 +24870,16 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     vlans:
-                       Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                       VLAN 1 will be used for access ports.
+                       Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                       The value will be
+                       interpreted according to these rules:
+                       - `defined_vlans` will configure all VLANs defined under
+                       network services as explicitly allowed VLANs on the trunk port.
+                       - Any other string will be
+                       interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                       If not set,
+                       the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                       for access ports.
                     spanning_tree_portfast: spanning_tree_portfast
                     spanning_tree_bpdufilter: spanning_tree_bpdufilter
                     spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -28917,14 +29201,16 @@ class EosDesigns(EosDesignsRootModel):
             Port-Channel L2 Subinterfaces
             Subinterfaces are only supported on routed port-channels, which means
             they cannot be configured on MLAG port-channels.
-            Setting short_esi: auto generates the short_esi
-            automatically using a hash of configuration elements.
-            Please see the notes under "EVPN A/A ESI dual-
-            attached endpoint scenario" before setting short_esi: auto.
+            The parent Port-Channel interface is automatically
+            created if not defined elsewhere.
+            Setting short_esi: auto generates the short_esi automatically
+            using a hash of configuration elements.
+            Please see the notes under "EVPN A/A ESI dual-attached
+            endpoint scenario" before setting short_esi: auto.
 
 
-            Subclass of AvdList with
-            `SubinterfacesItem` items.
+            Subclass of AvdList with `SubinterfacesItem`
+            items.
             """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -29014,14 +29300,16 @@ class EosDesigns(EosDesignsRootModel):
                            Port-Channel L2 Subinterfaces
                            Subinterfaces are only supported on routed port-channels, which means
                            they cannot be configured on MLAG port-channels.
-                           Setting short_esi: auto generates the short_esi
-                           automatically using a hash of configuration elements.
-                           Please see the notes under "EVPN A/A ESI dual-
-                           attached endpoint scenario" before setting short_esi: auto.
+                           The parent Port-Channel interface is automatically
+                           created if not defined elsewhere.
+                           Setting short_esi: auto generates the short_esi automatically
+                           using a hash of configuration elements.
+                           Please see the notes under "EVPN A/A ESI dual-attached
+                           endpoint scenario" before setting short_esi: auto.
 
 
-                           Subclass of AvdList with
-                           `SubinterfacesItem` items.
+                           Subclass of AvdList with `SubinterfacesItem`
+                           items.
                         raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                         structured_config:
                            Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -29149,8 +29437,16 @@ class EosDesigns(EosDesignsRootModel):
         """
         vlans: str | None
         """
-        Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-        VLAN 1 will be used for access ports.
+        Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+        The value will be
+        interpreted according to these rules:
+        - `defined_vlans` will configure all VLANs defined under
+        network services as explicitly allowed VLANs on the trunk port.
+        - Any other string will be
+        interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+        If not set,
+        the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+        for access ports.
         """
         spanning_tree_portfast: SpanningTreePortfast | None
         spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
@@ -29357,8 +29653,16 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList with `str` items.
                     vlans:
-                       Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                       VLAN 1 will be used for access ports.
+                       Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                       The value will be
+                       interpreted according to these rules:
+                       - `defined_vlans` will configure all VLANs defined under
+                       network services as explicitly allowed VLANs on the trunk port.
+                       - Any other string will be
+                       interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                       If not set,
+                       the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                       for access ports.
                     spanning_tree_portfast: spanning_tree_portfast
                     spanning_tree_bpdufilter: spanning_tree_bpdufilter
                     spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -31349,6 +31653,96 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class IgmpSnooping(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Querier(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    Version: TypeAlias = Literal[1, 2, 3]
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                    enabled: bool | None
+                    """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                    source_address: str | None
+                    """
+                    The value of `source_address` will be interpreted according to these rules:
+                    - `vrf_router_id` will
+                    configure the VRF router ID address according to
+                    `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                    - 'diagnostic_loopback' will configure the
+                    VRF Diagnostic Loopback address.
+                    - `main_router_id` will configure the Loopback0 IP address.
+                    - An
+                    IPv4 address will be used directly as the source address.
+                    Overrides
+                    `<network_services_key>[].igmp_snooping.querier.source_address`.
+                    """
+                    version: Version | None
+                    """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            source_address: str | None | UndefinedType = Undefined,
+                            version: Version | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Querier.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                                source_address:
+                                   The value of `source_address` will be interpreted according to these rules:
+                                   - `vrf_router_id` will
+                                   configure the VRF router ID address according to
+                                   `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                   - 'diagnostic_loopback' will configure the
+                                   VRF Diagnostic Loopback address.
+                                   - `main_router_id` will configure the Loopback0 IP address.
+                                   - An
+                                   IPv4 address will be used directly as the source address.
+                                   Overrides
+                                   `<network_services_key>[].igmp_snooping.querier.source_address`.
+                                version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                            """
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "querier": {"type": Querier}, "fast_leave": {"type": bool}}
+                enabled: bool | None
+                """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+                querier: Querier
+                """Subclass of AvdModel."""
+                fast_leave: bool | None
+                """Enable IGMP snooping fast-leave feature."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        querier: Querier | UndefinedType = Undefined,
+                        fast_leave: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        IgmpSnooping.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                            querier: Subclass of AvdModel.
+                            fast_leave: Enable IGMP snooping fast-leave feature.
+
+                        """
+
             class IgmpSnoopingQuerier(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -31368,7 +31762,7 @@ class EosDesigns(EosDesignsRootModel):
                 - An
                 IPv4 address will be used directly as the source address.
                 Overrides
-                `<network_services_key>[].igmp_snooping_querier.source_address`.
+                `<network_services_key>[].igmp_snooping.querier.source_address`.
                 """
                 version: Version | None
                 """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
@@ -31404,7 +31798,7 @@ class EosDesigns(EosDesignsRootModel):
                                - An
                                IPv4 address will be used directly as the source address.
                                Overrides
-                               `<network_services_key>[].igmp_snooping_querier.source_address`.
+                               `<network_services_key>[].igmp_snooping.querier.source_address`.
                             version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                             fast_leave: Enable IGMP snooping fast-leave feature.
 
@@ -31615,6 +32009,7 @@ class EosDesigns(EosDesignsRootModel):
                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
                 "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
+                "igmp_snooping": {"type": IgmpSnooping},
                 "igmp_snooping_enabled": {"type": bool},
                 "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                 "vxlan": {"type": bool, "default": True},
@@ -31784,6 +32179,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
+            igmp_snooping: IgmpSnooping
+            """Subclass of AvdModel."""
             igmp_snooping_enabled: bool | None
             """Enable or disable IGMP snooping (Enabled by default on EOS)."""
             igmp_snooping_querier: IgmpSnoopingQuerier
@@ -31858,6 +32255,7 @@ class EosDesigns(EosDesignsRootModel):
                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                     vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
+                    igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                     igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                     igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                     vxlan: bool | UndefinedType = Undefined,
@@ -31992,6 +32390,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdModel.
+                        igmp_snooping: Subclass of AvdModel.
                         igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                         igmp_snooping_querier: Subclass of AvdModel.
                         vxlan: Extend this SVI over VXLAN.
@@ -32346,6 +32745,96 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class IgmpSnooping(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Querier(AvdModel):
+                """Subclass of AvdModel."""
+
+                Version: TypeAlias = Literal[1, 2, 3]
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                enabled: bool | None
+                """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                source_address: str | None
+                """
+                The value of `source_address` will be interpreted according to these rules:
+                - `vrf_router_id` will
+                configure the VRF router ID address according to
+                `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                - 'diagnostic_loopback' will configure the
+                VRF Diagnostic Loopback address.
+                - `main_router_id` will configure the Loopback0 IP address.
+                - An
+                IPv4 address will be used directly as the source address.
+                Overrides
+                `<network_services_key>[].igmp_snooping.querier.source_address`.
+                """
+                version: Version | None
+                """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        source_address: str | None | UndefinedType = Undefined,
+                        version: Version | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Querier.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                            source_address:
+                               The value of `source_address` will be interpreted according to these rules:
+                               - `vrf_router_id` will
+                               configure the VRF router ID address according to
+                               `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                               - 'diagnostic_loopback' will configure the
+                               VRF Diagnostic Loopback address.
+                               - `main_router_id` will configure the Loopback0 IP address.
+                               - An
+                               IPv4 address will be used directly as the source address.
+                               Overrides
+                               `<network_services_key>[].igmp_snooping.querier.source_address`.
+                            version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                        """
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "querier": {"type": Querier}, "fast_leave": {"type": bool}}
+            enabled: bool | None
+            """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+            querier: Querier
+            """Subclass of AvdModel."""
+            fast_leave: bool | None
+            """Enable IGMP snooping fast-leave feature."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    querier: Querier | UndefinedType = Undefined,
+                    fast_leave: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    IgmpSnooping.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                        querier: Subclass of AvdModel.
+                        fast_leave: Enable IGMP snooping fast-leave feature.
+
+                    """
+
         class IgmpSnoopingQuerier(AvdModel):
             """Subclass of AvdModel."""
 
@@ -32365,7 +32854,7 @@ class EosDesigns(EosDesignsRootModel):
             - An
             IPv4 address will be used directly as the source address.
             Overrides
-            `<network_services_key>[].igmp_snooping_querier.source_address`.
+            `<network_services_key>[].igmp_snooping.querier.source_address`.
             """
             version: Version | None
             """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
@@ -32401,7 +32890,7 @@ class EosDesigns(EosDesignsRootModel):
                            - An
                            IPv4 address will be used directly as the source address.
                            Overrides
-                           `<network_services_key>[].igmp_snooping_querier.source_address`.
+                           `<network_services_key>[].igmp_snooping.querier.source_address`.
                         version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                         fast_leave: Enable IGMP snooping fast-leave feature.
 
@@ -32614,6 +33103,7 @@ class EosDesigns(EosDesignsRootModel):
             "evpn_l2_multicast": {"type": EvpnL2Multicast},
             "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
             "evpn_l3_multicast": {"type": EvpnL3Multicast},
+            "igmp_snooping": {"type": IgmpSnooping},
             "igmp_snooping_enabled": {"type": bool},
             "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
             "vxlan": {"type": bool, "default": True},
@@ -32799,6 +33289,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        igmp_snooping: IgmpSnooping
+        """Subclass of AvdModel."""
         igmp_snooping_enabled: bool | None
         """Enable or disable IGMP snooping (Enabled by default on EOS)."""
         igmp_snooping_querier: IgmpSnoopingQuerier
@@ -32875,6 +33367,7 @@ class EosDesigns(EosDesignsRootModel):
                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                 vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
+                igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                 igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                 igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                 vxlan: bool | UndefinedType = Undefined,
@@ -33021,6 +33514,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdModel.
+                    igmp_snooping: Subclass of AvdModel.
                     igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                     igmp_snooping_querier: Subclass of AvdModel.
                     vxlan: Extend this SVI over VXLAN.
@@ -36366,13 +36860,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -36429,8 +36923,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -37451,7 +37945,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
-                        subinterface, the parent physical interface is automatically created.
+                        subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         """
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -37648,7 +38142,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
-                                       subinterface, the parent physical interface is automatically created.
+                                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                     profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
@@ -41447,13 +41941,13 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             evpn_domain_id: str
                             """
-                            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                            Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                             Default value: `"65535:1"`
                             """
                             ipvpn_domain_id: str
                             """
-                            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                            Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                             Default value: `"65535:2"`
                             """
@@ -41510,8 +42004,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
-                                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                         enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                         maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                         local_as:
@@ -42543,7 +43037,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                             For a
-                            subinterface, the parent physical interface is automatically created.
+                            subinterface, the parent physical interface is automatically created if not defined elsewhere.
                             """
                             profile: str | None
                             """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -42740,7 +43234,7 @@ class EosDesigns(EosDesignsRootModel):
                                         name:
                                            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                            For a
-                                           subinterface, the parent physical interface is automatically created.
+                                           subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                         profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                         description:
                                            Interface description.
@@ -46491,13 +46985,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -46554,8 +47048,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -47576,7 +48070,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
-                        subinterface, the parent physical interface is automatically created.
+                        subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         """
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -47773,7 +48267,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
-                                       subinterface, the parent physical interface is automatically created.
+                                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                     profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
@@ -51598,13 +52092,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -51661,8 +52155,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -52683,7 +53177,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
-                        subinterface, the parent physical interface is automatically created.
+                        subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         """
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -52880,7 +53374,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
-                                       subinterface, the parent physical interface is automatically created.
+                                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                     profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
@@ -56841,14 +57335,16 @@ class EosDesigns(EosDesignsRootModel):
                         Port-Channel L2 Subinterfaces
                         Subinterfaces are only supported on routed port-channels, which means
                         they cannot be configured on MLAG port-channels.
-                        Setting short_esi: auto generates the short_esi
-                        automatically using a hash of configuration elements.
-                        Please see the notes under "EVPN A/A ESI dual-
-                        attached endpoint scenario" before setting short_esi: auto.
+                        The parent Port-Channel interface is automatically
+                        created if not defined elsewhere.
+                        Setting short_esi: auto generates the short_esi automatically
+                        using a hash of configuration elements.
+                        Please see the notes under "EVPN A/A ESI dual-attached
+                        endpoint scenario" before setting short_esi: auto.
 
 
-                        Subclass of AvdList with
-                        `SubinterfacesItem` items.
+                        Subclass of AvdList with `SubinterfacesItem`
+                        items.
                         """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -56938,14 +57434,16 @@ class EosDesigns(EosDesignsRootModel):
                                        Port-Channel L2 Subinterfaces
                                        Subinterfaces are only supported on routed port-channels, which means
                                        they cannot be configured on MLAG port-channels.
-                                       Setting short_esi: auto generates the short_esi
-                                       automatically using a hash of configuration elements.
-                                       Please see the notes under "EVPN A/A ESI dual-
-                                       attached endpoint scenario" before setting short_esi: auto.
+                                       The parent Port-Channel interface is automatically
+                                       created if not defined elsewhere.
+                                       Setting short_esi: auto generates the short_esi automatically
+                                       using a hash of configuration elements.
+                                       Please see the notes under "EVPN A/A ESI dual-attached
+                                       endpoint scenario" before setting short_esi: auto.
 
 
-                                       Subclass of AvdList with
-                                       `SubinterfacesItem` items.
+                                       Subclass of AvdList with `SubinterfacesItem`
+                                       items.
                                     raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                                     structured_config:
                                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -57118,8 +57616,16 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vlans: str | None
                     """
-                    Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                    VLAN 1 will be used for access ports.
+                    Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                    The value will be
+                    interpreted according to these rules:
+                    - `defined_vlans` will configure all VLANs defined under
+                    network services as explicitly allowed VLANs on the trunk port.
+                    - Any other string will be
+                    interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                    If not set,
+                    the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                    for access ports.
                     """
                     spanning_tree_portfast: SpanningTreePortfast | None
                     spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
@@ -57365,8 +57871,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 vlans:
-                                   Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                                   VLAN 1 will be used for access ports.
+                                   Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                                   The value will be
+                                   interpreted according to these rules:
+                                   - `defined_vlans` will configure all VLANs defined under
+                                   network services as explicitly allowed VLANs on the trunk port.
+                                   - Any other string will be
+                                   interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                                   If not set,
+                                   the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                                   for access ports.
                                 spanning_tree_portfast: spanning_tree_portfast
                                 spanning_tree_bpdufilter: spanning_tree_bpdufilter
                                 spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -58622,14 +59136,16 @@ class EosDesigns(EosDesignsRootModel):
                         Port-Channel L2 Subinterfaces
                         Subinterfaces are only supported on routed port-channels, which means
                         they cannot be configured on MLAG port-channels.
-                        Setting short_esi: auto generates the short_esi
-                        automatically using a hash of configuration elements.
-                        Please see the notes under "EVPN A/A ESI dual-
-                        attached endpoint scenario" before setting short_esi: auto.
+                        The parent Port-Channel interface is automatically
+                        created if not defined elsewhere.
+                        Setting short_esi: auto generates the short_esi automatically
+                        using a hash of configuration elements.
+                        Please see the notes under "EVPN A/A ESI dual-attached
+                        endpoint scenario" before setting short_esi: auto.
 
 
-                        Subclass of AvdList with
-                        `SubinterfacesItem` items.
+                        Subclass of AvdList with `SubinterfacesItem`
+                        items.
                         """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
@@ -58719,14 +59235,16 @@ class EosDesigns(EosDesignsRootModel):
                                        Port-Channel L2 Subinterfaces
                                        Subinterfaces are only supported on routed port-channels, which means
                                        they cannot be configured on MLAG port-channels.
-                                       Setting short_esi: auto generates the short_esi
-                                       automatically using a hash of configuration elements.
-                                       Please see the notes under "EVPN A/A ESI dual-
-                                       attached endpoint scenario" before setting short_esi: auto.
+                                       The parent Port-Channel interface is automatically
+                                       created if not defined elsewhere.
+                                       Setting short_esi: auto generates the short_esi automatically
+                                       using a hash of configuration elements.
+                                       Please see the notes under "EVPN A/A ESI dual-attached
+                                       endpoint scenario" before setting short_esi: auto.
 
 
-                                       Subclass of AvdList with
-                                       `SubinterfacesItem` items.
+                                       Subclass of AvdList with `SubinterfacesItem`
+                                       items.
                                     raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
                                     structured_config:
                                        Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config
@@ -58899,8 +59417,16 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vlans: str | None
                     """
-                    Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                    VLAN 1 will be used for access ports.
+                    Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                    The value will be
+                    interpreted according to these rules:
+                    - `defined_vlans` will configure all VLANs defined under
+                    network services as explicitly allowed VLANs on the trunk port.
+                    - Any other string will be
+                    interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                    If not set,
+                    the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                    for access ports.
                     """
                     spanning_tree_portfast: SpanningTreePortfast | None
                     spanning_tree_bpdufilter: SpanningTreeBpdufilter | None
@@ -59146,8 +59672,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 vlans:
-                                   Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
-                                   VLAN 1 will be used for access ports.
+                                   Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+                                   The value will be
+                                   interpreted according to these rules:
+                                   - `defined_vlans` will configure all VLANs defined under
+                                   network services as explicitly allowed VLANs on the trunk port.
+                                   - Any other string will be
+                                   interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+                                   If not set,
+                                   the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used
+                                   for access ports.
                                 spanning_tree_portfast: spanning_tree_portfast
                                 spanning_tree_bpdufilter: spanning_tree_bpdufilter
                                 spanning_tree_bpduguard: spanning_tree_bpduguard
@@ -60164,10 +60698,71 @@ class EosDesigns(EosDesignsRootModel):
 
                 BgpPeerGroups._item_type = BgpPeerGroupsItem
 
-                class Igmp(AvdModel):
+                class IgmpSnooping(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"fast_leave": {"type": bool}}
+                    class Querier(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        Version: TypeAlias = Literal[1, 2, 3]
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool},
+                            "source_address": {"type": str, "default": "main_router_id"},
+                            "version": {"type": int},
+                        }
+                        enabled: bool | None
+                        """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                        source_address: str
+                        """
+                        The value of `source_address` will be interpreted according to these rules:
+                        - `vrf_router_id` will
+                        configure the VRF router ID address according to
+                        `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                        - `diagnostic_loopback` will configure the
+                        VRF Diagnostic Loopback.
+                        - `main_router_id` will configure the Loopback0 IP address.
+                        - An IPv4
+                        address will be used directly as the source address.
+
+                        Default value: `"main_router_id"`
+                        """
+                        version: Version | None
+                        """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | None | UndefinedType = Undefined,
+                                source_address: str | UndefinedType = Undefined,
+                                version: Version | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Querier.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                                    source_address:
+                                       The value of `source_address` will be interpreted according to these rules:
+                                       - `vrf_router_id` will
+                                       configure the VRF router ID address according to
+                                       `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                       - `diagnostic_loopback` will configure the
+                                       VRF Diagnostic Loopback.
+                                       - `main_router_id` will configure the Loopback0 IP address.
+                                       - An IPv4
+                                       address will be used directly as the source address.
+                                    version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                                """
+
+                    _fields: ClassVar[dict] = {"querier": {"type": Querier}, "fast_leave": {"type": bool}}
+                    querier: Querier
+                    """Subclass of AvdModel."""
                     fast_leave: bool | None
                     """
                     Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the
@@ -60177,14 +60772,15 @@ class EosDesigns(EosDesignsRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, fast_leave: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, querier: Querier | UndefinedType = Undefined, fast_leave: bool | None | UndefinedType = Undefined) -> None:
                             """
-                            Igmp.
+                            IgmpSnooping.
 
 
                             Subclass of AvdModel.
 
                             Args:
+                                querier: Subclass of AvdModel.
                                 fast_leave:
                                    Explicitly enable or disable IGMP snooping fast-leave feature for all SVIs and L2 VLANs within the
                                    Tenant.
@@ -61538,6 +62134,96 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
+                            class IgmpSnooping(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Querier(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    Version: TypeAlias = Literal[1, 2, 3]
+                                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                                    enabled: bool | None
+                                    """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                                    source_address: str | None
+                                    """
+                                    The value of `source_address` will be interpreted according to these rules:
+                                    - `vrf_router_id` will
+                                    configure the VRF router ID address according to
+                                    `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                    - 'diagnostic_loopback' will configure the
+                                    VRF Diagnostic Loopback address.
+                                    - `main_router_id` will configure the Loopback0 IP address.
+                                    - An
+                                    IPv4 address will be used directly as the source address.
+                                    Overrides
+                                    `<network_services_key>[].igmp_snooping.querier.source_address`.
+                                    """
+                                    version: Version | None
+                                    """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            enabled: bool | None | UndefinedType = Undefined,
+                                            source_address: str | None | UndefinedType = Undefined,
+                                            version: Version | None | UndefinedType = Undefined,
+                                        ) -> None:
+                                            """
+                                            Querier.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                                                source_address:
+                                                   The value of `source_address` will be interpreted according to these rules:
+                                                   - `vrf_router_id` will
+                                                   configure the VRF router ID address according to
+                                                   `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                                   - 'diagnostic_loopback' will configure the
+                                                   VRF Diagnostic Loopback address.
+                                                   - `main_router_id` will configure the Loopback0 IP address.
+                                                   - An
+                                                   IPv4 address will be used directly as the source address.
+                                                   Overrides
+                                                   `<network_services_key>[].igmp_snooping.querier.source_address`.
+                                                version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                                            """
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "querier": {"type": Querier}, "fast_leave": {"type": bool}}
+                                enabled: bool | None
+                                """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+                                querier: Querier
+                                """Subclass of AvdModel."""
+                                fast_leave: bool | None
+                                """Enable IGMP snooping fast-leave feature."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        querier: Querier | UndefinedType = Undefined,
+                                        fast_leave: bool | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        IgmpSnooping.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                                            querier: Subclass of AvdModel.
+                                            fast_leave: Enable IGMP snooping fast-leave feature.
+
+                                        """
+
                             class IgmpSnoopingQuerier(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -61562,7 +62248,7 @@ class EosDesigns(EosDesignsRootModel):
                                 - An
                                 IPv4 address will be used directly as the source address.
                                 Overrides
-                                `<network_services_key>[].igmp_snooping_querier.source_address`.
+                                `<network_services_key>[].igmp_snooping.querier.source_address`.
                                 """
                                 version: Version | None
                                 """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
@@ -61598,7 +62284,7 @@ class EosDesigns(EosDesignsRootModel):
                                                - An
                                                IPv4 address will be used directly as the source address.
                                                Overrides
-                                               `<network_services_key>[].igmp_snooping_querier.source_address`.
+                                               `<network_services_key>[].igmp_snooping.querier.source_address`.
                                             version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                                             fast_leave: Enable IGMP snooping fast-leave feature.
 
@@ -61810,6 +62496,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
                                 "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
+                                "igmp_snooping": {"type": IgmpSnooping},
                                 "igmp_snooping_enabled": {"type": bool},
                                 "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                                 "vxlan": {"type": bool, "default": True},
@@ -61989,6 +62676,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdModel.
                             """
+                            igmp_snooping: IgmpSnooping
+                            """Subclass of AvdModel."""
                             igmp_snooping_enabled: bool | None
                             """Enable or disable IGMP snooping (Enabled by default on EOS)."""
                             igmp_snooping_querier: IgmpSnoopingQuerier
@@ -62064,6 +62753,7 @@ class EosDesigns(EosDesignsRootModel):
                                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                                     vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
+                                    igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                                     igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                                     igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                                     vxlan: bool | UndefinedType = Undefined,
@@ -62204,6 +62894,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                            Subclass of AvdModel.
+                                        igmp_snooping: Subclass of AvdModel.
                                         igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                                         igmp_snooping_querier: Subclass of AvdModel.
                                         vxlan: Extend this SVI over VXLAN.
@@ -62562,6 +63253,96 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class IgmpSnooping(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Querier(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                Version: TypeAlias = Literal[1, 2, 3]
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                                enabled: bool | None
+                                """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                                source_address: str | None
+                                """
+                                The value of `source_address` will be interpreted according to these rules:
+                                - `vrf_router_id` will
+                                configure the VRF router ID address according to
+                                `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                - 'diagnostic_loopback' will configure the
+                                VRF Diagnostic Loopback address.
+                                - `main_router_id` will configure the Loopback0 IP address.
+                                - An
+                                IPv4 address will be used directly as the source address.
+                                Overrides
+                                `<network_services_key>[].igmp_snooping.querier.source_address`.
+                                """
+                                version: Version | None
+                                """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        source_address: str | None | UndefinedType = Undefined,
+                                        version: Version | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Querier.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                                            source_address:
+                                               The value of `source_address` will be interpreted according to these rules:
+                                               - `vrf_router_id` will
+                                               configure the VRF router ID address according to
+                                               `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                               - 'diagnostic_loopback' will configure the
+                                               VRF Diagnostic Loopback address.
+                                               - `main_router_id` will configure the Loopback0 IP address.
+                                               - An
+                                               IPv4 address will be used directly as the source address.
+                                               Overrides
+                                               `<network_services_key>[].igmp_snooping.querier.source_address`.
+                                            version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "querier": {"type": Querier}, "fast_leave": {"type": bool}}
+                            enabled: bool | None
+                            """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+                            querier: Querier
+                            """Subclass of AvdModel."""
+                            fast_leave: bool | None
+                            """Enable IGMP snooping fast-leave feature."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    querier: Querier | UndefinedType = Undefined,
+                                    fast_leave: bool | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    IgmpSnooping.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                                        querier: Subclass of AvdModel.
+                                        fast_leave: Enable IGMP snooping fast-leave feature.
+
+                                    """
+
                         class IgmpSnoopingQuerier(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -62586,7 +63367,7 @@ class EosDesigns(EosDesignsRootModel):
                             - An
                             IPv4 address will be used directly as the source address.
                             Overrides
-                            `<network_services_key>[].igmp_snooping_querier.source_address`.
+                            `<network_services_key>[].igmp_snooping.querier.source_address`.
                             """
                             version: Version | None
                             """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
@@ -62622,7 +63403,7 @@ class EosDesigns(EosDesignsRootModel):
                                            - An
                                            IPv4 address will be used directly as the source address.
                                            Overrides
-                                           `<network_services_key>[].igmp_snooping_querier.source_address`.
+                                           `<network_services_key>[].igmp_snooping.querier.source_address`.
                                         version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                                         fast_leave: Enable IGMP snooping fast-leave feature.
 
@@ -62838,6 +63619,7 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_l2_multicast": {"type": EvpnL2Multicast},
                             "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                             "evpn_l3_multicast": {"type": EvpnL3Multicast},
+                            "igmp_snooping": {"type": IgmpSnooping},
                             "igmp_snooping_enabled": {"type": bool},
                             "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                             "vxlan": {"type": bool, "default": True},
@@ -63047,6 +63829,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        igmp_snooping: IgmpSnooping
+                        """Subclass of AvdModel."""
                         igmp_snooping_enabled: bool | None
                         """Enable or disable IGMP snooping (Enabled by default on EOS)."""
                         igmp_snooping_querier: IgmpSnoopingQuerier
@@ -63126,6 +63910,7 @@ class EosDesigns(EosDesignsRootModel):
                                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                                 vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
+                                igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                                 igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                                 igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                                 vxlan: bool | UndefinedType = Undefined,
@@ -63288,6 +64073,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdModel.
+                                    igmp_snooping: Subclass of AvdModel.
                                     igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                                     igmp_snooping_querier: Subclass of AvdModel.
                                     vxlan: Extend this SVI over VXLAN.
@@ -67137,6 +67923,96 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class IgmpSnooping(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Querier(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            Version: TypeAlias = Literal[1, 2, 3]
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}}
+                            enabled: bool | None
+                            """Will be enabled automatically if `evpn_l2_multicast` is enabled."""
+                            source_address: str | None
+                            """
+                            The value of `source_address` will be interpreted according to these rules:
+                            - `vrf_router_id` will
+                            configure the VRF router ID address according to
+                            `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                            - 'diagnostic_loopback' will configure the
+                            VRF Diagnostic Loopback address.
+                            - `main_router_id` will configure the Loopback0 IP address.
+                            - An
+                            IPv4 address will be used directly as the source address.
+                            Overrides
+                            `<network_services_key>[].igmp_snooping.querier.source_address`.
+                            """
+                            version: Version | None
+                            """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    source_address: str | None | UndefinedType = Undefined,
+                                    version: Version | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Querier.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                                        source_address:
+                                           The value of `source_address` will be interpreted according to these rules:
+                                           - `vrf_router_id` will
+                                           configure the VRF router ID address according to
+                                           `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                                           - 'diagnostic_loopback' will configure the
+                                           VRF Diagnostic Loopback address.
+                                           - `main_router_id` will configure the Loopback0 IP address.
+                                           - An
+                                           IPv4 address will be used directly as the source address.
+                                           Overrides
+                                           `<network_services_key>[].igmp_snooping.querier.source_address`.
+                                        version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "querier": {"type": Querier}, "fast_leave": {"type": bool}}
+                        enabled: bool | None
+                        """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+                        querier: Querier
+                        """Subclass of AvdModel."""
+                        fast_leave: bool | None
+                        """Enable IGMP snooping fast-leave feature."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | None | UndefinedType = Undefined,
+                                querier: Querier | UndefinedType = Undefined,
+                                fast_leave: bool | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                IgmpSnooping.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                                    querier: Subclass of AvdModel.
+                                    fast_leave: Enable IGMP snooping fast-leave feature.
+
+                                """
+
                     class IgmpSnoopingQuerier(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -67278,6 +68154,7 @@ class EosDesigns(EosDesignsRootModel):
                         "evpn_l2_multi_domain": {"type": bool},
                         "evpn_l2_multicast": {"type": EvpnL2Multicast},
                         "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
+                        "igmp_snooping": {"type": IgmpSnooping},
                         "igmp_snooping_enabled": {"type": bool},
                         "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                         "bgp": {"type": Bgp},
@@ -67380,6 +68257,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     vxlan_flood_multicast: VxlanFloodMulticast
                     """Subclass of AvdModel."""
+                    igmp_snooping: IgmpSnooping
+                    """Subclass of AvdModel."""
                     igmp_snooping_enabled: bool | None
                     """Enable or disable IGMP snooping (Enabled by default on EOS)."""
                     igmp_snooping_querier: IgmpSnoopingQuerier
@@ -67416,6 +68295,7 @@ class EosDesigns(EosDesignsRootModel):
                             evpn_l2_multi_domain: bool | None | UndefinedType = Undefined,
                             evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                             vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
+                            igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                             igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                             igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                             bgp: Bgp | UndefinedType = Undefined,
@@ -67496,6 +68376,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of
                                    AvdModel.
                                 vxlan_flood_multicast: Subclass of AvdModel.
+                                igmp_snooping: Subclass of AvdModel.
                                 igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                                 igmp_snooping_querier:
                                    Enable igmp snooping querier, by default using IP address of Loopback 0.
@@ -67660,6 +68541,8 @@ class EosDesigns(EosDesignsRootModel):
                         Interfaces patched to the pseudowire on this endpoints.
                         The list of interfaces is mapped to the list
                         of nodes, so they must have the same length.
+                        For subinterfaces, the parent physical interface is
+                        automatically created if not defined elsewhere.
 
 
                         Subclass of AvdList with `str` items.
@@ -67694,6 +68577,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Interfaces patched to the pseudowire on this endpoints.
                                        The list of interfaces is mapped to the list
                                        of nodes, so they must have the same length.
+                                       For subinterfaces, the parent physical interface is
+                                       automatically created if not defined elsewhere.
 
 
                                        Subclass of AvdList with `str` items.
@@ -67787,7 +68672,7 @@ class EosDesigns(EosDesignsRootModel):
                     "redistribute_mlag_ibgp_peering_vrfs": {"type": bool, "default": False},
                     "evpn_vlan_bundle": {"type": str},
                     "bgp_peer_groups": {"type": BgpPeerGroups},
-                    "igmp": {"type": Igmp},
+                    "igmp_snooping": {"type": IgmpSnooping},
                     "evpn_l2_multicast": {"type": EvpnL2Multicast},
                     "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                     "evpn_l3_multicast": {"type": EvpnL3Multicast},
@@ -67878,7 +68763,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of
                 AvdIndexedList with `BgpPeerGroupsItem` items. Primary key is `name` (`str`).
                 """
-                igmp: Igmp
+                igmp_snooping: IgmpSnooping
                 """Subclass of AvdModel."""
                 evpn_l2_multicast: EvpnL2Multicast
                 """
@@ -68010,7 +68895,7 @@ class EosDesigns(EosDesignsRootModel):
                         redistribute_mlag_ibgp_peering_vrfs: bool | UndefinedType = Undefined,
                         evpn_vlan_bundle: str | None | UndefinedType = Undefined,
                         bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
-                        igmp: Igmp | UndefinedType = Undefined,
+                        igmp_snooping: IgmpSnooping | UndefinedType = Undefined,
                         evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                         vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                         evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
@@ -68084,7 +68969,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                Subclass of
                                AvdIndexedList with `BgpPeerGroupsItem` items. Primary key is `name` (`str`).
-                            igmp: Subclass of AvdModel.
+                            igmp_snooping: Subclass of AvdModel.
                             evpn_l2_multicast:
                                Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant.
                                - Multicast group binding is
@@ -69175,13 +70060,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -69238,8 +70123,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -70260,7 +71145,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
-                        subinterface, the parent physical interface is automatically created.
+                        subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         """
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -70457,7 +71342,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
-                                       subinterface, the parent physical interface is automatically created.
+                                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                     profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
@@ -74256,13 +75141,13 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool
                             evpn_domain_id: str
                             """
-                            Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                            Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                             Default value: `"65535:1"`
                             """
                             ipvpn_domain_id: str
                             """
-                            Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                            Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                             Default value: `"65535:2"`
                             """
@@ -74319,8 +75204,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
-                                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                        evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                        ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                         enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                         maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                         local_as:
@@ -75352,7 +76237,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                             For a
-                            subinterface, the parent physical interface is automatically created.
+                            subinterface, the parent physical interface is automatically created if not defined elsewhere.
                             """
                             profile: str | None
                             """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -75549,7 +76434,7 @@ class EosDesigns(EosDesignsRootModel):
                                         name:
                                            Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                            For a
-                                           subinterface, the parent physical interface is automatically created.
+                                           subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                         profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                         description:
                                            Interface description.
@@ -79300,13 +80185,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -79363,8 +80248,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -80385,7 +81270,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
-                        subinterface, the parent physical interface is automatically created.
+                        subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         """
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -80582,7 +81467,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
-                                       subinterface, the parent physical interface is automatically created.
+                                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                     profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.
@@ -84407,13 +85292,13 @@ class EosDesigns(EosDesignsRootModel):
                         enabled: bool
                         evpn_domain_id: str
                         """
-                        Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:1"`
                         """
                         ipvpn_domain_id: str
                         """
-                        Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                        Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
 
                         Default value: `"65535:2"`
                         """
@@ -84470,8 +85355,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
-                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                                    evpn_domain_id: Domain ID to assign to EVPN address family for use with D-path. Format `<nn>:<nn>`.
+                                    ipvpn_domain_id: Domain ID to assign to IPVPN address families for use with D-path. Format `<nn>:<nn>`.
                                     enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
                                     maximum_routes: Maximum routes to accept from IPVPN remote peers.
                                     local_as:
@@ -85492,7 +86377,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                         For a
-                        subinterface, the parent physical interface is automatically created.
+                        subinterface, the parent physical interface is automatically created if not defined elsewhere.
                         """
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -85689,7 +86574,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name:
                                        Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
                                        For a
-                                       subinterface, the parent physical interface is automatically created.
+                                       subinterface, the parent physical interface is automatically created if not defined elsewhere.
                                     profile: L3 interface profile name. Profile defined under `l3_interface_profiles`.
                                     description:
                                        Interface description.

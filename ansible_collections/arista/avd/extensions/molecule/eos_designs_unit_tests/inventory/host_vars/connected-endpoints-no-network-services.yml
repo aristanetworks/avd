@@ -29,3 +29,28 @@ servers:
         endpoint_ports: [ Endpoint_port4 ]
         mode: trunk
         trunk_groups: [group1, group2]
+      - switches: [connected-endpoints-no-network-services]
+        switch_ports: [ Ethernet20 ]
+        endpoint_ports: [ Endpoint_port5 ]
+        mode: trunk
+        description: connected-endpoints-no-network-services_vlans="all->alias of EOS's default/implicit '1-4094'"
+        vlans: all
+      - switches: [connected-endpoints-no-network-services]
+        switch_ports: [ Ethernet21 ]
+        endpoint_ports: [ Endpoint_port6 ]
+        mode: trunk
+        description: connected-endpoints-no-network-services_vlans="defined_vlans->none"
+        vlans: defined_vlans
+      # Forcing VLANs despite they are not defined on the switch
+      - switches: [connected-endpoints-no-network-services]
+        switch_ports: [ Ethernet22 ]
+        endpoint_ports: [ Endpoint_port7 ]
+        mode: trunk
+        description: connected-endpoints-no-network-services_vlans="100,200"
+        vlans: 100,200
+      - switches: [connected-endpoints-no-network-services]
+        switch_ports: [ Ethernet23 ]
+        endpoint_ports: [ Endpoint_port8 ]
+        mode: trunk
+        description: connected-endpoints-no-network-services_vlans="none"
+        vlans: none

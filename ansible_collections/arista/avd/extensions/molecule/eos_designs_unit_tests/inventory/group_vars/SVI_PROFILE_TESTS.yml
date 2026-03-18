@@ -80,21 +80,25 @@ svi_profiles:
 #### ---- Test inheritance of svi igmp_snooping_enabled ----- ###
 # Tests logic for network services: ip igmp snooping
 # Precedence order:
-# 1. svi.igmp_snooping_enabled
-# 2. svi_profile.igmp_snooping_enabled
-# 3. svi_parent_profile.igmp_snooping_enabled
+# 1. svi.igmp_snooping.enabled
+# 2. svi_profile.igmp_snooping.enabled
+# 3. svi_parent_profile.igmp_snooping.enabled
 
   - profile: igmp_parent_profile_1
-    igmp_snooping_enabled: false
+    igmp_snooping:
+      enabled: false
 
   - profile: igmp_parent_profile_2
-    igmp_snooping_enabled: true
+    igmp_snooping:
+      enabled: true
 
   - profile: igmp_child_profile_1
-    igmp_snooping_enabled: false
+    igmp_snooping:
+      enabled: false
 
   - profile: igmp_child_profile_2
-    igmp_snooping_enabled: true
+    igmp_snooping:
+      enabled: true
     parent_profile: igmp_parent_profile_1
 
   - profile: igmp_child_profile_3
@@ -273,26 +277,27 @@ tenants:
             name: svi_profile_tests_121_description
             profile: struct_config_on_multiple_svis
 
-#### ---- Test inheritance of svi igmp_snooping_enabled ----- ###
+#### ---- Test inheritance of svi igmp_snooping.enabled ----- ###
 # Tests logic for network services: ip igmp snooping
 # Expected result for all tests is that igmp snooping is enabled for all VLANs
 
-          # igmp_snooping_enabled set on svi to true, child_profile and parent_profile set to false
+          # igmp_snooping.enabled set on svi to true, child_profile and parent_profile set to false
           - id: 210
             name: igmp_snooping_enabled_210
             enabled: true
             ip_address_virtual: 10.2.10.1/24
-            igmp_snooping_enabled: true
+            igmp_snooping:
+              enabled: true
             profile: igmp_child_profile_1
 
-          # igmp_snooping_enabled set on child_profile to true and parent_profile set to false
+          # igmp_snooping.enabled set on child_profile to true and parent_profile set to false
           - id: 211
             name: igmp_snooping_enabled_211
             enabled: true
             ip_address_virtual: 10.2.11.1/24
             profile: igmp_child_profile_2
 
-          # igmp_snooping_enabled set on parent_profile to true
+          # igmp_snooping.enabled set on parent_profile to true
           - id: 212
             name: igmp_snooping_enabled_212
             enabled: true
