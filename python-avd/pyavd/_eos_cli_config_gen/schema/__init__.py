@@ -40363,16 +40363,87 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class LabeledUnicast(AvdModel):
                 """Subclass of AvdModel."""
 
-                Rib: TypeAlias = Literal["ip", "tunnel", "ip tunnel"]
-                _fields: ClassVar[dict] = {"rib": {"type": str}, "route_map": {"type": str}}
-                rib: Rib | None
-                """Which rib to install LU routes.  EOS default is tunnel."""
-                route_map: str | None
-                """Define a route-map to use."""
+                class Rib(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Ip(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool | None
+                        route_map: str | None
+                        """Route-map applied to IP RIB"""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                Ip.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: Route-map applied to IP RIB
+
+                                """
+
+                    class Tunnel(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
+                        enabled: bool | None
+                        route_map: str | None
+                        """Route-map applied to tunnel RIB"""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                Tunnel.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    route_map: Route-map applied to tunnel RIB
+
+                                """
+
+                    _fields: ClassVar[dict] = {"ip": {"type": Ip}, "tunnel": {"type": Tunnel}}
+                    ip: Ip
+                    """Subclass of AvdModel."""
+                    tunnel: Tunnel
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, ip: Ip | UndefinedType = Undefined, tunnel: Tunnel | UndefinedType = Undefined) -> None:
+                            """
+                            Rib.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                ip: Subclass of AvdModel.
+                                tunnel: Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"rib": {"type": Rib}}
+                rib: Rib
+                """
+                Configure LU RIB behavior for ip and/or tunnel.
+
+                Subclass of AvdModel.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, rib: Rib | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, rib: Rib | UndefinedType = Undefined) -> None:
                         """
                         LabeledUnicast.
 
@@ -40380,8 +40451,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            rib: Which rib to install LU routes.  EOS default is tunnel.
-                            route_map: Define a route-map to use.
+                            rib:
+                               Configure LU RIB behavior for ip and/or tunnel.
+
+                               Subclass of AvdModel.
 
                         """
 

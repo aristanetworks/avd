@@ -9314,9 +9314,10 @@ ASN Notation: asdot
 
 ##### BGP LU RIB
 
-| RIB | Route-map |
-| --- | --------- |
-| ip | RM-TEST |
+| RIB | Enabled | Route-map |
+| --- | ------- | --------- |
+| ip | True | RM-rib1 | 
+| tunnel | False | - |
 
 #### Router BGP IPv4 SR-TE Address Family
 
@@ -9492,7 +9493,7 @@ ASN Notation: asdot
 !
 router bgp 65101
    bgp asn notation asdot
-   bgp labeled-unicast rib ip route-map RM-TEST
+   bgp labeled-unicast rib ip route-map RM-rib1
    router-id 192.168.255.3
    update wait-for-convergence
    update wait-install

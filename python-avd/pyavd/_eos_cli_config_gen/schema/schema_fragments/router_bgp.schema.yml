@@ -241,12 +241,25 @@ keys:
             type: dict
             keys:
               rib:
-                type: str
-                description: Which rib to install LU routes.  EOS default is tunnel.
-                valid_values: ["ip", "tunnel", "ip tunnel"]
-              route_map:
-                type: str
-                description: Define a route-map to use.
+                type: dict
+                description: Configure LU RIB behavior for ip and/or tunnel.
+                keys:
+                  ip:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                      route_map:
+                        type: str
+                        description: Route-map applied to IP RIB
+                  tunnel:
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                      route_map:
+                        type: str
+                        description: Route-map applied to tunnel RIB
       listen_ranges:
         type: list
         description: |

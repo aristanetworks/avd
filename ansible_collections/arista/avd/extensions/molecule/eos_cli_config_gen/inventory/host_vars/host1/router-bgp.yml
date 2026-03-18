@@ -51,8 +51,10 @@ router_bgp:
       send: ecmp
       send_limit: 30
     labeled_unicast:
-      rib: ip
-      route_map: RM-TEST
+      rib:
+        ip:
+          enabled: true
+          route_map: RM-rib1
   listen_ranges:
       # should render
     - prefix: 10.10.10.0/24
