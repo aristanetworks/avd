@@ -1,0 +1,21 @@
+---
+# Testing l3_edge.p2p_links with IPv6-only and include_in_underlay_protocol: true
+
+# Minimum config to only test the specific feature.
+type: spine
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+  nodes:
+    - name: l3-edge-ipv6-only-include-in-underlay-protocol
+      id: 1
+
+l3_edge:
+  p2p_links:
+    - nodes: [l3-edge-ipv6-only-include-in-underlay-protocol, peer1]
+      interfaces: [Ethernet1, Ethernet1]
+      ipv6: [2001:db8:100::1/64, 2001:db8:100::2/64]
+      include_in_underlay_protocol: true
+
+expected_error_message: "l3_edge.p2p_links.[].include_in_underlay_protocol is currently not supported with IPv6 addresses."

@@ -1,0 +1,11 @@
+{
+    "payload": [
+        {
+            "key": {
+                "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                "configletId": ""
+            },
+            "error": "static configlet ID cannot be empty"
+        }
+    ]
+}
