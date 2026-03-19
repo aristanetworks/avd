@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import sys
 from importlib.metadata import PackageNotFoundError
 from typing import TYPE_CHECKING
 from unittest.mock import Mock, patch
@@ -111,7 +112,7 @@ def test_cv_client_get_user_agent_pyavd_metadata_missing_falls_back_to_version_a
 
     with (
         patch("pyavd._cv.client.version", side_effect=_mock_version(versions)),
-        patch("pyavd._cv.client.__pyavd_version__", "6.100.0"),
+        patch("pyavd.__version__", "6.100.0"),
         patch("pyavd._cv.client.platform.python_version", return_value="3.12.2"),
         patch("pyavd._cv.client.get", mocked_requests_get),
     ):
@@ -140,9 +141,10 @@ def test_cv_client_get_user_agent_pyavd_unavailable(cv_client: CVClient) -> None
 
     with (
         patch("pyavd._cv.client.version", side_effect=_mock_version(versions)),
-        patch("pyavd._cv.client.__pyavd_version__", None),
         patch("pyavd._cv.client.platform.python_version", return_value="3.12.2"),
         patch("pyavd._cv.client.get", mocked_requests_get),
+        # Simulate failed import. This must be done after all pyavd-related patched above.
+        patch.dict(sys.modules, {"pyavd": None}),
     ):
         cv_client_user_agent = cv_client._get_user_agent()
         cv_client._set_version()

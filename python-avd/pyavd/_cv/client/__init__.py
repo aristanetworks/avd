@@ -31,11 +31,6 @@ if TYPE_CHECKING:
     from grpclib.protocol import H2Protocol
     from typing_extensions import Self
 
-try:
-    from pyavd import __version__ as __pyavd_version__
-except ImportError:
-    __pyavd_version__ = None
-
 
 class CVClientProtocol(
     ChangeControlMixin,
@@ -234,7 +229,10 @@ class CVClientProtocol(
             pyavd_version = version("pyavd")
         # Fallback to __version__
         except PackageNotFoundError:
-            pyavd_version = __pyavd_version__
+            try:
+                from pyavd import __version__ as pyavd_version  # noqa: PLC0415
+            except ImportError:
+                pyavd_version = None
 
         if pyavd_version:
             user_agent_parts.append(f"pyavd/{pyavd_version}")
