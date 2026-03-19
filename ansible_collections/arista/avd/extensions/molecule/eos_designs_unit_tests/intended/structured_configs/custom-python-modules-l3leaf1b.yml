@@ -25,7 +25,7 @@ ethernet_interfaces:
     peer_interface: Ethernet4
     peer_type: mlag_peer
 - name: Ethernet1
-  description: TEST_CUSTOM_PREFIX_Ethernet1_P2P_LINK_TO_CUSTOM-PYTHON-MODULES-SPINE1_Ethernet2
+  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON-MODULES-SPINE1_Ethernet2
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.23/31
@@ -42,11 +42,11 @@ ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 loopback_interfaces:
 - name: Loopback0
-  description: TEST_CUSTOM_PREFIX_Loopback0_EVPN_Overlay_Peering_L3LEAF
+  description: TEST_CUSTOM_PREFIX_EVPN_Overlay_Peering_L3LEAF
   shutdown: false
   ip_address: 192.168.255.22/32
 - name: Loopback1
-  description: TEST_CUSTOM_PREFIX_Loopback1_VTEP_VXLAN_Tunnel_Source_L3LEAF
+  description: TEST_CUSTOM_PREFIX_VTEP_VXLAN_Tunnel_Source_L3LEAF
   shutdown: false
   ip_address: 192.168.254.21/32
 management_interfaces:
@@ -70,7 +70,7 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel3
-  description: TEST_CUSTOM_PREFIX_Port-Channel3_MLAG_PEER_custom-python-modules-l3leaf1a_Po3
+  description: TEST_CUSTOM_PREFIX_MLAG_PEER_custom-python-modules-l3leaf1a_Po3
   shutdown: false
   switchport:
     enabled: true

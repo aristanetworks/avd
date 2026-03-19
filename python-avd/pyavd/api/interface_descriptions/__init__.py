@@ -102,7 +102,6 @@ class AvdInterfaceDescriptions(AvdFacts):
                 {
                     "interface": data.interface,
                     "peer": data.peer,
-                    "interface": data.interface,
                     "peer_interface": data.peer_interface,
                     "vrf": data.vrf,
                     "wan_carrier": data.wan_carrier,
@@ -143,7 +142,6 @@ class AvdInterfaceDescriptions(AvdFacts):
                     {
                         "interface": data.interface,
                         "peer": data.peer,
-                        "interface": data.interface,
                         "peer_interface": data.peer_interface,
                         "port_channel_id": data.port_channel_id,
                         "peer_port_channel_id": data.peer_channel_group_id,
@@ -188,7 +186,6 @@ class AvdInterfaceDescriptions(AvdFacts):
                 {
                     "interface": data.interface,
                     "peer": data.peer,
-                    "interface": data.interface,
                     "peer_interface": data.peer_interface,
                     "port_channel_id": data.port_channel_id,
                     "peer_port_channel_id": data.peer_channel_group_id,
@@ -223,6 +220,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.mlag_ethernet_interfaces:
             return self._template(
                 template_path,
+                # TODO: AVD 7.0.0 - Change this to interface=data.interface for consistency.
                 mlag_interface=data.interface,
                 mlag_peer=data.mlag_peer,
             )
@@ -261,7 +259,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.mlag_port_channel_interfaces:
             return self._template(
                 template_path,
-                mlag_interface=data.interface,
+                interface = data.interface,
                 mlag_interfaces=data.mlag_interfaces,
                 mlag_peer=data.mlag_peer,
                 mlag_port_channel_id=data.mlag_port_channel_id,
