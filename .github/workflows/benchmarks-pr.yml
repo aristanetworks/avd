@@ -12,7 +12,7 @@ env:
 jobs:
   pr-benchmarks:
     name: PR Benchmarks (Shard ${{ matrix.shard }}/16)
-    runs-on: ubuntu-latest  # Standard runner (free)
+    runs-on: internalci-k8s-1-1-gha-r  # Internal runner with more resources
     timeout-minutes: 120
     if: contains(github.event.pull_request.labels.*.name, 'benchmark')
     strategy:
@@ -43,9 +43,9 @@ jobs:
           token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
           run: |
-            # Extreme sharding: 16 benchmarks / 16 shards = 1 test per shard
-            # This ensures each shard only runs ONE benchmark, avoiding memory issues
-            # API benchmarks (8 tests) + scale benchmarks (8 tests) = 16 total
+            # Run ALL benchmarks: API (8 tests) + scale (8 tests) = 16 total
+            # 16 shards = 1 test per shard for optimal resource usage
+            # Internal runner has enough resources to handle all tests
             echo "=== Shard ${{ matrix.shard }}/16 - Collecting tests ==="
             pytest --codspeed \
               benchmarks/test_pyavd_api.py \
