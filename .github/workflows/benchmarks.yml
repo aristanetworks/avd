@@ -47,7 +47,7 @@ env:
 jobs:
   benchmarks:
     name: Benchmark (Shard ${{ matrix.shard }}/7, Python ${{ matrix.python }}, Ansible ${{ matrix.ansible }})
-    runs-on: ubuntu-latest
+    runs-on: internalci-k8s-1-1-gha-r  # Internal runner with more resources
     timeout-minutes: 90
     strategy:
       fail-fast: false
