@@ -259,7 +259,7 @@ class AvdInterfaceDescriptions(AvdFacts):
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.mlag_port_channel_interfaces:
             return self._template(
                 template_path,
-                interface = data.interface,
+                interface=data.interface,
                 mlag_interfaces=data.mlag_interfaces,
                 mlag_peer=data.mlag_peer,
                 mlag_port_channel_id=data.mlag_port_channel_id,
