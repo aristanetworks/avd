@@ -149,26 +149,6 @@ port_channel_interfaces:
     peer_type: point_to_point_service
   switchport:
     enabled: false
-- name: Port-Channel7.1000
-  shutdown: false
-  encapsulation_vlan:
-    client:
-      encapsulation: dot1q
-      vlan: 1000
-    network:
-      encapsulation: client
-  metadata:
-    peer_type: point_to_point_service
-- name: Port-Channel8.1000
-  shutdown: false
-  encapsulation_vlan:
-    client:
-      encapsulation: dot1q
-      vlan: 1000
-    network:
-      encapsulation: client
-  metadata:
-    peer_type: point_to_point_service
 - name: Port-Channel7
   shutdown: false
   evpn_ethernet_segment:
@@ -179,6 +159,16 @@ port_channel_interfaces:
     peer_type: system
   switchport:
     enabled: false
+- name: Port-Channel7.1000
+  shutdown: false
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 1000
+    network:
+      encapsulation: client
+  metadata:
+    peer_type: point_to_point_service
 - name: Port-Channel8
   shutdown: false
   evpn_ethernet_segment:
@@ -188,6 +178,16 @@ port_channel_interfaces:
     peer_type: system
   switchport:
     enabled: false
+- name: Port-Channel8.1000
+  shutdown: false
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 1000
+    network:
+      encapsulation: client
+  metadata:
+    peer_type: point_to_point_service
 router_bfd:
   multihop:
     interval: 300

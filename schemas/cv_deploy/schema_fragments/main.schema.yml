@@ -1,0 +1,63 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../python-avd/pyavd/_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  is_deployed:
+    type: bool
+    description: |-
+      When set to `false`, the device will be skipped from all operations performed by the `cv_deploy` role.
+    documentation_options:
+      table: cv_deploy
+    $ref: eos_designs#/keys/is_deployed
+  serial_number:
+    type: str
+    description: |-
+      Serial number of the device used to identify the device in CloudVision.
+      Takes precedence over `system_mac_address` and `inventory_hostname`.
+
+      Device identification precedence:
+        1. `serial_number` (highest priority)
+        2. `system_mac_address`
+        3. `inventory_hostname` (lowest priority, used only if neither of the above is set)
+    documentation_options:
+      table: cv_deploy
+    $ref: eos_designs#/keys/serial_number
+  system_mac_address:
+    type: str
+    description: |-
+      System MAC address of the device used to identify the device in CloudVision.
+      Should match the MAC address shown in "show version" on the device.
+      Used when `serial_number` is not set.
+
+      Device identification precedence:
+        1. `serial_number` (highest priority)
+        2. `system_mac_address`
+        3. `inventory_hostname` (lowest priority, used only if neither of the above is set)
+    documentation_options:
+      table: cv_deploy
+    $ref: eos_designs#/keys/system_mac_address
+  cv_device_tags:
+    type: list
+    description: |-
+      List of CloudVision device tags to be assigned to this device.
+    documentation_options:
+      table: cv_deploy
+    $ref: eos_cli_config_gen#/keys/metadata/keys/cv_tags/keys/device_tags
+  cv_interface_tags:
+    type: list
+    description: |-
+      List of CloudVision interface tags to be assigned to interfaces on this device.
+    documentation_options:
+      table: cv_deploy
+    $ref: eos_cli_config_gen#/keys/metadata/keys/cv_tags/keys/interface_tags
+  cv_pathfinder_metadata:
+    type: dict
+    description: |-
+      Metadata used for CV Pathfinder visualization on CloudVision.
+    documentation_options:
+      table: cv_deploy
+    $ref: eos_cli_config_gen#/keys/metadata/keys/cv_pathfinder

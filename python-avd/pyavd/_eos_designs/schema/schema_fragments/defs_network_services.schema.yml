@@ -177,9 +177,35 @@ $defs:
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name.
-        igmp:
+        igmp_snooping:
+          documentation_options:
+            table: network-services-multicast-settings
           type: dict
           keys:
+            querier:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Will be enabled automatically if `evpn_l2_multicast` is enabled.
+                source_address:
+                  type: str
+                  description: |-
+                    The value of `source_address` will be interpreted according to these rules:
+                    - `vrf_router_id` will configure the VRF router ID address according to `<network_services_keys.name>[].vrfs[].bgp.router_id`.
+                    - `diagnostic_loopback` will configure the VRF Diagnostic Loopback.
+                    - `main_router_id` will configure the Loopback0 IP address.
+                    - An IPv4 address will be used directly as the source address.
+                  default: main_router_id
+                version:
+                  type: int
+                  description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                  convert_types:
+                    - str
+                  valid_values:
+                    - 1
+                    - 2
+                    - 3
             fast_leave:
               type: bool
               description: |-
@@ -218,7 +244,7 @@ $defs:
                 warning: true
                 removed: false
                 remove_in_version: 7.0.0
-                new_key: <network_services_key.key>.igmp.fast_leave
+                new_key: igmp_snooping.fast_leave under the Tenant
               description: Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.
             always_redistribute_igmp:
               type: bool
@@ -340,6 +366,11 @@ $defs:
             Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
             When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.
           type: dict
+          deprecation:
+            warning: true
+            removed: false
+            remove_in_version: 7.0.0
+            new_key: igmp_snooping.querier
           keys:
             enabled:
               type: bool
@@ -856,7 +887,9 @@ $defs:
                       type: list
                       items:
                         type: str
-                        description: Interface name.
+                        description: |-
+                          Interface name.
+                          For subinterfaces, the parent physical interface is automatically created if not defined elsewhere.
                     encapsulation_dot1q_vlan:
                       type: list
                       description: For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
@@ -1801,6 +1834,7 @@ $defs:
                       description: |
                         Interfaces patched to the pseudowire on this endpoints.
                         The list of interfaces is mapped to the list of nodes, so they must have the same length.
+                        For subinterfaces, the parent physical interface is automatically created if not defined elsewhere.
                       required: true
                       min_length: 1
                       items:
