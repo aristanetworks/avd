@@ -40371,6 +40371,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                         enabled: bool | None
+                        """Install LU routes into IP RIB."""
                         route_map: str | None
                         """Route-map applied to IP RIB"""
 
@@ -40384,7 +40385,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    enabled: enabled
+                                    enabled: Install LU routes into IP RIB.
                                     route_map: Route-map applied to IP RIB
 
                                 """
@@ -40394,6 +40395,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
                         enabled: bool | None
+                        """Install LU routes into Tunnel RIB."""
                         route_map: str | None
                         """Route-map applied to tunnel RIB"""
 
@@ -40407,7 +40409,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    enabled: enabled
+                                    enabled: Install LU routes into Tunnel RIB.
                                     route_map: Route-map applied to tunnel RIB
 
                                 """
