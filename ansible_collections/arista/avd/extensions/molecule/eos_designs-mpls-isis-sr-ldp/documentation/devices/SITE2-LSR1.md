@@ -45,9 +45,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -143,11 +143,11 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_SITE2-LER1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - | - |
-| Ethernet3 | P2P_SITE1-LSR1_Ethernet3 | - | - | default | 9178 | False | - | - | - | - | - |
-| Ethernet4 | P2P_SITE2-RR1_Ethernet4 | - | - | default | 9178 | False | - | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Ethernet1 | P2P_SITE2-LER1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - | - | - | - |
+| Ethernet3 | P2P_SITE1-LSR1_Ethernet3 | - | - | default | 9178 | False | - | - | - | - | - | - | - |
+| Ethernet4 | P2P_SITE2-RR1_Ethernet4 | - | - | default | 9178 | False | - | - | - | - | - | - | - |
 
 ##### ISIS
 
