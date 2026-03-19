@@ -19,6 +19,8 @@ traffic-policies
 {%             if vrf.traffic_policy_input_physical is arista.avd.defined %}
       traffic-policy input {{ vrf.traffic_policy_input_physical }} physical
 {%             endif %}
+{%         endif %}
+{%         if not loop.last %}
    !
 {%         endif %}
 {%     endfor %}
