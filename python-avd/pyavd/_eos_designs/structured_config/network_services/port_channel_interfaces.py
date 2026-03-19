@@ -55,7 +55,7 @@ class PortChannelInterfacesMixin(Protocol):
         """
         for vrf in tenant.vrfs:
             for l3_port_channel in vrf.l3_port_channels:
-                if (is_subinterface := "." in l3_port_channel.name) is not None:
+                if is_subinterface := "." in l3_port_channel.name:
                     # Validation for l3_port_channel subinterface
                     if l3_port_channel.member_interfaces:
                         msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'member_interfaces' set. This is not a valid setting."
