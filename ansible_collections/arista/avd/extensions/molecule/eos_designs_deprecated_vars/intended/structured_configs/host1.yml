@@ -68,11 +68,18 @@ hostname: host1
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-  - id: 252
+  - id: 301
     querier:
       enabled: true
       address: 192.168.255.101
-    fast_leave: true
+      version: 3
+  - id: 302
+    querier:
+      enabled: true
+      address: 2.2.2.2
+      version: 2
+  - id: 401
+    enabled: false
 ip_radius:
   source_interface: Vlan123
   vrfs:
@@ -88,6 +95,7 @@ ip_tacacs:
     source_interface: Vlan125
   - name: MGMT1
     source_interface: Vlan125
+ip_virtual_router_mac_address: 00:1c:73:00:00:01
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -180,27 +188,46 @@ router_bgp:
       enabled: true
       route_map: RM-CONN-2-BGP
   vlans:
-  - id: 251
+  - id: 301
     metadata:
       tenants:
-      - Tenant_F
-    rd: 192.168.255.101:10251
+      - Tenant_G
+    rd: 192.168.255.101:30301
     route_targets:
       both:
-      - 10251:10251
+      - 30301:30301
     redistribute_routes:
     - learned
-  - id: 252
+  - id: 302
     metadata:
       tenants:
-      - Tenant_F
-    rd: 192.168.255.101:10252
+      - Tenant_G
+    rd: 192.168.255.101:30302
     route_targets:
       both:
-      - 10252:10252
+      - 30302:30302
     redistribute_routes:
     - learned
-    - igmp
+  - id: 22
+    metadata:
+      tenants:
+      - Tenant_H
+    rd: 192.168.255.101:40022
+    route_targets:
+      both:
+      - 40022:40022
+    redistribute_routes:
+    - learned
+  - id: 401
+    metadata:
+      tenants:
+      - Tenant_H
+    rd: 192.168.255.101:40401
+    route_targets:
+      both:
+      - 40401:40401
+    redistribute_routes:
+    - learned
   address_family_evpn:
     domain_identifier: '65200:2'
     domain_identifier_remote: '65100:1'
@@ -216,6 +243,22 @@ router_bgp:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
+  vrfs:
+  - name: IGMP_QUERIER_TEST_3
+    rd: 192.168.255.101:41
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '41:41'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '41:41'
+    router_id: 192.168.255.101
+    redistribute:
+      connected:
+        enabled: true
 router_multicast:
   ipv4:
     routing: true
@@ -253,25 +296,52 @@ tacacs_servers:
     key: 071B245F5A
   policy_unknown_mandatory_attribute_ignore: false
 transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan22
+  description: VLAN_22
+  shutdown: false
+  vrf: IGMP_QUERIER_TEST_3
+  ip_address_virtual: 10.0.22.1/24
+  metadata:
+    tenants:
+    - Tenant_H
+    tags:
+    - test_l3
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
 vlans:
-- id: 251
-  name: MULTICAST_DISABLED_251
+- id: 301
+  name: VLAN_301
   metadata:
     tenants:
-    - Tenant_F
-- id: 252
-  name: MULTICAST_ENABLED_252
+    - Tenant_G
+- id: 302
+  name: VLAN_302
   metadata:
     tenants:
-    - Tenant_F
+    - Tenant_G
+- id: 22
+  name: VLAN_22
+  metadata:
+    tenants:
+    - Tenant_H
+- id: 401
+  name: VLAN_401
+  metadata:
+    tenants:
+    - Tenant_H
 vrfs:
 - name: default
   ip_routing: false
+- name: IGMP_QUERIER_TEST_3
+  description: IGMP_QUERIER_TEST
+  ip_routing: true
+  metadata:
+    tenants:
+    - Tenant_H
 vxlan_interface:
   vxlan1:
     description: host1_VTEP
@@ -279,8 +349,14 @@ vxlan_interface:
       source_interface: Loopback1
       udp_port: 4789
       vlans:
-      - id: 251
-        vni: 10251
-      - id: 252
-        vni: 10252
-        multicast_group: 232.0.0.251
+      - id: 301
+        vni: 30301
+      - id: 302
+        vni: 30302
+      - id: 22
+        vni: 40022
+      - id: 401
+        vni: 40401
+      vrfs:
+      - name: IGMP_QUERIER_TEST_3
+        vni: 41
