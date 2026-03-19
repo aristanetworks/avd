@@ -15,7 +15,7 @@ router bgp {{ router_bgp.as }}
 {%         for rib_type, rib_type_data in router_bgp.bgp.labeled_unicast.rib.items() %}
 {%             if rib_type_data.enabled is true %}
 {%                 do unicast_rib.append(rib_type) %}
-{%                 if rib_type_data.route_map is defined %}
+{%                 if rib_type_data.route_map is arista.avd.defined %}
 {%                     do unicast_rib.append("route-map " ~ rib_type_data.route_map) %}
 {%                 endif %}
 {%             endif %}
