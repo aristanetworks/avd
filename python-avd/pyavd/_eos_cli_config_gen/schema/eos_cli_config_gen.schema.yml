@@ -25095,32 +25095,6 @@ keys:
         ipv6_nd:
           type: dict
           $ref: eos_cli_config_gen#/$defs/ipv6_nd
-          keys:
-            other_config_flag:
-              type: bool
-              description: Set the "other stateful configuration" flag in IPv6 router
-                advertisements.
-            cache:
-              type: dict
-              description: IPv6 neighbor cache options.
-              keys:
-                dynamic_capacity:
-                  type: int
-                  description: Capacity of dynamic cache entries.
-                  convert_types:
-                  - str
-                  min: 0
-                  max: 4294967295
-                expire:
-                  type: int
-                  description: Cache entries expiry in seconds.
-                  convert_types:
-                  - str
-                  min: 1
-                  max: 65535
-                refresh_always:
-                  type: bool
-                  description: Force refresh on cache expiry.
         access_group_in:
           type: str
           description: IPv4 access-list name.
@@ -26447,6 +26421,27 @@ $defs:
     description: IPv6 Neighbor Discovery protocol.
     type: dict
     keys:
+      cache:
+        type: dict
+        description: Neighbor cache options.
+        keys:
+          dynamic_capacity:
+            type: int
+            description: Capacity of dynamic cache entries.
+            convert_types:
+            - str
+            min: 0
+            max: 4294967295
+          expire:
+            type: int
+            description: Cache entries expiry in seconds.
+            convert_types:
+            - str
+            min: 1
+            max: 65535
+          refresh_always:
+            type: bool
+            description: Force refresh on cache expiry.
       ra:
         description: Router Advertisement.
         type: dict
@@ -26489,6 +26484,9 @@ $defs:
               type: bool
               description: Indicate that the prefix cannot be used for stateless address
                 autoconfiguration (SLAAC).
+      other_config_flag:
+        type: bool
+        description: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
   source_interface_per_vrf:
     type: dict
     keys:

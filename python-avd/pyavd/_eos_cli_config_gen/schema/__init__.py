@@ -7468,6 +7468,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Ipv6Nd(AvdModel):
             """Subclass of AvdModel."""
 
+            class Cache(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"dynamic_capacity": {"type": int}, "expire": {"type": int}, "refresh_always": {"type": bool}}
+                dynamic_capacity: int | None
+                """Capacity of dynamic cache entries."""
+                expire: int | None
+                """Cache entries expiry in seconds."""
+                refresh_always: bool | None
+                """Force refresh on cache expiry."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Cache.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dynamic_capacity: Capacity of dynamic cache entries.
+                            expire: Cache entries expiry in seconds.
+                            refresh_always: Force refresh on cache expiry.
+
+                        """
+
             class Ra(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -7566,7 +7599,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Prefixes._item_type = PrefixesItem
 
-            _fields: ClassVar[dict] = {"ra": {"type": Ra}, "managed_config_flag": {"type": bool}, "prefixes": {"type": Prefixes}}
+            _fields: ClassVar[dict] = {
+                "cache": {"type": Cache},
+                "ra": {"type": Ra},
+                "managed_config_flag": {"type": bool},
+                "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
+            }
+            cache: Cache
+            """
+            Neighbor cache options.
+
+            Subclass of AvdModel.
+            """
             ra: Ra
             """
             Router Advertisement.
@@ -7582,15 +7627,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `PrefixesItem`
             items. Primary key is `ipv6_prefix` (`str`).
             """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
+                    cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
                     managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -7599,6 +7648,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        cache:
+                           Neighbor cache options.
+
+                           Subclass of AvdModel.
                         ra:
                            Router Advertisement.
 
@@ -7609,6 +7662,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdIndexedList with `PrefixesItem`
                            items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
 
                     """
 
@@ -22836,6 +22890,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Ipv6Nd(AvdModel):
             """Subclass of AvdModel."""
 
+            class Cache(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"dynamic_capacity": {"type": int}, "expire": {"type": int}, "refresh_always": {"type": bool}}
+                dynamic_capacity: int | None
+                """Capacity of dynamic cache entries."""
+                expire: int | None
+                """Cache entries expiry in seconds."""
+                refresh_always: bool | None
+                """Force refresh on cache expiry."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Cache.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dynamic_capacity: Capacity of dynamic cache entries.
+                            expire: Cache entries expiry in seconds.
+                            refresh_always: Force refresh on cache expiry.
+
+                        """
+
             class Ra(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -22934,7 +23021,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Prefixes._item_type = PrefixesItem
 
-            _fields: ClassVar[dict] = {"ra": {"type": Ra}, "managed_config_flag": {"type": bool}, "prefixes": {"type": Prefixes}}
+            _fields: ClassVar[dict] = {
+                "cache": {"type": Cache},
+                "ra": {"type": Ra},
+                "managed_config_flag": {"type": bool},
+                "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
+            }
+            cache: Cache
+            """
+            Neighbor cache options.
+
+            Subclass of AvdModel.
+            """
             ra: Ra
             """
             Router Advertisement.
@@ -22950,15 +23049,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `PrefixesItem`
             items. Primary key is `ipv6_prefix` (`str`).
             """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
+                    cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
                     managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -22967,6 +23070,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        cache:
+                           Neighbor cache options.
+
+                           Subclass of AvdModel.
                         ra:
                            Router Advertisement.
 
@@ -22977,6 +23084,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdIndexedList with `PrefixesItem`
                            items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
 
                     """
 
@@ -33428,6 +33536,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Ipv6Nd(AvdModel):
             """Subclass of AvdModel."""
 
+            class Cache(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"dynamic_capacity": {"type": int}, "expire": {"type": int}, "refresh_always": {"type": bool}}
+                dynamic_capacity: int | None
+                """Capacity of dynamic cache entries."""
+                expire: int | None
+                """Cache entries expiry in seconds."""
+                refresh_always: bool | None
+                """Force refresh on cache expiry."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Cache.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dynamic_capacity: Capacity of dynamic cache entries.
+                            expire: Cache entries expiry in seconds.
+                            refresh_always: Force refresh on cache expiry.
+
+                        """
+
             class Ra(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -33526,7 +33667,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Prefixes._item_type = PrefixesItem
 
-            _fields: ClassVar[dict] = {"ra": {"type": Ra}, "managed_config_flag": {"type": bool}, "prefixes": {"type": Prefixes}}
+            _fields: ClassVar[dict] = {
+                "cache": {"type": Cache},
+                "ra": {"type": Ra},
+                "managed_config_flag": {"type": bool},
+                "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
+            }
+            cache: Cache
+            """
+            Neighbor cache options.
+
+            Subclass of AvdModel.
+            """
             ra: Ra
             """
             Router Advertisement.
@@ -33542,15 +33695,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `PrefixesItem`
             items. Primary key is `ipv6_prefix` (`str`).
             """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
+                    cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
                     managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -33559,6 +33716,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        cache:
+                           Neighbor cache options.
+
+                           Subclass of AvdModel.
                         ra:
                            Router Advertisement.
 
@@ -33569,6 +33730,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdIndexedList with `PrefixesItem`
                            items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
 
                     """
 
@@ -66989,6 +67151,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Ipv6Nd(AvdModel):
             """Subclass of AvdModel."""
 
+            class Cache(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"dynamic_capacity": {"type": int}, "expire": {"type": int}, "refresh_always": {"type": bool}}
+                dynamic_capacity: int | None
+                """Capacity of dynamic cache entries."""
+                expire: int | None
+                """Cache entries expiry in seconds."""
+                refresh_always: bool | None
+                """Force refresh on cache expiry."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        dynamic_capacity: int | None | UndefinedType = Undefined,
+                        expire: int | None | UndefinedType = Undefined,
+                        refresh_always: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Cache.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dynamic_capacity: Capacity of dynamic cache entries.
+                            expire: Cache entries expiry in seconds.
+                            refresh_always: Force refresh on cache expiry.
+
+                        """
+
             class Ra(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -67087,7 +67282,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Prefixes._item_type = PrefixesItem
 
-            _fields: ClassVar[dict] = {"ra": {"type": Ra}, "managed_config_flag": {"type": bool}, "prefixes": {"type": Prefixes}}
+            _fields: ClassVar[dict] = {
+                "cache": {"type": Cache},
+                "ra": {"type": Ra},
+                "managed_config_flag": {"type": bool},
+                "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
+            }
+            cache: Cache
+            """
+            Neighbor cache options.
+
+            Subclass of AvdModel.
+            """
             ra: Ra
             """
             Router Advertisement.
@@ -67103,15 +67310,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `PrefixesItem`
             items. Primary key is `ipv6_prefix` (`str`).
             """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
+                    cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
                     managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -67120,6 +67331,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        cache:
+                           Neighbor cache options.
+
+                           Subclass of AvdModel.
                         ra:
                            Router Advertisement.
 
@@ -67130,6 +67345,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdIndexedList with `PrefixesItem`
                            items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
 
                     """
 
@@ -68324,17 +68540,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Prefixes._item_type = PrefixesItem
 
             _fields: ClassVar[dict] = {
-                "other_config_flag": {"type": bool},
                 "cache": {"type": Cache},
                 "ra": {"type": Ra},
                 "managed_config_flag": {"type": bool},
                 "prefixes": {"type": Prefixes},
+                "other_config_flag": {"type": bool},
             }
-            other_config_flag: bool | None
-            """Set the "other stateful configuration" flag in IPv6 router advertisements."""
             cache: Cache
             """
-            IPv6 neighbor cache options.
+            Neighbor cache options.
 
             Subclass of AvdModel.
             """
@@ -68353,17 +68567,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Subclass of AvdIndexedList with `PrefixesItem`
             items. Primary key is `ipv6_prefix` (`str`).
             """
+            other_config_flag: bool | None
+            """Set the "Other Stateful Configuration" (O) flag in Router Advertisements."""
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
-                    other_config_flag: bool | None | UndefinedType = Undefined,
                     cache: Cache | UndefinedType = Undefined,
                     ra: Ra | UndefinedType = Undefined,
                     managed_config_flag: bool | None | UndefinedType = Undefined,
                     prefixes: Prefixes | UndefinedType = Undefined,
+                    other_config_flag: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Ipv6Nd.
@@ -68372,9 +68588,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        other_config_flag: Set the "other stateful configuration" flag in IPv6 router advertisements.
                         cache:
-                           IPv6 neighbor cache options.
+                           Neighbor cache options.
 
                            Subclass of AvdModel.
                         ra:
@@ -68387,6 +68602,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdIndexedList with `PrefixesItem`
                            items. Primary key is `ipv6_prefix` (`str`).
+                        other_config_flag: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
 
                     """
 
