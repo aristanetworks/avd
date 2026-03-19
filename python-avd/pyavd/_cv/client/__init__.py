@@ -6,6 +6,7 @@ from __future__ import annotations
 import asyncio
 import platform
 import ssl
+import sys
 from importlib.metadata import PackageNotFoundError, version
 from typing import TYPE_CHECKING, Protocol
 
@@ -227,12 +228,9 @@ class CVClientProtocol(
         # Process pyavd version
         try:
             pyavd_version = version("pyavd")
-        # Fallback to __version__
+        # Fallback to __version__ avoiding cyclic import
         except PackageNotFoundError:
-            try:
-                from pyavd import __version__ as pyavd_version  # noqa: PLC0415
-            except ImportError:
-                pyavd_version = None
+            pyavd_version = getattr(sys.modules.get("pyavd"), "__version__", None)
 
         if pyavd_version:
             user_agent_parts.append(f"pyavd/{pyavd_version}")
