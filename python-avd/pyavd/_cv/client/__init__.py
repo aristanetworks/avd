@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import asyncio
+import platform
 import ssl
+from importlib.metadata import PackageNotFoundError, version
 from typing import TYPE_CHECKING, Protocol
 
 from grpclib.client import Channel
@@ -28,6 +30,11 @@ if TYPE_CHECKING:
 
     from grpclib.protocol import H2Protocol
     from typing_extensions import Self
+
+try:
+    from pyavd import __version__ as __pyavd_version__
+except ImportError:
+    __pyavd_version__ = None
 
 
 class CVClientProtocol(
@@ -187,10 +194,14 @@ class CVClientProtocol(
             msg = "Unable to get version from CloudVision server. Missing token."
             raise CVClientException(msg)
 
+        custom_http_headers: dict[str, str] = {"Authorization": f"Bearer {self._token}"}
+        if custom_user_agent_header := self._get_user_agent():
+            custom_http_headers.update({"User-Agent": custom_user_agent_header})
+
         try:
             response = get(  # noqa: S113 TODO: Add configurable timeout
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
-                headers={"Authorization": f"Bearer {self._token}"},
+                headers=custom_http_headers,
                 verify=self._verify_certs,
                 proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
                 json={},
@@ -205,6 +216,38 @@ class CVClientProtocol(
         except (KeyError, JSONDecodeError) as e:
             msg = f"Unable to get version from CloudVision server. Got {response.text if response else 'No response'}"
             raise CVClientException(msg) from e
+
+    def _get_user_agent(self) -> str:
+        """
+        Build a user agent string with enriched version information.
+
+        Format: python/x.y.z pyavd/x.y.z grpclib/x.y.z python-socks/x.y.z requests/x.y.z ansible-core/x.y.z
+        """
+        user_agent_parts: list[str] = []
+
+        # Process Python version
+        if python_version := platform.python_version():
+            user_agent_parts.append(f"python/{python_version}")
+
+        # Process pyavd version
+        try:
+            pyavd_version = version("pyavd")
+        # Fallback to __version__
+        except PackageNotFoundError:
+            pyavd_version = __pyavd_version__
+
+        if pyavd_version:
+            user_agent_parts.append(f"pyavd/{pyavd_version}")
+
+        # Process optional Python dependencies
+        for dependent_package in ["grpclib", "python-socks", "requests", "ansible-core"]:
+            try:
+                if dependent_package_version := version(dependent_package):
+                    user_agent_parts.append(f"{dependent_package}/{dependent_package_version!s}")
+            except PackageNotFoundError:  # noqa: PERF203
+                continue
+
+        return " ".join(user_agent_parts)
 
 
 class CVClient(CVClientProtocol):
