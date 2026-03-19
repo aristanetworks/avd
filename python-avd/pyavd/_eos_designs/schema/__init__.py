@@ -7414,15 +7414,40 @@ class EosDesigns(EosDesignsRootModel):
             class EvpnL3(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": False},
+                    "inter_domain": {"type": bool, "default": True},
+                    "mode": {"type": str, "default": "next-hop-self"},
+                }
                 enabled: bool
                 """Default value: `False`"""
                 inter_domain: bool
                 """Default value: `True`"""
+                mode: Mode
+                """
+                Defines the rewriting mode for EVPN L3 inter-domain routing.
+                - next-hop-self: (default) Configures
+                "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                  in address-family evpn
+                to rewrite the next-hop for type-5 routes received from remote gateways.
+                - rd-rt-rewrite: Configures
+                "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                  Does not
+                configure "next-hop-self" for received EVPN routes.
+
+                Default value: `"next-hop-self"`
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        inter_domain: bool | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         EvpnL3.
 
@@ -7432,6 +7457,16 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             enabled: enabled
                             inter_domain: inter_domain
+                            mode:
+                               Defines the rewriting mode for EVPN L3 inter-domain routing.
+                               - next-hop-self: (default) Configures
+                               "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                                 in address-family evpn
+                               to rewrite the next-hop for type-5 routes received from remote gateways.
+                               - rd-rt-rewrite: Configures
+                               "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                                 Does not
+                               configure "next-hop-self" for received EVPN routes.
 
                         """
 
@@ -12518,15 +12553,40 @@ class EosDesigns(EosDesignsRootModel):
             class EvpnL3(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": False},
+                    "inter_domain": {"type": bool, "default": True},
+                    "mode": {"type": str, "default": "next-hop-self"},
+                }
                 enabled: bool
                 """Default value: `False`"""
                 inter_domain: bool
                 """Default value: `True`"""
+                mode: Mode
+                """
+                Defines the rewriting mode for EVPN L3 inter-domain routing.
+                - next-hop-self: (default) Configures
+                "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                  in address-family evpn
+                to rewrite the next-hop for type-5 routes received from remote gateways.
+                - rd-rt-rewrite: Configures
+                "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                  Does not
+                configure "next-hop-self" for received EVPN routes.
+
+                Default value: `"next-hop-self"`
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        inter_domain: bool | UndefinedType = Undefined,
+                        mode: Mode | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         EvpnL3.
 
@@ -12536,6 +12596,16 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             enabled: enabled
                             inter_domain: inter_domain
+                            mode:
+                               Defines the rewriting mode for EVPN L3 inter-domain routing.
+                               - next-hop-self: (default) Configures
+                               "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                                 in address-family evpn
+                               to rewrite the next-hop for type-5 routes received from remote gateways.
+                               - rd-rt-rewrite: Configures
+                               "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                                 Does not
+                               configure "next-hop-self" for received EVPN routes.
 
                         """
 
@@ -36565,15 +36635,40 @@ class EosDesigns(EosDesignsRootModel):
                         class EvpnL3(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                            Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "inter_domain": {"type": bool, "default": True},
+                                "mode": {"type": str, "default": "next-hop-self"},
+                            }
                             enabled: bool
                             """Default value: `False`"""
                             inter_domain: bool
                             """Default value: `True`"""
+                            mode: Mode
+                            """
+                            Defines the rewriting mode for EVPN L3 inter-domain routing.
+                            - next-hop-self: (default) Configures
+                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                              in address-family evpn
+                            to rewrite the next-hop for type-5 routes received from remote gateways.
+                            - rd-rt-rewrite: Configures
+                            "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                              Does not
+                            configure "next-hop-self" for received EVPN routes.
+
+                            Default value: `"next-hop-self"`
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    inter_domain: bool | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     EvpnL3.
 
@@ -36583,6 +36678,16 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         inter_domain: inter_domain
+                                        mode:
+                                           Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                           - next-hop-self: (default) Configures
+                                           "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                                             in address-family evpn
+                                           to rewrite the next-hop for type-5 routes received from remote gateways.
+                                           - rd-rt-rewrite: Configures
+                                           "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                                             Does not
+                                           configure "next-hop-self" for received EVPN routes.
 
                                     """
 
@@ -41646,15 +41751,40 @@ class EosDesigns(EosDesignsRootModel):
                             class EvpnL3(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                                Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool, "default": False},
+                                    "inter_domain": {"type": bool, "default": True},
+                                    "mode": {"type": str, "default": "next-hop-self"},
+                                }
                                 enabled: bool
                                 """Default value: `False`"""
                                 inter_domain: bool
                                 """Default value: `True`"""
+                                mode: Mode
+                                """
+                                Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                - next-hop-self: (default) Configures
+                                "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                                  in address-family evpn
+                                to rewrite the next-hop for type-5 routes received from remote gateways.
+                                - rd-rt-rewrite: Configures
+                                "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                                  Does not
+                                configure "next-hop-self" for received EVPN routes.
+
+                                Default value: `"next-hop-self"`
+                                """
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType = Undefined,
+                                        inter_domain: bool | UndefinedType = Undefined,
+                                        mode: Mode | UndefinedType = Undefined,
+                                    ) -> None:
                                         """
                                         EvpnL3.
 
@@ -41664,6 +41794,16 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             enabled: enabled
                                             inter_domain: inter_domain
+                                            mode:
+                                               Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                               - next-hop-self: (default) Configures
+                                               "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                                                 in address-family evpn
+                                               to rewrite the next-hop for type-5 routes received from remote gateways.
+                                               - rd-rt-rewrite: Configures
+                                               "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                                                 Does not
+                                               configure "next-hop-self" for received EVPN routes.
 
                                         """
 
@@ -46690,15 +46830,40 @@ class EosDesigns(EosDesignsRootModel):
                         class EvpnL3(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                            Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "inter_domain": {"type": bool, "default": True},
+                                "mode": {"type": str, "default": "next-hop-self"},
+                            }
                             enabled: bool
                             """Default value: `False`"""
                             inter_domain: bool
                             """Default value: `True`"""
+                            mode: Mode
+                            """
+                            Defines the rewriting mode for EVPN L3 inter-domain routing.
+                            - next-hop-self: (default) Configures
+                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                              in address-family evpn
+                            to rewrite the next-hop for type-5 routes received from remote gateways.
+                            - rd-rt-rewrite: Configures
+                            "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                              Does not
+                            configure "next-hop-self" for received EVPN routes.
+
+                            Default value: `"next-hop-self"`
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    inter_domain: bool | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     EvpnL3.
 
@@ -46708,6 +46873,16 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         inter_domain: inter_domain
+                                        mode:
+                                           Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                           - next-hop-self: (default) Configures
+                                           "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                                             in address-family evpn
+                                           to rewrite the next-hop for type-5 routes received from remote gateways.
+                                           - rd-rt-rewrite: Configures
+                                           "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                                             Does not
+                                           configure "next-hop-self" for received EVPN routes.
 
                                     """
 
@@ -51797,15 +51972,40 @@ class EosDesigns(EosDesignsRootModel):
                         class EvpnL3(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                            Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "inter_domain": {"type": bool, "default": True},
+                                "mode": {"type": str, "default": "next-hop-self"},
+                            }
                             enabled: bool
                             """Default value: `False`"""
                             inter_domain: bool
                             """Default value: `True`"""
+                            mode: Mode
+                            """
+                            Defines the rewriting mode for EVPN L3 inter-domain routing.
+                            - next-hop-self: (default) Configures
+                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                              in address-family evpn
+                            to rewrite the next-hop for type-5 routes received from remote gateways.
+                            - rd-rt-rewrite: Configures
+                            "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                              Does not
+                            configure "next-hop-self" for received EVPN routes.
+
+                            Default value: `"next-hop-self"`
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    inter_domain: bool | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     EvpnL3.
 
@@ -51815,6 +52015,16 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         inter_domain: inter_domain
+                                        mode:
+                                           Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                           - next-hop-self: (default) Configures
+                                           "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                                             in address-family evpn
+                                           to rewrite the next-hop for type-5 routes received from remote gateways.
+                                           - rd-rt-rewrite: Configures
+                                           "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                                             Does not
+                                           configure "next-hop-self" for received EVPN routes.
 
                                     """
 
@@ -69765,15 +69975,40 @@ class EosDesigns(EosDesignsRootModel):
                         class EvpnL3(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                            Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "inter_domain": {"type": bool, "default": True},
+                                "mode": {"type": str, "default": "next-hop-self"},
+                            }
                             enabled: bool
                             """Default value: `False`"""
                             inter_domain: bool
                             """Default value: `True`"""
+                            mode: Mode
+                            """
+                            Defines the rewriting mode for EVPN L3 inter-domain routing.
+                            - next-hop-self: (default) Configures
+                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                              in address-family evpn
+                            to rewrite the next-hop for type-5 routes received from remote gateways.
+                            - rd-rt-rewrite: Configures
+                            "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                              Does not
+                            configure "next-hop-self" for received EVPN routes.
+
+                            Default value: `"next-hop-self"`
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    inter_domain: bool | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     EvpnL3.
 
@@ -69783,6 +70018,16 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         inter_domain: inter_domain
+                                        mode:
+                                           Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                           - next-hop-self: (default) Configures
+                                           "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                                             in address-family evpn
+                                           to rewrite the next-hop for type-5 routes received from remote gateways.
+                                           - rd-rt-rewrite: Configures
+                                           "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                                             Does not
+                                           configure "next-hop-self" for received EVPN routes.
 
                                     """
 
@@ -74846,15 +75091,40 @@ class EosDesigns(EosDesignsRootModel):
                             class EvpnL3(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                                Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool, "default": False},
+                                    "inter_domain": {"type": bool, "default": True},
+                                    "mode": {"type": str, "default": "next-hop-self"},
+                                }
                                 enabled: bool
                                 """Default value: `False`"""
                                 inter_domain: bool
                                 """Default value: `True`"""
+                                mode: Mode
+                                """
+                                Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                - next-hop-self: (default) Configures
+                                "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                                  in address-family evpn
+                                to rewrite the next-hop for type-5 routes received from remote gateways.
+                                - rd-rt-rewrite: Configures
+                                "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                                  Does not
+                                configure "next-hop-self" for received EVPN routes.
+
+                                Default value: `"next-hop-self"`
+                                """
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType = Undefined,
+                                        inter_domain: bool | UndefinedType = Undefined,
+                                        mode: Mode | UndefinedType = Undefined,
+                                    ) -> None:
                                         """
                                         EvpnL3.
 
@@ -74864,6 +75134,16 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             enabled: enabled
                                             inter_domain: inter_domain
+                                            mode:
+                                               Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                               - next-hop-self: (default) Configures
+                                               "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                                                 in address-family evpn
+                                               to rewrite the next-hop for type-5 routes received from remote gateways.
+                                               - rd-rt-rewrite: Configures
+                                               "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                                                 Does not
+                                               configure "next-hop-self" for received EVPN routes.
 
                                         """
 
@@ -79890,15 +80170,40 @@ class EosDesigns(EosDesignsRootModel):
                         class EvpnL3(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                            Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "inter_domain": {"type": bool, "default": True},
+                                "mode": {"type": str, "default": "next-hop-self"},
+                            }
                             enabled: bool
                             """Default value: `False`"""
                             inter_domain: bool
                             """Default value: `True`"""
+                            mode: Mode
+                            """
+                            Defines the rewriting mode for EVPN L3 inter-domain routing.
+                            - next-hop-self: (default) Configures
+                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                              in address-family evpn
+                            to rewrite the next-hop for type-5 routes received from remote gateways.
+                            - rd-rt-rewrite: Configures
+                            "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                              Does not
+                            configure "next-hop-self" for received EVPN routes.
+
+                            Default value: `"next-hop-self"`
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    inter_domain: bool | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     EvpnL3.
 
@@ -79908,6 +80213,16 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         inter_domain: inter_domain
+                                        mode:
+                                           Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                           - next-hop-self: (default) Configures
+                                           "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                                             in address-family evpn
+                                           to rewrite the next-hop for type-5 routes received from remote gateways.
+                                           - rd-rt-rewrite: Configures
+                                           "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                                             Does not
+                                           configure "next-hop-self" for received EVPN routes.
 
                                     """
 
@@ -84997,15 +85312,40 @@ class EosDesigns(EosDesignsRootModel):
                         class EvpnL3(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "inter_domain": {"type": bool, "default": True}}
+                            Mode: TypeAlias = Literal["next-hop-self", "rd-rt-rewrite"]
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool, "default": False},
+                                "inter_domain": {"type": bool, "default": True},
+                                "mode": {"type": str, "default": "next-hop-self"},
+                            }
                             enabled: bool
                             """Default value: `False`"""
                             inter_domain: bool
                             """Default value: `True`"""
+                            mode: Mode
+                            """
+                            Defines the rewriting mode for EVPN L3 inter-domain routing.
+                            - next-hop-self: (default) Configures
+                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                              in address-family evpn
+                            to rewrite the next-hop for type-5 routes received from remote gateways.
+                            - rd-rt-rewrite: Configures
+                            "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                              Does not
+                            configure "next-hop-self" for received EVPN routes.
+
+                            Default value: `"next-hop-self"`
+                            """
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, inter_domain: bool | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    inter_domain: bool | UndefinedType = Undefined,
+                                    mode: Mode | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     EvpnL3.
 
@@ -85015,6 +85355,16 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: enabled
                                         inter_domain: inter_domain
+                                        mode:
+                                           Defines the rewriting mode for EVPN L3 inter-domain routing.
+                                           - next-hop-self: (default) Configures
+                                           "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
+                                             in address-family evpn
+                                           to rewrite the next-hop for type-5 routes received from remote gateways.
+                                           - rd-rt-rewrite: Configures
+                                           "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
+                                             Does not
+                                           configure "next-hop-self" for received EVPN routes.
 
                                     """
 

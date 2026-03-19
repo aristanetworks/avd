@@ -306,6 +306,11 @@ class RouterBgpMixin(Protocol):
             return
 
         # Not VRF default
+        if self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite":
+            bgp_vrf.rd_evpn_domain._update(domain="all", rd=bgp_vrf.rd)
+            bgp_vrf.route_targets.import_evpn_domains.append_new(domain="all", route_target=vrf_rt)
+            bgp_vrf.route_targets.export_evpn_domains.append_new(domain="all", route_target=vrf_rt)
+
         bgp_vrf.evpn_multicast = getattr(vrf._internal_data, "evpn_l3_multicast_enabled", None)
         if evpn_multicast_transit_mode := getattr(vrf._internal_data, "evpn_l3_multicast_evpn_peg_transit", False):
             bgp_vrf.evpn_multicast_address_family.ipv4.transit = evpn_multicast_transit_mode

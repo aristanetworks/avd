@@ -11096,6 +11096,20 @@ $defs:
                   inter_domain:
                     type: bool
                     default: true
+                  mode:
+                    type: str
+                    valid_values:
+                    - next-hop-self
+                    - rd-rt-rewrite
+                    default: next-hop-self
+                    description: "Defines the rewriting mode for EVPN L3 inter-domain
+                      routing.\n- next-hop-self: (default) Configures \"neighbor default
+                      next-hop-self received-evpn-routes route-type ip-prefix\"\n
+                      \ in address-family evpn to rewrite the next-hop for type-5
+                      routes received from remote gateways.\n- rd-rt-rewrite: Configures
+                      \"rd evpn domain all\" and \"route-target import/export evpn
+                      domain all\" for each VRF.\n  Does not configure \"next-hop-self\"
+                      for received EVPN routes.\n"
               d_path:
                 type: dict
                 keys:
