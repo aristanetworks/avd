@@ -233,7 +233,6 @@ class ActionModule(AvdActionPlugin):
 
         # Phase 2: Run the validation phase on the input_dir files or the templated_path files.
         if hosts_to_validate:
-            self.logger.info("Validating inputs against '%s' schema for %d hosts", plugin_args.schema_name, len(hosts_to_validate))
             self._run_validation_phase(
                 hostnames=hosts_to_validate,
                 workers=mt_workers,
