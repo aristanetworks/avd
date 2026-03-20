@@ -239,11 +239,11 @@ router_bgp:
         route_targets:
         - '10:10'
       import_evpn_domains:
-      - domain: all
-        route_target: '10:10'
+      - route_target: '10:10'
+        domain: all
       export_evpn_domains:
-      - domain: all
-        route_target: '10:10'
+      - route_target: '10:10'
+        domain: all
     router_id: 192.168.255.7
     redistribute:
       connected:
@@ -263,11 +263,11 @@ router_bgp:
         route_targets:
         - '11:11'
       import_evpn_domains:
-      - domain: all
-        route_target: '11:11'
+      - route_target: '11:11'
+        domain: all
       export_evpn_domains:
-      - domain: all
-        route_target: '11:11'
+      - route_target: '11:11'
+        domain: all
     router_id: 192.168.255.7
     redistribute:
       connected:
