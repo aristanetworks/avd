@@ -217,7 +217,7 @@ class CVClientProtocol(
         """
         Build a user agent string with enriched version information.
 
-        Format: python/x.y.z pyavd/x.y.z grpclib/x.y.z python-socks/x.y.z requests/x.y.z ansible-core/x.y.z
+        Format: python/x.y.z pyavd/x.y.z aristaproto/x.y.z grpclib/x.y.z python-socks/x.y.z requests/x.y.z
         """
         user_agent_parts: list[str] = []
 
@@ -236,7 +236,7 @@ class CVClientProtocol(
             user_agent_parts.append(f"pyavd/{pyavd_version}")
 
         # Process optional Python dependencies
-        for dependent_package in ["grpclib", "python-socks", "requests", "ansible-core"]:
+        for dependent_package in ["aristaproto", "grpclib", "python-socks", "requests"]:
             try:
                 if dependent_package_version := version(dependent_package):
                     user_agent_parts.append(f"{dependent_package}/{dependent_package_version!s}")

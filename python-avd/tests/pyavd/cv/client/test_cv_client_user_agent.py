@@ -35,17 +35,17 @@ def _mock_version(versions: dict[str, str]) -> Callable:
 
 ALL_VERSIONS = {
     "pyavd": "6.1.0",
+    "aristaproto": "0.1.4",
     "grpclib": "0.4.9",
     "python-socks": "2.8.1",
     "requests": "2.32.5",
-    "ansible-core": "2.20.2",
 }
 
 OPTIONAL_DEPS = ["grpclib", "python-socks", "requests", "ansible-core"]
 
 
 def test_cv_client_get_user_agent_python_version_unavailable(cv_client: CVClient) -> None:
-    expected_user_agent = "pyavd/6.1.0 grpclib/0.4.9 python-socks/2.8.1 requests/2.32.5 ansible-core/2.20.2"
+    expected_user_agent = "pyavd/6.1.0 aristaproto/0.1.4 grpclib/0.4.9 python-socks/2.8.1 requests/2.32.5"
 
     # Mock requests' Response
     mocked_requests_response = Mock()
@@ -71,7 +71,7 @@ def test_cv_client_get_user_agent_python_version_unavailable(cv_client: CVClient
 
 
 def test_cv_client_get_user_agent_all_packages_available(cv_client: CVClient) -> None:
-    expected_user_agent = "python/3.12.2 pyavd/6.1.0 grpclib/0.4.9 python-socks/2.8.1 requests/2.32.5 ansible-core/2.20.2"
+    expected_user_agent = "python/3.12.2 pyavd/6.1.0 aristaproto/0.1.4 grpclib/0.4.9 python-socks/2.8.1 requests/2.32.5"
 
     # Mock requests' Response
     mocked_requests_response = Mock()
@@ -98,7 +98,7 @@ def test_cv_client_get_user_agent_all_packages_available(cv_client: CVClient) ->
 
 def test_cv_client_get_user_agent_pyavd_metadata_missing_falls_back_to_version_attr(cv_client: CVClient) -> None:
     """Test falling back to pyavd.__version__ when importlib.metadata.version can not fetch pyavd version."""
-    expected_user_agent = "python/3.12.2 pyavd/6.100.0 grpclib/0.4.9 python-socks/2.8.1 requests/2.32.5 ansible-core/2.20.2"
+    expected_user_agent = "python/3.12.2 pyavd/6.100.0 aristaproto/0.1.4 grpclib/0.4.9 python-socks/2.8.1 requests/2.32.5"
 
     # Mock requests' Response
     mocked_requests_response = Mock()
@@ -127,7 +127,7 @@ def test_cv_client_get_user_agent_pyavd_metadata_missing_falls_back_to_version_a
 
 
 def test_cv_client_get_user_agent_pyavd_unavailable(cv_client: CVClient) -> None:
-    expected_user_agent = "python/3.12.2 grpclib/0.4.9 python-socks/2.8.1 requests/2.32.5 ansible-core/2.20.2"
+    expected_user_agent = "python/3.12.2 aristaproto/0.1.4 grpclib/0.4.9 python-socks/2.8.1 requests/2.32.5"
 
     # Mock requests' Response
     mocked_requests_response = Mock()
@@ -159,7 +159,7 @@ def test_cv_client_get_user_agent_pyavd_unavailable(cv_client: CVClient) -> None
 def test_cv_client_get_user_agent_optional_dependancy_missing(cv_client: CVClient) -> None:
     expected_user_agent = "python/3.12.2 pyavd/6.1.0 grpclib/0.4.9 python-socks/2.8.1 requests/2.32.5"
 
-    versions = {k: v for k, v in ALL_VERSIONS.items() if k != "ansible-core"}
+    versions = {k: v for k, v in ALL_VERSIONS.items() if k != "aristaproto"}
 
     # Mock requests' Response
     mocked_requests_response = Mock()
