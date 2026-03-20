@@ -192,8 +192,16 @@ class VerifyInterfaceErrDisabledInputFactory(AntaTestInputFactory[VerifyInterfac
 
     def create(self) -> Iterator[VerifyInterfaceErrDisabled.Input]:
         """Generate the inputs for the `VerifyInterfaceErrDisabled` test."""
-        if self.structured_config.metadata.interfaces.errdisable.avd_managed_only:
-            all_interfaces = chain(self.structured_config.ethernet_interfaces, self.structured_config.port_channel_interfaces)
+        if self.structured_config.metadata.interfaces.errdisable.only_avd_interfaces:
+            all_interfaces = chain(
+                self.structured_config.ethernet_interfaces,
+                self.structured_config.port_channel_interfaces,
+                self.structured_config.loopback_interfaces,
+                self.structured_config.vlan_interfaces,
+                self.structured_config.management_interfaces,
+                self.structured_config.dps_interfaces,
+                self.structured_config.tunnel_interfaces,
+            )
             interface_names = [intf.name for intf in all_interfaces]
             if not interface_names:
                 self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)

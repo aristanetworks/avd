@@ -51,8 +51,8 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
         self.structured_config.metadata.validate_no_errors_period = resolved_profile.logging.validate_no_errors_period
         if resolved_profile.exclude_as_extra_fabric_validation_target:
             self.structured_config.metadata.exclude_as_extra_fabric_validation_target = resolved_profile.exclude_as_extra_fabric_validation_target
-        if resolved_profile.interfaces.errdisable.avd_managed_only:
-            self.structured_config.metadata.interfaces.errdisable.avd_managed_only = resolved_profile.interfaces.errdisable.avd_managed_only
+        if resolved_profile.interfaces.errdisable.only_avd_interfaces:
+            self.structured_config.metadata.interfaces.errdisable.only_avd_interfaces = resolved_profile.interfaces.errdisable.only_avd_interfaces
 
 
 class AvdStructuredConfigMetadata(StructuredConfigGenerator, AvdStructuredConfigMetadataProtocol):

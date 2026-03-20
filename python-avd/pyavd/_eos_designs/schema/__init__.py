@@ -34000,71 +34000,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class Interfaces(AvdModel):
-            """Subclass of AvdModel."""
-
-            class Errdisable(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"avd_managed_only": {"type": bool, "default": False}}
-                avd_managed_only: bool
-                """
-                When true, only validate interfaces defined in the device structured configuration.
-                When false,
-                validate all interfaces on the device.
-
-                Default value: `False`
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, avd_managed_only: bool | UndefinedType = Undefined) -> None:
-                        """
-                        Errdisable.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            avd_managed_only:
-                               When true, only validate interfaces defined in the device structured configuration.
-                               When false,
-                               validate all interfaces on the device.
-
-                        """
-
-            _fields: ClassVar[dict] = {"errdisable": {"type": Errdisable}}
-            errdisable: Errdisable
-            """
-            Settings for the VerifyInterfaceErrDisabled test.
-
-            Subclass of AvdModel.
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, errdisable: Errdisable | UndefinedType = Undefined) -> None:
-                    """
-                    Interfaces.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        errdisable:
-                           Settings for the VerifyInterfaceErrDisabled test.
-
-                           Subclass of AvdModel.
-
-                    """
-
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "parent_profile": {"type": str},
             "hardware": {"type": Hardware},
             "logging": {"type": Logging},
             "exclude_as_extra_fabric_validation_target": {"type": bool, "default": False},
-            "interfaces": {"type": Interfaces},
+            "interfaces": {"type": EosCliConfigGen.Metadata.Interfaces},
         }
         name: str
         parent_profile: str | None
@@ -34092,12 +34034,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
-        interfaces: Interfaces
-        """
-        Interface validation settings.
-
-        Subclass of AvdModel.
-        """
+        interfaces: EosCliConfigGen.Metadata.Interfaces
+        """Interface validation settings."""
 
         if TYPE_CHECKING:
 
@@ -34109,7 +34047,7 @@ class EosDesigns(EosDesignsRootModel):
                 hardware: Hardware | UndefinedType = Undefined,
                 logging: Logging | UndefinedType = Undefined,
                 exclude_as_extra_fabric_validation_target: bool | UndefinedType = Undefined,
-                interfaces: Interfaces | UndefinedType = Undefined,
+                interfaces: EosCliConfigGen.Metadata.Interfaces | UndefinedType = Undefined,
             ) -> None:
                 """
                 ValidationProfilesItem.
@@ -34135,10 +34073,7 @@ class EosDesigns(EosDesignsRootModel):
                     exclude_as_extra_fabric_validation_target:
                        Exclude this node from being used as a destination target from other fabric devices in the extra
                        fabric validation tests performed by the `anta_runner` role.
-                    interfaces:
-                       Interface validation settings.
-
-                       Subclass of AvdModel.
+                    interfaces: Interface validation settings.
 
                 """
 

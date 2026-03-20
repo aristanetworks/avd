@@ -139,7 +139,7 @@ metadata:
     - Third-party vendor
   interfaces:
     errdisable:
-      avd_managed_only: true
+      only_avd_interfaces: true
 mlag_configuration:
   domain_id: DC1_L3_LEAF2
   local_interface: Vlan4094

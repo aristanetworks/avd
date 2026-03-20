@@ -72,7 +72,7 @@ metadata:
     enabled: false
   interfaces:
     errdisable:
-      avd_managed_only: true
+      only_avd_interfaces: true
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_DC2_L3_LEAF2_Port-Channel8

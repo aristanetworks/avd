@@ -125,7 +125,7 @@ validation_profiles:
         - Third-party vendor
     interfaces:
       errdisable:
-        avd_managed_only: true
+        only_avd_interfaces: true
   - name: profile2
     logging:
       validate_no_errors_period: 1

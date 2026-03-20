@@ -434,9 +434,23 @@
           "Ethernet31",
           "Ethernet32",
           "Ethernet33",
+          "Loopback0",
+          "Loopback1",
+          "Loopback10",
+          "Loopback11",
+          "Management1",
           "Port-Channel3",
           "Port-Channel5",
-          "Port-Channel8"
+          "Port-Channel8",
+          "Vlan11",
+          "Vlan12",
+          "Vlan21",
+          "Vlan22",
+          "Vlan3009",
+          "Vlan3010",
+          "Vlan4085",
+          "Vlan4093",
+          "Vlan4094"
         ]
       }
     },

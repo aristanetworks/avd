@@ -82,17 +82,4 @@ keys:
           default: false
         interfaces:
           type: dict
-          description: |-
-            Interface validation settings.
-          keys:
-            errdisable:
-              type: dict
-              description: |-
-                Settings for the VerifyInterfaceErrDisabled test.
-              keys:
-                avd_managed_only:
-                  type: bool
-                  description: |-
-                    When true, only validate interfaces defined in the device structured configuration.
-                    When false, validate all interfaces on the device.
-                  default: false
+          $ref: "eos_cli_config_gen#/keys/metadata/keys/interfaces"
