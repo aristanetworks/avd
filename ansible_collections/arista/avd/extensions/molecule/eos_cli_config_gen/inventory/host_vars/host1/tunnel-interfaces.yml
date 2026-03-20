@@ -87,3 +87,31 @@ tunnel_interfaces:
     nat_profile: NAT-PROFILE-NO-VRF-1
     source: 10.10.10.10
     destination: 1.1.1.1
+  # IPv6 ND new structure with cache and other_config_flag
+  - name: Tunnel5
+    description: IPv6 ND new structure test
+    shutdown: false
+    mtu: 1500
+    vrf: default
+    ipv6_enable: true
+    ipv6_addresses:
+      - 2001:db8:200::1/64
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
+      other_config_flag: true
+      cache:
+        dynamic_capacity: 1800
+        expire: 380
+        refresh_always: true
+      prefixes:
+        - ipv6_prefix: 2001:db8:200::/64
+          valid_lifetime: 250
+          preferred_lifetime: 125
+          no_autoconfig_flag: true
+    source: 20.20.20.20
+    destination: 2.2.2.2
