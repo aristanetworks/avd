@@ -14,7 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "traffic_policies.vrfs.[].cpu.traffic_policy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "traffic_policies.vrfs.[].cpu.traffic_policy.name") | String | Required |  |  | Traffic-policy name.<br>Currently this is always configured with "fallback traffic policy none". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enforcement_management</samp>](## "traffic_policies.vrfs.[].cpu.traffic_policy.enforcement_management") | Boolean |  |  |  | Enforce CPU traffic-policy on management ports. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy_input_physical</samp>](## "traffic_policies.vrfs.[].traffic_policy_input_physical") | String |  |  |  | Traffic arriving on physical interfaces within VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy_input_physical</samp>](## "traffic_policies.vrfs.[].traffic_policy_input_physical") | String |  |  |  | Apply traffic-policy to traffic arriving on physical interfaces within VRF. |
     | [<samp>&nbsp;&nbsp;options</samp>](## "traffic_policies.options") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counter_per_interface</samp>](## "traffic_policies.options.counter_per_interface") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counter_interface_poll_interval</samp>](## "traffic_policies.options.counter_interface_poll_interval") | Integer |  |  | Min: 2<br>Max: 60 | Interval between consecutive polls in seconds. |
@@ -123,7 +123,7 @@
               # Enforce CPU traffic-policy on management ports.
               enforcement_management: <bool>
 
-          # Traffic arriving on physical interfaces within VRF.
+          # Apply traffic-policy to traffic arriving on physical interfaces within VRF.
           traffic_policy_input_physical: <str>
       options:
         counter_per_interface: <bool>
