@@ -1045,6 +1045,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/inband-ztp-bootstra
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/dot1x-settings.md
 --8<--
 
+## Management console and banners
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/management_settings.md
+--8<--
+
 ## Monitoring
 
 ### Event monitor
