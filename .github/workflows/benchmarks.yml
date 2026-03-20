@@ -2,6 +2,8 @@
 name: "Benchmarks"
 
 "on":
+  schedule:
+    - cron: "0 2 * * 0"  # Every Sunday at 2 AM UTC
   workflow_dispatch:
     inputs:
       python_versions:
@@ -48,7 +50,6 @@ jobs:
   check-maintainer:
     name: Check Permissions
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
     outputs:
       is-maintainer: ${{ steps.check.outputs.is-maintainer }}
     steps:
@@ -79,12 +80,11 @@ jobs:
   benchmarks:
     name: Benchmark (Shard ${{ matrix.shard }}/4, Python ${{ matrix.python }}, Ansible ${{ matrix.ansible }})
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
     needs: [check-maintainer]
-    # Logic: Run if check was successful OR if check was skipped (on schedule)
-    if: always() && !cancelled() && (needs.check-maintainer.result == 'success' || needs.check-maintainer.result == 'skipped')
-    # Environment gate: Only applied if manually triggered by someone WITHOUT 'maintain' or 'admin' perms
-    environment: ${{ (github.event_name == 'workflow_dispatch' && needs.check-maintainer.outputs.is-maintainer != 'true') && 'benchmark-approval' || '' }}
+    if: always() && !cancelled() && needs.check-maintainer.result == 'success'
+    # Environment gate: Only applied if triggered by someone WITHOUT 'maintain' or 'admin' perms
+    environment: ${{ needs.check-maintainer.outputs.is-maintainer != 'true' && 'benchmark-approval' || '' }}
     strategy:
       fail-fast: false
       matrix:
@@ -128,8 +128,9 @@ jobs:
           token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
           run: |
-            # Run scale benchmarks: 15, 150, and 1500 devices (12 tests: 4 benchmarks × 3 scales)
-            pytest --codspeed \
-              benchmarks/test_large_fabric_scaling.py \
-              -k "15_devices or 150_devices or 1500_devices" \
+            # Run 4 benchmarks total:
+            # - Scale test (15, 150, 1500 devices): 3 tests
+            # - Molecule eos_designs_unit_tests: 1 test
+            # 4 shards = 1 test per shard
+            pytest --codspeed benchmarks \
               --test-group=${{ matrix.shard }} --test-group-count=4

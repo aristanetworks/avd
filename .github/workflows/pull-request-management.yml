@@ -766,3 +766,11 @@ jobs:
       contents: read
       id-token: write
     uses: ./.github/workflows/codecov.yml
+
+  # ----------------------------------- #
+  # PR Benchmarks
+  # ----------------------------------- #
+  pr-benchmarks:
+    name: PR Benchmarks
+    uses: ./.github/workflows/benchmarks-pr.yml
+    secrets: inherit
