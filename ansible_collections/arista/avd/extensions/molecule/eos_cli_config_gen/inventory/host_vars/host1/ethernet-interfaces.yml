@@ -2172,3 +2172,27 @@ ethernet_interfaces:
   - name: Ethernet89
     description: Loop protection disable
     loop_protection: false
+  # IPv6 ND new structure with cache and other_config_flag
+  - name: Ethernet90
+    description: IPv6 ND new structure test
+    shutdown: false
+    ipv6_enable: true
+    ipv6_addresses:
+      - 2001:db8:90::1/64
+    ipv6_nd:
+      ra:
+        disabled: true
+        rx_accept:
+          default_route: true
+          route_preference: true
+      managed_config_flag: true
+      other_config_flag: true
+      cache:
+        dynamic_capacity: 2000
+        expire: 400
+        refresh_always: true
+      prefixes:
+        - ipv6_prefix: 2001:db8:90::/64
+          valid_lifetime: 200
+          preferred_lifetime: 100
+          no_autoconfig_flag: true
