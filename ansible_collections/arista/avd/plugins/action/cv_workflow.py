@@ -34,7 +34,7 @@ try:
         CVWorkspace,
         DeployToCvResult,
     )
-    from pyavd._utils import get, strip_empties_from_dict
+    from pyavd._utils import default, get, strip_empties_from_dict
 
     HAS_PYAVD = True
 except ImportError:
@@ -370,13 +370,14 @@ class ActionModule(ActionBase):
             LOGGER.info("build_object_for_device: No structured config file for %s", hostname)
             structured_config = {}
 
-        if not get(structured_config, "metadata.is_deployed", default=True):
+        # metadata.* keys take precedence over global cv_deploy schema keys.
+        if not default(get(structured_config, "metadata.is_deployed"), get(structured_config, "is_deployed", default=True)):
             del structured_config
             return ([], [], [], [])
 
         # Build device object to be used in other objects.
-        serial_number = get(structured_config, "metadata.serial_number")
-        system_mac_address = get(structured_config, "metadata.system_mac_address")
+        serial_number = default(get(structured_config, "metadata.serial_number"), get(structured_config, "serial_number"))
+        system_mac_address = default(get(structured_config, "metadata.system_mac_address"), get(structured_config, "system_mac_address"))
         device_object = CVDevice(hostname=hostname, serial_number=serial_number, system_mac_address=system_mac_address)
 
         # Build device config objects
@@ -390,7 +391,7 @@ class ActionModule(ActionBase):
         # !     device_tags:
         # !     - name: topology_hint_datacenter
         # !       value: DC1
-        device_tags = get(structured_config, "metadata.cv_tags.device_tags", default=[])
+        device_tags = default(get(structured_config, "metadata.cv_tags.device_tags"), get(structured_config, "cv_device_tags"), [])
         device_tag_objects = [
             CVDeviceTag(label=device_tag["name"], value=device_tag["value"], device=device_object)
             for device_tag in device_tags
@@ -405,7 +406,7 @@ class ActionModule(ActionBase):
         # !      tags:
         # !      - name: peer_device_interface
         # !        value: Ethernet3
-        all_interface_tags = get(structured_config, "metadata.cv_tags.interface_tags", default=[])
+        all_interface_tags = default(get(structured_config, "metadata.cv_tags.interface_tags"), get(structured_config, "cv_interface_tags"), [])
         interface_tag_objects = [
             CVInterfaceTag(
                 label=interface_tag["name"],
@@ -421,7 +422,7 @@ class ActionModule(ActionBase):
 
         # Build WAN metadata object for this device.
         cv_pathfinder_metadata_objects = []
-        if (cv_pathfinder_metadata := get(structured_config, "metadata.cv_pathfinder")) is not None:
+        if (cv_pathfinder_metadata := default(get(structured_config, "metadata.cv_pathfinder"), get(structured_config, "cv_pathfinder_metadata"))) is not None:
             cv_pathfinder_metadata_objects.append(CVPathfinderMetadata(metadata=cv_pathfinder_metadata, device=device_object))
 
         del structured_config

@@ -26,6 +26,9 @@
 - name: Test cv_deploy with duplicated devices in inventory and non-default cv_strict_system_mac_address
   import_playbook: duplicated_devices_strict_system_mac.yml
 
+- name: Test cv_deploy with hostvars instead of structured config files
+  import_playbook: cv_deploy_hostvars.yml
+
 - name: Test cv_deploy with manifest alongside regular deployment
   import_playbook: cv_deploy_with_manifest.yml
 
