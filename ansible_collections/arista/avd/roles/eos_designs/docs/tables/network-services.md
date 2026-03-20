@@ -14,6 +14,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan_aware_bundle_number_base</samp>](## "<network_services_keys.name>.[].vlan_aware_bundle_number_base") | Integer |  | `0` |  | Base number for VLAN aware bundle RD/RT.<br>The "Assigned Number" part of RD/RT is derived from vrf_vni + vlan_aware_bundle_number_base.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_vlan_bundle</samp>](## "<network_services_keys.name>.[].evpn_vlan_bundle") | String |  |  |  | Enable `evpn_vlan_bundle` for all l2vlans and SVIs under the tenant. This `evpn_vlan_bundle` should be present in `evpn_vlan_bundles`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_l2_multi_domain</samp>](## "<network_services_keys.name>.[].evpn_l2_multi_domain") | Boolean |  | `True` |  | Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vpws</samp>](## "<network_services_keys.name>.[].vpws") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_control_word</samp>](## "<network_services_keys.name>.[].vpws.mpls_control_word") | Boolean |  | `False` |  | Enable or disable MPLS control word for VPWS pseudowires.<br>The default is false as this is more commonly used in Segment Routing designs, but it can be set to true for better interoperability with non-Segment Routing designs.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "<network_services_keys.name>.[].vpws.mtu") | Integer |  |  |  | MTU for VPWS pseudowires. This is configured on the Port-Channel interfaces of the pseudowire endpoints. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;label_flow</samp>](## "<network_services_keys.name>.[].vpws.label_flow") | Boolean |  |  |  | Enable or disable MPLS label flow for VPWS pseudowires.<br>When enabled, the provider edge device will push an additional MPLS label with the "flow" label bit set for each packet received on the pseudowire.<br>This is typically used in Segment Routing designs to allow the service provider to apply specific handling to pseudowire traffic based on the presence of the flow label.<br> |
 
 === "YAML"
 
@@ -45,4 +49,17 @@
 
         # Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains.
         evpn_l2_multi_domain: <bool; default=True>
+        vpws:
+
+          # Enable or disable MPLS control word for VPWS pseudowires.
+          # The default is false as this is more commonly used in Segment Routing designs, but it can be set to true for better interoperability with non-Segment Routing designs.
+          mpls_control_word: <bool; default=False>
+
+          # MTU for VPWS pseudowires. This is configured on the Port-Channel interfaces of the pseudowire endpoints.
+          mtu: <int>
+
+          # Enable or disable MPLS label flow for VPWS pseudowires.
+          # When enabled, the provider edge device will push an additional MPLS label with the "flow" label bit set for each packet received on the pseudowire.
+          # This is typically used in Segment Routing designs to allow the service provider to apply specific handling to pseudowire traffic based on the presence of the flow label.
+          label_flow: <bool>
     ```

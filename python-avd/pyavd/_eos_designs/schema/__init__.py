@@ -68395,6 +68395,68 @@ class EosDesigns(EosDesignsRootModel):
 
                 L2vlans._item_type = L2vlansItem
 
+                class Vpws(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"mpls_control_word": {"type": bool, "default": False}, "mtu": {"type": int}, "label_flow": {"type": bool}}
+                    mpls_control_word: bool
+                    """
+                    Enable or disable MPLS control word for VPWS pseudowires.
+                    The default is false as this is more
+                    commonly used in Segment Routing designs, but it can be set to true for better interoperability with
+                    non-Segment Routing designs.
+
+                    Default value: `False`
+                    """
+                    mtu: int | None
+                    """
+                    MTU for VPWS pseudowires. This is configured on the Port-Channel interfaces of the pseudowire
+                    endpoints.
+                    """
+                    label_flow: bool | None
+                    """
+                    Enable or disable MPLS label flow for VPWS pseudowires.
+                    When enabled, the provider edge device will
+                    push an additional MPLS label with the "flow" label bit set for each packet received on the
+                    pseudowire.
+                    This is typically used in Segment Routing designs to allow the service provider to apply
+                    specific handling to pseudowire traffic based on the presence of the flow label.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            mpls_control_word: bool | UndefinedType = Undefined,
+                            mtu: int | None | UndefinedType = Undefined,
+                            label_flow: bool | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Vpws.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                mpls_control_word:
+                                   Enable or disable MPLS control word for VPWS pseudowires.
+                                   The default is false as this is more
+                                   commonly used in Segment Routing designs, but it can be set to true for better interoperability with
+                                   non-Segment Routing designs.
+                                mtu:
+                                   MTU for VPWS pseudowires. This is configured on the Port-Channel interfaces of the pseudowire
+                                   endpoints.
+                                label_flow:
+                                   Enable or disable MPLS label flow for VPWS pseudowires.
+                                   When enabled, the provider edge device will
+                                   push an additional MPLS label with the "flow" label bit set for each packet received on the
+                                   pseudowire.
+                                   This is typically used in Segment Routing designs to allow the service provider to apply
+                                   specific handling to pseudowire traffic based on the presence of the flow label.
+
+                            """
+
                 class PointToPointServicesItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -68681,6 +68743,7 @@ class EosDesigns(EosDesignsRootModel):
                     "evpn_l2_multi_domain": {"type": bool, "default": True},
                     "vrfs": {"type": Vrfs},
                     "l2vlans": {"type": L2vlans},
+                    "vpws": {"type": Vpws},
                     "point_to_point_services": {"type": PointToPointServices},
                 }
                 name: str
@@ -68869,6 +68932,8 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdList with `L2vlansItem` items.
                 """
+                vpws: Vpws
+                """Subclass of AvdModel."""
                 point_to_point_services: PointToPointServices
                 """
                 Point to point services (pseudowires).
@@ -68904,6 +68969,7 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_l2_multi_domain: bool | UndefinedType = Undefined,
                         vrfs: Vrfs | UndefinedType = Undefined,
                         l2vlans: L2vlans | UndefinedType = Undefined,
+                        vpws: Vpws | UndefinedType = Undefined,
                         point_to_point_services: PointToPointServices | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -69056,6 +69122,7 @@ class EosDesigns(EosDesignsRootModel):
                                Define L2 network services organized by VLAN ID.
 
                                Subclass of AvdList with `L2vlansItem` items.
+                            vpws: Subclass of AvdModel.
                             point_to_point_services:
                                Point to point services (pseudowires).
                                Only supported for node types with "network_services.l1:

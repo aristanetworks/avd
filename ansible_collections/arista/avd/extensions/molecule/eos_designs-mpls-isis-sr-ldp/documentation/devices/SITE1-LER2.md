@@ -749,6 +749,13 @@ router bgp 65000
       route-target both 65000:22020
       redistribute learned
    !
+   vpws TENANT_A
+      rd 100.70.0.6:1000
+      route-target import export evpn 65000:1000
+      mpls control-word
+      label flow
+      mtu 1500
+   !
    vpws TENANT_B
       rd 100.70.0.6:2000
       route-target import export evpn 65000:2000

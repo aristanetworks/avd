@@ -797,9 +797,9 @@ ASN Notation: asplain
 
 | Instance | Route-Distinguisher | Both Route-Target | MPLS Control Word | Label Flow | MTU | Pseudowire | Local ID | Remote ID |
 | -------- | ------------------- | ----------------- | ----------------- | ---------- | --- | ---------- | -------- | --------- |
-| TENANT_A | 100.70.0.7:1000 | 65000:1000 | False | False | - | TEN_A_site1_site2_eline_port_based | 27 | 16 |
-| TENANT_A | 100.70.0.7:1000 | 65000:1000 | False | False | - | TEN_A_site1_site2_eline_with_subinterfaces_100 | 129 | 119 |
-| TENANT_A | 100.70.0.7:1000 | 65000:1000 | False | False | - | TEN_A_site1_site2_eline_with_subinterfaces_101 | 130 | 120 |
+| TENANT_A | 100.70.0.7:1000 | 65000:1000 | True | True | 1500 | TEN_A_site1_site2_eline_port_based | 27 | 16 |
+| TENANT_A | 100.70.0.7:1000 | 65000:1000 | True | True | 1500 | TEN_A_site1_site2_eline_with_subinterfaces_100 | 129 | 119 |
+| TENANT_A | 100.70.0.7:1000 | 65000:1000 | True | True | 1500 | TEN_A_site1_site2_eline_with_subinterfaces_101 | 130 | 120 |
 | TENANT_B | 100.70.0.7:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1000 | 51000 | 31000 |
 | TENANT_B | 100.70.0.7:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1001 | 51001 | 31001 |
 | TENANT_B | 100.70.0.7:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1002 | 51002 | 31002 |
@@ -853,6 +853,9 @@ router bgp 65000
    vpws TENANT_A
       rd 100.70.0.7:1000
       route-target import export evpn 65000:1000
+      mpls control-word
+      label flow
+      mtu 1500
       !
       pseudowire TEN_A_site1_site2_eline_port_based
          evpn vpws id local 27 remote 16

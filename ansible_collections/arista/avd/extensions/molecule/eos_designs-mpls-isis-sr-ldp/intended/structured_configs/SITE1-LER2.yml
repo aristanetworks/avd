@@ -384,6 +384,13 @@ router_bgp:
     redistribute_routes:
     - learned
   vpws:
+  - name: TENANT_A
+    rd: 100.70.0.6:1000
+    route_targets:
+      import_export: 65000:1000
+    mpls_control_word: true
+    label_flow: true
+    mtu: 1500
   - name: TENANT_B
     rd: 100.70.0.6:2000
     route_targets:

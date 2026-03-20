@@ -439,6 +439,9 @@ router_bgp:
     rd: 100.70.0.5:1000
     route_targets:
       import_export: 65000:1000
+    mpls_control_word: true
+    label_flow: true
+    mtu: 1500
     pseudowires:
     - name: TEN_A_site1_site2_eline_port_based
       id_local: 16
