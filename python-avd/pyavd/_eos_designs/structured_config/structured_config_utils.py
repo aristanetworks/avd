@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
 
-class StructuredConfigUtils():
+class StructuredConfigUtils:
     """
     Utility class for structured config generation.
 
