@@ -1098,3 +1098,11 @@ jobs:
           disable_search: true
           files: reports/pyavd/e2e-tests.xml
           flags: e2e_tests
+
+  # ----------------------------------- #
+  # PR Benchmarks
+  # ----------------------------------- #
+  pr-benchmarks:
+    name: PR Benchmarks
+    uses: ./.github/workflows/benchmarks-pr.yml
+    secrets: inherit
