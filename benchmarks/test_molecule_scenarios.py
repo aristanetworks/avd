@@ -8,18 +8,22 @@ These benchmarks test the full AVD workflow (validate → facts → structured_c
 across various real-world molecule scenarios.
 """
 
+from __future__ import annotations
+
 import logging
 import sys
 from typing import TYPE_CHECKING
 from unittest.mock import patch
 
 import pytest
-from pytest_codspeed import BenchmarkFixture
 
-from pyavd import get_avd_facts, get_device_config, get_device_structured_config, validate_inputs
+from pyavd import get_device_config, get_device_structured_config, validate_inputs
+from pyavd._schema.store import init_store
+from pyavd.api.schemas import AVDDesign
 
 if TYPE_CHECKING:
-    from tests.models import MoleculeScenario
+    from pytest_codspeed import BenchmarkFixture
+    from tests.models import MoleculeHost
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +31,8 @@ logger = logging.getLogger(__name__)
 @pytest.mark.molecule_scenarios("eos_designs_unit_tests")
 def test_molecule_scenario_full_workflow_benchmark(
     benchmark: BenchmarkFixture,
-    molecule_scenario: "MoleculeScenario",
+    # molecule_scenario: "MoleculeScenario",
+    molecule_host: MoleculeHost,
 ) -> None:
     """
     Benchmark complete AVD workflow for real molecule scenarios.
@@ -40,44 +45,27 @@ def test_molecule_scenario_full_workflow_benchmark(
 
     This simulates the real-world usage of AVD across various deployment patterns.
     """
-    with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
-        # Disable logging during benchmark
-        logging.disable(logging.CRITICAL)
+    logging.disable(logging.CRITICAL)
+    init_store()
 
-        @benchmark
-        def _() -> None:
-            # Step 1: Validate inputs for all devices
-            all_inputs = {}
-            all_hostvars = {}
-            for host in molecule_scenario.hosts:
-                validated_result = validate_inputs(host.hostvars)
-                if validated_result.validated_data:
-                    all_inputs[host.name] = validated_result.validated_data
-                    all_hostvars[host.name] = host.hostvars
+    def b() -> None:
+        hostvars = molecule_host.hostvars
 
-            # Step 2: Generate AVD facts
-            avd_facts = get_avd_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=molecule_scenario.pool_manager)
+        # Validate inputs
+        validated_data_result = validate_inputs(hostvars)
 
-            # Step 3: Generate structured configs for all devices
-            structured_configs = {}
-            for hostname, inputs in all_inputs.items():
-                structured_configs[hostname] = get_device_structured_config(
-                    hostname=hostname,
-                    inputs=inputs,
-                    avd_facts=avd_facts,
-                )
+        assert validated_data_result.validated_data is not None
+
+        design = AVDDesign._from_dict(validated_data_result.validated_data)
+
+        with patch("sys.path", [*sys.path, *molecule_host.scenario.extra_python_paths]):
+            avd_facts = molecule_host.scenario.avd_facts
+            structured_config = get_device_structured_config(
+                molecule_host.name, design, avd_facts, hostvars=hostvars, digital_twin=molecule_host.scenario.digital_twin
+            )
 
             # Step 4: Render EOS configs for all devices
-            configs = {}
-            for hostname, structured_config in structured_configs.items():
-                configs[hostname] = get_device_config(structured_config)
+            get_device_config(structured_config)
 
-            assert len(configs) == len(all_inputs)
-
-        logging.disable(logging.NOTSET)
-
-    logger.info(
-        "Benchmarked full workflow for molecule scenario '%s' with %d devices",
-        molecule_scenario.name,
-        len(molecule_scenario.hosts),
-    )
+    benchmark.pedantic(b, iterations=5, warmup_rounds=1)  # type: ignore[reportAttributeAccessIssue]
+    logging.disable(logging.NOTSET)
