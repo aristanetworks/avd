@@ -1,6 +1,7 @@
 ---
 - name: Validate eos_designs inputs
   arista.avd.validate_inputs:
+    device_list: "{{ ansible_play_hosts_all }}"
     schema_name: avd_design
     tmp_dir: "{{ actual_output_dir }}/tmp_eos_designs"
   delegate_to: localhost
