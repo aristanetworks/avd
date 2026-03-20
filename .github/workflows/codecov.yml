@@ -43,7 +43,7 @@ jobs:
       - name: Download eos_cli_config_gen compiled templates from pytest
         uses: actions/download-artifact@v7
         with:
-          name: pytest-eos-cli-config-gen-compiled_templates
+          name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
 
       - name: Upload coverage to Codecov
