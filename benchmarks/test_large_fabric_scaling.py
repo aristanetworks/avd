@@ -92,6 +92,3 @@ def test_large_fabric_full_workflow_benchmark(
     logging.disable(logging.NOTSET)
 
     logger.info("Benchmarked full workflow for %d devices", device_count)
-
-
-
