@@ -77,6 +77,58 @@ CodSpeed provides:
 - **PR comparisons** showing performance impact
 - **Historical data** across all commits and branches
 
+## CI vs Local Benchmarks
+
+### CI Benchmarks (GitHub Actions)
+
+**PR Benchmarks (with `benchmark` label):**
+
+- Scale benchmarks: 15 and 150 devices (8 tests)
+- 4 shards for parallel execution
+- **Approval required:** Users with `admin` or `maintain` permissions auto-approved; others require manual approval from maintainers
+
+**Weekly Scheduled Benchmarks:**
+
+- Scale benchmarks: 15, 150, and 1500 devices (12 tests)
+- Multiple Python/Ansible version combinations
+- 4 shards per version
+- Runs automatically without approval
+
+**Manual Workflow Trigger:**
+
+- Same as scheduled benchmarks
+- **Approval required:** Users with `admin` or `maintain` permissions auto-approved; others require manual approval from maintainers
+
+**Why limited scope in CI:**
+
+- API benchmarks (443 devices) are too resource-intensive for simulation mode
+- Molecule scenarios would fail in CI
+- Scale benchmarks provide good performance tracking
+
+### Local Benchmarks (Full Suite)
+
+**All benchmarks available locally:**
+
+- **API benchmarks** (8 tests, 443 devices) - `make benchmark-api` - Not in CI
+- **Scale benchmarks** (all scales) - `make benchmark-scaling` - Partial in CI
+- **Molecule scenarios** (16 tests) - `pytest --codspeed benchmarks/test_molecule_scenarios.py` - Not in CI
+- **All benchmarks** - `make benchmark`
+
+### Approval Process
+
+**Environment Setup (one-time):**
+
+1. Go to repository Settings → Environments
+2. Create environment: `benchmark-approval`
+3. Enable "Required reviewers"
+4. Add `avd-maintainers` team as reviewers
+
+**How it works:**
+
+- **Admin/Maintain permissions:** Benchmarks run immediately
+- **Write/Read permissions:** Requires approval from `avd-maintainers` team
+- **Scheduled runs:** Always run automatically
+
 ## Running Benchmarks Locally
 
 ### Prerequisites
@@ -85,6 +137,14 @@ Install the benchmark dependencies:
 
 ```bash
 pip install --group dev --group benchmark --upgrade
+```
+
+Build schemas and templates:
+
+```bash
+cd python-avd
+make compile-schemas
+make compile-templates
 ```
 
 ### Using Makefile (Recommended)
