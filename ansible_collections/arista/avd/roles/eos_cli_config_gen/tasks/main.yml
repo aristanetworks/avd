@@ -18,12 +18,12 @@
     - name: Validate eos_cli_config_gen inputs
       arista.avd.validate_inputs:
         tmp_dir: "{{ eos_cli_config_gen_tmp_dir }}"
+        device_list: "{{ ansible_play_hosts_all }}"
         batch_size: "{{ eos_cli_config_gen_validate_inputs_batch_size | arista.avd.default(10) }}"
         schema_name: eos_config
         input_dir: "{{ structured_dir }}"
         input_suffix: "{{ avd_structured_config_file_format }}"
         read_from_input_dir: "{{ read_structured_config_from_file | arista.avd.default(true) }}"
-        fail_on_validation_errors: false
         vault_id: "{{ avd_vault_id }}"
       delegate_to: localhost
       check_mode: false

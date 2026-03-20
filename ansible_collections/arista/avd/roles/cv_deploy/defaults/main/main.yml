@@ -2,6 +2,13 @@
 
 avd_structured_config_file_format: "yml"
 
+# Vault ID to use for encrypting temporary files.
+# See role documentation for details.
+avd_vault_id: null
+
+# Avoid deleting temporary files. Allows the user to inspect tmp files created by the role.
+cv_deploy_keep_tmp_files: false
+
 # Inventory hostname of the CloudVision host.
 # This is used to pickup the ansible_host and ansible_password used to connect to CloudVision.
 # Each of these can be overridden manually if CloudVision is not part of the inventory.

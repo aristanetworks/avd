@@ -10,6 +10,8 @@ title: Ansible Collection Role cv_deploy
 
 # arista.avd.cv_deploy
 
+TODO: Update the documentation to include new role variables (avd_vault_id, etc.)
+
 ## Overview
 
 **arista.avd.cv_deploy** deploys EOS device configurations and tags to the CloudVision management platform.

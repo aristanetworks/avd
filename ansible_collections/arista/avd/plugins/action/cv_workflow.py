@@ -15,7 +15,7 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 from yaml import load
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, raise_action_fail
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, get_tmp_paths, raise_action_fail
 
 PLUGIN_NAME = "arista.avd.cv_workflow"
 
@@ -45,6 +45,8 @@ LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
 ARGUMENT_SPEC = {
+    "tmp_dir": {"type": "str", "required": False},
+    "preview_features": {"type": "bool", "default": False},
     "configuration_dir": {"type": "str", "required": True},
     "structured_config_dir": {"type": "str", "required": False},
     "structured_config_suffix": {"type": "str", "default": "yml"},
@@ -97,6 +99,10 @@ ARGUMENT_SPEC = {
     "return_details": {"type": "bool", "required": False, "default": False},
 }
 
+REQUIRED_IF = [
+    ("preview_features", True, ("tmp_dir",)),
+]
+
 
 class ActionModule(ActionBase):
     def run(self, tmp: Any = None, task_vars: dict | None = None) -> dict:
@@ -116,7 +122,10 @@ class ActionModule(ActionBase):
         setup_module_logging(result)
 
         # Get task arguments and validate them
-        _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
+        _validation_result, validated_args = self.validate_argument_spec(
+            argument_spec=ARGUMENT_SPEC,
+            required_if=REQUIRED_IF,
+        )
         validated_args = strip_empties_from_dict(validated_args)
 
         # Converting to json and back to remove any AnsibeUnsafe types
@@ -150,11 +159,22 @@ class ActionModule(ActionBase):
                 proxy_username=validated_args.get("proxy_username"),
                 proxy_password=validated_args.get("proxy_password"),
             )
+
+            # If preview_features is enabled, we use the tmp_dir which contains validated inputs as JSON for structured_config_dir.
+            preview_features = validated_args.get("preview_features")
+            if preview_features:
+                _templated_path, validated_path = get_tmp_paths(tmp_dir=validated_args.get("tmp_dir"))
+                structured_config_dir = str(validated_path)
+                structured_config_suffix = "json"
+            else:
+                structured_config_dir = validated_args.get("structured_config_dir")
+                structured_config_suffix = validated_args.get("structured_config_suffix")
+
             # Build lists of CVEosConfig, CVDeviceTag, CVInterfaceTag and CVPathfinderMetadata objects.
             eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects = await self.build_objects(
                 device_list=get(validated_args, "device_list", default=[]),
-                structured_config_dir=get(validated_args, "structured_config_dir"),
-                structured_config_suffix=get(validated_args, "structured_config_suffix"),
+                structured_config_dir=structured_config_dir,
+                structured_config_suffix=structured_config_suffix,
                 configuration_dir=get(validated_args, "configuration_dir"),
                 configlet_name_template=get(validated_args, "configlet_name_template"),
             )
@@ -326,11 +346,12 @@ class ActionModule(ActionBase):
         """
         LOGGER.info("build_object_for_device: %s", hostname)
         if structured_config_dir and (file_path := Path(structured_config_dir, f"{hostname}.{structured_config_suffix}")).exists():
+            LOGGER.info("build_object_for_device: Loading structured config from %s for %s", file_path, hostname)
             with file_path.open(  # noqa: ASYNC230
                 mode="r", encoding="UTF-8"
             ) as structured_config_stream:
                 if structured_config_suffix in ["yml", "yaml"]:
-                    interesting_keys = ("is_deployed", "serial_number", "metadata")
+                    interesting_keys = ("metadata",)
                     in_interesting_context = False
                     structured_config_lines = []
                     for line in structured_config_stream:
@@ -346,6 +367,7 @@ class ActionModule(ActionBase):
                     structured_config = json.load(structured_config_stream)
         else:
             # No structured config file.
+            LOGGER.info("build_object_for_device: No structured config file for %s", hostname)
             structured_config = {}
 
         if not get(structured_config, "metadata.is_deployed", default=True):

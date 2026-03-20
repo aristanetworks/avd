@@ -20,6 +20,19 @@ description: |-
   - Create and associate Device and Interface Tags.
   - Approve, run, cancel Change Controls as needed.
 options:
+  preview_features:
+    description: |-
+      Enable preview features of the plugin.
+      Preview features may change or be removed without notice.
+    type: bool
+    default: false
+  tmp_dir:
+    description: |-
+      Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.
+      Must be the same across all plugins.
+      Required when `preview_features` is `true`.
+    type: str
+    required: false
   cv_servers:
     description: List of hostnames or IP addresses for CloudVision instance to deploy to.
     type: list

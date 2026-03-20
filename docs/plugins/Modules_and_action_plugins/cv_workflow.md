@@ -32,6 +32,8 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| <samp>preview_features</samp> | bool | optional | False | - | Enable preview features of the plugin.<br>Preview features may change or be removed without notice. |
+| <samp>tmp_dir</samp> | str | False | None | - | Path to use as the AVD temporary directory for storing templated and validated data used internally by plugins.<br>Must be the same across all plugins.<br>Required when `preview_features` is `true`. |
 | <samp>cv_servers</samp> | list | True | None | - | List of hostnames or IP addresses for CloudVision instance to deploy to. |
 | <samp>cv_token</samp> | str | False | None | - | Service account token. It is strongly recommended to use Vault for this. |
 | <samp>cv_username</samp> | str | False | None | - | Username to use if `cv_token` is missing. Not supported for CVaaS. |
