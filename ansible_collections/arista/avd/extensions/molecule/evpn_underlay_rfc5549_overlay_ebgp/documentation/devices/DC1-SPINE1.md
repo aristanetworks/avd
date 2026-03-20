@@ -50,9 +50,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA RX Accept | ND RA Disabled | ND Managed Config Flag |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ | --------------- | -------------- | ---------------------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -218,15 +218,15 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_DC1-LEAF1A_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - |
-| Ethernet2 | P2P_DC1-LEAF2A_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - |
-| Ethernet3 | P2P_DC1-LEAF2B_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - |
-| Ethernet4 | P2P_DC1-SVC3A_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - |
-| Ethernet5 | P2P_DC1-SVC3B_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - |
-| Ethernet6 | P2P_DC1-BL1A_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - |
-| Ethernet7 | P2P_DC1-BL1B_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Ethernet1 | P2P_DC1-LEAF1A_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - | - | - |
+| Ethernet2 | P2P_DC1-LEAF2A_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - | - | - |
+| Ethernet3 | P2P_DC1-LEAF2B_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - | - | - |
+| Ethernet4 | P2P_DC1-SVC3A_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - | - | - |
+| Ethernet5 | P2P_DC1-SVC3B_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - | - | - |
+| Ethernet6 | P2P_DC1-BL1A_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - | - | - |
+| Ethernet7 | P2P_DC1-BL1B_Ethernet1 | - | - | default | 1500 | False | - | - | - | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
