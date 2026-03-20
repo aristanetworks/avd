@@ -25,8 +25,7 @@ class StructuredConfigUtils:
     """
 
     def __init__(self, structured_config: EosCliConfigGen) -> None:
-        """Initialize the StructuredConfigUtils with a ParentInterfacesTracker instance."""
-        super().__init__()
+        """Initialize the StructuredConfigUtils with a ParentInterfacesTracker instance and structured config instance.""
         self.structured_config = structured_config
         """The shared structured config instance to write config into."""
         self.parent_interfaces_tracker = ParentInterfacesTracker()
