@@ -930,7 +930,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         raise_for_port_channels_without_members: bool
         """
-        Raise an error if a main L3 Port-Channel is configured without any member interfaces.
+        Raise an error if an L3 Port-Channel is configured without any member interfaces.
 
         Default value: `False`
         """
@@ -953,7 +953,7 @@ class EosDesigns(EosDesignsRootModel):
                     remove_redundant_ipv4_unicast_for_peer_groups:
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
                        default instead of always deactivating it.
-                    raise_for_port_channels_without_members: Raise an error if a main L3 Port-Channel is configured without any member interfaces.
+                    raise_for_port_channels_without_members: Raise an error if an L3 Port-Channel is configured without any member interfaces.
 
                 """
 
