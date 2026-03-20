@@ -161,9 +161,8 @@ class RouterBgpMixin(Protocol):
                     vrf_address_families.add("evpn")
 
                 if vrf_address_families:
-                    bgp_vrf.rd = self.get_vrf_rd(vrf, tenant)
                     # The called function in-place updates the bgp_vrf dict.
-                    self._update_router_bgp_vrf_evpn_or_mpls_cfg(bgp_vrf, vrf, vrf_address_families)
+                    self._update_router_bgp_vrf_evpn_or_mpls_cfg(bgp_vrf, vrf, tenant, vrf_address_families)
 
                 if vrf.name != "default":
                     bgp_vrf.router_id = self.get_protocol_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
@@ -274,9 +273,11 @@ class RouterBgpMixin(Protocol):
         self: AvdStructuredConfigNetworkServicesProtocol,
         bgp_vrf: EosCliConfigGen.RouterBgp.VrfsItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
         vrf_address_families: set[str],
     ) -> None:
         """In-place update EVPN/MPLS part of structured config for *one* VRF under router_bgp.vrfs."""
+        bgp_vrf.rd = self.get_vrf_rd(vrf, tenant)
         vrf_rt = self.get_vrf_rt(vrf)
 
         for af in sorted(vrf_address_families):
