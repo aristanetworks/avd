@@ -96,6 +96,7 @@ class LogMessage(Enum):
     INTERFACE_NO_IP = "{interface} skipped - No IP address configured"
     INTERFACE_UNNUMBERED = "{interface} skipped - IP unnumbered interface"
     INTERFACE_NOT_INBAND_MGMT = "{interface} skipped - Not an inband management interface"
+    INTERFACE_NON_DEFAULT_VRF = "{interface} skipped - Interface in non-default VRF"
 
     # Vxlan interface state messages
     INTERFACE_VXLAN1_NO_VNI = "Vxlan1 skipped - No VNI configured"
@@ -120,6 +121,3 @@ class LogMessage(Enum):
     DEVICE_IS_WAN_ROUTER = "skipped - Device is a WAN router"
     DEVICE_IS_NOT_VTEP = "skipped - Device is not a VTEP"
     DEVICE_IS_NOT_WAN_ROUTER = "skipped - Device is not a WAN router"
-
-    # Non-default Inband Management VRF
-    NON_DEFAULT_INBAND_MGMT_VRF = "{svi} skipped - non-default inband management vrf"
