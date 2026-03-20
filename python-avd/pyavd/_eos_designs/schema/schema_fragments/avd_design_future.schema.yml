@@ -19,5 +19,5 @@ keys:
       raise_for_port_channels_without_members:
         type: bool
         description: |-
-          Raise an error if a main L3 Port-Channel is configured without any member interfaces.
+          Raise an error if an L3 Port-Channel is configured without any member interfaces.
         default: false
