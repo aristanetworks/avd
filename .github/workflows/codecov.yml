@@ -34,17 +34,21 @@ jobs:
         with:
           name: ansible-test-integration-coverage
 
-      - name: Download eos_designs compiled templates from pytest
-        uses: actions/download-artifact@v7
-        with:
-          name: pytest-eos-designs-compiled-templates
-          path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
+      ######################################################################
+      # This section is commented out as it is not parsing the compiled templates,
+      # only files included in the repository are parsed, codecov limitation.
+      ######################################################################
+      # - name: Download eos_designs compiled templates from pytest
+      #   uses: actions/download-artifact@v7
+      #   with:
+      #     name: pytest-eos-designs-compiled-templates
+      #     path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
 
-      - name: Download eos_cli_config_gen compiled templates from pytest
-        uses: actions/download-artifact@v7
-        with:
-          name: pytest-eos-cli-config-gen-compiled-templates
-          path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
+      # - name: Download eos_cli_config_gen compiled templates from pytest
+      #   uses: actions/download-artifact@v7
+      #   with:
+      #     name: pytest-eos-cli-config-gen-compiled-templates
+      #     path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
