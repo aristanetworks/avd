@@ -81,38 +81,31 @@ CodSpeed provides:
 
 ### CI Benchmarks (GitHub Actions)
 
-**PR Benchmarks (with `benchmark` label):**
+**PR Benchmarks (runs on every PR):**
 
-- Scale benchmarks: 15 and 150 devices (8 tests)
-- 4 shards for parallel execution
-- **Approval required:** Users with `admin` or `maintain` permissions auto-approved; others require manual approval from maintainers
+- **1 benchmark:** Molecule eos_designs_unit_tests - Full workflow (~478 hosts)
+- Runs automatically as part of "Collection code testing" workflow
+- No approval required
 
-**Weekly Scheduled Benchmarks:**
+**Weekly Scheduled Benchmarks (Sundays at 2 AM UTC):**
 
-- Scale benchmarks: 15, 150, and 1500 devices (12 tests)
+- **4 benchmarks:** Scale test (15, 150, 1500 devices) + Molecule eos_designs_unit_tests
 - Multiple Python/Ansible version combinations
-- 4 shards per version
-- Runs automatically without approval
+- 4 shards per version (1 test per shard)
+- **Approval required:** Users with `admin` or `maintain` permissions auto-approved; others require manual approval from maintainers
 
 **Manual Workflow Trigger:**
 
-- Same as scheduled benchmarks
+- Same as scheduled benchmarks (all 4 benchmarks)
 - **Approval required:** Users with `admin` or `maintain` permissions auto-approved; others require manual approval from maintainers
 
-**Why limited scope in CI:**
+### Local Benchmarks
 
-- API benchmarks (443 devices) are too resource-intensive for simulation mode
-- Molecule scenarios would fail in CI
-- Scale benchmarks provide good performance tracking
+**Run benchmarks locally:**
 
-### Local Benchmarks (Full Suite)
-
-**All benchmarks available locally:**
-
-- **API benchmarks** (8 tests, 443 devices) - `make benchmark-api` - Not in CI
-- **Scale benchmarks** (all scales) - `make benchmark-scaling` - Partial in CI
-- **Molecule scenarios** (16 tests) - `pytest --codspeed benchmarks/test_molecule_scenarios.py` - Not in CI
 - **All benchmarks** - `make benchmark`
+- **Scale benchmarks only** - `make benchmark-scaling`
+- **Molecule benchmarks only** - `make benchmark-molecule`
 
 ### Approval Process
 
@@ -125,9 +118,9 @@ CodSpeed provides:
 
 **How it works:**
 
-- **Admin/Maintain permissions:** Benchmarks run immediately
-- **Write/Read permissions:** Requires approval from `avd-maintainers` team
-- **Scheduled runs:** Always run automatically
+- **PR benchmarks:** Always run automatically (no approval)
+- **Scheduled/Manual (admin/maintain):** Runs immediately
+- **Scheduled/Manual (write/read):** Requires approval from `avd-maintainers` team
 
 ## Running Benchmarks Locally
 
