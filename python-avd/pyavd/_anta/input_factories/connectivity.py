@@ -229,14 +229,12 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory[VerifyReachability.Inp
             if not self._is_svi_candidate(svi):
                 continue
 
-            vrf = svi.vrf or "default"
-
             for hostname, ip in self.data_source.fabric_loopback0_mapping.items():
                 if hostname == self.data_source.hostname:
                     # Don't ping ourself
                     continue
 
-                yield Host(destination=ip, source=ip_interface(svi.ip_address).ip, description=hostname, vrf=vrf, repeat=1)
+                yield Host(destination=ip, source=ip_interface(svi.ip_address).ip, description=hostname, vrf="default", repeat=1)
 
     @skip_if_extra_fabric_validation_disabled
     @skip_if_not_wan_router
