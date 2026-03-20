@@ -2,58 +2,17 @@
 name: "PR Benchmarks"
 
 "on":
-  pull_request:
-    types: [labeled]
+  workflow_call:
 
 env:
   PY_COLORS: 1
   ANSIBLE_FORCE_COLOR: 1
 
 jobs:
-  check-maintainer:
-    name: Check Permissions
-    runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'benchmark')
-    outputs:
-      is-maintainer: ${{ steps.check.outputs.is-maintainer }}
-    steps:
-      - name: Get User Role
-        id: check
-        uses: actions/github-script@v7
-        with:
-          script: |
-            try {
-              const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                username: context.actor,
-              });
-
-              const role = data.permission;
-              // Only 'admin' or 'maintain' roles bypass approval.
-              // 'write' (Developers/TechLeads) will trigger the approval environment.
-              const isPrivileged = (role === 'admin' || role === 'maintain');
-
-              console.log(`User: ${context.actor} | Role: ${role} | Privileged: ${isPrivileged}`);
-              core.setOutput('is-maintainer', String(isPrivileged));
-            } catch (error) {
-              console.log(`Error: ${error.message}`);
-              core.setOutput('is-maintainer', 'false');
-            }
-
   pr-benchmarks:
-    name: PR Benchmarks (Shard ${{ matrix.shard }}/4)
+    name: PR Benchmarks
     runs-on: ubuntu-latest
-    timeout-minutes: 60
-    needs: check-maintainer
-    # Logic: Run if check was successful and benchmark label is present
-    if: always() && !cancelled() && needs.check-maintainer.result == 'success' && contains(github.event.pull_request.labels.*.name, 'benchmark')
-    # Environment gate: Only applied if triggered by someone WITHOUT 'maintain' or 'admin' perms
-    environment: ${{ needs.check-maintainer.outputs.is-maintainer != 'true' && 'benchmark-approval' || '' }}
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [1, 2, 3, 4]
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v6
 
@@ -72,16 +31,11 @@ jobs:
           make compile-schemas
           make compile-templates
 
-      - name: Run benchmarks (shard ${{ matrix.shard }}/4)
+      - name: Run benchmarks
         uses: CodSpeedHQ/action@v4
         with:
           token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
           run: |
-            # Run ONLY scale benchmarks for CI (8 tests: 4 benchmarks × 2 scales)
-            # API benchmarks are kept in the codebase for local testing
-            # 4 shards = 2 tests per shard
-            pytest --codspeed \
-              benchmarks/test_large_fabric_scaling.py \
-              -k "15_devices or 150_devices" \
-              --test-group=${{ matrix.shard }} --test-group-count=4
+            # Run only molecule scenario benchmark on PRs
+            pytest --codspeed benchmarks/test_molecule_scenarios.py
