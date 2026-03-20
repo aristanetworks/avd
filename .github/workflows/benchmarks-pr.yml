@@ -13,6 +13,10 @@ jobs:
     name: PR Benchmarks
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v6
 
@@ -31,11 +35,13 @@ jobs:
           make compile-schemas
           make compile-templates
 
-      - name: Run benchmarks
+      - name: Run benchmarks (shard ${{ matrix.shard }}/4)
         uses: CodSpeedHQ/action@v4
         with:
           token: ${{ secrets.CODSPEED_TOKEN }}
           mode: simulation
           run: |
             # Run only molecule scenario benchmark on PRs
-            pytest --codspeed benchmarks/test_molecule_scenarios.py
+            pytest --codspeed \
+              benchmarks/test_molecule_scenarios.py \
+              --test-group=${{ matrix.shard }} --test-group-count=4
