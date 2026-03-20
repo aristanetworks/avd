@@ -81,7 +81,7 @@ class StaticRoutesMixin(Protocol):
             self.structured_config.ipv6_static_routes.append_unique(static_route_item)
 
     @run_once_method
-    def _populate_static_routes_from_network_services(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+    def set_once_static_routes_from_network_services(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
         Populate both static_routes and ipv6_static_routes from network services VRFs in a single pass.
 
@@ -106,7 +106,7 @@ class StaticRoutesMixin(Protocol):
         - static_routes defined under the vrfs
         - static routes added automatically for VARP with prefixes
         """
-        self._populate_static_routes_from_network_services()
+        self.set_once_static_routes_from_network_services()
 
     def set_zscaler_ie_connection_static_route(self: AvdStructuredConfigNetworkServicesProtocol, destination_ip: str, name: str, next_hop: str) -> None:
         """Set the static route for one Zscaler Internet Exit connection."""

@@ -8,7 +8,6 @@ from ipaddress import ip_network
 from typing import cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._eos_designs.shared_utils.static_routes import append_gateway_routes
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils.run_once import run_once_method
@@ -82,19 +81,19 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         return False
 
     @run_once_method
-    def _populate_inband_mgmt_static_routes(self) -> None:
+    def set_once_inband_mgmt_static_routes(self) -> None:
         """Populate static_routes and ipv6_static_routes from inband management config in a single pass."""
         if self.shared_utils.configure_inband_mgmt:
-            append_gateway_routes(
-                self.structured_config.static_routes,
+            self.structured_config_utils.set_static_routes(
+                "ipv4",
                 self.shared_utils.inband_mgmt_gateway,
                 self.shared_utils.inband_mgmt_vrf,
                 default_prefix="0.0.0.0/0",
             )
 
         if self.shared_utils.configure_inband_mgmt_ipv6:
-            append_gateway_routes(
-                self.structured_config.ipv6_static_routes,
+            self.structured_config_utils.set_static_routes(
+                "ipv6",
                 self.shared_utils.inband_mgmt_ipv6_gateway,
                 self.shared_utils.inband_mgmt_vrf,
                 default_prefix="::/0",
@@ -102,11 +101,11 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
 
     @structured_config_contributor
     def static_routes(self) -> None:
-        self._populate_inband_mgmt_static_routes()
+        self.set_once_inband_mgmt_static_routes()
 
     @structured_config_contributor
     def ipv6_static_routes(self) -> None:
-        self._populate_inband_mgmt_static_routes()
+        self.set_once_inband_mgmt_static_routes()
 
     @structured_config_contributor
     def vrfs(self) -> None:

@@ -27,4 +27,4 @@ class Ipv6StaticRoutesMixin(Protocol):
         - ipv6 static_routes defined under the vrfs
         - static routes added automatically for VARPv6 with prefixes
         """
-        self._populate_static_routes_from_network_services()
+        self.set_once_static_routes_from_network_services()
