@@ -36,18 +36,13 @@ cv_skip_missing_devices: false
 cv_strict_system_mac_address: false
 
 # Submit Workspace on deployment. Otherwise the Workspace will be left in "pending" mode.
-# Only applicable if cv_workspace_requested_state is not set.
 cv_submit_workspace: true
 
 # Force Workspace submission even if some devices are not streaming.
 # If set, configurations will not be validated for non-streaming devices.
-# Only applicable if cv_workspace_requested_state is set to 'submitted' or cv_workspace_requested_state is not set and cv_submit_workspace is true.
 cv_submit_workspace_force: false
 
 # Approve and Start Change Control. Otherwise the Change Control will be left in "pending approval" mode.
-# Only applicable if both conditions below are met:
-# - cv_workspace_requested_state is set to "submitted" or cv_workspace_requested_state is not set and cv_submit_workspace is true
-# - cv_change_control_requested_state is not set
 cv_run_change_control: false
 
 # Set the name of the created Workspace. By default this will be "AVD <date and time>"
@@ -56,10 +51,10 @@ cv_run_change_control: false
 # Set the description of the created Workspace.
 # cv_workspace_description: <str>
 
-# Set the ID of the created Workspace. If there is already a workspace with the same ID, it must be in the 'pending' state.
+# Set the ID of the Workspace.
 # cv_workspace_id: <str>
 
-# Set the requested state for the Workspace. Takes precedence over cv_submit_workspace.
+# Set the requested state of the Workspace.
 # Accepted values: "pending", "built", "submitted", "abandoned" or "deleted".
 # cv_workspace_requested_state: <str>
 
@@ -69,9 +64,8 @@ cv_run_change_control: false
 # Set the description of the created Change Control.
 # cv_change_control_description: <str>
 
-# Set the requested state of the created Change Control. Takes precedence over cv_run_change_control.
+# Set the requested state of the created Change Control.
 # Accepted values: "pending approval", "approved", "running" or "completed".
-# Only applicable if cv_workspace_requested_state is set to "submitted" or cv_workspace_requested_state is not set and cv_submit_workspace is true.
 # cv_change_control_requested_state: <str>
 
 # Remove any tags on the devices and interfaces not specified by AVD.
