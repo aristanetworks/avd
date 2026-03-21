@@ -433,17 +433,17 @@ class ActionModule(ActionBase):
 
         if structured_config_suffix in ["yml", "yaml"]:
             with file_path.open(mode="r", encoding="UTF-8") as structured_config_stream:
-                interesting_keys = ("metadata",)
-                in_interesting_context = False
-                structured_config_lines = []
+                metadata_lines = []
+                in_metadata = False
                 for line in structured_config_stream:
-                    if line.startswith(interesting_keys) or (in_interesting_context and line.startswith(" ")):
-                        structured_config_lines.append(line)
-                        in_interesting_context = True
-                    else:
-                        in_interesting_context = False
+                    if line.startswith("metadata"):
+                        in_metadata = True
+                    elif in_metadata and not line.startswith(" "):
+                        break
+                    if in_metadata:
+                        metadata_lines.append(line)
 
-                return load("".join(structured_config_lines), Loader=YamlLoader)  # noqa: S506 TODO: Consider safeload
+                return load("".join(metadata_lines), Loader=YamlLoader)  # noqa: S506 TODO: Consider safeload
 
         # JSON files may be encrypted by the validate_inputs plugin, so we use AVDFileHandler to decrypt if needed.
         vault_handler = AVDVaultHandler(self._loader)
