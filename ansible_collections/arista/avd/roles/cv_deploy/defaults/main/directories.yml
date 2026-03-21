@@ -17,4 +17,5 @@ eos_config_dir_name: 'configs'
 eos_config_dir: '{{ output_dir }}/{{ eos_config_dir_name }}'
 
 # Output directory for temporary files.
-cv_deploy_tmp_dir: "{{ output_dir }}/tmp_cv_deploy"
+# Contains templated and validated inputs used by the 'cv_deploy' role.
+cv_deploy_tmp_dir: '{{ output_dir }}/tmp_cv_deploy'
