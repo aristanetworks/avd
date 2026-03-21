@@ -15,7 +15,14 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 from yaml import load
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, get_tmp_paths, raise_action_fail
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    AVDFileHandler,
+    AVDVaultHandler,
+    PythonToAnsibleHandler,
+    YamlLoader,
+    get_tmp_paths,
+    raise_action_fail,
+)
 
 PLUGIN_NAME = "arista.avd.cv_workflow"
 
@@ -345,30 +352,8 @@ class ActionModule(ActionBase):
         TODO: Refactor into smaller functions.
         """
         LOGGER.info("build_object_for_device: %s", hostname)
-        if structured_config_dir and (file_path := Path(structured_config_dir, f"{hostname}.{structured_config_suffix}")).exists():
-            LOGGER.info("build_object_for_device: Loading structured config from %s for %s", file_path, hostname)
-            with file_path.open(  # noqa: ASYNC230
-                mode="r", encoding="UTF-8"
-            ) as structured_config_stream:
-                if structured_config_suffix in ["yml", "yaml"]:
-                    interesting_keys = ("metadata",)
-                    in_interesting_context = False
-                    structured_config_lines = []
-                    for line in structured_config_stream:
-                        if line.startswith(interesting_keys) or (in_interesting_context and line.startswith(" ")):
-                            structured_config_lines.append(line)
-                            in_interesting_context = True
-                        else:
-                            in_interesting_context = False
 
-                    structured_config = load("".join(structured_config_lines), Loader=YamlLoader)  # noqa: S506 TODO: Consider safeload
-                else:
-                    # Load as JSON
-                    structured_config = json.load(structured_config_stream)
-        else:
-            # No structured config file.
-            LOGGER.info("build_object_for_device: No structured config file for %s", hostname)
-            structured_config = {}
+        structured_config = self.load_structured_config(hostname, structured_config_dir, structured_config_suffix)
 
         # metadata.* keys take precedence over global cv_deploy schema keys.
         if not default(get(structured_config, "metadata.is_deployed"), get(structured_config, "is_deployed", default=True)):
@@ -427,6 +412,43 @@ class ActionModule(ActionBase):
 
         del structured_config
         return eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects
+
+    def load_structured_config(self, hostname: str, structured_config_dir: str | None, structured_config_suffix: str) -> dict[str, Any]:
+        """
+        Load the structured config for the host.
+
+        Args:
+            hostname: Inventory hostname.
+            structured_config_dir: Path to structured config files.
+            structured_config_suffix: Suffix for structured config files.
+
+        Returns:
+            Dict containing the structured config for the host.
+        """
+        if not structured_config_dir or not (file_path := Path(structured_config_dir, f"{hostname}.{structured_config_suffix}")).exists():
+            LOGGER.info("load_structured_config: No structured config file for %s", hostname)
+            return {}
+
+        LOGGER.info("load_structured_config: Loading %s structured config from %s", hostname, file_path)
+
+        if structured_config_suffix in ["yml", "yaml"]:
+            with file_path.open(mode="r", encoding="UTF-8") as structured_config_stream:
+                interesting_keys = ("metadata",)
+                in_interesting_context = False
+                structured_config_lines = []
+                for line in structured_config_stream:
+                    if line.startswith(interesting_keys) or (in_interesting_context and line.startswith(" ")):
+                        structured_config_lines.append(line)
+                        in_interesting_context = True
+                    else:
+                        in_interesting_context = False
+
+                return load("".join(structured_config_lines), Loader=YamlLoader)  # noqa: S506 TODO: Consider safeload
+
+        # JSON files may be encrypted by the validate_inputs plugin, so we use AVDFileHandler to decrypt if needed.
+        vault_handler = AVDVaultHandler(self._loader)
+        file_handler = AVDFileHandler(vault_handler)
+        return file_handler.load_json(file_path)
 
 
 def setup_module_logging(result: dict) -> None:
