@@ -46,6 +46,9 @@ except ImportError:
 
     # Workaround to make ansible-test sanity happy.
     ValidationResult = object
+    CV_DEPLOY_INPUT_KEYS = set()
+    EOS_CLI_CONFIG_GEN_INPUT_KEYS = set()
+    EOS_CLI_CONFIG_GEN_ROLE_KEYS = set()
 
 
 @dataclass(frozen=True, slots=True)
