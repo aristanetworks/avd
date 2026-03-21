@@ -29,7 +29,8 @@ dependencies = [
     # we patch the connection code in grpclib to get proxy support, so we need to carefully monitor and test new versions
     "grpclib>=0.4.8",
     "jinja2>=3.0",
-    "pyavd-utils==0.0.3",
+    # TODO: Update to released version when pyavd-utils with cv_deploy schema support is released.
+    "pyavd-utils @ git+https://github.com/aristanetworks/pyavd-utils.git@feat/add_cv_deploy_schema",
     "python-socks[asyncio]>=2.7.2",
     "pyyaml>=6.0.0",
     "requests>=2.27.0",
