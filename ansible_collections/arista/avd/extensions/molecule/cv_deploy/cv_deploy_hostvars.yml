@@ -145,7 +145,7 @@
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.set_fact:
-            deivces_structure: '{{ cv_deploy_results.deployed_configs | from_yaml }}'
+            devices_structure: '{{ cv_deploy_results.deployed_configs | from_yaml }}'
             output_devices: []
 
         - name: "(BLOCK) {{ test_id | upper }} Extract devices from output"
@@ -153,7 +153,7 @@
           run_once: true
           ansible.builtin.set_fact:
             output_devices: "{{ output_devices + [item.device.hostname] }}"
-          loop: "{{ deivces_structure }}"
+          loop: "{{ devices_structure }}"
           loop_control:
             label: "{{ item.configlet_name }}"
 

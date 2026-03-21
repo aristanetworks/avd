@@ -12,7 +12,6 @@
     tag_url: https://{{ cv_server }}/api/resources/tag/v2/TagAssignment/all
     configuration_dir: "{{ playbook_dir }}/intended/configs"
     structured_config_dir: "{{ playbook_dir }}/intended/structured_configs"
-    cv_deploy_tmp_dir: "{{ playbook_dir }}/intended/tmp_cv_deploy"
     intended_tag_device: ci-s1-leaf1
     intended_tags: "{{ lookup('file', structured_config_dir ~ '/test_configs/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
     intended_strict_tags: "{{ lookup('file', structured_config_dir ~ '/strict_tags/' ~ intended_tag_device ~ '.yml')|from_yaml }}"
