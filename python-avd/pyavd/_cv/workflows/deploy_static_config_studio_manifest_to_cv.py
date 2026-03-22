@@ -31,6 +31,8 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
         + Sync configlets.
             - Create or update all configlets declared in the manifest.
             - Delete any AVD-managed configlets not in the manifest.
+            - TODO: Implement policy options like containers to control how configlets are managed during the deployment.
+            - TODO: Implement configlet body diff - digest/checksum
         + Sync containers.
             - Fetch existing state (containers + root list) from CloudVision.
             - Compute the final state by layering the manifest on top of the existing state.
@@ -45,20 +47,6 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
             - Determine which containers are reachable from the final roots.
             - Diff final vs existing and apply changes (push, delete, update root list).
                 - Any AVD-managed container unreachable from the final root list (orphan) is always deleted.
-
-
-    TODO: Today default behavior with cv_deploy is `root_policy="selective"` and `child_policy="strict"`.
-          With "strict" child_policy, manually managed children that are unassigned from the hierarchy remain as
-          orphaned objects in the CloudVision database. Similarly, with "strict" root_policy, manually managed roots
-          removed from the root list also become orphaned objects. In both cases, non-AVD orphaned containers persist
-          in the database with no way to clean them up via the UI.
-
-          Consider a `cleanup_orphans` knob on the manifest to control orphan cleanup scope.
-          Option A: "all" — delete ALL unreachable containers regardless of prefix (unreachable containers are functionally useless).
-          Option B: "avd_only" (default) — only delete AVD-managed orphans (current behavior to avoid a breaking change).
-
-    TODO: Implement strict mode to remove any configlets not managed by AVD from the Studio.
-    TODO: Implement configlet body diff - digest/checksum.
     """
     workspace_id = deployment_result.workspace.id
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Starting manifest deployment for workspace '%s'.", workspace_id)
