@@ -47,6 +47,17 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
             - Diff final vs existing and apply changes (push, delete, update root list).
                 - Any AVD-managed container unreachable from the final root list (orphan) is always deleted.
 
+
+    TODO: Today default behavior with cv_deploy is `root_policy="selective"` and `child_policy="strict"`.
+          With "strict" child_policy, manually managed children that are unassigned from the hierarchy remain as
+          orphaned objects in the CloudVision database. Similarly, with "strict" root_policy, manually managed roots
+          removed from the root list also become orphaned objects. In both cases, non-AVD orphaned containers persist
+          in the database with no way to clean them up via the UI.
+
+          Consider a `cleanup_orphans` knob on the manifest to control orphan cleanup scope.
+          Option A: "all" — delete ALL unreachable containers regardless of prefix (unreachable containers are functionally useless).
+          Option B: "avd_only" (default) — only delete AVD-managed orphans (current behavior to avoid a breaking change).
+
     TODO: Implement strict mode to remove any configlets not managed by AVD from the Studio.
     TODO: Implement configlet body diff - digest/checksum.
     """
@@ -204,6 +215,7 @@ def _get_final_container_state(
     desired_root_ids = [container.id for container in cv_manifest.containers if container.is_root]
 
     if cv_manifest.root_policy == "strict":
+        # TODO: Consider adding a warning log (similar to above) if there are unassigned roots.
         final_root_ids = desired_root_ids
     elif cv_manifest.root_policy == "selective":
         manual_root_ids = [root_id for root_id in existing_root_ids if not root_id.startswith(AVD_ENTITY_PREFIX)]
