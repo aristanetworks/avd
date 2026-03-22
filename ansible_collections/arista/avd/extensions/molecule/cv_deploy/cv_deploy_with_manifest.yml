@@ -139,7 +139,8 @@
               Received: {{ received | to_nice_json }}
           vars:
             expected:
-              - configlets:
+              - child_policy: strict
+                configlets:
                   - TEST-MANIFEST-ACCESS-LISTS
                 description: Child container for AVD manifest deployment
                 match_policy: match_all
@@ -147,12 +148,14 @@
                 sub_containers: []
                 tag_query: "device:avd-ci-leaf1"
 
-              - configlets: []
+              - child_policy: strict
+                configlets: []
                 description: Root container for AVD manifest deployment
                 match_policy: match_all
                 name: AVD-MANIFEST-ROOT
                 sub_containers:
-                  - configlets:
+                  - child_policy: strict
+                    configlets:
                       - TEST-MANIFEST-ACCESS-LISTS
                     description: Child container for AVD manifest deployment
                     match_policy: match_all
