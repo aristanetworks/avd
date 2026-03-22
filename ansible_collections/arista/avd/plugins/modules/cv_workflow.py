@@ -99,6 +99,15 @@ options:
     description: Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio.
     type: dict
     suboptions:
+      root_policy:
+        description: |-
+          Controls how the Studio root container list is managed during deployment.
+          - `strict`: The root list contains only declared roots. Both AVD-managed and manual roots not in the manifest are removed.
+          - `selective`: Only AVD-managed roots not in the manifest are removed. Manual roots are preserved.
+          - `loose`: Desired roots are prepended to the existing list. Nothing is removed.
+        type: str
+        default: selective
+        choices: ["strict", "loose", "selective"]
       configlets:
         description: |-
           A list of dictionaries defining configlets to be pushed to the Configlet Library.
@@ -118,6 +127,10 @@ options:
           - **description** (`str`, optional): An optional description for the container.
           - **match_policy** (`str`, optional, default: "match_all"): The match policy to determine how devices with a matching tag inherit
               a child container configlets. Valid choices are `match_all` or `match_first`.
+          - **child_policy** (`str`, optional, default: `"strict"`): Controls how this container's children are managed.
+              `"strict"`: child containers not declared in the manifest are removed (both AVD-managed and manual).
+              `"selective"`: only undeclared AVD-managed children are removed, manual children are preserved.
+              `"loose"`: existing children not in the manifest are preserved alongside declared ones.
           - **configlets** (`list` of `str`, optional): A list of configlet names to apply to this container. Must be defined in the `configlets` section.
           - **sub_containers** (`list` of `dict`, optional): A nested list of container dictionaries that follow this same data model,
               allowing for a full hierarchy.
@@ -233,6 +246,7 @@ EXAMPLES = r"""
         # strict_system_mac_address: false
         # configlet_name_template: "AVD-${hostname}"
         # static_config_manifest:
+        #   root_policy: "loose"
         #   configlets:
         #     - name: "GLOBAL_NTP_SERVERS"
         #       file: "configlets/global_ntp.txt"

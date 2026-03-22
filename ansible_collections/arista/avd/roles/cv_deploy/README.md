@@ -276,6 +276,8 @@ cv_strict_system_mac_address: true
 
 #### Static Configuration Studio deployment
 
+TODO: Update this section with new root_policy and child_policy.
+
 In addition to deploying device-specific configurations, the role allows for the deployment of a full hierarchy of containers and configlets to the CloudVision "Static Configuration Studio". This is controlled by the `cv_static_config_manifest` variable:
 
 ```yaml

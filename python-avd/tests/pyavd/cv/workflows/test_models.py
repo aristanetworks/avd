@@ -178,6 +178,30 @@ class TestCVManifestGeneration:
         assert len(cv_manifest.configlets) == 0
         assert len(cv_manifest.containers) == 0
 
+    def test_root_policy_propagates_to_cv_manifest(self) -> None:
+        """Tests that the root_policy propagates from AvdManifest to CVManifest."""
+        avd_manifest_selective = AvdManifest(root_policy="selective", configlets=(), containers=())
+        cv_manifest_selective = CVManifest.from_avd_manifest(avd_manifest_selective)
+        assert cv_manifest_selective.root_policy == "selective"
+
+        avd_manifest_loose = AvdManifest(root_policy="loose", configlets=(), containers=())
+        cv_manifest_loose = CVManifest.from_avd_manifest(avd_manifest_loose)
+        assert cv_manifest_loose.root_policy == "loose"
+
+    def test_container_child_policy_propagates_to_cv_container(self) -> None:
+        """Tests that the per-container child_policy is accessible on CVContainer."""
+        strict_container = AvdContainer(name="STRICT", tag_query="q1", child_policy="strict")
+        loose_container = AvdContainer(name="LOOSE", tag_query="q2", child_policy="loose")
+        selective_container = AvdContainer(name="AVD_ONLY", tag_query="q3", child_policy="selective")
+        avd_manifest = AvdManifest(configlets=(), containers=(strict_container, loose_container, selective_container))
+
+        cv_manifest = CVManifest.from_avd_manifest(avd_manifest)
+        container_map = {c.name: c for c in cv_manifest.containers}
+
+        assert container_map["STRICT"].child_policy == "strict"
+        assert container_map["LOOSE"].child_policy == "loose"
+        assert container_map["AVD_ONLY"].child_policy == "selective"
+
     def test_deterministic_id_generation(self) -> None:
         """Ensures the ID generation function is deterministic and consistent."""
         id1 = CVManifest._generate_deterministic_id("my_key")
@@ -328,6 +352,7 @@ class TestAvdContainerFromDict:
         assert container.tag_query == "role:minimal"
         assert container.description is None
         assert container.match_policy == "match_all"
+        assert container.child_policy == "strict"
         assert not container.configlets
         assert not container.sub_containers
 
@@ -343,6 +368,7 @@ class TestAvdContainerFromDict:
                 {
                     "name": "Child1",
                     "tag_query": "rack:1",
+                    "child_policy": "loose",
                     "configlets": [{"name": "cfg_child"}],
                 }
             ],
@@ -351,6 +377,7 @@ class TestAvdContainerFromDict:
         assert container.name == "Root"
         assert container.description == "Root container"
         assert container.match_policy == "match_first"
+        assert container.child_policy == "strict"  # Default
         assert container.configlets == ("cfg1", "cfg2")
         assert len(container.sub_containers) == 1
 
@@ -358,7 +385,26 @@ class TestAvdContainerFromDict:
         assert isinstance(child, AvdContainer)
         assert child.name == "Child1"
         assert child.tag_query == "rack:1"
+        assert child.child_policy == "loose"  # Explicitly set
         assert child.configlets == ("cfg_child",)
+
+    def test_child_policy_defaults_to_strict(self) -> None:
+        """Tests that child_policy defaults to 'strict' when omitted from the input dictionary."""
+        data = {"name": "Container", "tag_query": "q1"}
+        container = AvdContainer.from_dict(data)
+        assert container.child_policy == "strict"
+
+    def test_child_policy_explicit_loose(self) -> None:
+        """Tests that child_policy can be explicitly set to 'loose'."""
+        data = {"name": "Container", "tag_query": "q1", "child_policy": "loose"}
+        container = AvdContainer.from_dict(data)
+        assert container.child_policy == "loose"
+
+    def test_child_policy_explicit_selective(self) -> None:
+        """Tests that child_policy can be explicitly set to 'selective'."""
+        data = {"name": "Container", "tag_query": "q1", "child_policy": "selective"}
+        container = AvdContainer.from_dict(data)
+        assert container.child_policy == "selective"
 
     @pytest.mark.parametrize(
         ("invalid_data", "match_str"),
@@ -404,10 +450,26 @@ class TestAvdManifestFromDict:
         manifest = AvdManifest.from_dict(full_manifest_dict)
         assert len(manifest.configlets) == 2
         assert len(manifest.containers) == 1
+        assert manifest.root_policy == "selective"  # Default
         assert manifest.configlets[0].name == "global_cfg"
         assert manifest.containers[0].name == "ROOT"
         assert len(manifest.containers[0].sub_containers) == 1
         assert manifest.containers[0].sub_containers[0].name == "LEAVES"
+
+    def test_root_policy_defaults_to_selective(self) -> None:
+        """Tests that the manifest root_policy defaults to 'selective' when omitted."""
+        manifest = AvdManifest.from_dict({})
+        assert manifest.root_policy == "selective"
+
+    def test_root_policy_explicit_loose(self) -> None:
+        """Tests that the manifest root_policy can be set to 'loose'."""
+        manifest = AvdManifest.from_dict({"root_policy": "loose"})
+        assert manifest.root_policy == "loose"
+
+    def test_root_policy_explicit_strict(self) -> None:
+        """Tests that the manifest root_policy can be set to 'strict'."""
+        manifest = AvdManifest.from_dict({"root_policy": "strict"})
+        assert manifest.root_policy == "strict"
 
     def test_success_configlets_only(self) -> None:
         """Tests successful creation of AvdManifest with only configlets defined."""

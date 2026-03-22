@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 from asyncio import gather
+from collections import deque
+from dataclasses import replace
 from logging import getLogger
 from typing import TYPE_CHECKING, cast
 
@@ -25,7 +27,27 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
     """
     Deploy a manifest (configlets/containers) to CloudVision using the "Static Configuration" Studio.
 
-    TODO: Implement strict mode to remove any containers/configlets not managed by AVD from the Studio.
+    Workflow:
+        + Sync configlets.
+            - Create or update all configlets declared in the manifest.
+            - Delete any AVD-managed configlets not in the manifest.
+        + Sync containers.
+            - Fetch existing state (containers + root list) from CloudVision.
+            - Compute the final state by layering the manifest on top of the existing state.
+                - For each container, `child_policy` controls how its children are resolved:
+                    - "strict": Replace children entirely with what is declared. Both AVD-managed and manual
+                      children not in the manifest are removed. A warning is logged for unassigned manual children.
+                    - "selective": Only undeclared AVD-managed children are removed. Manual children are preserved.
+                    - "loose": Desired children are merged into existing children. Nothing is removed.
+                - `root_policy` controls how the Studio root container list is resolved:
+                    - "strict": Replace the root list entirely with what is declared.
+                    - "selective": Only undeclared AVD-managed roots are removed. Manual roots are preserved.
+                    - "loose": Desired roots are prepended to the existing list. Nothing is removed.
+            - Determine which containers are reachable from the final roots.
+            - Diff final vs existing and apply changes (push, delete, update root list).
+                - Any AVD-managed container unreachable from the final root list (orphan) is always deleted.
+
+    TODO: Implement strict mode to remove any configlets not managed by AVD from the Studio.
     TODO: Implement configlet body diff - digest/checksum.
     """
     workspace_id = deployment_result.workspace.id
@@ -45,13 +67,12 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
     # Perform synchronization tasks.
     await _sync_configlets(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
     await _sync_containers(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
-    await _sync_studio_roots(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
 
     # Done.
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Completed manifest deployment for workspace '%s'.", workspace_id)
 
 
-async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> dict[str, ConfigletAssignment]:
+async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
     """Synchronize containers. Fetch existing ones and push any required creates or updates."""
     workspace_id = deployment_result.workspace.id
 
@@ -59,13 +80,36 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
     existing_containers = await cv_client.get_configlet_containers(workspace_id=workspace_id)
     existing_containers_by_id = {cast("str", container.key.configlet_assignment_id): container for container in existing_containers}
 
+    LOGGER.info("deploy_static_config_studio_manifest_to_cv: Fetching the existing list of root container IDs from the Studio inputs...")
+    existing_root_ids: list[str] = await cv_client.get_studio_inputs_with_path(
+        studio_id=STATIC_CONFIGURATION_STUDIO_ID,
+        workspace_id=workspace_id,
+        input_path=["configletAssignmentRoots"],
+        default_value=[],
+    )
+
+    # Compute the final state.
+    final_child_ids_by_container_id, final_root_ids = _get_final_container_state(cv_manifest, existing_containers_by_id, existing_root_ids)
+
+    # Determine which containers are reachable from the final roots.
+    reachable_container_ids = _get_reachable_container_ids(final_child_ids_by_container_id, final_root_ids)
+
+    LOGGER.info(
+        "deploy_static_config_studio_manifest_to_cv: Final state: %d reachable containers, %d root containers.",
+        len(reachable_container_ids),
+        len(final_root_ids),
+    )
+
+    # Determine which desired containers need to be pushed (created or updated).
     containers_to_push: list[CVContainer] = []
     for desired_container in cv_manifest.containers:
+        final_child_ids = tuple(final_child_ids_by_container_id.get(desired_container.id, desired_container.child_ids))
+        final_container = replace(desired_container, child_ids=final_child_ids)
         existing_container = existing_containers_by_id.get(desired_container.id)
 
         # Container is new or has changed, so it needs to be pushed.
-        if not existing_container or not desired_container.matches_configlet_assignment(existing_container):
-            containers_to_push.append(desired_container)
+        if not existing_container or not final_container.matches_configlet_assignment(existing_container):
+            containers_to_push.append(final_container)
         else:
             # Container is unchanged.
             deployment_result.skipped_static_config_containers.append(desired_container.avd_container)
@@ -79,11 +123,10 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No container creations or updates are needed.")
 
     # Delete unused AVD-managed containers.
-    desired_container_ids = {container.id for container in cv_manifest.containers}
     containers_to_delete = {
         container_id: cast("str", container.display_name)
         for container_id, container in existing_containers_by_id.items()
-        if container_id.startswith(AVD_ENTITY_PREFIX) and container_id not in desired_container_ids
+        if container_id.startswith(AVD_ENTITY_PREFIX) and container_id not in reachable_container_ids
     }
 
     if containers_to_delete:
@@ -93,6 +136,97 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
         await gather(*[cv_client.delete_configlet_container(workspace_id=workspace_id, assignment_id=container_id) for container_id in containers_to_delete])
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No AVD-managed container deletions are needed.")
+
+    # Update the Studio root list if it has changed.
+    if final_root_ids != existing_root_ids:
+        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Updating Studio root container assignment list...")
+        await cv_client.set_studio_inputs(
+            studio_id=STATIC_CONFIGURATION_STUDIO_ID,
+            workspace_id=workspace_id,
+            input_path=["configletAssignmentRoots"],
+            inputs=final_root_ids,
+        )
+    else:
+        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Studio root container assignments are already in the desired state.")
+
+
+def _get_final_container_state(
+    cv_manifest: CVManifest,
+    existing_containers_by_id: dict[str, ConfigletAssignment],
+    existing_root_ids: list[str],
+) -> tuple[dict[str, list[str]], list[str]]:
+    """
+    Compute the final (post-deployment) container state by layering the manifest on top of the existing state.
+
+    See `deploy_static_config_studio_manifest_to_cv` docstring for details on `child_policy` and `root_policy` behavior.
+
+    Returns the final child_ids for every container and the final root list.
+    """
+    # Start with existing children as the baseline for all known containers.
+    final_child_ids_by_container_id = {
+        container_id: list(container.child_assignment_ids.values) for container_id, container in existing_containers_by_id.items()
+    }
+
+    for desired_container in cv_manifest.containers:
+        existing_container = existing_containers_by_id.get(desired_container.id)
+        existing_child_ids = list(existing_container.child_assignment_ids.values) if existing_container else []
+
+        if desired_container.child_policy == "strict":
+            final_child_ids_by_container_id[desired_container.id] = list(desired_container.child_ids)
+
+            # Log a warning if a strict container is about to unassign manually managed children.
+            # TODO: Consider moving this block to a helper.
+            desired_child_ids = set(desired_container.child_ids)
+            orphaned_manual_child_ids = {
+                child_id for child_id in existing_child_ids if child_id not in desired_child_ids and not child_id.startswith(AVD_ENTITY_PREFIX)
+            }
+            if orphaned_manual_child_ids:
+                # Build human-readable details with both display name and ID for each orphaned manual child.
+                orphaned_details = {
+                    f"{cast('str', existing_containers_by_id[child_id].display_name)} ({child_id})" if child_id in existing_containers_by_id else child_id
+                    for child_id in orphaned_manual_child_ids
+                }
+                LOGGER.warning(
+                    "Container '%s' (%s) has child_policy='strict'. The following manually managed child containers will be unassigned from the hierarchy: %s",
+                    desired_container.name,
+                    desired_container.id,
+                    ", ".join(orphaned_details),
+                )
+
+        elif desired_container.child_policy == "selective":
+            preserved_manual_child_ids = [child_id for child_id in existing_child_ids if not child_id.startswith(AVD_ENTITY_PREFIX)]
+            final_child_ids_by_container_id[desired_container.id] = list(dict.fromkeys(list(desired_container.child_ids) + preserved_manual_child_ids))
+
+        else:
+            final_child_ids_by_container_id[desired_container.id] = list(dict.fromkeys(list(desired_container.child_ids) + existing_child_ids))
+
+    # Compute the final root list based on root_policy.
+    desired_root_ids = [container.id for container in cv_manifest.containers if container.is_root]
+
+    if cv_manifest.root_policy == "strict":
+        final_root_ids = desired_root_ids
+    elif cv_manifest.root_policy == "selective":
+        manual_root_ids = [root_id for root_id in existing_root_ids if not root_id.startswith(AVD_ENTITY_PREFIX)]
+        final_root_ids = desired_root_ids + manual_root_ids
+    else:
+        final_root_ids = list(dict.fromkeys(desired_root_ids + existing_root_ids))
+
+    return final_child_ids_by_container_id, final_root_ids
+
+
+def _get_reachable_container_ids(final_child_ids_by_container_id: dict[str, list[str]], final_root_ids: list[str]) -> set[str]:
+    """BFS traversal from the final roots to find all reachable container IDs."""
+    reachable_container_ids: set[str] = set()
+    traversal_queue: deque[str] = deque(final_root_ids)
+
+    while traversal_queue:
+        container_id = traversal_queue.popleft()
+        if container_id in reachable_container_ids:
+            continue
+        reachable_container_ids.add(container_id)
+        traversal_queue.extend(final_child_ids_by_container_id.get(container_id, []))
+
+    return reachable_container_ids
 
 
 async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
@@ -123,45 +257,3 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
         await cv_client.delete_configlets(workspace_id=workspace_id, configlet_ids=list(configlets_to_delete.keys()))
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No AVD-managed configlet deletions are needed.")
-
-
-async def _sync_studio_roots(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
-    """
-    Synchronize Studio root containers. Update root container assignments.
-
-    Note:
-        During an update, this function reorders root containers. All AVD-managed
-        containers are placed first, followed by any existing manually-added containers.
-    """
-    workspace_id = deployment_result.workspace.id
-
-    LOGGER.info("deploy_static_config_studio_manifest_to_cv: Syncing Static Config Studio root container assignments...")
-
-    # Get the existing list of root container IDs from the Studio inputs.
-    existing_root_ids: list[str] = await cv_client.get_studio_inputs_with_path(
-        studio_id=STATIC_CONFIGURATION_STUDIO_ID,
-        workspace_id=workspace_id,
-        input_path=["configletAssignmentRoots"],
-        default_value=[],
-    )
-
-    # Calculate which desired roots are missing.
-    desired_root_ids = [container.id for container in cv_manifest.containers if container.is_root]
-    desired_root_ids_set = set(desired_root_ids)
-    existing_root_ids_set = set(existing_root_ids)
-    missing_ids = desired_root_ids_set - existing_root_ids_set
-
-    # Update the Studio root container list if necessary, preserving any manually added (non-AVD) root containers.
-    if missing_ids:
-        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Updating Studio root container assignment list...")
-        manual_ids = [container_id for container_id in existing_root_ids if not container_id.startswith(AVD_ENTITY_PREFIX)]
-        new_ordered_ids = desired_root_ids + manual_ids
-
-        await cv_client.set_studio_inputs(
-            studio_id=STATIC_CONFIGURATION_STUDIO_ID,
-            workspace_id=workspace_id,
-            input_path=["configletAssignmentRoots"],
-            inputs=new_ordered_ids,
-        )
-    else:
-        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Studio root container assignments are already in the desired state.")

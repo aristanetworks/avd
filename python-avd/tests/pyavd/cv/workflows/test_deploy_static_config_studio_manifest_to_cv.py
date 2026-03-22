@@ -1,6 +1,7 @@
 # Copyright (c) 2025-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import logging
 from pathlib import Path
 from unittest.mock import MagicMock
 
@@ -324,3 +325,372 @@ class TestDeployStaticConfigStudio:
         assert len(deployment_result.skipped_static_config_containers) == 1  # CNT_LEAF1 was skipped
         assert deployment_result.removed_static_config_containers == ["CNT_LEAF2"]
         assert not deployment_result.removed_static_config_configlets
+
+    async def test_non_strict_container_preserves_existing_children(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that a non-strict container preserves existing children not in the manifest."""
+        # Initial state on CV: ROOT has two children (DC1 and DC2, both AVD-managed) and one manual child.
+        root_id = generate_id("ROOT")
+        dc1_id = generate_id("ROOT/DC1")
+        dc2_id = generate_id("ROOT/DC2")
+        manual_child_id = "manual-child-123"
+
+        existing_containers = [
+            create_grpc_container(container_id=root_id, name="ROOT", description="Root", query="device:*", child_ids=[dc1_id, dc2_id, manual_child_id]),
+            create_grpc_container(container_id=dc1_id, name="DC1", description="DC1", query="dc:DC1"),
+            create_grpc_container(container_id=dc2_id, name="DC2", description="DC2", query="dc:DC2"),
+            create_grpc_container(container_id=manual_child_id, name="MANUAL", description="Manual", query="dc:MANUAL"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [root_id]
+
+        # New manifest only declares DC1 under a non-strict ROOT. DC2 and manual child should be preserved.
+        dc1_container = AvdContainer(name="DC1", tag_query="dc:DC1", description="DC1")
+        root_container = AvdContainer(name="ROOT", tag_query="device:*", description="Root", child_policy="loose", sub_containers=(dc1_container,))
+        manifest = AvdManifest(configlets=(), containers=(root_container,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # No containers should be deleted (non-strict preserves all children).
+        mock_cv_client.delete_configlet_container.assert_not_called()
+
+        # ROOT should NOT be pushed because its merged child_ids match the existing state.
+        # Merged: desired [dc1_id] + existing [dc1_id, dc2_id, manual_child_id] -> [dc1_id, dc2_id, manual_child_id]
+        # This matches existing, so ROOT is skipped.
+        mock_cv_client.set_configlet_containers.assert_not_called()
+
+        # DC1 and ROOT are both skipped (unchanged).
+        assert len(deployment_result.skipped_static_config_containers) == 2
+        assert not deployment_result.deployed_static_config_containers
+        assert not deployment_result.removed_static_config_containers
+
+    async def test_non_strict_container_adds_new_child(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that a non-strict container adds a new child while preserving existing ones."""
+        # Initial state: ROOT has DC1.
+        root_id = generate_id("ROOT")
+        dc1_id = generate_id("ROOT/DC1")
+
+        existing_containers = [
+            create_grpc_container(container_id=root_id, name="ROOT", description="Root", query="device:*", child_ids=[dc1_id]),
+            create_grpc_container(container_id=dc1_id, name="DC1", description="DC1", query="dc:DC1"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [root_id]
+
+        # New manifest declares DC1 and DC2 under non-strict ROOT.
+        dc1_container = AvdContainer(name="DC1", tag_query="dc:DC1", description="DC1")
+        dc2_container = AvdContainer(name="DC2", tag_query="dc:DC2", description="DC2")
+        root_container = AvdContainer(
+            name="ROOT", tag_query="device:*", description="Root", child_policy="loose", sub_containers=(dc1_container, dc2_container)
+        )
+        manifest = AvdManifest(configlets=(), containers=(root_container,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # No deletions.
+        mock_cv_client.delete_configlet_container.assert_not_called()
+
+        # ROOT should be pushed (child_ids changed: DC2 is new) and DC2 is new.
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed_containers = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        pushed_names = {c[1] for c in pushed_containers}
+        assert "ROOT" in pushed_names
+        assert "DC2" in pushed_names
+
+        # Verify ROOT's pushed child_ids include both DC1 (existing) and DC2 (new).
+        dc2_id = generate_id("ROOT/DC2")
+        root_pushed = next(c for c in pushed_containers if c[1] == "ROOT")
+        assert set(root_pushed[5]) == {dc1_id, dc2_id}  # child_ids is index 5 in api_tuple
+
+    async def test_strict_container_warns_about_manual_children(
+        self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult, caplog: pytest.LogCaptureFixture
+    ) -> None:
+        """Test that a strict container logs a warning when manual children are orphaned."""
+        # Initial state: ROOT has DC1 (AVD) and MANUAL (non-AVD).
+        root_id = generate_id("ROOT")
+        dc1_id = generate_id("ROOT/DC1")
+        manual_child_id = "manual-child-456"
+
+        existing_containers = [
+            create_grpc_container(container_id=root_id, name="ROOT", description="Root", query="device:*", child_ids=[dc1_id, manual_child_id]),
+            create_grpc_container(container_id=dc1_id, name="DC1", description="DC1", query="dc:DC1"),
+            create_grpc_container(container_id=manual_child_id, name="MANUAL", description="Manual", query="dc:MANUAL"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [root_id]
+
+        # Strict ROOT only declares DC1. MANUAL will be orphaned.
+        dc1_container = AvdContainer(name="DC1", tag_query="dc:DC1", description="DC1")
+        root_container = AvdContainer(name="ROOT", tag_query="device:*", description="Root", child_policy="strict", sub_containers=(dc1_container,))
+        manifest = AvdManifest(configlets=(), containers=(root_container,))
+
+        with caplog.at_level(logging.WARNING):
+            await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Verify the warning log includes the container name, ID, and the manual child details.
+        assert any("child_policy='strict'" in record.message and "ROOT" in record.message and "MANUAL" in record.message for record in caplog.records)
+
+        # Manual child is NOT deleted (we don't delete non-AVD containers).
+        # But ROOT is pushed with only DC1 as child, orphaning MANUAL.
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed_containers = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        root_pushed = next(c for c in pushed_containers if c[1] == "ROOT")
+        assert root_pushed[5] == [dc1_id]  # Only DC1, MANUAL is orphaned.
+
+        # No container deletions (MANUAL is not AVD-managed).
+        mock_cv_client.delete_configlet_container.assert_not_called()
+
+    async def test_non_strict_root_list_preserves_old_avd_roots(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that manifest-level strict=false preserves old AVD roots in the Studio root list."""
+        # Initial state: two AVD roots and one manual root.
+        avd_root1_id = generate_id("AVD_ROOT1")
+        avd_root2_id = generate_id("AVD_ROOT2")
+        manual_root_id = "manual-root-789"
+
+        existing_containers = [
+            create_grpc_container(container_id=avd_root1_id, name="AVD_ROOT1", description="", query="device:*"),
+            create_grpc_container(container_id=avd_root2_id, name="AVD_ROOT2", description="", query="device:*"),
+            create_grpc_container(container_id=manual_root_id, name="MANUAL_ROOT", description="", query="device:*"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [avd_root1_id, manual_root_id, avd_root2_id]
+
+        # New manifest (strict=false) declares AVD_ROOT3 and AVD_ROOT2. AVD_ROOT1 should NOT be removed.
+        avd_root2 = AvdContainer(name="AVD_ROOT2", tag_query="device:*")
+        avd_root3 = AvdContainer(name="AVD_ROOT3", tag_query="device:*")
+        manifest = AvdManifest(root_policy="loose", configlets=(), containers=(avd_root3, avd_root2))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Verify studio roots: old AVD roots are preserved, desired roots are prepended.
+        # Loose policy puts desired roots first (so other static config containers can override AVD config),
+        # followed by existing roots that weren't already in the desired list.
+        avd_root3_id = generate_id("AVD_ROOT3")
+        mock_cv_client.set_studio_inputs.assert_called_once()
+        new_root_ids = mock_cv_client.set_studio_inputs.call_args[1]["inputs"]
+        assert new_root_ids == [avd_root3_id, avd_root2_id, avd_root1_id, manual_root_id]
+
+    async def test_deep_subtree_preservation_with_non_strict(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that a loose container preserves deep subtrees including children of undeclared containers."""
+        # Initial state: ROOT -> DC1 -> LEAF1, LEAF2.
+        root_id = generate_id("ROOT")
+        dc1_id = generate_id("ROOT/DC1")
+        leaf1_id = generate_id("ROOT/DC1/LEAF1")
+        leaf2_id = generate_id("ROOT/DC1/LEAF2")
+
+        existing_containers = [
+            create_grpc_container(container_id=root_id, name="ROOT", description="Root", query="device:*", child_ids=[dc1_id]),
+            create_grpc_container(container_id=dc1_id, name="DC1", description="DC1", query="dc:DC1", child_ids=[leaf1_id, leaf2_id]),
+            create_grpc_container(container_id=leaf1_id, name="LEAF1", description="LEAF1", query="device:LEAF1"),
+            create_grpc_container(container_id=leaf2_id, name="LEAF2", description="LEAF2", query="device:LEAF2"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [root_id]
+
+        # Loose ROOT only declares DC3. DC1 and its subtree are not in the manifest.
+        dc3_container = AvdContainer(name="DC3", tag_query="dc:DC3", description="DC3")
+        root_container = AvdContainer(name="ROOT", tag_query="device:*", description="Root", child_policy="loose", sub_containers=(dc3_container,))
+        manifest = AvdManifest(configlets=(), containers=(root_container,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # No containers should be deleted (DC1, LEAF1, LEAF2 are reachable through merged ROOT children).
+        mock_cv_client.delete_configlet_container.assert_not_called()
+
+        # ROOT should be pushed with merged child_ids (DC3 added, DC1 preserved).
+        dc3_id = generate_id("ROOT/DC3")
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed_containers = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        root_pushed = next(c for c in pushed_containers if c[1] == "ROOT")
+        assert set(root_pushed[5]) == {dc3_id, dc1_id}
+
+    async def test_cascading_deletion_with_strict(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that removing a subtree from a strict container cascades deletion to all descendants."""
+        root_id = generate_id("ROOT")
+        dc1_id = generate_id("ROOT/DC1")
+        leaf1_id = generate_id("ROOT/DC1/LEAF1")
+        leaf2_id = generate_id("ROOT/DC1/LEAF2")
+
+        existing_containers = [
+            create_grpc_container(container_id=root_id, name="ROOT", description="Root", query="device:*", child_ids=[dc1_id]),
+            create_grpc_container(container_id=dc1_id, name="DC1", description="DC1", query="dc:DC1", child_ids=[leaf1_id, leaf2_id]),
+            create_grpc_container(container_id=leaf1_id, name="LEAF1", description="LEAF1", query="device:LEAF1"),
+            create_grpc_container(container_id=leaf2_id, name="LEAF2", description="LEAF2", query="device:LEAF2"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [root_id]
+
+        # Strict ROOT only declares DC2 (new). DC1 and its entire subtree should be deleted.
+        dc2_container = AvdContainer(name="DC2", tag_query="dc:DC2", description="DC2")
+        root_container = AvdContainer(name="ROOT", tag_query="device:*", description="Root", child_policy="strict", sub_containers=(dc2_container,))
+        manifest = AvdManifest(configlets=(), containers=(root_container,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # DC1, LEAF1, LEAF2 should all be deleted (unreachable after ROOT drops DC1).
+        deleted_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
+        assert deleted_ids == {dc1_id, leaf1_id, leaf2_id}
+
+    async def test_strict_inside_non_strict(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that a strict container nested inside a non-strict container correctly manages its children."""
+        root_id = generate_id("ROOT")
+        dc1_id = generate_id("ROOT/DC1")
+        leaf1_id = generate_id("ROOT/DC1/LEAF1")
+        leaf2_id = generate_id("ROOT/DC1/LEAF2")
+        leaf3_id = generate_id("ROOT/DC1/LEAF3")
+
+        existing_containers = [
+            create_grpc_container(container_id=root_id, name="ROOT", description="Root", query="device:*", child_ids=[dc1_id]),
+            create_grpc_container(container_id=dc1_id, name="DC1", description="DC1", query="dc:DC1", child_ids=[leaf1_id, leaf2_id, leaf3_id]),
+            create_grpc_container(container_id=leaf1_id, name="LEAF1", description="LEAF1", query="device:LEAF1"),
+            create_grpc_container(container_id=leaf2_id, name="LEAF2", description="LEAF2", query="device:LEAF2"),
+            create_grpc_container(container_id=leaf3_id, name="LEAF3", description="LEAF3", query="device:LEAF3"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [root_id]
+
+        # ROOT is non-strict (preserves existing children), DC1 is strict (only LEAF1 declared).
+        leaf1_container = AvdContainer(name="LEAF1", tag_query="device:LEAF1", description="LEAF1")
+        dc1_container = AvdContainer(name="DC1", tag_query="dc:DC1", description="DC1", child_policy="strict", sub_containers=(leaf1_container,))
+        root_container = AvdContainer(name="ROOT", tag_query="device:*", description="Root", child_policy="loose", sub_containers=(dc1_container,))
+        manifest = AvdManifest(configlets=(), containers=(root_container,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # LEAF2 and LEAF3 should be deleted (DC1 is strict, only LEAF1 is declared → LEAF2/LEAF3 are unreachable).
+        deleted_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
+        assert deleted_ids == {leaf2_id, leaf3_id}
+
+        # DC1 should be pushed (child_ids changed from [LEAF1, LEAF2, LEAF3] to [LEAF1]).
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed_containers = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        dc1_pushed = next(c for c in pushed_containers if c[1] == "DC1")
+        assert dc1_pushed[5] == [leaf1_id]  # Only LEAF1 remains.
+
+    async def test_selective_child_policy_keeps_manual_drops_avd(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that selective child_policy keeps manual children but drops undeclared AVD-managed children."""
+        root_id = generate_id("ROOT")
+        dc1_id = generate_id("ROOT/DC1")
+        dc2_id = generate_id("ROOT/DC2")
+        manual_child_id = "manual-child-selective"
+
+        existing_containers = [
+            create_grpc_container(container_id=root_id, name="ROOT", description="Root", query="device:*", child_ids=[dc1_id, dc2_id, manual_child_id]),
+            create_grpc_container(container_id=dc1_id, name="DC1", description="DC1", query="dc:DC1"),
+            create_grpc_container(container_id=dc2_id, name="DC2", description="DC2", query="dc:DC2"),
+            create_grpc_container(container_id=manual_child_id, name="MANUAL", description="Manual", query="dc:MANUAL"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [root_id]
+
+        # Selective ROOT only declares DC1. DC2 (AVD) should be dropped, MANUAL should be preserved.
+        dc1_container = AvdContainer(name="DC1", tag_query="dc:DC1", description="DC1")
+        root_container = AvdContainer(name="ROOT", tag_query="device:*", description="Root", child_policy="selective", sub_containers=(dc1_container,))
+        manifest = AvdManifest(configlets=(), containers=(root_container,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # DC2 should be deleted (AVD-managed, not declared, unreachable after selective drops it).
+        deleted_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
+        assert deleted_ids == {dc2_id}
+
+        # ROOT should be pushed (child_ids changed: DC2 dropped, MANUAL preserved).
+        mock_cv_client.set_configlet_containers.assert_called_once()
+        pushed_containers = mock_cv_client.set_configlet_containers.call_args[1]["containers"]
+        root_pushed = next(c for c in pushed_containers if c[1] == "ROOT")
+        assert set(root_pushed[5]) == {dc1_id, manual_child_id}  # DC1 (declared) + MANUAL (preserved)
+
+    async def test_strict_root_policy_drops_manual_roots(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that strict root_policy drops manual roots from the root list."""
+        avd_root_id = generate_id("AVD_ROOT")
+        manual_root_id = "manual-root-strict"
+
+        existing_containers = [
+            create_grpc_container(container_id=avd_root_id, name="AVD_ROOT", description="", query="device:*"),
+            create_grpc_container(container_id=manual_root_id, name="MANUAL_ROOT", description="", query="device:*"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [avd_root_id, manual_root_id]
+
+        # Strict root_policy: only declared roots remain, manual roots are dropped.
+        avd_root = AvdContainer(name="AVD_ROOT", tag_query="device:*")
+        manifest = AvdManifest(root_policy="strict", configlets=(), containers=(avd_root,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # Root list should contain only the declared AVD root (manual root dropped).
+        mock_cv_client.set_studio_inputs.assert_called_once()
+        new_root_ids = mock_cv_client.set_studio_inputs.call_args[1]["inputs"]
+        assert new_root_ids == [avd_root_id]
+
+    async def test_pre_existing_orphans_are_always_cleaned_up(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that AVD-managed containers already orphaned on CV are cleaned up regardless of policy."""
+        root_id = generate_id("ROOT")
+        dc1_id = generate_id("ROOT/DC1")
+        orphan_id = generate_id("OLD_ORPHAN")
+
+        existing_containers = [
+            create_grpc_container(container_id=root_id, name="ROOT", description="Root", query="device:*", child_ids=[dc1_id]),
+            create_grpc_container(container_id=dc1_id, name="DC1", description="DC1", query="dc:DC1"),
+            # Pre-existing orphan: AVD-managed but not referenced by any container.
+            create_grpc_container(container_id=orphan_id, name="OLD_ORPHAN", description="Stale", query="device:old"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [root_id]
+
+        # Manifest matches existing state (no changes) but uses loose policy.
+        dc1_container = AvdContainer(name="DC1", tag_query="dc:DC1", description="DC1")
+        root_container = AvdContainer(name="ROOT", tag_query="device:*", description="Root", child_policy="loose", sub_containers=(dc1_container,))
+        manifest = AvdManifest(root_policy="loose", configlets=(), containers=(root_container,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # The pre-existing orphan should be deleted even with loose policies.
+        deleted_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
+        assert deleted_ids == {orphan_id}
+
+    async def test_mixed_child_policies_in_same_manifest(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test a manifest with different child_policies on different containers."""
+        root_id = generate_id("ROOT")
+        dc1_id = generate_id("ROOT/DC1")
+        dc2_id = generate_id("ROOT/DC2")
+        leaf1_id = generate_id("ROOT/DC1/LEAF1")
+        leaf2_id = generate_id("ROOT/DC1/LEAF2")
+        leaf3_id = generate_id("ROOT/DC2/LEAF3")
+        leaf4_id = generate_id("ROOT/DC2/LEAF4")
+
+        existing_containers = [
+            create_grpc_container(container_id=root_id, name="ROOT", description="Root", query="device:*", child_ids=[dc1_id, dc2_id]),
+            create_grpc_container(container_id=dc1_id, name="DC1", description="DC1", query="dc:DC1", child_ids=[leaf1_id, leaf2_id]),
+            create_grpc_container(container_id=dc2_id, name="DC2", description="DC2", query="dc:DC2", child_ids=[leaf3_id, leaf4_id]),
+            create_grpc_container(container_id=leaf1_id, name="LEAF1", description="LEAF1", query="device:LEAF1"),
+            create_grpc_container(container_id=leaf2_id, name="LEAF2", description="LEAF2", query="device:LEAF2"),
+            create_grpc_container(container_id=leaf3_id, name="LEAF3", description="LEAF3", query="device:LEAF3"),
+            create_grpc_container(container_id=leaf4_id, name="LEAF4", description="LEAF4", query="device:LEAF4"),
+        ]
+        mock_cv_client.get_configlet_containers.return_value = existing_containers
+        mock_cv_client.get_configlets.return_value = []
+        mock_cv_client.get_studio_inputs_with_path.return_value = [root_id]
+
+        # DC1 is strict (only LEAF1), DC2 is loose (preserves LEAF3 and LEAF4).
+        leaf1_container = AvdContainer(name="LEAF1", tag_query="device:LEAF1", description="LEAF1")
+        dc1_container = AvdContainer(name="DC1", tag_query="dc:DC1", description="DC1", child_policy="strict", sub_containers=(leaf1_container,))
+        dc2_container = AvdContainer(name="DC2", tag_query="dc:DC2", description="DC2", child_policy="loose")
+        root_container = AvdContainer(name="ROOT", tag_query="device:*", description="Root", sub_containers=(dc1_container, dc2_container))
+        manifest = AvdManifest(configlets=(), containers=(root_container,))
+
+        await deploy_static_config_studio_manifest_to_cv(manifest, deployment_result, mock_cv_client)
+
+        # LEAF2 should be deleted (DC1 is strict, only LEAF1 declared).
+        # LEAF3 and LEAF4 should be preserved (DC2 is loose).
+        deleted_ids = {call.kwargs["assignment_id"] for call in mock_cv_client.delete_configlet_container.call_args_list}
+        assert deleted_ids == {leaf2_id}
