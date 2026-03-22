@@ -102,9 +102,9 @@ options:
       root_policy:
         description: |-
           Controls how the Studio root container list is managed during deployment.
-          - `strict`: The root list contains only declared roots. Both AVD-managed and manual roots not in the manifest are removed.
-          - `selective`: Only AVD-managed roots not in the manifest are removed. Manual roots are preserved.
-          - `loose`: Desired roots are prepended to the existing list. Nothing is removed.
+          - `strict`: Replace the root list entirely with what is declared.
+          - `selective`: Only undeclared AVD-managed roots are removed. Declared roots are placed first, manual roots after.
+          - `loose`: Only new roots are added. Existing roots keep their position. Nothing is removed.
         type: str
         default: selective
         choices: ["strict", "loose", "selective"]
@@ -128,9 +128,9 @@ options:
           - **match_policy** (`str`, optional, default: "match_all"): The match policy to determine how devices with a matching tag inherit
               a child container configlets. Valid choices are `match_all` or `match_first`.
           - **child_policy** (`str`, optional, default: `"strict"`): Controls how this container's children are managed.
-              `"strict"`: child containers not declared in the manifest are removed (both AVD-managed and manual).
-              `"selective"`: only undeclared AVD-managed children are removed, manual children are preserved.
-              `"loose"`: existing children not in the manifest are preserved alongside declared ones.
+              `"strict"`: Replace children entirely with what is declared. Both AVD-managed and manual children not in the manifest are removed.
+              `"selective"`: Only undeclared AVD-managed children are removed. Declared children are placed first, manual children after.
+              `"loose"`: Only new children are added. Existing children keep their position. Nothing is removed.
           - **configlets** (`list` of `str`, optional): A list of configlet names to apply to this container. Must be defined in the `configlets` section.
           - **sub_containers** (`list` of `dict`, optional): A nested list of container dictionaries that follow this same data model,
               allowing for a full hierarchy.

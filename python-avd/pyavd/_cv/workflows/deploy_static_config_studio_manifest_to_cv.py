@@ -35,14 +35,13 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
             - Fetch existing state (containers + root list) from CloudVision.
             - Compute the final state by layering the manifest on top of the existing state.
                 - For each container, `child_policy` controls how its children are resolved:
-                    - "strict": Replace children entirely with what is declared. Both AVD-managed and manual
-                      children not in the manifest are removed. A warning is logged for unassigned manual children.
-                    - "selective": Only undeclared AVD-managed children are removed. Manual children are preserved.
-                    - "loose": Desired children are merged into existing children. Nothing is removed.
+                    - "strict": Replace children entirely with what is declared. Both AVD-managed and manual children not in the manifest are removed.
+                    - "selective": Only undeclared AVD-managed children are removed. Declared children are placed first, manual children after.
+                    - "loose": Only new children are added. Existing children keep their position. Nothing is removed.
                 - `root_policy` controls how the Studio root container list is resolved:
                     - "strict": Replace the root list entirely with what is declared.
-                    - "selective": Only undeclared AVD-managed roots are removed. Manual roots are preserved.
-                    - "loose": Desired roots are prepended to the existing list. Nothing is removed.
+                    - "selective": Only undeclared AVD-managed roots are removed. Declared roots are placed first, manual roots after.
+                    - "loose": Only new roots are added. Existing roots keep their position. Nothing is removed.
             - Determine which containers are reachable from the final roots.
             - Diff final vs existing and apply changes (push, delete, update root list).
                 - Any AVD-managed container unreachable from the final root list (orphan) is always deleted.
@@ -209,7 +208,9 @@ def _get_final_container_state(
             final_child_ids_by_container_id[desired_container.id] = list(dict.fromkeys(list(desired_container.child_ids) + preserved_manual_child_ids))
 
         else:
-            final_child_ids_by_container_id[desired_container.id] = list(dict.fromkeys(list(desired_container.child_ids) + existing_child_ids))
+            existing_child_ids_set = set(existing_child_ids)
+            new_child_ids = [child_id for child_id in desired_container.child_ids if child_id not in existing_child_ids_set]
+            final_child_ids_by_container_id[desired_container.id] = new_child_ids + existing_child_ids
 
     # Compute the final root list based on root_policy.
     desired_root_ids = [container.id for container in cv_manifest.containers if container.is_root]
@@ -221,7 +222,9 @@ def _get_final_container_state(
         manual_root_ids = [root_id for root_id in existing_root_ids if not root_id.startswith(AVD_ENTITY_PREFIX)]
         final_root_ids = desired_root_ids + manual_root_ids
     else:
-        final_root_ids = list(dict.fromkeys(desired_root_ids + existing_root_ids))
+        existing_root_ids_set = set(existing_root_ids)
+        new_root_ids = [root_id for root_id in desired_root_ids if root_id not in existing_root_ids_set]
+        final_root_ids = new_root_ids + existing_root_ids
 
     return final_child_ids_by_container_id, final_root_ids
 
