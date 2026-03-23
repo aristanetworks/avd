@@ -7443,7 +7443,7 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 Defines the rewriting mode for EVPN L3 inter-domain routing.
                 - next-hop-self: (default) RD and RT
-                values for the routes coming from remote EVPN domain are not modifed.
+                values for the routes coming from remote EVPN domain are not modified.
                 - rd-rt-rewrite: Re-write RD
                 and RT for the routes from external EVPN domains.
 
@@ -7471,7 +7471,7 @@ class EosDesigns(EosDesignsRootModel):
                             mode:
                                Defines the rewriting mode for EVPN L3 inter-domain routing.
                                - next-hop-self: (default) RD and RT
-                               values for the routes coming from remote EVPN domain are not modifed.
+                               values for the routes coming from remote EVPN domain are not modified.
                                - rd-rt-rewrite: Re-write RD
                                and RT for the routes from external EVPN domains.
 
@@ -12574,7 +12574,7 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 Defines the rewriting mode for EVPN L3 inter-domain routing.
                 - next-hop-self: (default) RD and RT
-                values for the routes coming from remote EVPN domain are not modifed.
+                values for the routes coming from remote EVPN domain are not modified.
                 - rd-rt-rewrite: Re-write RD
                 and RT for the routes from external EVPN domains.
 
@@ -12602,7 +12602,7 @@ class EosDesigns(EosDesignsRootModel):
                             mode:
                                Defines the rewriting mode for EVPN L3 inter-domain routing.
                                - next-hop-self: (default) RD and RT
-                               values for the routes coming from remote EVPN domain are not modifed.
+                               values for the routes coming from remote EVPN domain are not modified.
                                - rd-rt-rewrite: Re-write RD
                                and RT for the routes from external EVPN domains.
 
@@ -36648,7 +36648,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Defines the rewriting mode for EVPN L3 inter-domain routing.
                             - next-hop-self: (default) RD and RT
-                            values for the routes coming from remote EVPN domain are not modifed.
+                            values for the routes coming from remote EVPN domain are not modified.
                             - rd-rt-rewrite: Re-write RD
                             and RT for the routes from external EVPN domains.
 
@@ -36676,7 +36676,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode:
                                            Defines the rewriting mode for EVPN L3 inter-domain routing.
                                            - next-hop-self: (default) RD and RT
-                                           values for the routes coming from remote EVPN domain are not modifed.
+                                           values for the routes coming from remote EVPN domain are not modified.
                                            - rd-rt-rewrite: Re-write RD
                                            and RT for the routes from external EVPN domains.
 
@@ -41756,7 +41756,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 Defines the rewriting mode for EVPN L3 inter-domain routing.
                                 - next-hop-self: (default) RD and RT
-                                values for the routes coming from remote EVPN domain are not modifed.
+                                values for the routes coming from remote EVPN domain are not modified.
                                 - rd-rt-rewrite: Re-write RD
                                 and RT for the routes from external EVPN domains.
 
@@ -41784,7 +41784,7 @@ class EosDesigns(EosDesignsRootModel):
                                             mode:
                                                Defines the rewriting mode for EVPN L3 inter-domain routing.
                                                - next-hop-self: (default) RD and RT
-                                               values for the routes coming from remote EVPN domain are not modifed.
+                                               values for the routes coming from remote EVPN domain are not modified.
                                                - rd-rt-rewrite: Re-write RD
                                                and RT for the routes from external EVPN domains.
 
@@ -46827,7 +46827,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Defines the rewriting mode for EVPN L3 inter-domain routing.
                             - next-hop-self: (default) RD and RT
-                            values for the routes coming from remote EVPN domain are not modifed.
+                            values for the routes coming from remote EVPN domain are not modified.
                             - rd-rt-rewrite: Re-write RD
                             and RT for the routes from external EVPN domains.
 
@@ -46855,7 +46855,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode:
                                            Defines the rewriting mode for EVPN L3 inter-domain routing.
                                            - next-hop-self: (default) RD and RT
-                                           values for the routes coming from remote EVPN domain are not modifed.
+                                           values for the routes coming from remote EVPN domain are not modified.
                                            - rd-rt-rewrite: Re-write RD
                                            and RT for the routes from external EVPN domains.
 
@@ -51961,7 +51961,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Defines the rewriting mode for EVPN L3 inter-domain routing.
                             - next-hop-self: (default) RD and RT
-                            values for the routes coming from remote EVPN domain are not modifed.
+                            values for the routes coming from remote EVPN domain are not modified.
                             - rd-rt-rewrite: Re-write RD
                             and RT for the routes from external EVPN domains.
 
@@ -51989,7 +51989,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode:
                                            Defines the rewriting mode for EVPN L3 inter-domain routing.
                                            - next-hop-self: (default) RD and RT
-                                           values for the routes coming from remote EVPN domain are not modifed.
+                                           values for the routes coming from remote EVPN domain are not modified.
                                            - rd-rt-rewrite: Re-write RD
                                            and RT for the routes from external EVPN domains.
 
@@ -69956,7 +69956,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Defines the rewriting mode for EVPN L3 inter-domain routing.
                             - next-hop-self: (default) RD and RT
-                            values for the routes coming from remote EVPN domain are not modifed.
+                            values for the routes coming from remote EVPN domain are not modified.
                             - rd-rt-rewrite: Re-write RD
                             and RT for the routes from external EVPN domains.
 
@@ -69984,7 +69984,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode:
                                            Defines the rewriting mode for EVPN L3 inter-domain routing.
                                            - next-hop-self: (default) RD and RT
-                                           values for the routes coming from remote EVPN domain are not modifed.
+                                           values for the routes coming from remote EVPN domain are not modified.
                                            - rd-rt-rewrite: Re-write RD
                                            and RT for the routes from external EVPN domains.
 
@@ -75064,7 +75064,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 Defines the rewriting mode for EVPN L3 inter-domain routing.
                                 - next-hop-self: (default) RD and RT
-                                values for the routes coming from remote EVPN domain are not modifed.
+                                values for the routes coming from remote EVPN domain are not modified.
                                 - rd-rt-rewrite: Re-write RD
                                 and RT for the routes from external EVPN domains.
 
@@ -75092,7 +75092,7 @@ class EosDesigns(EosDesignsRootModel):
                                             mode:
                                                Defines the rewriting mode for EVPN L3 inter-domain routing.
                                                - next-hop-self: (default) RD and RT
-                                               values for the routes coming from remote EVPN domain are not modifed.
+                                               values for the routes coming from remote EVPN domain are not modified.
                                                - rd-rt-rewrite: Re-write RD
                                                and RT for the routes from external EVPN domains.
 
@@ -80135,7 +80135,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Defines the rewriting mode for EVPN L3 inter-domain routing.
                             - next-hop-self: (default) RD and RT
-                            values for the routes coming from remote EVPN domain are not modifed.
+                            values for the routes coming from remote EVPN domain are not modified.
                             - rd-rt-rewrite: Re-write RD
                             and RT for the routes from external EVPN domains.
 
@@ -80163,7 +80163,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode:
                                            Defines the rewriting mode for EVPN L3 inter-domain routing.
                                            - next-hop-self: (default) RD and RT
-                                           values for the routes coming from remote EVPN domain are not modifed.
+                                           values for the routes coming from remote EVPN domain are not modified.
                                            - rd-rt-rewrite: Re-write RD
                                            and RT for the routes from external EVPN domains.
 
@@ -85269,7 +85269,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Defines the rewriting mode for EVPN L3 inter-domain routing.
                             - next-hop-self: (default) RD and RT
-                            values for the routes coming from remote EVPN domain are not modifed.
+                            values for the routes coming from remote EVPN domain are not modified.
                             - rd-rt-rewrite: Re-write RD
                             and RT for the routes from external EVPN domains.
 
@@ -85297,7 +85297,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode:
                                            Defines the rewriting mode for EVPN L3 inter-domain routing.
                                            - next-hop-self: (default) RD and RT
-                                           values for the routes coming from remote EVPN domain are not modifed.
+                                           values for the routes coming from remote EVPN domain are not modified.
                                            - rd-rt-rewrite: Re-write RD
                                            and RT for the routes from external EVPN domains.
 
