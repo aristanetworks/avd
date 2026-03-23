@@ -59,7 +59,7 @@ class RouteMapsMixin(Protocol):
             self.structured_config_utils.set_once_route_map_mlag_peer_in()
 
         if self._mlag_ibgp_peering_subnets_without_redistribution:
-            self.structured_config_utils.set_once_route_map_connected_to_bgp_vrfs()
+            self.set_once_route_map_connected_to_bgp_vrfs()
 
     def _route_maps_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
@@ -87,6 +87,25 @@ class RouteMapsMixin(Protocol):
             return False
 
         return bool(self.shared_utils.wan_role and self._vrf_default_ipv4_static_routes["redistribute_in_overlay"])
+
+    @run_once_method
+    def set_once_route_map_connected_to_bgp_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+        """
+        Set one route-map item.
+
+        Filter MLAG peer subnets for redistribute connected for overlay VRFs.
+        """
+        route_maps_item = EosCliConfigGen.RouteMapsItem(name="RM-CONN-2-BGP-VRFS")
+        route_maps_item.sequence_numbers.append_new(
+            sequence=10,
+            type="deny",
+            match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-MLAG-PEER-VRFS"]),
+        )
+        route_maps_item.sequence_numbers.append_new(
+            sequence=20,
+            type="permit",
+        )
+        self.structured_config.route_maps.append(route_maps_item)
 
     @run_once_method
     def set_once_route_map_evpn_export_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:

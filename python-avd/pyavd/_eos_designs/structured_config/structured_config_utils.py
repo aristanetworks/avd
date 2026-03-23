@@ -59,24 +59,5 @@ class StructuredConfigUtils(RunOnceMethodStateHelper):
         )
         self.structured_config.route_maps.append(route_map)
 
-    @run_once_method
-    def set_once_route_map_connected_to_bgp_vrfs(self) -> None:
-        """
-        Set one route-map item.
-
-        Filter MLAG peer subnets for redistribute connected for overlay VRFs.
-        """
-        route_maps_item = EosCliConfigGen.RouteMapsItem(name="RM-CONN-2-BGP-VRFS")
-        route_maps_item.sequence_numbers.append_new(
-            sequence=10,
-            type="deny",
-            match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-MLAG-PEER-VRFS"]),
-        )
-        route_maps_item.sequence_numbers.append_new(
-            sequence=20,
-            type="permit",
-        )
-        self.structured_config.route_maps.append(route_maps_item)
-
 
 __all__ = ["StructuredConfigUtils"]
