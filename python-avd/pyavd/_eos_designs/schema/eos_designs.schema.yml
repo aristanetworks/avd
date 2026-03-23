@@ -11111,10 +11111,8 @@ $defs:
                       routing.\n- next-hop-self: (default) Configures \"neighbor default
                       next-hop-self received-evpn-routes route-type ip-prefix\"\n
                       \ in address-family evpn to rewrite the next-hop for type-5
-                      routes received from remote gateways.\n- rd-rt-rewrite: Configures
-                      \"rd evpn domain all\" and \"route-target import/export evpn
-                      domain all\" for each VRF.\n  Does not configure \"next-hop-self\"
-                      for received EVPN routes.\n"
+                      routes received from remote gateways.\n- rd-rt-rewrite: Re-write
+                      RD and RT for the routes from external EVPN domains.\n"
               d_path:
                 type: dict
                 keys:

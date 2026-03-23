@@ -7446,10 +7446,8 @@ class EosDesigns(EosDesignsRootModel):
                 "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                   in address-family evpn
                 to rewrite the next-hop for type-5 routes received from remote gateways.
-                - rd-rt-rewrite: Configures
-                "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                  Does not
-                configure "next-hop-self" for received EVPN routes.
+                - rd-rt-rewrite: Re-write
+                RD and RT for the routes from external EVPN domains.
 
                 Default value: `"next-hop-self"`
                 """
@@ -7478,10 +7476,8 @@ class EosDesigns(EosDesignsRootModel):
                                "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                                  in address-family evpn
                                to rewrite the next-hop for type-5 routes received from remote gateways.
-                               - rd-rt-rewrite: Configures
-                               "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                                 Does not
-                               configure "next-hop-self" for received EVPN routes.
+                               - rd-rt-rewrite: Re-write
+                               RD and RT for the routes from external EVPN domains.
 
                         """
 
@@ -12585,10 +12581,8 @@ class EosDesigns(EosDesignsRootModel):
                 "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                   in address-family evpn
                 to rewrite the next-hop for type-5 routes received from remote gateways.
-                - rd-rt-rewrite: Configures
-                "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                  Does not
-                configure "next-hop-self" for received EVPN routes.
+                - rd-rt-rewrite: Re-write
+                RD and RT for the routes from external EVPN domains.
 
                 Default value: `"next-hop-self"`
                 """
@@ -12617,10 +12611,8 @@ class EosDesigns(EosDesignsRootModel):
                                "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                                  in address-family evpn
                                to rewrite the next-hop for type-5 routes received from remote gateways.
-                               - rd-rt-rewrite: Configures
-                               "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                                 Does not
-                               configure "next-hop-self" for received EVPN routes.
+                               - rd-rt-rewrite: Re-write
+                               RD and RT for the routes from external EVPN domains.
 
                         """
 
@@ -36667,10 +36659,8 @@ class EosDesigns(EosDesignsRootModel):
                             "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                               in address-family evpn
                             to rewrite the next-hop for type-5 routes received from remote gateways.
-                            - rd-rt-rewrite: Configures
-                            "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                              Does not
-                            configure "next-hop-self" for received EVPN routes.
+                            - rd-rt-rewrite: Re-write
+                            RD and RT for the routes from external EVPN domains.
 
                             Default value: `"next-hop-self"`
                             """
@@ -36699,10 +36689,8 @@ class EosDesigns(EosDesignsRootModel):
                                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                                              in address-family evpn
                                            to rewrite the next-hop for type-5 routes received from remote gateways.
-                                           - rd-rt-rewrite: Configures
-                                           "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                                             Does not
-                                           configure "next-hop-self" for received EVPN routes.
+                                           - rd-rt-rewrite: Re-write
+                                           RD and RT for the routes from external EVPN domains.
 
                                     """
 
@@ -41783,10 +41771,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                                   in address-family evpn
                                 to rewrite the next-hop for type-5 routes received from remote gateways.
-                                - rd-rt-rewrite: Configures
-                                "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                                  Does not
-                                configure "next-hop-self" for received EVPN routes.
+                                - rd-rt-rewrite: Re-write
+                                RD and RT for the routes from external EVPN domains.
 
                                 Default value: `"next-hop-self"`
                                 """
@@ -41815,10 +41801,8 @@ class EosDesigns(EosDesignsRootModel):
                                                "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                                                  in address-family evpn
                                                to rewrite the next-hop for type-5 routes received from remote gateways.
-                                               - rd-rt-rewrite: Configures
-                                               "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                                                 Does not
-                                               configure "next-hop-self" for received EVPN routes.
+                                               - rd-rt-rewrite: Re-write
+                                               RD and RT for the routes from external EVPN domains.
 
                                         """
 
@@ -46862,10 +46846,8 @@ class EosDesigns(EosDesignsRootModel):
                             "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                               in address-family evpn
                             to rewrite the next-hop for type-5 routes received from remote gateways.
-                            - rd-rt-rewrite: Configures
-                            "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                              Does not
-                            configure "next-hop-self" for received EVPN routes.
+                            - rd-rt-rewrite: Re-write
+                            RD and RT for the routes from external EVPN domains.
 
                             Default value: `"next-hop-self"`
                             """
@@ -46894,10 +46876,8 @@ class EosDesigns(EosDesignsRootModel):
                                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                                              in address-family evpn
                                            to rewrite the next-hop for type-5 routes received from remote gateways.
-                                           - rd-rt-rewrite: Configures
-                                           "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                                             Does not
-                                           configure "next-hop-self" for received EVPN routes.
+                                           - rd-rt-rewrite: Re-write
+                                           RD and RT for the routes from external EVPN domains.
 
                                     """
 
@@ -52004,10 +51984,8 @@ class EosDesigns(EosDesignsRootModel):
                             "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                               in address-family evpn
                             to rewrite the next-hop for type-5 routes received from remote gateways.
-                            - rd-rt-rewrite: Configures
-                            "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                              Does not
-                            configure "next-hop-self" for received EVPN routes.
+                            - rd-rt-rewrite: Re-write
+                            RD and RT for the routes from external EVPN domains.
 
                             Default value: `"next-hop-self"`
                             """
@@ -52036,10 +52014,8 @@ class EosDesigns(EosDesignsRootModel):
                                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                                              in address-family evpn
                                            to rewrite the next-hop for type-5 routes received from remote gateways.
-                                           - rd-rt-rewrite: Configures
-                                           "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                                             Does not
-                                           configure "next-hop-self" for received EVPN routes.
+                                           - rd-rt-rewrite: Re-write
+                                           RD and RT for the routes from external EVPN domains.
 
                                     """
 
@@ -70007,10 +69983,8 @@ class EosDesigns(EosDesignsRootModel):
                             "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                               in address-family evpn
                             to rewrite the next-hop for type-5 routes received from remote gateways.
-                            - rd-rt-rewrite: Configures
-                            "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                              Does not
-                            configure "next-hop-self" for received EVPN routes.
+                            - rd-rt-rewrite: Re-write
+                            RD and RT for the routes from external EVPN domains.
 
                             Default value: `"next-hop-self"`
                             """
@@ -70039,10 +70013,8 @@ class EosDesigns(EosDesignsRootModel):
                                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                                              in address-family evpn
                                            to rewrite the next-hop for type-5 routes received from remote gateways.
-                                           - rd-rt-rewrite: Configures
-                                           "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                                             Does not
-                                           configure "next-hop-self" for received EVPN routes.
+                                           - rd-rt-rewrite: Re-write
+                                           RD and RT for the routes from external EVPN domains.
 
                                     """
 
@@ -75123,10 +75095,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                                   in address-family evpn
                                 to rewrite the next-hop for type-5 routes received from remote gateways.
-                                - rd-rt-rewrite: Configures
-                                "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                                  Does not
-                                configure "next-hop-self" for received EVPN routes.
+                                - rd-rt-rewrite: Re-write
+                                RD and RT for the routes from external EVPN domains.
 
                                 Default value: `"next-hop-self"`
                                 """
@@ -75155,10 +75125,8 @@ class EosDesigns(EosDesignsRootModel):
                                                "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                                                  in address-family evpn
                                                to rewrite the next-hop for type-5 routes received from remote gateways.
-                                               - rd-rt-rewrite: Configures
-                                               "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                                                 Does not
-                                               configure "next-hop-self" for received EVPN routes.
+                                               - rd-rt-rewrite: Re-write
+                                               RD and RT for the routes from external EVPN domains.
 
                                         """
 
@@ -80202,10 +80170,8 @@ class EosDesigns(EosDesignsRootModel):
                             "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                               in address-family evpn
                             to rewrite the next-hop for type-5 routes received from remote gateways.
-                            - rd-rt-rewrite: Configures
-                            "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                              Does not
-                            configure "next-hop-self" for received EVPN routes.
+                            - rd-rt-rewrite: Re-write
+                            RD and RT for the routes from external EVPN domains.
 
                             Default value: `"next-hop-self"`
                             """
@@ -80234,10 +80200,8 @@ class EosDesigns(EosDesignsRootModel):
                                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                                              in address-family evpn
                                            to rewrite the next-hop for type-5 routes received from remote gateways.
-                                           - rd-rt-rewrite: Configures
-                                           "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                                             Does not
-                                           configure "next-hop-self" for received EVPN routes.
+                                           - rd-rt-rewrite: Re-write
+                                           RD and RT for the routes from external EVPN domains.
 
                                     """
 
@@ -85344,10 +85308,8 @@ class EosDesigns(EosDesignsRootModel):
                             "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                               in address-family evpn
                             to rewrite the next-hop for type-5 routes received from remote gateways.
-                            - rd-rt-rewrite: Configures
-                            "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                              Does not
-                            configure "next-hop-self" for received EVPN routes.
+                            - rd-rt-rewrite: Re-write
+                            RD and RT for the routes from external EVPN domains.
 
                             Default value: `"next-hop-self"`
                             """
@@ -85376,10 +85338,8 @@ class EosDesigns(EosDesignsRootModel):
                                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                                              in address-family evpn
                                            to rewrite the next-hop for type-5 routes received from remote gateways.
-                                           - rd-rt-rewrite: Configures
-                                           "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                                             Does not
-                                           configure "next-hop-self" for received EVPN routes.
+                                           - rd-rt-rewrite: Re-write
+                                           RD and RT for the routes from external EVPN domains.
 
                                     """
 
