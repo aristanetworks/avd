@@ -277,19 +277,26 @@ class RouterBgpMixin(Protocol):
         vrf_address_families: set[str],
     ) -> None:
         """In-place update EVPN/MPLS part of structured config for *one* VRF under router_bgp.vrfs."""
-        bgp_vrf.rd = self.get_vrf_rd(vrf, tenant)
+        vrf_rd = self.get_vrf_rd(vrf, tenant)
         vrf_rt = self.get_vrf_rt(vrf)
+        is_rd_rt_rewrite = (
+            self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled
+            and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite"
+        )
 
-        for af in sorted(vrf_address_families):
-            if vrf.rt_import:
-                bgp_vrf.route_targets.field_import.append_new(
-                    address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ImportItem.RouteTargets([vrf_rt])
-                )
+        if not is_rd_rt_rewrite:
+            bgp_vrf.rd = vrf_rd
 
-            if vrf.rt_export:
-                bgp_vrf.route_targets.export.append_new(
-                    address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ExportItem.RouteTargets([vrf_rt])
-                )
+            for af in sorted(vrf_address_families):
+                if vrf.rt_import:
+                    bgp_vrf.route_targets.field_import.append_new(
+                        address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ImportItem.RouteTargets([vrf_rt])
+                    )
+
+                if vrf.rt_export:
+                    bgp_vrf.route_targets.export.append_new(
+                        address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ExportItem.RouteTargets([vrf_rt])
+                    )
 
         for rt in vrf.additional_route_targets:
             bgp_vrf.route_targets.field_import.obtain(rt.address_family).route_targets.extend(
@@ -307,8 +314,9 @@ class RouterBgpMixin(Protocol):
             return
 
         # Not VRF default
-        if self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite":
-            bgp_vrf.rd_evpn_domain._update(domain="all", rd=bgp_vrf.rd)
+        if is_rd_rt_rewrite:
+            # rd evpn domain all replaces the regular rd (see router-bgp.j2 note: vrf.rd should not be configured when domain is all)
+            bgp_vrf.rd_evpn_domain._update(domain="all", rd=vrf_rd)
             bgp_vrf.route_targets.import_evpn_domains.append_new(domain="all", route_target=vrf_rt)
             bgp_vrf.route_targets.export_evpn_domains.append_new(domain="all", route_target=vrf_rt)
 
@@ -466,13 +474,23 @@ class RouterBgpMixin(Protocol):
 
         vlan_rd = self.get_vlan_rd(vlan, tenant)
         vlan_rt = self.get_vlan_rt(vlan, tenant)
+        is_rd_rt_rewrite = (
+            self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled
+            and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite"
+        )
+        is_l2_multi_domain = self.shared_utils.node_config.evpn_gateway.evpn_l2.enabled and default(
+            vlan.evpn_l2_multi_domain, vrf.evpn_l2_multi_domain, tenant.evpn_l2_multi_domain
+        )
+        # In rd-rt-rewrite mode with L2 multi-domain, rd evpn domain all replaces the regular rd and route-target
+        suppress_base_rd_rt = bool(is_l2_multi_domain and is_rd_rt_rewrite)
 
         bgp_vlan = EosCliConfigGen.RouterBgp.VlansItem(
             id=vlan.id,
-            rd=vlan_rd,
+            rd=None if suppress_base_rd_rt else vlan_rd,
         )
         bgp_vlan.metadata.tenants.append_unique(tenant.name)
-        bgp_vlan.route_targets.both.append(vlan_rt)
+        if not suppress_base_rd_rt:
+            bgp_vlan.route_targets.both.append(vlan_rt)
         bgp_vlan.redistribute_routes.append("learned")
 
         if vlan.bgp.raw_eos_cli:
@@ -483,11 +501,10 @@ class RouterBgpMixin(Protocol):
                 vlan.bgp.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
 
-        if self.shared_utils.node_config.evpn_gateway.evpn_l2.enabled and default(
-            vlan.evpn_l2_multi_domain, vrf.evpn_l2_multi_domain, tenant.evpn_l2_multi_domain
-        ):
-            bgp_vlan.rd_evpn_domain._update(domain="remote", rd=vlan_rd)
-            bgp_vlan.route_targets.import_export_evpn_domains.append_new(domain="remote", route_target=vlan_rt)
+        if is_l2_multi_domain:
+            domain = "all" if is_rd_rt_rewrite else "remote"
+            bgp_vlan.rd_evpn_domain._update(domain=domain, rd=vlan_rd)
+            bgp_vlan.route_targets.import_export_evpn_domains.append_new(domain=domain, route_target=vlan_rt)
 
         vlan_evpn_l2_multicast_enabled = default(vlan.evpn_l2_multicast.enabled, tenant.evpn_l2_multicast.enabled) and self.shared_utils.evpn_multicast is True
         # if vlan_evpn_l2_multicast_enabled we redistribute igmp if:
