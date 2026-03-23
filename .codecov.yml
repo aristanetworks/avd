@@ -46,7 +46,8 @@ ignore:
   # Examples
   - "ansible_collections/arista/avd/examples/**/*"
 
-  # Generated code
+  # Ignore checked-in generated code
+  # Unchecked files are not supported by codecov
   - "python-avd/pyavd/_eos_cli_config_gen/schema/__init__.py"
   - "python-avd/pyavd/_eos_designs/schema/__init__.py"
   - "python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py"
