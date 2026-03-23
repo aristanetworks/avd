@@ -1,0 +1,19 @@
+---
+avd_design_future:
+  raise_for_port_channels_without_members: true
+
+type: l3leaf
+l3leaf:
+  nodes:
+    - bgp_as: 65000
+      name: l3-port-channel-without-member-interfaces
+      id: 1
+      loopback_ipv4_pool: 192.168.0.0/24
+      vtep_loopback_ipv4_pool: 192.168.1.0/24
+      l3_port_channels:
+        # No member interfaces
+        - name: Port-Channel5
+          ip_address: 172.16.0.2/30
+
+expected_error_message: >-
+  L3 Port-Channel 'Port-Channel5' must have at least one member interface defined.
