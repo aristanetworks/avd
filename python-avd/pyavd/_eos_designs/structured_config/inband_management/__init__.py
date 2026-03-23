@@ -10,7 +10,6 @@ from typing import cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils.run_once import run_once_method
 
 
 class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
@@ -80,32 +79,13 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
                     return True
         return False
 
-    @run_once_method
-    def set_once_inband_mgmt_static_routes(self) -> None:
-        """Populate static_routes and ipv6_static_routes from inband management config in a single pass."""
-        if self.shared_utils.configure_inband_mgmt:
-            self.structured_config_utils.set_static_routes(
-                "ipv4",
-                self.shared_utils.inband_mgmt_gateway,
-                self.shared_utils.inband_mgmt_vrf,
-                default_prefix="0.0.0.0/0",
-            )
-
-        if self.shared_utils.configure_inband_mgmt_ipv6:
-            self.structured_config_utils.set_static_routes(
-                "ipv6",
-                self.shared_utils.inband_mgmt_ipv6_gateway,
-                self.shared_utils.inband_mgmt_vrf,
-                default_prefix="::/0",
-            )
-
     @structured_config_contributor
     def static_routes(self) -> None:
-        self.set_once_inband_mgmt_static_routes()
+        self.structured_config_utils.set_once_inband_mgmt_static_routes()
 
     @structured_config_contributor
     def ipv6_static_routes(self) -> None:
-        self.set_once_inband_mgmt_static_routes()
+        self.structured_config_utils.set_once_inband_mgmt_static_routes()
 
     @structured_config_contributor
     def vrfs(self) -> None:

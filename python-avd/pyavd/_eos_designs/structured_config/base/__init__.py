@@ -15,7 +15,6 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
 )
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, get_v2
-from pyavd._utils.run_once import run_once_method
 from pyavd.j2filters import natural_sort, secure_hash
 
 from .address_locking import AddressLockingMixin
@@ -110,35 +109,15 @@ class AvdStructuredConfigBaseProtocol(
         for neighbor in self.shared_utils.l3_bgp_neighbors:
             self.structured_config.router_bgp.address_family_ipv4.neighbors.append_new(ip_address=neighbor.ip_address, activate=True)
 
-    @run_once_method
-    def set_once_mgmt_static_routes(self) -> None:
-        """Populate static_routes and ipv6_static_routes from management gateway config in a single pass."""
-        self.structured_config_utils.set_static_routes(
-            "ipv4",
-            self.shared_utils.mgmt_gateway,
-            self.inputs.mgmt_interface_vrf,
-            self.inputs.mgmt_destination_networks,
-            "0.0.0.0/0",
-        )
-
-        if self.shared_utils.node_config.ipv6_mgmt_ip is not None:
-            self.structured_config_utils.set_static_routes(
-                "ipv6",
-                self.shared_utils.ipv6_mgmt_gateway,
-                self.inputs.mgmt_interface_vrf,
-                self.inputs.ipv6_mgmt_destination_networks,
-                "::/0",
-            )
-
     @structured_config_contributor
     def static_routes(self) -> None:
         """static_routes set based on mgmt_gateway, mgmt_destination_networks and mgmt_interface_vrf."""
-        self.set_once_mgmt_static_routes()
+        self.structured_config_utils.set_once_mgmt_static_routes()
 
     @structured_config_contributor
     def ipv6_static_routes(self) -> None:
         """ipv6_static_routes set based on ipv6_mgmt_gateway, ipv6_mgmt_destination_networks and mgmt_interface_vrf."""
-        self.set_once_mgmt_static_routes()
+        self.structured_config_utils.set_once_mgmt_static_routes()
 
     @structured_config_contributor
     def service_routing_protocols_model(self) -> None:
