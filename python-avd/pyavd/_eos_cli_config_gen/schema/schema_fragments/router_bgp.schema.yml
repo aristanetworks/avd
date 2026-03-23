@@ -258,6 +258,7 @@ keys:
                     type: dict
                     keys:
                       enabled:
+                        required: true
                         type: bool
                         description: Install LU routes into Tunnel RIB.
                       route_map:
