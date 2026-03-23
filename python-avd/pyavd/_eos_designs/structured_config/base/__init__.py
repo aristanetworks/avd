@@ -875,18 +875,16 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def management_settings(self) -> None:
         """Configures management settings based on the input data model."""
-        if not self.inputs.management_settings:
+        if not (management_settings := self.inputs.management_settings):
             return
 
-        settings = self.inputs.management_settings
-
         # Apply management console settings
-        if settings.console:
-            self.structured_config.management_console = settings.console._cast_as(EosCliConfigGen.ManagementConsole)
+        if management_settings.console:
+            self.structured_config.management_console = management_settings.console._cast_as(EosCliConfigGen.ManagementConsole)
 
         # Apply banner settings
-        if settings.banners:
-            self.structured_config.banners = settings.banners._cast_as(EosCliConfigGen.Banners)
+        if management_settings.banners:
+            self.structured_config.banners = management_settings.banners._cast_as(EosCliConfigGen.Banners)
 
 
 class AvdStructuredConfigBase(StructuredConfigGenerator, AvdStructuredConfigBaseProtocol):
