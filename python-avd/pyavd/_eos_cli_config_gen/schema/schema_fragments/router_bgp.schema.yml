@@ -248,6 +248,7 @@ keys:
                     type: dict
                     keys:
                       enabled:
+                        required: true
                         type: bool
                         description: Install LU routes into IP RIB.
                       route_map:
