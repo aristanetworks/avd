@@ -208,6 +208,12 @@ repos:
         language: python
         files: python-avd/pyproject.toml
         pass_filenames: false
+      - id: pdm-export
+        name: Extract requirements from pyavd/pyproject.toml to docs/requirements.txt
+        entry: pdm export -p python-avd -o docs/requirements.txt --without-hashes -G ansible -G self --pyproject
+        language: python
+        files: python-avd/pyproject.toml
+        pass_filenames: false
 
   - repo: local
     hooks:
