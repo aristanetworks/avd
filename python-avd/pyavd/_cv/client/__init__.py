@@ -190,14 +190,10 @@ class CVClientProtocol(
             msg = "Unable to get version from CloudVision server. Missing token."
             raise CVClientException(msg)
 
-        custom_http_headers: dict[str, str] = {"Authorization": f"Bearer {self._token}"}
-        if custom_user_agent_header := self._get_user_agent():
-            custom_http_headers.update({"User-Agent": custom_user_agent_header})
-
         try:
             response = get(  # noqa: S113 TODO: Add configurable timeout
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
-                headers=custom_http_headers,
+                headers={"Authorization": f"Bearer {self._token}", "User-Agent": self._get_user_agent()},
                 verify=self._verify_certs,
                 proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
                 json={},
