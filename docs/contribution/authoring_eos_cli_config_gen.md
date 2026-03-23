@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -110,7 +110,7 @@ Run `pre-commit run --all`, this will trigger recompiling the schemas and the te
 ### Update Documentation
 
 1. If the proposed feature requires any changes to the documentation, update the documentation accordingly.
-2. For new top-level feature data models, include a link to the corresponding schema documentation file (e.g., `ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/<data-model>.md`) in the `ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/input-variables.md` file.
+2. For new top-level feature data models, include a link to the corresponding schema documentation file (e.g., `ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/<data-model>.md`) in the `ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/data-models.md` file.
 
 ### Run Pre-commit Checks
 

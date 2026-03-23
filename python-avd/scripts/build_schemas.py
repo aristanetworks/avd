@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import logging
@@ -8,8 +8,6 @@ from sys import argv, path
 
 # Override global path to load schema from source instead of any installed version.
 path.insert(0, str(Path(__file__).parents[1]))
-# Also include pyavd-utils
-path.insert(0, str(Path(__file__).parents[2].joinpath("pyavd-utils")))
 
 from schema_tools.build_schemas import build_schemas
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """Logging utilities used by PyAVD for ANTA."""
@@ -57,7 +57,7 @@ class TestLoggerAdapter(LoggerAdapter):
 
         prefix = f"<{device}> {test}"
         if context:
-            prefix += f" {context}"
+            prefix += f" ({context})"
 
         return f"{prefix} {formatted_msg}", kwargs
 
@@ -95,6 +95,7 @@ class LogMessage(Enum):
     INTERFACE_VALIDATION_DISABLED = "{interface} skipped - validate_state or validate_lldp disabled"
     INTERFACE_NO_IP = "{interface} skipped - No IP address configured"
     INTERFACE_UNNUMBERED = "{interface} skipped - IP unnumbered interface"
+    INTERFACE_NOT_INBAND_MGMT = "{interface} skipped - Not an inband management interface"
 
     # Vxlan interface state messages
     INTERFACE_VXLAN1_NO_VNI = "Vxlan1 skipped - No VNI configured"
@@ -104,15 +105,18 @@ class LogMessage(Enum):
     PATH_GROUP_NO_STUN_INTERFACE = "path group {path_group} skipped - No STUN client interfaces found"
     PATH_GROUP_NO_LOCAL_INTERFACES = "path group {path_group} skipped - No local interfaces found"
     PATH_GROUP_NO_STATIC_PEERS = "path group {path_group} skipped - No static peers configured"
-    NO_STATIC_PEERS = "skipped - No static peers configured in any path groups"
     PATH_GROUP_IPV6_STATIC_PEER = "static peer {peer} under path group {path_group} skipped - ANTA does not support IPv6 static peer"
+    NO_STATIC_PEERS = "skipped - No static peers configured in any path groups"
 
     # Input generation messages
-    INPUT_NONE_FOUND = "skipped - No inputs available"
+    NO_INPUTS_GENERATED = "skipped - No inputs generated"
     INPUT_NO_DATA_MODELS = "skipped - Data models {data_models} not found"
     INPUT_MISSING_FIELDS = "{identity} skipped - Missing required fields: {fields}"
     EXTRA_FABRIC_VALIDATION_DISABLED = "skipped - Extra fabric-wide validation tests disabled"
     HARDWARE_VALIDATION_DISABLED = "skipped - Hardware validation tests disabled"
+    NO_STORM_CONTROL_ENABLED = "skipped - No interfaces with storm-control enabled"
 
     # Device role message
     DEVICE_IS_WAN_ROUTER = "skipped - Device is a WAN router"
+    DEVICE_IS_NOT_VTEP = "skipped - Device is not a VTEP"
+    DEVICE_IS_NOT_WAN_ROUTER = "skipped - Device is not a WAN router"

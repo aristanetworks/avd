@@ -153,16 +153,16 @@
 | DC1-POD1-LEAF1A | Ethernet1 | 172.17.110.1/31 | DC1-POD1-SPINE1 | Ethernet3 | 172.17.110.0/31 |
 | DC1-POD1-LEAF1A | Ethernet2 | 172.17.110.3/31 | DC1-POD1-SPINE2 | Ethernet3 | 172.17.110.2/31 |
 | DC1-POD1-LEAF1A | Ethernet4 | 172.17.10.4/31 | DC1-RS1 | Ethernet3 | 172.17.10.5/31 |
-| DC1-POD1-LEAF1B | Ethernet1 | 172.17.110.13/31 | DC1.POD1.LEAF2A | Ethernet13 | 172.17.110.12/31 |
-| DC1-POD1-LEAF1B | Ethernet1.1025 | 172.17.110.13/31 | DC1.POD1.LEAF2A | Ethernet13.1025 | 172.17.110.12/31 |
-| DC1-POD1-LEAF1B | Ethernet1.1100 | 172.17.110.13/31 | DC1.POD1.LEAF2A | Ethernet13.1100 | 172.17.110.12/31 |
-| DC1-POD1-LEAF1B | Ethernet1.1101 | 172.17.110.13/31 | DC1.POD1.LEAF2A | Ethernet13.1101 | 172.17.110.12/31 |
-| DC1-POD1-LEAF1B | Ethernet1.1102 | 172.17.110.13/31 | DC1.POD1.LEAF2A | Ethernet13.1102 | 172.17.110.12/31 |
-| DC1-POD1-LEAF1B | Ethernet2 | 172.17.110.15/31 | DC1-POD1-LEAF2B | Ethernet13 | 172.17.110.14/31 |
-| DC1-POD1-LEAF1B | Ethernet2.1025 | 172.17.110.15/31 | DC1-POD1-LEAF2B | Ethernet13.1025 | 172.17.110.14/31 |
-| DC1-POD1-LEAF1B | Ethernet2.1100 | 172.17.110.15/31 | DC1-POD1-LEAF2B | Ethernet13.1100 | 172.17.110.14/31 |
-| DC1-POD1-LEAF1B | Ethernet2.1101 | 172.17.110.15/31 | DC1-POD1-LEAF2B | Ethernet13.1101 | 172.17.110.14/31 |
-| DC1-POD1-LEAF1B | Ethernet2.1102 | 172.17.110.15/31 | DC1-POD1-LEAF2B | Ethernet13.1102 | 172.17.110.14/31 |
+| DC1-POD1-LEAF1B | Ethernet1 | 172.17.110.5/31 | DC1.POD1.LEAF2A | Ethernet13 | 172.17.110.4/31 |
+| DC1-POD1-LEAF1B | Ethernet1.1025 | 172.17.110.5/31 | DC1.POD1.LEAF2A | Ethernet13.1025 | 172.17.110.4/31 |
+| DC1-POD1-LEAF1B | Ethernet1.1100 | 172.17.110.5/31 | DC1.POD1.LEAF2A | Ethernet13.1100 | 172.17.110.4/31 |
+| DC1-POD1-LEAF1B | Ethernet1.1101 | 172.17.110.5/31 | DC1.POD1.LEAF2A | Ethernet13.1101 | 172.17.110.4/31 |
+| DC1-POD1-LEAF1B | Ethernet1.1102 | 172.17.110.5/31 | DC1.POD1.LEAF2A | Ethernet13.1102 | 172.17.110.4/31 |
+| DC1-POD1-LEAF1B | Ethernet2 | 172.17.110.7/31 | DC1-POD1-LEAF2B | Ethernet13 | 172.17.110.6/31 |
+| DC1-POD1-LEAF1B | Ethernet2.1025 | 172.17.110.7/31 | DC1-POD1-LEAF2B | Ethernet13.1025 | 172.17.110.6/31 |
+| DC1-POD1-LEAF1B | Ethernet2.1100 | 172.17.110.7/31 | DC1-POD1-LEAF2B | Ethernet13.1100 | 172.17.110.6/31 |
+| DC1-POD1-LEAF1B | Ethernet2.1101 | 172.17.110.7/31 | DC1-POD1-LEAF2B | Ethernet13.1101 | 172.17.110.6/31 |
+| DC1-POD1-LEAF1B | Ethernet2.1102 | 172.17.110.7/31 | DC1-POD1-LEAF2B | Ethernet13.1102 | 172.17.110.6/31 |
 | DC1-POD1-LEAF2B | Ethernet1 | 172.17.110.17/31 | DC1-POD1-SPINE1 | Ethernet5 | 172.17.110.16/31 |
 | DC1-POD1-LEAF2B | Ethernet2 | 172.17.110.19/31 | DC1-POD1-SPINE2 | Ethernet5 | 172.17.110.18/31 |
 | DC1-POD1-LEAF2B | Ethernet7 | 11.1.0.38/31 | DC2-POD1-LEAF1A | Ethernet7 | 11.1.0.39/31 |
@@ -170,13 +170,13 @@
 | DC1-POD1-LEAF2B | Ethernet12 | 172.17.110.23/31 | DC1-POD1-SPINE2 | Ethernet8 | 172.17.110.22/31 |
 | DC1-POD1-SPINE1 | Ethernet1 | 172.16.11.1/31 | DC1-SUPER-SPINE1 | Ethernet1 | 172.16.11.0/31 |
 | DC1-POD1-SPINE1 | Ethernet2 | 172.16.11.65/31 | DC1-SUPER-SPINE2 | Ethernet1 | 172.16.11.64/31 |
-| DC1-POD1-SPINE1 | Ethernet4 | 172.17.110.8/31 | DC1.POD1.LEAF2A | Ethernet1 | 172.17.110.9/31 |
+| DC1-POD1-SPINE1 | Ethernet4 | 172.17.110.24/31 | DC1.POD1.LEAF2A | Ethernet1 | 172.17.110.25/31 |
 | DC1-POD1-SPINE1 | Ethernet6 | 172.17.10.2/31 | DC1-RS1 | Ethernet2 | 172.17.10.3/31 |
-| DC1-POD1-SPINE1 | Ethernet7 | 172.17.110.12/31 | DC1.POD1.LEAF2A | Ethernet11 | 172.17.110.13/31 |
+| DC1-POD1-SPINE1 | Ethernet7 | 172.17.110.28/31 | DC1.POD1.LEAF2A | Ethernet11 | 172.17.110.29/31 |
 | DC1-POD1-SPINE2 | Ethernet1 | 172.16.11.3/31 | DC1-SUPER-SPINE1 | Ethernet2 | 172.16.11.2/31 |
 | DC1-POD1-SPINE2 | Ethernet2 | 172.16.11.67/31 | DC1-SUPER-SPINE2 | Ethernet2 | 172.16.11.66/31 |
-| DC1-POD1-SPINE2 | Ethernet4 | 172.17.110.10/31 | DC1.POD1.LEAF2A | Ethernet2 | 172.17.110.11/31 |
-| DC1-POD1-SPINE2 | Ethernet7 | 172.17.110.14/31 | DC1.POD1.LEAF2A | Ethernet12 | 172.17.110.15/31 |
+| DC1-POD1-SPINE2 | Ethernet4 | 172.17.110.26/31 | DC1.POD1.LEAF2A | Ethernet2 | 172.17.110.27/31 |
+| DC1-POD1-SPINE2 | Ethernet7 | 172.17.110.30/31 | DC1.POD1.LEAF2A | Ethernet12 | 172.17.110.31/31 |
 | DC1-POD2-LEAF1A | Ethernet1 | 172.17.120.1/31 | DC1-POD2-SPINE1 | Ethernet3 | 172.17.120.0/31 |
 | DC1-POD2-LEAF1A | Ethernet2 | 172.17.120.3/31 | DC1-POD2-SPINE2 | Ethernet3 | 172.17.120.2/31 |
 | DC1-POD2-LEAF1A | Ethernet3 | 172.17.10.12/31 | DC1-RS2 | Ethernet3 | 172.17.10.13/31 |
@@ -222,7 +222,7 @@
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
 | DC1_POD1 | DC1-POD1-LEAF1A | 172.16.110.3/32 |
-| DC1_POD1 | DC1-POD1-LEAF1B | 172.16.110.6/32 |
+| DC1_POD1 | DC1-POD1-LEAF1B | 172.16.110.4/32 |
 | DC1_POD1 | DC1-POD1-LEAF2B | 172.16.110.5/32 |
 | DC1_POD1 | DC1-POD1-SPINE1 | 172.16.110.1/32 |
 | DC1_POD1 | DC1-POD1-SPINE2 | 172.16.110.2/32 |
@@ -233,7 +233,7 @@
 | DC1 | DC1-RS2 | 172.16.10.2/32 |
 | DC1 | DC1-SUPER-SPINE1 | 172.16.100.1/32 |
 | DC1 | DC1-SUPER-SPINE2 | 172.16.100.2/32 |
-| DC1_POD1 | DC1.POD1.LEAF2A | 172.16.110.4/32 |
+| DC1_POD1 | DC1.POD1.LEAF2A | 172.16.110.6/32 |
 | DC2_POD1 | DC2-POD1-LEAF1A | 172.16.210.3/32 |
 | DC2_POD1 | DC2-POD1-LEAF2A | 172.16.210.4/32 |
 | DC2_POD1 | DC2-POD1-SPINE1 | 172.16.210.1/32 |
@@ -256,9 +256,9 @@
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |
 | DC1_POD1 | DC1-POD1-LEAF1A | 172.18.110.3/32 |
-| DC1_POD1 | DC1-POD1-LEAF2B | 172.18.110.4/32 |
+| DC1_POD1 | DC1-POD1-LEAF2B | 172.18.110.6/32 |
 | DC1_POD2 | DC1-POD2-LEAF1A | 172.18.120.3/32 |
-| DC1_POD1 | DC1.POD1.LEAF2A | 172.18.110.4/32 |
+| DC1_POD1 | DC1.POD1.LEAF2A | 172.18.110.6/32 |
 | DC2_POD1 | DC2-POD1-LEAF1A | 172.18.210.3/32 |
 | DC2_POD1 | DC2-POD1-LEAF2A | 172.18.210.4/32 |
 
@@ -277,21 +277,21 @@
 | ---- | ---- | ---- | ------------- | ----------- | ----------- | -------- | ---- | ----------- | ------------------- | ------- |
 | server-3 | - | Eth1 | DC1.POD1.LEAF2A | Ethernet27 | server-3_Eth1 | False | access | 110 | - | TENANT_A |
 | server-3 | - | Eth2 | DC1-POD1-LEAF2B | Ethernet27 | server-3_Eth2 | False | access | 110 | - | TENANT_A |
-| server-4 | SpecialEndpoint | Eth5 | DC1.POD1.LEAF2A | Ethernet28 | SPECIALENDPOINT_server-4_Eth5 | False | access | 110 | - | NESTED_TENANT_A |
-| server-4 | SpecialEndpoint | Eth6 | DC1-POD1-LEAF2B | Ethernet28 | SPECIALENDPOINT_server-4_Eth6 | False | access | 110 | - | NESTED_TENANT_A |
+| server-4 | SpecialEndpoint | Eth5 | DC1.POD1.LEAF2A | Port-Channel28(Ethernet28) | PortChannel | False | access | 110 | - | NESTED_TENANT_A |
+| server-4 | SpecialEndpoint | Eth6 | DC1-POD1-LEAF2B | Port-Channel28(Ethernet28) | PortChannel | False | access | 110 | - | NESTED_TENANT_A |
 
 ### Servers
 
 | Name | Type | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
 | ---- | ---- | ---- | ------------- | ----------- | ----------- | -------- | ---- | ----------- | ------------------- | ------- |
-| server-1 | server | Eth1 | DC1.POD1.LEAF2A | Ethernet16 | SERVER_server-1_Eth1 | False | access | 110 | - | TENANT_A |
-| server-1 | server | Eth3 | DC1.POD1.LEAF2A | Ethernet17 | Set using structured_config on server adapter | False | access | 110 | - | TENANT_A |
-| server-1 | server | Eth5 | DC1.POD1.LEAF2A | Ethernet18 | SERVER_server-1_Eth5 | False | access | 110 | - | NESTED_TENANT_A |
-| server-1 | server | Eth7 | DC1.POD1.LEAF2A | Ethernet19 | SERVER_server-1_Eth7 | False | access | 110 | - | NESTED_TENANT_A |
-| server-1 | server | Eth2 | DC1-POD1-LEAF2B | Ethernet16 | SERVER_server-1_Eth2 | False | access | 110 | - | TENANT_A |
-| server-1 | server | Eth4 | DC1-POD1-LEAF2B | Ethernet17 | Set using structured_config on server adapter | False | access | 110 | - | TENANT_A |
-| server-1 | server | Eth6 | DC1-POD1-LEAF2B | Ethernet18 | SERVER_server-1_Eth6 | False | access | 110 | - | NESTED_TENANT_A |
-| server-1 | server | Eth8 | DC1-POD1-LEAF2B | Ethernet19 | SERVER_server-1_Eth8 | False | access | 110 | - | NESTED_TENANT_A |
+| server-1 | server | Eth1 | DC1.POD1.LEAF2A | Port-Channel16(Ethernet16) | PortChannel | False | access | 110 | - | TENANT_A |
+| server-1 | server | Eth2 | DC1-POD1-LEAF2B | Port-Channel16(Ethernet16) | PortChannel | False | access | 110 | - | TENANT_A |
+| server-1 | server | Eth3 | DC1.POD1.LEAF2A | Port-Channel17(Ethernet17) | Set using structured_config on server adapter port-channel | False | access | 110 | - | TENANT_A |
+| server-1 | server | Eth4 | DC1-POD1-LEAF2B | Port-Channel17(Ethernet17) | Set using structured_config on server adapter port-channel | False | access | 110 | - | TENANT_A |
+| server-1 | server | Eth5 | DC1.POD1.LEAF2A | Port-Channel18(Ethernet18) | PortChannel | False | access | 110 | - | NESTED_TENANT_A |
+| server-1 | server | Eth6 | DC1-POD1-LEAF2B | Port-Channel18(Ethernet18) | PortChannel | False | access | 110 | - | NESTED_TENANT_A |
+| server-1 | server | Eth7 | DC1.POD1.LEAF2A | Port-Channel19(Ethernet19) | PortChannel | False | access | 110 | - | NESTED_TENANT_A |
+| server-1 | server | Eth8 | DC1-POD1-LEAF2B | Port-Channel19(Ethernet19) | PortChannel | False | access | 110 | - | NESTED_TENANT_A |
 | server-1 | server | Eth9 | DC1-POD1-L2LEAF1A | Ethernet2 | SERVER_server-1_Eth9 | False | - | - | - | - |
 | server-2 | SpecialServer | Eth1 | DC1.POD1.LEAF2A | Ethernet26 | SPECIALSERVER_server-2_Eth1 | False | access | 110 | - | TENANT_A |
 | server-2 | SpecialServer | Eth2 | DC1-POD1-LEAF2B | Ethernet26 | SPECIALSERVER_server-2_Eth2 | False | access | 110 | - | TENANT_A |

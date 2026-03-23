@@ -73,3 +73,24 @@ custom_structured_configuration_port_channel_interfaces:
 custom_structured_configuration_interface_defaults:
   ethernet:
     shutdown: true
+
+# Custom BGP strucutred_config to validate that RFC5549 interfaces are skipped
+custom_structured_configuration_router_bgp:
+  neighbor_interfaces:
+    - name: Vlan4093
+      remote_as: 65133
+      metadata:
+        peer: dc1-svc-leaf1a
+        validate_state: false
+
+# Custom VXLAN interface with Dps1 source interface to validate the WAN DPS reachability test
+# This host will now be considered as a WAN router because of the DPS VXLAN source interface
+custom_structured_configuration_vxlan_interface:
+  vxlan1:
+    vxlan:
+      source_interface: Dps1
+
+custom_structured_configuration_dps_interfaces:
+  - name: Dps1
+    description: WAN_DPS
+    ip_address: 10.99.99.1/24

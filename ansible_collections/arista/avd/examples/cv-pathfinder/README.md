@@ -3,7 +3,7 @@
 title: CV Pathfinder
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -243,8 +243,8 @@ The following table lists the `eos_designs` top-level keys used for WAN and how 
 
 | Key | Must be the same for all the WAN routers | Comment |
 | --- | ---------------------------------------- | ------- |
-| `wan_mode` | ✅ | Two possible modes, `autovpn` and `cv-pathfinder` (default). |
-| `cv_pathfinder_regions` | ✅ | Defines the Region/Zone/Site hierarchy, not required for AutoVPN. |
+| `wan_mode` | ✅ | Two possible modes, `legacy-autovpn` and `cv-pathfinder` (default). |
+| `cv_pathfinder_regions` | ✅ | Defines the Region/Zone/Site hierarchy, not required for Legacy AutoVPN. |
 | `wan_route_servers` | ✘ | Indicate to which WAN route servers the WAN router should connect to. This key is also used to tell every WAN Route Reflectors with which other RRs it should peer with. |
 | `wan_ipsec_profiles` | ✅ | Defines the shared key for the Control Plane and Data Plane IPSec profiles. |
 | `wan_stun_dtls_disable` | ✅ | Disable dTLS for STUN, for instance, for the lab. (**NOT** recommended in production). |

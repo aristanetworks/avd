@@ -2,8 +2,22 @@ aaa_root:
   disabled: true
 config_end: true
 dns_domain: testfabric.local
+domain_list:
+- avd.lab
+- other.net
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet5
+  description: L2_cv-settings_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  metadata:
+    peer: cv-settings
+    peer_interface: Ethernet1
+    peer_type: l2leaf
 hostname: dns-settings-1
 ip_domain_lookup:
   source_interfaces:
@@ -12,19 +26,21 @@ ip_domain_lookup:
     vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 10.10.10.1
-  vrf: default
-  priority: 1
-- ip_address: 10.10.10.1
-  vrf: MGMT
-  priority: 1
-- ip_address: 10.10.10.2
-  vrf: MGMT
-- ip_address: 10.10.10.2
-  vrf: other_vrf
-- ip_address: 10.10.10.3
-  vrf: MGMT
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 10.10.10.1
+      priority: 1
+  - name: MGMT
+    servers:
+    - ip_address: 10.10.10.1
+      priority: 1
+    - ip_address: 10.10.10.2
+    - ip_address: 10.10.10.3
+  - name: other_vrf
+    servers:
+    - ip_address: 10.10.10.2
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
@@ -35,6 +51,15 @@ management_interfaces:
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+port_channel_interfaces:
+- name: Port-Channel5
+  description: L2_cv-settings_Port-Channel1
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '4092'
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:

@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -26,6 +26,9 @@ interface {{ dps_interface.name }}
 {%     endif %}
 {%     if dps_interface.ip_address is arista.avd.defined %}
    ip address {{ dps_interface.ip_address }}
+{%     endif %}
+{%     if dps_interface.ipv6_address_auto_config is arista.avd.defined(true) %}
+   ipv6 address auto-config
 {%     endif %}
 {%     if dps_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined or dps_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
 {%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}

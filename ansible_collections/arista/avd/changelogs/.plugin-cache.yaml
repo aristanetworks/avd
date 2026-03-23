@@ -46,6 +46,10 @@ plugins:
         list of strings.
       name: range_expand
       version_added: 3.4.0
+    secure_hash:
+      description: Generate an EOS supported hash digest.
+      name: secure_hash
+      version_added: 5.2.0
     snmp_hash:
       description: Compute localized SNMP passphrases
       name: snmp_hash
@@ -63,11 +67,6 @@ plugins:
       name: anta_workflow
       namespace: ''
       version_added: 5.3.0
-    configlet_build_config:
-      description: Build arista.cvp.configlet configuration.
-      name: configlet_build_config
-      namespace: ''
-      version_added: 1.0.0
     cv_workflow:
       description: Deploy various objects to CloudVision
       name: cv_workflow
@@ -93,26 +92,16 @@ plugins:
       name: eos_designs_structured_config
       namespace: ''
       version_added: 4.0.0
-    eos_validate_state_reports:
-      description: Generates validation reports for the eos_validate_state role
-      name: eos_validate_state_reports
-      namespace: ''
-      version_added: 4.5.0
-    eos_validate_state_runner:
-      description: Uses ANTA for eos_validate_state role
-      name: eos_validate_state_runner
-      namespace: ''
-      version_added: 4.4.0
-    inventory_to_container:
-      description: Transform information from inventory to arista.cvp collection
-      name: inventory_to_container
-      namespace: ''
-      version_added: 1.0.0
     set_vars:
       description: Set vars as ansible_facts.
       name: set_vars
       namespace: ''
       version_added: 4.0.0
+    validate_inputs:
+      description: Validate variables against AVD schemas
+      name: validate_inputs
+      namespace: ''
+      version_added: 6.0.0
     verify_requirements:
       description: Verify Python requirements when running AVD
       name: verify_requirements
@@ -136,4 +125,4 @@ plugins:
         than group_vars or host_vars
       name: global_vars
       version_added: 4.0.0
-version: 5.7.0
+version: 6.1.0

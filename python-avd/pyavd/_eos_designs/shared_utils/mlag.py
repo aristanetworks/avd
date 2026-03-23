@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -265,7 +265,7 @@ class MlagMixin(Protocol):
             description=AvdStringFormatter().format(self.inputs.mlag_bgp_peer_group_description, mlag_peer=self.mlag_peer),
             password=self.get_bgp_password(bgp_peer_group),
             bfd=bgp_peer_group.bfd or None,
-            maximum_routes=12000,
+            maximum_routes=bgp_peer_group.maximum_routes,
             send_community="all",
         )
         peer_group.metadata.type = "ipv4"

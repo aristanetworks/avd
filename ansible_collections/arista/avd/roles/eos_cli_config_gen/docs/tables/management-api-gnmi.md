@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "management_api_gnmi.transport.grpc.[].ssl_profile") | String |  |  |  | SSL profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "management_api_gnmi.transport.grpc.[].vrf") | String |  |  |  | VRF name is optional. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;notification_timestamp</samp>](## "management_api_gnmi.transport.grpc.[].notification_timestamp") | String |  |  | Valid Values:<br>- <code>send-time</code><br>- <code>last-change-time</code> | Per the gNMI specification, the default timestamp field of a notification message is set to be<br>the time at which the value of the underlying data source changes or when the reported event takes place.<br>In order to facilitate integration in legacy environments oriented around polling style operations,<br>an option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_access_group</samp>](## "management_api_gnmi.transport.grpc.[].ip_access_group") | String |  |  |  | ACL name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_access_group</samp>](## "management_api_gnmi.transport.grpc.[].ip_access_group") | String |  |  |  | -> ACL name. Only one transport in the same VRF can be configured with a service ACL; all transports in the same VRF use the same service ACL. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "management_api_gnmi.transport.grpc.[].port") | Integer |  |  |  | GNMI port.<br>Make sure to update the control-plane ACL accordingly in order for the service to be reachable by external applications.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authorization_requests</samp>](## "management_api_gnmi.transport.grpc.[].authorization_requests") | Boolean |  |  |  | Use per-RPC authorization. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;grpc_tunnels</samp>](## "management_api_gnmi.transport.grpc_tunnels") | List, items: Dictionary |  |  |  |  |
@@ -58,7 +58,7 @@
             # an option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.
             notification_timestamp: <str; "send-time" | "last-change-time">
 
-            # ACL name.
+            # -> ACL name. Only one transport in the same VRF can be configured with a service ACL; all transports in the same VRF use the same service ACL.
             ip_access_group: <str>
 
             # GNMI port.

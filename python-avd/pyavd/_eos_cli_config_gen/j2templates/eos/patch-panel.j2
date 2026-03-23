@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -16,20 +16,24 @@ patch panel
 {%         endif %}
    !
 {%     endif %}
-{%     for patch in patch_panel.patches | arista.avd.natural_sort("name") %}
+{%     for patch in patch_panel.patches | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 {%         if patch.name is arista.avd.defined %}
    patch {{ patch.name }}
 {%             if patch.enabled is arista.avd.defined(false) %}
       shutdown
 {%             endif %}
-{%             for connector in patch.connectors | arista.avd.natural_sort %}
-{%                 if connector.id is arista.avd.defined %}
-{%                     if connector.type is arista.avd.defined("interface") %}
-{%                         set connector_cli = "connector " ~ connector.id ~ " interface " ~ connector.endpoint %}
-{%                     elif connector.type is arista.avd.defined("pseudowire") %}
-{%                         set connector_cli = "connector " ~ connector.id ~ " pseudowire " ~ connector.endpoint %}
-{%                     endif %}
+{%             for connector in patch.connectors | arista.avd.natural_sort(sort_key="id", ignore_case=false) %}
+{%                 if connector.type is arista.avd.defined("interface") %}
+{%                     set connector_cli = "connector " ~ connector.id ~ " interface " ~ connector.endpoint %}
+{%                 elif connector.type is arista.avd.defined("pseudowire") %}
+{%                     set connector_cli = "connector " ~ connector.id ~ " pseudowire " ~ connector.endpoint %}
+{%                 endif %}
+{%                 if loop.first and patch.enabled is arista.avd.defined(false) %}
+      !
+{%                 endif %}
       {{ connector_cli }}
+{%                 if not loop.last %}
+      !
 {%                 endif %}
 {%             endfor %}
 {%         endif %}

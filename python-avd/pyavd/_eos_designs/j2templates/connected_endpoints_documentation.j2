@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2024-2025 Arista Networks, Inc.
+ Copyright (c) 2024-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -13,19 +13,19 @@ No connected endpoint configured!
 
 | Key | Default Type | Description |
 | --- | ------------ | ----------- |
-{%     for connected_endpoints_key in all_connected_endpoints_keys %}
+{%     for connected_endpoints_key in all_connected_endpoints_keys | arista.avd.natural_sort(sort_key='key') %}
 {%         set key = connected_endpoints_key.key %}
 {%         set type = connected_endpoints_key.type | arista.avd.default("-") %}
 {%         set description = connected_endpoints_key.description | arista.avd.default("-") %}
 | {{ key }} | {{ type }} | {{ description }} |
 {%     endfor %}
-{%     for key in all_connected_endpoints %}
+{%     for key in all_connected_endpoints | arista.avd.natural_sort %}
 
 ### {{ key | replace("_", " ") | title }}
 
 | Name | Type | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
 | ---- | ---- | ---- | ------------- | ----------- | ----------- | -------- | ---- | ----------- | ------------------- | ------- |
-{%         for connected_endpoint in all_connected_endpoints[key] %}
+{%         for connected_endpoint in all_connected_endpoints[key] | arista.avd.natural_sort(sort_key='peer_interface') | arista.avd.natural_sort(sort_key='peer') %}
 {%             set port = connected_endpoint.peer_interface %}
 {%             set type = connected_endpoint.peer_type | arista.avd.default("-") %}
 {%             set fabric_port = connected_endpoint.fabric_port %}
@@ -45,7 +45,7 @@ No connected endpoint configured!
 
 | Profile Name | Parent Profile |
 | ------------ | -------------- |
-{%     for profile in all_port_profiles %}
+{%     for profile in all_port_profiles | arista.avd.natural_sort(sort_key='profile') %}
 {%         set parent = profile.parent_profile | arista.avd.default("-") %}
 | {{ profile.profile }} | {{ parent }} |
 {%     endfor %}

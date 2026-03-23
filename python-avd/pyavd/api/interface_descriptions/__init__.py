@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """AVD eos_designs base module to generate interface descriptions."""
@@ -98,6 +98,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             **strip_null_from_data(
                 {
                     "peer": data.peer,
+                    "interface": data.interface,
                     "peer_interface": data.peer_interface,
                     "vrf": data.vrf,
                     "wan_carrier": data.wan_carrier,
@@ -457,7 +458,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             ),
         )
 
-    def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str:
+    def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str | None:
         """
         Build Router ID loopback interface description.
 
@@ -473,7 +474,7 @@ class AvdInterfaceDescriptions(AvdFacts):
 
         return data.description
 
-    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str:
+    def vtep_loopback_interface(self, data: InterfaceDescriptionData) -> str | None:
         """
         Build VTEP loopback interface description.
 

@@ -15,11 +15,12 @@ enable_password:
 hostname: inband-mgmt-per-interface-mtu-false
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 1.1.1.1
-  vrf: default
-- ip_address: 8.8.8.8
-  vrf: default
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 1.1.1.1
+    - ip_address: 8.8.8.8
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -50,7 +51,8 @@ vlans:
 - id: 108
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

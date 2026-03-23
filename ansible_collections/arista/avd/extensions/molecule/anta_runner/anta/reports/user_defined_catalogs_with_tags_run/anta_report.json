@@ -8,6 +8,7 @@
         "description": "Verifies Vxlan1 source interface and UDP port.",
         "result": "unset",
         "messages": [],
+        "atomic_results": [],
         "custom_field": null
     },
     {
@@ -19,6 +20,7 @@
         "description": "Verifies the Vxlan1 interface status.",
         "result": "unset",
         "messages": [],
+        "atomic_results": [],
         "custom_field": null
     },
     {
@@ -30,6 +32,7 @@
         "description": "Verifies there are no VXLAN config-sanity inconsistencies.",
         "result": "unset",
         "messages": [],
+        "atomic_results": [],
         "custom_field": null
     },
     {
@@ -41,6 +44,7 @@
         "description": "Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",
         "result": "unset",
         "messages": [],
+        "atomic_results": [],
         "custom_field": null
     },
     {
@@ -52,7 +56,8 @@
         "description": "Verifies Vxlan1 VTEP peers.",
         "result": "unset",
         "messages": [],
-        "custom_field": null
+        "atomic_results": [],
+        "custom_field": "DC2 VXLAN VTEP reachability"
     },
     {
         "name": "dc2-leaf2a",
@@ -63,6 +68,7 @@
         "description": "Verifies Vxlan1 source interface and UDP port.",
         "result": "unset",
         "messages": [],
+        "atomic_results": [],
         "custom_field": null
     },
     {
@@ -74,6 +80,7 @@
         "description": "Verifies the Vxlan1 interface status.",
         "result": "unset",
         "messages": [],
+        "atomic_results": [],
         "custom_field": null
     },
     {
@@ -85,6 +92,7 @@
         "description": "Verifies there are no VXLAN config-sanity inconsistencies.",
         "result": "unset",
         "messages": [],
+        "atomic_results": [],
         "custom_field": null
     },
     {
@@ -96,6 +104,7 @@
         "description": "Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",
         "result": "unset",
         "messages": [],
+        "atomic_results": [],
         "custom_field": null
     },
     {
@@ -107,7 +116,8 @@
         "description": "Verifies Vxlan1 VTEP peers.",
         "result": "unset",
         "messages": [],
-        "custom_field": null
+        "atomic_results": [],
+        "custom_field": "DC2 VXLAN VTEP reachability"
     },
     {
         "name": "dc2-leaf2b",
@@ -118,6 +128,7 @@
         "description": "Verifies Vxlan1 source interface and UDP port.",
         "result": "unset",
         "messages": [],
+        "atomic_results": [],
         "custom_field": null
     },
     {
@@ -129,6 +140,7 @@
         "description": "Verifies the Vxlan1 interface status.",
         "result": "unset",
         "messages": [],
+        "atomic_results": [],
         "custom_field": null
     },
     {
@@ -140,6 +152,7 @@
         "description": "Verifies there are no VXLAN config-sanity inconsistencies.",
         "result": "unset",
         "messages": [],
+        "atomic_results": [],
         "custom_field": null
     },
     {
@@ -151,6 +164,7 @@
         "description": "Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",
         "result": "unset",
         "messages": [],
+        "atomic_results": [],
         "custom_field": null
     },
     {
@@ -162,6 +176,7 @@
         "description": "Verifies Vxlan1 VTEP peers.",
         "result": "unset",
         "messages": [],
-        "custom_field": null
+        "atomic_results": [],
+        "custom_field": "DC2 VXLAN VTEP reachability"
     }
 ]

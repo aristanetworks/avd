@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -168,7 +168,7 @@ class CvTagsMixin(Protocol):
                 raise AristaAvdError(msg)
 
             # Silently ignoring empty values since structured config may vary between devices.
-            if value:
+            if value is not None and value != "":
                 self.structured_config.metadata.cv_tags.device_tags.append_new(name=generate_tag.name, value=str(value))
 
     def _set_interface_tags(self: AvdStructuredConfigMetadataProtocol) -> None:
@@ -202,7 +202,7 @@ class CvTagsMixin(Protocol):
                     raise AristaAvdError(msg)
 
                 # Silently ignoring empty values since structured config may vary between devices.
-                if value:
+                if value is not None and value != "":
                     tags.append(EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.TagsItem(name=generate_tag.name, value=str(value)))
 
             if self.shared_utils.is_cv_pathfinder_router:

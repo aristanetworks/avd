@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -47,10 +47,15 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         """Parse the given adapter_settings and return relevant vlans and trunk_groups."""
         vlans = set()
         trunk_groups = set(adapter_settings.trunk_groups)
-        if adapter_settings.vlans and adapter_settings.vlans != "all":
+        # Return an empty VLAN set and defined trunk groups if VLANs are explicitly set to "none"
+        if adapter_settings.vlans == "none":
+            return vlans, trunk_groups
+        # Update vlans set if adapter_settings.vlans is an actual range of vlan(s)
+        if adapter_settings.vlans and adapter_settings.vlans not in ["all", "defined_vlans"]:
             vlans.update(map(int, range_expand(adapter_settings.vlans)))
         elif adapter_settings.mode == "trunk" and not trunk_groups:
             # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
+            # Both "all" and "defined_vlans" effectively make all network services VLANs scoped for the switch to be presented towards the endpoint
             # No need to check further, since the list is now containing all vlans.
             return set(range(1, 4094)), trunk_groups
         elif adapter_settings.mode == "trunk phone":
@@ -152,12 +157,12 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
 
         vlans = set()
         trunk_groups = set()
-        for fabric_switch in self.shared_utils.all_fabric_devices:
-            fabric_switch_facts = self.get_peer_facts_generator(fabric_switch)
-            if fabric_switch_facts.shared_utils.uplink_type == "port-channel" and self.shared_utils.hostname in fabric_switch_facts.uplink_peers:
-                fabric_switch_endpoint_vlans, fabric_switch_endpoint_trunk_groups = fabric_switch_facts._endpoint_vlans_and_trunk_groups
-                vlans.update(fabric_switch_endpoint_vlans)
-                trunk_groups.update(fabric_switch_endpoint_trunk_groups)
+        for downlink_switch in self._downlink_switches:
+            downlink_switch_facts = self.get_peer_facts_generator(downlink_switch)
+            if downlink_switch_facts.shared_utils.uplink_type == "port-channel":
+                downlink_switch_endpoint_vlans, downlink_switch_endpoint_trunk_groups = downlink_switch_facts._endpoint_vlans_and_trunk_groups
+                vlans.update(downlink_switch_endpoint_vlans)
+                trunk_groups.update(downlink_switch_endpoint_trunk_groups)
 
         return vlans, trunk_groups
 

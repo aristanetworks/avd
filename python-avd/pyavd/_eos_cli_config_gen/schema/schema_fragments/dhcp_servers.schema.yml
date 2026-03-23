@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -111,6 +111,7 @@ keys:
                 type: str
         ipv4_vendor_options:
           type: list
+          min_length: 1
           primary_key: vendor_id
           items:
             type: dict
@@ -154,12 +155,15 @@ keys:
                         type: str
         ipv4_subnets:
           type: list
+          min_length: 1
           $ref: "eos_cli_config_gen#/$defs/subnets"
           items:
             type: dict
             keys:
               subnet:
                 description: IPv4 subnet.
+                type: str
+              default_gateway:
                 type: str
               reservations:
                 type: list
@@ -170,8 +174,26 @@ keys:
                       type: str
                       description: |-
                         Valid IPv4 address from the given subnet.
+              tftp_server:
+                type: dict
+                keys:
+                  file:
+                    type: str
+                    min_length: 1
+                    max_length: 253
+                    description: Name of TFTP file for IPv4 clients.
+                  option_66:
+                    type: str
+                    description: IPv4 address or server FQDN for TFTP option 66.
+                  option_150:
+                    type: list
+                    min_length: 1
+                    description: List of IPv4 addresses for TFTP option 150.
+                    items:
+                      type: str
         ipv6_subnets:
           type: list
+          min_length: 1
           $ref: "eos_cli_config_gen#/$defs/subnets"
           items:
             type: dict
@@ -188,6 +210,14 @@ keys:
                       type: str
                       description: |-
                         Valid IPv6 address from the given subnet.
+              tftp_server:
+                type: dict
+                keys:
+                  file:
+                    type: str
+                    min_length: 1
+                    max_length: 253
+                    description: Name of TFTP file for IPv6 clients.
         subnets:
           type: list
           deprecation:

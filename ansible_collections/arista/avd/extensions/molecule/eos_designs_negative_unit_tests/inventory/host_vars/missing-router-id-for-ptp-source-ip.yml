@@ -1,0 +1,19 @@
+type: cvxserver
+
+overlay_routing_protocol: CVX
+node_type_keys:
+  - key: cvxserver
+    type: cvxserver
+    underlay_router: false
+cvxserver:
+  nodes:
+    - name: missing-router-id-for-ptp-source-ip
+      id: 1
+      mgmt_ip: 192.168.0.11/24
+      ptp:
+        clock_identity: "00:00:00:00:00:00"
+        enabled: true
+        source_ip: router_id
+
+expected_error_message: >-
+  PTP source IP is set to 'ptp.source_ip: router_id' but no router ID is configured for this device.

@@ -7,3 +7,15 @@ overwritten_by_zz_global_vars_01: GLOBAL_VALUE
 overwritten_by_zz_global_vars_02: GLOBAL_VALUE
 not_overwritten_by_zz_global_vars_03: GLOBAL_VALUE
 not_overwritten: GLOBAL_VALUE
+
+# Test inline Jinja2 templating
+base_value: "BASE"
+jinja_template_simple: "{{ base_value }}_RENDERED"
+jinja_template_filter: "{{ base_value | lower }}_filtered"
+cleartext_password: "{{ vault.users.cvpadmin.password | default(lookup('ansible.builtin.env', 'CVP_PASSWORD'), true) }}"
+cleartext_password_2: "{{ lookup('ansible.builtin.env', 'CVP_PASSWORD') }}"
+
+vault:
+  users:
+    cvpadmin:
+      password: "vaulted_password"

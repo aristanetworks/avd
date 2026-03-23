@@ -1,9 +1,16 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
 from pyavd._cv.api.arista.workspace.v1 import ResponseCode, ResponseStatus
 
+MOCKED_EMPTY_CONFIGLET_ID = ""
+MOCKED_CONFIGLET_ID = "avd-B51AA89B6E51E89E1422107EDE3A9438"
+MOCKED_CONFIGLET_NAME = "TEST_CONFIGLET_NAME"
+MOCKED_CONFIGLET_DESCRIPTION = "Configuration created and uploaded by AVD for avd-ci-leaf2"
+MOCKED_CONFIGLET_BODY = "alias test test"
+
+MOCKED_MISSING_WORKSPACE_ID = "ws-missing-workspace-id"
 MOCKED_WORKSPACE_ID = "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
 MOCKED_WORKSPACE_NAME = "MOCKED_WS_NAME"
 MOCKED_WORKSPACE_DESCRIPTION = "MOCKED_WS_DESCRIPTION"

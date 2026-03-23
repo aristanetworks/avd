@@ -3,7 +3,7 @@
 title: Ansible Collection Role cv_deploy
 ---
 <!--
-  ~ Copyright (c) 2024-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2024-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -184,7 +184,7 @@ cv_devices: [ DC1-L3LEAF1A, DC1-L3LEAF1B ]
 
 The role will fail if a device is not found on CloudVision. Any workspace created will be abandoned automatically.
 
-Devices with `is_deployed: false` set as part of `eos_designs` inputs will automatically be ignored.
+Devices with `is_deployed: false` set as part of AVD Design inputs will be ignored.
 
 It is possible to ignore other missing devices by simply skipping them and continue with the remaining devices.
 

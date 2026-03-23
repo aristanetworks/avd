@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -45,10 +45,12 @@ All roles input variables follow SemVer. Any breaking changes will, at a minimum
 | Filter: `snmp_hash` | ✅ | ✅ | |
 | Filter: `status_render` | ✅ | ✅ | |
 | Action: `cv_workflow` | ✅ | ✅ | The resulting CloudVision configuration will be maintained, unless in rare cases, when addressing a bug. |
+| Action: `eos_cli_config_gen` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `eos_designs_facts` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `eos_designs_structured_config` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `anta_workflow` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `set_vars` | ✅ | ✅ | |
+| Action: `validate_inputs` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Action: `verify_requirements` | ✘ | ✘ | Internal plugin, not intended for external use. |
 | Test: `contains` | ✅ | ✅ | |
 | Test: `defined` | ✅ | ✅ | |

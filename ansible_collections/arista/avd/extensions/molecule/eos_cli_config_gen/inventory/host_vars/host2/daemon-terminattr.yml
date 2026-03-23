@@ -62,3 +62,9 @@ daemon_terminattr:
       cvauth:
         method: certs
         cert_file: /persist/secure/ssl/terminattr/DC1/certs/client.crt
+    - name: ac7
+      cvaddrs:
+        - 10.20.20.3:9910
+      cvauth:
+        method: certs
+        cert_file: /persist/secure/ssl/terminattr/DC1/certs/client.crt

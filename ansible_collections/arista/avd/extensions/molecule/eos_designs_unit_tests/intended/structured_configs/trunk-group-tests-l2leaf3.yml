@@ -74,14 +74,16 @@ vlans:
   - TG_200
   - UPLINK
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 - id: 210
   name: l2vlan210_with_trunk_groups
   trunk_groups:
   - TG_200
   - UPLINK
   metadata:
-    tenant: TRUNK_GROUP_TESTS
+    tenants:
+    - TRUNK_GROUP_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false

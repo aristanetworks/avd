@@ -81,48 +81,6 @@ dc2-leaf3a.arista.com,VerifyCoredump,unset,,Verifies there are no core dump file
 dc2-leaf3b.arista.com,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-spine1,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-spine2,VerifyCoredump,unset,,Verifies there are no core dump files.,System
-dc1-leaf1a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc1-leaf1b,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc1-leaf1c,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc1-leaf2a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc1-leaf2c,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc1-spine1,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc1-spine2,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc1-svc-leaf1a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc1-svc-leaf1b,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc1-wan1,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc1-wan2,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc2-leaf1a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc2-leaf1b,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc2-leaf1c,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc2-leaf2a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc2-leaf2b,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc2-leaf2c,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc2-leaf3a.arista.com,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc2-leaf3b.arista.com,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc2-spine1,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc2-spine2,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
-dc1-leaf1a,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc1-leaf1b,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc1-leaf1c,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc1-leaf2a,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc1-leaf2c,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc1-spine1,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc1-spine2,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc1-svc-leaf1a,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc1-svc-leaf1b,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc1-wan1,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc1-wan2,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc2-leaf1a,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc2-leaf1b,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc2-leaf1c,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc2-leaf2a,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc2-leaf2b,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc2-leaf2c,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc2-leaf3a.arista.com,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc2-leaf3b.arista.com,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc2-spine1,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
-dc2-spine2,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-leaf1a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-leaf1b,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-leaf2a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
@@ -456,39 +414,22 @@ dc2-leaf2c,VerifyPortChannels,unset,,Verifies there are no inactive ports in por
 dc2-leaf3a.arista.com,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
 dc2-leaf3b.arista.com,VerifyPortChannels,unset,,Verifies there are no inactive ports in port channels.,Interfaces
 dc1-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-leaf1a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-leaf1b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-leaf2a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-leaf2a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-spine1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-spine1,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-spine2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-spine2,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-svc-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-svc-leaf1a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-svc-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-svc-leaf1b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-wan1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-wan1,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-wan2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-wan2,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf1a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf1b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf2a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf2a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf2b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf2b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf3a.arista.com,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf3a.arista.com,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf3b.arista.com,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf3b.arista.com,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-spine1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-spine1,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-spine2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-spine2,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-leaf1b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-leaf1c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -584,27 +525,6 @@ dc1-leaf1b,VerifyTemperature,unset,,Verifies if the device temperature is within
 dc1-leaf2a,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
 dc1-wan1,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
 dc1-wan2,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
-dc1-leaf1a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc1-leaf1b,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc1-leaf1c,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc1-leaf2a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc1-leaf2c,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc1-spine1,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc1-spine2,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc1-svc-leaf1a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc1-svc-leaf1b,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc1-wan1,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc1-wan2,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc2-leaf1a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc2-leaf1b,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc2-leaf1c,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc2-leaf2a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc2-leaf2b,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc2-leaf2c,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc2-leaf3a.arista.com,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc2-leaf3b.arista.com,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc2-spine1,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc2-spine2,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
 dc1-leaf1a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-leaf1b,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
 dc1-leaf2a,VerifyTransceiversManufacturers,unset,,Verifies if all the transceivers come from approved manufacturers.,Hardware
@@ -615,16 +535,9 @@ dc1-leaf1b,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers
 dc1-leaf2a,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-wan1,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
 dc1-wan2,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
-dc1-leaf2a,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and UDP port.,VXLAN
-dc2-leaf2a,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and UDP port.,VXLAN
-dc2-leaf2b,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and UDP port.,VXLAN
-dc1-leaf2a,VerifyVxlan1Interface,unset,,Verifies the Vxlan1 interface status.,VXLAN
-dc2-leaf2a,VerifyVxlan1Interface,unset,,Verifies the Vxlan1 interface status.,VXLAN
-dc2-leaf2b,VerifyVxlan1Interface,unset,,Verifies the Vxlan1 interface status.,VXLAN
 dc1-leaf1a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-leaf1b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-leaf1c,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc1-leaf2a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-leaf2a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-svc-leaf1a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-svc-leaf1b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
@@ -633,17 +546,9 @@ dc1-wan2,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanit
 dc2-leaf1a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf1b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf2a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc2-leaf2a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc2-leaf2b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf2b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf3a.arista.com,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf3b.arista.com,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc1-leaf2a,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
-dc2-leaf2a,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
-dc2-leaf2b,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
-dc1-leaf2a,VerifyVxlanVtep,unset,,Verifies Vxlan1 VTEP peers.,VXLAN
-dc2-leaf2a,VerifyVxlanVtep,unset,,Verifies Vxlan1 VTEP peers.,VXLAN
-dc2-leaf2b,VerifyVxlanVtep,unset,,Verifies Vxlan1 VTEP peers.,VXLAN
 dc1-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf1c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration

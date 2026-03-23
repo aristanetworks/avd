@@ -60,9 +60,9 @@
 
 ##### IPv6
 
-| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ | -------------- | --------------- | ---------------------- | -------------------- | -------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - | - | - | - | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -79,9 +79,9 @@ interface Management1
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | UNIX-Socket | Default Services |
-| ---- | ----- | ----------- | ---------------- |
-| False | True | - | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services | Session Timeout |
+| ---- | ----- | ----------- | ---------------- | --------------- |
+| False | True | - | - | 1440 minutes |
 
 #### Management API VRF Access
 
@@ -213,13 +213,13 @@ vlan 2020
 
 ##### IPv6
 
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | ------------- | ------------ | --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
-| Ethernet1 | P2P_SITE2-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - |
-| Ethernet11 | P2P_SITE2-LSR2_Ethernet12 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet12 | P2P_SITE2-LSR2_Ethernet13 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet13 | P2P_SITE2-LSR2_Ethernet14 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet14 | P2P_SITE2-LSR2_Ethernet15 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Interface | Description | Channel Group | IPv6 Addresses | VRF | MTU | Shutdown | ND RA Disabled | ND RA RX Accept | ND Managed Config Flag | ND Other Config Flag | ND Cache | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ------------- | -------------- | --- | --- | -------- | -------------- | --------------- | ---------------------- | -------------------- | -------- | ----------- | ------------ |
+| Ethernet1 | P2P_SITE2-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - | - | - | - |
+| Ethernet11 | P2P_SITE2-LSR2_Ethernet12 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- | *- | *- |
+| Ethernet12 | P2P_SITE2-LSR2_Ethernet13 | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- | *- | *- |
+| Ethernet13 | P2P_SITE2-LSR2_Ethernet14 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- | *- | *- |
+| Ethernet14 | P2P_SITE2-LSR2_Ethernet15 | 220 | *- | *default | *9178 | *False | *- | *- | *- | *- | *- | *- | *- |
 
 *Inherited from Port-Channel Interface
 
@@ -480,8 +480,8 @@ interface Port-Channel220
 
 ##### IPv6
 
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
+| Interface | Description | VRF | IPv6 Addresses |
+| --------- | ----------- | --- | -------------- |
 | Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::7/128 |
 
 ##### ISIS
@@ -1001,34 +1001,42 @@ mpls ldp
 patch panel
    patch TEN_A_site1_site2_eline_port_based
       connector 1 interface Ethernet7
+      !
       connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_A_site1_site2_eline_port_based
    !
    patch TEN_A_site1_site2_eline_with_subinterfaces_100
       connector 1 interface Ethernet9.100
+      !
       connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_A_site1_site2_eline_with_subinterfaces_100
    !
    patch TEN_A_site1_site2_eline_with_subinterfaces_101
       connector 1 interface Ethernet9.101
+      !
       connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_A_site1_site2_eline_with_subinterfaces_101
    !
    patch TEN_B_site3_site5_eline_vlan_based_1000
       connector 1 interface Port-Channel4.1000
+      !
       connector 2 pseudowire bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1000
    !
    patch TEN_B_site3_site5_eline_vlan_based_1001
       connector 1 interface Port-Channel4.1001
+      !
       connector 2 pseudowire bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1001
    !
    patch TEN_B_site3_site5_eline_vlan_based_1002
       connector 1 interface Port-Channel4.1002
+      !
       connector 2 pseudowire bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1002
    !
    patch TEN_B_site3_site5_eline_vlan_based_1003
       connector 1 interface Port-Channel4.1003
+      !
       connector 2 pseudowire bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1003
    !
    patch TEN_B_site3_site5_eline_vlan_based_1004
       connector 1 interface Port-Channel4.1004
+      !
       connector 2 pseudowire bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1004
    !
 ```

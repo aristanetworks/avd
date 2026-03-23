@@ -54,7 +54,8 @@ event_handlers:
       operation: enter
       action: before
       bgp_peer: test
-  - name: trigger-on-logging
+  # Test for sort with ignore_case: false
+  - name: TRIGGER-ON-LOGGING
     trigger: on-logging
     trigger_on_logging:
       poll_interval: 10

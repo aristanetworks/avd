@@ -13,4 +13,4 @@ servers:
         switches: [invalid-schema-connected-endpoints]
 
 expected_error_message: >-
-  2 errors found during schema validation of input vars.
+  2 errors found during schema validation of input variables.

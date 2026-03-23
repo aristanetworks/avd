@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -19,11 +19,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.d_path") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_domain_id</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.d_path.remote_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.all_active_multihoming.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.all_active_multihoming.evpn_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.all_active_multihoming.evpn_domain_id_remote") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.all_active_multihoming.enable_d_path") <span style="color:red">deprecated</span> | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].evpn_gateway.d_path.enabled or <node_type_key>.nodes[].evpn_gateway.d_path.enabled or device_profiles[].evpn_gateway.d_path.enabled or devices[].evpn_gateway.d_path.enabled</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.all_active_multihoming.evpn_domain_id_local") <span style="color:red">deprecated</span> | String |  |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local or device_profiles[].evpn_gateway.d_path.local_domain_id_local or devices[].evpn_gateway.d_path.local_domain_id_local</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.all_active_multihoming.evpn_domain_id_remote") <span style="color:red">deprecated</span> | String |  |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id or device_profiles[].evpn_gateway.d_path.remote_domain_id or devices[].evpn_gateway.d_path.remote_domain_id</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_ethernet_segment</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.all_active_multihoming.evpn_ethernet_segment") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier") | String | Required |  |  | EVPN Ethernet Segment Identifier (Type 1 format) |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import") | String | Required |  |  | Low-order 6 bytes of ES-Import Route Target. |
@@ -41,11 +45,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.d_path.remote_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.all_active_multihoming.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.all_active_multihoming.enable_d_path") <span style="color:red">deprecated</span> | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].evpn_gateway.d_path.enabled or <node_type_key>.nodes[].evpn_gateway.d_path.enabled or device_profiles[].evpn_gateway.d_path.enabled or devices[].evpn_gateway.d_path.enabled</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") <span style="color:red">deprecated</span> | String |  |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local or device_profiles[].evpn_gateway.d_path.local_domain_id_local or devices[].evpn_gateway.d_path.local_domain_id_local</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") <span style="color:red">deprecated</span> | String |  |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id or device_profiles[].evpn_gateway.d_path.remote_domain_id or devices[].evpn_gateway.d_path.remote_domain_id</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_ethernet_segment</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier") | String | Required |  |  | EVPN Ethernet Segment Identifier (Type 1 format) |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import") | String | Required |  |  | Low-order 6 bytes of ES-Import Route Target. |
@@ -59,11 +67,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.d_path.remote_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.all_active_multihoming.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.all_active_multihoming.enable_d_path") <span style="color:red">deprecated</span> | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].evpn_gateway.d_path.enabled or <node_type_key>.nodes[].evpn_gateway.d_path.enabled or device_profiles[].evpn_gateway.d_path.enabled or devices[].evpn_gateway.d_path.enabled</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") <span style="color:red">deprecated</span> | String |  |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local or device_profiles[].evpn_gateway.d_path.local_domain_id_local or devices[].evpn_gateway.d_path.local_domain_id_local</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") <span style="color:red">deprecated</span> | String |  |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id or device_profiles[].evpn_gateway.d_path.remote_domain_id or devices[].evpn_gateway.d_path.remote_domain_id</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_ethernet_segment</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier") | String | Required |  |  | EVPN Ethernet Segment Identifier (Type 1 format) |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import") | String | Required |  |  | Low-order 6 bytes of ES-Import Route Target. |
@@ -79,11 +91,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_domain_id</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.d_path.remote_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.enable_d_path") <span style="color:red">deprecated</span> | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].evpn_gateway.d_path.enabled or <node_type_key>.nodes[].evpn_gateway.d_path.enabled or device_profiles[].evpn_gateway.d_path.enabled or devices[].evpn_gateway.d_path.enabled</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") <span style="color:red">deprecated</span> | String |  |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local or device_profiles[].evpn_gateway.d_path.local_domain_id_local or devices[].evpn_gateway.d_path.local_domain_id_local</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") <span style="color:red">deprecated</span> | String |  |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id or device_profiles[].evpn_gateway.d_path.remote_domain_id or devices[].evpn_gateway.d_path.remote_domain_id</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_ethernet_segment</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier") | String | Required |  |  | EVPN Ethernet Segment Identifier (Type 1 format) |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import") | String | Required |  |  | Low-order 6 bytes of ES-Import Route Target. |
@@ -99,11 +115,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "device_profiles.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "device_profiles.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "device_profiles.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "device_profiles.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_domain_id</samp>](## "device_profiles.[].evpn_gateway.d_path.remote_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.enable_d_path") <span style="color:red">deprecated</span> | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].evpn_gateway.d_path.enabled or <node_type_key>.nodes[].evpn_gateway.d_path.enabled or device_profiles[].evpn_gateway.d_path.enabled or devices[].evpn_gateway.d_path.enabled</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") <span style="color:red">deprecated</span> | String |  |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local or device_profiles[].evpn_gateway.d_path.local_domain_id_local or devices[].evpn_gateway.d_path.local_domain_id_local</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") <span style="color:red">deprecated</span> | String |  |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id or device_profiles[].evpn_gateway.d_path.remote_domain_id or devices[].evpn_gateway.d_path.remote_domain_id</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_ethernet_segment</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier") | String | Required |  |  | EVPN Ethernet Segment Identifier (Type 1 format) |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import</samp>](## "device_profiles.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import") | String | Required |  |  | Low-order 6 bytes of ES-Import Route Target. |
@@ -119,11 +139,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "devices.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "devices.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "devices.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "devices.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_domain_id</samp>](## "devices.[].evpn_gateway.d_path.remote_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "devices.[].evpn_gateway.all_active_multihoming") | Dictionary |  |  |  | Enable Active Active Multihoming architecture for EVPN Gateways.<br>Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].evpn_gateway.all_active_multihoming.enabled") | Boolean | Required |  |  | Enable Active Active Multihoming resiliency model. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "devices.[].evpn_gateway.all_active_multihoming.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "devices.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "devices.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "devices.[].evpn_gateway.all_active_multihoming.enable_d_path") <span style="color:red">deprecated</span> | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm.<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled or <node_type_key>.node_groups[].evpn_gateway.d_path.enabled or <node_type_key>.nodes[].evpn_gateway.d_path.enabled or device_profiles[].evpn_gateway.d_path.enabled or devices[].evpn_gateway.d_path.enabled</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_local</samp>](## "devices.[].evpn_gateway.all_active_multihoming.evpn_domain_id_local") <span style="color:red">deprecated</span> | String |  |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local or <node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local or device_profiles[].evpn_gateway.d_path.local_domain_id_local or devices[].evpn_gateway.d_path.local_domain_id_local</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_domain_id_remote</samp>](## "devices.[].evpn_gateway.all_active_multihoming.evpn_domain_id_remote") <span style="color:red">deprecated</span> | String |  |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation<span style="color:red">This key is deprecated. Support will be removed in AVD version 7.0.0. Use <samp><node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id or <node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id or device_profiles[].evpn_gateway.d_path.remote_domain_id or devices[].evpn_gateway.d_path.remote_domain_id</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_ethernet_segment</samp>](## "devices.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment") | Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier</samp>](## "devices.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier") | String | Required |  |  | EVPN Ethernet Segment Identifier (Type 1 format) |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_import</samp>](## "devices.[].evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import") | String | Required |  |  | Low-order 6 bytes of ES-Import Route Target. |
@@ -165,6 +189,16 @@
           evpn_l3:
             enabled: <bool; default=False>
             inter_domain: <bool; default=True>
+          d_path:
+
+            # Enable D-path for use with BGP bestpath selection algorithm.
+            enabled: <bool; default=True>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            local_domain_id: <str; required>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            remote_domain_id: <str; required>
 
           # Enable Active Active Multihoming architecture for EVPN Gateways.
           # Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
@@ -174,13 +208,22 @@
             enabled: <bool; required>
 
             # Enable D-path for use with BGP bestpath selection algorithm.
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `<node_type_key>.defaults.evpn_gateway.d_path.enabled` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled` or `<node_type_key>.node_groups[].evpn_gateway.d_path.enabled` or `<node_type_key>.nodes[].evpn_gateway.d_path.enabled` or `device_profiles[].evpn_gateway.d_path.enabled` or `devices[].evpn_gateway.d_path.enabled` instead.
             enable_d_path: <bool; default=True>
 
             # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-            evpn_domain_id_local: <str; required>
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `<node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local` or `device_profiles[].evpn_gateway.d_path.local_domain_id_local` or `devices[].evpn_gateway.d_path.local_domain_id_local` instead.
+            evpn_domain_id_local: <str>
 
             # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-            evpn_domain_id_remote: <str; required>
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `<node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id` or `device_profiles[].evpn_gateway.d_path.remote_domain_id` or `devices[].evpn_gateway.d_path.remote_domain_id` instead.
+            evpn_domain_id_remote: <str>
             evpn_ethernet_segment: # required
 
               # EVPN Ethernet Segment Identifier (Type 1 format)
@@ -231,6 +274,16 @@
                 evpn_l3:
                   enabled: <bool; default=False>
                   inter_domain: <bool; default=True>
+                d_path:
+
+                  # Enable D-path for use with BGP bestpath selection algorithm.
+                  enabled: <bool; default=True>
+
+                  # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                  local_domain_id: <str; required>
+
+                  # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                  remote_domain_id: <str; required>
 
                 # Enable Active Active Multihoming architecture for EVPN Gateways.
                 # Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
@@ -240,13 +293,22 @@
                   enabled: <bool; required>
 
                   # Enable D-path for use with BGP bestpath selection algorithm.
+                  # This key is deprecated.
+                  # Support will be removed in AVD version 7.0.0.
+                  # Use `<node_type_key>.defaults.evpn_gateway.d_path.enabled` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled` or `<node_type_key>.node_groups[].evpn_gateway.d_path.enabled` or `<node_type_key>.nodes[].evpn_gateway.d_path.enabled` or `device_profiles[].evpn_gateway.d_path.enabled` or `devices[].evpn_gateway.d_path.enabled` instead.
                   enable_d_path: <bool; default=True>
 
                   # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-                  evpn_domain_id_local: <str; required>
+                  # This key is deprecated.
+                  # Support will be removed in AVD version 7.0.0.
+                  # Use `<node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local` or `device_profiles[].evpn_gateway.d_path.local_domain_id_local` or `devices[].evpn_gateway.d_path.local_domain_id_local` instead.
+                  evpn_domain_id_local: <str>
 
                   # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-                  evpn_domain_id_remote: <str; required>
+                  # This key is deprecated.
+                  # Support will be removed in AVD version 7.0.0.
+                  # Use `<node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id` or `device_profiles[].evpn_gateway.d_path.remote_domain_id` or `devices[].evpn_gateway.d_path.remote_domain_id` instead.
+                  evpn_domain_id_remote: <str>
                   evpn_ethernet_segment: # required
 
                     # EVPN Ethernet Segment Identifier (Type 1 format)
@@ -284,6 +346,16 @@
             evpn_l3:
               enabled: <bool; default=False>
               inter_domain: <bool; default=True>
+            d_path:
+
+              # Enable D-path for use with BGP bestpath selection algorithm.
+              enabled: <bool; default=True>
+
+              # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+              local_domain_id: <str; required>
+
+              # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+              remote_domain_id: <str; required>
 
             # Enable Active Active Multihoming architecture for EVPN Gateways.
             # Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
@@ -293,13 +365,22 @@
               enabled: <bool; required>
 
               # Enable D-path for use with BGP bestpath selection algorithm.
+              # This key is deprecated.
+              # Support will be removed in AVD version 7.0.0.
+              # Use `<node_type_key>.defaults.evpn_gateway.d_path.enabled` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled` or `<node_type_key>.node_groups[].evpn_gateway.d_path.enabled` or `<node_type_key>.nodes[].evpn_gateway.d_path.enabled` or `device_profiles[].evpn_gateway.d_path.enabled` or `devices[].evpn_gateway.d_path.enabled` instead.
               enable_d_path: <bool; default=True>
 
               # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-              evpn_domain_id_local: <str; required>
+              # This key is deprecated.
+              # Support will be removed in AVD version 7.0.0.
+              # Use `<node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local` or `device_profiles[].evpn_gateway.d_path.local_domain_id_local` or `devices[].evpn_gateway.d_path.local_domain_id_local` instead.
+              evpn_domain_id_local: <str>
 
               # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-              evpn_domain_id_remote: <str; required>
+              # This key is deprecated.
+              # Support will be removed in AVD version 7.0.0.
+              # Use `<node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id` or `device_profiles[].evpn_gateway.d_path.remote_domain_id` or `devices[].evpn_gateway.d_path.remote_domain_id` instead.
+              evpn_domain_id_remote: <str>
               evpn_ethernet_segment: # required
 
                 # EVPN Ethernet Segment Identifier (Type 1 format)
@@ -343,6 +424,16 @@
             evpn_l3:
               enabled: <bool; default=False>
               inter_domain: <bool; default=True>
+            d_path:
+
+              # Enable D-path for use with BGP bestpath selection algorithm.
+              enabled: <bool; default=True>
+
+              # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+              local_domain_id: <str; required>
+
+              # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+              remote_domain_id: <str; required>
 
             # Enable Active Active Multihoming architecture for EVPN Gateways.
             # Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
@@ -352,13 +443,22 @@
               enabled: <bool; required>
 
               # Enable D-path for use with BGP bestpath selection algorithm.
+              # This key is deprecated.
+              # Support will be removed in AVD version 7.0.0.
+              # Use `<node_type_key>.defaults.evpn_gateway.d_path.enabled` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled` or `<node_type_key>.node_groups[].evpn_gateway.d_path.enabled` or `<node_type_key>.nodes[].evpn_gateway.d_path.enabled` or `device_profiles[].evpn_gateway.d_path.enabled` or `devices[].evpn_gateway.d_path.enabled` instead.
               enable_d_path: <bool; default=True>
 
               # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-              evpn_domain_id_local: <str; required>
+              # This key is deprecated.
+              # Support will be removed in AVD version 7.0.0.
+              # Use `<node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local` or `device_profiles[].evpn_gateway.d_path.local_domain_id_local` or `devices[].evpn_gateway.d_path.local_domain_id_local` instead.
+              evpn_domain_id_local: <str>
 
               # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-              evpn_domain_id_remote: <str; required>
+              # This key is deprecated.
+              # Support will be removed in AVD version 7.0.0.
+              # Use `<node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id` or `device_profiles[].evpn_gateway.d_path.remote_domain_id` or `devices[].evpn_gateway.d_path.remote_domain_id` instead.
+              evpn_domain_id_remote: <str>
               evpn_ethernet_segment: # required
 
                 # EVPN Ethernet Segment Identifier (Type 1 format)
@@ -402,6 +502,16 @@
           evpn_l3:
             enabled: <bool; default=False>
             inter_domain: <bool; default=True>
+          d_path:
+
+            # Enable D-path for use with BGP bestpath selection algorithm.
+            enabled: <bool; default=True>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            local_domain_id: <str; required>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            remote_domain_id: <str; required>
 
           # Enable Active Active Multihoming architecture for EVPN Gateways.
           # Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
@@ -411,13 +521,22 @@
             enabled: <bool; required>
 
             # Enable D-path for use with BGP bestpath selection algorithm.
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `<node_type_key>.defaults.evpn_gateway.d_path.enabled` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled` or `<node_type_key>.node_groups[].evpn_gateway.d_path.enabled` or `<node_type_key>.nodes[].evpn_gateway.d_path.enabled` or `device_profiles[].evpn_gateway.d_path.enabled` or `devices[].evpn_gateway.d_path.enabled` instead.
             enable_d_path: <bool; default=True>
 
             # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-            evpn_domain_id_local: <str; required>
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `<node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local` or `device_profiles[].evpn_gateway.d_path.local_domain_id_local` or `devices[].evpn_gateway.d_path.local_domain_id_local` instead.
+            evpn_domain_id_local: <str>
 
             # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-            evpn_domain_id_remote: <str; required>
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `<node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id` or `device_profiles[].evpn_gateway.d_path.remote_domain_id` or `devices[].evpn_gateway.d_path.remote_domain_id` instead.
+            evpn_domain_id_remote: <str>
             evpn_ethernet_segment: # required
 
               # EVPN Ethernet Segment Identifier (Type 1 format)
@@ -461,6 +580,16 @@
           evpn_l3:
             enabled: <bool; default=False>
             inter_domain: <bool; default=True>
+          d_path:
+
+            # Enable D-path for use with BGP bestpath selection algorithm.
+            enabled: <bool; default=True>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            local_domain_id: <str; required>
+
+            # ASN(asplain):local_admin or ASN(asdot):local_admin notation
+            remote_domain_id: <str; required>
 
           # Enable Active Active Multihoming architecture for EVPN Gateways.
           # Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
@@ -470,13 +599,22 @@
             enabled: <bool; required>
 
             # Enable D-path for use with BGP bestpath selection algorithm.
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `<node_type_key>.defaults.evpn_gateway.d_path.enabled` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.enabled` or `<node_type_key>.node_groups[].evpn_gateway.d_path.enabled` or `<node_type_key>.nodes[].evpn_gateway.d_path.enabled` or `device_profiles[].evpn_gateway.d_path.enabled` or `devices[].evpn_gateway.d_path.enabled` instead.
             enable_d_path: <bool; default=True>
 
             # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-            evpn_domain_id_local: <str; required>
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `<node_type_key>.defaults.evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.node_groups[].evpn_gateway.d_path.local_domain_id_local` or `<node_type_key>.nodes[].evpn_gateway.d_path.local_domain_id_local` or `device_profiles[].evpn_gateway.d_path.local_domain_id_local` or `devices[].evpn_gateway.d_path.local_domain_id_local` instead.
+            evpn_domain_id_local: <str>
 
             # ASN(asplain):local_admin or ASN(asdot):local_admin notation
-            evpn_domain_id_remote: <str; required>
+            # This key is deprecated.
+            # Support will be removed in AVD version 7.0.0.
+            # Use `<node_type_key>.defaults.evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.node_groups[].nodes[].evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.node_groups[].evpn_gateway.d_path.remote_domain_id` or `<node_type_key>.nodes[].evpn_gateway.d_path.remote_domain_id` or `device_profiles[].evpn_gateway.d_path.remote_domain_id` or `devices[].evpn_gateway.d_path.remote_domain_id` instead.
+            evpn_domain_id_remote: <str>
             evpn_ethernet_segment: # required
 
               # EVPN Ethernet Segment Identifier (Type 1 format)

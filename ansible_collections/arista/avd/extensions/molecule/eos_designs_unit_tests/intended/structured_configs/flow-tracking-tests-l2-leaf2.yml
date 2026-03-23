@@ -28,10 +28,10 @@ flow_tracking:
   sampled:
     sample: 10000
     trackers:
-    - record_export:
+    - name: FLOW-TRACKER
+      record_export:
         on_inactive_timeout: 70000
         on_interval: 300000
-      name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
         collectors:
@@ -92,11 +92,13 @@ vlans:
 - id: 11
   name: VLAN11
   metadata:
-    tenant: FLOW_TRACKING
+    tenants:
+    - FLOW_TRACKING
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

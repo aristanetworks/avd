@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import logging
@@ -10,7 +10,7 @@ from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 from hashlib import sha256
 from itertools import pairwise
-from typing import Any
+from typing import Any, NamedTuple
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -18,7 +18,14 @@ from grpclib import Status
 from grpclib.exceptions import GRPCError
 
 from pyavd._cv.client.async_decorators import GRPCRequestHandler, LimitCvVersion
-from pyavd._cv.client.exceptions import CVClientException, CVGRPCStatusUnavailable, CVMessageSizeExceeded, CVResourceNotFound, CVTimeoutError
+from pyavd._cv.client.exceptions import (
+    CVClientBulkAPIError,
+    CVClientException,
+    CVGRPCStatusUnavailable,
+    CVMessageSizeExceeded,
+    CVResourceNotFound,
+    CVTimeoutError,
+)
 from pyavd._cv.client.versioning import CVAAS_VERSION_STRING, CvVersion
 
 LOGGER = logging.getLogger(__name__)
@@ -51,6 +58,24 @@ MSG_SIZE_HANDLER_TESTS = [
     pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 4, [3, 3, 3], id="variable_sized_chunks_1"),
     pytest.param([1, 2, 3, 4, 5, 6, 7, 8, 9], 5, [4, 4, 1], id="variable_sized_chunks_2"),
 ]
+
+
+class MockedResponse:
+    response_id: str
+
+    def __init__(self, response_id: str) -> None:
+        self.response_id = response_id
+
+    def __str__(self) -> str:
+        return f"MockedResponse(response_id='{self.response_id}')"
+
+    def __repr__(self) -> str:
+        return f"MockedResponse(response_id='{self.response_id}')"
+
+
+class MockedResponseWithError(NamedTuple):
+    response: MockedResponse
+    error: str
 
 
 class CvClass:
@@ -130,6 +155,30 @@ class CvClass:
             # return list with len of fields for this execution.
             return [len(field)]
         raise GRPCError(Status.UNAVAILABLE)
+
+    @GRPCRequestHandler(list_field="field")
+    async def responses_no_errors(self, field: list[str]) -> list:
+        return [MockedResponse(x) for x in field]
+
+    @GRPCRequestHandler(list_field="field", check_bulk_response_errors=True)
+    async def responses_no_errors_check_bulk_response_errors(self, field: list[str]) -> list:
+        return [MockedResponse(x) for x in field]
+
+    @GRPCRequestHandler(list_field="field")
+    async def responses_mixed_errors(self, field: list[str]) -> list:
+        return [MockedResponseWithError(MockedResponse(x), f"Error for item {x}") if int(x) % 2 == 0 else MockedResponse(x) for x in field]
+
+    @GRPCRequestHandler(list_field="field", check_bulk_response_errors=True)
+    async def responses_mixed_errors_check_bulk_response_errors(self, field: list[str]) -> list:
+        return [MockedResponseWithError(MockedResponse(x), f"Error for item {x}") if int(x) % 2 == 0 else MockedResponse(x) for x in field]
+
+    @GRPCRequestHandler(list_field="field")
+    async def responses_all_errors(self, field: list[str]) -> list:
+        return [MockedResponseWithError(MockedResponse(x), f"Error for item {x}") for x in field]
+
+    @GRPCRequestHandler(list_field="field", check_bulk_response_errors=True)
+    async def responses_all_errors_check_bulk_response_errors(self, field: list[str]) -> list:
+        return [MockedResponseWithError(MockedResponse(x), f"Error for item {x}") for x in field]
 
 
 @pytest.mark.asyncio
@@ -612,3 +661,124 @@ async def test_grpc_request_handler_negative_max_retries() -> None:
 
     result = await GRPCRequestHandler(max_retries=-1)(basic_function)()
     assert result is None
+
+
+@pytest.mark.asyncio
+async def test_responses_no_errors(caplog: pytest.LogCaptureFixture) -> None:
+    """
+    All responses in stream have no 'error's. GRPCRequestHandler is instructed to not look for the 'error' inside response tuples.
+
+    Although ConfigletConfigSetSomeResponse objects are not returned unless they have 'error', this and the following tests as well cover another approach
+    which may be used by other bulk APIs where response objects in the stream don't have 'error'. This and the following test cases
+    are made to test both approaches.
+    """
+    mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
+
+    with caplog.at_level(logging.ERROR):
+        resp = await mocked_cv_client.responses_no_errors(field=["1", "2", "3"])
+
+    assert len(resp) == 3
+    assert len(caplog.records) == 0
+    for response, item in zip(resp, ["1", "2", "3"], strict=True):
+        assert response.response_id == str(item)
+
+
+@pytest.mark.asyncio
+async def test_responses_no_errors_check_bulk_response_errors(caplog: pytest.LogCaptureFixture) -> None:
+    """All responses in stream have no 'error's. GRPCRequestHandler is instructed to look for the 'error' inside response tuples."""
+    mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
+
+    with caplog.at_level(logging.ERROR):
+        resp = await mocked_cv_client.responses_no_errors(field=["1", "2", "3"])
+
+    assert len(resp) == 3
+    assert len(caplog.records) == 0
+    for response, item in zip(resp, ["1", "2", "3"], strict=True):
+        assert response.response_id == str(item)
+
+
+@pytest.mark.asyncio
+async def test_responses_mixed_errors(caplog: pytest.LogCaptureFixture) -> None:
+    """Some responses in stream have 'error's. GRPCRequestHandler is instructed to not look for the 'error' inside response tuples."""
+    mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
+
+    with caplog.at_level(logging.ERROR):
+        resp = await mocked_cv_client.responses_mixed_errors(field=["1", "2", "3"])
+
+    assert len(resp) == 3
+    assert len(caplog.records) == 0
+    for response, item in zip(resp, ["1", "2", "3"], strict=True):
+        if not int(item) % 2:
+            assert isinstance(response, tuple)
+            assert response[0].response_id == str(item)
+            assert response[1] == f"Error for item {item}"
+        else:
+            assert isinstance(response, MockedResponse)
+
+
+@pytest.mark.asyncio
+async def test_responses_mixed_errors_check_bulk_response_errors(caplog: pytest.LogCaptureFixture) -> None:
+    """Some responses in stream have 'error's. GRPCRequestHandler is instructed to look for the 'error' inside response tuples."""
+    mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
+
+    with (
+        caplog.at_level(logging.ERROR),
+        pytest.raises(
+            CVClientBulkAPIError,
+            match=re.escape(
+                r"1 server-side error(s) was returned from the 'responses_mixed_errors_check_bulk_response_errors' bulk API call. "
+                r"Please check logs for the failed items and error messages."
+            ),
+        ),
+    ):
+        _ = await mocked_cv_client.responses_mixed_errors_check_bulk_response_errors(field=["1", "2", "3"])
+
+    assert len(caplog.records) == 1
+    assert caplog.records[0].message == (
+        "responses_mixed_errors_check_bulk_response_errors: API Call failed 'Error for item 2' for 'MockedResponse(response_id='2')'."
+    )
+
+
+@pytest.mark.asyncio
+async def test_responses_all_errors(caplog: pytest.LogCaptureFixture) -> None:
+    """All responses in stream have 'error's. GRPCRequestHandler is instructed to not look for the 'error' inside response tuples."""
+    mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
+
+    with caplog.at_level(logging.ERROR):
+        resp = await mocked_cv_client.responses_all_errors(field=["1", "2", "3"])
+
+    assert len(resp) == 3
+    assert len(caplog.records) == 0
+    for response, item in zip(resp, ["1", "2", "3"], strict=True):
+        assert isinstance(response, tuple)
+        assert response[0].response_id == str(item)
+        assert response[1] == f"Error for item {item}"
+
+
+@pytest.mark.asyncio
+async def test_responses_all_errors_check_bulk_response_errors(caplog: pytest.LogCaptureFixture) -> None:
+    """All responses in stream have 'error's. GRPCRequestHandler is instructed to look for the 'error' inside response tuples."""
+    mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
+
+    with (
+        caplog.at_level(logging.ERROR),
+        pytest.raises(
+            CVClientBulkAPIError,
+            match=re.escape(
+                r"3 server-side error(s) was returned from the 'responses_all_errors_check_bulk_response_errors' bulk API call. "
+                r"Please check logs for the failed items and error messages."
+            ),
+        ),
+    ):
+        _ = await mocked_cv_client.responses_all_errors_check_bulk_response_errors(field=["1", "2", "3"])
+
+    assert len(caplog.records) == 3
+    assert caplog.records[0].message == (
+        "responses_all_errors_check_bulk_response_errors: API Call failed 'Error for item 1' for 'MockedResponse(response_id='1')'."
+    )
+    assert caplog.records[1].message == (
+        "responses_all_errors_check_bulk_response_errors: API Call failed 'Error for item 2' for 'MockedResponse(response_id='2')'."
+    )
+    assert caplog.records[2].message == (
+        "responses_all_errors_check_bulk_response_errors: API Call failed 'Error for item 3' for 'MockedResponse(response_id='3')'."
+    )

@@ -11,19 +11,21 @@ ip_domain_lookup:
     vrf: INBAND_MGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 10.10.10.1
-  vrf: default
-  priority: 1
-- ip_address: 10.10.10.1
-  vrf: INBAND_MGMT
-  priority: 1
-- ip_address: 10.10.10.2
-  vrf: INBAND_MGMT
-- ip_address: 10.10.10.2
-  vrf: other_vrf
-- ip_address: 10.10.10.3
-  vrf: INBAND_MGMT
+ip_name_server:
+  vrfs:
+  - name: default
+    servers:
+    - ip_address: 10.10.10.1
+      priority: 1
+  - name: INBAND_MGMT
+    servers:
+    - ip_address: 10.10.10.1
+      priority: 1
+    - ip_address: 10.10.10.2
+    - ip_address: 10.10.10.3
+  - name: other_vrf
+    servers:
+    - ip_address: 10.10.10.2
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -47,7 +49,8 @@ vlans:
 - id: 4092
   name: INBAND_MGMT
   metadata:
-    tenant: system
+    tenants:
+    - system
 vrfs:
 - name: MGMT
   ip_routing: false

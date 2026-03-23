@@ -34,6 +34,10 @@ sflow:
       destinations:
         - destination: 10.6.75.62
       source: 1.1.1.1
+    - name: abc
+      destinations:
+        - destination: 10.6.75.62
+      source: 2.2.2.2
   destinations:
     - destination: 10.6.75.62
       port: 123
@@ -52,7 +56,7 @@ sflow:
       enabled: true
     - name: switch
       enabled: false
-    - name: tunnel
+    - name: tunnel ipv4 egress
       enabled: false
   run: true
   interface:

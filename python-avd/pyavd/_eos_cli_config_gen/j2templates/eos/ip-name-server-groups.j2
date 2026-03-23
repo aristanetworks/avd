@@ -1,9 +1,9 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
-{% for name_server_group in ip_name_server_groups | arista.avd.natural_sort("name") %}
+{% for name_server_group in ip_name_server_groups | arista.avd.natural_sort(sort_key="name", ignore_case=false) %}
 !
 ip name-server group {{ name_server_group.name }}
 {# adding this logic for flattening name-servers to maintain EOS CLI ordering #}
@@ -21,7 +21,7 @@ ip name-server group {{ name_server_group.name }}
 {%     if not flattened_name_servers and name_server_group.name_servers is arista.avd.defined %}
 {%         set flattened_name_servers = name_server_group.name_servers %}
 {%     endif %}
-{%     for server in flattened_name_servers | arista.avd.natural_sort("ip_address") | arista.avd.natural_sort("vrf") | arista.avd.natural_sort("priority", default_value="0") %}
+{%     for server in flattened_name_servers | arista.avd.natural_sort("ip_address") | arista.avd.natural_sort(sort_key="vrf", ignore_case=false) | arista.avd.natural_sort("priority", default_value="0") %}
 {%         set name_server_cli = "name-server vrf " ~ server.vrf ~ " " ~ server.ip_address %}
 {%         if server.priority is arista.avd.defined %}
 {%             set name_server_cli = name_server_cli ~ " priority " ~ server.priority %}

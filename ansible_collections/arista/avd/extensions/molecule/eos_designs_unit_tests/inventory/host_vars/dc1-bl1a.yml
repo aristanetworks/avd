@@ -1,0 +1,80 @@
+---
+my_special_dci_ethernet_interfaces:
+  - name: Ethernet4000
+    ip_address: 10.3.2.1/21
+
+custom_structured_configuration_list_merge: append
+
+use_router_general_for_router_id: true
+
+# Test appending to list of ip name-servers.
+override_ip_name_server:
+  vrfs:
+    - name: MGMT
+      servers:
+        - ip_address: 1.1.1.1
+
+# Testing router id loopback description override
+router_id_loopback_description: "MY_ROUTER_ID_LOOPBACK"
+
+vtep_vvtep_ip: 192.168.255.255/32
+
+# Testing event_monitor
+event_monitor:
+  enabled: true
+
+# Testing load_interval_default
+load_interval:
+  default: 6
+
+# Testing unsupported_transceiver
+unsupported_transceiver:
+  license_name: key1
+  license_key: dsafDSFfvadskjh3424
+
+# Testing queue_monitor_streaming
+queue_monitor_streaming:
+  enable: true
+  ip_access_group: ACL-QMS
+  ipv6_access_group: ACLv6-QMS
+  max_connections: 8
+  vrf: vrf1
+
+# Testing event_handlers
+event_handlers:
+  - name: evpn-blacklist-recovery
+    actions:
+      bash_command: FastCli -p 15 -c "clear bgp evpn host-flap"
+    delay: 300
+    trigger: on-logging
+    trigger_on_logging:
+      regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
+    asynchronous: true
+
+# Test Mac address table variables
+mac_address_table:
+  aging_time: 42
+  notification_host_flap:
+    logging: true
+    detection:
+      window: 10
+      moves: 2
+
+# Test that we can enable CloudVision Tag generation
+# for a single device in a Fabric. The structured config for this node
+# should have CloudVision tags generated for it. All other nodes in
+# eos_designs_unit_tests should not have any CloudVision tags generated for them
+generate_cv_tags:
+  topology_hints: true
+
+# Management api-http
+# Expicitely disabling http and https
+management_eapi:
+  enabled: true
+  enable_https: false
+  enable_http: false
+  default_services: false
+
+# Test for remove redundant command no neighbor activate when no bgp default ipv4-unicast is configured
+avd_design_future:
+  remove_redundant_ipv4_unicast_for_peer_groups: true

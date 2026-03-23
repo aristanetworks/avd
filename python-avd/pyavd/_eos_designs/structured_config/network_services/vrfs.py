@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -40,7 +40,7 @@ class VrfsMixin(Protocol):
                 if vrf_name == "default":
                     continue
                 new_vrf = EosCliConfigGen.VrfsItem(name=vrf_name)
-                new_vrf.metadata.tenant = tenant.name
+                new_vrf.metadata.tenants.append(tenant.name)
 
                 # MLAG IBGP Peering VLANs per VRF
                 if self.inputs.overlay_mlag_rfc5549 and self._mlag_ibgp_peering_enabled(vrf, tenant):
@@ -54,6 +54,12 @@ class VrfsMixin(Protocol):
                 if vrf.description:
                     new_vrf.description = vrf.description
                 self.structured_config.vrfs.append(new_vrf, ignore_fields=("metadata",))
+
+                # If the VRF already existed (shared VRF across multiple tenants),
+                # append this tenant to the existing item's metadata.
+                existing_vrf = self.structured_config.vrfs.obtain(vrf_name)
+                if tenant.name not in existing_vrf.metadata.tenants:
+                    existing_vrf.metadata.tenants.append(tenant.name)
 
     def _has_ipv6(
         self: AvdStructuredConfigNetworkServicesProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem

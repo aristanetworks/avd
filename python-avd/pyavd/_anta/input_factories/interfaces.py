@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -7,12 +7,14 @@ from itertools import chain
 from typing import TYPE_CHECKING
 
 from anta.input_models.interfaces import InterfaceState
-from anta.tests.interfaces import VerifyInterfacesStatus, VerifyPortChannels, VerifyStormControlDrops
+from anta.tests.interfaces import VerifyIllegalLACP, VerifyInterfacesStatus, VerifyPortChannels, VerifyStormControlDrops
 
+from pyavd._anta.constants import StructuredConfigKey
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
-from ._base_classes import AntaTestInputFactory
+from .base_classes import AntaTestInputFactory
+from .decorators import skip_if_missing_config
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -34,18 +36,22 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
     - Vxlan1: Only tested if at least one VNI (L2 or L3) is configured and its source interface is operational (not shutdown and has required IP address)
     """
 
-    def create(self) -> list[VerifyInterfacesStatus.Input] | None:
-        """Create a list of inputs for the `VerifyInterfacesStatus` test."""
-        interfaces: list[InterfaceState] = []
+    def create(self) -> Iterator[VerifyInterfacesStatus.Input]:
+        """Generate the inputs for the `VerifyInterfacesStatus` test."""
+        interfaces = list(
+            chain(
+                self._get_ethernet_interfaces(),
+                self._get_port_channel_interfaces(),
+                self._get_miscellaneous_interfaces(),
+                self._get_vxlan_interface(),
+            )
+        )
 
-        interfaces.extend(self._get_ethernet_interfaces())
-        interfaces.extend(self._get_port_channel_interfaces())
-        interfaces.extend(self._get_miscellaneous_interfaces())
+        if not interfaces:
+            self.logger_adapter.debug(LogMessage.NO_INPUTS_GENERATED)
+            return
 
-        if vxlan_intf := self._get_vxlan_interface():
-            interfaces.append(vxlan_intf)
-
-        return [VerifyInterfacesStatus.Input(interfaces=natural_sort(interfaces, sort_key="name"))] if interfaces else None
+        yield VerifyInterfacesStatus.Input(interfaces=natural_sort(interfaces, sort_key="name"))
 
     def _get_ethernet_interfaces(self) -> Iterator[InterfaceState]:
         """Get Ethernet interfaces, considering `metadata.validate_state` knob and interface defaults."""
@@ -73,10 +79,10 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
         for intf in chain(self.structured_config.vlan_interfaces, self.structured_config.loopback_interfaces, self.structured_config.dps_interfaces):
             yield InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up")
 
-    def _get_vxlan_interface(self) -> InterfaceState | None:
+    def _get_vxlan_interface(self) -> Iterator[InterfaceState]:
         """Get the VXLAN interface."""
-        if not self.device.is_vtep:
-            return None
+        if not self.data_source.is_vtep:
+            return
 
         vxlan_config = self.structured_config.vxlan_interface.vxlan1.vxlan
 
@@ -85,13 +91,13 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory[VerifyInterfacesSt
 
         if not has_vnis:
             self.logger_adapter.debug(LogMessage.INTERFACE_VXLAN1_NO_VNI)
-            return None
+            return
 
         if not self._is_vxlan_source_interface_operational():
             self.logger_adapter.debug(LogMessage.INTERFACE_VXLAN1_NOT_OPERATIONAL, source_interface=vxlan_config.source_interface)
-            return None
+            return
 
-        return InterfaceState(name="Vxlan1", status="adminDown" if vxlan_config.shutdown else "up")
+        yield InterfaceState(name="Vxlan1", status="adminDown" if vxlan_config.shutdown else "up")
 
     def _is_vxlan_source_interface_operational(self) -> bool:
         """Check if the VXLAN source interface is operational (not shutdown and has IP configured)."""
@@ -127,8 +133,9 @@ class VerifyPortChannelsInputFactory(AntaTestInputFactory[VerifyPortChannels.Inp
     are ignored.
     """
 
-    def create(self) -> list[VerifyPortChannels.Input] | None:
-        """Create a list of inputs for the `VerifyPortChannels` test."""
+    @skip_if_missing_config(StructuredConfigKey.PORT_CHANNEL_INTERFACES)
+    def create(self) -> Iterator[VerifyPortChannels.Input]:
+        """Generate the inputs for the `VerifyPortChannels` test."""
         ignored_interfaces: list[str] = []
 
         for po_intf in self.structured_config.port_channel_interfaces:
@@ -140,7 +147,10 @@ class VerifyPortChannelsInputFactory(AntaTestInputFactory[VerifyPortChannels.Inp
                 self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=po_intf.name)
                 ignored_interfaces.append(po_intf.name)
 
-        return [VerifyPortChannels.Input(ignored_interfaces=natural_sort(ignored_interfaces))] if ignored_interfaces else [VerifyPortChannels.Input()]
+        if ignored_interfaces:
+            yield VerifyPortChannels.Input(ignored_interfaces=natural_sort(ignored_interfaces))
+        else:
+            yield VerifyPortChannels.Input()
 
 
 class VerifyStormControlDropsInputFactory(AntaTestInputFactory[VerifyStormControlDrops.Input]):
@@ -150,11 +160,23 @@ class VerifyStormControlDropsInputFactory(AntaTestInputFactory[VerifyStormContro
     Generate the test inputs only if any Ethernet or Port-Channel interfaces are configured with storm-control.
     """
 
-    def create(self) -> list[VerifyStormControlDrops.Input] | None:
-        for intf in self.structured_config.ethernet_interfaces:
-            if intf.storm_control:
-                return [VerifyStormControlDrops.Input()]
-        for po_intf in self.structured_config.port_channel_interfaces:
-            if po_intf.storm_control:
-                return [VerifyStormControlDrops.Input()]
-        return None
+    def create(self) -> Iterator[VerifyStormControlDrops.Input]:
+        """Generate the inputs for the `VerifyStormControlDrops` test."""
+        all_interfaces = chain(self.structured_config.ethernet_interfaces, self.structured_config.port_channel_interfaces)
+
+        if any(intf.storm_control for intf in all_interfaces):
+            yield VerifyStormControlDrops.Input()
+        else:
+            self.logger_adapter.debug(LogMessage.NO_STORM_CONTROL_ENABLED)
+
+
+class VerifyIllegalLACPInputFactory(AntaTestInputFactory[VerifyIllegalLACP.Input]):
+    """
+    Input factory class for the `VerifyIllegalLACP` test.
+
+    Generate the test inputs only if `port_channel_interfaces` are configured.
+    """
+
+    @skip_if_missing_config(StructuredConfigKey.PORT_CHANNEL_INTERFACES)
+    def create(self) -> Iterator[VerifyIllegalLACP.Input]:
+        yield VerifyIllegalLACP.Input()

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -34,10 +34,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone_trunk_mode</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].phone_trunk_mode") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>untagged</code><br>- <code>tagged phone</code><br>- <code>untagged phone</code> | Specify if the phone traffic is tagged or untagged.<br>If both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].trunk_groups") | List, items: String |  |  |  | Required with `enable_trunk_groups: true`.<br>Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].trunk_groups.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].vlans") | String |  |  |  | Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].vlans") | String |  |  |  | Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.<br>The value will be interpreted according to these rules:<br>- `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.<br>- Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).<br>If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_portfast</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].spanning_tree_portfast") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>network</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpdufilter</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].spanning_tree_bpdufilter") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpduguard</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].spanning_tree_bpduguard") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_link_type</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].spanning_tree_link_type") | String |  |  | Valid Values:<br>- <code>shared</code><br>- <code>point-to-point</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flowcontrol</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].flowcontrol") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;received</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].flowcontrol.received") | String |  |  | Valid Values:<br>- <code>desired</code><br>- <code>on</code><br>- <code>off</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].qos_profile") | String |  |  |  | QOS profile name. |
@@ -90,19 +91,19 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eap_response</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.eap_response") | String |  |  | Valid Values:<br>- <code>success</code><br>- <code>disabled</code> | EAP response to send. EOS default is `success`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action") | Dictionary |  |  |  | Set action for supplicant when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_access_list</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_access_list") | String |  |  |  | Name of standard access-list to apply when AAA times out. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive action apply cached-results else traffic allow |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_vlan</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_cached_results</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.apply_cached_results") | Boolean |  |  |  | Use results from a previous AAA response. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cached_results_timeout</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.cached_results_timeout") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration") | Integer |  |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration") | Integer | Required |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>eg. aaa unresponsive action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_vlan</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone_action</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action") | Dictionary |  |  |  | Set action for supplicant when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_cached_results</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_cached_results") | Boolean |  |  |  | Use results from a previous AAA response. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cached_results_timeout</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration") | Integer |  |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration") | Integer | Required |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>eg. aaa unresponsive phone action apply cached-results else traffic allow |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].poe") | Dictionary |  |  |  | Power Over Ethernet settings applied on port. Only configured if platform supports PoE. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].poe.disabled") | Boolean |  | `False` |  | Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS. |
@@ -179,22 +180,22 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_timer</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer") | Dictionary |  |  |  | LACP timer configuration. Applies only when Port-channel mode is not "on". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer.mode") | String |  |  | Valid Values:<br>- <code>normal</code><br>- <code>fast</code> | LACP mode for interface members. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer.multiplier") | Integer |  |  |  | Number of LACP BPDUs lost before deeming the peer down. EOS default is 3. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>The parent Port-Channel interface is automatically created if not defined elsewhere.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].number") | Integer |  |  |  | Subinterface number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<br>Required for multihomed port-channels with subinterfaces.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is subinterface number.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  | Client VLAN ID encapsulation.<br>Default is subinterface number.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<subinterface>] for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].validate_lldp") | Boolean |  |  |  | Set to false to disable the LLDP topology validation performed by the `anta_runner` role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].validate_lldp") | Boolean |  |  |  | Controls LLDP topology validation performed by the `anta_runner` role.<br>- Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)<br>and the peer interface is not administratively shutdown.<br>- `true`: Forces validation. Use this for connected endpoints not managed by AVD.<br>- `false`: Disables validation for the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_link_type</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].campus_link_type") | List, items: String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Values for the CloudVision `Link-Type` user tags to be associated with an interface.<br>Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result in the same tags being associated with the parent Ethernet interface instead.<br>Attempting to associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being associated with the member Ethernet interfaces instead. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].campus_link_type.[]") | String |  |  | Valid Values:<br>- <code>downlink</code><br>- <code>egress</code><br>- <code>fabric</code><br>- <code>mlag</code><br>- <code>uplink</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config schema. |
     | [<samp>&lt;custom_connected_endpoints_keys.key&gt;</samp>](## "<custom_connected_endpoints_keys.key>") | List, items: Dictionary |  |  |  | List of endpoint connected to the fabric.<br>This should be applied to group_vars or host_vars where endpoints are connecting.<br>`connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys". |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "<custom_connected_endpoints_keys.key>.[].name") | String | Required, Unique |  |  | Endpoint name will be used in the switchport description. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "<custom_connected_endpoints_keys.key>.[].type") | String |  |  |  | Type of endpoint.<br>This is used in descriptions and in documentation.<br>The default value is taken from `connected_endpoints_keys[].type`. |
@@ -222,10 +223,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone_trunk_mode</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].phone_trunk_mode") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>untagged</code><br>- <code>tagged phone</code><br>- <code>untagged phone</code> | Specify if the phone traffic is tagged or untagged.<br>If both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].trunk_groups") | List, items: String |  |  |  | Required with `enable_trunk_groups: true`.<br>Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].trunk_groups.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].vlans") | String |  |  |  | Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].vlans") | String |  |  |  | Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.<br>The value will be interpreted according to these rules:<br>- `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.<br>- Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).<br>If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_portfast</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].spanning_tree_portfast") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>network</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpdufilter</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].spanning_tree_bpdufilter") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpduguard</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].spanning_tree_bpduguard") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_link_type</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].spanning_tree_link_type") | String |  |  | Valid Values:<br>- <code>shared</code><br>- <code>point-to-point</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flowcontrol</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].flowcontrol") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;received</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].flowcontrol.received") | String |  |  | Valid Values:<br>- <code>desired</code><br>- <code>on</code><br>- <code>off</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].qos_profile") | String |  |  |  | QOS profile name. |
@@ -278,19 +280,19 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eap_response</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.eap_response") | String |  |  | Valid Values:<br>- <code>success</code><br>- <code>disabled</code> | EAP response to send. EOS default is `success`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action") | Dictionary |  |  |  | Set action for supplicant when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_access_list</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_access_list") | String |  |  |  | Name of standard access-list to apply when AAA times out. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive action apply cached-results else traffic allow |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_vlan</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_cached_results</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.apply_cached_results") | Boolean |  |  |  | Use results from a previous AAA response. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cached_results_timeout</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.cached_results_timeout") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration") | Integer |  |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration") | Integer | Required |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>eg. aaa unresponsive action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_vlan</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone_action</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action") | Dictionary |  |  |  | Set action for supplicant when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_cached_results</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_cached_results") | Boolean |  |  |  | Use results from a previous AAA response. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cached_results_timeout</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration") | Integer |  |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration") | Integer | Required |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>eg. aaa unresponsive phone action apply cached-results else traffic allow |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].poe") | Dictionary |  |  |  | Power Over Ethernet settings applied on port. Only configured if platform supports PoE. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].poe.disabled") | Boolean |  | `False` |  | Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS. |
@@ -367,22 +369,22 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_timer</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer") | Dictionary |  |  |  | LACP timer configuration. Applies only when Port-channel mode is not "on". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer.mode") | String |  |  | Valid Values:<br>- <code>normal</code><br>- <code>fast</code> | LACP mode for interface members. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_timer.multiplier") | Integer |  |  |  | Number of LACP BPDUs lost before deeming the peer down. EOS default is 3. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>The parent Port-Channel interface is automatically created if not defined elsewhere.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].number") | Integer |  |  |  | Subinterface number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<br>Required for multihomed port-channels with subinterfaces.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is subinterface number.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  | Client VLAN ID encapsulation.<br>Default is subinterface number.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<subinterface>] for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].validate_lldp") | Boolean |  |  |  | Set to false to disable the LLDP topology validation performed by the `anta_runner` role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].validate_lldp") | Boolean |  |  |  | Controls LLDP topology validation performed by the `anta_runner` role.<br>- Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)<br>and the peer interface is not administratively shutdown.<br>- `true`: Forces validation. Use this for connected endpoints not managed by AVD.<br>- `false`: Disables validation for the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_link_type</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].campus_link_type") | List, items: String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Values for the CloudVision `Link-Type` user tags to be associated with an interface.<br>Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result in the same tags being associated with the parent Ethernet interface instead.<br>Attempting to associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being associated with the member Ethernet interfaces instead. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].campus_link_type.[]") | String |  |  | Valid Values:<br>- <code>downlink</code><br>- <code>egress</code><br>- <code>fabric</code><br>- <code>mlag</code><br>- <code>uplink</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<custom_connected_endpoints_keys.key>.[].adapters.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config schema. |
     | [<samp>connected_endpoints</samp>](## "connected_endpoints") | List, items: Dictionary |  |  |  | List of endpoint connected to the fabric.<br>This should be applied to group_vars or host_vars where endpoints are connecting. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "connected_endpoints.[].name") | String | Required, Unique |  |  | Endpoint name will be used in the switchport description. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "connected_endpoints.[].type") | String |  |  |  | Type of endpoint.<br>This is used in descriptions and in documentation. |
@@ -410,10 +412,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone_trunk_mode</samp>](## "connected_endpoints.[].adapters.[].phone_trunk_mode") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>untagged</code><br>- <code>tagged phone</code><br>- <code>untagged phone</code> | Specify if the phone traffic is tagged or untagged.<br>If both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "connected_endpoints.[].adapters.[].trunk_groups") | List, items: String |  |  |  | Required with `enable_trunk_groups: true`.<br>Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "connected_endpoints.[].adapters.[].trunk_groups.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "connected_endpoints.[].adapters.[].vlans") | String |  |  |  | Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "connected_endpoints.[].adapters.[].vlans") | String |  |  |  | Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.<br>The value will be interpreted according to these rules:<br>- `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.<br>- Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).<br>If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_portfast</samp>](## "connected_endpoints.[].adapters.[].spanning_tree_portfast") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>network</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpdufilter</samp>](## "connected_endpoints.[].adapters.[].spanning_tree_bpdufilter") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpduguard</samp>](## "connected_endpoints.[].adapters.[].spanning_tree_bpduguard") | String |  |  | Valid Values:<br>- <code>enabled</code><br>- <code>disabled</code><br>- <code>True</code><br>- <code>False</code><br>- <code>true</code><br>- <code>false</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_link_type</samp>](## "connected_endpoints.[].adapters.[].spanning_tree_link_type") | String |  |  | Valid Values:<br>- <code>shared</code><br>- <code>point-to-point</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flowcontrol</samp>](## "connected_endpoints.[].adapters.[].flowcontrol") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;received</samp>](## "connected_endpoints.[].adapters.[].flowcontrol.received") | String |  |  | Valid Values:<br>- <code>desired</code><br>- <code>on</code><br>- <code>off</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "connected_endpoints.[].adapters.[].qos_profile") | String |  |  |  | QOS profile name. |
@@ -466,19 +469,19 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eap_response</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.eap_response") | String |  |  | Valid Values:<br>- <code>success</code><br>- <code>disabled</code> | EAP response to send. EOS default is `success`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action") | Dictionary |  |  |  | Set action for supplicant when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_access_list</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_access_list") | String |  |  |  | Name of standard access-list to apply when AAA times out. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive action apply cached-results else traffic allow |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_vlan</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_cached_results</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.apply_cached_results") | Boolean |  |  |  | Use results from a previous AAA response. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cached_results_timeout</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.cached_results_timeout") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration") | Integer |  |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration") | Integer | Required |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>eg. aaa unresponsive action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow_vlan</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.action.traffic_allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phone_action</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action") | Dictionary |  |  |  | Set action for supplicant when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_cached_results</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_cached_results") | Boolean |  |  |  | Use results from a previous AAA response. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cached_results_timeout</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration") | Integer |  |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration") | Integer | Required |  | Min: 1 | Enable caching for a specific duration -<br><1-10000>      duration in days<br><1-14400000>   duration in minutes<br><1-240000>     duration in hours<br><1-864000000>  duration in seconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;time_duration_unit</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action.cached_results_timeout.time_duration_unit") | String | Required |  | Valid Values:<br>- <code>days</code><br>- <code>hours</code><br>- <code>minutes</code><br>- <code>seconds</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>eg. aaa unresponsive phone action apply cached-results else traffic allow |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;apply_alternate</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action.apply_alternate") | Boolean |  |  |  | Apply alternate action if primary action fails.<br>e.g. aaa unresponsive phone action apply cached-results else traffic allow |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_allow</samp>](## "connected_endpoints.[].adapters.[].dot1x.aaa.unresponsive.phone_action.traffic_allow") | Boolean |  |  |  | Set action for supplicant traffic when AAA times out. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "connected_endpoints.[].adapters.[].poe") | Dictionary |  |  |  | Power Over Ethernet settings applied on port. Only configured if platform supports PoE. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "connected_endpoints.[].adapters.[].poe.disabled") | Boolean |  | `False` |  | Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS. |
@@ -555,22 +558,22 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_timer</samp>](## "connected_endpoints.[].adapters.[].port_channel.lacp_timer") | Dictionary |  |  |  | LACP timer configuration. Applies only when Port-channel mode is not "on". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "connected_endpoints.[].adapters.[].port_channel.lacp_timer.mode") | String |  |  | Valid Values:<br>- <code>normal</code><br>- <code>fast</code> | LACP mode for interface members. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "connected_endpoints.[].adapters.[].port_channel.lacp_timer.multiplier") | Integer |  |  |  | Number of LACP BPDUs lost before deeming the peer down. EOS default is 3. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>The parent Port-Channel interface is automatically created if not defined elsewhere.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].number") | Integer |  |  |  | Subinterface number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<br>Required for multihomed port-channels with subinterfaces.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is subinterface number.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  | Client VLAN ID encapsulation.<br>Default is subinterface number.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<subinterface>] for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "connected_endpoints.[].adapters.[].port_channel.subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "connected_endpoints.[].adapters.[].port_channel.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "connected_endpoints.[].adapters.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "connected_endpoints.[].adapters.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "connected_endpoints.[].adapters.[].validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "connected_endpoints.[].adapters.[].validate_lldp") | Boolean |  |  |  | Set to false to disable the LLDP topology validation performed by the `anta_runner` role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "connected_endpoints.[].adapters.[].validate_lldp") | Boolean |  |  |  | Controls LLDP topology validation performed by the `anta_runner` role.<br>- Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)<br>and the peer interface is not administratively shutdown.<br>- `true`: Forces validation. Use this for connected endpoints not managed by AVD.<br>- `false`: Disables validation for the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_link_type</samp>](## "connected_endpoints.[].adapters.[].campus_link_type") | List, items: String |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Values for the CloudVision `Link-Type` user tags to be associated with an interface.<br>Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result in the same tags being associated with the parent Ethernet interface instead.<br>Attempting to associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being associated with the member Ethernet interfaces instead. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "connected_endpoints.[].adapters.[].campus_link_type.[]") | String |  |  | Valid Values:<br>- <code>downlink</code><br>- <code>egress</code><br>- <code>fabric</code><br>- <code>mlag</code><br>- <code>uplink</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "connected_endpoints.[].adapters.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "connected_endpoints.[].adapters.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "connected_endpoints.[].adapters.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config schema. |
 
 === "YAML"
 
@@ -677,11 +680,16 @@
             trunk_groups:
               - <str>
 
-            # Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports.
+            # Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+            # The value will be interpreted according to these rules:
+            # - `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.
+            # - Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+            # If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
             vlans: <str>
             spanning_tree_portfast: <str; "edge" | "network">
             spanning_tree_bpdufilter: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
             spanning_tree_bpduguard: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
+            spanning_tree_link_type: <str; "shared" | "point-to-point">
             flowcontrol:
               received: <str; "desired" | "on" | "off">
 
@@ -781,6 +789,11 @@
                     # Name of standard access-list to apply when AAA times out.
                     traffic_allow_access_list: <str>
 
+                    # Apply alternate action if primary action fails.
+                    # e.g. aaa unresponsive action apply cached-results else traffic allow
+                    apply_alternate: <bool>
+                    traffic_allow_vlan: <int; 1-4094>
+
                     # Use results from a previous AAA response.
                     apply_cached_results: <bool>
                     cached_results_timeout:
@@ -790,16 +803,11 @@
                       # <1-14400000>   duration in minutes
                       # <1-240000>     duration in hours
                       # <1-864000000>  duration in seconds
-                      time_duration: <int; >=1>
+                      time_duration: <int; >=1; required>
                       time_duration_unit: <str; "days" | "hours" | "minutes" | "seconds"; required>
-
-                    # Apply alternate action if primary action fails.
-                    # eg. aaa unresponsive action apply cached-results else traffic allow
-                    apply_alternate: <bool>
 
                     # Set action for supplicant traffic when AAA times out.
                     traffic_allow: <bool>
-                    traffic_allow_vlan: <int; 1-4094>
 
                   # Set action for supplicant when AAA times out.
                   phone_action:
@@ -813,11 +821,11 @@
                       # <1-14400000>   duration in minutes
                       # <1-240000>     duration in hours
                       # <1-864000000>  duration in seconds
-                      time_duration: <int; >=1>
+                      time_duration: <int; >=1; required>
                       time_duration_unit: <str; "days" | "hours" | "minutes" | "seconds"; required>
 
                     # Apply alternate action if primary action fails.
-                    # eg. aaa unresponsive phone action apply cached-results else traffic allow
+                    # e.g. aaa unresponsive phone action apply cached-results else traffic allow
                     apply_alternate: <bool>
 
                     # Set action for supplicant traffic when AAA times out.
@@ -1049,6 +1057,7 @@
 
               # Port-Channel L2 Subinterfaces
               # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
+              # The parent Port-Channel interface is automatically created if not defined elsewhere.
               # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
               # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
               subinterfaces:
@@ -1072,19 +1081,23 @@
                   # EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                   raw_eos_cli: <str>
 
-                  # Custom structured config added under port_channel_interfaces.[name=<subinterface>] for eos_cli_config_gen.
+                  # Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema.
                   structured_config: <dict>
 
               # EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
               raw_eos_cli: <str>
 
-              # Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+              # Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
               structured_config: <dict>
 
             # Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
             validate_state: <bool>
 
-            # Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+            # Controls LLDP topology validation performed by the `anta_runner` role.
+            # - Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)
+            # and the peer interface is not administratively shutdown.
+            # - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
+            # - `false`: Disables validation for the interface.
             validate_lldp: <bool>
 
             # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
@@ -1097,7 +1110,7 @@
             # EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
             raw_eos_cli: <str>
 
-            # Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+            # Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config schema.
             structured_config: <dict>
 
     # List of endpoint connected to the fabric.
@@ -1202,11 +1215,16 @@
             trunk_groups:
               - <str>
 
-            # Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports.
+            # Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+            # The value will be interpreted according to these rules:
+            # - `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.
+            # - Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+            # If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
             vlans: <str>
             spanning_tree_portfast: <str; "edge" | "network">
             spanning_tree_bpdufilter: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
             spanning_tree_bpduguard: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
+            spanning_tree_link_type: <str; "shared" | "point-to-point">
             flowcontrol:
               received: <str; "desired" | "on" | "off">
 
@@ -1306,6 +1324,11 @@
                     # Name of standard access-list to apply when AAA times out.
                     traffic_allow_access_list: <str>
 
+                    # Apply alternate action if primary action fails.
+                    # e.g. aaa unresponsive action apply cached-results else traffic allow
+                    apply_alternate: <bool>
+                    traffic_allow_vlan: <int; 1-4094>
+
                     # Use results from a previous AAA response.
                     apply_cached_results: <bool>
                     cached_results_timeout:
@@ -1315,16 +1338,11 @@
                       # <1-14400000>   duration in minutes
                       # <1-240000>     duration in hours
                       # <1-864000000>  duration in seconds
-                      time_duration: <int; >=1>
+                      time_duration: <int; >=1; required>
                       time_duration_unit: <str; "days" | "hours" | "minutes" | "seconds"; required>
-
-                    # Apply alternate action if primary action fails.
-                    # eg. aaa unresponsive action apply cached-results else traffic allow
-                    apply_alternate: <bool>
 
                     # Set action for supplicant traffic when AAA times out.
                     traffic_allow: <bool>
-                    traffic_allow_vlan: <int; 1-4094>
 
                   # Set action for supplicant when AAA times out.
                   phone_action:
@@ -1338,11 +1356,11 @@
                       # <1-14400000>   duration in minutes
                       # <1-240000>     duration in hours
                       # <1-864000000>  duration in seconds
-                      time_duration: <int; >=1>
+                      time_duration: <int; >=1; required>
                       time_duration_unit: <str; "days" | "hours" | "minutes" | "seconds"; required>
 
                     # Apply alternate action if primary action fails.
-                    # eg. aaa unresponsive phone action apply cached-results else traffic allow
+                    # e.g. aaa unresponsive phone action apply cached-results else traffic allow
                     apply_alternate: <bool>
 
                     # Set action for supplicant traffic when AAA times out.
@@ -1574,6 +1592,7 @@
 
               # Port-Channel L2 Subinterfaces
               # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
+              # The parent Port-Channel interface is automatically created if not defined elsewhere.
               # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
               # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
               subinterfaces:
@@ -1597,19 +1616,23 @@
                   # EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                   raw_eos_cli: <str>
 
-                  # Custom structured config added under port_channel_interfaces.[name=<subinterface>] for eos_cli_config_gen.
+                  # Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema.
                   structured_config: <dict>
 
               # EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
               raw_eos_cli: <str>
 
-              # Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+              # Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
               structured_config: <dict>
 
             # Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
             validate_state: <bool>
 
-            # Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+            # Controls LLDP topology validation performed by the `anta_runner` role.
+            # - Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)
+            # and the peer interface is not administratively shutdown.
+            # - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
+            # - `false`: Disables validation for the interface.
             validate_lldp: <bool>
 
             # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
@@ -1622,7 +1645,7 @@
             # EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
             raw_eos_cli: <str>
 
-            # Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+            # Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config schema.
             structured_config: <dict>
 
     # List of endpoint connected to the fabric.
@@ -1725,11 +1748,16 @@
             trunk_groups:
               - <str>
 
-            # Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports.
+            # Access VLAN for an access port or a range of VLANs to be allowed on a trunk port.
+            # The value will be interpreted according to these rules:
+            # - `defined_vlans` will configure all VLANs defined under network services as explicitly allowed VLANs on the trunk port.
+            # - Any other string will be interpreted as a single VLAN (for access ports) or a range of VLANs (for trunk ports).
+            # If not set, the EOS default is that all VLANs are implicitly allowed for trunk ports, and VLAN 1 will be used for access ports.
             vlans: <str>
             spanning_tree_portfast: <str; "edge" | "network">
             spanning_tree_bpdufilter: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
             spanning_tree_bpduguard: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
+            spanning_tree_link_type: <str; "shared" | "point-to-point">
             flowcontrol:
               received: <str; "desired" | "on" | "off">
 
@@ -1829,6 +1857,11 @@
                     # Name of standard access-list to apply when AAA times out.
                     traffic_allow_access_list: <str>
 
+                    # Apply alternate action if primary action fails.
+                    # e.g. aaa unresponsive action apply cached-results else traffic allow
+                    apply_alternate: <bool>
+                    traffic_allow_vlan: <int; 1-4094>
+
                     # Use results from a previous AAA response.
                     apply_cached_results: <bool>
                     cached_results_timeout:
@@ -1838,16 +1871,11 @@
                       # <1-14400000>   duration in minutes
                       # <1-240000>     duration in hours
                       # <1-864000000>  duration in seconds
-                      time_duration: <int; >=1>
+                      time_duration: <int; >=1; required>
                       time_duration_unit: <str; "days" | "hours" | "minutes" | "seconds"; required>
-
-                    # Apply alternate action if primary action fails.
-                    # eg. aaa unresponsive action apply cached-results else traffic allow
-                    apply_alternate: <bool>
 
                     # Set action for supplicant traffic when AAA times out.
                     traffic_allow: <bool>
-                    traffic_allow_vlan: <int; 1-4094>
 
                   # Set action for supplicant when AAA times out.
                   phone_action:
@@ -1861,11 +1889,11 @@
                       # <1-14400000>   duration in minutes
                       # <1-240000>     duration in hours
                       # <1-864000000>  duration in seconds
-                      time_duration: <int; >=1>
+                      time_duration: <int; >=1; required>
                       time_duration_unit: <str; "days" | "hours" | "minutes" | "seconds"; required>
 
                     # Apply alternate action if primary action fails.
-                    # eg. aaa unresponsive phone action apply cached-results else traffic allow
+                    # e.g. aaa unresponsive phone action apply cached-results else traffic allow
                     apply_alternate: <bool>
 
                     # Set action for supplicant traffic when AAA times out.
@@ -2097,6 +2125,7 @@
 
               # Port-Channel L2 Subinterfaces
               # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
+              # The parent Port-Channel interface is automatically created if not defined elsewhere.
               # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
               # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
               subinterfaces:
@@ -2120,19 +2149,23 @@
                   # EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
                   raw_eos_cli: <str>
 
-                  # Custom structured config added under port_channel_interfaces.[name=<subinterface>] for eos_cli_config_gen.
+                  # Custom structured config added under port_channel_interfaces.[name=<subinterface>] for the EOS Config schema.
                   structured_config: <dict>
 
               # EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
               raw_eos_cli: <str>
 
-              # Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+              # Custom structured config added under port_channel_interfaces.[name=<interface>] for the EOS Config schema.
               structured_config: <dict>
 
             # Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
             validate_state: <bool>
 
-            # Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
+            # Controls LLDP topology validation performed by the `anta_runner` role.
+            # - Unset (Default): The peer is treated as an AVD-managed device. Validation is performed only if the peer is deployed (`is_deployed: true`)
+            # and the peer interface is not administratively shutdown.
+            # - `true`: Forces validation. Use this for connected endpoints not managed by AVD.
+            # - `false`: Disables validation for the interface.
             validate_lldp: <bool>
 
             # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
@@ -2145,6 +2178,6 @@
             # EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
             raw_eos_cli: <str>
 
-            # Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+            # Custom structured config added under ethernet_interfaces.[name=<interface>] for the EOS Config schema.
             structured_config: <dict>
     ```

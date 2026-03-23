@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>dynamic_prefix_lists</samp>](## "dynamic_prefix_lists") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "dynamic_prefix_lists.[].name") | String |  |  |  | Dynamic prefix-list name. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "dynamic_prefix_lists.[].name") | String | Required, Unique |  |  | Dynamic prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;match_map</samp>](## "dynamic_prefix_lists.[].match_map") | String |  |  |  | Route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "dynamic_prefix_lists.[].prefix_list") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "dynamic_prefix_lists.[].prefix_list.ipv4") | String |  |  |  | Prefix-list name. |
@@ -20,7 +20,7 @@
     dynamic_prefix_lists:
 
         # Dynamic prefix-list name.
-      - name: <str>
+      - name: <str; required; unique>
 
         # Route-map name.
         match_map: <str>

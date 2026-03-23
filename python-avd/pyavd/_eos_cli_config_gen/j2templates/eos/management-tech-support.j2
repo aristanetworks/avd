@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -9,7 +9,7 @@
 management tech-support
 {%     if management_tech_support.policy_show_tech_support is arista.avd.defined %}
    policy show tech-support
-{%         for exclude_command in management_tech_support.policy_show_tech_support.exclude_commands | arista.avd.natural_sort %}
+{%         for exclude_command in management_tech_support.policy_show_tech_support.exclude_commands | arista.avd.natural_sort(sort_key="command") %}
 {%             set exclude_cli = "" %}
 {%             if exclude_command.type is arista.avd.defined('json') %}
 {%                 set exclude_cli = "json " %}
@@ -17,7 +17,7 @@ management tech-support
 {%             set exclude_cli = exclude_cli ~ exclude_command.command %}
       exclude command {{ exclude_cli }}
 {%         endfor %}
-{%         for include_command in management_tech_support.policy_show_tech_support.include_commands | arista.avd.natural_sort %}
+{%         for include_command in management_tech_support.policy_show_tech_support.include_commands | arista.avd.natural_sort(sort_key="command") %}
       include command {{ include_command.command }}
 {%         endfor %}
    exit

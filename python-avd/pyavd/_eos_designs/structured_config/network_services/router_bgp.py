@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -11,7 +11,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, default, get_item, strip_empties_from_dict
+from pyavd._utils import AvdStringFormatter, default, strip_empties_from_dict
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:
@@ -119,10 +119,15 @@ class RouterBgpMixin(Protocol):
                 self.structured_config.router_bgp.address_family_ipv6.peer_groups.append(af_peer_group)
 
         # router bgp default vrf configuration for evpn
-        if self._vrf_default_evpn and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]):
-            target_peer_group = self.structured_config.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)
+        if (
+            self._vrf_default_evpn
+            and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"])
+            and (target_peer_group := self.structured_config.router_bgp.peer_groups.get(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name))
+        ):
+            # Set this only when peer group exists.
             target_peer_group.metadata.type = "ipv4"
             target_peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
+            self.set_once_route_map_bgp_underlay_peers_out()
 
     def _router_bgp_vrfs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
@@ -161,7 +166,7 @@ class RouterBgpMixin(Protocol):
                     self._update_router_bgp_vrf_evpn_or_mpls_cfg(bgp_vrf, vrf, vrf_address_families)
 
                 if vrf.name != "default":
-                    bgp_vrf.router_id = self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
+                    bgp_vrf.router_id = self.get_protocol_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
 
                     if vrf.redistribute_connected:
                         bgp_vrf.redistribute.connected.enabled = True
@@ -273,36 +278,28 @@ class RouterBgpMixin(Protocol):
     ) -> None:
         """In-place update EVPN/MPLS part of structured config for *one* VRF under router_bgp.vrfs."""
         vrf_rt = self.get_vrf_rt(vrf)
-        route_targets = {"import": [], "export": []}
 
         for af in sorted(vrf_address_families):
-            if (target := get_item(route_targets["import"], "address_family", af)) is None:
-                route_targets["import"].append({"address_family": af, "route_targets": [vrf_rt]})
-            else:
-                target["route_targets"].append(vrf_rt)
+            if vrf.rt_import:
+                bgp_vrf.route_targets.field_import.append_new(
+                    address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ImportItem.RouteTargets([vrf_rt])
+                )
 
-            if (target := get_item(route_targets["export"], "address_family", af)) is None:
-                route_targets["export"].append({"address_family": af, "route_targets": [vrf_rt]})
-            else:
-                target["route_targets"].append(vrf_rt)
+            if vrf.rt_export:
+                bgp_vrf.route_targets.export.append_new(
+                    address_family=af, route_targets=EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets.ExportItem.RouteTargets([vrf_rt])
+                )
 
         for rt in vrf.additional_route_targets:
-            if rt.type is None:
-                continue
-            if (target := get_item(route_targets[rt.type], "address_family", rt.address_family)) is None:
-                route_targets[rt.type].append({"address_family": rt.address_family, "route_targets": [rt.route_target]})
-            else:
-                target["route_targets"].append(rt.route_target)
+            bgp_vrf.route_targets.field_import.obtain(rt.address_family).route_targets.extend(
+                [rt.route_target]
+            ) if rt.type == "import" else bgp_vrf.route_targets.export.obtain(rt.address_family).route_targets.extend([rt.route_target])
 
-        if vrf.name == "default" and self._vrf_default_evpn and self._route_maps_vrf_default_check():
+        if vrf.name == "default" and self._vrf_default_evpn and self._route_maps_vrf_default_check() and vrf.rt_export:
             # Special handling of vrf default with evpn.
-
-            if (target := get_item(route_targets["export"], "address_family", "evpn")) is None:
-                route_targets["export"].append({"address_family": "evpn", "route_targets": ["route-map RM-EVPN-EXPORT-VRF-DEFAULT"]})
-            else:
-                target.setdefault("route_targets", []).append("route-map RM-EVPN-EXPORT-VRF-DEFAULT")
-
-        bgp_vrf.route_targets = EosCliConfigGen.RouterBgp.VrfsItem.RouteTargets._from_dict(route_targets)
+            bgp_vrf.route_targets.export.obtain("evpn").route_targets.extend(["route-map RM-EVPN-EXPORT-VRF-DEFAULT"])
+            # Create route-map
+            self.set_once_route_map_evpn_export_vrf_default()
 
         # VRF default
         if vrf.name == "default":
@@ -323,6 +320,8 @@ class RouterBgpMixin(Protocol):
         """In-place update MLAG neighbor part of structured config for *one* VRF under router_bgp.vrfs."""
         if self._exclude_mlag_ibgp_peering_from_redistribute(vrf, tenant):
             bgp_vrf.redistribute.connected._update(enabled=True, route_map="RM-CONN-2-BGP-VRFS")
+            # Create route-map
+            self.set_once_route_map_connected_to_bgp_vrfs()
 
         interface_name = f"Vlan{vlan_id}"
 
@@ -466,7 +465,7 @@ class RouterBgpMixin(Protocol):
             id=vlan.id,
             rd=vlan_rd,
         )
-        bgp_vlan.metadata.tenant = tenant.name
+        bgp_vlan.metadata.tenants.append_unique(tenant.name)
         bgp_vlan.route_targets.both.append(vlan_rt)
         bgp_vlan.redistribute_routes.append("learned")
 
@@ -495,6 +494,9 @@ class RouterBgpMixin(Protocol):
             or bool(default(vlan.evpn_l2_multicast.always_redistribute_igmp, tenant.evpn_l2_multicast.always_redistribute_igmp))
         ):
             bgp_vlan.redistribute_routes.append("igmp")
+
+        if self.inputs.dot1x_settings.enabled and self.inputs.dot1x_settings.redistribute_in_evpn:
+            bgp_vlan.redistribute_routes.append("dot1x")
 
         return bgp_vlan
 
@@ -671,12 +673,17 @@ class RouterBgpMixin(Protocol):
             redistribute_routes=EosCliConfigGen.RouterBgp.VlanAwareBundlesItem.RedistributeRoutes(["learned"]),
             vlan=list_compress([vlan.id for vlan in vxlan_vlans]),
         )
+        # TODO: consider if doing this is required in the long run.
+        # using this bundle.metadata.tenants.append_unique(tenant.name)
         if self.shared_utils.node_config.evpn_gateway.evpn_l2.enabled and evpn_l2_multi_domain:
             bundle.rd_evpn_domain._update(domain="remote", rd=rd)
             bundle.route_targets.import_export_evpn_domains.append_new(domain="remote", route_target=rt)
 
         if any(default(vlan.evpn_l2_multicast.enabled, tenant.evpn_l2_multicast.enabled) for vlan in vxlan_vlans):
             bundle.redistribute_routes.append("igmp")
+
+        if self.inputs.dot1x_settings.enabled and self.inputs.dot1x_settings.redistribute_in_evpn:
+            bundle.redistribute_routes.append("dot1x")
 
         return bundle
 

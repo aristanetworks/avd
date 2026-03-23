@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -60,14 +60,6 @@ $defs:
             <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
           min: 68
           max: 65535
-        kernel_ecmp_cli:
-          type: bool
-          default: true
-          description: |-
-            Use EOS CLI to configure kernel forwarding ECMP programming.
-            For EOS kernel forwarding, ECMP programming can be enabled in two different ways, depending on the EOS version.
-            - For newer EOS versions (starting 4.33.2) use the proper CLI.
-            - For older EOS versions use an agent environment variable. Changing this requires restarting the KernelFib agent.
         feature_support:
           type: dict
           keys:
@@ -294,6 +286,12 @@ $defs:
                 Support for Precision Time Protocol (PTP).
                 The feature will be ignored on platforms where this is false.
               default: true
+            hardware_validation:
+              type: bool
+              description: |-
+                Enable hardware validation for the device.
+                When `false`, all hardware tests are skipped, therefore the `validation_profiles[].hardware` keys defined for the validation profile applied to the device are ignored.
+              default: true
         management_interface:
           type: str
           default: Management1
@@ -335,15 +333,12 @@ $defs:
                 - third-party
                 - tools-server
                 - veos
-        validate_hardware:
-          type: dict
-          $ref: eos_cli_config_gen#/keys/metadata/keys/validate_hardware
         structured_config:
           type: dict
           relaxed_validation: true
           documentation_options:
             hide_keys: true
-          description: Custom structured config for eos_cli_config_gen.
+          description: Custom structured config for the EOS Config schema.
           $ref: "eos_cli_config_gen#"
         raw_eos_cli:
           type: str

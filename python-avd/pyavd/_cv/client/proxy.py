@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -113,7 +113,7 @@ class CVConnectionManager:
 
                 # Create the gRPC protocol using the proxy socket
                 _, protocol = await loop.create_connection(
-                    lambda: channel._protocol_factory(),
+                    channel._protocol_factory,
                     sock=proxy_sock,
                     ssl=channel._ssl,
                     server_hostname=self._target_host if ssl_context else None,

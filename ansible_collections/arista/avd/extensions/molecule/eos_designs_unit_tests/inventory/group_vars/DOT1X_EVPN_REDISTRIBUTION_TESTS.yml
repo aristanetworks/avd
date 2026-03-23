@@ -1,0 +1,39 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: cEOSLab
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    loopback_ipv4_pool: 10.1.0.0/24
+    vtep_loopback_ipv4_pool: 10.1.1.0/24
+    bgp_as: 65000
+  nodes:
+    - name: leaf1-dot1x-evpn-redistribution-enabled
+      id: 11
+      mgmt_ip: 172.20.20.111/24
+    - name: leaf2-dot1x-evpn-redistribution-disabled
+      id: 12
+      mgmt_ip: 172.20.20.112/24
+    - name: leaf1-dot1x-evpn-redistribution-enabled-vlan-aware-bundles
+      id: 13
+      mgmt_ip: 172.20.20.113/24
+    - name: leaf2-dot1x-evpn-redistribution-disabled-vlan-aware-bundles
+      id: 14
+      mgmt_ip: 172.20.20.114/24
+
+tenants:
+  - name: Tenant_A
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: DEV
+        vrf_id: 500
+        svis:
+          - id: 100
+            name: VRFDEV_VLAN100
+            enabled: true
+            ip_address_virtual: 192.168.100.1/24
+          - id: 200
+            name: VRFDEV_VLAN200
+            enabled: true
+            ip_address_virtual: 192.168.200.1/24

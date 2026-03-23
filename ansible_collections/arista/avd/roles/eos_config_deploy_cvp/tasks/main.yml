@@ -1,0 +1,11 @@
+# Copyright (c) 2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+---
+- name: Role Removal Notice
+  ansible.builtin.fail:
+    msg: |-
+      The 'eos_config_deploy_cvp' role has been removed. Use 'cv_deploy' instead.
+      Please refer to https://avd.arista.com/6.x/docs/howto/migrate-to-cv-deploy.html
+      for migration instructions.
+  run_once: true

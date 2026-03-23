@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -31,7 +31,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         if self.shared_utils.mlag_peer_l3_vlan is not None and self.shared_utils.underlay_routing_protocol != "none":
             self.structured_config.vlans.append_new(
                 id=self.shared_utils.mlag_peer_l3_vlan,
-                metadata=EosCliConfigGen.VlansItem.Metadata(tenant="system"),
+                metadata=EosCliConfigGen.VlansItem.Metadata(tenants=EosCliConfigGen.VlansItem.Metadata.Tenants(["system"])),
                 name=AvdStringFormatter().format(
                     self.inputs.mlag_peer_l3_vlan_name, mlag_peer=self.shared_utils.mlag_peer, mlag_peer_l3_vlan=self.shared_utils.mlag_peer_l3_vlan
                 ),
@@ -40,7 +40,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
 
         self.structured_config.vlans.append_new(
             id=self.shared_utils.node_config.mlag_peer_vlan,
-            metadata=EosCliConfigGen.VlansItem.Metadata(tenant="system"),
+            metadata=EosCliConfigGen.VlansItem.Metadata(tenants=EosCliConfigGen.VlansItem.Metadata.Tenants(["system"])),
             name=AvdStringFormatter().format(
                 self.inputs.mlag_peer_vlan_name, mlag_peer=self.shared_utils.mlag_peer, mlag_peer_vlan=self.shared_utils.node_config.mlag_peer_vlan
             ),
@@ -73,7 +73,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             )
 
         if self.shared_utils.node_config.mlag_peer_address_family == "ipv6":
-            main_vlan_interface.ipv6_address = f"{self.shared_utils.mlag_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+            main_vlan_interface.ipv6_addresses.append(f"{self.shared_utils.mlag_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}")
         else:
             main_vlan_interface.ip_address = f"{self.shared_utils.mlag_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
         if not self.shared_utils.mlag_l3 or self.shared_utils.underlay_routing_protocol == "none":
@@ -103,7 +103,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         )
         if not self.inputs.underlay_rfc5549:
             if self.shared_utils.underlay_ipv6_numbered:
-                l3_vlan_interface.ipv6_address = f"{self.shared_utils.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+                l3_vlan_interface.ipv6_addresses.append(f"{self.shared_utils.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}")
             else:
                 l3_vlan_interface.ip_address = f"{self.shared_utils.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
 

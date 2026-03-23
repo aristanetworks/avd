@@ -37,34 +37,16 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: MPLS-OVERLAY-PEERS
-    metadata:
-      type: mpls
-    remote_as: '65000'
-    update_source: Loopback0
-    bfd: true
-    send_community: all
-    maximum_routes: 0
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls
       next_hop_self_source_interface: Loopback0
-    peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: true
-  address_family_ipv4:
-    peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: false
 router_isis:
   instance: CORE
   net: 49.0001.0000.0001.0099.00
   router_id: 172.28.4.99
   is_type: level-2
   log_adjacency_changes: true
-  advertise:
-    passive_only: false
   address_family_ipv4:
     enabled: true
     maximum_paths: 4

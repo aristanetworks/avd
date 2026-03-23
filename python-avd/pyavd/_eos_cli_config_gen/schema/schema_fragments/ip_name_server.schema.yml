@@ -1,0 +1,42 @@
+# Copyright (c) 2025-2026 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ip_name_server:
+    type: dict
+    keys:
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              description: |-
+                VRF Name.
+                Use "default" for the default VRF.
+              type: str
+              convert_types:
+                - int
+            servers:
+              type: list
+              required: true
+              primary_key: ip_address
+              items:
+                type: dict
+                keys:
+                  ip_address:
+                    type: str
+                    required: true
+                    description: IPv4 or IPv6 address for DNS server.
+                  priority:
+                    description: Priority value (lower is first).
+                    type: int
+                    convert_types:
+                      - str
+                    min: 0
+                    max: 4

@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 Arista Networks, Inc.
+# Copyright (c) 2024-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -16,7 +16,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, ParamSpec, TypeVar, get_args, g
 from grpclib import Status
 from grpclib.exceptions import GRPCError
 
-from pyavd._cv.client.exceptions import CVClientException, CVResourceNotFound, CVTimeoutError
+from pyavd._cv.client.exceptions import CVClientBulkAPIError, CVClientException, CVGRPCError, CVResourceNotFound, CVTimeoutError
 from pyavd._utils import batch
 
 from .constants import CVAAS_VERSION_STRING
@@ -123,6 +123,7 @@ class GRPCRequestHandler:
         factor (int): Multiplier for the delay in subsequent retries.
         list_field (str): Name of the parameter to be split if Status.RESOURCE_EXHAUSTED is received.
         min_items_for_splitting_attempt (int): Minimum length of the item that we'll still try to split.
+        check_bulk_response_errors (bool): Check for the presence of the 'error' inside each response tuple for bulk (stream-based) gRPC calls.
     """
 
     max_retries: int
@@ -130,6 +131,7 @@ class GRPCRequestHandler:
     factor: int
     list_field: str | None
     min_items_for_splitting_attempt: int
+    check_bulk_response_errors: bool
     func: Callable
     func_signature: Signature
     bound_arguments: BoundArguments
@@ -142,12 +144,14 @@ class GRPCRequestHandler:
         factor: int = 2,
         list_field: str | None = None,
         min_items_for_splitting_attempt: int = 2,
+        check_bulk_response_errors: bool = False,
     ) -> None:
         self.max_retries = max_retries
         self.initial_delay = initial_delay
         self.factor = factor
         self.list_field = list_field
         self.min_items_for_splitting_attempt = max(2, min_items_for_splitting_attempt)
+        self.check_bulk_response_errors = check_bulk_response_errors
 
     def __call__(self, func: Callable[P, T]) -> Callable[P, T]:
         self.func = func
@@ -179,7 +183,13 @@ class GRPCRequestHandler:
 
         @wraps(func)
         async def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
-            return await self._execute_with_splitting(args, kwargs)
+            result = await self._execute_with_splitting(args, kwargs)
+
+            # Check for the presence of the 'error' inside each response tuple for bulk (stream-based) gRPC calls. Log all errors and raise if any are found.
+            if self.check_bulk_response_errors and result:
+                self._raise_on_bulk_response_errors(result)
+
+            return result
 
         return wrapper
 
@@ -250,7 +260,8 @@ class GRPCRequestHandler:
                                     raise new_exception
 
                             case _:
-                                raise CVClientException(*e.args, call_args, call_kwargs)
+                                # All other gRPC errors are converted to CVGRPCError
+                                raise CVGRPCError(*e.args, call_args, call_kwargs)
 
                     case _:
                         raise CVClientException(*e.args, call_args, call_kwargs)
@@ -330,3 +341,28 @@ class GRPCRequestHandler:
                 aggregated_results.extend(await self._execute_with_splitting(bound_arguments.args, bound_arguments.kwargs))
 
         return aggregated_results
+
+    def _raise_on_bulk_response_errors(self, responses: list) -> None:
+        """
+        Check each response tuple (produced from the streamed responses) for the presence of the error.
+
+        Log each found error.
+
+        Raises:
+            CVClientBulkAPIError if errors are found.
+        """
+        func_name = self.func.__name__
+        found_errors = 0
+
+        for response in responses:
+            if isinstance(response, tuple) and len(response) > 1:
+                LOGGER.error(
+                    "%s: API Call failed '%s' for '%s'.",
+                    func_name,
+                    response[1],
+                    response[0],
+                )
+                found_errors += 1
+
+        if found_errors:
+            raise CVClientBulkAPIError(func_name, found_errors)

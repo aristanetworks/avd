@@ -1,0 +1,4 @@
+---
+errdisable:
+  recovery:
+    interval: 300

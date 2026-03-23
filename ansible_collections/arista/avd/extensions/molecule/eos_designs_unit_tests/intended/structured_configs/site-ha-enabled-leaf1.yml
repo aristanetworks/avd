@@ -5,18 +5,18 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_cv-pathfinder-transit1A_Ethernet52
+  description: P2P_cv-pathfinder-transit1a_Ethernet52
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.0/31
   metadata:
-    peer: cv-pathfinder-transit1A
+    peer: cv-pathfinder-transit1a
     peer_interface: Ethernet52
     peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet1.1000
-  description: P2P_cv-pathfinder-transit1A_Ethernet52.1000_VRF_IT
+  description: P2P_cv-pathfinder-transit1a_Ethernet52.1000_VRF_IT
   shutdown: false
   mtu: 9214
   vrf: IT
@@ -24,11 +24,11 @@ ethernet_interfaces:
     vlan: 1000
   ip_address: 172.17.0.0/31
   metadata:
-    peer: cv-pathfinder-transit1A
+    peer: cv-pathfinder-transit1a
     peer_interface: Ethernet52.1000
     peer_type: wan_router
 - name: Ethernet1.142
-  description: P2P_cv-pathfinder-transit1A_Ethernet52.142_VRF_PROD
+  description: P2P_cv-pathfinder-transit1a_Ethernet52.142_VRF_PROD
   shutdown: false
   mtu: 9214
   vrf: PROD
@@ -36,11 +36,11 @@ ethernet_interfaces:
     vlan: 142
   ip_address: 172.17.0.0/31
   metadata:
-    peer: cv-pathfinder-transit1A
+    peer: cv-pathfinder-transit1a
     peer_interface: Ethernet52.142
     peer_type: wan_router
 - name: Ethernet1.666
-  description: P2P_cv-pathfinder-transit1A_Ethernet52.666_VRF_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_cv-pathfinder-transit1a_Ethernet52.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   mtu: 9214
   vrf: ATTRACTED-VRF-FROM-UPLINK
@@ -48,22 +48,22 @@ ethernet_interfaces:
     vlan: 666
   ip_address: 172.17.0.0/31
   metadata:
-    peer: cv-pathfinder-transit1A
+    peer: cv-pathfinder-transit1a
     peer_interface: Ethernet52.666
     peer_type: wan_router
 - name: Ethernet2
-  description: P2P_cv-pathfinder-transit1B_Ethernet52
+  description: P2P_cv-pathfinder-transit1b_Ethernet52
   shutdown: false
   mtu: 9214
   ip_address: 172.17.0.2/31
   metadata:
-    peer: cv-pathfinder-transit1B
+    peer: cv-pathfinder-transit1b
     peer_interface: Ethernet52
     peer_type: wan_router
   switchport:
     enabled: false
 - name: Ethernet2.1000
-  description: P2P_cv-pathfinder-transit1B_Ethernet52.1000_VRF_IT
+  description: P2P_cv-pathfinder-transit1b_Ethernet52.1000_VRF_IT
   shutdown: false
   mtu: 9214
   vrf: IT
@@ -71,11 +71,11 @@ ethernet_interfaces:
     vlan: 1000
   ip_address: 172.17.0.2/31
   metadata:
-    peer: cv-pathfinder-transit1B
+    peer: cv-pathfinder-transit1b
     peer_interface: Ethernet52.1000
     peer_type: wan_router
 - name: Ethernet2.142
-  description: P2P_cv-pathfinder-transit1B_Ethernet52.142_VRF_PROD
+  description: P2P_cv-pathfinder-transit1b_Ethernet52.142_VRF_PROD
   shutdown: false
   mtu: 9214
   vrf: PROD
@@ -83,11 +83,11 @@ ethernet_interfaces:
     vlan: 142
   ip_address: 172.17.0.2/31
   metadata:
-    peer: cv-pathfinder-transit1B
+    peer: cv-pathfinder-transit1b
     peer_interface: Ethernet52.142
     peer_type: wan_router
 - name: Ethernet2.666
-  description: P2P_cv-pathfinder-transit1B_Ethernet52.666_VRF_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_cv-pathfinder-transit1b_Ethernet52.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   mtu: 9214
   vrf: ATTRACTED-VRF-FROM-UPLINK
@@ -95,7 +95,7 @@ ethernet_interfaces:
     vlan: 666
   ip_address: 172.17.0.2/31
   metadata:
-    peer: cv-pathfinder-transit1B
+    peer: cv-pathfinder-transit1b
     peer_interface: Ethernet52.666
     peer_type: wan_router
 hostname: site-ha-enabled-leaf1
@@ -149,28 +149,20 @@ router_bgp:
     metadata:
       type: ipv4
     send_community: all
-    maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    metadata:
-      type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
+    maximum_routes: 256000
   neighbors:
   - ip_address: 172.17.0.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     metadata:
-      peer: cv-pathfinder-transit1A
-    description: cv-pathfinder-transit1A_Ethernet52
+      peer: cv-pathfinder-transit1a
+    description: cv-pathfinder-transit1a_Ethernet52
   - ip_address: 172.17.0.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     metadata:
-      peer: cv-pathfinder-transit1B
-    description: cv-pathfinder-transit1B_Ethernet52
+      peer: cv-pathfinder-transit1b
+    description: cv-pathfinder-transit1b_Ethernet52
   redistribute:
     connected:
       enabled: true
@@ -178,7 +170,8 @@ router_bgp:
   vlans:
   - id: 100
     metadata:
-      tenant: TenantA
+      tenants:
+      - TenantA
     rd: 192.168.45.1:1100
     route_targets:
       both:
@@ -187,7 +180,8 @@ router_bgp:
     - learned
   - id: 101
     metadata:
-      tenant: TenantA
+      tenants:
+      - TenantA
     rd: 192.168.45.1:1101
     route_targets:
       both:
@@ -196,23 +190,18 @@ router_bgp:
     - learned
   - id: 666
     metadata:
-      tenant: TenantC
+      tenants:
+      - TenantC
     rd: 192.168.45.1:1666
     route_targets:
       both:
       - 1666:1666
     redistribute_routes:
     - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   vrfs:
   - name: IT
     rd: 192.168.45.1:1000
@@ -230,11 +219,11 @@ router_bgp:
     - ip_address: 172.17.0.1
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-transit1A_Ethernet52.1000_vrf_IT
+      description: cv-pathfinder-transit1a_Ethernet52.1000_vrf_IT
     - ip_address: 172.17.0.3
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-transit1B_Ethernet52.1000_vrf_IT
+      description: cv-pathfinder-transit1b_Ethernet52.1000_vrf_IT
     redistribute:
       connected:
         enabled: true
@@ -254,11 +243,11 @@ router_bgp:
     - ip_address: 172.17.0.1
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-transit1A_Ethernet52.142_vrf_PROD
+      description: cv-pathfinder-transit1a_Ethernet52.142_vrf_PROD
     - ip_address: 172.17.0.3
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-transit1B_Ethernet52.142_vrf_PROD
+      description: cv-pathfinder-transit1b_Ethernet52.142_vrf_PROD
     redistribute:
       connected:
         enabled: true
@@ -278,11 +267,11 @@ router_bgp:
     - ip_address: 172.17.0.1
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-transit1A_Ethernet52.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+      description: cv-pathfinder-transit1a_Ethernet52.666_vrf_ATTRACTED-VRF-FROM-UPLINK
     - ip_address: 172.17.0.3
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
-      description: cv-pathfinder-transit1B_Ethernet52.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+      description: cv-pathfinder-transit1b_Ethernet52.666_vrf_ATTRACTED-VRF-FROM-UPLINK
     redistribute:
       connected:
         enabled: true
@@ -306,14 +295,16 @@ vlan_interfaces:
   vrf: PROD
   ip_address_virtual: 10.0.100.1/24
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: Vlan666
   description: VLAN666
   shutdown: true
   vrf: ATTRACTED-VRF-FROM-UPLINK
   ip_address_virtual: 10.66.66.66/24
   metadata:
-    tenant: TenantC
+    tenants:
+    - TenantC
 vlan_internal_order:
   allocation: ascending
   range:
@@ -323,30 +314,36 @@ vlans:
 - id: 100
   name: VLAN100
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - id: 101
   name: VLAN101
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - id: 666
   name: VLAN666
   metadata:
-    tenant: TenantC
+    tenants:
+    - TenantC
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: IT
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: PROD
   ip_routing: true
   metadata:
-    tenant: TenantA
+    tenants:
+    - TenantA
 - name: ATTRACTED-VRF-FROM-UPLINK
   ip_routing: true
   metadata:
-    tenant: TenantC
+    tenants:
+    - TenantC
 vxlan_interface:
   vxlan1:
     description: site-ha-enabled-leaf1_VTEP

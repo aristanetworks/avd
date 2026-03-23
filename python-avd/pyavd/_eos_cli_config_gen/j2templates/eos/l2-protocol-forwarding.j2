@@ -1,12 +1,12 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
 {% if l2_protocol is arista.avd.defined %}
 !
 l2-protocol
-{%     for profile in l2_protocol.forwarding_profiles | arista.avd.natural_sort('name') %}
+{%     for profile in l2_protocol.forwarding_profiles | arista.avd.natural_sort('name', ignore_case=false) %}
    forwarding profile {{ profile.name }}
 {%         for protocol in profile.protocols %}
 {%             if protocol.forward is arista.avd.defined(true) %}

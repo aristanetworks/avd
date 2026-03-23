@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -13,7 +13,7 @@ from pyavd._utils import template_var
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable, Sequence
+    from collections.abc import Iterable, MutableMapping, Sequence
     from typing import TypeVar
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
@@ -75,7 +75,7 @@ class UtilsMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
         return self.peer_facts[peer_name]
 
-    def template_var(self: SharedUtilsProtocol, template_file: str, template_vars: dict) -> str:
+    def template_var(self: SharedUtilsProtocol, template_file: str, template_vars: MutableMapping) -> str:
         """Run the simplified templater using the passed Ansible "templar" engine."""
         try:
             return template_var(template_file, template_vars, self.templar)
@@ -301,3 +301,21 @@ class UtilsMixin(Protocol):
                 return self.inband_mgmt_vrf or "default"
             case _:
                 return vrf_input
+
+    def get_local_interface(self: SharedUtilsProtocol, input_interface: str | None) -> str | None:
+        """
+        Resolve and return the appropriate local interface.
+
+        Given an `input_interface`, this function determines the corresponding local interface.
+        If the input is None, empty, or one of the predefined keywords, it returns the relevant
+        management or inband interface.
+        Otherwise, the provided interface name is returned as-is.
+        """
+        match input_interface:
+            case None | "" | "use_default_mgmt_method_interface":
+                return self.default_mgmt_protocol_interface
+            case "use_mgmt_interface":
+                return self.mgmt_interface
+            case "use_inband_mgmt_interface":
+                return self.inband_mgmt_interface
+        return input_interface

@@ -1,14 +1,13 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import json
 import sys
-from copy import deepcopy
 from unittest.mock import patch
 
 import pytest
 
 from pyavd import get_device_structured_config, validate_inputs
+from pyavd.api.schemas import AVDDesign, EOSConfig
 from tests.models import MoleculeHost
 
 
@@ -36,19 +35,25 @@ from tests.models import MoleculeHost
 @pytest.mark.digital_twin_molecule_scenarios("digital_twin")
 def test_get_device_structured_config(molecule_host: MoleculeHost) -> None:
     """Test get_device_structured_config."""
-    inputs = deepcopy(molecule_host.hostvars)
+    hostvars = molecule_host.hostvars
 
-    # run validation on inputs to ensure it is converted
-    validate_inputs(inputs)
+    # Validate inputs
+    validated_data_result = validate_inputs(hostvars)
 
-    expected_structured_config = deepcopy(molecule_host.structured_config)
+    assert validated_data_result.validated_data is not None
+
+    design = AVDDesign._from_dict(validated_data_result.validated_data)
+
+    expected_structured_config = molecule_host.structured_config
 
     with patch("sys.path", [*sys.path, *molecule_host.scenario.extra_python_paths]):
         avd_facts = molecule_host.scenario.avd_facts
-        structured_config = get_device_structured_config(molecule_host.name, inputs, avd_facts, digital_twin=molecule_host.scenario.digital_twin)
+        # We need hostvars for those few tests where we have custom ip addressing / description logic reading hostvars...
+        structured_config = get_device_structured_config(
+            molecule_host.name, design, avd_facts, hostvars=hostvars, digital_twin=molecule_host.scenario.digital_twin
+        )
 
-    assert isinstance(structured_config, dict)
-    assert molecule_host.name == structured_config["hostname"]
-    assert expected_structured_config == structured_config
-    # Test that we can dump the returned data as json.
-    assert json.dumps(structured_config)
+    assert isinstance(structured_config, EOSConfig)
+    assert molecule_host.name == structured_config.hostname
+    # Comparing with dict to get better assert output on diff.
+    assert expected_structured_config == structured_config._as_dict()

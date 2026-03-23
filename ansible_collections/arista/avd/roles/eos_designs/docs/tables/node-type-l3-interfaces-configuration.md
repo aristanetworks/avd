@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 Arista Networks, Inc.
+  ~ Copyright (c) 2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "<node_type_keys.key>.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "<node_type_keys.key>.defaults.l3_interfaces") | List, items: Dictionary |  |  |  | L3 Interfaces to configure on the node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "<node_type_keys.key>.defaults.l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
@@ -57,7 +57,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces") | List, items: Dictionary |  |  |  | L3 Interfaces to configure on the node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
@@ -99,7 +99,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces") | List, items: Dictionary |  |  |  | L3 Interfaces to configure on the node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "<node_type_keys.key>.node_groups.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
@@ -143,7 +143,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces") | List, items: Dictionary |  |  |  | L3 Interfaces to configure on the node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "<node_type_keys.key>.nodes.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
@@ -187,7 +187,7 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "device_profiles.[].name") | String | Required, Unique |  |  | Profile Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "device_profiles.[].l3_interfaces") | List, items: Dictionary |  |  |  | L3 Interfaces to configure on the node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "device_profiles.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "device_profiles.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "device_profiles.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "device_profiles.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "device_profiles.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "device_profiles.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
@@ -231,7 +231,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l3_interfaces</samp>](## "devices.[].l3_interfaces") | List, items: Dictionary |  |  |  | L3 Interfaces to configure on the node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "devices.[].l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under `l3_interface_profiles`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "devices.[].l3_interfaces.[].name") | String | Required, Unique |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "devices.[].l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "devices.[].l3_interfaces.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "devices.[].l3_interfaces.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
@@ -273,7 +273,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "devices.[].l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
     | [<samp>l3_interface_profiles</samp>](## "l3_interface_profiles") | List, items: Dictionary |  |  |  | Profiles to inherit common settings for l3_interfaces defined under the node type key.<br>These profiles will *not* work for `l3_interfaces` defined under `vrfs`. |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "l3_interface_profiles.[].profile") | String | Required, Unique |  |  | L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "l3_interface_profiles.[].name") | String |  |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "l3_interface_profiles.[].name") | String |  |  | Pattern: `Ethernet[\d/]+(\.[\d]+)?` | Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.<br>For a subinterface, the parent physical interface is automatically created if not defined elsewhere. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_interface_profiles.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "l3_interface_profiles.[].ip_address") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_ip</samp>](## "l3_interface_profiles.[].dhcp_ip") | String |  |  |  | When the `ip_address` is `dhcp`, this optional field allows to indicate the expected<br>IPv4 address (without mask) to be allocated on the interface if known.<br>This is not rendered in the configuration but can be used for substitution of 'interface_ip' in the Access-list<br>set under `ipv4_acl_in` and `ipv4_acl_out`. |
@@ -329,7 +329,7 @@
           - profile: <str>
 
             # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-            # For a subinterface, the parent physical interface is automatically created.
+            # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
             name: <str; required; unique>
 
             # Interface description.
@@ -495,7 +495,7 @@
                 - profile: <str>
 
                   # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-                  # For a subinterface, the parent physical interface is automatically created.
+                  # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
                   name: <str; required; unique>
 
                   # Interface description.
@@ -648,7 +648,7 @@
             - profile: <str>
 
               # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-              # For a subinterface, the parent physical interface is automatically created.
+              # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
               name: <str; required; unique>
 
               # Interface description.
@@ -807,7 +807,7 @@
             - profile: <str>
 
               # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-              # For a subinterface, the parent physical interface is automatically created.
+              # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
               name: <str; required; unique>
 
               # Interface description.
@@ -966,7 +966,7 @@
           - profile: <str>
 
             # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-            # For a subinterface, the parent physical interface is automatically created.
+            # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
             name: <str; required; unique>
 
             # Interface description.
@@ -1125,7 +1125,7 @@
           - profile: <str>
 
             # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-            # For a subinterface, the parent physical interface is automatically created.
+            # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
             name: <str; required; unique>
 
             # Interface description.
@@ -1279,7 +1279,7 @@
       - profile: <str; required; unique>
 
         # Ethernet interface name like 'Ethernet2' or subinterface name like 'Ethernet2.42'.
-        # For a subinterface, the parent physical interface is automatically created.
+        # For a subinterface, the parent physical interface is automatically created if not defined elsewhere.
         name: <str>
 
         # Interface description.

@@ -3,7 +3,7 @@
 title: Ansible Collection Role eos_cli_config_gen
 ---
 <!--
-  ~ Copyright (c) 2023-2025 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2026 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -12,12 +12,11 @@ title: Ansible Collection Role eos_cli_config_gen
 
 ## Overview
 
-**eos_cli_config_gen**, is a role that generates eos cli syntax and device documentation.
+**eos_cli_config_gen**, is a role that generates EOS CLI configuration and device documentation.
 
 The **eos_cli_config_gen** role:
 
 - Designed to generate the intended configuration offline, without relying on switch current state information.
-- Facilitates the evaluation of the configuration prior to deployment with tools like [Batfish](https://www.batfish.org/)
 - Facilitates the evaluation of the configuration post deployment with [anta_runner](../anta_runner/README.md) role.
 
 ## Role Inputs and Outputs
@@ -29,26 +28,26 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 **Inputs:**
 
-- Structured EOS configuration according to supported data models.
+- [EOS Config](./docs/data-models.md) inputs according to supported data models.
 
 **Outputs:**
 
 - EOS configuration in CLI format.
-- Device Documentation in Markdown format.
+- Device documentation in Markdown format.
 
 **Tasks:**
 
-1. Import device structured configuration from YAML file unless `structured_config` flag is set by `eos_designs`.
+1. Load and validate input variables according to the EOS Config schema.
 2. Generate EOS configuration in CLI format.
-3. Generate Device Documentation in Markdown format.
+3. Generate device documentation in Markdown format.
 
 ## Requirements
 
 Requirements are located in the [collection installation guide](../../../../../docs/installation/collection-installation.md)
 
-## Input Variables
+## Data models
 
-The input variables are documented in the [Input Variables](docs/input-variables.md) section.
+The data models are documented in the [EOS Config data models](docs/data-models.md) section.
 
 ## Role Configuration
 

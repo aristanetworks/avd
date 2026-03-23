@@ -1,8 +1,9 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2023-2026 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from hashlib import sha1
 from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_designs.schema import EosDesigns
@@ -18,8 +19,8 @@ if TYPE_CHECKING:
 
     T_Source_Interfaces = TypeVar(
         "T_Source_Interfaces",
-        EosCliConfigGen.IpHttpClientSourceInterfaces,
-        EosCliConfigGen.IpSshClientSourceInterfaces,
+        EosCliConfigGen.IpHttpClient,
+        EosCliConfigGen.IpSshClient,
     )
 
     T_RadiusOrTacacsServer = TypeVar("T_RadiusOrTacacsServer", EosDesigns.AaaSettings.Radius.ServersItem, EosDesigns.AaaSettings.Tacacs.ServersItem)
@@ -53,9 +54,10 @@ class UtilsMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
 
             # mgmt_interface is always set (defaults to "Management1") so no need for error handling missing interface.
-            source_interfaces.append_new(
-                name=self.shared_utils.mgmt_interface, vrf=self.inputs.mgmt_interface_vrf if self.inputs.mgmt_interface_vrf != "default" else None
-            )
+            if self.inputs.mgmt_interface_vrf != "default":
+                source_interfaces.vrfs.append_new(source_interface=self.shared_utils.mgmt_interface, name=self.inputs.mgmt_interface_vrf)
+            else:
+                source_interfaces.source_interface = self.shared_utils.mgmt_interface
 
         if include_inband_mgmt_interface:
             # Check for missing interface
@@ -66,14 +68,17 @@ class UtilsMixin(Protocol):
             # Check for duplicate VRF
             # inband_mgmt_vrf returns None in case of VRF "default", but here we want the "default" VRF name to have proper duplicate detection.
             inband_mgmt_vrf = self.shared_utils.inband_mgmt_vrf or "default"
-            if [source_interface for source_interface in source_interfaces if (source_interface.vrf or "default") == inband_mgmt_vrf]:
+            if include_mgmt_interface and (inband_mgmt_vrf == self.inputs.mgmt_interface_vrf):
                 msg = f"Unable to configure multiple {error_context} source-interfaces for the same VRF '{inband_mgmt_vrf}'."
                 raise AristaAvdError(msg)
 
-            source_interfaces.append_new(
-                name=self.shared_utils.inband_mgmt_interface,
-                vrf=self.shared_utils.inband_mgmt_vrf,
-            )
+            if inband_mgmt_vrf == "default":
+                source_interfaces.source_interface = self.shared_utils.inband_mgmt_interface
+            else:
+                source_interfaces.vrfs.append_new(
+                    source_interface=self.shared_utils.inband_mgmt_interface,
+                    name=inband_mgmt_vrf,
+                )
 
         return source_interfaces
 
@@ -109,3 +114,19 @@ class UtilsMixin(Protocol):
 
         msg = f"`{path_prefix}.key` or `{path_prefix}.cleartext_key`"
         raise AristaAvdMissingVariableError(msg)
+
+    def get_salt(self: AvdStructuredConfigBaseProtocol, string: str) -> str:
+        """
+        Computes the SHA1 hash of the input string and returns a truncated version of the hash.
+
+        The SHA1 hash is computed, and the resulting hexadecimal digest is truncated to a maximum of 16 characters.
+        This function is flagged with 'NOSONAR' to indicate that the use of SHA1 is intentional
+        and not a security vulnerability in this context, as it is used for generating a salt.
+
+        Args:
+            string: The input string to be hashed.
+
+        Returns:
+            A string representing the truncated SHA1 hash (salt), with a maximum length of 16 characters.
+        """
+        return sha1(string.encode(), usedforsecurity=False).hexdigest()[:16]  # NOSONAR

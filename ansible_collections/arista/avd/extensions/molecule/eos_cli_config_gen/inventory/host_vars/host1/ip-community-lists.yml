@@ -21,3 +21,8 @@ ip_community_lists:
     entries:
       - action: deny
         regexp: ^100
+  # Test for sort with ignore_case: false
+  - name: aa_test3
+    entries:
+      - action: deny
+        regexp: ^100

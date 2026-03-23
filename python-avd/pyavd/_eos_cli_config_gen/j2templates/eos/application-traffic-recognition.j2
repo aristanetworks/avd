@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023-2025 Arista Networks, Inc.
+ Copyright (c) 2023-2026 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -17,7 +17,7 @@ application traffic recognition
 {%             if application.dest_prefix_set_name is arista.avd.defined %}
       destination prefix field-set {{ application.dest_prefix_set_name }}
 {%             endif %}
-{%             for protocol in application.protocols | arista.avd.natural_sort() %}
+{%             for protocol in application.protocols | arista.avd.natural_sort %}
 {%                 set config = [protocol] %}
 {%                 if protocol == "tcp" %}
 {%                     if application.tcp_src_port_set_name is arista.avd.defined %}
@@ -38,7 +38,7 @@ application traffic recognition
       protocol {{ config | join(" ") }}
 {%             endfor %}
 {%             if application.protocol_ranges is arista.avd.defined %}
-      protocol {{ application.protocol_ranges | arista.avd.natural_sort('name') | join(", ") }}
+      protocol {{ application.protocol_ranges | arista.avd.natural_sort(sort_key='name') | join(", ") }}
 {%             endif %}
 {%             if application.dscp_ranges is arista.avd.defined %}
       dscp {{ application.dscp_ranges | join(" ") }}
@@ -47,7 +47,7 @@ application traffic recognition
 {%         for application in application_traffic_recognition.applications.l4_applications | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    application l4 {{ application.name }}
-{%             for protocol in application.protocols | arista.avd.natural_sort() %}
+{%             for protocol in application.protocols | arista.avd.natural_sort %}
 {%                 set config = [protocol] %}
 {%                 if protocol == "tcp" %}
 {%                     if application.tcp_src_port_set_name is arista.avd.defined %}
@@ -68,7 +68,7 @@ application traffic recognition
       protocol {{ config | join(" ") }}
 {%             endfor %}
 {%             if application.protocol_ranges is arista.avd.defined %}
-      protocol {{ application.protocol_ranges | arista.avd.natural_sort('name') | join(", ") }}
+      protocol {{ application.protocol_ranges | arista.avd.natural_sort(sort_key='name') | join(", ") }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
@@ -76,7 +76,7 @@ application traffic recognition
 {%     for category in application_traffic_recognition.categories | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    category {{ category.name }}
-{%         for app_details in category.applications | arista.avd.natural_sort('name') | arista.avd.natural_sort('service', strict=False) %}
+{%         for app_details in category.applications | arista.avd.natural_sort(sort_key='name') | arista.avd.natural_sort(sort_key='service', strict=False) %}
 {%             if app_details.service is  arista.avd.defined %}
       application {{ app_details.name }} service {{ app_details.service }}
 {%             else %}
@@ -87,7 +87,7 @@ application traffic recognition
 {%     for application_profile in application_traffic_recognition.application_profiles | arista.avd.natural_sort(sort_key='name', ignore_case=false) %}
    !
    application-profile {{ application_profile.name }}
-{%         for application in application_profile.applications | arista.avd.natural_sort('name') | arista.avd.natural_sort('service', strict=False) %}
+{%         for application in application_profile.applications | arista.avd.natural_sort(sort_key='name') | arista.avd.natural_sort(sort_key='service', strict=False) %}
 {%             if application.service is arista.avd.defined %}
       application {{ application.name }} service {{ application.service }}
 {%             else %}
@@ -97,7 +97,7 @@ application traffic recognition
 {%         for transport in application_profile.application_transports | arista.avd.natural_sort %}
       application {{ transport }} transport
 {%         endfor %}
-{%         for category in application_profile.categories | arista.avd.natural_sort %}
+{%         for category in application_profile.categories | arista.avd.natural_sort(sort_key="name") %}
 {%             if category.service is arista.avd.defined %}
       category {{ category.name }} service {{ category.service }}
 {%             else %}

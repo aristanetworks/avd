@@ -50,3 +50,5 @@ l3leaf:
       id: 12
       ptp:
         profile: my-custom-ptp-profile
+        free_running:
+          enabled: false
