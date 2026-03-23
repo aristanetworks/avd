@@ -747,8 +747,7 @@ $defs:
                       Defines the rewriting mode for EVPN L3 inter-domain routing.
                       - next-hop-self: (default) Configures "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
                         in address-family evpn to rewrite the next-hop for type-5 routes received from remote gateways.
-                      - rd-rt-rewrite: Configures "rd evpn domain all" and "route-target import/export evpn domain all" for each VRF.
-                        Does not configure "next-hop-self" for received EVPN routes.
+                      - rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.
               d_path:
                 type: dict
                 keys:
