@@ -111,23 +111,6 @@ l3leaf:
           enabled: true
           mode: rd-rt-rewrite
 
-    - name: evpn-gateway-l2-l3-rd-rt-rewrite
-      id: 7
-      mgmt_ip: 192.168.0.210/24
-      evpn_route_servers: [evpn-gateway-l2-evpn-role-server]
-      filter:
-        tenants: [ EVPN_GATEWAY_TESTS ]
-      evpn_gateway:
-        remote_peers:
-          - hostname: DCI_TEST
-            ip_address: 192.168.100.10
-            bgp_as: 65002
-        evpn_l2:
-          enabled: true
-        evpn_l3:
-          enabled: true
-          mode: rd-rt-rewrite
-
 tenants:
   - name: EVPN_GATEWAY_TESTS
     mac_vrf_vni_base: 10000
