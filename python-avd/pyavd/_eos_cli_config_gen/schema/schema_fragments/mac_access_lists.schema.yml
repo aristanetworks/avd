@@ -27,6 +27,7 @@ keys:
                 type: int
                 convert_types:
                 - str
+              # Action is not required key as `remark` will be added in future.
               action:
                 type: str
                 required: true
