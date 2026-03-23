@@ -279,9 +279,11 @@ class RouterBgpMixin(Protocol):
         """In-place update EVPN/MPLS part of structured config for *one* VRF under router_bgp.vrfs."""
         vrf_rd = self.get_vrf_rd(vrf, tenant)
         vrf_rt = self.get_vrf_rt(vrf)
-        if not (is_rd_rt_rewrite := (
-            self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite"
-        )):
+        if not (
+            is_rd_rt_rewrite := (
+                self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite"
+            )
+        ):
             bgp_vrf.rd = vrf_rd
 
             for af in sorted(vrf_address_families):
