@@ -7442,12 +7442,10 @@ class EosDesigns(EosDesignsRootModel):
                 mode: Mode
                 """
                 Defines the rewriting mode for EVPN L3 inter-domain routing.
-                - next-hop-self: (default) Configures
-                "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                  in address-family evpn
-                to rewrite the next-hop for type-5 routes received from remote gateways.
-                - rd-rt-rewrite: Re-write
-                RD and RT for the routes from external EVPN domains.
+                - next-hop-self: (default) RD and RT
+                values for the routes coming from remote EVPN domain are not modifed.
+                - rd-rt-rewrite: Re-write RD
+                and RT for the routes from external EVPN domains.
 
                 Default value: `"next-hop-self"`
                 """
@@ -7472,12 +7470,10 @@ class EosDesigns(EosDesignsRootModel):
                             inter_domain: inter_domain
                             mode:
                                Defines the rewriting mode for EVPN L3 inter-domain routing.
-                               - next-hop-self: (default) Configures
-                               "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                                 in address-family evpn
-                               to rewrite the next-hop for type-5 routes received from remote gateways.
-                               - rd-rt-rewrite: Re-write
-                               RD and RT for the routes from external EVPN domains.
+                               - next-hop-self: (default) RD and RT
+                               values for the routes coming from remote EVPN domain are not modifed.
+                               - rd-rt-rewrite: Re-write RD
+                               and RT for the routes from external EVPN domains.
 
                         """
 
@@ -12577,12 +12573,10 @@ class EosDesigns(EosDesignsRootModel):
                 mode: Mode
                 """
                 Defines the rewriting mode for EVPN L3 inter-domain routing.
-                - next-hop-self: (default) Configures
-                "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                  in address-family evpn
-                to rewrite the next-hop for type-5 routes received from remote gateways.
-                - rd-rt-rewrite: Re-write
-                RD and RT for the routes from external EVPN domains.
+                - next-hop-self: (default) RD and RT
+                values for the routes coming from remote EVPN domain are not modifed.
+                - rd-rt-rewrite: Re-write RD
+                and RT for the routes from external EVPN domains.
 
                 Default value: `"next-hop-self"`
                 """
@@ -12607,12 +12601,10 @@ class EosDesigns(EosDesignsRootModel):
                             inter_domain: inter_domain
                             mode:
                                Defines the rewriting mode for EVPN L3 inter-domain routing.
-                               - next-hop-self: (default) Configures
-                               "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                                 in address-family evpn
-                               to rewrite the next-hop for type-5 routes received from remote gateways.
-                               - rd-rt-rewrite: Re-write
-                               RD and RT for the routes from external EVPN domains.
+                               - next-hop-self: (default) RD and RT
+                               values for the routes coming from remote EVPN domain are not modifed.
+                               - rd-rt-rewrite: Re-write RD
+                               and RT for the routes from external EVPN domains.
 
                         """
 
@@ -36655,12 +36647,10 @@ class EosDesigns(EosDesignsRootModel):
                             mode: Mode
                             """
                             Defines the rewriting mode for EVPN L3 inter-domain routing.
-                            - next-hop-self: (default) Configures
-                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                              in address-family evpn
-                            to rewrite the next-hop for type-5 routes received from remote gateways.
-                            - rd-rt-rewrite: Re-write
-                            RD and RT for the routes from external EVPN domains.
+                            - next-hop-self: (default) RD and RT
+                            values for the routes coming from remote EVPN domain are not modifed.
+                            - rd-rt-rewrite: Re-write RD
+                            and RT for the routes from external EVPN domains.
 
                             Default value: `"next-hop-self"`
                             """
@@ -36685,12 +36675,10 @@ class EosDesigns(EosDesignsRootModel):
                                         inter_domain: inter_domain
                                         mode:
                                            Defines the rewriting mode for EVPN L3 inter-domain routing.
-                                           - next-hop-self: (default) Configures
-                                           "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                                             in address-family evpn
-                                           to rewrite the next-hop for type-5 routes received from remote gateways.
-                                           - rd-rt-rewrite: Re-write
-                                           RD and RT for the routes from external EVPN domains.
+                                           - next-hop-self: (default) RD and RT
+                                           values for the routes coming from remote EVPN domain are not modifed.
+                                           - rd-rt-rewrite: Re-write RD
+                                           and RT for the routes from external EVPN domains.
 
                                     """
 
@@ -41767,12 +41755,10 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Mode
                                 """
                                 Defines the rewriting mode for EVPN L3 inter-domain routing.
-                                - next-hop-self: (default) Configures
-                                "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                                  in address-family evpn
-                                to rewrite the next-hop for type-5 routes received from remote gateways.
-                                - rd-rt-rewrite: Re-write
-                                RD and RT for the routes from external EVPN domains.
+                                - next-hop-self: (default) RD and RT
+                                values for the routes coming from remote EVPN domain are not modifed.
+                                - rd-rt-rewrite: Re-write RD
+                                and RT for the routes from external EVPN domains.
 
                                 Default value: `"next-hop-self"`
                                 """
@@ -41797,12 +41783,10 @@ class EosDesigns(EosDesignsRootModel):
                                             inter_domain: inter_domain
                                             mode:
                                                Defines the rewriting mode for EVPN L3 inter-domain routing.
-                                               - next-hop-self: (default) Configures
-                                               "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                                                 in address-family evpn
-                                               to rewrite the next-hop for type-5 routes received from remote gateways.
-                                               - rd-rt-rewrite: Re-write
-                                               RD and RT for the routes from external EVPN domains.
+                                               - next-hop-self: (default) RD and RT
+                                               values for the routes coming from remote EVPN domain are not modifed.
+                                               - rd-rt-rewrite: Re-write RD
+                                               and RT for the routes from external EVPN domains.
 
                                         """
 
@@ -46842,12 +46826,10 @@ class EosDesigns(EosDesignsRootModel):
                             mode: Mode
                             """
                             Defines the rewriting mode for EVPN L3 inter-domain routing.
-                            - next-hop-self: (default) Configures
-                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                              in address-family evpn
-                            to rewrite the next-hop for type-5 routes received from remote gateways.
-                            - rd-rt-rewrite: Re-write
-                            RD and RT for the routes from external EVPN domains.
+                            - next-hop-self: (default) RD and RT
+                            values for the routes coming from remote EVPN domain are not modifed.
+                            - rd-rt-rewrite: Re-write RD
+                            and RT for the routes from external EVPN domains.
 
                             Default value: `"next-hop-self"`
                             """
@@ -46872,12 +46854,10 @@ class EosDesigns(EosDesignsRootModel):
                                         inter_domain: inter_domain
                                         mode:
                                            Defines the rewriting mode for EVPN L3 inter-domain routing.
-                                           - next-hop-self: (default) Configures
-                                           "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                                             in address-family evpn
-                                           to rewrite the next-hop for type-5 routes received from remote gateways.
-                                           - rd-rt-rewrite: Re-write
-                                           RD and RT for the routes from external EVPN domains.
+                                           - next-hop-self: (default) RD and RT
+                                           values for the routes coming from remote EVPN domain are not modifed.
+                                           - rd-rt-rewrite: Re-write RD
+                                           and RT for the routes from external EVPN domains.
 
                                     """
 
@@ -51980,12 +51960,10 @@ class EosDesigns(EosDesignsRootModel):
                             mode: Mode
                             """
                             Defines the rewriting mode for EVPN L3 inter-domain routing.
-                            - next-hop-self: (default) Configures
-                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                              in address-family evpn
-                            to rewrite the next-hop for type-5 routes received from remote gateways.
-                            - rd-rt-rewrite: Re-write
-                            RD and RT for the routes from external EVPN domains.
+                            - next-hop-self: (default) RD and RT
+                            values for the routes coming from remote EVPN domain are not modifed.
+                            - rd-rt-rewrite: Re-write RD
+                            and RT for the routes from external EVPN domains.
 
                             Default value: `"next-hop-self"`
                             """
@@ -52010,12 +51988,10 @@ class EosDesigns(EosDesignsRootModel):
                                         inter_domain: inter_domain
                                         mode:
                                            Defines the rewriting mode for EVPN L3 inter-domain routing.
-                                           - next-hop-self: (default) Configures
-                                           "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                                             in address-family evpn
-                                           to rewrite the next-hop for type-5 routes received from remote gateways.
-                                           - rd-rt-rewrite: Re-write
-                                           RD and RT for the routes from external EVPN domains.
+                                           - next-hop-self: (default) RD and RT
+                                           values for the routes coming from remote EVPN domain are not modifed.
+                                           - rd-rt-rewrite: Re-write RD
+                                           and RT for the routes from external EVPN domains.
 
                                     """
 
@@ -69979,12 +69955,10 @@ class EosDesigns(EosDesignsRootModel):
                             mode: Mode
                             """
                             Defines the rewriting mode for EVPN L3 inter-domain routing.
-                            - next-hop-self: (default) Configures
-                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                              in address-family evpn
-                            to rewrite the next-hop for type-5 routes received from remote gateways.
-                            - rd-rt-rewrite: Re-write
-                            RD and RT for the routes from external EVPN domains.
+                            - next-hop-self: (default) RD and RT
+                            values for the routes coming from remote EVPN domain are not modifed.
+                            - rd-rt-rewrite: Re-write RD
+                            and RT for the routes from external EVPN domains.
 
                             Default value: `"next-hop-self"`
                             """
@@ -70009,12 +69983,10 @@ class EosDesigns(EosDesignsRootModel):
                                         inter_domain: inter_domain
                                         mode:
                                            Defines the rewriting mode for EVPN L3 inter-domain routing.
-                                           - next-hop-self: (default) Configures
-                                           "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                                             in address-family evpn
-                                           to rewrite the next-hop for type-5 routes received from remote gateways.
-                                           - rd-rt-rewrite: Re-write
-                                           RD and RT for the routes from external EVPN domains.
+                                           - next-hop-self: (default) RD and RT
+                                           values for the routes coming from remote EVPN domain are not modifed.
+                                           - rd-rt-rewrite: Re-write RD
+                                           and RT for the routes from external EVPN domains.
 
                                     """
 
@@ -75091,12 +75063,10 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Mode
                                 """
                                 Defines the rewriting mode for EVPN L3 inter-domain routing.
-                                - next-hop-self: (default) Configures
-                                "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                                  in address-family evpn
-                                to rewrite the next-hop for type-5 routes received from remote gateways.
-                                - rd-rt-rewrite: Re-write
-                                RD and RT for the routes from external EVPN domains.
+                                - next-hop-self: (default) RD and RT
+                                values for the routes coming from remote EVPN domain are not modifed.
+                                - rd-rt-rewrite: Re-write RD
+                                and RT for the routes from external EVPN domains.
 
                                 Default value: `"next-hop-self"`
                                 """
@@ -75121,12 +75091,10 @@ class EosDesigns(EosDesignsRootModel):
                                             inter_domain: inter_domain
                                             mode:
                                                Defines the rewriting mode for EVPN L3 inter-domain routing.
-                                               - next-hop-self: (default) Configures
-                                               "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                                                 in address-family evpn
-                                               to rewrite the next-hop for type-5 routes received from remote gateways.
-                                               - rd-rt-rewrite: Re-write
-                                               RD and RT for the routes from external EVPN domains.
+                                               - next-hop-self: (default) RD and RT
+                                               values for the routes coming from remote EVPN domain are not modifed.
+                                               - rd-rt-rewrite: Re-write RD
+                                               and RT for the routes from external EVPN domains.
 
                                         """
 
@@ -80166,12 +80134,10 @@ class EosDesigns(EosDesignsRootModel):
                             mode: Mode
                             """
                             Defines the rewriting mode for EVPN L3 inter-domain routing.
-                            - next-hop-self: (default) Configures
-                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                              in address-family evpn
-                            to rewrite the next-hop for type-5 routes received from remote gateways.
-                            - rd-rt-rewrite: Re-write
-                            RD and RT for the routes from external EVPN domains.
+                            - next-hop-self: (default) RD and RT
+                            values for the routes coming from remote EVPN domain are not modifed.
+                            - rd-rt-rewrite: Re-write RD
+                            and RT for the routes from external EVPN domains.
 
                             Default value: `"next-hop-self"`
                             """
@@ -80196,12 +80162,10 @@ class EosDesigns(EosDesignsRootModel):
                                         inter_domain: inter_domain
                                         mode:
                                            Defines the rewriting mode for EVPN L3 inter-domain routing.
-                                           - next-hop-self: (default) Configures
-                                           "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                                             in address-family evpn
-                                           to rewrite the next-hop for type-5 routes received from remote gateways.
-                                           - rd-rt-rewrite: Re-write
-                                           RD and RT for the routes from external EVPN domains.
+                                           - next-hop-self: (default) RD and RT
+                                           values for the routes coming from remote EVPN domain are not modifed.
+                                           - rd-rt-rewrite: Re-write RD
+                                           and RT for the routes from external EVPN domains.
 
                                     """
 
@@ -85304,12 +85268,10 @@ class EosDesigns(EosDesignsRootModel):
                             mode: Mode
                             """
                             Defines the rewriting mode for EVPN L3 inter-domain routing.
-                            - next-hop-self: (default) Configures
-                            "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                              in address-family evpn
-                            to rewrite the next-hop for type-5 routes received from remote gateways.
-                            - rd-rt-rewrite: Re-write
-                            RD and RT for the routes from external EVPN domains.
+                            - next-hop-self: (default) RD and RT
+                            values for the routes coming from remote EVPN domain are not modifed.
+                            - rd-rt-rewrite: Re-write RD
+                            and RT for the routes from external EVPN domains.
 
                             Default value: `"next-hop-self"`
                             """
@@ -85334,12 +85296,10 @@ class EosDesigns(EosDesignsRootModel):
                                         inter_domain: inter_domain
                                         mode:
                                            Defines the rewriting mode for EVPN L3 inter-domain routing.
-                                           - next-hop-self: (default) Configures
-                                           "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                                             in address-family evpn
-                                           to rewrite the next-hop for type-5 routes received from remote gateways.
-                                           - rd-rt-rewrite: Re-write
-                                           RD and RT for the routes from external EVPN domains.
+                                           - next-hop-self: (default) RD and RT
+                                           values for the routes coming from remote EVPN domain are not modifed.
+                                           - rd-rt-rewrite: Re-write RD
+                                           and RT for the routes from external EVPN domains.
 
                                     """
 

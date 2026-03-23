@@ -19,7 +19,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.evpn_l3.mode") | String |  | `next-hop-self` | Valid Values:<br>- <code>next-hop-self</code><br>- <code>rd-rt-rewrite</code> | Defines the rewriting mode for EVPN L3 inter-domain routing.<br>- next-hop-self: (default) Configures "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"<br>  in address-family evpn to rewrite the next-hop for type-5 routes received from remote gateways.<br>- rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.evpn_l3.mode") | String |  | `next-hop-self` | Valid Values:<br>- <code>next-hop-self</code><br>- <code>rd-rt-rewrite</code> | Defines the rewriting mode for EVPN L3 inter-domain routing.<br>- next-hop-self: (default) RD and RT values for the routes coming from remote EVPN domain are not modifed.<br>- rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.d_path") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "<node_type_keys.key>.defaults.evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
@@ -46,7 +46,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.evpn_l3.mode") | String |  | `next-hop-self` | Valid Values:<br>- <code>next-hop-self</code><br>- <code>rd-rt-rewrite</code> | Defines the rewriting mode for EVPN L3 inter-domain routing.<br>- next-hop-self: (default) Configures "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"<br>  in address-family evpn to rewrite the next-hop for type-5 routes received from remote gateways.<br>- rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.evpn_l3.mode") | String |  | `next-hop-self` | Valid Values:<br>- <code>next-hop-self</code><br>- <code>rd-rt-rewrite</code> | Defines the rewriting mode for EVPN L3 inter-domain routing.<br>- next-hop-self: (default) RD and RT values for the routes coming from remote EVPN domain are not modifed.<br>- rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
@@ -69,7 +69,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.evpn_l3.mode") | String |  | `next-hop-self` | Valid Values:<br>- <code>next-hop-self</code><br>- <code>rd-rt-rewrite</code> | Defines the rewriting mode for EVPN L3 inter-domain routing.<br>- next-hop-self: (default) Configures "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"<br>  in address-family evpn to rewrite the next-hop for type-5 routes received from remote gateways.<br>- rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.evpn_l3.mode") | String |  | `next-hop-self` | Valid Values:<br>- <code>next-hop-self</code><br>- <code>rd-rt-rewrite</code> | Defines the rewriting mode for EVPN L3 inter-domain routing.<br>- next-hop-self: (default) RD and RT values for the routes coming from remote EVPN domain are not modifed.<br>- rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "<node_type_keys.key>.node_groups.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
@@ -94,7 +94,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.evpn_l3.mode") | String |  | `next-hop-self` | Valid Values:<br>- <code>next-hop-self</code><br>- <code>rd-rt-rewrite</code> | Defines the rewriting mode for EVPN L3 inter-domain routing.<br>- next-hop-self: (default) Configures "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"<br>  in address-family evpn to rewrite the next-hop for type-5 routes received from remote gateways.<br>- rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.evpn_l3.mode") | String |  | `next-hop-self` | Valid Values:<br>- <code>next-hop-self</code><br>- <code>rd-rt-rewrite</code> | Defines the rewriting mode for EVPN L3 inter-domain routing.<br>- next-hop-self: (default) RD and RT values for the routes coming from remote EVPN domain are not modifed.<br>- rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "<node_type_keys.key>.nodes.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
@@ -119,7 +119,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "device_profiles.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "device_profiles.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "device_profiles.[].evpn_gateway.evpn_l3.mode") | String |  | `next-hop-self` | Valid Values:<br>- <code>next-hop-self</code><br>- <code>rd-rt-rewrite</code> | Defines the rewriting mode for EVPN L3 inter-domain routing.<br>- next-hop-self: (default) Configures "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"<br>  in address-family evpn to rewrite the next-hop for type-5 routes received from remote gateways.<br>- rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "device_profiles.[].evpn_gateway.evpn_l3.mode") | String |  | `next-hop-self` | Valid Values:<br>- <code>next-hop-self</code><br>- <code>rd-rt-rewrite</code> | Defines the rewriting mode for EVPN L3 inter-domain routing.<br>- next-hop-self: (default) RD and RT values for the routes coming from remote EVPN domain are not modifed.<br>- rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "device_profiles.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "device_profiles.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "device_profiles.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
@@ -144,7 +144,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_l3</samp>](## "devices.[].evpn_gateway.evpn_l3") | Dictionary |  |  |  | Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].evpn_gateway.evpn_l3.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inter_domain</samp>](## "devices.[].evpn_gateway.evpn_l3.inter_domain") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "devices.[].evpn_gateway.evpn_l3.mode") | String |  | `next-hop-self` | Valid Values:<br>- <code>next-hop-self</code><br>- <code>rd-rt-rewrite</code> | Defines the rewriting mode for EVPN L3 inter-domain routing.<br>- next-hop-self: (default) Configures "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"<br>  in address-family evpn to rewrite the next-hop for type-5 routes received from remote gateways.<br>- rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "devices.[].evpn_gateway.evpn_l3.mode") | String |  | `next-hop-self` | Valid Values:<br>- <code>next-hop-self</code><br>- <code>rd-rt-rewrite</code> | Defines the rewriting mode for EVPN L3 inter-domain routing.<br>- next-hop-self: (default) RD and RT values for the routes coming from remote EVPN domain are not modifed.<br>- rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "devices.[].evpn_gateway.d_path") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "devices.[].evpn_gateway.d_path.enabled") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_domain_id</samp>](## "devices.[].evpn_gateway.d_path.local_domain_id") | String | Required |  |  | ASN(asplain):local_admin or ASN(asdot):local_admin notation |
@@ -197,8 +197,7 @@
             inter_domain: <bool; default=True>
 
             # Defines the rewriting mode for EVPN L3 inter-domain routing.
-            # - next-hop-self: (default) Configures "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-            #   in address-family evpn to rewrite the next-hop for type-5 routes received from remote gateways.
+            # - next-hop-self: (default) RD and RT values for the routes coming from remote EVPN domain are not modifed.
             # - rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.
             mode: <str; "next-hop-self" | "rd-rt-rewrite"; default="next-hop-self">
           d_path:
@@ -288,8 +287,7 @@
                   inter_domain: <bool; default=True>
 
                   # Defines the rewriting mode for EVPN L3 inter-domain routing.
-                  # - next-hop-self: (default) Configures "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-                  #   in address-family evpn to rewrite the next-hop for type-5 routes received from remote gateways.
+                  # - next-hop-self: (default) RD and RT values for the routes coming from remote EVPN domain are not modifed.
                   # - rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.
                   mode: <str; "next-hop-self" | "rd-rt-rewrite"; default="next-hop-self">
                 d_path:
@@ -366,8 +364,7 @@
               inter_domain: <bool; default=True>
 
               # Defines the rewriting mode for EVPN L3 inter-domain routing.
-              # - next-hop-self: (default) Configures "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-              #   in address-family evpn to rewrite the next-hop for type-5 routes received from remote gateways.
+              # - next-hop-self: (default) RD and RT values for the routes coming from remote EVPN domain are not modifed.
               # - rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.
               mode: <str; "next-hop-self" | "rd-rt-rewrite"; default="next-hop-self">
             d_path:
@@ -450,8 +447,7 @@
               inter_domain: <bool; default=True>
 
               # Defines the rewriting mode for EVPN L3 inter-domain routing.
-              # - next-hop-self: (default) Configures "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-              #   in address-family evpn to rewrite the next-hop for type-5 routes received from remote gateways.
+              # - next-hop-self: (default) RD and RT values for the routes coming from remote EVPN domain are not modifed.
               # - rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.
               mode: <str; "next-hop-self" | "rd-rt-rewrite"; default="next-hop-self">
             d_path:
@@ -534,8 +530,7 @@
             inter_domain: <bool; default=True>
 
             # Defines the rewriting mode for EVPN L3 inter-domain routing.
-            # - next-hop-self: (default) Configures "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-            #   in address-family evpn to rewrite the next-hop for type-5 routes received from remote gateways.
+            # - next-hop-self: (default) RD and RT values for the routes coming from remote EVPN domain are not modifed.
             # - rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.
             mode: <str; "next-hop-self" | "rd-rt-rewrite"; default="next-hop-self">
           d_path:
@@ -618,8 +613,7 @@
             inter_domain: <bool; default=True>
 
             # Defines the rewriting mode for EVPN L3 inter-domain routing.
-            # - next-hop-self: (default) Configures "neighbor default next-hop-self received-evpn-routes route-type ip-prefix"
-            #   in address-family evpn to rewrite the next-hop for type-5 routes received from remote gateways.
+            # - next-hop-self: (default) RD and RT values for the routes coming from remote EVPN domain are not modifed.
             # - rd-rt-rewrite: Re-write RD and RT for the routes from external EVPN domains.
             mode: <str; "next-hop-self" | "rd-rt-rewrite"; default="next-hop-self">
           d_path:
