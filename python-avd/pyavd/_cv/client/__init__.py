@@ -234,8 +234,7 @@ class CVClientProtocol(
         # Process optional Python dependencies
         for dependent_package in ["aristaproto", "grpclib", "python-socks", "requests"]:
             try:
-                if dependent_package_version := version(dependent_package):
-                    user_agent_parts.append(f"{dependent_package}/{dependent_package_version!s}")
+                user_agent_parts.append(f"{dependent_package}/{version(dependent_package)}")
             except PackageNotFoundError:  # noqa: PERF203
                 continue
 
