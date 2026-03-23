@@ -22,7 +22,23 @@ logging_settings:
       enabled: true
 
 monitor_connectivity:
+  # global address_only not set
   interval: 10
   hosts:
     - name: INTERNET_CHECK
+      # local address_only: true with local_interfaces
+      local_interfaces: Loopback0
+      address_only: true
       ip: 8.8.4.4
+    - name: INTERNET_CHECK_1
+      # local address_only not set no local_interfaces
+      ip: 8.8.4.5
+    - name: INTERNET_CHECK_2
+      local_interfaces: Loopback1
+      # local address_only: false
+      address_only: false
+      ip: 8.8.4.6
+    - name: INTERNET_CHECK_3
+      # local address_only not set with local_interfaces
+      local_interfaces: Loopback2
+      ip: 8.8.4.7

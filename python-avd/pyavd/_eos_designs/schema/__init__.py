@@ -23282,6 +23282,426 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class MonitorConnectivity(AvdModel):
+        """Subclass of AvdModel."""
+
+        class InterfaceSetsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
+            name: str
+            interfaces: str
+            """
+            Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
+            Multiple interface
+            ranges can be specified separated by ",".
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | UndefinedType = Undefined) -> None:
+                    """
+                    InterfaceSetsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: name
+                        interfaces:
+                           Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
+                           Multiple interface
+                           ranges can be specified separated by ",".
+
+                    """
+
+        class InterfaceSets(AvdIndexedList[str, InterfaceSetsItem]):
+            """Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        InterfaceSets._item_type = InterfaceSetsItem
+
+        class HostsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "description": {"type": str},
+                "single_line_description": {"type": str},
+                "ip": {"type": str},
+                "icmp_echo_size": {"type": int},
+                "local_interfaces": {"type": str},
+                "address_only": {"type": bool, "default": False},
+                "url": {"type": str},
+            }
+            name: str
+            """Host Name."""
+            description: str | None
+            """
+            Description in the form of
+            ```
+            description
+            <description>
+            ```
+            """
+            single_line_description: str | None
+            """
+            Description in the form of `description <description>`.
+            Supported in EOS versions 4.32.2F and above.
+            """
+            ip: str | None
+            icmp_echo_size: int | None
+            """Size of ICMP probe in bytes."""
+            local_interfaces: str | None
+            address_only: bool
+            """
+            When address-only is configured, the source IP of the packet is set to the interface
+            IP but the
+            packet may exit the device via a different interface.
+            When set to `false`, the probe uses the
+            interface to exit the device.
+
+            Default value: `False`
+            """
+            url: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    single_line_description: str | None | UndefinedType = Undefined,
+                    ip: str | None | UndefinedType = Undefined,
+                    icmp_echo_size: int | None | UndefinedType = Undefined,
+                    local_interfaces: str | None | UndefinedType = Undefined,
+                    address_only: bool | UndefinedType = Undefined,
+                    url: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    HostsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Host Name.
+                        description:
+                           Description in the form of
+                           ```
+                           description
+                           <description>
+                           ```
+                        single_line_description:
+                           Description in the form of `description <description>`.
+                           Supported in EOS versions 4.32.2F and above.
+                        ip: ip
+                        icmp_echo_size: Size of ICMP probe in bytes.
+                        local_interfaces: local_interfaces
+                        address_only:
+                           When address-only is configured, the source IP of the packet is set to the interface
+                           IP but the
+                           packet may exit the device via a different interface.
+                           When set to `false`, the probe uses the
+                           interface to exit the device.
+                        url: url
+
+                    """
+
+        class Hosts(AvdIndexedList[str, HostsItem]):
+            """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Hosts._item_type = HostsItem
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class InterfaceSetsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "interfaces": {"type": str}}
+                name: str
+                interfaces: str | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | UndefinedType = Undefined, interfaces: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        InterfaceSetsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: name
+                            interfaces: interfaces
+
+                        """
+
+            class InterfaceSets(AvdIndexedList[str, InterfaceSetsItem]):
+                """Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            InterfaceSets._item_type = InterfaceSetsItem
+
+            class HostsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "description": {"type": str},
+                    "single_line_description": {"type": str},
+                    "ip": {"type": str},
+                    "icmp_echo_size": {"type": int},
+                    "local_interfaces": {"type": str},
+                    "address_only": {"type": bool, "default": True},
+                    "url": {"type": str},
+                }
+                name: str
+                """Host name."""
+                description: str | None
+                """
+                Description in the form of
+                ```
+                description
+                <description>
+                ```
+                """
+                single_line_description: str | None
+                """
+                Description in the form of `description <description>`.
+                Supported in EOS versions 4.32.2F and above.
+                """
+                ip: str | None
+                icmp_echo_size: int | None
+                """Size of ICMP probe in bytes."""
+                local_interfaces: str | None
+                address_only: bool
+                """
+                When address-only is configured, the source IP of the packet is set to the interface
+                IP but the
+                packet may exit the device via a different interface.
+                When set to `false`, the probe uses the
+                interface to exit the device.
+
+                Default value: `True`
+                """
+                url: str | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        description: str | None | UndefinedType = Undefined,
+                        single_line_description: str | None | UndefinedType = Undefined,
+                        ip: str | None | UndefinedType = Undefined,
+                        icmp_echo_size: int | None | UndefinedType = Undefined,
+                        local_interfaces: str | None | UndefinedType = Undefined,
+                        address_only: bool | UndefinedType = Undefined,
+                        url: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        HostsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Host name.
+                            description:
+                               Description in the form of
+                               ```
+                               description
+                               <description>
+                               ```
+                            single_line_description:
+                               Description in the form of `description <description>`.
+                               Supported in EOS versions 4.32.2F and above.
+                            ip: ip
+                            icmp_echo_size: Size of ICMP probe in bytes.
+                            local_interfaces: local_interfaces
+                            address_only:
+                               When address-only is configured, the source IP of the packet is set to the interface
+                               IP but the
+                               packet may exit the device via a different interface.
+                               When set to `false`, the probe uses the
+                               interface to exit the device.
+                            url: url
+
+                        """
+
+            class Hosts(AvdIndexedList[str, HostsItem]):
+                """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Hosts._item_type = HostsItem
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "description": {"type": str},
+                "single_line_description": {"type": str},
+                "interface_sets": {"type": InterfaceSets},
+                "local_interfaces": {"type": str},
+                "address_only": {"type": bool, "default": True},
+                "hosts": {"type": Hosts},
+            }
+            name: str
+            """VRF Name."""
+            description: str | None
+            """
+            Description in the form of
+            ```
+            description
+            <description>
+            ```
+            """
+            single_line_description: str | None
+            """
+            Description in the form of `description <description>`.
+            Supported in EOS versions 4.32.2F and above.
+            """
+            interface_sets: InterfaceSets
+            """Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`)."""
+            local_interfaces: str | None
+            address_only: bool
+            """
+            When address-only is configured, the source IP of the packet is set to the interface
+            IP but the
+            packet may exit the device via a different interface.
+            When set to `false`, the probe uses the
+            interface to exit the device.
+
+            Default value: `True`
+            """
+            hosts: Hosts
+            """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    description: str | None | UndefinedType = Undefined,
+                    single_line_description: str | None | UndefinedType = Undefined,
+                    interface_sets: InterfaceSets | UndefinedType = Undefined,
+                    local_interfaces: str | None | UndefinedType = Undefined,
+                    address_only: bool | UndefinedType = Undefined,
+                    hosts: Hosts | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: VRF Name.
+                        description:
+                           Description in the form of
+                           ```
+                           description
+                           <description>
+                           ```
+                        single_line_description:
+                           Description in the form of `description <description>`.
+                           Supported in EOS versions 4.32.2F and above.
+                        interface_sets: Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`).
+                        local_interfaces: local_interfaces
+                        address_only:
+                           When address-only is configured, the source IP of the packet is set to the interface
+                           IP but the
+                           packet may exit the device via a different interface.
+                           When set to `false`, the probe uses the
+                           interface to exit the device.
+                        hosts: Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`).
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {
+            "shutdown": {"type": bool},
+            "interval": {"type": int},
+            "interface_sets": {"type": InterfaceSets},
+            "local_interfaces": {"type": str},
+            "address_only": {"type": bool, "default": False},
+            "hosts": {"type": Hosts},
+            "name_server_group": {"type": str},
+            "vrfs": {"type": Vrfs},
+        }
+        shutdown: bool | None
+        interval: int | None
+        interface_sets: InterfaceSets
+        """Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`)."""
+        local_interfaces: str | None
+        address_only: bool
+        """
+        When address-only is configured, the source IP of the packet is set to the interface
+        IP but the
+        packet may exit the device via a different interface.
+        When set to `false`, the probe uses the
+        interface to exit the device.
+
+        Default value: `False`
+        """
+        hosts: Hosts
+        """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`)."""
+        name_server_group: str | None
+        """Set name-server group."""
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                shutdown: bool | None | UndefinedType = Undefined,
+                interval: int | None | UndefinedType = Undefined,
+                interface_sets: InterfaceSets | UndefinedType = Undefined,
+                local_interfaces: str | None | UndefinedType = Undefined,
+                address_only: bool | UndefinedType = Undefined,
+                hosts: Hosts | UndefinedType = Undefined,
+                name_server_group: str | None | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
+            ) -> None:
+                """
+                MonitorConnectivity.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    shutdown: shutdown
+                    interval: interval
+                    interface_sets: Subclass of AvdIndexedList with `InterfaceSetsItem` items. Primary key is `name` (`str`).
+                    local_interfaces: local_interfaces
+                    address_only:
+                       When address-only is configured, the source IP of the packet is set to the interface
+                       IP but the
+                       packet may exit the device via a different interface.
+                       When set to `false`, the probe uses the
+                       interface to exit the device.
+                    hosts: Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`).
+                    name_server_group: Set name-server group.
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+
+                """
+
     class NetworkPortsItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -89675,7 +90095,7 @@ class EosDesigns(EosDesignsRootModel):
         "mlag_peer_svi_description": {"type": str, "default": "MLAG"},
         "mlag_peer_vlan_name": {"type": str, "default": "MLAG"},
         "mlag_port_channel_description": {"type": str, "default": "MLAG_{mlag_peer}_{peer_interface}"},
-        "monitor_connectivity": {"type": EosCliConfigGen.MonitorConnectivity},
+        "monitor_connectivity": {"type": MonitorConnectivity},
         "network_ports": {"type": NetworkPorts},
         "network_services_keys": {"type": NetworkServicesKeys, "default": lambda cls: coerce_type([{"name": "tenants"}], target_type=cls)},
         "custom_node_type_keys": {"type": CustomNodeTypeKeys},
@@ -91500,7 +91920,8 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"MLAG_{mlag_peer}_{peer_interface}"`
     """
-    monitor_connectivity: EosCliConfigGen.MonitorConnectivity
+    monitor_connectivity: MonitorConnectivity
+    """Subclass of AvdModel."""
     network_ports: NetworkPorts
     """Subclass of AvdList with `NetworkPortsItem` items."""
     network_services_keys: NetworkServicesKeys
@@ -92392,7 +92813,7 @@ class EosDesigns(EosDesignsRootModel):
             mlag_peer_svi_description: str | UndefinedType = Undefined,
             mlag_peer_vlan_name: str | UndefinedType = Undefined,
             mlag_port_channel_description: str | UndefinedType = Undefined,
-            monitor_connectivity: EosCliConfigGen.MonitorConnectivity | UndefinedType = Undefined,
+            monitor_connectivity: MonitorConnectivity | UndefinedType = Undefined,
             network_ports: NetworkPorts | UndefinedType = Undefined,
             network_services_keys: NetworkServicesKeys | UndefinedType = Undefined,
             custom_node_type_keys: CustomNodeTypeKeys | UndefinedType = Undefined,
@@ -93393,7 +93814,7 @@ class EosDesigns(EosDesignsRootModel):
 
                    By
                    default the description is templated from the name and port-channel interface of the MLAG peer.
-                monitor_connectivity: monitor_connectivity
+                monitor_connectivity: Subclass of AvdModel.
                 network_ports: Subclass of AvdList with `NetworkPortsItem` items.
                 network_services_keys:
                    Network Services can be grouped by using separate keys.

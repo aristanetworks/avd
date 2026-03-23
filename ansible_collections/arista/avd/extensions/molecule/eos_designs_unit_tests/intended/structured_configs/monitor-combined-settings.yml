@@ -36,10 +36,23 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 monitor_connectivity:
   interval: 10
-  address_only: true
+  address_only: false
   hosts:
   - name: INTERNET_CHECK
     ip: 8.8.4.4
+    local_interfaces: Loopback0
+    address_only: true
+  - name: INTERNET_CHECK_1
+    ip: 8.8.4.5
+    address_only: false
+  - name: INTERNET_CHECK_2
+    ip: 8.8.4.6
+    local_interfaces: Loopback1
+    address_only: false
+  - name: INTERNET_CHECK_3
+    ip: 8.8.4.7
+    local_interfaces: Loopback2
+    address_only: false
 monitor_layer1:
   enabled: true
   logging_transceiver:

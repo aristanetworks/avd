@@ -400,13 +400,23 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.monitor_connectivity._update(
             shutdown=self.inputs.monitor_connectivity.shutdown,
             interval=self.inputs.monitor_connectivity.interval,
-            interface_sets=self.inputs.monitor_connectivity.interface_sets,
+            interface_sets=self.inputs.monitor_connectivity.interface_sets._cast_as(EosCliConfigGen.MonitorConnectivity.InterfaceSets),
             local_interfaces=self.inputs.monitor_connectivity.local_interfaces,
             address_only=self.inputs.monitor_connectivity.address_only,
-            hosts=self.inputs.monitor_connectivity.hosts,
             name_server_group=self.inputs.monitor_connectivity.name_server_group,
-            vrfs=self.inputs.monitor_connectivity.vrfs,
+            vrfs=self.inputs.monitor_connectivity.vrfs._cast_as(EosCliConfigGen.MonitorConnectivity.Vrfs),
         )
+        for host in self.inputs.monitor_connectivity.hosts:
+            self.structured_config.monitor_connectivity.hosts.append_new(
+                name=host.name,
+                description=host.description,
+                single_line_description=host.single_line_description,
+                ip=host.ip,
+                icmp_echo_size=host.icmp_echo_size,
+                local_interfaces=host.local_interfaces,
+                address_only=host.address_only,
+                url=host.url,
+            )
 
     @structured_config_contributor
     def redundancy(self) -> None:

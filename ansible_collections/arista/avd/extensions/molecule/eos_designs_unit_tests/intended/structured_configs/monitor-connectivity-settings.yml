@@ -47,6 +47,13 @@ monitor_connectivity:
     description: Secondary DNS Server
     ip: 1.1.1.1
     icmp_echo_size: 100
+    local_interfaces: SET_INTERNET_1
+    address_only: false
+  - name: DNS3
+    description: Tertiory DNS Server
+    ip: 1.1.1.2
+    local_interfaces: SET_INTERNET_2
+    address_only: true
   vrfs:
   - name: MGMT
     description: Management VRF monitoring

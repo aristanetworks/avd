@@ -11,3 +11,42 @@ keys:
       table: system-settings
     $ref: "eos_cli_config_gen#/keys/monitor_connectivity"
     type: dict
+    keys:
+      shutdown:
+        type: bool
+      interval:
+        type: int
+        convert_types:
+          - str
+      interface_sets:
+        type: list
+      local_interfaces:
+        type: str
+      address_only:
+        type: bool
+        default: false
+      hosts:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            description:
+              type: str
+            single_line_description:
+              type: str
+            ip:
+              type: str
+            icmp_echo_size:
+              type: int
+              convert_types:
+                - str
+            local_interfaces:
+              type: str
+            address_only:
+              type: bool
+              default: false
+            url:
+              type: str

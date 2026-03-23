@@ -54,7 +54,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_connectivity.interface_sets.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "monitor_connectivity.interface_sets.[].interfaces") | String | Required |  |  | Interface range(s) should be of same type, Ethernet, Loopback, Management etc.<br>Multiple interface ranges can be specified separated by ",".<br> |
     | [<samp>&nbsp;&nbsp;local_interfaces</samp>](## "monitor_connectivity.local_interfaces") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;address_only</samp>](## "monitor_connectivity.address_only") | Boolean |  | `True` |  | When address-only is configured, the source IP of the packet is set to the interface<br>IP but the packet may exit the device via a different interface.<br>When set to `false`, the probe uses the interface to exit the device. |
+    | [<samp>&nbsp;&nbsp;address_only</samp>](## "monitor_connectivity.address_only") | Boolean |  | `False` |  | When address-only is configured, the source IP of the packet is set to the interface<br>IP but the packet may exit the device via a different interface.<br>When set to `false`, the probe uses the interface to exit the device. |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "monitor_connectivity.hosts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "monitor_connectivity.hosts.[].name") | String | Required, Unique |  |  | Host Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "monitor_connectivity.hosts.[].description") | String |  |  |  | Description in the form of<br>```<br>description<br><description><br>``` |
@@ -62,7 +62,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "monitor_connectivity.hosts.[].ip") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icmp_echo_size</samp>](## "monitor_connectivity.hosts.[].icmp_echo_size") | Integer |  |  | Min: 36<br>Max: 18024 | Size of ICMP probe in bytes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interfaces</samp>](## "monitor_connectivity.hosts.[].local_interfaces") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_only</samp>](## "monitor_connectivity.hosts.[].address_only") | Boolean |  | `True` |  | When address-only is configured, the source IP of the packet is set to the interface<br>IP but the packet may exit the device via a different interface.<br>When set to `false`, the probe uses the interface to exit the device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_only</samp>](## "monitor_connectivity.hosts.[].address_only") | Boolean |  | `False` |  | When address-only is configured, the source IP of the packet is set to the interface<br>IP but the packet may exit the device via a different interface.<br>When set to `false`, the probe uses the interface to exit the device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url</samp>](## "monitor_connectivity.hosts.[].url") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;name_server_group</samp>](## "monitor_connectivity.name_server_group") | String |  |  |  | Set name-server group. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "monitor_connectivity.vrfs") | List, items: Dictionary |  |  |  |  |
@@ -243,7 +243,7 @@
       # When address-only is configured, the source IP of the packet is set to the interface
       # IP but the packet may exit the device via a different interface.
       # When set to `false`, the probe uses the interface to exit the device.
-      address_only: <bool; default=True>
+      address_only: <bool; default=False>
       hosts:
 
           # Host Name.
@@ -268,7 +268,7 @@
           # When address-only is configured, the source IP of the packet is set to the interface
           # IP but the packet may exit the device via a different interface.
           # When set to `false`, the probe uses the interface to exit the device.
-          address_only: <bool; default=True>
+          address_only: <bool; default=False>
           url: <str>
 
       # Set name-server group.
