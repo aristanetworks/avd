@@ -124,8 +124,8 @@ class PortChannelInterfacesMixin(Protocol):
         self: AvdStructuredConfigUnderlayProtocol, l3_port_channel: EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
     ) -> None:
         """Set structured_configuration for one L3 Port-Channel."""
-        # Validation for l3_port_channel subinterface
         if "." in l3_port_channel.name:
+            # Validation for l3_port_channel subinterface
             if l3_port_channel.member_interfaces:
                 msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'member_interfaces' set. This is not a valid setting."
                 raise AristaAvdInvalidInputsError(msg)
@@ -133,6 +133,10 @@ class PortChannelInterfacesMixin(Protocol):
                 # Implies 'mode' is set when not applicable for a sub-interface.
                 msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mode' set. This is not a valid setting."
                 raise AristaAvdInvalidInputsError(msg)
+        # Validation: Non-subinterface port-channels must have at least one member interface
+        elif self.inputs.avd_design_future.raise_for_port_channels_without_members and not l3_port_channel.member_interfaces:
+            msg = f"L3 Port-Channel '{l3_port_channel.name}' must have at least one member interface defined."
+            raise AristaAvdInvalidInputsError(msg)
 
         # build common portion of the interface cfg
         interface = self._get_l3_common_interface_cfg(l3_port_channel)
