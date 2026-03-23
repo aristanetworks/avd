@@ -321,7 +321,7 @@ class RouterBgpMixin(Protocol):
         if self._exclude_mlag_ibgp_peering_from_redistribute(vrf, tenant):
             bgp_vrf.redistribute.connected._update(enabled=True, route_map="RM-CONN-2-BGP-VRFS")
             # Create route-map
-            self.set_once_route_map_connected_to_bgp_vrfs()
+            self.structured_config_utils.set_once_route_map_connected_to_bgp_vrfs()
 
         interface_name = f"Vlan{vlan_id}"
 
