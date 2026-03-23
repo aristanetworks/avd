@@ -254,7 +254,7 @@ cv_workspace_build_timeout: 300
 
 ##### Advanced role configuration
 
-Optional settings below provide direct control over Workspace and Change Control states.
+The optional settings below provide direct control over Workspace and Change Control states.
 
 ```yaml
 # Set the ID of the created Workspace. If a workspace with the same ID already exists, it must be in the 'pending' state.
