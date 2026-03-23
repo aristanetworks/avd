@@ -96,12 +96,15 @@ router_bgp:
     metadata:
       tenants:
       - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.7:10011
     rd_evpn_domain:
-      domain: all
+      domain: remote
       rd: 192.168.255.7:10011
     route_targets:
+      both:
+      - 10011:10011
       import_export_evpn_domains:
-      - domain: all
+      - domain: remote
         route_target: 10011:10011
     redistribute_routes:
     - learned
@@ -109,12 +112,15 @@ router_bgp:
     metadata:
       tenants:
       - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.7:10012
     rd_evpn_domain:
-      domain: all
+      domain: remote
       rd: 192.168.255.7:10012
     route_targets:
+      both:
+      - 10012:10012
       import_export_evpn_domains:
-      - domain: all
+      - domain: remote
         route_target: 10012:10012
     redistribute_routes:
     - learned
@@ -122,12 +128,15 @@ router_bgp:
     metadata:
       tenants:
       - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.7:10021
     rd_evpn_domain:
-      domain: all
+      domain: remote
       rd: 192.168.255.7:10021
     route_targets:
+      both:
+      - 10021:10021
       import_export_evpn_domains:
-      - domain: all
+      - domain: remote
         route_target: 10021:10021
     redistribute_routes:
     - learned
@@ -135,12 +144,15 @@ router_bgp:
     metadata:
       tenants:
       - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.7:10022
     rd_evpn_domain:
-      domain: all
+      domain: remote
       rd: 192.168.255.7:10022
     route_targets:
+      both:
+      - 10022:10022
       import_export_evpn_domains:
-      - domain: all
+      - domain: remote
         route_target: 10022:10022
     redistribute_routes:
     - learned
@@ -148,12 +160,15 @@ router_bgp:
     metadata:
       tenants:
       - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.7:10300
     rd_evpn_domain:
-      domain: all
+      domain: remote
       rd: 192.168.255.7:10300
     route_targets:
+      both:
+      - 10300:10300
       import_export_evpn_domains:
-      - domain: all
+      - domain: remote
         route_target: 10300:10300
     redistribute_routes:
     - learned
@@ -161,12 +176,15 @@ router_bgp:
     metadata:
       tenants:
       - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.7:13401
     rd_evpn_domain:
-      domain: all
+      domain: remote
       rd: 192.168.255.7:13401
     route_targets:
+      both:
+      - 13401:13401
       import_export_evpn_domains:
-      - domain: all
+      - domain: remote
         route_target: 13401:13401
     redistribute_routes:
     - learned
@@ -174,12 +192,15 @@ router_bgp:
     metadata:
       tenants:
       - EVPN_GATEWAY_TESTS
+    rd: 192.168.255.7:13402
     rd_evpn_domain:
-      domain: all
+      domain: remote
       rd: 192.168.255.7:13402
     route_targets:
+      both:
+      - 13402:13402
       import_export_evpn_domains:
-      - domain: all
+      - domain: remote
         route_target: 13402:13402
     redistribute_routes:
     - learned

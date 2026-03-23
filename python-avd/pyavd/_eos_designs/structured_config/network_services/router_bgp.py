@@ -473,22 +473,13 @@ class RouterBgpMixin(Protocol):
 
         vlan_rd = self.get_vlan_rd(vlan, tenant)
         vlan_rt = self.get_vlan_rt(vlan, tenant)
-        is_rd_rt_rewrite = (
-            self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite"
-        )
-        is_l2_multi_domain = self.shared_utils.node_config.evpn_gateway.evpn_l2.enabled and default(
-            vlan.evpn_l2_multi_domain, vrf.evpn_l2_multi_domain, tenant.evpn_l2_multi_domain
-        )
-        # In rd-rt-rewrite mode with L2 multi-domain, rd evpn domain all replaces the regular rd and route-target
-        suppress_base_rd_rt = bool(is_l2_multi_domain and is_rd_rt_rewrite)
 
         bgp_vlan = EosCliConfigGen.RouterBgp.VlansItem(
             id=vlan.id,
-            rd=None if suppress_base_rd_rt else vlan_rd,
+            rd=vlan_rd,
         )
         bgp_vlan.metadata.tenants.append_unique(tenant.name)
-        if not suppress_base_rd_rt:
-            bgp_vlan.route_targets.both.append(vlan_rt)
+        bgp_vlan.route_targets.both.append(vlan_rt)
         bgp_vlan.redistribute_routes.append("learned")
 
         if vlan.bgp.raw_eos_cli:
@@ -499,10 +490,11 @@ class RouterBgpMixin(Protocol):
                 vlan.bgp.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
 
-        if is_l2_multi_domain:
-            domain = "all" if is_rd_rt_rewrite else "remote"
-            bgp_vlan.rd_evpn_domain._update(domain=domain, rd=vlan_rd)
-            bgp_vlan.route_targets.import_export_evpn_domains.append_new(domain=domain, route_target=vlan_rt)
+        if self.shared_utils.node_config.evpn_gateway.evpn_l2.enabled and default(
+            vlan.evpn_l2_multi_domain, vrf.evpn_l2_multi_domain, tenant.evpn_l2_multi_domain
+        ):
+            bgp_vlan.rd_evpn_domain._update(domain="remote", rd=vlan_rd)
+            bgp_vlan.route_targets.import_export_evpn_domains.append_new(domain="remote", route_target=vlan_rt)
 
         vlan_evpn_l2_multicast_enabled = default(vlan.evpn_l2_multicast.enabled, tenant.evpn_l2_multicast.enabled) and self.shared_utils.evpn_multicast is True
         # if vlan_evpn_l2_multicast_enabled we redistribute igmp if:
