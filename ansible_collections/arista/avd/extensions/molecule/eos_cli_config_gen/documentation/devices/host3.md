@@ -331,8 +331,8 @@ ASN Notation: asplain
 
 | RIB | Enabled | Route-map |
 | --- | ------- | --------- |
-| ip | True | RM-rib2 |
-| tunnel | True | RM-rib3 |
+| IP | True | RM-rib2 |
+| Tunnel | True | RM-rib3 |
 
 #### Router BGP Path-Selection Address Family
 

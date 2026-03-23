@@ -61,10 +61,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;labeled_unicast</samp>](## "router_bgp.bgp.labeled_unicast") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rib</samp>](## "router_bgp.bgp.labeled_unicast.rib") | Dictionary |  |  |  | Configure LU RIB behavior for ip and/or tunnel. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "router_bgp.bgp.labeled_unicast.rib.ip") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.bgp.labeled_unicast.rib.ip.enabled") | Boolean |  |  |  | Install LU routes into IP RIB. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.bgp.labeled_unicast.rib.ip.enabled") | Boolean | Required |  |  | Install LU routes into IP RIB. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.bgp.labeled_unicast.rib.ip.route_map") | String |  |  |  | Route-map applied to IP RIB |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel</samp>](## "router_bgp.bgp.labeled_unicast.rib.tunnel") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.bgp.labeled_unicast.rib.tunnel.enabled") | Boolean |  |  |  | Install LU routes into Tunnel RIB. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.bgp.labeled_unicast.rib.tunnel.enabled") | Boolean | Required |  |  | Install LU routes into Tunnel RIB. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.bgp.labeled_unicast.rib.tunnel.route_map") | String |  |  |  | Route-map applied to tunnel RIB |
     | [<samp>&nbsp;&nbsp;listen_ranges</samp>](## "router_bgp.listen_ranges") | List, items: Dictionary |  |  |  | Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.listen_ranges.[].prefix") | String |  |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
@@ -1755,14 +1755,14 @@
             ip:
 
               # Install LU routes into IP RIB.
-              enabled: <bool>
+              enabled: <bool; required>
 
               # Route-map applied to IP RIB
               route_map: <str>
             tunnel:
 
               # Install LU routes into Tunnel RIB.
-              enabled: <bool>
+              enabled: <bool; required>
 
               # Route-map applied to tunnel RIB
               route_map: <str>

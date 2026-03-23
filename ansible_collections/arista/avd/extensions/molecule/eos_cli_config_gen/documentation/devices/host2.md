@@ -1225,8 +1225,8 @@ ASN Notation: asplain
 
 | RIB | Enabled | Route-map |
 | --- | ------- | --------- |
-| ip | True | RM-test2 |
-| tunnel | True | - |
+| IP | True | RM-test2 |
+| Tunnel | True | - |
 
 #### Router BGP Path-Selection Address Family
 

@@ -40370,14 +40370,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                        enabled: bool | None
+                        enabled: bool
                         """Install LU routes into IP RIB."""
                         route_map: str | None
                         """Route-map applied to IP RIB"""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Ip.
 
@@ -40394,14 +40394,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                        enabled: bool | None
+                        enabled: bool
                         """Install LU routes into Tunnel RIB."""
                         route_map: str | None
                         """Route-map applied to tunnel RIB"""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
                                 """
                                 Tunnel.
 
