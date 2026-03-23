@@ -746,7 +746,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             endfor %}
 {%         endif %}
 {%     endif %}
-{%     if router_bgp.bgp.labeled_unicast.rib is arista.avd.defined %}
+{%     if router_bgp.bgp.labeled_unicast.rib.ip is arista.avd.defined or router_bgp.bgp.labeled_unicast.rib.tunnel is arista.avd.defined %}
 
 ##### BGP LU RIB
 
