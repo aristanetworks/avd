@@ -280,8 +280,7 @@ class RouterBgpMixin(Protocol):
         vrf_rd = self.get_vrf_rd(vrf, tenant)
         vrf_rt = self.get_vrf_rt(vrf)
         is_rd_rt_rewrite = (
-            self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled
-            and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite"
+            self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite"
         )
 
         if not is_rd_rt_rewrite:
@@ -475,8 +474,7 @@ class RouterBgpMixin(Protocol):
         vlan_rd = self.get_vlan_rd(vlan, tenant)
         vlan_rt = self.get_vlan_rt(vlan, tenant)
         is_rd_rt_rewrite = (
-            self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled
-            and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite"
+            self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled and self.shared_utils.node_config.evpn_gateway.evpn_l3.mode == "rd-rt-rewrite"
         )
         is_l2_multi_domain = self.shared_utils.node_config.evpn_gateway.evpn_l2.enabled and default(
             vlan.evpn_l2_multi_domain, vrf.evpn_l2_multi_domain, tenant.evpn_l2_multi_domain
