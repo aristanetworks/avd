@@ -464,12 +464,17 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
     extra_fabric_validation = get(PLUGIN_ARGS, "avd_catalogs.extra_fabric_validation")
     output_dir = get(PLUGIN_ARGS, "avd_catalogs.output_dir")
     avd_catalogs_filters = get(PLUGIN_ARGS, "avd_catalogs.filters", default=[])
+    devices_unreachable_at_setup = []
 
     for device in devices:
-        anta_device = build_anta_device(device)
-        inventory.add_device(anta_device)
         # We generate the device's AVD catalog only if structured configs are loaded
         if STRUCTURED_CONFIGS is not None and FABRIC_DATA is not None:
+            structured_config = STRUCTURED_CONFIGS[device]
+            eapi_conifgs = structured_config.get("management_api_http", {})
+            if not eapi_conifgs.get("enable_https"):
+                devices_unreachable_at_setup.append(device)
+                continue
+
             settings = AVDCatalogGenerationSettings(
                 extra_fabric_validation=extra_fabric_validation,
                 output_dir=output_dir,
@@ -477,11 +482,18 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
             )
             catalog = get_device_test_catalog(
                 hostname=device,
-                structured_config=STRUCTURED_CONFIGS[device],
+                structured_config=structured_config,
                 fabric_data=FABRIC_DATA,
                 settings=settings,
             )
             catalogs.append(catalog)
+
+        anta_device = build_anta_device(device)
+        inventory.add_device(anta_device)
+
+    if (total_devices_unreachable := len(devices_unreachable_at_setup)) > 0:
+        device_list_str = ", ".join(sorted(devices_unreachable_at_setup))
+        LOGGER.info("%d devices found unreachable after connection attempts: %s", total_devices_unreachable, device_list_str)
 
     catalog = AntaCatalog.merge_catalogs(catalogs)
 
