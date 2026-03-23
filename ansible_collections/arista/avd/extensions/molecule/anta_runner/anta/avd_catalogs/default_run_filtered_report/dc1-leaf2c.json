@@ -101,6 +101,13 @@
             "repeat": 1
           },
           {
+            "destination": "10.255.2.3",
+            "source": "172.21.110.5",
+            "description": "dc1-wan3",
+            "vrf": "MGMT",
+            "repeat": 1
+          },
+          {
             "destination": "10.255.128.11",
             "source": "172.21.110.5",
             "description": "dc2-spine1",
