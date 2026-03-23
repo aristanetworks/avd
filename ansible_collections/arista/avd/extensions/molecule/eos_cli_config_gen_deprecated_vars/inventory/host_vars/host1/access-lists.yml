@@ -1,5 +1,5 @@
 ---
-### Access-Lists ###
+#### Test for deprecated key access_lists ###
 access_lists:
   - name: acl_qos_tc0_v4
     sequence_numbers:

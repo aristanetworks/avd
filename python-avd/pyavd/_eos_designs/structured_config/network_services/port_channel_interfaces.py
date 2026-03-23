@@ -55,10 +55,8 @@ class PortChannelInterfacesMixin(Protocol):
         """
         for vrf in tenant.vrfs:
             for l3_port_channel in vrf.l3_port_channels:
-                is_subinterface = "." in l3_port_channel.name
-
-                # Validation for l3_port_channel subinterface
-                if is_subinterface:
+                if is_subinterface := "." in l3_port_channel.name:
+                    # Validation for l3_port_channel subinterface
                     if l3_port_channel.member_interfaces:
                         msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'member_interfaces' set. This is not a valid setting."
                         raise AristaAvdInvalidInputsError(msg)
@@ -70,6 +68,10 @@ class PortChannelInterfacesMixin(Protocol):
                         # implies 'mtu' is set when not applicable for a sub-interface
                         msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mtu' set. This is not a valid setting."
                         raise AristaAvdInvalidInputsError(msg)
+                elif self.inputs.avd_design_future.raise_for_port_channels_without_members and not l3_port_channel.member_interfaces:
+                    # Validation: Non-subinterface port-channels must have at least one member interface
+                    msg = f"L3 Port-Channel '{l3_port_channel.name}' must have at least one member interface defined."
+                    raise AristaAvdInvalidInputsError(msg)
 
                 if not (interface_description := l3_port_channel.description):
                     interface_description = "_".join(filter(None, [l3_port_channel.peer, l3_port_channel.peer_port_channel]))
