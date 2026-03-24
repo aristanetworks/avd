@@ -30,6 +30,39 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
+- name: Ethernet15
+  description: l3_interface_sflow_true
+  shutdown: false
+  vrf: VRF1
+  ip_address: 10.255.15.1/30
+  metadata:
+    peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+- name: Ethernet16
+  description: l3_interface_sflow_false
+  shutdown: false
+  vrf: VRF1
+  ip_address: 10.255.16.1/30
+  metadata:
+    peer_type: l3_interface
+  sflow:
+    enable: false
+  switchport:
+    enabled: false
+- name: Ethernet17
+  description: l3_interface_sflow_unset
+  shutdown: false
+  vrf: VRF1
+  ip_address: 10.255.17.1/30
+  metadata:
+    peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
 - name: Ethernet10
   description: SERVER_single-interface-true_eth1
   shutdown: false
