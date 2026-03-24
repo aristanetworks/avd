@@ -120,9 +120,9 @@ vlan_interfaces:
   metadata:
     type: inband_mgmt
 - name: Vlan103
-  description: SVI103_INBAND_MGMT
+  description: SVI103_INBAND_MGMT_DEFAULT_VRF
   shutdown: false
-  vrf: MGMT_BACKUP
+  vrf: default
   ip_address: 10.103.103.1/24
   metadata:
     type: inband_mgmt
