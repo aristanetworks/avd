@@ -25,4 +25,3 @@ servers:
 
 expected_error_message: >-
   'mac_acls[name=acl1].entries[0].source_wildcard' is required but was not found for host 'missing-source-wildcard-mac-acl'.
-  
