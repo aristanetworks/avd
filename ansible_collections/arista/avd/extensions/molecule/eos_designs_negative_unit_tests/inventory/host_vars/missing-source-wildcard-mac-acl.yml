@@ -1,0 +1,28 @@
+---
+mac_acls:
+  - name: acl1
+    entries:
+      - sequence: 10
+        action: deny
+        source: 01:80:c2:00:00:00
+        destination: 01:80:c2:00:00:00
+        destination_wildcard: 00:00:00:00:00:00
+
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: missing-source-wildcard-mac-acl
+
+servers:
+  - name: server1
+    rack: RackB
+    adapters:
+      - endpoint_ports: [E0]
+        switch_ports: [Ethernet2]
+        switches: [missing-source-wildcard-mac-acl]
+        mac_acl_in: acl1
+
+expected_error_message: >-
+  'mac_acls[name=acl1].entries[0].source_wildcard' is required but was not found for host 'missing-source-wildcard-mac-acl'.
+  

@@ -278,10 +278,3 @@ class UtilsMixin(Protocol):
                 return adapter.vlans
 
         return Undefined
-
-    def _get_mac_acl(self: AvdStructuredConfigConnectedEndpointsProtocol, acl_name: str) -> EosDesigns.MacAclsItem:
-        """Returns MAC ACL."""
-        if acl_name not in self.inputs.mac_acls:
-            msg = f"mac_acls[name={acl_name}]"
-            raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
-        return self.inputs.mac_acls[acl_name]
