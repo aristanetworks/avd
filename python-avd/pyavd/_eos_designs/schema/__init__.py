@@ -917,7 +917,10 @@ class EosDesigns(EosDesignsRootModel):
     class AvdDesignFuture(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False}}
+        _fields: ClassVar[dict] = {
+            "remove_redundant_ipv4_unicast_for_peer_groups": {"type": bool, "default": False},
+            "raise_for_port_channels_without_members": {"type": bool, "default": False},
+        }
         remove_redundant_ipv4_unicast_for_peer_groups: bool
         """
         Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
@@ -925,10 +928,21 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        raise_for_port_channels_without_members: bool
+        """
+        Raise an error if an L3 Port-Channel is configured without any member interfaces.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                remove_redundant_ipv4_unicast_for_peer_groups: bool | UndefinedType = Undefined,
+                raise_for_port_channels_without_members: bool | UndefinedType = Undefined,
+            ) -> None:
                 """
                 AvdDesignFuture.
 
@@ -939,6 +953,7 @@ class EosDesigns(EosDesignsRootModel):
                     remove_redundant_ipv4_unicast_for_peer_groups:
                        Deactivate the IPv4 unicast Address Family for BGP Peer Groups only when IPv4 is activated by
                        default instead of always deactivating it.
+                    raise_for_port_channels_without_members: Raise an error if an L3 Port-Channel is configured without any member interfaces.
 
                 """
 
@@ -64731,6 +64746,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ospf": {"type": Ospf},
                             "pim": {"type": Pim},
                             "flow_tracking": {"type": FlowTracking},
+                            "sflow": {"type": bool},
                             "monitor_sessions": {"type": MonitorSessions},
                             "campus_link_type": {"type": CampusLinkType},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -64801,6 +64817,8 @@ class EosDesigns(EosDesignsRootModel):
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                         Subclass of AvdModel.
                         """
+                        sflow: bool | None
+                        """Configures sFlow on the interface. Overrides `fabric_sflow.l3_interfaces` setting."""
                         monitor_sessions: MonitorSessions
                         """
                         Used to define interfaces as source or destination for monitoring sessions.
@@ -64851,6 +64869,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ospf: Ospf | UndefinedType = Undefined,
                                 pim: Pim | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
+                                sflow: bool | None | UndefinedType = Undefined,
                                 monitor_sessions: MonitorSessions | UndefinedType = Undefined,
                                 campus_link_type: CampusLinkType | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -64909,6 +64928,7 @@ class EosDesigns(EosDesignsRootModel):
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                                        Subclass of AvdModel.
+                                    sflow: Configures sFlow on the interface. Overrides `fabric_sflow.l3_interfaces` setting.
                                     monitor_sessions:
                                        Used to define interfaces as source or destination for monitoring sessions.
 

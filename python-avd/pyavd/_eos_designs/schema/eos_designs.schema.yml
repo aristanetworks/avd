@@ -331,6 +331,11 @@ keys:
         description: Deactivate the IPv4 unicast Address Family for BGP Peer Groups
           only when IPv4 is activated by default instead of always deactivating it.
         default: false
+      raise_for_port_channels_without_members:
+        type: bool
+        description: Raise an error if an L3 Port-Channel is configured without any
+          member interfaces.
+        default: false
   avd_digital_twin_mode:
     documentation_options:
       table: role-settings
@@ -9235,6 +9240,10 @@ $defs:
                       $ref: eos_designs#/$defs/flow_tracking_link
                       description: Configures flow-tracking on the interface. Overrides
                         `fabric_flow_tracking.l3_interfaces` setting.
+                    sflow:
+                      type: bool
+                      description: Configures sFlow on the interface. Overrides `fabric_sflow.l3_interfaces`
+                        setting.
                     monitor_sessions:
                       type: list
                       $ref: eos_designs#/$defs/monitor_sessions
