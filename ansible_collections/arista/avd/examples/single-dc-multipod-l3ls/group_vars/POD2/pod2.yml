@@ -2,7 +2,7 @@
 # Spine Switches
 spine:
   defaults:
-    platform: cEOS
+    platform: cEOSLab
     bgp_as: 65002
     loopback_ipv4_pool: 192.168.101.0/24
     uplink_switches: [dc1-ss1, dc1-ss2] # Where the leaf uplinks go
@@ -22,7 +22,7 @@ spine:
 l3leaf:
   defaults:
     bgp_as: 65100-65199 # Gives a range which will be auto-assigned
-    platform: cEOS
+    platform: cEOSLab
     loopback_ipv4_pool: 192.168.101.0/24 # This is loopback0 (underlay)
     vtep_loopback_ipv4_pool: 192.168.102.0/24 # This is loopback1 (VTEP)
     uplink_switches: [dc1-spine3, dc1-spine4] # Where the leaf uplinks go

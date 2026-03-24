@@ -2,7 +2,7 @@
 # Super-Spine Switches
 super_spine:
   defaults:
-    platform: cEOS
+    platform: cEOSLab
     bgp_as: 65000
     loopback_ipv4_pool: 192.168.101.0/24
     evpn_role: server

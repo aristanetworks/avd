@@ -19,7 +19,6 @@ l3leaf,dc1-leaf2b,,Ethernet2,spine,dc1-spine4,,Ethernet4,True
 l3leaf,dc1-leaf2b,,Ethernet3,mlag_peer,dc1-leaf2a,,Ethernet3,True
 l3leaf,dc1-leaf2b,,Ethernet4,mlag_peer,dc1-leaf2a,,Ethernet4,True
 l3leaf,dc1-leaf2b,,Ethernet5,server,host2,,,True
-l3leaf,dc1-leaf2b,,Ethernet6,l3_interface,,,,True
 spine,dc1-spine1,,Ethernet1,super-spine,dc1-ss1,,Ethernet1,True
 spine,dc1-spine1,,Ethernet2,super-spine,dc1-ss2,,Ethernet1,True
 spine,dc1-spine1,,Ethernet3,l3leaf,dc1-leaf1a,,Ethernet1,True

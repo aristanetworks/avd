@@ -1,18 +1,6 @@
 aaa_root:
   disabled: true
 config_end: true
-daemon_terminattr:
-  cvaddrs:
-  - 172.16.1.5:9910
-  - 172.16.1.6:9910
-  - 172.16.1.7:9910
-  cvauth:
-    method: token
-    token_file: /tmp/token
-  cvsourceintf: Management1
-  cvvrf: MGMT
-  disable_aaa: true
-  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -99,7 +87,7 @@ management_interfaces:
   gateway: 172.16.1.1
 metadata:
   is_deployed: true
-  platform: cEOS
+  platform: cEOSLab
   fabric_name: FABRIC
   validate_hardware:
     enabled: false

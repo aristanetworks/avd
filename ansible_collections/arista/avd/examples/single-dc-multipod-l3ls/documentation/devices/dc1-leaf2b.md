@@ -11,8 +11,6 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
-- [Monitoring](#monitoring)
-  - [TerminAttr Daemon](#terminattr-daemon)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -181,25 +179,6 @@ username arista privilege 15 role network-admin secret sha512 <removed>
 
 Enable password has been disabled
 
-## Monitoring
-
-### TerminAttr Daemon
-
-#### TerminAttr Daemon Summary
-
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 172.16.1.5:9910,172.16.1.6:9910,172.16.1.7:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | - | True |
-
-#### TerminAttr Daemon Device Configuration
-
-```eos
-!
-daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=172.16.1.5:9910,172.16.1.6:9910,172.16.1.7:9910 -cvauth=token,/tmp/token -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs -cvsourceintf=Management1
-   no shutdown
-```
-
 ## MLAG
 
 ### MLAG Summary
@@ -320,7 +299,6 @@ vlan 4094
 | --------- | ----------- | ------------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Ethernet1 | P2P_dc1-spine3_Ethernet4 | - | 192.168.103.13/31 | default | 9214 | False | - | - |
 | Ethernet2 | P2P_dc1-spine4_Ethernet4 | - | 192.168.103.15/31 | default | 9214 | False | - | - |
-| Ethernet6 | - | - | 10.1.5.0/31 | VRF_A | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -354,12 +332,6 @@ interface Ethernet5
    description SERVER_host2
    no shutdown
    channel-group 5 mode active
-!
-interface Ethernet6
-   no shutdown
-   no switchport
-   vrf VRF_A
-   ip address 10.1.5.0/31
 ```
 
 ### Port-Channel Interfaces
@@ -647,7 +619,6 @@ ASN Notation: asplain
 | 192.168.103.12 | 65002 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 192.168.103.14 | 65002 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 10.255.251.4 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | VRF_A | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
-| 10.1.5.1 | 65534 | VRF_A | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -728,13 +699,9 @@ router bgp 65299
       route-target import evpn 10:10
       route-target export evpn 10:10
       router-id 192.168.101.4
-      neighbor 10.1.5.1 remote-as 65534
       neighbor 10.255.251.4 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.4 description dc1-leaf2a_Vlan3009
       redistribute connected route-map RM-CONN-2-BGP-VRFS
-      !
-      address-family ipv4
-         neighbor 10.1.5.1 activate
 ```
 
 ## BFD

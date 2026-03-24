@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Mutli-Pod L3LS
+title: Single DC Multi-Pod L3LS (5-Stage Clos)
 ---
 <!--
   ~ Copyright (c) 2023-2026 Arista Networks, Inc.
@@ -8,21 +8,13 @@ title: Mutli-Pod L3LS
   ~ that can be found in the LICENSE file.
   -->
 
-# AVD example for a single data center with Multi-Pod using L3LS
+# Single DC Multi-Pod L3LS (5-Stage Clos)
 
 ## Introduction
 
 This example shows how to create a multi-pod environment (a 5-stage Clos) in a single DC environment. Of course, this can be used in multiple DCs, but this example is only for two PODs in a single DC.
 
-Also included is an example of connecting an external router to a VRF/tenant.
-
 This example only teaches some aspects of an L3LS EVPN/VXLAN build; please see the [single DC L3LS example](../single-dc-l3ls/README.md) for additional information. It supplements the single DC example, concentrating on the unique elements of multiple PODs/5-stage Clos.
-
-Ansible playbooks are included to show the following:
-
-- Building the intended configuration and documentation
-- Deploying the configuration via CloudVision or directly to the switches via eAPI
-- Validating the configuration
 
 ## AVD Playground
 
@@ -131,16 +123,6 @@ The leaf configurations, EVPN services, and endpoints sections aren't affected b
     --8<--
     ```
 
-## Connecting an External Router
-
-In addition to the multi-pod, this example has a tenant/VRF connecting to an external network via a router (R1). This is defined in the `evpn_services.yml` file. The `l3_interfaces` parameter creates an L3 interface in the VRF on a specific leaf and the `bgp_peer` section defines the BGP peering with the external router.
-
-```yaml title="EVPN_SERVICES/evpn_services.yml"
---8<--
-ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/group_vars/EVPN_SERVICES/evpn_services.yml
---8<--
-```
-
 ## Endpoint connectivity
 
 The final group variables file provides an example of connecting two servers across a leaf pair.
@@ -160,16 +142,6 @@ ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/group_vars/ENDPO
     ``` yaml
     --8<--
     ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/build.yml
-    --8<--
-    ```
-
-=== "deploy-cvp.yml"
-
-    The `deploy-cvp.yml` file leverages the artifacts from the build playbook to provision our fabric with CVP.
-
-    ``` yaml
-    --8<--
-    ansible_collections/arista/avd/examples/single-dc-multipod-l3ls/deploy-cvp.yml
     --8<--
     ```
 

@@ -35,11 +35,11 @@ default_node_types:
 default_interfaces:
   - types: [super-spine]
     platforms: [default]
-    downlink_interfaces: [Ethernet1-6]   # Connects to pod spines
+    downlink_interfaces: [Ethernet1-4]   # Connects to pod spines
   - types: [spine]
     platforms: [default]
     uplink_interfaces: [Ethernet1-2]     # Connects to super-spines
-    downlink_interfaces: [Ethernet3-8]   # Connects to leafs
+    downlink_interfaces: [Ethernet3-4]   # Connects to leafs
   - types: [l3leaf]
     platforms: [default]
     uplink_interfaces: [Ethernet1-2]     # Connects to spines
@@ -58,17 +58,6 @@ aaa_settings:
       privilege: 15
       role: network-admin
       sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
-
-# CloudVision settings for streaming telemetry and management
-cv_settings:
-  onprem_clusters:
-    - name: primary
-      servers:
-        - name: 172.16.1.5
-        - name: 172.16.1.6
-        - name: 172.16.1.7
-  terminattr:
-    disable_aaa: true
 
 # BFD Settings
 bfd_multihop:
