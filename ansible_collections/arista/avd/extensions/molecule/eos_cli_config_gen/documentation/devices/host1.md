@@ -11996,7 +11996,7 @@ poe
 
 ##### 99
 
-| Sequence | Action | Source | Remark | VLAN | Inner VLAN | Log | Mirror Session |
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
 | -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
 | - | - | - | ACL to restrict access RFC1918 addresses | - | - | - | - |
 | - | permit | 10.0.0.0/8 | - | 20 | 10 | - | mirror1 |
@@ -12007,33 +12007,33 @@ poe
 
 ##### ACL-API
 
-| Sequence | Action | Source | Remark | VLAN | Inner VLAN | Log | Mirror Session |
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
 | -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
 | 10 | - | - | ACL to restrict access to switch API to CVP and Ansible | - | - | - | - |
-| 20 | permit | 10.10.10.10 | - | 10:0x001 | - | - | mirror1 |
-| 30 | permit | 10.10.10.11 | - | - | 10:0x001 | True | - |
-| 40 | permit | 10.10.10.12 | - | 10:0x001 | 10:0x001 | True | mirror1 |
-| 50 | permit | any | - | 10:0x001 | 10:0x001 | - | - |
+| 20 | permit | 10.10.10.10 | - | 10 0x001 | - | - | mirror1 |
+| 30 | permit | 10.10.10.11 | - | - | 10 0x001 | True | - |
+| 40 | permit | 10.10.10.12 | - | 10 0x001 | 10 0x001 | True | mirror1 |
+| 50 | permit | any | - | 10 0x001 | 10 0x001 | - | - |
 
 ##### ACL-SSH
 
 ACL has counting mode `counters per-entry` enabled!
 
-| Sequence | Action | Source | Remark | VLAN | Inner VLAN | Log | Mirror Session |
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
 | -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
 | 10 | - | - | ACL to restrict access RFC1918 addresses | - | - | - | - |
-| 20 | permit | 10.0.0.0/8 | - | 10:0x000 | 20:0x001 | True | mirror1 |
-| 30 | permit | 172.16.0.0/12 | - | - | 20:0x001 | True | mirror1 |
+| 20 | permit | 10.0.0.0/8 | - | 10 0x000 | 20 0x001 | True | mirror1 |
+| 30 | permit | 172.16.0.0/12 | - | - | 20 0x001 | True | mirror1 |
 | 40 | permit | 192.168.0.0/16 | - | - | - | - | - |
 
 ##### ACL-SSH-VRF
 
-| Sequence | Action | Source | Remark | VLAN | Inner VLAN | Log | Mirror Session |
+| Sequence | Action | Source | Remark | VLAN/Mask | Inner VLAN/Mask | Log | Mirror Session |
 | -------- | ------ | ------ | ------ | ---- | ---------- | --- | -------------- |
 | 10 | - | - | ACL to restrict access RFC1918 addresses | - | - | - | - |
-| 20 | permit | 10.0.0.0/8 | - | 10:0x000 | 20:0x001 | - | - |
-| 30 | permit | 172.16.0.0/12 | - | 10:0x000 | - | - | - |
-| 40 | permit | 192.168.0.0/16 | - | - | 20:0x001 | - | - |
+| 20 | permit | 10.0.0.0/8 | - | 10 0x000 | 20 0x001 | - | - |
+| 30 | permit | 172.16.0.0/12 | - | 10 0x000 | - | - | - |
+| 40 | permit | 192.168.0.0/16 | - | - | 20 0x001 | - | - |
 
 #### Standard Access-lists Device Configuration
 
