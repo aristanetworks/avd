@@ -316,8 +316,10 @@ class RouterBgpMixin(Protocol):
         if is_rd_rt_rewrite:
             # rd evpn domain all replaces the regular rd (see router-bgp.j2 note: vrf.rd should not be configured when domain is all)
             bgp_vrf.rd_evpn_domain._update(domain="all", rd=vrf_rd)
-            bgp_vrf.route_targets.import_evpn_domains.append_new(domain="all", route_target=vrf_rt)
-            bgp_vrf.route_targets.export_evpn_domains.append_new(domain="all", route_target=vrf_rt)
+            if vrf.rt_import:
+                bgp_vrf.route_targets.import_evpn_domains.append_new(domain="all", route_target=vrf_rt)
+            if vrf.rt_export:
+                bgp_vrf.route_targets.export_evpn_domains.append_new(domain="all", route_target=vrf_rt)
 
         bgp_vrf.evpn_multicast = getattr(vrf._internal_data, "evpn_l3_multicast_enabled", None)
         if evpn_multicast_transit_mode := getattr(vrf._internal_data, "evpn_l3_multicast_evpn_peg_transit", False):
