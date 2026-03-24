@@ -23878,8 +23878,12 @@ keys:
                 - str
               vlan_mask:
                 type: str
-                description: VLAN mask. Range 0x000-0xFFF. Required when `vlan` is
-                  defined.
+                description: 'VLAN mask. Range "0x000"-"0xFFF". Required when `vlan`
+                  is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
               inner_vlan:
                 type: int
                 description: Match packets by inner VLAN value.
@@ -23887,8 +23891,12 @@ keys:
                 - str
               inner_vlan_mask:
                 type: str
-                description: Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan`
+                description: 'Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan`
                   is defined.
+
+                  To ensure that a value like 0x001 is treated strictly as a string
+
+                  and not converted to a decimal (like 1), use single or double quotes.'
               log:
                 type: bool
                 description: Enable logging when a packet matches the ACL rule.

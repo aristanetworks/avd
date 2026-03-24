@@ -64886,11 +64886,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             vlan: int | None
             """Match packets by VLAN value."""
             vlan_mask: str | None
-            """VLAN mask. Range 0x000-0xFFF. Required when `vlan` is defined."""
+            """
+            VLAN mask. Range "0x000"-"0xFFF". Required when `vlan` is defined.
+            To ensure that a value like 0x001
+            is treated strictly as a string
+            and not converted to a decimal (like 1), use single or double
+            quotes.
+            """
             inner_vlan: int | None
             """Match packets by inner VLAN value."""
             inner_vlan_mask: str | None
-            """Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined."""
+            """
+            Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
+            To ensure that a value
+            like 0x001 is treated strictly as a string
+            and not converted to a decimal (like 1), use single or
+            double quotes.
+            """
             log: bool | None
             """Enable logging when a packet matches the ACL rule."""
             mirror_session: str | None
@@ -64929,9 +64941,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            3.
                            'any' source address.
                         vlan: Match packets by VLAN value.
-                        vlan_mask: VLAN mask. Range 0x000-0xFFF. Required when `vlan` is defined.
+                        vlan_mask:
+                           VLAN mask. Range "0x000"-"0xFFF". Required when `vlan` is defined.
+                           To ensure that a value like 0x001
+                           is treated strictly as a string
+                           and not converted to a decimal (like 1), use single or double
+                           quotes.
                         inner_vlan: Match packets by inner VLAN value.
-                        inner_vlan_mask: Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
+                        inner_vlan_mask:
+                           Inner VLAN mask. Range 0x000-0xFFF. Required when `inner_vlan` is defined.
+                           To ensure that a value
+                           like 0x001 is treated strictly as a string
+                           and not converted to a decimal (like 1), use single or
+                           double quotes.
                         log: Enable logging when a packet matches the ACL rule.
                         mirror_session: Mirror session to mirror matches against this rule.
 
