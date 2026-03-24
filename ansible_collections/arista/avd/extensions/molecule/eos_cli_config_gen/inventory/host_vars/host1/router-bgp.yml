@@ -55,8 +55,6 @@ router_bgp:
         ip:
           enabled: true
           route_map: RM-rib1
-        tunnel:
-          enabled: false
   listen_ranges:
       # should render
     - prefix: 10.10.10.0/24

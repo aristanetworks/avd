@@ -105,11 +105,19 @@ ASN Notation: asplain
 | Settings | Value |
 | -------- | ----- |
 
+##### BGP LU RIB
+
+| RIB | Enabled | Route-map |
+| --- | ------- | --------- |
+| IP | False | - |
+| Tunnel | True | RM-rib3 |
+
 #### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65001
+   bgp labeled-unicast rib tunnel route-map RM-rib3
    router-id 192.168.255.3
    graceful-restart-helper long-lived
    bgp additional-paths send ecmp
