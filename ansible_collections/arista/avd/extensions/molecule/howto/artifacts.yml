@@ -61,6 +61,38 @@ artifacts:
     artifact: "htft-leaf1a-links.cfg"
     output_dir: "fabric_topology/artifacts/"
 
+  # IP Addressing artifacts
+  - file: inventory/intended/configs/htipa-leaf1.cfg
+    sections:
+      - header: "interface Ethernet1"
+      - header: "interface Ethernet2"
+    artifact: "leaf1-to-spines.cfg"
+    output_dir: "ip_addressing/artifacts/"
+
+  - file: inventory/intended/configs/htipa-leaf1.cfg
+    sections:
+      - header: "interface Loopback0"
+    artifact: "leaf1-loopback.cfg"
+    output_dir: "ip_addressing/artifacts/"
+
+  - file: inventory/intended/configs/htipa-leaf2.cfg
+    sections:
+      - header: "interface Loopback0"
+    artifact: "leaf2-loopback.cfg"
+    output_dir: "ip_addressing/artifacts/"
+
+  - file: inventory/intended/configs/htipa-spine1.cfg
+    sections:
+      - header: "interface Loopback0"
+    artifact: "spine1-loopback.cfg"
+    output_dir: "ip_addressing/artifacts/"
+
+  - file: inventory/intended/configs/htipa-spine2.cfg
+    sections:
+      - header: "interface Loopback0"
+    artifact: "spine2-loopback.cfg"
+    output_dir: "ip_addressing/artifacts/"
+
   # IPv6 artifacts
   - file: inventory/intended/configs/htipv6-numbered-spine1.cfg
     sections:

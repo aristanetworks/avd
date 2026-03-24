@@ -18,7 +18,8 @@ ethernet_interfaces:
   description: P2P_htipv6-numbered-leaf1_Ethernet2
   shutdown: false
   mtu: 1500
-  ipv6_address: 2001:db8:10:1::1/64
+  ipv6_addresses:
+  - 2001:db8:10:1::1/64
   metadata:
     peer: htipv6-numbered-leaf1
     peer_interface: Ethernet2
@@ -29,7 +30,8 @@ ethernet_interfaces:
   description: P2P_htipv6-numbered-leaf2_Ethernet2
   shutdown: false
   mtu: 1500
-  ipv6_address: 2001:db8:10:3::1/64
+  ipv6_addresses:
+  - 2001:db8:10:3::1/64
   metadata:
     peer: htipv6-numbered-leaf2
     peer_interface: Ethernet2
@@ -66,7 +68,8 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ipv6_address: 2001:db8:1::2/128
+  ipv6_addresses:
+  - 2001:db8:1::2/128
 management_interfaces:
 - name: Management0
   description: OOB_MANAGEMENT
