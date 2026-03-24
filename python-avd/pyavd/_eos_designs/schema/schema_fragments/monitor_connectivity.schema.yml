@@ -9,7 +9,6 @@ keys:
   monitor_connectivity:
     documentation_options:
       table: system-settings
-    # $ref: "eos_cli_config_gen#/keys/monitor_connectivity"
     type: dict
     keys:
       shutdown:
