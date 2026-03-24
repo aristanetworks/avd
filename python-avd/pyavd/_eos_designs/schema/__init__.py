@@ -68431,11 +68431,11 @@ class EosDesigns(EosDesignsRootModel):
                     label_flow: bool | None
                     """
                     Enable or disable MPLS label flow for VPWS pseudowires.
-                    When enabled, the provider edge device will
-                    push an additional MPLS label with the "flow" label bit set for each packet received on the
+                    When enabled, the provider edge (PE) device
+                    pushes an additional MPLS label with the flow label bit set on each packet received over the
                     pseudowire.
-                    This is typically used in Segment Routing designs to allow the service provider to apply
-                    specific handling to pseudowire traffic based on the presence of the flow label.
+                    This is typically used in Segment Routing deployments to enable flow-aware load
+                    balancing or apply specific handling to pseudowire traffic based on the presence of the flow label.
                     """
 
                     if TYPE_CHECKING:
@@ -68464,11 +68464,11 @@ class EosDesigns(EosDesignsRootModel):
                                    endpoints.
                                 label_flow:
                                    Enable or disable MPLS label flow for VPWS pseudowires.
-                                   When enabled, the provider edge device will
-                                   push an additional MPLS label with the "flow" label bit set for each packet received on the
+                                   When enabled, the provider edge (PE) device
+                                   pushes an additional MPLS label with the flow label bit set on each packet received over the
                                    pseudowire.
-                                   This is typically used in Segment Routing designs to allow the service provider to apply
-                                   specific handling to pseudowire traffic based on the presence of the flow label.
+                                   This is typically used in Segment Routing deployments to enable flow-aware load
+                                   balancing or apply specific handling to pseudowire traffic based on the presence of the flow label.
 
                             """
 

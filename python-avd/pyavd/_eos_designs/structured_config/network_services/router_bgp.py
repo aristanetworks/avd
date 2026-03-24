@@ -11,7 +11,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import AvdStringFormatter, default, strip_empties_from_dict
+from pyavd._utils import AvdStringFormatter, Undefined, default, strip_empties_from_dict
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:
@@ -717,7 +717,7 @@ class RouterBgpMixin(Protocol):
             return
 
         for tenant in self.shared_utils.filtered_tenants:
-            if (not tenant.point_to_point_services or tenant.pseudowire_rt_base is None) and tenant.vpws is None:
+            if (not tenant.point_to_point_services or tenant.pseudowire_rt_base is None) and tenant._get_defined_attr("vpws") is Undefined:
                 continue
 
             pseudowires = EosCliConfigGen.RouterBgp.VpwsItem.Pseudowires()
@@ -750,9 +750,9 @@ class RouterBgpMixin(Protocol):
                 name=tenant.name,
                 rd=rd,
                 route_targets=EosCliConfigGen.RouterBgp.VpwsItem.RouteTargets(import_export=rt),
-                mpls_control_word=tenant.vpws.mpls_control_word or None,
+                mpls_control_word=tenant.vpws.mpls_control_word or None,  # Using 'or None' to only render True in structuired config.
                 mtu=tenant.vpws.mtu,
-                label_flow=tenant.vpws.label_flow or None,
+                label_flow=tenant.vpws.label_flow or None,  # Using 'or None' to only render True in structuired config.
             )
             if pseudowires:
                 vpws.pseudowires = pseudowires

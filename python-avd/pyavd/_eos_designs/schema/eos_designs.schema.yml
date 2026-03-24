@@ -10098,9 +10098,7 @@ $defs:
 
                 The default is false as this is more commonly used in Segment Routing
                 designs, but it can be set to true for better interoperability with
-                non-Segment Routing designs.
-
-                '
+                non-Segment Routing designs.'
             mtu:
               type: int
               convert_types:
@@ -10111,15 +10109,13 @@ $defs:
               type: bool
               description: 'Enable or disable MPLS label flow for VPWS pseudowires.
 
-                When enabled, the provider edge device will push an additional MPLS
-                label with the "flow" label bit set for each packet received on the
+                When enabled, the provider edge (PE) device pushes an additional MPLS
+                label with the flow label bit set on each packet received over the
                 pseudowire.
 
-                This is typically used in Segment Routing designs to allow the service
-                provider to apply specific handling to pseudowire traffic based on
-                the presence of the flow label.
-
-                '
+                This is typically used in Segment Routing deployments to enable flow-aware
+                load balancing or apply specific handling to pseudowire traffic based
+                on the presence of the flow label.'
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings
