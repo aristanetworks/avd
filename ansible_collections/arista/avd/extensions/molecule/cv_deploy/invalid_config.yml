@@ -66,7 +66,7 @@
             structured_config_dir: "{{ structured_dir }}"
             device_list: "{{ ansible_play_hosts_all }}"
             workspace:
-              name: "__converge - {{ cv_common_pattern }} {{ r }}"
+              name: "{{ cv_common_pattern }}_{{ r }}_converge"
               description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
               requested_state: "abandoned"
             return_details: true
