@@ -1,0 +1,4 @@
+# anta_runner will skip the validation for this device with warning as device is unreachable.
+management_eapi:
+  enabled: true
+  enable_https: false

@@ -148,6 +148,13 @@
             "description": "dc2-leaf3a.arista.com",
             "vrf": "MGMT",
             "repeat": 1
+          },
+          {
+            "destination": "10.255.128.19",
+            "source": "172.21.110.5",
+            "description": "dc2-leaf4a.arista.com",
+            "vrf": "MGMT",
+            "repeat": 1
           }
         ]
       }

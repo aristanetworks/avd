@@ -69,22 +69,22 @@
         },
         "hosts": [
           {
-            "destination": "10.255.255.119",
+            "destination": "10.255.255.55",
             "source": "1.1.1.1",
             "description": "dc2-leaf2b_Ethernet2",
             "vrf": "default",
             "repeat": 1
           },
           {
-            "destination": "10.255.255.120",
-            "source": "10.255.255.121",
+            "destination": "10.255.255.56",
+            "source": "10.255.255.57",
             "description": "dc2-spine1_Ethernet5",
             "vrf": "default",
             "repeat": 1
           },
           {
-            "destination": "10.255.255.122",
-            "source": "10.255.255.123",
+            "destination": "10.255.255.58",
+            "source": "10.255.255.59",
             "description": "dc2-spine2_Ethernet5",
             "vrf": "default",
             "repeat": 1
@@ -185,6 +185,13 @@
             "destination": "10.255.128.16",
             "source": "10.255.128.17",
             "description": "dc2-leaf2b",
+            "vrf": "default",
+            "repeat": 1
+          },
+          {
+            "destination": "10.255.128.19",
+            "source": "10.255.128.17",
+            "description": "dc2-leaf4a.arista.com",
             "vrf": "default",
             "repeat": 1
           }
@@ -594,11 +601,19 @@
             "vrf": "default"
           },
           {
+            "prefix": "10.255.128.19/32",
+            "vrf": "default"
+          },
+          {
             "prefix": "10.255.129.13/32",
             "vrf": "default"
           },
           {
             "prefix": "10.255.129.15/32",
+            "vrf": "default"
+          },
+          {
+            "prefix": "10.255.129.19/32",
             "vrf": "default"
           }
         ]

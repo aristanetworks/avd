@@ -30,7 +30,7 @@ ethernet_interfaces:
   description: P2P_dc2-spine1_Ethernet5
   shutdown: false
   mtu: 1500
-  ip_address: 10.255.255.121/31
+  ip_address: 10.255.255.57/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   metadata:
@@ -43,7 +43,7 @@ ethernet_interfaces:
   description: P2P_dc2-spine2_Ethernet5
   shutdown: false
   mtu: 1500
-  ip_address: 10.255.255.123/31
+  ip_address: 10.255.255.59/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   metadata:

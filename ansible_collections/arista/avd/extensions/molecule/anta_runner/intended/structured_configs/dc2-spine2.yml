@@ -8,7 +8,7 @@ ethernet_interfaces:
   description: P2P_dc2-leaf1a_Ethernet2
   shutdown: false
   mtu: 1500
-  ip_address: 10.255.255.106/31
+  ip_address: 10.255.255.42/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   metadata:
@@ -21,7 +21,7 @@ ethernet_interfaces:
   description: P2P_dc2-leaf1b_Ethernet2
   shutdown: false
   mtu: 1500
-  ip_address: 10.255.255.110/31
+  ip_address: 10.255.255.46/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   metadata:
@@ -34,7 +34,7 @@ ethernet_interfaces:
   description: P2P_dc2-leaf2a_Ethernet2
   shutdown: false
   mtu: 1500
-  ip_address: 10.255.255.114/31
+  ip_address: 10.255.255.50/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   metadata:
@@ -47,7 +47,7 @@ ethernet_interfaces:
   description: P2P_dc2-leaf2b_Ethernet2
   shutdown: false
   mtu: 1500
-  ip_address: 10.255.255.118/31
+  ip_address: 10.255.255.54/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   metadata:
@@ -60,7 +60,7 @@ ethernet_interfaces:
   description: P2P_dc2-leaf3a.arista.com_Ethernet2
   shutdown: false
   mtu: 1500
-  ip_address: 10.255.255.122/31
+  ip_address: 10.255.255.58/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   metadata:
@@ -73,11 +73,24 @@ ethernet_interfaces:
   description: P2P_dc2-leaf3b.arista.com_Ethernet2
   shutdown: false
   mtu: 1500
-  ip_address: 10.255.255.126/31
+  ip_address: 10.255.255.62/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   metadata:
     peer: dc2-leaf3b.arista.com
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet7
+  description: P2P_dc2-leaf4a.arista.com_Ethernet2
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.255.255.66/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  metadata:
+    peer: dc2-leaf4a.arista.com
     peer_interface: Ethernet2
     peer_type: l3leaf
   switchport:
@@ -180,6 +193,12 @@ router_bgp:
     metadata:
       peer: dc2-leaf3b.arista.com
     description: dc2-leaf3b.arista.com_Loopback0
+  - ip_address: 10.255.128.19
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65204'
+    metadata:
+      peer: dc2-leaf4a.arista.com
+    description: dc2-leaf4a.arista.com_Loopback0
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -201,6 +220,7 @@ router_ospf:
     - Ethernet4
     - Ethernet5
     - Ethernet6
+    - Ethernet7
     max_lsa: 12000
     graceful_restart:
       enabled: true
