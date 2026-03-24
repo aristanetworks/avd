@@ -1,0 +1,41 @@
+---
+name: Publish coverage to CodeCov
+"on":
+  workflow_call:
+
+jobs:
+  codecov:
+    name: Upload coverage to CodeCov
+    if: github.repository == 'aristanetworks/avd'
+    runs-on: ubuntu-latest
+    # These permissions are mandatory for OIDC to work
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Download coverage from pytest
+        continue-on-error: true
+        uses: actions/download-artifact@v7
+        with:
+          name: pytest-coverage
+
+      - name: Download coverage from ansible-test units
+        continue-on-error: true
+        uses: actions/download-artifact@v7
+        with:
+          name: ansible-test-units-coverage
+
+      - name: Download coverage from ansible-test integration
+        continue-on-error: true
+        uses: actions/download-artifact@v7
+        with:
+          name: ansible-test-integration-coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
+        with:
+          use_oidc: true
+          fail_ci_if_error: false
