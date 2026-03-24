@@ -29,7 +29,7 @@ class MacAccessListsMixin(Protocol):
             action = ""
             if acl_entry.remark:
                 action += acl_entry.remark
-            elif acl_entry.source:
+            elif acl_entry.action and acl_entry.source:
                 if acl_entry.source != "any" and not acl_entry.source_wildcard:
                     msg = f"mac_acls[name={acl_name}].entries[{index}].source_wildcard"
                     raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
