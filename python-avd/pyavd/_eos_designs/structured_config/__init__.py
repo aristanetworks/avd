@@ -110,7 +110,7 @@ def get_structured_config(
     custom_structured_configs = StructCfgs.new_from_ansible_list_merge_strategy(inputs.custom_structured_configuration_list_merge)
 
     # Create a single shared structured config utils instance for all structured config classes.
-    structured_config_utils = StructuredConfigUtils()
+    structured_config_utils = StructuredConfigUtils(structured_config=structured_config, inputs=inputs, shared_utils=shared_utils)
 
     for cls in AVD_STRUCTURED_CONFIG_CLASSES:
         eos_designs_module = cls(
