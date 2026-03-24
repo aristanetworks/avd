@@ -5,6 +5,12 @@
 - name: Test Provisions with Workspace Pending
   import_playbook: workspace_pending.yml
 
+- name: Test Workspace Requested State = built
+  import_playbook: workspace_requested_state.yml
+
+- name: Test Workspace custom ID
+  import_playbook: workspace_id.yml
+
 - name: Test Workspace Force True
   import_playbook: workspace_force_true.yml
 
@@ -16,6 +22,9 @@
 
 - name: Test Change Control False
   import_playbook: cc_false.yml
+
+- name: Test Change Control Requested State = pending approval
+  import_playbook: cc_requested_state.yml
 
 - name: Test cv_deploy with devices with uniquely set serial_numbers and system_mac_addresses
   import_playbook: no_duplicated_devices.yml
