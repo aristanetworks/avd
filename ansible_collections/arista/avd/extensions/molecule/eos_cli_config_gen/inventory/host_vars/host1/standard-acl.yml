@@ -26,6 +26,13 @@ standard_access_lists:
         vlan_mask: "0x001"
         inner_vlan: 10
         inner_vlan_mask: "0x001"
+      - sequence: 50
+        action: permit
+        source: any
+        vlan: 10
+        vlan_mask: "0x001"
+        inner_vlan: 10
+        inner_vlan_mask: "0x001"
   - name: ACL-SSH
     counters_per_entry: true
     entries:
@@ -93,3 +100,6 @@ standard_access_lists:
       - sequence: 50
         action: permit
         source: any
+        # Below configuration is not rendered as there is not source.
+      - sequence: 60
+        action: permit
