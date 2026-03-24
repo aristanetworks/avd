@@ -26,6 +26,14 @@ mac_acls:
         source_wildcard: 00:00:00:00:00:00
         destination: any
   - name: no-entries
+  - name: acl_remark
+    entries:
+      - sequence: 10
+        remark: remark acl with remark
+        # source and destination are ignored when remark is set.
+        action: permit
+        source: any
+        destination: any
 
 type: l2leaf
 l2leaf:
@@ -174,6 +182,7 @@ servers:
       - switches: [connected-endpoints]
         switch_ports: [Ethernet14]
         profile: INDIVIDUAL_TRUNK # Notice that poe and dot1x _are_ inherited from the main profile.
+        mac_acl_in: acl_remark
   - name: INDIVIDUAL_2_TRUNK_PHONE
     adapters:
       - switches: [connected-endpoints, connected-endpoints]

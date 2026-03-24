@@ -23149,6 +23149,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "sequence": {"type": int},
                 "action": {"type": str},
+                "remark": {"type": str},
                 "source": {"type": str},
                 "source_wildcard": {"type": str},
                 "destination": {"type": str},
@@ -23156,6 +23157,13 @@ class EosDesigns(EosDesignsRootModel):
             }
             sequence: int | None
             action: Action | None
+            remark: str | None
+            """
+            Remark.
+            Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`
+            are ignored
+            when `remark` is set.
+            """
             source: str | None
             """
             Source mac-address.
@@ -23184,6 +23192,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     sequence: int | None | UndefinedType = Undefined,
                     action: Action | None | UndefinedType = Undefined,
+                    remark: str | None | UndefinedType = Undefined,
                     source: str | None | UndefinedType = Undefined,
                     source_wildcard: str | None | UndefinedType = Undefined,
                     destination: str | None | UndefinedType = Undefined,
@@ -23198,6 +23207,11 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         sequence: sequence
                         action: action
+                        remark:
+                           Remark.
+                           Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`
+                           are ignored
+                           when `remark` is set.
                         source:
                            Source mac-address.
                            This can be `any` or a MAC address.

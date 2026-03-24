@@ -139,11 +139,11 @@ class EthernetInterfacesMixin(Protocol):
 
         if adapter.mac_acl_in is not None:
             ethernet_interface.mac_access_group_in = adapter.mac_acl_in
-            self._set_mac_acls(adapter.mac_acl_in)
+            self._set_mac_acl(adapter.mac_acl_in)
 
         if adapter.mac_acl_out is not None:
             ethernet_interface.mac_access_group_out = adapter.mac_acl_out
-            self._set_mac_acls(adapter.mac_acl_out)
+            self._set_mac_acl(adapter.mac_acl_out)
 
     def _get_ethernet_interface_cfg(
         self: AvdStructuredConfigConnectedEndpointsProtocol,

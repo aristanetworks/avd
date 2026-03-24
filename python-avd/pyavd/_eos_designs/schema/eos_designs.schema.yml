@@ -3603,6 +3603,13 @@ keys:
                 valid_values:
                 - permit
                 - deny
+              remark:
+                type: str
+                description: 'Remark.
+
+                  Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`
+
+                  are ignored when `remark` is set. '
               source:
                 type: str
                 description: 'Source mac-address.

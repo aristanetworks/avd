@@ -235,6 +235,7 @@ ethernet_interfaces:
 - name: Ethernet14
   description: CUSTOM_SERVER_DOT1X_UNAUTHORIZED
   shutdown: false
+  mac_access_group_in: acl_remark
   poe:
     disabled: true
   ptp:
@@ -643,6 +644,10 @@ mac_access_lists:
     action: permit any 01:00:0c:cc:cc:cd 00:00:00:00:00:00
   - sequence: 10
     action: deny 01:80:c2:00:00:00 00:00:00:00:00:00 any
+- name: acl_remark
+  entries:
+  - sequence: 10
+    action: remark acl with remark
 - name: no-entries
 management_interfaces:
 - name: Management1

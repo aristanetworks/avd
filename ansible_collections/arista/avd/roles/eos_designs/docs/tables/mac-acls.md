@@ -12,6 +12,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "mac_acls.[].entries") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "mac_acls.[].entries.[].sequence") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "mac_acls.[].entries.[].action") | String |  |  | Valid Values:<br>- <code>permit</code><br>- <code>deny</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remark</samp>](## "mac_acls.[].entries.[].remark") | String |  |  |  | Remark.<br>Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`<br>are ignored when `remark` is set.  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "mac_acls.[].entries.[].source") | String |  |  |  | Source mac-address.<br>This can be `any` or a MAC address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_wildcard</samp>](## "mac_acls.[].entries.[].source_wildcard") | String |  |  |  | Wildcard bits for source MAC address.<br>Required when `source` is not `any`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "mac_acls.[].entries.[].destination") | String |  |  |  | Destination MAC address.<br>This can be `any` or a MAC address. |
@@ -30,6 +31,11 @@
         entries:
           - sequence: <int>
             action: <str; "permit" | "deny">
+
+            # Remark.
+            # Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`
+            # are ignored when `remark` is set.
+            remark: <str>
 
             # Source mac-address.
             # This can be `any` or a MAC address.
