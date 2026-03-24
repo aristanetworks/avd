@@ -755,7 +755,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%         if router_bgp.bgp.labeled_unicast.rib.ip is arista.avd.defined %}
 | IP | {{ router_bgp.bgp.labeled_unicast.rib.ip.enabled }} | {{ router_bgp.bgp.labeled_unicast.rib.ip.route_map | arista.avd.default("-") }} |
 {%         endif %}
-{%         if router_bgp.bgp.labeled_unicast.rib.tunnel is arista.avd.defined 
+{%         if router_bgp.bgp.labeled_unicast.rib.tunnel is arista.avd.defined
 | Tunnel | {{ router_bgp.bgp.labeled_unicast.rib.tunnel.enabled }} | {{ router_bgp.bgp.labeled_unicast.rib.tunnel.route_map | arista.avd.default("-") }} |
 {%         endif %}
 {%     endif %}
