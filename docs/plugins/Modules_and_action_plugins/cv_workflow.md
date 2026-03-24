@@ -134,9 +134,9 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
           requested_state: submitted
           force: true
           build_warnings:
-            enabled: true
+            # enabled: true
             suppress_patterns: [".*/32 IPv4 address is not configured on the interface.*"]
-            suppress_portfast: true
+            # suppress_portfast: false
         change_control:
         #   name:
         #   description:
