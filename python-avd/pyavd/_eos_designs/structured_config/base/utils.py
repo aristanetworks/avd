@@ -131,9 +131,11 @@ class UtilsMixin(Protocol):
         """
         return sha1(string.encode(), usedforsecurity=False).hexdigest()[:16]  # NOSONAR
 
-    def _set_monitor_connectivity_hosts(self: AvdStructuredConfigBaseProtocol, hosts: EosDesigns.MonitorConnectivity.Hosts |
-                   EosDesigns.MonitorConnectivity.VrfsItem.Hosts, monitor_connectivity_hosts: EosCliConfigGen.MonitorConnectivity.Hosts |
-                   EosCliConfigGen.MonitorConnectivity.VrfsItem.Hosts) -> None:
+    def _set_monitor_connectivity_hosts(
+        self: AvdStructuredConfigBaseProtocol,
+        hosts: EosDesigns.MonitorConnectivity.Hosts | EosDesigns.MonitorConnectivity.VrfsItem.Hosts,
+        monitor_connectivity_hosts: EosCliConfigGen.MonitorConnectivity.Hosts | EosCliConfigGen.MonitorConnectivity.VrfsItem.Hosts,
+    ) -> None:
         """
         Populate monitor connectivity hosts from EOS Designs host entries.
 
