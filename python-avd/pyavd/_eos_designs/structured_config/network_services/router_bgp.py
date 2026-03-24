@@ -213,8 +213,6 @@ class RouterBgpMixin(Protocol):
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
                     self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
                     self.need_mlag_peer_group = True
-                    if self.shared_utils.node_config.mlag_ibgp_origin_incomplete:
-                        self.structured_config_utils.set_once_route_map_mlag_peer_in()
 
                 for bgp_peer in vrf.bgp_peers:
                     peer_ip = bgp_peer.ip_address
@@ -374,6 +372,9 @@ class RouterBgpMixin(Protocol):
             if self.inputs.underlay_rfc5549 and not self.shared_utils.use_separate_peer_group_for_mlag_vrfs:
                 af_neighbor = bgp_vrf.address_family_ipv4.neighbors.obtain(ip_address)
                 af_neighbor.next_hop.address_family_ipv6.enabled = False
+
+        if self.shared_utils.node_config.mlag_ibgp_origin_incomplete:
+            self.structured_config_utils.set_once_route_map_mlag_peer_in()
 
     def _router_bgp_sorted_vlans_and_svis_lists(self: AvdStructuredConfigNetworkServicesProtocol) -> dict:
         tenant_svis_l2vlans_dict = {}
