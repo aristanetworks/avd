@@ -11,8 +11,8 @@ keys:
     primary_key: name
     description: |-
       MAC access-lists.
-      These can be referenced under `network_ports/connected_endpoints`
-      and only configured when it is in use.
+      These can be referenced under `network_ports/connected_endpoints`.
+      A MAC ACL is only configured when it is referenced.
     items:
       type: dict
       keys:
