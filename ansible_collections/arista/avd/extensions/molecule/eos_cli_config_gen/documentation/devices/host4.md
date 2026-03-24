@@ -109,7 +109,6 @@ ASN Notation: asplain
 
 | RIB | Enabled | Route-map |
 | --- | ------- | --------- |
-| IP | False | - |
 | Tunnel | True | RM-rib3 |
 
 #### Router BGP Device Configuration
