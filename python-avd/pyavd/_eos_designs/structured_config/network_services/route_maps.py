@@ -54,10 +54,6 @@ class RouteMapsMixin(Protocol):
                     self.structured_config.route_maps.append(route_maps_item)
         self._route_maps_vrf_default()
 
-        # Note we check the 'flag need_mlag_peer_group' here which is being set by router_bgp logic. So this must run after.
-        if self.need_mlag_peer_group and self.shared_utils.node_config.mlag_ibgp_origin_incomplete:
-            self.structured_config_utils.set_once_route_map_mlag_peer_in()
-
         if self._mlag_ibgp_peering_subnets_without_redistribution:
             self.set_once_route_map_connected_to_bgp_vrfs()
 

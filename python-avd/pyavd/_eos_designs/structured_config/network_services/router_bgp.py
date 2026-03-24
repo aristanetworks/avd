@@ -213,6 +213,8 @@ class RouterBgpMixin(Protocol):
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
                     self._update_router_bgp_vrf_mlag_neighbor_cfg(bgp_vrf, vrf, tenant, vlan_id)
                     self.need_mlag_peer_group = True
+                    if self.shared_utils.node_config.mlag_ibgp_origin_incomplete:
+                        self.structured_config_utils.set_once_route_map_mlag_peer_in()
 
                 for bgp_peer in vrf.bgp_peers:
                     peer_ip = bgp_peer.ip_address
