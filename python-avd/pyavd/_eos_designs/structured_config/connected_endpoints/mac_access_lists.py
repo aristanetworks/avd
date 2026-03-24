@@ -19,7 +19,7 @@ class MacAccessListsMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    def _set_mac_acls(self: AvdStructuredConfigConnectedEndpointsProtocol, acl_name: str) -> None:
+    def _set_mac_acl(self: AvdStructuredConfigConnectedEndpointsProtocol, acl_name: str) -> None:
         if acl_name not in self.inputs.mac_acls:
             msg = f"mac_acls[name={acl_name}]"
             raise AristaAvdMissingVariableError(msg, host=self.shared_utils.hostname)
