@@ -404,17 +404,8 @@ class AvdStructuredConfigBaseProtocol(
             address_only=self.inputs.monitor_connectivity.address_only,
             name_server_group=self.inputs.monitor_connectivity.name_server_group,
         )
-        for host in self.inputs.monitor_connectivity.hosts:
-            monitor_connectivity.hosts.append_new(
-                name=host.name,
-                description=host.description,
-                single_line_description=host.single_line_description,
-                ip=host.ip,
-                icmp_echo_size=host.icmp_echo_size,
-                local_interfaces=host.local_interfaces,
-                address_only=host.address_only,
-                url=host.url,
-            )
+        self._set_monitor_connectivity_hosts(self.inputs.monitor_connectivity.hosts, monitor_connectivity.hosts)
+
         for vrf in self.inputs.monitor_connectivity.vrfs:
             monitor_connectivity_vrf = monitor_connectivity.vrfs.append_new(
                 name=vrf.name,
@@ -424,17 +415,7 @@ class AvdStructuredConfigBaseProtocol(
                 local_interfaces=vrf.local_interfaces,
                 address_only=vrf.address_only,
             )
-            for host in vrf.hosts:
-                monitor_connectivity_vrf.hosts.append_new(
-                    name=host.name,
-                    description=host.description,
-                    single_line_description=host.single_line_description,
-                    ip=host.ip,
-                    icmp_echo_size=host.icmp_echo_size,
-                    local_interfaces=host.local_interfaces,
-                    address_only=host.address_only,
-                    url=host.url,
-                )
+            self._set_monitor_connectivity_hosts(vrf.hosts, monitor_connectivity_vrf.hosts)
 
     @structured_config_contributor
     def redundancy(self) -> None:

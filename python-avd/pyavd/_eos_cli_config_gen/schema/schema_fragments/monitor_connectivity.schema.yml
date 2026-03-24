@@ -31,7 +31,8 @@ keys:
                 Multiple interface ranges can be specified separated by ",".
       local_interfaces:
         type: str
-      # TODO: Set default false for address_only
+      # TODO: AVD 7.0 Set default false for address_only
+      # Use ref in eos_designs schemas once this is fixed.
       address_only:
         type: bool
         description: |-
@@ -72,7 +73,8 @@ keys:
               max: 18024
             local_interfaces:
               type: str
-            # TODO: Set default false for address_only
+            # TODO: AVD 7.0 Set default false for address_only
+            # Use ref in eos_designs schemas once this is fixed.
             address_only:
               type: bool
               description: |-
@@ -122,7 +124,8 @@ keys:
                     type: str
             local_interfaces:
               type: str
-            # TODO: Set default false for address_only
+            # TODO: AVD 7.0 Set default false for address_only
+            # Use ref in eos_designs schemas once this is fixed.
             address_only:
               type: bool
               description: |-
@@ -163,7 +166,8 @@ keys:
                     max: 18024
                   local_interfaces:
                     type: str
-                  # TODO: Set default false for address_only
+                  # TODO: AVD 7.0 Set default false for address_only
+                  # Use ref in eos_designs schemas once this is fixed.
                   address_only:
                     type: bool
                     description: |-
