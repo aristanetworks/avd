@@ -53,4 +53,4 @@ rules:
     # NOTE: Here we diverge from the ansible-lint default configuration
     #       and this is causing issues when running ansible-lint without
     #       out custom configuration.
-    # indent-sequences: consistent
+    indent-sequences: consistent
