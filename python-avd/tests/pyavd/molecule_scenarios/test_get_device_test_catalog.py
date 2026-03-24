@@ -51,7 +51,10 @@ def test_get_device_test_catalog(molecule_host: MoleculeHost, molecule_scenario:
 
     expected_data = deepcopy(molecule_host.get_test_catalog(run_name=run_name))
 
-    if get(host_config, "metadata.is_deployed", default=True) is True:
+    # Skip the check for unreachable devices
+    if get(host_config, "management_api_http.enable_https", default=False) is not True:
+        result_catalog = AntaCatalog()
+    elif get(host_config, "metadata.is_deployed", default=True) is True:
         result_catalog = get_device_test_catalog(molecule_host.name, host_config, fabric_data, settings=settings)
     else:
         result_catalog = AntaCatalog()
