@@ -71,6 +71,9 @@ manifest:
     - global-exclude /.* /__pycache__ *.pyc *.pyo *.bak *~ *.swp
     # Adding dotfiles
     - include examples/cv-pathfinder/.vault
-    - include .ansible-lint
     - include tests/integration/targets/vars_global_vars/zz_global_vars/.03.yml
+    # TODO: see how we can reduce the two following dotfiles to avoid including them in the future
+    #       There may not be a way forward.
+    - include .ansible-lint
+    - include .yamllint
   omit_default_directives: true
