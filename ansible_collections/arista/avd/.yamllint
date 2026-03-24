@@ -33,10 +33,7 @@ rules:
     max: 160
     ignore:
       - /extensions/molecule/**/intended/structured_configs/
-      - /extensions/molecule/**/intended/structured_configs/cvp/
-      - /examples/**/intended/structured_configs/cvp/
       - /changelogs/fragments_backup/
-      - /tests/inventory/**/expected_output
   new-lines:
     type: unix
   indentation:
