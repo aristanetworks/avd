@@ -198,6 +198,7 @@ nav:
       - Custom Structured Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md
       - Generate CloudVision Tags: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/cloudvision-tags.md
       - Migrate to cv_deploy: docs/howto/migrate-to-cv-deploy.md
+      - Proxy server support in cv_deploy: docs/howto/cv_deploy/proxy.md
       - Migrate to anta_runner: docs/howto/migrate-to-anta-runner.md
   - User Manual:
       - Data Models:
