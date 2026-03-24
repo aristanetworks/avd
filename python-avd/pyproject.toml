@@ -59,7 +59,7 @@ requires = [
     "pydantic>=2.3.0",
     "pyyaml>=6.0.0",
     "referencing>=0.35.0",
-    "ruff==0.15.6",
+    "ruff==0.15.7",
     "setuptools>=77.0",
 ]
 build-backend = "custom_build_backend"
@@ -71,6 +71,7 @@ include-package-data = true
 [tool.setuptools.package-data]
 "*" = [
     "avd_meta_schema.pickle",
+    "cv_deploy.schema.pickle",
     "eos_cli_config_gen.schema.pickle",
     "eos_designs.schema.pickle",
     "schemas.json.gz",
@@ -85,7 +86,7 @@ version = {attr = "pyavd.__version__"}
 [dependency-groups]
 # helping pdm generate the flat list of requirements in pre-commit
 self = [
-  "pyavd==6.1.0.dev1"
+  "pyavd==6.1.0"
 ]
 
 [tool.black]

@@ -701,3 +701,12 @@ jobs:
         with:
           name: pytest-coverage
           path: coverage.xml
+
+  codecov:
+    name: Upload coverage to codecov
+    needs:
+      - ansible_test_units
+      - ansible_test_integration
+      - generate_pyavd_coverage_report
+    if: github.repository == 'aristanetworks/avd'
+    uses: ./.github/workflows/codecov.yml

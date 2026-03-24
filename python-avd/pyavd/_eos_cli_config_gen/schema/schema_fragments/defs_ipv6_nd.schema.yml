@@ -10,6 +10,27 @@ $defs:
     description: IPv6 Neighbor Discovery protocol.
     type: dict
     keys:
+      cache:
+        type: dict
+        description: Neighbor cache options.
+        keys:
+          dynamic_capacity:
+            type: int
+            description: Capacity of dynamic cache entries.
+            convert_types:
+              - str
+            min: 0
+            max: 4294967295
+          expire:
+            type: int
+            description: Cache entries expiry in seconds.
+            convert_types:
+              - str
+            min: 1
+            max: 65535
+          refresh_always:
+            type: bool
+            description: Force refresh on cache expiry.
       ra:
         description: Router Advertisement.
         type: dict
@@ -51,3 +72,6 @@ $defs:
             no_autoconfig_flag:
               type: bool
               description: Indicate that the prefix cannot be used for stateless address autoconfiguration (SLAAC).
+      other_config_flag:
+        type: bool
+        description: Set the "Other Stateful Configuration" (O) flag in Router Advertisements.
