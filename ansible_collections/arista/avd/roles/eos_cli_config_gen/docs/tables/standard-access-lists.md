@@ -14,7 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "standard_access_lists.[].entries.[].sequence") | Integer |  |  |  | Sequence ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "standard_access_lists.[].entries.[].action") | String |  |  | Valid Values:<br>- <code>permit</code><br>- <code>deny</code> | Action as string.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remark</samp>](## "standard_access_lists.[].entries.[].remark") | String |  |  |  | Specify a comment. If remark is specified other keys of the entry are ignored. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "standard_access_lists.[].entries.[].source") | String |  |  |  | The value can be:<br>1. A single source address.<br>2. Source address with mask. e.g. '10.0.0.1/8'.<br>3. 'any' source address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "standard_access_lists.[].entries.[].source") | String |  |  |  | Required for non-remark entries.<br>The value can be:<br>1. A single source address.<br>2. Source address with mask. e.g. '10.0.0.1/8'.<br>3. 'any' source address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "standard_access_lists.[].entries.[].vlan") | Integer |  |  |  | Match packets by VLAN value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_mask</samp>](## "standard_access_lists.[].entries.[].vlan_mask") | String |  |  |  | VLAN mask. Range "0x000"-"0xFFF". Required when `vlan` is defined.<br>To ensure that a value like 0x001 is treated strictly as a string<br>and not converted to a decimal (like 1), use single or double quotes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan</samp>](## "standard_access_lists.[].entries.[].inner_vlan") | Integer |  |  |  | Match packets by inner VLAN value. |
@@ -44,6 +44,7 @@
             # Specify a comment. If remark is specified other keys of the entry are ignored.
             remark: <str>
 
+            # Required for non-remark entries.
             # The value can be:
             # 1. A single source address.
             # 2. Source address with mask. e.g. '10.0.0.1/8'.

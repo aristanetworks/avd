@@ -64877,11 +64877,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Specify a comment. If remark is specified other keys of the entry are ignored."""
             source: str | None
             """
+            Required for non-remark entries.
             The value can be:
             1. A single source address.
-            2. Source address with mask. e.g. '10.0.0.1/8'.
-            3.
-            'any' source address.
+            2. Source address
+            with mask. e.g. '10.0.0.1/8'.
+            3. 'any' source address.
             """
             vlan: int | None
             """Match packets by VLAN value."""
@@ -64935,11 +64936,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         action: Action as string.
                         remark: Specify a comment. If remark is specified other keys of the entry are ignored.
                         source:
+                           Required for non-remark entries.
                            The value can be:
                            1. A single source address.
-                           2. Source address with mask. e.g. '10.0.0.1/8'.
-                           3.
-                           'any' source address.
+                           2. Source address
+                           with mask. e.g. '10.0.0.1/8'.
+                           3. 'any' source address.
                         vlan: Match packets by VLAN value.
                         vlan_mask:
                            VLAN mask. Range "0x000"-"0xFFF". Required when `vlan` is defined.

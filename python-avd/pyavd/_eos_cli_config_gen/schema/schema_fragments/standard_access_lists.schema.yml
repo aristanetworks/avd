@@ -41,6 +41,7 @@ keys:
               source:
                 type: str
                 description: |-
+                  Required for non-remark entries.
                   The value can be:
                   1. A single source address.
                   2. Source address with mask. e.g. '10.0.0.1/8'.
