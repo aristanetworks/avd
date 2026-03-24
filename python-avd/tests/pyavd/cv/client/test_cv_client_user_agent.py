@@ -156,7 +156,7 @@ def test_cv_client_get_user_agent_pyavd_unavailable(cv_client: CVClient) -> None
     assert http_headers["User-Agent"] == expected_user_agent
 
 
-def test_cv_client_get_user_agent_optional_dependancy_missing(cv_client: CVClient) -> None:
+def test_cv_client_get_user_agent_optional_dependency_missing(cv_client: CVClient) -> None:
     expected_user_agent = "python/3.12.2 pyavd/6.1.0 grpclib/0.4.9 python-socks/2.8.1 requests/2.32.5"
 
     versions = {k: v for k, v in ALL_VERSIONS.items() if k != "aristaproto"}
