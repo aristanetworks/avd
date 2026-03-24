@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>mac_acls</samp>](## "mac_acls") | List, items: Dictionary |  |  |  | MAC access-lists.<br>These can be referenced under `network_ports/connected_endpoints`<br>and only configured when it is in use. |
+    | [<samp>mac_acls</samp>](## "mac_acls") | List, items: Dictionary |  |  |  | MAC access-lists.<br>These can be referenced under `network_ports/connected_endpoints`.<br>A MAC ACL is only configured when it is referenced. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "mac_acls.[].name") | String | Required, Unique |  |  | Access-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "mac_acls.[].entries") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "mac_acls.[].entries.[].sequence") | Integer |  |  |  |  |
@@ -21,8 +21,8 @@
 
     ```yaml
     # MAC access-lists.
-    # These can be referenced under `network_ports/connected_endpoints`
-    # and only configured when it is in use.
+    # These can be referenced under `network_ports/connected_endpoints`.
+    # A MAC ACL is only configured when it is referenced.
     mac_acls:
 
         # Access-list name.

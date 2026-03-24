@@ -91414,12 +91414,12 @@ class EosDesigns(EosDesignsRootModel):
     mac_acls: MacAcls
     """
     MAC access-lists.
-    These can be referenced under `network_ports/connected_endpoints`
-    and only
-    configured when it is in use.
+    These can be referenced under `network_ports/connected_endpoints`.
+    A MAC ACL is
+    only configured when it is referenced.
 
-    Subclass of AvdIndexedList with `MacAclsItem` items. Primary key is
-    `name` (`str`).
+    Subclass of AvdIndexedList with `MacAclsItem` items. Primary
+    key is `name` (`str`).
     """
     mac_address_table: EosCliConfigGen.MacAddressTable
     management_eapi: ManagementEapi
@@ -93387,12 +93387,12 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdModel.
                 mac_acls:
                    MAC access-lists.
-                   These can be referenced under `network_ports/connected_endpoints`
-                   and only
-                   configured when it is in use.
+                   These can be referenced under `network_ports/connected_endpoints`.
+                   A MAC ACL is
+                   only configured when it is referenced.
 
-                   Subclass of AvdIndexedList with `MacAclsItem` items. Primary key is
-                   `name` (`str`).
+                   Subclass of AvdIndexedList with `MacAclsItem` items. Primary
+                   key is `name` (`str`).
                 mac_address_table: mac_address_table
                 management_eapi:
                    Default is HTTPS management eAPI enabled.
