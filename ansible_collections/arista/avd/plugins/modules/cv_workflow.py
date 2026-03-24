@@ -163,7 +163,7 @@ options:
             type: bool
             default: true
           suppress_patterns:
-            description: Arbitrary list of the EOS CLI warning string patterns to suppress.
+            description: Arbitrary list of regex patterns used with fullmatch to suppress EOS CLI warnings.
             type: list
             elements: str
             default: []
@@ -272,10 +272,10 @@ EXAMPLES = r"""
         #   id: <uuid or similar>
           requested_state: submitted
           force: true
-          # build_warnings:
-          #   enabled: true
-          #   suppress_patterns: []
-          #   suppress_portfast: false
+          build_warnings:
+            enabled: true
+            suppress_patterns: [".*/32 IPv4 address is not configured on the interface.*"]
+            suppress_portfast: true
         change_control:
         #   name:
         #   description:

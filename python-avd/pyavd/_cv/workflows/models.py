@@ -159,18 +159,18 @@ class CVWorkspaceBuildConfigValidationResult:
 
 
 @dataclass
-class CVWorkspaceBuildResult:
+class CVWorkspaceDeviceBuildResult:
     device: CVDevice
     config_validation: CVWorkspaceBuildConfigValidationResult
     """Configuration validation results."""
 
 
 @dataclass
-class CVWorkspaceBuildWarnings:
+class CVWorkspaceBuildWarningsConfig:
     enabled: bool = True
     """Fetch and expose Workspace build warnings."""
     suppress_patterns: list[str] = field(default_factory=list)
-    """Arbitrary list of the EoS CLI warning string patterns to suppress."""
+    """Arbitrary list of the EOS CLI warning string patterns to suppress."""
     suppress_portfast: bool = False
     """Suppress Workspace build warnings related to the usage of the `portfast` feature on switchports."""
 
@@ -199,11 +199,11 @@ class CVWorkspace:
     change_control_id: str | None = None
     """Do not set this manually."""
     build_id: str | None = None
-    """last_build_id of the Workspace. Used to fetch build details related to the last Workspace build attempt."""
-    build_warnings: CVWorkspaceBuildWarnings = field(default_factory=CVWorkspaceBuildWarnings)
-    """Fetch and expose Workspace build warnings."""
-    build_results: list[CVWorkspaceBuildResult] = field(default_factory=list)
-    """Details of Workspace build results."""
+    """last_build_id of the Workspace. Used to fetch build details related to the last Workspace build attempt. Do not set this manually."""
+    build_warnings: CVWorkspaceBuildWarningsConfig = field(default_factory=CVWorkspaceBuildWarningsConfig)
+    """Configuration settings to control fetching and exposing Workspace build warnings."""
+    device_build_results: list[CVWorkspaceDeviceBuildResult] = field(default_factory=list)
+    """Details of per-device Workspace build results. Do not set this manually."""
 
 
 @dataclass

@@ -18,7 +18,7 @@ from .models import (
     CVWorkspaceBuildConfigValidationError,
     CVWorkspaceBuildConfigValidationResult,
     CVWorkspaceBuildConfigValidationWarning,
-    CVWorkspaceBuildResult,
+    CVWorkspaceDeviceBuildResult,
 )
 
 if TYPE_CHECKING:
@@ -53,7 +53,7 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
     workspace_config = await cv_client.build_workspace(workspace_id=workspace.id)
     build_result, cv_workspace = await cv_client.wait_for_workspace_response(workspace_id=workspace.id, request_id=workspace_config.request_params.request_id)
     workspace.build_id = cv_workspace.last_build_id
-    workspace.build_results = await _process_workspace_build_details(workspace=workspace, cv_client=cv_client, devices=devices, warnings=warnings)
+    workspace.device_build_results = await _process_workspace_build_details(workspace=workspace, cv_client=cv_client, devices=devices, warnings=warnings)
     if build_result.status != ResponseStatus.SUCCESS:
         workspace.state = "build failed"
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
@@ -132,7 +132,6 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
 
 def _prepare_build_warnings_suppress_patterns(
     workspace: CVWorkspace,
-    static_suppression_patterns: dict[str, str],
     warnings: list,
 ) -> list[Pattern]:
     """
@@ -140,16 +139,16 @@ def _prepare_build_warnings_suppress_patterns(
 
     Parameters:
         workspace: Active Workspace.
-        static_suppression_patterns: Dictionary of pre-defined Regex string patterns to match undesired warnings.
+        warnings: List of warnings.
 
     Returns:
         Unified list of compiled Regex patterns describing Workspace Build warnings that we would like to suppress.
     """
     # Deduplicate list of patterns from user
-    workspace_build_warnings_suppress_set = set(workspace.build_warnings.suppress_patterns[:])
+    workspace_build_warnings_suppress_set = set(workspace.build_warnings.suppress_patterns)
     # Add predefined static patterns if requested
-    if workspace.build_warnings.suppress_portfast and (pattern := static_suppression_patterns.get("portfast")):
-        workspace_build_warnings_suppress_set.add(pattern)
+    if workspace.build_warnings.suppress_portfast:
+        workspace_build_warnings_suppress_set.add(EOS_CLI_WARNINGS["portfast"])
 
     compiled_workspace_build_warnings_suppress_list: list[Pattern] = []
     for proposed_regex_pattern in workspace_build_warnings_suppress_set:
@@ -280,7 +279,7 @@ def _build_warnings_list(
     ]
 
 
-def _get_device_by_serial(devices: list[CVDevice], serial_number: str) -> CVDevice:
+def _get_device_by_serial(devices: list[CVDevice], serial_number: str) -> CVDevice | None:
     """
     Get CVDevice by serial number.
 
@@ -290,22 +289,23 @@ def _get_device_by_serial(devices: list[CVDevice], serial_number: str) -> CVDevi
 
     Returns:
         CVDevice object matching the serial number.
+        None in case requested device is not in the list of the targeted devices.
     """
     # TODO: Can there be a case where no device is found here? Like if we apply Tag changes that lead to the config change for the device we have not targeted?
     try:
         return next(device for device in devices if device.serial_number == serial_number)
     except StopIteration:
-        return CVDevice(hostname="Unknown Device (was not directly targeted by AVD deployment)", serial_number=serial_number)
+        return None
 
 
-async def _produce_cvworkspace_build_result(
+def _produce_cvworkspace_build_result(
     workspace: CVWorkspace,
     workspace_build_details: list[WorkspaceBuildDetails],
     compiled_workspace_build_warnings_suppress_list: list[Pattern],
     devices: list[CVDevice],
-) -> list[CVWorkspaceBuildResult]:
+) -> list[CVWorkspaceDeviceBuildResult]:
     """
-    Process list of WorkspaceBuildDetails to generate list of CVWorkspaceBuildResult suppressing undesired warnings (when requested).
+    Process list of WorkspaceBuildDetails to generate list of CVWorkspaceDeviceBuildResult suppressing undesired warnings (when requested).
 
     Parameters:
         workspace: Active Workspace.
@@ -314,7 +314,7 @@ async def _produce_cvworkspace_build_result(
         devices: List of CVDevice objects representing existing CV devices.
 
     Returns:
-        List of CVWorkspaceBuildResult objects defining details of the Workspace build.
+        List of CVWorkspaceDeviceBuildResult objects defining details of the Workspace build.
     """
     results = []
 
@@ -326,13 +326,22 @@ async def _produce_cvworkspace_build_result(
         # Get the device for this build details item
         device = _get_device_by_serial(devices, workspace_build_details_item.key.device_id)
 
+        # Continue if device is not in the list of devices targeted by this deployment
+        if device is None:
+            LOGGER.warning(
+                "_produce_cvworkspace_build_result: Returned WorkspaceBuildDetails object references device '%s' not targeted by our deployment: '%s'",
+                workspace_build_details_item.key.device_id,
+                workspace_build_details_item,
+            )
+            continue
+
         # Build errors and warnings lists
         errors = _build_errors_list(workspace_build_details_item)
         warnings = _build_warnings_list(workspace_build_details_item, workspace, compiled_workspace_build_warnings_suppress_list)
 
         # Create and append the result
         results.append(
-            CVWorkspaceBuildResult(
+            CVWorkspaceDeviceBuildResult(
                 device=device,
                 config_validation=CVWorkspaceBuildConfigValidationResult(
                     errors=errors,
@@ -349,7 +358,7 @@ async def _process_workspace_build_details(
     cv_client: CVClient,
     devices: list[CVDevice],
     warnings: list,
-) -> list[CVWorkspaceBuildResult]:
+) -> list[CVWorkspaceDeviceBuildResult]:
     """
     Get and parse Workspace Build Details.
 
@@ -364,7 +373,7 @@ async def _process_workspace_build_details(
         warnings: List of warnings.
 
     Returns:
-        List of 'CVWorkspaceBuildResult's describing observed Workspace build validation errors and warnings per targeted device.
+        List of 'CVWorkspaceDeviceBuildResult's describing observed Workspace build validation errors and warnings per targeted device.
     """
     if not workspace.build_id:
         return []
@@ -375,11 +384,9 @@ async def _process_workspace_build_details(
     # Process list of warning suppress patterns if build warnings were requested to be part of the build results.
     compiled_workspace_build_warnings_suppress_list = []
     if workspace.build_warnings.enabled:
-        compiled_workspace_build_warnings_suppress_list = _prepare_build_warnings_suppress_patterns(
-            workspace=workspace, static_suppression_patterns=EOS_CLI_WARNINGS, warnings=warnings
-        )
+        compiled_workspace_build_warnings_suppress_list = _prepare_build_warnings_suppress_patterns(workspace=workspace, warnings=warnings)
 
-    return await _produce_cvworkspace_build_result(
+    return _produce_cvworkspace_build_result(
         workspace=workspace,
         workspace_build_details=workspace_build_details,
         compiled_workspace_build_warnings_suppress_list=compiled_workspace_build_warnings_suppress_list,

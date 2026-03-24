@@ -3,6 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import re
+from logging import WARNING
 from typing import TYPE_CHECKING, ClassVar
 from unittest.mock import patch
 
@@ -10,13 +12,13 @@ import pytest
 
 from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed
 from pyavd._cv.workflows.constants import EOS_CLI_WARNINGS
-from pyavd._cv.workflows.finalize_workspace_on_cv import finalize_workspace_on_cv
+from pyavd._cv.workflows.finalize_workspace_on_cv import _produce_cvworkspace_build_result, finalize_workspace_on_cv
 from pyavd._cv.workflows.models import (
     CVDevice,
     CVWorkspace,
     CVWorkspaceBuildConfigValidationError,
     CVWorkspaceBuildConfigValidationWarning,
-    CVWorkspaceBuildWarnings,
+    CVWorkspaceBuildWarningsConfig,
 )
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_ID,
@@ -142,7 +144,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             workspace = CVWorkspace(
                 id=workspace_id,
                 requested_state=workspace_requested_state,
-                build_warnings=CVWorkspaceBuildWarnings(enabled=build_warnings),
+                build_warnings=CVWorkspaceBuildWarningsConfig(enabled=build_warnings),
             )
             await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1", "avd-ci-spine1", "avd-ci-spine2"]), warnings)
 
@@ -150,7 +152,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         assert workspace.build_warnings.enabled == build_warnings
         assert not workspace.build_warnings.suppress_patterns
         assert not workspace.build_warnings.suppress_portfast
-        assert not workspace.build_results
+        assert not workspace.device_build_results
         assert not warnings
 
     async def test_build_failure(self, cv_client: CVClient) -> None:
@@ -167,15 +169,15 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         assert not workspace.build_warnings.suppress_patterns
         assert not workspace.build_warnings.suppress_portfast
         assert not warnings
-        assert len(workspace.build_results) == 3
-        for build_result in workspace.build_results:
+        assert len(workspace.device_build_results) == 3
+        for build_result in workspace.device_build_results:
             match build_result.device.hostname:
                 case "avd-ci-leaf1":
                     assert not build_result.config_validation.errors
                     assert len(build_result.config_validation.warnings) == 1
-                    assert CVWorkspaceBuildConfigValidationWarning(
+                    assert build_result.config_validation.warnings[0] == CVWorkspaceBuildConfigValidationWarning(
                         # strip start and end of the line markers
-                        warning_msg=EOS_CLI_WARNINGS.get("portfast", "")[1:-2],
+                        warning_msg=EOS_CLI_WARNINGS.get("portfast", "")[1:-1],
                         line_num=3,
                         configlet_name="avd-13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
                     )
@@ -200,16 +202,22 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                     )
 
                     assert len(build_result.config_validation.warnings) == 2
-                    assert CVWorkspaceBuildConfigValidationWarning(
-                        # strip start and end of the line markers
-                        warning_msg=EOS_CLI_WARNINGS.get("portfast", "")[1:-2],
-                        line_num=8,
-                        configlet_name="avd-DCC816CEAC4BBD6319385043AD318362",
+                    assert (
+                        CVWorkspaceBuildConfigValidationWarning(
+                            # strip start and end of the line markers
+                            warning_msg=EOS_CLI_WARNINGS.get("portfast", "")[1:-1],
+                            line_num=8,
+                            configlet_name="avd-DCC816CEAC4BBD6319385043AD318362",
+                        )
+                        in build_result.config_validation.warnings
                     )
-                    assert CVWorkspaceBuildConfigValidationWarning(
-                        warning_msg="! /32 IPv4 address is not configured on the interface",
-                        line_num=15,
-                        configlet_name="avd-DCC816CEAC4BBD6319385043AD318362",
+                    assert (
+                        CVWorkspaceBuildConfigValidationWarning(
+                            warning_msg="! /32 IPv4 address is not configured on the interface",
+                            line_num=15,
+                            configlet_name="avd-DCC816CEAC4BBD6319385043AD318362",
+                        )
+                        in build_result.config_validation.warnings
                     )
 
                 # default case for avd-ci-spine2
@@ -233,7 +241,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             workspace = CVWorkspace(
                 id=self.workspace_id,
                 requested_state="built",
-                build_warnings=CVWorkspaceBuildWarnings(suppress_portfast=True),
+                build_warnings=CVWorkspaceBuildWarningsConfig(suppress_portfast=True),
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
@@ -243,8 +251,8 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         assert not workspace.build_warnings.suppress_patterns
         assert workspace.build_warnings.suppress_portfast
         assert not warnings
-        assert len(workspace.build_results) == 2
-        for build_result in workspace.build_results:
+        assert len(workspace.device_build_results) == 2
+        for build_result in workspace.device_build_results:
             match build_result.device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
@@ -266,7 +274,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                     )
 
                     assert len(build_result.config_validation.warnings) == 1
-                    assert CVWorkspaceBuildConfigValidationWarning(
+                    assert build_result.config_validation.warnings[0] == CVWorkspaceBuildConfigValidationWarning(
                         warning_msg="! /32 IPv4 address is not configured on the interface",
                         line_num=15,
                         configlet_name="avd-DCC816CEAC4BBD6319385043AD318362",
@@ -293,7 +301,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             workspace = CVWorkspace(
                 id=self.workspace_id,
                 requested_state="built",
-                build_warnings=CVWorkspaceBuildWarnings(suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"]),
+                build_warnings=CVWorkspaceBuildWarningsConfig(suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"]),
             )
             with pytest.raises(CVWorkspaceBuildFailed):
                 await finalize_workspace_on_cv(workspace, cv_client, list(self.CV_DEVICES), warnings)
@@ -303,15 +311,15 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         assert len(workspace.build_warnings.suppress_patterns) == 1
         assert not workspace.build_warnings.suppress_portfast
         assert not warnings
-        assert len(workspace.build_results) == 3
-        for build_result in workspace.build_results:
+        assert len(workspace.device_build_results) == 3
+        for build_result in workspace.device_build_results:
             match build_result.device.hostname:
                 case "avd-ci-leaf1":
                     assert not build_result.config_validation.errors
                     assert len(build_result.config_validation.warnings) == 1
-                    assert CVWorkspaceBuildConfigValidationWarning(
+                    assert build_result.config_validation.warnings[0] == CVWorkspaceBuildConfigValidationWarning(
                         # strip start and end of the line markers
-                        warning_msg=EOS_CLI_WARNINGS.get("portfast", "")[1:-2],
+                        warning_msg=EOS_CLI_WARNINGS.get("portfast", "")[1:-1],
                         line_num=3,
                         configlet_name="avd-13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
                     )
@@ -336,9 +344,9 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                     )
 
                     assert len(build_result.config_validation.warnings) == 1
-                    assert CVWorkspaceBuildConfigValidationWarning(
+                    assert build_result.config_validation.warnings[0] == CVWorkspaceBuildConfigValidationWarning(
                         # strip start and end of the line markers
-                        warning_msg=EOS_CLI_WARNINGS.get("portfast", "")[1:-2],
+                        warning_msg=EOS_CLI_WARNINGS.get("portfast", "")[1:-1],
                         line_num=8,
                         configlet_name="avd-DCC816CEAC4BBD6319385043AD318362",
                     )
@@ -364,7 +372,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             workspace = CVWorkspace(
                 id=self.workspace_id,
                 requested_state="built",
-                build_warnings=CVWorkspaceBuildWarnings(
+                build_warnings=CVWorkspaceBuildWarningsConfig(
                     suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*", EOS_CLI_WARNINGS.get("portfast", "")]
                 ),
             )
@@ -376,8 +384,8 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         assert len(workspace.build_warnings.suppress_patterns) == 2
         assert not workspace.build_warnings.suppress_portfast
         assert not warnings
-        assert len(workspace.build_results) == 2
-        for build_result in workspace.build_results:
+        assert len(workspace.device_build_results) == 2
+        for build_result in workspace.device_build_results:
             match build_result.device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
@@ -421,7 +429,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             workspace = CVWorkspace(
                 id=self.workspace_id,
                 requested_state="built",
-                build_warnings=CVWorkspaceBuildWarnings(
+                build_warnings=CVWorkspaceBuildWarningsConfig(
                     suppress_patterns=[".*! /32 IPv4 address is not [a-z]+ on the.*"],
                     suppress_portfast=True,
                 ),
@@ -434,8 +442,8 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         assert len(workspace.build_warnings.suppress_patterns) == 1
         assert workspace.build_warnings.suppress_portfast
         assert not warnings
-        assert len(workspace.build_results) == 2
-        for build_result in workspace.build_results:
+        assert len(workspace.device_build_results) == 2
+        for build_result in workspace.device_build_results:
             match build_result.device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
@@ -479,7 +487,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             workspace = CVWorkspace(
                 id=self.workspace_id,
                 requested_state="built",
-                build_warnings=CVWorkspaceBuildWarnings(
+                build_warnings=CVWorkspaceBuildWarningsConfig(
                     suppress_patterns=[r"(?P<invalid"],
                 ),
             )
@@ -495,15 +503,15 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             r"_prepare_build_warnings_suppress_patterns: Failed to process proposed regex pattern '(?P<invalid'. "
             r"This incorrect pattern will not be used for warnings suppression. Error: 'missing >, unterminated name at position 4'"
         )
-        assert len(workspace.build_results) == 3
-        for build_result in workspace.build_results:
+        assert len(workspace.device_build_results) == 3
+        for build_result in workspace.device_build_results:
             match build_result.device.hostname:
                 case "avd-ci-leaf1":
                     assert not build_result.config_validation.errors
                     assert len(build_result.config_validation.warnings) == 1
-                    assert CVWorkspaceBuildConfigValidationWarning(
+                    assert build_result.config_validation.warnings[0] == CVWorkspaceBuildConfigValidationWarning(
                         # strip start and end of the line markers
-                        warning_msg=EOS_CLI_WARNINGS.get("portfast", "")[1:-2],
+                        warning_msg=EOS_CLI_WARNINGS.get("portfast", "")[1:-1],
                         line_num=3,
                         configlet_name="avd-13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
                     )
@@ -528,16 +536,22 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                     )
 
                     assert len(build_result.config_validation.warnings) == 2
-                    assert CVWorkspaceBuildConfigValidationWarning(
-                        # strip start and end of the line markers
-                        warning_msg=EOS_CLI_WARNINGS.get("portfast", "")[1:-2],
-                        line_num=8,
-                        configlet_name="avd-DCC816CEAC4BBD6319385043AD318362",
+                    assert (
+                        CVWorkspaceBuildConfigValidationWarning(
+                            # strip start and end of the line markers
+                            warning_msg=EOS_CLI_WARNINGS.get("portfast", "")[1:-1],
+                            line_num=8,
+                            configlet_name="avd-DCC816CEAC4BBD6319385043AD318362",
+                        )
+                        in build_result.config_validation.warnings
                     )
-                    assert CVWorkspaceBuildConfigValidationWarning(
-                        warning_msg="! /32 IPv4 address is not configured on the interface",
-                        line_num=15,
-                        configlet_name="avd-DCC816CEAC4BBD6319385043AD318362",
+                    assert (
+                        CVWorkspaceBuildConfigValidationWarning(
+                            warning_msg="! /32 IPv4 address is not configured on the interface",
+                            line_num=15,
+                            configlet_name="avd-DCC816CEAC4BBD6319385043AD318362",
+                        )
+                        in build_result.config_validation.warnings
                     )
 
                 # default case for avd-ci-spine2
@@ -561,7 +575,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             workspace = CVWorkspace(
                 id=self.workspace_id,
                 requested_state="built",
-                build_warnings=CVWorkspaceBuildWarnings(
+                build_warnings=CVWorkspaceBuildWarningsConfig(
                     suppress_patterns=[".*portfast should only be enabled on ports connected to a single host.*"],
                     suppress_portfast=True,
                 ),
@@ -574,8 +588,8 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         assert len(workspace.build_warnings.suppress_patterns) == 1
         assert workspace.build_warnings.suppress_portfast
         assert not warnings
-        assert len(workspace.build_results) == 2
-        for build_result in workspace.build_results:
+        assert len(workspace.device_build_results) == 2
+        for build_result in workspace.device_build_results:
             match build_result.device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
@@ -597,7 +611,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                     )
 
                     assert len(build_result.config_validation.warnings) == 1
-                    assert CVWorkspaceBuildConfigValidationWarning(
+                    assert build_result.config_validation.warnings[0] == CVWorkspaceBuildConfigValidationWarning(
                         warning_msg="! /32 IPv4 address is not configured on the interface",
                         line_num=15,
                         configlet_name="avd-DCC816CEAC4BBD6319385043AD318362",
@@ -624,7 +638,7 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
             workspace = CVWorkspace(
                 id=self.workspace_id,
                 requested_state="built",
-                build_warnings=CVWorkspaceBuildWarnings(
+                build_warnings=CVWorkspaceBuildWarningsConfig(
                     enabled=False,
                 ),
             )
@@ -636,8 +650,8 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
         assert not workspace.build_warnings.suppress_patterns
         assert not workspace.build_warnings.suppress_portfast
         assert not warnings
-        assert len(workspace.build_results) == 2
-        for build_result in workspace.build_results:
+        assert len(workspace.device_build_results) == 2
+        for build_result in workspace.device_build_results:
             match build_result.device.hostname:
                 case "avd-ci-spine1":
                     assert len(build_result.config_validation.errors) == 2
@@ -672,3 +686,65 @@ class TestFinalizeWorkspaceOnCVBuildErrors:
                         in build_result.config_validation.errors
                     )
                     assert not build_result.config_validation.warnings
+
+    @pytest.mark.asyncio
+    async def test_produce_cvworkspace_build_result(self, caplog: pytest.LogCaptureFixture, cv_client: CVClient) -> None:
+        """
+        Test possible use case where returned WorkspaceBuildDetails object does not match any of the devices targeted by our deployment.
+
+        Engaged mocked API call:
+        -   description: Fetch build details
+            request: 'WorkspaceBuildDetailsStreamRequest(partial_eq_filter=[WorkspaceBuildDetails(key=WorkspaceBuildDetailsKey(
+                workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', build_id='req-914310f3-08dd-4239-bd42-6d78b0000100'))])'
+            targeted_file: 'arista.workspace.v1.WorkspaceBuildDetailsService/GetAll/www.cv-prod-us-central1-c.arista.io/
+                85ff5d81e72ea2e4f36942319dc7329094cdb591.json'
+
+        """
+        # Redefine list of CVDevices making sure avd-ci-leaf1 (13C20F1EDCCED2D85F6DB2FB9E3AC5B6) is missing in it
+        cv_devices_short: tuple[CVDevice, ...] = (
+            CVDevice(
+                hostname="avd-ci-spine1",
+                serial_number="DCC816CEAC4BBD6319385043AD318362",
+                system_mac_address="50:00:00:d7:ee:0b",
+                _exists_on_cv=True,
+                _streaming=True,
+            ),
+            CVDevice(
+                hostname="avd-ci-spine2",
+                serial_number="A7D46613D44DE45D68D5B5C5CBA06B0D",
+                system_mac_address="50:00:00:cb:38:c2",
+                _exists_on_cv=True,
+                _streaming=True,
+            ),
+        )
+
+        # Fetch mocked/recorded API response which includes config validation warnings for avd-ci-leaf1 (13C20F1EDCCED2D85F6DB2FB9E3AC5B6)
+        workspace_build_details = await cv_client.get_workspace_build_details(workspace_id=self.workspace_id, build_id=self.workspace_build_id)
+
+        # Attempt to process CloudVision build details
+        with caplog.at_level(WARNING):
+            response = _produce_cvworkspace_build_result(
+                workspace=CVWorkspace(id=self.workspace_id, requested_state="built"),
+                workspace_build_details=workspace_build_details,
+                compiled_workspace_build_warnings_suppress_list=[],
+                devices=cv_devices_short,
+            )
+
+        # Assert that CVWorkspaceDeviceBuildResult objects are generated for avd-ci-spine1 and avd-ci-spine2
+        assert len(response) == 2
+        assert all((response_item.device.hostname in ["avd-ci-spine1", "avd-ci-spine2"]) for response_item in response)
+
+        # Assert that CVWorkspaceDeviceBuildResult objects are not generated for avd-ci-leaf1
+        assert not any(response_item.device.hostname == "avd-ci-leaf1" for response_item in response)
+
+        # Assert that log message is generated for avd-ci-leaf1 which is missing in the list of CVDevices
+        assert any(
+            re.search(
+                re.compile(
+                    r"_produce_cvworkspace_build_result: Returned WorkspaceBuildDetails object references device '13C20F1EDCCED2D85F6DB2FB9E3AC5B6'.*"
+                    r"warnings=ConfigErrors\(values=\[ConfigError\(error_code=ErrorCode.DEVICE_WARNING, error_msg='! portfast should only be enabled.*"
+                ),
+                str(record.message),
+            )
+            for record in caplog.records
+        )

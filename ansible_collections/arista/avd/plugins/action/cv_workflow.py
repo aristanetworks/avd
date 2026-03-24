@@ -32,7 +32,7 @@ try:
         CVPathfinderMetadata,
         CVTimeOuts,
         CVWorkspace,
-        CVWorkspaceBuildWarnings,
+        CVWorkspaceBuildWarningsConfig,
         DeployToCvResult,
     )
     from pyavd._utils import get, strip_empties_from_dict
@@ -199,10 +199,10 @@ class ActionModule(ActionBase):
             )
 
             if work_to_do:
-                # Pre-process workspace args to convert build_warnings to CVWorkspaceBuildWarnings object.
+                # Pre-process workspace args to convert build_warnings to CVWorkspaceBuildWarningsConfig object.
                 workspace_args = get(validated_args, "workspace", default={})
                 if "build_warnings" in workspace_args:
-                    workspace_args["build_warnings"] = CVWorkspaceBuildWarnings(**workspace_args["build_warnings"])
+                    workspace_args["build_warnings"] = CVWorkspaceBuildWarningsConfig(**workspace_args["build_warnings"])
 
                 # Perform deployment of all objects, getting a DeployToCVResult object back.
                 result_object = await deploy_to_cv(
