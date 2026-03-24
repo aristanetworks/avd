@@ -16,4 +16,4 @@ cvxserver:
       mgmt_ip: 192.168.201.118/24
 
 expected_error_message: >-
-  'mgmt_ip' for CVX Server dhcp-mgmt-ip-cvx-server-2 must be a static IP address, 'dhcp' is not supported.
+  'mgmt_ip' for CVX Server dhcp-mgmt-ip-cvx-server-2 must be a static management IP address, 'dhcp' is not supported for host 'dhcp-mgmt-ip-cvx-server-1'.

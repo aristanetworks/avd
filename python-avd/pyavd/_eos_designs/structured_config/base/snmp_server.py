@@ -82,7 +82,7 @@ class SnmpServerMixin(Protocol):
                 if self.shared_utils.node_config.mgmt_ip == "dhcp":
                     msg = (
                         "'snmp_settings.local_engineid_ip' is set to 'use_mgmt_interface' but 'mgmt_ip: dhcp' is not supported. "
-                        "A static IP address is required."
+                        f"A static management IP address is required for host '{self.shared_utils.hostname}'."
                     )
                     raise AristaAvdInvalidInputsError(msg, self.shared_utils.hostname)
                 return default(self.shared_utils.node_config.mgmt_ip, self.shared_utils.node_config.ipv6_mgmt_ip)
@@ -123,8 +123,11 @@ class SnmpServerMixin(Protocol):
                 # This does not handle well inband mgmt cases as it uses None for the management IP
                 # This is kept for legacy purposes.
                 if self.shared_utils.node_config.mgmt_ip == "dhcp":
-                    msg = "'mgmt_ip: dhcp' is not supported for SNMP engine ID computation with 'hostname_and_ip'. A static management IP address is required."
-                    raise AristaAvdInvalidInputsError(msg)
+                    msg = (
+                        f"'mgmt_ip: dhcp' is not supported for 'snmp_settings.compute_local_engineid_source: hostname_and_ip'. "
+                        f"A static management IP address is required for host '{self.shared_utils.hostname}'."
+                    )
+                    raise AristaAvdInvalidInputsError(msg, self.shared_utils.hostname)
                 local_engine_id = self._get_sha1_digest(self.shared_utils.node_config.mgmt_ip)
             case "rfc3411_type3":
                 # prefix with Enterprise Id + 05 to adhere to RCF3411 and RFC5343

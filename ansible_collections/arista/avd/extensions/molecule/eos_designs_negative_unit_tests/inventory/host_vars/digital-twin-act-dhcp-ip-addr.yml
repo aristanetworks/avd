@@ -16,5 +16,4 @@ platform_settings:
 avd_digital_twin_mode: true
 
 expected_error_message: >-
-  Failed to generate ACT Digital Twin metadata for device 'digital-twin-act-dhcp-ip-addr'. 'mgmt_ip: dhcp' is not supported for Digital Twin.
-  A static IP address must be used.
+  'mgmt_ip: dhcp' is not supported for Digital Twin. A static management IP address is required for host 'digital-twin-act-dhcp-ip-addr'.

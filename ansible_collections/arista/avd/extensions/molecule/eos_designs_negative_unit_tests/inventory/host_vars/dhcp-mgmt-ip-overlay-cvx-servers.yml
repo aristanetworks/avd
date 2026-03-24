@@ -24,4 +24,5 @@ cvxserver:
       mgmt_ip: dhcp
 
 expected_error_message: >-
-  'mgmt_ip' for CVX Server dhcp-mgmt-ip-overlay-cvx-servers must be a static IP address, 'dhcp' is not supported.
+  'mgmt_ip' for CVX Server dhcp-mgmt-ip-overlay-cvx-servers must be a static management IP address, 'dhcp' is not supported
+  for host 'dhcp-mgmt-ip-overlay-cvx-servers'.

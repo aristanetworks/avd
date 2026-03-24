@@ -20,6 +20,3 @@ l3leaf:
         - name: mlag-dhcp-mgmt-ip-2
           id: 102
           mgmt_ip: dhcp
-
-expected_error_message: >-
-  'vtep_loopback_ipv6_pool' is required but was not found for host 'missing-vtep-loopback-ipv6-pool'.

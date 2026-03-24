@@ -35,8 +35,11 @@ class CvxMixin(Protocol):
                 msg = f"'mgmt_ip' for CVX Server {overlay_cvx_server} is required."
                 raise AristaAvdInvalidInputsError(msg)
             if peer_switch_facts.mgmt_ip == "dhcp":
-                msg = f"'mgmt_ip' for CVX Server {overlay_cvx_server} must be a static IP address, 'dhcp' is not supported."
-                raise AristaAvdInvalidInputsError(msg, self.shared_utils.hostname)
+                msg = (
+                    f"'mgmt_ip' for CVX Server {overlay_cvx_server} must be a static management IP address, "
+                    f"'dhcp' is not supported for host '{self.shared_utils.hostname}'."
+                )
+                raise AristaAvdInvalidInputsError(msg)
             self.structured_config.cvx.peer_hosts.append(get_ip_from_ip_prefix(peer_switch_facts.mgmt_ip))
 
         self.structured_config.cvx.shutdown = False

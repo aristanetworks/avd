@@ -56,8 +56,8 @@ class DigitalTwinMixin(Protocol):
                     raise AristaAvdError(msg)
                 if ip_addr == "dhcp":
                     msg = (
-                        f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."
-                        " 'mgmt_ip: dhcp' is not supported for Digital Twin. A static IP address must be used."
+                        f"'mgmt_ip: dhcp' is not supported for Digital Twin. "
+                        f"A static management IP address is required for host '{self.shared_utils.hostname}'."
                     )
                     raise AristaAvdError(msg, self.shared_utils.hostname)
                 version = default(
