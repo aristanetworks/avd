@@ -279,25 +279,6 @@ def _build_warnings_list(
     ]
 
 
-def _get_device_by_serial(devices: list[CVDevice], serial_number: str) -> CVDevice | None:
-    """
-    Get CVDevice by serial number.
-
-    Parameters:
-        devices: List of CVDevice objects.
-        serial_number: Serial number to search for.
-
-    Returns:
-        CVDevice object matching the serial number.
-        None in case requested device is not in the list of the targeted devices.
-    """
-    # TODO: Can there be a case where no device is found here? Like if we apply Tag changes that lead to the config change for the device we have not targeted?
-    try:
-        return next(device for device in devices if device.serial_number == serial_number)
-    except StopIteration:
-        return None
-
-
 def _produce_cvworkspace_build_result(
     workspace: CVWorkspace,
     workspace_build_details: list[WorkspaceBuildDetails],
@@ -323,8 +304,9 @@ def _produce_cvworkspace_build_result(
         if not _should_include_build_details(workspace_build_details_item, workspace, compiled_workspace_build_warnings_suppress_list):
             continue
 
-        # Get the device for this build details item
-        device = _get_device_by_serial(devices, workspace_build_details_item.key.device_id)
+        # Get the device for this build details item. Return None if device ID is not found in the list of targeted devices
+        # TODO: Can there be a case where no device is found here? Example: Tag changes leading to the config change for the device we have not targeted.
+        device = next((device for device in devices if device.serial_number == workspace_build_details_item.key.device_id), None)
 
         # Continue if device is not in the list of devices targeted by this deployment
         if device is None:
