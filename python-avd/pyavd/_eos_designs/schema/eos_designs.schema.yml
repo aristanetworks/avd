@@ -3609,7 +3609,7 @@ keys:
 
                   Fields `source`, `source_wildcard`, `destination` and `destination_wildcard`
 
-                  are ignored when `remark` is set. '
+                  are ignored when `remark` is set.'
               source:
                 type: str
                 description: 'Source mac-address.

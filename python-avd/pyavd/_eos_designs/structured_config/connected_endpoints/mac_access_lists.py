@@ -46,7 +46,7 @@ class MacAccessListsMixin(Protocol):
                 action = action + " " + acl_entry.source
                 if acl_entry.source_wildcard:
                     action = action + " " + acl_entry.source_wildcard
-                    
+
                 action = action + " " + acl_entry.destination
                 if acl_entry.destination_wildcard:
                     action = action + " " + acl_entry.destination_wildcard
