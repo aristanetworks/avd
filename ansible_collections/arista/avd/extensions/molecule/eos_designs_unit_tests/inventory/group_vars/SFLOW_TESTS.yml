@@ -76,19 +76,19 @@ tenants:
               - node: sflow-tests-leaf2
                 ip_address: 172.17.11.1/24
         l3_interfaces:
-          # Test: per-interface sflow: true overrides fabric_sflow.l3_interfaces (not set)
+          # Test: per-interface sflow: true overrides fabric_sflow.l3_interfaces: true
           - interfaces: [Ethernet15]
             ip_addresses: [10.255.15.1/30]
             nodes: [sflow-tests-leaf1]
             description: l3_interface_sflow_true
             sflow: true
-          # Test: per-interface sflow: false overrides fabric_sflow.l3_interfaces (not set)
+          # Test: per-interface sflow: false overrides fabric_sflow.l3_interfaces: true
           - interfaces: [Ethernet16]
             ip_addresses: [10.255.16.1/30]
             nodes: [sflow-tests-leaf1]
             description: l3_interface_sflow_false
             sflow: false
-          # Test: no sflow key falls back to fabric_sflow.l3_interfaces (not set → no sflow)
+          # Test: no sflow key falls back to fabric_sflow.l3_interfaces: true
           - interfaces: [Ethernet17]
             ip_addresses: [10.255.17.1/30]
             nodes: [sflow-tests-leaf1]
