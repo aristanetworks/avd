@@ -43,11 +43,11 @@ custom_structured_configuration_vlan_interfaces:
   ip_address: dhcp
   metadata:
     type: inband_mgmt
-# SVI will be used
+# SVI will be used when default vrf (topology limitation)
 - name: Vlan103
-  description: SVI103_INBAND_MGMT
+  description: SVI103_INBAND_MGMT_DEFAULT_VRF
   shutdown: false
   ip_address: 10.103.103.1/24
-  vrf: MGMT_BACKUP
+  vrf: default
   metadata:
     type: inband_mgmt
