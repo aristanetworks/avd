@@ -122,6 +122,7 @@ keys:
                     type: str
             local_interfaces:
               type: str
+            # TODO: Set default false for address_only
             address_only:
               type: bool
               description: |-
@@ -162,6 +163,7 @@ keys:
                     max: 18024
                   local_interfaces:
                     type: str
+                  # TODO: Set default false for address_only
                   address_only:
                     type: bool
                     description: |-

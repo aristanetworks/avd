@@ -396,18 +396,16 @@ class AvdStructuredConfigBaseProtocol(
         """Set monitor_connectivity based on the input data model."""
         if not self.inputs.monitor_connectivity:
             return
-        # Here _cast_as is not possible since there is default value set for address_only.
-        self.structured_config.monitor_connectivity._update(
+        monitor_connectivity = self.structured_config.monitor_connectivity._update(
             shutdown=self.inputs.monitor_connectivity.shutdown,
             interval=self.inputs.monitor_connectivity.interval,
             interface_sets=self.inputs.monitor_connectivity.interface_sets._cast_as(EosCliConfigGen.MonitorConnectivity.InterfaceSets),
             local_interfaces=self.inputs.monitor_connectivity.local_interfaces,
             address_only=self.inputs.monitor_connectivity.address_only,
             name_server_group=self.inputs.monitor_connectivity.name_server_group,
-            vrfs=self.inputs.monitor_connectivity.vrfs._cast_as(EosCliConfigGen.MonitorConnectivity.Vrfs),
         )
         for host in self.inputs.monitor_connectivity.hosts:
-            self.structured_config.monitor_connectivity.hosts.append_new(
+            monitor_connectivity.hosts.append_new(
                 name=host.name,
                 description=host.description,
                 single_line_description=host.single_line_description,
@@ -417,6 +415,26 @@ class AvdStructuredConfigBaseProtocol(
                 address_only=host.address_only,
                 url=host.url,
             )
+        for vrf in self.inputs.monitor_connectivity.vrfs:
+            monitor_connectivity_vrf = monitor_connectivity.vrfs.append_new(
+                name=vrf.name,
+                description=vrf.description,
+                single_line_description=vrf.single_line_description,
+                interface_sets=vrf.interface_sets._cast_as(EosCliConfigGen.MonitorConnectivity.VrfsItem.InterfaceSets),
+                local_interfaces=vrf.local_interfaces,
+                address_only=vrf.address_only,
+            )
+            for host in vrf.hosts:
+                monitor_connectivity_vrf.hosts.append_new(
+                    name=host.name,
+                    description=host.description,
+                    single_line_description=host.single_line_description,
+                    ip=host.ip,
+                    icmp_echo_size=host.icmp_echo_size,
+                    local_interfaces=host.local_interfaces,
+                    address_only=host.address_only,
+                    url=host.url,
+                )
 
     @structured_config_contributor
     def redundancy(self) -> None:

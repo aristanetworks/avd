@@ -60,11 +60,42 @@ monitor_connectivity:
     interface_sets:
     - name: SET_MGMT
       interfaces: Management1
+    address_only: false
     hosts:
     - name: MGMT_SERVER
       description: Management server
       ip: 10.0.0.1
       local_interfaces: SET_MGMT
+      address_only: false
+    - name: MGMT_SERVER_1
+      description: Management server 1
+      ip: 10.0.0.2
+      local_interfaces: SET_MGMT_1
+      address_only: true
+    - name: MGMT_SERVER_2
+      description: Management server 2
+      ip: 10.0.0.3
+      local_interfaces: SET_MGMT_2
+      address_only: false
+  - name: MGMT_1
+    description: Management VRF monitoring 1
+    local_interfaces: Vrf_Set_MGMT
+    address_only: true
+    hosts:
+    - name: MGMT_SERVER_1
+      description: Management server 1
+      ip: 11.0.0.1
+      local_interfaces: SET_MGMT_1
+      address_only: false
+    - name: MGMT_SERVER_2
+      description: Management server 2
+      ip: 11.0.0.2
+      local_interfaces: SET_MGMT_2
+      address_only: true
+    - name: MGMT_SERVER_3
+      description: Management server 3
+      ip: 11.0.0.3
+      local_interfaces: SET_MGMT_3
       address_only: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY

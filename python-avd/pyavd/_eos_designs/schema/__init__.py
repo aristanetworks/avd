@@ -23459,7 +23459,7 @@ class EosDesigns(EosDesignsRootModel):
                     "ip": {"type": str},
                     "icmp_echo_size": {"type": int},
                     "local_interfaces": {"type": str},
-                    "address_only": {"type": bool, "default": True},
+                    "address_only": {"type": bool, "default": False},
                     "url": {"type": str},
                 }
                 name: str
@@ -23489,7 +23489,7 @@ class EosDesigns(EosDesignsRootModel):
                 When set to `false`, the probe uses the
                 interface to exit the device.
 
-                Default value: `True`
+                Default value: `False`
                 """
                 url: str | None
 
@@ -23550,7 +23550,7 @@ class EosDesigns(EosDesignsRootModel):
                 "single_line_description": {"type": str},
                 "interface_sets": {"type": InterfaceSets},
                 "local_interfaces": {"type": str},
-                "address_only": {"type": bool, "default": True},
+                "address_only": {"type": bool, "default": False},
                 "hosts": {"type": Hosts},
             }
             name: str
@@ -23579,7 +23579,7 @@ class EosDesigns(EosDesignsRootModel):
             When set to `false`, the probe uses the
             interface to exit the device.
 
-            Default value: `True`
+            Default value: `False`
             """
             hosts: Hosts
             """Subclass of AvdIndexedList with `HostsItem` items. Primary key is `name` (`str`)."""

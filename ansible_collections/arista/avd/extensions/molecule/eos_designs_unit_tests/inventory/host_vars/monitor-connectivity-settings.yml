@@ -42,6 +42,7 @@ monitor_connectivity:
   vrfs:
     - name: MGMT
       description: Management VRF monitoring
+      # testing default vrf.address_only
       interface_sets:
         - name: SET_MGMT
           interfaces: Management1
@@ -49,5 +50,40 @@ monitor_connectivity:
         - name: MGMT_SERVER
           description: Management server
           ip: 10.0.0.1
+          # testing vrf.hosts.[].address_only: false
           local_interfaces: SET_MGMT
           address_only: false
+        - name: MGMT_SERVER_1
+          description: Management server 1
+          ip: 10.0.0.2
+          local_interfaces: SET_MGMT_1
+          # testing vrf.hosts.[].address_only: true
+          address_only: true
+        - name: MGMT_SERVER_2
+          description: Management server 2
+          ip: 10.0.0.3
+          # testing default vrf.hosts.[].address_only
+          local_interfaces: SET_MGMT_2
+    - name: MGMT_1
+      description: Management VRF monitoring 1
+      # testing vrf.address_only: true
+      local_interfaces: Vrf_Set_MGMT
+      address_only: true
+      hosts:
+        - name: MGMT_SERVER_1
+          description: Management server 1
+          ip: 11.0.0.1
+          # testing vrf.hosts.[].address_only: false
+          local_interfaces: SET_MGMT_1
+          address_only: false
+        - name: MGMT_SERVER_2
+          description: Management server 2
+          ip: 11.0.0.2
+          local_interfaces: SET_MGMT_2
+          # testing vrf.hosts.[].address_only: true
+          address_only: true
+        - name: MGMT_SERVER_3
+          description: Management server 3
+          ip: 11.0.0.3
+          # testing default vrf.hosts.[].address_only
+          local_interfaces: SET_MGMT_3
