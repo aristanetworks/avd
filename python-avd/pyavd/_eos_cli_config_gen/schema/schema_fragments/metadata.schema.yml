@@ -465,6 +465,5 @@ keys:
               only_avd_interfaces:
                 type: bool
                 description: |-
-                  When true, only validate interfaces defined in the AVD structured configuration for errdisabled state.
-                  When false, validate all interfaces on the device for errdisabled state.
+                  Only validate interfaces defined in the AVD structured configuration for errdisabled state.
                 default: false

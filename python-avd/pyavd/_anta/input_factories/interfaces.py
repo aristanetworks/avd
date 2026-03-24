@@ -186,8 +186,9 @@ class VerifyInterfaceErrDisabledInputFactory(AntaTestInputFactory[VerifyInterfac
     """
     Input factory class for the `VerifyInterfaceErrDisabled` test.
 
-    When `metadata.interfaces.errdisable.avd_managed_only` is True, only the AVD-managed
-    Ethernet and Port-Channel interfaces are checked. Otherwise, all interfaces are checked.
+    When `metadata.interfaces.errdisable.only_avd_interfaces` is True, only the AVD-managed
+    Ethernet, Port-Channel, Loopback, VLAN, Management, DPS, and Tunnel interfaces are checked.
+    Otherwise, all interfaces are checked.
     """
 
     def create(self) -> Iterator[VerifyInterfaceErrDisabled.Input]:

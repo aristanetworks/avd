@@ -2,6 +2,9 @@ aaa_root:
   disabled: true
 config_end: true
 dns_domain: dc1.local
+dps_interfaces:
+- name: Dps1
+  description: Interface for testing errordisable test
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -525,6 +528,9 @@ static_routes:
   prefix: 0.0.0.0/0
   next_hop: 172.16.1.1
 transceiver_qsfp_default_mode_4x10: true
+tunnel_interfaces:
+- name: Tunnel1
+  description: Interface for testing errordisable test
 virtual_source_nat_vrfs:
 - name: VRF10
   ip_address: 10.255.10.3

@@ -23,7 +23,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exclude_as_extra_fabric_validation_target</samp>](## "validation_profiles.[].exclude_as_extra_fabric_validation_target") | Boolean |  | `False` |  | Exclude this node from being used as a destination target from other fabric devices in the extra fabric validation tests performed by the `anta_runner` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "validation_profiles.[].interfaces") | Dictionary |  |  |  | Interface validation settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errdisable</samp>](## "validation_profiles.[].interfaces.errdisable") | Dictionary |  |  |  | Settings for the VerifyInterfaceErrDisabled test. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_avd_interfaces</samp>](## "validation_profiles.[].interfaces.errdisable.only_avd_interfaces") | Boolean |  | `False` |  | When true, only validate interfaces defined in the AVD structured configuration for errdisabled state.<br>When false, validate all interfaces on the device for errdisabled state. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only_avd_interfaces</samp>](## "validation_profiles.[].interfaces.errdisable.only_avd_interfaces") | Boolean |  | `False` |  | Only validate interfaces defined in the AVD structured configuration for errdisabled state. |
 
 === "YAML"
 
@@ -74,8 +74,7 @@
           # Settings for the VerifyInterfaceErrDisabled test.
           errdisable:
 
-            # When true, only validate interfaces defined in the AVD structured configuration for errdisabled state.
-            # When false, validate all interfaces on the device for errdisabled state.
+            # Only validate interfaces defined in the AVD structured configuration for errdisabled state.
             only_avd_interfaces: <bool; default=False>
     ```
 

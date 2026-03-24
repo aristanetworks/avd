@@ -258,6 +258,7 @@
           ]
         },
         "interfaces": [
+          "Dps1",
           "Ethernet1",
           "Ethernet2",
           "Ethernet3",
@@ -277,6 +278,7 @@
           "Port-Channel3",
           "Port-Channel5",
           "Port-Channel8",
+          "Tunnel1",
           "Vlan11",
           "Vlan12",
           "Vlan21",
@@ -324,6 +326,10 @@
           ]
         },
         "interfaces": [
+          {
+            "name": "Dps1",
+            "status": "up"
+          },
           {
             "name": "Ethernet1",
             "status": "up"

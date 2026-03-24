@@ -26046,9 +26046,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"only_avd_interfaces": {"type": bool, "default": False}}
                 only_avd_interfaces: bool
                 """
-                When true, only validate interfaces defined in the AVD structured configuration for errdisabled
-                state.
-                When false, validate all interfaces on the device for errdisabled state.
+                Only validate interfaces defined in the AVD structured configuration for errdisabled state.
 
                 Default value: `False`
                 """
@@ -26063,10 +26061,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            only_avd_interfaces:
-                               When true, only validate interfaces defined in the AVD structured configuration for errdisabled
-                               state.
-                               When false, validate all interfaces on the device for errdisabled state.
+                            only_avd_interfaces: Only validate interfaces defined in the AVD structured configuration for errdisabled state.
 
                         """
 
