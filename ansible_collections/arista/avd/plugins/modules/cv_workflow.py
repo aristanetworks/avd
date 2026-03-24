@@ -163,7 +163,7 @@ options:
             type: bool
             default: true
           suppress_patterns:
-            description: Arbitrary list of the EoS CLI warning string patterns to suppress.
+            description: Arbitrary list of the EOS CLI warning string patterns to suppress.
             type: list
             elements: str
             default: []
