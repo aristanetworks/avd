@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import get_ip_from_ip_prefix
+from pyavd._utils import default, get_ip_from_ip_prefix
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -137,7 +137,9 @@ class EthernetInterfacesMixin(Protocol):
                         l3_interface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                     )
 
-                interface.sflow.enable = self.shared_utils.get_interface_sflow(interface.name, self.inputs.fabric_sflow.l3_interfaces)
+                interface.sflow.enable = self.shared_utils.get_interface_sflow(
+                    interface.name, default(l3_interface.sflow, self.inputs.fabric_sflow.l3_interfaces)
+                )
 
                 if l3_interface.ipv4_acl_in:
                     acl = self.shared_utils.get_ipv4_acl(
