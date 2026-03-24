@@ -59,6 +59,8 @@ ethernet_interfaces:
   ip_address: 10.255.17.1/30
   metadata:
     peer_type: l3_interface
+  sflow:
+    enable: true
   switchport:
     enabled: false
 - name: Ethernet10
