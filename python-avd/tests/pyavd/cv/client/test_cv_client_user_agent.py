@@ -184,7 +184,7 @@ def test_cv_client_get_user_agent_optional_dependancy_missing(cv_client: CVClien
     assert http_headers["User-Agent"] == expected_user_agent
 
 
-def test_cv_client_get_user_agent_no_optional_dependancies(cv_client: CVClient) -> None:
+def test_cv_client_get_user_agent_no_optional_dependencies(cv_client: CVClient) -> None:
     expected_user_agent = "python/3.12.2 pyavd/6.1.0"
 
     versions = {"pyavd": "6.1.0"}
