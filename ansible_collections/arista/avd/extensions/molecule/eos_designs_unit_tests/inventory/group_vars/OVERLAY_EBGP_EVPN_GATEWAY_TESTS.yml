@@ -101,7 +101,7 @@ l3leaf:
       mgmt_ip: 192.168.0.209/24
       evpn_route_servers: [evpn-gateway-l2-evpn-role-server]
       filter:
-        tenants: [ EVPN_GATEWAY_TESTS ]
+        tenants: [ EVPN_GATEWAY_TESTS, RD_RT_REWRITE_PARTIAL_TESTS ]
       evpn_gateway:
         remote_peers:
           - hostname: DCI_TEST
@@ -236,3 +236,25 @@ tenants:
         name: L2_MULTI_DOMAIN_DISABLED
         # Test to disable specific VLAN for l2 multi-domain when enabled on Tenant
         evpn_l2_multi_domain: false
+
+  - name: RD_RT_REWRITE_PARTIAL_TESTS
+    mac_vrf_vni_base: 30000
+    vrfs:
+      - name: VRF_RT_IMPORT_ONLY
+        vrf_vni: 30
+        # Test: rt_export false means only import_evpn_domains is rendered in rd-rt-rewrite mode
+        rt_export: false
+        svis:
+          - id: 301
+            name: VRF_RT_IMPORT_ONLY_VLAN301
+            enabled: true
+            ip_address_virtual: 10.3.1.1/24
+      - name: VRF_RT_EXPORT_ONLY
+        vrf_vni: 31
+        # Test: rt_import false means only export_evpn_domains is rendered in rd-rt-rewrite mode
+        rt_import: false
+        svis:
+          - id: 302
+            name: VRF_RT_EXPORT_ONLY_VLAN302
+            enabled: true
+            ip_address_virtual: 10.3.2.1/24

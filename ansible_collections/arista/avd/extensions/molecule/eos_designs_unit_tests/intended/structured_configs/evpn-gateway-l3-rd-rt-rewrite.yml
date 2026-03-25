@@ -162,6 +162,26 @@ router_bgp:
       - 13402:13402
     redistribute_routes:
     - learned
+  - id: 302
+    metadata:
+      tenants:
+      - RD_RT_REWRITE_PARTIAL_TESTS
+    rd: 192.168.255.6:30302
+    route_targets:
+      both:
+      - 30302:30302
+    redistribute_routes:
+    - learned
+  - id: 301
+    metadata:
+      tenants:
+      - RD_RT_REWRITE_PARTIAL_TESTS
+    rd: 192.168.255.6:30301
+    route_targets:
+      both:
+      - 30301:30301
+    redistribute_routes:
+    - learned
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -212,6 +232,30 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+  - name: VRF_RT_EXPORT_ONLY
+    rd_evpn_domain:
+      domain: all
+      rd: 192.168.255.6:31
+    route_targets:
+      export_evpn_domains:
+      - route_target: '31:31'
+        domain: all
+    router_id: 192.168.255.6
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_RT_IMPORT_ONLY
+    rd_evpn_domain:
+      domain: all
+      rd: 192.168.255.6:30
+    route_targets:
+      import_evpn_domains:
+      - route_target: '30:30'
+        domain: all
+    router_id: 192.168.255.6
+    redistribute:
+      connected:
+        enabled: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
@@ -254,6 +298,22 @@ vlan_interfaces:
   metadata:
     tenants:
     - EVPN_GATEWAY_TESTS
+- name: Vlan302
+  description: VRF_RT_EXPORT_ONLY_VLAN302
+  shutdown: false
+  vrf: VRF_RT_EXPORT_ONLY
+  ip_address_virtual: 10.3.2.1/24
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- name: Vlan301
+  description: VRF_RT_IMPORT_ONLY_VLAN301
+  shutdown: false
+  vrf: VRF_RT_IMPORT_ONLY
+  ip_address_virtual: 10.3.1.1/24
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
 vlan_internal_order:
   allocation: ascending
   range:
@@ -295,6 +355,16 @@ vlans:
   metadata:
     tenants:
     - EVPN_GATEWAY_TESTS
+- id: 302
+  name: VRF_RT_EXPORT_ONLY_VLAN302
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- id: 301
+  name: VRF_RT_IMPORT_ONLY_VLAN301
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -308,6 +378,16 @@ vrfs:
   metadata:
     tenants:
     - EVPN_GATEWAY_TESTS
+- name: VRF_RT_EXPORT_ONLY
+  ip_routing: true
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
+- name: VRF_RT_IMPORT_ONLY
+  ip_routing: true
+  metadata:
+    tenants:
+    - RD_RT_REWRITE_PARTIAL_TESTS
 vxlan_interface:
   vxlan1:
     description: evpn-gateway-l3-rd-rt-rewrite_VTEP
@@ -329,8 +409,16 @@ vxlan_interface:
         vni: 13401
       - id: 3402
         vni: 13402
+      - id: 302
+        vni: 30302
+      - id: 301
+        vni: 30301
       vrfs:
       - name: VRF10
         vni: 10
       - name: VRF11
         vni: 11
+      - name: VRF_RT_EXPORT_ONLY
+        vni: 31
+      - name: VRF_RT_IMPORT_ONLY
+        vni: 30
