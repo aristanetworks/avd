@@ -256,6 +256,17 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+  - name: default
+    rd_evpn_domain:
+      domain: all
+      rd: 192.168.255.6:1
+    route_targets:
+      import_evpn_domains:
+      - route_target: '1:1'
+        domain: all
+      export_evpn_domains:
+      - route_target: '1:1'
+        domain: all
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
@@ -422,3 +433,5 @@ vxlan_interface:
         vni: 31
       - name: VRF_RT_IMPORT_ONLY
         vni: 30
+      - name: default
+        vni: 1
