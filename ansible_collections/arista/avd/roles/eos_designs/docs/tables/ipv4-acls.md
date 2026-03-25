@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sequence</samp>](## "ipv4_acls.[].entries.[].sequence") | Integer |  |  |  | ACL entry sequence number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remark</samp>](## "ipv4_acls.[].entries.[].remark") | String |  |  |  | Comment up to 100 characters.<br>If remark is defined, other keys in the ACL entry will be ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "ipv4_acls.[].entries.[].action") | String |  |  | Valid Values:<br>- <code>permit</code><br>- <code>deny</code> | ACL action.<br>Required except for remarks. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "ipv4_acls.[].entries.[].protocol") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "ipv4_acls.[].entries.[].protocol") | String |  |  |  | "ip", "tcp", "udp", "icmp" or other protocol name or number.<br>Required except for remarks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fragments</samp>](## "ipv4_acls.[].entries.[].fragments") | Boolean |  |  |  | Match non-head fragment packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "ipv4_acls.[].entries.[].ttl") | Integer |  |  | Min: 0<br>Max: 255 | TTL value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl_match</samp>](## "ipv4_acls.[].entries.[].ttl_match") | String |  | `eq` | Valid Values:<br>- <code>eq</code><br>- <code>gt</code><br>- <code>lt</code><br>- <code>neq</code> |  |
@@ -79,6 +79,9 @@
             # ACL action.
             # Required except for remarks.
             action: <str; "permit" | "deny">
+
+            # "ip", "tcp", "udp", "icmp" or other protocol name or number.
+            # Required except for remarks.
             protocol: <str>
 
             # Match non-head fragment packets.

@@ -35,6 +35,9 @@ keys:
                 type: str
               protocol:
                 type: str
+                description: |-
+                  "ip", "tcp", "udp", "icmp" or other protocol name or number.
+                  Required except for remarks.
               source:
                 type: str
                 description: |-

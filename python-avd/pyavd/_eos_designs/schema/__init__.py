@@ -19745,6 +19745,10 @@ class EosDesigns(EosDesignsRootModel):
             Required except for remarks.
             """
             protocol: str | None
+            """
+            "ip", "tcp", "udp", "icmp" or other protocol name or number.
+            Required except for remarks.
+            """
             fragments: bool | None
             """Match non-head fragment packets."""
             ttl: int | None
@@ -19836,7 +19840,9 @@ class EosDesigns(EosDesignsRootModel):
                         action:
                            ACL action.
                            Required except for remarks.
-                        protocol: protocol
+                        protocol:
+                           "ip", "tcp", "udp", "icmp" or other protocol name or number.
+                           Required except for remarks.
                         fragments: Match non-head fragment packets.
                         ttl: TTL value.
                         ttl_match: ttl_match

@@ -15195,6 +15195,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             Required except for remarks.
             """
             protocol: str | None
+            """
+            "ip", "tcp", "udp", "icmp" or other protocol name or number.
+            Required except for remarks.
+            """
             source: str | None
             """
             "any", "<ip>/<mask>" or "<ip>".
@@ -15284,7 +15288,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         action:
                            ACL action.
                            Required except for remarks.
-                        protocol: protocol
+                        protocol:
+                           "ip", "tcp", "udp", "icmp" or other protocol name or number.
+                           Required except for remarks.
                         source:
                            "any", "<ip>/<mask>" or "<ip>".
                            "<ip>" without a mask means host.

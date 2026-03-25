@@ -100,7 +100,7 @@ ipv6 access-list {{ acl.name }}
 {%                         set acl_entry.string = acl_entry.string ~ ' tracked' %}
 {%                     endif %}
 {%                     if acle.hop_limit is arista.avd.defined %}
-{%                         set acl_entry.string = acl_entry.string ~ ' hop-limit ' ~ acle.hop_limit_match | arista.avd.default('eq') ~ ' ' ~ acle.hop_limit | lower %}
+{%                         set acl_entry.string = acl_entry.string ~ ' hop-limit ' ~ acle.hop_limit_match | arista.avd.default('eq') ~ ' ' ~ acle.hop_limit %}
 {%                     endif %}
 {#                     * add dscp #}
 {%                     if acle.dscp is arista.avd.defined %}
